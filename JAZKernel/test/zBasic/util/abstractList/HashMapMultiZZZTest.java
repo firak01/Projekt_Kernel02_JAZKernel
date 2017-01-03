@@ -1,0 +1,62 @@
+package zBasic.util.abstractList;
+
+import junit.framework.TestCase;
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapMultiZZZ;
+
+public class HashMapMultiZZZTest extends TestCase{
+    private HashMapMultiZZZ hmTest = null;
+	
+    protected void setUp(){
+      
+	//try {			
+		//### Die TestObjecte		
+		hmTest=new HashMapMultiZZZ();
+	
+	/*
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+	*/
+	
+}//END setup
+    
+    
+public void testValueSetGet(){
+	try{
+		hmTest.clear();
+		hmTest.put("Alias1", "Alias1a", "Das ist ein Test");
+		
+		//Nun den Wert wieder auslesen
+		String stemp = (String)hmTest.get("Alias1", "Alias1a");
+		assertEquals("Das ist ein Test", stemp);
+		
+	
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+}
+
+public void testDebugString(){
+	try{
+		hmTest.clear();
+		hmTest.put("Alias1", "Alias1a", "Das ist ein Test");
+		hmTest.put("Alias1", "Alias1b", "2. Zeile");
+		hmTest.put("Alias2", "Alias2a", "3. Zeile");
+		hmTest.put("Alias2", "Alias2b", "4. Zeile");
+		
+	
+		String stemp = hmTest.debugString();
+		assertFalse(stemp==null);
+		assertFalse(stemp.equals(""));
+		
+		
+		System.out.println(stemp);
+		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+}
+  
+}//END Class
+

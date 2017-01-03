@@ -1,0 +1,269 @@
+package basic.zBasic;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+import java.util.ArrayList;
+
+import debug.zBasic.MyPrivilegedAction;
+
+import basic.javareflection.mopex.Mopex;
+import basic.javareflection.mopex.UQueue;
+import basic.zBasic.util.datatype.string.StringZZZ;
+
+public class ReflectClassZZZ implements IConstantZZZ{
+
+	/**
+	     * Produces an array of all the fields in a class, each of which has all of the 
+	     * modifiers indicated by the int parameter mustHave and none of the modifiers indicated
+	     * by the int parameter mustNotHave. Note that "all the fields in a class" means the
+	     * class and all of its superclasses. For example, selectFields(x,0,Modifier.FINAL)
+	     * returns all the fields that are not final.
+	     * 
+	     * ACHTUNG: Seit Java 1.6: Problematisch, wenn der Code auf einem Server ausgeführt wird, in dem Java Security über die java.policy Datei geregelt wird.
+	     *                  Verwende dann die entprechende ..Priviliged - Methode.
+	     *
+	     * @return Field[]
+	     * @param cls java.lang.Class
+	     * @param mustHave int
+	     * @param mustNotHave int
+	     * 
+	     * Aus dem Buch: "Java Reflection in Action"
+	     */
+		//start extract selectFields
+	    public static Field[] selectFields( Class cls, 
+						int mustHave, 
+						int mustNotHave ) {
+		UQueue fq = new UQueue(Field.class);
+		Class[] ca = Mopex.selectAncestors(cls,0,0);
+		for ( int j = 0; j < ca.length; j++ ){
+		    Field[] fa = ca[j].getDeclaredFields();
+		    for ( int i = 0; i < fa.length; i++ ) {
+			int mods = fa[i].getModifiers();
+			if ( ((mods & mustHave) == mustHave) 
+			     && ((mods & mustNotHave) == 0) )
+			    fq.add( fa[i] );
+		    }
+		}
+		return (Field[])fq.toArray();
+	    }
+	//start extract selectFields
+	    
+	/* Verwende eine "Privilegierte Helper Klasse, um per Reflection API Werte auszulesen.
+	 *  Seit Java 1.6. tritt beim Einsatz auf Servern die Problematik der java.policy Datei auf.
+	 *   *  Wichtig: Damit das funktioniert muss es überhaupt eine java.policy Datei geben. Sie kann vom Inhalt auch leer sein.*/   
+   public Field[] selectFieldsPrivileged(final Class cls, final int mustHave, final int mustNotHave)  {
+		UQueue fq = new UQueue(Field.class);
+		Class[] ca = Mopex.selectAncestors(cls,0,0);
+		for ( int j = 0; j < ca.length; j++ ){
+		    //Field[] fa = ca[j].getDeclaredFields();			
+			ReflectHelperDeclaredFieldsZZZ pr = new ReflectHelperDeclaredFieldsZZZ(ca[j]);
+			AccessController.doPrivileged(pr);
+			ArrayList<Field>listaField = pr.getFieldList();
+			Field[] fa = new Field[listaField.size()];
+			fa = listaField.toArray(fa);
+		
+		    for ( int i = 0; i < fa.length; i++ ) {
+			int mods = fa[i].getModifiers();
+			if ( ((mods & mustHave) == mustHave) 
+			     && ((mods & mustNotHave) == 0) )
+			    fq.add( fa[i] );
+		    }
+		}
+		return (Field[])fq.toArray();
+    	}
+
+	    /** Ermittelt intern alle Elternklassen von clsCurrent und prüft dann, ob die clsSuperclass darin enthalten ist. 
+	     *   Verwendet intern Mopex.getSuperclasses(class) aus dem Buch "Java Reflections in Action".
+	     *   
+	    * @param clsCurrent
+	    * @param clsSuperclass
+	    * 
+	    * lindhaueradmin; 13.03.2007 08:37:02
+	     * @throws ExceptionZZZ 
+	     */
+	    public static boolean isChildclassFrom(Class clsCurrent, Class clsSuperclass) throws ExceptionZZZ{
+	    	boolean bReturn = false;
+	    	main:{
+	    		if(clsCurrent==null){
+	    			ExceptionZZZ ez = new ExceptionZZZ("Class Current", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			throw ez;
+	    		}
+	    		if(clsSuperclass == null){
+	    			ExceptionZZZ ez = new ExceptionZZZ("Class Superclass", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			throw ez;
+	    		}
+	    		
+	    		//1. Alle Superclassen ermitteln
+	    		Class[] clsaSuper = Mopex.getSuperclasses(clsCurrent);
+	    		if(clsaSuper==null) break main;
+	    		if(clsaSuper.length <= 0) break main;
+	    		
+	    		//2. nun im Array durchgehen
+	    		String sSuperclass = clsSuperclass.getName();
+	    		for(int icount = 0 ; icount <= clsaSuper.length - 1; icount ++){
+	    			String stemp = clsaSuper[icount].getName();
+	    			if(stemp.equals(sSuperclass)){
+	    				bReturn = true;
+	    				break main;
+	    			}
+	    		}
+	    		
+	    	}//end main:
+	    	return bReturn;
+	    }
+	    
+	    public static boolean hasSuperclass(Class clsCurrent) throws ExceptionZZZ{
+	    	boolean bReturn = false;
+	    	main:{
+	    		if(clsCurrent==null){
+	    			ExceptionZZZ ez = new ExceptionZZZ("Class Current", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			throw ez;
+	    		}
+	    			    		
+	    		//Alle Superclassen ermitteln
+	    		Class[] clsaSuper = Mopex.getSuperclasses(clsCurrent);
+	    		if(clsaSuper==null) break main;
+	    		if(clsaSuper.length <= 0) break main;
+	    		bReturn = true;
+	    		
+	    	}//end main:
+	    	return bReturn;
+	    }
+	    
+	    public static String getSuperclassName(Class clsCurrent) throws ExceptionZZZ{
+	    	String sReturn = null;
+	    	main:{
+	    		if(clsCurrent==null){
+	    			ExceptionZZZ ez = new ExceptionZZZ("Class Current", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			throw ez;
+	    		}
+	    		
+	    		Class clsSuper = clsCurrent.getSuperclass();
+	    		if(clsSuper!=null) sReturn = clsSuper.getName();
+	    	}//end main:
+	    	return sReturn;
+	    }
+	    
+	    public static boolean isImplementing(Class clsCurrent, Class clsInterface) throws ExceptionZZZ{
+	    	boolean bReturn = false;
+	    	main:{
+	    		if(clsCurrent==null){
+	    			ExceptionZZZ ez = new ExceptionZZZ("Class Current", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			throw ez;
+	    		}
+	    		if(clsInterface == null){
+	    			ExceptionZZZ ez = new ExceptionZZZ("Class Interafce", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			throw ez;
+	    		}
+	    		
+	    		//1. Alle Interfaceklassen ermitteln
+	    		Class[] clsaInterface = Mopex.getAllInterfaces(clsCurrent);
+	    		
+	    		if(clsaInterface==null) break main;
+	    		if(clsaInterface.length <= 0) break main;
+	    		
+	    		//2. nun im Array durchgehen
+	    		String sInterface = clsInterface.getName();
+	    		for(int icount = 0 ; icount <= clsaInterface.length - 1; icount ++){
+	    			String stemp = clsaInterface[icount].getName();
+	    			if(stemp.equals(sInterface)){
+	    				bReturn = true;
+	    				break main;
+	    			}
+	    		}
+	    		
+	    	}//end main
+	    	return bReturn;
+	    }
+	    
+	    /*
+	     * Feststellen, ob das Feld einer Klasse eine public Konstante ist.
+	     */
+	    public static boolean isPublicStaticFinal(Field field){
+			int modifiers = field.getModifiers();
+			return (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers));
+		}
+	    
+	    /* Feststellen, ob eine Klasse abstract ist
+	     * 
+	     */
+	    public static boolean isAbstract(Class objClass){
+	    	return Modifier.isAbstract( objClass.getModifiers());
+	    }
+	    
+	    /* ArrayList mit den Klassen-Objekten der Elternklassen zurückgeben. 
+	     * ! intern Rekursiver Aufruf !
+	     */
+		public static ArrayList<Class<?>> getSuperClasses(Class objClass){
+			ArrayList<Class<?>> superTypes = new ArrayList<Class<?>>();
+			
+			Class objSuperClass = objClass.getSuperclass();
+			if(objSuperClass!=null){
+			//System.out.println("SuperClassname: " + objSuperClass.getName());
+			superTypes.add(objSuperClass);
+			
+			ReflectClassZZZ.scanSuperClasses(objSuperClass, superTypes);
+			}
+			return superTypes;
+		}
+		
+		/* ArrayList mit den Klassen-Objekten der Elternklassen zurückgeben. 
+	     * ! intern Rekursiver Aufruf !
+	     */
+		public static void scanSuperClasses(Class objClass, ArrayList<Class<?>> superTypes){
+			
+			Class objSuperClass = objClass.getSuperclass();
+			if(objSuperClass!=null){
+				//System.out.println("SuperClassname: " + objSuperClass.getName());
+				superTypes.add(objSuperClass);
+				
+				ReflectClassZZZ.scanSuperClasses(objSuperClass, superTypes);
+			}
+		}
+		
+		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
+		 * 
+		 */
+		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass, String sFilterClassname){
+			ArrayList<Class<?>> embeddedTypes = new ArrayList<Class<?>>();
+						
+			ReflectClassZZZ.scanEmbeddedClasses(objClass, embeddedTypes);
+			
+			//!!! Filtere den gesuchten Klassennamen heraus, d.h. entferne alle, auf die er nicht zutrifft.
+			for(Class objClassTemp : embeddedTypes){
+				String sClassname = objClassTemp.getName();
+				String sTemp = StringZZZ.rightback(sClassname,"$");
+				if(!sTemp.equals(sFilterClassname)){
+					embeddedTypes.remove(objClassTemp);
+				}
+			}
+			return embeddedTypes;
+		}
+		
+		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
+		 * 
+		 */
+		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass){
+			ArrayList<Class<?>> embeddedTypes = new ArrayList<Class<?>>();
+						
+			ReflectClassZZZ.scanEmbeddedClasses(objClass, embeddedTypes);
+			
+			return embeddedTypes;
+		}
+		
+		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
+		 * 
+		 */
+		public static void scanEmbeddedClasses(Class objClass, ArrayList<Class<?>> embeddedTypes){
+			Class[] objaClass = objClass.getClasses();
+			for(Class objClassTemp : objaClass){
+			
+				//System.out.println("Classname in array: " + objClass.getName());
+				embeddedTypes.add(objClassTemp);
+			}	
+		}
+}
