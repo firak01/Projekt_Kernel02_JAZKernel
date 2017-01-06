@@ -1,6 +1,6 @@
 /*
  * Created on 24.10.2004
- * Eine kleine Hilfsklasse für die Behandlung von Strings.
+ * Eine kleine Hilfsklasse fï¿½r die Behandlung von Strings.
  */
 package basic.zBasic.util.datatype.string;
 
@@ -40,7 +40,7 @@ import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
  *
  */
 public class StringZZZ implements IConstantZZZ{
-	public static final String  sREPLACE_FAR_FROM_MARK = "<NOREPLACE>";             //Dies wird temporär in einen String gesetzt, damit der Wert nicht ersetzt wird.
+	public static final String  sREPLACE_FAR_FROM_MARK = "<NOREPLACE>";             //Dies wird temporï¿½r in einen String gesetzt, damit der Wert nicht ersetzt wird.
 	private StringZZZ(){
 		//zum 'Verstecken" des Konstruktors
 	}
@@ -62,11 +62,11 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 		
-	/** Prüft die Zeichen des Strings gegen die Zeichen des übergebenen Pattern
+	/** Prï¿½ft die Zeichen des Strings gegen die Zeichen des ï¿½bergebenen Pattern
 	 *   Zur Steuerung dient iFlag:
-	 *   = -1  => der String enthält nur Zeichen, die im Pattern  enthalten sind
-	 *   = 0  => der String enthält keine Zeichen, die im Pattern enthalten sind.
-	 *   = 1  => das übergebene Pattern wird als RegEx angesehen und auch so behandelt
+	 *   = -1  => der String enthï¿½lt nur Zeichen, die im Pattern  enthalten sind
+	 *   = 0  => der String enthï¿½lt keine Zeichen, die im Pattern enthalten sind.
+	 *   = 1  => das ï¿½bergebene Pattern wird als RegEx angesehen und auch so behandelt
 	 *    
 	 *    
 	 *    
@@ -138,14 +138,14 @@ public class StringZZZ implements IConstantZZZ{
 		  int startIndex = 0;
 		  int index = textStr.indexOf(oldStr);
 		  while((index >= 0) && (index < textLength)) {
-			  //Text ohne den zu ersetzenden String an buffer anhängen
+			  //Text ohne den zu ersetzenden String an buffer anhï¿½ngen
 			  buffer.append(textStr.substring(startIndex, index));
-			  //neuen substring anhängen
+			  //neuen substring anhï¿½ngen
 			  buffer.append(newStr);
 			  startIndex = index + repLength;
 			  index = textStr.indexOf(oldStr, startIndex);
 		  }
-		  //letzten Teil des Textes anhängen
+		  //letzten Teil des Textes anhï¿½ngen
 		  buffer.append(textStr.substring(startIndex, textStr.length()));
 		  return buffer.toString();
 	  }
@@ -239,7 +239,7 @@ public class StringZZZ implements IConstantZZZ{
 	public static char string2Char(String s2c) throws ExceptionZZZ{
 		if(s2c.length() >= 2) {			
 			ExceptionZZZ ez = new ExceptionZZZ("The string should only have one character", 101,  ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			//doesn´t work. Only works when > JDK 1.4
+			//doesnï¿½t work. Only works when > JDK 1.4
 			//Exception e = new Exception();
 			//ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 			throw ez;
@@ -256,7 +256,7 @@ public class StringZZZ implements IConstantZZZ{
 	public static char string2Char(String s2c, int iIndex) throws ExceptionZZZ{	
 		if(iIndex <= -2 ){
 			ExceptionZZZ ez = new ExceptionZZZ("The index can not be smaller than 0", iERROR_PARAMETER_VALUE,  StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName()); 
-			//doesn´t work. Only works when > JDK 1.4
+			//doesnï¿½t work. Only works when > JDK 1.4
 			//Exception e = new Exception();
 			//ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 			throw ez;
@@ -469,7 +469,7 @@ public class StringZZZ implements IConstantZZZ{
 		int iIndex = sString.lastIndexOf(sToFind);
 		if(iIndex<= -1) break main;
 		
-		//die Länge des Strings aufaddieren
+		//die Lï¿½nge des Strings aufaddieren
 		iIndex = iIndex + sToFind.length();
 				
 		sReturn = sString.substring(iIndex);
@@ -503,7 +503,7 @@ public class StringZZZ implements IConstantZZZ{
 					int iIndex = sStringLCase.lastIndexOf(sToFindLCase);
 					if(iIndex<= -1) break main;
 				
-					//die Länge des Strings aufaddieren
+					//die Lï¿½nge des Strings aufaddieren
 					iIndex = iIndex + sToFind.length();
 						
 					sReturn = sString.substring(iIndex);				
@@ -541,7 +541,7 @@ public class StringZZZ implements IConstantZZZ{
 			//Alle gefundenen Teilstrings erneut zerlegen, aber (!) die Liste der Delimiter um den gerade verarbeiteten reduzieren
 			listaDelim.remove(0);
 			if(listaDelim.isEmpty()){
-				//Damit den letzten Delimiter gefunden. Array zurückgeben
+				//Damit den letzten Delimiter gefunden. Array zurï¿½ckgeben
 				saReturn = saTemp;
 				break main;
 			}
@@ -556,7 +556,7 @@ public class StringZZZ implements IConstantZZZ{
 				String[] saTemp2 = StringZZZ.explode(sStringTemp, saDelimTemp);
 				ArrayList listaTemp = StringArrayZZZ.toArrayList(saTemp2);
 				
-				//Nun das Ergebnis zu dem bisherigen hinzufügen
+				//Nun das Ergebnis zu dem bisherigen hinzufï¿½gen
 				listaStringFound = ArrayListZZZ.join(listaStringFound, listaTemp, false);
 			}		
 			saReturn = new String[listaStringFound.size()-1];
@@ -565,7 +565,7 @@ public class StringZZZ implements IConstantZZZ{
 		return saReturn;
 	}
 	
-	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurï¿½ck. Links, Mitte, Rechts. Falls die Trenner zurï¿½ckgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
 	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
 	* @param sStringToParse
 	* @param sLeftSep
@@ -663,7 +663,7 @@ public class StringZZZ implements IConstantZZZ{
 			 sReturn = sReturn + sString;	
 			}
 			
-			/* Aus "Java für Domino.". Ist das besser ???? Nutzt StringBuffer !!!
+			/* Aus "Java fï¿½r Domino.". Ist das besser ???? Nutzt StringBuffer !!!
   private static String times(String s, int n)
     {
 		StringBuffer b = new StringBuffer();
@@ -778,7 +778,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	
-	/** true, wenn der erste Buchstabe ein Großbuchstabe ist.
+	/** true, wenn der erste Buchstabe ein Groï¿½buchstabe ist.
 	* @param sString
 	* @return
 	* 
@@ -860,7 +860,7 @@ public class StringZZZ implements IConstantZZZ{
 		}
 	
 	/** Dieser CamelCase arbeitet ohne Delimiter. 
-	 *   Wenn der nachfolgende Buchstabe ein Großbuchstabe ist, wird der aktuelle Buchstabe zum Kleinbuchstaben.
+	 *   Wenn der nachfolgende Buchstabe ein Groï¿½buchstabe ist, wird der aktuelle Buchstabe zum Kleinbuchstaben.
 	* @param s
 	* @return
 	* 
@@ -875,9 +875,9 @@ public class StringZZZ implements IConstantZZZ{
 		  		   
 		   for (int icount=0; icount <= s.length()-2; icount++){
 			   String cur = s.substring(icount,icount+1);
-			   String part = s.substring(icount+1,icount+2); //der nächste teilstring
+			   String part = s.substring(icount+1,icount+2); //der nï¿½chste teilstring
 			   if(StringZZZ.isCapitalized(part)){
-				   //Wenn der Folgebuchstabe ein Großbuchstabe ist, dann den aktuellen Buchstaben zum Kleinbuchstaben umwandeln
+				   //Wenn der Folgebuchstabe ein Groï¿½buchstabe ist, dann den aktuellen Buchstaben zum Kleinbuchstaben umwandeln
 				   sReturn = sReturn + cur.toLowerCase();
 			   }else{
 				   //ansonsten den Wert beibehalten
@@ -885,7 +885,7 @@ public class StringZZZ implements IConstantZZZ{
 			   }
 		   }
 		   
-		   //Den letzten Wert übernehmen.
+		   //Den letzten Wert ï¿½bernehmen.
 		   sReturn = sReturn + s.substring(s.length()-1, s.length() );
 		   
 	}//endmain:
@@ -1152,9 +1152,9 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	/** Ersetze ae, ue, ss, oe in dem übergebenen String.
-	 *    Dabei wird versucht besonderheiten zu Berücksichtigen:
-	 *    - Ersetzt werden nur Worte >= 5 Buchstaben (so bleibt z.B. Suez bestehen).
+	/** Ersetze ae, ue, ss, oe in dem Ã¼bergebenen String.
+	 *    Dabei wird versucht besonderheiten zu BerÃ¼cksichtigen:
+	 *    - Ersetzt werden nur Worte >= 4 Buchstaben (so bleibt z.B. Suez bestehen).
 	 *    
 	 *    ae) Wird nur innerhalb des Wortes ersetzt (vorne und hinten ein Buchstabe abgeschnitten.
 	 *    
@@ -1167,8 +1167,8 @@ public class StringZZZ implements IConstantZZZ{
 	 *    ue) Es wird das ganze Wort betrachtet.
 	 *         
 	 *          
-	 *     Tip: Aufgrund der vielen Ausnahmen sollte man vorher prüfen, ob es nicht schon einen Umlaut gibt:
-	 *     org.apache.regexp.RE objReUmlaut = new org.apache.regexp.RE("[ÖöÜüÄäß]");
+	 *     Tip: Aufgrund der vielen Ausnahmen sollte man vorher prÃ¼fen, ob es nicht schon einen Umlaut gibt:
+	 *     org.apache.regexp.RE objReUmlaut = new org.apache.regexp.RE("[Ã–Ã¶ÃœÃ¼Ã„Ã¤ÃŸ]");
 			boolean bHasUmlaut = objReUmlaut.match(sAllRaw);
 	 *          
 	* @param sString2Parse
@@ -1180,8 +1180,8 @@ public class StringZZZ implements IConstantZZZ{
 	public static String replaceCharacterGerman(String sString2Parse)throws ExceptionZZZ{
 		String sReturn = "";
 		main:{
-			//Ersetz werden nur Worte >= 5 Buchstaben. So bleibt z.B. Suez bestehne
-			if(sString2Parse.length() <= 4){
+			//Ersetz werden nur Worte >= 4 Buchstaben, die Kleingeschreiben sind So bleibt z.B. Suez bestehne
+			if(sString2Parse.length() <= 3){
 				sReturn = sString2Parse;
 				break main;
 			}
@@ -1190,30 +1190,37 @@ public class StringZZZ implements IConstantZZZ{
 			//leider ist es mir nicht gelungen das alles auf einen streich zu definieren und zu ersetzen        org.apache.regexp.RE objRe = new org.apache.regexp.RE("[(oe)]|[(ae)]|[(ue)]|[(ss)]");
 			//Daher werden 4 Objekte definiert.
 			
-			//als Beispiel für einen sinnvollen Parameter			objRe1.setMatchFlags(org.apache.regexp.RE.MATCH_CASEINDEPENDENT); 			
-			// stemp = objRe.subst(stemp, "[ö]|[ä]|[ü]|[ß]");//objRe.subst("[(oe)][(ae)][(ue)][(ss)]","[ö][ä][ü][ß]"); oder ähnlich.
-			//als ein Beispiel für ne statische Methode: String stemp2 =org.apache.regexp.RE.simplePatternToFullRegularExpression("oe");
-			//Merke: Als Beispiel für die Prüfung: 					//boolean bMatch = objRe.match(stemp);					   
+			//als Beispiel fÃ¼r einen sinnvollen Parameter			objRe1.setMatchFlags(org.apache.regexp.RE.MATCH_CASEINDEPENDENT); 			
+			// stemp = objRe.subst(stemp, "[Ã¶]|[Ã¤]|[Ã¼]|[ÃŸ]");//objRe.subst("[(oe)][(ae)][(ue)][(ss)]","[Ã¶][Ã¤][Ã¼][ÃŸ]"); oder Ã¤hnlich.
+			//als ein Beispiel fÃ¼r ne statische Methode: String stemp2 =org.apache.regexp.RE.simplePatternToFullRegularExpression("oe");
+			//Merke: Als Beispiel fÃ¼r die PrÃ¼fung: 					//boolean bMatch = objRe.match(stemp);					   			   
 			org.apache.regexp.RE objReOe = new org.apache.regexp.RE("(oe)");			
-			org.apache.regexp.RE objReAe = new org.apache.regexp.RE("(ae)");			
-					
-			//Problem: Es wird auch der erste Buchstabe mit umgewandelt, bei: sReplace = objRe3.subst(sReplace, "ü"); //Daher wird .match(sValue) verwendet  
-			org.apache.regexp.RE objReUe = new org.apache.regexp.RE("([a-pr-zA-PR-Z0-9öÖÜäÄß]){1}(ue)");  //nicht ü selber und kein q
+			org.apache.regexp.RE objReAe = new org.apache.regexp.RE("(ae)");
+			org.apache.regexp.RE objReUe1 = new org.apache.regexp.RE("(ue)");
+			
+								
+			//Problem: Es wird auch der erste Buchstabe mit umgewandelt, bei: sReplace = objRe3.subst(sReplace, "Ã¼"); //Daher wird .match(sValue) verwendet  
+			//GroÃŸ- und Kleinbuchstaben der deutschen Umlaute (sofern GroÃŸbuchstabe vorhanden) wg. ANSI Problematik.
+			org.apache.regexp.RE objReUe = new org.apache.regexp.RE("([a-pr-zA-PR-Z0-9Ã¶Ã–ÃœÃ¤Ã„ÃŸ]){1}(ue)");  //nicht das kleine Ã¼ selber und kein q
 			//also kein q, wie z.B. in Nilquelle vor dem ue. ue am Anfang darf aber umgewandelt werden.
 			//Auch nicht Queen
 			
 			//Problem: Beim Replacen wird hier auch der erste Buchstabe mit umgewandelt.
-			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9]){1}(ss)|^(ss)");   //wie. z.B. in Odyssee, hier nicht umwandeln. Das Würde Asseln umwandlen, weill ss am Anfang stehen dürfte.
-			org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9öÖüÜäÄ]){1}(ss)");  //nicht ß selber und kein y 
-																																		//wie. z.B. in Odyssee, hier nicht umwandeln.
-																																		//ss am anfang wird nicht umgewandelt, da links und rechts ein Buchstabe abgeschnitten wird
-																																		//Asseln wird nicht umgewandelt, da beim betrachteten String sseln vorne ein Buchstabe fehlt.
-			                                                                                                                            //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
-			
+			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9]){1}(ss)|^(ss)");   //wie. z.B. in Odyssee, hier nicht umwandeln. Das wÃ¼rde Asseln umwandlen, weil ss am Anfang stehen dÃ¼rfte.
+			//org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([a-xzA-XZ0-9Ã¶Ã–Ã¼ÃœÃ¤Ã„]){1}(ss)");   //nicht ÃŸ selber und kein y 																																	//wie. z.B. in Odyssee, hier nicht umwandeln.
+                                                                                                         //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
+			org.apache.regexp.RE objReSs = new org.apache.regexp.RE("([b-dB-Df-hF-Hj-nJ-Np-tP-Tv-xzV-XZ0-9Ã¶Ã–Ã¼ÃœÃ¤Ã„]){1}(ss)");  //nicht ÃŸ selber und kein y (wg. Odyssee) 
+													//wie. z.B. in Odyssee, hier nicht umwandeln.
+			//auch kein Vokal vor dem ss (a, e, i, o, u) fÃ¼hrt zum Umwandlen.
+			//wie z.B. in Ereignisse, Essen, Kassel
+
+			//ss am anfang wird nicht umgewandelt, da links und rechts ein Buchstabe abgeschnitten wird
+			//Asseln wird nicht umgewandelt, da beim betrachteten String sseln vorne ein Buchstabe fehlt.
+            //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
 		
-			org.apache.regexp.RE objReVowel = new org.apache.regexp.RE("[aeou]{3,}");  //es dürfen keine 3 Vokale aufeinander folgen z.B. aus "treuer" soll nicht "treür" werden. 
 			
-			
+			org.apache.regexp.RE objReVowel = new org.apache.regexp.RE("[aeou]{3,}");  //es dÃ¼rfen keine 3 Vokale aufeinander folgen z.B. aus "treuer" soll nicht "treï¿½r" werden. 
+						
 			String sReplace = StringZZZ.midBounds(sString2Parse, 1, 1);
 			boolean bTest = objReVowel.match(sReplace);
 			if(bTest==true){
@@ -1224,27 +1231,33 @@ public class StringZZZ implements IConstantZZZ{
 			
 		
 		
-		if(!sReplace.equals("")){//Merke: Ist ein Wort z.B. nur ein Buchstabe, so würde er verdoppelt beim Zusammenbauen
-			sReplace = objReOe.subst(sReplace, "ö");
-			sReplace = objReAe.subst(sReplace, "ä");
+		if(!sReplace.equals("")){//Merke: Ist ein Wort z.B. nur ein Buchstabe, so wÃ¼rde er verdoppelt beim Zusammenbauen
+			sReplace = objReOe.subst(sReplace, "Ã¶");
+			sReplace = objReAe.subst(sReplace, "Ã¤");
 
-			//sReplace = objRe4.subst(sReplace, "ß"); /Ersetzt auch den zusätzlichen Buchstaben VOR dem ss, da er in die RegEx mit aufgenommen worden ist.
+			//sReplace = objRe4.subst(sReplace, "ÃŸ"); /Ersetzt auch den zusï¿½tzlichen Buchstaben VOR dem ss, da er in die RegEx mit aufgenommen worden ist.
 			boolean bMatch = objReSs.match(sReplace);
 			if(bMatch==true){
-				sReplace = StringZZZ.replace(sReplace, "ss", "ß");
+				sReplace = StringZZZ.replace(sReplace, "ss", "ÃŸ");
 			}   
 		
 //			2b) Wieder zusammenbauen
 			sReturn = StringZZZ.left(sString2Parse, 1) + sReplace + StringZZZ.right(sString2Parse, 1);
 		}//end if sReplace!=""
 		
-		//DAS Ü Wird auf den ganzen String bezogen
-		//sReplace = objRe3.subst(sReplace, "ü"); //Ersetzt auch den zusätzlichen Buchstaben VOR dem ue, da er in die RegEx mit aufgenommen worden ist.
-		//Umzuwandeln sind nur Buchstaben in Worten, die länger als 4 Buchstaben sind
+		//DAS Ãœ Wird auf den ganzen String bezogen
+		//sReplace = objRe3.subst(sReplace, "Ã¼"); //Ersetzt auch den zusÃ¤tzlichen Buchstaben VOR dem ue, da er in die RegEx mit aufgenommen worden ist.
+		//Umzuwandeln sind nur Buchstaben in Worten, die lÃ¤nger als 4 Buchstaben sind
 		if(sReturn.length()>=5){
-			boolean bMatch = objReUe.match(sReturn);
+			boolean bMatch = objReUe.match(sReturn);//Nicht das erste Zeichen matched!
 			if(bMatch==true){
-				sReturn = StringZZZ.replace(sReturn, "ue", "ü");
+				sReturn = StringZZZ.replace(sReturn, "ue", "Ã¼");
+			}								
+		}
+		if(sReturn.length()>=4 && !StringZZZ.isCapitalized(sReturn)){
+			boolean bMatch = objReUe1.match(sReturn);
+			if(bMatch==true){
+				sReturn = StringZZZ.replace(sReturn, "ue", "Ã¼");
 			}								
 		}
 		
@@ -1252,13 +1265,42 @@ public class StringZZZ implements IConstantZZZ{
 		}///end main
 		return sReturn;
 	}
+	
+	public static String replaceCharacterGermanFromSentence(String sString2ParseIn) throws ExceptionZZZ{
+		String sReturn = "";
+		main:{
+			if(StringZZZ.isEmptyNull(sString2ParseIn)) break main;
+			
+			//Ersetz werden nur Worte >= 4 Buchstaben, die keinen groÃŸen Anfangsbuchstaben haben. So bleibt z.B. Suez bestehen
+			String sString2Parse = sString2ParseIn.trim();
+			if(sString2Parse.length() <= 3){
+				sReturn = sString2Parse;
+				break main;
+			}
+			
+			//++++ Satz in Einzelworte zerlegen...
+			StringTokenizer tokenSentence = new StringTokenizer(sString2Parse, " ", false);
+			while(tokenSentence.hasMoreTokens()){				
+				String sReplaceOrig = (String) tokenSentence.nextToken();
+				String stemp = StringZZZ.replaceCharacterGerman(sReplaceOrig);
+				
+				//++++ ... und wieder zusammenbauen
+				if(sReturn.equals("")){
+					sReturn = stemp;
+				}else{
+					sReturn = sReturn + " " + stemp;
+				}
+			}//End while						
+		}//end main:
+		return sReturn;
+	}
 
 
 
 
-	/** Gibt ein Array aller Index-Startpostionen zurück. Das Array ist NICHT sortiert !!!
+	/** Gibt ein Array aller Index-Startpostionen zurÃ¼ck. Das Array ist NICHT sortiert !!!
 	* @param sSource, der durchsuchte String.
-	* @param saString2Find, die Strings, die gesucht werden. D.h. es können mehrere sein.
+	* @param saString2Find, die Strings, die gesucht werden. D.h. es kÃ¶nnen mehrere sein.
 	* @return
 	* 
 	* lindhauer; 30.06.2007 11:43:38
@@ -1285,7 +1327,7 @@ public class StringZZZ implements IConstantZZZ{
 						
 						//Nun den String vorne abschneiden !!!
 						iLengthOld = saString2Find[icount].length();
-						sCurrent = rightback(sCurrent, iIndex+ iLengthOld);//den Index um die Länge des zu suchenden String serweitern !!!
+						sCurrent = rightback(sCurrent, iIndex+ iLengthOld);//den Index um die Lï¿½nge des zu suchenden String serweitern !!!
 					}
 				}while(iIndex >= 0 & isEmpty(sCurrent)==false);
 			}//END for
@@ -1303,14 +1345,14 @@ public class StringZZZ implements IConstantZZZ{
 
 
 
-	/** int, Gibt den ersten index wert zurück, der existiert. Falls keiner der zu suchenden Strings existiert, wird -1 zurückgegeben.
+	/** int, Gibt den ersten index wert zurï¿½ck, der existiert. Falls keiner der zu suchenden Strings existiert, wird -1 zurï¿½ckgegeben.
 	* Lindhauer; 13.05.2006 09:22:14
 	 * @param sSource, der String, der durchsucht wird.
 	 * @param saString2Find, das Array der Strings, die gesucht werden. D.h. man kann also nach mehreren Strings suchen.
 	 * @return
 	 */
 	public static int firstIndexOf(String sSource, String[] saString2Find){
-		int iReturn=-1; //Merke: -1 wird auch zurückgegeben, falls der Teilstring nicht im String enthalten ist.
+		int iReturn=-1; //Merke: -1 wird auch zurï¿½ckgegeben, falls der Teilstring nicht im String enthalten ist.
 		main:{
 				if(isEmpty(sSource))break main;
 				if(saString2Find==null)break main;
@@ -1331,7 +1373,7 @@ public class StringZZZ implements IConstantZZZ{
 			}
 		}//END for
 		
-		//Falls die Länge von iEndCur unverändert geblieben ist, dann wurde nix gefunden. Es wird -1 zurückgegeben
+		//Falls die Lï¿½nge von iEndCur unverï¿½ndert geblieben ist, dann wurde nix gefunden. Es wird -1 zurï¿½ckgegeben
 		if(iEndCur==sSource.length()+1) break main;
 		iReturn = iEndCur;
 		
@@ -1363,9 +1405,9 @@ public class StringZZZ implements IConstantZZZ{
 			if(saPattern.length==0) break main;
 			
 			
-			//Idee: In einer Schleife auf Vorhandenheit des Strings des Pattern-Arrays prüfen  (von links nach rechts).
+			//Idee: In einer Schleife auf Vorhandenheit des Strings des Pattern-Arrays prï¿½fen  (von links nach rechts).
 			//        Der niedrigere Indexwert gewinnt (am besten auch in ein Array packen).
-			//        Aus diesem Indexwert und der Länge des jeweiligen "Pattern" Strings bekommt man dann einen Reststring, der wiederum in der Schleife auf Vorhandenheit geprüft werden muss.
+			//        Aus diesem Indexwert und der Lï¿½nge des jeweiligen "Pattern" Strings bekommt man dann einen Reststring, der wiederum in der Schleife auf Vorhandenheit geprï¿½ft werden muss.
 			int[] iaPattern = new int[saPattern.length];					
 			String sRemaining = new String(sString);			
 								
@@ -1377,14 +1419,14 @@ public class StringZZZ implements IConstantZZZ{
 					if(itemp >=0){
 						iaPattern[icount] = itemp;
 					}else{
-						iaPattern[icount] = iLength + 1; //String wurde nicht gefunden, darum wird hier der höchstmögliche Wert plus 1 in das auszuwertende Array geschrieben.					
+						iaPattern[icount] = iLength + 1; //String wurde nicht gefunden, darum wird hier der hï¿½chstmï¿½gliche Wert plus 1 in das auszuwertende Array geschrieben.					
 					}				
 				}
 				
 				//Nun das int - Array auswerten. Der niedrigste Wert gewinnt.
 				int itemp = MathZZZ.min(iaPattern);
 							
-				//Falls der niedrigeste Wert kleiner ist als die Länge des Strings, muss die Index-Position des Werts ermittelt werden.
+				//Falls der niedrigeste Wert kleiner ist als die Lï¿½nge des Strings, muss die Index-Position des Werts ermittelt werden.
 				int iIndex=-1;
 				if(itemp <= iLength){
 					for(int i=0; i<=iaPattern.length-1;i++){
@@ -1408,8 +1450,8 @@ public class StringZZZ implements IConstantZZZ{
 		return listaString;
 	}
 	
-	/** 'Heuristische' Lösung einen 'sprechenden Key' / eine Abkürzung zu generieren.
-	 * Es werden Großbuchstaben und Zahlen im übergebenenString verwendet.
+	/** 'Heuristische' Lï¿½sung einen 'sprechenden Key' / eine Abkï¿½rzung zu generieren.
+	 * Es werden Groï¿½buchstaben und Zahlen im ï¿½bergebenenString verwendet.
 	 * @author Fritz Lindhauer
 	 *
 	 * @param name
@@ -1439,7 +1481,7 @@ public class StringZZZ implements IConstantZZZ{
 		return key;
 	}
 	
-	/* Trimme den String, schneide links und rechts jeweils ein Anführungszeichen weg, trimme wieder, ...  schneide Anführungszeichen weg, usw. bis es kein passendes Paar Anführungszeichen links und rechts mehr gibt.
+	/* Trimme den String, schneide links und rechts jeweils ein Anfï¿½hrungszeichen weg, trimme wieder, ...  schneide Anfï¿½hrungszeichen weg, usw. bis es kein passendes Paar Anfï¿½hrungszeichen links und rechts mehr gibt.
 	 * 
 	 */
 	public static String trimQuotationMarked(String sString){
@@ -1451,7 +1493,7 @@ public class StringZZZ implements IConstantZZZ{
 			boolean bGoon = false;
 			while(!bGoon){
 				if(sReturn.startsWith("\"") && sReturn.endsWith("\"")){
-					sReturn = StringZZZ.midBounds(sReturn, 1, 1); //Schneide die Anführungszeichen links und rechts weg
+					sReturn = StringZZZ.midBounds(sReturn, 1, 1); //Schneide die Anfï¿½hrungszeichen links und rechts weg
 					sReturn = sReturn.trim();
 				}else{
 					bGoon = true;

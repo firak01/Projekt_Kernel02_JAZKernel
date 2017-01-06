@@ -24,7 +24,7 @@ public class TxtReaderZZZ extends TxtCommonZZZ{
 		IsFileSorted, IgnoreCase, IgnoreEmptyLine, IgnoreCommentLine;
 	}
 	
-	//Aus IFlagZZZ, über die abstrakte TxtCommonZZZ Klasse
+	//Aus IFlagZZZ, ï¿½ber die abstrakte TxtCommonZZZ Klasse
 	@Override
 	public Class getClassZ() {
 		return FLAGZ.class;
@@ -54,7 +54,7 @@ public TxtReaderZZZ(TxtWriterZZZ objWriter, String[] saFlagControl) throws Excep
 private boolean TxtReaderNew_(TxtWriterZZZ objWriter, File file, String[] saFlagControlIn ) throws ExceptionZZZ{
 boolean bReturn = false;
 main:{
- //setzen der übergebenen Flags	
+ //setzen der ï¿½bergebenen Flags	
   if(saFlagControlIn != null){
 	  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 		  String stemp = saFlagControlIn[iCount];
@@ -97,7 +97,7 @@ return bReturn;
 
 
 
-/** Gibt den Mode für das RandomAccessFile zurück.
+/** Gibt den Mode fï¿½r das RandomAccessFile zurï¿½ck.
 *   Es muss hier nur lesend auf die Datei zugegriffen werden.
 * @return
 * 
@@ -117,7 +117,7 @@ return "r";
 }
 
 /** Ermittelt, die BytePostion, an der diese Zeile existiert.
- *  -1 wird zurückgegeben, wenn sie nicht existiert
+ *  -1 wird zurÃ¼ckgegeben, wenn sie nicht existiert
 * @param sLine2proof
 * @param lStartByteIn
 * @return
@@ -143,8 +143,13 @@ public long readPositionLineFirst(String sLine2proof, long lStartByteIn) throws 
 			long lPosition = lStartByte;
 			raFile.seek(lPosition);
 			
+			String sLine = raFile.readLine();//ABER: DAS LIEST KEINE UTF8-DATEIEN 
+			if(!StringZZZ.isEmptyNull(sLine)){
+				//Darum ggfs. umkodieren
+				String UTF8 = new String(sLine.getBytes("ISO-8859-1"), "UTF-8");
+				sLine = UTF8;
+			}
 			
-			String sLine = raFile.readLine();
 			while(sLine!=null){
 				if(bFlagIgnoreCase==true){
 					if(sLine.equalsIgnoreCase(sLine2proof)){
@@ -158,7 +163,13 @@ public long readPositionLineFirst(String sLine2proof, long lStartByteIn) throws 
 					}
 				}
 				lPosition = raFile.getFilePointer(); //Die vorherige Position speichern
-				sLine = raFile.readLine();
+				sLine = raFile.readLine();////ABER: DAS LIEST KEINE UTF8-DATEIEN 
+				if(!StringZZZ.isEmptyNull(sLine)){
+					//Darum ggfs. umkodieren
+					String UTF8 = new String(sLine.getBytes("ISO-8859-1"), "UTF-8");
+					sLine = UTF8;
+				}
+				
 			}
 			
 		}catch(IOException ie){
@@ -191,7 +202,10 @@ public String readLineByByte(long lStartByteIn) throws ExceptionZZZ{
 			RandomAccessFile raFile = this.getRandomAccessFileObject();
 			raFile.seek(lStartByte);
 		    
-			sReturn = raFile.readLine();
+			String sLine = raFile.readLine();//ABER: Das liest kein UTF8
+			String UTF8 = new String(sLine.getBytes("ISO-8859-1"), "UTF-8");
+			sReturn = UTF8;
+			
 	}catch(IOException ie){
 		ExceptionZZZ ez = new ExceptionZZZ("IOException happend: " + ie.getMessage(), iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
 		throw ez;
@@ -216,7 +230,7 @@ public String readLineNextByByte(long lStartByteIn) throws ExceptionZZZ{
 
 			String sTemp = raFile.readLine();
 			
-			//Das ist aber noch nicht die nächste Zeile
+			//Das ist aber noch nicht die nÃ¤chste Zeile
 			sReturn = raFile.readLine();
 			
 			
@@ -229,7 +243,7 @@ public String readLineNextByByte(long lStartByteIn) throws ExceptionZZZ{
 }
 
 
-/** List die Datei ab der gegebenen Byte-Position aus und schreibt Zeile für Zeile in einen Vector.
+/** List die Datei ab der gegebenen Byte-Position aus und schreibt Zeile fï¿½r Zeile in einen Vector.
  *   Falls das Flag "IgnoreCommentLine" gesetzt ist, 
  *  
 * @param lStartByteIn
@@ -266,7 +280,7 @@ public Vector readVectorStringByByte(long lStartByteIn) throws ExceptionZZZ{
 						if(this.isCommentLine(sLine)) break currentLine;
 					}
 					
-					//TODO: Das IsFileSorted - Flag irgendwie berücksichtigen. Z.B. in einer speziellen .VectorSortedFromFile(...) Methode, in der die Werte dann sortiert 
+					//TODO: Das IsFileSorted - Flag irgendwie berï¿½cksichtigen. Z.B. in einer speziellen .VectorSortedFromFile(...) Methode, in der die Werte dann sortiert 
 					//in den Vector gegeben werden. Falls die Datei als sortiert markiert ist, dann braucht eben nicht extra sortiert werden. 
 					vecReturn.add(sLine);
 					
@@ -294,7 +308,7 @@ public Vector readVectorStringByByte(long lStartByteIn) throws ExceptionZZZ{
  * - isFileSorted
  * - ignoreCase, d.h. Gross-/Kleinschreibung beim Suchen nicht beachten. Wenn das false ist, werden Kleinbuchstaben automatisch unterhalb der Grossbuchstaben einsortiert.
  * - ignoreCommentLine, d.h. Kommentarzeilen nicht beachten)
- * - TopOfEmptyLine, d.h. beim Verarbeiten wird der einzugügende String oberhalb von ggf. vorhandenen Leerzeilen eingefügt
+ * - TopOfEmptyLine, d.h. beim Verarbeiten wird der einzugï¿½gende String oberhalb von ggf. vorhandenen Leerzeilen eingefï¿½gt
  * 
  */
 //public boolean getFlag(String sFlagName) {
@@ -346,7 +360,7 @@ public Vector readVectorStringByByte(long lStartByteIn) throws ExceptionZZZ{
 //		String stemp = sFlagName.toLowerCase();
 //		if(stemp.equals("ignoreemptyline")){
 //			this.bFlagIgnoreEmptyLine = bFlagValue;
-//			bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag überhaupt gibt !!!
+//			bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag ï¿½berhaupt gibt !!!
 //			break main;
 //		}else if(stemp.equals("ignorecommentline")){
 //			this.bFlagIgnoreCommentLine = bFlagValue;
@@ -354,7 +368,7 @@ public Vector readVectorStringByByte(long lStartByteIn) throws ExceptionZZZ{
 //			break main;
 //		} else if(stemp.equals("isfilesorted")){
 //			this.bFlagIsFileSorted = bFlagValue;
-//			bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag überhaupt gibt !!!
+//			bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag ï¿½berhaupt gibt !!!
 //			break main;
 //		}else if(stemp.equals("ignorecase")){
 //			this.bFlagIgnoreCase = bFlagValue;
