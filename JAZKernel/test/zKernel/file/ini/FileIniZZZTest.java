@@ -35,9 +35,17 @@ public class FileIniZZZTest extends TestCase {
 		try {			
 			
 			//### Eine Beispieldatei. Merke: Die Eintrï¿½ge werden immer neu geschrieben und nicht etwa angehï¿½ngt.
-			//Merke: Erst wenn es ï¿½berhaupt einen Test gibt, wird diese DAtei erstellt
-			String sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
-			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file			
+			//Merke: Erst wenn es übberhaupt einen Test gibt, wird diese DAtei erstellt
+			String sFileDirectoryUsed = strFILE_DIRECTORY_DEFAULT;
+			String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
+			Stream objStreamFile = null;
+			try{
+				objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file			
+			} catch (FileNotFoundException e) {
+				sFileDirectoryUsed = "c:\\temp";
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
+				objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
+			} 
 			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");
 			objStreamFile.println("#This is another commentline");
@@ -97,17 +105,14 @@ public class FileIniZZZTest extends TestCase {
 			//### Die TestObjecte
 			
 			//An object just initialized
-			//TODO Default construktor in der Klasse zur verfï¿½gung stellenobjFileInit = new FileIniZZZ();
+			//TODO Default construktor in der Klasse zur Verfügung stellen objFileInit = new FileIniZZZ();
 			
 			String[] saFlag = {"init"};
 			objFileIniInit = new FileIniZZZ(objKernel,  objFile, saFlag);
 			
 			//The main object used for testing
-			objFileIniTest = new FileIniZZZ(objKernel, strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT, (String[]) null);
-			
-			//TestKonfiguration prï¿½fen
-			assertTrue(objFileIniInit.getFlag("init")==true);
-			assertFalse(objFileIniTest.getFlag("init")==true); //Nun wï¿½re init falsch
+			objFileIniTest = new FileIniZZZ(objKernel, sFileDirectoryUsed, strFILE_NAME_DEFAULT, (String[]) null);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} catch (FileNotFoundException e) {
@@ -118,6 +123,21 @@ public class FileIniZZZTest extends TestCase {
 			e.printStackTrace();
 		}		
 	}//END setup
+	
+	
+	public void testFlagHanling(){
+		//try{
+		
+			
+			//TestKonfiguration prüfen
+			assertTrue(objFileIniInit.getFlag("init")==true);
+			assertFalse(objFileIniTest.getFlag("init")==true); //Nun wïäre init falsch
+			
+
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}
+	}
 	
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32

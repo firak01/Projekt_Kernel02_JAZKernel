@@ -9,12 +9,12 @@ import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 
 import debug.zBasic.MyPrivilegedAction;
-
 import basic.javareflection.mopex.Mopex;
 import basic.javareflection.mopex.UQueue;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ReflectClassZZZ implements IConstantZZZ{
+	public static final String sINDICATOR_CLASSNAME_INNER= "$"; //Innere Klassen haben ien $ im ihrer; objClassInstance.getClass().getName()
 
 	/**
 	     * Produces an array of all the fields in a class, each of which has all of the 
@@ -180,6 +180,22 @@ public class ReflectClassZZZ implements IConstantZZZ{
 	    	return bReturn;
 	    }
 	    
+	    public static boolean isInner(Class objClass){
+	    	boolean bReturn = false;
+	    	main:{
+	    		if(objClass==null) break main;
+	    		
+	    		String sName = objClass.getName();
+	    		CharSequence cSeq = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER;
+	    		if(sName.contains(cSeq)){
+	    			bReturn = true;
+	    		}else{
+	    			bReturn = false;
+	    		}
+	    	}//end main
+	    	return bReturn;
+	    }
+	    
 	    /*
 	     * Feststellen, ob das Feld einer Klasse eine public Konstante ist.
 	     */
@@ -193,6 +209,20 @@ public class ReflectClassZZZ implements IConstantZZZ{
 	     */
 	    public static boolean isAbstract(Class objClass){
 	    	return Modifier.isAbstract( objClass.getModifiers());
+	    }
+	    
+	    public static Class<?> getEnclosingClass(Class<?> objClass) throws ClassNotFoundException{
+	    	Class<?> objReturn = null;
+	    	main:{
+	    		if(objClass==null)break main;
+	    		if(!ReflectClassZZZ.isInner(objClass))break main;
+	    		
+	    		String sClassNameInner = objClass.getName();
+	    		int iIndicatorPosition = sClassNameInner.indexOf(ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER);
+				String sEnclosingClassName = sClassNameInner.substring(0, iIndicatorPosition);
+				objReturn = Class.forName(sEnclosingClassName);
+	    	}//end main
+	    	return objReturn;
 	    }
 	    
 	    /* ArrayList mit den Klassen-Objekten der Elternklassen zurückgeben. 

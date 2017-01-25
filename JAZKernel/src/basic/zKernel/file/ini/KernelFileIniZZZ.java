@@ -29,10 +29,23 @@ import custom.zKernel.file.ini.FileIniZZZ;
 @author 0823 ,date 05.10.2004
 */
 public class KernelFileIniZZZ extends KernelUseObjectZZZ{
-	private boolean bFlagFileUnsaved;
-	private boolean bFlagFileNew; // don´t create a file in the constructor
-	private boolean bFlagFileChanged;
-	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgelöst. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
+	//20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
+//	private boolean bFlagFileUnsaved;
+//	private boolean bFlagFileNew; // don´t create a file in the constructor
+//	private boolean bFlagFileChanged;
+//	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgelöst. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
+	
+	//Flags, die alle Z-Objekte haben
+//	private boolean bFlagDebug;
+//	private boolean bFlagInit;
+		
+	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
+	 * 
+	 */
+	public enum FLAGZ{
+		FILEUNSAVED, FILENEW, FILECHANGED, USEFORMULA;
+	}
+	
 	
 	private IniFile objFileIni;
 	private File objFile;
@@ -581,6 +594,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	- FileUnsaved
 	- FileNew
 	 */
+	/*20170123: Soll herausgenommen werden können wg. ENUMERATION FlagZ Nutzung
 	public boolean getFlag(String sFlagName){
 		boolean bFunction = false;
 		main:{
@@ -606,6 +620,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		}//end main:
 		return bFunction;
 	}
+	*/
 
 	/**
 	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
@@ -615,6 +630,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 * - FileUnsaved, if a value is written to the file the flag is changed to true, if the save() method is used it is reset to false.
 	 * 			  source_remove: after copying the source_files will be removed.
 	 */
+	/*20170123: Soll herausgenommen werden können wg. ENUMERATION FlagZ Nutzung
 	public boolean setFlag(String sFlagName, boolean bFlagValue){
 		boolean bFunction = false;
 		main:{
@@ -644,6 +660,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		}//end main:
 		return bFunction;
 	}
+	*/
 	
 	public boolean save() throws ExceptionZZZ{
 		boolean bReturn = false;
