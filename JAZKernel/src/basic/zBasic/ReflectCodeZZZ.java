@@ -22,10 +22,10 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	   */
 	  public static String getMethodCurrentName() {		  
 			String method = null;
-			
+			 
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-				///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
+				///Siehe Artikel 'The surprisingly simple stack trace Element'");
 
 				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 				if(stackTrace.length>=3){
@@ -75,7 +75,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  t=null;
 			  }
 			  
-			  //!!! Falls hier nix ist, dann hat sich der Aufbau geändert.
+			  //!!! Falls hier nix ist, dann hat sich der Aufbau geï¿½ndert.
 			  if(t==null){
 				  tok = new StringTokenizer(l.trim(), "(");
 				  try{
@@ -110,9 +110,9 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 					method = ReflectCodeZZZ.getMethodCallingName();
 					
-					int iLine = ReflectCodeZZZ.getMethodCallingLine() + iOffset; //Berechne die gewünschte Zeile
+					int iLine = ReflectCodeZZZ.getMethodCallingLine() + iOffset; //Berechne die gewï¿½nschte Zeile
 					
-					method +=ReflectCodeZZZ.getMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe.
+					method +=ReflectCodeZZZ.getMethodCallingLine(iLine); //Berechne den String  fï¿½r die Zeilenausgabe.
 					
 					
 //					OutputStream out = System.out;
@@ -157,7 +157,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					  t=null;
 				  }
 				  
-				  //!!! Falls hier nix ist, dann hat sich der Aufbau geändert.
+				  //!!! Falls hier nix ist, dann hat sich der Aufbau geï¿½ndert.
 				  if(t==null){
 					  tok = new StringTokenizer(l.trim(), "(");
 					  try{
@@ -190,7 +190,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		
 		if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 			//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-			///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
+			///System.out.println("HIER WEITERARBEITEN, gemï¿½ï¿½ Artikel 'The surprisingly simple stack trace Element'");
 
 			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			if(stackTrace.length>=4){
@@ -230,7 +230,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		  l = tok.nextToken(); // 'at ...getCurrentMethodName'
 		  l = tok.nextToken(); // 'at ...<caller to getCurrentRoutine>'
 		  
-		  //FGL 20130723: Die Methode VOR der mit .getMethodCurrentName() zurückgelieferten Methode.
+		  //FGL 20130723: Die Methode VOR der mit .getMethodCurrentName() zurï¿½ckgelieferten Methode.
 		  l = tok.nextToken(); // 'at ...<caller to ..... >'
 		  
 		  // Parse line 3
@@ -242,7 +242,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  t=null;
 		  }
 		  
-		  //!!! Falls hier nix ist, dann hat sich der Aufbau geändert.
+		  //!!! Falls hier nix ist, dann hat sich der Aufbau geï¿½ndert.
 		  if(t==null){
 			  tok = new StringTokenizer(l.trim(), "(");
 			  try{
@@ -281,7 +281,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-				///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
+				///System.out.println("HIER WEITERARBEITEN, gemï¿½ï¿½ Artikel 'The surprisingly simple stack trace Element'");
 
 				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 				if(stackTrace.length>=4){
@@ -324,7 +324,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  
 			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-					///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
+					///System.out.println("HIER WEITERARBEITEN, gemï¿½ï¿½ Artikel 'The surprisingly simple stack trace Element'");
 
 					final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 					if(stackTrace.length>=4){
@@ -352,7 +352,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					
 						//Verarbeitung vor Java 1.4
 						  
-					  String sMethodCalling = ReflectCodeZZZ.getMethodCallingName(); //... weil getMethodCurrentName(); DIESE Methode zurückgeben würde.
+					  String sMethodCalling = ReflectCodeZZZ.getMethodCallingName(); //... weil getMethodCurrentName(); DIESE Methode zurï¿½ckgeben wï¿½rde.
 					  if(StringZZZ.isEmpty(sMethodCalling)) break main;
 					  
 					  //Hole alles links von der Methode
@@ -372,7 +372,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  
 				  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 						//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-						///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
+						///System.out.println("HIER WEITERARBEITEN, gemï¿½ï¿½ Artikel 'The surprisingly simple stack trace Element'");
 
 						final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 						if(stackTrace.length>=4){
@@ -411,7 +411,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  
 				  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 						//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-						///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
+						///System.out.println("HIER WEITERARBEITEN, gemï¿½ï¿½ Artikel 'The surprisingly simple stack trace Element'");
 
 					  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 					  	String sLine = ReflectCodeZZZ.getMethodCallingLine(iLine );
@@ -471,10 +471,10 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		return sReturn;			
 	  }
 	
-	/**  Gibt den reinen Klassennamen (also ohne . oder / ) zurück.
+	/**  Gibt den reinen Klassennamen (also ohne . oder / ) zurï¿½ck.
 	 * Falls "this" in einer statischen Methode aufgerufen wird, so gibt es die gleiche Methode noch mit einem erwarteten class-Object als Parameter.
 	 * 
-	 * Merke: obj.getClass().getName() gibt auch den Pfad zurück. 
+	 * Merke: obj.getClass().getName() gibt auch den Pfad zurï¿½ck. 
 	 * 
 	* @param obj
 	* @return
@@ -500,7 +500,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		return sReturn;			
 	}
 	
-	/** Gibt den reinen Klassennamen (also ohne . oder / ) zurück.
+	/** Gibt den reinen Klassennamen (also ohne . oder / ) zurï¿½ck.
 	 *   Diese Methode ist in statischen methoden zu verwenden, wenn kein "this" erlaubt ist.
 	* @param classOfObject
 	* @return
@@ -530,7 +530,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	 * Liefert den Namen einer aufrufenden Methode oder deren Aufrufer
 	 * @param callerID - gibt an, wieviele Aufrufe oberhalb der aufrufenden Methode
 	 * ausgegeben werden sollen. 0 liefert den Namen der aufrufenden Methode, 1 den
-	 * Namen des übergeordneten Aufrufers usw.
+	 * Namen des ï¿½bergeordneten Aufrufers usw.
 	 * @return - Name der Aufrufenden Methode
 	 */
 	public static String getCaller(int callerID) {
