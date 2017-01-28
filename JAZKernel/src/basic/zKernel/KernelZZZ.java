@@ -44,10 +44,10 @@ public class KernelZZZ extends ObjectZZZ implements IObjectZZZ,IKernelContextUse
 	private String sDirectoryConfig="";
 
 	private LogZZZ objLog = null;
-	private IKernelConfigZZZ objConfig = null;        //die Werte für den Applikationskey, Systemnummer, etc.
+	private IKernelConfigZZZ objConfig = null;        //die Werte fï¿½r den Applikationskey, Systemnummer, etc.
 	private IKernelContextZZZ objContext = null;   //die Werte des aufrufenden PRogramms (bzw. sein Klassenname, etc.)
 	
-/**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
+/**  Verwende diesen Konstruktor, wenn die Defaultangaben fï¿½r das Verzeichnis und fï¿½r den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini
 	 * Diese Werte stammen aus ConfigZZZ im custom.zKernel - Verzeichnis.
@@ -60,7 +60,7 @@ public KernelZZZ() throws ExceptionZZZ{
 	saFlagControl[0] = "init";
 	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
 }
-	/**Merke: Damit einzelne Projekte ihr eigenes ConfigZZZ - Objekt verwenden können, wird in diesem Konstruktor ein Interface eingebaut.
+	/**Merke: Damit einzelne Projekte ihr eigenes ConfigZZZ - Objekt verwenden kï¿½nnen, wird in diesem Konstruktor ein Interface eingebaut.
 	* lindhauer; 14.08.2007 07:19:55
 	 * @param objConfig
 	 * @param sFlagControl
@@ -80,7 +80,7 @@ public KernelZZZ() throws ExceptionZZZ{
 
 	TODO: Contructor mit File-Object
 	TODO: Finden der Notes.ini. In der Notes.ini eine Section [FritZ-Kernel] einbauen und diese mit einer property versehen, welche den Pfad zur Configurationsdatei beinhaltet.
-	            Dies als static Methode anbieten, die ein File-Object zurückliefert, dass dann Grundlage für die Kernel-Konfiguration ist.
+	            Dies als static Methode anbieten, die ein File-Object zurï¿½ckliefert, dass dann Grundlage fï¿½r die Kernel-Konfiguration ist.
 	
 
 	
@@ -109,7 +109,7 @@ public KernelZZZ() throws ExceptionZZZ{
 		KernelNew_(null, objContext, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName,null, saFlagControl);
 	}
 	
-	/** Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
+	/** Verwende diesen Konstruktor, wenn die Defaultangaben fï¿½r das Verzeichnis und fï¿½r den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini
 	 * Diese Werte stammen aus ConfigZZZ im custom.zKernel - Verzeichnis.
@@ -127,7 +127,7 @@ public KernelZZZ() throws ExceptionZZZ{
 		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saFlagControl);
 	}
 	
-	/**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
+	/**  Verwende diesen Konstruktor, wenn die Defaultangaben fï¿½r das Verzeichnis und fï¿½r den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini
 	 * Diese Werte stammen aus ConfigZZZ im custom.zKernel - Verzeichnis.
@@ -157,7 +157,7 @@ public KernelZZZ() throws ExceptionZZZ{
 			check:{
 				if(objKernelOld==null){
 					  ExceptionZZZ ez = new ExceptionZZZ("Missing kernel-object parameter.", iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-					  //doesn´t work. Only works when > JDK 1.4
+					  //doesnï¿½t work. Only works when > JDK 1.4
 					  //Exception e = new Exception();
 					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					  throw ez;		 
@@ -290,7 +290,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	}
 
 	/**
-	 * @return sApplicationKey + "!" + sSystemNumber, also der Modulname z.B. für das Produktivsystem
+	 * @return sApplicationKey + "!" + sSystemNumber, also der Modulname z.B. fï¿½r das Produktivsystem
 	 */
 	public String getSystemKey(){
 		String stemp = this.sApplicationKey;
@@ -320,7 +320,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.objFileFilterModule = (FileFilterModuleZZZ) objFileFilter;
 	}
 	
-	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesn´t proof the file existance !!! <CR>
+	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesnï¿½t proof the file existance !!! <CR>
 		Gets the Entries starting with 'KernelConfigPath...', 'KernelConfigFile...', where ... is the Alias.
 		<CR><CR>
 		e.g. for the alias 'Export' the following entries may be found<CR>
@@ -367,7 +367,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					if(StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
 					
 					objReturn = new FileIniZZZ(this,  sFilePath,sFileName,null);
-					/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu prüfen
+					/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu prï¿½fen
 					if(objReturn.exists()==false){
 						sMethod = this.getMethodCurrentName();
 						ExceptionZZZ ez = new ExceptionZZZ("File not found '" + sFilePath + "\\" + sFileName + "'",101, this, sMethod, null );
@@ -396,7 +396,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}else{
 					sDir = sDirIn;
 				}			
-				//Das ist nun möglich. Konfigurationsdatein werden dirkt in den Projektordner abgelegt.   if(sDir.equals("")) break main;
+				//Das ist nun mï¿½glich. Konfigurationsdatein werden dirkt in den Projektordner abgelegt.   if(sDir.equals("")) break main;
 			}//END check:
 			
 //			Das Verzeichnis holen
@@ -420,7 +420,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objaReturn;
 	}
 	
-	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesn´t proof the file existance !!! <CR>
+	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesnï¿½t proof the file existance !!! <CR>
 		Gets the Entries starting with 'KernelConfigPath...', 'KernelConfigFile...', where ... is the Alias.
 		<CR><CR>
 		e.g. for the alias 'Export' the following entries may be found<CR>
@@ -446,38 +446,38 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						//TODO write ini-file-class for zzz-kernel
 						IniFile objIni = this.getFileIniConfigKernel();
 						
-						//1. Versuch: Speziell für die Komponente definiert
+						//1. Versuch: Speziell fï¿½r die Komponente definiert
 						String sFileName =objIni.getValue(sAlias,"KernelConfigFile" +sAlias );	
 						String sFilePath = null;
 						if(StringZZZ.isEmpty(sFileName)) {
 																				
-							//2. Versuch: Speziell für ein System konfiguriert.
+							//2. Versuch: Speziell fï¿½r ein System konfiguriert.
 							String stemp = this.getSystemKey();													
 							sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAlias );		 			
 							if(StringZZZ.isEmpty(sFileName)) {
 								
-								//3. Versuch: Global für die Applikation konfiguriert
+								//3. Versuch: Global fï¿½r die Applikation konfiguriert
 								stemp = this.getApplicationKey();													
 								sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAlias );		 			
 								if(StringZZZ.isEmpty(sFileName)) {
 								
 									
-									//4. Versuch: Global für die Applikation konfiguriert, mit dem SystemKey
+									//4. Versuch: Global fï¿½r die Applikation konfiguriert, mit dem SystemKey
 									stemp = this.getApplicationKey();		
 									String sAliasTemp = this.getSystemKey();
 									sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAliasTemp );		
 									if(StringZZZ.isEmpty(sFileName)) {
 										
-										//5. Versuch: Global für die Applikation konfiguriert, mit dem Applikationskey
+										//5. Versuch: Global fï¿½r die Applikation konfiguriert, mit dem Applikationskey
 										stemp = this.getApplicationKey();		
 										sAliasTemp = this.getApplicationKey();
 										sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAliasTemp );		
 										if(StringZZZ.isEmpty(sFileName)) {
 										
-											//TODO: 20121106 Eigentlich sollte dann die eigene / gleiche Datei zurückgegeben werden, oder?
+											//TODO: 20121106 Eigentlich sollte dann die eigene / gleiche Datei zurï¿½ckgegeben werden, oder?
 											
 											
-											//Merke: Das soll keine Exception auslösen, sondern es soll null zurückgegeben werden.
+											//Merke: Das soll keine Exception auslï¿½sen, sondern es soll null zurï¿½ckgegeben werden.
 											//ExceptionZZZ ez = new ExceptionZZZ("no filename for the module '"+ sAlias + "' available in the kernelconfiguration-file. Property: KernelConfigFile"+sAlias+ " was empty.", iERROR_CONFIGURATION_MISSING, this, ReflectionZZZ.getMethodCurrentName());
 											//throw ez;
 											//Also:
@@ -494,7 +494,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 							if (StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
 						}//end if Versuch 1
 						
-						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu prüfen*/
+						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu prï¿½fen*/
 						//FGL 20121106: Relative Fileangaben verarbeiten
 						objReturn = FileEasyZZZ.getFile(sFilePath, sFileName);
 						//objReturn = new File(sFilePath + File.separator + sFileName);
@@ -503,14 +503,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}
 	
 	
-	/** Parameter für ein ganzes Modul holen, aus der Modul-.ini-Datei, die erst noch hier ermittelt werden muss.
+	/** Parameter fï¿½r ein ganzes Modul holen, aus der Modul-.ini-Datei, die erst noch hier ermittelt werden muss.
 	 * Ein Modul ist der Teil, der zwischen dem KernelConfigPath und dem Gleichheitszeichen steht
 	 * KernelConfigPath...=,
 	 *  bzw. auch KernelConfigFile...=
-	 *  Die drei Punkte ... stehen nun für den Modulnamen.
+	 *  Die drei Punkte ... stehen nun fï¿½r den Modulnamen.
 	 *        
-	 * Dies ist z.B. der Aliasname für ein 'Program'-Teil
-	 * Um für das Program einen Parameter zu holen muss verwendet werden "getParameterByProgramAlias(,,,)
+	 * Dies ist z.B. der Aliasname fï¿½r ein 'Program'-Teil
+	 * Um fï¿½r das Program einen Parameter zu holen muss verwendet werden "getParameterByProgramAlias(,,,)
 	 * @param objFileConfig, Modul-Konfigurationsfile. Wird z.B. durch  objKernel.getFileConfigByAlias(sModuleAlias); ermittelt.
 	 * @param sModuleAlias
 	 * @param sParameter
@@ -599,7 +599,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * Das kann dann verwendet werden, wenn das Kernel-Konfigurationsfile die Modulkonfiguration auf sich selbst verweist.
 	 * 
 	 * Beispiel:
-	 * Es gibt eine Datei ZKernelConfig_OVPNClient.ini, die als Parameter bei der Erstellung des Kernel-Objekts übergeben wurde.
+	 * Es gibt eine Datei ZKernelConfig_OVPNClient.ini, die als Parameter bei der Erstellung des Kernel-Objekts ï¿½bergeben wurde.
 	 * Diese Datei hat folgenden Inhalt: 
 	 * 
 	 * 
@@ -652,9 +652,9 @@ MeinTestParameter=blablaErgebnis
 		return sReturn;
 	}
 
-	/** Parameter für ein ganzes Modul holen, aus der Modul-.ini-Datei, die übergeben wird.
-	 * Dies ist z.B. der Aliasname für ein 'Program'-Teil
-	 * Um für das Program einen Parameter zu holen muss verwendet werden "getParameterByProgramAlias(,,,)
+	/** Parameter fï¿½r ein ganzes Modul holen, aus der Modul-.ini-Datei, die ï¿½bergeben wird.
+	 * Dies ist z.B. der Aliasname fï¿½r ein 'Program'-Teil
+	 * Um fï¿½r das Program einen Parameter zu holen muss verwendet werden "getParameterByProgramAlias(,,,)
 	 * @param objFileConfig, Modul-Konfigurationsfile. Wird z.B. durch  objKernel.getFileConfigByAlias(sModuleAlias); ermittelt.
 	 * @param sModuleAlias
 	 * @param sParameter
@@ -744,13 +744,13 @@ MeinTestParameter=blablaErgebnis
 	* Der Aliasname des Programms ist dabei eine weitere Section in der .ini-Datei, mit folgendem Aufbau:
 	 * [SYSTEMKEY!PROGRAMALIAS]
 	 * 
-	 * z.B. für das Programm mit dem Alias copy1 lautet die Section [FGL#01!copy1]
+	 * z.B. fï¿½r das Programm mit dem Alias copy1 lautet die Section [FGL#01!copy1]
 	 * 
 	 * 
 	 * Hintergrund:
-	 * Ein Programm, z.B. ein Notes-Agent sollte seinen eigenen Namen kennen und das Modul, zu dem es gehört.
+	 * Ein Programm, z.B. ein Notes-Agent sollte seinen eigenen Namen kennen und das Modul, zu dem es gehï¿½rt.
 	 * Mit diesem Namen wird es in der Lage sein aus der Modulkonfiguration in einem ersten Schritt den Aliasnamen zu ermitteln.
-	 * und in einem nächsten Schritt kann dann diese Methode eingesetzt werden.
+	 * und in einem nï¿½chsten Schritt kann dann diese Methode eingesetzt werden.
 	 * 
 	* Lindhauer; 20.04.2006 07:53:05
 	 * @param objFileConfig
@@ -794,7 +794,7 @@ MeinTestParameter=blablaErgebnis
 	return sReturn;		
 }//end function getParameterByProgramAlias(..)
 	
-	/**Gibt den Konfigurierten Wert eines Programms wieder. Dabei werden globale Werte durch "Speziell" für die SystemNumber definierte Werte überschrieben
+	/**Gibt den Konfigurierten Wert eines Programms wieder. Dabei werden globale Werte durch "Speziell" fï¿½r die SystemNumber definierte Werte ï¿½berschrieben
 	 * @param objFileIniConfig
 	 * @param sAliasProgramOrSection  
 	 * @param sProperty
@@ -885,7 +885,7 @@ MeinTestParameter=blablaErgebnis
 					throw ez;
 				}else{
 					//Beim NICHTFINDEN eines Paremeters ist es wichtig einen Fehler auszugeben, weil das auf eine falsche Konfiguration hindeuten kann
-					//NEIEN, sReturn sollte Null sein, dann ist es nicht angegeben. Ein Leerwert ist nämlcih durchaus möglich
+					//NEIEN, sReturn sollte Null sein, dann ist es nicht angegeben. Ein Leerwert ist nï¿½mlcih durchaus mï¿½glich
 					if(sReturn==null){
 						ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: (sAliasProgramOrSection = '" + sAliasProgramOrSection + "'), in the specified section of the configuration file is no property configured named: '" + sProperty + "'.",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
@@ -916,17 +916,17 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 		
-		//A1. Prüfen, ob das Modul überhaupt konfiguriert ist
+		//A1. Prï¿½fen, ob das Modul ï¿½berhaupt konfiguriert ist
 		String sModuleUsed = sModule;
 		boolean bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 		if(bModuleConfig==false){
 			
-			//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
+			//A2. Versuch: Prï¿½fen, ob es als Systemkey konfiguriert ist
 			sModuleUsed = this.getSystemKey();
 			bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 			if(bModuleConfig==false){
 				
-				//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
+				//A3. Versuch: Prï¿½fen, ob es als Applikationskey konfiguriert ist
 				sModuleUsed = this.getApplicationKey();
 				bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 				if(bModuleConfig==false){
@@ -936,7 +936,7 @@ MeinTestParameter=blablaErgebnis
 			} //end if Versuch 2
 		}//end if Versuch 1
 		
-		//B1. Prüfen, ob das Modul existiert
+		//B1. Prï¿½fen, ob das Modul existiert
 		boolean bModuleExists = this.proofModuleFileExists(sModuleUsed);
 		if(bModuleExists==false){
 			ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
@@ -946,7 +946,7 @@ MeinTestParameter=blablaErgebnis
 		//3. Konfigurationsfile des Moduls holen
 		FileIniZZZ file = this.getFileConfigIniByAlias(sModuleUsed);
 		if(file==null){
-			ExceptionZZZ ez = new ExceptionZZZ("FileIniZZZ für Modul '" + sModuleUsed + "' ist NULL.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+			ExceptionZZZ ez = new ExceptionZZZ("FileIniZZZ fï¿½r Modul '" + sModuleUsed + "' ist NULL.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
 		
@@ -1106,14 +1106,14 @@ String sSection = null;
 							//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
 						}//end check:
 						
-						//1. Prüfen, ob das Modul überhaupt konfiguriert ist
+						//1. Prï¿½fen, ob das Modul ï¿½berhaupt konfiguriert ist
 						boolean bModuleConfig = this.proofModuleFileIsConfigured(sModule);
 						if(bModuleConfig==false){
 							ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' is not configured.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 						}
 						
-						//2. Prüfen, ob das Modul existiert
+						//2. Prï¿½fen, ob das Modul existiert
 						boolean bModuleExists = this.proofModuleFileExists(sModule);
 						if(bModuleExists==false){
 							ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
@@ -1197,7 +1197,7 @@ String sSection = null;
 		return fileReturn;
 	}
 	
-	/** String; Ausgehend vom Dateinamen werden die "überflüssigen" Namensteile abgeschnitten und der Modulalias bleibt bestehen 
+	/** String; Ausgehend vom Dateinamen werden die "ï¿½berflï¿½ssigen" Namensteile abgeschnitten und der Modulalias bleibt bestehen 
 	* Lindhauer; 12.05.2006 09:33:01
 	 * @param sIn
 	 * @return
@@ -1261,26 +1261,26 @@ String sSection = null;
 			String sSubject = sSubjectIn.toLowerCase();
 			String stemp = StringZZZ.left(sSubject, "kernelconfigfile");
 			
-			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurückgeben.
+			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurï¿½ckgeben.
 			if(!StringZZZ.isEmpty(stemp)) break main;
 			
 			sReturn = StringZZZ.right(sSubject, "kernelconfigfile");
 			if(!StringZZZ.isEmpty(sReturn)){
-				//Da der Returnwert nun allerdings nur kleingeschrieben wäre vom Original ausgehen
-				sReturn = sSubjectIn.substring(16);  //16 ist die Länge von 'kernelConfigfile'
+				//Da der Returnwert nun allerdings nur kleingeschrieben wï¿½re vom Original ausgehen
+				sReturn = sSubjectIn.substring(16);  //16 ist die Lï¿½nge von 'kernelConfigfile'
 				break main;
 			}
 			
 			
 			//b) kernelconfigpath
 			stemp = StringZZZ.left(sSubject, "kernelconfigpath");
-			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurückgeben.
+			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurï¿½ckgeben.
 			if(!StringZZZ.isEmpty(stemp)) break main;
 			
 			sReturn = StringZZZ.right(sSubject, "kernelconfigpath");
 			if(!StringZZZ.isEmpty(sReturn)) {
-//				Da der Returnwert nun allerdings nur kleingeschrieben wäre vom Original ausgehen
-				sReturn = sSubjectIn.substring(16);  //16 ist die Länge von 'kernelConfigpath'
+//				Da der Returnwert nun allerdings nur kleingeschrieben wï¿½re vom Original ausgehen
+				sReturn = sSubjectIn.substring(16);  //16 ist die Lï¿½nge von 'kernelConfigpath'
 				break main;
 			}
 		}
@@ -1376,7 +1376,7 @@ String sSection = null;
 							}
 						}
 						
-						//Alle ggf. doppelt vorkommenden Einträge entfernen
+						//Alle ggf. doppelt vorkommenden Eintrï¿½ge entfernen
 						listaReturn = ArrayListZZZ.unique(listaConfigured);
 						break;
 					case 2:
@@ -1384,7 +1384,7 @@ String sSection = null;
 						//(!!! hierbei wird das Kernel-Konfigurations-Verzeichnis nach Moduldateien durchsucht !!!)
 						objFileTemp = this.getFileConfigKernel();
 						sDir = objFileTemp.getParent();
-						if(sDir==null) sDir = "";     //Das ist nun möglich     if(sDir.equals("")) break main;
+						if(sDir==null) sDir = "";     //Das ist nun mï¿½glich     if(sDir.equals("")) break main;
 						
 						//Alle Moduldateien dieses Verzeichnisses holen
 						objaFileTemp = this.getFileConfigAllByDir(sDir);
@@ -1442,12 +1442,12 @@ String sSection = null;
 						//Nun die Module trimmen
 						listaFile = ArrayListZZZ.unique(listaConfigured);
 						
-						//Aus der liste nun diejenigen wieder entfernen, die  existieren, bzw: Diejenigen, die FEHLEN HINZUFÜGEN
+						//Aus der liste nun diejenigen wieder entfernen, die  existieren, bzw: Diejenigen, die FEHLEN HINZUFï¿½GEN
 						listaReturn = new ArrayList();
 						for(int icount=0; icount < listaFile.size(); icount++){
 							boolean btemp = this.proofModuleFileExists((String) listaFile.get(icount));
 							if(btemp == false){
-								listaReturn.add(listaFile.get(icount));  //Ein einfaches Entfernen an dieser Stelle ändert die Size der Liste und die Indexpositionen
+								listaReturn.add(listaFile.get(icount));  //Ein einfaches Entfernen an dieser Stelle ï¿½ndert die Size der Liste und die Indexpositionen
 							}
 						}
 												
@@ -1457,7 +1457,7 @@ String sSection = null;
 //						(!!! hierbei wird das Kernel-Konfigurations-Verzeichnis nach Moduldateien durchsucht !!!)
 						objFileTemp = this.getFileConfigKernel();
 						sDir = objFileTemp.getParent();
-						if(sDir==null) sDir = "";     //Das ist nun möglich     if(sDir.equals("")) break main;
+						if(sDir==null) sDir = "";     //Das ist nun mï¿½glich     if(sDir.equals("")) break main;
 						
 						
 						//Alle Moduldateien dieses Verzeichnisses holen
@@ -1517,7 +1517,7 @@ String sSection = null;
 	
 	
 	
-	/**List aus der KernelKonfiguration alle Konfigurierten Modulenamen aus. Irgenwelche File - Eigenschaften (z.B. die Existenz) werden hier nicht berücksichtig
+	/**List aus der KernelKonfiguration alle Konfigurierten Modulenamen aus. Irgenwelche File - Eigenschaften (z.B. die Existenz) werden hier nicht berï¿½cksichtig
 	* @return
 	* 
 	* lindhaueradmin; 04.03.2007 10:00:37
@@ -1572,7 +1572,7 @@ String sSection = null;
 			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileIniConfigKernel();
 			
-			//PRÜFUNG: LIES EINEN .ini - DATEINAMEN AUS.
+			//PRï¿½FUNG: LIES EINEN .ini - DATEINAMEN AUS.
 			//Merke: Der Pfad darf leer sein. Dann wird "." als aktuelles Verzeichnis angenommen    String sFilePath = objIni.getValue(stemp,"KernelConfigPath" +sAlias );
 			
 			//1. Versuch: Systemebene
@@ -1660,7 +1660,7 @@ String sSection = null;
 				String sDirectoryConfig = null;
 				String sLog = null;
 				
-				 //setzen der übergebenen Flags	
+				 //setzen der ï¿½bergebenen Flags	
 				  if(saFlagControlIn != null){
 					  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						  stemp = saFlagControlIn[iCount];
@@ -1694,10 +1694,17 @@ String sSection = null;
 					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}else if(objConfig.isOptionObjectLoaded()==false){
-					sLog = "ApplicationKey unavailable, Config-Object not loaded";
+					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-EintrÃ¤gen
+					//      und nicht von irgendwelchen Ã¼bergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+					sLog = "Config-Object not loaded, using DEFAULTS.";
 					System.out.println(sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+					sApplicationKey = objConfig.getApplicationKeyDefault();
+					if(StringZZZ.isEmpty(sApplicationKey)){
+						sLog = "ApplicationKey DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+						System.out.println(sLog);
+						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
 				}else{
 					sApplicationKey = objConfig.readApplicationKey();
 					if(StringZZZ.isEmpty(sApplicationKey)){
@@ -1718,10 +1725,18 @@ String sSection = null;
 					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}else if(objConfig.isOptionObjectLoaded()==false){
-					sLog = "SystemNumber unavailable, Config-Object not loaded";
+					sLog = "SystemNumber unavailable, Config-Object not loaded, USING DEFAULTS";
 					System.out.println(sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+					
+					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-EintrÃ¤gen
+					//      und nicht von irgendwelchen Ã¼bergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+					sSystemNumber = objConfig.getSystemNumberDefault();
+					if(StringZZZ.isEmpty(sApplicationKey)){
+						sLog = "SystemNumber DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+						System.out.println(sLog);
+						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
 				}else{
 					sSystemNumber = objConfig.readSystemNumber();
 					if(StringZZZ.isEmpty(sSystemNumber)){
@@ -1741,8 +1756,22 @@ String sSection = null;
 					sDirectoryConfig = sDirectoryConfigIn;					
 				}else if(objConfig==null){
 					//Damit ist das Konfigurationsverzeichnis entsprechend dem aktuellen Verzeichnis
-				}else if(objConfig.isOptionObjectLoaded()){
-						sDirectoryConfig = objConfig.readConfigDirectoryName();
+					
+				}else if(objConfig.isOptionObjectLoaded()==false){
+					sLog = "Directory for configuration unavailable, Config-Object not loaded, USING DEFAULTS";
+					System.out.println(sLog);
+					
+					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-EintrÃ¤gen
+					//      und nicht von irgendwelchen Ã¼bergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+					sDirectoryConfig = objConfig.getConfigDirectoryNameDefault();
+					if(StringZZZ.isEmpty(sDirectoryConfig)){
+						sLog = "Directory for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+						System.out.println(sLog);
+						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+				}else{
+					sDirectoryConfig = objConfig.readConfigDirectoryName();
 				}
 				if(StringZZZ.isEmpty(sDirectoryConfig)){
 					this.sDirectoryConfig = ".";//"c:\\fglkernel\\KernelConfig";				
@@ -1760,10 +1789,18 @@ String sSection = null;
 					ExceptionZZZ ez = new ExceptionZZZ(sLog , iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}else if(objConfig.isOptionObjectLoaded()==false){
-					sLog = "ConfigurationFilename unavailable, Config-Object not loaded";
+					sLog = "ConfigurationFilename unavailable, Config-Object not loaded, USING DEFAULTS";
 					System.out.println(sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+					
+					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-EintrÃ¤gen
+					//      und nicht von irgendwelchen Ã¼bergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+					sFileConfig = objConfig.getConfigFileNameDefault();
+					if(StringZZZ.isEmpty(sFileConfig)){
+						sLog = "Filename for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+						System.out.println(sLog);
+						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}										
 				}else{
 					sFileConfig = objConfig.readConfigFileName();
 					if(StringZZZ.isEmpty(sFileConfig)){
@@ -1807,8 +1844,8 @@ String sSection = null;
 				LogZZZ objLog = null;
 				if(objLogIn==null){
 					System.out.println("Erstelle neues Log Object");
-//					1. Versuch: Über die Programm-Konfiguration. 
-					//Merke: Dies geht nur, wenn ein Context-Objekt übergeben worden ist. An dieser Stelle kommt man nicht anders an den Namen der Aufrufenden - Klasse (d.h. den Programnamen) dran.
+//					1. Versuch: ï¿½ber die Programm-Konfiguration. 
+					//Merke: Dies geht nur, wenn ein Context-Objekt ï¿½bergeben worden ist. An dieser Stelle kommt man nicht anders an den Namen der Aufrufenden - Klasse (d.h. den Programnamen) dran.
 					if(this.getContextUsed()!=null){
 						
 						//!!! Falls da nix konfiguriert ist, darf kein Fehler geworfen werden !!!
@@ -1821,7 +1858,7 @@ String sSection = null;
 						}
 					}	
 					
-					//2. Versuch: Über die Globale konfiguration der Applikation
+					//2. Versuch: ï¿½ber die Globale konfiguration der Applikation
 					if(StringZZZ.isEmpty(sDirectoryLog) && StringZZZ.isEmpty(sFileLog)){
 						sDirectoryLog = objIni.getValue(this.getSystemKey(), "KernelLogPath");
 						sFileLog = objIni.getValue(this.getSystemKey(), "KernelLogFile");										
