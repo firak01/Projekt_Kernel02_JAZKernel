@@ -3,8 +3,8 @@ package zBasic.util.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import junit.framework.TestCase;
 
+import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -27,10 +27,20 @@ public class IniFileTest extends TestCase{
 	protected void setUp(){
 		try {			
 			
-			//### Eine Beispieldatei. Merke: Die Eintr�ge werden immer neu geschrieben und nicht etwa angeh�ngt.
+			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehängt.
 			//Merke: Es soll nicht versucht werden die Datei z.B. mit der Datei aus dem FileIniZZZTest 
 			//Merke: Erst wenn es �berhaupt einen Test gibt, wird diese Datei erstellt
-			String sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			String sFilePathTotal = null;
+			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			}else{
+				//Eclipse Workspace
+				File f = new File("");
+			    String sPathEclipse = f.getAbsolutePath();
+			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
+			}
+
 			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file			
 			objStreamFile.println(";This is a temporarily test file for FileIniTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println("#This is another commentline");

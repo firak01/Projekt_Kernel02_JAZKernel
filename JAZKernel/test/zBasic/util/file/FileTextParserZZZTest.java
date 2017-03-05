@@ -8,7 +8,6 @@ import org.apache.regexp.RE;
 import org.apache.regexp.RESyntaxException;
 
 import junit.framework.TestCase;
-
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -19,6 +18,7 @@ public class FileTextParserZZZTest extends TestCase{
 	private File objFileTarget=null;
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
 	private final static String strFILE_NAME_DEFAULT = new String("JUnitKernelFileParseTest.txt");
+	private final static String strFILE_NAME_DEFAULT_RESULT = new String("JUnitKernelFileParseResult.txt");
 
 	
 	private FileTextParserZZZ objParserTest = null;
@@ -26,16 +26,25 @@ public class FileTextParserZZZTest extends TestCase{
 	protected void setUp(){
 		try {			
 			
-			//Eine Beispieldatei. Durch deren Existenz kann man den Namen einer Folgedatei bestimmen, welche eine 'Expansion' erh�lt.
-			//Merke: Ddurch, dass man die Datei per stream - aufbaut, werden keine Eintr�ge an eine vorherige Datei angeh�ngt, sondern die Datei wird f�r jeden Test neu geschrieben.
-			String sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			//Eine Beispieldatei. Durch deren Existenz kann man den Namen einer Folgedatei bestimmen, welche eine 'Expansion' erhält.
+			//Merke: Dadurch, dass man die Datei per stream - aufbaut, werden keine Einträge an eine vorherige Datei angehängt, sondern die Datei wird für jeden Test neu geschrieben.			
+			String sFilePathTotal = null;
+			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			}else{
+				//Eclipse Workspace
+				File f = new File("");
+			    String sPathEclipse = f.getAbsolutePath();
+			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
+			}
 			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
 			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
 			objStreamFile.println("erste zeile");      //Now the File is created
 			objStreamFile.println("zweite zeile");   
 			objStreamFile.println("dritte zeile");    
 			objStreamFile.println("vierte zeile");   
-			objStreamFile.println("f�nfte zeile");     
+			objStreamFile.println("fünfte zeile");     
 			objStreamFile.println("sechste zeile");      
 			objStreamFile.println("sechste zeile ist doppelt");     
 			objStreamFile.println("doppelte sechste zeile");     
@@ -46,7 +55,18 @@ public class FileTextParserZZZTest extends TestCase{
 			
 			this.objFileSource = new File(sFilePathTotal);
 			
-			sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, "JUnitKernelFileParseResult.txt" );
+			
+			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT_RESULT );
+			}else{
+				//Eclipse Workspace
+				File f = new File("");
+			    String sPathEclipse = f.getAbsolutePath();
+			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT_RESULT );			   
+			}
+			
+			
 			this.objFileTarget = new File(sFilePathTotal);			
 			
 			//The main object used for testing

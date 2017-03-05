@@ -32,9 +32,20 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	protected void setUp(){
 		try {			
 			
-			//### Eine Beispieldatei. Merke: Die Eintr�ge werden immer neu geschrieben und nicht etwa angeh�ngt.
+			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehngt.
 			//Merke: Erst wenn es �berhaupt einen Test gibt, wird diese DAtei erstellt
-			String sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			String sFilePathTotal = null;		
+			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			}else{
+				//Eclipse Worspace
+				File f = new File("");
+			    String sPathEclipse = f.getAbsolutePath();
+			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+				
+			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse, strFILE_NAME_DEFAULT );				
+			}
+			
 			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file			
 			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");

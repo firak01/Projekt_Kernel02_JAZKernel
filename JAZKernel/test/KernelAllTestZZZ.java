@@ -29,7 +29,7 @@ public class KernelAllTestZZZ {
 	public static Test suite(){
 		TestSuite objReturn = new TestSuite();
 		//Merke: Die Tests bilden in ihrer Reihenfolge in etwa die Hierarchie im Framework ab. 
-		//            Dies beim Einf�gen weiterer Tests bitte beachten.         
+		//            Dies beim Einfügen weiterer Tests bitte beachten.         
 		
 		
 		//Tests f�r Datentypen etc.

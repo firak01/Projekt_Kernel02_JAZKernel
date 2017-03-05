@@ -745,12 +745,12 @@ public void testVecMidFirst(){
 			//A) Ae			
 			sReplaceOrig = "Maenner";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("M�nner", sErg); 
+			assertEquals("Männer", sErg); 
 			
 			//B) Oe
 			sReplaceOrig = "Moerser";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("M�rser", sErg); 
+			assertEquals("Mörser", sErg); 
 			
 			sReplaceOrig = "Oelde";  //intern wird nur eld analysiert (erster und letzter Buchstabe wird nicht betrachtet).
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
@@ -771,11 +771,11 @@ public void testVecMidFirst(){
 			
 			sReplaceOrig =  "OdXssee";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("OdX�ee", sErg);
+			assertEquals("OdXßee", sErg);
 			
 			
 			//D) Ue  //Intern wird hier das ganze Wort betrachtet
-			sReplaceOrig = "lquelle"; //Darf nicht ver�ndert werden
+			sReplaceOrig = "lquelle"; //Darf nicht verändert werden
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
 			assertEquals(sReplaceOrig, sErg); 
 			
@@ -795,15 +795,15 @@ public void testVecMidFirst(){
 			//##### Kombinationen
 			sReplaceOrig="Muessen";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("M��en", sErg); 
+			assertEquals("Müßen", sErg); 
 			
 			sReplaceOrig = "MMuessen";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("MM��en", sErg); 
+			assertEquals("MMüßen", sErg); 
 			
 			sReplaceOrig = "groesste";
 			sErg = StringZZZ.replaceCharacterGerman(sReplaceOrig);
-			assertEquals("gr��te", sErg); 
+			assertEquals("größte", sErg); 
 			
 			//###### Wortl�nge
 			sReplaceOrig = "Suez";  //es werden nur Worte >= 5 Buchstaben ersetzt

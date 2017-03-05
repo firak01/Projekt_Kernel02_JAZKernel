@@ -269,12 +269,12 @@ public void testParameterByModuleAlias(){
 
 public void testParameterByProgramAlias(){
 	try{
-		//A) �bergabe als directe Section testen
+		//A) Übergabe als directe Section testen
 		String stemp = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramProperty" ); 
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp);
 		
 		
-		//B) �bergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Sysstemnumber angegeben wird
+		//B) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
 		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty");
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp2);
 		

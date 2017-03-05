@@ -1,5 +1,6 @@
 package zUtil.io;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -19,8 +20,18 @@ public class FileZZZTest extends TestCase {
 	protected void setUp(){
 		try {			
 			
-			//Eine Beispieldatei. Durch deren Existenz kann man den Namen einer Folgedatei bestimmen, welche eine 'Expansion' erh�lt.
-			String sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			//Eine Beispieldatei. Durch deren Existenz kann man den Namen einer Folgedatei bestimmen, welche eine 'Expansion' erhält.
+			String sFilePathTotal = null;
+			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
+				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+			}else{
+				//Eclipse Workspace
+				File f = new File("");
+			    String sPathEclipse = f.getAbsolutePath();
+			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
+			}
+			
 			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
 			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
 			objStreamFile.close();
