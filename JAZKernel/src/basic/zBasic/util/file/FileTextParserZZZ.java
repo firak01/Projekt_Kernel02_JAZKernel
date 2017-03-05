@@ -66,11 +66,11 @@ public class FileTextParserZZZ extends ObjectZZZ{
 	/**replaces the line, which matches the regular expression, with the passed string.
 	 *  This is no "in place" replacement, so a new file is created with all lined (and the replaced ones).
 	 *  
-	 *  TODO: Die Funktionalitäten von "KernelFileTextJoin" und "KernelFileTextCopy" in diese Klasse übernehmen.
+	 *  TODO: Die Funktionalitï¿½ten von "KernelFileTextJoin" und "KernelFileTextCopy" in diese Klasse ï¿½bernehmen.
 	 *  TODO: InPlace - replacement, d.h. die gleiche Datei behandeln und darin ersetzen.
-	 *  TODO: replaceNthLine(...) Nur der xte-Zeileneintrag soll geändert werden. Normalerwiese der 1.
-	 *  TODO: readLineAt(int iLineNr) Gibt lediglich den String in der iLineNr zurück.
-	 *  TODO: Es erlauben, nicht sofort zu speichern. Z.B: die Zielen erst in einen Vektor einlasen, diesen dann parsen und den Wert ändern.
+	 *  TODO: replaceNthLine(...) Nur der xte-Zeileneintrag soll geï¿½ndert werden. Normalerwiese der 1.
+	 *  TODO: readLineAt(int iLineNr) Gibt lediglich den String in der iLineNr zurï¿½ck.
+	 *  TODO: Es erlauben, nicht sofort zu speichern. Z.B: die Zielen erst in einen Vektor einlasen, diesen dann parsen und den Wert ï¿½ndern.
 	 *             Dann muss es aber auch eine Methode .save(...) geben.
 	 *  
 	 *  
@@ -131,14 +131,14 @@ public class FileTextParserZZZ extends ObjectZZZ{
 						  iReturn++;
 					  }
 				   }else{
-					   //Fall: Zeile unverändert übernehmen
+					   //Fall: Zeile unverÃ¤ndert Ã¼bernehmen
 					   bfout.write(sLine);
 					   bfout.newLine();
 				   }				   
 				   sLine = bfin.readLine();
 			   }//END while
 					   
-			   //Schliessen der Dateiströme
+			   //Schliessen der Dateistrï¿½me
 				bfin.close();
 				bfout.close();
 				fin.close();
@@ -226,7 +226,7 @@ public class FileTextParserZZZ extends ObjectZZZ{
 			  // int c;
 			   //ToDo: Verlauf der Kopieraktion protokollieren.
 			   //while ((c = bfin.read()) != -1) bfout.write(c);
-			   //Schliessen der Dateiströme
+			   //Schliessen der Dateistrï¿½me
 				bfin.close();
 				//bfout.close();
 				fin.close();
@@ -259,7 +259,7 @@ public class FileTextParserZZZ extends ObjectZZZ{
 		
 	}
 	
-	/**Prüft auf Vorhandensein dieser Zeile in der Datei. Ggf. kann eine casesensitive Übereinstimmung gefordert werden.
+	/**Prï¿½ft auf Vorhandensein dieser Zeile in der Datei. Ggf. kann eine casesensitive ï¿½bereinstimmung gefordert werden.
 	* @param sLineToFind
 	* @param bCaseSenitiveMatch
 	* @return
@@ -285,7 +285,7 @@ public class FileTextParserZZZ extends ObjectZZZ{
 				FileReader fread = new FileReader(objFileSource);
 				BufferedReader bfread = new BufferedReader(fread);
 				String sLine = bfread.readLine();
-				if(bCaseSensitiveMatch==false){		//Diese if-Abfrage aus Performancegründen ausserhalb der Schleife	
+				if(bCaseSensitiveMatch==false){		//Diese if-Abfrage aus Performancegrï¿½nden ausserhalb der Schleife	
 					while(StringZZZ.isEmpty(sLine)==false){				
 						sLine = bfread.readLine();
 						if(sLineToFind.equals(sLine)){
@@ -369,7 +369,7 @@ public class FileTextParserZZZ extends ObjectZZZ{
 		  // int c;
 		   //ToDo: Verlauf der Kopieraktion protokollieren.
 		   //while ((c = bfin.read()) != -1) bfout.write(c);
-		   //Schliessen der Dateiströme
+		   //Schliessen der Dateistrï¿½me
 			bfin.close();
 			//bfout.close();
 			fin.close();
@@ -414,17 +414,17 @@ public class FileTextParserZZZ extends ObjectZZZ{
 		}
 			}//END check:
 			
-			//LAUT DOKU, KANN MAN DEN WAHLFREIEN ZUGRIFF NUR BEI DATENSÄTZEN MIT GLEICHER LÄNGE DURCHFÜHREN
+			//LAUT DOKU, KANN MAN DEN WAHLFREIEN ZUGRIFF NUR BEI DATENSï¿½TZEN MIT GLEICHER Lï¿½NGE DURCHFï¿½HREN
 
 			  
-			  /* DAS ERSETZT ABER DIE BESTEHENDEN EINTRÄGE !!! WAS NICHT GEWÜNSCHT IST !!! 
+			  /* DAS ERSETZT ABER DIE BESTEHENDEN EINTRï¿½GE !!! WAS NICHT GEWï¿½NSCHT IST !!! 
 			   FileWriter fout = new FileWriter(objFileTarget);			   
 			   BufferedWriter bfout = new BufferedWriter(fout);
-			   PrintWriter pw = new PrintWriter(bfout, true); //Damit man eine Zeile mit println(...) anhängen kann
+			   PrintWriter pw = new PrintWriter(bfout, true); //Damit man eine Zeile mit println(...) anhï¿½ngen kann
 			   pw.write(sStringNew);
 			   //pw.println(sStringNew);
 			   
-			   //Schliessen der Dateiströme
+			   //Schliessen der Dateistrï¿½me
 				//bfin.close();
 				bfout.close();
 				//fin.close();
@@ -447,18 +447,18 @@ public class FileTextParserZZZ extends ObjectZZZ{
 			   while(sLine != null){
 				   lReturn++;
 				   
-					   //Fall: Zeile unverändert übernehmen
+					   //Fall: Zeile unverï¿½ndert ï¿½bernehmen
 					   bfout.write(sLine);
 					   bfout.newLine();		   
 				   sLine = bfin.readLine();
 			   }//END while
 			
-				//an der letzten Zeile etwas anhängen
+				//an der letzten Zeile etwas anhï¿½ngen
 			   lReturn++;
 				bfout.write(sStringNew);
 				bfout.newLine();		
 			
-			   //Schliessen der Dateiströme
+			   //Schliessen der Dateistrï¿½me
 				bfin.close();
 				bfout.close();
 				fin.close();
