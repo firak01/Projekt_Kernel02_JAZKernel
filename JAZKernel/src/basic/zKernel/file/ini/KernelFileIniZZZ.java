@@ -31,15 +31,15 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	//20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
-//	private boolean bFlagFileNew; // don´t create a file in the constructor
+//	private boolean bFlagFileNew; // donï¿½t create a file in the constructor
 //	private boolean bFlagFileChanged;
-//	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgelöst. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
+//	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgelï¿½st. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
 	
 	//Flags, die alle Z-Objekte haben
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
 		
-	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
+	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geï¿½ndert
 	 * 
 	 */
 	public enum FLAGZ{
@@ -78,7 +78,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		 	
 	 	try{
 	 		
-			//setzen der übergebenen Flags	
+			//setzen der ï¿½bergebenen Flags	
 				if(saFlagControlIn != null){
 					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						stemp = saFlagControlIn[iCount];
@@ -148,7 +148,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 }//end function
 	
 	
-	/** Gibt true zurück, wenn in dem Section String (ab dem 2. Buchstaben) ein Ausrufezeichen steht und ggf. ein Folgebuchstabe.
+	/** Gibt true zurï¿½ck, wenn in dem Section String (ab dem 2. Buchstaben) ein Ausrufezeichen steht und ggf. ein Folgebuchstabe.
 	 * Also der minimalste Section-Name ist z.b. "a!a"
 	* @param sSection
 	* @return
@@ -282,7 +282,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					sProperty = sPropertyIn;
 				}
 				
-				//!!! Falls es schon in der Property ein Ausrufezeichen gibt, so entfällt der 1. Versuch. Es wird sofort nach der konkreten Section gesucht
+				//!!! Falls es schon in der Property ein Ausrufezeichen gibt, so entfï¿½llt der 1. Versuch. Es wird sofort nach der konkreten Section gesucht
 				if(! KernelFileIniZZZ.isSectionWithSystemNrAny(sSection)){
 					if(StringZZZ.isEmpty(sSystemNrIn)){
 						sSystemNr = this.getKernelObject().getSystemNumber();
@@ -320,7 +320,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 				}
 				if(StringZZZ.isEmpty(sSectionIn)){
 					ExceptionZZZ ez = new ExceptionZZZ( "missing parameter 'Section'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
-					//doesn´t work. Only works when > JDK 1.4
+					//doesnï¿½t work. Only works when > JDK 1.4
 					//Exception e = new Exception();
 					//ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					throw ez;						
@@ -339,7 +339,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 				listaString.add(icount, stemp);
 			}
 			
-			//durch den neuen Parameter wird der Datentyp des zurückzugebenden Arrays definiert.
+			//durch den neuen Parameter wird der Datentyp des zurï¿½ckzugebenden Arrays definiert.
 			//Trotzdem braucht man den Typcast.
 			saReturn =  (String[]) listaString.toArray(new String[0]);
 			
@@ -450,12 +450,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 			}//end check:
 			
 			//##############################
-			//Falls gewünscht die Section erst entfernen
+			//Falls gewÃ¼nscht die Section erst entfernen
 			if(bFlagClearBefore == true){
 				this.deleteSection(sSection);
 			}
 			
-			//Section erstellen oder auffüllen. Alle Elemente der Hashtable durchgehen
+			//Section erstellen oder auffÃ¼llen. Alle Elemente der Hashtable durchgehen
 			Enumeration objEnum = objHtValue.keys();
 			while(objEnum.hasMoreElements()){
 				String sProperty = (String) objEnum.nextElement();
@@ -594,7 +594,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	- FileUnsaved
 	- FileNew
 	 */
-	/*20170123: Soll herausgenommen werden können wg. ENUMERATION FlagZ Nutzung
+	/*20170123: Soll herausgenommen werden kï¿½nnen wg. ENUMERATION FlagZ Nutzung
 	public boolean getFlag(String sFlagName){
 		boolean bFunction = false;
 		main:{
@@ -630,7 +630,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 * - FileUnsaved, if a value is written to the file the flag is changed to true, if the save() method is used it is reset to false.
 	 * 			  source_remove: after copying the source_files will be removed.
 	 */
-	/*20170123: Soll herausgenommen werden können wg. ENUMERATION FlagZ Nutzung
+	/*20170123: Soll herausgenommen werden kï¿½nnen wg. ENUMERATION FlagZ Nutzung
 	public boolean setFlag(String sFlagName, boolean bFlagValue){
 		boolean bFunction = false;
 		main:{

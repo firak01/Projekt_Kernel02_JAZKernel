@@ -23,7 +23,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 	     * class and all of its superclasses. For example, selectFields(x,0,Modifier.FINAL)
 	     * returns all the fields that are not final.
 	     * 
-	     * ACHTUNG: Seit Java 1.6: Problematisch, wenn der Code auf einem Server ausgeführt wird, in dem Java Security über die java.policy Datei geregelt wird.
+	     * ACHTUNG: Seit Java 1.6: Problematisch, wenn der Code auf einem Server ausgefï¿½hrt wird, in dem Java Security ï¿½ber die java.policy Datei geregelt wird.
 	     *                  Verwende dann die entprechende ..Priviliged - Methode.
 	     *
 	     * @return Field[]
@@ -54,7 +54,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 	    
 	/* Verwende eine "Privilegierte Helper Klasse, um per Reflection API Werte auszulesen.
 	 *  Seit Java 1.6. tritt beim Einsatz auf Servern die Problematik der java.policy Datei auf.
-	 *   *  Wichtig: Damit das funktioniert muss es überhaupt eine java.policy Datei geben. Sie kann vom Inhalt auch leer sein.*/   
+	 *   *  Wichtig: Damit das funktioniert muss es ï¿½berhaupt eine java.policy Datei geben. Sie kann vom Inhalt auch leer sein.*/   
    public Field[] selectFieldsPrivileged(final Class cls, final int mustHave, final int mustNotHave)  {
 		UQueue fq = new UQueue(Field.class);
 		Class[] ca = Mopex.selectAncestors(cls,0,0);
@@ -76,7 +76,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 		return (Field[])fq.toArray();
     	}
 
-	    /** Ermittelt intern alle Elternklassen von clsCurrent und prüft dann, ob die clsSuperclass darin enthalten ist. 
+	    /** Ermittelt intern alle Elternklassen von clsCurrent und prï¿½ft dann, ob die clsSuperclass darin enthalten ist. 
 	     *   Verwendet intern Mopex.getSuperclasses(class) aus dem Buch "Java Reflections in Action".
 	     *   
 	    * @param clsCurrent
@@ -225,7 +225,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 	    	return objReturn;
 	    }
 	    
-	    /* ArrayList mit den Klassen-Objekten der Elternklassen zurückgeben. 
+	    /* ArrayList mit den Klassen-Objekten der Elternklassen zurï¿½ckgeben. 
 	     * ! intern Rekursiver Aufruf !
 	     */
 		public static ArrayList<Class<?>> getSuperClasses(Class objClass){
@@ -241,7 +241,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 			return superTypes;
 		}
 		
-		/* ArrayList mit den Klassen-Objekten der Elternklassen zurückgeben. 
+		/* ArrayList mit den Klassen-Objekten der Elternklassen zurï¿½ckgeben. 
 	     * ! intern Rekursiver Aufruf !
 	     */
 		public static void scanSuperClasses(Class objClass, ArrayList<Class<?>> superTypes){
@@ -255,7 +255,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 			}
 		}
 		
-		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
+		/* ArrayList mit den eingebetteten Klassen zurÃ¼ckgeben. Wird vom mir verwendet fÃ¼r die FLAGZ - Enum Definition
 		 * 
 		 */
 		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass, String sFilterClassname){
@@ -274,7 +274,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 			return embeddedTypes;
 		}
 		
-		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
+		/* ArrayList mit den eingebetteten Klassen zurÃ¼ckgeben. Wird vom mir verwendet fÃ¼r die FLAGZ - Enum Definition
 		 * 
 		 */
 		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass){
@@ -285,7 +285,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 			return embeddedTypes;
 		}
 		
-		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
+		/* ArrayList mit den eingebetteten Klassen zurÃ¼ckgeben. Wird vom mir verwendet fÃ¼r die FLAGZ - Enum Definition
 		 * 
 		 */
 		public static void scanEmbeddedClasses(Class objClass, ArrayList<Class<?>> embeddedTypes){

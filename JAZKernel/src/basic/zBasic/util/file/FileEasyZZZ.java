@@ -29,7 +29,7 @@ private FileEasyZZZ(){
 	//Zum Verstecken des Konstruktors
 }
 
-/** überprüft, ob unter dem angegebenen pfadnamen "fileName" eine Datei existiert.
+/** ÃœberprÃ¼ft, ob unter dem angegebenen pfadnamen "fileName" eine Datei existiert.
  * 
  * @param fileName
  * @return
@@ -43,7 +43,7 @@ public static boolean exists (String sFileName) throws ExceptionZZZ {
 			throw ez;
 		}
 		
-		//Prüfen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad berücksichtig.
+		//PrÃ¼fen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad berï¿½cksichtig.
 		File f = FileEasyZZZ.getFile(sFileName);
 		bReturn = f.exists();
 	}//end main:
@@ -117,7 +117,7 @@ public static File getFile(String sDirectoryIn, String sFileName)throws Exceptio
 }
 
 
-/** Prüft, ob der Pfad relativ ist: Das ist der Fall, wenn 
+/** Prï¿½ft, ob der Pfad relativ ist: Das ist der Fall, wenn 
  * 
  *     A file name is relative to the current directory if it does not begin with one of the following:
 
@@ -160,7 +160,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 	return bReturn;
 }
 
-	/** prüft ob ein gegebener dirName ein Directory repräsentiert und erzeugt gegebenenfalls ein solches dir */
+	/** prï¿½ft ob ein gegebener dirName ein Directory reprï¿½sentiert und erzeugt gegebenenfalls ein solches dir */
 	public static boolean makeDirectory (String dirName) {
 		File d = new File (dirName);
 		if (d.exists() && !d.isDirectory()) {
@@ -229,8 +229,8 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		return bReturn;
 	}
 	
-	/** Löscht ein Verzeichnis.
-	* @return boolean,	 true, wenn das Verzeichnis nicht existiert hat oder erfolgreich gelöscht werden konnte.
+	/** Lï¿½scht ein Verzeichnis.
+	* @return boolean,	 true, wenn das Verzeichnis nicht existiert hat oder erfolgreich gelï¿½scht werden konnte.
 	*                					 false, wenn das Verzeichnis nicht leer ist.
 	* @param sDirectoryPath
 	* @throws ExceptionZZZ
@@ -255,7 +255,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				throw ez;
 			}
 			
-			//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
+			//Gibt false zurï¿½ck, wenn z.B. das Directory nicht leer ist.
 			bReturn = objFile.delete();
 			
 		}
@@ -282,14 +282,14 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			}
 			
 			if(bEmptyDirectoryBefore==true){
-				//Hole alle dateien und lösche diese
+				//Hole alle dateien und lï¿½sche diese
 				File[] objaFile =  objFile.listFiles();
 				for(int icount = 0; icount <= objaFile.length - 1; icount++){
 					objaFile[icount].delete();
 				}		
-				bReturn = objFile.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gelöscht werden
+				bReturn = objFile.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gelï¿½scht werden
 			}else{			
-				//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
+				//Gibt false zurï¿½ck, wenn z.B. das Directory nicht leer ist.
 				bReturn = objFile.delete();
 			}
 		}
@@ -303,7 +303,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			check:{
 				if(sFilenameTotal==null){
 					 ExceptionZZZ ez = new ExceptionZZZ("Missing Filename parameter.", 101, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-					  //doesn´t work. Only works when > JDK 1.4
+					  //doesnï¿½t work. Only works when > JDK 1.4
 					  //Exception e = new Exception();
 					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					  throw ez;		 
@@ -344,7 +344,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			check:{
 				if(sFilenameTotal==null){
 					 ExceptionZZZ ez = new ExceptionZZZ("Missing Filepath parameter.", 101, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-					  //doesn´t work. Only works when > JDK 1.4
+					  //doesnï¿½t work. Only works when > JDK 1.4
 					  //Exception e = new Exception();
 					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					  throw ez;		 
@@ -365,7 +365,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			check:{
 				if(sFileName==null){
 				 ExceptionZZZ ez = new ExceptionZZZ("Missing Filename Parameter.", 101, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-				  //doesn´t work. Only works when > JDK 1.4
+				  //doesnï¿½t work. Only works when > JDK 1.4
 				  //Exception e = new Exception();
 				  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 				  throw ez;		 
@@ -390,7 +390,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		
 			if(StringZZZ.isEmpty(sFileName)){
 			 ExceptionZZZ ez = new ExceptionZZZ("Missing Filename Parameter.", 101, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			  //doesn´t work. Only works when > JDK 1.4
+			  //doesnï¿½t work. Only works when > JDK 1.4
 			  //Exception e = new Exception();
 			  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 			  throw ez;		 
@@ -439,7 +439,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			//here is the code throwing an ExceptionZZZ
 			stemp = " 'FileName'";
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING,  ReflectCodeZZZ.getMethodCurrentName(), "");
-			   //doesn´t work. Only works when > JDK 1.4
+			   //doesnï¿½t work. Only works when > JDK 1.4
 			   //Exception e = new Exception();
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
@@ -452,7 +452,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			//here is the code throwing an ExceptionZZZ
 			stemp = "''FilePath'";
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-			   //doesn´t work. Only works when > JDK 1.4
+			   //doesnï¿½t work. Only works when > JDK 1.4
 			   //Exception e = new Exception();
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
@@ -475,7 +475,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				
 				//Eleminate empty strings
 				String sFilePathTemp = new String("");
-				int iNrOfTokenTotal = objToken.countTokens(); //Merke: Dies wird durch den Aufruf von .nextToken() immer verändert/weniger. Darum vorher in einer Variablen sichern.
+				int iNrOfTokenTotal = objToken.countTokens(); //Merke: Dies wird durch den Aufruf von .nextToken() immer verï¿½ndert/weniger. Darum vorher in einer Variablen sichern.
 				for( int icount = 1;icount <= iNrOfTokenTotal; icount++){
 					stemp = objToken.nextToken();
 					if(!stemp.equals("")){
@@ -528,7 +528,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			//here is the code throwing an ExceptionZZZ
 			stemp = "''FileName'";			   
 			  ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-			   //doesn´t work. Only works when > JDK 1.4
+			   //doesnï¿½t work. Only works when > JDK 1.4
 			   //Exception e = new Exception();
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
@@ -536,7 +536,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				//	here is the code throwing an ExceptionZZZ
 					  stemp = "'FileName'";
 					  ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_EMPTY + stemp, iERROR_PARAMETER_EMPTY,  ReflectCodeZZZ.getMethodCurrentName(), "");
-						 //doesn´t work. Only works when > JDK 1.4
+						 //doesnï¿½t work. Only works when > JDK 1.4
 						 //Exception e = new Exception();
 						 //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 						 throw ez;	
@@ -597,7 +597,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("No file object provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			//nein, das ist überflüssig   if(file2proof.exists()==false) break main;
+			//nein, das ist ï¿½berflï¿½ssig   if(file2proof.exists()==false) break main;
 			if(file2proof.isDirectory()==false) break main;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Ist Verzeichnis: '" + file2proof.getAbsolutePath() + "'");
 			
@@ -672,7 +672,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		        // bei einem throw geschlossen werden.
 		        // Falls in null ist, ist out auch null!
 		        if (in != null) {
-		            //Falls tatsächlich in.close() und out.close()
+		            //Falls tatsï¿½chlich in.close() und out.close()
 		            //Exceptions werfen, die jenige von 'out' geworfen wird.
 		            try {
 		                in.close();

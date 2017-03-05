@@ -22,7 +22,7 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
 		
-	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
+	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geï¿½ndert
 	 * 
 	 */
 	public enum FLAGZ{
@@ -33,7 +33,7 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 	
 	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	
-	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
+	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu kï¿½nnen.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	
 	public ObjectZZZ() {
@@ -53,10 +53,10 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 	
 	
 	//### FLAGS ####################
-	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
+	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - Ã¼ber Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
 	 * Weteire Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
-	 * - Innere Klassen müssen auch public deklariert werden.
+	 * - Innere Klassen mï¿½ssen auch public deklariert werden.
 	 * @param objClassParent
 	 * @param sFlagName
 	 * @param bFlagValue
@@ -82,7 +82,7 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 		return bFunction;	
 	}
 
-	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
+	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - Ã¼ber Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
 	 *  SIE WIRD PER METHOD.INVOKE(....) AUFGERUFEN.
 	 * @param name 
 	 * @param sFlagName
@@ -104,8 +104,8 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 					
 					Field[] fields = objClass.getDeclaredFields();
 					for(Field field : fields){
-						if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
-							out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
+						if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurï¿½ckgegeben.
+							//out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
 							if(sFlagName.equalsIgnoreCase(field.getName())){
 								bReturn = true;
 								break main;
@@ -135,7 +135,7 @@ public static boolean proofFlagZExists(IFlagZZZ objcp, String sFlagName) {
 			
 			Field[] fields = objClass.getDeclaredFields();
 			for(Field field : fields){
-				if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
+				if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurï¿½ckgegeben.
 					out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
 					if(sFlagName.equalsIgnoreCase(field.getName())){
 						bReturn = true;
@@ -168,7 +168,7 @@ public static boolean proofFlagZExists(Class objcp, String sFlagName) {
 			
 			Field[] fields = objClass.getDeclaredFields();
 			for(Field field : fields){
-				if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
+				if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurÃ¼ckgegeben.
 					out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
 					if(sFlagName.equalsIgnoreCase(field.getName())){
 						bReturn = true;
@@ -188,7 +188,7 @@ public static boolean proofFlagZExists(Class objcp, String sFlagName) {
 
 /* Voraussetzungen:
  * - Public Default Konstruktor, damit die Klasse instanziiert werden kann.
- * - Innere Klassen müssen auch public deklariert werden.
+ * - Innere Klassen mï¿½ssen auch public deklariert werden.
  */
 public static boolean proofFlagZExists(String sClassName, String sFlagName){
 	boolean bReturn = false;
@@ -198,10 +198,10 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 		try {
 			
 			//Existiert in der Elternklasse oder in der aktuellen Klasse das Flag?
-			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# ObjektInstanz erzeugen für '" + sClassName + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# ObjektInstanz erzeugen fÃ¼r '" + sClassName + "'");
 			Class<?> objClass = Class.forName(sClassName);		
 			
-			//!!! für abstrakte Klassen gilt: Es kann per Reflection keine neue Objektinstanz geholt werden.
+			//!!! fÃ¼r abstrakte Klassen gilt: Es kann per Reflection keine neue Objektinstanz geholt werden.
 			if(!ReflectClassZZZ.isAbstract(objClass)){
 				if(ReflectClassZZZ.isInner(objClass)){
 					//Bei inneren Klassen anders eine neue Instanz erzeugen.
@@ -215,7 +215,7 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 						IFlagZZZ objcp = (IFlagZZZ) objInnerInstance;
 						if(objcp==null){
 						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# INNERE ObjektInstanz für '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# INNERE ObjektInstanz fÃ¼r '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
 							bReturn = ObjectZZZ.proofFlagZExists(objcp, sFlagName);
 						}
 					} catch (SecurityException e) {
@@ -235,7 +235,7 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 					IFlagZZZ objcp = (IFlagZZZ)objClass.newInstance();  //Aus der Objektinstanz kann dann gut die Enumeration FLAGZ ausgelesen werden.				
 					if(objcp==null){
 					}else{
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# ObjektInstanz für '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# ObjektInstanz fÃ¼r '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
 						bReturn = ObjectZZZ.proofFlagZExists(objcp, sFlagName);
 					}
 				}//isInner(...)
@@ -295,7 +295,7 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
 	 * 	 Weteire Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
-	 * - Innere Klassen müssen auch public deklariert werden.(non-Javadoc)
+	 * - Innere Klassen mï¿½ssen auch public deklariert werden.(non-Javadoc)
 	 */
 	public boolean getFlagZ(String sFlagName) {
 		boolean bFunction = false;
@@ -355,7 +355,7 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 //			String stemp = sFlagName.toLowerCase();
 //			if(stemp.equals("debug")){
 //				this.bFlagDebug = bFlagValue;
-//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag überhaupt gibt !!!
+//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag ï¿½berhaupt gibt !!!
 //				break main;
 //			}else if(stemp.equals("init")){
 //				this.bFlagInit = bFlagValue;

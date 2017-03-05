@@ -35,7 +35,7 @@ public interface IConstantZZZ {
 	public static  final String sERROR_CONFIGURATION_VALUE = "Configuration has wrong value: ";
 	public static  final int iERROR_CONFIGURATION_VALUE = 77;
 	
-	public static  final String sERROR_ZFRAME_METHOD ="A method isn´t overwritten, but should be: ";
+	public static  final String sERROR_ZFRAME_METHOD ="A method is not overwritten, but should be: ";
 	public static  final int iERROR_ZFRAME_METHOD = 69;
 	
 	public static  final String sERROR_ZFRAME_DESING = "A design element not found: ";

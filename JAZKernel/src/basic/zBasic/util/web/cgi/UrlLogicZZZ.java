@@ -9,17 +9,20 @@ import java.net.URLStreamHandler;
 import java.util.StringTokenizer;
 
 
+
+
+
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.UrlLogicBaseZZZ;
 import  basic.zBasic.util.datatype.string.StringZZZ;
 
 /** Im wesentlichen ein Wrapper um das J2SE ULR-Objekt.
- *   Was aber auch mit unvollständigen URLs arbeiten soll.
+ *   Was aber auch mit unvollstï¿½ndigen URLs arbeiten soll.
  *   
- *   Ist ein Äquivalent zur Javascript Klasse ZApi.Basic.Url.js .
+ *   Ist ein ï¿½quivalent zur Javascript Klasse ZApi.Basic.Url.js .
  *   
- *  Dabei gibt es folgende Mögliche Elemente einer URL
+ *  Dabei gibt es folgende Mï¿½gliche Elemente einer URL
  * 
  http://hans:geheim@www.example.org:80/demo/example.cgi?land=de&stadt=aa#abschnitt1
 |     		 | 			|    		  |              				|  |  				              |         				       |
@@ -32,22 +35,13 @@ Protokoll
  * @author lindhaueradmin
  *
  */
-public class UrlLogicZZZ  implements IConstantZZZ{
-	public static final String sURL_SEPARATOR_PROTOCOL = "://";
+public class UrlLogicZZZ  extends UrlLogicBaseZZZ{	
 	public static final String sURL_SEPARATOR_PATH = "/";
 	public static final String sURL_SEPARATOR_QUERY = "?";
 	public static final String sURL_SEPARATOR_PARAM = "&";
 	public static final String sURL_SEPARATOR_VALUE = "=";
 	public static final String sURL_SEPARATOR_ANKER = "#";
-	
-	private String sUrl;
-	
-	//Default Konsturktor
-	public UrlLogicZZZ(){
-	}
-	public UrlLogicZZZ(String sUrl){
-		this.setUrl(sUrl);
-	}
+		
 	
 	public String getHost() throws ExceptionZZZ{
 		String sReturn = "";
@@ -73,9 +67,9 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 					throw ez;
 				}
 			
-				//Falls in dem String ein Protokoll vorhanden ist, geht das über die Standardklasse.
+				//Falls in dem String ein Protokoll vorhanden ist, geht das ï¿½ber die Standardklasse.
 				//ansonsten muss etwas mehr Intelligenz reingesteckt werden.
-				if(UrlLogicZZZ.hasProtocol(sUrl)){
+				if(UrlLogicBaseZZZ.hasProtocol(sUrl)){
 					//... Falls das Protokoll unbekannt ist ... Fehler werfen.
 					URL objUrl = new URL(sUrl);
 					sReturn = objUrl.getHost();
@@ -102,7 +96,7 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 					throw ez;
 				}
 				
-				if(! UrlLogicZZZ.hasProtocol(sUrl)) break main;
+				if(! UrlLogicBaseZZZ.hasProtocol(sUrl)) break main;
 				
 				
 				//+++++++++++				
@@ -169,7 +163,7 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 	}
 	
 	
-	/** Pfad in der URL (ohne Parameter ?..... ) aber mit führenden Slasch /
+	/** Pfad in der URL (ohne Parameter ?..... ) aber mit fï¿½hrenden Slasch /
 	* @return
 	* @throws ExceptionZZZ
 	* 
@@ -191,8 +185,8 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 	}
 	
 	
-	/** Gibt den Pfad der URL zurück.
-	 * D.h. zumindst der Domänen / Hostname wird als Bestandteil erwartet, der herauszutrennen ist.
+	/** Gibt den Pfad der URL zurï¿½ck.
+	 * D.h. zumindst der Domï¿½nen / Hostname wird als Bestandteil erwartet, der herauszutrennen ist.
 	* @param sUrl
 	* @return
 	* @throws ExceptionZZZ
@@ -214,16 +208,16 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 				}else{
 					sReturn = StringZZZ.left(sUrl+"?", "?");
 					
-					//1. Ggfs. vorhandene "Protokoll-Trenner" und ungültige Protokolle entfernen
+					//1. Ggfs. vorhandene "Protokoll-Trenner" und ungï¿½ltige Protokolle entfernen
 					String sReturnTemp = StringZZZ.rightback(sReturn, UrlLogicZZZ.sURL_SEPARATOR_PROTOCOL);
 					if(! StringZZZ.isEmpty(sReturnTemp)){
 						sReturn = sReturnTemp;
 					}
 					
-					//2. Ggfs. die Domäne bzw. Servername  entfernen
+					//2. Ggfs. die DomÃ¤ne bzw. Servername  entfernen
 					sReturn = StringZZZ.rightback(sReturn, "/");
 					
-					//Falls der Slash aus irgendwelchen Gründen abhanden gekommen sein sollte
+					//Falls der Slash aus irgendwelchen Grï¿½nden abhanden gekommen sein sollte
 					if(StringZZZ.left(sReturn, 1)!=UrlLogicZZZ.sURL_SEPARATOR_PATH) sReturn = UrlLogicZZZ.sURL_SEPARATOR_PATH  + sReturn;
 				}
 				
@@ -235,56 +229,7 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	
-	/** Prüft, ob ein Protokoll in der URL vorhanden ist (also etwas vor :// steht).
-	 *   !!! Damit ist noch nicht gesagt, dass es ein bekanntes / gültiges Protokol ist.
-	 *   
-	* @return
-	* @throws ExceptionZZZ
-	* 
-	* lindhaueradmin; 04.04.2009 11:32:02
-	 */
-	public boolean hasProtocol() throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			String sUrl = this.getUrl();
-			if(StringZZZ.isEmpty(sUrl)){
-				ExceptionZZZ ez = new ExceptionZZZ("No Url provided", iERROR_PROPERTY_MISSING,  this, ReflectCodeZZZ.getMethodCurrentName()); 
-				throw ez;
-			}
-			
-			bReturn = UrlLogicZZZ.hasProtocol(sUrl);
-			
-		}//END main:
-		return bReturn;
-	}
-	
-	/** Prüft, ob rechts neben einem :// String noch ein Wert steht
-	* @param sUrl
-	* @return
-	* @throws ExceptionZZZ
-	* 
-	* lindhaueradmin; 05.04.2009 09:38:22
-	 */
-	public static boolean hasProtocol(String sUrl) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			if(StringZZZ.isEmpty(sUrl)){
-				ExceptionZZZ ez = new ExceptionZZZ("No Url provided", iERROR_PROPERTY_MISSING,  UrlLogicZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName()); 
-				throw ez;
-			}
-			
-			bReturn = StringZZZ.contains(sUrl, UrlLogicZZZ.sURL_SEPARATOR_PROTOCOL);
-			
-			if(bReturn){
-				String stemp = StringZZZ.left(sUrl, UrlLogicZZZ.sURL_SEPARATOR_PROTOCOL);
-				if(StringZZZ.isEmpty(stemp)) bReturn = false;
-			}			
-		}
-		return bReturn;
-	}
-	
-	/** Prüft, ob rechts neben einem :// String noch ein Wert steht. UND ob der String von der URL - Klasse akzeptiert wird.
+	/** PrÃ¼ft, ob rechts neben einem :// String noch ein Wert steht. UND ob der String von der URL - Klasse akzeptiert wird.
 	* @param sUrl
 	* @return
 	* @throws ExceptionZZZ
@@ -299,9 +244,9 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 				throw ez;
 			}
 			
-			bReturn = UrlLogicZZZ.hasProtocol(sUrl);
+			bReturn = UrlLogicBaseZZZ.hasProtocol(sUrl);
 			if(bReturn){
-				//Nun testen, ob es gültig ist
+				//Nun testen, ob es gï¿½ltig ist
 				try{
 					URL objUrl = new URL(sUrl);
 				}catch(MalformedURLException murl){
@@ -341,7 +286,7 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	/** Verwendet intern nicht das URL-Objekt um den Query String zu holen. Dadurch können auch PSEUDO URLs, die lediglich eine ähnliche Syntax haben GEPARSED werden.
+	/** Verwendet intern nicht das URL-Objekt um den Query String zu holen. Dadurch kï¿½nnen auch PSEUDO URLs, die lediglich eine ï¿½hnliche Syntax haben GEPARSED werden.
 	* @param sUrl
 	* @return
 	* @throws ExceptionZZZ
@@ -436,7 +381,7 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 	
 	
 	
-	/** Hängt einen Parameter an den Query String an, aber nur wenn er noch nicht als Parameter vorhanden ist.
+	/** Hï¿½ngt einen Parameter an den Query String an, aber nur wenn er noch nicht als Parameter vorhanden ist.
 	 *   Ist der Parameter vorhanden, wird er ersetzt.
 	* @param sUrl
 	* @param sAlias
@@ -529,7 +474,7 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 				}
 				sReturn = sUpdate;
 			}else{
-				//Hänge an
+				//Hï¿½nge an
 				if(StringZZZ.isEmpty(sQuery)){
 					sReturn = sUrl + UrlLogicZZZ.sURL_SEPARATOR_QUERY + sAlias + UrlLogicZZZ.sURL_SEPARATOR_VALUE + sValue;
 				}else{
@@ -542,8 +487,8 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 		return sReturn;		
 	}
 	
-	/* Es hängt davon ab, ob es einen StreamHandler gibt, wenn Java ein bestimmtes Protocol nicht kennt.
-	 * Mit dieser Method kann man per Reflection den passenden Stream Handler für ein Protokoll bekommen */
+	/* Es hÃ¤ngt davon ab, ob es einen StreamHandler gibt, wenn Java ein bestimmtes Protocol nicht kennt.
+	 * Mit dieser Method kann man per Reflection den passenden Stream Handler fï¿½r ein Protokoll bekommen */
 	public static URLStreamHandler getURLStreamHandler(String protocol) {
 	    try {
 	        Method method = URL.class.getDeclaredMethod("getURLStreamHandler", String.class);
@@ -554,17 +499,7 @@ public class UrlLogicZZZ  implements IConstantZZZ{
 	    }
 	}
 	
-	
-	
-	
 
-	
 	//### GETTER / SETTER ###############
-	public String getUrl(){
-		return this.sUrl; 
-	}
-	public void  setUrl(String sUrl){
-		this.sUrl = sUrl;
-	}
 	
 }
