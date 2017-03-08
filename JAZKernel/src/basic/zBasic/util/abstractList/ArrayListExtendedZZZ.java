@@ -112,10 +112,10 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 			
 			
 			//###############################
-			String sMethod = null; //Für das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
-			Object obj = null;        //Für das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
+			String sMethod = null; //Fï¿½r das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
+			Object obj = null;        //Fï¿½r das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
 			try {
-			//1. Kann ja nur Teilmenge sein, wenn die übergebene Hashmap gleich ist.
+			//1. Kann ja nur Teilmenge sein, wenn die ï¿½bergebene Hashmap gleich ist.
 			boolean	btemp = ArrayListZZZ.isSameSize(this.toArrayList(), objAL);
 			if(!btemp){
 				bReturn = false;
@@ -124,7 +124,7 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 			
 		
 			//2. Vergleiche zwei Hashmaps, elemtweise.
-			//1. Äußere Schleife: Nimm dafür "das von aussen kommende Vergleichsobjekt"
+			//1. ï¿½uï¿½ere Schleife: Nimm dafï¿½r "das von aussen kommende Vergleichsobjekt"
 			ArrayList objALExt = this.toArrayList();
 			ArrayList objALInt = objAL;
 						
@@ -143,17 +143,17 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 					
 					
 					//+++ Suche nun nach der Methode in den beiden Objekten.
-					//Merke: In der Reflection API Paramter für die MEthode anzugeben geht so:
+					//Merke: In der Reflection API Paramter fï¿½r die MEthode anzugeben geht so:
 					//Class[] classaParam = new Class[1];
 					//classaParam[0] = objKeyValueToStore.getClass();
 					//
 					//aber hier ist classaParm=null;  
-					sMethod = sMethodName; //Für das Exception Handling
-					obj = objInt; //Für das Exception Handling
+					sMethod = sMethodName; //Fï¿½r das Exception Handling
+					obj = objInt; //Fï¿½r das Exception Handling
 					Method mInt = Mopex.getSupportedMethod(objInt.getClass(), sMethodName, null);
 					
-					sMethod = sMethodName; //Für das Exception Handling
-					obj = objExt; //Für das Exception Handling
+					sMethod = sMethodName; //Fï¿½r das Exception Handling
+					obj = objExt; //Fï¿½r das Exception Handling
 					Method mExt = Mopex.getSupportedMethod(objExt.getClass(), sMethodName, null);
 					
 					if(mInt==null | mExt==null){
@@ -169,9 +169,9 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 					//System.out.println("Ergebnis der Method invocation addNewKeyPrimary=" + iCode);
 					
 					//Object objReturnType = m.invoke(objWithKey, null);
-					//so würde der Parameterwert übergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
+					//so wï¿½rde der Parameterwert ï¿½bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 					//wir habe aber keinen Parameter, also NULL
-					obj = objInt; //Für das Exception Handling
+					obj = objInt; //Fï¿½r das Exception Handling
 					objTestErgInt = mInt.invoke(objInt, null);
 					if(objTestErgInt!=null){
 						//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objTestErgInt.toString());
@@ -180,7 +180,7 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 						break main;
 					}
 					
-					obj = objExt; //Für das Exception Handling
+					obj = objExt; //Fï¿½r das Exception Handling
 					objTestErgExt = mExt.invoke(objExt, null);
 					if(objTestErgExt!=null){
 						//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objTestErgExt.toString());
@@ -190,13 +190,13 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 					}
 					
 					
-					//+++ Suche die "equals" Methode in dem Ergebnisobjekt und führe sie aus.
+					//+++ Suche die "equals" Methode in dem Ergebnisobjekt und fï¿½hre sie aus.
 					//!!! Parameter ist das andere Ergebnisobjekt
 					Class[] classaParam = new Class[1];
 					classaParam[0] = Object.class; //die MEthode "equals" bekommt als Parameter ein Classe Objekt, nicht genauer wie z.B. String. Dazu wird keine Methode gefunden. Also nicht: objTestErgInt.getClass();
 					
-					sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Für das Exception Handling
-					obj = objTestErgExt; //Für das Exception Handling
+					sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Fï¿½r das Exception Handling
+					obj = objTestErgExt; //Fï¿½r das Exception Handling
 					Method mEqualsExt = Mopex.getSupportedMethod(objTestErgExt.getClass(), "equals", classaParam);
 					
 				
@@ -208,7 +208,7 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 							break main; //wenn false, dann die Schleife verlassen
 						}
 					}else{
-						//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. RÜCKGABEWERT: false");
+						//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. Rï¿½CKGABEWERT: false");
 						bReturn = false;
 						break main; //wenn False, dann die Schleife verlassen.
 					}
@@ -233,7 +233,7 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 		return bReturn;
 	}
 	
-	/** Prüft ob alle Objekte in den ArrayListen die gleiche Classe haben.
+	/** Prï¿½ft ob alle Objekte in den ArrayListen die gleiche Classe haben.
 	* @param alStoring2
 	* @return
 	* @throws ExceptionZZZ
@@ -277,7 +277,7 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 	
 	
 	/** Entferne Dubletten. Dabei wird die IndexHashMap zum Kennzeichnen der Dubletten verwendet.
-	 *    Intern werden die Dubletten in einer einzigen ArrayList zusammengefasst und diese dann gelöscht.
+	 *    Intern werden die Dubletten in einer einzigen ArrayList zusammengefasst und diese dann gelï¿½scht.
 	* @param hm
 	* @param hmIndexed
 	* @param sFlagRemain "KEEPFIRST" / "KEEPLAST", default ist "KEEPLAST"

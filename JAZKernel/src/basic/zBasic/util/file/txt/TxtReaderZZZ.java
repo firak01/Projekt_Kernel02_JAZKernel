@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.ObjectZZZ.FLAGZ;
+//import basic.zBasic.ObjectZZZ.FLAGZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /** Verwendet intern "RandomAccessFile", das ist der Unterschied zu FileTextParserZZZ
@@ -15,16 +15,16 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *
  */
 public class TxtReaderZZZ extends TxtCommonZZZ{
-	private boolean bFlagIsFileSorted = false;
-	private boolean bFlagIgnoreCase = false;
-	private boolean bFlagIgnoreEmptyLine=false;
-	private boolean bFlagIgnoreCommentLine=false;
-	
+//	private boolean bFlagIsFileSorted = false;
+//	private boolean bFlagIgnoreCase = false;
+//	private boolean bFlagIgnoreEmptyLine=false;
+//	private boolean bFlagIgnoreCommentLine=false;
+//	
 	public enum FLAGZ{
 		IsFileSorted, IgnoreCase, IgnoreEmptyLine, IgnoreCommentLine;
 	}
 	
-	//Aus IFlagZZZ, �ber die abstrakte TxtCommonZZZ Klasse
+	//Aus IFlagZZZ, über die abstrakte TxtCommonZZZ Klasse
 	@Override
 	public Class getClassZ() {
 		return FLAGZ.class;
@@ -54,14 +54,16 @@ public TxtReaderZZZ(TxtWriterZZZ objWriter, String[] saFlagControl) throws Excep
 private boolean TxtReaderNew_(TxtWriterZZZ objWriter, File file, String[] saFlagControlIn ) throws ExceptionZZZ{
 boolean bReturn = false;
 main:{
- //setzen der �bergebenen Flags	
+ //setzen der übergebenen Flags	
   if(saFlagControlIn != null){
 	  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 		  String stemp = saFlagControlIn[iCount];
-		  boolean btemp = setFlagZ(stemp, true);
-		  if(btemp==false){						
-			  ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-			  throw ez;		 
+		  if(!StringZZZ.isEmpty(stemp)){
+			  boolean btemp = setFlagZ(stemp, true);
+			  if(btemp==false){						
+				  ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+				  throw ez;		 
+			  }
 		  }
 	  }
 		if(this.getFlagZ("INIT")==true){
@@ -97,7 +99,7 @@ return bReturn;
 
 
 
-/** Gibt den Mode f�r das RandomAccessFile zur�ck.
+/** Gibt den Mode für das RandomAccessFile zurück.
 *   Es muss hier nur lesend auf die Datei zugegriffen werden.
 * @return
 * 

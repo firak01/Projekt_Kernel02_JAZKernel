@@ -1,12 +1,15 @@
 package basic.zUtil.io;
 
 import java.io.File;
-import java.util.StringTokenizer;
+import java.util.HashMap;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IFunctionZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -17,7 +20,7 @@ import basic.zBasic.util.math.MathZZZ;
 This class extends File and not ObjectZZZ !!!
 ==> it inherits the methods of file and can also be used as input for printwriter/reader - objects !!!
 ==> it implements AssetObjectZZZ for throwing ExcetptionZZZ
-==> it doesn´t implement assetKernelZZZ, because this class is used to create the log-file of the kernel.
+==> it doesnï¿½t implement assetKernelZZZ, because this class is used to create the log-file of the kernel.
          I never implement any functionality in an object which is used for this functionality !!!
 
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
@@ -39,10 +42,15 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 	private char cExpansionFilling=cEXPANSION_FILLING_DEFAULT;
 	
 	//flags 
-	private boolean bFlagExpansionAppend; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
+	//private boolean bFlagExpansionAppend; //Zeigt an, ob eine Dateinamens Expansion angehï¿½ngt werden muss, oder eine bestehende Expansion ersetzt hat.
+	public enum FLAGZ{
+		EXPANSIONAPPEND; //Merke: DEBUG und INIT aus ObjectZZZ sollen Ã¼ber IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
+	}
+	
+	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); 
 	
 //	### Constructor ##########################
-	public KernelFileZZZ(){
+	public KernelFileZZZ() throws ExceptionZZZ{
 		this("","","init");
 	}
 	
@@ -51,14 +59,14 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 		String stemp; boolean btemp;
 		main:{
 			
-		//seten der übergebenen Flags	
+		//seten der Ã¼bergebenen Flags	
 			if(saFlagControlIn != null){
 				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 					stemp = saFlagControlIn[iCount];
 					btemp = setFlag(stemp, true);
 					if(btemp==false){ 								   
 						   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-						   //doesn´t work. Only works when > JDK 1.4
+						   //doesnï¿½t work. Only works when > JDK 1.4
 						   //Exception e = new Exception();
 						   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 						   throw ez;		 
@@ -66,7 +74,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 				}
 				}
 
-			//+++ Falls das Debug-Flag gesetzt ist, muss nun eine Session über das Factory-Objekt erzeugt werden. 
+			//+++ Falls das Debug-Flag gesetzt ist, muss nun eine Session ï¿½ber das Factory-Objekt erzeugt werden. 
 			// Damit kann auf andere Datenbanken zugegriffen werden (z.B. im Eclipse Debugger)
 			// Besser jedoch ist es beim Debuggen mit einem anderen Tool eine Notes-ID zu verwenden, die ein leeres Passwort hat.
 			btemp = this.getFlag("init");
@@ -79,11 +87,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 	}
 	
 	
-	public KernelFileZZZ(String sDirectoryPath, String sFileName, String sFlagControl){
+	public KernelFileZZZ(String sDirectoryPath, String sFileName, String sFlagControl) throws ExceptionZZZ{
 		super(sDirectoryPath + "\\" + sFileName);
-		this.sDirectoryPath = sDirectoryPath;
-		this.sFileName = sFileName;
-		this.iExpansionLength = 3; //der Defaultwert 
+		String[] saFlagControl = new String[1];
+		saFlagControl[0] = sFlagControl;
+		KernelFileNew_(sDirectoryPath, sFileName, 3, saFlagControl);		//3; der Defaultwert 
 	}
 
 	
@@ -96,26 +104,30 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 	 */
 	public KernelFileZZZ(String sDirectoryPath, String sFileName, int iExpansionLength, String[] saFlagControl) throws ExceptionZZZ {		
 		super(sDirectoryPath + "\\" + sFileName);
-		main:{
-			if(saFlagControl!=null){
-				boolean btemp = false;
-				for(int icount=0;icount <= saFlagControl.length-1;icount++){
-					String stemp = saFlagControl[icount];
-					btemp = this.setFlag(stemp, true);
-					
-					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-						   throw ez;		 
+		KernelFileNew_(sDirectoryPath, sFileName, iExpansionLength, saFlagControl);
+	}
+	private void KernelFileNew_(String sDirectoryPath, String sFileName, int iExpansionLength, String[] saFlagControl) throws ExceptionZZZ {
+			main:{
+				if(saFlagControl!=null){
+					boolean btemp = false;
+					for(int icount=0;icount <= saFlagControl.length-1;icount++){
+						String stemp = saFlagControl[icount];
+						btemp = this.setFlag(stemp, true);
+						
+						if(btemp==false){ 								   
+							   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+							   throw ez;		 
+						}
 					}
+					if(this.getFlag("init")) break main;
 				}
-				if(this.getFlag("init")) break main;
-			}
+				
+				this.sDirectoryPath = sDirectoryPath;
+				this.sFileName = sFileName;
+				this.iExpansionLength = iExpansionLength;			
 			
-			this.sDirectoryPath = sDirectoryPath;
-			this.sFileName = sFileName;
-			this.iExpansionLength = iExpansionLength;			
-		
 		}//End main:
+		
 	}
 
 	
@@ -159,9 +171,9 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 	}
 	
 	
-	/** Berechnet den nächsten Dateinamen. Dabei wird ggf. eine Zählvariable an den Dateinamen angehängt
+	/** Berechnet den nÃ¤chsten Dateinamen. Dabei wird ggf. eine ZÃ¤hlvariable an den Dateinamen angehÃ¤ngt
 	 * 
-	 * Merke: Der Rückgabewert enthält nur den Dateinamen nicht den Pfad
+	 * Merke: Der RÃ¼ckgabewert enthÃ¤lt nur den Dateinamen nicht den Pfad
 	* @return
 	* @throws ExceptionZZZ
 	* 
@@ -199,7 +211,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 	
 	//++++++++++++++++++++++++++++++++++++++++++
 	public String getPathDirectory(){
-		//Merke: hierfür gibt es keine Berechnung. Dies wird konstant gesetzt.
+		//Merke: hierfÃ¼r gibt es keine Berechnung. Dies wird konstant gesetzt.
 		return this.sDirectoryPath;			
 	}
 	
@@ -207,40 +219,173 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 		this.sDirectoryPath = sToSet;
 	}
 	
+	/**Overwritten and using an object of jakarta.commons.lang
+	 * to create this string using reflection. 
+	 * Remark: this is not yet formated. A style class is available in jakarta.commons.lang. 
+	 */
+	@Override
+	public String toString(){
+		String sReturn = "";
+		sReturn = ReflectionToStringBuilder.toString(this);
+		return sReturn;
+	}
 	
-	//### FlagMethods ##########################
-	//++++++++++++++++++++++++++++++++++++++++++
-	public boolean getFlag(String sFlagAlias){
+	//### FlagMethods ##########################		
+	public HashMap<String, Boolean>getHashMapFlagZ(){
+		return this.hmFlag;
+	} 
+	
+	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
+	 * 	 Weteire Voraussetzungen:
+	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
+	 * - Innere Klassen mÃ¼ssen auch public deklariert werden.(non-Javadoc)
+	 */
+	@Override
+	public boolean getFlagZ(String sFlagName) {
 		boolean bFunction = false;
-		
 		main:{
-			String sTemp = sFlagAlias.toLowerCase();
-			if(sTemp.equals("expansionappend")){
-					bFunction = this.bFlagExpansionAppend;
+			if(StringZZZ.isEmpty(sFlagName)) break main;
+										
+			HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
+			Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
 			}
-		}
-		end:{
-			return bFunction;	
-		}		
-	} // end function
-	
-	//+++++++++++++++++++++++++++++++++++++++++++
-	public boolean setFlag(String sFlagAlias, boolean bValue){
-		boolean bFunction = false;
+							
+		}	// end main:
 		
-		main:{
-			String sTemp = sFlagAlias.toLowerCase();
-			if(sTemp.equals("expansionappend")){
-				this.bFlagExpansionAppend = bValue;
-				bFunction = true;
-			}			
-		}
-		end:{
-			return bFunction;	
-		}	
+		return bFunction;	
 	}
 	
 	
+	
+	//++++++++++++++++++++++++++++++++++++++++++
+//		public boolean getFlag(String sFlagAlias){
+//			boolean bFunction = false;
+//			
+//			main:{
+//				String sTemp = sFlagAlias.toLowerCase();
+//				if(sTemp.equals("expansionappend")){
+//						bFunction = this.bFlagExpansionAppend;
+//				}
+//			}
+//			end:{
+//				return bFunction;	
+//			}		
+//		} // end function
+//		
+//		//+++++++++++++++++++++++++++++++++++++++++++
+//		public boolean setFlag(String sFlagAlias, boolean bValue){
+//			boolean bFunction = false;
+//			
+//			main:{
+//				String sTemp = sFlagAlias.toLowerCase();
+//				if(sTemp.equals("expansionappend")){
+//					this.bFlagExpansionAppend = bValue;
+//					bFunction = true;
+//				}			
+//			}
+//			end:{
+//				return bFunction;	
+//			}	
+//		}
+	
+	
+	@Override
+	public boolean getFlag(String sFlagName) {
+//		boolean bFunction = false;
+//	main:{
+//		if(StringZZZ.isEmpty(sFlagName)) break main;
+//		
+//		// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
+//		// bFunction = super.getFlag(sFlagName);
+//		// if(bFunction == true) break main;
+//		
+//		// Die Flags dieser Klasse setzen
+//		String stemp = sFlagName.toLowerCase();
+//		if(stemp.equals("debug")){
+//			bFunction = this.bFlagDebug;
+//			break main;
+//		}else if(stemp.equals("init")){
+//			bFunction = this.bFlagInit;
+//			break main;
+//		}else{
+//			bFunction = false;
+//		}		
+//	}	// end main:
+//	
+//	return bFunction;	
+		return this.getFlagZ(sFlagName);
+	}
+	@Override
+	public boolean setFlag(String sFlagName, boolean bFlagValue) {
+		//Version Vor Java 1.6
+//		boolean bFunction = true;
+//		main:{
+//			if(StringZZZ.isEmpty(sFlagName)) break main;
+//			
+//			// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
+//			// bFunction = super.setFlag(sFlagName, bFlagValue);
+//			// if(bFunction == true) break main;
+//			
+//			// Die Flags dieser Klasse setzen
+//			String stemp = sFlagName.toLowerCase();
+//			if(stemp.equals("debug")){
+//				this.bFlagDebug = bFlagValue;
+//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag ï¿½berhaupt gibt !!!
+//				break main;
+//			}else if(stemp.equals("init")){
+//				this.bFlagInit = bFlagValue;
+//				bFunction = true;
+//				break main;
+//			}else{
+//				bFunction = false;
+//			}	
+//			
+//		}	// end main:
+//		
+//		return bFunction;	
+		try {
+			return this.setFlagZ(sFlagName, bFlagValue);
+		} catch (ExceptionZZZ e) {
+			System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
+			return false;
+		}
+	}
+	
+	
+	
+	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - Ã¼ber Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
+	 * Weteire Voraussetzungen:
+	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
+	 * - Innere Klassen mÃ¼ssen auch public deklariert werden.
+	 * @param objClassParent
+	 * @param sFlagName
+	 * @param bFlagValue
+	 * @return
+	 * lindhaueradmin, 23.07.2013
+	 */
+	@Override
+	public boolean setFlagZ(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName)) break main;
+			
+
+			bFunction = this.proofFlagZExists(sFlagName);												
+			if(bFunction == true){
+				
+				//Setze das Flag nun in die HashMap
+				HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
+				hmFlag.put(sFlagName.toUpperCase(), bFlagValue);
+				bFunction = true;								
+			}										
+		}	// end main:
+		
+		return bFunction;	
+	}
 	
 	
 	
@@ -278,7 +423,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 					sFileName = this.sFileName;
 				}
 				
-				//Leere Dateinamen können nicht "expanidert" werden.
+				//Leere Dateinamen kÃ¶nnen nicht "expanidert" werden.
 				iFileLength = sFileName.length();
 				if(iFileLength <= 0){
 					break main;
@@ -321,7 +466,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 				sFileName = this.sFileName;
 			}
 				
-			//Leere Dateinamen können nicht "expanidert" werden.
+			//Leere Dateinamen kÃ¶nnen nicht "expanidert" werden.
 			iFileLength = sFileName.length();
 			if(iFileLength <= 0){
 				break main;
@@ -365,7 +510,7 @@ public String PathNameTotalExpandedCurrentCompute(String sDirectoryNameIn, Strin
 				sFileName = this.sFileName;
 			}
 				
-			//Leere Dateinamen können nicht "expanidert" werden.
+			//Leere Dateinamen kï¿½nnen nicht "expanidert" werden.
 			iFileLength = sFileName.length();
 			if(iFileLength <= 0){
 				break main;
@@ -420,12 +565,13 @@ return sReturn;
 						sEnding = "." + sEnding;
 					}
 		
-					if(bFlagExpansionAppend == false){
-						sReturn =  this.getPathDirectory() + "\\" + sFileOnly + sEnding;	
+					if(this.getFlag("ExpansionAppend") == false){
+					//if(bFlagExpansionAppend == false){
+						sReturn =  this.getPathDirectory() + File.separator + sFileOnly + sEnding;	
 						this.sFileNameExpandedNext = sFileOnly + sEnding;
 						break main;
 					}else{
-						sReturn = this.getPathDirectory() + "\\" + sFileOnly + sExpandValue + sEnding;
+						sReturn = this.getPathDirectory() + File.separator + sFileOnly + sExpandValue + sEnding;
 						this.sFileNameExpandedNext = sFileOnly+sExpandValue+sEnding;
 						break main;			
 					}			 
@@ -443,12 +589,13 @@ return sReturn;
 					sEnding = "." + sEnding;
 				}
 		
-				if(bFlagExpansionAppend == false){
-					sReturn =  this.getPathDirectory() + "\\" + sFileOnly + sEnding;		
+				//if(bFlagExpansionAppend == false){
+				if(this.getFlag("ExpansionAppend") == false){
+					sReturn =  this.getPathDirectory() +File.separator + sFileOnly + sEnding;		
 					this.sFileNameExpandedFirst = sFileOnly + sEnding;
 					break main;
 				}else{
-					sReturn = this.getPathDirectory() + "\\" + sFileOnly + sExpandValue + sEnding;
+					sReturn = this.getPathDirectory() + File.separator + sFileOnly + sExpandValue + sEnding;
 					this.sFileNameExpandedFirst = sFileOnly + sExpandValue + sEnding;
 					break main;			
 				}			 
@@ -466,12 +613,13 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 					sEnding = "." + sEnding;
 				}
 		
-				if(bFlagExpansionAppend == false){
-					sReturn =  this.getPathDirectory() + "\\" + sFileOnly + sEnding;		
+				//if(bFlagExpansionAppend == false){
+				if(this.getFlag("ExpansionAppend") == false){
+					sReturn =  this.getPathDirectory() + File.separator + sFileOnly + sEnding;		
 					this.sFileNameExpandedCurrent = sFileOnly + sEnding;
 					break main;
 				}else{
-					sReturn = this.getPathDirectory() + "\\" + sFileOnly + sExpandValue + sEnding;
+					sReturn = this.getPathDirectory() + File.separator + sFileOnly + sExpandValue + sEnding;
 					this.sFileNameExpandedCurrent = sFileOnly + sExpandValue + sEnding;
 					break main;			
 				}			 
@@ -536,12 +684,12 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 	 * @param cExpansionFilling
 	 */
 	public void setExpansionFilling(char cExpansionFilling){
-		//TODO Das Filling-Zeichen muss dahingehend geprüft werden, ob es ein Zeichene ist, das in einem Dateinamen enthalten ist
+		//TODO Das Filling-Zeichen muss dahingehend geprï¿½ft werden, ob es ein Zeichene ist, das in einem Dateinamen enthalten ist
 		this.cExpansionFilling = cExpansionFilling;
 	}
 	
 	public void setExpansionFilling(String sExpansionFilling) throws ExceptionZZZ{
-		//		TODO Das Filling-Zeichen muss dahingehend geprüft werden, ob es ein Zeichene ist, das in einem Dateinamen enthalten ist
+		//		TODO Das Filling-Zeichen muss dahingehend geprï¿½ft werden, ob es ein Zeichene ist, das in einem Dateinamen enthalten ist
 		if(sExpansionFilling.length() >= 2) {
 			ExceptionZZZ ez = new ExceptionZZZ("An expansion-filling should be one character", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;		 
@@ -579,7 +727,7 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 		//get file details
 		String sPath = this.getPathDirectory();
 		if(sPath.length() > 0){
-			sPath = sPath + "\\";
+			sPath = sPath + File.separator;
 		}
 		String sEnding = this.getNameEnd();
 		if(sEnding.length() > 0){
@@ -599,7 +747,7 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 				if(f.exists() == true){
 					bFound = true;
 					sExpansionFoundLast = sExpansion;
-					//Remark: Don´t leave this loop, because there can be a gap
+					//Remark: Donï¿½t leave this loop, because there can be a gap
 				}
 				iCounter--;			
 			}while(iCounter >= 0 && bFound == false);
@@ -648,7 +796,7 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 				sEnding = "." + sEnding;
 			}
 			
-			//Die höchste Expansion ermitteln
+			//Die hï¿½chste Expansion ermitteln
 			Integer intNrOfExpansion = 	new Integer(getExpansionMax(iExpansionLength));
 			int iNrOfExpansion = intNrOfExpansion.intValue();
 			for (int iCount = 0; iCount <= iNrOfExpansion; iCount++){
@@ -712,13 +860,13 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 		sEndingValue = intEndingValue.toString();
 				
 		if(sEndingValue.length() == iEndingLength){
-			//Den Eingangswert zurückgeben 
+			//Den Eingangswert zurï¿½ckgeben 
 			sReturn = sEndingValue;
 		} else if(iEndingLength==0){
-			// !!! nix weiter zu tun, es soll keine Endung zurückgegeben werden
+			// !!! nix weiter zu tun, es soll keine Endung zurï¿½ckgegeben werden
 			sReturn = "";
 		}else{
-			//Führende Nullen setzen
+			//Fï¿½hrende Nullen setzen
 			int iEndingToFill = iEndingLength - sEndingValue.length();
 			for(int iCounter = 0; iCounter < iEndingToFill; iCounter++){
 				sEndingValue = sFilling + sEndingValue;				
@@ -747,8 +895,31 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 		this.objException = objException;
 	}//end function
 
-	public boolean proofFlagExists(String sFlagName) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	//Aus IObjectZZZ, siehe FileZZZ
+	@Override
+	public boolean proofFlagZExists(String sFlagName) {
+		boolean bReturn = false;
+		main:{
+			bReturn = ObjectZZZ.proofFlagZExists(this.getClass(), sFlagName);
+		
+			//Schon die oberste IObjectZZZ nutzende Klasse, darum ist der Aufruf einer Elternklasse mit der Methode nicht mÃ¶glich. 
+			//boolean bReturn = super.proofFlagZExists(sFlagName);
+		
+			if(!bReturn){			
+				Class<FLAGZ> enumClass = FLAGZ.class;				
+				for(Object obj : FLAGZ.class.getEnumConstants()){
+					//System.out.println(obj + "; "+obj.getClass().getName());
+					if(sFlagName.equalsIgnoreCase(obj.toString())) {
+						bReturn = true;
+						break main;
+					}
+				}				
+			}
+		}//end main:
+		return bReturn;
 	}
+
+
+	
 }//end class

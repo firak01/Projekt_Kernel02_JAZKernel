@@ -1,5 +1,7 @@
 package basic.zBasic;
 
+import java.util.HashMap;
+
 /**
  * @author 0823
  *
@@ -11,4 +13,6 @@ package basic.zBasic;
 public interface IObjectZZZ {
  	public abstract ExceptionZZZ getExceptionObject();
  	public abstract void setExceptionObject(ExceptionZZZ objException);
+ 	
+ 	public String toString(); //Nutzt intern eine Jakarta-Commons Klasse
 }

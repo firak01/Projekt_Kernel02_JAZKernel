@@ -13,7 +13,7 @@ import basic.zUtil.io.KernelFileZZZ;
  */
 public class FileZZZ extends KernelFileZZZ{
 
-	public FileZZZ(){
+	public FileZZZ() throws ExceptionZZZ{
 		super();
 	}
 	

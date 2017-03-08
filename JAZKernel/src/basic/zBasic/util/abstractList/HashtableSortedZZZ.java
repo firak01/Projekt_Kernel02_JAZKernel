@@ -2,6 +2,7 @@ package basic.zBasic.util.abstractList;
 
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -13,21 +14,23 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-/**Klasse dient dazu eine bestehende Hashtable zu verwenden, aber das Ergebnis ggf. sortiert zurückzubekommen.
- * Die Klasse erweitert nicht Hashtable, weil sonst alle MEthoden auf einen Schlag überschrieben werden müssten.
+/**Klasse dient dazu eine bestehende Hashtable zu verwenden, aber das Ergebnis ggf. sortiert zurï¿½ckzubekommen.
+ * Die Klasse erweitert nicht Hashtable, weil sonst alle MEthoden auf einen Schlag ï¿½berschrieben werden mï¿½ssten.
  * @author Lindhauer
  *
  */
 public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZZZ{
-	//TODO Einen eigenen Comparator im Konstruktor hinzufügbar machen.
+	//TODO Einen eigenen Comparator im Konstruktor hinzufï¿½gbar machen.
 	
 	private Hashtable objHt;
 	private Vector objV;	
 	private int iIndex=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
 	private String sSortDirectionAlias=null;
 	
+	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
 	
-	/**  Konstruktor: Die übergebenen Hashtable wird aufsteigend sortiert
+	
+	/**  Konstruktor: Die ï¿½bergebenen Hashtable wird aufsteigend sortiert
 	* Lindhauer; 26.04.2006 11:09:59
 	 * @param objHt
 	 * @throws ExceptionZZZ 
@@ -36,7 +39,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		HashtableSortedNew_(objHt,"+");
 	}
 	
-	/** Konstruktor: Die übergebene Hashtable wird mit abhängig von der sSortDirection sortiert.
+	/** Konstruktor: Die ï¿½bergebene Hashtable wird mit abhï¿½ngig von der sSortDirection sortiert.
 	 * bei '+': wird aufsteigend sortiert
 	 * bei '-': wird absteigend sortiert (mit Collections.reverseOrder())
 	 * 
@@ -62,7 +65,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 					this.sSortDirectionAlias = "+";					
 				}else if(!(sSortDirectionIn.equals("+") || sSortDirectionIn.equals("-"))){
 					  ExceptionZZZ ez = new ExceptionZZZ( "sSortDirection=" + sSortDirectionIn +", but expected to be '+' or '-'", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-					  //doesn´t work. Only works when > JDK 1.4
+					  //doesnï¿½t work. Only works when > JDK 1.4
 					  //Exception e = new Exception();
 					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					  throw ez;		 
@@ -99,7 +102,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		// TODO Auto-generated constructor stub
 	}
 
-	/** Object, Den Key des ersten Objekts zurückgeben. (Das ist das erste Element des internen Vectors.)
+	/** Object, Den Key des ersten Objekts zurï¿½ckgeben. (Das ist das erste Element des internen Vectors.)
 	* Lindhauer; 27.04.2006 08:13:07
 	 * @return Object
 	 */
@@ -123,7 +126,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		return objReturn;
 	}
 	
-	/** Object, Den Key des letzten Objekts zurückgeben. (Das ist das letzte Objekt des inneren Vektors.)
+	/** Object, Den Key des letzten Objekts zurï¿½ckgeben. (Das ist das letzte Objekt des inneren Vektors.)
 	* Lindhauer; 27.04.2006 08:13:38
 	 * @return Object
 	 */
@@ -145,7 +148,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		 return objReturn;
 	}
 	
-	/** Object, Den Key an der nächsten Indexposition holen. Dabei wird der Index im 1 erhöht.
+	/** Object, Den Key an der nï¿½chsten Indexposition holen. Dabei wird der Index im 1 erhï¿½ht.
 	* Lindhauer; 27.04.2006 14:16:21
 	 * @return Object
 	 */
@@ -165,7 +168,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtable für den ersten Key (gemäß der Sortierung) zurück.
+	/** Object, Gibt den Wert der Hashtable fï¿½r den ersten Key (gemï¿½ï¿½ der Sortierung) zurï¿½ck.
 	* Lindhauer; 27.04.2006 11:30:25
 	 * @return Object
 	 */
@@ -180,7 +183,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtable für den letzten Key (gemäß der Sortierung) zurück.
+	/** Object, Gibt den Wert der Hashtable fï¿½r den letzten Key (gemï¿½ï¿½ der Sortierung) zurï¿½ck.
 	* Lindhauer; 27.04.2006 11:30:25
 	 * @return Object
 	 */
@@ -195,7 +198,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtalbe für den nächsten Key (gemäß der Sortierung) zurück und schiebt den Index-Wert um 1 weiter.
+	/** Object, Gibt den Wert der Hashtalbe fï¿½r den nï¿½chsten Key (gemï¿½ï¿½ der Sortierung) zurï¿½ck und schiebt den Index-Wert um 1 weiter.
 	* Lindhauer; 27.04.2006 12:39:15
 	 * @return Object
 	 */
@@ -210,7 +213,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert für den aktullen Key/den übergebenen Key zurück, ohne den Indexwert weiterzuschieben.
+	/** Object, Gibt den Wert fï¿½r den aktullen Key/den ï¿½bergebenen Key zurï¿½ck, ohne den Indexwert weiterzuschieben.
 	* Lindhauer; 27.04.2006 14:05:33
 	 * @param objKey
 	 * @return Object
@@ -241,13 +244,13 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 			check:{
 				if(iIndex <= -1){
 					  ExceptionZZZ ez = new ExceptionZZZ( "iIndex <= -1, but expected to be >= 0", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-					  //doesn´t work. Only works when > JDK 1.4
+					  //doesnï¿½t work. Only works when > JDK 1.4
 					  //Exception e = new Exception();
 					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					  throw ez;		 
 				}else if(iIndex > objV.size() - 1){
 					  ExceptionZZZ ez = new ExceptionZZZ("iIndex > " + (objV.size() -1) + ", but expected to be <= Vector.size()", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-					  //doesn´t work. Only works when > JDK 1.4
+					  //doesnï¿½t work. Only works when > JDK 1.4
 					  //Exception e = new Exception();
 					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 					  throw ez;							
@@ -258,8 +261,8 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		}//END main:
 	}
 	
-	/** Hashtable, die Im Kontruktor übergebene Hashtable, unverändert.
-	 * Merke: Es macht keine Sinn zu versuchen eine irgendwie sortierte Hashtable zurückzugeben,
+	/** Hashtable, die Im Kontruktor ï¿½bergebene Hashtable, unverï¿½ndert.
+	 * Merke: Es macht keine Sinn zu versuchen eine irgendwie sortierte Hashtable zurï¿½ckzugeben,
 	 * 			da Hashtable immer beliebig sortiert ist.
 	* Lindhauer; 27.04.2006 13:26:19
 	 * @return Hashtable
@@ -268,7 +271,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		return objHt;		
 	}
 	
-	/** Treeset, der interne Vector wird und die Werte aus der Hashtable werden  in eine TreeMap umgewandelt. Dieses ist aber wie gewünscht sortiert.
+	/** Treeset, der interne Vector wird und die Werte aus der Hashtable werden  in eine TreeMap umgewandelt. Dieses ist aber wie gewï¿½nscht sortiert.
 	* Lindhauer; 27.04.2006 13:27:12
 	 * @return TreeMap
 	 */
@@ -281,7 +284,7 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		}
 				
 		main:{
-			//TODO GOON: Den Vektor in eine neues Treeset umwandeln und die dazugehörenden Werte setzen.
+			//TODO GOON: Den Vektor in eine neues Treeset umwandeln und die dazugehï¿½renden Werte setzen.
 			Object objKey = this.getKeyFirst();
 			Object objValue = this.getValue(objKey);
 			while(objKey!=null){
@@ -311,18 +314,41 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		
 	}
 
+	@Override
 	public boolean getFlag(String sFlagName) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	@Override
 	public boolean setFlag(String sFlagName, boolean bValue) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean proofFlagExists(String sFlagName) {
+	//TODO: Dies wie in FileZZZ machen. IObjectZZZ wird implementiert.
+		public HashMap<String, Boolean>getHashMapFlagZ(){
+			return this.hmFlag;
+		} 
+	@Override
+	public boolean proofFlagZExists(String sFlagName) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean setFlagZ(String sFlagName, boolean bFlagValue)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean getFlagZ(String sFlagName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+
 }//END Class

@@ -35,7 +35,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	}
 	
 	/** Vergleiche die Werte der in der HashMap gespeicherten Objekte. 
-	 *   Aber: Gib eine Methode an, über die die Werte der Objekte erst einmal ermittelt werden sollen.
+	 *   Aber: Gib eine Methode an, ï¿½ber die die Werte der Objekte erst einmal ermittelt werden sollen.
 	 *   Die daraus reslutierenden Werte werden mit .equals() miteinander verglichen.
 	* @param hm
 	* @param sMethod
@@ -121,10 +121,10 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			
 			
 			//###############################
-			String sMethod = null; //Für das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
-			Object obj = null;        //Für das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
+			String sMethod = null; //Fï¿½r das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
+			Object obj = null;        //Fï¿½r das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
 			try {
-			//1. Kann ja nur Teilmenge sein, wenn die übergebene Hashmap gleich ist.
+			//1. Kann ja nur Teilmenge sein, wenn die ï¿½bergebene Hashmap gleich ist.
 			boolean	btemp = this.isSameSize(objHashMap);
 			if(!btemp){
 				bReturn = false;
@@ -133,7 +133,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			
 		
 			//2. Vergleiche zwei Hashmaps, elemtweise.
-			//1. Äußere Schleife: Nimm dafür "das von aussen kommende Vergleichsobjekt"
+			//1. ï¿½uï¿½ere Schleife: Nimm dafï¿½r "das von aussen kommende Vergleichsobjekt"
 			HashMap objHashMapExt = this;
 			HashMap objHashMapInt = objHashMap;
 						
@@ -158,17 +158,17 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				
 				
 				//+++ Suche nun nach der Methode in den beiden Objekten.
-				//Merke: In der Reflection API Paramter für die MEthode anzugeben geht so:
+				//Merke: In der Reflection API Paramter fï¿½r die MEthode anzugeben geht so:
 				//Class[] classaParam = new Class[1];
 				//classaParam[0] = objKeyValueToStore.getClass();
 				//
 				//aber hier ist classaParm=null;  
-				sMethod = sMethodName; //Für das Exception Handling
-				obj = objTestInt; //Für das Exception Handling
+				sMethod = sMethodName; //Fï¿½r das Exception Handling
+				obj = objTestInt; //Fï¿½r das Exception Handling
 				Method mInt = Mopex.getSupportedMethod(objTestInt.getClass(), sMethodName, null);
 				
-				sMethod = sMethodName; //Für das Exception Handling
-				obj = objTestExt; //Für das Exception Handling
+				sMethod = sMethodName; //Fï¿½r das Exception Handling
+				obj = objTestExt; //Fï¿½r das Exception Handling
 				Method mExt = Mopex.getSupportedMethod(objTestExt.getClass(), sMethodName, null);
 				
 				if(mInt==null | mExt==null){
@@ -186,9 +186,9 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				//System.out.println("Ergebnis der Method invocation addNewKeyPrimary=" + iCode);
 				
 				//Object objReturnType = m.invoke(objWithKey, null);
-				//so würde der Parameterwert übergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
+				//so wï¿½rde der Parameterwert ï¿½bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 				//wir habe aber keinen Parameter, also NULL
-				obj = objTestInt; //Für das Exception Handling
+				obj = objTestInt; //Fï¿½r das Exception Handling
 				objTestErgInt = mInt.invoke(objTestInt, null);
 				if(objTestErgInt!=null){
 					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objTestErgInt.toString());
@@ -197,7 +197,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 					break main;
 				}
 				
-				obj = objTestExt; //Für das Exception Handling
+				obj = objTestExt; //Fï¿½r das Exception Handling
 				objTestErgExt = mExt.invoke(objTestExt, null);
 				if(objTestErgExt!=null){
 					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objTestErgExt.toString());
@@ -207,13 +207,13 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				}
 				
 				
-				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und führe sie aus.
+				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und fï¿½hre sie aus.
 				//!!! Parameter ist das andere Ergebnisobjekt
 				Class[] classaParam = new Class[1];
 				classaParam[0] = Object.class; //die MEthode "equals" bekommt als Parameter ein Classe Objekt, nicht genauer wie z.B. String. Dazu wird keine Methode gefunden. Also nicht: objTestErgInt.getClass();
 				
-				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Für das Exception Handling
-				obj = objTestErgExt; //Für das Exception Handling
+				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Fï¿½r das Exception Handling
+				obj = objTestErgExt; //Fï¿½r das Exception Handling
 				Method mEqualsExt = Mopex.getSupportedMethod(objTestErgExt.getClass(), "equals", classaParam);
 				
 			
@@ -225,7 +225,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 						break main; //wenn false, dann die Schleife verlassen
 					}
 				}else{
-					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. RÜCKGABEWERT: false");
+					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. Rï¿½CKGABEWERT: false");
 					bReturn = false;
 					break main; //wenn False, dann die Schleife verlassen.
 				}
@@ -297,8 +297,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		return bReturn;
 	}
 	
-	/** Vergleicht, ob die Objekte, die in der kleineren Liste gespeichert sind, in der größeren Liste vorkommen.
-	 *   Achtung: Objekte sind viel mehr als z.B. ein Text, den sie repräsentieren. Verwende für den Vergleich von 'objekt.xyzMEthodenname()' die Methode isSubsetFromByMethod. 
+	/** Vergleicht, ob die Objekte, die in der kleineren Liste gespeichert sind, in der grï¿½ï¿½eren Liste vorkommen.
+	 *   Achtung: Objekte sind viel mehr als z.B. ein Text, den sie reprï¿½sentieren. Verwende fï¿½r den Vergleich von 'objekt.xyzMEthodenname()' die Methode isSubsetFromByMethod. 
 	* @param objHashMap
 	* @return
 	* @throws ExceptionZZZ
@@ -313,7 +313,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				throw ez;	
 			  }
 			
-			//1. Kann ja nur Teilmenge sein, wenn die übergebene Hashmap größer oder gleich ist.
+			//1. Kann ja nur Teilmenge sein, wenn die ï¿½bergebene Hashmap grï¿½ï¿½er oder gleich ist.
 			boolean btemp = this.isSmallerThan(objHashMap);
 			if(!btemp){
 				btemp = this.isSameSize(objHashMap);
@@ -324,7 +324,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			}
 		
 			//2. Vergleiche zwei Hashmaps, elemtweise.
-			//1. Äußere Schleife: Nimm dafür die Hashmap mit den wenigsten elementen, das aktuelle objekt
+			//1. ï¿½uï¿½ere Schleife: Nimm dafï¿½r die Hashmap mit den wenigsten elementen, das aktuelle objekt
 			HashMap objHashMapExt = this;
 			HashMap objHashMapInt = objHashMap;
 						
@@ -355,8 +355,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		return bReturn;
 	}
 	
-	/** Objekte sind viel mehr als z.B. ein Text, den sie repräsentieren. Verwende diese Methode für den Vergleich der beiden Objekte bzgl. des Ergebnisses von 'objekt.xyzMEthodenname()'.
-	 *    Gelöst wird dies über den 2. Paramter, der dem Methodennamen entspricht, der per Reflection-API in dem Objekt gesucht und aufgerufen wird.
+	/** Objekte sind viel mehr als z.B. ein Text, den sie reprï¿½sentieren. Verwende diese Methode fï¿½r den Vergleich der beiden Objekte bzgl. des Ergebnisses von 'objekt.xyzMEthodenname()'.
+	 *    Gelï¿½st wird dies ï¿½ber den 2. Paramter, der dem Methodennamen entspricht, der per Reflection-API in dem Objekt gesucht und aufgerufen wird.
 	 *    MERKE: Dabei muss es sich um eine Methode handeln, die KEINEN Parameter erwartet!
 	* @param objHashMap
 	* @param sMethodName
@@ -377,10 +377,10 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				throw ez;	
 			}
 			//###############################
-			String sMethod = null; //Für das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
-			Object obj = null;        //Für das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
+			String sMethod = null; //Fï¿½r das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
+			Object obj = null;        //Fï¿½r das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
 			
-			//Objektvorbereitungen Nimm dafür die Hashmap mit den wahrscheinlich wenigsten elementen: Das aktuelle objekt
+			//Objektvorbereitungen Nimm dafï¿½r die Hashmap mit den wahrscheinlich wenigsten elementen: Das aktuelle objekt
 			HashMap objHashMapExt = this;
 			HashMap objHashMapInt = objHashMap;
 			
@@ -393,7 +393,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			Object objTestErgExt = null;
 			
 			try {
-			//1. Kann ja nur Teilmenge sein, wenn die übergebene Hashmap größer oder gleich ist.
+			//1. Kann ja nur Teilmenge sein, wenn die ï¿½bergebene Hashmap grï¿½ï¿½er oder gleich ist.
 			boolean btemp = this.isSmallerThan(objHashMap);
 			if(!btemp){
 				btemp = this.isSameSize(objHashMap);
@@ -429,19 +429,19 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				mExt= null;
 				mInt = null;
 				
-				//Merke: In der Reflection API Paramter für die MEthode anzugeben geht so:
+				//Merke: In der Reflection API Paramter fï¿½r die MEthode anzugeben geht so:
 				//Class[] classaParam = new Class[1];
 				//classaParam[0] = objKeyValueToStore.getClass();
 				//
 				//aber hier ist classaParm=null;  
 				
-//				!!! Es ist wichtig, das erst das "This" objekt geprüft wird. Ist darin die "untersuchungsmethode" nicht vorhanden == > Fehler werfen. Ansonsten ist der Fehler egal.
-				sMethod = sMethodName; //Für das Exception Handling
-				obj = objTestExt; //Für das Exception Handling
+//				!!! Es ist wichtig, das erst das "This" objekt geprï¿½ft wird. Ist darin die "untersuchungsmethode" nicht vorhanden == > Fehler werfen. Ansonsten ist der Fehler egal.
+				sMethod = sMethodName; //Fï¿½r das Exception Handling
+				obj = objTestExt; //Fï¿½r das Exception Handling
 				mExt = Mopex.getSupportedMethod(objTestExt.getClass(), sMethodName, null); //Merke: ..ext... ist das "This" objekt.
 				
-				sMethod = sMethodName; //Für das Exception Handling
-				obj = objTestInt; //Für das Exception Handling
+				sMethod = sMethodName; //Fï¿½r das Exception Handling
+				obj = objTestInt; //Fï¿½r das Exception Handling
 				mInt = Mopex.getSupportedMethod(objTestInt.getClass(), sMethodName, null);
 				
 				if(mInt==null | mExt==null){
@@ -459,7 +459,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				//System.out.println("Ergebnis der Method invocation addNewKeyPrimary=" + iCode);
 				
 				
-				obj = objTestExt; //Für das Exception Handling
+				obj = objTestExt; //Fï¿½r das Exception Handling
 				objTestErgExt = mExt.invoke(objTestExt, null);
 				if(objTestErgExt!=null){
 					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objTestErgExt.toString());
@@ -469,9 +469,9 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				}
 				
 				//Object objReturnType = m.invoke(objWithKey, null);
-				//so würde der Parameterwert übergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
+				//so wï¿½rde der Parameterwert ï¿½bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 				//wir habe aber keinen Parameter, also NULL
-				obj = objTestInt; //Für das Exception Handling
+				obj = objTestInt; //Fï¿½r das Exception Handling
 				objTestErgInt = mInt.invoke(objTestInt, null);
 				if(objTestErgInt!=null){
 					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objTestErgInt.toString());
@@ -483,13 +483,13 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			
 				
 				
-				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und führe sie aus.
+				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und fï¿½hre sie aus.
 				//!!! Parameter ist das andere Ergebnisobjekt
 				Class[] classaParam = new Class[1];
 				classaParam[0] = Object.class; //die MEthode "equals" bekommt als Parameter ein Classe Objekt, nicht genauer wie z.B. String. Dazu wird keine Methode gefunden. Also nicht: objTestErgInt.getClass();
 				
-				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Für das Exception Handling
-				obj = objTestErgExt; //Für das Exception Handling
+				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Fï¿½r das Exception Handling
+				obj = objTestErgExt; //Fï¿½r das Exception Handling
 				Method mEqualsExt = Mopex.getSupportedMethod(objTestErgExt.getClass(), "equals", classaParam);
 				
 				Object objErgEquals = mEqualsExt.invoke(objTestErgExt, new Object[] {objTestErgInt});
@@ -500,7 +500,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 						break main; //wenn false, dann die Schleife verlassen
 					}
 				}else{
-					//System.out.println("Methode " + sMethod + " erfolgreich invoked. Kein Ergebnisobjekt. RÜCKGABEWERT: false");
+					//System.out.println("Methode " + sMethod + " erfolgreich invoked. Kein Ergebnisobjekt. Rï¿½CKGABEWERT: false");
 					bReturn = false;
 					break main; //wenn False, dann die Schleife verlassen.
 				}
@@ -516,7 +516,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				ExceptionZZZ ez = new ExceptionZZZ("InvocationTargetException bei '" + sMethod + "' in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			} catch (NoSuchMethodException e) {
-				//FGL 20131223: Wenn es die Vergleichsmethode im aufrufenden Object nicht vorhanden ist, den Fehler werfen, ansonsten sind die Objekte halt nicht gleich un den Fehler unterdrücken.
+				//FGL 20131223: Wenn es die Vergleichsmethode im aufrufenden Object nicht vorhanden ist, den Fehler werfen, ansonsten sind die Objekte halt nicht gleich un den Fehler unterdrï¿½cken.
 				if(mExt==null){  //Merke: mExt ist die Methode des "This" Objektes. Darum ist es wichtig erst mExt versuchen zu holen und dann mInt. Weil mInt = null soll keinen Fehler werfen.
 				   ExceptionZZZ ez = new ExceptionZZZ("NoSuchMethodException '" + sMethod + "' in Object " + obj.getClass().getName() + ": " + e.getMessage(), iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
@@ -530,7 +530,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	}
 	
 	
-	/** Gibt von 2 übergebenen HashMaps diejenige mit den wenigsten Elementen zurück.
+	/** Gibt von 2 ï¿½bergebenen HashMaps diejenige mit den wenigsten Elementen zurï¿½ck.
 	 *    Bzw. null, wenn beide HashMaps gleich viele Elemente haben.
 	* @param objHashMap1
 	* @param objHashMap2
@@ -555,7 +555,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			int iSize2 = objHashMap2.size();
 			
 			int iResult = MathZZZ.min(iSize1, iSize2);
-			if(iResult==iSize1 & iResult == iSize2) break main; //null zurückgeben, wenn beide Listen gleich viele Elemente haben.
+			if(iResult==iSize1 & iResult == iSize2) break main; //null zurï¿½ckgeben, wenn beide Listen gleich viele Elemente haben.
 			if(iResult==iSize1){
 				objReturn = objHashMap1;
 			}else if(iResult==iSize2){
@@ -566,7 +566,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		return objReturn;
 	}
 	
-	/** Gibt von 2 übergebenen HashMaps diejenige mit den meisten Elementen zurück.
+	/** Gibt von 2 ï¿½bergebenen HashMaps diejenige mit den meisten Elementen zurï¿½ck.
 	 *    Bzw. null, wenn beide HashMaps gleich viele Elemente haben.
 	* @param objHashMap1
 	* @param objHashMap2
@@ -591,7 +591,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			int iSize2 = objHashMap2.size();
 			
 			int iResult = MathZZZ.max(iSize1, iSize2);
-			if(iResult==iSize1 & iResult == iSize2) break main; //null zurückgeben, wenn beide Listen gleich viele Elemente haben.
+			if(iResult==iSize1 & iResult == iSize2) break main; //null zurï¿½ckgeben, wenn beide Listen gleich viele Elemente haben.
 			if(iResult==iSize1){
 				objReturn = objHashMap1;
 			}else if(iResult==iSize2){
@@ -602,7 +602,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		return objReturn;
 	}
 	
-	/**Sortiere die Map. !!! Die Werte müssen vergleichbar sein!!!
+	/**Sortiere die Map. !!! Die Werte mï¿½ssen vergleichbar sein!!!
 	 *   http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
 	* @param map
 	* @return
@@ -625,7 +625,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	    return result;
 	} 	
 	
-	/**Sortiere die Map. !!! Die Werte müssen vergleichbar sein!!!
+	/**Sortiere die Map. !!! Die Werte mï¿½ssen vergleichbar sein!!!
 	 *   http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
 	* @param map
 	* @return
@@ -655,7 +655,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	    return result;
 	} 
 	
-	/**Sortiere die Map. !!! Die Werte müssen vergleichbar sein!!!
+	/**Sortiere die Map. !!! Die Werte mï¿½ssen vergleichbar sein!!!
 	 *   http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
 	* @param map
 	* @return
@@ -671,7 +671,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	     });
 	} 
 	
-	/**Sortiere die Map. !!! Die Werte müssen vergleichbar sein!!!
+	/**Sortiere die Map. !!! Die Werte mï¿½ssen vergleichbar sein!!!
 	 *   http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
 	* @param map
 	* @return
@@ -695,7 +695,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	} 
 	
 	
-	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch für jeden neuen Eintrag.
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fï¿½r jeden neuen Eintrag.
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
@@ -724,8 +724,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		return sReturn;
 	}
 	
-	/** Entferne aus der HashMap den Eintrag an der übergebenen Indexposition.
-	 * Merke: Man kann nicht nach der beim Befüllen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
+	/** Entferne aus der HashMap den Eintrag an der ï¿½bergebenen Indexposition.
+	 * Merke: Man kann nicht nach der beim Befï¿½llen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
 	* @param iIndex; Der Index beginnt mit 0.
 	* 
 	* lindhauer; 05.09.2011 09:41:21
@@ -751,8 +751,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	}
 	
 	
-	/** Gib den Key an der übergebenen Indexposition zurück.
-	 * Merke: Man kann nicht nach der beim Befüllen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
+	/** Gib den Key an der ï¿½bergebenen Indexposition zurï¿½ck.
+	 * Merke: Man kann nicht nach der beim Befï¿½llen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
 	* @param iIndex; Der Index beginnt mit 0.
 	* 
 	* lindhauer; 05.09.2011 09:41:21
@@ -782,8 +782,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	}
 	
 	
-	/** Gib den Wert an der übergebenen Indexposition zurück.
-	 * Merke: Man kann nicht nach der beim Befüllen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
+	/** Gib den Wert an der ï¿½bergebenen Indexposition zurï¿½ck.
+	 * Merke: Man kann nicht nach der beim Befï¿½llen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
 	* @param iIndex; Der Index beginnt mit 0.
 	* 
 	* lindhauer; 05.09.2011 09:41:21
@@ -813,7 +813,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	}
 
 	
-	/** TODO Idee aus der HashMap mal eben Schnell einen einzeiligen String machen zu können.
+	/** TODO Idee aus der HashMap mal eben Schnell einen einzeiligen String machen zu kï¿½nnen.
 	 * TODO GOON
 	* @param sDelimSet
 	* @param sDelimValue
@@ -852,5 +852,4 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	public void setExceptionObject(ExceptionZZZ objException) {
 		this.objException = objException;
 	}
-	
 }

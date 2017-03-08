@@ -9,12 +9,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.javareflection.mopex.Mopex;
+import basic.javareflection.util.ReflectionUtil;
+import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IFlagZZZ{
@@ -22,13 +25,12 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
 		
-	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 ge�ndert
+	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
 	 * 
 	 */
-	public enum FLAGZ{
-		DEBUG, INIT;
-	}
-
+//	public enum FLAGZ{
+//		DEBUG, INIT; //20170307 Verschoben nach IObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
+//	}
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
 	
 	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
@@ -45,7 +47,9 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 		if(saFlag!=null){
 			if(saFlag.length>=1){
 				for(int icount =0; icount <= saFlag.length-1; icount++){
-					this.setFlag(saFlag[icount], true);
+					if(!StringZZZ.isEmpty(saFlag[icount])){						
+						this.setFlag(saFlag[icount], true);
+					}
 				}
 			}
 		}
@@ -56,7 +60,7 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
 	 * Weteire Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
-	 * - Innere Klassen m�ssen auch public deklariert werden.
+	 * - Innere Klassen müssen auch public deklariert werden.
 	 * @param objClassParent
 	 * @param sFlagName
 	 * @param bFlagValue
@@ -82,7 +86,7 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 		return bFunction;	
 	}
 
-	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
+	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung ODER Interface Implementierung -, DIE IHRE FLAGS SETZEN WOLLEN
 	 *  SIE WIRD PER METHOD.INVOKE(....) AUFGERUFEN.
 	 * @param name 
 	 * @param sFlagName
@@ -92,28 +96,49 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 	public boolean proofFlagZExists(String sFlagName){
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sFlagName))break main;			
+			if(StringZZZ.isEmpty(sFlagName))break main;
+				System.out.println("sFlagName = " + sFlagName);
 				
 				Class objClass4Enum = this.getClassFlagZ();	//Aufgrund des Interfaces IFlagZZZ wird vorausgesetzt, dass diese Methode vorhanden ist.
 				String sFilterName = objClass4Enum.getSimpleName();
 				
 				ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
 				if(listEmbedded == null) break main;
+				out.format("%s# ListEmbeddedClasses.size()...%s%n", ReflectCodeZZZ.getPositionCurrent(), listEmbedded.size());
 				
 				for(Class objClass : listEmbedded){
-					
+					out.format("%s# Class...%s%n", ReflectCodeZZZ.getPositionCurrent(), objClass.getName());
 					Field[] fields = objClass.getDeclaredFields();
 					for(Field field : fields){
-						if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zur�ckgegeben.
-							//out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
+						if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
+							//out.format("%s# Field...%s%n", ReflectCodeZZZ.getPositionCurrent(), field.getName());
 							if(sFlagName.equalsIgnoreCase(field.getName())){
 								bReturn = true;
 								break main;
 							}
 						}				
-				}
-			}//end if objaEnumConstant!=null
-						
+				}//end for
+			}//end for
+				
+			//20170307: Durch das Verschieben von FLAGZ mit den Werten DEBUG und INIT in das IObjectZZZ Interface, muss man explizit auch dort nachsehen.
+		   //                Merke: Das Verschieben ist deshlab notwenig, weil nicht alle Klassen direkt von ObjectZZZ erben können, sondern das Interface implementieren müsssen.
+		
+							
+				//TODO GOON: 
+				//Merke: bReturn = set.contains(sFlagName.toUpperCase());
+				//          Weil das nicht funktioniert meine Util-Klasse erstellen, die dann den String tatsächlich prüfen kann
+				
+				Class<FLAGZ> enumClass = FLAGZ.class;
+				//EnumSet<FLAGZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
+				
+				for(Object obj : FLAGZ.class.getEnumConstants()){
+					System.out.println(obj + "; "+obj.getClass().getName());
+					if(sFlagName.equalsIgnoreCase(obj.toString())) {
+						bReturn = true;
+						break main;
+					}
+					//set.add((FLAGZ) obj);
+				}				
 		}//end main:
 		return bReturn;
 	}
@@ -127,7 +152,7 @@ public static boolean proofFlagZExists(IFlagZZZ objcp, String sFlagName) {
 		Class objClass4Enum = objcp.getClassFlagZ();	//Aufgrund des Interfaces IFlagZZZ wird vorausgesetzt, dass diese Methode vorhanden ist.
 		String sFilterName = objClass4Enum.getSimpleName();
 		
-		//TODO: Nachfolgender Code ist Redundant, bleibt aber drin, solange "FLAGZ" nicht irgendwo als Konstante definiert ist.
+		//Merke: Nachfolgender Code ist Redundant, bleibt aber drin, solange "FLAGZ" nicht irgendwo als Konstante definiert ist.
 		ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(objcp.getClass(), sFilterName);
 		if(listEmbedded == null) break main;
 		
@@ -136,7 +161,7 @@ public static boolean proofFlagZExists(IFlagZZZ objcp, String sFlagName) {
 			Field[] fields = objClass.getDeclaredFields();
 			for(Field field : fields){
 				if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zur�ckgegeben.
-					out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
+					//out.format("%s# Field...%s%n", ReflectCodeZZZ.getPositionCurrent(), field.getName());
 					if(sFlagName.equalsIgnoreCase(field.getName())){
 						bReturn = true;
 						break main;
@@ -146,9 +171,9 @@ public static boolean proofFlagZExists(IFlagZZZ objcp, String sFlagName) {
 		}
 	}//End main:
 	if(bReturn){
-		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# VORHANDEN Flag='" + sFlagName + "'");
+		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# VORHANDEN Flag='" + sFlagName + "'");
 	}else{
-		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# NICHT DA Flag='" + sFlagName + "'");
+		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# NICHT DA Flag='" + sFlagName + "'");
 	}
 	return bReturn;
 }
@@ -177,11 +202,25 @@ public static boolean proofFlagZExists(Class objcp, String sFlagName) {
 				}				
 			}		
 		}
+		
+		//20170307: Durch das Verschieben von FLAGZ mit den Werten DEBUG und INIT in das IObjectZZZ Interface, muss man explizit auch dort nachsehen.
+		   //                Merke: Das Verschieben ist deshlab notwenig, weil nicht alle Klassen direkt von ObjectZZZ erben können, sondern das Interface implementieren müsssen.				
+		Class<FLAGZ> enumClass = FLAGZ.class;				
+		for(Object obj : FLAGZ.class.getEnumConstants()){
+			//System.out.println(obj + "; "+obj.getClass().getName());
+			if(sFlagName.equalsIgnoreCase(obj.toString())) {
+				bReturn = true;
+				break main;
+			}
+		}			
+				
+		//20170308: Merke: Wenn immer noch kein FLAGZ gefunden wurde, dieses Flag aus der aufrufenden Klasse selbst holen.
+		
 	}//End main:
 	if(bReturn){
-		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# VORHANDEN Flag='" + sFlagName + "'");
+		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# VORHANDEN Flag='" + sFlagName + "'");
 	}else{
-		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# NICHT DA Flag='" + sFlagName + "'");
+		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# NICHT VORHANDEN Flag='" + sFlagName + "'");
 	}
 	return bReturn;
 }
@@ -198,7 +237,7 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 		try {
 			
 			//Existiert in der Elternklasse oder in der aktuellen Klasse das Flag?
-			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# ObjektInstanz erzeugen für '" + sClassName + "'");
+			//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# ObjektInstanz erzeugen für '" + sClassName + "'");
 			Class<?> objClass = Class.forName(sClassName);		
 			
 			//!!! für abstrakte Klassen gilt: Es kann per Reflection keine neue Objektinstanz geholt werden.
@@ -215,7 +254,7 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 						IFlagZZZ objcp = (IFlagZZZ) objInnerInstance;
 						if(objcp==null){
 						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# INNERE ObjektInstanz für '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
+							//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# INNERE ObjektInstanz für '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
 							bReturn = ObjectZZZ.proofFlagZExists(objcp, sFlagName);
 						}
 					} catch (SecurityException e) {
@@ -235,12 +274,12 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 					IFlagZZZ objcp = (IFlagZZZ)objClass.newInstance();  //Aus der Objektinstanz kann dann gut die Enumeration FLAGZ ausgelesen werden.				
 					if(objcp==null){
 					}else{
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# ObjektInstanz für '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
+						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# ObjektInstanz für '" + objcp.getClass().getName() + "' erfolgreich erzeugt. Nun daraus Enum Klasse holen... .");
 						bReturn = ObjectZZZ.proofFlagZExists(objcp, sFlagName);
 					}
 				}//isInner(...)
 			}else{
-				System.out.println("Abstrakte Klasse, weiter zur Elternklasse.");
+				//System.out.println("Abstrakte Klasse, weiter zur Elternklasse.");
 				Class objcp2 = objClass.getSuperclass();
 				if(objcp2!=null){
 					bReturn = ObjectZZZ.proofFlagZExists(objcp2.getName(), sFlagName);
@@ -257,6 +296,21 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		//20170307: Durch das Verschieben von FLAGZ mit den Werten DEBUG und INIT in das IObjectZZZ Interface, muss man explizit auch dort nachsehen.
+		   //                Merke: Das Verschieben ist deshlab notwenig, weil nicht alle Klassen direkt von ObjectZZZ erben können, sondern das Interface implementieren müsssen.						
+		Class<FLAGZ> enumClass = FLAGZ.class;				
+		for(Object obj : FLAGZ.class.getEnumConstants()){
+			//System.out.println(obj + "; "+obj.getClass().getName());
+			if(sFlagName.equalsIgnoreCase(obj.toString())) {
+				bReturn = true;
+				break main;
+			}
+		}			
+		
+		
+		//20170308: Merke: Wenn immer noch kein FLAGZ gefunden wurde, dieses Flag aus der aufrufenden Klasse selbst holen.
+		
 	}//end main:
 	return bReturn;
 }

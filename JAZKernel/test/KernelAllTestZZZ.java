@@ -1,29 +1,30 @@
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import zBasic.util.abstractList.ArrayListExtendedZZZTest;
-import zBasic.util.abstractList.HashMapExtendedZZZTest;
-import zBasic.util.abstractList.HashMapIndexedZZZTest;
-import zBasic.util.abstractList.HashMapMultiZZZTest;
-import zBasic.util.abstractList.HashtableSortedZZZTest;
-import zBasic.util.abstractList.VectorZZZTest;
-import zBasic.util.data.DataStoreZZZTest;
-import zBasic.util.datatype.integer.IntegerArrayZZZTest;
-import zBasic.util.datatype.string.StringArrayZZZTest;
-import zBasic.util.datatype.string.StringZZZTest;
-import zBasic.util.file.FileTextParserZZZTest;
-import zBasic.util.file.ini.IniFileTest;
-import zBasic.util.file.txt.TxtReaderZZZTest;
-import zBasic.util.file.txt.TxtWriterZZZTest;
-import zKernel.GetOptZZZTest;
-import zKernel.KernelPropertyZZZTest;
-import zKernel.KernelUseObjectZZZTest;
-import zKernel.KernelZZZTest;
-import zKernel.LogZZZTest;
-import zKernel.file.ini.FileIniZZZTest;
-import zKernel.file.ini.KernelExpressionIniSolverZZZTest;
-import zUtil.io.FileZZZTest;
+import basic.zBasic.util.abstractEnum.EnumSetMappedUtilZZZTest;
+import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZTest;
+import basic.zBasic.util.abstractList.HashMapIndexedZZZTest;
+import basic.zBasic.util.abstractList.HashMapMultiZZZTest;
+import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
+import basic.zBasic.util.abstractList.VectorZZZTest;
+import basic.zBasic.util.data.DataStoreZZZTest;
+import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
+import basic.zBasic.util.datatype.string.StringArrayZZZTest;
+import basic.zBasic.util.datatype.string.StringZZZTest;
+import basic.zBasic.util.file.FileTextParserZZZTest;
+import basic.zBasic.util.file.ini.IniFileTest;
+import basic.zBasic.util.file.txt.TxtReaderZZZTest;
+import basic.zBasic.util.file.txt.TxtWriterZZZTest;
+import basic.zKernel.GetOptZZZTest;
+import basic.zKernel.KernelPropertyZZZTest;
+import basic.zKernel.KernelUseObjectZZZTest;
+import basic.zKernel.KernelZZZTest;
+import basic.zKernel.LogZZZTest;
+import basic.zKernel.file.ini.FileIniZZZTest;
+import basic.zKernel.file.ini.KernelExpressionIniSolverZZZTest;
+import basic.zUtil.io.FileZZZTest;
  
-
 public class KernelAllTestZZZ {
 
 	public static Test suite(){
@@ -31,8 +32,11 @@ public class KernelAllTestZZZ {
 		//Merke: Die Tests bilden in ihrer Reihenfolge in etwa die Hierarchie im Framework ab. 
 		//            Dies beim Einfügen weiterer Tests bitte beachten.         
 		
+		//Tests für Enum
+		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);
+		objReturn.addTestSuite(EnumSetMappedZZZTest.class);
 		
-		//Tests f�r Datentypen etc.
+		//Tests für Datentypen etc.
 		objReturn.addTestSuite(ArrayListExtendedZZZTest.class);		
 		
 		objReturn.addTestSuite(HashMapMultiZZZTest.class);

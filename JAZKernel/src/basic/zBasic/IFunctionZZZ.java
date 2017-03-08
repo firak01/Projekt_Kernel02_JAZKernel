@@ -1,5 +1,7 @@
 package basic.zBasic;
 
+import java.util.HashMap;
+
 /**
  * @author 0823
  *
@@ -15,4 +17,12 @@ public interface IFunctionZZZ {
 
 	public abstract boolean getFlag(String sFlagName);
 	public abstract boolean setFlag(String sFlagName, boolean bValue);	
+	
+	public enum FLAGZ{
+		DEBUG, INIT ; //20170307 - Verschoben aus ObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Java spezifischen Klasse erben).
+	}
+	public HashMap<String, Boolean>getHashMapFlagZ();
+	public boolean proofFlagZExists(String sFlagName);
+	public boolean setFlagZ(String sFlagName, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean getFlagZ(String sFlagName);
 }
