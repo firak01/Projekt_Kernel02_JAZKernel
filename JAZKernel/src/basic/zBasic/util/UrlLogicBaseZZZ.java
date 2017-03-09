@@ -10,6 +10,13 @@ public abstract class UrlLogicBaseZZZ implements IUrlLogicZZZ{
 	public static final String sURL_SEPARATOR_PROTOCOL = "://";
 	private String sUrl;
 	
+	public UrlLogicBaseZZZ(){		
+	}
+	
+	public UrlLogicBaseZZZ(String sUrl){
+		this.setUrl(sUrl);
+	}
+	
 	public static String getProtocol(String sUrl) throws ExceptionZZZ{		
 		/* Besser wäre es  diese Methode abstract zu machen 
 		  als einen ExceptionZZZ - Hinweis auszugeben. Wie aktell gemacht wird..

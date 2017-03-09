@@ -20,9 +20,9 @@ import  basic.zBasic.util.datatype.string.StringZZZ;
 /** Im wesentlichen ein Wrapper um das J2SE ULR-Objekt.
  *   Was aber auch mit unvollst�ndigen URLs arbeiten soll.
  *   
- *   Ist ein �quivalent zur Javascript Klasse ZApi.Basic.Url.js .
+ *   Ist ein äquivalent zur Javascript Klasse ZApi.Basic.Url.js .
  *   
- *  Dabei gibt es folgende M�gliche Elemente einer URL
+ *  Dabei gibt es folgende Mögliche Elemente einer URL
  * 
  http://hans:geheim@www.example.org:80/demo/example.cgi?land=de&stadt=aa#abschnitt1
 |     		 | 			|    		  |              				|  |  				              |         				       |
@@ -41,7 +41,14 @@ public class UrlLogicZZZ  extends UrlLogicBaseZZZ{
 	public static final String sURL_SEPARATOR_PARAM = "&";
 	public static final String sURL_SEPARATOR_VALUE = "=";
 	public static final String sURL_SEPARATOR_ANKER = "#";
-		
+	
+	public UrlLogicZZZ(){
+		super(); 
+	}
+	
+	public UrlLogicZZZ(String sUrl){
+		super(sUrl);	
+	}
 	
 	public String getHost() throws ExceptionZZZ{
 		String sReturn = "";

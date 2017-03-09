@@ -9,7 +9,11 @@ import basic.zBasic.util.file.FileEasyZZZ;
 public class UrlLogicZZZ extends UrlLogicBaseZZZ {
 	public static final String sURL_PROTOCOL_PERSISTENCE_JDBC = "jdbc";
 	public static final String sURL_PROTOCOL_PERSISTENCE_SEPARATOR_PROTOCOL = ":";
-		
+	
+	public UrlLogicZZZ(String sUrl){
+		super(sUrl);
+	}
+	
 	public static String getProtocol(String sUrl) throws ExceptionZZZ{		
 		/* Besser wäre es  diese Methode abstract zu machen 
 		  als einen ExceptionZZZ - Hinweis auszugeben. Wie aktell gemacht wird..
