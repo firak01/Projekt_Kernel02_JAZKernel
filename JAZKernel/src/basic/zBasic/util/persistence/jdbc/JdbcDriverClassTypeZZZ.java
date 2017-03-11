@@ -106,6 +106,7 @@ public EnumSet<?>getEnumSetUsed(){
 	return JdbcDriverClassTypeZZZ.getEnumSet();
 }
 
+/* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
 @SuppressWarnings("rawtypes")
 public static <E> EnumSet getEnumSet() {
 	
@@ -115,12 +116,12 @@ public static <E> EnumSet getEnumSet() {
 	//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
 	
 	//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
-	Class<EnumSetMappedTestTypeZZZ> enumClass = EnumSetMappedTestTypeZZZ.class;
-	EnumSet<EnumSetMappedTestTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
+	Class<JdbcDriverClassTypeZZZ> enumClass = JdbcDriverClassTypeZZZ.class;
+	EnumSet<JdbcDriverClassTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
-	for(Object obj : EnumSetMappedTestTypeZZZ.class.getEnumConstants()){
+	for(Object obj : JdbcDriverClassTypeZZZ.class.getEnumConstants()){
 		//System.out.println(obj + "; "+obj.getClass().getName());
-		set.add((EnumSetMappedTestTypeZZZ) obj);
+		set.add((JdbcDriverClassTypeZZZ) obj);
 	}
 	return set;
 	

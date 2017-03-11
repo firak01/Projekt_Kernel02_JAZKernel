@@ -61,23 +61,23 @@ public class EnumSetMappedZZZTest extends TestCase{
 				EnumSet setEnumGenerated = EnumSetMappedTestTypeZZZ.getEnumSet();
 				
 				//Positivfall
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumGenerated, "ONE");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("ONE", setEnumGenerated);
 				assertTrue("A) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativfall
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumGenerated, "XXXX");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("XXXX", setEnumGenerated);
 				assertFalse("A) Prüfstring sollte in der Enumeration NICHT vorhanden sein.", btemp);
 
 				//++++++++++++++++++++++
 				//Variante B) Erstelle das EnumSet mit festen Werten
 				//Positivfall
 				EnumSet<EnumSetMappedTestTypeZZZ> setEnumCurrent = EnumSet.of(EnumSetMappedTestTypeZZZ.ONE, EnumSetMappedTestTypeZZZ.TWO, EnumSetMappedTestTypeZZZ.THREE);
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumCurrent, "ONE");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("ONE", setEnumCurrent);
 				assertTrue("B) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativfall
 				EnumSet<EnumSetMappedTestTypeZZZ> setEnumCurrent02 = EnumSet.of(EnumSetMappedTestTypeZZZ.ONE, EnumSetMappedTestTypeZZZ.TWO, EnumSetMappedTestTypeZZZ.THREE);
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumCurrent02, "Nixdaaa");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("Nixdaaa",setEnumCurrent02);
 				assertFalse("B) Prüfstring sollte in der Enumeration NICHT vorhanden sein .", btemp);
 				
 				//++++++++++++++++++++++				
@@ -88,11 +88,11 @@ public class EnumSetMappedZZZTest extends TestCase{
 				EnumSet<?> setEnumGeneric = objEnumUtilC.getEnumSetCurrent();
 				
 				//Positivfall
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumGeneric, "ONE");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("ONE", setEnumGeneric);
 				assertTrue("C) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativfall
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumGeneric, "Nixdaaa");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("Nixdaaa", setEnumGeneric);
 				assertFalse("C) Prüfstring sollte in der Enumeration NICHT vorhanden sein .", btemp);
 				
 				//++++++++++++++++++++++
@@ -101,11 +101,11 @@ public class EnumSetMappedZZZTest extends TestCase{
 				EnumSetMappedUtilZZZ objEnumUtilD = new EnumSetMappedUtilZZZ(objFactoryD, EnumSetMappedTestTypeZZZ.class);
 				
 				//Positivfall
-				btemp = objEnumUtilD.anyStartsWithAlias("ONE");
+				btemp = objEnumUtilD.startsWithAnyAlias("ONE");
 				assertTrue("D) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativfall
-				btemp = objEnumUtilD.anyStartsWithAlias("Nixdaaa");
+				btemp = objEnumUtilD.startsWithAnyAlias("Nixdaaa");
 				assertFalse("D) Prüfstring sollte in der Enumeration NICHT vorhanden sein .", btemp);
 			
 			} catch (ExceptionZZZ ez) {

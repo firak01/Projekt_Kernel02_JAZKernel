@@ -862,4 +862,32 @@ public void testVecMidFirst(){
 		//	fail("Method throws an exception." + ez.getMessageLast());
 		//}
 	}
+	
+	public void testStartsWithIgnoreCase(){
+		//try{
+			boolean bErg = false;
+				
+			String sString = "Lorem Ipsum";
+			String sMatch = "Lore";
+			
+			bErg = StringZZZ.startsWithIgnoreCase(sString, sMatch);
+			assertTrue(bErg);
+			
+			String sMiss = "NIXDA";
+			bErg = StringZZZ.startsWithIgnoreCase(sString, sMiss);
+			assertFalse(bErg);
+			
+			
+			sMiss = "Viel länger als Lorem Ispum";
+			bErg = StringZZZ.startsWithIgnoreCase(sString, sMiss);
+			assertFalse(bErg);
+			
+			sMatch = "loreM";
+			bErg = StringZZZ.startsWithIgnoreCase(sString, sMatch);
+			assertTrue(bErg);
+						
+		//}catch(ExceptionZZZ ez){
+		//	fail("Method throws an exception." + ez.getMessageLast());
+		//}
+	}
 }//End class

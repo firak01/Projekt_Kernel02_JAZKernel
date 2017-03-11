@@ -288,6 +288,28 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
+	public static boolean startsWithIgnoreCase(String sString, String sMatch){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sMatch)) break main;
+									
+			
+			int iMatchLength=sMatch.length();			
+			if(sString.length() < iMatchLength) break main;
+			
+			
+			String sSub = sString.substring(0, iMatchLength);
+			if(sSub.equalsIgnoreCase(sMatch)){
+				bReturn = true;
+				break main;
+			}
+			
+		} //end main:		
+		return bReturn;
+	}
+	
 	/** String, analog to LotusScript, return the iLength number of strings from the left
 	* Lindhauer; 15.05.2006 10:53:48
 	 * @param iLength

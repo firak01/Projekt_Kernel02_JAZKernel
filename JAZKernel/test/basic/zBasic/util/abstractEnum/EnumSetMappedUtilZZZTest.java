@@ -70,26 +70,26 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 				//Positivfall
 				EnumSet<EnumSetMappedTestTypeZZZ> setEnumCurrent = EnumSet.of(EnumSetMappedTestTypeZZZ.ONE, EnumSetMappedTestTypeZZZ.TWO, EnumSetMappedTestTypeZZZ.THREE);
 				assertNotNull(setEnumCurrent);
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumCurrent, "ONE");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("ONE", setEnumCurrent);
 				assertTrue("A) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativfall
 				EnumSet<EnumSetMappedTestTypeZZZ> setEnumCurrent02 = EnumSet.of(EnumSetMappedTestTypeZZZ.ONE, EnumSetMappedTestTypeZZZ.TWO, EnumSetMappedTestTypeZZZ.THREE);
 				assertNotNull(setEnumCurrent02);
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumCurrent02, "Nixdaaa");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("Nixdaaa", setEnumCurrent02);
 				assertFalse("A) Prüfstring sollte in der Enumeration NICHT vorhanden sein .", btemp);
 				
 				//Variante B) EnumSet per statischer Methode holen
 				//Positivfall
 				EnumSet<?> setEnumGenerated = EnumSetMappedTestTypeZZZ.getEnumSet();
 				assertNotNull(setEnumGenerated);
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumGenerated, "TWO");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("TWO", setEnumGenerated);
 				assertTrue("B) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 				
 				//Negativvall
 				EnumSet<?> setEnumGenerated02 = EnumSetMappedTestTypeZZZ.getEnumSet();
 				assertNotNull(setEnumGenerated02);
-				btemp = EnumSetMappedUtilZZZ.anyStartsWithAlias(setEnumGenerated02, "NIXDA");
+				btemp = EnumSetMappedUtilZZZ.startsWithAnyAlias("NIXDA", setEnumGenerated02);
 				assertFalse("B) Prüfstring sollte in der Enumeration NICHT vorhanden sein.", btemp);
 				
 				//Variante C) direkter
@@ -99,11 +99,11 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 				EnumSetMappedUtilZZZ enumSetUtil = new EnumSetMappedUtilZZZ(objFactory, objClass);
 				
 				//Positivfall
-				btemp = enumSetUtil.anyStartsWithAbbreviation("THREE");
+				btemp = enumSetUtil.startsWithAnyAbbreviation("THREE");
 				assertTrue("C) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 												
 				//Negativfall
-				btemp = enumSetUtil.anyStartsWithAbbreviation("XXXX");
+				btemp = enumSetUtil.startsWithAnyAbbreviation("XXXX");
 				assertFalse("C) Prüfstring sollte in der Enumeration NICHT vorhanden sein.", btemp);
 				
 			} catch (ExceptionZZZ ez) {
