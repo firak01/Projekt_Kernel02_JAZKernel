@@ -1,17 +1,13 @@
 package basic.zBasic.util.abstractList;
 
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.Vector;
 
-import basic.zBasic.IConstantZZZ;
-import basic.zBasic.IFunctionZZZ;
-import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 /**Klasse dient dazu eine bestehende Hashtable zu verwenden, aber das Ergebnis ggf. sortiert zur�ckzubekommen.
@@ -19,7 +15,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author Lindhauer
  *
  */
-public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZZZ{
+public class HashtableSortedZZZ  implements IObjectZZZ{
 	//TODO Einen eigenen Comparator im Konstruktor hinzuf�gbar machen.
 	
 	private Hashtable objHt;
@@ -314,40 +310,6 @@ public class HashtableSortedZZZ  implements IConstantZZZ, IObjectZZZ, IFunctionZ
 		
 	}
 
-	@Override
-	public boolean getFlag(String sFlagName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setFlag(String sFlagName, boolean bValue) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	//TODO: Dies wie in FileZZZ machen. IObjectZZZ wird implementiert.
-		public HashMap<String, Boolean>getHashMapFlagZ(){
-			return this.hmFlag;
-		} 
-	@Override
-	public boolean proofFlagZExists(String sFlagName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setFlagZ(String sFlagName, boolean bFlagValue)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean getFlagZ(String sFlagName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	
 

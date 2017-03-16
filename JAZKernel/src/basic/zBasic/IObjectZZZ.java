@@ -10,7 +10,7 @@ import java.util.HashMap;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public interface IObjectZZZ {
+public interface IObjectZZZ extends IConstantZZZ {  //Was nutzt einem schon das ExceptionZZZ - Objekt ohne die ganzen Fehlerkonstansten.
  	public abstract ExceptionZZZ getExceptionObject();
  	public abstract void setExceptionObject(ExceptionZZZ objException);
  	

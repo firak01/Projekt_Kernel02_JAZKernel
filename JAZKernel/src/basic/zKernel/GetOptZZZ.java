@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
-import basic.zBasic.IFunctionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -30,9 +29,9 @@ public class GetOptZZZ extends ObjectZZZ{
 	
 	/** Konstruktor, der sofort alles initiiert
 	* lindhauer; 18.07.2007 06:47:43
-	 * @param objKernel, kann ein mit new KernelZZZ() initiierter default - Kernel sein (vorausgesetzt die entsprechende Default ini-Datei existiert für den default kernel)
+	 * @param objKernel, kann ein mit new KernelZZZ() initiierter default - Kernel sein (vorausgesetzt die entsprechende Default ini-Datei existiert fï¿½r den default kernel)
 	 * @param sPattern, die Steuerzeichen. Ein Buchstabe, ein Doppelpunkt bedeutet, dass ein Argument folgt. z.B. "k:s:abc". Die Argumente tauchen dann im Argument Array auf
-	 * @param saArg, Array der Argumente. Hier werden die Steuerzeichen mit Bindestrich eingeleitet. z.B. -k wert1 -s wert2. Es müssen nicht alle im Pattern definierten Steuerzeichen vorhanden sein.
+	 * @param saArg, Array der Argumente. Hier werden die Steuerzeichen mit Bindestrich eingeleitet. z.B. -k wert1 -s wert2. Es mï¿½ssen nicht alle im Pattern definierten Steuerzeichen vorhanden sein.
 	 * @throws ExceptionZZZ
 	 */
 	public GetOptZZZ( String sPattern, String[] saArg) throws ExceptionZZZ{
@@ -46,7 +45,7 @@ public class GetOptZZZ extends ObjectZZZ{
 	/**Setzt die Kommandozeile in dem Format, wie es auch von GetOpt erwartet wird.
 	 *  z.B. -a: erster_wert -b -c: zweiter_wert
 	            Dabei ist -b ein Parameter ohne Wert (er ist einfach nur da), -a und -c haben einen Wert zugewiesen bekommen.
-	            Die Parameter dürfen nur die Länge von 1 haben.
+	            Die Parameter dï¿½rfen nur die Lï¿½nge von 1 haben.
 	             
 	* @param sPattern
 	* 
@@ -58,7 +57,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			if(! this.sPattern.equals(sPattern)){ //NUr falls ein anderer neuer Wert
 				if(this.isPatternStringValid(sPattern)){
 					this.sPattern = sPattern;	
-					this.clearOptions(); //Bisherige HAshmap löschen und Iteartor wieder zurücksetzen
+					this.clearOptions(); //Bisherige HAshmap lï¿½schen und Iteartor wieder zurï¿½cksetzen
 				}else{
 					String sResult = this.proofPatternString(sPattern);
 					ExceptionZZZ ez = new ExceptionZZZ("Not a valid pattern string." + sResult, iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -78,11 +77,11 @@ public class GetOptZZZ extends ObjectZZZ{
 		}
 	}
 
-	/**Die Interne HashMap zurücksetzen
+	/**Die Interne HashMap zurï¿½cksetzen
 	* lindhauer; 28.06.2007 06:59:29
 	 */
 	public void clearOptions(){		
-		this.getOptionMap().clear(); //Die Hashmap zurücksetzen
+		this.getOptionMap().clear(); //Die Hashmap zurï¿½cksetzen
 		this.setOptionIterator(null);
 		this.bFlagIsLoaded = false;	
 	}
@@ -111,7 +110,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			if(StringZZZ.isEmpty(sPattern)) break main;
 			
 //			1b Pattern String auf Doppelpunkte untersuchen. 
-			//Merke: Irgendwelche Indexbetrachtungen können nicht funktionieren. Die Reihenfolge der Argumente ist nämlich beliebig. 
+			//Merke: Irgendwelche Indexbetrachtungen kï¿½nnen nicht funktionieren. Die Reihenfolge der Argumente ist nï¿½mlich beliebig. 
 			//Es muss vielmehr das Steuerungszeichen davor ermittelt werden. Damit kann dann das Argumentenarray untersucht werden: Folgt dem Steuerungszeichen immer ein anderer Wert
 			String[] saDelim = {":"};
 			Integer[] intaIndex = StringZZZ.allIndexOf(sPattern, saDelim);
@@ -134,8 +133,8 @@ public class GetOptZZZ extends ObjectZZZ{
 		return listaReturn;
 	}
 	
-	/** Füllt die übergebenen Argumente in eine HashMap.
-	 *   Dazu wird erst ein GetOpt-Object verwendet und dann für Optionen des "Pattern" abgefragt.
+	/** Fï¿½llt die ï¿½bergebenen Argumente in eine HashMap.
+	 *   Dazu wird erst ein GetOpt-Object verwendet und dann fï¿½r Optionen des "Pattern" abgefragt.
 	 *   
 	* @param saArg
 	* 
@@ -148,7 +147,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			if(saArg==null) break main;
 			if(saArg.length==0) break main;
 			
-			//Prüfen, ob einer der Argumentstrings gefüllt ist.
+			//Prï¿½fen, ob einer der Argumentstrings gefï¿½llt ist.
 			boolean bfound = false;
 			for(int icount = 0; icount <= saArg.length - 1; icount++){
 				if(! StringZZZ.isEmpty(saArg[icount])){
@@ -180,7 +179,7 @@ public class GetOptZZZ extends ObjectZZZ{
 				
 				this.getOptionMap().put(sOption, sParam);
 				
-				//Zum nächsten Argument
+				//Zum nï¿½chsten Argument
 				a = objOption.getopt(saArg);
 				sOption = StringZZZ.char2String(a).trim();
 			}
@@ -238,11 +237,11 @@ public class GetOptZZZ extends ObjectZZZ{
 	public String proofArgument(String sArgument) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
-			//#### Parameter für die Funktion prüfen
+			//#### Parameter fï¿½r die Funktion prï¿½fen
 //			Null oder Leerstring sind valid
 			if(StringZZZ.isEmpty(sArgument)) break main;
 				
-			//Falls das Pattern leer ist, sArgument ist aber gefüllt, dann FEHLER:
+			//Falls das Pattern leer ist, sArgument ist aber gefï¿½llt, dann FEHLER:
 			String sPattern = this.getPattern();
 			if(StringZZZ.isEmpty(sPattern)){
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
@@ -252,8 +251,8 @@ public class GetOptZZZ extends ObjectZZZ{
 			//TODO: DAS PATTERN SELBST VALIDIEREN
 			
 			
-			//#### Die Prüfung des Argument strings
-//			1a Alle nach dem Leerzeichen zerlegen. Parameter prüfen.
+			//#### Die Prï¿½fung des Argument strings
+//			1a Alle nach dem Leerzeichen zerlegen. Parameter prï¿½fen.
 			String[] saParamAll = StringZZZ.explode(sArgument, " ");
 			if(saParamAll==null|saParamAll.length==0) break main;
 			
@@ -268,7 +267,7 @@ public class GetOptZZZ extends ObjectZZZ{
 		main:{
 			if(saParamAll==null|saParamAll.length==0) break main;
 			
-//			Falls das Pattern leer ist, sArgument ist aber gefüllt, dann FEHLER:
+//			Falls das Pattern leer ist, sArgument ist aber gefï¿½llt, dann FEHLER:
 			String sPattern = this.getPattern();
 			if(StringZZZ.isEmpty(sPattern)){
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
@@ -278,7 +277,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			//TODO: DAS PATTERN SELBST VALIDIEREN
 			
 			
-			//##### Die prüfung
+			//##### Die prï¿½fung
 			sReturn = this.proofArgument_(sPattern, saParamAll);
 			
 		}//End main
@@ -293,7 +292,7 @@ public class GetOptZZZ extends ObjectZZZ{
 				throw ez;
 			}
 			
-			//#### Die Prüfung des Argumentarrays
+			//#### Die Prï¿½fung des Argumentarrays
 			if(saParamAll==null|saParamAll.length==0) break main;
 					
 //			Die Liste der vorherigen Steuerzeichen
@@ -301,7 +300,7 @@ public class GetOptZZZ extends ObjectZZZ{
             ArrayList listaControl = GetOptZZZ.Pattern2ListControlAll(sPattern);     
           
 			
-			//Nun die Argumentliste prüfen:
+			//Nun die Argumentliste prï¿½fen:
             //Es muss immer ein Steuerzeichen sein,
             //nur wenn es ein Steuerzeichen mit Parameter ist, dann darf der folgende Wert beliebig sein
             ArrayList listaControlFound = new ArrayList();
@@ -312,8 +311,8 @@ public class GetOptZZZ extends ObjectZZZ{
 					String stemp = saParamAll[icount].substring(0, 1);
 					if(stemp.equals("-") & sControlPrevious.equals("")){
 						listaControlFound.add(StringZZZ.rightback(saParamAll[icount], 1));  //Ohne den Bindestrich !!!
-						//sControlPrevious = saParamAll[icount].substring(1);	      //Das sollte Doch der Wert bis zum nächsten LEERZEICHEN SEIN
-						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	      //Das ist der Wert bis zum nächsten LEERZEICHEN
+						//sControlPrevious = saParamAll[icount].substring(1);	      //Das sollte Doch der Wert bis zum nï¿½chsten LEERZEICHEN SEIN
+						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	      //Das ist der Wert bis zum nï¿½chsten LEERZEICHEN
 						
 						//Falls dieses gefundene Steuerzeichen mehr kein Zeichen oder mehr als 2 Zeichen lang ist, FEHLER
 						if(StringZZZ.isEmpty(sControlPrevious)){
@@ -332,7 +331,7 @@ public class GetOptZZZ extends ObjectZZZ{
 						
 						
 						if(listaControlValue.contains(sControlPrevious)){
-							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird benötigt
+							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird benï¿½tigt
 //							Hier braucht man ggf. das vorherige Steuerzeiche noch
 						}else{
 							bNeedArgument = false; //Das ist Kein Steuerzeichen mit Doppelpunkt
@@ -343,7 +342,7 @@ public class GetOptZZZ extends ObjectZZZ{
 						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	 //saParamAll[icount].substring(1);
 						stemp = StringZZZ.rightback(saParamAll[icount], 1);
 						if(listaControlValue.contains(stemp)){
-							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird benötigt
+							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird benï¿½tigt
 							//Hier braucht man ggf. das vorherige Steuerzeiche noch
 						}else{
 							bNeedArgument = false; //Das ist Kein Steuerzeichen mit Doppelpunkt
@@ -368,7 +367,7 @@ public class GetOptZZZ extends ObjectZZZ{
 					}
 				}else{
 					if(bNeedArgument==true){
-//						Leeres Argument für ein Steuerzeichen
+//						Leeres Argument fï¿½r ein Steuerzeichen
 						bNeedArgument = false;
 						sControlPrevious = "";
 					}else{
@@ -376,7 +375,7 @@ public class GetOptZZZ extends ObjectZZZ{
 					}
 				}
 			}
-			//Fehler - LETZTES STEUERZEICHEN SOLLTE EINEN WERT HABEN, HAT´s ABER NCIHT
+			//Fehler - LETZTES STEUERZEICHEN SOLLTE EINEN WERT HABEN, HATï¿½s ABER NCIHT
 			if(bNeedArgument == true){
 				sReturn = "Error 60: Last control character has no argument: '" + saParamAll[saParamAll.length-1] + "'";
 				break main;
@@ -397,7 +396,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			//Argument-Pattern
 			String sPattern = this.getPattern();
 			
-			//Falls das Pattern leer ist, sArgument ist aber gefüllt, dann FEHLER:
+			//Falls das Pattern leer ist, sArgument ist aber gefï¿½llt, dann FEHLER:
 			if(StringZZZ.isEmpty(sPattern)){
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -432,7 +431,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			//Argument-Pattern
 			String sPattern = this.getPattern();
 			
-			//Falls das Pattern leer ist, sArgument ist aber gefüllt, dann FEHLER:
+			//Falls das Pattern leer ist, sArgument ist aber gefï¿½llt, dann FEHLER:
 			if(StringZZZ.isEmpty(sPattern)){
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -451,10 +450,10 @@ public class GetOptZZZ extends ObjectZZZ{
 	}
 	
 	
-	/** TODO Muss noch entwickelt werden. Prüft. ob der Pattern String valide ist.
+	/** TODO Muss noch entwickelt werden. Prï¿½ft. ob der Pattern String valide ist.
 	 * Z.B: zwei Doppelpunkte hintereinander sind nicht valide
-	 * - überhaupt sind doppelte zeichen im pattern string nicht valide
-	 * - Bindestriche sind im pattern string ebenfalls nicht erlaubt (sonst müsste im Argument string ja "-- hallo" stehen dürfen.
+	 * - ï¿½berhaupt sind doppelte zeichen im pattern string nicht valide
+	 * - Bindestriche sind im pattern string ebenfalls nicht erlaubt (sonst mï¿½sste im Argument string ja "-- hallo" stehen dï¿½rfen.
 	 * 
 	* @param sPattern
 	* @return
@@ -476,19 +475,19 @@ public class GetOptZZZ extends ObjectZZZ{
 		return bReturn;
 	}
 	
-	/** Prüft den Pattern String auf folgendes:
+	/** Prï¿½ft den Pattern String auf folgendes:
 	 *1. Kein wert darf doppelt vorkommen, mit Ausnahme des Doppelpunkts
  	* 2. Nach einem Doppelpunkt darf kein zweiter Doppelpunkt sofort folgen
 	* 3. Der Pattern String darf nicht mit einem Doppelpunkt beginnen.	
 	* @param sPattern
-	* @return  Ein String, der eine Fehlermeldung enthält. 
+	* @return  Ein String, der eine Fehlermeldung enthï¿½lt. 
 	* 
 	* lindhauer; 11.07.2007 06:55:02
 	 */
 	public String proofPatternString(String sPattern){
 		String sReturn = new String("");
 		main:{
-			//#### Parameter für die Funktion prüfen
+			//#### Parameter fï¿½r die Funktion prï¿½fen
 //			Null oder Leerstring sind valid
 			if(StringZZZ.isEmpty(sPattern))	break main;
 			
@@ -557,7 +556,7 @@ public class GetOptZZZ extends ObjectZZZ{
 		main:{
 			if(StringZZZ.isEmpty(sResult)) break main;
 			
-			String sReturn = StringZZZ.left(sResult, 5, ":");  //5 ist die Zeichenlänge von "Error"
+			String sReturn = StringZZZ.left(sResult, 5, ":");  //5 ist die Zeichenlï¿½nge von "Error"
 			if(StringZZZ.isEmpty(sReturn)){
 				ExceptionZZZ ez = new ExceptionZZZ("No error code found in the string:'"+ sResult+"'", iERROR_RUNTIME, GetOptZZZ.class.getName());
 				throw ez;
@@ -593,7 +592,7 @@ public class GetOptZZZ extends ObjectZZZ{
 	/**
 	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
-	 * 	"isLoaded": Wird gesetzt, wenn die interne HashMap erfolgreich gefüllt worden ist, z.B. in .loadOptionAll(..);
+	 * 	"isLoaded": Wird gesetzt, wenn die interne HashMap erfolgreich gefï¿½llt worden ist, z.B. in .loadOptionAll(..);
 	 */
 	public boolean setFlag(String sFlagName, boolean bFlagValue){
 		boolean bFunction = false;

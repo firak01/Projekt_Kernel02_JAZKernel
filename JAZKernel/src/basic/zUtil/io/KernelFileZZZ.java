@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
-import basic.zBasic.IFunctionZZZ;
+import basic.zBasic.IFlagZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -26,7 +26,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFunctionZZZ {
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFlagZZZ{ //IFunctionZZZ {
 	private static final char cEXPANSION_FILLING_DEFAULT = '0'; 
 	private String sFileNameExpandedNext = new String("");
 	private String sFileNameExpandedFirst = new String("");
@@ -42,7 +42,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 	private char cExpansionFilling=cEXPANSION_FILLING_DEFAULT;
 	
 	//flags 
-	//private boolean bFlagExpansionAppend; //Zeigt an, ob eine Dateinamens Expansion angeh�ngt werden muss, oder eine bestehende Expansion ersetzt hat.
+	//private boolean bFlagExpansionAppend; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
 	public enum FLAGZ{
 		EXPANSIONAPPEND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
 	}
@@ -230,7 +230,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 		return sReturn;
 	}
 	
-	//### FlagMethods ##########################		
+	//### FlagMethods ##########################	
+	@Override
+	public Class getClassFlagZ(){
+		return FLAGZ.class;
+	}
+	
 	public HashMap<String, Boolean>getHashMapFlagZ(){
 		return this.hmFlag;
 	} 
@@ -386,6 +391,30 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFu
 		
 		return bFunction;	
 	}
+	
+	//Aus IObjectZZZ, siehe FileZZZ
+		@Override
+		public boolean proofFlagZExists(String sFlagName) {
+			boolean bReturn = false;
+			main:{
+				bReturn = ObjectZZZ.proofFlagZExists(this.getClass(), sFlagName);
+			
+				//Schon die oberste IObjectZZZ nutzende Klasse, darum ist der Aufruf einer Elternklasse mit der Methode nicht möglich. 
+				//boolean bReturn = super.proofFlagZExists(sFlagName);
+			
+				if(!bReturn){			
+					Class<FLAGZ> enumClass = FLAGZ.class;				
+					for(Object obj : FLAGZ.class.getEnumConstants()){
+						//System.out.println(obj + "; "+obj.getClass().getName());
+						if(sFlagName.equalsIgnoreCase(obj.toString())) {
+							bReturn = true;
+							break main;
+						}
+					}				
+				}
+			}//end main:
+			return bReturn;
+		}
 	
 	
 	
@@ -895,30 +924,10 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sF
 		this.objException = objException;
 	}//end function
 
+
+
 	
-	//Aus IObjectZZZ, siehe FileZZZ
-	@Override
-	public boolean proofFlagZExists(String sFlagName) {
-		boolean bReturn = false;
-		main:{
-			bReturn = ObjectZZZ.proofFlagZExists(this.getClass(), sFlagName);
-		
-			//Schon die oberste IObjectZZZ nutzende Klasse, darum ist der Aufruf einer Elternklasse mit der Methode nicht möglich. 
-			//boolean bReturn = super.proofFlagZExists(sFlagName);
-		
-			if(!bReturn){			
-				Class<FLAGZ> enumClass = FLAGZ.class;				
-				for(Object obj : FLAGZ.class.getEnumConstants()){
-					//System.out.println(obj + "; "+obj.getClass().getName());
-					if(sFlagName.equalsIgnoreCase(obj.toString())) {
-						bReturn = true;
-						break main;
-					}
-				}				
-			}
-		}//end main:
-		return bReturn;
-	}
+	
 
 
 	

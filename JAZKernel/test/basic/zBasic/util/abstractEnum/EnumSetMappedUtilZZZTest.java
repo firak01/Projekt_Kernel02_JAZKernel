@@ -99,7 +99,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 				EnumSetMappedUtilZZZ enumSetUtil = new EnumSetMappedUtilZZZ(objFactory, objClass);
 				
 				//Positivfall
-				btemp = enumSetUtil.startsWithAnyAbbreviation("THREE");
+				btemp = enumSetUtil.startsWithAnyAbbreviation("3");
 				assertTrue("C) Prüfstring sollte in der Enumeration vorhanden sein.", btemp);
 												
 				//Negativfall

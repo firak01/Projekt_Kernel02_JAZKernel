@@ -11,8 +11,7 @@ import basic.zBasic.util.file.txt.TxtReaderZZZ;
 import junit.framework.TestCase;
 import custom.zUtil.io.FileZZZ;
 
-public class FileZZZTest extends TestCase {
-	private FileZZZ objFileInit;
+public class FileZZZTest extends TestCase {	
 	private FileZZZ objFileTest;
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
 	private final static String strFILE_NAME_DEFAULT = new String("JUnitTest.txt");
@@ -38,10 +37,6 @@ public class FileZZZTest extends TestCase {
 			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
 			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
 			objStreamFile.close();
-			
-			
-			//An object just initialized
-			objFileInit = new FileZZZ();
 
 			//The main object used for testing
 			//objFileTest = new FileZZZ(sFilePathTotal, strFILE_NAME_DEFAULT, (String[]) null);
@@ -58,7 +53,7 @@ public class FileZZZTest extends TestCase {
 	}//END setup
 	
 	public void testFlagZ(){
-		//try{
+		try{
 		boolean  bExists = objFileTest.proofFlagZExists("NIXDA");
 		assertFalse("Object should NOT have FlagZ 'NIXDA'",bExists);
 		
@@ -71,15 +66,19 @@ public class FileZZZTest extends TestCase {
 			}
 			
 			//TestKonfiguration prüfen
-			assertFalse(objFileTest.getFlag("init")==true); //Nun wäre init falsch			
+			assertFalse(objFileTest.getFlag("init")==true); //Nun wäre init falsch		
+			
+			//An object just initialized
+			FileZZZ objFileInit = new FileZZZ();
 			assertTrue(objFileInit.getFlag("init")==true);
 			
+			//Flags aus der FileZZZ-Klasse
 			assertTrue(objFileTest.getFlag("ExpansionAppend")==true);
 			
 			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		
 	}
 	

@@ -20,7 +20,7 @@ import basic.javareflection.util.ReflectionUtil;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IFlagZZZ{
+public class ObjectZZZ <T> implements IObjectZZZ, IFlagZZZ{
 	//Flags, die alle Z-Objekte haben
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
@@ -56,7 +56,15 @@ public class ObjectZZZ <T> implements IConstantZZZ, IObjectZZZ, IFunctionZZZ, IF
 	}
 	
 	
-	//### FLAGS ####################
+	//### FlagMethods ##########################		
+	public Class getClassFlagZ(){
+		return FLAGZ.class;
+	}
+
+		public HashMap<String, Boolean>getHashMapFlagZ(){
+			return this.hmFlag;
+		} 
+	
 	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
 	 * Weteire Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
@@ -227,7 +235,7 @@ public static boolean proofFlagZExists(Class objcp, String sFlagName) {
 
 /* Voraussetzungen:
  * - Public Default Konstruktor, damit die Klasse instanziiert werden kann.
- * - Innere Klassen m�ssen auch public deklariert werden.
+ * - Innere Klassen müssen auch public deklariert werden.
  */
 public static boolean proofFlagZExists(String sClassName, String sFlagName){
 	boolean bReturn = false;
@@ -314,13 +322,6 @@ public static boolean proofFlagZExists(String sClassName, String sFlagName){
 	}//end main:
 	return bReturn;
 }
-	
-	public HashMap<String, Boolean>getHashMapFlagZ(){
-		return this.hmFlag;
-	} 
-	public Class getClassFlagZ(){
-		return FLAGZ.class;
-	}
 	
 	/* (non-Javadoc)
 	 * @see zzzKernel.basic.KernelAssetObjectZZZ#getExceptionObject()
