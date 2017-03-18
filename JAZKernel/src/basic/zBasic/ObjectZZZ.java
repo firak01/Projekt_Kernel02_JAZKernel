@@ -5,19 +5,11 @@ import static java.lang.System.out;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
-import basic.javareflection.mopex.Mopex;
-import basic.javareflection.util.ReflectionUtil;
-import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ObjectZZZ <T> implements IObjectZZZ, IFlagZZZ{
