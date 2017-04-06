@@ -476,6 +476,9 @@ public class StringZZZ implements IConstantZZZ{
 	
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
+	 * 
+	 * Gibt den String rechts von dem Suchstring zurück.
+	 *  Dabei wird von rechts nach dem Suchstring gesucht.
 	* Lindhauer; 16.05.2006 08:11:18
 	 * @param sString
 	 * @param sToFind
@@ -491,7 +494,7 @@ public class StringZZZ implements IConstantZZZ{
 		int iIndex = sString.lastIndexOf(sToFind);
 		if(iIndex<= -1) break main;
 		
-		//die L�nge des Strings aufaddieren
+		//die Länge des Strings aufaddieren
 		iIndex = iIndex + sToFind.length();
 				
 		sReturn = sString.substring(iIndex);
@@ -1075,7 +1078,12 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	
+	/**Gibt den String rechts von dem Suchstring zurück.
+	 *  Dabei wird von LINKS nach dem Suchstring gesucht.
+	 * @param sString
+	 * @param sToFind
+	 * @return
+	 */
 	public static String rightback(String sString, String sToFind){
 		String sReturn = "";
 		main:{
