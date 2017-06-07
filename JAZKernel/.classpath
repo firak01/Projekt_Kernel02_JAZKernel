@@ -7,6 +7,6 @@
 	<classpathentry exported="true" kind="lib" path="/ZKernelFileCollection/commons-lang-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="/ZKernelFileCollection/commons-collections-3.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/ZKernelFileZJar/JAZDummy_fat.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JAZDummy"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
