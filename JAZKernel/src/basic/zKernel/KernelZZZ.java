@@ -229,6 +229,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	public File getFileConfigKernel() throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
+			String sLog = null;
 			check:{
 				//Falls schon mal geholt, nicht neu holen
 				if(this.objFileKernelConfig!=null){
@@ -237,7 +238,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}
 				
 				if(StringZZZ.isEmpty(this.sFileConfig)){
-					ExceptionZZZ ez = new ExceptionZZZ("Missing property: 'Configuration File-Name'",iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					sLog = "Missing property: 'Configuration File-Name'";
+					System.out.println(sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 			}//end check
@@ -248,8 +251,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 		    objReturn = FileEasyZZZ.getFile(this.sDirectoryConfig, this.sFileConfig);
 		    if(objReturn.exists()) {
-		    	if(objReturn.isDirectory()){				
-					ExceptionZZZ ez = new ExceptionZZZ("'Configuration Filename' is a directory: " + this.sDirectoryConfig + File.separator + this.sFileConfig, iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+		    	if(objReturn.isDirectory()){		
+		    		sLog = "'Configuration Filename' is a directory: " + this.sDirectoryConfig + File.separator + this.sFileConfig;
+		    		System.out.println(sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 		    	break main;
@@ -260,12 +265,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			objReturn = new File(this.sDirectoryConfig + File.separator + this.sFileConfig);
 			
 			//Falls der 2. Versuch auch gescheitert ist, wirf Fehler
-			if(objReturn.exists()==false){				
-				ExceptionZZZ ez = new ExceptionZZZ("'Configuration File' does not exist in the current directory or in: " + this.sDirectoryConfig + File.separator + this.sFileConfig,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName() );
+			if(objReturn.exists()==false){			
+				sLog = "'Configuration File' does not exist in the current directory or in: " + this.sDirectoryConfig + File.separator + this.sFileConfig;
+				System.out.println(sLog);				
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName() );
 				throw ez;
 			}				
-			if(objReturn.isDirectory()){				
-				ExceptionZZZ ez = new ExceptionZZZ("'Configuration Filename' is a directory: " + this.sDirectoryConfig + File.separator + this.sFileConfig, iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+			if(objReturn.isDirectory()){	
+				sLog = "'Configuration Filename' is a directory: " + this.sDirectoryConfig + File.separator + this.sFileConfig;
+				System.out.println(sLog);
+				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 		}//end main:
