@@ -12,14 +12,14 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Diese Klasse erlaubt das "direktere" Arbeiten mit einer HashMap, die in einer anderen HashMap gespeichert ist.
- *  Dabei wird angenommen, dass die Schlüsselwerte der äusseren HashMap vom Typ String sind.
+ *  Dabei wird angenommen, dass die SchlÃ¼sselwerte der Ã¤usseren HashMap vom Typ String sind.
  *  
- *  Merke: Sinnvoll ist das nur, wenn die MetaInformationen über die Objekte, die in der inneren HashMap gespeichert wurden 
+ *  Merke: Sinnvoll ist das nur, wenn die MetaInformationen Ã¼ber die Objekte, die in der inneren HashMap gespeichert wurden 
  *             an einer anderen Stelle bekannt sind. Wie beispielsweise in der Klasse DataStoreZZZ.  
  *             
- *  Merke: Es ist dabei nicht möglich mehrere Werte unter dem gleichen Schlüssel abzulegen !!!
+ *  Merke: Es ist dabei nicht mï¿½glich mehrere Werte unter dem gleichen Schlï¿½ssel abzulegen !!!
  * 
- * TODO: Eine Klasse HashmapCascasdedZZZ wäre auch nicht schlecht. Dabei sollte die Anzahl der Hashmaps beliebig tief verschachtelt sein. 
+ * TODO: Eine Klasse HashmapCascasdedZZZ wÃ¤re auch nicht schlecht. Dabei sollte die Anzahl der Hashmaps beliebig tief verschachtelt sein. 
  * @author lindhaueradmin
  *
  */
@@ -101,7 +101,7 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 		return objReturn;
 	}
 	
-	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch für jeden neuen Eintrag.
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fï¿½r jeden neuen Eintrag.
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
@@ -163,7 +163,7 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 	/* (non-Javadoc)
 	 * @see java.util.Map#get(java.lang.Object)
 	 * 
-	 * Merke: Es wird immer das zuletzt hinzugefügte Dokument zurückgegeben !!!
+	 * Merke: Es wird immer das zuletzt hinzugefï¿½gte Dokument zurï¿½ckgegeben !!!
 	 */
 	public Object get(Object arg0) {	
 		return hmOuter.get(arg0);

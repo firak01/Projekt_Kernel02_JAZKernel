@@ -5,7 +5,7 @@
 // NAME			: ExtendedVector.java                                       //
 //                                                                          //
 // AUTOR		: Stephan Mecking, CoCoNet GmbH                             //
-//				: Peter Kühn, CoCoNet GmbH                                  //
+//				: Peter Kï¿½hn, CoCoNet GmbH                                  //
 //                                                                          //
 // COMPONENT    : MULTIWEB client -> some different components              //
 //                                                                          //
@@ -31,7 +31,7 @@ public class ExtendedVectorZZZ extends Vector {
 
 	//
 	// getIndexOfString: search a string case-dependent or case-independent
-	//                   in a vector and return it´s index or -1, if not found
+	//                   in a vector and return it's index or -1, if not found
 	//                   
 
 	int getIndexOfString(String string, boolean ignoreCase, int fromIndex) {
@@ -55,7 +55,7 @@ public class ExtendedVectorZZZ extends Vector {
 	}
 	
 	
-	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Einträge rechts von dem Suchstring zurück. 
+	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Eintrï¿½ge rechts von dem Suchstring zurï¿½ck. 
 	 *   Dabei wird von links gesucht.
 	 *   
 	* @param string

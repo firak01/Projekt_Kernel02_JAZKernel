@@ -27,18 +27,18 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *            Entferne nun alle diese Doppelten und lasse den letzten Wert bestehen.
  *            
  *     Merke: Es soll keinen Konstruktor mit new(HashMap) geben und auch keine importIt(HashMap).
- *                Zuordnung nur über TypeCast    HashMapIndexedZZZ hmIndexed = (HashMapIndexedZZZ) hmWhichShouldBeIndexed.
+ *                Zuordnung nur ï¿½ber TypeCast    HashMapIndexedZZZ hmIndexed = (HashMapIndexedZZZ) hmWhichShouldBeIndexed.
  * @author lindhaueradmin
  *
  */
 public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 
-	/** Prüfe, ob die übergebene HashMap die vorausgesetzte Struktur besitzt.
+	/** Prï¿½fe, ob die Ã¼bergebene HashMap die vorausgesetzte Struktur besitzt.
 	 *   a) Alle Keys sind Integer Werte
 	 *   b) Alle Elemente sind Arraylisten, die ebenfalls nur Integer Werte enthalten.
 	 *   
 	 * @param hmIndexed
-	 * @param bQuiet              Wenn true, dann wird bei ungültiger Struktur keine Exception geworfen.
+	 * @param bQuiet              Wenn true, dann wird bei ungï¿½ltiger Struktur keine Exception geworfen.
 	 * @return
 	 * 
 	 * lindhaueradmin; 17.05.2011 06:57:05
@@ -55,7 +55,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 
 			//#####################################
 
-			//1. Prüfe auf Integer Objekt des Keys
+			//1. Prï¿½fe auf Integer Objekt des Keys
 			Set keySet = hmIndexed.keySet();
 			Iterator itKey = keySet.iterator();
 			while(itKey.hasNext()){
@@ -72,7 +72,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 			}//end while
 
 
-			//2. Prüfe auf ArrayList des Entries
+			//2. Prï¿½fe auf ArrayList des Entries
 			Set entrySet = hmIndexed.entrySet();
 			Iterator itSet = entrySet.iterator();
 			while(itSet.hasNext()){
@@ -99,7 +99,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 						}
 					}//end if
 
-					//3. Prüfe auf Integer Objekt der Einträge der ArrayList
+					//3. Prï¿½fe auf Integer Objekt der Eintrï¿½ge der ArrayList
 					ArrayList alSet = (ArrayList) obj2b;
 					for(int icount=0; icount< alSet.size(); icount++){
 						Object obj3 = alSet.get(icount);
@@ -139,7 +139,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 	}
 	
 	/** Vergleiche die Werte der in der HashMap gespeicherten Objekte. 
-	 *   Aber: Gib eine Methode an, über die die Werte der Objekte erst einmal ermittelt werden sollen.
+	 *   Aber: Gib eine Methode an, ï¿½ber die die Werte der Objekte erst einmal ermittelt werden sollen.
 	 *   Die daraus reslutierenden Werte werden mit .equals() miteinander verglichen.
 	* @param hm
 	* @param sMethod
@@ -160,8 +160,8 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 				throw ez;	
 			}
 			//###############################
-			String sMethod = null; //Für das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
-			Object obj = null;        //Für das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
+			String sMethod = null; //Fï¿½r das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
+			Object obj = null;        //Fï¿½r das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
 			try {
 					
 			//2. Vergleich der gleichen ArrayList, elemtweise.
@@ -175,7 +175,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 			
 			
 			//#################################
-			//Ersten Wert holen: Äussere Schleife
+			//Ersten Wert holen: ï¿½ussere Schleife
 			//Merke: Anders als bei der HashMap-Index-Ermittlung, hier mit For-Schleifen arbeiten.
 			int iposMaxExt = objAlExt.size();
 			for(int icountExt=0; icountExt < iposMaxExt; icountExt++){
@@ -183,13 +183,13 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 				Object objExt = objAlExt.get(icountExt); //Wer sagt denn, das ein Key immer String sein muss.....
 				
 				//+++ Suche nun nach der Methode im Objekt.
-				//Merke: In der Reflection API Paramter für die Methode anzugeben geht so:
+				//Merke: In der Reflection API Paramter fï¿½r die Methode anzugeben geht so:
 				//Class[] classaParam = new Class[1];
 				//classaParam[0] = objKeyValueToStore.getClass();
 				//
 				//aber hier ist classaParm=null;  
-				sMethod = sMethodName; //Für das Exception Handling
-				obj = objExt; //Für das Exception Handling
+				sMethod = sMethodName; //Fï¿½r das Exception Handling
+				obj = objExt; //Fï¿½r das Exception Handling
 				Method mExt = Mopex.getSupportedMethod(objExt.getClass(), sMethodName, null);
 				
 				if(mExt==null){
@@ -205,27 +205,27 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 				//System.out.println("Ergebnis der Method invocation addNewKeyPrimary=" + iCode);
 				
 				//Object objReturnType = m.invoke(objWithKey, null);
-				//so würde der Parameterwert übergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
+				//so wï¿½rde der Parameterwert ï¿½bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 				//wir habe aber keinen Parameter, also NULL
-				obj = objExt; //Für das Exception Handling
+				obj = objExt; //Fï¿½r das Exception Handling
 				objErgExt = mExt.invoke(objExt, null);
 				if(objErgExt!=null){
 					System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objErgExt.toString());
 				}else{
 					System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. ABBRUCH");
 					
-					//TODO: Hier muss eigentlich zum nächsten Element der äußeren Schleife gegangen werden.
+					//TODO: Hier muss eigentlich zum nï¿½chsten Element der ï¿½uï¿½eren Schleife gegangen werden.
 					break main;
 				}
 				
-				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und führe sie aus.
+				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und fï¿½hre sie aus.
 				//!!! Parameter ist das andere Ergebnisobjekt
 				Class[] classaParam = new Class[1];
 				classaParam[0] = Object.class; //die MEthode "equals" bekommt als Parameter ein Classe Objekt, nicht genauer wie z.B. String. Dazu wird keine Methode gefunden. Also nicht: objTestErgInt.getClass();
 				
-				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Für das Exception Handling
-				obj = objErgExt; //Für das Exception Handling
-				Method mEqualsExt = Mopex.getSupportedMethod(objErgExt.getClass(), "equals", classaParam);  //Merke: Der Vergleich wird dann in der inneren Schleife durchgeführt.
+				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Fï¿½r das Exception Handling
+				obj = objErgExt; //Fï¿½r das Exception Handling
+				Method mEqualsExt = Mopex.getSupportedMethod(objErgExt.getClass(), "equals", classaParam);  //Merke: Der Vergleich wird dann in der inneren Schleife durchgefï¿½hrt.
 				
 //				#############################################
 				//### Zweiten Wert holen: Innere Schleife	
@@ -236,13 +236,13 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 					Object objInt = objAlInt.get(icountInt); //Wer sagt denn, das ein Key immer String sein muss.....
 					
 //					+++ Suche nun nach der Methode im Objekt.
-					//Merke: In der Reflection API Paramter für die Methode anzugeben geht so:
+					//Merke: In der Reflection API Paramter fï¿½r die Methode anzugeben geht so:
 					//Class[] classaParam = new Class[1];
 					//classaParam[0] = objKeyValueToStore.getClass();
 					//
 					//aber hier ist classaParm=null;  
-					sMethod = sMethodName; //Für das Exception Handling
-					obj = objInt; //Für das Exception Handling
+					sMethod = sMethodName; //Fï¿½r das Exception Handling
+					obj = objInt; //Fï¿½r das Exception Handling
 					Method mInt = Mopex.getSupportedMethod(objInt.getClass(), sMethodName, null);
 					
 					if(mInt==null){
@@ -258,21 +258,21 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 					//System.out.println("Ergebnis der Method invocation addNewKeyPrimary=" + iCode);
 					
 					//Object objReturnType = m.invoke(objWithKey, null);
-					//so würde der Parameterwert übergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
+					//so wï¿½rde der Parameterwert ï¿½bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 					//wir habe aber keinen Parameter, also NULL
-					obj = objInt; //Für das Exception Handling
+					obj = objInt; //Fï¿½r das Exception Handling
 					objErgInt = mInt.invoke(objInt, null);
 					if(objErgInt!=null){
 						System.out.println("Methode " + sMethod + " erfolgreich invoked. Ergebnisobjekt: " + objErgInt.toString());
 					}else{
-						System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. ABBRUCH zum nächsten Wert");
+						System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. ABBRUCH zum nï¿½chsten Wert");
 						
-						//TODO: Hier muss eigentlich zum nächsten Element der inneren Schleife gegangen werden.
+						//TODO: Hier muss eigentlich zum nï¿½chsten Element der inneren Schleife gegangen werden.
 						break main;
 					}
 					
 			        //##########################################################	
-					//+++ Füre die "equals" Methode aus.
+					//+++ Fï¿½re die "equals" Methode aus.
 					Object objErgEquals = mEqualsExt.invoke(objErgExt, new Object[] {objErgInt});
 					if(objErgEquals!=null){
 						System.out.println("Methode " + sMethod + " erfolgreich invoked. Ergebnisobjekt: " + objErgEquals.toString());
@@ -283,14 +283,14 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 							alInt.add(new Integer(icountInt));
 						}
 					}else{
-						//System.out.println("Methode " + sMethod + " erfolgreich invoked. Kein Ergebnisobjekt. RÜCKGABEWERT: false");
+						//System.out.println("Methode " + sMethod + " erfolgreich invoked. Kein Ergebnisobjekt. Rï¿½CKGABEWERT: false");
 						 //Mache nix;
 					}
 					
 				} //End while "innere Schleife"
 				
 				//############################################################ 
-				//+++ Prüfe die Anzahl der Index-Arraylist-Elemente und füge bei mehr als 2 Elementen den Wert hinzu. Merke: 1 Element sollte immer darin sein, wenn der gleich wert auf sich selbst geprüft wurde.
+				//+++ Prï¿½fe die Anzahl der Index-Arraylist-Elemente und fï¿½ge bei mehr als 2 Elementen den Wert hinzu. Merke: 1 Element sollte immer darin sein, wenn der gleich wert auf sich selbst geprï¿½ft wurde.
 				if(alInt.size()>=2){
 					hmIndexed.put(new Integer(icountExt), alInt);
 				}
@@ -315,7 +315,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 	}
 	
 	/** Vergleiche die Werte der in der HashMap gespeicherten Objekte. 
-	 *   Aber: Gib eine Methode an, über die die Werte der Objekte erst einmal ermittelt werden sollen.
+	 *   Aber: Gib eine Methode an, ï¿½ber die die Werte der Objekte erst einmal ermittelt werden sollen.
 	 *   Die daraus reslutierenden Werte werden mit .equals() miteinander verglichen.
 	* @param hm
 	* @param sMethod
@@ -336,8 +336,8 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 				throw ez;	
 			}
 			//###############################
-			String sMethod = null; //Für das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
-			Object obj = null;        //Für das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
+			String sMethod = null; //Fï¿½r das Exception Handling: Name der Methode, die gerade gesucht, invoked, etc. wird
+			Object obj = null;        //Fï¿½r das Exception Handling: Objekt, das gerade in Arbeit ist, bzgl. der Methode
 			try {
 					
 			//2. Vergleiche der gleichen Hashmap, elemtweise.
@@ -351,7 +351,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 			
 			
 			//#################################
-			//Ersten Wert holen: Äussere Schleife
+			//Ersten Wert holen: ï¿½ussere Schleife
 			Iterator itExt = objHashMapExt.keySet().iterator();
 			int iposExt = -1;
 			while(itExt.hasNext()){
@@ -361,16 +361,16 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 				//System.out.println("+++ Neuer Keywert: " + objKeyExt.toString());
 				
 				Object objValueExt = objHashMapExt.get(objKeyExt);
-				//System.out.println("+++ Neues Element (äußere Schleife): " + objValueExt.toString());
+				//System.out.println("+++ Neues Element (ï¿½uï¿½ere Schleife): " + objValueExt.toString());
 				
 				//+++ Suche nun nach der Methode im Objekt.
-				//Merke: In der Reflection API Paramter für die Methode anzugeben geht so:
+				//Merke: In der Reflection API Paramter fï¿½r die Methode anzugeben geht so:
 				//Class[] classaParam = new Class[1];
 				//classaParam[0] = objKeyValueToStore.getClass();
 				//
 				//aber hier ist classaParm=null;  
-				sMethod = sMethodName; //Für das Exception Handling
-				obj = objValueExt; //Für das Exception Handling
+				sMethod = sMethodName; //Fï¿½r das Exception Handling
+				obj = objValueExt; //Fï¿½r das Exception Handling
 				Method mExt = Mopex.getSupportedMethod(objValueExt.getClass(), sMethodName, null);
 				
 				if(mExt==null){
@@ -386,27 +386,27 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 				//System.out.println("Ergebnis der Method invocation addNewKeyPrimary=" + iCode);
 				
 				//Object objReturnType = m.invoke(objWithKey, null);
-				//so würde der Parameterwert übergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
+				//so wï¿½rde der Parameterwert ï¿½bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 				//wir habe aber keinen Parameter, also NULL
-				obj = objValueExt; //Für das Exception Handling
+				obj = objValueExt; //Fï¿½r das Exception Handling
 				objValueErgExt = mExt.invoke(objValueExt, null);
 				if(objValueErgExt!=null){
 					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Ergebnisobjekt: " + objValueErgExt.toString());
 				}else{
 					//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. ABBRUCH");
 					
-					//TODO: Hier muss eigentlich zum nächsten Element der äußeren Schleife gegangen werden.
+					//TODO: Hier muss eigentlich zum nï¿½chsten Element der ï¿½uï¿½eren Schleife gegangen werden.
 					break main;
 				}
 				
-				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und führe sie aus.
+				//+++ Suche die "equals" Methode in dem Ergebnisobjekt und fï¿½hre sie aus.
 				//!!! Parameter ist das andere Ergebnisobjekt
 				Class[] classaParam = new Class[1];
 				classaParam[0] = Object.class; //die MEthode "equals" bekommt als Parameter ein Classe Objekt, nicht genauer wie z.B. String. Dazu wird keine Methode gefunden. Also nicht: objTestErgInt.getClass();
 				
-				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Für das Exception Handling
-				obj = objValueErgExt; //Für das Exception Handling
-				Method mEqualsExt = Mopex.getSupportedMethod(objValueErgExt.getClass(), "equals", classaParam);  //Merke: Der Vergleich wird dann in der inneren Schleife durchgeführt.
+				sMethod = "equals(OBJECT)"; //NEIN, das wird nicht gefunden.... " + objTestErgInt.getClass().getName() + ")"; //Fï¿½r das Exception Handling
+				obj = objValueErgExt; //Fï¿½r das Exception Handling
+				Method mEqualsExt = Mopex.getSupportedMethod(objValueErgExt.getClass(), "equals", classaParam);  //Merke: Der Vergleich wird dann in der inneren Schleife durchgefï¿½hrt.
 				
 				
 				
@@ -421,13 +421,13 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 					iposInt++;
 					
 //					+++ Suche nun nach der Methode im Objekt.
-					//Merke: In der Reflection API Paramter für die Methode anzugeben geht so:
+					//Merke: In der Reflection API Paramter fï¿½r die Methode anzugeben geht so:
 					//Class[] classaParam = new Class[1];
 					//classaParam[0] = objKeyValueToStore.getClass();
 					//
 					//aber hier ist classaParm=null;  
-					sMethod = sMethodName; //Für das Exception Handling
-					obj = objValueInt; //Für das Exception Handling
+					sMethod = sMethodName; //Fï¿½r das Exception Handling
+					obj = objValueInt; //Fï¿½r das Exception Handling
 					Method mInt = Mopex.getSupportedMethod(objValueExt.getClass(), sMethodName, null);
 					
 					if(mInt==null){
@@ -443,21 +443,21 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 					//System.out.println("Ergebnis der Method invocation addNewKeyPrimary=" + iCode);
 					
 					//Object objReturnType = m.invoke(objWithKey, null);
-					//so würde der Parameterwert übergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
+					//so wï¿½rde der Parameterwert ï¿½bergeben an eine MEthode, die einen Parameter erwartet objTestErgInt = mInt.invoke(objKeyStore, new Object[] {objKeyValueToStore});
 					//wir habe aber keinen Parameter, also NULL
-					obj = objValueInt; //Für das Exception Handling
+					obj = objValueInt; //Fï¿½r das Exception Handling
 					objValueErgInt = mInt.invoke(objValueInt, null);
 					if(objValueErgInt!=null){
 						//System.out.println("Methode " + sMethod + " erfolgreich invoked. Ergebnisobjekt: " + objValueErgInt.toString());
 					}else{
-						//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. ABBRUCH zum nächsten Wert");
+						//System.out.println("Methode " + sMethodName + " erfolgreich invoked. Kein Ergebnisobjekt. ABBRUCH zum nï¿½chsten Wert");
 						
-						//TODO: Hier muss eigentlich zum nächsten Element der inneren Schleife gegangen werden.
+						//TODO: Hier muss eigentlich zum nï¿½chsten Element der inneren Schleife gegangen werden.
 						break main;
 					}
 					
 			        //##########################################################	
-					//+++ Füre die "equals" Methode aus.
+					//+++ Fï¿½re die "equals" Methode aus.
 					Object objErgEquals = mEqualsExt.invoke(objValueErgExt, new Object[] {objValueErgInt});
 					if(objErgEquals!=null){
 						//System.out.println("Methode " + sMethod + " erfolgreich invoked. Ergebnisobjekt: " + objErgEquals.toString());
@@ -468,19 +468,19 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 							alInt.add(new Integer(iposInt));
 						}
 					}else{
-						//System.out.println("Methode " + sMethod + " erfolgreich invoked. Kein Ergebnisobjekt. RÜCKGABEWERT: false");
+						//System.out.println("Methode " + sMethod + " erfolgreich invoked. Kein Ergebnisobjekt. Rï¿½CKGABEWERT: false");
 						 //Mache nix;
 					}
 					
 				} //End while "innere Schleife"
 				
 				//############################################################ 
-				//+++ Prüfe die Anzahl der Index-Arraylist-Elemente und füge bei mehr als 2 Elementen den Wert hinzu. Merke: 1 Element sollte immer darin sein, wenn der gleich wert auf sich selbst geprüft wurde.
+				//+++ Prï¿½fe die Anzahl der Index-Arraylist-Elemente und fï¿½ge bei mehr als 2 Elementen den Wert hinzu. Merke: 1 Element sollte immer darin sein, wenn der gleich wert auf sich selbst geprï¿½ft wurde.
 				if(alInt.size()>=2){
 					hmIndexed.put(new Integer(iposExt), alInt);
 				}
 				
-			} //end while "äußere Schleife"
+			} //end while "ï¿½uï¿½ere Schleife"
 			
 			} catch (IllegalArgumentException e) {
 				ExceptionZZZ ez = new ExceptionZZZ("IllegalArgumentException bei " + sMethod + " in Object " + obj.getClass().getName() + ": "  + e.getMessage(), iERROR_PARAMETER_VALUE, HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -500,7 +500,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 	}
 	
 	/** Entferne Dubletten. Dabei wird die IndexHashMap zum Kennzeichnen der Dubletten verwendet.
-	 *    Intern werden die Dubletten in einer einzigen ArrayList zusammengefasst und diese dann gelöscht.
+	 *    Intern werden die Dubletten in einer einzigen ArrayList zusammengefasst und diese dann gelï¿½scht.
 	* @param hm
 	* @param hmIndexed
 	* @param sFlagRemain "KEEPFIRST" / "KEEPLAST", default ist "KEEPLAST"
@@ -523,7 +523,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 		}			 
 		if(hmIndexed.size()==0) break main;
 		
-		//Prüfe die Struktur der Index-Hash-Map
+		//Prï¿½fe die Struktur der Index-Hash-Map
 		boolean btemp = hmIndexed.checkStructure(true);  //!!!Hier keine Fehler auswerfen.
 		if(btemp==false){
 		   String sMessage = null;	
@@ -551,7 +551,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 		/* Algorithmus:
 		 * Fasse alle ArrayListen der HashMapIndexed zu einer einzigen zusammen. 
 		 * Ignoriere dabei jeweils den ersten / bzw. letzten Eintrag.
-		 * Sorge auch dafür, dass die Einträge in der neuen ArrayList unique sind.
+		 * Sorge auch dafï¿½r, dass die Eintrï¿½ge in der neuen ArrayList unique sind.
 		 */
 		
 		//1. Zusammenfassen
@@ -563,7 +563,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 			Integer objtest = (Integer)ittest.next();
 			System.out.println(objtest.intValue());
 		}*/
-		HashMapExtendedZZZ.sortByKeyInteger(hmIndexed);  //Fest steht, das die Schlüssel Integer Werte sind.
+		HashMapExtendedZZZ.sortByKeyInteger(hmIndexed);  //Fest steht, das die Schlï¿½ssel Integer Werte sind.
 		
 		/*
 		List list = new LinkedList( hmIndexed.entrySet());
@@ -603,12 +603,12 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 		Collections.sort(alUnique, Collections.reverseOrder());
 		
 		//3. In der hashMap an den entsprechend zu entfernenden Keys finden.
-		//???? ist das sicher ???? Wenn die IndexHashMap auf der übergebenen HashMap basiert, wahrscheinlich schon.
+		//???? ist das sicher ???? Wenn die IndexHashMap auf der ï¿½bergebenen HashMap basiert, wahrscheinlich schon.
 		//Object[] obja = new Object[hm.size()];
 		//obja = hm.keySet().toArray(obja);  //Zum Anschauen beim Debuggen
 
 		//+++++
-		//ArrayList alKeyRemove = new ArrayList(); //Die Liste der zu entfenenden Schlüssel-Element-Paare
+		//ArrayList alKeyRemove = new ArrayList(); //Die Liste der zu entfenenden Schlï¿½ssel-Element-Paare
 		int iposMax = objAl.size();
 		
 		//Anders als bei der HashMap-Entfernung jetzt eine For - Schleife und von hinten nach vorne durchgehen.
@@ -616,7 +616,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 			Integer objInt = (Integer) alUnique.get(iReturn);  //Hole als Vergleichswert die sortierten Indizes
 			if(objInt.intValue()==icount){
 				objAl.remove(icount);
-				iReturn++; //zum nächsten Vergleichswert
+				iReturn++; //zum nï¿½chsten Vergleichswert
 				if(iReturn >= alUnique.size()) {
 					break; //for Schleife verlassen wenn es keine weiteren Vergleichswerte gibt.
 				}
@@ -650,7 +650,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 		}			 
 		if(hmIndexed.size()==0) break main;
 		
-		//Prüfe die Struktur der Index-Hash-Map
+		//Prï¿½fe die Struktur der Index-Hash-Map
 		boolean btemp = hmIndexed.checkStructure(true);  //!!!Hier keine Fehler auswerfen.
 		if(btemp==false){
 		   String sMessage = null;	
@@ -678,7 +678,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 		/* Algorithmus:
 		 * Fasse alle ArrayListen der HashMapIndexed zu einer einzigen zusammen. 
 		 * Ignoriere dabei jeweils den ersten / bzw. letzten Eintrag.
-		 * Sorge auch dafür, dass die Einträge in der neuen ArrayList unique sind.
+		 * Sorge auch dafï¿½r, dass die Eintrï¿½ge in der neuen ArrayList unique sind.
 		 */
 		
 		//1. Zusammenfassen
@@ -690,7 +690,7 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 			Integer objtest = (Integer)ittest.next();
 			System.out.println(objtest.intValue());
 		}*/
-		HashMapExtendedZZZ.sortByKeyInteger(hmIndexed);  //Fest steht, das die Schlüssel Integer Werte sind.
+		HashMapExtendedZZZ.sortByKeyInteger(hmIndexed);  //Fest steht, das die Schlï¿½ssel Integer Werte sind.
 		
 		/*
 		List list = new LinkedList( hmIndexed.entrySet());
@@ -729,12 +729,12 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 		Collections.sort(alUnique); 
 		
 		//3. In der hashMap an den entsprechend zu entfernenden Keys finden.
-		//???? ist das sicher ???? Wenn die IndexHashMap auf der übergebenen HashMap basiert, wahrscheinlich schon.
+		//???? ist das sicher ???? Wenn die IndexHashMap auf der ï¿½bergebenen HashMap basiert, wahrscheinlich schon.
 		Object[] obja = new Object[hm.size()];
 		obja = hm.keySet().toArray(obja);  //Zum Anschauen beim Debuggen
 
 		//+++++
-		ArrayList alKeyRemove = new ArrayList(); //Die Liste der zu entfenenden Schlüssel-Element-Paare
+		ArrayList alKeyRemove = new ArrayList(); //Die Liste der zu entfenenden Schlï¿½ssel-Element-Paare
 		int ipos = 0;
 		Iterator itKey = hm.keySet().iterator();
 		while(itKey.hasNext()){
@@ -743,18 +743,18 @@ public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
 		    Object objKey = (Object)itKey.next();
 			if(objInt.intValue()==ipos){
 				alKeyRemove.add(objKey);
-				iReturn++;  //zum nächsten Vergleichswert
+				iReturn++;  //zum nï¿½chsten Vergleichswert
 				if(iReturn >= alUnique.size()) {
 					break; //while Schleife verlassen wenn es keine weiteren Vergleichswerte gibt.
 				}
 			}
 			
 			
-			ipos++; //zur nächsten Position in der Hashmap
+			ipos++; //zur nï¿½chsten Position in der Hashmap
 		}
 
 		
-		//Das eigentliche Entfernen aus der Hashmap über die Keys
+		//Das eigentliche Entfernen aus der Hashmap ï¿½ber die Keys
 		Iterator itRemove = alKeyRemove.iterator();
 		while(itRemove.hasNext()){
 			Object objKey = itRemove.next();
