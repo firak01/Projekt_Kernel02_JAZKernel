@@ -578,6 +578,146 @@ public void testVecMidFirst(){
 		
 	}
 	
+	public void testAbbreviateStrict(){
+		try{
+			String sTest = "";
+			String sErg = StringZZZ.abbreviateStrict(sTest, 2);
+			assertEquals("", sErg); 
+			
+			//+++++++++++++++++
+			sTest = "A";
+			sErg = StringZZZ.abbreviateStrict(sTest, 1);
+			assertEquals("A", sErg);
+			
+			//++++++++++++++++++
+			try{
+				sTest = "AA";
+				sErg = StringZZZ.abbreviateStrict(sTest, 1);
+				fail("Method should have thrown an exception");
+			 
+			}catch(ExceptionZZZ ez){
+				//HIER WIRD EIN FEHLER ERWARTET
+			}
+			
+			//+++++++++++++++++++
+			
+			sTest = "AAA";
+			sErg = StringZZZ.abbreviateStrict(sTest, 2);
+			System.out.println(sErg);
+			assertEquals("A.", sErg);
+			
+			//+++++++++++++++++++
+			sTest = "AAAA";
+			sErg = StringZZZ.abbreviateStrict(sTest, 3);
+			System.out.println(sErg);
+			assertEquals("A..", sErg);
+			
+			//++++++++++++++++++++
+			sTest = "AAAA";
+			sErg = StringZZZ.abbreviateStrict(sTest, 4);
+			System.out.println(sErg);
+			assertEquals("AAAA", sErg);
+			
+			//+++++++++++++++++++++
+			sTest = "AAAAA";
+			sErg = StringZZZ.abbreviateStrict(sTest, 4);
+			System.out.println(sErg);
+			assertEquals("A...", sErg);
+			
+			//+++++++++++++++++++++
+			sTest = "abcdefg";
+			sErg = StringZZZ.abbreviateStrict(sTest, 4);
+			System.out.println(sErg);
+			assertEquals("a...", sErg);
+			
+			//+++++++++++++++++++
+			sTest = "abcdefg";
+			sErg = StringZZZ.abbreviateStrict(sTest, 5);
+			System.out.println(sErg);
+			assertEquals("ab...", sErg);
+			
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testAbbreviateDynamic(){
+		try{
+			String sTest = "";
+			String sErg = StringZZZ.abbreviateDynamic(sTest, 2);
+			assertEquals("", sErg); 
+			
+			//+++++++++++++++++
+			sTest = "A";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 1);
+			assertEquals("A", sErg);
+			
+			//++++++++++++++++++
+			try{
+				sTest = "AA";
+				sErg = StringZZZ.abbreviateDynamic(sTest, 1);
+				fail("Method should have thrown an exception");
+			 
+			}catch(ExceptionZZZ ez){
+				//HIER WIRD EIN FEHLER ERWARTET
+			}
+			
+			//+++++++++++++++++++
+			
+			sTest = "AAA";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 2);
+			System.out.println(sErg);
+			assertEquals("A.", sErg);
+			
+			//+++++++++++++++++++
+			
+			sTest = "AAA";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 3);
+			System.out.println(sErg);
+			assertEquals("AAA", sErg);
+			
+			//+++++++++++++++++++
+			sTest = "AAAA";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 3);
+			System.out.println(sErg);
+			assertEquals("AA.", sErg);
+			
+			//++++++++++++++++++++
+			sTest = "AAAAA";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 3);
+			System.out.println(sErg);
+			assertEquals("A..", sErg);
+			
+			//+++++++++++++++++++++
+			sTest = "AAAAA";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 4);
+			System.out.println(sErg);
+			assertEquals("AAA.", sErg);
+			
+			//+++++++++++++++++++++
+			sTest = "abcdefg";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 4);
+			System.out.println(sErg);
+			assertEquals("a...", sErg); /// DAS IST EINE BESONDERHEIT, da besonders langer String
+			
+			//+++++++++++++++++++
+			sTest = "abcdefg";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 5);
+			System.out.println(sErg);
+			assertEquals("abc..", sErg);
+			
+			//++++++++++++++++++
+			sTest = "abcdefghijklmenop";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 6); //Auch hier wieder Besonderheit, da besonders langer String
+			System.out.println(sErg);
+			assertEquals("abc...", sErg);
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	public void testAllIndexOf(){
 		String sTest = "das:ist:ein:Test:";
 		String [] saToFind = {":"};
