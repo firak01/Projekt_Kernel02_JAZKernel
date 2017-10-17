@@ -1030,4 +1030,30 @@ public void testVecMidFirst(){
 		//	fail("Method throws an exception." + ez.getMessageLast());
 		//}
 	}
+	
+	public void testShorten(){
+		try{
+			boolean bErg = false;
+				
+			String sString = "Lorem Ipsum";
+			String sMatch = "Lorem Ipsum";
+			
+			String sErg = StringZZZ.toShorten(sString, StringZZZ.iSHORTEN_METHOD_NONE, 1);		
+			assertTrue(sMatch.equals(sErg));
+			
+			sMatch = "Lrm psm";			
+			sErg = StringZZZ.toShorten(sString, StringZZZ.iSHORTEN_METHOD_VOWEL, 1);		
+			assertTrue(sMatch.equals(sErg));
+			
+			sMatch = "Lrm Ipsm";
+			sErg = StringZZZ.toShorten(sString, StringZZZ.iSHORTEN_METHOD_VOWEL_LOWERCASE, 1);		
+			assertTrue(sMatch.equals(sErg));		
+			
+			sMatch = "Lorem psum";
+			sErg = StringZZZ.toShorten(sString, StringZZZ.iSHORTEN_METHOD_VOWEL_UPPERCASE, 1);		
+			assertTrue(sMatch.equals(sErg));																				
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		
+	}
 }//End class

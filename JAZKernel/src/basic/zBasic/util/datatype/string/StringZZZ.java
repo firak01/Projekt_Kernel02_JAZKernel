@@ -41,6 +41,12 @@ import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
  */
 public class StringZZZ implements IConstantZZZ{
 	public static final String  sREPLACE_FAR_FROM_MARK = "<NOREPLACE>";             //Dies wird tempor�r in einen String gesetzt, damit der Wert nicht ersetzt wird.
+	
+	public static final int iSHORTEN_METHOD_NONE = 0; //in der ToShorten(...)-Funktion verwendete Option, hier "nix kürzen"
+	public static final int iSHORTEN_METHOD_VOWEL_LOWERCASE = 1; //in der ToShorten(...)-Funktion verwendete Option, die Vokale zu elimenieren (nur Kelinbuchstaben)
+	public static final int iSHORTEN_METHOD_VOWEL_UPPERCASE = 2; //in der ToShorten(...)-Funktion verwendete Option, die Vokale zu elimenieren (nur Großbuchstaben)
+	public static final int iSHORTEN_METHOD_VOWEL=3; //Sowohl Groß- als auch Kleinbuschstaben. 
+	
 	private StringZZZ(){
 		//zum 'Verstecken" des Konstruktors
 	}
@@ -926,6 +932,64 @@ public class StringZZZ implements IConstantZZZ{
 		    return sReturn;
 		}
 		
+		public static String toShorten(String s, int iShortenMethodType, int iOffset) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(null==s) break main;
+			
+				if(StringZZZ.isEmpty(s)) {
+					sReturn = new String("");
+					break main;
+				}
+								
+				//Ersetz werden nur Worte >= 3 Buchstaben mehr als das OFFSET
+				if(s.length() <= 3 + iOffset){
+					sReturn = s;
+					break main;
+				}
+				
+				String sOffset = s.substring(0,iOffset);
+				String sToParse = s.substring(iOffset);
+				
+				org.apache.regexp.RE objReRemove = null;
+				switch(iShortenMethodType){
+				case StringZZZ.iSHORTEN_METHOD_NONE:
+					break;
+				case StringZZZ.iSHORTEN_METHOD_VOWEL_LOWERCASE:					
+					objReRemove = new org.apache.regexp.RE("[aeiou]\\B");				//als Beispiel für einen sinnvollen Parameter: Entferne alle Vokale...Wortende:		string.replaceAll("[aeiou]\\B", "")
+					break;
+				case StringZZZ.iSHORTEN_METHOD_VOWEL_UPPERCASE:					
+					objReRemove = new org.apache.regexp.RE("[AEIOU]\\B");				
+					break;
+				case StringZZZ.iSHORTEN_METHOD_VOWEL:					
+					objReRemove = new org.apache.regexp.RE("[aAeEiIoOuU]\\B");		
+					break;
+				default:
+					ExceptionZZZ ez = new ExceptionZZZ("Not configured ShortenMethodType.", iERROR_PARAMETER_VALUE, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;					
+				}
+				
+											
+//				String sReplace = StringZZZ.midBounds(sString2Parse, 1, 1);
+//				boolean bTest = objReVowel.match(sReplace);
+//				if(bTest==true){
+//					sReturn = sString2Parse;
+//					break main;
+//				}
+				
+				
+			if(objReRemove!=null){
+				sReturn = objReRemove.subst(sToParse,"");
+			}else{
+				sReturn = sToParse; //ausser Spesen nix gewesen....
+			}
+			sReturn = sOffset + sReturn;
+				
+			}
+		    return sReturn;
+		}
+		
+		
 		/* http://www.kodejava.org/examples/266.html
 		 * Von FGL angepasst
 		 */
@@ -1249,7 +1313,7 @@ public class StringZZZ implements IConstantZZZ{
             //(nicht y, 1  mal vorkommend, und danach ss oder ss am Anfang)
 		
 			
-			org.apache.regexp.RE objReVowel = new org.apache.regexp.RE("[aeou]{3,}");  //es dürfen keine 3 Vokale aufeinander folgen z.B. aus "treuer" soll nicht "tre�r" werden. 
+			org.apache.regexp.RE objReVowel = new org.apache.regexp.RE("[aeou]{3,}");  //es dürfen keine 3 Vokale aufeinander folgen z.B. aus "treuer" soll nicht "treür" werden. 
 						
 			String sReplace = StringZZZ.midBounds(sString2Parse, 1, 1);
 			boolean bTest = objReVowel.match(sReplace);
