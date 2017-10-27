@@ -6,6 +6,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ;
 import basic.zBasic.util.persistence.jdbc.UrlLogicZZZ;
@@ -83,7 +84,7 @@ public class EnumSetMappedZZZTest extends TestCase{
 				//++++++++++++++++++++++				
 				//Varainte C) Hole das benötigte EnumSet aus der Enumeration selbst, unter intensivem Einsatz von Reflection.
 				//                Dabei reicht der Name der Klasse aus PLUS der Factory, die ihn dan verarbeitet.
-				IEnumSetFactoryZZZ objFactory = EnumSetMappedTestFactoryZZZ.getInstance();	
+				IEnumSetFactoryZZZ objFactory = EnumSetTestFactoryZZZ.getInstance();	
 				EnumSetMappedUtilZZZ objEnumUtilC = new EnumSetMappedUtilZZZ(objFactory, EnumSetMappedTestTypeZZZ.class);
 				EnumSet<?> setEnumGeneric = objEnumUtilC.getEnumSetCurrent();
 				
@@ -97,7 +98,7 @@ public class EnumSetMappedZZZTest extends TestCase{
 				
 				//++++++++++++++++++++++
 				//Variante D) wie C), nur noch directer
-				IEnumSetFactoryZZZ objFactoryD = EnumSetMappedTestFactoryZZZ.getInstance();	
+				IEnumSetFactoryZZZ objFactoryD = EnumSetTestFactoryZZZ.getInstance();	
 				EnumSetMappedUtilZZZ objEnumUtilD = new EnumSetMappedUtilZZZ(objFactoryD, EnumSetMappedTestTypeZZZ.class);
 				
 				//Positivfall

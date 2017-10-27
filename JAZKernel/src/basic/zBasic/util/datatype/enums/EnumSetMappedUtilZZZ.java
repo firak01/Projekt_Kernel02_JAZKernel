@@ -1,4 +1,4 @@
-package basic.zBasic.util.abstractEnum;
+package basic.zBasic.util.datatype.enums;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -12,6 +12,9 @@ import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 

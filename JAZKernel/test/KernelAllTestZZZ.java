@@ -1,6 +1,5 @@
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import basic.zBasic.util.abstractEnum.EnumSetMappedUtilZZZTest;
 import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZTest;
@@ -10,6 +9,7 @@ import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
 import basic.zBasic.util.abstractList.VectorZZZTest;
 import basic.zBasic.util.data.DataStoreZZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
+import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZTest;

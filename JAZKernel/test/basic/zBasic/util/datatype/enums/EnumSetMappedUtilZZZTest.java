@@ -1,11 +1,16 @@
-package basic.zBasic.util.abstractEnum;
+package basic.zBasic.util.datatype.enums;
 
 import java.util.EnumSet;
 import java.util.Set;
 
 import junit.framework.TestCase;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractEnum.EnumSetTestFactoryZZZ;
+import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
 public class EnumSetMappedUtilZZZTest  extends TestCase{
 	 private HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ> hmTestGenerics = null;
@@ -44,7 +49,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 				assertTrue("3 Elemente im Set erwartet.", iSize==3);
 				
 				//Generischer Zugriff, ist  nicht ganz möglich, darum Verwendung der Factory Klasse
-				IEnumSetFactoryZZZ objFactory = EnumSetMappedTestFactoryZZZ.getInstance();				
+				IEnumSetFactoryZZZ objFactory = EnumSetTestFactoryZZZ.getInstance();				
 				Class objClass = EnumSetMappedTestTypeZZZ.class;
 				EnumSetMappedUtilZZZ enumSetUtil = new EnumSetMappedUtilZZZ(objFactory, objClass);
 				
@@ -94,7 +99,7 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 				
 				//Variante C) direkter
 				//Generischer Zugriff, ist  nicht ganz möglich, darum Verwendung der Factory Klasse
-				IEnumSetFactoryZZZ objFactory = EnumSetMappedTestFactoryZZZ.getInstance();	
+				IEnumSetFactoryZZZ objFactory = EnumSetTestFactoryZZZ.getInstance();	
 				Class objClass = EnumSetMappedTestTypeZZZ.class;
 				EnumSetMappedUtilZZZ enumSetUtil = new EnumSetMappedUtilZZZ(objFactory, objClass);
 				

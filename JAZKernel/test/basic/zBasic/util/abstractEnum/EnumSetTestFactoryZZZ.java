@@ -12,24 +12,24 @@ import basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ;
 import basic.zKernel.KernelZZZ;
 
-public class EnumSetMappedTestFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ{
+public class EnumSetTestFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ{
 
-private static EnumSetMappedTestFactoryZZZ objEnumFactory = null;  //muss static sein, wg. getInstance()!!!
+private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein, wg. getInstance()!!!
 	
 	/**Konstruktor ist private, wg. Singleton
 	 * @param objKernel
 	 * @throws ExceptionZZZ
 	 */
-	private EnumSetMappedTestFactoryZZZ(KernelZZZ objKernel) throws ExceptionZZZ{
+	private EnumSetTestFactoryZZZ(KernelZZZ objKernel) throws ExceptionZZZ{
 		super();
 	}
-	private EnumSetMappedTestFactoryZZZ(){
+	private EnumSetTestFactoryZZZ(){
 		super();
 	}
 	
-	public static EnumSetMappedTestFactoryZZZ getInstance(){
+	public static EnumSetTestFactoryZZZ getInstance(){
 		if(objEnumFactory==null){
-			objEnumFactory = new EnumSetMappedTestFactoryZZZ();
+			objEnumFactory = new EnumSetTestFactoryZZZ();
 		}
 		return objEnumFactory;		
 	}
