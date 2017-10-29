@@ -63,8 +63,14 @@ private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein,
 			if (sClassNameEnum.equals("basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ")){
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 	        	out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
-	        	objEnumSetReturn= EnumSetMappedTestTypeZZZ.getEnumSet();     
-			         
+	        	objEnumSetReturn= EnumSetMappedTestTypeZZZ.getEnumSet();    
+	        	
+	        	//TODO: Dieser Typ ist im THM-Projekt definiert. Das darf aber im Kernel nicht eingebunden werden
+	        	//TODO: Den Typen auch im Kernel einbauen.
+//			}else if(sClassNameEnum.equals("basic.zBasic.util.abstractEnum.EnumSetDefaulttextTestTypeZZZ")){
+//				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
+//	        	out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
+//	        	objEnumSetReturn= EnumSetDefaulttextTestTypeZZZ.getEnumSet();     
 	        }else{
 	        	//Wenn es die Klasse nicht gibt. Keinen Fehler werfen, da ggfs. über einen Vererbungsmechanismus ja zuerst in der Superklasse nachgesehen wurde und dann ggfs. weiter in Kindklassen gesucht wird.
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
