@@ -122,7 +122,7 @@ public class HashtableSortedZZZ  implements IObjectZZZ{
 		return objReturn;
 	}
 	
-	/** Object, Den Key des letzten Objekts zur�ckgeben. (Das ist das letzte Objekt des inneren Vektors.)
+	/** Object, Den Key des letzten Objekts zurückgeben. (Das ist das letzte Objekt des inneren Vektors.)
 	* Lindhauer; 27.04.2006 08:13:38
 	 * @return Object
 	 */
@@ -144,7 +144,7 @@ public class HashtableSortedZZZ  implements IObjectZZZ{
 		 return objReturn;
 	}
 	
-	/** Object, Den Key an der n�chsten Indexposition holen. Dabei wird der Index im 1 erh�ht.
+	/** Object, Den Key an der nächsten Indexposition holen. Dabei wird der Index im 1 erhöht.
 	* Lindhauer; 27.04.2006 14:16:21
 	 * @return Object
 	 */
