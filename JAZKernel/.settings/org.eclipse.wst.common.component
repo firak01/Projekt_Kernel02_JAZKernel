@@ -11,5 +11,8 @@
         <dependent-module archiveName="jakarta-regexp-1.3.jar" deploy-path="/" handle="module:/classpath/lib/ZKernelFileCollection/jakarta-regexp-1.3.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="guava-10.0.1.jar" deploy-path="/" handle="module:/classpath/lib/ZKernelFileCollection/google/guava-10.0.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>
