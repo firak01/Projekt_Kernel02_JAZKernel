@@ -35,7 +35,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	}
 	
 	/** Vergleiche die Werte der in der HashMap gespeicherten Objekte. 
-	 *   Aber: Gib eine Methode an, �ber die die Werte der Objekte erst einmal ermittelt werden sollen.
+	 *   Aber: Gib eine Methode an, über die die Werte der Objekte erst einmal ermittelt werden sollen.
 	 *   Die daraus reslutierenden Werte werden mit .equals() miteinander verglichen.
 	* @param hm
 	* @param sMethod
@@ -167,8 +167,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				obj = objTestInt; //F�r das Exception Handling
 				Method mInt = Mopex.getSupportedMethod(objTestInt.getClass(), sMethodName, null);
 				
-				sMethod = sMethodName; //F�r das Exception Handling
-				obj = objTestExt; //F�r das Exception Handling
+				sMethod = sMethodName; //Für das Exception Handling
+				obj = objTestExt; //Für das Exception Handling
 				Method mExt = Mopex.getSupportedMethod(objTestExt.getClass(), sMethodName, null);
 				
 				if(mInt==null | mExt==null){

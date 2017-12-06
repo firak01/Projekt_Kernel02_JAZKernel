@@ -27,13 +27,13 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *            Entferne nun alle diese Doppelten und lasse den letzten Wert bestehen.
  *            
  *     Merke: Es soll keinen Konstruktor mit new(HashMap) geben und auch keine importIt(HashMap).
- *                Zuordnung nur �ber TypeCast    HashMapIndexedZZZ hmIndexed = (HashMapIndexedZZZ) hmWhichShouldBeIndexed.
+ *                Zuordnung nur über TypeCast    HashMapIndexedZZZ hmIndexed = (HashMapIndexedZZZ) hmWhichShouldBeIndexed.
  * @author lindhaueradmin
  *
  */
-public class HashMapIndexedZZZ extends HashMap implements  IConstantZZZ{
+public class HashMapIndexedZZZ<T,X> extends HashMap implements  IConstantZZZ{
 
-	/** Pr�fe, ob die übergebene HashMap die vorausgesetzte Struktur besitzt.
+	/** Prüfe, ob die übergebene HashMap die vorausgesetzte Struktur besitzt.
 	 *   a) Alle Keys sind Integer Werte
 	 *   b) Alle Elemente sind Arraylisten, die ebenfalls nur Integer Werte enthalten.
 	 *   
