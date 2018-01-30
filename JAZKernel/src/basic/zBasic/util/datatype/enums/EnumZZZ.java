@@ -38,6 +38,20 @@ public class EnumZZZ {
         String identifier = prefix.replace('$', '.') + "." + enumInstance.name();
         return identifier;
     }
+    
+    /** FGL: Fehlte mir irgendwie an dieser Stelle.     
+     *
+     * @param enumInstance  the enum instance that's name should be returned
+     *
+     * @return  the name
+     *
+     * @throws IllegalArgumentException if {@code enumInstance == null}
+     */
+    public static String getEnumName(Enum<?> enumInstance) {
+        EnsureArgument.notNull(enumInstance, "enumInstance must not be null");        
+        String identifier = enumInstance.name();
+        return identifier;
+    }
 
     /**
      * Gets all enum constants names of the given enum.
