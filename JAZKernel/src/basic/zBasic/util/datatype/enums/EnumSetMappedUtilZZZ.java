@@ -18,81 +18,23 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-public class EnumSetMappedUtilZZZ extends ObjectZZZ{
-	private EnumSet<?> enumSetCurrent=null;
-	private IEnumSetFactoryZZZ objEnumSetFactory=null;
-	
-	public EnumSetMappedUtilZZZ(){		
+public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
+		public EnumSetMappedUtilZZZ(){		
 	}
 	public EnumSetMappedUtilZZZ(EnumSet<?>enumSetUsed){
-		this.setEnumSetCurrent(enumSetUsed);
+		super(enumSetUsed);
 	}
 	public EnumSetMappedUtilZZZ(Class<?>objClass)throws ExceptionZZZ{
-		if(objClass==null){
-			ExceptionZZZ ez  = new ExceptionZZZ("ClassObject", iERROR_PARAMETER_MISSING, this.getClass().getName(), ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
-		
-		IEnumSetFactoryZZZ objEnumSetFactory = EnumSetFactoryZZZ.getInstance();
-		this.setEnumFactoryCurrent(objEnumSetFactory);
-		
-		EnumSet<?> enumSetUsed = this.getEnumSet(objClass);
-		this.setEnumSetCurrent(enumSetUsed);
-		
-	
-		
+		super(objClass);
 	}
 	public EnumSetMappedUtilZZZ(IEnumSetFactoryZZZ objEnumSetFactory, Class<?> objClass) throws ExceptionZZZ{
-		if(objEnumSetFactory==null){
-			ExceptionZZZ ez  = new ExceptionZZZ("EnumSetFactoryObject", iERROR_PARAMETER_MISSING, this.getClass().getName(), ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
-		if(objClass==null){
-			ExceptionZZZ ez  = new ExceptionZZZ("ClassObject", iERROR_PARAMETER_MISSING, this.getClass().getName(), ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
-		
-		this.setEnumFactoryCurrent(objEnumSetFactory);
-		
-		EnumSet<?> enumSetUsed = this.getEnumSet(objClass);
-		this.setEnumSetCurrent(enumSetUsed);
+		super(objEnumSetFactory, objClass);
 	}
 	public EnumSetMappedUtilZZZ(IEnumSetFactoryZZZ objEnumSetFactory){
 		this.setEnumFactoryCurrent(objEnumSetFactory);
 	}
 	
-	public IEnumSetFactoryZZZ getEnumSetFactoryInstanceCurrent(){
-		return this.objEnumSetFactory; 
-	}
-	public void setEnumFactoryCurrent(IEnumSetFactoryZZZ objEnumSetFactory){
-		this.objEnumSetFactory = objEnumSetFactory;
-	}
-	
-	//##################################
-	/*
-	 * Ziel ist es eine Instanz der Enum Klasse zu bekommen. Die Instanz ist notwendig, um auf die Static-Methode getEnumSet() aufrufen zu können.
-	 * 
-	 * Versuch über ein Factory Klasse an die Instanz zu gelangen...
-	 */
-	public EnumSet<?> getEnumSet(Class objClassEnumSetUsed) throws ExceptionZZZ{
-		main:{
-			if(objClassEnumSetUsed==null){
-				ExceptionZZZ ez  = new ExceptionZZZ("ClassObject", iERROR_PARAMETER_MISSING, this.getClass().getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-	
-			//EnumSetFactoryZZZ objFactory = EnumSetFactoryZZZ.getInstance(); //Nicht merhr direkt, sondern etwas dynamischer auf ein Klasse zugreifen
-			IEnumSetFactoryZZZ objFactory = this.getEnumSetFactoryInstanceCurrent();
-			if (objFactory==null){
-				ExceptionZZZ ez  = new ExceptionZZZ("ObjectFactoryCurrent is Null ", iERROR_PARAMETER_VALUE, this.getClass().getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			EnumSet<?> x = objFactory.getEnumSet(objClassEnumSetUsed);
-			this.setEnumSetCurrent(x);			
-		}//end main:
-		return this.getEnumSetCurrent();
-	}
-	
+		
 	//##################################
 	/* 
 	 * Ziel ist es eine Instanz der Enum Klasse zu bekommen. Die Instanz ist notwendig, um auf die Static-Methode getEnumSet() aufrufen zu können.
@@ -353,15 +295,7 @@ public class EnumSetMappedUtilZZZ extends ObjectZZZ{
 		}//end main:
 		return this.getEnumSetCurrent();	
 	}
-	public EnumSet<?> getEnumSetCurrent() {
-		return (EnumSet<?>) this.enumSetCurrent;
-	}
-
-	public void setEnumSetCurrent(EnumSet<?> enumSetCurrent) {
-		this.enumSetCurrent = enumSetCurrent;
-	}
-	
-	
+		
 	//###############
 	public boolean startsWithAnyAlias(String sToFind){
 		boolean bReturn = false;
@@ -514,32 +448,6 @@ public class EnumSetMappedUtilZZZ extends ObjectZZZ{
 		
 		//getAbbreviation();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
-			String sReturn = null;
-			main:{
-		    if (clazz==null || name==null || name.isEmpty()) break main;
-		  
-		    
-		    IEnumSetMappedZZZ[] enumaSetMapped = clazz.getEnumConstants();
-			for(IEnumSetMappedZZZ driver : enumaSetMapped) {
-//			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
-//			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
-//			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
-				
-			
-				if(!StringZZZ.isEmpty(driver.getDescription())){
-				  if(driver.name().equals(name)){
-					  sReturn = driver.getDescription();
-					  break main;
-				  }
-			  }
-		
-			}//end for
-			}//end main:
-			return sReturn;
-		}
-		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static String getEnumConstant_AbbreviationValue(Class<IEnumSetMappedZZZ> clazz, String name) {
 			String sReturn = null;
 			main:{
@@ -565,6 +473,32 @@ public class EnumSetMappedUtilZZZ extends ObjectZZZ{
 			return sReturn;
 		}
 		
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
+					String sReturn = null;
+					main:{
+				    if (clazz==null || name==null || name.isEmpty()) break main;
+				  
+				    
+				    IEnumSetMappedZZZ[] enumaSetMapped = clazz.getEnumConstants();
+					for(IEnumSetMappedZZZ driver : enumaSetMapped) {
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
+						
+					
+						if(!StringZZZ.isEmpty(driver.getDescription())){
+						  if(driver.name().equals(name)){
+							  sReturn = driver.getDescription();
+							  break main;
+						  }
+					  }
+				
+					}//end for
+					}//end main:
+					return sReturn;
+				}		
+				
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static Integer getEnumConstant_PositionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
 			Integer intValue = null;
