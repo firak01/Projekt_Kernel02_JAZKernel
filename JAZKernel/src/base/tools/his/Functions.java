@@ -133,12 +133,11 @@ public final class Functions {
      * @param index     zero based index at which the element should be extracted; must be &gt;= 0
      *
      * @return the extraction function
-     */
-    
-    //Erst ab Java 1.7
-//    public static <T> Function<T[], T> elementAtIndex(final int index) {
-//        return new ElementAtIndexFunction<>(index);
-//    }
+     */       
+    public static <T> Function<T[], T> elementAtIndex(final int index) {
+    	//Erst ab Java 1.7 return new ElementAtIndexFunction<>(index);
+    	return new ElementAtIndexFunction<T>(index);//FGL: Eclipse Vorschlag: Insert Inferred Type
+    }
 
     private static final class ElementAtIndexFunction<T> implements Function<T[], T> {
         private final int index;

@@ -6,6 +6,7 @@ package basic.zBasic.util.datatype.string;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -839,6 +840,26 @@ public class StringZZZ implements IConstantZZZ{
 	 */
 	public static boolean isNumeric(String sString){
 		return StringUtils.isNumeric(sString);
+	}
+	
+	/** Packt ein Stringarray und einen String zusammen.
+	 *  Meke: In Java 8 gibt es diese Funktion schon. Hier für andere Java Versionen einsetzbar.
+	 * @param saString
+	 * @param sString
+	 * @return
+	 */
+	public static String join(String[] saString, String sString, String sFlag) throws ExceptionZZZ {
+		//FGL: Erst ab Java 8: return String.join(File.separator, pathElements);
+    	String sReturn = new String("");
+	    main:{    		
+			if(StringZZZ.isEmpty(sFlag)){
+				sFlag = "BEFORE";				
+			}
+
+	        String[] saTemp = StringArrayZZZ.plusString(saString, File.separator, sFlag);		
+	       	sReturn = StringArrayZZZ.implode(saTemp);
+	    }//End main
+    	return sReturn;
 	}
 	
 	/** The first letter of the string will become a capital letter. E.g. "abcd" => "Abcd"
