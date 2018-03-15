@@ -754,7 +754,9 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	/**returns true if the string is empty or null. 
+	/**returns true if the string is empty or null.
+	 * FGL: D.h. NULL oder Leerstring 
+	 * 
 	 * Uses Jakarta commons.lang.
 	 * @param sString
 	 * @return, 
@@ -773,6 +775,17 @@ public class StringZZZ implements IConstantZZZ{
 		return false;
 	}
 	
+	/**returns true if the string is empty or null or containing blanks only.
+	 * FGL: D.h. NULL oder Leerstring oder ein String mit nur Leerzeichen drin.
+	 * 
+	 * Uses Jakarta commons.lang.
+	 * @param sString
+	 * @return, 
+	 *
+	 * @return boolean
+	 *
+	 * javadoc created by: 0823, 24.07.2006 - 08:52:50
+	 */
 	public static boolean isBlank(String sString){
 		return StringUtils.isBlank(sString);
 	}
