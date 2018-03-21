@@ -47,7 +47,7 @@ public class RandomZZZ {
 	}
 	
 	/** 
-	 * Zufallszahl zwischen <b>min</b> einschlieﬂlich und <b>max</b> einschlieﬂlich.
+	 * Zufallszahl zwischen <b>min</b> einschlie√ülich und <b>max</b> einschlie√ülich.
 	 * @param min
 	 * @param max
 	 * @return int
