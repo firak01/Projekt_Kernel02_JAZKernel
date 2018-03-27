@@ -1,10 +1,13 @@
 package basic.zBasic.util.abstractList;
 
+import java.awt.BorderLayout;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import javax.swing.Box;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -17,11 +20,48 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *  Merke: Sinnvoll ist das nur, wenn die MetaInformationen über die Objekte, die in der inneren HashMap gespeichert wurden 
  *             an einer anderen Stelle bekannt sind. Wie beispielsweise in der Klasse DataStoreZZZ.  
  *             
- *  Merke: Es ist dabei nicht m�glich mehrere Werte unter dem gleichen Schl�ssel abzulegen !!!
+ *  Merke: Es ist dabei nicht möglich mehrere Werte unter dem gleichen Schlüssel abzulegen !!!
  * 
  * TODO: Eine Klasse HashmapCascasdedZZZ wäre auch nicht schlecht. Dabei sollte die Anzahl der Hashmaps beliebig tief verschachtelt sein. 
  * @author lindhaueradmin
- *
+ * 
+ * 
+ * Merke: 
+ * 20180326: Diese Multi Hashmap muss man leichter durchlaufen können. So kommt ein Fehler:
+//		FEHLER     Exception in thread "main" java.lang.ClassCastException: java.util.HashMap$Entry cannot be cast to java.util.HashMap		     
+//		     Set<HashMap<?, ?>> setVariant = hmCatalog.entrySet();
+//		     //Set<HashMap> setVariant = hmType.entrySet();
+//		     for (Iterator<HashMap<?, ?>> iteratorVariantType = setVariant.iterator(); iteratorVariantType.hasNext();) {
+//		    	    HashMap<?,?>hmVariantType = iteratorVariantType.next();
+//		    	    
+//		    	    for(Iterator<?> iteratorVariant = hmVariantType.entrySet().iterator();iteratorVariant.hasNext();){
+//		    	    	Entry<String, Box> variant = (Entry<String, Box>) iteratorVariant.next();
+//		    	    	String sString = variant.getKey();
+//		    	    	Box boxTemp = variant.getValue();
+//		    	    	String sNameBoxTemp = boxTemp.getName();
+//		    	    	System.out.println("String: '" + sString + "' | '" + sNameBoxTemp + "'");
+//		    	    	
+//		    	    	this.add(BorderLayout.CENTER, boxTemp);
+//		    	    }
+//		    	    
+//		    	}
+ * 
+ * 20180326: Daher kann man alle Elemente der HashMapMultiZZZ nun so durchlaufen
+   HashMapMultiZZZ hmCatalog = this.getVariantCatalog().getMapCatalog();
+   for (Iterator<String> iteratorVariantTypes = hmCatalog.getOuterKeySetIterator(); iteratorVariantTypes.hasNext();) {
+	 String sVariantType = (String) iteratorVariantTypes.next();
+	 System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX String: '" + sVariantType + "'");
+
+	 //Set<String> setVariant = (Set<String>) hmCatalog.getInnerKeySet(sVariantType);
+	 //for (Iterator<String> iteratorVariant = setVariant.iterator(); iteratorVariant.hasNext();) {
+	 for (Iterator<String> iteratorVariant = hmCatalog.getInnerKeySetIterator(sVariantType); iteratorVariant.hasNext();) {
+		 String sVariant = (String) iteratorVariant.next();
+		 System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX String: '" + sVariant + "'");
+
+		 Box boxTemp = (Box) hmCatalog.get(sVariantType, sVariant);//z.B.: Box boxTemp = (Box) hmCatalog.get("ARMY","new_sale");		    		 		    		 		     
+	     this.add(BorderLayout.CENTER, boxTemp);				    
+	 }		    	 		    	
+ }
  */
 public class HashMapMultiZZZ implements IConstantZZZ, Map{
 	private HashMap hmOuter=new HashMap();
@@ -168,6 +208,56 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 	public Object get(Object arg0) {	
 		return hmOuter.get(arg0);
 	}
+	
+	public Set<?> getInnerKeySet(String sOuterKey){
+		Set<?> setReturn = null;
+		main:{
+			if(sOuterKey==null) break main;
+			if(!this.getOuterHashMap().containsKey(sOuterKey)){
+				break main;
+			}
+						
+			HashMap hmOuterReturn = this.getOuterHashMap();
+			HashMap hmInnerReturn = (HashMap) hmOuterReturn.get(sOuterKey);
+			setReturn = hmInnerReturn.keySet();
+		}//end main:
+		return setReturn;
+	}
+	
+	public Iterator getInnerKeySetIterator(String sOuterKey){
+		Iterator iteratorReturn = null;
+		main:{
+			if(sOuterKey==null) break main;
+			if(!this.getOuterHashMap().containsKey(sOuterKey)){
+				break main;
+			}
+			
+			Set<?> set = this.getInnerKeySet(sOuterKey);
+			if(set!=null){
+				iteratorReturn = set.iterator();
+			}
+		}//end main:
+		return iteratorReturn;
+	}
+	
+	public Set<?> getOuterKeySet(){
+		Set<?> setReturn = null;
+		main:{
+			setReturn = this.getOuterHashMap().keySet();
+		}//end main:
+		return setReturn;
+	}
+	
+	public Iterator getOuterKeySetIterator(){
+		Iterator iteratorReturn = null;
+		main:{
+			Set<?> set = this.getOuterKeySet();
+			if(set!=null){
+				iteratorReturn = set.iterator();
+			}
+		}//end main:
+		return iteratorReturn;
+	}
 
 	public Object put(Object arg0, Object arg1) {	
 		Object objReturn = null;
@@ -215,5 +305,26 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 	public void putAll(Map arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public HashMap getHashMap(){
+		return this.hmOuter;
+	}
+	
+	/* Damit das anwndungsfreundlicher wird zwischen Outer und Inner Maps ggfs. unterscheiden.
+	 * 
+	 */
+	public HashMap getOuterHashMap(){
+		return this.hmOuter;
+	}
+	
+	public HashMap getInnerHashMap(Object objOuterKey){
+		HashMap hmReturn = null;
+		main:{
+			if(objOuterKey==null) break main;
+		
+			hmReturn = (HashMap) this.get(objOuterKey);
+		}//end main:
+		return hmReturn;
 	}
 }
