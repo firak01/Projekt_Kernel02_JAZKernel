@@ -21,7 +21,7 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
 	public KernelUseObjectZZZ(){		
-		//FGL 20080422 wenn objekte diese klasse erweitern scheint dies immer ausgefürht zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
+		//FGL 20080422 wenn objekte diese klasse erweitern scheint dies immer ausgefÃ¼rht zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
 	}
 	
 	/** This constructor declares the used Log-Object as the Kernel-LogObject.
@@ -47,7 +47,7 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 		}
 	}
 	
-	/** Dieser Konstruktor kann für Objkete verwendet werden, die auf bestimmte Bereiche der Modulkonfiguration zurückgreifen müssen UND bei denen diese Bereiche nicht dem eigenen Klassennamen entsprechen.
+	/** Dieser Konstruktor kann fï¿½r Objkete verwendet werden, die auf bestimmte Bereiche der Modulkonfiguration zurï¿½ckgreifen mï¿½ssen UND bei denen diese Bereiche nicht dem eigenen Klassennamen entsprechen.
 	* lindhaueradmin; 12.04.2007 15:46:51
 	 * @param objKernel
 	 * @param objKernelSection
