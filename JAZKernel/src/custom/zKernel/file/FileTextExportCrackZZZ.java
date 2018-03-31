@@ -50,7 +50,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 							check:{
 								//Konfigurationsdatei holen
 								objFileConfigIniExport = objKernel.getFileConfigIniByAlias("Export");
-								//Darin wird die Existenz, etc. schon geprüft
+								//Darin wird die Existenz, etc. schon geprï¿½ft
 								//Dadurch dass sofort das IniZZZ-Object verwendet wird, braucht man es nur einmal einzulesen
 								
 								//Auslesen des Zielverzeichnisses 																				
@@ -68,7 +68,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 						String sBaseDirectory = objFileTemp.getParent();
 						String sBaseFile = objFileTemp.getName();
 						
-						//!!! nächste Datei ermitteln
+						//!!! nï¿½chste Datei ermitteln
 						FileZZZ objFileToCrack = new FileZZZ(sBaseDirectory, sBaseFile, "");
 						 String sFileExpanded = objFileToCrack.getNameExpandedCurrent();
 			 
@@ -78,7 +78,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 						//!!! die configuration (quasi das mapping von csv-->ini)
 						String sDirConfigAction = objKernel.getParameterByProgramAlias(objFileConfigIniExport, this.getProgramAliasCurrent(), "ActionPath");
 						String sFileConfigAction = objKernel.getParameterByProgramAlias(objFileConfigIniExport, this.getProgramAliasCurrent(), "ActionFilenameBasis");
-						FileIniZZZ objFileConfigIniAction = new FileIniZZZ(objKernel, sDirConfigAction,sFileConfigAction,null);
+						FileIniZZZ objFileConfigIniAction = new FileIniZZZ(objKernel, sDirConfigAction,sFileConfigAction,(String[])null);
 						
 						//!!! die Transformation starten
 						FileTransformCsv2IniZZZ objCrack = new FileTransformCsv2IniZZZ(objKernel, objLog, objCsv,objFileConfigIniAction, sDirTarget, null);

@@ -7,6 +7,7 @@
 package custom.zKernel.file.ini;
 
 import java.io.File;
+import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.KernelZZZ;
@@ -31,6 +32,10 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 	public FileIniZZZ(KernelZZZ objKernel, File objFile, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, objFile, saFlagControl);
 	}
+	
+	public FileIniZZZ(KernelZZZ objKernel, File objFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
+		super(objKernel, objFile, hmFlag);
+	}
 
 
 
@@ -47,6 +52,9 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 		super(objKernel, sDirectory, sFile, saFlagControl);
 	}
 
+	public FileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
+		super(objKernel, sDirectory, sFile, hmFlag);
+	}
 
 
 	

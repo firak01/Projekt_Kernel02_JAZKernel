@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
@@ -14,6 +15,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.file.ini.KernelFileIniZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
 import custom.zKernel.LogZZZ;
@@ -375,7 +377,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );					
 					if(StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
 					
-					objReturn = new FileIniZZZ(this,  sFilePath,sFileName,null);
+					HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);					
+					objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlag);					
 					/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen
 					if(objReturn.exists()==false){
 						sMethod = this.getMethodCurrentName();
@@ -593,7 +597,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}
 		
 		//first, get the Ini-file-object
-		FileIniZZZ objIni = new FileIniZZZ(this,  objFileModule, null);
+		HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+		hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+		FileIniZZZ objIni = new FileIniZZZ(this,  objFileModule, hmFlag);
 		String sSection = this.getSystemKey();
 		objIni.setPropertyValue(sSection, sParameter, sValue, bSaveImmediate);
 
@@ -692,7 +698,10 @@ MeinTestParameter=blablaErgebnis
 							}//end check:
 					
 							//first, get the Ini-file-object
-							FileIniZZZ objIni = new FileIniZZZ(this,  objFileConfig, null);
+							HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+							hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+		
+							FileIniZZZ objIni = new FileIniZZZ(this,  objFileConfig, hmFlag);
 							
 							//1. Versuch: get the value by SystemKey
 							String sModuleAlias = this.getSystemKey();
@@ -795,7 +804,10 @@ MeinTestParameter=blablaErgebnis
 						}//end check:
 					
 						//first, get the Ini-file-object
-						FileIniZZZ objIni = new FileIniZZZ(this, objFileConfig, null);
+						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+						hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+	
+						FileIniZZZ objIni = new FileIniZZZ(this, objFileConfig, hmFlag);
 	
 						//now call another method
 						sReturn = this.getParameterByProgramAlias(objIni, sProgramOrSection, sProperty);
@@ -1016,7 +1028,10 @@ MeinTestParameter=blablaErgebnis
 						}//end check:
 									
 					//1. Erstellen des FileIni-Objects
-					FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,(String[]) null);
+					HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+	
+					FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
 					
 					//2. Aufrufen einer methode mit anderer Signatur
 					this.setParameterByProgramAlias(objFileIni, sProgramOrSection, sProperty, sValueIn, bFlagSaveImmidiate);
@@ -1353,7 +1368,11 @@ String sSection = null;
 					
 					//+++ Die KernelKonfigurations-Datei
 				File objFile = this.getFileConfigKernel();
-				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, null);
+				
+				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+				hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+				
+				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, hmFlag);
 					
 				String[] saProperty = null; String sSearch = null; int iIndex;
 				File objFileTemp=null; File[] objaFileTemp=null; String sDir=null; ArrayList listaConfigured=null; ArrayList listaFile = null;

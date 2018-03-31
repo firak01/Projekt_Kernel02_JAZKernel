@@ -70,7 +70,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			//Kernel + Log - Object dem TestFixture hinzuf�gen. Siehe test.zzzKernel.KernelZZZTest
 			objKernel = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String)null);	
-			objFileIni = new FileIniZZZ(objKernel,  objFile, null);
+			objFileIni = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			 			
 			//### Die TestObjecte
 			objExpressionSolverInit = new KernelExpressionIniSolverZZZ();

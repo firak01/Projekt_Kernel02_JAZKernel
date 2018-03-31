@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import basic.zBasic.ExceptionZZZ;
@@ -19,7 +20,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -52,14 +52,23 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 
 	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
-		KernelFileIniNew_(null, sDirectory, sFilename, saFlagControl);
+		KernelFileIniNew_(null, sDirectory, sFilename, saFlagControl,null);
+	}
+	
+	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+		super(objKernel);
+		KernelFileIniNew_(null, sDirectory, sFilename, null, hmFlag);
 	}
 	
 	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile,String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
-		KernelFileIniNew_(objFile,null, null,saFlagControl);
+		KernelFileIniNew_(objFile,null, null,saFlagControl,null);
 	}
 	
+	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile,HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+		super(objKernel);
+		KernelFileIniNew_(objFile,null, null,null,hmFlag);
+	}
 	
 	
 	/** ++++++++++++++++++++++++++++++++++++++++++
@@ -71,12 +80,19 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
 		 	
 	 	try{
+	 		//Die ggf. vorhandenen Flags setzen.
+			if(hmFlag!=null){
+				for(String sKey:hmFlag.keySet()){
+					this.setFlagZ(sKey, hmFlag.get(sKey));
+				}
+			}
+	 		
 	 		
 			//setzen der �bergebenen Flags	
 				if(saFlagControlIn != null){

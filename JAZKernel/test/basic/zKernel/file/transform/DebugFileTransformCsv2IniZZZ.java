@@ -44,8 +44,8 @@ public class DebugFileTransformCsv2IniZZZ {
 			String sTargetDirectory = "c:\\tempfgl\\SI\\EDM_Interface\\file01ZZZ";
 
 			//!!! die configuration (quasi das mapping von csv-->ini)
-			FileIniZZZ objIniConfig = new FileIniZZZ(objKernel, "C:\\tempfgl\\KernelConfig","ZKernelConfigAction_transformCSV2Ini00.ini",null);
-			FileTransformCsv2IniZZZ objCrack = new FileTransformCsv2IniZZZ(objKernel, objLog, objCsv,objIniConfig, sTargetDirectory, null);
+			FileIniZZZ objIniConfig = new FileIniZZZ(objKernel, "C:\\tempfgl\\KernelConfig","ZKernelConfigAction_transformCSV2Ini00.ini",(String[]) null);
+			FileTransformCsv2IniZZZ objCrack = new FileTransformCsv2IniZZZ(objKernel, objLog, objCsv,objIniConfig, sTargetDirectory, (String[]) null);
 			objCrack.startIt();
 			
 			} catch (ExceptionZZZ e) {
