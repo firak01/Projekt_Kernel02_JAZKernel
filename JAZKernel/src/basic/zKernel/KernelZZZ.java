@@ -239,7 +239,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					break main;
 				}
 				
-				if(StringZZZ.isEmpty(this.sFileConfig)){
+				String sFileConfig = this.getFileConfigKernelName();
+				if(StringZZZ.isEmpty(sFileConfig)){
 					sLog = "Missing property: 'Configuration File-Name'";
 					System.out.println(sLog);
 					ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
@@ -248,9 +249,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}//end check
 		
 			//1. Versuch
-			if(this.sDirectoryConfig.equals("")){
-				this.sDirectoryConfig = ".";
-			}
+			String sDirectoryConfig = this.getFileConfigKernelDirectory();		
 		    objReturn = FileEasyZZZ.getFile(this.sDirectoryConfig, this.sFileConfig);
 		    if(objReturn.exists()) {
 		    	if(objReturn.isDirectory()){		
@@ -284,7 +283,45 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;
 	}
 	
-	public IniFile getFileIniConfigKernel(){
+	public String getFileConfigKernelName(){
+		return this.sFileConfig;
+	}
+	protected void setFileConfigKernelName(String sFileConfig){
+		this.sFileConfig = sFileConfig;
+	}
+	
+	public String getFileConfigKernelDirectory(){
+		if(this.sDirectoryConfig.equals("")){
+			
+				File objDir = new File(KernelZZZ.sDIRECTORY_CONFIG_DEFAULT);
+				if(objDir.exists()){
+					this.sDIRECTORY_CONFIG_DEFAULT = KernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+				}else{
+					this.sDirectoryConfig = ".";
+				}
+		}
+		return this.sDirectoryConfig;
+	}
+	protected void setFileConfigKernelDirectory(String sDirectoryConfig){
+		this.sDirectoryConfig = sDirectoryConfig;
+	}
+	
+	public IniFile getFileIniConfigKernel() throws ExceptionZZZ{
+		if(this.objIniConfig==null){
+			
+			File objFile = this.getFileConfigKernel();
+			IniFile objIni;
+			try {
+				objIni = new IniFile(objFile.getPath());
+			} catch (IOException e) {
+				String sLog = "Configuration File. Not able to create ini-FileObject.";
+				System.out.println(sLog);
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName() );
+				throw ez;
+			}
+						
+			this.objIniConfig = objIni; 
+		}
 		return this.objIniConfig;	
 	}
 	
@@ -295,17 +332,26 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	public String getApplicationKey(){
 		return this.sApplicationKey;	
 	}
+	protected void setApplicationKey(String sApplicationKey){
+		this.sApplicationKey = sApplicationKey;
+	}
 	
 	public String getSystemNumber(){
+		if(StringZZZ.isEmpty(this.sSystemNumber)){
+			this.setSystemNumber("1");
+		}
 		return this.sSystemNumber;
+	}
+	protected void setSystemNumber(String sSystemNumber){
+		this.setSystemNumber(sSystemNumber);
 	}
 
 	/**
 	 * @return sApplicationKey + "!" + sSystemNumber, also der Modulname z.B. f�r das Produktivsystem
 	 */
 	public String getSystemKey(){
-		String stemp = this.sApplicationKey;
-		String stemp2 = this.sSystemNumber;
+		String stemp = this.getApplicationKey();
+		String stemp2 = this.getSystemNumber();
 		if(!StringZZZ.isEmpty(stemp2)){
 			return stemp + "!" + stemp2;	
 		}else{
@@ -937,17 +983,17 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 		
-		//A1. Pr�fen, ob das Modul �berhaupt konfiguriert ist
+		//A1. Prüfen, ob das Modul überhaupt konfiguriert ist
 		String sModuleUsed = sModule;
 		boolean bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 		if(bModuleConfig==false){
 			
-			//A2. Versuch: Pr�fen, ob es als Systemkey konfiguriert ist
+			//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
 			sModuleUsed = this.getSystemKey();
 			bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 			if(bModuleConfig==false){
 				
-				//A3. Versuch: Pr�fen, ob es als Applikationskey konfiguriert ist
+				//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
 				sModuleUsed = this.getApplicationKey();
 				bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 				if(bModuleConfig==false){
@@ -957,7 +1003,7 @@ MeinTestParameter=blablaErgebnis
 			} //end if Versuch 2
 		}//end if Versuch 1
 		
-		//B1. Pr�fen, ob das Modul existiert
+		//B1. Prüfen, ob das Modul existiert
 		boolean bModuleExists = this.proofModuleFileExists(sModuleUsed);
 		if(bModuleExists==false){
 			ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
@@ -1600,17 +1646,16 @@ String sSection = null;
 			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileIniConfigKernel();
 			
-			//PR�FUNG: LIES EINEN .ini - DATEINAMEN AUS.
+			//PRÜFUNG: LIES EINEN .ini - DATEINAMEN AUS.
 			//Merke: Der Pfad darf leer sein. Dann wird "." als aktuelles Verzeichnis angenommen    String sFilePath = objIni.getValue(stemp,"KernelConfigPath" +sAlias );
 			
 			//1. Versuch: Systemebene
-			String stemp = this.getSystemKey();			
-			String sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAlias );
+			String sKeyUsed = this.getSystemKey();			
+			String sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile" +sAlias );
  			
 			//2. Versuch: Applilkationsebene
 			if(StringZZZ.isEmptyNull(sFileName)){
-				stemp = this.getApplicationKey();
-				sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAlias );
+				sFileName =objIni.getValue(sAlias, "KernelConfigFile"+sAlias );
 			}
 
 			if(StringZZZ.isEmpty(sFileName)) break main;
@@ -1742,7 +1787,7 @@ String sSection = null;
 						throw ez;
 					}
 				}
-				this.sApplicationKey = sApplicationKey;
+				this.setApplicationKey(sApplicationKey);
 				
 				btemp = StringZZZ.isEmpty(sSystemNumberIn);
 				if(!btemp){
@@ -1774,7 +1819,7 @@ String sSection = null;
 						throw ez;
 					}
 				}
-				this.sSystemNumber = sSystemNumber;
+				this.setSystemNumber(sSystemNumber);
 				
 				//get the Application-Configuration-File
 				//A) Directory
@@ -1802,9 +1847,9 @@ String sSection = null;
 					sDirectoryConfig = objConfig.readConfigDirectoryName();
 				}
 				if(StringZZZ.isEmpty(sDirectoryConfig)){
-					this.sDirectoryConfig = ".";//"c:\\fglkernel\\KernelConfig";				
+					this.setFileConfigKernelDirectory(".");//"c:\\fglkernel\\KernelConfig";				
 				}else{
-					this.sDirectoryConfig =sDirectoryConfig;
+					this.setFileConfigKernelDirectory(sDirectoryConfig);
 				}						
 				
 				//B) FileName
