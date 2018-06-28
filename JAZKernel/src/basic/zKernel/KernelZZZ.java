@@ -343,7 +343,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return this.sSystemNumber;
 	}
 	protected void setSystemNumber(String sSystemNumber){
-		this.setSystemNumber(sSystemNumber);
+		this.sSystemNumber=sSystemNumber;
 	}
 
 	/**
@@ -1013,7 +1013,7 @@ MeinTestParameter=blablaErgebnis
 		//3. Konfigurationsfile des Moduls holen
 		FileIniZZZ file = this.getFileConfigIniByAlias(sModuleUsed);
 		if(file==null){
-			ExceptionZZZ ez = new ExceptionZZZ("FileIniZZZ f�r Modul '" + sModuleUsed + "' ist NULL.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+			ExceptionZZZ ez = new ExceptionZZZ("FileIniZZZ fuer Modul '" + sModuleUsed + "' ist NULL.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
 		
