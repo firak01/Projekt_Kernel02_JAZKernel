@@ -43,7 +43,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 * 
 	 */
 	public enum FLAGZ{
-		FILEUNSAVED, FILENEW, FILECHANGED, USEFORMULA;
+		FILEUNSAVED, FILENEW, FILECHANGED, USEFORMULA, USEFORMULA_MATH;
 	}
 	
 	
@@ -257,6 +257,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 			//NEU 20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
 			if(this.getFlag("useFormula")==true){
 				if(KernelExpressionIniSolverZZZ.isExpression(sReturn)){
+					
+					//TODO GOON 20180711: Die Flags an das neue Objekt der Klasse vererben
+					//String[] saFlagZpassed = this.createFlagZpassedForClass("KernelExpressionIniSoverZZZ"); //Darin dürfen nur FlagZ sein, die in der Zielklasse gültig sind!
+					//KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, saFlagZpassed);
+					
 					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this);
 					sReturn = ex.compute(sReturn);
 				}

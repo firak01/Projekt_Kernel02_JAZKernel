@@ -597,7 +597,7 @@ public class StringZZZ implements IConstantZZZ{
 		return saReturn;
 	}
 	
-	/** Gibt einen Vector mit 3 String-Bestandteilen zur�ck. Links, Mitte, Rechts. Falls die Trenner zur�ckgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
 	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
 	* @param sStringToParse
 	* @param sLeftSep

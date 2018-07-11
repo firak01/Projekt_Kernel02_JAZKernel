@@ -12,7 +12,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 
-/**Diese Klasse verarbeitet ggf. Ausdrücke/Formeln in Ini-Dateien.
+/**Diese Klasse verarbeitet ggf. Ausdrï¿½cke/Formeln in Ini-Dateien.
  *  Es kann dann in einem dieser Formeln z.B. auf den Property-Wert einer anderen Sektion zugegriffen werden. So entstehen 'dynamische' ini-Dateien.
  * @author lindhaueradmin
  *
@@ -42,7 +42,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 	 main:{
 		 	
 	 	//try{	 		
-	 			//setzen der übergebenen Flags	
+	 			//setzen der ï¿½bergebenen Flags	
 				if(saFlagControlIn != null){
 					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						stemp = saFlagControlIn[iCount];
@@ -91,10 +91,14 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			
-			//TODO: Mehrere Ausdrücke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//TODO: Mehrere Ausdrï¿½cke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
+				
+				//TODO GOON: Hole AusdrÃ¼cke mit <z:math>...</z:math>
+				
+				
 				
 				//Nun die Section suchen
 				Vector vecSection = StringZZZ.vecMidFirst(sExpression, "[", "]", false);
@@ -107,12 +111,12 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 					throw ez;
 				}
 				
-//				20080109 FGL: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
+//				20080109 FGL: Falls es eine Section gibt, so muss die Auflï¿½sung der Section ï¿½ber eine Suche ï¿½ber die Systemnummer erfolgen
 				//String sValue =  objFileIni.getPropertyValue(sSection, sProperty);
 				String sSystemNr = this.getKernelObject().getSystemNumber();
 				String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr);
 				
-//				TODO: Verschachtelung der Ausdrücke. Dann muss das jeweilige "Vector Element" des ExpressionFirst-Vectors erneut mit this.computeExpressionFirstVector(...) zerlegt werden.
+//				TODO: Verschachtelung der Ausdrï¿½cke. Dann muss das jeweilige "Vector Element" des ExpressionFirst-Vectors erneut mit this.computeExpressionFirstVector(...) zerlegt werden.
 				
 				//Den Wert ersetzen
 				vecReturn.removeElementAt(1);
@@ -125,7 +129,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 		return vecReturn;
 	}
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	/** Gibt einen Vector zurï¿½ck, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
 	* 
