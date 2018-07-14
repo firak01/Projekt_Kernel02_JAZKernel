@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.Vector;
 
 import custom.zKernel.file.ini.FileIniZZZ;
-
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
@@ -18,6 +18,10 @@ import basic.zKernel.KernelZZZ;
  *
  */
 public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
+	public enum FLAGZ{
+		USEFORMULA_MATH
+	}
+	
 	private FileIniZZZ objFileIni=null;
 	
 	public KernelExpressionIniSolverZZZ() throws ExceptionZZZ{
@@ -28,6 +32,11 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, null);
+	}
+	
+	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni.getKernelObject());
+		KernelExpressionIniSolverNew_(objFileIni, saFlag);
 	}
 	
 	public KernelExpressionIniSolverZZZ(KernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
@@ -75,12 +84,25 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 			
 			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = "";					
-			for(int icount = 0; icount <= vecAll.size()-1; icount ++){
-				sReturn = sReturn + (String) vecAll.get(icount);				
-			}
+			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+			if(this.getFlag("useFormula_math")==true){
+				//Erst den Vector der "übersetzten" Werte zusammensetzen
+				String sLineWithExpression2Check = VectorZZZ.implode(vecAll);
 			
+				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+				KernelExpressionMathSolverZZZ objMathSolver = new KernelExpressionMathSolverZZZ(); 
+													
+				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				if(objMathSolver.isExpression(sLineWithExpression2Check)){
+					String sValueMath = objMathSolver.compute(sLineWithExpression2Check);
+					sReturn = sValueMath;
+				}else{
+					sReturn = sLineWithExpression2Check;
+				}
+			}else{									
+				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+				sReturn = VectorZZZ.implode(vecAll);
+			}
 		}//end main:
 		return sReturn;
 	}
@@ -95,37 +117,32 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
-				
-				//TODO GOON: Hole Ausdrücke mit <z:math>...</z:math>
-				
-				
-				
+					
 				//Nun die Section suchen
 				Vector vecSection = StringZZZ.vecMidFirst(sExpression, "[", "]", false);
 				String sSection = (String) vecSection.get(1);
 				String sProperty = (String) vecSection.get(2);
-				
+				if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
 				FileIniZZZ objFileIni = this.getFileIni();
 				if(objFileIni==null){
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 				
-//				20080109 FGL: Falls es eine Section gibt, so muss die Aufl�sung der Section �ber eine Suche �ber die Systemnummer erfolgen
+//				20080109 FGL: Falls es eine Section gibt, so muss die Aufl�sung der Section über eine Suche über die Systemnummer erfolgen
 				//String sValue =  objFileIni.getPropertyValue(sSection, sProperty);
 				String sSystemNr = this.getKernelObject().getSystemNumber();
 				String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr);
 				
-//				TODO: Verschachtelung der Ausdr�cke. Dann muss das jeweilige "Vector Element" des ExpressionFirst-Vectors erneut mit this.computeExpressionFirstVector(...) zerlegt werden.
-				
-				//Den Wert ersetzen
+				//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
 				vecReturn.removeElementAt(1);
 				vecReturn.add(1, sValue);
 				
-			}
-			
-			
-		}
+//				TODO: Verschachtelung der Ausdrücke. Dann muss das jeweilige "Vector Element" des ExpressionFirst-Vectors erneut mit this.computeExpressionFirstVector(...) zerlegt werden.
+								
+				}
+			}				
+		}//end main:
 		return vecReturn;
 	}
 	

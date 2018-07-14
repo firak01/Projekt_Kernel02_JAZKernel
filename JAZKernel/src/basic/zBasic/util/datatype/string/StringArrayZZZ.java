@@ -122,18 +122,18 @@ output:
 			for(int icount = 0; icount<=iSize-2;icount++){	
 				String stemp = saSorted[iPositionOriginal];
 				if(stemp.compareToIgnoreCase(sString)<=0 && bInserted ==false){
-					//Bis zum gefundenen Wert das RückgabeArray auffüllen					
+					//Bis zum gefundenen Wert das Rï¿½ckgabeArray auffï¿½llen					
 					objReturn[icount] = saSorted[iPositionOriginal];
 					if(iPositionOriginal < saSorted.length-1) iPositionOriginal++;
 				}else if(stemp.compareToIgnoreCase(sString)>0 && bInserted ==false){
 					
-					//Neuen Wert einfügen
+					//Neuen Wert einfï¿½gen
 					objReturn[icount] = sString;		
 					bInserted = true;
 					
 				}else if(bInserted == true){
 					
-					// Bis zum Ende die Originalwerte in das RückgabeArray füllen					
+					// Bis zum Ende die Originalwerte in das Rï¿½ckgabeArray fï¿½llen					
 					objReturn[icount] = stemp;
 					if(iPositionOriginal < saSorted.length-1) iPositionOriginal++;
 				}
@@ -143,25 +143,25 @@ output:
 			for(int icount = 0; icount<=iSize-2;icount++){	
 				String stemp = saSorted[iPositionOriginal];
 				if(stemp.compareToIgnoreCase(sString)<=0 && bInserted ==false){
-					//Bis zum gefundenen Wert das RückgabeArray auffüllen				
+					//Bis zum gefundenen Wert das Rï¿½ckgabeArray auffï¿½llen				
 					objReturn[icount] = saSorted[iPositionOriginal];
 					if(iPositionOriginal < saSorted.length-1) iPositionOriginal++;
 				}else if(stemp.compareTo(sString)>0 && bInserted ==false){
 				
-					//Neuen Wert einfügen
+					//Neuen Wert einfï¿½gen
 					objReturn[icount] = sString;	
 					bInserted = true;
 					
 				}else if(bInserted == true){
 					
-					// Bis zum Ende die Originalwerte in das RückgabeArray füllen				
+					// Bis zum Ende die Originalwerte in das Rï¿½ckgabeArray fï¿½llen				
 					objReturn[icount] = stemp;
 					if(iPositionOriginal < saSorted.length-1) iPositionOriginal++;
 				}
 			}//end for
 		}
 		
-//		immer separat die letzen Position einfügen
+//		immer separat die letzen Position einfï¿½gen
 		if(bInserted == false){
 			objReturn[iSize-1] = sString;
 		}else{
@@ -256,7 +256,7 @@ output:
 		int iSize = MathZZZ.max(saString1.length, saString2.length);
 		objReturn = new String[iSize];
 		
-		if(sFlag.equals("BEHIND")){//MErke: Diese if-Abfrage ist aus performance-gründen ausserhalb der Schleife
+		if(sFlag.equals("BEHIND")){//MErke: Diese if-Abfrage ist aus performance-grï¿½nden ausserhalb der Schleife
 			for(int icount = 0; icount<=iSize-1;icount++){
 				if(saString1.length-1>=icount && saString2.length-1>= icount){
 					objReturn[icount]=saString1[icount] + saString2[icount];
@@ -342,6 +342,25 @@ output:
 	
 	public static String implode(String[] saString){
 		return StringUtils.join(saString);   //
+	}
+	
+	public static String[] intersect(String[] saString01, String[] saString02) throws ExceptionZZZ{
+		String[]saReturn = null;
+		main:{
+			if(saString01==null)break main;
+			if(saString02==null)break main;
+			if(saString01.length==0) break main;
+			if(saString02.length==0) break main;
+						
+			ArrayList<String>listasTemp = new ArrayList<String>();
+			for(String s01 : saString01){
+				if(StringArrayZZZ.contains(saString02, s01)){
+					listasTemp.add(s01);
+				}
+				saReturn = listasTemp.toArray(new String[listasTemp.size()]);
+			}
+		}//End main:
+		return saReturn;
 	}
 
 	

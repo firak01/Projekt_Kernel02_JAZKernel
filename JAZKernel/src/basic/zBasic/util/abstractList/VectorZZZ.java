@@ -101,31 +101,43 @@ public class VectorZZZ extends ObjectZZZ {
 		return vecReturn;
 	}
 	
+	public static String implode(Vector vecIn){
+		String sReturn = null;
+		main:{
+			sReturn = VectorZZZ.implode(vecIn, "");
+		}//end main:
+		return sReturn;
+		
+	}
 	
-	/*Idee, Todo GOON*/
-	public static String toStringImplode(Vector vecIn, String sImplode){
-		/*
-		 * 	String sSearchField = saSearchFields[icount];
-				Vector vecValue = Config.getValue(doc, sSearchField);
-				if(vecValue!=null){
-					if(!vecValue.isEmpty()){
-						if(vecValue.size()>=2){
-							Iterator itValue = vecValue.iterator();
-							while(itValue.hasNext());{
-								Object obj = itValue.next();
-								if(obj!=null){
-									sReturn = sReturn + " " + obj.toString();
-								}
-							}
+	public static String implode(Vector vecIn, String sDelimiter){
+		String sReturn = null;
+		main:{
+			if(vecIn==null) break main;
+			if(vecIn.size()==0 || vecIn.isEmpty()){
+				sReturn = new String("");
+				break main;
+			}
+			
+			if(vecIn.size()>=2){
+				Iterator itValue = vecIn.iterator();
+				while(itValue.hasNext()){
+					Object obj = itValue.next();
+					if(obj!=null){
+						if(!StringZZZ.isEmpty(sReturn)){
+							sReturn = sReturn + sDelimiter + obj.toString();
 						}else{
-							Object obj = vecValue.firstElement();
-							if(obj!=null){
-								sReturn = sReturn + " " + obj.toString();
-							}							
+							sReturn = obj.toString();
 						}
 					}
 				}
-		 */
-		return "";
+			}else{
+				Object obj = vecIn.firstElement();
+				if(obj!=null){
+					sReturn = obj.toString();
+				}							
+			}			
+		}//end  main:
+		return sReturn;			
 	}
-}
+}//end class

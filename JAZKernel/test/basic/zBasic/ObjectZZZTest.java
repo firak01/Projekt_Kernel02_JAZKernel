@@ -46,5 +46,42 @@ public class ObjectZZZTest extends TestCase{
 //		}
 	}
 	
+	public void testGetFlagZ(){
+//		try{
+		//Init - Object
+		String[] saFlag = {"init"};
+		ObjectZZZ objObjectInit = new ObjectZZZ(saFlag);
+		assertTrue(objObjectInit.getFlag("init")==true); 
+		
+		
+		//TestKonfiguration prüfen.
+		//1. Hole alle FlagZ des Objekts
+		String[] saTest01 = objObjectInit.getFlagZ();
+		assertNotNull(saTest01);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur 2 FlagZ erwartet: DEBUG und INIT.",saTest01.length==2);
+		
+		//2. Hole alle FlagZ Einträge, die entsprechend true/false gesetzt sind.
+		String[]saTest02 = objObjectInit.getFlagZ(true);
+		assertNotNull(saTest02);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur 1 FlagZ für 'true' erwartet: INIT.",saTest02.length==1);
+				
+		String[]saTest02b = objObjectInit.getFlagZ(false);
+		assertNotNull(saTest02b);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur 1 FlagZ für 'false' erwartet: DEBUG.",saTest02b.length==1);
+		
+		objObjectInit.setFlag("DEBUG", true);
+		String[]saTest02c = objObjectInit.getFlagZ(false);
+		assertNotNull(saTest02c);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT EIN FLAG WENIGER für 'false' erwartet.",saTest02c.length==saTest02b.length-1);
+				
+		String[]saTest02d = objObjectInit.getFlagZ(false);
+		assertNotNull(saTest02d);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT KEIN FLAG MEHR für 'false' erwartet.",saTest02d.length==0);
+//	}catch(ExceptionZZZ ez){
+//		fail("An exception happend testing: " + ez.getDetailAllLast());
+//	}
+		
+	}
+	
 
 }//END Class

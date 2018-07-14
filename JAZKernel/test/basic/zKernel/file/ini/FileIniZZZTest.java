@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 import junit.framework.TestCase;
-
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -134,10 +134,55 @@ public class FileIniZZZTest extends TestCase {
 			assertFalse(objFileIniTest.getFlag("init")==true); //Nun wäre init falsch
 			
 
+			
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}
 	}
+	
+	/** Erweitertes Flag Handling. 
+	 *   Das Ziel ist es gesetzte Flags an andere Objekte "Weiterzureichen"
+	 * 
+	 */
+	public void testFlagPassHandling(){
+		//A) Teste an dier Stelle die Funktionalitäten aus ObjectZZZ
+		
+//		try{
+				
+		//TestKonfiguration prüfen.
+		//1. Hole alle FlagZ des Objekts
+		String[] saTest01 = objFileIniInit.getFlagZ();
+		assertNotNull(saTest01);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie mehr als 2 FlagZ erwartet: Also nicht nur DEBUG und INIT.",saTest01.length>=3);
+		
+		//2. Hole alle FlagZ Einträge, die entsprechend true/false gesetzt sind.
+		//Init - Object
+		assertTrue(objFileIniInit.getFlag("init")==true);
+		
+		String[]saTest02 = objFileIniInit.getFlagZ(true);
+		assertNotNull(saTest02);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur 1 FlagZ für 'true' erwartet: INIT.",saTest02.length==1);
+				
+		String[]saTest02b = objFileIniInit.getFlagZ(false);
+		assertNotNull(saTest02b);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie mehr als 1 FlagZ für 'false' erwartet: Also nicht nur DEBUG.",saTest02b.length>=2);
+		
+		objFileIniInit.setFlag("DEBUG", true);
+		String[]saTest02c = objFileIniInit.getFlagZ(false);
+		assertNotNull(saTest02c);		
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT EIN FLAG WENIGER für 'false' erwartet.",saTest02c.length==saTest02b.length-1);
+		
+		
+		//B) TESTE DIE FUNKTIONALITÄT DER FLAG - ÜBERGABE.
+		
+		
+//	}catch(ExceptionZZZ ez){
+//		fail("An exception happend testing: " + ez.getDetailAllLast());
+//	}
+		
+	}
+	
+	
 	
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
