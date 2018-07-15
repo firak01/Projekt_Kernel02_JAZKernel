@@ -424,7 +424,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					if(StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
 					
 					HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);					
+					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA_MATH.name(), true);
 					objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlag);					
 					/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen
 					if(objReturn.exists()==false){
@@ -948,13 +949,17 @@ MeinTestParameter=blablaErgebnis
 				
 				if(bNoSectionFound==true){
 					//Throw an error when no section can be found
-					ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: sALiasProgramOrSection, there is no program and no section available in the module configuration file with the name '" + sAliasProgramOrSection + "'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					String stemp = "Wrong parameter: sALiasProgramOrSection, there is no program and no section available in the module configuration file with the name '" + sAliasProgramOrSection + "'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}else{
 					//Beim NICHTFINDEN eines Paremeters ist es wichtig einen Fehler auszugeben, weil das auf eine falsche Konfiguration hindeuten kann
 					//NEIEN, sReturn sollte Null sein, dann ist es nicht angegeben. Ein Leerwert ist n�mlcih durchaus m�glich
 					if(sReturn==null){
-						ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: (sAliasProgramOrSection = '" + sAliasProgramOrSection + "'), in the specified section of the configuration file is no property configured named: '" + sProperty + "'.",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						String stemp = "Wrong parameter: (sAliasProgramOrSection = '" + sAliasProgramOrSection + "'), in the specified section of the configuration file is no property configured named: '" + sProperty + "'.";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
 				}

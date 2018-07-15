@@ -68,15 +68,24 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			objStreamFile.println("[Section for testComputeMathArguments]");
 			objStreamFile.println("WertA=4");
+			objStreamFile.println("WertB=5");
 			
 			objStreamFile.println("[Section for testComputeMathValue]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:value-of>3</Z:value-of></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist ''<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");		
+			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");		
 			
 			objStreamFile.println("[Section for testComputeMath]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>3</Z:value-of></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist ''<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");
-		
+			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");
+			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:math><Z:value-of>[Section for testComputeMathArguments]WertB</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");
+			 
+			
+			objStreamFile.println("[Section for testComputePathWithMath]");
+			objStreamFile.println("Formula1=<Z>[Section for testComputeMath]Formula1</Z>");
+			objStreamFile.println("Formula2=<Z>[Section for testComputeMath]Formula2</Z>");
+			objStreamFile.println("Formula3=<Z>[Section for testComputeMath]Formula3</Z>");
+			
+			
 			objFile = new File(sFilePathTotal);
 			
 		
@@ -171,7 +180,29 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
 			assertEquals(sValue, sExpression);
 			
+			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält.
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula1");
+			sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
+			assertEquals(sValue, sExpression);
 			
+			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula2");
+			sValue="Der dynamische Wert2 ist '8'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '8' erwartet.", StringZZZ.contains(sExpression, "8"));
+			assertEquals(sValue, sExpression);
+			
+			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.... diesmal 2 Path Anweisungen!!!
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula3");
+			sValue="Der dynamische Wert3 ist '20'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '20' erwartet.", StringZZZ.contains(sExpression, "20"));
+			assertEquals(sValue, sExpression);
 			
 			
 		} catch (ExceptionZZZ ez) {

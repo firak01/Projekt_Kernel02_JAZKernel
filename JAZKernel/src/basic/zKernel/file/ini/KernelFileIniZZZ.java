@@ -256,7 +256,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 			
 			//20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
 			if(this.getFlag("useFormula")==true){
-				if(KernelExpressionIniSolverZZZ.isExpression(sReturn)){
+				while(KernelExpressionIniSolverZZZ.isExpression(sReturn)){
 					
 					//20180711: Die Flags an das neue Objekt der Klasse vererben
 					KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();

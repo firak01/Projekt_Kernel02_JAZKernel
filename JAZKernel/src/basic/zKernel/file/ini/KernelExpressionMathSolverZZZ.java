@@ -75,7 +75,7 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			
-			//TODO: Mehrere Ausdr�cke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Mehrere Ausdr�cke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
@@ -126,9 +126,11 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ{
 								
 				String sValue = sExpression;
 				
-				//Den Wert ersetzen
-				vecReturn.removeElementAt(1);
-				vecReturn.add(1, sValue);
+				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+				if(sValue!=null){
+					vecReturn.removeElementAt(1);
+					vecReturn.add(1, sValue);
+				}
 				
 //				TODO: Verschachtelung der Ausdrücke. Dann muss das jeweilige "Vector Element" des ExpressionFirst-Vectors erneut mit this.computeExpressionFirstVector(...) zerlegt werden.
 													

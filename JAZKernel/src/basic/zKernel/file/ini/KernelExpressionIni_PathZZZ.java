@@ -10,27 +10,27 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ{
+public class KernelExpressionIni_PathZZZ  extends KernelUseObjectZZZ{
 //	public enum FLAGZ{
 //		USEFORMULA_MATH
 //	}
 		
-	public KernelExpressionMath_ValueZZZ() throws ExceptionZZZ{
+	public KernelExpressionIni_PathZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
-		KernelExpressionMathValueNew_(saFlag);
+		KernelExpressionIniPathNew_(saFlag);
 	}
 		
-	public KernelExpressionMath_ValueZZZ(String[] saFlag) throws ExceptionZZZ{		
-		KernelExpressionMathValueNew_(saFlag);
+	public KernelExpressionIni_PathZZZ(String[] saFlag) throws ExceptionZZZ{		
+		KernelExpressionIniPathNew_(saFlag);
 	}
 	
-	public KernelExpressionMath_ValueZZZ(KernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIni_PathZZZ(KernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionMathValueNew_(saFlag);
+		KernelExpressionIniPathNew_(saFlag);
 	}
 	
 	
-	private boolean KernelExpressionMathValueNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionIniPathNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
@@ -76,7 +76,11 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ{
 			
 			
 			//TODO: Mehrere Ausdr�cke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);	
+			
+			
+			
+			
 //			String sExpression = (String) vecReturn.get(1);
 //			if(!StringZZZ.isEmpty(sExpression)){
 //					
@@ -133,7 +137,7 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ{
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMath_ValueZZZ.getExpressionTagStarting(), KernelExpressionMath_ValueZZZ.getExpressionTagClosing(), false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionIni_PathZZZ.getExpressionTagStarting(), KernelExpressionIni_PathZZZ.getExpressionTagClosing(), false);
 		}
 		return vecReturn;
 	}
@@ -142,10 +146,10 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ{
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMath_ValueZZZ.getExpressionTagStarting());
+			boolean btemp = StringZZZ.contains(sLine, KernelExpressionIni_PathZZZ.getExpressionTagStarting());
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionMath_ValueZZZ.getExpressionTagClosing());
+			btemp = StringZZZ.contains(sLine, KernelExpressionIni_PathZZZ.getExpressionTagClosing());
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -156,12 +160,12 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ{
 	
 	//###### Getter / Setter
 	public static String getExpressionTagName(){
-		return "Z:value-of";
+		return "";  //Hier kein Tag
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelExpressionMath_ValueZZZ.getExpressionTagName() + ">";
+		return "[";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelExpressionMath_ValueZZZ.getExpressionTagName() + ">"; 
+		return "]"; 
 	}		
 }//End class
