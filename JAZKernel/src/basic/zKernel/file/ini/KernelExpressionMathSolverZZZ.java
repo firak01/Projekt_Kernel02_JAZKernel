@@ -118,7 +118,7 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ{
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMathSolverZZZ.getExpressionTagStarting(), KernelExpressionMathSolverZZZ.getExpressionTagClosing(), false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMathSolverZZZ.getExpressionTagStarting(), KernelExpressionMathSolverZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -127,10 +127,10 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ{
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMathSolverZZZ.getExpressionTagStarting());
+			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMathSolverZZZ.getExpressionTagStarting(), false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionMathSolverZZZ.getExpressionTagClosing());
+			btemp = StringZZZ.contains(sLine, KernelExpressionMathSolverZZZ.getExpressionTagClosing(), false);
 			if(btemp==false) break main;
 			
 			bReturn = true;

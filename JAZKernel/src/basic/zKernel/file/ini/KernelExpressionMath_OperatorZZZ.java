@@ -135,10 +135,10 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMath_OperatorZZZ.getExpressionTagStarting());
+			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMath_OperatorZZZ.getExpressionTagStarting(),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionMath_OperatorZZZ.getExpressionTagClosing());
+			btemp = StringZZZ.contains(sLine, KernelExpressionMath_OperatorZZZ.getExpressionTagClosing(),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -156,7 +156,7 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMath_OperatorZZZ.getExpressionTagStarting(), KernelExpressionMath_OperatorZZZ.getExpressionTagClosing(), false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMath_OperatorZZZ.getExpressionTagStarting(), KernelExpressionMath_OperatorZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -200,7 +200,7 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	
 	//###### Getter / Setter
 	public static String getExpressionTagName(){
-		return "Z:operator";
+		return "Z:op";
 	}
 	public static String getExpressionTagStarting(){
 		return "<" + KernelExpressionMath_OperatorZZZ.getExpressionTagName() + ">";

@@ -71,13 +71,13 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("WertB=5");
 			
 			objStreamFile.println("[Section for testComputeMathValue]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:value-of>3</Z:value-of></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");		
+			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
+			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");		
 			
 			objStreamFile.println("[Section for testComputeMath]");
-			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>3</Z:value-of></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");
-			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:math><Z:value-of>[Section for testComputeMathArguments]WertB</Z:value-of><Z:operator>*</Z:operator><Z:value-of>[Section for testComputeMathArguments]WertA</Z:value-of></Z:math></Z>'. FGL rulez.");
+			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.");
+			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
+			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z><Z:math><Z:val>[Section for testComputeMathArguments]WertB</Z:val><Z:op>*</Z:op><Z:val>[Section for testComputeMathArguments]WertA</Z:val></Z:math></Z>'. FGL rulez.");
 			 
 			
 			objStreamFile.println("[Section for testComputePathWithMath]");
@@ -85,7 +85,9 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("Formula2=<Z>[Section for testComputeMath]Formula2</Z>");
 			objStreamFile.println("Formula3=<Z>[Section for testComputeMath]Formula3</Z>");
 			
-			
+			objStreamFile.println("[Section for testComputeMath NOT EXACTMATCH]");
+			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>6</Z:val><Z:oP>+</Z:op><Z:val>7</Z:val></Z:math></Z>'. FGL rulez.");
+			 			
 			objFile = new File(sFilePathTotal);
 			
 		
@@ -159,7 +161,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Damit noch KEINE MATH FORMEL ausgerechnet wird
 			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1");
-			sValue="Der dynamische Wert ist '<Z:math><Z:value-of>2</Z:value-of><Z:operator>*</Z:operator><Z:value-of>3</Z:value-of></Z:math>'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			sValue="Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertEquals(sValue, sExpression);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
@@ -201,6 +203,13 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '20' erwartet.", StringZZZ.contains(sExpression, "20"));
 			assertEquals(sValue, sExpression);
 			
+			//+++ Die Tags brauchen nicht exact zu sein hinsichtlich der Groß-/Kleinescheibung. Außerdem wird der '+' Operator getestet.
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath NOT EXACTMATCH", "Formula1");
+			sValue="Der dynamische Wert ist '13'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '13' erwartet.", StringZZZ.contains(sExpression, "13"));
+			assertEquals(sValue, sExpression);
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

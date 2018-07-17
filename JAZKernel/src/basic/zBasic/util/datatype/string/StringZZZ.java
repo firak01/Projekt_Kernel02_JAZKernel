@@ -295,6 +295,37 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	public static boolean contains(String sString, String sMatch, boolean bExactMatch){
+		boolean bReturn = false;
+		main:{
+			check:{
+			if(bExactMatch){
+				bReturn = StringZZZ.contains(sString, sMatch);
+			}
+			
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sMatch)) break main;			
+			}
+			//Merke: sString.contains(CharSequence) gibt es erst seit Java 1.5
+			//CharSequence sequence = sMatch.subSequence(1, sString.length());
+			//if(sString.contains(sequence)  .......
+			
+			String sSub;
+			int iMatchLength=sMatch.length();
+			int iProof = sString.length()-iMatchLength;
+			String sStringLcased = sString.toLowerCase();
+			String sMatchLcased = sMatch.toLowerCase();
+			for(int icount=0; icount <= iProof; icount++){
+				sSub = sStringLcased.substring(icount, iMatchLength+icount);
+				if(sSub.equals(sMatchLcased)){
+					bReturn = true;
+					break main;
+				}
+			}					
+		} //end main:		
+		return bReturn;
+	}
+	
 	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
 	public static boolean startsWithIgnoreCase(String sString, String sMatch){
 		boolean bReturn = false;
@@ -424,6 +455,37 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	/** String, analog to LotusScript, returns the substring left from the first occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
+	 * Returns the empty String if sToFind is empty
+	* Lindhauer; 15.05.2006 10:53:48
+	 * @param iLength
+	 * @return String
+	 */
+	public static String left(String sString, String sToFind, boolean bExactMatch){
+		String sReturn=null;
+		main:{
+			if(bExactMatch){
+				sReturn = StringZZZ.left(sString, sToFind);
+				break main;
+			}
+			
+			check:{
+				if (sString==null) break main;
+				if(sString.equals("")) break main;
+			}
+		int iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase()); //Hier wird ignoreCase realisiert.
+		if(iIndex<= -1) break main;
+		if(iIndex-1<= -1) {
+			sReturn = new String("");
+		}else{
+			sReturn = sString.substring(0, iIndex);
+		}
+		}//END main:
+		return sReturn;
+	}
+	
+	
+	
 	/** String, analog to LotusScript, returns the substring left from the first occurance of sToFind, STARTING From the position. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
 	* @param sString
@@ -517,17 +579,18 @@ public class StringZZZ implements IConstantZZZ{
 	 * @param sToFind
 	 * @return String
 	 */
-	public static String right(String sString, String sToFind, boolean bIgnoreCase){
+	public static String right(String sString, String sToFind, boolean bExactMatch){
 		String sReturn=null;
 		main:{
-				if(!bIgnoreCase){
+			check:{
+				if(bExactMatch){
 					sReturn = StringZZZ.right(sString, sToFind);
-				}else{
-					
-					check:{
-						if (sString==null) break main;
-						if(sString.equals("")) break main;
-					}
+					break main;
+				}
+
+				if (sString==null) break main;
+				if(sString.equals("")) break main;
+			    }
 				
 					String sStringLCase = sString.toLowerCase();
 					String sToFindLCase = sToFind.toLowerCase();
@@ -535,12 +598,10 @@ public class StringZZZ implements IConstantZZZ{
 					int iIndex = sStringLCase.lastIndexOf(sToFindLCase);
 					if(iIndex<= -1) break main;
 				
-					//die L�nge des Strings aufaddieren
+					//die Länge des Strings aufaddieren
 					iIndex = iIndex + sToFind.length();
 						
-					sReturn = sString.substring(iIndex);				
-				}
-		
+					sReturn = sString.substring(iIndex);						
 		}//END main:
 		return sReturn;
 	}
@@ -643,6 +704,86 @@ public class StringZZZ implements IConstantZZZ{
 			*/
 			
 			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep);
+			if(StringZZZ.isEmpty(sExpressionTagged)){
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+			}
+			
+			
+			//nun gibt es einen Ausdruck
+			sExpressionTagged = sExpressionTagged + sRightSep;
+			
+			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length());
+			if(sRight==null) sRight = "";
+			
+			//Nun die Werte in den ErgebnisVector zusammenfassen
+			vecReturn.add(sLeft);
+			
+			if(bReturnSeparators ==true){
+				vecReturn.add(sExpressionTagged);
+			}else{
+				String sExpression = StringZZZ.right(sExpressionTagged, sExpressionTagged.length()-sLeftSep.length());
+				sExpression = StringZZZ.left(sExpression, sExpression.length()-sRightSep.length());
+				vecReturn.add(sExpression);
+			}
+			vecReturn.add(sRight);
+		}
+		return vecReturn;
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();
+		main:{					
+			if(bExactMatch){
+				vecReturn = StringZZZ.vecMidFirst(sStringToParse, sLeftSep, sRightSep, bReturnSeparators);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sStringToParse)) break main;
+			if(StringZZZ.isEmpty(sLeftSep)){
+				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sRightSep)){
+				ExceptionZZZ ez = new ExceptionZZZ("Right separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sLeft = StringZZZ.left(sStringToParse, sLeftSep, bExactMatch);
+			if(sLeft==null) sLeft="";
+			/*
+			if(StringZZZ.isEmpty(sLeft))
+				{
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+				}
+				*/
+			
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
+			/*
+			if(StringZZZ.isEmpty(sRemainingTagged)){
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+			}
+			*/
+			
+			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep, bExactMatch);
 			if(StringZZZ.isEmpty(sExpressionTagged)){
 				vecReturn.add(sStringToParse);
 				vecReturn.add("");
