@@ -14,15 +14,11 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 
 /**
-
 @author 0823 ,date 05.10.2004
 */
 public class FileIniZZZ extends KernelFileIniZZZ{
 
-	/**
-	CONSTRUCTOR
-	
-	
+	/** CONSTRUCTOR
 	 @author 0823 , date: 05.10.2004
 	 @param kernelZZZ
 	 @param object
@@ -37,12 +33,7 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 		super(objKernel, objFile, hmFlag);
 	}
 
-
-
-	/**
-	CONSTRUCTOR
-	
-	
+	/** CONSTRUCTOR
 	 @author 0823 , date: 05.10.2004
 	 @param objKernel
 	 @param objLog
@@ -55,9 +46,4 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 	public FileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
 		super(objKernel, sDirectory, sFile, hmFlag);
 	}
-
-
-	
-	
-
 }

@@ -116,13 +116,10 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	
 	public void testFlagHandling(){
 		//try{
-		
-			
+				
 		assertTrue(objExpressionSolverInit.getFlag("init")==true);
 		assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
-			
 
-			
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}

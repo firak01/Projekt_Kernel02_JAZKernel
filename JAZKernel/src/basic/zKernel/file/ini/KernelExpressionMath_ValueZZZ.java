@@ -73,51 +73,11 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ{
 		Vector vecReturn = new Vector();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			
-			//TODO: Mehrere Ausdr�cke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+						
+			//TODO: Mehrere Ausdrücke ineinander verschachtelt. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-//			String sExpression = (String) vecReturn.get(1);
-//			if(!StringZZZ.isEmpty(sExpression)){
-//					
-//				//Nun den z:operator suchen
-//				
-//				//Nun die z:value-of suchen
-//				//links vom Operator
-//				
-//				//rechts vom Operator
-//				
-//				
-//
-//				
-//				//Den Wert ersetzen
-//				vecReturn.removeElementAt(1);
-//				vecReturn.add(1, sValue);
-//				
-////				TODO: Verschachtelung der Ausdrücke. Dann muss das jeweilige "Vector Element" des ExpressionFirst-Vectors erneut mit this.computeExpressionFirstVector(...) zerlegt werden.
-//				
-//				//Nun den Vector der "übersetzten" Werte zusammensetzen
-//				String sLineWithExpression2Check = VectorZZZ.implode(vecReturn);
-//								
-//				
-//				//TODO GOON: Hole Ausdrücke mit <z:math>...</z:math>							
-//				//1. Ist das Flag gesetzt
-//				
-//				//Ja: Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-//				KernelExpressionMath_ValueZZZ objMathSolver = new KernelExpressionMath_ValueZZZ(); //Dummy, um die Flags zu bekommen
-//				
-//				
-//				
-//				
-//				//2. Ist in dem String math?
-//				//aus dem vecReturn wieder einen String machen, in dem ein Wert ersetzt ist.
-//				//Danach den Math-Teil herausholen und in einen neuen vec packen.
-//				
-//				
-//				
-//				
-//			}
 			
+			//... und vielleicht erneut den Math-Solver auf den Rest ansetzen.
 			
 		}
 		return vecReturn;

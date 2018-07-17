@@ -57,26 +57,41 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
-	public String compute(String sValue01, String sValue02) throws ExceptionZZZ{
+	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
-			if(StringZZZ.isEmpty(sValue01)) break main;
-			if(StringZZZ.isEmpty(sValue02)) break main;
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
-			String sOperator = this.getOperator();
-			sReturn = this.compute(sValue01, sValue02, sOperator);
+			
+			//links vom Operator
+			KernelExpressionMath_ValueZZZ objValue01 = new KernelExpressionMath_ValueZZZ();
+			if(objValue01.isExpression(sLineWithExpression)){
+				sLineWithExpression = objValue01.compute(sLineWithExpression);						
+			}	
+			
+			//rechts vom Operator
+			KernelExpressionMath_ValueZZZ objValue02 = new KernelExpressionMath_ValueZZZ();
+			if(objValue02.isExpression(sLineWithExpression)){
+				sLineWithExpression = objValue02.compute(sLineWithExpression);						
+			}	
+			
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+									
+			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+			sReturn = VectorZZZ.implode(vecAll);
 									
 		}//end main:
 		return sReturn;
 	}
 	
-	public String compute(String sValue01, String sValue02, String sOperator) throws ExceptionZZZ{
+	public String compute(String sValue01, String sValue02) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sValue01)) break main;
 			if(StringZZZ.isEmpty(sValue02)) break main;
 			try{
-			
+				String sOperator = this.getOperator();
+				
 			//erst ab Java 1.7 kann auf Strings in einenr Switch - Anweisung gepürft werden.
 //			switch(sOperator){
 //			case "*":
@@ -91,7 +106,7 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 //			}
 			
 			String sOp = "+";
-			if(!StringZZZ.isBlank(sOperator)){
+			if(!StringZZZ.isEmpty(sOperator)){
 				sOp = sOperator.trim();				
 			}
 			
@@ -146,6 +161,42 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 		return vecReturn;
 	}
 	
+		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+			Vector vecReturn = new Vector();
+			main:{
+				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+				
+				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+				String sExpression = (String) vecReturn.get(1);		
+				boolean bIsError = false;
+				if(!StringZZZ.isEmpty(sExpression)){															
+					this.setOperator(sExpression);
+					String sValue01 = (String)vecReturn.get(0);
+					String sValue02 = (String)vecReturn.get(2);
+					
+					try{
+						sExpression = this.compute(sValue01, sValue02);
+					}catch(ExceptionZZZ ez){
+						bIsError=true;
+					}					
+				} //end if sExpression = ""
+					
+				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+				if(!bIsError){
+				vecReturn.remove(0)	;
+				vecReturn.add(0,"");
+				
+				vecReturn.remove(1);
+				vecReturn.add(1, sExpression);
+				
+				vecReturn.remove(2);
+				vecReturn.add(2,"");
+				}					
+			}//end main:
+			return vecReturn;
+		}
+
+	
 	
 	//###### Getter / Setter
 	public static String getExpressionTagName(){
@@ -156,13 +207,13 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	}
 	public static String getExpressionTagClosing(){
 		return "</" + KernelExpressionMath_OperatorZZZ.getExpressionTagName() + ">"; 
-	}		
+	}			
 	
-	//+++++++
+	//++++ 
 	public String getOperator(){
 		return this.sOperator;
 	}
 	public void setOperator(String sOperator){
-		this.sOperator = sOperator;
+		this.sOperator=sOperator;
 	}
 }//End class

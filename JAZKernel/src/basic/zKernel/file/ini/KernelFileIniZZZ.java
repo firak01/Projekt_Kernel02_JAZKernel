@@ -29,13 +29,13 @@ import custom.zKernel.file.ini.FileIniZZZ;
 @author 0823 ,date 05.10.2004
 */
 public class KernelFileIniZZZ extends KernelUseObjectZZZ{
-	//20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
+//20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
 //	private boolean bFlagFileChanged;
 //	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgel�st. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
 	
-	//Flags, die alle Z-Objekte haben
+//Flags, die alle Z-Objekte haben
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
 		
@@ -213,7 +213,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		return saReturn;
 	}
 	
-	/** 		//TODO GOON String[], All properties of all sections of the .ini-file. The Array is contains only unique values.
+	/** TODO String[], All properties of all sections of the .ini-file. The Array is contains only unique values.
 	* Lindhauer; 23.04.2006 10:16:44
 	 * @return String[]
 	 */
@@ -271,7 +271,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		return sReturn;
 	}//end function
 	
-	/** TODO What the method does.
+	/** Returns a Value by SystemNr. If this doesn´t exists the global value will be returned (value without a SystemNr).
 	* @param sSectionIn
 	* @param sPropertyIn
 	* @param sSystemNrIn

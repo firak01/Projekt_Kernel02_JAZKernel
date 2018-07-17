@@ -80,47 +80,19 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ{
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
 					
-				//Nun den z:operator suchen
+				//Nun den z:operator Tag suchen
 				KernelExpressionMath_OperatorZZZ objOperator = new KernelExpressionMath_OperatorZZZ();
 				if(objOperator.isExpression(sExpression)){
-					//Nun die z:value-of suchen
-					String sValue01 = null;
-					String sValue02 = null;
-					
-					//links vom Operator
-					KernelExpressionMath_ValueZZZ objValue01 = new KernelExpressionMath_ValueZZZ();
-					if(objValue01.isExpression(sExpression)){
-						Vector vecValue = objValue01.computeExpressionFirstVector(sExpression);
-						sValue01 = (String) vecValue.get(1);
-						sExpression = VectorZZZ.implode(vecValue);
-					}	
-					
-					//rechts vom Operator
-					KernelExpressionMath_ValueZZZ objValue02 = new KernelExpressionMath_ValueZZZ();
-					if(objValue01.isExpression(sExpression)){
-						Vector vecValue = objValue01.computeExpressionFirstVector(sExpression);
-						sValue02 = (String) vecValue.get(1);
-						sExpression = VectorZZZ.implode(vecValue);
-					}	
-					
-					 Vector vecValue = objOperator.computeExpressionFirstVector(sExpression); //TEST: Damit holt man den Operator selbst
-					String sOperator = (String) vecValue.get(1);
-					 objOperator.setOperator(sOperator);
-					 
-					//... und dann compute, mit den beiden Werten...
-					sExpression = objOperator.compute(sValue01, sValue02);
-					
+					 sExpression = objOperator.compute(sExpression);					
 				}else{
-					//Da gibt es wohl nix weiter auszurechen....
-					//Also die Werte als String nebeneinander setzen....
+					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
 					KernelExpressionMath_ValueZZZ objValue = new KernelExpressionMath_ValueZZZ();
 					while(objValue.isExpression(sExpression)){
-						Vector vecValue = objValue.computeExpressionFirstVector(sExpression);
+						sExpression = objValue.compute(sExpression);
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
-						sExpression = VectorZZZ.implode(vecValue);
-//						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamtstring soweit=" + sExpression);
+//						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
 					}					
 				}
 								
@@ -130,13 +102,8 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ{
 				if(sValue!=null){
 					vecReturn.removeElementAt(1);
 					vecReturn.add(1, sValue);
-				}
-				
-//				TODO: Verschachtelung der Ausdrücke. Dann muss das jeweilige "Vector Element" des ExpressionFirst-Vectors erneut mit this.computeExpressionFirstVector(...) zerlegt werden.
-													
+				}												
 			}
-			
-			
 		}
 		return vecReturn;
 	}
