@@ -87,7 +87,14 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			objStreamFile.println("[Section for testComputeMath NOT EXACTMATCH]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>6</Z:val><Z:oP>+</Z:op><Z:val>7</Z:val></Z:math></Z>'. FGL rulez.");
-			 			
+			 
+			
+			objStreamFile.println("[Section for testComputeMathArguments FLOAT]");
+			objStreamFile.println("WertA_float=4.0");
+			objStreamFile.println("WertB_float=5.0");
+			objStreamFile.println("[Section for testComputeMath FLOAT]");
+			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+			
 			objFile = new File(sFilePathTotal);
 			
 		
@@ -209,6 +216,14 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath NOT EXACTMATCH", "Formula1");
 			sValue="Der dynamische Wert ist '13'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '13' erwartet.", StringZZZ.contains(sExpression, "13"));
+			assertEquals(sValue, sExpression);
+			
+			//+++ Teste das Rechnen mit Float-Werten
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath FLOAT", "Formula1");
+			sValue="Der dynamische Wert ist '20.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
 			assertEquals(sValue, sExpression);
 			
 		} catch (ExceptionZZZ ez) {

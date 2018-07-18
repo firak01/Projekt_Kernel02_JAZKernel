@@ -110,21 +110,41 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 				sOp = sOperator.trim();				
 			}
 			
-			Integer intA = new Integer(sValue01);
-			Integer intB = new Integer(sValue02);
-			int iReturn = 0;
-			if(sOp.equals("+")){
-				iReturn = intA.intValue() + intB.intValue();				
-			}else if(sOp.equals("*")){
-				iReturn = intA.intValue() * intB.intValue();
+			if(StringZZZ.isFloatExplizit(sValue01) || StringZZZ.isFloatExplizit(sValue02)){ //Explizit: Damit nicht Integer Werte (die auch gültig als Float umgerechnet werden könnten, hier nicht umgeändert werden)
+				Float fltA = new Float(sValue01);
+				Float fltB = new Float(sValue02);
+				
+				float fReturn = 0.0f;
+				if(sOp.equals("+")){
+					fReturn = fltA.floatValue() + fltB.floatValue();				
+				}else if(sOp.equals("*")){
+					fReturn = fltA.floatValue() * fltB.floatValue();
+				}else{
+					ExceptionZZZ ez = new ExceptionZZZ( "the operator '" + sOperator + "' is not handled yet.", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					throw ez;		 
+				}
+				Float fltReturn = new Float(fReturn);
+				sReturn = fltReturn.toString();
+
 			}else{
-				ExceptionZZZ ez = new ExceptionZZZ( "the operator '" + sOperator + "' is not handled yet.", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-				throw ez;		 
-			}
-			Integer intReturn = new Integer(iReturn);
-			sReturn = intReturn.toString();
+				Integer intA = new Integer(sValue01);
+				Integer intB = new Integer(sValue02);
+				int iReturn = 0;
+				if(sOp.equals("+")){
+					iReturn = intA.intValue() + intB.intValue();				
+				}else if(sOp.equals("*")){
+					iReturn = intA.intValue() * intB.intValue();
+				}else{
+					ExceptionZZZ ez = new ExceptionZZZ( "the operator '" + sOperator + "' is not handled yet.", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					throw ez;		 
+				}
+				Integer intReturn = new Integer(iReturn);
+				sReturn = intReturn.toString();
+				}
 			}catch(NumberFormatException e){
-				ExceptionZZZ ez = new ExceptionZZZ( "Fehler bei Berechung: '" + sValue01 + "'_'" + sOperator + "'_'" + sValue02 + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+				String stemp = "Fehler bei Berechung: '" + sValue01 + "'_'" + sOperator + "'_'" + sValue02 + "'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + stemp);
+				ExceptionZZZ ez = new ExceptionZZZ( stemp, iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				throw ez;
 			}
 									

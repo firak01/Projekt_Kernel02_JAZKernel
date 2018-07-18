@@ -916,6 +916,64 @@ public class StringZZZ implements IConstantZZZ{
 		return false;
 	}
 	
+	public static boolean isFloat(String sString){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+			//check if float
+		    try{
+		        Float.parseFloat(sString);
+		        bReturn = true;
+		    }catch(NumberFormatException e){
+		        //not float
+		    }
+		}//end main:
+		return bReturn;		
+	}
+	
+	/** Alles was Integer ist, ist dann nicht Float.
+	 *   Auch wenn Float.parseFloat(sString) keine NumberFormatException werfen würde.
+	 * @param sString
+	 * @return
+	 */
+	public static boolean isFloatExplizit(String sString){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+			//check if Integer
+			if(StringZZZ.isInteger(sString)) break main;
+			
+			//check if float
+		    try{
+		        Float.parseFloat(sString);
+		        bReturn = true;
+		    }catch(NumberFormatException e){
+		        //not float
+		    }
+		}//end main:
+		return bReturn;		
+	}
+	
+	public static boolean isInteger(String sString){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+			 //check if int
+		    try{
+		        Integer.parseInt(sString);
+		        bReturn = true;
+		    }catch(NumberFormatException e){
+		        //not int
+		    }
+		}//end main:
+		return bReturn;		
+	}
+	
+
+	
 	/**returns true if the string is empty or null or containing blanks only.
 	 * FGL: D.h. NULL oder Leerstring oder ein String mit nur Leerzeichen drin.
 	 * 
