@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
@@ -45,29 +47,49 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	public enum FLAGZ{
 		FILEUNSAVED, FILENEW, FILECHANGED, USEFORMULA, USEFORMULA_MATH;
 	}
-	
-	
+		
 	private IniFile objFileIni;
 	private File objFile;
+	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
 
 	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
-		KernelFileIniNew_(null, sDirectory, sFilename, saFlagControl,null);
+		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl,null);
 	}
 	
 	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelFileIniNew_(null, sDirectory, sFilename, null, hmFlag);
+		KernelFileIniNew_(null, sDirectory, sFilename, null, null, hmFlag);
 	}
 	
 	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile,String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
-		KernelFileIniNew_(objFile,null, null,saFlagControl,null);
+		KernelFileIniNew_(objFile,null, null, null,saFlagControl,null);
 	}
 	
 	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile,HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelFileIniNew_(objFile,null, null,null,hmFlag);
+		KernelFileIniNew_(objFile,null, null, null,null,hmFlag);
+	}
+	
+	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
+		super(objKernel);
+		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl,null);
+	}
+	
+	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename,  HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+		super(objKernel);
+		KernelFileIniNew_(null, sDirectory, sFilename, null, null, hmFlag);
+	}
+	
+	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
+		super(objKernel);
+		KernelFileIniNew_(objFile, null, null,null,saFlagControl,null);
+	}
+	
+	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+		super(objKernel);
+		KernelFileIniNew_(objFile,null, null, null,null,hmFlag);
 	}
 	
 	
@@ -80,7 +102,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
+	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControlIn, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
@@ -94,7 +116,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 			}
 	 		
 	 		
-			//setzen der �bergebenen Flags	
+			//setzen der übergebenen Flags	
 				if(saFlagControlIn != null){
 					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						stemp = saFlagControlIn[iCount];
@@ -159,6 +181,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 		bReturn = false;
 	 		break main;
 		 }
+	 	
+	 	this.setHashMapVariable(hmVariable);
 	 	}//end main:
 		return bReturn;
 	 }//end function
@@ -747,25 +771,6 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		
 			return bReturn;
 		}//end function
-
-
-
-	/** 
-	 @date: 26.10.2004
-	 @return FileObject
-	 */
-	public File getFileObject() {
-		return objFile;
-	}
-
-	/** 
-	 @date: 26.10.2004
-	 @param file
-	 */
-	public void setFileObject(File file) {
-		objFile = file;
-	}
-
 	
 	/** boolean, searches all sections of the ini-file for sSection. Returns true if there is a match.
 	* Lindhauer; 19.05.2006 09:11:34
@@ -791,4 +796,30 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		}//END main
 		return bReturn;
 	}
+	
+	
+	//### Getter / Setter
+	/** 
+	 @date: 26.10.2004
+	 @return FileObject
+	 */
+	public File getFileObject() {
+		return objFile;
+	}
+
+	/** 
+	 @date: 26.10.2004
+	 @param file
+	 */
+	public void setFileObject(File file) {
+		objFile = file;
+	}
+	
+	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		this.hmVariable = hmVariable;
+	}
+	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+		return this.hmVariable;
+	}
+	
 }

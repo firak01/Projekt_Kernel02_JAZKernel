@@ -34,7 +34,10 @@ public class KernelZZZ extends ObjectZZZ implements IObjectZZZ,IKernelContextUse
 	public static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
 	private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
-
+    //Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
+	//                        Sie hängt aussschliesslich am Kernel...IniFileZZZ-Objekt. 
+	//                        Eventuelle Variablen-"Zustände" werden dann beim Holen der Parameter als Argument übergeben, sind aber NICHT im Kernel-Objekt gespeichert.
+	
 	private String sSystemNumber="";
 	private File objFileKernelConfig=null;
 
@@ -338,7 +341,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	
 	public String getSystemNumber(){
 		if(StringZZZ.isEmpty(this.sSystemNumber)){
-			this.setSystemNumber("1");
+			this.setSystemNumber("01");
 		}
 		return this.sSystemNumber;
 	}

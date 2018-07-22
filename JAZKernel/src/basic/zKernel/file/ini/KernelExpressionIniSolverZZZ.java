@@ -2,11 +2,13 @@ package basic.zKernel.file.ini;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.Vector;
 
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -23,29 +25,45 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 	}
 	
 	private FileIniZZZ objFileIni=null;
+	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	public KernelExpressionIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
-		KernelExpressionIniSolverNew_(null, saFlag);
+		KernelExpressionIniSolverNew_(null, null,saFlag);
 	}
 	
 	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, null);
+		KernelExpressionIniSolverNew_(objFileIni, null, null);
 	}
 	
 	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
 	}
 	
 	public KernelExpressionIniSolverZZZ(KernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionIniSolverNew_(objFileIni, saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
+	}
+	
+	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+		super(objFileIni.getKernelObject());
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable, null);
+	}
+	
+	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objFileIni.getKernelObject());
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
+	}
+	
+	public KernelExpressionIniSolverZZZ(KernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel);
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
 	
 	
-	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
@@ -73,6 +91,8 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 				}else{
 					this.setFileIni(objFileIn);
 				}
+				
+				this.setHashMapVariable(hmVariable);
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
@@ -82,7 +102,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			if(this.getFlag("useFormula_math")==true){				
@@ -111,16 +131,29 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);									
 			if(!StringZZZ.isEmpty(sExpression)){
-					
-				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				
-				//ZUERST ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen				
-				while(objIniPath.isExpression(sExpression)){
+				//ZUERST: Löse ggfs. übergebene Variablen auf.
+				KernelExpressionIni_VariableZZZ objVariable = new KernelExpressionIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				while(KernelExpressionIni_VariableZZZ.isExpression(sExpression)){
+					sExpression = objVariable.compute(sExpression);			
+				} //end while
+					
+								
+				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);			
 				} //end while
 						
+//				if(!StringZZZ.isEmpty(sBefore)){
+//					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+//					vecReturn.add(0, sBefore);
+//				}else{
+//					vecReturn.add(0,vecSection.get(0));
+//				}
+				
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-				vecReturn.remove(1);
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 				vecReturn.add(1, sExpression);
 			
 			} //end if sExpression = ""					
@@ -175,6 +208,33 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 	}
 	public FileIniZZZ getFileIni(){
 		return this.objFileIni;
+	}
+	
+	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		this.hmVariable = hmVariable;
+	}
+	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+		return this.hmVariable;
+	}
+	
+	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		if(this.hmVariable==null){
+			this.hmVariable = hmVariable;
+		}else{
+			if(hmVariable==null){
+				//nix....
+			}else{
+				//füge Werte hinzu.
+				Set<String> sSet =  this.hmVariable.keySet();
+				for(String sKey : sSet){
+					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
+				}
+			}
+		}
+	}
+	
+	public String getVariable(String sKey){
+		return (String) this.getHashMapVariable().get(sKey);
 	}
 	
 	

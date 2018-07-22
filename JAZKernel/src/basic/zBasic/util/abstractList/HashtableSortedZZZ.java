@@ -10,8 +10,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-/**Klasse dient dazu eine bestehende Hashtable zu verwenden, aber das Ergebnis ggf. sortiert zur�ckzubekommen.
- * Die Klasse erweitert nicht Hashtable, weil sonst alle MEthoden auf einen Schlag �berschrieben werden m�ssten.
+/**Klasse dient dazu eine bestehende Hashtable zu verwenden, aber das Ergebnis ggf. sortiert zurückzubekommen.
+ * Die Klasse erweitert nicht Hashtable, weil sonst alle MEthoden auf einen Schlag überschrieben werden müssten.
  * @author Lindhauer
  *
  */

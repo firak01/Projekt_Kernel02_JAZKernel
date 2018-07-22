@@ -35,7 +35,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		try {			
 			
 			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehngt.
-			//Merke: Erst wenn es �berhaupt einen Test gibt, wird diese DAtei erstellt
+			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
 			String sFilePathTotal = null;		
 			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
 				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
@@ -94,6 +94,12 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("WertB_float=5.0");
 			objStreamFile.println("[Section for testComputeMath FLOAT]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+			
+			//Beachte Variablen können wie INI-Path auch außßerhalb einer MATH - Anweisung gelten.
+			objStreamFile.println("[Section for testPassVariable]");
+			objStreamFile.println("Formula1=<Z><z:Var>myTestVariable</z:Var></Z>");
+			//objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+			
 			
 			objFile = new File(sFilePathTotal);
 			
@@ -225,6 +231,18 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			sValue="Der dynamische Wert ist '20.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
 			assertEquals(sValue, sExpression);
+			
+			//+++ Teste Übergaebe von Variablen
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", false); //Math ist keine Voraussetzung für Variablen
+			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1"); //Wenn noch keine Formelvariable gesetzt ist...
+			sValue="Der dynamische Wert ist 'myTestVariable'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete 'myTestVariable' erwartet.", StringZZZ.contains(sExpression, "myTestVariable"));
+			assertEquals(sValue, sExpression);
+			
+			//TODO Goon 20180721: 
+			//Hier einen Wert in die TestVariable setzten, d.h. endlich mal ein HashMap übergeben....
+			
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
