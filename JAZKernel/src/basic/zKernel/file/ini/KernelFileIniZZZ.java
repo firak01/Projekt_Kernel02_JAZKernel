@@ -285,7 +285,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					//20180711: Die Flags an das neue Objekt der Klasse vererben
 					KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
 					String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
-					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, saFlagZpassed);				
+															
+					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, saFlagZpassed);		
 					sReturn = ex.compute(sReturn);
 				}
 			}

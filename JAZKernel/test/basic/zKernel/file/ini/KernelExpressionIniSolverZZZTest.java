@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.KernelZZZ;
@@ -95,10 +96,16 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("[Section for testComputeMath FLOAT]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
 			
+			objStreamFile.println("[Section for testComputeMathVariable FLOAT]");
+			objStreamFile.println("WertB_float=<Z><z:Var>myTestVariableFloat</z:Var></z>");
+			
 			//Beachte Variablen können wie INI-Path auch außßerhalb einer MATH - Anweisung gelten.
 			objStreamFile.println("[Section for testPassVariable]");
-			objStreamFile.println("Formula1=<Z><z:Var>myTestVariable</z:Var></Z>");
-			//objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+			objStreamFile.println("Formula1=<Z>Der dynamische Wert ist '<z:Var>myTestVariableString</z:Var>'. FGL rulez.</Z>");
+			objStreamFile.println("Formula2=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val><Z:Var>myTestVariableFloat</z:Var></Z:val></Z:math></Z>'. FGL rulez.");
+			objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
+			
+			
 			
 			
 			objFile = new File(sFilePathTotal);
@@ -236,14 +243,33 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Math ist keine Voraussetzung für Variablen
 			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1"); //Wenn noch keine Formelvariable gesetzt ist...
-			sValue="Der dynamische Wert ist 'myTestVariable'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete 'myTestVariable' erwartet.", StringZZZ.contains(sExpression, "myTestVariable"));
+			sValue="Der dynamische Wert ist 'myTestVariableString'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete 'myTestVariableString' erwartet.", StringZZZ.contains(sExpression, "myTestVariableString"));
+			assertEquals(sValue, sExpression);
+			 
+			//Einbinden der Variablen in Math-Ausdrücke
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Math ist keine Voraussetzung für Variablennersetzung, aber zum Rechnen.
+			
+			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
+			hmVariable.put("myTestVariableString","Test erfolgreich");
+			hmVariable.put("myTestVariableFloat","2.5");
+			objFileIniTest.setHashMapVariable(hmVariable);
+			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula2"); //Wenn noch keine Formelvariable gesetzt ist...
+			sValue="Der dynamische Wert ist '10.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '10.0' erwartet.", StringZZZ.contains(sExpression, "10.0"));
 			assertEquals(sValue, sExpression);
 			
-			//TODO Goon 20180721: 
-			//Hier einen Wert in die TestVariable setzten, d.h. endlich mal ein HashMap übergeben....
-			
-			
+			//Verschachtelung. D.h Formel arbeitet mit Variablen, die in einem anderen INI-Pfad liegt.
+			HashMapCaseInsensitiveZZZ<String,String> hmVariable02 = new HashMapCaseInsensitiveZZZ<String,String>();
+			hmVariable02.put("myTestVariableString","Test erfolgreich");
+			hmVariable02.put("myTestVariableFloat","3.0");
+			objFileIniTest.setHashMapVariable(hmVariable02);
+			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula3"); //Wenn noch keine Formelvariable gesetzt ist...
+			sValue="Der dynamische Wert ist '12.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '12.0' erwartet.", StringZZZ.contains(sExpression, "12.0"));
+			assertEquals(sValue, sExpression);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

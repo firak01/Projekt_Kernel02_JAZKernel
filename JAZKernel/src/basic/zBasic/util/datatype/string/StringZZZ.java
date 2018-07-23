@@ -1905,6 +1905,46 @@ public class StringZZZ implements IConstantZZZ{
 		return key;
 	}
 	
+	/**Merke: So einfach kann man sonst nicht nach float parsen
+	 * @param sValue
+	 * @return
+	 */
+	public static float toFloat(String sValue){
+		float fReturn=0.0f;
+		main:{
+			if(StringZZZ.isEmpty(sValue)) break main;
+			
+			if(StringZZZ.isFloat(sValue)){
+				Float fltValue = new Float(sValue);
+				fReturn = fltValue.floatValue();
+			}else{
+				int iValue = Integer.parseInt(sValue);	
+				fReturn = (float) iValue;
+			}
+		}//end main:
+		return fReturn;
+	}
+	
+	
+	/** Merke: Integer.paseInt(...) wirft beispielsweise eine java.lang.NumberFormatException, wenn man einen float-String, (z.B. "2.0") übergibt.
+	 *              Das wird hier vermieden.
+	 * @param sValue
+	 */
+	public static int toInteger(String sValue){
+		int iReturn = 0;
+		main:{
+			if(StringZZZ.isEmpty(sValue)) break main;
+			
+			if(StringZZZ.isFloat(sValue)){
+				Float fltValue = new Float(sValue);
+				iReturn = fltValue.intValue();
+			}else{
+				iReturn = Integer.parseInt(sValue);	
+			}
+		}
+		return iReturn;
+	}
+	
 	/* Trimme den String, schneide links und rechts jeweils ein Anf�hrungszeichen weg, trimme wieder, ...  schneide Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.
 	 * 
 	 */

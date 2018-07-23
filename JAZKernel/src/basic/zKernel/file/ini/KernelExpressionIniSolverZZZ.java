@@ -89,10 +89,15 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 				}else{
-					this.setFileIni(objFileIn);
+					this.setFileIni(objFileIn);	
+					if(objFileIn.getHashMapVariable()!=null){
+						this.setHashMapVariable(objFileIn.getHashMapVariable());
+					}
 				}
 				
-				this.setHashMapVariable(hmVariable);
+				if(hmVariable!=null){				
+						this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+				}
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
@@ -139,7 +144,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 				} //end while
 					
 								
-				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+				//DANACHALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);			
