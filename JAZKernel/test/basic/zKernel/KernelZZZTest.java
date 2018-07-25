@@ -279,7 +279,7 @@ public void testParameterByProgramAlias(){
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp2);
 		
 		//B2) 20061021 dieser Wert ist dann global definiert
-		stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testGlobalProperty");
+		stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "TestProgramName", "testGlobalProperty");
 		assertEquals("testWert global", stemp2);
 		
 		//C) Einen Parameterwert setzen und anschliessend auslesen
@@ -308,7 +308,7 @@ public void testParameterByProgramAlias(){
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty4'", sToSet3, stemp5);
 		
 //		E) Neu 20070116 Direktes Setzen eines Parameters auf Modulebene
-		String sToSet4 = new String("testwert für module");
+		String sToSet4 = new String("testwert fuer module");
 		sClassname = this.getClass().getName();
 		objKernelFGL.setParameterByModuleAlias(sClassname, "testProgramProperty5", sToSet4, true);
 		

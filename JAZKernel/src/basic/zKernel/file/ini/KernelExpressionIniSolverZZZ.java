@@ -21,7 +21,7 @@ import basic.zKernel.KernelZZZ;
  */
 public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 	public enum FLAGZ{
-		USEFORMULA_MATH
+		USEFORMULA,USEFORMULA_MATH
 	}
 	
 	private FileIniZZZ objFileIni=null;

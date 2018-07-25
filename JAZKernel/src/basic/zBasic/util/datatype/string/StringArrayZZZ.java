@@ -356,9 +356,9 @@ output:
 			for(String s01 : saString01){
 				if(StringArrayZZZ.contains(saString02, s01)){
 					listasTemp.add(s01);
-				}
-				saReturn = listasTemp.toArray(new String[listasTemp.size()]);
-			}
+				}				
+			}			
+			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
 		}//End main:
 		return saReturn;
 	}

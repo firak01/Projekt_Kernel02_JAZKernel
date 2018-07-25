@@ -380,6 +380,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.objFileFilterModule = (FileFilterModuleZZZ) objFileFilter;
 	}
 	
+	public FileIniZZZ getFileConfigIni() throws ExceptionZZZ{
+		String sKey = this.getApplicationKey();
+		return this.getFileConfigIniByAlias(sKey);		
+	}
+	
 	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesn�t proof the file existance !!! <CR>
 		Gets the Entries starting with 'KernelConfigPath...', 'KernelConfigFile...', where ... is the Alias.
 		<CR><CR>
@@ -419,7 +424,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						sKeyUsed = this.getApplicationKey();
 						sFileName = objIni.getValue(sKeyUsed, "KernelConfigFile" + sAlias );
 						
-						if(StringZZZ.isEmpty(sFileName)) break main;
+						if(StringZZZ.isEmpty(sFileName)){
+							//3. Versuch: KernelKey
+							sKeyUsed = this.getKernelKey();
+							sFileName = objIni.getValue(sKeyUsed, "KernelConfigFile" + sAlias );
+						
+							if(StringZZZ.isEmpty(sFileName)) break main;							
+						}												
 					}
 					
 					//Neu: Nun kann die Datei auch im . - Verzeichnis liegen
@@ -637,7 +648,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 		}//end check:
 
+		this.KernelSetParameterByProgramAlias_(null, sModuleAlias, null, sParameter, sValue, bSaveImmediate);
 		
+		/*
 		//+++ First get the Module-Ini-File
 		File objFileModule = this.getFileConfigByAlias(sModuleAlias);
 		if(objFileModule==null) break main;
@@ -652,7 +665,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		FileIniZZZ objIni = new FileIniZZZ(this,  objFileModule, hmFlag);
 		String sSection = this.getSystemKey();
 		objIni.setPropertyValue(sSection, sParameter, sValue, bSaveImmediate);
-
+*/
+	
 		}//END main
 		
 	}
@@ -879,94 +893,42 @@ MeinTestParameter=blablaErgebnis
 	main:{
 				check:{
 							if(objFileIniConfig == null){
-								ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+								String stemp = "Missing parameter: 'Configuration file-object'";
+								System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+								ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}else if(objFileIniConfig.getFileObject().exists()==false){
-								ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+								String stemp = "Wrong parameter: 'Configuration file-object' does not exist.";
+								System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+								ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}else if(objFileIniConfig.getFileObject().isDirectory()==true){
-								ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' is as directory.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+								String stemp = "Wrong parameter: 'Configuration file-object' is as directory.";
+								System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+								ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}
 									
 							if(StringZZZ.isEmpty(sAliasProgramOrSection)){
-								ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'ProgramOrSection'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+								String stemp = "Missing parameter: 'ProgramOrSection'";
+								System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+								ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}
 							
 							if(StringZZZ.isEmpty(sProperty)){
-								ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Property'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+								String stemp = "Missing parameter: 'Property'";
+								System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+								ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}
 						}//end check:
-		
-		String sSection = null;
-		boolean bNoSectionFound=true;
-		
-		
-		//+++ Absolutely first. Try to read an Aliasname from the file in then Systemkey-Section
-		String sProgramOrSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sAliasProgramOrSection);
-		if(StringZZZ.isEmpty(sProgramOrSection)){
-			sProgramOrSection = sAliasProgramOrSection;
-		}
-		//#############################################################################
-		
-		//+++ First Try: Use SystemKey ! Parameter as section
-		boolean bSectionExists = objFileIniConfig.proofSectionExists(this.getSystemKey() + "!" + sProgramOrSection);
-		if(bSectionExists==true){
-			bNoSectionFound = false;
-			sSection = this.getSystemKey() + "!" + sProgramOrSection;
-			sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-			if(sReturn != null) break main;
-		}
-		
-		//Falls der Wert noch nicht in der speziellen Section gefunden worden ist, so ist er ggf. in einer "globalen" section
-			//+++ Second Try: Use the passed parameter as section 
-			bSectionExists = objFileIniConfig.proofSectionExists(sProgramOrSection);
-		   if(bSectionExists==true){
-			   bNoSectionFound = false;
-			   sSection = sProgramOrSection;
-				sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-				if(sReturn != null) break main;
-		   }
-		   	 
-		   //Falls der Wert immer noch nicht gefunden wurde, so muss nach einem Alias gesucht werden,der bezieht ich dann aber wohl auf eine spezielle Systemnumber
-				//+++ Third Try: Use the parameter as programname, for which an alias has to be found
-				//1. get the SystemKey: Application#SystemNumber
-				String sSystem = this.getSystemKey();
-				
-				//2. get from the Application-Section the "program-alias", or the section where the property can be found. 	
-				//FGL: 2008-02-18 das ist falsch und muss korregiert werden   sSection = objFileIniConfig.getPropertyValue(sSystem, sProgramOrSection);
-				sSection = objFileIniConfig.getPropertyValue(sSystem, sAliasProgramOrSection);
-				if(!StringZZZ.isEmpty(sSection)){   //Wenn das auf einen leeren Section String angesetzt wird, so kommt ggf. eine falsche Fehlermeldung raus.
-					bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						bNoSectionFound = false;
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if (sReturn!=null) break main;			
-					}
-				}else{
-					
-				}//end if !StringZZZ.isEmpty(sSection)
-				
-				
-				if(bNoSectionFound==true){
-					//Throw an error when no section can be found
-					String stemp = "Wrong parameter: sALiasProgramOrSection, there is no program and no section available in the module configuration file with the name '" + sAliasProgramOrSection + "'";
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}else{
-					//Beim NICHTFINDEN eines Paremeters ist es wichtig einen Fehler auszugeben, weil das auf eine falsche Konfiguration hindeuten kann
-					//NEIEN, sReturn sollte Null sein, dann ist es nicht angegeben. Ein Leerwert ist n�mlcih durchaus m�glich
-					if(sReturn==null){
-						String stemp = "Wrong parameter: (sAliasProgramOrSection = '" + sAliasProgramOrSection + "'), in the specified section of the configuration file is no property configured named: '" + sProperty + "'.";
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
-				}
 
+				String sProgramOrSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sAliasProgramOrSection);
+				if(StringZZZ.isEmpty(sProgramOrSection)){
+					sProgramOrSection = sAliasProgramOrSection;
+				}
+				sReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty);
 
 	}//end main:
 	return sReturn;		
@@ -978,59 +940,289 @@ MeinTestParameter=blablaErgebnis
 		main:{
 			check:{
 				if(StringZZZ.isEmpty(sModule)){
-					ExceptionZZZ ez = new ExceptionZZZ("'String Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					String stemp = "'String Module'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}	
 				if(StringZZZ.isEmpty(sProgramOrSection)){
-					ExceptionZZZ ez = new ExceptionZZZ("'String ProgramOrSection'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					String stemp = "'String ProgramOrSection'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);					
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}	
 				if(StringZZZ.isEmpty(sProperty)){
-					ExceptionZZZ ez = new ExceptionZZZ("'String Property'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					String stemp = "'String Property'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}	
 			}//END check:
 		
-		//A1. Prüfen, ob das Modul überhaupt konfiguriert ist
-		String sModuleUsed = sModule;
-		boolean bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
-		if(bModuleConfig==false){
-			
-			//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
-			sModuleUsed = this.getSystemKey();
-			bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
-			if(bModuleConfig==false){
-				
-				//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
-				sModuleUsed = this.getApplicationKey();
-				bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
-				if(bModuleConfig==false){
-					ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' is not configured.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+		sReturn = this.KernelGetParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty);
+
+		}//END main:
+		return sReturn;
+	}
+	
+	public String getParameterByProgramAlias(FileIniZZZ objFileIniconfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			check:{
+				if(objFileIniconfig==null){
+					String stemp = "'FileIniZZZ'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
-				} //end if Versuch 3
-			} //end if Versuch 2
-		}//end if Versuch 1
+				}
+				if(StringZZZ.isEmpty(sModule)){
+					String stemp = "'String Module'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+				if(StringZZZ.isEmpty(sProgramOrSection)){
+					String stemp = "'String ProgramOrSection'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+				if(StringZZZ.isEmpty(sProperty)){
+					String stemp = "'String Property'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+			}//END check:
 		
-		//B1. Prüfen, ob das Modul existiert
-		boolean bModuleExists = this.proofModuleFileExists(sModuleUsed);
-		if(bModuleExists==false){
-			ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
+			sReturn = this.KernelGetParameterByProgramAlias_(objFileIniconfig, sModule, sProgramOrSection, sProperty);
+		}//END main:
+		return sReturn;
+	}
+	
+	private String KernelGetParameterByProgramAlias_(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		String sReturn = new String("");
+		
+		main:{		
+			
+			//A1. Prüfen, ob das Modul überhaupt konfiguriert ist
+			String sModuleUsed;
+			if(StringZZZ.isEmpty(sModule)){
+				sModuleUsed = this.getApplicationKey();
+			}else{
+				if(sModule.equals(sProgramOrSection)){
+					sModuleUsed = this.getApplicationKey();
+				}else{
+					sModuleUsed = sModule;
+				}
+			}
+			
+			//3. Konfigurationsfile des Moduls holen
+			FileIniZZZ file = null;
+		    if(objFileIniConfig==null){
+				file = this.getFileConfigIniByAlias(sModuleUsed);				
+		    }else{
+		    	file = objFileIniConfig;
+		    }
+		    
+		    //als Programm...
+		    if(file==null){
+		    	file = this.getFileConfigIniByAlias(sProgramOrSection);
+		    }
+		    		    
+		    if(file==null){
+				String stemp = "FileIniZZZ fuer Modul '" + sModuleUsed + "' ist NULL.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		    		   	   
+		    //+++ Ggfs. als Program deklarierte Section
+		    String  sSection = this.getSystemKey() + "!" + sModuleUsed;
+		    boolean bSectionExists = file.proofSectionExists(sSection);
+			if(bSectionExists==true){
+				sReturn = file.getPropertyValue(sSection, sProperty);
+				if(sReturn != null) break main;
+			}
+			
+			sSection = sModuleUsed;
+			bSectionExists = file.proofSectionExists(sSection);
+			if(bSectionExists==true){
+				sReturn = file.getPropertyValue(sSection, sProperty);
+				if(sReturn != null) break main;
+			}
+			
+			//+++ First Try: Use SystemKey ! Parameter as section
+			sSection  = this.getSystemKey() + "!" + sProgramOrSection;
+			bSectionExists = file.proofSectionExists(sSection);
+			if(bSectionExists==true){				
+				sReturn = file.getPropertyValue(sSection, sProperty);
+				if(sReturn != null) break main;
+			}			
+			
+			//+++ Second Try
+			sSection =  sProgramOrSection;
+		    bSectionExists = file.proofSectionExists(sSection);
+			if(bSectionExists==true){
+				sReturn = file.getPropertyValue(sSection, sProperty);
+				if(sReturn != null) break main;
+			}
+				
+			//+++ Einfach als SystemKey
+			sSection = this.getSystemKey();
+			bSectionExists = file.proofSectionExists(sSection);
+			if(bSectionExists==true){
+				sReturn = file.getPropertyValue(sSection, sProperty);
+				if(sReturn != null) break main;
+			}
+				
+			//+++++++++++++++++++
+				boolean bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+				if(bModuleConfig==false){
+																		
+					//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
+					sModuleUsed = this.getSystemKey();
+					bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+					if(bModuleConfig==false){
+						
+						//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
+						sModuleUsed = this.getApplicationKey();
+						bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+						if(bModuleConfig==false){
+							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured.";
+							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						} //end if Versuch 3
+					} //end if Versuch 2
+				}//end if Versuch 1
+				
+				//B1. Prüfen, ob das Modul existiert
+				boolean bModuleExists = this.proofModuleFileExists(sModuleUsed);
+				if(bModuleExists==false){
+					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist.";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
+				//4. weitere Methode aufrufen
+				sReturn = this.getParameterByProgramAlias(file, sProgramOrSection, sProperty);
+						
+				}//END main:
+				return sReturn;
+	}
+	
+	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty, String sValue, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{		
+		
+		//A1. Prüfen, ob das Modul überhaupt konfiguriert ist
+		String sModuleUsed;
+		if(StringZZZ.isEmpty(sModule)){
+			sModuleUsed = this.getApplicationKey();
+		}else{
+			sModuleUsed = sModule;
 		}
 		
 		//3. Konfigurationsfile des Moduls holen
-		FileIniZZZ file = this.getFileConfigIniByAlias(sModuleUsed);
-		if(file==null){
-			ExceptionZZZ ez = new ExceptionZZZ("FileIniZZZ fuer Modul '" + sModuleUsed + "' ist NULL.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+		FileIniZZZ file = null;
+	    if(objFileIniConfig==null){
+			file = this.getFileConfigIniByAlias(sModuleUsed);			
+	    }else{
+	    	file = objFileIniConfig;
+	    }
+	    
+	    //als Programm...
+	    if(file==null){
+	    	file = this.getFileConfigIniByAlias(sProgramOrSection);
+	    }
+	    
+	    
+	    if(file==null){
+			String stemp = "FileIniZZZ fuer Modul '" + sModuleUsed + "' ist NULL.";
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
+	    
+	    //+++ Ggfs. als Program deklarierte Section
+	    String sSection = this.getSystemKey() + "!" + sModuleUsed;
+	    boolean bSectionExists = file.proofSectionExists(sSection);
+		if(bSectionExists==true){
+			bReturn = file.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+			if (bReturn) break main;
+		}
 		
-		//4. weitere Methode aufrufen
-		sReturn = this.getParameterByProgramAlias(file, sProgramOrSection, sProperty);
-
+		sSection = sModuleUsed;
+		bSectionExists = file.proofSectionExists(sSection);
+		if(bSectionExists==true){
+			bReturn = file.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+			if(bReturn) break main;
+		}
+		
+		//+++ First Try: Use SystemKey ! Parameter as section
+		sSection  = this.getSystemKey() + "!" + sProgramOrSection;
+		bSectionExists = file.proofSectionExists(sSection);
+		if(bSectionExists==true){				
+			bReturn = file.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+			if(bReturn) break main;
+		}			
+		
+		//+++ Second Try
+		sSection =  sProgramOrSection;
+	    bSectionExists = file.proofSectionExists(sSection);
+		if(bSectionExists==true){
+			bReturn = file.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+			if(bReturn) break main;
+		}
 				
-		}//END main:
-		return sReturn;
+		//+++++++++++++++++++
+			boolean bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+			if(bModuleConfig==false){
+																	
+				//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
+				sModuleUsed = this.getSystemKey();
+				bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+				if(bModuleConfig==false){
+					
+					//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
+					sModuleUsed = this.getApplicationKey();
+					bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+					if(bModuleConfig==false){
+						String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured.";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					} //end if Versuch 3
+				} //end if Versuch 2
+			}//end if Versuch 1
+			
+			//B1. Prüfen, ob das Modul existiert
+			boolean bModuleExists = this.proofModuleFileExists(sModuleUsed);
+			if(bModuleExists==false){
+				String stemp = "Wrong parameter: Module '" + sModule + "' does not exist.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Setzen des Wertes
+			boolean bFlagDelete = false;
+			if(sValue==null){
+				bFlagDelete=true;
+			}else{
+				sValue=sValue;
+			}
+			
+			if(bFlagDelete==false){
+				bReturn = file.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);				
+			}else{
+				bReturn =  file.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+			}
+						
+			}//END main:
+		return bReturn;
 	}
 	
 	/**Merke: Hier wird davon ausgegangen, das Modul - und Programmname identisch sind !!!
@@ -1065,7 +1257,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param sValue,                 the Value to be set, if the parameter does not exist, the entry will be created.	if the value is 'null', the property will be deleted from the file.
 	 * @throws ExceptionZZZ
 	 */
-	public synchronized void setParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+	public synchronized void setParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty, String sValue, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		main:{
 			check:{
 							if(objFileConfig == null){
@@ -1080,15 +1272,14 @@ MeinTestParameter=blablaErgebnis
 							}
 											
 						}//end check:
-									
-					//1. Erstellen des FileIni-Objects
-					HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
 	
-					FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
+						//1. Erstellen des FileIni-Objects
+						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+						hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
 					
-					//2. Aufrufen einer methode mit anderer Signatur
-					this.setParameterByProgramAlias(objFileIni, sProgramOrSection, sProperty, sValueIn, bFlagSaveImmidiate);
+						FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
+						this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, bFlagSaveImmidiate);
+
 		}//end main:
 	}//end function setParameterByProgramAlias
 		
@@ -1100,11 +1291,9 @@ MeinTestParameter=blablaErgebnis
 	 * @param bFlagSaveImmediate,   true if the change should be saved immediately, otherwise the change will be kept im memory and stored in objFileConfig
 	 * @throws ExceptionZZZ
 	 */
-	public synchronized void setParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sProgramOrSection, String sProperty, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+	public synchronized void setParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sProgramOrSection, String sProperty, String sValue, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 	main:{
 		try{
-		String sValue=new String("");
-		boolean bFlagDelete=false;
 		check:{
 						if(objFileIniConfig == null){
 							ExceptionZZZ ez = new ExceptionZZZ("'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
@@ -1119,43 +1308,11 @@ MeinTestParameter=blablaErgebnis
 						if(StringZZZ.isEmpty(sProperty)){
 							ExceptionZZZ ez = new ExceptionZZZ("Property",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
-						}
-						
-						if(sValueIn==null){
-							bFlagDelete=true;
-						}else{
-							sValue=sValueIn;
-						}
+						}												
 					}//end check:
 									
-String sSection = null;
-		
-		//+++ First Try: Use the parameter as section 
-		boolean bSectionExists = objFileIniConfig.proofSectionExists(sProgramOrSection);
-	   if(bSectionExists==true){
-		   sSection = sProgramOrSection;
-	   }else{
-	   	   
-				//+++ Second Try: Use the parameter as programname, for which an alias has to be found
-				//1. get the SystemKey: Application#SystemNumber
-				String sSystem = this.getSystemKey();
-				
-				//2. get from the Application-Section the "program-alias", or the section where the property can be found. 
-				sSection = objFileIniConfig.getPropertyValue(sSystem, sProgramOrSection);
-				if(StringZZZ.isEmpty(sSection)){
-					ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: sProgramOrSection, there is no program and no section available in the module configuration file.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-		
-	   }//END if bSectionExists			
-		
-				//Setzen des Wertes
-				if(bFlagDelete==false){
-					objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);	
-				}else{
-					objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
-				}
-					
+					this.KernelSetParameterByProgramAlias_(objFileIniConfig, null, sProgramOrSection, sProperty, sValue, bFlagSaveImmidiate);
+
 		}catch(ExceptionZZZ ez){
 			this.setExceptionObject(ez);
 			throw ez;		
@@ -1183,30 +1340,11 @@ String sSection = null;
 																			
 							//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
 						}//end check:
-						
-						//1. Pr�fen, ob das Modul �berhaupt konfiguriert ist
-						boolean bModuleConfig = this.proofModuleFileIsConfigured(sModule);
-						if(bModuleConfig==false){
-							ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' is not configured.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-						}
-						
-						//2. Pr�fen, ob das Modul existiert
-						boolean bModuleExists = this.proofModuleFileExists(sModule);
-						if(bModuleExists==false){
-							ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: Module '" + sModule + "' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-						}
-									
-						//Methode mit anderer Signatur aufrufen
-						//Falls Module und Section gleich sind,
-						//MErke: Das sofortige Speichern ist notwendig, weill die Datei beim Wiederholten Aufruf wieder neu geholt wird. 
+	
 						if(sModule.equals(sSectionOrProgram)){
 							this.setParameterByModuleAlias(sModule, sProperty, sValue, true); //Es muss sofort gespeichert werden, da man keine chance hat auf das noch nicht gespeicherte FiniIni-Objekt von aussen zuzugreifen und dieses anschliessend zu speichern.
-						}else{
-//							Konfigurationsfile ausgehend vom Modul bestimmen
-							FileIniZZZ objFileIni = this.getFileConfigIniByAlias(sModule);						
-							this.setParameterByProgramAlias(objFileIni, sSectionOrProgram, sProperty, sValue, true);  //Es muss sofort gespeichert werden, da man keine chance hat auf das noch nicht gespeicherte FiniIni-Objekt von aussen zuzugreifen und dieses anschliessend zu speichern.
+						}else{					
+							this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, true);
 						}
 		}//end main:
 	}
@@ -1234,7 +1372,7 @@ String sSection = null;
 					//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
 				}//end check:
 	
-		this.setParameterByProgramAlias(sModuleAndSectionAndProgram, sModuleAndSectionAndProgram, sProperty, sValue);
+	            this.KernelSetParameterByProgramAlias_(null, null, sModuleAndSectionAndProgram, sProperty, sValue, true);
 		}
 	}
 	
@@ -1645,7 +1783,9 @@ String sSection = null;
 		main:{
 			check:{
 				if(StringZZZ.isEmpty(sAlias)){
-					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING,  this,  ReflectCodeZZZ.getMethodCurrentName());
+					String stemp = "Missing parameter: 'Alias'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING,  this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}							
 			}//end check:

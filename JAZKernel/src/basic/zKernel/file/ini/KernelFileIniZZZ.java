@@ -172,7 +172,6 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 			IniFile objFileIni = new IniFile(objFile.getPath(), false); //the target is not to save the file, everytime an entry is made, performance !!!
 			this.objFileIni = objFileIni;		
 			}else{
-				//.getflag("fielnew")==true
 				IniFile objFileIni = new IniFile(); //the target is not to save the file, everytime an entry is made, performance !!!
 				this.objFileIni = objFileIni;	
 			}
@@ -527,7 +526,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		String[] saReturn = null;
 		main:{
 			if(this.objFileIni==null){
-				ExceptionZZZ ez = new ExceptionZZZ( "missing property 'FileIniObject'",iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+				String stemp =  "missing property 'FileIniObject'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				throw ez;		
 			}
 						
@@ -784,7 +785,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		main:{
 			check:{
 				if(StringZZZ.isEmpty(sSection)){
-					ExceptionZZZ ez = new ExceptionZZZ("'Section'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					String stemp = "'Section'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;	
 				}
 			}//END check:
@@ -820,7 +823,18 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		this.hmVariable = hmVariable;
 	}
 	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+		if(this.hmVariable==null){
+			HashMapCaseInsensitiveZZZ<String,String> hmVariable = new HashMapCaseInsensitiveZZZ<String,String>();
+			this.setHashMapVariable(hmVariable);		
+		}
 		return this.hmVariable;
+	}
+	
+	public void setVariable(String sVariable, String sValue){
+		this.getHashMapVariable().put(sVariable, sValue);		
+	}	
+	public String getVariable(String sVariable){
+		return (String) this.getHashMapVariable().get(sVariable);
 	}
 	
 }

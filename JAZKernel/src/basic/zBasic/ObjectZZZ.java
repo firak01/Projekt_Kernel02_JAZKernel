@@ -152,7 +152,7 @@ public class ObjectZZZ <T> implements IObjectZZZ, IFlagZZZ{
 				//2. Hole alle FlagZ der Zielklasse
 				String[] saFlagTarget = objUsingFlagZ.getFlagZ();
 				
-				ArrayList<String>listasFlagPassable=new ArrayList<String>();
+				//ArrayList<String>listasFlagPassable=new ArrayList<String>();
 				//Nun nur die Schnittmenge der beiden StringÄrrays hiolen.
 				
 				saReturn = StringArrayZZZ.intersect(saFlag, saFlagTarget);
