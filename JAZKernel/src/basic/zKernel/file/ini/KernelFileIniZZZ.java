@@ -52,6 +52,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	private File objFile;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
 
+	public KernelFileIniZZZ() throws ExceptionZZZ{
+		super();
+		String[] saFlag = {"init"};
+		KernelFileIniNew_(null, null, null, null, saFlag, null);
+	}
+	
 	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl,null);
@@ -285,7 +291,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
 					String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
 															
-					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, saFlagZpassed);		
+					//20180726: Damit mit Variablen gerechnet werden kann, hier die Hashmap übergeben.
+					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
 					sReturn = ex.compute(sReturn);
 				}
 			}

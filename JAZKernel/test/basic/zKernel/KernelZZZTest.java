@@ -79,7 +79,7 @@ public void testContructor(){
 		assertEquals("01", objKernelFGL.getSystemNumber());
 		assertEquals("FGL!01", objKernelFGL.getSystemKey()); //so wird die Categorie in der ini-Datei bezeichnet
 		
-		assertNotNull("Test-Configuration-File does not exist", objKernelFGL.getFileIniConfigKernel()); //die Test-Konfigurationsdatei soll vorhanden sein.
+		assertNotNull("Test-Configuration-File does not exist", objKernelFGL.getFileConfigKernelAsIni()); //die Test-Konfigurationsdatei soll vorhanden sein.
 				
 		assertNotNull("Log-Filepath in configuration file does not exist", objKernelFGL.getLogObject());
 		
@@ -91,7 +91,7 @@ public void testContructor(){
 		assertEquals("01", objKernelTest.getSystemNumber());
 		assertEquals("TEST!01", objKernelTest.getSystemKey()); //so wird die Categorie in der ini-Datei bezeichnet
 		
-		assertNotNull("Test-Configuration-File does not exist", objKernelTest.getFileIniConfigKernel()); //die Test-Konfigurationsdatei soll vorhanden sein.
+		assertNotNull("Test-Configuration-File does not exist", objKernelTest.getFileConfigKernelAsIni()); //die Test-Konfigurationsdatei soll vorhanden sein.
 				
 		assertNotNull("Log-Filepath in configuration file does not exist", objKernelTest.getLogObject());
 		

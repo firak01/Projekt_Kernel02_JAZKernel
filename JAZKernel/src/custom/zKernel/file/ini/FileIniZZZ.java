@@ -17,7 +17,11 @@ import basic.zKernel.file.ini.KernelFileIniZZZ;
 @author 0823 ,date 05.10.2004
 */
 public class FileIniZZZ extends KernelFileIniZZZ{
-
+	
+	public FileIniZZZ() throws ExceptionZZZ{
+		super();
+	}
+	
 	/** CONSTRUCTOR
 	 @author 0823 , date: 05.10.2004
 	 @param kernelZZZ

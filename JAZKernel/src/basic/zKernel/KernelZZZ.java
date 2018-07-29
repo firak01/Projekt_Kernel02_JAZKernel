@@ -11,6 +11,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -31,6 +32,11 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public class KernelZZZ extends ObjectZZZ implements IObjectZZZ,IKernelContextUserZZZ {
+	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
+	public enum FLAGZ{
+		USEFORMULA, USEFORMULA_MATH;
+	}
+	
 	public static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
 	private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
@@ -40,6 +46,7 @@ public class KernelZZZ extends ObjectZZZ implements IObjectZZZ,IKernelContextUse
 	
 	private String sSystemNumber="";
 	private File objFileKernelConfig=null;
+	private FileIniZZZ objFileIniKernelConfig = null;
 
 
 	private String sFileConfig="";
@@ -63,6 +70,11 @@ public KernelZZZ() throws ExceptionZZZ{
 	ConfigZZZ objConfig = new ConfigZZZ();
 	String[] saFlagControl = new String[1];
 	saFlagControl[0] = "init";
+	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
+}
+
+public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
+	ConfigZZZ objConfig = new ConfigZZZ();
 	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
 }
 	/**Merke: Damit einzelne Projekte ihr eigenes ConfigZZZ - Objekt verwenden k�nnen, wird in diesem Konstruktor ein Interface eingebaut.
@@ -309,7 +321,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.sDirectoryConfig = sDirectoryConfig;
 	}
 	
-	public IniFile getFileIniConfigKernel() throws ExceptionZZZ{
+	public IniFile getFileConfigKernelAsIni() throws ExceptionZZZ{
 		if(this.objIniConfig==null){
 			
 			File objFile = this.getFileConfigKernel();
@@ -318,7 +330,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				objIni = new IniFile(objFile.getPath());
 			} catch (IOException e) {
 				String sLog = "Configuration File. Not able to create ini-FileObject.";
-				System.out.println(sLog);
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName() );
 				throw ez;
 			}
@@ -329,6 +341,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	}
 	
 	public void setFileIniConfigKernel(IniFile objIni){
+		//TODO: Müsste dann nicht FileIniZZZ für diesen Kernel mit diesem ggfs. neuen File neu gemacht werden.
 		this.objIniConfig = objIni;
 	}
 	
@@ -381,8 +394,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	}
 	
 	public FileIniZZZ getFileConfigIni() throws ExceptionZZZ{
-		String sKey = this.getApplicationKey();
-		return this.getFileConfigIniByAlias(sKey);		
+		FileIniZZZ objReturn = this.objFileIniKernelConfig;
+		if(objReturn==null){
+			String sKey = this.getApplicationKey();
+			objReturn = this.getFileConfigIniByAlias(sKey);
+			this.objFileIniKernelConfig = objReturn;
+		}
+		return objReturn;	
+	}
+	public void setFileConfigIni(FileIniZZZ objFileIniKernelConfig){
+		this.objFileIniKernelConfig = objFileIniKernelConfig;
 	}
 	
 	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesn�t proof the file existance !!! <CR>
@@ -412,9 +433,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					}//end check:
 					
 					//first, get the Kernel-Configuration-INI-File
-					//TODO write ini-file-class for zzz-kernel
-					IniFile objIni = this.getFileIniConfigKernel();
-					
+					IniFile objIni = this.getFileConfigKernelAsIni();
+					if(objIni==null){
+						String sLog = "FileIni";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+						ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+										
 					//1. Versuch: SystemKey
 					String sKeyUsed = this.getSystemKey();
 					String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias );
@@ -436,11 +462,23 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					//Neu: Nun kann die Datei auch im . - Verzeichnis liegen
 					String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );					
 					if(StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
+										
+					if(this.objFileIniKernelConfig==null){
+						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+						FileIniZZZ exDummy = new FileIniZZZ();					
+						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);						
+						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,saFlagZpassed);	
+					}else{
+						//Übernimm die gesetzten FlagZ...
+						HashMap<String,Boolean>hmFlagZ = this.objFileIniKernelConfig.getHashMapFlagZ();
+						
+						//Übernimm die gesetzten Variablen...
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.objFileIniKernelConfig.getHashMapVariable();
+						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlagZ);
+						objReturn.setHashMapVariable(hmVariable);												
+					}
 					
-					HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
-					hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA_MATH.name(), true);
-					objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlag);					
+									
 					/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen
 					if(objReturn.exists()==false){
 						sMethod = this.getMethodCurrentName();
@@ -448,6 +486,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						throw ez;		
 					}
 					*/
+					this.setFileConfigIni(objReturn);
+					
 					
 				}//end main:
 		return objReturn;
@@ -518,7 +558,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					
 						//first, get the Kernel-Configuration-INI-File
 						//TODO write ini-file-class for zzz-kernel
-						IniFile objIni = this.getFileIniConfigKernel();
+						IniFile objIni = this.getFileConfigKernelAsIni();
 						
 						//1. Versuch: Speziell f�r die Komponente definiert
 						String sFileName =objIni.getValue(sAlias,"KernelConfigFile" +sAlias );	
@@ -761,11 +801,10 @@ MeinTestParameter=blablaErgebnis
 								}
 							}//end check:
 					
-							//first, get the Ini-file-object
-							HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-							hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
-		
-							FileIniZZZ objIni = new FileIniZZZ(this,  objFileConfig, hmFlag);
+							//first, get the Ini-file-object			                 	
+							String[] saFlagZpassed = this.getFlagZ_passable(true, this);
+							FileIniZZZ objIni = new FileIniZZZ(this,  objFileConfig, saFlagZpassed);						
+							
 							
 							//1. Versuch: get the value by SystemKey
 							String sModuleAlias = this.getSystemKey();
@@ -928,8 +967,7 @@ MeinTestParameter=blablaErgebnis
 				if(StringZZZ.isEmpty(sProgramOrSection)){
 					sProgramOrSection = sAliasProgramOrSection;
 				}
-				sReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty);
-
+				sReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty);								
 	}//end main:
 	return sReturn;		
 }//end function getParameterByProgramAlias(..)
@@ -1036,6 +1074,9 @@ MeinTestParameter=blablaErgebnis
 				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+		    
+
+		    
 		    		   	   
 		    //+++ Ggfs. als Program deklarierte Section
 		    String  sSection = this.getSystemKey() + "!" + sModuleUsed;
@@ -1106,10 +1147,31 @@ MeinTestParameter=blablaErgebnis
 					throw ez;
 				}
 				
-				//4. weitere Methode aufrufen
-				sReturn = this.getParameterByProgramAlias(file, sProgramOrSection, sProperty);
+				
+		        //Falls der Parameter immer noch nicht gefunden wurde, hier eine Exception auswerfen.
+		        //Ansonsten droht die Gefahr einer Endlosschleife.
+				if(sReturn == null){
+					
+
+					//Erneuter Versuch. Diesmal Versuchen, ob das Programm nicht eine Section hat, die als Alias zur Verfügung steht.
+					String sAliasProgramOrSection = file.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+					if(!StringZZZ.isEmpty(sAliasProgramOrSection)){						
+						sModuleUsed = this.getApplicationKey();
+						sProgramOrSection = sAliasProgramOrSection;
 						
+						sReturn = KernelGetParameterByProgramAlias_(objFileIniConfig, sModuleUsed, sProgramOrSection, sProperty);
+						
+					}else{
+					
+						//Abbruch der Parametersuche. Ohne diesen else-Zweig, gibt es ggfs. eine Endlosschleife.
+						String stemp = "Parameter nicht in der ini-Datei definiert (Modul/Program or Section) '(" + sModule + "/" + sProgramOrSection + ") " + sProperty + "'";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+				}
 				}//END main:
+
 				return sReturn;
 	}
 	
@@ -1207,6 +1269,7 @@ MeinTestParameter=blablaErgebnis
 				throw ez;
 			}
 			
+
 			//Setzen des Wertes
 			boolean bFlagDelete = false;
 			if(sValue==null){
@@ -1746,7 +1809,7 @@ MeinTestParameter=blablaErgebnis
 	public ArrayList getModuleAll() throws ExceptionZZZ{
 		ArrayList listaModuleString = new ArrayList();
 		main:{
-			IniFile objFileIni = this.getFileIniConfigKernel();
+			IniFile objFileIni = this.getFileConfigKernelAsIni();
 			if(objFileIni==null){
 				ExceptionZZZ ez = new ExceptionZZZ("KernelConfigurationIni-File", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
@@ -1792,7 +1855,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//first, get the Kernel-Configuration-INI-File
 			//TODO write ini-file-class for zzz-kernel
-			IniFile objIni = this.getFileIniConfigKernel();
+			IniFile objIni = this.getFileConfigKernelAsIni();
 			
 			//PRÜFUNG: LIES EINEN .ini - DATEINAMEN AUS.
 			//Merke: Der Pfad darf leer sein. Dann wird "." als aktuelles Verzeichnis angenommen    String sFilePath = objIni.getValue(stemp,"KernelConfigPath" +sAlias );
@@ -1832,7 +1895,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//first, get the Kernel-Configuration-INI-File
 			//TODO write ini-file-class for zzz-kernel
-			IniFile objIni = this.getFileIniConfigKernel();
+			IniFile objIni = this.getFileConfigKernelAsIni();
 			
 			
 			//1. Versuch: Auf Systemebene
@@ -1889,7 +1952,7 @@ MeinTestParameter=blablaErgebnis
 							  btemp = setFlag(stemp, true);
 							  if(btemp==false){
 								  sLog = "the flag '" + stemp + "' is not available.";
-								  System.out.println(sLog);
+								  System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 								  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 								  throw ez;		 
 							  }
