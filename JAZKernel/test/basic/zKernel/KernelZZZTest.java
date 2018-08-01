@@ -298,7 +298,7 @@ public void testParameterByProgramAlias(){
 		String stemp4 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty3"); //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty3'", sToSet2, stemp4);
 		
-//		D) Neu 20061021 Section ds Aliasnamen mit Systemnumber, wenn  ein Paramenter in der Section des "nur" Aliasnamens nicht gefunden wird
+//		D) Neu 20061021 Section des Aliasnamen mit Systemnumber, wenn  ein Paramenter in der Section des "nur" Aliasnamens nicht gefunden wird
 		//D1) Teste das Setzen von Parameterwerten, bei gleichem Modulnamen / Aliasnamen
 		String sToSet3 = new String("testwert progname equals module");
 		String sClassname = this.getClass().getName(); 
@@ -314,6 +314,17 @@ public void testParameterByProgramAlias(){
 		
 		String stemp6 = objKernelFGL.getParameterByModuleAlias(sClassname, "testProgramProperty5");
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty5'", sToSet4, stemp6);
+		
+		
+		//Zuletzt) Behandlung "Parameter ist nicht vorhanden": Dann soll eine ExceptionZZZ geworfen werden.
+		//Zuletzt A) Übergabe als directe Section testen
+		try{
+		String stempZuletzt = null;
+		stempZuletzt = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramPropertyNIXDA" );
+		assertNull("Expected an exception using not existing Property 'testProgramPropertyNIXDA'. Configured in the 'TestModule' of the Application 'FGL'", stempZuletzt);
+		}catch(ExceptionZZZ ez){			
+		}			
+				
 		
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
