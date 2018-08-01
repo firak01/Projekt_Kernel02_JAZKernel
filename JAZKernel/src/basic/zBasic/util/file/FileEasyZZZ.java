@@ -23,6 +23,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *
  */
 public class FileEasyZZZ extends ObjectZZZ{
+	public static String sDIRECTORY_CURRENT = ".";
+	public static String sDIRECTORY_PARENT = "..";
+	public static String sFILE_ENDING_SEPARATOR = ".";
 	public static String sFILE_ABSOLUT_REGEX="/^(?:[A-Za-z]:)?\\/";
 	public static String sFILE_VALID_WINDOWS_REGEX="^(?>[a-z]:)?(?>\\|/)?([^\\/?%*:|\"<>\r\n]+(?>\\|/)?)+$";
 private FileEasyZZZ(){
@@ -89,7 +92,7 @@ public static File getFile(String sDirectoryIn, String sFileName)throws Exceptio
 		}
 	
 		//Verzeichnis analysieren	
-	    String sDirectory = new String(".");
+	    String sDirectory = FileEasyZZZ.sDIRECTORY_CURRENT;
 		if(!StringZZZ.isEmpty(sDirectoryIn)){
 			sDirectory=sDirectoryIn;	    
 		}
@@ -324,7 +327,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		main:{
 					
 		//Ermitteln der Dateinamensendung.
-		iFileOnlyLength = sFileName.lastIndexOf(".");
+		iFileOnlyLength = sFileName.lastIndexOf(FileEasyZZZ.sFILE_ENDING_SEPARATOR);
 		if(iFileOnlyLength > -1){
 			sFunction = sFileName.substring(iFileOnlyLength + 1);
 		}
@@ -406,19 +409,43 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		
 		//#########################################
 		//Ermitteln der Dateinamensendung.
-		int iFileOnlyLength = sFileName.lastIndexOf(".");
+		int iFileOnlyLength = sFileName.lastIndexOf(FileEasyZZZ.sFILE_ENDING_SEPARATOR);
 		if(iFileOnlyLength > -1){
 			sReturn = StringZZZ.left(sFileName, iFileOnlyLength + 1);
 			if(StringZZZ.isEmpty(sReturn)){
 				//Dann ist irgendwas anders als geplant......
-				sReturn = sFileName + File.separator + sEnd;
+				sReturn = sFileName + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnd;
 			}else{
 				sReturn = sReturn + sEnd;
 			}
 		}else{
 			//Es gibt keinen Punkt im Dateinamen
-			sReturn = sFileName + File.separator + sEnd;
+			sReturn = sFileName + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnd;
 		}
+		return sReturn;
+	}
+	
+
+
+public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sSuffix) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sFileName)){
+			 ExceptionZZZ ez = new ExceptionZZZ("Missing Filename Parameter.", 101, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			  //doesn�t work. Only works when > JDK 1.4
+			  //Exception e = new Exception();
+			  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
+			  throw ez;		 
+			}
+			
+			if(StringZZZ.isEmpty(sSuffix)) break main;
+			
+			String sFileNameLeft = FileEasyZZZ.getNameOnly(sFileName);
+			String sFileNameRight = FileEasyZZZ.getNameEnd(sFileName);
+			
+			sReturn = sFileNameLeft + sSuffix + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sFileNameRight;
+		
+		}//end main:
 		return sReturn;
 	}
 	
@@ -556,14 +583,14 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		
 		//#################
 		String sFileOnly;
-		int iFileOnlyLength = sFileName.lastIndexOf(".");
+		int iFileOnlyLength = sFileName.lastIndexOf(FileEasyZZZ.sFILE_ENDING_SEPARATOR);
 		if(iFileOnlyLength > -1){
 			sFileOnly = sFileName.substring(0, iFileOnlyLength);   //.substring(iFileOnlyLength + 1);
 		}else{
 			sFileOnly = sFileName;
 		}
 		
-		sReturn = sFileOnly + "." + sEndNew;
+		sReturn = sFileOnly + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEndNew;
 			
 	}//end main
 	return sReturn;	
