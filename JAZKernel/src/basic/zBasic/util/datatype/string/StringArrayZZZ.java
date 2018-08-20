@@ -1,6 +1,7 @@
 package basic.zBasic.util.datatype.string;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +32,24 @@ public class StringArrayZZZ implements IConstantZZZ{
 		this.saIntern = args;
 		this.bIsString = true;
 	}
+	
+	public StringArrayZZZ( Object args[]) throws ExceptionZZZ{
+		if(args==null){
+			ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		ArrayList<String> listas = new ArrayList<String>();
+		for(Object obj : args){
+			String s = obj.toString();
+			listas.add(s);
+		}
+		
+		String[] saArgs = listas.toArray(new String[listas.size()]);
+		this.saIntern = saArgs;
+		this.bIsString = true;
+	}
+	
 	
 	public boolean contains(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -83,6 +102,70 @@ public class StringArrayZZZ implements IConstantZZZ{
 output:
 		return lFunction;
 	}//end IndexFirstGet
+	
+	
+
+	/** long, returns the index of the first sToFind in the string Array
+	* Lindhauer; 16.05.2006 07:42:37
+	 * @param sToFind
+	 * @return long
+	 */
+	public static long getIndexFirst(String[] saSource, String sToFind){
+		long lFunction = -1;
+		main:{
+			if(saSource==null) break main;
+			
+			for(int iCounter = 0; iCounter <= saSource.length -1; iCounter++){
+			 	String sTemp = saSource[iCounter];
+			 	// Erst ab Java 1.2   if (sTemp.compareToIgnoreCase(sToFind)== 0){
+			 	if (sTemp.compareTo(sToFind)== 0){
+			 		lFunction = (long)iCounter;
+			 		break;
+			 	}
+			 } // end for
+		}//end main:
+		return lFunction;
+	}//end IndexFirstGet
+	
+	public static long searchIndexFirst(String[] saSource, String sToFind){
+		return StringArrayZZZ.getIndexFirst(saSource, sToFind);
+	}
+	
+	public String[] sort() throws ExceptionZZZ{
+		String[] sa = this.saIntern;
+		Arrays.sort(sa);
+		return sa;
+	}
+	public static String[] sort(Object[] saSource) throws ExceptionZZZ{
+		StringArrayZZZ saObj = new StringArrayZZZ(saSource);
+		return saObj.sort();					
+	}
+	
+	public static String getLast(String[] saSource){
+		String sReturn = null;
+		main:{
+			if(saSource==null) break main;
+			long lIndex = saSource.length - 1;
+			if(lIndex<0)break main;
+			
+			Long lngIndex = new Long(lIndex);
+			int iIndex = lngIndex.intValue();
+			sReturn = saSource[iIndex];
+		}// end main:
+		return sReturn;
+	}
+	
+	public static String getFirst(String[] saSource){
+		String sReturn = null;
+		main:{
+			if(saSource==null) break main;
+			long lIndex = saSource.length - 1;
+			if(lIndex<0)break main;
+
+			sReturn = saSource[0];
+		}// end main:
+		return sReturn;
+	}
 	
 	
 	public static String[] insertSorted(String[] saSorted, String sString, String sFlagIn) throws ExceptionZZZ{
