@@ -658,9 +658,12 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				
 						//+++ First get the Module-Ini-File
 						File objFileModule = this.getFileConfigByAlias(sModuleAlias);
-						if(objFileModule==null) break main;
+						if(objFileModule==null){
+							ExceptionZZZ ez = new ExceptionZZZ("Configuration file not configured for the module'" + sModuleAlias + "'",iERROR_CONFIGURATION_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;	
+						};
 						if(objFileModule.exists()==false){
-							ExceptionZZZ ez = new ExceptionZZZ("Configuration file '" + objFileModule.getAbsolutePath() + "' not found for the module'" + sModuleAlias + "'",iERROR_CONFIGURATION_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+							ExceptionZZZ ez = new ExceptionZZZ("Configuration file '" + objFileModule.getAbsolutePath() + "' not exists for the module'" + sModuleAlias + "'",iERROR_CONFIGURATION_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;		
 						}
 												
@@ -1379,6 +1382,7 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	/**Merke: Hier wird davon ausgegangen, das Modul - und Programmname identisch sind !!!
+	 * FGL 20180909: Müsste nicht eigentlich der Kernel-ApplicationKey als ModulAlias verwendet werden??? Statt Gleichheit???
 	* @param sModuleAndProgramAndSection
 	* @param sProperty
 	* @return
@@ -1396,7 +1400,9 @@ MeinTestParameter=blablaErgebnis
 				}			
 			}//END check:
 		
-			sReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sModuleAndProgramAndSection, sProperty); 
+			//FGL TODO GOON 20180909: Müsste nicht eigentlich der ApplicationKey als ModulAlias verwendet werden?		
+			//sReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sModuleAndProgramAndSection, sProperty); 
+		sReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection, sProperty);
 		}//END main:
 		return sReturn;
 	}
