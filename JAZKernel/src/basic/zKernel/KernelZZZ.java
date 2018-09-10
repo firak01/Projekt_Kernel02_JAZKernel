@@ -1163,6 +1163,34 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
+			
+			//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
+			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+			sSection = sSection + "!" + this.getSystemNumber();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sSection)){
+				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+				if(bSectionExists==true){
+					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+					if(sReturn != null) break main;
+				}
+			}
+			
+			
+			//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
+			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+			sSection = this.getSystemKey() + "!" + sSection;
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sSection)){
+				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+				if(bSectionExists==true){
+					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+					if(sReturn != null) break main;
+				}
+			}
+			
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sModuleUsed);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){

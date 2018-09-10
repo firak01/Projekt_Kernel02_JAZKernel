@@ -308,7 +308,7 @@ public void testParameterByProgramAlias(){
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty4'", sToSet3, stemp5);
 		
 //		E) Neu 20070116 Direktes Setzen eines Parameters auf Modulebene
-		String sToSet4 = new String("testwert fuer module");
+		String sToSet4 = new String("testwert for module");
 		sClassname = this.getClass().getName();
 		objKernelFGL.setParameterByModuleAlias(sClassname, "testProgramProperty5", sToSet4, true);
 		
