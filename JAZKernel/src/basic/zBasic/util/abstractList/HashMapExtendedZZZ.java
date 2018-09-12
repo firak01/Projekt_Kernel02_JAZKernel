@@ -34,6 +34,22 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	public HashMapExtendedZZZ(){
 	}
 	
+	
+	/** Versuche für das angegebene Objekt den Schlüsselwert zurückzugeben.
+	 *   Da ein Objetk mit mhereren Schlüsseln abgelegt sein kann: "First"...
+	 * @param hm
+	 * @param value
+	 * @return
+	 */
+	public static Object getKeyFromValueFirst(Map hm, Object value) {
+	    for (Object o : hm.keySet()) {
+	      if (hm.get(o).equals(value)) {
+	        return o;
+	      }
+	    }
+	    return null;
+	  }
+	
 	/** Vergleiche die Werte der in der HashMap gespeicherten Objekte. 
 	 *   Aber: Gib eine Methode an, über die die Werte der Objekte erst einmal ermittelt werden sollen.
 	 *   Die daraus reslutierenden Werte werden mit .equals() miteinander verglichen.

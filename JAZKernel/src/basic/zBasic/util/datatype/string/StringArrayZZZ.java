@@ -141,6 +141,20 @@ output:
 		return saObj.sort();					
 	}
 	
+	
+	public static String getLast(Object[] saSource){
+		String sReturn = null;
+		main:{
+			if(saSource==null) break main;
+			long lIndex = saSource.length - 1;
+			if(lIndex<0)break main;
+			
+			Long lngIndex = new Long(lIndex);
+			int iIndex = lngIndex.intValue();
+			sReturn = saSource[iIndex].toString();
+		}// end main:
+		return sReturn;
+	}
 	public static String getLast(String[] saSource){
 		String sReturn = null;
 		main:{
@@ -155,6 +169,17 @@ output:
 		return sReturn;
 	}
 	
+	public static String getFirst(Object[] saSource){
+		String sReturn = null;
+		main:{
+			if(saSource==null) break main;
+			long lIndex = saSource.length - 1;
+			if(lIndex<0)break main;
+
+			sReturn = saSource[0].toString();
+		}// end main:
+		return sReturn;
+	}
 	public static String getFirst(String[] saSource){
 		String sReturn = null;
 		main:{
