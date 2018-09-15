@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class ArrayListZZZ extends ObjectZZZ {
+public class ArrayListZZZ<T> extends ObjectZZZ {
 
 public static ArrayList unique(ArrayList lista){
 	ArrayList listaReturn = null;
@@ -46,7 +46,7 @@ public static ArrayList join(ArrayList lista1, ArrayList lista2, boolean bFlagUn
 		break main;
 		
 	}else{
-		//Wenn 'uniqued' werden soll, dann erst in eine temporäre Liste joinen
+		//Wenn 'uniqued' werden soll, dann erst in eine temporï¿½re Liste joinen
 		ArrayList listaTemp = new ArrayList();
 		if(lista1!=null){
 			for(int icount=0; icount < lista1.size(); icount++){
@@ -86,6 +86,20 @@ public static boolean isSameSize(ArrayList objAL1, ArrayList objAL2) throws Exce
 		if (iSize1 == iSize2) bReturn = true;
 	}//end main:
 	return bReturn;
+}
+
+public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove){
+	main:{
+		if(lista==null) break main;
+		if(lista.size()>iNumberOfElements2Remove){
+			for(int iCount = 0; iCount <= iNumberOfElements2Remove; iCount++){
+				int iLast = lista.size() - 1; //-1 da der Index mit 0 anfÃ¤ngt
+				lista.remove(iLast);
+			}
+		}else{
+			lista.clear();
+		}
+	}//end main:
 }
 
 }//END class

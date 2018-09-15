@@ -27,7 +27,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IObjectZZZ{
+public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZZZ, IObjectZZZ{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2859619907770188881L;
 	private ExceptionZZZ objException;
 	
 	/**
@@ -49,7 +53,7 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 		return bReturn;
 	}//end private constructor
 	
-	public boolean addList(ArrayList obj_alIn, int istartin, int iendin) throws ExceptionZZZ{
+	public boolean addList(ArrayList<T> obj_alIn, int istartin, int iendin) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(obj_alIn== null){
@@ -70,13 +74,14 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 			  int istart = istartin;
 			  iend = iend-istart;
 			  for(int icount = 0; icount <= iend; icount++){
-			  	this.add(obj_alIn.get(istart));
+			  	this.add((T) obj_alIn.get(istart));
 			  	istart++;
 			  }
 	}//end main:
     return bReturn;
 }//end function
 	
+	@SuppressWarnings("unchecked")
 	public void addUnique(Object obj) throws ExceptionZZZ{
 		main:{
 			if(obj==null){
@@ -85,7 +90,7 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 			}
 			
 			if(this.contains(obj)) break main;
-			this.add(obj);
+			this.add((T) obj);
 			
 		}//end main
 	}
@@ -293,6 +298,8 @@ public class ArrayListExtendedZZZ extends ArrayList implements  IConstantZZZ, IO
 		}//end main
 		return iReturn;
 	}
+	
+	
 	
 	
  
