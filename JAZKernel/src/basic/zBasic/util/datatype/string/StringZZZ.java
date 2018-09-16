@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import basic.zBasic.ExceptionZZZ;
@@ -322,6 +323,28 @@ public class StringZZZ implements IConstantZZZ{
 					break main;
 				}
 			}					
+		} //end main:		
+		return bReturn;
+	}
+	
+	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
+	public static boolean endsWithIgnoreCase(String sString, String sMatch){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sMatch)) break main;
+									
+			
+			int iMatchLength=sMatch.length();			
+			if(sString.length() < iMatchLength) break main;
+			
+			
+			String sSub = sString.substring(sString.length() - iMatchLength -1, sString.length()-1); //-1 um es auf Indes umzurechnen.
+			if(sSub.equalsIgnoreCase(sMatch)){
+				bReturn = true;
+				break main;
+			}
+			
 		} //end main:		
 		return bReturn;
 	}
@@ -1923,6 +1946,100 @@ public class StringZZZ implements IConstantZZZ{
 			}
 		}//end main:
 		return fReturn;
+	}
+	
+	public static String asHtml(String sValue) throws ExceptionZZZ{
+		String sReturn = new String("");
+		main:{
+			
+			if(StringZZZ.isEmpty(sValue)){
+				sReturn = "<html></html>";
+				break main;
+			}
+			
+			sReturn = StringZZZ.toHtml(sValue);
+			
+			if(!StringZZZ.startsWithIgnoreCase(sValue, "<html>")){
+				sReturn = "<html>" + sReturn;
+			}
+			if(!StringZZZ.endsWithIgnoreCase(sValue, "</html>")){
+				sReturn = sReturn + "</html>";
+			}
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String toHtml(String sValue) throws ExceptionZZZ{
+		String sReturn = new String("");
+		main:{
+			if(StringZZZ.isEmpty(sValue)) break main;
+			sReturn = StringZZZ.toHtmlEscaped(sValue);
+			sReturn = StringZZZ.toHtmlCrlf(sValue);
+			
+			//Merke: Will man die HTML - Tags noch haben, dann StringZZZ.asHtml(...)
+		}
+		return sReturn;
+	}
+	public static String toHtmlSimple(String s){
+		/*
+		 You should do some replacements on the text programmatically. Here are some clues:
+
+    All Newlines should be converted to "<br>\n" (The \n for better readability of the output).
+    All CRs should be dropped (who uses DOS encoding anyway).
+    All pairs of spaces should be replaced with " &nbsp;"
+    Replace "<" with "&lt;"
+    Replace "&" with "&amp;"
+    All other characters < 128 should be left as they are.
+    All other characters >= 128 should be written as "&#"+((int)myChar)+";", to make them readable in every encoding.
+    To autodetect your links, you could either use a regex like "http://[^ ]+", or "www.[^ ]" and convert them like JB Nizet said. to "<a href=\""+url+"\">"+url+"</a>", but only after having done all the other replacements.
+
+		  String str = "(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'\".,<>?«»“”‘’]))";
+Pattern patt = Pattern.compile(str);
+Matcher matcher = patt.matcher(plain);
+plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
+		 */
+		StringBuilder builder = new StringBuilder();
+	    boolean previousWasASpace = false;
+	    for( char c : s.toCharArray() ) {
+	        if( c == ' ' ) {
+	            if( previousWasASpace ) {
+	                builder.append("&nbsp;");
+	                previousWasASpace = false;
+	                continue;
+	            }
+	            previousWasASpace = true;
+	        } else {
+	            previousWasASpace = false;
+	        }
+	        switch(c) {
+	            case '<': builder.append("&lt;"); break;
+	            case '>': builder.append("&gt;"); break;
+	            case '&': builder.append("&amp;"); break;
+	            case '"': builder.append("&quot;"); break;
+	            case '\n': builder.append("<br>"); break;
+	            // We need Tab support here, because we print StackTraces as HTML
+	            case '\t': builder.append("&nbsp; &nbsp; &nbsp;"); break;  
+	            default:
+	                if( c < 128 ) {
+	                    builder.append(c);
+	                } else {
+	                    builder.append("&#").append((int)c).append(";");
+	                }    
+	        }
+	    }
+	    return builder.toString();
+	}
+	
+	public static String toHtmlCrlf(String sValue) throws ExceptionZZZ{
+		String sReturn = StringZZZ.replace(sValue, StringZZZ.crlf(), "<br>");
+		return sReturn;
+	}
+	
+	
+	public static String toHtmlEscaped(String sValue){
+		String sReturn = StringEscapeUtils.escapeHtml(sValue);
+		return sReturn;
 	}
 	
 	
