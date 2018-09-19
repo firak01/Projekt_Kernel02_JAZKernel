@@ -21,7 +21,7 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
 	public KernelUseObjectZZZ(){		
-		//FGL 20080422 wenn objekte diese klasse erweitern scheint dies immer ausgefürht zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
+		//FGL 20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
 	}
 	
 	/** This constructor declares the used Log-Object as the Kernel-LogObject.
