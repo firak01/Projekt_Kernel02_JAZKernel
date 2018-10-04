@@ -10,6 +10,7 @@ import java.io.File;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.KernelFileTextExportCrackZZZ;
 import custom.zKernel.LogZZZ;
@@ -45,7 +46,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 			LogZZZ objLog=null;
 			FileIniZZZ objFileConfigIniExport;
 						try {	
-							KernelZZZ objKernel = this.getKernelObject();
+							IKernelZZZ objKernel = this.getKernelObject();
 							objLog = objKernel.getLogObject();						
 							check:{
 								//Konfigurationsdatei holen

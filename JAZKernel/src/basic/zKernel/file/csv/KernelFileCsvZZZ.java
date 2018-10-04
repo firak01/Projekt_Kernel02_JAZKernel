@@ -15,6 +15,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.csv.CSVReader;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -27,7 +28,7 @@ public class KernelFileCsvZZZ  extends KernelUseObjectZZZ{
 	private CSVReader objCSV;
 	private File objFile;
 
-	public KernelFileCsvZZZ(KernelZZZ objKernel, LogZZZ objLog, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileCsvZZZ(IKernelZZZ objKernel, LogZZZ objLog, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
 		KernelFileCsvNew_(objKernel, objLog, null, sDirectory, sFilename, saFlagControl);
 	}
 
@@ -42,7 +43,7 @@ public class KernelFileCsvZZZ  extends KernelUseObjectZZZ{
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileCsvNew_(KernelZZZ objKernelIn, LogZZZ objLogIn, File objFileIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelFileCsvNew_(IKernelZZZ objKernelIn, LogZZZ objLogIn, File objFileIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		String stemp; boolean btemp; 
 		main:{
@@ -53,7 +54,7 @@ public class KernelFileCsvZZZ  extends KernelUseObjectZZZ{
 				this.objLog = objLogIn;
 			 }
 					 
-			   //setzen der übergebenen Flags	
+			   //setzen der ï¿½bergebenen Flags	
 				   if(saFlagControlIn != null){
 					   for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						   stemp = saFlagControlIn[iCount];
@@ -139,14 +140,14 @@ public class KernelFileCsvZZZ  extends KernelUseObjectZZZ{
 	/* (non-Javadoc)
 	@see zzzKernel.basic.KernelAssetKernelZZZ#getKernelObject()
 	 */
-	public KernelZZZ getKernelObject() {
+	public IKernelZZZ getKernelObject() {
 		return this.objKernel;
 	}
 
 	/* (non-Javadoc)
 	@see zzzKernel.basic.KernelAssetKernelZZZ#setKernelObject(zzzKernel.custom.KernelZZZ)
 	 */
-	public void setKernelObject(KernelZZZ objKernel) {
+	public void setKernelObject(IKernelZZZ objKernel) {
 		this.objKernel= objKernel;
 	}
 

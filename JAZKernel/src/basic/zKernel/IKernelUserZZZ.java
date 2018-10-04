@@ -12,8 +12,8 @@ import custom.zKernel.LogZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public interface IKernelUserZZZ {
-	public abstract KernelZZZ getKernelObject();
-	public abstract void setKernelObject(KernelZZZ objKernel);		
+	public abstract IKernelZZZ getKernelObject();
+	public abstract void setKernelObject(IKernelZZZ objKernel);		
 	public abstract LogZZZ getLogObject();
 	public abstract void setLogObject(LogZZZ objLog);
 }

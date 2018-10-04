@@ -9,6 +9,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -24,12 +25,12 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ{
 		KernelExpressionIniVariableNew_(null, saFlag);
 	}
 			
-	public KernelExpressionIni_VariableZZZ(KernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
+	public KernelExpressionIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniVariableNew_(hmVariableValue, null);
 	}
 	
-	public KernelExpressionIni_VariableZZZ(KernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniVariableNew_(hmVariableValue, saFlag);
 	}

@@ -11,6 +11,7 @@ import java.io.File;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -33,7 +34,7 @@ public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
 				//String sFunction = new String("");
 		main:{
 			ExceptionZZZ ez = new ExceptionZZZ("this function has to be overwritten by a function of the include package", iERROR_ZFRAME_METHOD, this, ReflectCodeZZZ.getMethodCurrentName()); 
-			//doesn´t work. Only works when > JDK 1.4
+			//doesnï¿½t work. Only works when > JDK 1.4
 			//Exception e = new Exception();
 			//ExceptionZZZ ez = new ExceptionZZZ("Parameter missing: KernelObject", 101,this, e, "");
 			throw ez;
@@ -68,7 +69,7 @@ public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
 									if(btemp==false){ 
 											stemp = "the flag '" + stemp + "' is not available.";
 										   ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-										   //doesn´t work. Only works when > JDK 1.4
+										   //doesnï¿½t work. Only works when > JDK 1.4
 										   //Exception e = new Exception();
 										   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
 										   throw ez;		 
@@ -83,7 +84,7 @@ public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
 							if(objFileIn==null){				
 											if(StringZZZ.isEmpty(sFileIn)){										
 											   ExceptionZZZ ez = new ExceptionZZZ("missing parameter 'filename'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
-											   //doesn´t work. Only works when > JDK 1.4
+											   //doesnï¿½t work. Only works when > JDK 1.4
 											   //Exception e = new Exception();
 											   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");										
 											   throw ez;		 
@@ -114,14 +115,14 @@ public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
 	/* (non-Javadoc)
 	@see zzzKernel.basic.KernelAssetKernelZZZ#getKernelObject()
 	 */
-	public KernelZZZ getKernelObject() {
+	public IKernelZZZ getKernelObject() {
 		return this.objKernel;
 	}
 
 	/* (non-Javadoc)
 	@see zzzKernel.basic.KernelAssetKernelZZZ#setKernelObject(zzzKernel.custom.KernelZZZ)
 	 */
-	public void setKernelObject(KernelZZZ objKernel) {
+	public void setKernelObject(IKernelZZZ objKernel) {
 		this.objKernel = objKernel;
 	}
 

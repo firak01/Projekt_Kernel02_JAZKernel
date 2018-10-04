@@ -9,7 +9,6 @@ package basic.zKernel.file;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
@@ -17,6 +16,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -40,14 +40,14 @@ public class KernelFileTextJoinZZZ extends KernelUseObjectZZZ{
 	/* (non-Javadoc)
 	 * @see zzzKernel.basic.KernelAssetKernelZZZ#getKernelObject()
 	 */
-	public KernelZZZ getKernelObject() {
+	public IKernelZZZ getKernelObject() {
 		return objKernel;
 	}
 
 	/* (non-Javadoc)
 	 * @see zzzKernel.basic.KernelAssetKernelZZZ#setKernelObject(zzzKernel.custom.KernelZZZ)
 	 */
-	public void setKernelObject(KernelZZZ objKernel) {
+	public void setKernelObject(IKernelZZZ objKernel) {
 	 	this.objKernel = objKernel;
 	}
 	

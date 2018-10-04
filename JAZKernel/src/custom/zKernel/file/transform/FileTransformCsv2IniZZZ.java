@@ -10,6 +10,7 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.csv.FileCsvZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.transform.KernelFileTransformCsv2IniZZZ;
 
@@ -28,7 +29,7 @@ public class FileTransformCsv2IniZZZ extends KernelFileTransformCsv2IniZZZ {
 	 @param saFlagControl
 	 @throws ExceptionZZZ
 	 */
-	public FileTransformCsv2IniZZZ(KernelZZZ objKernel, LogZZZ objLog, FileCsvZZZ objCSV, FileIniZZZ objActionConfigurationIni,String sDirTarget, String[] saFlagControl) throws ExceptionZZZ {
+	public FileTransformCsv2IniZZZ(IKernelZZZ objKernel, LogZZZ objLog, FileCsvZZZ objCSV, FileIniZZZ objActionConfigurationIni,String sDirTarget, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, objLog, objCSV, objActionConfigurationIni, sDirTarget, saFlagControl);
 	}
 }

@@ -13,6 +13,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -87,7 +88,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 	
 	
 	
-	public KernelFileTransformCsv2IniZZZ(KernelZZZ objKernel, LogZZZ objLog, FileCsvZZZ objCSV, FileIniZZZ objActionConfigurationIni, String sDirTargetIn, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileTransformCsv2IniZZZ(IKernelZZZ objKernel, LogZZZ objLog, FileCsvZZZ objCSV, FileIniZZZ objActionConfigurationIni, String sDirTargetIn, String[] saFlagControl) throws ExceptionZZZ{
 		KernelFileTransformCsv2IniNew_(objKernel, objLog, objCSV, objActionConfigurationIni, sDirTargetIn, saFlagControl);
 	}
 	
@@ -109,11 +110,11 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileTransformCsv2IniNew_(KernelZZZ objKernelIn, LogZZZ objLogIn, FileCsvZZZ objCsvIn, FileIniZZZ objActionConfigurationIniIn, String sDirTargetIn, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelFileTransformCsv2IniNew_(IKernelZZZ objKernelIn, LogZZZ objLogIn, FileCsvZZZ objCsvIn, FileIniZZZ objActionConfigurationIniIn, String sDirTargetIn, String[] saFlagControlIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 			String stemp; boolean btemp;
 			main:{
-			  		   //setzen der übergebenen Flags	
+			  		   //setzen der ï¿½bergebenen Flags	
 					   if(saFlagControlIn != null){
 							for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 								stemp = saFlagControlIn[iCount];
@@ -180,14 +181,14 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 	/* (non-Javadoc)
 	@see zzzKernel.basic.KernelAssetKernelZZZ#getKernelObject()
 	 */
-	public KernelZZZ getKernelObject() {
+	public IKernelZZZ getKernelObject() {
 	return this.objKernel;
 	}
 
 	/* (non-Javadoc)
 	@see zzzKernel.basic.KernelAssetKernelZZZ#setKernelObject(zzzKernel.custom.KernelZZZ)
 	 */
-	public void setKernelObject(KernelZZZ objKernel) {
+	public void setKernelObject(IKernelZZZ objKernel) {
 	this.objKernel = objKernel;
 	}
 
@@ -233,7 +234,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 		Hashtable objsHashLine=null;
 				
 		main:{
-		KernelZZZ objKernel = this.getKernelObject();
+		IKernelZZZ objKernel = this.getKernelObject();
 		LogZZZ objLog = objKernel.getLogObject();
 		
 		FileCsvZZZ objCSV = this.getCsvObject();			
@@ -252,7 +253,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 		}//end check:
 
 		//the default Headerline
-		//TODO Default headerline - CC konfigurierbar machen, der für den "Wechsel zur nächsten Datei verantwortlich ist.".Ohne diesen korrekten HeaderlineCC gibt es FEHLER		
+		//TODO Default headerline - CC konfigurierbar machen, der fï¿½r den "Wechsel zur nï¿½chsten Datei verantwortlich ist.".Ohne diesen korrekten HeaderlineCC gibt es FEHLER		
 		String sCCHeader = new String("Z00");
 	
 	  // The Filename

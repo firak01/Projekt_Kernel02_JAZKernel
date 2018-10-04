@@ -20,6 +20,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -58,42 +59,42 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		KernelFileIniNew_(null, null, null, null, saFlag, null);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl,null);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(null, sDirectory, sFilename, null, null, hmFlag);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile,String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(objFile,null, null, null,saFlagControl,null);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile,HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(objFile,null, null, null,null,hmFlag);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl,null);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFilename,  HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename,  HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(null, sDirectory, sFilename, null, null, hmFlag);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(objFile, null, null,null,saFlagControl,null);
 	}
 	
-	public KernelFileIniZZZ(KernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelFileIniNew_(objFile,null, null, null,null,hmFlag);
 	}

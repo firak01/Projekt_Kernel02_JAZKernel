@@ -6,6 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -32,7 +33,7 @@ public class KernelExpressionIni_PathZZZ  extends KernelUseObjectZZZ{
 		KernelExpressionIniPathNew_(objFileIni, saFlag);
 	}
 	
-	public KernelExpressionIni_PathZZZ(KernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public KernelExpressionIni_PathZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniPathNew_(objFileIni, null);
 	}

@@ -13,7 +13,7 @@ import custom.zKernel.LogZZZ;
  */
 public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
 	// Flags, die alle Z-Kernel-Objekte haben !!!	
-	protected KernelZZZ objKernel = null;	
+	protected IKernelZZZ objKernel = null;	
 	protected LogZZZ objLog = null;
 	private IKernelContextZZZ objContext = null;
 
@@ -28,18 +28,18 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	* Lindhauer; 10.05.2006 06:06:00
 	 * @param objKernel
 	 */
-	public KernelUseObjectZZZ(KernelZZZ objKernel){
+	public KernelUseObjectZZZ(IKernelZZZ objKernel){
 		this.objKernel = objKernel;
 		this.objLog = objKernel.getLogObject();
 	}
-	public KernelUseObjectZZZ(KernelZZZ objKernel, String sFlag){
+	public KernelUseObjectZZZ(IKernelZZZ objKernel, String sFlag){
 		super(sFlag);
 		if(this.getFlag("init")==false){
 			this.objKernel = objKernel;
 			this.objLog = objKernel.getLogObject();
 		}
 	}
-	public KernelUseObjectZZZ(KernelZZZ objKernel, String[] saFlag){
+	public KernelUseObjectZZZ(IKernelZZZ objKernel, String[] saFlag){
 		super(saFlag);
 		if(this.getFlag("init")==false){
 			this.objKernel = objKernel;
@@ -52,7 +52,7 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	 * @param objKernel
 	 * @param objKernelSection
 	 */
-	public KernelUseObjectZZZ(KernelZZZ objKernel, IKernelContextZZZ objKernelContext){
+	public KernelUseObjectZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext){
 		this(objKernel);
 		this.objContext = objKernelContext;		
 	}
@@ -60,14 +60,14 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	/* (non-Javadoc)
 	 * @see zzzKernel.basic.KernelAssetKernelZZZ#getKernelObject()
 	 */
-	public KernelZZZ getKernelObject() {
+	public IKernelZZZ getKernelObject() {
 		return this.objKernel;
 	}
 
 	/* (non-Javadoc)
 	 * @see zzzKernel.basic.KernelAssetKernelZZZ#setKernelObject(zzzKernel.custom.KernelZZZ)
 	 */
-	public void setKernelObject(KernelZZZ objKernel) {
+	public void setKernelObject(IKernelZZZ objKernel) {
 		this.objKernel=objKernel;
 	}
 

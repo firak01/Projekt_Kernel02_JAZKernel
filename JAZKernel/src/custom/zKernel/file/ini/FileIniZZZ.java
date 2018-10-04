@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 
@@ -29,11 +30,11 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 	 @param objFile
 	 @param object2
 	 */
-	public FileIniZZZ(KernelZZZ objKernel, File objFile, String[] saFlagControl) throws ExceptionZZZ {
+	public FileIniZZZ(IKernelZZZ objKernel, File objFile, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, objFile, saFlagControl);
 	}
 	
-	public FileIniZZZ(KernelZZZ objKernel, File objFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
+	public FileIniZZZ(IKernelZZZ objKernel, File objFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
 		super(objKernel, objFile, hmFlag);
 	}
 
@@ -43,11 +44,11 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 	 @param objLog
 	 @param saFlagControl
 	 */
-	public FileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFile, String[] saFlagControl) throws ExceptionZZZ {
+	public FileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFile, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, sDirectory, sFile, saFlagControl);
 	}
 
-	public FileIniZZZ(KernelZZZ objKernel, String sDirectory, String sFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
+	public FileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFile, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
 		super(objKernel, sDirectory, sFile, hmFlag);
 	}
 }

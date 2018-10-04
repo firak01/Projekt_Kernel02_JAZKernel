@@ -31,7 +31,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelContextUserZZZ,IKernelZZZ {
+public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IObjectZZZ,IKernelContextUserZZZ {
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
@@ -66,14 +66,14 @@ public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelCont
 * lindhauer; 14.08.2007 06:40:31
  * @throws ExceptionZZZ
  */
-public KernelZZZ() throws ExceptionZZZ{
+public KernelKernelZZZ() throws ExceptionZZZ{
 	ConfigZZZ objConfig = new ConfigZZZ();
 	String[] saFlagControl = new String[1];
 	saFlagControl[0] = "init";
 	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
 }
 
-public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
+public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	ConfigZZZ objConfig = new ConfigZZZ();
 	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
 }
@@ -83,12 +83,12 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @param sFlagControl
 	 * @throws ExceptionZZZ
 	 */
-	public KernelZZZ(IKernelConfigZZZ objConfig, String sFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(IKernelConfigZZZ objConfig, String sFlagControl) throws ExceptionZZZ{
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
 		KernelNew_(objConfig, null, null, null, null, null, null, saFlagControl);
 	}
-	public KernelZZZ(IKernelConfigZZZ objConfig, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(IKernelConfigZZZ objConfig, String[] saFlagControl) throws ExceptionZZZ{
 		KernelNew_(objConfig, null, null, null, null, null, null, saFlagControl);
 	}
 	
@@ -110,17 +110,17 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 @param saFlagControl
 	 @throws ExceptionZZZ
 	 */
-	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
 		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, saFlagControl);
 	}
 	
-	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String sFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String sFlagControl) throws ExceptionZZZ{
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
 		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, saFlagControl);
 	}
 	
-	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, IKernelContextZZZ objContext, String sFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, IKernelContextZZZ objContext, String sFlagControl) throws ExceptionZZZ{
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
 		KernelNew_(null, objContext, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName,null, saFlagControl);
@@ -137,7 +137,7 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @param sFlagControl
 	 * @throws ExceptionZZZ
 	 */
-	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFlagControl) throws ExceptionZZZ{
 		ConfigZZZ objConfig = new ConfigZZZ();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
@@ -155,7 +155,7 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @param saFlagControl
 	 * @throws ExceptionZZZ
 	 */
-	public KernelZZZ(String sApplicationKey, String sSystemNumber, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String[] saFlagControl) throws ExceptionZZZ{
 		ConfigZZZ objConfig = new ConfigZZZ();
 		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saFlagControl);
 	}
@@ -169,7 +169,7 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @param saFlagControl
 	 * @throws ExceptionZZZ 
 	 */
-	public KernelZZZ(String sApplicationKey, String sSystemNumber, IKernelZZZ objKernelOld, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, KernelKernelZZZ objKernelOld, String[] saFlagControl) throws ExceptionZZZ{
 		main:{
 			check:{
 				if(objKernelOld==null){
@@ -277,7 +277,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		    }
 		    
 		    //2. Versuch: Nimm das Default Verzeichnis
-			this.sDirectoryConfig = KernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+			this.sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 			objReturn = new File(this.sDirectoryConfig + File.separator + this.sFileConfig);
 			
 			//Falls der 2. Versuch auch gescheitert ist, wirf Fehler
@@ -308,9 +308,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	public String getFileConfigKernelDirectory(){
 		if(this.sDirectoryConfig.equals("")){
 			
-				File objDir = new File(KernelZZZ.sDIRECTORY_CONFIG_DEFAULT);
+				File objDir = new File(KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT);
 				if(objDir.exists()){
-					this.sDIRECTORY_CONFIG_DEFAULT = KernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+					this.sDIRECTORY_CONFIG_DEFAULT = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 				}else{
 					this.sDirectoryConfig = ".";
 				}
@@ -1656,7 +1656,7 @@ MeinTestParameter=blablaErgebnis
 		String sReturn = new String("");
 		main:{
 			if(StringZZZ.isEmpty(sSubjectIn)){
-				ExceptionZZZ ez = new ExceptionZZZ("SubjectIn", iERROR_PARAMETER_MISSING, KernelZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("SubjectIn", iERROR_PARAMETER_MISSING, KernelKernelZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -1709,7 +1709,7 @@ MeinTestParameter=blablaErgebnis
 				}else if(sPropertyIn.equals("")){
 					sProperty = new String("File");
 				}else if(sPropertyIn.toLowerCase()!="file" && sPropertyIn.toLowerCase()!="path"){
-					ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter for sProperty='" + sPropertyIn + "', but expected 'File' or 'Path'.'", iERROR_PROPERTY_VALUE, KernelZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
+					ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter for sProperty='" + sPropertyIn + "', but expected 'File' or 'Path'.'", iERROR_PROPERTY_VALUE, KernelKernelZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
 					throw ez;
 				}
 			}
@@ -1942,7 +1942,7 @@ MeinTestParameter=blablaErgebnis
 			String sSystemKey = this.getSystemKey(); //Also z.b. "MyApplication#01"
 			String[] saVar = objFileIni.getVariables(sSystemKey);
 			for(int icount = 0; icount <= saVar.length-1; icount ++){
-				String sModule = KernelZZZ.computeModuleAliasBySubject(saVar[icount]);
+				String sModule = KernelKernelZZZ.computeModuleAliasBySubject(saVar[icount]);
 				if(!StringZZZ.isEmpty(sModule)){
 					if(!listaModuleString.contains(sModule)){
 						listaModuleString.add(sModule);
