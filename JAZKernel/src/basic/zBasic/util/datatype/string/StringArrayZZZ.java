@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 /**
@@ -280,6 +282,24 @@ output:
 		return objReturn;
 	}
 	
+	public static String[] remove(String[] saString, String sStringToRemove, boolean bIgnoreCase) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+		if(saString==null) break main;
+		if(StringZZZ.isEmpty(sStringToRemove)) break main;
+				
+		if(bIgnoreCase){
+			ArrayList<String>listas = StringArrayZZZ.toArrayList(saString);
+			ArrayListZZZ.remove(listas, sStringToRemove, true);
+			objReturn = ArrayListZZZ.toStringArray(listas);
+		}else{
+			objReturn = (String[]) ArrayUtils.removeElement(saString, sStringToRemove);
+		}
+		
+		}//End main:
+		return objReturn;
+	}
+	
 	/**Alle Elemente des String Arrays werden um einen weiteren String erweitert.
 	 * @param saString
 	 * @param sString
@@ -424,8 +444,8 @@ output:
 		return objReturn;
 	}
 	
-	public static ArrayList toArrayList(String[] saString){
-		ArrayList listaString = new ArrayList();
+	public static ArrayList<String> toArrayList(String[] saString){
+		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
 			if(saString==null) break main;
 			if(saString.length==0) break main;
@@ -439,8 +459,8 @@ output:
 		return listaString;
 	}
 	
-	public ArrayList toArrayList(){
-		ArrayList listaString = new ArrayList();
+	public ArrayList<String> toArrayList(){
+		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
 			String[] saString = this.getArray();
 			listaString = StringArrayZZZ.toArrayList(saString);

@@ -12,11 +12,14 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import org.apache.commons.io.FileUtils;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.KernelKernelZZZ;
 
 /**Einfache Dateioperationen
  * @author lindhaueradmin
@@ -99,22 +102,60 @@ public static File getFile(String sDirectoryIn, String sFileName)throws Exceptio
 		
 		//+++++++++
 		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+
+	}//END main:
+	return objReturn;	
+}
+
+public static File searchFile(String sDirectoryIn, String sFileName)throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		if(StringZZZ.isEmpty(sFileName)){
+			ExceptionZZZ ez  = new ExceptionZZZ("FileName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}	
+		String sDirectory = null;
 		
-//		if (isPathRelative(sDirectory)){
-//			//Mit relativen Pfaden
-//			//Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird
-//			try {
-//				URL workspaceURL = new File(sDirectory + File.separator + sFileName).toURI().toURL();
-//				objReturn = new File(workspaceURL.getPath());
-//						
-//			} catch (MalformedURLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//	    }else{
-//	    	//Absolute Pfadangabe
-//	    	objReturn = new File(sDirectory + File.separator + sFileName);
-//		}
+		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
+		if(sDirectoryIn.equals(".")){
+			sDirectory = "";
+		}
+		sDirectory = KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER+File.separator;
+		
+		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+		if(objReturn.exists()) break main;
+		
+		//+++ 2. Versuch lokal suchen, sogar ggfs. als relativer Pfad zum Workspace ++++++
+		//Verzeichnis analysieren	
+		sDirectory = FileEasyZZZ.sDIRECTORY_CURRENT;
+		if(!StringZZZ.isEmpty(sDirectoryIn)){
+			sDirectory=sDirectoryIn;	    
+		}
+		
+		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+		if(objReturn.exists()) break main;
+							
+		//+++ 2. Versuch (WebService) im Classpath suchen +++++++
+	    //Problematik: Zugriff auf die Datei, wenn Sie in einem WAR File gepackt ist.
+	    //1. Sie muss unterhalb des Source Ordners liegen
+	    //2. Über eine Ressource eine "Kopie" erzeugen....
+	    try {
+			objReturn = File.createTempFile("temp", "ZZZ");					
+			objReturn.deleteOnExit();
+						
+			String sDirectoryOnClasspath = sDirectoryIn;
+			if(sDirectoryIn.equalsIgnoreCase(".")){
+				sDirectoryOnClasspath = "";
+			}
+			InputStream resourceAsStream = FileEasyZZZ.class.getClassLoader().getResourceAsStream(sDirectoryOnClasspath + File.separator + sFileName);		    
+			if(resourceAsStream != null){
+				FileUtils.copyInputStreamToFile(resourceAsStream, objReturn);
+				if(objReturn.exists()) break main;	
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		 					
+		
 	}//END main:
 	return objReturn;	
 }

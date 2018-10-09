@@ -2,6 +2,7 @@ package basic.zBasic;
 
 import static java.lang.System.out;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -14,11 +15,13 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class ObjectZZZ <T> implements IObjectZZZ, IFlagZZZ{
+public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	//Flags, die alle Z-Objekte haben
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
 		
+	private static final long serialVersionUID = 1L;
+
 	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
 	 * 
 	 */

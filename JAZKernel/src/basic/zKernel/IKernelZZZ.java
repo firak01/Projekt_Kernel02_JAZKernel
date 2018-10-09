@@ -9,18 +9,20 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public interface IKernelZZZ{
 	
+	public boolean isOnServer();
+	public String getFileRootPath();
 	public File getFileConfigKernel() throws ExceptionZZZ;
 	public FileIniZZZ getFileConfigIni() throws ExceptionZZZ;
 	public FileIniZZZ getFileConfigIniByAlias(String sModule) throws ExceptionZZZ;
 	public ArrayList getModuleFileAliasAll(boolean bOnlyConfigured, boolean bOnlyExisting) throws ExceptionZZZ;
 	
-	public IKernelConfigZZZ getConfigObject();
+	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ;
 	
 	public LogZZZ getLogObject();
 	
-	public String getApplicationKey();
-	public String getSystemKey();	
-	public String getSystemNumber();
+	public String getApplicationKey() throws ExceptionZZZ;
+	public String getSystemKey() throws ExceptionZZZ;	
+	public String getSystemNumber() throws ExceptionZZZ;
 	
 	public boolean proofModuleFileIsConfigured(String sModule) throws ExceptionZZZ;
 	public boolean proofModuleFileExists(String sModule) throws ExceptionZZZ;

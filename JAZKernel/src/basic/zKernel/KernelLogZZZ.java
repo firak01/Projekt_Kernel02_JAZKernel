@@ -52,7 +52,7 @@ public class KernelLogZZZ extends ObjectZZZ implements IObjectZZZ {
 			 */			 			
 			String sDirectoryPath;
 			
-			//Idee dahinter: Auch ohne Konfiguration soll soll protokollierung möglich sein.
+			//Idee dahinter: Auch ohne Konfiguration soll soll protokollierung mÃ¶glich sein.
 			if(StringZZZ.isEmpty(sDirectoryPathIn)){
 				sDirectoryPath = ".";
 			}else{
@@ -73,7 +73,7 @@ public class KernelLogZZZ extends ObjectZZZ implements IObjectZZZ {
 				System.out.println("Unable to create Log '" + sLogFileNew + "'.");	
 			}
 						
-			//die ermittelten Werte als Property - Übernehmen			
+			//die ermittelten Werte als Property - ï¿½bernehmen			
 			this.setFileObject(objFile);
 			
 		}//end main:

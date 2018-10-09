@@ -3,8 +3,13 @@ package basic.zKernel;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.commons.io.FileUtils;
 
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
@@ -38,6 +43,7 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	}
 	
 	public static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
+	public static String sDIRECTORY_CONFIG_SOURCEFOLDER="src";
 	private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
     //Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
@@ -67,14 +73,17 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
  * @throws ExceptionZZZ
  */
 public KernelKernelZZZ() throws ExceptionZZZ{
-	ConfigZZZ objConfig = new ConfigZZZ();
+	//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
+	IKernelConfigZZZ objConfig = this.getConfigObject();
+	
 	String[] saFlagControl = new String[1];
 	saFlagControl[0] = "init";
 	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
 }
 
 public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
-	ConfigZZZ objConfig = new ConfigZZZ();
+	//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.   ConfigZZZ objConfig = new ConfigZZZ();
+	IKernelConfigZZZ objConfig = this.getConfigObject();
 	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
 }
 	/**Merke: Damit einzelne Projekte ihr eigenes ConfigZZZ - Objekt verwenden k�nnen, wird in diesem Konstruktor ein Interface eingebaut.
@@ -138,7 +147,9 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ
 	 */
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFlagControl) throws ExceptionZZZ{
-		ConfigZZZ objConfig = new ConfigZZZ();
+		//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
+		IKernelConfigZZZ objConfig = this.getConfigObject();
+		
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
 		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saFlagControl);
@@ -156,7 +167,9 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ
 	 */
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String[] saFlagControl) throws ExceptionZZZ{
-		ConfigZZZ objConfig = new ConfigZZZ();
+		//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
+		IKernelConfigZZZ objConfig = this.getConfigObject();
+				
 		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saFlagControl);
 	}
 	
@@ -169,7 +182,7 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @param saFlagControl
 	 * @throws ExceptionZZZ 
 	 */
-	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, KernelKernelZZZ objKernelOld, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, IKernelZZZ objKernelOld, String[] saFlagControl) throws ExceptionZZZ{
 		main:{
 			check:{
 				if(objKernelOld==null){
@@ -247,6 +260,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		File objReturn = null;
 		main:{
 			String sLog = null;
+			String sFileConfig = null;
 			check:{
 				//Falls schon mal geholt, nicht neu holen
 				if(this.objFileKernelConfig!=null){
@@ -254,7 +268,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					break main;
 				}
 				
-				String sFileConfig = this.getFileConfigKernelName();
+				sFileConfig = this.getFileConfigKernelName();
 				if(StringZZZ.isEmpty(sFileConfig)){
 					sLog = "Missing property: 'Configuration File-Name'";
 					System.out.println(sLog);
@@ -263,59 +277,69 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}
 			}//end check
 		
-			//1. Versuch
-			String sDirectoryConfig = this.getFileConfigKernelDirectory();		
-		    objReturn = FileEasyZZZ.getFile(this.sDirectoryConfig, this.sFileConfig);
-		    if(objReturn.exists()) {
-		    	if(objReturn.isDirectory()){		
-		    		sLog = "'Configuration Filename' is a directory: " + this.sDirectoryConfig + File.separator + this.sFileConfig;
-		    		System.out.println(sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-		    	break main;
-		    }
-		    
-		    //2. Versuch: Nimm das Default Verzeichnis
-			this.sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
-			objReturn = new File(this.sDirectoryConfig + File.separator + this.sFileConfig);
+
+			String sDirectoryConfig = this.getFileConfigKernelDirectory();	
 			
-			//Falls der 2. Versuch auch gescheitert ist, wirf Fehler
-			if(objReturn.exists()==false){			
-				sLog = "'Configuration File' does not exist in the current directory or in: " + this.sDirectoryConfig + File.separator + this.sFileConfig;
+			//Suche nach der Datei, ggfs. mit relativem Pfad unterhalb des Workspace oder sogar im Classpath (.war / .jar Datei, s. WebService)
+			objReturn = FileEasyZZZ.searchFile(sDirectoryConfig, sFileConfig);
+					    		   
+		    if(objReturn.exists()==false){			
+				sLog = "'Configuration File' does not exist in the current directory or in: " + sDirectoryConfig + this.sFileConfig + " or in the classpath.";
 				System.out.println(sLog);				
 				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName() );
 				throw ez;
-			}				
+			}	
+		    			    
 			if(objReturn.isDirectory()){	
 				sLog = "'Configuration Filename' is a directory: " + this.sDirectoryConfig + File.separator + this.sFileConfig;
 				System.out.println(sLog);
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+			
 		}//end main:
 		this.objFileKernelConfig = objReturn; 
 		return objReturn;
 	}
 	
-	public String getFileConfigKernelName(){
-		return this.sFileConfig;
+	public String getFileConfigKernelName() throws ExceptionZZZ{		
+		String sFileConfigKernelName = this.sFileConfig;
+		if(StringZZZ.isEmpty(sFileConfigKernelName)){
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			sFileConfigKernelName=objConfig.getConfigFileNameDefault();
+			this.sFileConfig = sFileConfigKernelName;
+		}
+		return sFileConfigKernelName;
 	}
 	protected void setFileConfigKernelName(String sFileConfig){
 		this.sFileConfig = sFileConfig;
 	}
 	
-	public String getFileConfigKernelDirectory(){
-		if(this.sDirectoryConfig.equals("")){
-			
+	public String getFileConfigKernelDirectory() throws ExceptionZZZ{				
+		String sDirectoryConfig = this.sDirectoryConfig;
+		if(StringZZZ.isEmpty(sDirectoryConfig)){
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			sDirectoryConfig=objConfig.getConfigDirectoryNameDefault();
+
+			if(sDirectoryConfig.equals("")){				
 				File objDir = new File(KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT);
 				if(objDir.exists()){
-					this.sDIRECTORY_CONFIG_DEFAULT = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+					sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 				}else{
-					this.sDirectoryConfig = ".";
+					sDirectoryConfig = this.getFileRootPath(); //Merke: Im SourceFolder (d.h. Classpath) wird die Datei auch auf dem WebServer gefunden.
 				}
+				this.sDirectoryConfig = sDirectoryConfig;
+			}			
+		}else if(sDirectoryConfig.equals(".")){
+				this.sDirectoryConfig =  this.getFileRootPath();
+		}else{
+			File objDir = new File(sDirectoryConfig);
+			if(!objDir.exists()){
+				sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;				
+			}
+			this.sDirectoryConfig = sDirectoryConfig;
 		}
-		return this.sDirectoryConfig;
+		return sDirectoryConfig;
 	}
 	protected void setFileConfigKernelDirectory(String sDirectoryConfig){
 		this.sDirectoryConfig = sDirectoryConfig;
@@ -345,17 +369,26 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.objIniConfig = objIni;
 	}
 	
-	public String getApplicationKey(){
-		return this.sApplicationKey;	
+	public String getApplicationKey() throws ExceptionZZZ{		
+		String sApplicationKey = this.sApplicationKey;
+		if(StringZZZ.isEmpty(sApplicationKey)){
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			sApplicationKey = objConfig.getApplicationKeyDefault();
+			this.setApplicationKey(sApplicationKey);
+		}
+		return this.sApplicationKey;
 	}
 	protected void setApplicationKey(String sApplicationKey){
 		this.sApplicationKey = sApplicationKey;
 	}
 	
-	public String getSystemNumber(){
-		if(StringZZZ.isEmpty(this.sSystemNumber)){
-			this.setSystemNumber("01");
-		}
+	public String getSystemNumber() throws ExceptionZZZ{
+		String sSystemNumber = this.sSystemNumber;
+		if(StringZZZ.isEmpty(sSystemNumber)){
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			sSystemNumber = objConfig.getSystemNumberDefault();
+			this.setSystemNumber(sSystemNumber);
+		}		
 		return this.sSystemNumber;
 	}
 	protected void setSystemNumber(String sSystemNumber){
@@ -364,8 +397,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 
 	/**
 	 * @return sApplicationKey + "!" + sSystemNumber, also der Modulname z.B. f�r das Produktivsystem
+	 * @throws ExceptionZZZ 
 	 */
-	public String getSystemKey(){
+	public String getSystemKey() throws ExceptionZZZ{
 		String stemp = this.getApplicationKey();
 		String stemp2 = this.getSystemNumber();
 		if(!StringZZZ.isEmpty(stemp2)){
@@ -459,9 +493,12 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						}												
 					}
 					
-					//Neu: Nun kann die Datei auch im . - Verzeichnis liegen
-					String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );					
-					if(StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
+					//Neu: Nun kann die Datei auch im . - Verzeichnis liegen. Bzw. im Classpath, damit die Datei auch auf einem WebServer gefunden wird.
+					String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );															
+					if(sFilePath.equals(".")){
+						//TODO GOON 20181009: Wenn auf dem Server, dann Leerstring. Wenn als Standalone, dann Sourcefolder.
+						sFilePath = getFileRootPath();
+					}
 										
 					if(this.objFileIniKernelConfig==null){
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
@@ -605,17 +642,21 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 								}//end if Versuch 3
 							}//end if Versuch 2
 							sFilePath = objIni.getValue(stemp,"KernelConfigPath" +sAlias );
-							if (StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
+							//if (StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
 							
 						}else{
 							sFilePath = objIni.getValue(sAlias,"KernelConfigPath" +sAlias );
-							if (StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
+							//if (StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
 						}//end if Versuch 1
+						//objReturn = new File(sFilePath + File.separator + sFileName);
 						
 						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen*/
 						//FGL 20121106: Relative Fileangaben verarbeiten
-						objReturn = FileEasyZZZ.getFile(sFilePath, sFileName);
-						//objReturn = new File(sFilePath + File.separator + sFileName);
+						//objReturn = FileEasyZZZ.getFile(sFilePath, sFileName);
+						
+						//FGL 20181008: Relative Fileangaben verarbeitet und Suche auf dem Classpath (z.B. wg. verpackt in .war / .jar Datei, z.B. WebService - Fall.
+						objReturn = FileEasyZZZ.searchFile(sFilePath, sFileName); 
+						
 				}//end main:
 			return objReturn;
 		}
@@ -802,25 +843,26 @@ MeinTestParameter=blablaErgebnis
 		String sReturn = null;
 		main:{
 				check:{
-								if(objFileConfig == null){
-									ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;
-								}else if(objFileConfig.exists()==false){
-									ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;
-								}else if(objFileConfig.isDirectory()==true){
-									ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' is as directory.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;
-								}															
-								
-								if(StringZZZ.isEmpty(sParameter)){
-									ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Parameter'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;								
-								}
-							}//end check:
+					if(objFileConfig == null){
+						ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}else if(objFileConfig.exists()==false){
+						ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}else if(objFileConfig.isDirectory()==true){
+						ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' is as directory.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}															
+					
+					if(StringZZZ.isEmpty(sParameter)){
+						ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Parameter'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;								
+					}
+				}//end check:
 					
 							//first, get the Ini-file-object			                 	
 							String[] saFlagZpassed = this.getFlagZ_passable(true, this);
+							saFlagZpassed = StringArrayZZZ.remove(saFlagZpassed, "INIT", true);
 							FileIniZZZ objFileIniConfig = new FileIniZZZ(this,  objFileConfig, saFlagZpassed);						
 							
 							sReturn = this.getParameterByModuleFile(objFileIniConfig,  sParameter);
@@ -1152,40 +1194,46 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
-			//+++ Einen ggfs. definierten Aliasnamen		
-			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+			//+++ Einen ggfs. definierten Aliasnamen
+			if(!StringZZZ.isEmpty(sProgramOrSection)){
+				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				if(!StringZZZ.isEmpty(sSection)){
+					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+					if(bSectionExists==true){
+						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+						if(sReturn != null) break main;
+					}
 				}
 			}
 			
 			
 			//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
-			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-			sSection = sSection + "!" + this.getSystemNumber();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+			if(!StringZZZ.isEmpty(sProgramOrSection)){
+				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+				sSection = sSection + "!" + this.getSystemNumber();
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				if(!StringZZZ.isEmpty(sSection)){
+					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+					if(bSectionExists==true){
+						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+						if(sReturn != null) break main;
+					}
 				}
 			}
 			
 			
 			//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
-			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-			sSection = this.getSystemKey() + "!" + sSection;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+			if(!StringZZZ.isEmpty(sProgramOrSection)){
+				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+				sSection = this.getSystemKey() + "!" + sSection;
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				if(!StringZZZ.isEmpty(sSection)){
+					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+					if(bSectionExists==true){
+						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+						if(sReturn != null) break main;
+					}
 				}
 			}
 			
@@ -1201,30 +1249,34 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
-			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+			if(!StringZZZ.isEmpty(sProgramOrSection)){
+				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				if(!StringZZZ.isEmpty(sSection)){
+					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+					if(bSectionExists==true){
+						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+						if(sReturn != null) break main;
+					}
 				}
 			}
 			
-			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sModuleUsed);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+			if(!StringZZZ.isEmpty(sModuleUsed)){
+				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sModuleUsed);
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				if(!StringZZZ.isEmpty(sSection)){
+					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+					if(bSectionExists==true){
+						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+						if(sReturn != null) break main;
+					}
 				}
 			}
 			
 			//+++ Einfach als SystemKey
 			sSection = this.getSystemKey();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
+			if(!StringZZZ.isEmpty(sSection)){	
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
@@ -1257,7 +1309,7 @@ MeinTestParameter=blablaErgebnis
 						sModuleUsed = this.getApplicationKey();
 						bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 						if(bModuleConfig==false){
-							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured.";
+							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file: '" + sProperty + "'.";
 							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
@@ -1268,7 +1320,7 @@ MeinTestParameter=blablaErgebnis
 				//B1. Prüfen, ob das Modul existiert
 				boolean bModuleExists = this.proofModuleFileExists(sModuleUsed);
 				if(bModuleExists==false){
-					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist.";
+					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
@@ -2068,7 +2120,7 @@ MeinTestParameter=blablaErgebnis
 				String sDirectoryConfig = null;
 				String sLog = null;
 				
-				 //setzen der �bergebenen Flags	
+				 //setzen der übergebenen Flags	
 				  if(saFlagControlIn != null){
 					  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						  stemp = saFlagControlIn[iCount];
@@ -2092,9 +2144,8 @@ MeinTestParameter=blablaErgebnis
 				this.objConfig = objConfig;
 				this.objContext = objContext;
 				  
-				  
-				 btemp = StringZZZ.isEmpty(sApplicationKeyIn);
-				if(!btemp){
+
+				if(!StringZZZ.isEmpty(sApplicationKeyIn)){
 					sApplicationKey = sApplicationKeyIn;
 				}else if(objConfig==null){
 					sLog = "ApplicationKey not passed, Config-Object not available";
@@ -2158,13 +2209,12 @@ MeinTestParameter=blablaErgebnis
 				
 				//get the Application-Configuration-File
 				//A) Directory
-				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen
-				btemp = StringZZZ.isEmpty(sDirectoryConfigIn);
-				if(!btemp){
+				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
+				if(!StringZZZ.isEmpty(sDirectoryConfigIn)){
 					sDirectoryConfig = sDirectoryConfigIn;					
 				}else if(objConfig==null){
-					//Damit ist das Konfigurationsverzeichnis entsprechend dem aktuellen Verzeichnis
-					
+					//Damit ist das Konfigurationsverzeichnis entsprechend dem aktuellen Verzeichnis. Vorerst!
+					sDirectoryConfig=this.getConfigObject().getConfigDirectoryNameDefault();
 				}else if(objConfig.isOptionObjectLoaded()==false){
 					sLog = "Directory for configuration unavailable, Config-Object not loaded, USING DEFAULTS";
 					System.out.println(sLog);
@@ -2181,21 +2231,22 @@ MeinTestParameter=blablaErgebnis
 				}else{
 					sDirectoryConfig = objConfig.readConfigDirectoryName();
 				}
-				if(StringZZZ.isEmpty(sDirectoryConfig)){
-					this.setFileConfigKernelDirectory(".");//"c:\\fglkernel\\KernelConfig";				
+				if(sDirectoryConfig.equals(".")){
+					sDirectoryConfig = this.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.	
 				}else{
-					this.setFileConfigKernelDirectory(sDirectoryConfig);
-				}						
+					if(sDirectoryConfig.equals("")){
+						sDirectoryConfig = this.getFileRootPath();
+					}else{
+						sDirectoryConfig = this.getFileRootPath() +  File.separator + sDirectoryConfig;
+					}					
+				}	
+				this.sDirectoryConfig = sDirectoryConfig;
 				
 				//B) FileName
-				btemp = StringZZZ.isEmpty(sFileConfigIn);
-				if(!btemp){
+				if(! StringZZZ.isEmpty(sFileConfigIn)){
 					sFileConfig = sFileConfigIn;
 				}else if(objConfig==null){
-					sLog = "ConfigurationFilename not passed, Config-Object not available";
-					System.out.println(sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog , iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+					sFileConfig=this.getConfigObject().getConfigFileNameDefault();					
 				}else if(objConfig.isOptionObjectLoaded()==false){
 					sLog = "ConfigurationFilename unavailable, Config-Object not loaded, USING DEFAULTS";
 					System.out.println(sLog);
@@ -2296,15 +2347,40 @@ MeinTestParameter=blablaErgebnis
 		return bReturn;
 	}
 
-	public IKernelConfigZZZ  getConfigObject(){
-		return this.objConfig;
-	}
+	
 	
 	//##### Interfaces
+	public IKernelConfigZZZ  getConfigObject() throws ExceptionZZZ{
+		return this.objConfig;
+	}
+	public void setConfigObject(IKernelConfigZZZ objConfig){
+		this.objConfig = objConfig;
+	}
+	
 	public IKernelContextZZZ getContextUsed() {
 		return this.objContext;
 	}
 	public void setContextUsed(IKernelContextZZZ objContext) {
 		this.objContext = objContext;
+	}
+	
+	public boolean isOnServer(){
+		boolean bReturn = false;
+		main:{
+			File objFileTest = new File(KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER);
+			bReturn = !objFileTest.exists();			
+		}//end main:
+		return bReturn;
+	}
+	public String getFileRootPath(){
+		String sReturn = "";
+		main:{
+			if(isOnServer()){
+				sReturn = "";
+			}else{
+				sReturn = KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
+			}
+		}//end main:
+		return sReturn;
 	}
 }//end class// end class

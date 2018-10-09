@@ -32,7 +32,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		saArg[6] = "-d";
 		saArg[7] = this.getConfigDirectoryNameDefault();
 		
-		//Das Objekt, das für die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
+		//Das Objekt, das fï¿½r die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
 		this.objOpt = new GetOptZZZ(sPattern, saArg);
 	}
 	public KernelConfigZZZ(String[] saArg) throws ExceptionZZZ{
@@ -49,7 +49,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		//Nun den konfigurierten String holen
 		String sPattern = this.readPatternString();
 		
-		//Das Objekt, das für die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
+		//Das Objekt, das fï¿½r die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
 		this.objOpt = new GetOptZZZ(sPattern, saArg);
 	}
 	
@@ -104,8 +104,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		}//end main:
 		if(StringZZZ.isEmpty(sReturn)) sReturn = this.getConfigDirectoryNameDefault();
 		
-//		!!! Falls es ein Leerstring ist, dann wird das aktuelle Verzeichnis verwendet. Hier noch mal sicherheitshalber eingebaut.
-		if(StringZZZ.isEmpty(sReturn)) sReturn = ".";
+//		!!! Falls es ein Leerstring ist, dann wird das aktuelle Verzeichnis verwendet.
+		if(StringZZZ.isEmpty(sReturn)) sReturn = "."; //Merke: Bei der Suche nach der Datei dann geÃ¤ndert in: KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Damit ist diese Datei auch auf dem WebServer findbar.
 		return sReturn;
 	} 
 	  
@@ -125,7 +125,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	
 	/**Intern wird ein GetOptZZZ-Objekt verwendet, um die Argumente auszuwerten.
 	 *  Hier wird das "isLoaded" - Flag dieses Objekts ausgewertet. 
-	 *  Falls z.B. keine Argumente übergeben worden sind, oder die Argumente fehlerhaft sind, dann sollte dieses Flag nicht gesetzt sein.
+	 *  Falls z.B. keine Argumente ï¿½bergeben worden sind, oder die Argumente fehlerhaft sind, dann sollte dieses Flag nicht gesetzt sein.
 	* @return
 	* 
 	* lindhauer; 12.08.2007 06:50:56

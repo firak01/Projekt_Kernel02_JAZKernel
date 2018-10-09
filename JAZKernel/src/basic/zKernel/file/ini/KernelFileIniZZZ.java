@@ -162,15 +162,20 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					ExceptionZZZ ez = new ExceptionZZZ( "Parameter Filename is empty: '" + objFile.getPath() + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 			}else{
-				if(sDirectoryIn!=null){
-					if(sDirectoryIn.equals("")){
-						objFile = new File(sFileIn);
-					}else{
-						objFile = new File(sDirectoryIn + File.separator + File.separator + sFileIn);
-					}
+				String sDirectory = "";
+				if(StringZZZ.isEmpty(sDirectoryIn)){
+					sDirectory = this.getKernelObject().getFileRootPath();
+				}else if(sDirectoryIn.equals(".")){
+					sDirectory = this.getKernelObject().getFileRootPath();
 				}else{
-					objFile = new File(sFileIn);	
-				}	
+					sDirectory = sDirectoryIn;
+				}
+				
+				if(sDirectory.equals("")){
+					objFile = new File(sFileIn);
+				}else{
+					objFile = new File(sDirectory + File.separator + sFileIn);
+				}				
 			}
 			
 			//create the ini-file-object from file-object

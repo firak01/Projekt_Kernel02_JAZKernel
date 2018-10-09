@@ -88,6 +88,26 @@ public static boolean isSameSize(ArrayList objAL1, ArrayList objAL2) throws Exce
 	return bReturn;
 }
 
+public static void remove(ArrayList<?> lista, String sToRemove, boolean bIgnoreCase){
+	main:{
+	if(lista==null) break main;
+	if(sToRemove==null) break main;
+	
+	if(bIgnoreCase){	
+		for(Object obj : lista){
+			if(sToRemove.equalsIgnoreCase(obj.toString())){			
+				lista.remove(obj);
+				break main; //wenn man danach weiter durch die Liste gehen will, dann gibt es Fehler.
+			}
+		}
+	}else{
+		lista.remove(sToRemove);
+	}
+	
+  }//end main:
+}
+
+
 public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove){
 	main:{
 		if(lista==null) break main;
@@ -101,5 +121,21 @@ public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove){
 		}
 	}//end main:
 }
+
+	public static String[]toStringArray(ArrayList<?> lista){
+		String[] saReturn = null;
+		main:{
+			if(lista==null) break main;
+			if(lista.size()==0) break main;
+			
+			saReturn = lista.toArray(new String[lista.size()]);
+			int iIndex = -1;
+			for(Object obj : lista){
+				iIndex++;
+				saReturn[iIndex] = obj.toString();
+			}
+		}//end main:
+		return saReturn;	
+	}
 
 }//END class
