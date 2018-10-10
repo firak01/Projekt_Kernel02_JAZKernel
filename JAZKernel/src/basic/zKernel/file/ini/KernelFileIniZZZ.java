@@ -19,6 +19,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -162,15 +163,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					ExceptionZZZ ez = new ExceptionZZZ( "Parameter Filename is empty: '" + objFile.getPath() + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 			}else{
-				String sDirectory = "";
-				if(StringZZZ.isEmpty(sDirectoryIn)){
-					sDirectory = this.getKernelObject().getFileRootPath();
-				}else if(sDirectoryIn.equals(".")){
-					sDirectory = this.getKernelObject().getFileRootPath();
-				}else{
-					sDirectory = sDirectoryIn;
-				}
-				
+				String sDirectory = FileEasyZZZ.getFileUsedPath(sDirectoryIn);
 				if(sDirectory.equals("")){
 					objFile = new File(sFileIn);
 				}else{

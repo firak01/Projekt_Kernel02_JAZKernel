@@ -8,9 +8,6 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public interface IKernelZZZ{
-	
-	public boolean isOnServer();
-	public String getFileRootPath();
 	public File getFileConfigKernel() throws ExceptionZZZ;
 	public FileIniZZZ getFileConfigIni() throws ExceptionZZZ;
 	public FileIniZZZ getFileConfigIniByAlias(String sModule) throws ExceptionZZZ;

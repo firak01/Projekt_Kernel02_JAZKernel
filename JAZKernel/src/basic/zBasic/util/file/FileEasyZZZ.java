@@ -31,6 +31,8 @@ public class FileEasyZZZ extends ObjectZZZ{
 	public static String sFILE_ENDING_SEPARATOR = ".";
 	public static String sFILE_ABSOLUT_REGEX="/^(?:[A-Za-z]:)?\\/";
 	public static String sFILE_VALID_WINDOWS_REGEX="^(?>[a-z]:)?(?>\\|/)?([^\\/?%*:|\"<>\r\n]+(?>\\|/)?)+$";
+	
+	public static String sDIRECTORY_CONFIG_SOURCEFOLDER="src";//Dient zur Unterscheidung, ob die Applikation auf deinem Server oder lokal läuft. Der Ordner ist auf dem Server nicht vorhanden (Voraussetzung)!!!
 private FileEasyZZZ(){
 	//Zum Verstecken des Konstruktors
 }
@@ -120,7 +122,7 @@ public static File searchFile(String sDirectoryIn, String sFileName)throws Excep
 		if(sDirectoryIn.equals(".")){
 			sDirectory = "";
 		}
-		sDirectory = KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER+File.separator;
+		sDirectory = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER+File.separator;
 		
 		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
 		if(objReturn.exists()) break main;
@@ -137,6 +139,7 @@ public static File searchFile(String sDirectoryIn, String sFileName)throws Excep
 							
 		//+++ 2. Versuch (WebService) im Classpath suchen +++++++
 	    //Problematik: Zugriff auf die Datei, wenn Sie in einem WAR File gepackt ist.
+		//Ansatz, siehe: https://www.java-forum.org/thema/auf-dateien-im-war-zugreifen.157897/
 	    //1. Sie muss unterhalb des Source Ordners liegen
 	    //2. Über eine Ressource eine "Kopie" erzeugen....
 	    try {
@@ -676,6 +679,58 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return bReturn;
 	}
 	
+	/** Prüft, ob die Anwendung auf einem Webserver läuft oder im Eclipse Workspace.
+	 *  Beim Eclipse Workspace wird vom Vorhandensein des "src" - Ordners ausgegangen.
+	 *  Beim Serverlauf, gibt es den src-Ordner nicht. Er liegt dann auf dem Classpath. 
+	 * @param sFilePathRaw
+	 * @return
+	 */
+	public static boolean isOnServer(){
+		boolean bReturn = false;
+		main:{
+			File objFileTest = new File(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER);
+			bReturn = !objFileTest.exists();			
+		}//end main:
+		return bReturn;
+	}
+	
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Root-Pfad zurück.
+	 * @param sFilePathRaw
+	 * @return
+	 */
+	public static String getFileRootPath(){
+		String sReturn = "";
+		main:{
+			if(isOnServer()){
+				sReturn = "";
+			}else{
+				sReturn = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück.
+	 * @param sFilePathRaw
+	 * @return
+	 */
+	public static String getFileUsedPath(String sFilePathRaw){
+		String sReturn=null;
+		main:{
+			if(sFilePathRaw==null) break main;
+			
+		if(sFilePathRaw.equals(".")){
+			sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.	
+		}else{
+			if(sFilePathRaw.equals("")){
+				sReturn = FileEasyZZZ.getFileRootPath();
+			}else{
+				sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;
+			}					
+		}
+		}//end main
+		return sReturn;
+	}
 	
 	/** Returns the root-string of a file.
 	 *   if the file-object does not have a path, then null will be returned.

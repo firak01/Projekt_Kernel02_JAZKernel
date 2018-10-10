@@ -43,7 +43,6 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	}
 	
 	public static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
-	public static String sDIRECTORY_CONFIG_SOURCEFOLDER="src";
 	private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
     //Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
@@ -326,16 +325,24 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				if(objDir.exists()){
 					sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 				}else{
-					sDirectoryConfig = this.getFileRootPath(); //Merke: Im SourceFolder (d.h. Classpath) wird die Datei auch auf dem WebServer gefunden.
+					sDirectoryConfig = FileEasyZZZ.getFileRootPath(); //Merke: Im SourceFolder (d.h. Classpath) wird die Datei auch auf dem WebServer gefunden.
 				}
 				this.sDirectoryConfig = sDirectoryConfig;
 			}			
 		}else if(sDirectoryConfig.equals(".")){
-				this.sDirectoryConfig =  this.getFileRootPath();
+				this.sDirectoryConfig =  FileEasyZZZ.getFileRootPath();
 		}else{
 			File objDir = new File(sDirectoryConfig);
 			if(!objDir.exists()){
-				sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;				
+				//sofort gefunden... dann nimm es.
+			}else{
+				objDir = new File(KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT+File.separator+sDirectoryConfig);
+				if(objDir.exists()){
+					sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT+File.separator+sDirectoryConfig;
+				}else{
+					sDirectoryConfig = FileEasyZZZ.getFileRootPath()+File.separator+sDirectoryConfig; //Merke: Im SourceFolder (d.h. Classpath) wird die Datei auch auf dem WebServer gefunden.
+				}
+				this.sDirectoryConfig = sDirectoryConfig;
 			}
 			this.sDirectoryConfig = sDirectoryConfig;
 		}
@@ -497,7 +504,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );															
 					if(sFilePath.equals(".")){
 						//TODO GOON 20181009: Wenn auf dem Server, dann Leerstring. Wenn als Standalone, dann Sourcefolder.
-						sFilePath = getFileRootPath();
+						sFilePath = FileEasyZZZ.getFileRootPath();
 					}
 										
 					if(this.objFileIniKernelConfig==null){
@@ -2231,15 +2238,7 @@ MeinTestParameter=blablaErgebnis
 				}else{
 					sDirectoryConfig = objConfig.readConfigDirectoryName();
 				}
-				if(sDirectoryConfig.equals(".")){
-					sDirectoryConfig = this.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.	
-				}else{
-					if(sDirectoryConfig.equals("")){
-						sDirectoryConfig = this.getFileRootPath();
-					}else{
-						sDirectoryConfig = this.getFileRootPath() +  File.separator + sDirectoryConfig;
-					}					
-				}	
+				sDirectoryConfig = FileEasyZZZ.getFileUsedPath(sDirectoryConfig);
 				this.sDirectoryConfig = sDirectoryConfig;
 				
 				//B) FileName
@@ -2364,23 +2363,4 @@ MeinTestParameter=blablaErgebnis
 		this.objContext = objContext;
 	}
 	
-	public boolean isOnServer(){
-		boolean bReturn = false;
-		main:{
-			File objFileTest = new File(KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER);
-			bReturn = !objFileTest.exists();			
-		}//end main:
-		return bReturn;
-	}
-	public String getFileRootPath(){
-		String sReturn = "";
-		main:{
-			if(isOnServer()){
-				sReturn = "";
-			}else{
-				sReturn = KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
-			}
-		}//end main:
-		return sReturn;
-	}
 }//end class// end class
