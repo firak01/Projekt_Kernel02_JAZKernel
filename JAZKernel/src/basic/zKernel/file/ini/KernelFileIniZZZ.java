@@ -168,6 +168,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					objFile = new File(sFileIn);
 				}else{
 					objFile = new File(sDirectory + File.separator + sFileIn);
+					if(!objFile.exists()){
+						objFile = new File(sFileIn);
+					}
 				}				
 			}
 			

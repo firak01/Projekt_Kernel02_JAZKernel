@@ -502,16 +502,27 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					
 					//Neu: Nun kann die Datei auch im . - Verzeichnis liegen. Bzw. im Classpath, damit die Datei auch auf einem WebServer gefunden wird.
 					String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );															
-					if(sFilePath.equals(".")){
-						//TODO GOON 20181009: Wenn auf dem Server, dann Leerstring. Wenn als Standalone, dann Sourcefolder.
-						sFilePath = FileEasyZZZ.getFileRootPath();
+
+					//Hole nun den korrekten, existierenden Pfad oder das aktuelle Verzeichnis.
+					File objDirectoryProof = FileEasyZZZ.searchDirectory(sFilePath);
+					if(objDirectoryProof==null){
+						sFilePath = ".";
+					}else{
+						sFilePath = objDirectoryProof.getPath();
+						
+						//Prüfe, ob an der Stelle überhaupt die Datei ist	
+						String sFileTotal = sFilePath+File.separator+sFileName;
+						if(!FileEasyZZZ.exists(sFileTotal)){
+							sFilePath=".";
+						}
 					}
-										
-					if(this.objFileIniKernelConfig==null){
+								
+					if(this.objFileIniKernelConfig==null){												
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
 						FileIniZZZ exDummy = new FileIniZZZ();					
 						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);						
-						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,saFlagZpassed);	
+						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,saFlagZpassed);
+
 					}else{
 						//Übernimm die gesetzten FlagZ...
 						HashMap<String,Boolean>hmFlagZ = this.objFileIniKernelConfig.getHashMapFlagZ();
@@ -2238,8 +2249,12 @@ MeinTestParameter=blablaErgebnis
 				}else{
 					sDirectoryConfig = objConfig.readConfigDirectoryName();
 				}
-				sDirectoryConfig = FileEasyZZZ.getFileUsedPath(sDirectoryConfig);
-				this.sDirectoryConfig = sDirectoryConfig;
+				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
+				if(objDirectoryProof==null){
+					this.sDirectoryConfig = ".";
+				}else{
+					this.sDirectoryConfig = sDirectoryConfig;
+				}
 				
 				//B) FileName
 				if(! StringZZZ.isEmpty(sFileConfigIn)){

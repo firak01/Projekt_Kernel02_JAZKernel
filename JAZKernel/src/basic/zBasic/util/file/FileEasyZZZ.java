@@ -29,7 +29,7 @@ public class FileEasyZZZ extends ObjectZZZ{
 	public static String sDIRECTORY_CURRENT = ".";
 	public static String sDIRECTORY_PARENT = "..";
 	public static String sFILE_ENDING_SEPARATOR = ".";
-	public static String sFILE_ABSOLUT_REGEX="/^(?:[A-Za-z]:)?\\/";
+	public static String sFILE_ABSOLUT_REGEX="^[A-Za-z]:[\\\\/]"; //Merke: Um 1 Backslash auszukommentieren 4 verwenden zum ausmaskieren.
 	public static String sFILE_VALID_WINDOWS_REGEX="^(?>[a-z]:)?(?>\\|/)?([^\\/?%*:|\"<>\r\n]+(?>\\|/)?)+$";
 	
 	public static String sDIRECTORY_CONFIG_SOURCEFOLDER="src";//Dient zur Unterscheidung, ob die Applikation auf deinem Server oder lokal läuft. Der Ordner ist auf dem Server nicht vorhanden (Voraussetzung)!!!
@@ -66,7 +66,7 @@ public static File getFile(String sFilePath) throws ExceptionZZZ{
 			throw ez;
 		}
 		
-		
+		//TODO GOON 20181014: InputStream inputStream = YourClass.class.getResourceAsStream(“file.txt”);
 		//+++++++++
 		if(FileEasyZZZ.isPathRelative(sFilePath)){
 			//Mit relativen Pfaden
@@ -118,11 +118,13 @@ public static File searchFile(String sDirectoryIn, String sFileName)throws Excep
 		}	
 		String sDirectory = null;
 		
-		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
-		if(sDirectoryIn.equals(".")){
-			sDirectory = "";
+		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.		
+		File objDirectory = FileEasyZZZ.searchDirectory(sDirectoryIn); 
+		if(objDirectory==null){
+			sDirectory = ".";
+		}else{
+			sDirectory = objDirectory.getPath();
 		}
-		sDirectory = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER+File.separator;
 		
 		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
 		if(objReturn.exists()) break main;
@@ -158,6 +160,33 @@ public static File searchFile(String sDirectoryIn, String sFileName)throws Excep
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		 					
+		
+	}//END main:
+	return objReturn;	
+}
+
+public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		if(sDirectoryIn==null){
+			ExceptionZZZ ez  = new ExceptionZZZ("DirctoryName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}	
+		String sDirectory = null;
+		
+		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
+		if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals("")){
+			sDirectory = FileEasyZZZ.getFileRootPath();
+		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
+			sDirectory = sDirectoryIn; 
+		}else if(FileEasyZZZ.isPathRelative(sDirectoryIn)){
+			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn; 
+		}else{
+			sDirectory = sDirectoryIn;
+		}
+		objReturn = FileEasyZZZ.getFile(sDirectory);
+		if(objReturn.exists()) break main;
+		return null;
 		
 	}//END main:
 	return objReturn;	
@@ -200,9 +229,16 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			throw ez;
 		}
 		
-		Pattern p = Pattern.compile( FileEasyZZZ.sFILE_ABSOLUT_REGEX); 
-		 Matcher m = p.matcher( sFilePathName ); 
-		 bReturn = m.matches(); 	
+		Pattern p = Pattern.compile(FileEasyZZZ.sFILE_ABSOLUT_REGEX); 
+		 Matcher m =p.matcher( sFilePathName ); 
+		 bReturn =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
+		 if(bReturn) break main;
+		 
+		 //Wohl für Netzwerkpfade...
+		 if ( sFilePathName.indexOf("\\") == 0 ) {
+			 bReturn = true;
+			 break main;
+		 }		                        
 	}//end main:
 	return bReturn;
 }
@@ -713,21 +749,26 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück.
 	 * @param sFilePathRaw
 	 * @return
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getFileUsedPath(String sFilePathRaw){
+	public static String getFileUsedPath(String sFilePathRaw) throws ExceptionZZZ{
 		String sReturn=null;
 		main:{
 			if(sFilePathRaw==null) break main;
 			
-		if(sFilePathRaw.equals(".")){
-			sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.	
-		}else{
-			if(sFilePathRaw.equals("")){
-				sReturn = FileEasyZZZ.getFileRootPath();
+			if(FileEasyZZZ.isPathRelative(sFilePathRaw)){
+				if(sFilePathRaw.equals(".")){
+					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.	
+				}else{
+					if(sFilePathRaw.equals("")){
+						sReturn = FileEasyZZZ.getFileRootPath();
+					}else{
+						sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;
+					}					
+				}
 			}else{
-				sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;
-			}					
-		}
+				sReturn = sFilePathRaw;
+			}
 		}//end main
 		return sReturn;
 	}
