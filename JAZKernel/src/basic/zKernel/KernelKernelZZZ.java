@@ -329,7 +329,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}
 				this.sDirectoryConfig = sDirectoryConfig;
 			}			
-		}else if(sDirectoryConfig.equals(".")){
+		}else if(sDirectoryConfig.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
 				this.sDirectoryConfig =  FileEasyZZZ.getFileRootPath();
 		}else{
 			File objDir = new File(sDirectoryConfig);
@@ -2159,23 +2159,23 @@ MeinTestParameter=blablaErgebnis
 				  }
 			
 				//ggf. Config Object setzen
-				this.objConfig = objConfig;
-				this.objContext = objContext;
+				this.setConfigObject(objConfig);
+				this.setContextUsed(objContext);
 				  
 
 				if(!StringZZZ.isEmpty(sApplicationKeyIn)){
 					sApplicationKey = sApplicationKeyIn;
-				}else if(objConfig==null){
+				}else if(this.getConfigObject()==null){
 					sLog = "ApplicationKey not passed, Config-Object not available";
 					System.out.println(sLog);	
 					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
-				}else if(objConfig.isOptionObjectLoaded()==false){
+				}else if(this.getConfigObject().isOptionObjectLoaded()==false){
 					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 					//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
 					sLog = "Config-Object not loaded, using DEFAULTS.";
 					System.out.println(sLog);
-					sApplicationKey = objConfig.getApplicationKeyDefault();
+					sApplicationKey = this.getConfigObject().getApplicationKeyDefault();
 					if(StringZZZ.isEmpty(sApplicationKey)){
 						sLog = "ApplicationKey DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
 						System.out.println(sLog);
@@ -2183,7 +2183,7 @@ MeinTestParameter=blablaErgebnis
 						throw ez;
 					}
 				}else{
-					sApplicationKey = objConfig.readApplicationKey();
+					sApplicationKey = this.getConfigObject().readApplicationKey();
 					if(StringZZZ.isEmpty(sApplicationKey)){
 						sLog = "ApplicationKey not receivable from Config-Object";
 						System.out.println(sLog);
@@ -2196,18 +2196,18 @@ MeinTestParameter=blablaErgebnis
 				btemp = StringZZZ.isEmpty(sSystemNumberIn);
 				if(!btemp){
 					sSystemNumber = sSystemNumberIn;
-				}else if(objConfig==null){
+				}else if(this.getConfigObject()==null){
 					sLog = "SystemNumber not passed, Config-Object not available";
 					System.out.println(sLog);
 					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
-				}else if(objConfig.isOptionObjectLoaded()==false){
+				}else if(this.getConfigObject().isOptionObjectLoaded()==false){
 					sLog = "SystemNumber unavailable, Config-Object not loaded, USING DEFAULTS";
 					System.out.println(sLog);
 					
 					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 					//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
-					sSystemNumber = objConfig.getSystemNumberDefault();
+					sSystemNumber = this.getConfigObject().getSystemNumberDefault();
 					if(StringZZZ.isEmpty(sApplicationKey)){
 						sLog = "SystemNumber DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
 						System.out.println(sLog);
@@ -2215,7 +2215,7 @@ MeinTestParameter=blablaErgebnis
 						throw ez;
 					}
 				}else{
-					sSystemNumber = objConfig.readSystemNumber();
+					sSystemNumber = this.getConfigObject().readSystemNumber();
 					if(StringZZZ.isEmpty(sSystemNumber)){
 						sLog = "SystemNumber not receivable from Config-Object";
 						System.out.println(sLog);
@@ -2225,65 +2225,73 @@ MeinTestParameter=blablaErgebnis
 				}
 				this.setSystemNumber(sSystemNumber);
 				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//get the Application-Configuration-File
 				//A) Directory
 				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
 				if(!StringZZZ.isEmpty(sDirectoryConfigIn)){
 					sDirectoryConfig = sDirectoryConfigIn;					
-				}else if(objConfig==null){
-					//Damit ist das Konfigurationsverzeichnis entsprechend dem aktuellen Verzeichnis. Vorerst!
-					sDirectoryConfig=this.getConfigObject().getConfigDirectoryNameDefault();
-				}else if(objConfig.isOptionObjectLoaded()==false){
-					sLog = "Directory for configuration unavailable, Config-Object not loaded, USING DEFAULTS";
-					System.out.println(sLog);
-					
-					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
-					//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
-					sDirectoryConfig = objConfig.getConfigDirectoryNameDefault();
-					if(StringZZZ.isEmpty(sDirectoryConfig)){
-						sLog = "Directory for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+				}else if(this.getConfigObject()!=null){
+					if(this.getConfigObject().isOptionObjectLoaded()){
+						sDirectoryConfig = this.getConfigObject().readConfigDirectoryName();
+					}else{
+						sLog = "Directory for configuration unavailable, Config-Object not loaded, USING DEFAULTS";
 						System.out.println(sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
+						
+						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
+						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+						sDirectoryConfig = this.getConfigObject().getConfigDirectoryNameDefault();
+						if(sDirectoryConfig==null){
+							sLog = "Directory for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+							System.out.println(sLog);
+							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}
+					}
+					
+					//Prüfe nun auf Vorhandensein und korregiere ggfs. auf das aktuelle Verzeichnis
+					File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
+					if(objDirectoryProof==null){
+						this.setFileConfigKernelDirectory(FileEasyZZZ.sDIRECTORY_CURRENT);//Falls das Verzeichnis nicht existiert, verwende das aktuelle Verzeichnis.
+					}else{
+						this.setFileConfigKernelDirectory(sDirectoryConfig);
 					}
 				}else{
-					sDirectoryConfig = objConfig.readConfigDirectoryName();
+					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";
+					System.out.println(sLog);					
+					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
 				}
-				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
-				if(objDirectoryProof==null){
-					this.sDirectoryConfig = ".";
-				}else{
-					this.sDirectoryConfig = sDirectoryConfig;
-				}
+				
+				
 				
 				//B) FileName
 				if(! StringZZZ.isEmpty(sFileConfigIn)){
 					sFileConfig = sFileConfigIn;
-				}else if(objConfig==null){
-					sFileConfig=this.getConfigObject().getConfigFileNameDefault();					
-				}else if(objConfig.isOptionObjectLoaded()==false){
-					sLog = "ConfigurationFilename unavailable, Config-Object not loaded, USING DEFAULTS";
-					System.out.println(sLog);
+				}else if(this.getConfigObject()!=null){
+					if(this.getConfigObject().isOptionObjectLoaded()){
+						sFileConfig=this.getConfigObject().readConfigFileName();	
+					}else{
+						sLog = "ConfigurationFilename unavailable, Config-Object not loaded, USING DEFAULTS";
+						System.out.println(sLog);
 					
-					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
-					//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
-					sFileConfig = objConfig.getConfigFileNameDefault();
-					if(StringZZZ.isEmpty(sFileConfig)){
-						sLog = "Filename for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
-						System.out.println(sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}										
-				}else{
-					sFileConfig = objConfig.readConfigFileName();
-					if(StringZZZ.isEmpty(sFileConfig)){
-						sLog = "ConfigurationFilename not receivable from Config-Object";
-						System.out.println(sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
+						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
+						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+						sFileConfig = this.getConfigObject().getConfigFileNameDefault();
+						if(sFileConfig==null){
+							sLog = "Filename for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+							System.out.println(sLog);
+							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}						
 					}
 				}
-				this.sFileConfig = sFileConfig;
+				if(StringZZZ.isEmpty(sFileConfig)){
+					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";
+					System.out.println(sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				this.setFileConfigKernelName(sFileConfig);
 				if(this.getFlag("DEBUG")){
 					System.out.println("SystemNr: '" + sSystemNumber + "'");
 					System.out.println("Configurationfile: '" + sFileConfig + "'");
@@ -2295,8 +2303,7 @@ MeinTestParameter=blablaErgebnis
 				File objFile = this.getFileConfigKernel();
 				IniFile objIni = new IniFile(objFile.getPath());
 				if(this.getFlag ("DEBUG")) System.out.println("Konfigurationsdatei gefunden: '" + objFile.getPath() +"'");
-				
-				
+								
 //				TODO replace the direct use of the IniFile - Klass by a Z-Kernel-Class
 				this.setFileIniConfigKernel(objIni);
 				

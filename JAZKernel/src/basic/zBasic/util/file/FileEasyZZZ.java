@@ -58,6 +58,34 @@ public static boolean exists (String sFileName) throws ExceptionZZZ {
 	return bReturn;
 }	
 
+public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		if(sDirectoryPath==null){ //Merke: Anders als bei einer Datei, darf der Directory-Name leer sein.
+			ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//TODO GOON 20181014: InputStream inputStream = YourClass.class.getResourceAsStream(“file.txt”);
+		//+++++++++
+		if(FileEasyZZZ.isPathRelative(sDirectoryPath)){
+			//Mit relativen Pfaden
+			//Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird
+			try {
+				URL workspaceURL = new File(sDirectoryPath).toURI().toURL();
+				objReturn = new File(workspaceURL.getPath());
+								
+			} catch (MalformedURLException e) {				
+				e.printStackTrace();
+			}
+	    }else{
+		   	//Absolute Pfadangabe
+	    	objReturn = new File(sDirectoryPath);
+		}	
+	}//end main:
+	return objReturn;
+}
+
 public static File getFile(String sFilePath) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
@@ -75,8 +103,7 @@ public static File getFile(String sFilePath) throws ExceptionZZZ{
 				URL workspaceURL = new File(sFilePath).toURI().toURL();
 				objReturn = new File(workspaceURL.getPath());
 								
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
+			} catch (MalformedURLException e) {				
 				e.printStackTrace();
 			}
 	    }else{
@@ -184,7 +211,7 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 		}else{
 			sDirectory = sDirectoryIn;
 		}
-		objReturn = FileEasyZZZ.getFile(sDirectory);
+		objReturn = FileEasyZZZ.getDirectory(sDirectory);
 		if(objReturn.exists()) break main;
 		return null;
 		
@@ -210,7 +237,7 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 public static boolean isPathRelative(String sFilePathName)throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
-		if(StringZZZ.isEmpty(sFilePathName)){
+		if(sFilePathName==null){ //Merke: Darf ein Leerstring sein.
 			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
@@ -224,10 +251,11 @@ public static boolean isPathRelative(String sFilePathName)throws ExceptionZZZ{
 public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
-		if(StringZZZ.isEmpty(sFilePathName)){
+		if(sFilePathName==null){//Merke: Darf ein Leerstring sein.
 			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
+		if(sFilePathName.equals("")) break main; //Merke: Leerstring ist kein absoluter Pfad.
 		
 		Pattern p = Pattern.compile(FileEasyZZZ.sFILE_ABSOLUT_REGEX); 
 		 Matcher m =p.matcher( sFilePathName ); 
