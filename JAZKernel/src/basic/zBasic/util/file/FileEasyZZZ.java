@@ -176,7 +176,7 @@ public static File searchFile(String sDirectoryIn, String sFileName)throws Excep
 			objReturn.deleteOnExit();
 						
 			String sDirectoryOnClasspath = sDirectoryIn;
-			if(sDirectoryIn.equalsIgnoreCase(".")){
+			if(sDirectoryIn.equalsIgnoreCase(FileEasyZZZ.sDIRECTORY_CURRENT)){
 				sDirectoryOnClasspath = "";
 			}
 			InputStream resourceAsStream = FileEasyZZZ.class.getClassLoader().getResourceAsStream(sDirectoryOnClasspath + File.separator + sFileName);		    
