@@ -62,8 +62,10 @@ public class ConfigZZZTest  extends TestCase{
 		    assertNotNull(objConfigInit);
 		    
 		    String stemp = objConfigInit.readApplicationKey();
+		    assertNull(stemp);
+		    
 		    String stemp2proof = objConfigInit.getApplicationKeyDefault();
-		    assertEquals(stemp2proof, stemp);
+		    assertFalse(stemp2proof.equals(stemp));
 		
 		    //#########################
 		    //Objekt Mit leerem Argument
@@ -73,7 +75,7 @@ public class ConfigZZZTest  extends TestCase{
 		    
 		    stemp = objConfigInit2.readApplicationKey();
 		    stemp2proof = objConfigInit2.getApplicationKeyDefault();
-		    assertEquals(stemp2proof, stemp);
+		    assertFalse(stemp2proof.equals(stemp));
 		    
 		    //#########################
 		    //Testfixture Object (s. setUp)

@@ -19,6 +19,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  */
 public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, IKernelConfigZZZ{
 	private GetOptZZZ objOpt = null;
+	private String sDirectory = null;
+	private String sFile = null;
+	private String sApplicationKey = null;
+	private String sSystemNumber= null;
+	private String sPatternString = null;
 	 
 	public KernelConfigZZZ() throws ExceptionZZZ{
 		String sPattern = this.getPatternStringDefault();
@@ -47,7 +52,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		 */
 		
 		//Nun den konfigurierten String holen
-		String sPattern = this.readPatternString();
+		String sPattern = this.getPatternStringDefault();
 		
 		//Das Objekt, das f�r die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
 		this.objOpt = new GetOptZZZ(sPattern, saArg);
@@ -62,8 +67,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
 			sReturn = objOpt.getPattern();
-		}
-		if(StringZZZ.isEmpty(sReturn)) sReturn = this.getPatternStringDefault();
+		}		
 		return sReturn;
 	}
 	
@@ -75,8 +79,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
 			sReturn = objOpt.readValue("k");
-		}//end main:
-		if(StringZZZ.isEmpty(sReturn)) sReturn = this.getApplicationKeyDefault();
+		}//end main:		
 		return sReturn;
 	}
 	
@@ -88,8 +91,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
 			sReturn = objOpt.readValue("s");
-		}//end main:
-		if(StringZZZ.isEmpty(sReturn)) sReturn = this.getSystemNumberDefault();
+		}//end main:		
 		return sReturn;
 	}
 	
@@ -102,10 +104,9 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			
 			sReturn = objOpt.readValue("d");
 		}//end main:
-		if(StringZZZ.isEmpty(sReturn)) sReturn = this.getConfigDirectoryNameDefault();
 		
 //		!!! Falls es ein Leerstring ist, dann wird das aktuelle Verzeichnis verwendet.
-		if(StringZZZ.isEmpty(sReturn)) sReturn = "."; //Merke: Bei der Suche nach der Datei dann geändert in: KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Damit ist diese Datei auch auf dem WebServer findbar.
+//		if(StringZZZ.isEmpty(sReturn)) sReturn = "."; //Merke: Bei der Suche nach der Datei dann geändert in: KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Damit ist diese Datei auch auf dem WebServer findbar.
 		return sReturn;
 	} 
 	  
@@ -117,8 +118,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			 
 			sReturn = objOpt.readValue("f");
-		}//end main:
-		if(StringZZZ.isEmpty(sReturn)) sReturn = this.getConfigFileNameDefault();
+		}//end main:		
 		return sReturn;
 	}
 	
@@ -151,9 +151,40 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	//#########
 	//Aus Interface
 	//##########
-	public abstract String getApplicationKeyDefault();
-	public abstract String getConfigDirectoryNameDefault();
-	public abstract String getConfigFileNameDefault();
-	public abstract String getPatternStringDefault();
-	public abstract String getSystemNumberDefault();	
+	public String getApplicationKeyDefault(){
+		if(this.sApplicationKey==null){
+			this.sApplicationKey = this.readApplicationKey();			
+		}
+		return this.sApplicationKey;
+	};
+	
+	public String getConfigDirectoryNameDefault(){
+		if(this.sDirectory==null){
+			this.sDirectory = this.readConfigDirectoryName();
+		}
+		return this.sDirectory;
+	}
+	
+	
+	public String getConfigFileNameDefault(){
+		if(this.sFile==null){
+			this.sFile=this.readConfigFileName();
+		}
+		return this.sFile;
+	}
+
+	public String getSystemNumberDefault(){
+		if(this.sSystemNumber==null){
+			this.sSystemNumber=this.readSystemNumber();
+		}
+		return this.sSystemNumber;
+	}
+	
+	public String getPatternStringDefault(){
+		if(this.sPatternString==null){
+			this.sPatternString=this.readPatternString();
+		}
+		return this.sPatternString;
+	}
+	
 }

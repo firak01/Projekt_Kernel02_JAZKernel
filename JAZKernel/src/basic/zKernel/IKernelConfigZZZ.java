@@ -7,7 +7,7 @@ import basic.zBasic.IFlagZZZ;
  *
  */
 public interface IKernelConfigZZZ extends IFlagZZZ{
-	/**Falls Kein entsprechender Parameter in der Kommandozeile �bergeben worden ist, so wird der hier definierte Wert verwendet f�r den Initialisierung des Kernels
+	/**Falls Kein entsprechender Parameter in der Kommandozeile übergeben worden ist, so wird der hier definierte Wert verwendet für den Initialisierung des Kernels
 	* @return
 	* 
 	* lindhauer; 25.07.2007 07:20:25
@@ -22,7 +22,7 @@ public interface IKernelConfigZZZ extends IFlagZZZ{
 	public String getConfigFileNameDefault();
 	
 	/** Die Argumente, die f�r diese Konfiguration erlaubt sind. Siehe dazu GetOptZZZ()
-	* @return (z.B. "a:b:cde:", mit dem Doppelpunkt als Anzeichen daf�r, das ein Parameter diesem Steuerungsargument folgt.)
+	* @return (z.B. "a:b:cde:", mit dem Doppelpunkt als Anzeichen dafür, das ein Parameter diesem Steuerungsargument folgt.)
 	* 
 	* lindhauer; 31.07.2007 06:24:53
 	 */

@@ -371,6 +371,36 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return this.objIniConfig;	
 	}
 	
+	public IniFile getFileConfigKernelAsIni(String sAlias) throws ExceptionZZZ{
+		IniFile objReturn = null;
+		main:{
+			check:{
+				if(sAlias == null){							
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				if(sAlias.equals("")){							
+					ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}						
+			}//end check:
+		
+			//Hole zuerst das "Basis-File"
+			IniFile objIni = this.getFileConfigKernelAsIni(); 
+
+			//1. Hole den Dateinamen
+			String sFileName = this.searchPropertyForAlias(objIni, sAlias,"KernelConfigFile");
+			if(StringZZZ.isEmpty(sFileName)) break main;
+			
+			//2. Hole den Dateipfad
+			String sFilePath = this.searchPropertyForAlias(objIni, sAlias,"KernelConfigPath");
+			
+			
+		return this.objIniConfig;
+		}//end main:
+		return objReturn;
+	}
+	
 	public void setFileIniConfigKernel(IniFile objIni){
 		//TODO: Müsste dann nicht FileIniZZZ für diesen Kernel mit diesem ggfs. neuen File neu gemacht werden.
 		this.objIniConfig = objIni;
@@ -447,7 +477,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.objFileIniKernelConfig = objFileIniKernelConfig;
 	}
 	
-	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesn�t proof the file existance !!! <CR>
+	/** Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesn't proof the file existance !!! <CR>
 		Gets the Entries starting with 'KernelConfigPath...', 'KernelConfigFile...', where ... is the Alias.
 		<CR><CR>
 		e.g. for the alias 'Export' the following entries may be found<CR>
@@ -474,49 +504,25 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					}//end check:
 					
 					//first, get the Kernel-Configuration-INI-File
-					IniFile objIni = this.getFileConfigKernelAsIni();
+					//IniFile objIni = this.getFileConfigKernelAsIni(); //Hier fehlt der Alias...
+					//NEIN, das wäre wohl eine Endlosschleife: FileIniZZZ objKernelIni = this.getFileConfigIniByAlias(sAlias);
+					IniFile objIni = this.getFileConfigKernelAsIni(sAlias);
 					if(objIni==null){
 						String sLog = "FileIni";
 						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 						ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
-										
-					//1. Versuch: SystemKey
-					String sKeyUsed = this.getSystemKey();
-					String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias );
-					if(StringZZZ.isEmpty(sFileName)){
-						
-						//2. Versuch: ApplicationKey
-						sKeyUsed = this.getApplicationKey();
-						sFileName = objIni.getValue(sKeyUsed, "KernelConfigFile" + sAlias );
-						
-						if(StringZZZ.isEmpty(sFileName)){
-							//3. Versuch: KernelKey
-							sKeyUsed = this.getKernelKey();
-							sFileName = objIni.getValue(sKeyUsed, "KernelConfigFile" + sAlias );
-						
-							if(StringZZZ.isEmpty(sFileName)) break main;							
-						}												
-					}
 					
-					//Neu: Nun kann die Datei auch im . - Verzeichnis liegen. Bzw. im Classpath, damit die Datei auch auf einem WebServer gefunden wird.
-					String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );															
-
-					//Hole nun den korrekten, existierenden Pfad oder das aktuelle Verzeichnis.
-					File objDirectoryProof = FileEasyZZZ.searchDirectory(sFilePath);
-					if(objDirectoryProof==null){
-						sFilePath = ".";
-					}else{
-						sFilePath = objDirectoryProof.getPath();
-						
-						//Prüfe, ob an der Stelle überhaupt die Datei ist	
-						String sFileTotal = sFilePath+File.separator+sFileName;
-						if(!FileEasyZZZ.exists(sFileTotal)){
-							sFilePath=".";
-						}
-					}
-								
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++
+					//1. Hole den Dateinamen
+					String sFileName = this.searchPropertyForAlias(sAlias,"KernelConfigFile");
+					if(StringZZZ.isEmpty(sFileName)) break main;
+					
+					//2. Hole den Dateipfad
+					String sFilePath = this.searchPropertyForAlias(sAlias,"KernelConfigPath");
+					
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++			
 					if(this.objFileIniKernelConfig==null){												
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
 						FileIniZZZ exDummy = new FileIniZZZ();					
@@ -614,70 +620,103 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 								throw ez;
 							}						
 						}//end check:
-					
-						//first, get the Kernel-Configuration-INI-File
-						//TODO write ini-file-class for zzz-kernel
-						IniFile objIni = this.getFileConfigKernelAsIni();
+																	
+						//1. Hole den Dateinamen
+						String sFileName = this.searchPropertyForAlias(sAlias,"KernelConfigFile");
+						if(StringZZZ.isEmpty(sFileName)) break main;
 						
-						//1. Versuch: Speziell f�r die Komponente definiert
-						String sFileName =objIni.getValue(sAlias,"KernelConfigFile" +sAlias );	
-						String sFilePath = null;
-						if(StringZZZ.isEmpty(sFileName)) {
-																				
-							//2. Versuch: Speziell f�r ein System konfiguriert.
-							String stemp = this.getSystemKey();													
-							sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAlias );		 			
-							if(StringZZZ.isEmpty(sFileName)) {
-								
-								//3. Versuch: Global f�r die Applikation konfiguriert
-								stemp = this.getApplicationKey();													
-								sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAlias );		 			
-								if(StringZZZ.isEmpty(sFileName)) {
-								
-									
-									//4. Versuch: Global f�r die Applikation konfiguriert, mit dem SystemKey
-									stemp = this.getApplicationKey();		
-									String sAliasTemp = this.getSystemKey();
-									sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAliasTemp );		
-									if(StringZZZ.isEmpty(sFileName)) {
-										
-										//5. Versuch: Global f�r die Applikation konfiguriert, mit dem Applikationskey
-										stemp = this.getApplicationKey();		
-										sAliasTemp = this.getApplicationKey();
-										sFileName =objIni.getValue(stemp,"KernelConfigFile" +sAliasTemp );		
-										if(StringZZZ.isEmpty(sFileName)) {
-										
-											//TODO: 20121106 Eigentlich sollte dann die eigene / gleiche Datei zur�ckgegeben werden, oder?
-											
-											
-											//Merke: Das soll keine Exception ausl�sen, sondern es soll null zur�ckgegeben werden.
-											//ExceptionZZZ ez = new ExceptionZZZ("no filename for the module '"+ sAlias + "' available in the kernelconfiguration-file. Property: KernelConfigFile"+sAlias+ " was empty.", iERROR_CONFIGURATION_MISSING, this, ReflectionZZZ.getMethodCurrentName());
-											//throw ez;
-											//Also:
-											break main;
-										}//end if Versuch 5
-									}//end if Versuch 4
-								}//end if Versuch 3
-							}//end if Versuch 2
-							sFilePath = objIni.getValue(stemp,"KernelConfigPath" +sAlias );
-							//if (StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
-							
-						}else{
-							sFilePath = objIni.getValue(sAlias,"KernelConfigPath" +sAlias );
-							//if (StringZZZ.isEmpty(sFilePath)) sFilePath = ".";
-						}//end if Versuch 1
-						//objReturn = new File(sFilePath + File.separator + sFileName);
+						//2. Hole den Dateipfad
+						String sFilePath = this.searchPropertyForAlias(sAlias,"KernelConfigPath");
 						
-						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen*/
-						//FGL 20121106: Relative Fileangaben verarbeiten
-						//objReturn = FileEasyZZZ.getFile(sFilePath, sFileName);
-						
+						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen*/					
 						//FGL 20181008: Relative Fileangaben verarbeitet und Suche auf dem Classpath (z.B. wg. verpackt in .war / .jar Datei, z.B. WebService - Fall.
 						objReturn = FileEasyZZZ.searchFile(sFilePath, sFileName); 
 						
 				}//end main:
 			return objReturn;
 		}
+	
+	private String searchPropertyForAlias(String sAlias, String sProperty) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			check:{
+			if(StringZZZ.isEmpty(sAlias)){								
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+			if(StringZZZ.isEmpty(sProperty)){								
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Property'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+		}//end check:
+			
+			//first, get the Kernel-Configuration-INI-File
+			//TODO write ini-file-class for zzz-kernel
+			IniFile objIni = this.getFileConfigKernelAsIni();			
+			sReturn = this.searchPropertyForAlias(objIni, sAlias, sProperty);
+		}//end main:
+		return sReturn;		
+	}
+	
+	private String searchPropertyForAlias(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			check:{
+			if(objIni==null){
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'IniFile'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sAlias)){								
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+			if(StringZZZ.isEmpty(sProperty)){								
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Property'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+		}//end check:
+									
+			//1. Versuch: Speziell für die Komponente/das Modul definiert
+			String sSection = sAlias;
+			String sPropertyUsed = sProperty;
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			sReturn =objIni.getValue(sSection,sProperty );		 			
+			if(!StringZZZ.isEmpty(sReturn)) break main;
+																	
+			//2. Versuch: Speziell für ein System konfiguriert.
+			sSection =  this.getSystemKey();
+			sPropertyUsed = sProperty;
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			sReturn =objIni.getValue(sSection,sPropertyUsed );	
+			if(!StringZZZ.isEmpty(sReturn)) break main;
+					
+			//3. Versuch: Global f�r die Applikation konfiguriert
+			sSection = this.getApplicationKey();
+			sPropertyUsed = sProperty;
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			sReturn =objIni.getValue(sSection,sProperty );		 			
+			if(!StringZZZ.isEmpty(sReturn)) break main;
+					
+						
+			//4. Versuch: Global f�r die Applikation konfiguriert, mit dem SystemKey
+			sSection = this.getApplicationKey();		
+			sPropertyUsed = sProperty + this.getSystemKey();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			sReturn =objIni.getValue(sSection,sProperty );		
+			if(!StringZZZ.isEmpty(sReturn)) break main;
+							
+			//5. Versuch: Global f�r die Applikation konfiguriert, mit dem Applikationskey
+			sSection = this.getApplicationKey();		
+			sPropertyUsed = sProperty +this.getApplicationKey();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			sReturn =objIni.getValue(sSection,sProperty);	
+			if(!StringZZZ.isEmpty(sReturn)) break main;
+			
+
+		}//end main:
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE +++++++++++++++++++++++++++++++");
+		return sReturn;		
+	}
 	
 	
 	/** Parameter f�r ein ganzes Modul holen, aus der Modul-.ini-Datei, die erst noch hier ermittelt werden muss.
@@ -940,14 +979,11 @@ MeinTestParameter=blablaErgebnis
 		
 	
 	private String KernelGetParameterByModuleFile_(FileIniZZZ objFileIniConfigIn, String sModuleAlias, String sProperty) throws ExceptionZZZ{
-		String sReturn = new String("");
-		
-		main:{		
-			
-					sReturn = KernelGetParameterByProgramAlias_(objFileIniConfigIn, sModuleAlias, null, sProperty);
-				}//END main:
-
-				return sReturn;
+		String sReturn = new String("");		
+		main:{			
+			sReturn = KernelGetParameterByProgramAlias_(objFileIniConfigIn, sModuleAlias, null, sProperty);
+		}//END main:
+		return sReturn;
 	}
 	
 	/** String; Parameter basierend auf dem Systemkey holen und dem ALIAS eines Programms, innerhalb der Modul-.ini-Datei.
@@ -955,7 +991,7 @@ MeinTestParameter=blablaErgebnis
 	* Der Aliasname des Programms ist dabei eine weitere Section in der .ini-Datei, mit folgendem Aufbau:
 	 * [SYSTEMKEY!PROGRAMALIAS]
 	 * 
-	 * z.B. f�r das Programm mit dem Alias copy1 lautet die Section [FGL#01!copy1]
+	 * z.B. für das Programm mit dem Alias copy1 lautet die Section [FGL#01!copy1]
 	 * 
 	 * 
 	 * Hintergrund:
@@ -1350,7 +1386,7 @@ MeinTestParameter=blablaErgebnis
 				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 				}//END main:
-
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": ENDE DIESER SUCHE +-+-+-+-+-+-+-+-+-+-+-+-+-");
 				return sReturn;
 	}
 	

@@ -23,7 +23,9 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 
-/**
+/** TODO: 20181020: Diese Klasse wird durch KernelSingletonZZZ ersetzt.
+ *        Dadurch ist sie "deprecated".
+ *        
  * @author 0823
  *
  * To change this generated comment edit the template variable "typecomment":
@@ -31,6 +33,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
+@Deprecated
 public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelContextUserZZZ,IKernelZZZ {
 	/**  Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig

@@ -133,7 +133,7 @@ public class GetOptZZZ extends ObjectZZZ{
 		return listaReturn;
 	}
 	
-	/** F�llt die �bergebenen Argumente in eine HashMap.
+	/** Füllt die übergebenen Argumente in eine HashMap.
 	 *   Dazu wird erst ein GetOpt-Object verwendet und dann f�r Optionen des "Pattern" abgefragt.
 	 *   
 	* @param saArg
@@ -147,7 +147,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			if(saArg==null) break main;
 			if(saArg.length==0) break main;
 			
-			//Pr�fen, ob einer der Argumentstrings gef�llt ist.
+			//Prüfen, ob einer der Argumentstrings gefüllt ist.
 			boolean bfound = false;
 			for(int icount = 0; icount <= saArg.length - 1; icount++){
 				if(! StringZZZ.isEmpty(saArg[icount])){
