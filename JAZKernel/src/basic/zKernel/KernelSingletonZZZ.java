@@ -5,27 +5,32 @@ import basic.zBasic.ExceptionZZZ;
 
 public class KernelSingletonZZZ extends KernelKernelZZZ{
 	private static final long serialVersionUID = 1L;
-	private static KernelSingletonZZZ objKernelSingelton; //muss als Singleton static sein	
+	private static KernelSingletonZZZ objKernelSingleton; //muss als Singleton static sein	
 	public static KernelSingletonZZZ getInstance() throws ExceptionZZZ{
-		if(objKernelSingelton==null){
-			String[] saFlagZ={"init"};
-			objKernelSingelton = new KernelSingletonZZZ(saFlagZ);			
+		if(objKernelSingleton==null){
+			//Das hier nur zu initialisieren ist falsch. Schliesslich kennt man doch denk Application-Key
+			//String[] saFlagZ={"init"};
+			//objKernelSingelton = new KernelSingletonZZZ(saFlagZ);	
+			
+			//Verwende hier Config-Objekt mit dem gleichen Suffix der Klasse, also ZZZ
+			IKernelConfigZZZ objConfig = new ConfigZZZ();
+			objKernelSingleton = new KernelSingletonZZZ(objConfig, (String) null);
 		}
-		return objKernelSingelton;	
+		return objKernelSingleton;	
 	}
 		
 	public static  KernelSingletonZZZ getInstance(IKernelConfigZZZ objConfig, String sFlagControl) throws ExceptionZZZ{
-		if(objKernelSingelton==null){
-			objKernelSingelton = new KernelSingletonZZZ(objConfig, sFlagControl);
+		if(objKernelSingleton==null){
+			objKernelSingleton = new KernelSingletonZZZ(objConfig, sFlagControl);
 		}
-		return objKernelSingelton;	
+		return objKernelSingleton;	
 	}
 	
 	public static  KernelSingletonZZZ getInstance(IKernelConfigZZZ objConfig, String[] saFlagControl) throws ExceptionZZZ{
-		if(objKernelSingelton==null){
-			objKernelSingelton = new KernelSingletonZZZ(objConfig, saFlagControl);
+		if(objKernelSingleton==null){
+			objKernelSingleton = new KernelSingletonZZZ(objConfig, saFlagControl);
 		}
-		return objKernelSingelton;	
+		return objKernelSingleton;	
 	}
 	
 //	public static KernelSingletonZZZ getInstance(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
@@ -36,10 +41,11 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 //	}
 	
 	public static KernelSingletonZZZ getInstance(String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
-		if(objKernelSingelton==null){
-			objKernelSingelton = new KernelSingletonZZZ("THM", sSystemNumber, sFileConfigPath, sFileConfigName, saFlagControl);
+		if(objKernelSingleton==null){
+			//Verwende hier das Suffix der Klasse als Applicationkey, also ZZZ
+			objKernelSingleton = new KernelSingletonZZZ("ZZZ", sSystemNumber, sFileConfigPath, sFileConfigName, saFlagControl);
 		}
-		return objKernelSingelton;	
+		return objKernelSingleton;	
 	}
 	
 	//Die Konstruktoren nun verbergen, wg. Singleton
