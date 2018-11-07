@@ -658,6 +658,22 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return sReturn;		
 	}
 	
+	/** Heuristische Lösung. 
+	 *  Funktioniert so im Vergleich "Webservice" vs. "Swing Standalone in Eclipse"
+	 * @return
+	 * @author lindhaueradmin, 07.11.2018, 07:26:27
+	 * @throws ExceptionZZZ 
+	 */
+	@Override
+	public boolean isOnServer() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			bReturn = objConfig.isOnServer();
+		}
+		return bReturn;
+	}
+	
 	private String searchPropertyForAlias(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -1960,7 +1976,7 @@ MeinTestParameter=blablaErgebnis
 						for(int icount=0; icount < listaFile.size(); icount++){
 							boolean btemp = this.proofModuleFileExists((String) listaFile.get(icount));
 							if(btemp == false){
-								listaReturn.add(listaFile.get(icount));  //Ein einfaches Entfernen an dieser Stelle �ndert die Size der Liste und die Indexpositionen
+								listaReturn.add(listaFile.get(icount));  //Ein einfaches Entfernen an dieser Stelle ändert die Size der Liste und die Indexpositionen
 							}
 						}
 												

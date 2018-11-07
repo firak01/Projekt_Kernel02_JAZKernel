@@ -4,13 +4,13 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.KernelConfigZZZ;
 
 
-/**Klasse enthält die Werte, die im Kernel als default angesehen werden.
+/**Klasse enthï¿½lt die Werte, die im Kernel als default angesehen werden.
 	 *- ApplicationKey: FGL
 	 * - SystemNumber: 01
 	 * - Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini
 	
-	Verwende eine eigene Klasse, die KernelConfigZZZ erweitert, um für eine Spezielles Projekt andere Werte zu verwenden.
+	Verwende eine eigene Klasse, die KernelConfigZZZ erweitert, um fÃ¼r eine Spezielles Projekt andere Werte zu verwenden.
  * @author lindhauer
  *
  */

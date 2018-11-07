@@ -5,6 +5,7 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 
 /**Klasse wertet Kommandozeilenparamter aus, hinsichtlich der zu verwendenden Kernel-Konfiguration
  * -k = ApplicationKey
@@ -122,6 +123,19 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		return sReturn;
 	}
 	
+	
+	/** Heuristische Lösung. 
+	 *  Funktioniert so im Vergleich "Webservice" vs. "Swing Standalone in Eclipse"
+	 * @return
+	 * @author lindhaueradmin, 07.11.2018, 07:26:27
+	 */
+	public boolean isOnServer(){
+		boolean bReturn = false;
+		main:{
+			bReturn = FileEasyZZZ.isOnServer();
+		}
+		return bReturn;
+	}
 	
 	/**Intern wird ein GetOptZZZ-Objekt verwendet, um die Argumente auszuwerten.
 	 *  Hier wird das "isLoaded" - Flag dieses Objekts ausgewertet. 

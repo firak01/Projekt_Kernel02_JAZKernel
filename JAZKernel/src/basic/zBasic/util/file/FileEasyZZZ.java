@@ -746,7 +746,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	/** Prüft, ob die Anwendung auf einem Webserver läuft oder im Eclipse Workspace.
 	 *  Beim Eclipse Workspace wird vom Vorhandensein des "src" - Ordners ausgegangen.
 	 *  Beim Serverlauf, gibt es den src-Ordner nicht. Er liegt dann auf dem Classpath. 
-	 * @param sFilePathRaw
+	 *  
+	 *  Heuristische Lösung. 
+	 *  Funktioniert so im Vergleich "Webservice" vs. "Swing Standalone in Eclipse"
 	 * @return
 	 */
 	public static boolean isOnServer(){

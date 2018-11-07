@@ -36,4 +36,6 @@ public interface IKernelZZZ{
 	
 	public String getParameter(String sParameterName) throws ExceptionZZZ;
 	
+	
+	public boolean isOnServer() throws ExceptionZZZ;
 }

@@ -29,6 +29,7 @@ public interface IKernelConfigZZZ extends IFlagZZZ{
 	public String readPatternString();
 	public String getPatternStringDefault();
 	
+	public boolean isOnServer();
 	public boolean isOptionObjectLoaded();
 	
 }
