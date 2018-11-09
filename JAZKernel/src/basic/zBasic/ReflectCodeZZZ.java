@@ -98,6 +98,10 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  return method;
 	  }
 	  
+	  public static String getMethodCurrentNameLined(){
+		  return ReflectCodeZZZ.getMethodCurrentNameLined(0);
+	  }
+	  
 	  /**
 		 * use this method for the constructor of exceptionZZZ when throwing an exceptionZZZ, in an environment < JDK1.4
 		 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
