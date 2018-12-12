@@ -285,7 +285,19 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 	public Object remove(Object arg0) {
 		return hmOuter.remove((HashMap) arg0);
 	}
-
+	
+	public Object remove(Object sAliasOuter, Object sAliasInner){		
+		HashMap hmInner = this.getInnerHashMap(sAliasOuter);
+		Object objReturn = hmInner.remove(sAliasInner);
+		
+		if(hmInner.size()==0){
+			hmOuter.remove(sAliasOuter);
+		}
+		
+		return objReturn;
+	}
+			
+		
 	public void clear() {
 		hmOuter.clear();
 	}
