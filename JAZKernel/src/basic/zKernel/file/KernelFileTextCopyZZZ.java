@@ -15,7 +15,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
+import basic.zKernel.IKernelZZZ;
 
 
 import custom.zKernel.*;
@@ -43,7 +43,7 @@ public class KernelFileTextCopyZZZ   extends KernelUseObjectZZZ{
 	private String[] saFileSource;
 
 	//Constructor	
-	public KernelFileTextCopyZZZ(KernelZZZ objKernelIn, LogZZZ objLogIn, String sDirectorySourceIn, String sDirectoryTargetIn,String[] saFileSourceIn, String[] saFileTargetIn, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileTextCopyZZZ(IKernelZZZ objKernelIn, LogZZZ objLogIn, String sDirectorySourceIn, String sDirectoryTargetIn,String[] saFileSourceIn, String[] saFileTargetIn, String[] saFlagControl) throws ExceptionZZZ{
 		KernelFileTextCopyNew_(objKernelIn, objLogIn, sDirectorySourceIn, sDirectoryTargetIn,saFileSourceIn, saFileTargetIn, saFlagControl);
 	}
 	
@@ -59,7 +59,7 @@ public class KernelFileTextCopyZZZ   extends KernelUseObjectZZZ{
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileTextCopyNew_(KernelZZZ objKernelIn, LogZZZ objLogIn, String sDirectorySourceIn, String sDirectoryTargetIn, String[] saFileSourceIn, String[] saFileTargetIn, String[] saFlagControl) throws ExceptionZZZ {
+	private boolean KernelFileTextCopyNew_(IKernelZZZ objKernelIn, LogZZZ objLogIn, String sDirectorySourceIn, String sDirectoryTargetIn, String[] saFileSourceIn, String[] saFileTargetIn, String[] saFlagControl) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			String stemp;	boolean btemp;

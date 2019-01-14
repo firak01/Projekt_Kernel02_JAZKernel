@@ -11,7 +11,6 @@ import java.io.File;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.KernelFileTextExportCrackZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.csv.FileCsvZZZ;
@@ -33,7 +32,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 	 @param saFlagControl
 	 @throws ExceptionZZZ
 	 */
-	public FileTextExportCrackZZZ(KernelZZZ objKernel, LogZZZ objLog, File objFile,String sProgramAlias, String[] saFlagControl) throws ExceptionZZZ {
+	public FileTextExportCrackZZZ(IKernelZZZ objKernel, LogZZZ objLog, File objFile,String sProgramAlias, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, objLog, objFile, sProgramAlias, saFlagControl);
 	}
 	

@@ -20,7 +20,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
+import basic.zKernel.IKernelZZZ;
 import custom.zKernel.LogZZZ;
 
 
@@ -33,7 +33,7 @@ public class KernelFileTextImportCrackZZZ extends KernelUseObjectZZZ{
 		private File objFile;
 
 
-	public KernelFileTextImportCrackZZZ(KernelZZZ objKernel, LogZZZ objLog, File objFile, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileTextImportCrackZZZ(IKernelZZZ objKernel, LogZZZ objLog, File objFile, String[] saFlagControl) throws ExceptionZZZ{
 			KernelFileTextImportCrackNew_(objKernel, objLog, objFile, null, null, saFlagControl);
 		}
 		
@@ -99,7 +99,7 @@ public class KernelFileTextImportCrackZZZ extends KernelUseObjectZZZ{
 	//return sFunction;
 		}
 		
-		private boolean KernelFileTextImportCrackNew_(KernelZZZ objKernelIn, LogZZZ objLogIn,File objFileIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn ) throws ExceptionZZZ{
+		private boolean KernelFileTextImportCrackNew_(IKernelZZZ objKernelIn, LogZZZ objLogIn,File objFileIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn ) throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
 				String stemp; boolean btemp; 

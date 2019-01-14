@@ -9,6 +9,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public interface IKernelZZZ{
 	public File getFileConfigKernel() throws ExceptionZZZ;
+	public File getFileConfigByAlias(String sAlias) throws ExceptionZZZ;
 	public FileIniZZZ getFileConfigIni() throws ExceptionZZZ;
 	public FileIniZZZ getFileConfigIniByAlias(String sModule) throws ExceptionZZZ;
 	public ArrayList getModuleFileAliasAll(boolean bOnlyConfigured, boolean bOnlyExisting) throws ExceptionZZZ;
@@ -35,7 +36,10 @@ public interface IKernelZZZ{
 	public String getParameterByModuleFile(FileIniZZZ objFileIni, String sParameterName) throws ExceptionZZZ;
 	
 	public String getParameter(String sParameterName) throws ExceptionZZZ;
-	
+	public File getParameterFileByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ;
 	
 	public boolean isOnServer() throws ExceptionZZZ;
+	
+	
+	public void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue) throws ExceptionZZZ;
 }

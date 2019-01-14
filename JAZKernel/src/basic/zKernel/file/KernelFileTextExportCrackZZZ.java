@@ -13,7 +13,6 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -25,7 +24,7 @@ public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
    private File objFile;
 
 	
-	public KernelFileTextExportCrackZZZ(KernelZZZ objKernel, LogZZZ objLog, File objFileToCrack, String sProgramAlias, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileTextExportCrackZZZ(IKernelZZZ objKernel, LogZZZ objLog, File objFileToCrack, String sProgramAlias, String[] saFlagControl) throws ExceptionZZZ{
 		KernelFileTextExportCrackNew_(objKernel, objLog, objFileToCrack, null, null, sProgramAlias, saFlagControl);		
 	}
 	
@@ -55,7 +54,7 @@ public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileTextExportCrackNew_(KernelZZZ objKernelIn, LogZZZ objLogIn, File objFileIn, String sDirIn, String sFileIn, String sProgramAliasIn, String[] saFlagControlIn) throws ExceptionZZZ{
+	private boolean KernelFileTextExportCrackNew_(IKernelZZZ objKernelIn, LogZZZ objLogIn, File objFileIn, String sDirIn, String sFileIn, String sProgramAliasIn, String[] saFlagControlIn) throws ExceptionZZZ{
 		boolean bFunction = false;
 		main:{
 						String stemp; boolean btemp;

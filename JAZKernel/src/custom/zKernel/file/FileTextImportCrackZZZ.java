@@ -12,7 +12,7 @@ import java.util.Vector;
 import custom.zKernel.LogZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zKernel.KernelZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.file.KernelFileTextImportCrackZZZ;
 
 /**
@@ -21,7 +21,7 @@ import basic.zKernel.file.KernelFileTextImportCrackZZZ;
 */
 public class FileTextImportCrackZZZ extends KernelFileTextImportCrackZZZ {
 
-	public FileTextImportCrackZZZ(KernelZZZ objKernel, LogZZZ objLog, File objFile, String[] saFlagControl) throws ExceptionZZZ{
+	public FileTextImportCrackZZZ(IKernelZZZ objKernel, LogZZZ objLog, File objFile, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel, objLog, objFile, saFlagControl);
 	}
 	

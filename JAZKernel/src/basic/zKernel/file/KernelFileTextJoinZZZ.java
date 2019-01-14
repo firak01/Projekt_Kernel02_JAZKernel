@@ -18,7 +18,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
+import basic.zKernel.IKernelZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.FileTextImportCrackZZZ;
 
@@ -72,7 +72,7 @@ public class KernelFileTextJoinZZZ extends KernelUseObjectZZZ{
 		}
 	}
 	
-	private boolean KernelFileTextJoinNew_(KernelZZZ objKernelIn, LogZZZ objLogIn, File objFileBaseIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn) throws ExceptionZZZ{
+	private boolean KernelFileTextJoinNew_(IKernelZZZ objKernelIn, LogZZZ objLogIn, File objFileBaseIn, String sDirectoryIn, String sFileIn, String[] saFlagControlIn) throws ExceptionZZZ{
 		boolean bReturn = false;
 			
 		String stemp;  boolean btemp;
@@ -156,7 +156,7 @@ public class KernelFileTextJoinZZZ extends KernelUseObjectZZZ{
 	 @throws ExceptionZZZ
 	 */
 	public KernelFileTextJoinZZZ(
-	KernelZZZ objKernelIn,
+	IKernelZZZ objKernelIn,
 	LogZZZ objLogIn,
 	String sBaseDirectoryIn, 
 	String sBaseFileIn, 
@@ -164,7 +164,7 @@ public class KernelFileTextJoinZZZ extends KernelUseObjectZZZ{
 	KernelFileTextJoinNew_(objKernelIn, objLogIn, null, sBaseDirectoryIn, sBaseFileIn, saFlagControl);
 	} //end constructor
 	
-	public KernelFileTextJoinZZZ(KernelZZZ objKernel, LogZZZ objLog, File objFile, String[] saFlagControl) throws ExceptionZZZ{
+	public KernelFileTextJoinZZZ(IKernelZZZ objKernel, LogZZZ objLog, File objFile, String[] saFlagControl) throws ExceptionZZZ{
 		KernelFileTextJoinNew_(objKernel, objLog, objFile, null, null, saFlagControl);
 	}
 
