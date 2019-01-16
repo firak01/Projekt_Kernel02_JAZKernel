@@ -4,11 +4,14 @@ import basic.javagently.Stream;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 
 import java.io.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import custom.zUtil.io.FileZZZ;
 
 /**
@@ -64,7 +67,12 @@ public class KernelLogZZZ extends ObjectZZZ implements IObjectZZZ {
 				sLogFile = sLogFileIn;
 			}
 			
-			FileZZZ objFile = new FileZZZ(sDirectoryPath, sLogFile, 3,null);
+			//20190116: Suche nach dem Pfad. Er ist ggfs. als Serverapplication ohne den "src"-Ordner.
+			File objDirectory = FileEasyZZZ.searchDirectory(sDirectoryPath);
+			String sDirectoryPathNormed = objDirectory.getAbsolutePath();
+			System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+			
+			FileZZZ objFile = new FileZZZ(sDirectoryPathNormed, sLogFile, 3,null);
 			String sLogFileNew = objFile.PathNameTotalExpandedNextCompute();
 			boolean btemp = createStreamInternal(sLogFileNew);
 			if(btemp) {

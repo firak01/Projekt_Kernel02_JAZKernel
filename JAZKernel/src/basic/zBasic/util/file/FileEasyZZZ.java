@@ -51,6 +51,21 @@ public static boolean exists (String sFileName) throws ExceptionZZZ {
 			throw ez;
 		}
 		
+		//1. Aufteilen auf Datei und Verzeichnis
+				File objFile = new File(sFilePath);
+				String sDirectory = objFile.getParent();
+				if(sDirectory==null){ //ROOT
+					objReturn = new File(sFilePath);
+					break main;
+				}	
+				
+				File objDirectoryNormed = FileEasyZZZ.getDirectory(sDirectory);
+				String sDirectoryPathNormed = objDirectoryNormed.getAbsolutePath();
+				String sFileName = objFile.getName();
+				
+				
+		File objDirectoryNormed = FileEasyZZZ.getDirectory(sDirectory);
+		
 		//Prüfen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad ber�cksichtig.
 		File f = FileEasyZZZ.getFile(sFileName);
 		bReturn = f.exists();
@@ -134,6 +149,32 @@ public static File getFile(String sDirectoryIn, String sFileName)throws Exceptio
 
 	}//END main:
 	return objReturn;	
+}
+
+public static File searchFile(String sFilePath) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		if(StringZZZ.isEmpty(sFilePath)){
+			ExceptionZZZ ez  = new ExceptionZZZ("sFilePath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//1. Aufteilen auf Datei und Verzeichnis
+		File objFile = new File(sFilePath);
+		String sDirectory = objFile.getParent();
+		if(sDirectory==null){ //ROOT
+			objReturn = new File(sFilePath);
+			break main;
+		}	
+		
+		File objDirectoryNormed = FileEasyZZZ.getDirectory(sDirectory);
+		String sDirectoryPathNormed = objDirectoryNormed.getAbsolutePath();
+		String sFileName = objFile.getName();
+		
+		objReturn = FileEasyZZZ.searchFile(sDirectoryPathNormed, sFileName);
+		
+	}//END main:
+	return objReturn;
 }
 
 public static File searchFile(String sDirectoryIn, String sFileName)throws ExceptionZZZ{
@@ -290,18 +331,21 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			File objFile = new File(sFilePathName);
-			if(objFile.exists()==false){
+			
+			//20190116: Sicherstellen, dass die Datei (auch auf einem WebServer) gefunden wird.
+			//File objFile = new File(sFilePathName);
+			File objFileNormed = FileEasyZZZ.searchFile(sFilePathName);						
+			if(objFileNormed.exists()==false){
 				bReturn = true;
 				break main;
 			}
 			
-			if(objFile.isFile()==false){
-				ExceptionZZZ ez = new ExceptionZZZ("FilePathName='" + sFilePathName + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+			if(objFileNormed.isFile()==false){
+				ExceptionZZZ ez = new ExceptionZZZ("FilePathName='" + sFilePathName + "' is a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			bReturn = objFile.delete();
+			bReturn = objFileNormed.delete();
 			
 		}
 		return bReturn;
