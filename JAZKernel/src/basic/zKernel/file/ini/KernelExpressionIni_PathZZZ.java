@@ -38,7 +38,7 @@ public class KernelExpressionIni_PathZZZ  extends KernelUseObjectZZZ{
 		KernelExpressionIniPathNew_(objFileIni, null);
 	}
 	
-	public KernelExpressionIni_PathZZZ(KernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIni_PathZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniPathNew_(objFileIni, saFlag);
 	}
@@ -111,7 +111,7 @@ public class KernelExpressionIni_PathZZZ  extends KernelUseObjectZZZ{
 						throw ez;
 					}
 					
-					//20080109 FGL: Falls es eine Section gibt, so muss die Aufl�sung der Section über eine Suche über die Systemnummer erfolgen
+					//20080109 FGL: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
 					String sSystemNr = this.getKernelObject().getSystemNumber();
 					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr);
 					

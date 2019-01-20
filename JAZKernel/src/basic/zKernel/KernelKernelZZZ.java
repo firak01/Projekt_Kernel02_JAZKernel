@@ -508,7 +508,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					//NEIN, das wäre wohl eine Endlosschleife: FileIniZZZ objKernelIni = this.getFileConfigIniByAlias(sAlias);
 					IniFile objIni = this.getFileConfigKernelAsIni(sAlias);
 					if(objIni==null){
-						String sLog = "FileIni";
+						String sLog = "FileIni missing for Alias: " + sAlias;
 						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 						ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
@@ -691,58 +691,75 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				throw ez;
 			}	
 		}//end check:
-									
+							
+			//TODO GOON 20190119: Definiere einen "empty" Tag in der ZFormel Sprache. Dieser muss hier ausgewertet werden und auch den Abbruch bedingen, wenn er gefunden wird.
+		    //Merke: Ein Leerstring bedingt nämlich, dass weitergesucht wird.
+		
 			//1. Versuch: Speziell für die Komponente/das Modul definiert
 			String sSection = sAlias;
 			String sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sProperty );		 			
+			sReturn =objIni.getValue(sSection,sPropertyUsed);		 			
 			if(!StringZZZ.isEmpty(sReturn)) break main;
-																	
-			//2. Versuch: Speziell für ein System konfiguriert.
+				
+			//2a. Versuch: Speziel für das System konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
+			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
+			sSection = this.getSystemKey();		
+			sPropertyUsed = sProperty + sAlias;
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			sReturn =objIni.getValue(sSection,sPropertyUsed);	
+			if(!StringZZZ.isEmpty(sReturn)) break main;
+			
+			//2b. Versuch: Global für die Applikation konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
+			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
+			sSection = this.getApplicationKey();		
+			sPropertyUsed = sProperty + sAlias;
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			sReturn =objIni.getValue(sSection,sPropertyUsed);	
+			if(!StringZZZ.isEmpty(sReturn)) break main;
+			
+			//3a. Versuch: Speziell für ein System konfiguriert.
 			sSection =  this.getSystemKey();
 			sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed );	
 			if(!StringZZZ.isEmpty(sReturn)) break main;
 					
-			//3. Versuch: Global f�r die Applikation konfiguriert
+			//3b. Versuch: Global für die Applikation konfiguriert
 			sSection = this.getApplicationKey();
 			sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sProperty );		 			
+			sReturn =objIni.getValue(sSection,sPropertyUsed );		 			
 			if(!StringZZZ.isEmpty(sReturn)) break main;
 					
 						
-			//4. Versuch: Global f�r die Applikation konfiguriert, mit dem SystemKey
+			//4a. Versuch: Global für die Applikation konfiguriert, mit dem SystemKey
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty + this.getSystemKey();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sProperty );		
+			sReturn =objIni.getValue(sSection,sPropertyUsed );		
 			if(!StringZZZ.isEmpty(sReturn)) break main;
 							
-			//5. Versuch: Global f�r die Applikation konfiguriert, mit dem Applikationskey
+			//4b. Versuch: Global für die Applikation konfiguriert, mit dem Applikationskey
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty +this.getApplicationKey();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sProperty);	
+			sReturn =objIni.getValue(sSection,sPropertyUsed);	
 			if(!StringZZZ.isEmpty(sReturn)) break main;
-			
-
 		}//end main:
 		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE +++++++++++++++++++++++++++++++");
 		return sReturn;		
 	}
 	
 	
-	/** Parameter f�r ein ganzes Modul holen, aus der Modul-.ini-Datei, die erst noch hier ermittelt werden muss.
+	/** Parameter für ein ganzes Modul holen, aus der Modul-.ini-Datei, die erst noch hier ermittelt werden muss.
 	 * Ein Modul ist der Teil, der zwischen dem KernelConfigPath und dem Gleichheitszeichen steht
 	 * KernelConfigPath...=,
 	 *  bzw. auch KernelConfigFile...=
-	 *  Die drei Punkte ... stehen nun f�r den Modulnamen.
+	 *  Die drei Punkte ... stehen nun für den Modulnamen.
 	 *        
-	 * Dies ist z.B. der Aliasname f�r ein 'Program'-Teil
-	 * Um f�r das Program einen Parameter zu holen muss verwendet werden "getParameterByProgramAlias(,,,)
+	 * Dies ist z.B. der Aliasname für ein 'Program'-Teil
+	 * Um für das Program einen Parameter zu holen muss verwendet werden "getParameterByProgramAlias(,,,)
 	 * @param objFileConfig, Modul-Konfigurationsfile. Wird z.B. durch  objKernel.getFileConfigByAlias(sModuleAlias); ermittelt.
 	 * @param sModuleAlias
 	 * @param sParameter
@@ -1145,11 +1162,11 @@ MeinTestParameter=blablaErgebnis
 		return sReturn;
 	}
 	
-	public String getParameterByProgramAlias(FileIniZZZ objFileIniconfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+	public String getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			check:{
-				if(objFileIniconfig==null){
+				if(objFileIniConfig==null){
 					String stemp = "'FileIniZZZ'";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
@@ -1174,8 +1191,8 @@ MeinTestParameter=blablaErgebnis
 					throw ez;
 				}	
 			}//END check:
-		
-			sReturn = this.KernelGetParameterByProgramAlias_(objFileIniconfig, sModule, sProgramOrSection, sProperty);
+
+			sReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty);
 		}//END main:
 		return sReturn;
 	}

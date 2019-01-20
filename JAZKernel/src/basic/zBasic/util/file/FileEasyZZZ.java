@@ -19,6 +19,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.dataype.calling.ReferenceZZZ;
 import basic.zKernel.KernelKernelZZZ;
 
 /**Einfache Dateioperationen
@@ -51,27 +52,12 @@ public static boolean exists (String sFileName) throws ExceptionZZZ {
 			throw ez;
 		}
 		
-		//1. Aufteilen auf Datei und Verzeichnis
-				File objFile = new File(sFilePath);
-				String sDirectory = objFile.getParent();
-				if(sDirectory==null){ //ROOT
-					objReturn = new File(sFilePath);
-					break main;
-				}	
-				
-				File objDirectoryNormed = FileEasyZZZ.getDirectory(sDirectory);
-				String sDirectoryPathNormed = objDirectoryNormed.getAbsolutePath();
-				String sFileName = objFile.getName();
-				
-				
-		File objDirectoryNormed = FileEasyZZZ.getDirectory(sDirectory);
-		
 		//Prüfen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad ber�cksichtig.
 		File f = FileEasyZZZ.getFile(sFileName);
 		bReturn = f.exists();
 	}//end main:
 	return bReturn;
-}	
+} 
 
 public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
 	File objReturn = null;
@@ -159,19 +145,18 @@ public static File searchFile(String sFilePath) throws ExceptionZZZ{
 			throw ez;
 		}
 		
-		//1. Aufteilen auf Datei und Verzeichnis
-		File objFile = new File(sFilePath);
-		String sDirectory = objFile.getParent();
-		if(sDirectory==null){ //ROOT
-			objReturn = new File(sFilePath);
-			break main;
-		}	
+		//Hier der Workaround mit Refenz-Objekten, aus denen dann der Wert geholt werden kann. Also PASS_BY_REFERENCE durch auslesen der Properties der Objekte.  
+		ReferenceZZZ<String> strDirectory = new ReferenceZZZ("");
+		ReferenceZZZ<String> strFileName = new ReferenceZZZ("");
+		FileEasyZZZ.splitFilePathName(sFilePath, strDirectory, strFileName);
 		
-		File objDirectoryNormed = FileEasyZZZ.getDirectory(sDirectory);
-		String sDirectoryPathNormed = objDirectoryNormed.getAbsolutePath();
-		String sFileName = objFile.getName();
+		String sDirectory = strDirectory.get();
+		File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectory);
+		String sDirectoryNormed = objDirectoryNormed.getAbsolutePath();
 		
-		objReturn = FileEasyZZZ.searchFile(sDirectoryPathNormed, sFileName);
+		String sFileName = strFileName.get();
+		
+		objReturn = FileEasyZZZ.searchFile(sDirectoryNormed, sFileName);
 		
 	}//END main:
 	return objReturn;
@@ -233,6 +218,110 @@ public static File searchFile(String sDirectoryIn, String sFileName)throws Excep
 	return objReturn;	
 }
 
+public static File searchFilePath(String sFilePath) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		if(StringZZZ.isEmpty(sFilePath)){
+			ExceptionZZZ ez  = new ExceptionZZZ("sFilePath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//1. Aufteilen auf Datei und Verzeichnis
+		File objFile = new File(sFilePath);
+		String sDirectory = objFile.getParent();
+		if(sDirectory==null){ //ROOT
+			objReturn = new File(sFilePath);
+			break main;
+		}	
+		
+		File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectory);
+		String sDirectoryPathNormed = objDirectoryNormed.getAbsolutePath();
+		String sFileName = objFile.getName();
+		
+		String sFilePathNormedTotal = sDirectoryPathNormed + File.separator + sFileName;
+		objReturn = new File(sFilePathNormedTotal);
+		
+	}//END main:
+	return objReturn;
+}
+
+public static boolean searchIsDirectoryEmpty(String sDirectoryPath) throws ExceptionZZZ{
+	boolean bReturn = false;
+	main:{
+			if(StringZZZ.isEmpty(sDirectoryPath)){
+				ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			File objFile = FileEasyZZZ.searchDirectory(sDirectoryPath);						
+			if(objFile.exists()==false){
+				ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' does not exist (... on the web server).", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}				
+			if(objFile.isDirectory()==false){
+				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory (... on the web server).", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String[] saFile = objFile.list();
+			if(saFile==null){
+				bReturn = true;
+			}else{
+				if(saFile.length>=1){
+					bReturn = false;
+				}else{
+					bReturn = true;
+				}
+			}
+	}
+	return bReturn;
+}
+
+public static File searchMakeDirectory(String sDirectoryPath) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		File objDirectory = FileEasyZZZ.searchDirectory(sDirectoryPath);
+		String sDirectoryPathNormed = objDirectory.getAbsolutePath();
+		System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+	
+		FileEasyZZZ.makeDirectory(sDirectoryPathNormed);
+        
+		objReturn = new File(sDirectoryPathNormed);
+	}//end main:
+	return objReturn;
+}
+
+/*Rückgabewert ist das 'File-Objekt' vom Eingabe FilePath.
+ * Darüber hinaus wird der Pfad aufgeteilt und zurückgegeben.
+ * Da Java nur ein CALL_BY_VALUE machen kann, weden hier für die eingefüllten Werte Referenz-Objekte verwendet.
+ */
+public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strDirectory, ReferenceZZZ<String> strFileName) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+	if(StringZZZ.isEmpty(sFilePath)){
+		ExceptionZZZ ez  = new ExceptionZZZ("sFilePath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+		throw ez;
+	}
+	
+	//1. Aufteilen auf Datei und Verzeichnis
+	objReturn = new File(sFilePath);
+	String sDirectory = objReturn.getParent();
+	if(sDirectory==null){ //ROOT		
+		break main;
+	}	
+	
+//	File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectory);
+//	String sDirectoryPathNormed = objDirectoryNormed.getAbsolutePath();
+	String sFileName = objReturn.getName();
+	
+	//#### Die Rückgabewerte
+	strDirectory.set(sDirectory);
+	strFileName.set(sFileName);
+	
+	}//END main:
+	return objReturn;	
+}
+
 public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
@@ -258,6 +347,21 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 		
 	}//END main:
 	return objReturn;	
+}
+
+public static boolean searchExists(String sFilePath) throws ExceptionZZZ{
+	boolean bReturn = false;
+	main:{
+		if(StringZZZ.isEmpty(sFilePath)){
+			ExceptionZZZ ez  = new ExceptionZZZ("FileName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//Prüfen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad berücksichtig.
+		File f = FileEasyZZZ.searchFile(sFilePath);
+		bReturn = f.exists();
+	}//end main:
+	return bReturn;	
 }
 
 
@@ -312,7 +416,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 	return bReturn;
 }
 
-	/** pr�ft ob ein gegebener dirName ein Directory repr�sentiert und erzeugt gegebenenfalls ein solches dir */
+	/** prüft ob ein gegebener dirName ein Directory repräsentiert und erzeugt gegebenenfalls ein solches dir */
 	public static boolean makeDirectory (String dirName) {
 		File d = new File (dirName);
 		if (d.exists() && !d.isDirectory()) {
@@ -325,6 +429,97 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 	}
 	
 	public static boolean removeFile(String sFilePathName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sFilePathName)){
+				ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			File objFile = new File(sFilePathName);
+			if(objFile.exists()==false){
+				bReturn = true;
+				break main;
+			}
+			
+			if(objFile.isFile()==false){
+				ExceptionZZZ ez = new ExceptionZZZ("FilePathName='" + sFilePathName + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			bReturn = objFile.delete();
+			
+		}
+		return bReturn;
+}
+	
+	/** Löscht ein Verzeichnis.
+	* @return boolean,	 true, wenn das Verzeichnis nicht existiert hat oder erfolgreich gel�scht werden konnte.
+	*                					 false, wenn das Verzeichnis nicht leer ist.
+	* @param sDirectoryPath
+	* @throws ExceptionZZZ
+	* 
+	* lindhaueradmin; 25.10.2006 09:38:28
+	 */
+	public static boolean searchRemoveDirectory(String sDirectoryPath) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sDirectoryPath)){
+				ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			File objFile = new File(sDirectoryPath);
+			if(objFile.exists()==false){
+				bReturn = true;
+				break main;
+			}
+			
+			if(objFile.isDirectory()==false){
+				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Gibt false zur�ck, wenn z.B. das Directory nicht leer ist.
+			bReturn = objFile.delete();
+			
+		}
+		return bReturn;
+	}
+	
+	
+	public static boolean searchRemoveDirectory(String sDirectoryPath, boolean bEmptyDirectoryBefore) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sDirectoryPath)){
+				ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			File objFile = new File(sDirectoryPath);
+			if(objFile.exists()==false){
+				bReturn = true;
+				break main;
+			}
+			
+			if(objFile.isDirectory()==false){
+				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(bEmptyDirectoryBefore==true){
+				//Hole alle dateien und l�sche diese
+				File[] objaFile =  objFile.listFiles();
+				for(int icount = 0; icount <= objaFile.length - 1; icount++){
+					objaFile[icount].delete();
+				}		
+				bReturn = objFile.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
+			}else{			
+				//Gibt false zur�ck, wenn z.B. das Directory nicht leer ist.
+				bReturn = objFile.delete();
+			}
+		}
+		return bReturn;
+	}
+	
+	public static boolean searchRemoveFile(String sFilePathName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sFilePathName)){
@@ -350,6 +545,8 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		}
 		return bReturn;
 	}
+	
+	
 	
 	
 	
@@ -384,7 +581,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		return bReturn;
 	}
 	
-	/** L�scht ein Verzeichnis.
+	/** Löscht ein Verzeichnis.
 	* @return boolean,	 true, wenn das Verzeichnis nicht existiert hat oder erfolgreich gel�scht werden konnte.
 	*                					 false, wenn das Verzeichnis nicht leer ist.
 	* @param sDirectoryPath
@@ -399,18 +596,18 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			File objFile = new File(sDirectoryPath);
+			File objFile = FileEasyZZZ.searchDirectory(sDirectoryPath); //Soll auch auf einem Web Server die passende Datei finden.
 			if(objFile.exists()==false){
 				bReturn = true;
 				break main;
 			}
 			
 			if(objFile.isDirectory()==false){
-				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory (... on the web server).", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			//Gibt false zur�ck, wenn z.B. das Directory nicht leer ist.
+			//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
 			bReturn = objFile.delete();
 			
 		}
@@ -425,7 +622,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			File objFile = new File(sDirectoryPath);
+			File objFile =  FileEasyZZZ.searchDirectory(sDirectoryPath); //Soll auch auf einem Web Server die passende Datei finden.
 			if(objFile.exists()==false){
 				bReturn = true;
 				break main;
@@ -437,14 +634,14 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			}
 			
 			if(bEmptyDirectoryBefore==true){
-				//Hole alle dateien und l�sche diese
+				//Hole alle dateien und läsche diese
 				File[] objaFile =  objFile.listFiles();
 				for(int icount = 0; icount <= objaFile.length - 1; icount++){
 					objaFile[icount].delete();
 				}		
 				bReturn = objFile.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
 			}else{			
-				//Gibt false zur�ck, wenn z.B. das Directory nicht leer ist.
+				//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
 				bReturn = objFile.delete();
 			}
 		}
