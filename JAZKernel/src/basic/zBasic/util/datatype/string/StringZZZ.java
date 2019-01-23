@@ -939,6 +939,12 @@ public class StringZZZ implements IConstantZZZ{
 		return false;
 	}
 	
+	public static boolean isEmptyTrimmed(String sString){		
+		if(sString==null) return true;
+		if(sString.trim().equals("")) return true;
+		return false;
+	}
+	
 	public static boolean isFloat(String sString){
 		boolean bReturn = false;
 		main:{

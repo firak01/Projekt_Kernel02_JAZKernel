@@ -11,6 +11,8 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 
@@ -42,7 +44,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(KernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
 	}
@@ -57,7 +59,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(KernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
@@ -102,31 +104,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
 	
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			
-			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
-			if(this.getFlag("useFormula_math")==true){				
-				sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			
-				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelExpressionMathSolverZZZ objMathSolver = new KernelExpressionMathSolverZZZ(); 
-													
-				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-				while(objMathSolver.isExpression(sReturn)){
-					String sValueMath = objMathSolver.compute(sReturn);
-					sReturn=sValueMath;				
-				}													
-			}else{													
-				sReturn = VectorZZZ.implode(vecAll);
-			}
-		}//end main:
-		return sReturn;
-	}
+	
 	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
@@ -207,6 +185,10 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 	public static String getExpressionTagClosing(){
 		return "</" + KernelExpressionIniSolverZZZ.getExpressionTagName() + ">"; 
 	}
+	public static String getExpressionTagEmpty(){
+		return "<" + KernelExpressionIniSolverZZZ.getExpressionTagName() + "/>";
+	}
+	
 	
 	public void setFileIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
@@ -242,5 +224,29 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
 		return (String) this.getHashMapVariable().get(sKey);
 	}
 	
-	
+	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			
+			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+			if(this.getFlag("useFormula_math")==true){				
+				sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
+			
+				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+				KernelExpressionMathSolverZZZ objMathSolver = new KernelExpressionMathSolverZZZ(); 
+													
+				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				while(objMathSolver.isExpression(sReturn)){
+					String sValueMath = objMathSolver.compute(sReturn);
+					sReturn=sValueMath;				
+				}													
+			}else{													
+				sReturn = VectorZZZ.implode(vecAll);
+			}
+		}//end main:
+		return sReturn;
+	}
 }//End class

@@ -9,12 +9,12 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelExpressionIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ{
+public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 //	public enum FLAGZ{
 //		USEFORMULA_MATH
 //	}
@@ -59,20 +59,7 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ{
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
-	
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
-			
-		}//end main:
-		return sReturn;
-	}
+		
 	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
@@ -159,6 +146,7 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ{
 	
 	
 	//###### Getter / Setter
+	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
 	public static String getExpressionTagName(){
 		return "z:Var"; 
 	}
@@ -167,7 +155,10 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ{
 	}
 	public static String getExpressionTagClosing(){
 		return "</" + KernelExpressionIni_VariableZZZ.getExpressionTagName() + ">"; 
-	}		
+	}	
+	public static String getExpressionTagEmpty(){
+		return "<" + KernelExpressionIni_VariableZZZ.getExpressionTagName() + "/>";
+	}
 	
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
 		this.hmVariable = hmVariable;
@@ -204,4 +195,45 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ{
 		}
 		return sReturn;
 	}
+
+	//### Aus Interface IKernelExpressionIniZZZ
+		@Override
+		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+			boolean bReturn=false;
+			
+			//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
+//			if(StringZZZ.isEmpty(sToProof)){
+//				bReturn = true;
+//			}
+			return bReturn;
+		}
+		
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof)
+				throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public String compute(String sLineWithExpression) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+				
+				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+				
+				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+				sReturn = VectorZZZ.implode(vecAll);
+				
+			}//end main:
+			return sReturn;
+		}
+
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	
 }//End class

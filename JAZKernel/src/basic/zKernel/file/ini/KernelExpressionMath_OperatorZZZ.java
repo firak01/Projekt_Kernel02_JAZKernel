@@ -6,11 +6,13 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
+public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniZZZ{
 //	public enum FLAGZ{
 //		USEFORMULA_MATH
 //	}
@@ -25,7 +27,7 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
-	public KernelExpressionMath_OperatorZZZ(KernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionMath_OperatorZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
@@ -57,32 +59,6 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			
-			//links vom Operator
-			KernelExpressionMath_ValueZZZ objValue01 = new KernelExpressionMath_ValueZZZ();
-			if(objValue01.isExpression(sLineWithExpression)){
-				sLineWithExpression = objValue01.compute(sLineWithExpression);						
-			}	
-			
-			//rechts vom Operator
-			KernelExpressionMath_ValueZZZ objValue02 = new KernelExpressionMath_ValueZZZ();
-			if(objValue02.isExpression(sLineWithExpression)){
-				sLineWithExpression = objValue02.compute(sLineWithExpression);						
-			}	
-			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-									
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
-									
-		}//end main:
-		return sReturn;
-	}
 	
 	public String compute(String sValue01, String sValue02) throws ExceptionZZZ{
 		String sReturn = null;
@@ -227,7 +203,10 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	}
 	public static String getExpressionTagClosing(){
 		return "</" + KernelExpressionMath_OperatorZZZ.getExpressionTagName() + ">"; 
-	}			
+	}	
+	public static String getExpressionTagEmpty(){
+		return "<" + KernelExpressionMath_OperatorZZZ.getExpressionTagName() + "/>";
+	}
 	
 	//++++ 
 	public String getOperator(){
@@ -236,4 +215,58 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ{
 	public void setOperator(String sOperator){
 		this.sOperator=sOperator;
 	}
+
+	//### Aus Interface IKernelExpressionIniZZZ
+		@Override
+		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+			boolean bReturn=false;
+			
+			//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
+//					if(StringZZZ.isEmpty(sToProof)){
+//						bReturn = true;
+//					}
+			return bReturn;
+		}
+		
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof)
+				throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		@Override
+		public String compute(String sLineWithExpression) throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+				
+				
+				//links vom Operator
+				KernelExpressionMath_ValueZZZ objValue01 = new KernelExpressionMath_ValueZZZ();
+				if(objValue01.isExpression(sLineWithExpression)){
+					sLineWithExpression = objValue01.compute(sLineWithExpression);						
+				}	
+				
+				//rechts vom Operator
+				KernelExpressionMath_ValueZZZ objValue02 = new KernelExpressionMath_ValueZZZ();
+				if(objValue02.isExpression(sLineWithExpression)){
+					sLineWithExpression = objValue02.compute(sLineWithExpression);						
+				}	
+				
+				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+										
+				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+				sReturn = VectorZZZ.implode(vecAll);
+										
+			}//end main:
+			return sReturn;
+		}
+
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return null;
+		}
+				
 }//End class

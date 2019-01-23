@@ -1423,7 +1423,7 @@ MeinTestParameter=blablaErgebnis
 				return sReturn;
 	}
 	
-	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sModule, String sProgramOrSection, String sProperty, String sValue, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sModule, String sProgramOrSection, String sProperty, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{		
 		
@@ -1433,6 +1433,15 @@ MeinTestParameter=blablaErgebnis
 			sModuleUsed = this.getApplicationKey();
 		}else{
 			sModuleUsed = sModule;
+		}
+		
+		//Setzen des Wertes
+		String sValue=new String("");
+		boolean bFlagDelete = false;
+		if(sValueIn==null){
+			bFlagDelete=true;
+		}else{
+			sValue=sValueIn;
 		}
 		
 		//3. Konfigurationsfile des Moduls holen
@@ -1529,15 +1538,7 @@ MeinTestParameter=blablaErgebnis
 				throw ez;
 			}
 			
-
-			//Setzen des Wertes
-			boolean bFlagDelete = false;
-			if(sValue==null){
-				bFlagDelete=true;
-			}else{
-				sValue=sValue;
-			}
-			
+						
 			if(bFlagDelete==false){
 				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);				
 			}else{

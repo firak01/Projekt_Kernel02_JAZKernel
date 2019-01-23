@@ -21,6 +21,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.IKernelExpressionIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
@@ -37,7 +38,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
 //	private boolean bFlagFileChanged;
-//	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgel�st. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
+//	private boolean bFlagUseFormula=true;  //Falls true, dann wird ggf. die Formel in der ini-Datei aufgelöst. z.B. <Z>[Section A]Value1</Z>. Siehe KernelExpressionIniSolver.
 	
 //Flags, die alle Z-Objekte haben
 //	private boolean bFlagDebug;
@@ -287,7 +288,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 			
 			//20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
 			if(this.getFlag("useFormula")==true){
+				boolean bExpressionFound=false;
 				while(KernelExpressionIniSolverZZZ.isExpression(sReturn)){
+					bExpressionFound= true;
 					
 					//20180711: Die Flags an das neue Objekt der Klasse vererben
 					KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
@@ -297,6 +300,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
 					sReturn = ex.compute(sReturn);
+				}
+				
+				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
+				if(!bExpressionFound){
+					sReturn = KernelExpressionIniConverterZZZ.getAsString(sReturn);			
 				}
 			}
 			
@@ -443,7 +451,13 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 						throw ez;	
 					}else{
 						//Remark: An empty String may be allowed !!!
-						sValue = sValueIn;		
+						IKernelExpressionIniZZZ objExpression = KernelExpressionIniConverterZZZ.getAsObject(sValueIn);
+						//TODO GOON 20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
+						if(objExpression!=null){
+							sValue = objExpression.convert(sValueIn);
+						}else{						
+							sValue = sValueIn;
+						}
 					}
 				}//end check:
 			
