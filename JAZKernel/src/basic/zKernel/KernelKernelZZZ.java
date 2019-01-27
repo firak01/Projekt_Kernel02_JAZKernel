@@ -700,7 +700,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed);		 			
-			if(!StringZZZ.isEmpty(sReturn)) break main;
+			if(!StringZZZ.isEmpty(sReturn)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+				break main;
+			}
 				
 			//2a. Versuch: Speziel für das System konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
 			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
@@ -708,7 +711,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sPropertyUsed = sProperty + sAlias;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed);	
-			if(!StringZZZ.isEmpty(sReturn)) break main;
+			if(!StringZZZ.isEmpty(sReturn)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+				break main;
+			}
 			
 			//2b. Versuch: Global für die Applikation konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
 			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
@@ -716,21 +722,30 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sPropertyUsed = sProperty + sAlias;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed);	
-			if(!StringZZZ.isEmpty(sReturn)) break main;
+			if(!StringZZZ.isEmpty(sReturn)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+				break main;
+			}
 			
 			//3a. Versuch: Speziell für ein System konfiguriert.
 			sSection =  this.getSystemKey();
 			sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed );	
-			if(!StringZZZ.isEmpty(sReturn)) break main;
+			if(!StringZZZ.isEmpty(sReturn)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+				break main;
+			}
 					
 			//3b. Versuch: Global für die Applikation konfiguriert
 			sSection = this.getApplicationKey();
 			sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed );		 			
-			if(!StringZZZ.isEmpty(sReturn)) break main;
+			if(!StringZZZ.isEmpty(sReturn)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+				break main;
+			}
 					
 						
 			//4a. Versuch: Global für die Applikation konfiguriert, mit dem SystemKey
@@ -738,14 +753,20 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sPropertyUsed = sProperty + this.getSystemKey();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed );		
-			if(!StringZZZ.isEmpty(sReturn)) break main;
+			if(!StringZZZ.isEmpty(sReturn)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+				break main;
+			}
 							
 			//4b. Versuch: Global für die Applikation konfiguriert, mit dem Applikationskey
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty +this.getApplicationKey();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
 			sReturn =objIni.getValue(sSection,sPropertyUsed);	
-			if(!StringZZZ.isEmpty(sReturn)) break main;
+			if(!StringZZZ.isEmpty(sReturn)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+				break main;
+			}
 		}//end main:
 		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE +++++++++++++++++++++++++++++++");
 		return sReturn;		
@@ -1244,7 +1265,10 @@ MeinTestParameter=blablaErgebnis
 			    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+					if(sReturn != null){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						break main;
+					}
 				}
 			}
 			
@@ -1255,7 +1279,10 @@ MeinTestParameter=blablaErgebnis
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){				
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+					if(sReturn != null){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						break main;
+					}
 				}			
 			}
 			
@@ -1266,7 +1293,10 @@ MeinTestParameter=blablaErgebnis
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+					if(sReturn != null){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						break main;
+					}
 				}
 			}
 			
@@ -1277,7 +1307,10 @@ MeinTestParameter=blablaErgebnis
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+					if(sReturn != null){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						break main;
+					}
 				}
 			}
 			
@@ -1289,7 +1322,10 @@ MeinTestParameter=blablaErgebnis
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null) break main;
+						if(sReturn != null){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							break main;
+						}
 					}
 				}
 			}
@@ -1304,7 +1340,10 @@ MeinTestParameter=blablaErgebnis
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null) break main;
+						if(sReturn != null){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							break main;
+						}
 					}
 				}
 			}
@@ -1319,7 +1358,10 @@ MeinTestParameter=blablaErgebnis
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null) break main;
+						if(sReturn != null){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							break main;
+						}
 					}
 				}
 			}
@@ -1332,7 +1374,10 @@ MeinTestParameter=blablaErgebnis
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+					if(sReturn != null){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						break main;
+					}
 				}
 			}
 			
@@ -1343,7 +1388,10 @@ MeinTestParameter=blablaErgebnis
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null) break main;
+						if(sReturn != null){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							break main;
+						}
 					}
 				}
 			}
@@ -1355,7 +1403,10 @@ MeinTestParameter=blablaErgebnis
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null) break main;
+						if(sReturn != null){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							break main;
+						}
 					}
 				}
 			}
@@ -1367,7 +1418,10 @@ MeinTestParameter=blablaErgebnis
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+					if(sReturn != null){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						break main;
+					}
 				}
 			}
 									
@@ -1378,7 +1432,10 @@ MeinTestParameter=blablaErgebnis
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null) break main;
+					if(sReturn != null){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						break main;
+					}
 				}
 			}
 
@@ -1472,7 +1529,10 @@ MeinTestParameter=blablaErgebnis
 		    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
 				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-				if (bReturn) break main;
+				if (bReturn) {
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+					break main;
+				}
 			}
 		}
 		
@@ -1482,7 +1542,10 @@ MeinTestParameter=blablaErgebnis
 		boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 		if(bSectionExists==true){
 			bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-			if(bReturn) break main;
+			if (bReturn) {
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+				break main;
+			}
 		}
 		}
 		
@@ -1493,7 +1556,10 @@ MeinTestParameter=blablaErgebnis
 			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){				
 				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-				if(bReturn) break main;
+				if (bReturn) {
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+					break main;
+				}
 			}		
 		}
 		
@@ -1504,7 +1570,10 @@ MeinTestParameter=blablaErgebnis
 		    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
 				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-				if(bReturn) break main;
+				if (bReturn) {
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+					break main;
+				}
 			}
 		}
 				
@@ -1540,9 +1609,17 @@ MeinTestParameter=blablaErgebnis
 			
 						
 			if(bFlagDelete==false){
-				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);				
+				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);		
+				if (bReturn) {
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+					break main;
+				}
 			}else{
 				bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+				if (bReturn) {
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+					break main;
+				}
 			}
 						
 			}//END main:

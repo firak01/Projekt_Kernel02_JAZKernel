@@ -195,7 +195,13 @@ public class KernelExpressionIni_EmptyZZZ  extends KernelUseObjectZZZ implements
 	@Override
 	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
-		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) bReturn = true;
+		main:{
+		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
+		if(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty().equalsIgnoreCase(sExpressionToProof)){
+			bReturn = true;
+			break main;
+		}
+	}//end main
 		return bReturn;
 	}
 	

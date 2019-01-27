@@ -283,13 +283,13 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 				}					
 			}//end check:
 			
-			sReturn = this.objFileIni.getValue(sSection, sProperty);
+			String sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
 			
 			
 			//20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
 			if(this.getFlag("useFormula")==true){
 				boolean bExpressionFound=false;
-				while(KernelExpressionIniSolverZZZ.isExpression(sReturn)){
+				while(KernelExpressionIniSolverZZZ.isExpression(sReturnRaw)){
 					bExpressionFound= true;
 					
 					//20180711: Die Flags an das neue Objekt der Klasse vererben
@@ -299,12 +299,18 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					//20180726: Damit mit Variablen gerechnet werden kann, hier die Hashmap übergeben.
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
-					sReturn = ex.compute(sReturn);
+					sReturn = ex.compute(sReturnRaw);
+					if(!sReturn.equals(sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value durch ExpressionIniSolver verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
+					}
 				}
 				
 				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
 				if(!bExpressionFound){
-					sReturn = KernelExpressionIniConverterZZZ.getAsString(sReturn);			
+					sReturn = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);
+					if(!sReturn.equals(sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
+					}
 				}
 			}
 			
@@ -452,9 +458,13 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					}else{
 						//Remark: An empty String may be allowed !!!
 						IKernelExpressionIniZZZ objExpression = KernelExpressionIniConverterZZZ.getAsObject(sValueIn);
-						//TODO GOON 20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
+						
+						//20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
 						if(objExpression!=null){
 							sValue = objExpression.convert(sValueIn);
+							if(!sValueIn.equals(sValue)){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value durch ExpressionIniConverter verändert von '" + sValueIn + "' nach '" + sValue +"'");
+							}
 						}else{						
 							sValue = sValueIn;
 						}
