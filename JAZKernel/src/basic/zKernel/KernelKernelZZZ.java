@@ -280,6 +280,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sDirectoryConfig = this.getFileConfigKernelDirectory();	
 			
 			//Suche nach der Datei, ggfs. mit relativem Pfad unterhalb des Workspace oder sogar im Classpath (.war / .jar Datei, s. WebService)
+			//MErke: Wenn diese Datei nicht existiert, wird im TEMP Verzeichnis eine temporäre Datei erstellt. z.B. C:\DOKUME~1\MYUSER~1\LOKALE~1\Temp\temp9018141784814640806ZZZ
+			//       Diese existiert demnach immer...
 			objReturn = FileEasyZZZ.searchFile(sDirectoryConfig, sFileConfig);
 					    		   
 		    if(objReturn.exists()==false){			
@@ -295,6 +297,22 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+			
+			
+			//Merke: Das soll dann einen Fehler werfen, wenn es eine temporäre Datei ist
+			//TODO GOON 20190128: Eine temporäre Datei mit den übergebenen Daten füllen, so dass Sie als Minimale Kernelkonfiguration durchgeht.
+			if(objReturn.isFile()){
+				
+				//Merke: Die einzige Methode eine neue temporäre Datei zu erkennen ist, dass die Dateigröße 0 ist.
+				if(objReturn.length()==0){				
+					sLog = "The configuration file '" + objReturn.getPath() + "' is empty. Probabley a temporary file because the original file does not exist.";
+					System.out.println(sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	
+				}
+			}
+
+			
 			
 		}//end main:
 		this.objFileKernelConfig = objReturn; 
@@ -2408,6 +2426,7 @@ MeinTestParameter=blablaErgebnis
 					System.out.println(sLog);					
 					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
 				}
+				this.setFileConfigKernelDirectory(sDirectoryConfig);
 				
 				
 				
@@ -2446,8 +2465,12 @@ MeinTestParameter=blablaErgebnis
 				}
 				
 				//read the ini-content: 
-				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen
+				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen, 			
 				File objFile = this.getFileConfigKernel();
+				//Wenn die Datei nicht existiert:
+				//Bei der Suche nach dem IniFile wird eine Datei im Temp-Ordner vermutet, z.B. C:\DOKUME~1\MYUSER~1\LOKALE~1\Temp\temp1401956673150772371ZZZ
+				//TODO 20190128: Vielleicht diese "vermutete" Konfigurationsdatei im Temp-Ordner mit den Kernel-Konigurationen füllen, die übergeben wurden. So als Dummy.
+
 				IniFile objIni = new IniFile(objFile.getPath());
 				if(this.getFlag ("DEBUG")) System.out.println("Konfigurationsdatei gefunden: '" + objFile.getPath() +"'");
 								
@@ -2485,7 +2508,7 @@ MeinTestParameter=blablaErgebnis
 						}
 					}	
 					
-					//2. Versuch: �ber die Globale konfiguration der Applikation
+					//2. Versuch: über die Globale konfiguration der Applikation
 					if(StringZZZ.isEmpty(sDirectoryLog) && StringZZZ.isEmpty(sFileLog)){
 						sDirectoryLog = objIni.getValue(this.getSystemKey(), "KernelLogPath");
 						sFileLog = objIni.getValue(this.getSystemKey(), "KernelLogFile");										

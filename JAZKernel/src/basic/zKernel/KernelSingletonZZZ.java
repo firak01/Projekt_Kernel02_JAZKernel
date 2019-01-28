@@ -57,18 +57,20 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 			super(saFlagControl);
 		}
 		
-		//Die Konstruktoren nun verbergen, wg. Singleton
 		private KernelSingletonZZZ(IKernelConfigZZZ objConfig, String sFlagControl) throws ExceptionZZZ{
 			super(objConfig, sFlagControl);
 		}
 		
-		//Die Konstruktoren nun verbergen, wg. Singleton
+		private KernelSingletonZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
+			super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, saFlagControl);
+		}	
+				
 		private KernelSingletonZZZ(IKernelConfigZZZ objConfig, String[] saFlagControl) throws ExceptionZZZ{
 			super(objConfig, saFlagControl);
 		}
 		
-		private KernelSingletonZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
-			super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, saFlagControl);
+		private KernelSingletonZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String sFlagControl ) throws ExceptionZZZ{
+			super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, sFlagControl);
 		}		
 		
 		public String getFileConfigKernelName() throws ExceptionZZZ{			

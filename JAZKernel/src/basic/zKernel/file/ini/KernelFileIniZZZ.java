@@ -456,7 +456,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 						ExceptionZZZ ez = new ExceptionZZZ("missing parameter 'Value'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 						throw ez;	
 					}else{
-						//Remark: An empty String may be allowed !!!
+						//Remark: An empty String may be allowed !!! 
+						
+						//Hole den passenden Converter
 						IKernelExpressionIniZZZ objExpression = KernelExpressionIniConverterZZZ.getAsObject(sValueIn);
 						
 						//20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
