@@ -74,10 +74,10 @@ public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
 			//Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird
 			try {
 				URL workspaceURL = new File(sDirectoryPath).toURI().toURL();
-				objReturn = new File(workspaceURL.getPath());
-								
-			} catch (MalformedURLException e) {				
-				e.printStackTrace();
+				objReturn = new File(workspaceURL.getPath());							
+			} catch (MalformedURLException e) {	
+				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}
 	    }else{
 		   	//Absolute Pfadangabe
@@ -137,7 +137,13 @@ public static File getFile(String sDirectoryIn, String sFileName)throws Exceptio
 	return objReturn;	
 }
 
-public static File searchFile(String sFilePath) throws ExceptionZZZ{
+/**Gibt eine gesuchte Datei zurück. Ggfs. auch einen temporär erzeugte Datei, falls die andere nicht gefunden wird.
+ * @param sFilePath
+ * @param bTempFileAlternative
+ * @return
+ * @throws ExceptionZZZ
+ */
+public static File searchFile(String sFilePath, boolean bTempFileAlternative) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		if(StringZZZ.isEmpty(sFilePath)){
@@ -162,7 +168,32 @@ public static File searchFile(String sFilePath) throws ExceptionZZZ{
 	return objReturn;
 }
 
+/**Gibt eine gesuchte Datei zurück. Ggfs. auch einen temporär erzeugte Datei, falls die andere nicht gefunden wird.
+ * @param sFilePath
+ * @return
+ * @throws ExceptionZZZ
+ */
+public static File searchFile(String sFilePath) throws ExceptionZZZ{
+	return FileEasyZZZ.searchFile(sFilePath, true);
+}
+
+/** Gibt eine gesuchte Datei zurück. Ggfs. auch einen temporär erzeugte Datei, falls die andere nicht gefunden wird. 
+ * @param sDirectoryIn
+ * @param sFileName
+ * @return
+ * @throws ExceptionZZZ
+ */
 public static File searchFile(String sDirectoryIn, String sFileName)throws ExceptionZZZ{
+	return FileEasyZZZ.searchFile(sDirectoryIn, sFileName, true);
+}
+
+/** Gibt eine gesuchte Datei zurück. Ggfs. auch einen temporär erzeugte Datei, falls die andere nicht gefunden wird. 
+ * @param sDirectoryIn
+ * @param sFileName
+ * @return
+ * @throws ExceptionZZZ
+ */
+public static File searchFile(String sDirectoryIn, String sFileName, boolean bTempFileAlternative)throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		if(StringZZZ.isEmpty(sFileName)){
@@ -171,50 +202,52 @@ public static File searchFile(String sDirectoryIn, String sFileName)throws Excep
 		}	
 		String sDirectory = null;
 		
-		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.		
-		File objDirectory = FileEasyZZZ.searchDirectory(sDirectoryIn); 
-		if(objDirectory==null){
-			sDirectory = ".";
-		}else{
+		//+++ 1. Versuch im Input-Pfad suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.		
+		objReturn = FileEasyZZZ.getFile(sDirectoryIn+File.separator+sFileName);
+		if(objReturn.exists()) break main;
+					
+		//+++ 2. Versuch im Eclipse Workspace suchen +++++++		    
+		File objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CURRENT); 
+		if(objDirectory!=null){
 			sDirectory = objDirectory.getPath();
+			objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+			if(objReturn.exists()) break main;
+		}
+	    
+		//+++ 3. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.		
+		objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER); 
+		if(objDirectory!=null){
+			sDirectory = objDirectory.getPath();
+			objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+			if(objReturn.exists()) break main;
+								
 		}
 		
-		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
-		if(objReturn.exists()) break main;
-		
-		//+++ 2. Versuch lokal suchen, sogar ggfs. als relativer Pfad zum Workspace ++++++
-		//Verzeichnis analysieren	
-		sDirectory = FileEasyZZZ.sDIRECTORY_CURRENT;
-		if(!StringZZZ.isEmpty(sDirectoryIn)){
-			sDirectory=sDirectoryIn;	    
-		}
-		
-		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
-		if(objReturn.exists()) break main;
-							
-		//+++ 2. Versuch (WebService) im Classpath suchen +++++++
-	    //Problematik: Zugriff auf die Datei, wenn Sie in einem WAR File gepackt ist.
+		//+++ 4. Versuch (WebService) im Classpath suchen 
+		//Problematik: Zugriff auf die Datei, wenn Sie in einem WAR File gepackt ist.
 		//Ansatz, siehe: https://www.java-forum.org/thema/auf-dateien-im-war-zugreifen.157897/
 	    //1. Sie muss unterhalb des Source Ordners liegen
 	    //2. Über eine Ressource eine "Kopie" erzeugen....
-	    try {
-			objReturn = File.createTempFile("temp", "ZZZ");					
-			objReturn.deleteOnExit();
-						
-			String sDirectoryOnClasspath = sDirectoryIn;
-			if(sDirectoryIn.equalsIgnoreCase(FileEasyZZZ.sDIRECTORY_CURRENT)){
-				sDirectoryOnClasspath = "";
-			}
-			InputStream resourceAsStream = FileEasyZZZ.class.getClassLoader().getResourceAsStream(sDirectoryOnClasspath + File.separator + sFileName);		    
-			if(resourceAsStream != null){
-				FileUtils.copyInputStreamToFile(resourceAsStream, objReturn);
-				if(objReturn.exists()) break main;	
-			}
+		 try {
+			 	String sDirectoryOnClasspath = sDirectoryIn;
+			 	objReturn = File.createTempFile("temp", "ZZZ");					
+				objReturn.deleteOnExit();
+												
+				InputStream resourceAsStream = FileEasyZZZ.class.getClassLoader().getResourceAsStream(sDirectoryOnClasspath + File.separator + sFileName);
+				if(resourceAsStream != null){
+					FileUtils.copyInputStreamToFile(resourceAsStream, objReturn);
+					if(objReturn.exists()) break main;	
+				}
 		} catch (IOException e) {
-			e.printStackTrace();
-		}		 					
-		
-	}//END main:
+				e.printStackTrace();
+		}	
+		 
+		//Wenn man hierher kommt, wurde keine Datei gefunden. Falls keine temporäre Datei gewünscht wird, diese hier wieder entfernen.
+		if(!bTempFileAlternative){
+			objReturn = null;
+		}
+				 							
+	}//END main:	
 	return objReturn;	
 }
 
@@ -332,17 +365,38 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 		String sDirectory = null;
 		
 		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
-		if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals("")){
-			sDirectory = FileEasyZZZ.getFileRootPath();
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
-			sDirectory = sDirectoryIn; 
-		}else if(FileEasyZZZ.isPathRelative(sDirectoryIn)){
-			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn; 
+		//if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals("")){
+		if(sDirectoryIn.equals("")| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
+			sDirectory = FileEasyZZZ.getFileRootPath();		
+		}else if(FileEasyZZZ.isPathRelative(sDirectoryIn)& !sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
+			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn; 			
 		}else{
 			sDirectory = sDirectoryIn;
 		}
 		objReturn = FileEasyZZZ.getDirectory(sDirectory);
-		if(objReturn.exists()) break main;
+		if(objReturn.exists()){
+			break main;
+		}else{
+			//Pfad relativ zum Eclipse Workspace
+			URL workspaceURL;
+			try {
+				workspaceURL = new File(sDirectoryIn).toURI().toURL();
+				objReturn = new File(workspaceURL.getPath());
+				if(objReturn.exists()){
+					break main;
+				}else{
+					//Pfad relativ zum src - Ordner
+					sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn; 		
+					objReturn = new File(workspaceURL.getPath());
+					if(objReturn.exists()){
+						break main;
+					}
+				}
+			} catch (MalformedURLException e) {
+				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+		}
 		return null;
 		
 	}//END main:

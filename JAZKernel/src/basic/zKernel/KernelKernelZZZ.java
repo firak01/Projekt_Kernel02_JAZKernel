@@ -332,37 +332,72 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.sFileConfig = sFileConfig;
 	}
 	
-	public String getFileConfigKernelDirectory() throws ExceptionZZZ{				
+	public String getFileConfigKernelDirectory() throws ExceptionZZZ{		
 		String sDirectoryConfig = this.sDirectoryConfig;
+		boolean bDirectoryFound = false;
 		if(StringZZZ.isEmpty(sDirectoryConfig)){
 			IKernelConfigZZZ objConfig = this.getConfigObject();
 			sDirectoryConfig=objConfig.getConfigDirectoryNameDefault();
-
-			if(sDirectoryConfig.equals("")){				
-				File objDir = new File(KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT);
+			if(sDirectoryConfig.equals("")){
+				String sDirConfigTemp = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT; 
+				File objDir = new File(sDirConfigTemp);
 				if(objDir.exists()){
-					sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+					sDirectoryConfig = sDirConfigTemp;
+					bDirectoryFound = true;
 				}else{
-					sDirectoryConfig = FileEasyZZZ.getFileRootPath(); //Merke: Im SourceFolder (d.h. Classpath) wird die Datei auch auf dem WebServer gefunden.
-				}
-				this.sDirectoryConfig = sDirectoryConfig;
+					//Pfad relativ zum Eclipse Workspace
+					URL workspaceURL;
+					try {
+						workspaceURL = new File(sDirectoryConfig).toURI().toURL();
+						objDir = new File(workspaceURL.getPath());
+						if(objDir.exists()){
+							sDirectoryConfig = objDir.getAbsolutePath();
+							bDirectoryFound = true;
+						}else{
+							//Pfad relativ zum src - Ordner
+							sDirConfigTemp = FileEasyZZZ.getFileRootPath(); 		
+							objDir = new File(sDirConfigTemp);
+							if(objDir.exists()){
+								sDirectoryConfig = sDirConfigTemp;
+								bDirectoryFound = true;
+							}
+						}
+					} catch (MalformedURLException e) {
+						ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}			
+				}				
 			}			
-		}else if(sDirectoryConfig.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-				this.sDirectoryConfig =  FileEasyZZZ.getFileRootPath();
+//		}else if(sDirectoryConfig.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
+//			sDirectoryConfig =  FileEasyZZZ.getFileRootPath();
+//			bDirectoryFound = true;
 		}else{
-			File objDir = new File(sDirectoryConfig);
-			if(!objDir.exists()){
+			/* Merke: Das sind die hierin verarbeiteten Suchpfade
+			 * if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals(""))==> FileEasyZZZ.getFileRootPath();
+		     * if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER))==> sDirectory = sDirectoryIn; 
+		     * if(FileEasyZZZ.isPathRelative(sDirectoryIn))==> FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn;
+		     * und dann wird auf die Existenz des Verzeichnisses geprüft.
+			 */
+			File objDir = FileEasyZZZ.searchDirectory(sDirectoryConfig);
+			if(objDir!=null){
 				//sofort gefunden... dann nimm es.
+				sDirectoryConfig = objDir.getAbsolutePath();
+				bDirectoryFound = true;
 			}else{
-				objDir = new File(KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT+File.separator+sDirectoryConfig);
+				//Jetzt geht die Sucherei los
+				String sDirConfigTemp = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT+File.separator+sDirectoryConfig;			
+				objDir = new File(sDirConfigTemp);
 				if(objDir.exists()){
-					sDirectoryConfig = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT+File.separator+sDirectoryConfig;
+					sDirectoryConfig = sDirConfigTemp;
+					bDirectoryFound = true;
 				}else{
-					sDirectoryConfig = FileEasyZZZ.getFileRootPath()+File.separator+sDirectoryConfig; //Merke: Im SourceFolder (d.h. Classpath) wird die Datei auch auf dem WebServer gefunden.
+					//Merke 20190129: Hier wird keine Fehlermeldung geworfen. Jetzt ist die Idee mit einer temporären Minimalkonfigurationsdatei (selbst erzeugt) weiterzuarbeiten.
+					bDirectoryFound = false;
 				}
-				this.sDirectoryConfig = sDirectoryConfig;
-			}
-			this.sDirectoryConfig = sDirectoryConfig;
+			}								
+		}
+		if(bDirectoryFound){
+			this.setFileConfigKernelDirectory(sDirectoryConfig);
 		}
 		return sDirectoryConfig;
 	}

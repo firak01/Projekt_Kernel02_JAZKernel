@@ -68,9 +68,19 @@ public class KernelExpressionIniConverterZZZTest extends TestCase {
 		
 			
 			//Kernel + Log - Object dem TestFixture hinzufügen. Siehe test.zzzKernel.KernelZZZTest
-			//objKernel = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String)null);	
-			//TODO GOON 20190128: DAS ODER EINE TEMPORÄRE DATEI ALS ZIEL objKernel = KernelSingletonZZZ.getInstance("01", "test", "ZKernelConfigKernelSingleton_test.ini", (String[])null);
-			objKernel = KernelSingletonZZZ.getInstance("01", ".", "ZKernelConfigKernelSingleton_test.ini", (String[])null);
+			//objKernel = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String)null);
+			
+			//Das funktioniert... gesucht wird: 
+			//zuerst in			c:\fglkernel\kernelconfig (also default) Ordner
+			//wenn dort nichts gefunden wird im Workspace-Root...
+			//und wenn dort nichts gefunden wird, wird eine temporäre Datei angelegt.
+			//objKernel = KernelSingletonZZZ.getInstance("01", "", "ZKernelConfigKernelSingleton_test.ini", (String[])null);
+			
+			//Das funktioniert nicht im TEST, sondern nur im src - Ordner: 
+			//objKernel = KernelSingletonZZZ.getInstance("01", ".", "ZKernelConfigKernelSingleton_test.ini", (String[])null);
+			
+			//Das funktioniert, die Testdatei soll im test-Root liegen
+			objKernel = KernelSingletonZZZ.getInstance("01", "test", "ZKernelConfigKernelSingleton_test.ini", (String[])null);
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			 			
 			//### Die TestObjecte
