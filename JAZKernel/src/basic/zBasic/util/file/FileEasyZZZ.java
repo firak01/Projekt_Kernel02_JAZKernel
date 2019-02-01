@@ -367,12 +367,12 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
 		//if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals("")){
 		if(sDirectoryIn.equals("")| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
-			sDirectory = FileEasyZZZ.getFileRootPath();		
+			sDirectory = FileEasyZZZ.getFileRootPath();	
 		}else if(FileEasyZZZ.isPathRelative(sDirectoryIn)& !sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn; 			
+			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn;
 		}else{
-			sDirectory = sDirectoryIn;
-		}
+			sDirectory = sDirectoryIn;			
+		}		
 		objReturn = FileEasyZZZ.getDirectory(sDirectory);
 		if(objReturn.exists()){
 			break main;

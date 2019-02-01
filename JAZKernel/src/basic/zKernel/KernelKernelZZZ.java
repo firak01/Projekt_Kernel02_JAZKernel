@@ -570,11 +570,18 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//1. Hole den Dateinamen
 					String sFileName = this.searchPropertyForAlias(sAlias,"KernelConfigFile");
-					if(StringZZZ.isEmpty(sFileName)) break main;
+					if(StringZZZ.isEmpty(sFileName)){											
+							ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+					}
 					
 					//2. Hole den Dateipfad
 					String sFilePath = this.searchPropertyForAlias(sAlias,"KernelConfigPath");
-					
+					if(sFilePath==null){						
+//						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;
+						sFilePath="";
+					}
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++			
 					if(this.objFileIniKernelConfig==null){												
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
@@ -2447,19 +2454,18 @@ MeinTestParameter=blablaErgebnis
 							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 						}
-					}
-					
-					//Prüfe nun auf Vorhandensein und korregiere ggfs. auf das aktuelle Verzeichnis
-					File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
-					if(objDirectoryProof==null){
-						this.setFileConfigKernelDirectory(FileEasyZZZ.sDIRECTORY_CURRENT);//Falls das Verzeichnis nicht existiert, verwende das aktuelle Verzeichnis.
-					}else{
-						this.setFileConfigKernelDirectory(sDirectoryConfig);
-					}
+					}										
 				}else{
 					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";
 					System.out.println(sLog);					
 					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
+				}
+				//Prüfe nun auf Vorhandensein und korregiere ggfs. auf das aktuelle Verzeichnis
+				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
+				if(objDirectoryProof==null){
+					sDirectoryConfig = FileEasyZZZ.sDIRECTORY_CURRENT;//Falls das Verzeichnis nicht existiert, verwende das aktuelle Verzeichnis.
+				}else{
+					sDirectoryConfig=objDirectoryProof.getAbsolutePath();						
 				}
 				this.setFileConfigKernelDirectory(sDirectoryConfig);
 				

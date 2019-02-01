@@ -261,7 +261,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	 @throws ExceptionZZZ
 	 */
 	public String getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
-		String sReturn = new String("");
+		String sReturn = null;
 		main:{
 			String sSection; String sProperty;
 			check:{
@@ -283,13 +283,14 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 				}					
 			}//end check:
 			
+			System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 			String sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
-			
+			if(sReturnRaw==null) break main;
 			
 			//20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
 			if(this.getFlag("useFormula")==true){
 				boolean bExpressionFound=false;
-				while(KernelExpressionIniSolverZZZ.isExpression(sReturnRaw)){
+				while(KernelExpressionIniSolverZZZ.isExpression(sReturnRaw)){//Schrittweise die Formel auflösen.
 					bExpressionFound= true;
 					
 					//20180711: Die Flags an das neue Objekt der Klasse vererben
@@ -301,15 +302,16 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
 					sReturn = ex.compute(sReturnRaw);
 					if(!sReturn.equals(sReturnRaw)){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value durch ExpressionIniSolver verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
 					}
+					sReturnRaw=sReturn;//Sonst Endlosschleife.
 				}
 				
 				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
 				if(!bExpressionFound){
 					sReturn = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);
 					if(!sReturn.equals(sReturnRaw)){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
 					}
 				}
 			}
