@@ -1,4 +1,4 @@
-package basic.zBasic.util.dataype.calling;
+package basic.zBasic.util.datatype.calling;
 
 /*
  * https://stackoverflow.com/questions/7884581/how-can-i-simulate-pass-by-reference-in-java

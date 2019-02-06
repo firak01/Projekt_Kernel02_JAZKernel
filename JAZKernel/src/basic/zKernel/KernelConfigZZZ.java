@@ -18,7 +18,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
  * @author lindhauer
  * 
  */
-public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, IKernelConfigZZZ{
+public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, IKernelConfigZZZ{	
 	private GetOptZZZ objOpt = null;
 	private String sDirectory = null;
 	private String sFile = null;
@@ -68,6 +68,9 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
 			sReturn = objOpt.getPattern();
+			if(sReturn==null){
+				sReturn = this.getPatternStringDefault();
+			}
 		}		
 		return sReturn;
 	}
@@ -80,6 +83,9 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
 			sReturn = objOpt.readValue("k");
+			if(sReturn==null){
+				sReturn = this.getApplicationKeyDefault();
+			}
 		}//end main:		
 		return sReturn;
 	}
@@ -92,6 +98,9 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
 			sReturn = objOpt.readValue("s");
+			if(sReturn==null){
+				sReturn = this.getSystemNumberDefault();
+			}
 		}//end main:		
 		return sReturn;
 	}
@@ -104,10 +113,13 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
 			sReturn = objOpt.readValue("d");
-		}//end main:
-		
-//		!!! Falls es ein Leerstring ist, dann wird das aktuelle Verzeichnis verwendet.
-//		if(StringZZZ.isEmpty(sReturn)) sReturn = "."; //Merke: Bei der Suche nach der Datei dann geändert in: KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Damit ist diese Datei auch auf dem WebServer findbar.
+//			!!! Falls es ein Leerstring ist, dann wird das aktuelle Verzeichnis verwendet.
+//			if(StringZZZ.isEmpty(sReturn)) sReturn = "."; //Merke: Bei der Suche nach der Datei dann geändert in: KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Damit ist diese Datei auch auf dem WebServer findbar.
+			
+			if(sReturn==null){
+				sReturn = this.getConfigDirectoryNameDefault();
+			}
+		}//end main:						
 		return sReturn;
 	} 
 	  
@@ -119,6 +131,9 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			 
 			sReturn = objOpt.readValue("f");
+			if(sReturn==null){
+				sReturn = this.getConfigFileNameDefault();
+			}
 		}//end main:		
 		return sReturn;
 	}

@@ -15,32 +15,39 @@ import basic.zKernel.KernelConfigZZZ;
  *
  */
 public class ConfigZZZ extends KernelConfigZZZ{
+	private static String sDIRECTORY_CONFIG_DEFAULT = "c:\\fglKernel\\KernelConfig";
+	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";
+	private static String sKEY_APPLICATION_DEFAULT = "FGL";
+	private static String sNUMBER_SYSTEM_DEFAULT= "01";
+	private static String sPATTERN_DEFAULT="k:s:f:d:";
+	
 	public ConfigZZZ() throws ExceptionZZZ{
 		super();
 	}
 	public ConfigZZZ(String[] saArg) throws ExceptionZZZ {
 		super(saArg); 
 	} 
-	
+			
+	@Override
 	public String getApplicationKeyDefault() {
-		return "FGL"; 
+		return ConfigZZZ.sKEY_APPLICATION_DEFAULT;
 	}
-
+	@Override
 	public String getConfigDirectoryNameDefault() {
-		return "c:\\fglKernel\\KernelConfig";
+		return ConfigZZZ.sDIRECTORY_CONFIG_DEFAULT;
 	}
-
-	public String getConfigFileNameDefault() {
-		return "ZKernelConfigKernel_default.ini";
+	@Override
+	public String getConfigFileNameDefault() {		
+		return ConfigZZZ.sFILE_CONFIG_DEFAULT;
 	}
-
+	@Override
 	public String getPatternStringDefault() {
-		return "k:s:d:f:";
+		return ConfigZZZ.sPATTERN_DEFAULT;
 	}
-
+	@Override
 	public String getSystemNumberDefault() {
-		return "01";
-	}
+		return ConfigZZZ.sNUMBER_SYSTEM_DEFAULT;
+}
 
 
 	

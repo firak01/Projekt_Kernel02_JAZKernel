@@ -81,7 +81,7 @@ public class KernelLogZZZ extends ObjectZZZ implements IObjectZZZ {
 				System.out.println("Unable to create Log '" + sLogFileNew + "'.");	
 			}
 						
-			//die ermittelten Werte als Property - �bernehmen			
+			//die ermittelten Werte als Property - übernehmen			
 			this.setFileObject(objFile);
 			
 		}//end main:

@@ -19,7 +19,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.dataype.calling.ReferenceZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.KernelKernelZZZ;
 
 /**Einfache Dateioperationen
@@ -74,7 +74,9 @@ public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
 			//Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird
 			try {
 				URL workspaceURL = new File(sDirectoryPath).toURI().toURL();
-				objReturn = new File(workspaceURL.getPath());							
+				String sWorkspaceURL = workspaceURL.getPath();					
+				sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);
+				objReturn = new File(sWorkspaceURL);							
 			} catch (MalformedURLException e) {	
 				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -386,7 +388,11 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 					break main;
 				}else{
 					//Pfad relativ zum src - Ordner
-					sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn; 		
+					if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
+						sDirectory = FileEasyZZZ.getFileRootPath();
+					}else{
+						sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn;
+					}
 					objReturn = new File(workspaceURL.getPath());
 					if(objReturn.exists()){
 						break main;

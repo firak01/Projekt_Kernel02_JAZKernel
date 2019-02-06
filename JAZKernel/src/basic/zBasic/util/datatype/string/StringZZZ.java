@@ -14,6 +14,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -26,6 +27,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
  
@@ -339,7 +341,7 @@ public class StringZZZ implements IConstantZZZ{
 			if(sString.length() < iMatchLength) break main;
 			
 			
-			String sSub = sString.substring(sString.length() - iMatchLength -1, sString.length()-1); //-1 um es auf Indes umzurechnen.
+			String sSub = sString.substring(sString.length() - iMatchLength, sString.length());
 			if(sSub.equalsIgnoreCase(sMatch)){
 				bReturn = true;
 				break main;
@@ -561,6 +563,22 @@ public class StringZZZ implements IConstantZZZ{
 			int iPosition = sString.lastIndexOf(sToFind);
 			if (iPosition == -1) break main;
 		
+			sReturn = sString.substring(0, iPosition);				
+		}
+		return sReturn;
+	}
+	
+	public static String leftback(String sString, int iPosFromTheRight){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(iPosFromTheRight<=0) break main;
+						
+			int iPosition = sString.length()-iPosFromTheRight;
+			if (iPosition <= -1){
+				sReturn= "";
+				break main;
+			}		
 			sReturn = sString.substring(0, iPosition);				
 		}
 		return sReturn;
@@ -2068,11 +2086,10 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return iReturn;
 	}
 	
-	/* Trimme den String, schneide links und rechts jeweils ein Anf�hrungszeichen weg, trimme wieder, ...  schneide Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.
-	 * 
+	/* Trimme den String, schneide links und rechts jeweils ein Anf�hrungszeichen weg, trimme wieder, ...  schneide Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
 	 */
 	public static String trimQuotationMarked(String sString){
-		String sReturn = "";
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 		
@@ -2080,7 +2097,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			boolean bGoon = false;
 			while(!bGoon){
 				if(sReturn.startsWith("\"") && sReturn.endsWith("\"")){
-					sReturn = StringZZZ.midBounds(sReturn, 1, 1); //Schneide die Anf�hrungszeichen links und rechts weg
+					sReturn = StringZZZ.midBounds(sReturn, 1, 1); //Schneide die Anführungszeichen links und rechts weg
 					sReturn = sReturn.trim();
 				}else{
 					bGoon = true;
@@ -2089,4 +2106,75 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		}//end main:
 		return sReturn;
 	}
+	
+	/* Anders als beim trimQuotationMarked werden hier Leerzeichen nicht getrimmt. 
+	 */
+	public static String stripQuotationMarked(String sString){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+		
+			boolean bGoon = false;
+			while(!bGoon){
+				if(sString.startsWith("\"") && sString.endsWith("\"")){
+					sReturn = StringZZZ.midBounds(sString, 1, 1); //Schneide die Anführungszeichen links und rechts weg					
+				}else{
+					bGoon = true;
+				}
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	//TODO GOON 20190205
+	public static String stripRight(String sString, String sStringToBeStripped){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringToBeStripped)) break main;
+			
+			boolean bGoon = false;
+			while(!bGoon){
+				if(sReturn.endsWith(sStringToBeStripped)){
+					sReturn = StringZZZ.rightback(sString, sStringToBeStripped.length());
+				}else{
+					bGoon = true;
+				}
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String stripRightFileSeparators(String sString){
+		String sReturn = sString;
+		main:{
+
+			String[] saStringsToBeStripped = {File.separator, FileEasyZZZ.sDIRECTORY_CURRENT,"/"};
+			sReturn = StringZZZ.stripRight(sString, saStringsToBeStripped);
+		}
+		return sReturn;
+	}
+	
+	public static String stripRight(String sString, String[] saStringsToBeStripped){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(saStringsToBeStripped==null) break main;
+									
+			boolean bGoon = false;
+			while(!bGoon){
+				bGoon = true;
+				String sStringTemp = "";
+				for(String sStringToBeStripped:saStringsToBeStripped){
+					if(StringZZZ.endsWithIgnoreCase(sReturn, sStringToBeStripped)){
+						bGoon = false;
+						sStringTemp = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
+						sReturn = sStringTemp;
+					}
+				}				
+			}
+		}//end main:
+		return sReturn;
+	}
+	
 }// END class
