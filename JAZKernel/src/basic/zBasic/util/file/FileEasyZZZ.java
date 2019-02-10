@@ -337,16 +337,17 @@ public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strD
 		ExceptionZZZ ez  = new ExceptionZZZ("sFilePath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 		throw ez;
 	}
-	
-	//1. Aufteilen auf Datei und Verzeichnis
+
 	objReturn = new File(sFilePath);
-	String sDirectory = objReturn.getParent();
-	if(sDirectory==null){ //ROOT		
-		break main;
-	}	
-	
-//	File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectory);
-//	String sDirectoryPathNormed = objDirectoryNormed.getAbsolutePath();
+	String sDirectory = "";
+	if(sFilePath.contains(File.separator)){
+		//Aufteilen auf Datei und Verzeichnis, nur wenn es einen Seperator im Pfad gibt, sonst ist es lediglich der Dateiname.
+		sDirectory = objReturn.getParent();
+		if(sDirectory==null){ //ROOT		
+			break main;
+		}	
+	}
+
 	String sFileName = objReturn.getName();
 	
 	//#### Die Rückgabewerte

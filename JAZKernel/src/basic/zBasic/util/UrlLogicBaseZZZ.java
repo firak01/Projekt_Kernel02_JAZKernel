@@ -8,6 +8,7 @@ import basic.zBasic.util.web.cgi.UrlLogicZZZ;
 
 public abstract class UrlLogicBaseZZZ implements IUrlLogicZZZ{	
 	public static final String sURL_SEPARATOR_PROTOCOL = "://";
+	public static final String sURL_SEPARATOR_PROTOCOL_FILE = ":///"; //Irgendwie ein Slash mehr, warum?
 	private String sUrl;
 	
 	public UrlLogicBaseZZZ(){		

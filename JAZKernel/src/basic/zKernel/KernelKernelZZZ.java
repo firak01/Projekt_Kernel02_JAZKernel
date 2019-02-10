@@ -769,8 +769,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}	
 		}//end check:
 							
-			//TODO GOON 20190119: Definiere einen "empty" Tag in der ZFormel Sprache. Dieser muss hier ausgewertet werden und auch den Abbruch bedingen, wenn er gefunden wird.
-		    //Merke: Ein Leerstring bedingt nämlich, dass weitergesucht wird.
+			//Merke 20190119: Wird ein "empty" Tag in der ZFormel Sprache definiert. Dieser muss hier ausgewertet werden und auch den Abbruch bedingen, wenn er gefunden wird.
+		    //Merke:               Das bedeutet eine Beschleunigung . Ein Leerstring bedingt nämlich, dass weitergesucht wird.
 		
 			//1. Versuch: Speziell für die Komponente/das Modul definiert
 			String sSection = sAlias;
@@ -2318,13 +2318,21 @@ MeinTestParameter=blablaErgebnis
 			//1. Versuch: Systemebene
 			String sKeyUsed = this.getSystemKey();			
 			String sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile" +sAlias );
- 			
+			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+			if(!sFileName.equals(sFileNameUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+			}
+			
 			//2. Versuch: Applilkationsebene
-			if(StringZZZ.isEmptyNull(sFileName)){
+			if(StringZZZ.isEmptyNull(sFileNameUsed)){
 				sFileName =objIni.getValue(sAlias, "KernelConfigFile"+sAlias );
+				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+				if(!sFileName.equals(sFileNameUsed)){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				}
 			}
 
-			if(StringZZZ.isEmpty(sFileName)) break main;
+			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
 			bReturn = true;			
 		}//end main:
 		return bReturn;
@@ -2355,22 +2363,33 @@ MeinTestParameter=blablaErgebnis
 			
 			//1. Versuch: Auf Systemebene
 			String sKeyUsed = this.getSystemKey();
-			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias ); 			
-			if(StringZZZ.isEmpty(sFileName)){
+			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias ); 	
+			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+			if(!sFileName.equals(sFileNameUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+			}
+			if(StringZZZ.isEmpty(sFileNameUsed)) {
 				
 				//2. Versuch auf Applikationsebene
 				sKeyUsed = this.getApplicationKey();
 				sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias ); 
-				
-				if(sFileName.equals(""))break main;
-								
+				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+				if(!sFileName.equals(sFileNameUsed)){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				}
+				if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+				if(sFileNameUsed.equals(""))break main;								
 			}
 			
 			String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );
-			if(StringZZZ.isEmpty(sFilePath)) sFilePath = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
+			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
+			if(!sFilePath.equals(sFilePathUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
+			}						
+			if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
 			
 			//Proof the existance of the file
-			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePath, sFileName);
+			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
 			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
 			File objFile = new File(sFileTotal);
 			bReturn = objFile.exists();

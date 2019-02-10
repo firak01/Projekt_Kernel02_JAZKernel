@@ -253,7 +253,7 @@ public class UrlLogicZZZ  extends UrlLogicBaseZZZ{
 			
 			bReturn = UrlLogicBaseZZZ.hasProtocol(sUrl);
 			if(bReturn){
-				//Nun testen, ob es g�ltig ist
+				//Nun testen, ob es gültig ist
 				try{
 					URL objUrl = new URL(sUrl);
 				}catch(MalformedURLException murl){
