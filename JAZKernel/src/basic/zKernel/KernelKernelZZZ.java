@@ -1346,7 +1346,7 @@ MeinTestParameter=blablaErgebnis
 			//3. Ermittle ggfs. den Aliasnamen eines Programms
 			//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines PRograms zu ermitteln
 			String sProgramAliasUsed = "";
-			sSection = this.getSystemKey(); //;			
+			sSection = this.getSystemKey();		
 			if(!StringZZZ.isEmpty(sMainSection)){
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sMainSectionUsed + "'");			
 			    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
@@ -1361,45 +1361,7 @@ MeinTestParameter=blablaErgebnis
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Keine Suche nach einem Programmalias. Suche direkter nach der Property '" + sProperty + "'");
 			}
 		    
-		    
-
-		    
-		    //##################################################################################
-			
-			
-		    //+++ Ggfs. als Program deklarierte Section
-//			if(!StringZZZ.isEmpty(sModuleUsed)){
-//			    sSection = this.getSystemKey() + "!" + sModuleUsed;
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
-//				if(!StringZZZ.isEmpty(sSection)){
-//				    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-//					if(bSectionExists==true){
-//						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-//						if(sReturn != null){
-//							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-//							break main;
-//						}
-//					}
-//				}
-//			}
-			
-			//+++ First Try: Use SystemKey ! Parameter as section
-//			if(!StringZZZ.isEmpty(sProgramOrSection)){
-//				sSection  = this.getSystemKey() + "!" + sProgramOrSection;
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-//				if(!StringZZZ.isEmpty(sSection)){
-//					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-//					if(bSectionExists==true){				
-//						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-//						if(sReturn != null){
-//							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-//							break main;
-//						}
-//					}			
-//				}
-//			}
-			
-			//+++ 
+			//+++ Als Program mit Alias:
 			sSection = sProgramAliasUsed;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
@@ -1413,7 +1375,7 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
-			//+++ 
+			//##################################################################################			 
 			sSection =  sProgramOrSection;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
@@ -1594,19 +1556,38 @@ MeinTestParameter=blablaErgebnis
 				return sReturn;
 	}
 	
-	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sModule, String sProgramOrSection, String sProperty, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{		
 		
-		//A1. Prüfen, ob das Modul überhaupt konfiguriert ist
-		String sModuleUsed;
-		if(StringZZZ.isEmpty(sModule)){
-			sModuleUsed = this.getApplicationKey();
-		}else{
-			sModuleUsed = sModule;
-		}
-		
-		//Setzen des Wertes
+			//1. Konfigurationsfile des Systems holen
+			FileIniZZZ objFileIniConfig = null;
+		    if(objFileIniConfigIn==null){
+		    	String sSystemkey = this.getSystemKey();
+		    	objFileIniConfig = this.getFileConfigIniByAlias(sSystemkey);
+		    	 if(objFileIniConfig==null){
+						String stemp = "FileIniZZZ fuer Modul '" + sSystemkey + "' ist NULL.";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+		    }else{
+		    	objFileIniConfig = objFileIniConfigIn;
+		    }
+		    				    
+		  //2. Den Abschnitt holen
+			String sMainSectionUsed;
+			if(StringZZZ.isEmpty(sMainSection)){
+				sMainSectionUsed = this.getApplicationKey();
+			}else{
+				if(sMainSection.equals(sProgramOrSection)){
+					sMainSectionUsed = this.getApplicationKey();
+				}else{
+					sMainSectionUsed = sMainSection;
+				}
+			}
+		    		
+		//3. Setzen des Wertes
 		String sValue=new String("");
 		boolean bFlagDelete = false;
 		if(sValueIn==null){
@@ -1615,129 +1596,374 @@ MeinTestParameter=blablaErgebnis
 			sValue=sValueIn;
 		}
 		
-		//3. Konfigurationsfile des Moduls holen
-		FileIniZZZ objFileIniConfig = null;
-	    if(objFileIniConfigIn==null){
-	    	objFileIniConfig = this.getFileConfigIniByAlias(sModuleUsed);			
-	    }else{
-	    	objFileIniConfig = objFileIniConfigIn;
-	    }
-	    
-	    //als Programm...
-	    if(objFileIniConfig==null){
-	    	objFileIniConfig = this.getFileConfigIniByAlias(sProgramOrSection);
-	    }
-	    
-	    
-	    if(objFileIniConfig==null){
-			String stemp = "FileIniZZZ fuer Modul '" + sModuleUsed + "' ist NULL.";
-			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
-	    
-	    //+++ Ggfs. als Program deklarierte Section
-	    String sSection = this.getSystemKey() + "!" + sModuleUsed;
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		
+		//! ZWEI DURCHLÄUFE: 
+		//Im ersten Durchlauf, prüfen, ob der Wert an der Stelle existiert.
+		//Im zweiten Durchlauf, an der erstbesten Stelle setzen.		
+		boolean bSetNew = false;		
+		for(int icount = 0; icount <= 1; icount++){
+			if(icount==1){
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zweiter Durchlauf. Ersetze jetzt keinen bestehenden Wert, sondern erlaube neuen Eintrag an der ersten passenden Stelle.");
+				bSetNew=true;
+			}
+			
+			
+		//### B. SUCHE WERTE ####################################################################
+		//+++ B1. Ggfs. ohne Program deklarierter Wert
+		String sSection = this.getSystemKey();
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 		if(!StringZZZ.isEmpty(sSection)){
 		    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
-				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-				if (bReturn) {
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
-					break main;
+				boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+				if(bValueExists){
+					if(bFlagDelete==false){					
+						bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}	
+					}else{
+						bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}
+					}				
 				}
 			}
 		}
 		
-		sSection = sModuleUsed;
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-		if(!StringZZZ.isEmpty(sSection)){
-		boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-		if(bSectionExists==true){
-			bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-			if (bReturn) {
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
-				break main;
-			}
-		}
+		//###############################################################################+
+		//C. Ermittle ggfs. den Aliasnamen eines Programms
+		//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines Programs zu ermitteln
+		String sProgramAliasUsed = "";
+		sSection = this.getSystemKey();		
+		if(!StringZZZ.isEmpty(sMainSection)){
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sMainSectionUsed + "'");			
+		    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+			if(bSectionExists==true){				
+				String sProgramAlias = objFileIniConfig.getPropertyValue(sSection, sMainSectionUsed);
+				if(!StringZZZ.isEmpty(sProgramAlias)){
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sProgramAlias + "'");
+					sProgramAliasUsed = sProgramAlias;
+				}
+			}				
+		}else{
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Keine Suche nach einem Programmalias. Suche direkter nach der Property '" + sProperty + "'");
 		}
 		
-		//+++ First Try: Use SystemKey ! Parameter as section
-		sSection  = this.getSystemKey() + "!" + sProgramOrSection;
+		//+++ als Programm mit - Alias ...
+		sSection = sProgramAliasUsed;
 		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 		if(!StringZZZ.isEmpty(sSection)){
 			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-			if(bSectionExists==true){				
-				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-				if (bReturn) {
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
-					break main;
+			if(bSectionExists==true){
+				boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+				if(bValueExists){
+					if(bFlagDelete==false){					
+						bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}	
+					}else{
+						bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}
+					}
 				}
-			}		
+			}
 		}
+	    
 		
-		//+++ Second Try
+		 //##################################################################################		
 		sSection =  sProgramOrSection;
 		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 		if(!StringZZZ.isEmpty(sSection)){
-		    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
-				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
-				if (bReturn) {
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
-					break main;
+				boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+				if(bValueExists){
+					if(bFlagDelete==false){					
+						bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}	
+					}else{
+						bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}
+					}		
 				}
 			}
 		}
 				
-		//+++++++++++++++++++
-			boolean bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
-			if(bModuleConfig==false){
-																	
-				//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
-				sModuleUsed = this.getSystemKey();
-				bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+		//+++ Einen ggfs. definierten Aliasnamen
+		if(!StringZZZ.isEmpty(sProgramOrSection)){
+			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sSection)){
+				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+				if(bSectionExists==true){
+					boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+					if(bValueExists){
+						if(bFlagDelete==false){					
+							bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}	
+						}else{
+							bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}
+						}	
+					}
+				}
+			}
+		}
+		
+		//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
+		if(!StringZZZ.isEmpty(sProgramOrSection)){
+			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+			sSection = sSection + "!" + this.getSystemNumber();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sSection)){
+				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+				if(bSectionExists==true){
+					boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+					if(bValueExists){
+						if(bFlagDelete==false){					
+							bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}	
+						}else{
+							bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}
+						}	
+					}
+				}
+			}
+		}
+		
+		//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
+		if(!StringZZZ.isEmpty(sProgramOrSection)){
+			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
+			sSection = this.getSystemKey() + "!" + sSection;
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sSection)){
+				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+				if(bSectionExists==true){
+					boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+					if(bValueExists){
+						if(bFlagDelete==false){					
+							bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}	
+						}else{
+							bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}
+						}	
+					}
+				}
+			}
+		}
+		
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		if(!StringZZZ.isEmpty(sSection)){
+			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+			if(bSectionExists==true){
+				boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+				if(bValueExists){
+					if(bFlagDelete==false){					
+						bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}	
+					}else{
+						bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}
+					}	
+				}
+			}
+		}
+		
+		if(!StringZZZ.isEmpty(sProgramOrSection)){
+			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sSection)){
+				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+				if(bSectionExists==true){
+					boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+					if(bValueExists){
+						if(bFlagDelete==false){					
+							bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}	
+						}else{
+							bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}
+						}	
+					}
+				}
+			}
+		}
+		
+		if(!StringZZZ.isEmpty(sMainSection)){
+			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sMainSection);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sSection)){
+				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+				if(bSectionExists==true){
+					boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+					if(bValueExists){
+						if(bFlagDelete==false){					
+							bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}	
+						}else{
+							bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+							if (bReturn) {
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+								break main;
+							}
+						}	
+					}
+				}
+			}
+		}
+		
+		//+++ Einfach als SystemKey
+		sSection = this.getSystemKey();
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		if(!StringZZZ.isEmpty(sSection)){	
+			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+			if(bSectionExists==true){
+				boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+				if(bValueExists){
+					if(bFlagDelete==false){					
+						bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}	
+					}else{
+						bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}
+					}	
+				}
+			}
+		}
+								
+		//+++ Einfach nur ApplicationKey
+		sSection = this.getApplicationKey();
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		if(!StringZZZ.isEmpty(sSection)){				
+			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+			if(bSectionExists==true){
+				boolean bValueExists = objFileIniConfig.proofValueExists(sSection, sProperty);
+				if(bValueExists){
+					if(bFlagDelete==false){					
+						bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  (ggfs. konvertiert) gesetzt für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}	
+					}else{
+						bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
+						if (bReturn) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
+							break main;
+						}
+					}		
+				}
+			}
+		}
+		}//end for icount
+		
+		if(bFlagDelete){	
+			//Falls der Wert nicht gefunden wurde, hier bReturn = false, aber keine Exception
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zu löschende Property nicht gefunden. Ende, keine Exception.");
+			bReturn = false;
+			break  main;
+		}
+		
+		
+//#####################################################################		
+			//Falls der Parameter immer noch nicht gefunden wurde, hier eine Exception auswerfen.
+	        //Ansonsten droht die Gefahr einer Endlosschleife.
+				String sModuleUsed="";
+				boolean bModuleConfig = this.proofModuleFileIsConfigured(sMainSection);
 				if(bModuleConfig==false){
-					
-					//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
-					sModuleUsed = this.getApplicationKey();
+																		
+					//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
+					sModuleUsed = this.getSystemKey();
 					bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 					if(bModuleConfig==false){
-						String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured.";
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					} //end if Versuch 3
-				} //end if Versuch 2
-			}//end if Versuch 1
-			
-			//B1. Prüfen, ob das Modul existiert
-			boolean bModuleExists = this.proofModuleFileExists(sModuleUsed);
-			if(bModuleExists==false){
-				String stemp = "Wrong parameter: Module '" + sModule + "' does not exist.";
+						
+						//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
+						sModuleUsed = this.getApplicationKey();
+						bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+						if(bModuleConfig==false){
+							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file: '" + sProperty + "'.";
+							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						} //end if Versuch 3
+					} //end if Versuch 2
+				}//end if Versuch 1
+				
+				//B1. Prüfen, ob das Modul existiert
+				boolean bModuleExists = this.proofModuleFileExists(sMainSection);
+				if(bModuleExists==false){
+					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file: '" + sProperty + "'.";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+
+				//Abbruch der Parametersuche. Ohne diesen else-Zweig, gibt es ggfs. eine Endlosschleife.
+				String stemp = "Parameter nicht in der ini-Datei definiert (Modul/Program or Section) '(" + sMainSection + "/" + sProgramOrSection + ") " + sProperty + "'";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
-			}
-			
-						
-			if(bFlagDelete==false){
-				bReturn = objFileIniConfig.setPropertyValue(sSection, sProperty, sValue, bFlagSaveImmidiate);		
-				if (bReturn) {
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
-					break main;
-				}
-			}else{
-				bReturn =  objFileIniConfig.deleteProperty(sSection, sProperty, bFlagSaveImmidiate);
-				if (bReturn) {
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value erfolgreich  gelöscht für Property '" + sProperty + "'=''" + sValue + "'");
-					break main;
-				}
-			}
-						
-			}//END main:
-		return bReturn;
+				}//END main:
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": ENDE DIESER SUCHE +-+-+-+-+-+-+-+-+-+-+-+-+-");
+				return bReturn;
 	}
 	
 	/**Merke: Hier wird davon ausgegangen, das Modul - und Programmname identisch sind !!!

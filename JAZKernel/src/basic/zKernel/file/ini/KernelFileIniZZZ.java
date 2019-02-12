@@ -44,7 +44,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
 		
-	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 ge�ndert
+	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
 	 * 
 	 */
 	public enum FLAGZ{
@@ -835,6 +835,38 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 		StringArrayZZZ saZZZ = new StringArrayZZZ(saSectionAll);
 		bReturn = saZZZ.contains(sSection);
 				
+		}//END main
+		return bReturn;
+	}
+	
+	/** boolean, searches all sections of the ini-file for sSection and Value. Returns true if there is a match.
+	* Lindhauer; 12.02.2019 8:43
+	 * @param sSection
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	public boolean proofValueExists(String sSection, String sValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			check:{
+				if(StringZZZ.isEmpty(sSection)){
+					String stemp = "'Section'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	
+				}
+				if(this.objFileIni==null){
+					String stemp =  "missing property 'FileIniObject'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					throw ez;		
+				}
+			}//END check:
+		
+		String stemp = this.objFileIni.getValue(sSection, sValue);
+		if(stemp!=null){
+			bReturn = true;
+		}
 		}//END main
 		return bReturn;
 	}
