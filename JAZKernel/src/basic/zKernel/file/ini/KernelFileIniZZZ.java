@@ -301,7 +301,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
 					sReturn = ex.compute(sReturnRaw);
-					if(!sReturn.equals(sReturnRaw)){
+					if(!StringZZZ.equals(sReturn,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
 					}
 					sReturnRaw=sReturn;//Sonst Endlosschleife.
@@ -310,7 +310,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
 				if(!bExpressionFound){
 					sReturn = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);
-					if(!sReturn.equals(sReturnRaw)){
+					if(!StringZZZ.equals(sReturn,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
 					}
 				}

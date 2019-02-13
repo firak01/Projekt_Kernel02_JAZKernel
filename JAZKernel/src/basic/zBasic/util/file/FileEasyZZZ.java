@@ -83,6 +83,7 @@ public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
 			}
 	    }else{
 		   	//Absolute Pfadangabe
+	    	sDirectoryPath = StringZZZ.stripRightFileSeparators(sDirectoryPath);
 	    	objReturn = new File(sDirectoryPath);
 		}	
 	}//end main:
@@ -104,13 +105,15 @@ public static File getFile(String sFilePath) throws ExceptionZZZ{
 			//Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird
 			try {
 				URL workspaceURL = new File(sFilePath).toURI().toURL();
-				objReturn = new File(workspaceURL.getPath());
-								
+				String sWorkspaceURL = workspaceURL.getPath();
+				sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);	//TODO GOON 20190212: Das müssten eigentlich ...MidFileSeperators(...) sein				
+				objReturn = new File(sWorkspaceURL);								
 			} catch (MalformedURLException e) {				
 				e.printStackTrace();
 			}
 	    }else{
 		   	//Absolute Pfadangabe
+	    	sFilePath = StringZZZ.stripRightFileSeparators(sFilePath);	//TODO GOON 20190212: Das müssten eigentlich ...MidFileSeperators(...) sein
 	    	objReturn = new File(sFilePath);
 		}	
 	}//end main:
@@ -159,12 +162,9 @@ public static File searchFile(String sFilePath, boolean bTempFileAlternative) th
 		FileEasyZZZ.splitFilePathName(sFilePath, strDirectory, strFileName);
 		
 		String sDirectory = strDirectory.get();
-		File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectory);
-		String sDirectoryNormed = objDirectoryNormed.getAbsolutePath();
-		
 		String sFileName = strFileName.get();
 		
-		objReturn = FileEasyZZZ.searchFile(sDirectoryNormed, sFileName);
+		objReturn = FileEasyZZZ.searchFile(sDirectory, sFileName);
 		
 	}//END main:
 	return objReturn;
@@ -201,29 +201,31 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 		if(StringZZZ.isEmpty(sFileName)){
 			ExceptionZZZ ez  = new ExceptionZZZ("FileName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
-		}	
-		String sDirectory = null;
+		}			
+		File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectoryIn);
+		String sDirectoryNormed = objDirectoryNormed.getAbsolutePath();
+		
 		
 		//+++ 1. Versuch im Input-Pfad suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.		
-		objReturn = FileEasyZZZ.getFile(sDirectoryIn+File.separator+sFileName);
+		objReturn = FileEasyZZZ.getFile(sDirectoryNormed+File.separator+sFileName);
 		if(objReturn.exists()) break main;
 					
-		//+++ 2. Versuch im Eclipse Workspace suchen +++++++		    
-		File objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CURRENT); 
-		if(objDirectory!=null){
-			sDirectory = objDirectory.getPath();
-			objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
-			if(objReturn.exists()) break main;
-		}
-	    
-		//+++ 3. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.		
-		objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER); 
-		if(objDirectory!=null){
-			sDirectory = objDirectory.getPath();
-			objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
-			if(objReturn.exists()) break main;
-								
-		}
+//		//+++ 2. Versuch im Eclipse Workspace suchen +++++++		    
+//		File objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CURRENT); 
+//		if(objDirectory!=null){
+//			sDirectory = objDirectory.getPath();
+//			objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+//			if(objReturn.exists()) break main;
+//		}
+//	    
+//		//+++ 3. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.		
+//		objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER); 
+//		if(objDirectory!=null){
+//			sDirectory = objDirectory.getPath();
+//			objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+//			if(objReturn.exists()) break main;
+//								
+//		}
 		
 		//+++ 4. Versuch (WebService) im Classpath suchen 
 		//Problematik: Zugriff auf die Datei, wenn Sie in einem WAR File gepackt ist.
@@ -358,51 +360,67 @@ public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strD
 	return objReturn;	
 }
 
+/** Eine NULL Angabe bedeutet "." und damit "Projekt-Ordner-Ebene".
+ *  Ein Leerstring bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
+ * @param sDirectoryIn
+ * @return
+ * @throws ExceptionZZZ
+ * @author lindhaueradmin, 13.02.2019, 07:14:31
+ */
 public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
-		if(sDirectoryIn==null){
-			ExceptionZZZ ez  = new ExceptionZZZ("DirctoryName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}	
 		String sDirectory = null;
+		if(sDirectoryIn==null){
+			sDirectory = FileEasyZZZ.sDIRECTORY_CURRENT;
+		}else if(sDirectoryIn.equals("")){
+			sDirectory = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
+		}else{
+			sDirectory = sDirectoryIn;
+		}
+		
 		
 		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
 		//if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals("")){
-		if(sDirectoryIn.equals("")| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
-			sDirectory = FileEasyZZZ.getFileRootPath();	
-		}else if(FileEasyZZZ.isPathRelative(sDirectoryIn)& !sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn;
+		if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
+			sDirectory = FileEasyZZZ.getFileRootPath();
+			objReturn = FileEasyZZZ.getDirectory(sDirectory);
+		}else if(FileEasyZZZ.isPathRelative(sDirectory) & !sDirectory.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
+			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
+			objReturn = FileEasyZZZ.getDirectory(sDirectory);
+		}else if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
+			//Pfad relativ zum Eclipse Workspace
+			URL workspaceURL;
+			try {
+				workspaceURL = new File(sDirectory).toURI().toURL();
+				String sWorkspaceURL = workspaceURL.getPath();					
+				sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);				
+				objReturn = FileEasyZZZ.getDirectory(sWorkspaceURL);
+				if(objReturn.exists()) break main;
+			} catch (MalformedURLException e) {
+				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
 		}else{
-			sDirectory = sDirectoryIn;			
-		}		
-		objReturn = FileEasyZZZ.getDirectory(sDirectory);
+			//Absolute Pfadangabe....
+			objReturn = FileEasyZZZ.getDirectory(sDirectory);
+		}
+				
 		if(objReturn.exists()){
 			break main;
 		}else{
 			//Pfad relativ zum Eclipse Workspace
 			URL workspaceURL;
 			try {
-				workspaceURL = new File(sDirectoryIn).toURI().toURL();
-				objReturn = new File(workspaceURL.getPath());
-				if(objReturn.exists()){
-					break main;
-				}else{
-					//Pfad relativ zum src - Ordner
-					if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-						sDirectory = FileEasyZZZ.getFileRootPath();
-					}else{
-						sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn;
-					}
-					objReturn = new File(workspaceURL.getPath());
-					if(objReturn.exists()){
-						break main;
-					}
-				}
+				workspaceURL = new File(sDirectory).toURI().toURL();
+				String sWorkspaceURL = workspaceURL.getPath();					
+				sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);				
+				objReturn = FileEasyZZZ.getDirectory(sWorkspaceURL);
+				if(objReturn.exists()) break main;
 			} catch (MalformedURLException e) {
 				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
-			}			
+			}							
 		}
 		return null;
 		

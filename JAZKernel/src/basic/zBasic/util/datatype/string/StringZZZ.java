@@ -329,6 +329,62 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	/** Hier muss man nicht auf NULL achten, wenn man die Strings miteinander vergleicht.
+	 * @param sString
+	 * @param sMatch
+	 * @return
+	 * @author lindhaueradmin, 12.02.2019, 19:43:08
+	 */
+	public static boolean equals(String sString, String sMatch){
+		boolean bReturn = false;
+		main:{
+			if(sString==null && sMatch == null){
+				bReturn = true;
+				break main;
+			}
+			if(sString!=null && sMatch == null){
+				bReturn = false;
+				break main;				
+			}
+			if(sString==null && sMatch !=null){
+				bReturn = false;
+				break main;
+			}
+			
+			bReturn = sString.equals(sMatch);
+						
+		}//end main:
+		return bReturn;
+	}
+	
+	/** Hier muss man nicht auf NULL achten, wenn man die Strings miteinander vergleicht.
+	 * @param sString
+	 * @param sMatch
+	 * @return
+	 * @author lindhaueradmin, 12.02.2019, 19:43:08
+	 */
+	public static boolean equalsIgnoreCase(String sString, String sMatch){
+		boolean bReturn = false;
+		main:{
+			if(sString==null && sMatch == null){
+				bReturn = true;
+				break main;
+			}
+			if(sString!=null && sMatch == null){
+				bReturn = false;
+				break main;				
+			}
+			if(sString==null && sMatch !=null){
+				bReturn = false;
+				break main;
+			}
+			
+			bReturn = sString.equalsIgnoreCase(sMatch);
+						
+		}//end main:
+		return bReturn;
+	}
+	
 	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
 	public static boolean endsWithIgnoreCase(String sString, String sMatch){
 		boolean bReturn = false;

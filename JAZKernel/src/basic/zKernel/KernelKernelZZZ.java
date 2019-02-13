@@ -350,7 +350,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					URL workspaceURL;
 					try {
 						workspaceURL = new File(sDirectoryConfig).toURI().toURL();
-						objDir = new File(workspaceURL.getPath());
+						String sWorkspaceURL = workspaceURL.getPath();					
+						sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);				
+						objDir = FileEasyZZZ.getDirectory(sWorkspaceURL);
 						if(objDir.exists()){
 							sDirectoryConfig = objDir.getAbsolutePath();
 							bDirectoryFound = true;
@@ -445,7 +447,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//1. Hole den Dateinamen
 			String sFileName = this.searchPropertyForAlias(objIni, sAlias,"KernelConfigFile");
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-			if(!sFileName.equals(sFileNameUsed)){
+			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 			}
 			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
@@ -453,13 +455,24 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//2. Hole den Dateipfad
 			String sFilePath = this.searchPropertyForAlias(objIni, sAlias,"KernelConfigPath");
 			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
-			if(!sFilePath.equals(sFilePathUsed)){
+			if(!StringZZZ.equals(sFilePath, sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
 			}
 			//NEIN, Weitermachen if(StringZZZ.isEmpty(sFilePathUsed)) break main;
+			File objDirTemp = FileEasyZZZ.searchDirectory(sFilePathUsed);
+			if(objDirTemp==null){
+				String sLog = "Dirctory with name '" + sFilePathUsed + "' not found.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				ExceptionZZZ ez  = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_VALUE, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			sFilePathUsed = objDirTemp.getAbsolutePath();
 			
 			//3. Mache das neue Ini-Objekt
-			objReturn = new IniFile(sFilePathUsed + File.separator + sFileNameUsed);
+			String sPathTotalToUse = sFilePathUsed + File.separator + sFileNameUsed;
+			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "' not found.";
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+			objReturn = new IniFile(sPathTotalToUse);
 			
 			} catch (IOException e) {
 				String sLog = "Configuration File. Not able to create ini-FileObject.";
@@ -771,14 +784,22 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 							
 			//Merke 20190119: Wird ein "empty" Tag in der ZFormel Sprache definiert. Dieser muss hier ausgewertet werden und auch den Abbruch bedingen, wenn er gefunden wird.
 		    //Merke:               Das bedeutet eine Beschleunigung . Ein Leerstring bedingt nämlich, dass weitergesucht wird.
-		
+		    String sValueFound=null;
+		    String sValueFoundAny=null; String sSectionFoundAny=null; String sPropertyUsedAny=null; //Sollte hier irgendwann einmal ein Leerstring gefunden worden sein, wird er zurückgegeben. Null bedeutet nämlich "überhaupt nicht konfiguriert".
+		    
 			//1. Versuch: Speziell für die Komponente/das Modul definiert
 			String sSection = sAlias;
 			String sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sPropertyUsed);		 			
-			if(!StringZZZ.isEmpty(sReturn)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+			sValueFound=objIni.getValue(sSection,sPropertyUsed);
+			if(sValueFound!=null && sValueFoundAny==null){
+				sValueFoundAny = sValueFound;
+				sSectionFoundAny = sSection;
+				sPropertyUsedAny = sPropertyUsed; 
+			}
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				sReturn = sValueFound;
 				break main;
 			}
 				
@@ -787,9 +808,15 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection = this.getSystemKey();		
 			sPropertyUsed = sProperty + sAlias;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sPropertyUsed);	
-			if(!StringZZZ.isEmpty(sReturn)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+			sValueFound =objIni.getValue(sSection,sPropertyUsed);
+			if(sValueFound!=null && sValueFoundAny==null){
+				sValueFoundAny = sValueFound;
+				sSectionFoundAny = sSection;
+				sPropertyUsedAny = sPropertyUsed; 
+			}
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				sReturn = sValueFound;
 				break main;
 			}
 			
@@ -798,9 +825,15 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty + sAlias;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sPropertyUsed);	
-			if(!StringZZZ.isEmpty(sReturn)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+			sValueFound =objIni.getValue(sSection,sPropertyUsed);	
+			if(sValueFound!=null && sValueFoundAny==null){
+				sValueFoundAny = sValueFound;
+				sSectionFoundAny = sSection;
+				sPropertyUsedAny = sPropertyUsed; 
+			}
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				sReturn = sValueFound;
 				break main;
 			}
 			
@@ -808,9 +841,15 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection =  this.getSystemKey();
 			sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sPropertyUsed );	
-			if(!StringZZZ.isEmpty(sReturn)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+			sValueFound =objIni.getValue(sSection,sPropertyUsed );	
+			if(sValueFound!=null && sValueFoundAny==null){
+				sValueFoundAny = sValueFound;
+				sSectionFoundAny = sSection;
+				sPropertyUsedAny = sPropertyUsed; 
+			}
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				sReturn = sValueFound;
 				break main;
 			}
 					
@@ -818,9 +857,15 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection = this.getApplicationKey();
 			sPropertyUsed = sProperty;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sPropertyUsed );		 			
-			if(!StringZZZ.isEmpty(sReturn)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+			sValueFound =objIni.getValue(sSection,sPropertyUsed );
+			if(sValueFound!=null && sValueFoundAny==null){
+				sValueFoundAny = sValueFound;
+				sSectionFoundAny = sSection;
+				sPropertyUsedAny = sPropertyUsed; 
+			}
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				sReturn = sValueFound;
 				break main;
 			}
 					
@@ -829,9 +874,15 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty + this.getSystemKey();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sPropertyUsed );		
-			if(!StringZZZ.isEmpty(sReturn)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+			sValueFound =objIni.getValue(sSection,sPropertyUsed);
+			if(sValueFound!=null && sValueFoundAny==null){
+				sValueFoundAny = sValueFound;
+				sSectionFoundAny = sSection;
+				sPropertyUsedAny = sPropertyUsed; 
+			}
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				sReturn = sValueFound;
 				break main;
 			}
 							
@@ -839,10 +890,22 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty +this.getApplicationKey();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
-			sReturn =objIni.getValue(sSection,sPropertyUsed);	
-			if(!StringZZZ.isEmpty(sReturn)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sReturn + "'");
+			sValueFound =objIni.getValue(sSection,sPropertyUsed);	
+			if(sValueFound!=null && sValueFoundAny==null){
+				sValueFoundAny = sValueFound;
+				sSectionFoundAny = sSection;
+				sPropertyUsedAny = sPropertyUsed; 
+			}
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				sReturn = sValueFound;
 				break main;
+			}
+			
+			//Falls irgendwann einmal ein Leerstring (oder ähnliches) gefunden wurde diesen zurückliefern und nicht NULL
+			if(sValueFoundAny!=null ){
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zu guter Letzt. Erstmals gefundener Value (section='" + sSectionFoundAny + "') anwenden für Property '" + sPropertyUsedAny + "'=''" + sValueFoundAny + "'");
+				sReturn = sValueFoundAny;
 			}
 		}//end main:
 		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE +++++++++++++++++++++++++++++++");
@@ -1529,7 +1592,7 @@ MeinTestParameter=blablaErgebnis
 						sModuleUsed = this.getApplicationKey();
 						bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 						if(bModuleConfig==false){
-							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file: '" + sProperty + "'.";
+							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
@@ -1540,14 +1603,14 @@ MeinTestParameter=blablaErgebnis
 				//B1. Prüfen, ob das Modul existiert
 				boolean bModuleExists = this.proofModuleFileExists(sMainSection);
 				if(bModuleExists==false){
-					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file: '" + sProperty + "'.";
+					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 
 				//Abbruch der Parametersuche. Ohne diesen else-Zweig, gibt es ggfs. eine Endlosschleife.
-				String stemp = "Parameter nicht in der ini-Datei definiert (Modul/Program or Section) '(" + sMainSection + "/" + sProgramOrSection + ") " + sProperty + "'";
+				String stemp = "Parameter nicht in der ini-Datei definiert (Modul/Program or Section) '(" + sMainSection + "/" + sProgramOrSection + ") in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: ''"  + sProperty + "'";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -1939,7 +2002,7 @@ MeinTestParameter=blablaErgebnis
 						sModuleUsed = this.getApplicationKey();
 						bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 						if(bModuleConfig==false){
-							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file: '" + sProperty + "'.";
+							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
@@ -1950,14 +2013,14 @@ MeinTestParameter=blablaErgebnis
 				//B1. Prüfen, ob das Modul existiert
 				boolean bModuleExists = this.proofModuleFileExists(sMainSection);
 				if(bModuleExists==false){
-					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file: '" + sProperty + "'.";
+					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 
 				//Abbruch der Parametersuche. Ohne diesen else-Zweig, gibt es ggfs. eine Endlosschleife.
-				String stemp = "Parameter nicht in der ini-Datei definiert (Modul/Program or Section) '(" + sMainSection + "/" + sProgramOrSection + ") " + sProperty + "'";
+				String stemp = "Parameter nicht in der ini-Datei definiert (Modul/Program or Section) '(" + sMainSection + "/" + sProgramOrSection + ")  in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -2545,7 +2608,7 @@ MeinTestParameter=blablaErgebnis
 			String sKeyUsed = this.getSystemKey();			
 			String sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile" +sAlias );
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-			if(!sFileName.equals(sFileNameUsed)){
+			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 			}
 			
@@ -2553,7 +2616,7 @@ MeinTestParameter=blablaErgebnis
 			if(StringZZZ.isEmptyNull(sFileNameUsed)){
 				sFileName =objIni.getValue(sAlias, "KernelConfigFile"+sAlias );
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-				if(!sFileName.equals(sFileNameUsed)){
+				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				}
 			}
@@ -2591,7 +2654,7 @@ MeinTestParameter=blablaErgebnis
 			String sKeyUsed = this.getSystemKey();
 			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias ); 	
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-			if(!sFileName.equals(sFileNameUsed)){
+			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 			}
 			if(StringZZZ.isEmpty(sFileNameUsed)) {
@@ -2600,7 +2663,7 @@ MeinTestParameter=blablaErgebnis
 				sKeyUsed = this.getApplicationKey();
 				sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias ); 
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-				if(!sFileName.equals(sFileNameUsed)){
+				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				}
 				if(StringZZZ.isEmpty(sFileNameUsed)) break main;
@@ -2609,7 +2672,7 @@ MeinTestParameter=blablaErgebnis
 			
 			String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );
 			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
-			if(!sFilePath.equals(sFilePathUsed)){
+			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
 			}						
 			if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
@@ -2846,7 +2909,7 @@ MeinTestParameter=blablaErgebnis
 				LogZZZ objLog = null;
 				if(objLogIn==null){
 					System.out.println("Erstelle neues Log Object");
-//					1. Versuch: �ber die Programm-Konfiguration. 
+//					1. Versuch: über die Programm-Konfiguration. 
 					//Merke: Dies geht nur, wenn ein Context-Objekt �bergeben worden ist. An dieser Stelle kommt man nicht anders an den Namen der Aufrufenden - Klasse (d.h. den Programnamen) dran.
 					if(this.getContextUsed()!=null){
 						
