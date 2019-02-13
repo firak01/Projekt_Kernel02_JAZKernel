@@ -912,7 +912,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
 		}else{
-			sFilePath = sFilePathIn;
+			sFilePath = StringZZZ.stripRightFileSeparators(sFilePathIn);
 		}
 		}//END Check
 		
@@ -1107,7 +1107,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(sFilePathRaw==null) break main;
 			
 			if(FileEasyZZZ.isPathRelative(sFilePathRaw)){
-				if(sFilePathRaw.equals(".")){
+				if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
 					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.	
 				}else{
 					if(sFilePathRaw.equals("")){

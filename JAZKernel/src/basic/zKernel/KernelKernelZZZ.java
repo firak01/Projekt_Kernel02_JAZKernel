@@ -781,7 +781,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				throw ez;
 			}	
 		}//end check:
-							
+
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Suche '"+ objIni.getFileName() + "'.");
+		
 			//Merke 20190119: Wird ein "empty" Tag in der ZFormel Sprache definiert. Dieser muss hier ausgewertet werden und auch den Abbruch bedingen, wenn er gefunden wird.
 		    //Merke:               Das bedeutet eine Beschleunigung . Ein Leerstring bedingt nämlich, dass weitergesucht wird.
 		    String sValueFound=null;
@@ -2600,6 +2602,7 @@ MeinTestParameter=blablaErgebnis
 			//first, get the Kernel-Configuration-INI-File
 			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileConfigKernelAsIni();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
 			
 			//PRÜFUNG: LIES EINEN .ini - DATEINAMEN AUS.
 			//Merke: Der Pfad darf leer sein. Dann wird "." als aktuelles Verzeichnis angenommen    String sFilePath = objIni.getValue(stemp,"KernelConfigPath" +sAlias );
@@ -2648,7 +2651,7 @@ MeinTestParameter=blablaErgebnis
 			//first, get the Kernel-Configuration-INI-File
 			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileConfigKernelAsIni();
-			
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
 			
 			//1. Versuch: Auf Systemebene
 			String sKeyUsed = this.getSystemKey();
