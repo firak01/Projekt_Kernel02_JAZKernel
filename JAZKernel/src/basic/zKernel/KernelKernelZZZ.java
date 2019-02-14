@@ -22,6 +22,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
+import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
@@ -470,9 +471,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			//3. Mache das neue Ini-Objekt
 			String sPathTotalToUse = sFilePathUsed + File.separator + sFileNameUsed;
-			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "' not found.";
+			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 			objReturn = new IniFile(sPathTotalToUse);
+			
+			//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen.
 			
 			} catch (IOException e) {
 				String sLog = "Configuration File. Not able to create ini-FileObject.";
@@ -801,6 +804,35 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+//20190214: Hier zunächst keine Formelauflösung einbauen
+//					boolean bExpressionFound=false;
+//					while(KernelExpressionIniSolverZZZ.isExpression(sReturnRaw)){//Schrittweise die Formel auflösen.
+//						bExpressionFound= true;
+//						
+//						//20180711: Die Flags an das neue Objekt der Klasse vererben
+//						KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
+//						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
+//																
+//						//20180726: Damit mit Variablen gerechnet werden kann, hier die Hashmap übergeben.
+//						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.get.getHashMapVariable();
+//						KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
+//						sReturn = ex.compute(sReturnRaw);
+//						if(!StringZZZ.equals(sReturn,sReturnRaw)){
+//							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
+//						}
+//						sReturnRaw=sReturn;//Sonst Endlosschleife.
+//					}
+//					
+//					//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
+//					if(!bExpressionFound){					   
+						sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+						if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						}
+//					}
+				}
 				sReturn = sValueFound;
 				break main;
 			}
@@ -818,6 +850,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+					}
+				}
 				sReturn = sValueFound;
 				break main;
 			}
@@ -835,6 +874,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+					}
+				}
 				sReturn = sValueFound;
 				break main;
 			}
@@ -851,6 +897,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+					}
+				}
 				sReturn = sValueFound;
 				break main;
 			}
@@ -867,6 +920,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+					}
+				}
 				sReturn = sValueFound;
 				break main;
 			}
@@ -884,6 +944,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+					}
+				}
 				sReturn = sValueFound;
 				break main;
 			}
@@ -900,6 +967,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+					}
+				}
 				sReturn = sValueFound;
 				break main;
 			}
@@ -907,6 +981,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//Falls irgendwann einmal ein Leerstring (oder ähnliches) gefunden wurde diesen zurückliefern und nicht NULL
 			if(sValueFoundAny!=null ){
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zu guter Letzt. Erstmals gefundener Value (section='" + sSectionFoundAny + "') anwenden für Property '" + sPropertyUsedAny + "'=''" + sValueFoundAny + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFoundAny = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFoundAny,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFoundAny +"'");
+					}
+				}
 				sReturn = sValueFoundAny;
 			}
 		}//end main:
@@ -1394,7 +1475,7 @@ MeinTestParameter=blablaErgebnis
 			//#######################################################################
 			//+++ Ggfs. ohne Program deklarierter Wert
 			String sSection = this.getSystemKey();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 			if(!StringZZZ.isEmpty(sSection)){
 			    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1408,12 +1489,12 @@ MeinTestParameter=blablaErgebnis
 			
 			
 			//###############################################################################+
-			//3. Ermittle ggfs. den Aliasnamen eines Programms
-			//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines PRograms zu ermitteln
+			//3. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems.
+			//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines Programs zu ermitteln
 			String sProgramAliasUsed = "";
 			sSection = this.getSystemKey();		
-			if(!StringZZZ.isEmpty(sMainSection)){
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sMainSectionUsed + "'");			
+			if(!StringZZZ.isEmpty(sMainSectionUsed)){
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Programaliasermittlung - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sMainSectionUsed + "'");			
 			    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					String sProgramAlias = objFileIniConfig.getPropertyValue(sSection, sMainSectionUsed);
@@ -1423,26 +1504,32 @@ MeinTestParameter=blablaErgebnis
 					}
 				}				
 			}else{
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Keine Suche nach einem Programmalias. Suche direkter nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Keine Suche nach einem Programmalias. Suche direkter nach der Property '" + sProperty + "'");
 			}
 		    
 			//+++ Als Program mit Alias:
-			sSection = sProgramAliasUsed;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-						break main;
+			if(!StringZZZ.isEmpty(sProgramAliasUsed)){
+				sSection = sProgramAliasUsed;
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (c) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				if(!StringZZZ.isEmpty(sSection)){
+					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+					if(bSectionExists==true){
+						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+						if(sReturn != null){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							break main;
+						}
 					}
+				}else{
+					
 				}
+			}else{
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (c) Kein Programmalias in Section '" + sSection + "' gefunden ' für die Property: '" + sMainSectionUsed + "'");
 			}
 			
 			//##################################################################################			 
 			sSection =  sProgramOrSection;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1457,7 +1544,7 @@ MeinTestParameter=blablaErgebnis
 			//+++ Einen ggfs. definierten Aliasnamen
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
@@ -1475,7 +1562,7 @@ MeinTestParameter=blablaErgebnis
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = sSection + "!" + this.getSystemNumber();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
@@ -1493,7 +1580,7 @@ MeinTestParameter=blablaErgebnis
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = this.getSystemKey() + "!" + sSection;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
@@ -1509,7 +1596,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1523,7 +1610,7 @@ MeinTestParameter=blablaErgebnis
 			
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
@@ -1538,7 +1625,7 @@ MeinTestParameter=blablaErgebnis
 			
 			if(!StringZZZ.isEmpty(sMainSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sMainSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
@@ -1553,7 +1640,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//+++ Einfach als SystemKey
 			sSection = this.getSystemKey();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (k) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){	
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1567,7 +1654,7 @@ MeinTestParameter=blablaErgebnis
 									
 			//+++ Einfach nur ApplicationKey
 			sSection = this.getApplicationKey();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (l) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){				
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1676,7 +1763,7 @@ MeinTestParameter=blablaErgebnis
 		//### B. SUCHE WERTE ####################################################################
 		//+++ B1. Ggfs. ohne Program deklarierter Wert
 		String sSection = this.getSystemKey();
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 		if(!StringZZZ.isEmpty(sSection)){
 		    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
@@ -1700,12 +1787,12 @@ MeinTestParameter=blablaErgebnis
 		}
 		
 		//###############################################################################+
-		//C. Ermittle ggfs. den Aliasnamen eines Programms
+		//C. Ermittle ggfs. den Aliasnamen eines Programms immer aus der "MainSection".
 		//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines Programs zu ermitteln
 		String sProgramAliasUsed = "";
 		sSection = this.getSystemKey();		
 		if(!StringZZZ.isEmpty(sMainSection)){
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sMainSectionUsed + "'");			
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Programaliasermittlung - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sMainSectionUsed + "'");			
 		    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){				
 				String sProgramAlias = objFileIniConfig.getPropertyValue(sSection, sMainSectionUsed);
@@ -1715,12 +1802,12 @@ MeinTestParameter=blablaErgebnis
 				}
 			}				
 		}else{
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Keine Suche nach einem Programmalias. Suche direkter nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Keine Suche nach einem Programmalias. Suche direkter nach der Property '" + sProperty + "'");
 		}
 		
 		//+++ als Programm mit - Alias ...
 		sSection = sProgramAliasUsed;
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (c) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 		if(!StringZZZ.isEmpty(sSection)){
 			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
@@ -1746,7 +1833,7 @@ MeinTestParameter=blablaErgebnis
 		
 		 //##################################################################################		
 		sSection =  sProgramOrSection;
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 		if(!StringZZZ.isEmpty(sSection)){
 			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
@@ -1772,7 +1859,7 @@ MeinTestParameter=blablaErgebnis
 		//+++ Einen ggfs. definierten Aliasnamen
 		if(!StringZZZ.isEmpty(sProgramOrSection)){
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1800,7 +1887,7 @@ MeinTestParameter=blablaErgebnis
 		if(!StringZZZ.isEmpty(sProgramOrSection)){
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 			sSection = sSection + "!" + this.getSystemNumber();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1828,7 +1915,7 @@ MeinTestParameter=blablaErgebnis
 		if(!StringZZZ.isEmpty(sProgramOrSection)){
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 			sSection = this.getSystemKey() + "!" + sSection;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1854,7 +1941,7 @@ MeinTestParameter=blablaErgebnis
 		
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 		if(!StringZZZ.isEmpty(sSection)){
 			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
@@ -1879,7 +1966,7 @@ MeinTestParameter=blablaErgebnis
 		
 		if(!StringZZZ.isEmpty(sProgramOrSection)){
 			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1905,7 +1992,7 @@ MeinTestParameter=blablaErgebnis
 		
 		if(!StringZZZ.isEmpty(sMainSection)){
 			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sMainSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
@@ -1931,7 +2018,7 @@ MeinTestParameter=blablaErgebnis
 		
 		//+++ Einfach als SystemKey
 		sSection = this.getSystemKey();
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (k) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 		if(!StringZZZ.isEmpty(sSection)){	
 			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
@@ -1956,7 +2043,7 @@ MeinTestParameter=blablaErgebnis
 								
 		//+++ Einfach nur ApplicationKey
 		sSection = this.getApplicationKey();
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (l) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 		if(!StringZZZ.isEmpty(sSection)){				
 			boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 			if(bSectionExists==true){
