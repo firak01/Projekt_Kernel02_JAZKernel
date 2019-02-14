@@ -475,7 +475,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 			objReturn = new IniFile(sPathTotalToUse);
 			
-			//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen.
+			//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
 			
 			} catch (IOException e) {
 				String sLog = "Configuration File. Not able to create ini-FileObject.";
