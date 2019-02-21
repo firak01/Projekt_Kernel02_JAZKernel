@@ -281,6 +281,49 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public boolean addBefore(Object objToAdd, Object objNext) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(objNext==null){
+				this.add((T) objToAdd);
+				break main;
+			}
+			
+			boolean bFound = false; int iFound=-1;
+			ArrayList<T>listaTemp2Append = new ArrayList<T>();
+			int iIndex = -1;
+			Iterator<T> itThis = this.iterator();
+			while(itThis.hasNext()){				
+				Object objExt = itThis.next();
+				iIndex++;
+				if(bFound){
+					//Wenn nachfoldenden Wert gefunden, zuerst alle Werte in eine neue, temporäre Arraylist speichern.					
+					listaTemp2Append.add((T) objExt);										
+				}else{
+					if(objNext.equals(objNext)){
+						bFound = true;
+						iFound = iIndex;
+					}
+				}																					
+			}
+			
+			//Rückwärts alle Werte löschen, immer den letzten
+			for(iIndex=this.size()-1;iIndex>=iFound;iIndex--){ 
+				this.remove(iIndex);
+			}
+			
+			//Den neuen Wert einfügen
+			this.add((T) objToAdd);
+			
+			//Die temporäre Liste anhängen
+			this.addList(listaTemp2Append, 0, listaTemp2Append.size()-1);			
+		}
+		return bReturn;
+	}
+	
+
+	
 	/** Entferne Dubletten. Dabei wird die IndexHashMap zum Kennzeichnen der Dubletten verwendet.
 	 *    Intern werden die Dubletten in einer einzigen ArrayList zusammengefasst und diese dann gel�scht.
 	* @param hm

@@ -268,17 +268,17 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName))break main;
-				System.out.println("sFlagName = " + sFlagName);
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sFlagName = " + sFlagName);
 				
 				Class objClass4Enum = this.getClassFlagZ();	//Aufgrund des Interfaces IFlagZZZ wird vorausgesetzt, dass diese Methode vorhanden ist.
 				String sFilterName = objClass4Enum.getSimpleName();
 				
 				ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
 				if(listEmbedded == null) break main;
-				out.format("%s# ListEmbeddedClasses.size()...%s%n", ReflectCodeZZZ.getPositionCurrent(), listEmbedded.size());
+				//out.format("%s# ListEmbeddedClasses.size()...%s%n", ReflectCodeZZZ.getPositionCurrent(), listEmbedded.size());
 				
 				for(Class objClass : listEmbedded){
-					out.format("%s# Class...%s%n", ReflectCodeZZZ.getPositionCurrent(), objClass.getName());
+					//out.format("%s# Class...%s%n", ReflectCodeZZZ.getPositionCurrent(), objClass.getName());
 					Field[] fields = objClass.getDeclaredFields();
 					for(Field field : fields){
 						if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
@@ -303,7 +303,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 				//EnumSet<FLAGZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 				
 				for(Object obj : FLAGZ.class.getEnumConstants()){
-					System.out.println(obj + "; "+obj.getClass().getName());
+					//System.out.println(ReflectCodeZZZ.getPositionCurrent()+": "+ obj + "; "+obj.getClass().getName());
 					if(sFlagName.equalsIgnoreCase(obj.toString())) {
 						bReturn = true;
 						break main;
@@ -365,7 +365,7 @@ public static boolean proofFlagZExists(Class objcp, String sFlagName) {
 			Field[] fields = objClass.getDeclaredFields();
 			for(Field field : fields){
 				if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
-					out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
+					// out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());
 					if(sFlagName.equalsIgnoreCase(field.getName())){
 						bReturn = true;
 						break main;

@@ -93,6 +93,12 @@ public class KernelExpressionIniConverterZZZ extends KernelUseObjectZZZ{
 			break main;
 		}
 		
+		objTemp = new KernelExpressionIni_NullZZZ();
+		if(objTemp.isStringForConvertRelevant(sToConvert)){
+			objReturn = objTemp;
+			break main;
+		}
+		
 	}
 		return objReturn;
 	}
@@ -111,6 +117,12 @@ public class KernelExpressionIniConverterZZZ extends KernelUseObjectZZZ{
 		main:{
 			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
 			IKernelExpressionIniZZZ objExpression = new KernelExpressionIni_EmptyZZZ();
+			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
+				sReturn = KernelExpressionIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
+				break main;
+			}
+			
+			objExpression = new KernelExpressionIni_NullZZZ();
 			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
 				sReturn = KernelExpressionIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
 				break main;
