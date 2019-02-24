@@ -6,6 +6,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
 
 /**Klasse wertet Kommandozeilenparamter aus, hinsichtlich der zu verwendenden Kernel-Konfiguration
  * -k = ApplicationKey
@@ -148,6 +149,19 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		boolean bReturn = false;
 		main:{
 			bReturn = FileEasyZZZ.isOnServer();
+		}
+		return bReturn;
+	}
+	
+	/** Ist notwendig, da der Zugriff auf Ressource anders ist,  wenn die Applikation in einer .jar Datei liegt.
+	 * @return
+	 * @author lindhaueradmin, 07.11.2018, 07:26:27
+	 * @throws ExceptionZZZ 
+	 */
+	public boolean isInJar() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			bReturn = JarEasyZZZ.isInJar(this.getClass());
 		}
 		return bReturn;
 	}

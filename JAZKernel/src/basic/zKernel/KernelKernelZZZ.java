@@ -17,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IRessourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
@@ -25,6 +26,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
@@ -43,7 +45,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelContextUserZZZ {
+public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelContextUserZZZ, IRessourceHandlingObjectZZZ {
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
@@ -775,6 +777,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return bReturn;
 	}
 	
+	
+	
+	
 	private String searchPropertyForAlias(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -1048,6 +1053,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						if(objFileModule.exists()==false){
 							ExceptionZZZ ez = new ExceptionZZZ("Configuration file '" + objFileModule.getAbsolutePath() + "' not exists for the module'" + sModuleAlias + "'",iERROR_CONFIGURATION_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;		
+						}
+						if(objFileModule.length()==0){
+							ExceptionZZZ ez = new ExceptionZZZ("Configuration file '" + objFileModule.getAbsolutePath() + "' not filled for the module'" + sModuleAlias + "'",iERROR_CONFIGURATION_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
 						}
 												
 						//+++ Now use another method
@@ -3479,6 +3488,22 @@ MeinTestParameter=blablaErgebnis
 	}
 	public void setContextUsed(IKernelContextZZZ objContext) {
 		this.objContext = objContext;
+	}
+	
+	//aus iRessourceHandlingObjectZZZ
+	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
+	 *   Merke: Static Klassen müssen diese Methode selbst implementieren.
+	 * @return
+	 * @author lindhaueradmin, 21.02.2019
+	 * @throws ExceptionZZZ 
+	 */
+	@Override
+	public boolean isInJar() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			bReturn = JarEasyZZZ.isInJar(this.getClass());
+		}
+		return bReturn;
 	}
 	
 }//end class// end class

@@ -363,6 +363,5 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 	 */
 	public ArrayList toArrayList() {
 		return (ArrayList)this;
-	}
-	
+	}	
 	}//end class

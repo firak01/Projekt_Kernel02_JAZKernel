@@ -1,5 +1,6 @@
 package basic.zKernel;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IFlagZZZ;
 
 /** Interface, welches von KernelConfigZZZ etc. eingebunden wird, um die Default Werte festzulegen.
@@ -21,7 +22,7 @@ public interface IKernelConfigZZZ extends IFlagZZZ{
 	public String readConfigFileName();
 	public String getConfigFileNameDefault();
 	
-	/** Die Argumente, die f�r diese Konfiguration erlaubt sind. Siehe dazu GetOptZZZ()
+	/** Die Argumente, die für diese Konfiguration erlaubt sind. Siehe dazu GetOptZZZ()
 	* @return (z.B. "a:b:cde:", mit dem Doppelpunkt als Anzeichen dafür, das ein Parameter diesem Steuerungsargument folgt.)
 	* 
 	* lindhauer; 31.07.2007 06:24:53

@@ -14,6 +14,9 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zKernel.IKernelConfigZZZ;
 
 public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	//Flags, die alle Z-Objekte haben
@@ -51,7 +54,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 			}
 		}
 	}
-	
+		
 	
 	//### FlagMethods ##########################		
 	public Class getClassFlagZ(){

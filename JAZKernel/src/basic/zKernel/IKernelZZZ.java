@@ -45,6 +45,7 @@ public interface IKernelZZZ{
 	public ImageIcon getParameterImageIconByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ;
 	
 	public boolean isOnServer() throws ExceptionZZZ;
+	public boolean isInJar() throws ExceptionZZZ;
 	
 	
 	public void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue) throws ExceptionZZZ;
