@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -51,6 +52,42 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 		    }	    
 			}//end main:
 			return objReturn;
+	}
+	
+	public static File getJarCurrent() throws ExceptionZZZ{
+		File objReturn=null;
+		try {
+			String sPath = JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+			objReturn = new File(sPath);
+		} catch (URISyntaxException e) {
+			ExceptionZZZ ez = new ExceptionZZZ("URISyntaxException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+			throw ez;			
+		}
+		return objReturn;
+	}
+	
+	public static File getJarDirectoryCurrent() throws ExceptionZZZ{
+		File objReturn = null;
+		try {
+			String sLog = null;
+			if(JarEasyZZZ.isInJarStatic()){
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Running in a jar file.";
+				System.out.println(sLog);
+				
+				String sPath = JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Current Directory of jar: '" + sPath + "'";
+				System.out.println(sLog);
+				
+				objReturn = FileEasyZZZ.getDirectoryFromFilepath(sPath);
+			}else{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Not running in a jar file.";
+				System.out.println(sLog);
+			}
+		} catch (URISyntaxException e) {
+			ExceptionZZZ ez = new ExceptionZZZ("URISyntaxException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+			throw ez;			
+		}
+		return objReturn;
 	}
 	
 	
