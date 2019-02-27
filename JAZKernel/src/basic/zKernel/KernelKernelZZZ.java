@@ -17,7 +17,7 @@ import org.apache.commons.io.FileUtils;
 
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IRessourceHandlingObjectZZZ;
+import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
@@ -45,7 +45,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelContextUserZZZ, IRessourceHandlingObjectZZZ {
+public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelContextUserZZZ, IKernelExpressionIniConverterUserZZZ, IResourceHandlingObjectZZZ {
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
@@ -61,8 +61,13 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	private String sSystemNumber="";
 	private File objFileKernelConfig=null;
 	private FileIniZZZ objFileIniKernelConfig = null;
-
-
+		
+	//20190226: Problem: Wenn ein Wert (z.B. <z:Empty/> konvertiert wurde, weiss das die aufrufenden Methode nicht.
+	//                   Um auf solch einen Wert reagieren zu können (also im genannten Beispiel zu merken: Der Wert ist absichtlich leer) das Flag und den 
+	private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
+	private String sValueRaw=null;
+	
+	
 	private String sFileConfig="";
 	private String sApplicationKey="";
 	
@@ -457,6 +462,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				this.setValueRaw(sFileName);
+			}else{
+				this.setValueRaw(null);
 			}
 			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
 			
@@ -465,6 +473,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
 			if(!StringZZZ.equals(sFilePath, sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
+				this.setValueRaw(sFilePath);
+			}else{
+				this.setValueRaw(null);
 			}
 			//NEIN, Weitermachen if(StringZZZ.isEmpty(sFilePathUsed)) break main;
 			File objDirTemp = FileEasyZZZ.searchDirectory(sFilePathUsed);
@@ -843,6 +854,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 						if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+							this.setValueRaw(sReturnRaw);
+						}else{
+							this.setValueRaw(null);
 						}
 //					}
 				}
@@ -868,6 +882,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 				sReturn = sValueFound;
@@ -892,6 +909,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 				sReturn = sValueFound;
@@ -915,6 +935,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 				sReturn = sValueFound;
@@ -938,6 +961,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 				sReturn = sValueFound;
@@ -962,6 +988,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 				sReturn = sValueFound;
@@ -985,6 +1014,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 				sReturn = sValueFound;
@@ -999,6 +1031,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFoundAny = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFoundAny,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFoundAny +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 				sReturn = sValueFoundAny;
@@ -1502,8 +1537,13 @@ MeinTestParameter=blablaErgebnis
 						if(sReturn != null){
 							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Kein Value gefunden für Property '" + sProperty + "'");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
@@ -1517,8 +1557,13 @@ MeinTestParameter=blablaErgebnis
 						if(sReturn != null){
 							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Kein Value gefunden für Property '" + sProperty + "'");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
@@ -1534,8 +1579,13 @@ MeinTestParameter=blablaErgebnis
 						if(sReturn != null){
 							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Kein Value gefunden für Property '" + sProperty + "'");
+						}else{						
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
@@ -1551,8 +1601,13 @@ MeinTestParameter=blablaErgebnis
 						if(sReturn != null){
 							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Kein Value gefunden für Property '" + sProperty + "'");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
@@ -1562,48 +1617,58 @@ MeinTestParameter=blablaErgebnis
 			//###############################################################################+
 			//3. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems.
 			//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines Programs zu ermitteln
-			String sSystemNumber= this.getSystemNumber();
-			ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
-						
-			//+++ Als Program mit Alias:
-			Iterator<String> itAlias = listasAlias.iterator();
-			while(itAlias.hasNext()){				
-				String sProgramAliasUsed = itAlias.next();
-				sSection = sProgramAliasUsed;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			if(!StringZZZ.isEmpty(sProgramOrSection)){
+				String sSystemNumber= this.getSystemNumber();
+				ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
+							
+				//+++ Als Program mit Alias:
+				Iterator<String> itAlias = listasAlias.iterator();
+				while(itAlias.hasNext()){				
+					String sProgramAliasUsed = itAlias.next();
+					sSection = sProgramAliasUsed;
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+					if(!StringZZZ.isEmpty(sSection)){
+						boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
+						if(bSectionExists==true){
+							sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+							if(sReturn != null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b)Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+								break main;
+							}else{								
+								if(objFileIniConfig.getValueRaw()!=null){
+									System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Convertierten Value gefunden für Property '" + sProperty + "");
+									break main;
+								}else{
+									System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Kein Value gefunden in Section '" + sSection + "' für die Property: '" + sProperty + "'.");
+								}
+							}
+						}
+					}
+				}
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");
+				
+				//##################################################################################			 
+				sSection =  sProgramOrSection;
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b)Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Kein Value gefunden in Section '" + sSection + "' für die Property: '" + sProperty + "'.");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
-			}
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");
-			
-			//##################################################################################			 
-			sSection =  sProgramOrSection;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-						break main;
-					}else{
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");
-					}
-				}
-			}
-			
-			//+++ Einen ggfs. definierten Aliasnamen
-			if(!StringZZZ.isEmpty(sProgramOrSection)){
+				
+				//+++ Einen ggfs. definierten Aliasnamen
 				//TODO GOON 20190216: Dies in eine eine eigene Methode auslagern
 				//a) mit Systemkey
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
@@ -1613,10 +1678,15 @@ MeinTestParameter=blablaErgebnis
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.a) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.a) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.a.) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
@@ -1629,19 +1699,20 @@ MeinTestParameter=blablaErgebnis
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.b) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.b) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.b) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
-				
-			}
-			
-			
-			//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
-			if(!StringZZZ.isEmpty(sProgramOrSection)){
+													
+				//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = sSection + "!" + this.getSystemNumber();
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1650,18 +1721,20 @@ MeinTestParameter=blablaErgebnis
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");							
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
-			}
-			
-			
-			//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
-			if(!StringZZZ.isEmpty(sProgramOrSection)){
+									
+				//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = this.getSystemKey() + "!" + sSection;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1670,15 +1743,20 @@ MeinTestParameter=blablaErgebnis
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g)Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g)Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
-				}
-			}
-			
+				}				
+			}//end if(!StringZZZ.isEmpty(sProgramOrSection)){ //GROSSE KLAMMER
+			//#################################################################################################
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
@@ -1688,10 +1766,15 @@ MeinTestParameter=blablaErgebnis
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 					if(sReturn != null){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 						break main;
-					}else{
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");
+					}else{						
+						if(objFileIniConfig.getValueRaw()!=null){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h)Convertierten Value gefunden für Property '" + sProperty + "");
+							break main;
+						}else{
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h) Kein Value gefunden für Property '" + sProperty + "'");
+						}
 					}
 				}
 			}
@@ -1704,10 +1787,15 @@ MeinTestParameter=blablaErgebnis
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i)Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
@@ -1721,10 +1809,15 @@ MeinTestParameter=blablaErgebnis
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Kein Value gefunden für Property '" + sProperty + "'");							
+						}else{							
+							if(objFileIniConfig.getValueRaw()!=null){
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j)Convertierten Value gefunden für Property '" + sProperty + "");
+								break main;
+							}else{
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j) Kein Value gefunden für Property '" + sProperty + "'");
+							}
 						}
 					}
 				}
@@ -3130,14 +3223,20 @@ MeinTestParameter=blablaErgebnis
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				this.setValueRaw(sFileName);
+			}else{
+				this.setValueRaw(null);
 			}
 			
-			//2. Versuch: Applilkationsebene
+			//2. Versuch: Applikationsebene
 			if(StringZZZ.isEmptyNull(sFileNameUsed)){
 				sFileName =objIni.getValue(sAlias, "KernelConfigFile"+sAlias );
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+					this.setValueRaw(sFileName);
+				}else{
+					this.setValueRaw(null);
 				}
 			}
 
@@ -3176,6 +3275,9 @@ MeinTestParameter=blablaErgebnis
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				this.setValueRaw(sFileName);
+			}else{
+				this.setValueRaw(null);
 			}
 			if(StringZZZ.isEmpty(sFileNameUsed)) {
 				
@@ -3185,6 +3287,9 @@ MeinTestParameter=blablaErgebnis
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+					this.setValueRaw(sFileName);
+				}else{
+					this.setValueRaw(null);
 				}
 				if(StringZZZ.isEmpty(sFileNameUsed)) break main;
 				if(sFileNameUsed.equals(""))break main;								
@@ -3194,6 +3299,9 @@ MeinTestParameter=blablaErgebnis
 			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
+				this.setValueRaw(sFilePath);
+			}else{
+				this.setValueRaw(null);
 			}						
 			if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
 			
@@ -3490,7 +3598,28 @@ MeinTestParameter=blablaErgebnis
 		this.objContext = objContext;
 	}
 	
-	//aus iRessourceHandlingObjectZZZ
+	
+	//aus IKernelExpressionIniConverterUserZZZ
+	//Damit eine aufrufende Methode mitbekommt, ob ein Converter den Wert verändert hat.
+		public boolean isValueConverted(){
+			return this.bValueConverted;
+		}
+		public void isValueConverted(boolean bStatus){
+			this.bValueConverted=bStatus;
+		}
+		public String getValueRaw(){
+			return this.sValueRaw;
+		}
+		public void setValueRaw(String sValueRaw){
+			this.sValueRaw = sValueRaw;
+			if(this.sValueRaw!=null){
+				this.isValueConverted(true);
+			}else{
+				this.isValueConverted(false);
+			}
+		}
+	
+	//aus IRessourceHandlingObjectZZZ
 	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
 	 *   Merke: Static Klassen müssen diese Methode selbst implementieren.
 	 * @return
@@ -3505,5 +3634,7 @@ MeinTestParameter=blablaErgebnis
 		}
 		return bReturn;
 	}
+	
+	
 	
 }//end class// end class

@@ -8,12 +8,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IRessourceHandlingObjectZZZ;
+import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class JarEasyZZZ  extends ObjectZZZ implements IRessourceHandlingObjectZZZ{
+public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ{
 
 	/**
 	*  This method is responsible for extracting resource files from within the .jar to the temporary directory.

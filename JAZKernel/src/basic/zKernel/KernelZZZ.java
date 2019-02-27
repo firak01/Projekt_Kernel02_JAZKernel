@@ -159,4 +159,5 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 			}
 			return bReturn;
 		}
+
 }//end class// end class

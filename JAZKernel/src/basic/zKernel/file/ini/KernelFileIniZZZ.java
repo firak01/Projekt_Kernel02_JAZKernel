@@ -21,6 +21,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
 import basic.zKernel.IKernelExpressionIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -33,7 +34,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ extends KernelUseObjectZZZ{
+public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpressionIniConverterUserZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
@@ -54,6 +55,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	private IniFile objFileIni;
 	private File objFile;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
+	
+	//20190226: Problem: Wenn ein Wert (z.B. <z:Empty/> konvertiert wurde, weiss das die aufrufenden Methode nicht.
+	//                   Um auf solch einen Wert reagieren zu können (also im genannten Beispiel zu merken: Der Wert ist absichtlich leer) das Flag und den 
+	private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
+	private String sValueRaw=null;
 
 	public KernelFileIniZZZ() throws ExceptionZZZ{
 		super();
@@ -312,6 +318,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 					sReturn = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);
 					if(!StringZZZ.equals(sReturn,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
 					}
 				}
 			}
@@ -905,6 +914,27 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ{
 	}	
 	public String getVariable(String sVariable){
 		return (String) this.getHashMapVariable().get(sVariable);
+	}
+	
+	//### Interface
+	//aus IKernelExpressionIniConverterUserZZZ
+	//Damit eine aufrufende Methode mitbekommt, ob ein Converter den Wert verändert hat.
+	public boolean isValueConverted(){
+		return this.bValueConverted;
+	}
+	public void isValueConverted(boolean bStatus){
+		this.bValueConverted=bStatus;
+	}
+	public String getValueRaw(){
+		return this.sValueRaw;
+	}
+	public void setValueRaw(String sValueRaw){
+		this.sValueRaw = sValueRaw;
+		if(this.sValueRaw!=null){
+			this.isValueConverted(true);
+		}else{
+			this.isValueConverted(false);
+		}
 	}
 	
 }
