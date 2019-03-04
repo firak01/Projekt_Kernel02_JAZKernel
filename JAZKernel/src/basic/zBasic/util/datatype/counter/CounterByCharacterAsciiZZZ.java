@@ -18,7 +18,7 @@ public class CounterByCharacterAsciiZZZ implements IConstantZZZ {
 	public static int iNUMERIC_POSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
 	public static int iNUMERIC_POSITION_MAX=10;//die 10 Ziffern 0-9 dazu.
 	
-	public static int iALPHANUMERIC_POSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
+	public static int iALPHANUMERIC_POSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
 	public static int iALPHANUMERIC_POSITION_MAX=36;
 	
 	/*
@@ -238,6 +238,34 @@ public class CounterByCharacterAsciiZZZ implements IConstantZZZ {
 	public static String getCharForPositionInNumeric(int i) {
 		return i > (CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MIN-1) && i < (CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX+1) ? String.valueOf((char)(i + '0' - 1)) : null; //Merke: Es gibt keine Kleinbuchstaben Variante
 	}
+	
+	
+	public static String getCharForPositionInAlphanumeric(int i) {		
+		int iOffset;
+		if(i>CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
+			iOffset = 7;
+		}else{
+			iOffset = 0; 
+		}
+		int iNormed = i + iOffset;
+		
+		return iNormed > (CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN-1) && iNormed < (CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null;
+	}
+	
+public static String getCharForPositionInAlphanumeric(int i, boolean bLowercase) {
+	if(bLowercase){		
+				int iOffset;
+				if(i>CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
+					iOffset = 7+6+CounterByCharacterAsciiZZZ.iALPHABET_POSITION_MAX; //Also bei Kleinbuchstaben die Großbuchstabenlücke und noch weitere Sonderzeichen (6) überbrücken.
+				}else{
+					iOffset = 0; 
+				}
+				int iNormed = i + iOffset;
+		return iNormed > (CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN-1) && iNormed < (CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null; //Bei Kleinbuchstaben sind das andere ASCII Werte. Aber mit 'Zeichen'/Characters kann man wie mit Integer rechnen
+	}else{
+		return CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(i);
+	}
+}
 	
 	
 }

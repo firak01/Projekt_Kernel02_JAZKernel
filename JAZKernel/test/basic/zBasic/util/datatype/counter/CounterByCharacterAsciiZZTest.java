@@ -74,6 +74,24 @@ public class CounterByCharacterAsciiZZTest  extends TestCase{
 	    	return bReturn;	    	
 	    }
 	    
+	    private boolean assertCheckNullBordersAlphanumeric_(int iInput, String sResult){
+	    	boolean bReturn = false;
+	    	main:{
+	    		if(iInput< CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN){
+		    		assertNull("Bei <'" + CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		    	}else if(iInput>CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX){
+		    		assertNull("Bei >'" + CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		    	}
+		    		
+	    		if(iInput>=CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN && iInput <= CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX){
+		    		assertNotNull("Bei >= '" + CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN +"' und <='" + CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		    	}	    		
+	    		bReturn=true;
+	    			    		    	
+	    	}//end main:
+	    	return bReturn;	    	
+	    }
+	    
 	    private boolean assertCheckNullBordersStrategyBased_(int iInput, String sResult){
 	    	boolean bReturn = false;
 	    	main:{
@@ -170,6 +188,68 @@ public class CounterByCharacterAsciiZZTest  extends TestCase{
 	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
     		assertEquals("9",stemp);
 	    }
+	    
+	    public void testGetCharForPositionInAlphanumeric(){	    		    	
+	    	int itemp = CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN-1;
+	    	String stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp);
+	    	boolean btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	    	
+	    	//+++++++++++++++++++++++++++++++++++++++++++++++
+	    	itemp = CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MIN;
+	    	stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    		assertEquals("0",stemp);
+	    	
+    			    	
+    		//+++++++++++++++++++++++++++++++++++++++++++++++++++
+    		itemp = CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX+1;
+	    	stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    			    	
+    		//++++++++++++++++++++++++++++++++
+    		itemp = CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX;
+	    	stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp);
+	        btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    		assertEquals("Z",stemp);
+    		
+	    	stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp, true); //Kleinbuchstaben
+	        btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    		assertEquals("z",stemp);
+    		
+    		
+    		//++++ WEITER WERTE AN "DEN INNEREN RÄNDERN" (also die Stelle an der intern die Sonderzeichen ausgeschnitten werden.
+    		itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX; //"9"....
+    		stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    		assertEquals("9",stemp);
+    		
+    		stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp,true); //kleinbuschstaben, obwohl es dafür ("9") keine geben soll.
+	    	btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    		assertEquals("9",stemp);
+    		
+    		//+++++++++
+    		itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX+1; //"A"....
+    		stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    		assertEquals("A",stemp);
+    		
+    		stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(itemp, true); //Kleinbuchstaben
+    		btemp = assertCheckNullBordersAlphabet_(itemp, stemp);
+	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+    		assertEquals("a",stemp);
+    		
+	    }
+	    
+	    
+	    
 	    
 public void testGetCharForNumber_StrategySerial(){
 	    	
