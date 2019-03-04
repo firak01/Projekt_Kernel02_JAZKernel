@@ -8,6 +8,7 @@ import basic.zBasic.util.abstractList.HashMapMultiZZZTest;
 import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
 import basic.zBasic.util.abstractList.VectorZZZTest;
 import basic.zBasic.util.data.DataStoreZZZTest;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAsciiZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
@@ -46,6 +47,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(HashtableSortedZZZTest.class);
 
 		//TODO Noch nicht fertig objReturn.addTestSuite(HashtableWithDupsTestZZZ.class));
+		objReturn.addTestSuite(CounterByCharacterAsciiZZTest.class);
 		objReturn.addTestSuite(VectorZZZTest.class);
 		objReturn.addTestSuite(DataStoreZZZTest.class);
 		objReturn.addTestSuite(DateTimeZZZTest.class);
