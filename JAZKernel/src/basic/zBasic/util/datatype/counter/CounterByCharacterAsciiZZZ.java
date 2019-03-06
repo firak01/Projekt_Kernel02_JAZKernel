@@ -46,8 +46,8 @@ public class CounterByCharacterAsciiZZZ implements IConstantZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getCharForNumber(int i){
-		return CounterByCharacterAsciiZZZ.getCharForNumber_(i, false, false);
+	public static String getStringAlphabetForNumber(int i){
+		return CounterByCharacterAsciiZZZ.getStringAlphabetForNumber_(i, false, false);
 	}
 	
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
@@ -57,32 +57,32 @@ public class CounterByCharacterAsciiZZZ implements IConstantZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:56
 	 */
-	public static String getCharForNumber(int i, boolean bLowercase){
-		return CounterByCharacterAsciiZZZ.getCharForNumber_(i, bLowercase, false);		
+	public static String getStringAlphabetForNumber(int i, boolean bLowercase){
+		return CounterByCharacterAsciiZZZ.getStringAlphabetForNumber_(i, bLowercase, false);		
 	}
 	
-	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	/**Behandlung der Werte nach der "Multiple"-Strategie.
 	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getCharMultipleForNumber(int i){
-		return CounterByCharacterAsciiZZZ.getCharForNumber_(i, false, true);
+	public static String getStringAlphabetMultipleForNumber(int i){
+		return CounterByCharacterAsciiZZZ.getStringAlphabetForNumber_(i, false, true);
 	}
 	
-	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	/**Behandlung der Werte nach der "Multiple"-Strategie. 
 	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
 	 * @param bLowercase
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:56
 	 */
-	public static String getCharMultipleForNumber(int i, boolean bLowercase){
-		return CounterByCharacterAsciiZZZ.getCharForNumber_(i, bLowercase, true);		
+	public static String getStringAlphabetMultipleForNumber(int i, boolean bLowercase){
+		return CounterByCharacterAsciiZZZ.getStringAlphabetForNumber_(i, bLowercase, true);		
 	}
 	
-	private static String getCharForNumber_(int i, boolean bLowercase, boolean bMultipleStrategy){
+	private static String getStringAlphabetForNumber_(int i, boolean bLowercase, boolean bMultipleStrategy){
 		String sReturn = null;		
 		main:{
 			
@@ -145,28 +145,28 @@ public class CounterByCharacterAsciiZZZ implements IConstantZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getCharNumericForNumber(int i){
-		return CounterByCharacterAsciiZZZ.getCharNumericForNumber_(i, false);//es gibt keine Kleinbuchstaben
+	public static String getStringNumericForNumber(int i){
+		return CounterByCharacterAsciiZZZ.getStringNumericForNumber_(i, false);//es gibt keine Kleinbuchstaben
 	}
 		
-	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	/**Behandlung der Werte nach der "Multiple"-Strategie.
 	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getCharNumericMultipleForNumber(int i){
-		return CounterByCharacterAsciiZZZ.getCharNumericForNumber_(i, true);//es gibt keine Kleinbuschstaben
+	public static String getStringNumericMultipleForNumber(int i){
+		return CounterByCharacterAsciiZZZ.getStringNumericForNumber_(i, true);//es gibt keine Kleinbuschstaben
 	}
 	
 	
-	/** Merke: Es gibt keine Kleinbuschstaben bei NUMMERN
+	/** Merke: Es gibt keine Kleinbuchstaben bei NUMMERN
 	 * @param i
 	 * @param bMultipleStrategy
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 */
-	private static String getCharNumericForNumber_(int i, boolean bMultipleStrategy){
+	private static String getStringNumericForNumber_(int i, boolean bMultipleStrategy){
 		String sReturn = null;		
 		main:{
 			
@@ -205,6 +205,112 @@ public class CounterByCharacterAsciiZZZ implements IConstantZZZ {
 					sReturn = sCharacter;
 				}else if(iMod==0){
 					sCharacter = CounterByCharacterAsciiZZZ.getCharForPositionInNumeric(CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX);
+					sReturn = "";
+				}
+				
+				
+				//Zusammenfassen der Werte: Multiple Strategie
+				for(int icount=1; icount <= iDiv; icount++){					
+						sReturn+=sCharacter;
+				}
+				
+			}
+			
+		}//end main:
+		return sReturn;		
+	}
+	
+	
+	//###################
+	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 */
+	public static String getStringAlphanumericForNumber(int i){
+		return CounterByCharacterAsciiZZZ.getStringAlphanumericForNumber_(i, false, false);
+	}
+	
+	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 */
+	public static String getStringAlphanumericForNumber(int i, boolean bLowercase){
+		return CounterByCharacterAsciiZZZ.getStringAlphanumericForNumber_(i, bLowercase, false);
+	}
+		
+
+	
+	/**Behandlung der Werte nach der "Multiple"-Strategie.
+	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 */
+	public static String getStringAlphanumericMultipleForNumber(int i){
+		return CounterByCharacterAsciiZZZ.getStringAlphanumericForNumber_(i, false, true);
+	}
+	
+	/**Behandlung der Werte nach der "Multiple"-Strategie. 
+	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @param bLowercase
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:56
+	 */
+	public static String getStringAlphanumericMultipleForNumber(int i, boolean bLowercase){
+		return CounterByCharacterAsciiZZZ.getStringAlphanumericForNumber_(i, bLowercase, true);		
+	}
+	
+	
+	/** Merke: Es gibt auch Kleinbuchstaben bei NUMMERN
+	 * @param i
+	 * @param bMultipleStrategy
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
+	 */
+	private static String getStringAlphanumericForNumber_(int i, boolean bLowercase, boolean bMultipleStrategy){
+		String sReturn = null;		
+		main:{
+			
+		   //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
+			int iDiv = Math.abs(i / CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = i % CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX;
+
+			
+			if(!bMultipleStrategy){ //"SERIAL STRATEGY"
+				ArrayList<String>listas=new ArrayList<String>();			
+				for(int icount = 1; icount <= iDiv; icount++){
+					String stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
+					listas.add(stemp);
+				}
+				if(iMod>=1){
+					String stemp = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);
+					listas.add(stemp);
+				}
+				
+				//Zusammenfassen der Werte: Serial Strategie
+				for(int icount=1; icount <= listas.size(); icount++){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
+				}
+			}else{ //"MULTIPLE STATEGY"
+				if(iMod==0 && iDiv ==0) break main;
+				
+				//Ermittle den "Modulo"-Wert und davon das Zeichen
+				String sCharacter=null;
+				if(iMod>=1){
+					sCharacter = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);	
+					sReturn = sCharacter;
+				}else if(iMod==0){
+					sCharacter = CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAsciiZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
 					sReturn = "";
 				}
 				
