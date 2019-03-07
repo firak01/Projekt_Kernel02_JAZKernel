@@ -11,6 +11,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 
 public class EnumSetFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ {
@@ -20,7 +21,7 @@ public class EnumSetFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ {
 	 * @param objKernel
 	 * @throws ExceptionZZZ
 	 */
-	private EnumSetFactoryZZZ(KernelZZZ objKernel) throws ExceptionZZZ{
+	private EnumSetFactoryZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
 	}
 	private EnumSetFactoryZZZ(){

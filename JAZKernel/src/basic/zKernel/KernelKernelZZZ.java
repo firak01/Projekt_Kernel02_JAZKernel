@@ -23,6 +23,9 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAsciiFactoryZZZ;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAsciiZZZ;
+import basic.zBasic.util.datatype.counter.ICounterStringZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -1523,90 +1526,116 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
+			int iSearchCounter=CounterByCharacterAsciiZZZ.iALPHABET_POSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
+			String sSearchCounter=null;
+			System.out.println("First iSearchCounter="+iSearchCounter);
+			
 			//#######################################################################
 			//+++ Ggfs. ohne Program deklarierter Wert
-			String sSection = null;
+		    //TODO IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
+			//           Dementsprechend in solch einem Objekt den Startwert speichern ung ggfs. per Konstruktor erstellen.
+			//           Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
+			//            letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
+			CounterByCharacterAsciiFactoryZZZ objFactoryCounter = CounterByCharacterAsciiFactoryZZZ.getInstance();
+			ICounterStringZZZ objCounter = objFactoryCounter.createCounterAlphabetStartingWithString("AA");
+			objCounter.setPrefix(": (");
+			objCounter.setSuffix(") ");
+			sSearchCounter = objCounter.current();
 			
+			iSearchCounter++;
+			sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = ": (" + sSearchCounter + ") "; 			
+			String sSection = null;						
 			if(sMainSection!=this.getSystemKey() && sMainSection!=this.getApplicationKey()){ //Damit keine doppelte Abfrage gemacht wird.
 				sSection=sMainSection+"!"+this.getSystemNumber();	//Immer zuerst die ggfs. überschreibende Variante
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 				if(!StringZZZ.isEmpty(sSection)){
 				    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (0) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
 				}
 				
+				iSearchCounter++;
+				sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection=sMainSection;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 				if(!StringZZZ.isEmpty(sSection)){
 				    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (00) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
 				}
 			}
 			
+			iSearchCounter++;
+			System.out.println("iSearchCounter="+iSearchCounter);
+			sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(sMainSection!=this.getSystemKey()){
 				sSection = this.getSystemKey();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 				if(!StringZZZ.isEmpty(sSection)){
 				    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{						
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (a) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
 				}
 			}
 			
+			iSearchCounter++;
+			sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(sMainSection!=this.getApplicationKey()){
 				sSection = this.getApplicationKey();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 				if(!StringZZZ.isEmpty(sSection)){
 				    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (aa) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
@@ -1617,6 +1646,9 @@ MeinTestParameter=blablaErgebnis
 			//###############################################################################+
 			//3. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems.
 			//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines Programs zu ermitteln
+			iSearchCounter++;
+			sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				String sSystemNumber= this.getSystemNumber();
 				ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
@@ -1626,43 +1658,46 @@ MeinTestParameter=blablaErgebnis
 				while(itAlias.hasNext()){				
 					String sProgramAliasUsed = itAlias.next();
 					sSection = sProgramAliasUsed;
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 					if(!StringZZZ.isEmpty(sSection)){
 						boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 						if(bSectionExists==true){
 							sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 							if(sReturn != null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b)Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 								break main;
 							}else{								
 								if(objFileIniConfig.getValueRaw()!=null){
-									System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Convertierten Value gefunden für Property '" + sProperty + "");
+									System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 									break main;
 								}else{
-									System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Kein Value gefunden in Section '" + sSection + "' für die Property: '" + sProperty + "'.");
+									System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden in Section '" + sSection + "' für die Property: '" + sProperty + "'.");
 								}
 							}
 						}
 					}
 				}
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (b) Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");
 				
-				//##################################################################################			 
+				//##################################################################################
+				iSearchCounter++;
+				sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection =  sProgramOrSection;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (d) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
@@ -1671,86 +1706,98 @@ MeinTestParameter=blablaErgebnis
 				//+++ Einen ggfs. definierten Aliasnamen
 				//TODO GOON 20190216: Dies in eine eine eigene Methode auslagern
 				//a) mit Systemkey
+				iSearchCounter++;
+				sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.a) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.a) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.a) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.a.) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
 				}
 				
 				//b) mit Applicationkey
+				iSearchCounter++;
+				sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.b) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.b) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.b) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (e.b) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
 				}
 													
 				//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
+				iSearchCounter++;
+				sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = sSection + "!" + this.getSystemNumber();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (f) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
 				}
 									
 				//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
+				iSearchCounter++;
+				sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = this.getSystemKey() + "!" + sSection;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g)Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g)Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (g) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
@@ -1759,64 +1806,73 @@ MeinTestParameter=blablaErgebnis
 			//#################################################################################################
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			iSearchCounter++;
+			sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
 					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 					if(sReturn != null){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 						break main;
 					}else{						
 						if(objFileIniConfig.getValueRaw()!=null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h)Convertierten Value gefunden für Property '" + sProperty + "");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 							break main;
 						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (h) Kein Value gefunden für Property '" + sProperty + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 						}
 					}
 				}
 			}
 			
+			iSearchCounter++;
+			sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i)Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (i) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}
 				}
 			}
 			
+			iSearchCounter++;
+			sSearchCounter = CounterByCharacterAsciiZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(!StringZZZ.isEmpty(sMainSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sMainSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
 						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
 						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j) Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
 							break main;
 						}else{							
 							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j)Convertierten Value gefunden für Property '" + sProperty + "");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
 								break main;
 							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (j) Kein Value gefunden für Property '" + sProperty + "'");
+								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
 							}
 						}
 					}

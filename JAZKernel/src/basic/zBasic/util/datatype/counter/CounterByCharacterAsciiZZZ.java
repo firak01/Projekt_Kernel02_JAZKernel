@@ -11,7 +11,7 @@ import basic.zBasic.IConstantZZZ;
  * @author Fritz Lindhauer, 03.03.2019, 12:49:22
  * 
  */
-public class CounterByCharacterAsciiZZZ implements IConstantZZZ {
+public class CounterByCharacterAsciiZZZ extends AbstractCounterByCharacterAsciiZZZ{
 	public static int iALPHABET_POSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
 	public static int iALPHABET_POSITION_MAX=26;
 	
@@ -371,6 +371,20 @@ public static String getCharForPositionInAlphanumeric(int i, boolean bLowercase)
 	}else{
 		return CounterByCharacterAsciiZZZ.getCharForPositionInAlphanumeric(i);
 	}
+}
+
+
+//### Aus Interface
+@Override
+public String next() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public String increased() {
+	// TODO Auto-generated method stub
+	return null;
 }
 	
 	
