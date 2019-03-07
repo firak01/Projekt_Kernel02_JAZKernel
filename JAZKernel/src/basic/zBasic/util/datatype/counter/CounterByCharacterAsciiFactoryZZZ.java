@@ -28,15 +28,36 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 	}
 	
 	
+	
+	
+	private ICounterStringZZZ createCounterAlphabet(){
+		return null;
+	}
+	private ICounterStringZZZ createCounterAlphabetStartingWithString(String s){
+		return null;
+	}
+	private ICounterStringZZZ createCounterAlphanumeric(){
+		return null;
+	}
+	private ICounterStringZZZ createCounterAlphanumericStartingWithString(String s){
+		return null;
+	}
+	private ICounterStringZZZ createCounterNumeric(){
+		return null;
+	}
+	private ICounterStringZZZ createCounterNumericStartingWithString(String s){
+		return null;
+	}
+	
+	//### AUS Interfaces
 	@Override
-	public ICounterStringZZZ createCounterAlphabet() {
+	public ICounterStringZZZ createCounter(int iCounterType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public ICounterStringZZZ createCounterAlphabetStartingWithString(String s) {
+	public ICounterStringZZZ createCounter(int iCounterType, String sStart) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

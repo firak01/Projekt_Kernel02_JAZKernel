@@ -1537,7 +1537,7 @@ MeinTestParameter=blablaErgebnis
 			//           Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
 			//            letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
 			CounterByCharacterAsciiFactoryZZZ objFactoryCounter = CounterByCharacterAsciiFactoryZZZ.getInstance();
-			ICounterStringZZZ objCounter = objFactoryCounter.createCounterAlphabetStartingWithString("AA");
+			ICounterStringZZZ objCounter = objFactoryCounter.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET, "AA");
 			objCounter.setPrefix(": (");
 			objCounter.setSuffix(") ");
 			sSearchCounter = objCounter.current();
