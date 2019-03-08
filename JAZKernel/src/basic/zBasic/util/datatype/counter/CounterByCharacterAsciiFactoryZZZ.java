@@ -2,6 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -51,13 +52,36 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 	
 	//### AUS Interfaces
 	@Override
-	public ICounterStringZZZ createCounter(int iCounterType) {
-		// TODO Auto-generated method stub
-		return null;
+	public ICounterStringZZZ createCounter(int iCounterType) throws ExceptionZZZ {
+		ICounterStringZZZ objReturn = null;
+		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
+			objReturn = new CounterByCharacterAscii_NumericZZZ();
+		}else{
+			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		return objReturn;
 	}
 	@Override
-	public ICounterStringZZZ createCounter(int iCounterType, String sStart) {
-		// TODO Auto-generated method stub
-		return null;
+	public ICounterStringZZZ createCounter(int iCounterType, String sStart) throws ExceptionZZZ {
+		ICounterStringZZZ objReturn = null;
+		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
+			objReturn = new CounterByCharacterAscii_NumericZZZ(sStart);
+		}else{
+			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		return objReturn;
+	}
+	@Override
+	public ICounterStringZZZ createCounter(int iCounterType, int iStart)	throws ExceptionZZZ {
+		ICounterStringZZZ objReturn = null;
+		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
+			objReturn = new CounterByCharacterAscii_NumericZZZ(iStart);
+		}else{
+			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		return objReturn;
 	}
 }

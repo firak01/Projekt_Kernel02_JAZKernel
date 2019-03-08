@@ -8,7 +8,10 @@ import basic.zBasic.util.abstractList.HashMapMultiZZZTest;
 import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
 import basic.zBasic.util.abstractList.VectorZZZTest;
 import basic.zBasic.util.data.DataStoreZZZTest;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAsciiFactoryZZZTest;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphabetZZZTest;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphanumericZZZTest;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_NumericZZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
@@ -47,7 +50,10 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(HashtableSortedZZZTest.class);
 
 		//TODO Noch nicht fertig objReturn.addTestSuite(HashtableWithDupsTestZZZ.class));
+		objReturn.addTestSuite(CounterByCharacterAscii_AlphabetZZZTest.class);
+		objReturn.addTestSuite(CounterByCharacterAscii_NumericZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAscii_AlphanumericZZZTest.class);
+		objReturn.addTestSuite(CounterByCharacterAsciiFactoryZZZTest.class);
 		objReturn.addTestSuite(VectorZZZTest.class);
 		objReturn.addTestSuite(DataStoreZZZTest.class);
 		objReturn.addTestSuite(DateTimeZZZTest.class);
