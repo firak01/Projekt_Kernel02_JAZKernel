@@ -39,6 +39,25 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		
 	}//END setup
 	    
+	    private boolean assertCheckNullBordersAlphanumeric_(char cInput,int iResult){
+	    	boolean bReturn = false;
+	    	main:{
+	    		boolean bIsValidCharacter=CounterByCharacterAscii_AlphanumericZZZ.isValidCharacter(cInput);    		
+	    		if(iResult< CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN){
+	    				assertFalse("Bei <'" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+	    		}else if(iResult>CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX){
+	    				assertFalse("Bei >'" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+		    	}
+	    		
+	    		if(iResult>=CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN && iResult <= CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX){
+		    		assertFalse("Bei >= '" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN +"' und <='" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+		    	}	   
+		    		    		
+	    		bReturn=true;
+	    			    		    	
+	    	}//end main:
+	    	return bReturn;	    	
+	    }
 	    
 	    private boolean assertCheckNullBordersAlphanumeric_(int iInput, String sResult){
 	    	boolean bReturn = false;
@@ -47,16 +66,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    		assertNull("Bei <'" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
 		    	}else if(iInput>CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX){
 		    		assertNull("Bei >'" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
-		    	}
-		    		
-	    		if(iInput>=CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN && iInput <= CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX){
-		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN +"' und <='" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
-		    	}	    		
+		    	}   		
 	    		bReturn=true;
 	    			    		    	
 	    	}//end main:
 	    	return bReturn;	    	
-	    }
+	    }	    	    
 	    
 	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(int iInput, String sResult){
 	    	boolean bReturn = false;
@@ -72,6 +87,44 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    			    		    	
 	    	}//end main:
 	    	return bReturn;	    	
+	    }
+	    
+	    /** Als Grundlage für den Konstruktor, bei dem das "Startzeichen" übergeben wird. 
+	     * 
+	     * @author Fritz Lindhauer, 16.03.2019, 08:34:53
+	     */
+	    public void testGetPositionInAlphanumericForChar(){
+	    	char ctemp = '?';
+	    	int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(ctemp);
+	    	boolean btemp = assertCheckNullBordersAlphanumeric_(ctemp,itemp);
+	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+	    	    	
+	    	//+++++++++++++++++++++++++++++++++++++++++
+	    	ctemp = 'A';
+	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(ctemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(ctemp,itemp);
+	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+	    	assertEquals(1,itemp);
+	    	
+	    	ctemp = 'a';
+	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(ctemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(ctemp,itemp);
+	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+	    	assertEquals(1,itemp);
+	    	
+	    	//++++++++++++++++++++++++++++++++++++++++
+	    	ctemp = 'Z';
+	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(ctemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(ctemp,itemp);
+	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+	    	assertEquals(26,itemp);
+	    	
+	    	ctemp = 'z';
+	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(ctemp);
+	    	btemp = assertCheckNullBordersAlphanumeric_(ctemp,itemp);
+	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+	    	assertEquals(26,itemp);
+	    	
 	    }
 	    
 	    public void testGetCharForPositionInAlphanumeric(){	    		    	

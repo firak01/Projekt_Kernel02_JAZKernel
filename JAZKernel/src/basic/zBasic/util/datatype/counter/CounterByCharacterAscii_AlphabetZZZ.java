@@ -3,6 +3,9 @@ package basic.zBasic.util.datatype.counter;
 import java.util.ArrayList;
 
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 
 /**
@@ -14,6 +17,8 @@ import basic.zBasic.IConstantZZZ;
 public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ{
 	public static int iALPHABET_POSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
 	public static int iALPHABET_POSITION_MAX=26;
+	
+	public static String sREGEX_CHARACTERS="[a-zA-Z]";
 		
 /**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
 	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
@@ -113,6 +118,42 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	
 	//####################
 	
+	/** Grundlage für einen Konstruktor, bei dem ein String als Ausgangszähler übergeben wird.
+	 * @param c
+	 * @return
+	 * @author Fritz Lindhauer, 16.03.2019, 08:46:42
+	 */
+	public static int getPositionInAlphabetForChar(char c){
+		int iReturn = -1;
+		main:{
+			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
+			boolean bValid = CounterByCharacterAscii_AlphabetZZZ.isValidCharacter(c);
+			if(!bValid) break main;
+			
+			boolean bIsLowercase = CharZZZ.isLowercase(c);
+					
+			//2. Umrechnung auf den ASCII-Integer-Wert
+			int i = c;
+			
+			//3. Umrechnung dieses Wertes auf die Position im Alphabet
+			//    Berücksichtige dabei, ob es ein Klein-oder Großbuchstabe ist.
+			if(bIsLowercase){
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Lowercase");
+				//String.valueOf((char)(i + 'a' - 1)
+				iReturn = i - 'a' + 1;//Umgerechnet aus der Methode getCharForPositiionInAlphabet
+			}else{
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Uppercase");				
+				//String.valueOf((char)(i + 'a' - 1)
+				iReturn = i -'A'+1; //Umgerechnet aus der Methode getCharForPositiionInAlphabet
+			}
+			
+			
+		}
+		return iReturn;
+	}
+	
+	
+	
 	public static String getCharForPositionInAlphabet(int i) {
 			return i > (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN-1) && i < (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX+1) ? String.valueOf((char)(i + 'A' - 1)) : null;
 		}
@@ -135,6 +176,37 @@ protected void setCurrent(String sCurrent){
 public String getStringFor(int iValue) {
 	String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
 	return sCurrent;
+}
+
+//++++++++++
+public static boolean isValidCharacter(char c){
+	boolean bReturn = false;
+	main:{
+		String s = Character.toString(c);
+		bReturn = CounterByCharacterAscii_AlphabetZZZ.isValidCharacter(s);
+	}
+	return bReturn;
+}
+
+public static boolean isValidCharacter(String s){
+	boolean bReturn = false;
+	main:{
+		if(StringZZZ.isEmpty(s)) break main;
+		
+		String sRegex = CounterByCharacterAscii_AlphabetZZZ.sREGEX_CHARACTERS;
+		
+		bReturn = true;
+		char[] ca = s.toCharArray();
+		for(int icount = 0; icount<= ca.length-1; icount++){
+			char ctemp = ca[icount];
+			String stemp = Character.toString(ctemp);
+			if(!stemp.matches(sRegex)){
+				bReturn = false;
+				break main;
+			}
+		}
+	}
+	return bReturn;
 }
 
 

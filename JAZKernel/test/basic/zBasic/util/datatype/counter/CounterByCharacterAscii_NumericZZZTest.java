@@ -47,6 +47,21 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     	}//end main:
     	return bReturn;	    	
     }
+    private boolean assertCheckNullBordersNumeric_(char cInput,int iResult){
+    	boolean bReturn = false;
+    	main:{
+    		boolean bIsValidCharacter=CounterByCharacterAscii_NumericZZZ.isValidCharacter(cInput);    		
+    		if(iResult< CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
+    				assertFalse("Bei <'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+    		}else if(iResult>CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){
+    				assertFalse("Bei >'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+	    	}
+	    		    		
+    		bReturn=true;
+    			    		    	
+    	}//end main:
+    	return bReturn;	    	
+    }
     private boolean assertCheckNullBordersNumericStrategyBased_(int iInput, String sResult){
     	boolean bReturn = false;
     	main:{
@@ -61,6 +76,29 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     			    		    	
     	}//end main:
     	return bReturn;	    	
+    }
+    
+    public void testGetPositionInAlphabetForChar(){
+    	char ctemp = 'A';
+    	int itemp = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(ctemp);
+    	boolean btemp = assertCheckNullBordersNumeric_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	    	
+    	//+++++++++++++++++++++++++++++++++++++++++
+    	ctemp = '0';
+    	itemp = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(ctemp);
+    	btemp = assertCheckNullBordersNumeric_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	assertEquals(1,itemp);
+
+    	//++++++++++++++++++++++++++++++++++++++++
+    	ctemp = '9';
+    	itemp = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(ctemp);
+    	btemp = assertCheckNullBordersNumeric_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	assertEquals(10,itemp);
+
+    	
     }
     
     public void testGetCharForPositionInNumeric(){	    		    	

@@ -3,6 +3,8 @@ package basic.zBasic.util.datatype.counter;
 import java.util.ArrayList;
 
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 
 /**
@@ -15,6 +17,8 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 
 	public static int iALPHANUMERIC_POSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
 	public static int iALPHANUMERIC_POSITION_MAX=36;
+	
+	public static String sREGEX_CHARACTERS="[a-zA-Z0-9]";
 	
 	//###################
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
@@ -122,7 +126,41 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	}
 	
 	
-	
+	/** Grundlage für einen Konstruktor, bei dem ein String als Ausgangszähler übergeben wird.
+	 * @param c
+	 * @return
+	 * @author Fritz Lindhauer, 16.03.2019, 08:46:42
+	 */
+	public static int getPositionInAlphanumericForChar(char c){
+		int iReturn = -1;
+		main:{
+			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
+			boolean bValid = CounterByCharacterAscii_AlphanumericZZZ.isValidCharacter(c);
+			if(!bValid) break main;
+			
+			boolean bIsLowercase = CharZZZ.isLowercase(c);
+					
+			//TODO GOON: 20190316
+			
+			//2. Umrechnung auf den ASCII-Integer-Wert
+			int i = c;
+			
+			//3. Umrechnung dieses Wertes auf die Position im Alphabet
+			//    Berücksichtige dabei, ob es ein Klein-oder Großbuchstabe ist.
+			if(bIsLowercase){
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Lowercase");
+				//String.valueOf((char)(i + 'a' - 1)
+				iReturn = i - 'a' + 1;//Umgerechnet aus der Methode getCharForPositiionInAlphabet
+			}else{
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Uppercase");				
+				//String.valueOf((char)(i + 'a' - 1)
+				iReturn = i -'A'+1; //Umgerechnet aus der Methode getCharForPositiionInAlphabet
+			}
+			
+			
+		}
+		return iReturn;
+	}
 	
 	public static String getCharForPositionInAlphanumeric(int i) {		
 		int iOffset;
@@ -149,6 +187,37 @@ public static String getCharForPositionInAlphanumeric(int i, boolean bLowercase)
 	}else{
 		return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i);
 	}
+}
+
+//++++++++++
+public static boolean isValidCharacter(char c){
+	boolean bReturn = false;
+	main:{
+		String s = Character.toString(c);
+		bReturn = CounterByCharacterAscii_AlphanumericZZZ.isValidCharacter(s);
+	}
+	return bReturn;
+}
+
+public static boolean isValidCharacter(String s){
+	boolean bReturn = false;
+	main:{
+		if(StringZZZ.isEmpty(s)) break main;
+		
+		String sRegex = CounterByCharacterAscii_AlphanumericZZZ.sREGEX_CHARACTERS;
+		
+		bReturn = true;
+		char[] ca = s.toCharArray();
+		for(int icount = 0; icount<= ca.length-1; icount++){
+			char ctemp = ca[icount];
+			String stemp = Character.toString(ctemp);
+			if(!stemp.matches(sRegex)){
+				bReturn = false;
+				break main;
+			}
+		}
+	}
+	return bReturn;
 }
 
 

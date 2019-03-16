@@ -47,6 +47,22 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     	return bReturn;	    	
     }
     
+    private boolean assertCheckNullBordersAlphabet_(char cInput,int iResult){
+    	boolean bReturn = false;
+    	main:{
+    		boolean bIsValidCharacter=CounterByCharacterAscii_AlphabetZZZ.isValidCharacter(cInput);    		
+    		if(iResult< CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN){
+    				assertFalse("Bei <'" + CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+    		}else if(iResult>CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX){
+    				assertFalse("Bei >'" + CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+	    	}
+	    		    		
+    		bReturn=true;
+    			    		    	
+    	}//end main:
+    	return bReturn;	    	
+    }
+    
     private boolean assertCheckNullBordersAlphabetStrategyBased_(int iInput, String sResult){
     	boolean bReturn = false;
     	main:{
@@ -60,6 +76,44 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     			    		    	
     	}//end main:
     	return bReturn;	    	
+    }
+    
+    /** Als Grundlage für den Konstruktor, bei dem das "Startzeichen" übergeben wird. 
+     * 
+     * @author Fritz Lindhauer, 16.03.2019, 08:34:53
+     */
+    public void testGetPositionInAlphabetForChar(){
+    	char ctemp = '0';
+    	int itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	boolean btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	    	
+    	//+++++++++++++++++++++++++++++++++++++++++
+    	ctemp = 'A';
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	assertEquals(1,itemp);
+    	
+    	ctemp = 'a';
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	assertEquals(1,itemp);
+    	
+    	//++++++++++++++++++++++++++++++++++++++++
+    	ctemp = 'Z';
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	assertEquals(26,itemp);
+    	
+    	ctemp = 'z';
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	assertEquals(26,itemp);
+    	
     }
     
     public void testGetCharForPositionInAlphabet(){	    		    	
