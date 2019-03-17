@@ -17,5 +17,14 @@ public class CharZZZ {
 		}//end main:
 		return bReturn;
 	}
+	
+	public static boolean isNumeric(char c){
+		boolean bReturn = false;
+		main:{
+			String stemp = Character.toString(c);			
+			bReturn = StringZZZ.isNumeric(stemp);
+		}//end main:
+		return bReturn;
+	}
 		
 }

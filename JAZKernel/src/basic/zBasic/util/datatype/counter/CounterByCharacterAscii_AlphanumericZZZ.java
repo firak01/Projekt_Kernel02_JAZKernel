@@ -27,6 +27,73 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
+	public static int getNumberForStringAlphanumeric(String s){
+		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric_(s, false);
+	}
+	
+	/** Merke: Es gibt auch Kleinbuchstaben bei NUMMERN
+	 * @param i
+	 * @param bMultipleStrategy
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
+	 */
+	private static int getNumberForStringAlphanumeric_(String sTotal, boolean bMultipleStrategy){
+		int iReturn = 0;		
+		main:{
+			if(StringZZZ.isEmpty(sTotal)) break main;
+			
+			//TODO GOON 20190317
+			
+		   //Ermittle Groß-/Kleinschreibung anhand des ersten Buchstabens
+			boolean bLowercase = StringZZZ.isLowerized(sTotal);
+			
+			//Ermittle die Anzahl der Zeichen
+			int iLoop = sTotal.length();
+
+			int iTotal = 0;
+			if(!bMultipleStrategy){ //"SERIAL STRATEGY"							
+				for(int icount = 1; icount <= iLoop; icount++){
+					String s=StringZZZ.mid(sTotal, icount, 1);
+					int itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(s);
+					iTotal = iTotal + itemp;
+				}
+								
+				//Zusammenfassen der Werte: Serial Strategie
+				iReturn = iTotal;
+				
+			}else{ //"MULTIPLE STRATEGY"
+				if(iMod==0 && iDiv ==0) break main;
+				
+				//Ermittle den "Modulo"-Wert und davon das Zeichen
+				String sCharacter=null;
+				if(iMod>=1){
+					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);	
+					sReturn = sCharacter;
+				}else if(iMod==0){
+					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
+					sReturn = "";
+				}
+				
+				
+				//Zusammenfassen der Werte: Multiple Strategie
+				for(int icount=1; icount <= iDiv; icount++){					
+						sReturn+=sCharacter;
+				}
+				
+			}
+			
+		}//end main:
+		return iReturn;		
+	}
+	
+	
+	//###################
+	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 */
 	public static String getStringAlphanumericForNumber(int i){
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, false);
 	}
@@ -100,7 +167,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 						sReturn+=sPosition;
 					}
 				}
-			}else{ //"MULTIPLE STATEGY"
+			}else{ //"MULTIPLE STRATEGY"
 				if(iMod==0 && iDiv ==0) break main;
 				
 				//Ermittle den "Modulo"-Wert und davon das Zeichen
@@ -138,27 +205,24 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 			boolean bValid = CounterByCharacterAscii_AlphanumericZZZ.isValidCharacter(c);
 			if(!bValid) break main;
 			
-			boolean bIsLowercase = CharZZZ.isLowercase(c);
-					
-			//TODO GOON: 20190316
-			
 			//2. Umrechnung auf den ASCII-Integer-Wert
 			int i = c;
-			
+								
 			//3. Umrechnung dieses Wertes auf die Position im Alphabet
-			//    Berücksichtige dabei, ob es ein Klein-oder Großbuchstabe ist.
-			if(bIsLowercase){
-				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Lowercase");
-				//String.valueOf((char)(i + 'a' - 1)
-				iReturn = i - 'a' + 1;//Umgerechnet aus der Methode getCharForPositiionInAlphabet
-			}else{
-				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Uppercase");				
-				//String.valueOf((char)(i + 'a' - 1)
-				iReturn = i -'A'+1; //Umgerechnet aus der Methode getCharForPositiionInAlphabet
-			}
-			
-			
-		}
+			//    Berücksichtige dabei, ob es ein Klein-oder Großbuchstabe ist.			
+				if(i>='0' && i<='9'){
+					iReturn = i - '0' + 1;
+				}else if(i>='A' && i <='Z'){
+					iReturn = i - 'A' + 1;
+					iReturn = iReturn + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+				}else if(i>='a' && i <= 'z'){
+					iReturn = i - 'a' + 1;
+					iReturn = iReturn + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+				}else{
+					break main;
+				}
+							
+		}//end main:
 		return iReturn;
 	}
 	
