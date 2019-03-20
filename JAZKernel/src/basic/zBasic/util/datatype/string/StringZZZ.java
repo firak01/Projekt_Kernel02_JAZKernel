@@ -640,6 +640,34 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	public static String letterAtPosition(String sString, int iIndex){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+								
+			char[] ca = sString.toCharArray();
+			char c = ca[iIndex];
+			
+			sReturn = Character.toString(c);
+		}
+		return sReturn;
+	}
+	
+	public static String letterFirst(String sString){
+		return StringZZZ.letterAtPosition(sString, 0);
+	}
+	
+	public static String letterLast(String sString){
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			sReturn = StringZZZ.letterAtPosition(sString, sString.length()-1);
+		}
+		return sReturn;
+	}
+	
+	
+	
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
 	 * 

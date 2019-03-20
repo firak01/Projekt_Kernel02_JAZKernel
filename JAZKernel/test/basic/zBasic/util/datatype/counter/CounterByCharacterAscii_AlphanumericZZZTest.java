@@ -102,11 +102,21 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	return bReturn;	    	
 	    }
 	    
-	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(String sInput, int iResult){
+	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(String sInput, int iResult, boolean bMultipleStrategy){
 	    	boolean bReturn = false;
 	    	main:{
+	    		//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
+				int iDiv = Math.abs(iResult / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+				int iMod = iResult % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
 	    		
-	    		//bReturn=true;
+				if(iDiv==0 && iMod< CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN){
+		    		assertEquals("Bei <'" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN + "' wird NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+		    	}
+		    		
+	    		if(iMod>=CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN){
+		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+		    	}	    		
+	    		bReturn=true;
 	    			    		    	
 	    	}//end main:
 	    	return bReturn;	    	
@@ -250,176 +260,330 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    
 	   
 	    public void testGetNumberForStringAlphanumeric_StrategyMultiple(){
-	    	//TODO GOON 20190317:
 	    	
 	    	
 	    	//"MULTIPLE STRATEGY"-Ergebnisse
-	    	String stemp = "00";
-	    	int itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumericMultiple(itemp, false); // .getCharMultipleForNumber(itemp);
-	    	boolean btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	    	String stemp; int itemp; boolean btemp;
 	    	
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN;
-	    		
-	    	//"MULTIPLE STRATEGY"-Ergebnisse
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("0",stemp);
+	    	try {
+				stemp = "0"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("0",stemp); //Kleinbuchstaben für Zahlen gibt es ja nicht.
-	    		    	
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
-
-	    	//"MULTIPLE STRATEGY"-Ergebnisse
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("Z",stemp);
+	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("z",stemp);
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			try {
+				stemp = "00"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
+			try {
+				stemp = "9"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	//######################
-	    	//Nun Werte eingeben, die über 27 liegen. Diese müssen erlaubt sein.
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX+1;
+			try {
+				stemp = "99"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	//"MULTIPLE STRATEGY"-Ergebnisse
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("00",stemp);
+			try {
+				stemp = "A"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("00",stemp); //Keine Kleinbuchstaben bei Ziffern
+			try {
+				stemp = "AA"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			try {
+				stemp = "Z"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	//... weitere Tests	
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX+2;
-	    	
-	    	//"MULTIPLE STRATEGY"-Ergebnisse
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("11",stemp);
-	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("11",stemp);
-	    	
-	    	//... weitere Tests	
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX*2;
-	    	
-	    	//"MULTIPLE STRATEGY"-Ergebnisse
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("ZZ",stemp);
-	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("zz",stemp);
+			try {
+				stemp = "ZZ"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 		
 	    }
-	    
+	    	   
 	    public void testGetNumberForStringAlphanumeric_StrategySerial(){
 	    	
-	    	//TODO GOON 20190317
+	    	String stemp; int itemp; boolean btemp;
 	    	
-	    	//"SERIAL STRATEGIE"-Ergebnisse
-	    	int itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN-1;
-	    	String stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp);
-	    	boolean btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN;
-	    	
-	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("0",stemp);
-	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("0",stemp); //die Kleinbuchstaben für Zahlen gibt es ja nicht
-	    		    	
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
-	    	
-	    	//"SERIAL STRATEGIE"-Ergebnisse
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("Z",stemp);
-	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("z",stemp);
-
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	//Ungültige Werte
+	    	try {
+				stemp = "?"; //Parameter false="Serielle Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				fail("Method should have thrown an exception for the string '"+stemp+"'");
+				
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 
 	    	
 	    	
-	    	//######################
-	    	//Nun Werte eingeben, die über 27 liegen. Diese müssen erlaubt sein.
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	//Ungültige Werte, für die verschiedenen Strategien
+	    	//...serielle Strategie
+	    	try {
+		    	stemp = "0aA"; //Groß-/Kleinschreibung nicht mischen
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);//Parameter true="Serielle Strategy"
+		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
+						    	
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 
 	    	
-	    	//"SERIAL STRATEGIE"-Ergebnisse
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX+1;
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("Z0",stemp);
+	    	//...multiple Strategie
+	    	try {
+		    	stemp = "01"; //Alle Zeichen müssen gleich sein
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);//Parameter true="Multiple Strategy"
+		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
+				
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 
 	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("z0",stemp);
 	    	
-	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	//Ungültige Werte, da die Zeichen nicht in Relation zueinander passen.
+	    	//... serielle Strategie
+	    	try {
+		    	stemp = "0A";//Merke: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein. 
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);//Parameter false="Serielle Strategy"
+		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
+				
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 
 	    	
-	    	//... weitere Tests
-	     	//"SERIAL STRATEGIE"-Ergebnisse
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX+2;
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("Z1",stemp);
+	    	//"SERIAL STRATEGIE"-Ergebnisse	    		    	
+	    	try {
+				stemp = "0"; //Parameter false="Serielle Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("z1",stemp);
+	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	//"SERIAL STRATEGIE"-Ergebnisse
-	    	itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX*2;
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp);
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("ZZ",stemp);
+			try {				
+				stemp = "Z0"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-	    	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
-	    	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	    	assertEquals("zz",stemp);
+			try {
+				stemp = "9"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "Z9"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "A"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "ZA"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "Z"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "ZZ"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+	    	
 	    }
+	    
 	    
 
 	
@@ -511,6 +675,7 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 
 public void testGetStringAlphanumericForNumber_StrategySerial(){
 	
+	
 	//"SERIAL STRATEGIE"-Ergebnisse
 	int itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN-1;
 	String stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp);
@@ -590,6 +755,10 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("zz",stemp);
+}
+
+public void testGetNumberForStringAlphanumeric_StrategySerial2(){
+	
 }
 }//end class
 	

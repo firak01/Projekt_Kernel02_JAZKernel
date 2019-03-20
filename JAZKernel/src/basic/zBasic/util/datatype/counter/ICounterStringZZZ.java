@@ -11,7 +11,7 @@ public interface ICounterStringZZZ {
 	public String getStringSuffix();
 	public void setStringSuffix(String sSufffix);//String nach dem Counter
 	
-	public String getString();//gib den akteullen String zurück, wie .current, aber mit Prefix und suffix.
+	public String getString();//gib den aktuellen String zurück, wie .current, aber mit Prefix und suffix.
 	public String getStringFor(int iValue);
 	public String getStringNext();//dito
 	public String getStringIncreased();//dito

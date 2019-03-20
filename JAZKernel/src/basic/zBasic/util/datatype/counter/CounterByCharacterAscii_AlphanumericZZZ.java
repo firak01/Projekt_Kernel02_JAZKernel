@@ -2,7 +2,9 @@ package basic.zBasic.util.datatype.counter;
 
 import java.util.ArrayList;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -22,66 +24,119 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	
 	//###################
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	 * Der Eingabestring darf nur entweder aus Groß- oder aus Kleinbuschsteben bestehen.
 	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 * @throws ExceptionZZZ 
 	 */
-	public static int getNumberForStringAlphanumeric(String s){
-		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric_(s, false);
+	public static int getNumberForStringAlphanumeric(String s) throws ExceptionZZZ{		
+		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(s, false);
 	}
+	
+	/**Behandlung der Werte nach der "Multiple"-Strategie, wenn bMultiple = true.
+	 * Der Eingabestring muss aus gleichen Zeichen bestehen. 
+	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 * @throws ExceptionZZZ 
+	 */
+	public static int getNumberForStringAlphanumeric(String s, boolean bMultiple) throws ExceptionZZZ{		
+		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric_(s, bMultiple);
+	}
+	
+	
 	
 	/** Merke: Es gibt auch Kleinbuchstaben bei NUMMERN
 	 * @param i
 	 * @param bMultipleStrategy
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
+	 * @throws ExceptionZZZ 
 	 */
-	private static int getNumberForStringAlphanumeric_(String sTotal, boolean bMultipleStrategy){
+	private static int getNumberForStringAlphanumeric_(String sTotal, boolean bMultipleStrategy) throws ExceptionZZZ{
 		int iReturn = 0;		
 		main:{
 			if(StringZZZ.isEmpty(sTotal)) break main;
 			
-			//TODO GOON 20190317
-			
-		   //Ermittle Groß-/Kleinschreibung anhand des ersten Buchstabens
-			boolean bLowercase = StringZZZ.isLowerized(sTotal);
-			
-			//Ermittle die Anzahl der Zeichen
-			int iLoop = sTotal.length();
-
-			int iTotal = 0;
-			if(!bMultipleStrategy){ //"SERIAL STRATEGY"							
-				for(int icount = 1; icount <= iLoop; icount++){
-					String s=StringZZZ.mid(sTotal, icount, 1);
-					int itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(s);
-					iTotal = iTotal + itemp;
-				}
-								
-				//Zusammenfassen der Werte: Serial Strategie
-				iReturn = iTotal;
-				
-			}else{ //"MULTIPLE STRATEGY"
-				if(iMod==0 && iDiv ==0) break main;
-				
-				//Ermittle den "Modulo"-Wert und davon das Zeichen
-				String sCharacter=null;
-				if(iMod>=1){
-					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);	
-					sReturn = sCharacter;
-				}else if(iMod==0){
-					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
-					sReturn = "";
-				}
-				
-				
-				//Zusammenfassen der Werte: Multiple Strategie
-				for(int icount=1; icount <= iDiv; icount++){					
-						sReturn+=sCharacter;
-				}
-				
+			//#### Überprüfe den String	
+			//... enthält der Zähler nur gültige Zeichen
+			boolean bValid = CounterByCharacterAscii_AlphanumericZZZ.isValidCharacter(sTotal);
+			if(!bValid){
+				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: String enthält ungültige Zeichen ('"+sTotal+"')", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}
 			
+			//.... Besonderheiten der Zählerstrategien 
+			if(bMultipleStrategy){
+				String sLetterFirst = StringZZZ.letterFirst(sTotal);
+				
+				//A) Multiple: 
+				for(int icounter=1;icounter<=sTotal.length()-1;icounter++){
+					String stemp=StringZZZ.mid(sTotal, icounter, 1);
+				    if(!sLetterFirst.equals(stemp)){
+				    	ExceptionZZZ ez = new ExceptionZZZ("MultipleStrategy: Alle Zeichen des ASCII-Zählers müssen gleich sein. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+				    }
+				}
+					
+				//Berechnung...
+				char c = sLetterFirst.toCharArray()[0];
+				if (sTotal.length()==1){	
+					iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
+				}else if(sTotal.length()>=2){					
+					iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
+					iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX);
+				}
+				
+			}else{
+				String sLetterLast = StringZZZ.letterLast(sTotal);
+				
+				//B) Seriell			   
+				//B1) Überprüfe hinsichtlich der Groß-/Kleinschreibung. Die Zeichen müssen hier durchgängig groß oder klein sein.
+				//Das prüft man am besten durch Kleinsetzung ab und durch Großsetzung.
+				String sLowerized = sTotal.toLowerCase();
+				boolean bLowerized = false; boolean bCapsized = false;
+				if(sLowerized.equals(sTotal)){
+					bLowerized = true;
+				}
+				
+				String sCapsized = sTotal.toUpperCase();
+				if(sCapsized.equals(sTotal)){
+					bCapsized = true;
+				}
+				if(!(bLowerized || bCapsized)){
+				    	ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen des ASCII-Zählers müssen gleich sein hinsichtlich der Groß-/Kleinschreibung. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;					
+				}
+				
+				//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
+				String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighestInAlphanumeric(bLowerized);
+				for (int icount=0;icount<=sTotal.length()-2;icount++){
+					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
+					if(!sLetterMax.equals(stemp)){
+						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	
+					}
+				}
+				
+				//Berechnung...
+				char c = sLetterLast.toCharArray()[0];
+				int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
+				if(sTotal.length()==1){					
+					iReturn = itemp;				    					
+				}else if(sTotal.length()>=2){
+					iReturn = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX * (sTotal.length()-1);															
+					iReturn = iReturn + itemp;
+				}
+				
+				//Merke der umgekehrte Weg aus der Zahl einen String zu machen geht so:
+				//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
+				//int iDiv = Math.abs(i / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+				//int iMod = i % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
+			}
 		}//end main:
 		return iReturn;		
 	}
@@ -251,6 +306,15 @@ public static String getCharForPositionInAlphanumeric(int i, boolean bLowercase)
 	}else{
 		return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i);
 	}
+}
+
+public static String getCharHighestInAlphanumeric(boolean bLowercase){
+	int  i= CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
+	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i, bLowercase);
+}
+public static String getCharLowestInAlphanumeric(boolean bLowercase){
+	int  i= CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN;
+	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i, bLowercase);
 }
 
 //++++++++++
