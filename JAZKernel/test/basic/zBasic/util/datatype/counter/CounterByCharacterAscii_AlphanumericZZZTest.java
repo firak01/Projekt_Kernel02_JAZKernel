@@ -102,7 +102,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	return bReturn;	    	
 	    }
 	    
-	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(String sInput, int iResult, boolean bMultipleStrategy){
+	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(String sInput, int iResult){
 	    	boolean bReturn = false;
 	    	main:{
 	    		//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
@@ -264,11 +264,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 	    	//"MULTIPLE STRATEGY"-Ergebnisse
 	    	String stemp; int itemp; boolean btemp;
+	    	ICounterStrategyZZZ objCounterStrategy = new CounterStrategyMultipleZZZ();
 	    	
 	    	try {
-				stemp = "0"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				stemp = "0";				
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -284,8 +285,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "00"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -301,8 +302,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "9"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -318,8 +319,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "99"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -335,8 +336,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "A"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -352,8 +353,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "AA"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -369,8 +370,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "Z"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -386,8 +387,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "ZZ"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
@@ -403,11 +404,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    public void testGetNumberForStringAlphanumeric_StrategySerial(){
 	    	
 	    	String stemp; int itemp; boolean btemp;
+	    	ICounterStrategyZZZ objCounterStrategy = new CounterStrategySerialZZZ();
 	    	
 	    	//Ungültige Werte
 	    	try {
 				stemp = "?"; //Parameter false="Serielle Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
 				fail("Method should have thrown an exception for the string '"+stemp+"'");
 				
 			} catch (ExceptionZZZ ez) {
@@ -419,7 +421,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	//...serielle Strategie
 	    	try {
 		    	stemp = "0aA"; //Groß-/Kleinschreibung nicht mischen
-		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);//Parameter true="Serielle Strategy"
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);//Parameter true="Serielle Strategy"
 		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
 						    	
 			} catch (ExceptionZZZ ez) {
@@ -429,7 +431,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	//...multiple Strategie
 	    	try {
 		    	stemp = "01"; //Alle Zeichen müssen gleich sein
-		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,true);//Parameter true="Multiple Strategy"
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);//Parameter true="Multiple Strategy"
 		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
 				
 			} catch (ExceptionZZZ ez) {
@@ -441,7 +443,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	//... serielle Strategie
 	    	try {
 		    	stemp = "0A";//Merke: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein. 
-		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);//Parameter false="Serielle Strategy"
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);//Parameter false="Serielle Strategy"
 		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
 				
 			} catch (ExceptionZZZ ez) {
@@ -451,12 +453,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	//"SERIAL STRATEGIE"-Ergebnisse	    		    	
 	    	try {
 				stemp = "0"; //Parameter false="Serielle Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -468,12 +470,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {				
 				stemp = "Z0"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -485,12 +487,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "9"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -502,12 +504,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "Z9"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -519,12 +521,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "A"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -536,12 +538,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "ZA"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -553,12 +555,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "Z"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp,  false);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -570,12 +572,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 			try {
 				stemp = "ZZ"; //Parameter true="Multiple Strategy"
-				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,false);
-				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp, true);//TODO GOON: Woran Gültigkeit identifizieren?
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, false);//false ist lowercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp,  false);//true ist lowercase, false ist uppercase
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    	
 			} catch (ExceptionZZZ ez) {
@@ -605,7 +607,7 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("0",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("0",stemp); //Kleinbuchstaben für Zahlen gibt es ja nicht.
@@ -619,7 +621,7 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Z",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("z",stemp);
@@ -637,7 +639,7 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("00",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("00",stemp); //Keine Kleinbuchstaben bei Ziffern
@@ -653,7 +655,7 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("11",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("11",stemp);
@@ -667,7 +669,7 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("ZZ",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp,  true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("zz",stemp);
@@ -691,7 +693,7 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("0",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("0",stemp); //die Kleinbuchstaben für Zahlen gibt es ja nicht
@@ -705,7 +707,7 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Z",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("z",stemp);
@@ -724,7 +726,7 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Z0",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("z0",stemp);
@@ -739,7 +741,7 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Z1",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("z1",stemp);
@@ -751,7 +753,7 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("ZZ",stemp);
 	
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //Kleinbuchstaben
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(itemp, true); //true ist lowercase, false ist uppercase
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("zz",stemp);

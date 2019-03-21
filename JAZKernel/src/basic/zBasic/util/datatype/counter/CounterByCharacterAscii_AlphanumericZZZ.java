@@ -32,7 +32,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @throws ExceptionZZZ 
 	 */
 	public static int getNumberForStringAlphanumeric(String s) throws ExceptionZZZ{		
-		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(s, false);
+		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(s, null);
 	}
 	
 	/**Behandlung der Werte nach der "Multiple"-Strategie, wenn bMultiple = true.
@@ -43,8 +43,8 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static int getNumberForStringAlphanumeric(String s, boolean bMultiple) throws ExceptionZZZ{		
-		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric_(s, bMultiple);
+	public static int getNumberForStringAlphanumeric(String s, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{		
+		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric_(s, objCounterStrategy);
 	}
 	
 	
@@ -56,10 +56,15 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 * @throws ExceptionZZZ 
 	 */
-	private static int getNumberForStringAlphanumeric_(String sTotal, boolean bMultipleStrategy) throws ExceptionZZZ{
+	private static int getNumberForStringAlphanumeric_(String sTotal, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{
 		int iReturn = 0;		
 		main:{
 			if(StringZZZ.isEmpty(sTotal)) break main;
+			if(objCounterStrategy==null){
+				objCounterStrategy = new CounterStrategyMultipleZZZ();
+//				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+			}
 			
 			//#### Überprüfe den String	
 			//... enthält der Zähler nur gültige Zeichen
@@ -70,73 +75,11 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 			}
 			
 			//.... Besonderheiten der Zählerstrategien 
-			if(bMultipleStrategy){
-				String sLetterFirst = StringZZZ.letterFirst(sTotal);
-				
-				//A) Multiple: 
-				for(int icounter=1;icounter<=sTotal.length()-1;icounter++){
-					String stemp=StringZZZ.mid(sTotal, icounter, 1);
-				    if(!sLetterFirst.equals(stemp)){
-				    	ExceptionZZZ ez = new ExceptionZZZ("MultipleStrategy: Alle Zeichen des ASCII-Zählers müssen gleich sein. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-				    }
-				}
-					
-				//Berechnung...
-				char c = sLetterFirst.toCharArray()[0];
-				if (sTotal.length()==1){	
-					iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
-				}else if(sTotal.length()>=2){					
-					iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
-					iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX);
-				}
-				
-			}else{
-				String sLetterLast = StringZZZ.letterLast(sTotal);
-				
-				//B) Seriell			   
-				//B1) Überprüfe hinsichtlich der Groß-/Kleinschreibung. Die Zeichen müssen hier durchgängig groß oder klein sein.
-				//Das prüft man am besten durch Kleinsetzung ab und durch Großsetzung.
-				String sLowerized = sTotal.toLowerCase();
-				boolean bLowerized = false; boolean bCapsized = false;
-				if(sLowerized.equals(sTotal)){
-					bLowerized = true;
-				}
-				
-				String sCapsized = sTotal.toUpperCase();
-				if(sCapsized.equals(sTotal)){
-					bCapsized = true;
-				}
-				if(!(bLowerized || bCapsized)){
-				    	ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen des ASCII-Zählers müssen gleich sein hinsichtlich der Groß-/Kleinschreibung. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;					
-				}
-				
-				//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
-				String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighestInAlphanumeric(bLowerized);
-				for (int icount=0;icount<=sTotal.length()-2;icount++){
-					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
-					if(!sLetterMax.equals(stemp)){
-						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;	
-					}
-				}
-				
-				//Berechnung...
-				char c = sLetterLast.toCharArray()[0];
-				int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
-				if(sTotal.length()==1){					
-					iReturn = itemp;				    					
-				}else if(sTotal.length()>=2){
-					iReturn = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX * (sTotal.length()-1);															
-					iReturn = iReturn + itemp;
-				}
-				
-				//Merke der umgekehrte Weg aus der Zahl einen String zu machen geht so:
-				//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-				//int iDiv = Math.abs(i / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-				//int iMod = i % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
-			}
+			boolean bSyntaxValid = objCounterStrategy.checkSyntax(sTotal);
+			
+			//Berechnung...
+			iReturn = objCounterStrategy.computeNumberForString(sTotal);
+
 		}//end main:
 		return iReturn;		
 	}
@@ -150,7 +93,8 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringAlphanumericForNumber(int i){
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, false);
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategySerialZZZ();
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, objCounterStrategy);
 	}
 	
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
@@ -160,7 +104,8 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringAlphanumericForNumber(int i, boolean bLowercase){
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, false);
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategySerialZZZ();
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, objCounterStrategy);
 	}
 		
 
@@ -172,7 +117,8 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringAlphanumericMultipleForNumber(int i){
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, true);
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyMultipleZZZ();
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, objCounterStrategy);
 	}
 	
 	/**Behandlung der Werte nach der "Multiple"-Strategie. 
@@ -183,7 +129,8 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:56
 	 */
 	public static String getStringAlphanumericMultipleForNumber(int i, boolean bLowercase){
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, true);		
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyMultipleZZZ();
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, objCounterStrategy);		
 	}
 	
 	
@@ -193,55 +140,17 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 */
-	private static String getStringAlphanumericForNumber_(int i, boolean bLowercase, boolean bMultipleStrategy){
+	private static String getStringAlphanumericForNumber_(int iNumber, boolean bLowercase, ICounterStrategyZZZ objCounterStrategy){
 		String sReturn = null;		
 		main:{
-			
-		   //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(i / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = i % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
-
-			
-			if(!bMultipleStrategy){ //"SERIAL STRATEGY"
-				ArrayList<String>listas=new ArrayList<String>();			
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
-					listas.add(stemp);
-				}
-				if(iMod>=1){
-					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);
-					listas.add(stemp);
-				}
-				
-				//Zusammenfassen der Werte: Serial Strategie
-				for(int icount=1; icount <= listas.size(); icount++){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}
-			}else{ //"MULTIPLE STRATEGY"
-				if(iMod==0 && iDiv ==0) break main;
-				
-				//Ermittle den "Modulo"-Wert und davon das Zeichen
-				String sCharacter=null;
-				if(iMod>=1){
-					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);	
-					sReturn = sCharacter;
-				}else if(iMod==0){
-					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
-					sReturn = "";
-				}
-				
-				
-				//Zusammenfassen der Werte: Multiple Strategie
-				for(int icount=1; icount <= iDiv; icount++){					
-						sReturn+=sCharacter;
-				}
-				
+			if(iNumber<0) break main;			
+			if(objCounterStrategy==null){
+				objCounterStrategy = new CounterStrategyMultipleZZZ();
+//				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
 			}
+			
+			sReturn = objCounterStrategy.computeStringForNumber(iNumber, bLowercase);
 			
 		}//end main:
 		return sReturn;		
