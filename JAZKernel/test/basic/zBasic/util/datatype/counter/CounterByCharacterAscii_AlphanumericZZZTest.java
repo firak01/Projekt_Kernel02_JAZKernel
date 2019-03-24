@@ -264,7 +264,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 	    	//"MULTIPLE STRATEGY"-Ergebnisse
 	    	String stemp; int itemp; boolean btemp;
-	    	ICounterStrategyZZZ objCounterStrategy = new CounterStrategyMultipleZZZ();
+	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 	    	
 	    	try {
 				stemp = "0";				
@@ -404,7 +404,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    public void testGetNumberForStringAlphanumeric_StrategySerial(){
 	    	
 	    	String stemp; int itemp; boolean btemp;
-	    	ICounterStrategyZZZ objCounterStrategy = new CounterStrategySerialZZZ();
+	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 	    	
 	    	//Ungültige Werte
 	    	try {

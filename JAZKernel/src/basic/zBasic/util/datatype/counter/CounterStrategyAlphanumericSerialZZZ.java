@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class CounterStrategySerialZZZ extends AbstractCounterStrategyZZZ{
+public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrategyAlphanumericZZZ{
 
 	@Override
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {

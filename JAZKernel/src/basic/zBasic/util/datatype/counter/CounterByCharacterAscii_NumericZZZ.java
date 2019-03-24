@@ -36,7 +36,8 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringNumericForNumber(int i){
-		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, false);//es gibt keine Kleinbuchstaben
+		ICounterStrategyNumbersOnlyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
+		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
 	}
 		
 	/**Behandlung der Werte nach der "Multiple"-Strategie.
@@ -46,7 +47,8 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringNumericMultipleForNumber(int i){
-		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, true);//es gibt keine Kleinbuschstaben
+		ICounterStrategyNumbersOnlyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
+		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
 	}
 	
 	
@@ -56,55 +58,18 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 */
-	private static String getStringNumericForNumber_(int i, boolean bMultipleStrategy){
+	private static String getStringNumericForNumber_(int iNumber, ICounterStrategyNumbersOnlyZZZ objCounterStrategy){
 		String sReturn = null;		
 		main:{
-			
-		   //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(i / CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = i % CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
-
-			
-			if(!bMultipleStrategy){ //"SERIAL STRATEGY"
-				ArrayList<String>listas=new ArrayList<String>();			
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX);
-					listas.add(stemp);
-				}
-				if(iMod>=1){
-					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(iMod);
-					listas.add(stemp);
+				if(iNumber<0) break main;			
+				if(objCounterStrategy==null){
+					objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
+//					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
 				}
 				
-				//Zusammenfassen der Werte: Serial Strategie
-				for(int icount=1; icount <= listas.size(); icount++){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}
-			}else{ //"MULTIPLE STATEGY"
-				if(iMod==0 && iDiv ==0) break main;
+				sReturn = objCounterStrategy.computeStringForNumber(iNumber);
 				
-				//Ermittle den "Modulo"-Wert und davon das Zeichen
-				String sCharacter=null;
-				if(iMod>=1){
-					sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(iMod);	
-					sReturn = sCharacter;
-				}else if(iMod==0){
-					sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX);
-					sReturn = "";
-				}
-				
-				
-				//Zusammenfassen der Werte: Multiple Strategie
-				for(int icount=1; icount <= iDiv; icount++){					
-						sReturn+=sCharacter;
-				}
-				
-			}
 			
 		}//end main:
 		return sReturn;		

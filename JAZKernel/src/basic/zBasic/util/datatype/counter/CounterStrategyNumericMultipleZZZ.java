@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class CounterStrategyMultipleZZZ extends AbstractCounterStrategyZZZ{
+public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNumbersOnlyZZZ{
 
 	@Override
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
@@ -31,6 +31,7 @@ public class CounterStrategyMultipleZZZ extends AbstractCounterStrategyZZZ{
 	public int computeNumberForString(String sTotal) {
 		int iReturn = -1;
 		main:{
+			/*
 			if(StringZZZ.isEmpty(sTotal)) break main;
 			
 			String sLetterFirst = StringZZZ.letterFirst(sTotal);
@@ -41,27 +42,28 @@ public class CounterStrategyMultipleZZZ extends AbstractCounterStrategyZZZ{
 				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
 				iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX);
 			}
+			*/
 		}//end main
 		return iReturn;
 	}
 
 	@Override
-	public String computeStringForNumber(int iNumber, boolean bLowercase) {
+	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
-
+			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+	
 			if(iMod==0 && iDiv ==0) break main;
 			
 			//Ermittle den "Modulo"-Wert und davon das Zeichen
-			String sCharacter=null;			
+			String sCharacter=null;
 			if(iMod>=1){
-				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);	
+				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(iMod);	
 				sReturn = sCharacter;
 			}else if(iMod==0){
-				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
+				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX);
 				sReturn = "";
 			}
 			
@@ -70,6 +72,8 @@ public class CounterStrategyMultipleZZZ extends AbstractCounterStrategyZZZ{
 			for(int icount=1; icount <= iDiv; icount++){					
 					sReturn+=sCharacter;
 			}
+			
+			
 		}//end main:
 		return sReturn;
 	}

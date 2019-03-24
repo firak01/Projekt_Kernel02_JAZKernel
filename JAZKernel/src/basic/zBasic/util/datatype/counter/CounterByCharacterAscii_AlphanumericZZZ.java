@@ -15,12 +15,14 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 03.03.2019, 12:49:22
  * 
  */
-public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ{
+public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStringAlphanumericZZZ{
 
 	public static int iALPHANUMERIC_POSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
 	public static int iALPHANUMERIC_POSITION_MAX=36;
 	
 	public static String sREGEX_CHARACTERS="[a-zA-Z0-9]";
+	
+	private boolean bLowercase = false;
 	
 	//###################
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
@@ -43,7 +45,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static int getNumberForStringAlphanumeric(String s, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{		
+	public static int getNumberForStringAlphanumeric(String s, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{		
 		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric_(s, objCounterStrategy);
 	}
 	
@@ -56,12 +58,12 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 * @throws ExceptionZZZ 
 	 */
-	private static int getNumberForStringAlphanumeric_(String sTotal, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{
+	private static int getNumberForStringAlphanumeric_(String sTotal, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
 		int iReturn = 0;		
 		main:{
 			if(StringZZZ.isEmpty(sTotal)) break main;
 			if(objCounterStrategy==null){
-				objCounterStrategy = new CounterStrategyMultipleZZZ();
+				objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 //				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 			}
@@ -93,7 +95,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringAlphanumericForNumber(int i){
-		ICounterStrategyZZZ objCounterStrategy = new CounterStrategySerialZZZ();
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, objCounterStrategy);
 	}
 	
@@ -104,7 +106,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringAlphanumericForNumber(int i, boolean bLowercase){
-		ICounterStrategyZZZ objCounterStrategy = new CounterStrategySerialZZZ();
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, objCounterStrategy);
 	}
 		
@@ -117,7 +119,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringAlphanumericMultipleForNumber(int i){
-		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyMultipleZZZ();
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, objCounterStrategy);
 	}
 	
@@ -129,7 +131,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:56
 	 */
 	public static String getStringAlphanumericMultipleForNumber(int i, boolean bLowercase){
-		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyMultipleZZZ();
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, objCounterStrategy);		
 	}
 	
@@ -140,12 +142,12 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 */
-	private static String getStringAlphanumericForNumber_(int iNumber, boolean bLowercase, ICounterStrategyZZZ objCounterStrategy){
+	private static String getStringAlphanumericForNumber_(int iNumber, boolean bLowercase, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		String sReturn = null;		
 		main:{
 			if(iNumber<0) break main;			
 			if(objCounterStrategy==null){
-				objCounterStrategy = new CounterStrategyMultipleZZZ();
+				objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 //				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 			}
@@ -268,5 +270,17 @@ protected void setCurrent(String sCurrent){
 public String getStringFor(int iValue) {
 	String sCurrent = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(iValue);
 	return sCurrent;
+}
+
+
+//+++ Aus Interface
+@Override
+public boolean isLowercase() {
+	return this.bLowercase;
+}
+
+@Override
+public void isLowercase(boolean bValue) {
+	this.bLowercase = bValue;
 }	
 }
