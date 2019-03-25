@@ -79,14 +79,16 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 		return iReturn;			
 	}
 
+	
 	@Override
-	public String computeStringForNumber(int iNumber, boolean bLowercase) {
+	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
 			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 			int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX;
 
+			boolean bLowercase = this.isLowercase();
 			
 			ArrayList<String>listas=new ArrayList<String>();			
 			for(int icount = 1; icount <= iDiv; icount++){
@@ -110,5 +112,4 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 		}//end main:
 		return sReturn;
 	}
-
 }

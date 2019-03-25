@@ -19,8 +19,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 		this.setValueCurrent(CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN);
 	}
 	public CounterByCharacterAscii_NumericZZZ(int iStartingValue){
-		super();
-		this.setValueCurrent(iStartingValue);
+		super(iStartingValue);		
 	}
 	public CounterByCharacterAscii_NumericZZZ(String sStartingValue){
 		//TODO GOON: Erst einmal muss es die statische Methode geben, um vom String auf den int-Wert umzuschlüsseln.
@@ -36,7 +35,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringNumericForNumber(int i){
-		ICounterStrategyNumbersOnlyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
 	}
 		
@@ -47,7 +46,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringNumericMultipleForNumber(int i){
-		ICounterStrategyNumbersOnlyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
 	}
 	
@@ -58,7 +57,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 */
-	private static String getStringNumericForNumber_(int iNumber, ICounterStrategyNumbersOnlyZZZ objCounterStrategy){
+	private static String getStringNumericForNumber_(int iNumber, ICounterStrategyZZZ objCounterStrategy){
 		String sReturn = null;		
 		main:{
 				if(iNumber<0) break main;			

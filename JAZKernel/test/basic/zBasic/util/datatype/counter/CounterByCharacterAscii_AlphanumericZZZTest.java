@@ -591,7 +591,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	
 
 public void testGetStringAlphanumericForNumber_StrategyMultiple(){
-	
+	try{
+		
 	//"MULTIPLE STRATEGY"-Ergebnisse
 	int itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN-1;
 	String stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericMultipleForNumber(itemp, false); // .getCharMultipleForNumber(itemp);
@@ -673,10 +674,14 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("zz",stemp);
+	
+} catch (ExceptionZZZ ez) {
+	fail("Method throws an exception." + ez.getMessageLast());
+} 
 }
 
 public void testGetStringAlphanumericForNumber_StrategySerial(){
-	
+	try{
 	
 	//"SERIAL STRATEGIE"-Ergebnisse
 	int itemp = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN-1;
@@ -757,6 +762,9 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("zz",stemp);
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
 }
 
 public void testGetNumberForStringAlphanumeric_StrategySerial2(){

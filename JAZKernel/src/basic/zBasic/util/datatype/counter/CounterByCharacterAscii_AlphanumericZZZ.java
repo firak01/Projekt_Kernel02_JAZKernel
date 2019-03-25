@@ -15,14 +15,28 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 03.03.2019, 12:49:22
  * 
  */
-public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStringAlphanumericZZZ{
+public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ {
 
 	public static int iALPHANUMERIC_POSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
 	public static int iALPHANUMERIC_POSITION_MAX=36;
 	
 	public static String sREGEX_CHARACTERS="[a-zA-Z0-9]";
 	
-	private boolean bLowercase = false;
+	public CounterByCharacterAscii_AlphanumericZZZ(){
+		super();
+		this.setValueCurrent(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
+	}
+	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue){
+		super(iStartingValue);		
+	}
+	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		super(iStartingValue);
+		this.setCounterStrategyObject(objCounterStrategy);
+	}
+	public CounterByCharacterAscii_AlphanumericZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		super(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
+		this.setCounterStrategyObject(objCounterStrategy);
+	}
 	
 	//###################
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
@@ -93,10 +107,11 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @param i
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericForNumber(int i){
+	public static String getStringAlphanumericForNumber(int i) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, objCounterStrategy);
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
 	
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
@@ -104,10 +119,12 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @param i
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericForNumber(int i, boolean bLowercase){
+	public static String getStringAlphanumericForNumber(int i, boolean bLowercase) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, objCounterStrategy);
+		objCounterStrategy.isLowercase(bLowercase);
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
 		
 
@@ -117,42 +134,43 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @param i
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericMultipleForNumber(int i){
+	public static String getStringAlphanumericMultipleForNumber(int i) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, false, objCounterStrategy);
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
 	
-	/**Behandlung der Werte nach der "Multiple"-Strategie. 
+	/**Behandlung der Werte nach der "Multiple"-Strategie.
 	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
-	 * @param bLowercase
 	 * @return
-	 * @author Fritz Lindhauer, 04.03.2019, 09:03:56
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericMultipleForNumber(int i, boolean bLowercase){
+	public static String getStringAlphanumericMultipleForNumber(int i, boolean bLowercase) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, bLowercase, objCounterStrategy);		
+		objCounterStrategy.isLowercase(bLowercase);
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
-	
 	
 	/** Merke: Es gibt auch Kleinbuchstaben bei NUMMERN
 	 * @param i
 	 * @param bMultipleStrategy
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
+	 * @throws ExceptionZZZ 
 	 */
-	private static String getStringAlphanumericForNumber_(int iNumber, boolean bLowercase, ICounterStrategyAlphanumericZZZ objCounterStrategy){
+	private static String getStringAlphanumericForNumber_(int iNumber, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
 		String sReturn = null;		
 		main:{
 			if(iNumber<0) break main;			
 			if(objCounterStrategy==null){
-				objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
-//				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;
+				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}
 			
-			sReturn = objCounterStrategy.computeStringForNumber(iNumber, bLowercase);
+			sReturn = objCounterStrategy.computeStringForNumber(iNumber);
 			
 		}//end main:
 		return sReturn;		
@@ -267,20 +285,10 @@ protected void setCurrent(String sCurrent){
 }
 
 @Override
-public String getStringFor(int iValue) {
+public String getStringFor(int iValue) throws ExceptionZZZ {
 	String sCurrent = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(iValue);
 	return sCurrent;
 }
 
 
-//+++ Aus Interface
-@Override
-public boolean isLowercase() {
-	return this.bLowercase;
-}
-
-@Override
-public void isLowercase(boolean bValue) {
-	this.bLowercase = bValue;
-}	
 }

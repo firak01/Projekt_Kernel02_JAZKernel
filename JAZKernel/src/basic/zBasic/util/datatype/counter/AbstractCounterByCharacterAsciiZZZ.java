@@ -1,5 +1,6 @@
 package basic.zBasic.util.datatype.counter;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 
 /**
@@ -33,7 +34,18 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 	private String sPrefix="";	
 	private int iValueCurrent=-1; //Die berechneten Strings nicht speichern. Nur den Wert. Die Umrechnung wird dann den jeweiligen Static-Methoden überlassen.
 	
-	//### Aus Interfasce
+	
+	public AbstractCounterByCharacterAsciiZZZ(){		
+	}
+	
+	public AbstractCounterByCharacterAsciiZZZ(int iStartingValue){
+		this.setValueCurrent(iStartingValue);
+	}
+	
+	//### Aus Interface
+	public abstract String getStringFor(int iValue) throws ExceptionZZZ;	
+	
+	
 	public int getValueCurrent(){
 		return this.iValueCurrent;
 	}
@@ -55,22 +67,24 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 	public void setStringPrefix (String sPrefix){
 		this.sPrefix=sPrefix;
 	}
-	public String getString(){
+	public String getString() throws ExceptionZZZ{
 		return this.getStringPrefix() + this.current() + this.getStringSuffix();
 	}
 	
+	
+	
 	//+++++++++++++++++++++++++++++++++++++++++
-	public String current() {
+	public String current() throws ExceptionZZZ {
 		int iValueCurrent = this.getValueCurrent();
 		return this.getStringFor(iValueCurrent);
 	}
-	public String increased(){
+	public String increased() throws ExceptionZZZ{
 		//Gibt den wert wie er sein würde, ohne den Zähler zu erhöhen
 		int iValueCurrent = this.getValueCurrent();
 		iValueCurrent++;
 		return this.getStringFor(iValueCurrent);
 	}
-	public String next(){
+	public String next() throws ExceptionZZZ{
 		//Gibt den wert mit dem Zähler erhöht
 		int iValueCurrent = this.getValueCurrent();
 		iValueCurrent++;
@@ -80,7 +94,7 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++
-	public String getStringNext(){
+	public String getStringNext() throws ExceptionZZZ{
 		//DAS ERHÖHT DEN ZÄHLER
 		int iCurrent = this.getValueCurrent();
 		iCurrent++;
@@ -90,14 +104,19 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 		return s;		
 	}
 	
-	public String getStringIncreased(){
+	public String getStringIncreased() throws ExceptionZZZ{
 		return this.getStringPrefix() + this.increased() + this.getStringSuffix();
 	}
 	
 	//+++
 		public String toString(){
 			String s = this.getClass().getName();
-			s+=" : " + this.getString();
+			try {
+				s+=" : " + this.getString();
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			return s;
 		}

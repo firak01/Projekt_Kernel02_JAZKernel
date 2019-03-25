@@ -14,13 +14,26 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 03.03.2019, 12:49:22
  * 
  */
-public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStringAlphanumericZZZ{
+public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ{
 	public static int iALPHABET_POSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
 	public static int iALPHABET_POSITION_MAX=26;
 	
 	public static String sREGEX_CHARACTERS="[a-zA-Z]";
+
 	
-	private boolean bLowercase = false;
+	public CounterByCharacterAscii_AlphabetZZZ(){
+		super();
+		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN);
+	}
+	public CounterByCharacterAscii_AlphabetZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		super(objCounterStrategy);
+		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN);
+	}
+	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		super(iStartingValue, objCounterStrategy);
+	}
+	
+	
 		
 /**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
 	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
@@ -30,19 +43,19 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	 */
 	public static String getStringAlphabetForNumber(int i){
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ();
-		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, false, objCounterStrategy);
+		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);
 	}
 	
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
 	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
-	 * @param bLowercase
 	 * @return
-	 * @author Fritz Lindhauer, 04.03.2019, 09:03:56
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
 	public static String getStringAlphabetForNumber(int i, boolean bLowercase){
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ();
-		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, bLowercase, objCounterStrategy);		
+		objCounterStrategy.isLowercase(bLowercase);
+		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);
 	}
 	
 	/**Behandlung der Werte nach der "Multiple"-Strategie.
@@ -53,7 +66,7 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	 */
 	public static String getStringAlphabetMultipleForNumber(int i){
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();
-		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, false, objCounterStrategy);
+		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);
 	}
 	
 	/**Behandlung der Werte nach der "Multiple"-Strategie. 
@@ -65,10 +78,10 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	 */
 	public static String getStringAlphabetMultipleForNumber(int i, boolean bLowercase){
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();
-		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, bLowercase, objCounterStrategy);		
+		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);		
 	}
 	
-	private static String getStringAlphabetForNumber_(int iNumber, boolean bLowercase, ICounterStrategyAlphanumericZZZ objCounterStrategy){
+	private static String getStringAlphabetForNumber_(int iNumber, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		String sReturn = null;		
 		main:{
 				if(iNumber<=0) break main;			
@@ -77,8 +90,8 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 //					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 //					throw ez;
 				}
-				
-				sReturn = objCounterStrategy.computeStringForNumber(iNumber, bLowercase);
+																			
+				sReturn = objCounterStrategy.computeStringForNumber(iNumber);
 
 		}//end main:
 		return sReturn;		
@@ -140,7 +153,6 @@ protected void setCurrent(String sCurrent){
 	//TODO GOON 20190308
 }
 
-@Override
 public String getStringFor(int iValue) {
 	String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
 	return sCurrent;
@@ -178,16 +190,7 @@ public static boolean isValidCharacter(String s){
 }
 
 
-// ++++ Aus Interface
-@Override
-public boolean isLowercase() {
-	return this.bLowercase;
-}
 
-@Override
-public void isLowercase(boolean bValue) {
-	this.bLowercase = bValue;
-}
 
 
 

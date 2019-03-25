@@ -46,7 +46,7 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 	}
 
 	@Override
-	public String computeStringForNumber(int iNumber, boolean bLowercase) {
+	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
@@ -54,6 +54,8 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
 
 			if(iMod==0 && iDiv ==0) break main;
+			
+			boolean bLowercase = this.isLowercase();
 			
 			//Ermittle den "Modulo"-Wert und davon das Zeichen
 			String sCharacter=null;			
