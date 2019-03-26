@@ -1,5 +1,7 @@
 package basic.zBasic.util.datatype.counter;
 
+import basic.zBasic.ExceptionZZZ;
+
 public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStrategyAlphanumericUserZZZ{
 	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
@@ -41,5 +43,7 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 	public void isLowercase(boolean bValue) {
 		this.getCounterStrategyObject().isLowercase(bValue);
 	}
+	
+	
 
 }

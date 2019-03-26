@@ -2,6 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import java.util.ArrayList;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
@@ -147,16 +148,7 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 		}
 	}
 	
-//### Aus Interface
-protected void setCurrent(String sCurrent){
-	//Da der Wert nicht gespeichert wird, muss nun aus dem String die Zahl berechnet werden.
-	//TODO GOON 20190308
-}
 
-public String getStringFor(int iValue) {
-	String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
-	return sCurrent;
-}
 
 //++++++++++
 public static boolean isValidCharacter(char c){
@@ -187,6 +179,18 @@ public static boolean isValidCharacter(String s){
 		}
 	}
 	return bReturn;
+}
+
+//### Aus Interface
+protected void setCurrent(String sCurrent){
+	//Da der Wert nicht gespeichert wird, muss nun aus dem String die Zahl berechnet werden.
+	//TODO GOON 20190308
+}
+
+@Override
+public String peekChange(int iValue) throws ExceptionZZZ {
+	String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
+	return sCurrent;
 }
 
 

@@ -2,10 +2,11 @@ package basic.zBasic.util.datatype.counter;
 
 import java.util.ArrayList;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharacterAsciiZZZ{
+public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharacterAsciiNumericZZZ{
 
 	public static int iNUMERIC_POSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
 	public static int iNUMERIC_POSITION_MAX=10;//die 10 Ziffern 0-9 dazu.
@@ -143,7 +144,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	}
 
 	@Override
-	public String getStringFor(int iValue) {
+	public String peekChange(int iValue) throws ExceptionZZZ {
 		String sCurrent = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(iValue);
 		return sCurrent;
 	}	

@@ -284,8 +284,9 @@ protected void setCurrent(String sCurrent){
 	//TODO GOON 20190308
 }
 
+
 @Override
-public String getStringFor(int iValue) throws ExceptionZZZ {
+public String peekChange(int iValue) throws ExceptionZZZ {
 	String sCurrent = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(iValue);
 	return sCurrent;
 }

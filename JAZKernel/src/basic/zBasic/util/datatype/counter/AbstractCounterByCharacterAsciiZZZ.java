@@ -42,10 +42,9 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 		this.setValueCurrent(iStartingValue);
 	}
 	
-	//### Aus Interface
-	public abstract String getStringFor(int iValue) throws ExceptionZZZ;	
-	
-	
+	//### Aus Interface	
+	public abstract String peekChange(int iValue) throws ExceptionZZZ;
+		
 	public int getValueCurrent(){
 		return this.iValueCurrent;
 	}
@@ -67,23 +66,12 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 	public void setStringPrefix (String sPrefix){
 		this.sPrefix=sPrefix;
 	}
-	public String getString() throws ExceptionZZZ{
-		return this.getStringPrefix() + this.current() + this.getStringSuffix();
-	}
-	
-	
 	
 	//+++++++++++++++++++++++++++++++++++++++++
 	public String current() throws ExceptionZZZ {
 		int iValueCurrent = this.getValueCurrent();
-		return this.getStringFor(iValueCurrent);
-	}
-	public String increased() throws ExceptionZZZ{
-		//Gibt den wert wie er sein würde, ohne den Zähler zu erhöhen
-		int iValueCurrent = this.getValueCurrent();
-		iValueCurrent++;
-		return this.getStringFor(iValueCurrent);
-	}
+		return this.peekChange(iValueCurrent);
+	}	
 	public String next() throws ExceptionZZZ{
 		//Gibt den wert mit dem Zähler erhöht
 		int iValueCurrent = this.getValueCurrent();
@@ -91,24 +79,45 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 		this.setValueCurrent(iValueCurrent);
 		return this.current();	
 	}
-	
+	public String change(int iValue) throws ExceptionZZZ{
+		//Setze den neuen Wert
+		this.setValueCurrent(iValue);
+		return this.current();
+	}
+	//++++++++++++++++++++++++++++++++++++++++++++++++++
+	public String peekNext() throws ExceptionZZZ{
+		//Gibt den wert wie er sein würde, ohne den Zähler zu erhöhen
+		int iValueCurrent = this.getValueCurrent();
+		iValueCurrent++;
+		return this.peekChange(iValueCurrent);
+	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++
+	public String getString() throws ExceptionZZZ{
+		return this.getStringPrefix() + this.current() + this.getStringSuffix();
+	}
+	
 	public String getStringNext() throws ExceptionZZZ{
-		//DAS ERHÖHT DEN ZÄHLER
-		int iCurrent = this.getValueCurrent();
-		iCurrent++;
-		this.setValueCurrent(iCurrent);
-		
-		String s= this.getString();
-		return s;		
+		//DAS ERHÖHT DEN ZÄHLER		
+		return this.getStringPrefix() + this.next() + this.getStringSuffix();		
 	}
 	
-	public String getStringIncreased() throws ExceptionZZZ{
-		return this.getStringPrefix() + this.increased() + this.getStringSuffix();
+	public String getStringChange(int iValue) throws ExceptionZZZ{
+		//DAS ERHÖHT DEN ZÄHLER		
+		return this.getStringPrefix() + this.change(iValue) + this.getStringSuffix();		
 	}
 	
-	//+++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
+	public String getStringPeekNext() throws ExceptionZZZ{
+		//DAS ERHÖHT DEN ZÄHLER NICHT
+		return this.getStringPrefix() + this.peekNext() + this.getStringSuffix();
+	}
+	public String getStringPeekChange(int iValue) throws ExceptionZZZ{
+		//DAS ÄNDERT DEN ZÄHLER NICHT
+		return this.getStringPrefix() + this.peekChange(iValue) + this.getStringSuffix();
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		public String toString(){
 			String s = this.getClass().getName();
 			try {

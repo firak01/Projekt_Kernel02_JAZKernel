@@ -51,6 +51,7 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 	}
 	
 	//### AUS Interfaces
+	//COUNTER MIT DEFAUKTSTRATEGY "MULTIPLE"
 	@Override
 	public ICounterStringZZZ createCounter(int iCounterType) throws ExceptionZZZ {
 		ICounterStringZZZ objReturn = null;
@@ -83,5 +84,29 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 			throw ez;
 		}
 		return objReturn;
+	}
+	
+	//#### COUNTER UNTER ANGABE DER STRATEGY
+	@Override
+	public ICounterStringZZZ createCounter(int iCounterType,ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ {
+		ICounterStringZZZ objReturn = null;
+		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
+			objReturn = new CounterByCharacterAscii_NumericZZZ();
+			objReturn.setCounterStrategyObject(objCounterStrategy);
+		}else{
+			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		return objReturn;
+	}
+	@Override
+	public ICounterStringZZZ createCounter(int iCounterType, int iStart,ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ICounterStringZZZ createCounter(int iCounterType, String sStart,	ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

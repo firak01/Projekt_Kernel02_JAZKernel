@@ -73,19 +73,40 @@ public class CounterByCharacterAsciiFactoryZZZTest   extends TestCase{
 public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 
 	try {	
-
-	//TODO GOON Konstruktoren in alle Counter einbauen (die sind ja bisher lediglich static-Methoden-enthalter)
+		int itemp; int itempold; String stemp; boolean btemp;
+		
+	//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)
+	//A) MULTIPLE-STRATEGY ist default.
 	ICounterStringZZZ objCounterString = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC);
 
 	//Untenstehende Tests und Ergebnisse müssen auch mit der Factory und den daraus generierten Counter-Objekten erfüllbar sein.
 	///..................... TODO GOON 20190307
-	int itemp = objCounterString.getValueCurrent();
-	String stemp = objCounterString.current();
-	boolean btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	itemp = objCounterString.getValueCurrent();
+	stemp = objCounterString.current();
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	
+	itempold = itemp;
+	stemp = objCounterString.next();
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 	
-			
+	itemp = 42;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "99991", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+				
+	//B) Definiere per Factory einen Counter mit Serieller Strategy
+	CounterStrategyNumericSerialZZZ objCounterStrategySerial = new CounterStrategyNumericSerialZZZ();
+	ICounterStringZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategySerial);
+
 	
 	//### Das spezielle Generics Testobjekt			
 //	hmTestGenerics = new HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ>();
