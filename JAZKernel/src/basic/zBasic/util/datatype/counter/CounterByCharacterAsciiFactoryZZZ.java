@@ -86,13 +86,13 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		return objReturn;
 	}
 	
-	//#### COUNTER UNTER ANGABE DER STRATEGY
+	//#### COUNTER UNTER ANGABE DER STRATEGY. DABEI GIBT ES VERSCHIEDENEN STRATEGIEN. Die haben auch ggfs. andere Methoden.
 	@Override
-	public ICounterStringZZZ createCounter(int iCounterType,ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ {
-		ICounterStringZZZ objReturn = null;
+	public ICounterStrategyNumericUserZZZ createCounter(int iCounterType,ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
+		ICounterStrategyNumericUserZZZ objReturn = null;
 		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
 			objReturn = new CounterByCharacterAscii_NumericZZZ();
-			objReturn.setCounterStrategyObject(objCounterStrategy);
+			objReturn.setCounterStrategyObject(objCounterStrategy);			
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
@@ -100,12 +100,35 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		return objReturn;
 	}
 	@Override
-	public ICounterStringZZZ createCounter(int iCounterType, int iStart,ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ {
+	public ICounterStrategyNumericUserZZZ createCounter(int iCounterType, int iStart,ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public ICounterStringZZZ createCounter(int iCounterType, String sStart,	ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ {
+	public ICounterStrategyNumericUserZZZ createCounter(int iCounterType, String sStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ICounterStrategyAlphanumericUserZZZ createCounter(int iCounterType,
+			ICounterStrategyAlphanumericZZZ objCounterStrategy)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ICounterStrategyAlphanumericUserZZZ createCounter(int iCounterType,
+			int iStart, ICounterStrategyAlphanumericUserZZZ objCounterStrategy)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ICounterStrategyAlphanumericUserZZZ createCounter(int iCounterType,
+			String sStart,
+			ICounterStrategyAlphanumericUserZZZ objCounterStrategy)
+			throws ExceptionZZZ {
 		// TODO Auto-generated method stub
 		return null;
 	}

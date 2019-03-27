@@ -80,7 +80,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	ICounterStringZZZ objCounterString = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC);
 
 	//Untenstehende Tests und Ergebnisse müssen auch mit der Factory und den daraus generierten Counter-Objekten erfüllbar sein.
-	///..................... TODO GOON 20190307
+    //A) OHNE STRATEGY-OBJEKT ZU ÜBERGEBEN
 	itemp = objCounterString.getValueCurrent();
 	stemp = objCounterString.current();
 	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
@@ -103,10 +103,23 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	itemp = objCounterString.getValueCurrent();
 	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
 				
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//B) Definiere per Factory einen Counter mit Serieller Strategy
 	CounterStrategyNumericSerialZZZ objCounterStrategySerial = new CounterStrategyNumericSerialZZZ();
-	ICounterStringZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategySerial);
-
+	ICounterStrategyNumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategySerial);
+	itemp = objCounterStringSeriel.getValueCurrent();
+	stemp = objCounterStringSeriel.current();
+	
+	itempold = itemp;
+	stemp = objCounterStringSeriel.next();
+	itemp = objCounterStringSeriel.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+	
+	
+	///..................... TODO GOON 20190307
+	
+	
+	
 	
 	//### Das spezielle Generics Testobjekt			
 //	hmTestGenerics = new HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ>();

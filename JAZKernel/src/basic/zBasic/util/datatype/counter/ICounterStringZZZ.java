@@ -20,10 +20,14 @@ public interface ICounterStringZZZ {
 	public String getStringPeekChange(int iValue) throws ExceptionZZZ;//dito
 	
 	public String current() throws ExceptionZZZ; //gib den aktuellen String zurück
-	public String next() throws ExceptionZZZ; //gib den nächsten String zurück, aber mit Speicherung ders internen Wertes.
+	public String next() throws ExceptionZZZ; //gib den nächsten String zurück, aber mit Speicherung des internen Wertes.
 	public String change(int iValue) throws ExceptionZZZ;
 	public String peekNext() throws ExceptionZZZ; //wie next(), ohne den Wert zu speichern.
 	public String peekChange(int iValue) throws ExceptionZZZ;//wie change() ohne den Wet zu speichern.
 
-	//TODO GOON: Wenn wir das hier aufnehmen, dann reisst es an anderer Stelle Probleme: public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
+	//TODO: Wenn wir das hier aufnehmen, dann reisst es an anderer Stelle Probleme:
+	//Mir fällt als Lösung nichts anderes ein, als beide Strategy-Inferface-Typen hier zu übergeben.
+	//Vielleicht analog zu der DTO-Lösung im TileHexMap-Projekt?
+//	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
+//	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
 }
