@@ -106,7 +106,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//B) Definiere per Factory einen Counter mit Serieller Strategy
 	CounterStrategyNumericSerialZZZ objCounterStrategySerial = new CounterStrategyNumericSerialZZZ();
-	ICounterStrategyNumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategySerial);
+	ICounterStringStrategyNumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategySerial);
 	itemp = objCounterStringSeriel.getValueCurrent();
 	stemp = objCounterStringSeriel.current();
 	
@@ -114,6 +114,13 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	stemp = objCounterStringSeriel.next();
 	itemp = objCounterStringSeriel.getValueCurrent();
 	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+	
+	//+++++++++++++++++++++++++++++++++	
+	//TODO GOON: Setze den Counter durch String-Wert
+	
+	
+	//TODO Goon: Mache Alphabet-Counter
+	
 	
 	
 	///..................... TODO GOON 20190307

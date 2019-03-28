@@ -3,6 +3,7 @@ package basic.zBasic.util.datatype.counter;
 import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -81,6 +82,14 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	public static String getCharForPositionInNumeric(int i) {
 		return i > (CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN-1) && i < (CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX+1) ? String.valueOf((char)(i + '0' - 1)) : null; //Merke: Es gibt keine Kleinbuchstaben Variante
 	}
+	public static String getCharHighestInNumeric(boolean bLowercase){
+		int  i= CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+		return CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(i);
+	}
+	public static String getCharLowestInNumeric(boolean bLowercase){
+		int  i= CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN;
+		return CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(i);
+	}
 	
 	
 	/** Grundlage für einen Konstruktor, bei dem ein String als Ausgangszähler übergeben wird.
@@ -116,6 +125,55 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 		return bReturn;
 	}
 	
+	
+	
+	//##############################################
+	//Statische Methoden, um aus einer Buchstabenkombination eine Zahl zu machen.
+	public static int getNumberForStringNumeric(String sValue) throws ExceptionZZZ{			
+				ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
+				return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);						
+	}
+	
+	private static int getNumberForStringNumeric_(String sValue, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{
+		int iReturn = 0;
+		main:{
+			if(StringZZZ.isEmpty(sValue))break main;
+			
+			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
+			boolean bValid = CounterByCharacterAscii_NumericZZZ.isValidCharacter(sValue);
+			if(!bValid){
+				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			//.... Besonderheiten der Zählerstrategien 
+			boolean bSyntaxValid = objCounterStrategy.checkSyntax(sValue);
+			if(!bSyntaxValid){
+				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Für die Strategy '" + objCounterStrategy.getClass().getName() + "' ist die Syntax des String snicht korrekt '" + sValue +"'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			char[] caValue = sValue.toCharArray();
+			for (int icounter=0; icounter<= caValue.length-1; icounter++){
+				char c = caValue[icounter];
+				
+//				//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
+//				boolean bValid = CounterByCharacterAscii_NumericZZZ.isValidCharacter(c);
+//				if(!bValid){
+//					String sC = Character.toString(c);
+//					ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben '" + sC +"' im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
+				
+				int iC = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(c);
+				iReturn+=iC;
+			}									
+		}//end main:
+		return iReturn;
+	}
+
 	public static boolean isValidCharacter(String s){
 		boolean bReturn = false;
 		main:{
@@ -136,17 +194,17 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 		}
 		return bReturn;
 	}
-
+	
 //### Aus Interface
-	protected void setCurrent(String sCurrent){
-		//Da der Wert nicht gespeichert wird, muss nun aus dem String die Zahl berechnet werden.
-		//TODO GOON 20190308
-	}
-
 	@Override
 	public String peekChange(int iValue) throws ExceptionZZZ {
 		String sCurrent = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(iValue);
 		return sCurrent;
+	}
+	@Override
+	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
+		// TODO Auto-generated method stub
+		
 	}	
 	
 	

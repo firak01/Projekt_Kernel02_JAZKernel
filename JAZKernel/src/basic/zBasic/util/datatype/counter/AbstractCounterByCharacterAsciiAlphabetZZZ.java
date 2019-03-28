@@ -1,6 +1,6 @@
 package basic.zBasic.util.datatype.counter;
 
-public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStrategyAlphanumericUserZZZ{
+public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStringStrategyAlphanumericUserZZZ{
 	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
 	public AbstractCounterByCharacterAsciiAlphabetZZZ(){

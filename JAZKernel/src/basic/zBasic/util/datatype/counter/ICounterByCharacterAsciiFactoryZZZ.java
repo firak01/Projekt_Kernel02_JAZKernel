@@ -13,12 +13,12 @@ public interface ICounterByCharacterAsciiFactoryZZZ {
 	public ICounterStringZZZ createCounter(int iCounterType, String sStart) throws ExceptionZZZ ;
 	
 	//Alternative Strategy angeben
-	public ICounterStrategyNumericUserZZZ createCounter(int iCounterType, ICounterStrategyNumericZZZ objCounterStrategy)  throws ExceptionZZZ;
-	public ICounterStrategyNumericUserZZZ createCounter(int iCounterType, int iStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ ;
-	public ICounterStrategyNumericUserZZZ createCounter(int iCounterType, String sStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ ;
+	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, ICounterStrategyNumericZZZ objCounterStrategy)  throws ExceptionZZZ;
+	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, int iStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ ;
+	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, String sStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ ;
 	
-	public ICounterStrategyAlphanumericUserZZZ createCounter(int iCounterType, ICounterStrategyAlphanumericZZZ objCounterStrategy)  throws ExceptionZZZ;
-	public ICounterStrategyAlphanumericUserZZZ createCounter(int iCounterType, int iStart, ICounterStrategyAlphanumericUserZZZ objCounterStrategy) throws ExceptionZZZ ;
-	public ICounterStrategyAlphanumericUserZZZ createCounter(int iCounterType, String sStart, ICounterStrategyAlphanumericUserZZZ objCounterStrategy) throws ExceptionZZZ ;
+	public ICounterStringStrategyAlphanumericUserZZZ createCounter(int iCounterType, ICounterStrategyAlphanumericZZZ objCounterStrategy)  throws ExceptionZZZ;
+	public ICounterStringStrategyAlphanumericUserZZZ createCounter(int iCounterType, int iStart, ICounterStringStrategyAlphanumericUserZZZ objCounterStrategy) throws ExceptionZZZ ;
+	public ICounterStringStrategyAlphanumericUserZZZ createCounter(int iCounterType, String sStart, ICounterStringStrategyAlphanumericUserZZZ objCounterStrategy) throws ExceptionZZZ ;
 	
 }

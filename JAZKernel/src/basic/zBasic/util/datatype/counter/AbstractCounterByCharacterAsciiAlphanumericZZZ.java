@@ -2,7 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStrategyAlphanumericUserZZZ{
+public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStringStrategyAlphanumericUserZZZ{
 	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(){

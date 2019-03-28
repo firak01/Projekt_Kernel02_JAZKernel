@@ -1,6 +1,6 @@
 package basic.zBasic.util.datatype.counter;
 
-public interface ICounterStrategyAlphanumericUserZZZ extends ICounterStringZZZ{
+public interface ICounterStringStrategyAlphanumericUserZZZ extends ICounterStringZZZ{
 	public ICounterStrategyAlphanumericZZZ getCounterStrategyObject();
 	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
 	

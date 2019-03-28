@@ -35,7 +35,7 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 			}
 			
 			//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
-			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighestInAlphanumeric(bLowerized);
+			String sLetterMax = CounterByCharacterAscii_NumericZZZ.getCharHighestInNumeric(bLowerized);
 			for (int icount=0;icount<=sTotal.length()-2;icount++){
 				String stemp = StringZZZ.letterAtPosition(sTotal,icount);
 				if(!sLetterMax.equals(stemp)){

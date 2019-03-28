@@ -182,15 +182,17 @@ public static boolean isValidCharacter(String s){
 }
 
 //### Aus Interface
-protected void setCurrent(String sCurrent){
-	//Da der Wert nicht gespeichert wird, muss nun aus dem String die Zahl berechnet werden.
-	//TODO GOON 20190308
-}
 
 @Override
 public String peekChange(int iValue) throws ExceptionZZZ {
 	String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
 	return sCurrent;
+}
+
+@Override
+public void setValueCurrent(String sValue) {
+	// TODO Auto-generated method stub
+	
 }
 
 

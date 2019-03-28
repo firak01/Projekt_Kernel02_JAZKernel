@@ -25,9 +25,12 @@ public interface ICounterStringZZZ {
 	public String peekNext() throws ExceptionZZZ; //wie next(), ohne den Wert zu speichern.
 	public String peekChange(int iValue) throws ExceptionZZZ;//wie change() ohne den Wet zu speichern.
 
-	//TODO: Wenn wir das hier aufnehmen, dann reisst es an anderer Stelle Probleme:
-	//Mir fällt als Lösung nichts anderes ein, als beide Strategy-Inferface-Typen hier zu übergeben.
-	//Vielleicht analog zu der DTO-Lösung im TileHexMap-Projekt?
+	//TODO GOON: SEtze den Counter per Zeichen.
+	public void setValueCurrent(String sValue) throws ExceptionZZZ;
+	
+	
+	//Merke: in den ICounterStrategyUserZZZ ... Interfaces git es 
 //	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
+	//bzw.
 //	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
 }
