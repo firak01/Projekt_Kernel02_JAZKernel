@@ -25,7 +25,7 @@ public interface ICounterStringZZZ {
 	public String peekNext() throws ExceptionZZZ; //wie next(), ohne den Wert zu speichern.
 	public String peekChange(int iValue) throws ExceptionZZZ;//wie change() ohne den Wet zu speichern.
 
-	//TODO GOON: SEtze den Counter per Zeichen.
+	//TODO GOON: Setze den Counter per Zeichen.
 	public void setValueCurrent(String sValue) throws ExceptionZZZ;
 	
 	

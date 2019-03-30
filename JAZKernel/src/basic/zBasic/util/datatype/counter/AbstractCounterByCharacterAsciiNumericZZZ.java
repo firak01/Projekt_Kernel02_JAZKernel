@@ -19,7 +19,9 @@ public abstract class AbstractCounterByCharacterAsciiNumericZZZ extends Abstract
 		super(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
-	
+	public AbstractCounterByCharacterAsciiNumericZZZ(String sStartingValue){
+		super(sStartingValue);
+	}
 	
 	
 	// ++++ Aus Interface

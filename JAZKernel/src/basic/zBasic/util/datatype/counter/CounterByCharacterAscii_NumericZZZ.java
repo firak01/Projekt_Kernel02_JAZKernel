@@ -24,8 +24,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 		super(iStartingValue);		
 	}
 	public CounterByCharacterAscii_NumericZZZ(String sStartingValue){
-		//TODO GOON: Erst einmal muss es die statische Methode geben, um vom String auf den int-Wert umzuschlüsseln.
-		
+		super(sStartingValue);
 	}
 		
 	
@@ -192,8 +191,8 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	}
 	@Override
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
-		// TODO Auto-generated method stub
-		
+		int iValue = CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric(sValue);
+		this.setValueCurrent(iValue);
 	}	
 	
 	

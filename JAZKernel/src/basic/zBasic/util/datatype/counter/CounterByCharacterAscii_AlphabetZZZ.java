@@ -33,6 +33,16 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		super(iStartingValue, objCounterStrategy);
 	}
+	public CounterByCharacterAscii_AlphabetZZZ(String sStartingValue){
+		super(sStartingValue);
+	}
+	public CounterByCharacterAscii_AlphabetZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		super(objCounterStrategy);
+		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN);
+	}
+	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		super(iStartingValue, objCounterStrategy);
+	}
 	
 	
 		
@@ -239,10 +249,11 @@ public String peekChange(int iValue) throws ExceptionZZZ {
 	return sCurrent;
 }
 
-@Override
-public void setValueCurrent(String sValue) {
-	// TODO Auto-generated method stub
-	
+	@Override
+	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
+		int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(sValue);
+		this.setValueCurrent(iValue);
+	}	
 }
 
 

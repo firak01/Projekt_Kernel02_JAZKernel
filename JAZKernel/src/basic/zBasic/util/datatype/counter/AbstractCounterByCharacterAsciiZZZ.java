@@ -42,6 +42,12 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 		this.setValueCurrent(iStartingValue);
 	}
 	
+	public AbstractCounterByCharacterAsciiZZZ(String sStartingValue){
+		//Zuerst den Wert des Strings ermitteln. Diesen kann man dann Wegsichern
+		int iStartingValue = this.
+		this.setValueCurrent(iStartingValue);
+	}
+	
 	//### Aus Interface	
 	public abstract String peekChange(int iValue) throws ExceptionZZZ;
 		

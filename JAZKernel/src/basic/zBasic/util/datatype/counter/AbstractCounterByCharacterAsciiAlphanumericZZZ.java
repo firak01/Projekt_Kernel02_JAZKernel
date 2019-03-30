@@ -19,6 +19,13 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 		super(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
+	public AbstractCounterByCharacterAsciiAlphanumericZZZ(String sStartingValue){
+		super(sStartingValue);
+	}
+	public AbstractCounterByCharacterAsciiAlphanumericZZZ(String sStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		super(sStartingValue);
+		this.setCounterStrategyObject(objCounterStrategy);
+	}
 	
 	
 	
