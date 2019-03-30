@@ -29,22 +29,23 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 
 	@Override
 	public int computeNumberForString(String sTotal) {
-		int iReturn = -1;
+		int iReturn = 0;
 		main:{
-			/*
-			if(StringZZZ.isEmpty(sTotal)) break main;
-			
-			String sLetterFirst = StringZZZ.letterFirst(sTotal);
-			char c = sLetterFirst.toCharArray()[0];
-			if (sTotal.length()==1){	
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
-			}else if(sTotal.length()>=2){					
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
-				iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX);
+			char[] caValue = sTotal.toCharArray();
+			if(caValue.length>=2){
+				char c = caValue[caValue.length-1];
+				
+				//Multiple Zählvariante
+				int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(c);				
+				iReturn= iC + (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX * (caValue.length-1));	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+				
+			}else{				
+				char c = caValue[0];
+				iReturn = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(c);
 			}
-			*/
-		}//end main
-		return iReturn;
+		
+		}//end main;
+		return iReturn;			
 	}
 
 	@Override

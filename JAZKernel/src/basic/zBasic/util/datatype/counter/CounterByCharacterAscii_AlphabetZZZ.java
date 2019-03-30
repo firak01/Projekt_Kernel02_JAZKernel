@@ -79,6 +79,7 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	 */
 	public static String getStringAlphabetMultipleForNumber(int i, boolean bLowercase){
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();
+		objCounterStrategy.isLowercase(bLowercase);
 		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);		
 	}
 	
@@ -97,6 +98,55 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 		}//end main:
 		return sReturn;		
 	}
+	
+	//###################
+	public static int getNumberForStringAlphabet(String sValue) throws ExceptionZZZ{
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ();
+		return CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet_(sValue, objCounterStrategy);
+	}
+	
+	public static int getNumberForStringAlphabet(String sValue, boolean bLowercase) throws ExceptionZZZ{
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ();		
+		objCounterStrategy.isLowercase(bLowercase);
+		return CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet_(sValue, objCounterStrategy);
+	}
+	
+	public static int getNumberForStringAlphabetMultiple(String sValue) throws ExceptionZZZ{
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();
+		return CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet_(sValue, objCounterStrategy);
+	}
+	
+	public static int getNumberForStringAlphabetMultiple(String sValue, boolean bLowercase) throws ExceptionZZZ{
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();		
+		objCounterStrategy.isLowercase(bLowercase);
+		return CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet_(sValue, objCounterStrategy);
+	}
+	
+	private static int getNumberForStringAlphabet_(String sValue, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		int iReturn = 0;
+		main:{
+			if(StringZZZ.isEmpty(sValue))break main;
+			
+			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
+			boolean bValid = CounterByCharacterAscii_AlphabetZZZ.isValidCharacter(sValue);
+			if(!bValid){
+				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			//.... Besonderheiten der Zählerstrategien 
+			boolean bSyntaxValid = objCounterStrategy.checkSyntax(sValue);
+			if(!bSyntaxValid){
+				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Für die Strategy '" + objCounterStrategy.getClass().getName() + "' ist die Syntax des String snicht korrekt '" + sValue +"'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			iReturn = objCounterStrategy.computeNumberForString(sValue);														
+		}//end main:
+		return iReturn;
+	}
+	
 	
 	//####################
 	

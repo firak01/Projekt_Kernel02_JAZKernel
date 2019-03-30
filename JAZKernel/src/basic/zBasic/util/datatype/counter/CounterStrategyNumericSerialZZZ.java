@@ -52,29 +52,22 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 
 	@Override
 	public int computeNumberForString(String sTotal) {
-		int iReturn = -1;
+		int iReturn = 0;
 		
 		main:{
-			/*
-			if(StringZZZ.isEmpty(sTotal)) break main;			
-			
-			String sLetterLast = StringZZZ.letterLast(sTotal);
-			
-			//Berechnung...
-			char c = sLetterLast.toCharArray()[0];
-			int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
-			if(sTotal.length()==1){					
-				iReturn = itemp;				    					
-			}else if(sTotal.length()>=2){
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX * (sTotal.length()-1);															
-				iReturn = iReturn + itemp;
+			char[] caValue = sTotal.toCharArray();
+			for (int icounter=0; icounter<= caValue.length-1; icounter++){
+				char c = caValue[icounter];
+				
+				//Serielle Zählvariante
+				int iC = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(c);
+				if(icounter==(caValue.length-1)){
+					iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+				}else{
+					iReturn+= (CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+				}	
 			}
-			
-			//Merke der umgekehrte Weg aus der Zahl einen String zu machen geht so:
-			//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			//int iDiv = Math.abs(i / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			//int iMod = i % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
-			 */
+		
 		}//end main;
 		return iReturn;			
 	}

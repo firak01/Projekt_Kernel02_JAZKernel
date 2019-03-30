@@ -133,6 +133,10 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 				ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
 				return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);						
 	}
+	public static int getNumberForStringNumericMultiple(String sValue) throws ExceptionZZZ{			
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
+		return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);						
+}
 	
 	private static int getNumberForStringNumeric_(String sValue, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{
 		int iReturn = 0;
@@ -154,22 +158,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 				throw ez;
 			}
 			
-			
-			char[] caValue = sValue.toCharArray();
-			for (int icounter=0; icounter<= caValue.length-1; icounter++){
-				char c = caValue[icounter];
-				
-//				//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
-//				boolean bValid = CounterByCharacterAscii_NumericZZZ.isValidCharacter(c);
-//				if(!bValid){
-//					String sC = Character.toString(c);
-//					ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben '" + sC +"' im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-//					throw ez;
-//				}
-				
-				int iC = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(c);
-				iReturn+=iC;
-			}									
+			iReturn = objCounterStrategy.computeNumberForString(sValue);														
 		}//end main:
 		return iReturn;
 	}
