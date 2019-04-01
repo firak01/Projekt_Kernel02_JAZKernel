@@ -33,16 +33,13 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		super(iStartingValue, objCounterStrategy);
 	}
-	public CounterByCharacterAscii_AlphabetZZZ(String sStartingValue){
+	public CounterByCharacterAscii_AlphabetZZZ(String sStartingValue) throws ExceptionZZZ{
 		super(sStartingValue);
 	}
-	public CounterByCharacterAscii_AlphabetZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		super(objCounterStrategy);
-		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN);
+	public CounterByCharacterAscii_AlphabetZZZ(String sStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		super(sStartingValue, objCounterStrategy);		
 	}
-	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		super(iStartingValue, objCounterStrategy);
-	}
+	
 	
 	
 		
@@ -198,7 +195,7 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	
 	public static String getCharForPositionInAlphabet(int i) {
 			return i > (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN-1) && i < (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX+1) ? String.valueOf((char)(i + 'A' - 1)) : null;
-		}
+	}
 		
 	public static String getCharForPositionInAlphabet(int i, boolean bLowercase) {
 		if(bLowercase){
@@ -220,50 +217,38 @@ public static boolean isValidCharacter(char c){
 	return bReturn;
 }
 
-public static boolean isValidCharacter(String s){
-	boolean bReturn = false;
-	main:{
-		if(StringZZZ.isEmpty(s)) break main;
-		
-		String sRegex = CounterByCharacterAscii_AlphabetZZZ.sREGEX_CHARACTERS;
-		
-		bReturn = true;
-		char[] ca = s.toCharArray();
-		for(int icount = 0; icount<= ca.length-1; icount++){
-			char ctemp = ca[icount];
-			String stemp = Character.toString(ctemp);
-			if(!stemp.matches(sRegex)){
-				bReturn = false;
-				break main;
+	public static boolean isValidCharacter(String s){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(s)) break main;
+			
+			String sRegex = CounterByCharacterAscii_AlphabetZZZ.sREGEX_CHARACTERS;
+			
+			bReturn = true;
+			char[] ca = s.toCharArray();
+			for(int icount = 0; icount<= ca.length-1; icount++){
+				char ctemp = ca[icount];
+				String stemp = Character.toString(ctemp);
+				if(!stemp.matches(sRegex)){
+					bReturn = false;
+					break main;
+				}
 			}
 		}
+		return bReturn;
 	}
-	return bReturn;
-}
 
-//### Aus Interface
-
-@Override
-public String peekChange(int iValue) throws ExceptionZZZ {
-	String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
-	return sCurrent;
-}
+	//### Aus Interface
+	
+	@Override
+	public String peekChange(int iValue) throws ExceptionZZZ {
+		String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
+		return sCurrent;
+	}
 
 	@Override
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
 		int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(sValue);
 		this.setValueCurrent(iValue);
 	}	
-}
-
-
-
-
-
-
-
-
-
-	
-	
-}
+}//End class

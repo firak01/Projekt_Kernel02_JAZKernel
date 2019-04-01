@@ -73,7 +73,7 @@ public class CounterByCharacterAsciiFactoryZZZTest   extends TestCase{
 public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 
 	try {	
-		int itemp; int itempold; String stemp; boolean btemp;
+		int itemp; int itempold; String stemp; String stempold; boolean btemp;
 		
 	//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)
 	//A) MULTIPLE-STRATEGY ist default.
@@ -116,15 +116,46 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 	
 	//+++++++++++++++++++++++++++++++++	
-	//TODO GOON: Setze den Counter durch String-Wert
+	//Setze den Counter durch String-Wert
+	//...ungültige Zeichen
+	try{
+		stemp = "ZA";
+		objCounterStringSeriel.setValueCurrent(stemp);
+		fail("Method should have thrown an exception for the string '"+stemp+"'");
+	} catch (ExceptionZZZ ez) {
+		//Erwartetete Exception
+	} 
 	
+	//... ungültige serielle Syntax
+	try{
+		stemp = "00";
+		objCounterStringSeriel.setValueCurrent(stemp);
+		fail("Method should have thrown an exception for the string '"+stemp+"'");
+	} catch (ExceptionZZZ ez) {
+		//Erwartetete Exception
+	} 
+	
+	stemp = "90";
+	objCounterStringSeriel.setValueCurrent(stemp);
+	itemp = objCounterStringSeriel.getValueCurrent();
+	
+	stempold = stemp;
+	stemp = objCounterStringSeriel.current();
+	assertEquals(stemp, stempold);
+		
+	itempold = itemp;
+	stemp = objCounterStringSeriel.next();
+	itemp = objCounterStringSeriel.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 	
 	//TODO Goon: Mache Alphabet-Counter
 	
 	
 	
 	///..................... TODO GOON 20190307
-	
+	//Erstelle einen Counter über den Konstruktor 
+	//A) Mit int Wert
+	//B) Mit String  Wert
 	
 	
 	

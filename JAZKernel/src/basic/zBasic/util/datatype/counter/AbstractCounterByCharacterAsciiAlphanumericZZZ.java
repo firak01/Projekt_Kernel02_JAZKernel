@@ -19,12 +19,30 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 		super(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
-	public AbstractCounterByCharacterAsciiAlphanumericZZZ(String sStartingValue){
-		super(sStartingValue);
+	public AbstractCounterByCharacterAsciiAlphanumericZZZ(String sStartingValue) throws ExceptionZZZ{
+		//Das Problem ist, dass der Integer Wert nur über eine CounterStrategy errechnet wird.
+		//Die Counter Strategy ist aber auf der hierüber liegenden "Vererbungsebene" der Abstrakten Klassen nicht vorhanden!!!
+		//Darum kann man nicht einfach den Konstruktor der Elternklasse mit super(...) aufrufen. 
+		boolean bSuccess = this.AbstractCounterByCharacterAsciiAlphanumericZZZ_(sStartingValue, null);		
 	}
-	public AbstractCounterByCharacterAsciiAlphanumericZZZ(String sStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		super(sStartingValue);
-		this.setCounterStrategyObject(objCounterStrategy);
+	public AbstractCounterByCharacterAsciiAlphanumericZZZ(String sStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		//Das Problem ist, dass der Integer Wert nur über eine CounterStrategy errechnet wird.
+		//Die Counter Strategy ist aber auf der hierüber liegenden "Vererbungsebene" der Abstrakten Klassen nicht vorhanden!!!
+		//Darum kann man nicht einfach den Konstruktor der Elternklasse mit super(...) aufrufen. 
+		boolean bSuccess = this.AbstractCounterByCharacterAsciiAlphanumericZZZ_(sStartingValue, objCounterStrategy);				
+	}
+	
+	private boolean AbstractCounterByCharacterAsciiAlphanumericZZZ_(String sStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		boolean bReturn=false;
+		main:{
+			if(objCounterStrategy==null){
+				objCounterStrategy = this.getCounterStrategyObject();	
+			}
+			this.setCounterStrategyObject(objCounterStrategy);			
+			this.setValueCurrent(sStartingValue);
+			bReturn = true;
+		}//end main:
+		return bReturn;
 	}
 	
 	

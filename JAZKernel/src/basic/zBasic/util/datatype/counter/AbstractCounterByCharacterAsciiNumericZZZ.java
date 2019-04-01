@@ -19,8 +19,30 @@ public abstract class AbstractCounterByCharacterAsciiNumericZZZ extends Abstract
 		super(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
-	public AbstractCounterByCharacterAsciiNumericZZZ(String sStartingValue){
-		super(sStartingValue);
+	public AbstractCounterByCharacterAsciiNumericZZZ(String sStartingValue) throws ExceptionZZZ{
+		//Das Problem ist, dass der Integer Wert nur über eine CounterStrategy errechnet wird.
+				//Die Counter Strategy ist aber auf der hierüber liegenden "Vererbungsebene" der Abstrakten Klassen nicht vorhanden!!!
+				//Darum kann man nicht einfach den Konstruktor der Elternklasse mit super(...) aufrufen. 
+				boolean bSuccess = this.AbstractCounterByCharacterAsciiNumericZZZ_(sStartingValue, null);
+	}
+	public AbstractCounterByCharacterAsciiNumericZZZ(String sStartingValue,ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		//Das Problem ist, dass der Integer Wert nur über eine CounterStrategy errechnet wird.
+				//Die Counter Strategy ist aber auf der hierüber liegenden "Vererbungsebene" der Abstrakten Klassen nicht vorhanden!!!
+				//Darum kann man nicht einfach den Konstruktor der Elternklasse mit super(...) aufrufen. 
+				boolean bSuccess = this.AbstractCounterByCharacterAsciiNumericZZZ_(sStartingValue, objCounterStrategy);
+	}
+		
+	private boolean AbstractCounterByCharacterAsciiNumericZZZ_(String sStartingValue, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		boolean bReturn=false;
+		main:{
+			if(objCounterStrategy==null){
+				objCounterStrategy = this.getCounterStrategyObject();	
+			}
+			this.setCounterStrategyObject(objCounterStrategy);			
+			this.setValueCurrent(sStartingValue);
+			bReturn = true;
+		}//end main:
+		return bReturn;
 	}
 	
 	

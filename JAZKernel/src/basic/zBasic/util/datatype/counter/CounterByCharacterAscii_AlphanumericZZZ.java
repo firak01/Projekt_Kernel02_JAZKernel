@@ -130,6 +130,9 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 		objCounterStrategy.isLowercase(bLowercase);
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
+	public static String getStringAlphanumericForNumber(int i, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
+	}
 		
 
 	

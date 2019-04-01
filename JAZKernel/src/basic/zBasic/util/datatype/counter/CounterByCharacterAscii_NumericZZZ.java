@@ -23,10 +23,15 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	public CounterByCharacterAscii_NumericZZZ(int iStartingValue){
 		super(iStartingValue);		
 	}
-	public CounterByCharacterAscii_NumericZZZ(String sStartingValue){
+	public CounterByCharacterAscii_NumericZZZ(int iStartingValue, ICounterStrategyNumericZZZ objCounterStrategy){
+		super(iStartingValue, objCounterStrategy);		
+	}
+	public CounterByCharacterAscii_NumericZZZ(String sStartingValue) throws ExceptionZZZ{
 		super(sStartingValue);
 	}
-		
+	public CounterByCharacterAscii_NumericZZZ(String sStartingValue, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		super(sStartingValue, objCounterStrategy);
+	}	
 	
 	//##### STATISCHE METHODEN ######
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
@@ -135,7 +140,10 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	public static int getNumberForStringNumericMultiple(String sValue) throws ExceptionZZZ{			
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);						
-}
+	}
+	public static int getNumberForStringNumeric(String sValue, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);
+	}
 	
 	private static int getNumberForStringNumeric_(String sValue, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{
 		int iReturn = 0;
@@ -146,6 +154,10 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 			boolean bValid = CounterByCharacterAscii_NumericZZZ.isValidCharacter(sValue);
 			if(!bValid){
 				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(objCounterStrategy==null){
+				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Kein Strategy - Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -191,7 +203,8 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	}
 	@Override
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
-		int iValue = CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric(sValue);
+		ICounterStrategyNumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+		int iValue = CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric(sValue,objCounterStrategy);
 		this.setValueCurrent(iValue);
 	}	
 	
