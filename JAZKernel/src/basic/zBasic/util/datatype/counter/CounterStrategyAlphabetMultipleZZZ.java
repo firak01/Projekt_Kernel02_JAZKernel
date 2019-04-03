@@ -5,7 +5,13 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyAlphanumericZZZ{
-
+	public CounterStrategyAlphabetMultipleZZZ(){
+		super();
+	}
+	public CounterStrategyAlphabetMultipleZZZ(boolean bLowercase){
+		super(bLowercase);
+	}
+	
 	@Override
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
 		boolean bReturn = false;

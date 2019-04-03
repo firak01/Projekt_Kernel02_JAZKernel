@@ -106,7 +106,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//B) Definiere per Factory einen Counter mit Serieller Strategy
 	CounterStrategyNumericSerialZZZ objCounterStrategySerial = new CounterStrategyNumericSerialZZZ();
-	ICounterStringStrategyNumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategySerial);
+	ICounterStringStrategyNumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(objCounterStrategySerial);
 	itemp = objCounterStringSeriel.getValueCurrent();
 	stemp = objCounterStringSeriel.current();
 	
@@ -148,7 +148,54 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	itemp = objCounterStringSeriel.getValueCurrent();
 	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 	
-	//TODO Goon: Mache Alphabet-Counter
+	//#################################################################
+	//C) Mache Alphabet-Counter per Factory.
+	CounterStrategyAlphabetMultipleZZZ objCounterStrategyAlphaM = new CounterStrategyAlphabetMultipleZZZ();
+	//ICounterStringStrategyAlphanumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategyAlphaM);
+	ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaM);
+	
+	
+	itemp = objCounterAlphaM.getValueCurrent();
+	stemp = objCounterAlphaM.current();
+	
+	itempold = itemp;
+	stemp = objCounterAlphaM.next();
+	itemp = objCounterAlphaM.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+	
+	//+++++++++++++++++++++++++++++++++	
+	//Setze den Counter durch String-Wert
+	//...ungültige Zeichen
+	try{
+		stemp = "90";
+		objCounterAlphaM.setValueCurrent(stemp);
+		fail("Method should have thrown an exception for the string '"+stemp+"'");
+	} catch (ExceptionZZZ ez) {
+		//Erwartetete Exception
+	} 
+	
+	//... ungültige multiple  Syntax
+	try{
+		stemp = "ZA";
+		objCounterAlphaM.setValueCurrent(stemp);
+		fail("Method should have thrown an exception for the string '"+stemp+"'");
+	} catch (ExceptionZZZ ez) {
+		//Erwartetete Exception
+	} 
+	
+	//... gültige multiple Syntax
+	stemp = "AA";
+	objCounterAlphaM.setValueCurrent(stemp);
+	itemp = objCounterAlphaM.getValueCurrent();
+	
+	stempold = stemp;
+	stemp = objCounterStringSeriel.current();
+	assertEquals(stemp, stempold);
+		
+	itempold = itemp;
+	stemp = objCounterAlphaM.next();
+	itemp = objCounterAlphaM.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 	
 	
 	

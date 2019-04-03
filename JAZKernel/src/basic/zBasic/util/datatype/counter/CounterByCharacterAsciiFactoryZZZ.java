@@ -92,48 +92,65 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 	
 	//#### COUNTER UNTER ANGABE DER STRATEGY. DABEI GIBT ES VERSCHIEDENEN STRATEGIEN. Die haben auch ggfs. andere Methoden.
 	@Override
-	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType,ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
+	public ICounterStringStrategyNumericUserZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
 		ICounterStringStrategyNumericUserZZZ objReturn = null;
-		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
+		if(objCounterStrategy==null){
+			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
 			objReturn = new CounterByCharacterAscii_NumericZZZ();
 			objReturn.setCounterStrategyObject(objCounterStrategy);			
-		}else{
-			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+		//}else{
+//			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+//			throw ez;
+		//}
+		return objReturn;
+	}
+	@Override
+	public ICounterStringStrategyNumericUserZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
+		ICounterStringStrategyNumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(iStart);
+		return objReturn;	
+	}
+	@Override
+	public ICounterStringStrategyNumericUserZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy,String sStart) throws ExceptionZZZ {
+		ICounterStringStrategyNumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(sStart);
+		return objReturn;	
+	}
+	@Override
+	public ICounterStringStrategyAlphanumericUserZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
+		ICounterStringStrategyAlphanumericUserZZZ objReturn = null;
+		if(objCounterStrategy==null){
+			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
+		if(objCounterStrategy instanceof CounterStrategyAlphabetSerialZZZ || objCounterStrategy instanceof CounterStrategyAlphabetMultipleZZZ){
+			objReturn = new CounterByCharacterAscii_AlphabetZZZ();
+			objReturn.setCounterStrategyObject(objCounterStrategy);			
+		}else if(objCounterStrategy instanceof CounterStrategyAlphanumericMultipleZZZ || objCounterStrategy instanceof CounterStrategyAlphanumericSerialZZZ){				 
+			objReturn = new CounterByCharacterAscii_AlphanumericZZZ();
+			objReturn.setCounterStrategyObject(objCounterStrategy);			
+		}else{		
+			ExceptionZZZ ez = new ExceptionZZZ("CounterStategyObject-Type wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
 		return objReturn;
 	}
 	@Override
-	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, int iStart,ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public ICounterStringStrategyAlphanumericUserZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
+		ICounterStringStrategyAlphanumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(iStart);
+		return objReturn;
 	}
 	@Override
-	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, String sStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ICounterStringStrategyAlphanumericUserZZZ createCounter(int iCounterType,
-			ICounterStrategyAlphanumericZZZ objCounterStrategy)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public ICounterStringStrategyAlphanumericUserZZZ createCounter(int iCounterType,
-			int iStart, ICounterStringStrategyAlphanumericUserZZZ objCounterStrategy)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public ICounterStringStrategyAlphanumericUserZZZ createCounter(int iCounterType,
-			String sStart,
-			ICounterStringStrategyAlphanumericUserZZZ objCounterStrategy)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public ICounterStringStrategyAlphanumericUserZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sStart) throws ExceptionZZZ {
+		ICounterStringStrategyAlphanumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(sStart);
+		return objReturn;
 	}
 }

@@ -4,7 +4,14 @@ import basic.zBasic.IConstantZZZ;
 
 public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCounterStrategyZZZ implements ICounterStrategyAlphanumericZZZ{
 	private boolean bLowercase = false;
-		
+	public AbstractCounterStrategyAlphanumericZZZ(){
+		super();
+	}
+	public AbstractCounterStrategyAlphanumericZZZ(boolean bLowercase){
+		super();
+		this.isLowercase(true);
+	}
+	
 	//++++ Aus Interface
 	@Override
 	public boolean isLowercase() {

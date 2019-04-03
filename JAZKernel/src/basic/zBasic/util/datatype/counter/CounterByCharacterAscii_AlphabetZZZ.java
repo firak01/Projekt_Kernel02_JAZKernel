@@ -241,14 +241,22 @@ public static boolean isValidCharacter(char c){
 	//### Aus Interface
 	
 	@Override
-	public String peekChange(int iValue) throws ExceptionZZZ {
-		String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue);
+	public String peekChange(int iValue) throws ExceptionZZZ {		
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+		
+		//TODO GOON 20190403: Statische Methoden ansprechen. Vermutlich per 
+				//if (objCounterStrategy instanceof ...multiple...){
+		String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue, objCounterStrategy);
 		return sCurrent;
 	}
 
 	@Override
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
-		int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(sValue);
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+		
+		//TODO GOON 20190403: Statische Methoden ansprechen. Vermutlich per 
+				//if (objCounterStrategy instanceof ...multiple...){
+		int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(sValue, objCounterStrategy);
 		this.setValueCurrent(iValue);
 	}	
 }//End class
