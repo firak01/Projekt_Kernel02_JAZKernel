@@ -57,6 +57,17 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	}
 	
 	
+	/**Behandlung der Werte nach der "Multiple"-Strategie.
+	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 */
+	public static String getStringNumericForNumber(int i,ICounterStrategyZZZ objCounterStrategy){	
+		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
+	}
+	
+	
 	/** Merke: Es gibt keine Kleinbuchstaben bei NUMMERN
 	 * @param i
 	 * @param bMultipleStrategy
@@ -198,7 +209,8 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 //### Aus Interface
 	@Override
 	public String peekChange(int iValue) throws ExceptionZZZ {
-		String sCurrent = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(iValue);
+		ICounterStrategyNumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+		String sCurrent = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(iValue,objCounterStrategy);
 		return sCurrent;
 	}
 	@Override

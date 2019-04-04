@@ -97,7 +97,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	stemp = objCounterString.change(itemp);
 	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	assertEquals("Fehler beim Setzen des Counters", "99991", stemp);
+	assertEquals("Fehler beim Setzen des Counters", "11111", stemp);
 	
 	itempold = itemp;
 	itemp = objCounterString.getValueCurrent();
@@ -148,55 +148,6 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	itemp = objCounterStringSeriel.getValueCurrent();
 	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 	
-	//#################################################################
-	//C) Mache Alphabet-Counter per Factory.
-	CounterStrategyAlphabetMultipleZZZ objCounterStrategyAlphaM = new CounterStrategyAlphabetMultipleZZZ();
-	//ICounterStringStrategyAlphanumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC, objCounterStrategyAlphaM);
-	ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaM);
-	
-	
-	itemp = objCounterAlphaM.getValueCurrent();
-	stemp = objCounterAlphaM.current();
-	
-	itempold = itemp;
-	stemp = objCounterAlphaM.next();
-	itemp = objCounterAlphaM.getValueCurrent();
-	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
-	
-	//+++++++++++++++++++++++++++++++++	
-	//Setze den Counter durch String-Wert
-	//...ungültige Zeichen
-	try{
-		stemp = "90";
-		objCounterAlphaM.setValueCurrent(stemp);
-		fail("Method should have thrown an exception for the string '"+stemp+"'");
-	} catch (ExceptionZZZ ez) {
-		//Erwartetete Exception
-	} 
-	
-	//... ungültige multiple  Syntax
-	try{
-		stemp = "ZA";
-		objCounterAlphaM.setValueCurrent(stemp);
-		fail("Method should have thrown an exception for the string '"+stemp+"'");
-	} catch (ExceptionZZZ ez) {
-		//Erwartetete Exception
-	} 
-	
-	//... gültige multiple Syntax
-	stemp = "AA";
-	objCounterAlphaM.setValueCurrent(stemp);
-	itemp = objCounterAlphaM.getValueCurrent();
-	
-	stempold = stemp;
-	stemp = objCounterStringSeriel.current();
-	assertEquals(stemp, stempold);
-		
-	itempold = itemp;
-	stemp = objCounterAlphaM.next();
-	itemp = objCounterAlphaM.getValueCurrent();
-	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
-	
 	
 	
 	///..................... TODO GOON 20190307
@@ -205,17 +156,77 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//B) Mit String  Wert
 	
 	
-	
-	//### Das spezielle Generics Testobjekt			
-//	hmTestGenerics = new HashMapExtendedZZZ<String, EnumSetMappedTestTypeZZZ>();
-//	
-//	Set<EnumSetMappedTestTypeZZZ> allTypes = EnumSet.allOf(EnumSetMappedTestTypeZZZ.class);
-//	for(EnumSetMappedTestTypeZZZ myType : allTypes) {
-//		//String sType = myType.getAbbreviation();
-//		String sName = myType.name();
-//		hmTestGenerics.put(sName,myType);
-//	}
-	
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+
+}
+
+
+public void testGetStringAlphabetForNumber_FactoryBasedStrategyMultiple(){
+
+	try {	
+		int itemp; int itempold; String stemp; String stempold; boolean btemp;
+		
+		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)	
+		//A) Mache Alphabet-Counter per Factory und Miltiple Strategy
+		CounterStrategyAlphabetMultipleZZZ objCounterStrategyAlphaM = new CounterStrategyAlphabetMultipleZZZ();
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaM);
+		
+		///+++++++++++++++++++++++++++++++
+		//Hole Initialwert
+		itemp = objCounterAlphaM.getValueCurrent();
+		stemp = objCounterAlphaM.current();
+		assertEquals("A",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
+		assertEquals("B",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		//+++++++++++++++++++++++++++++++++	
+		//Setze den Counter durch String-Wert
+		//...ungültige Zeichen
+		try{
+			stemp = "90";
+			objCounterAlphaM.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... ungültige multiple  Syntax
+		try{
+			stemp = "ZA";
+			objCounterAlphaM.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... gültige multiple Syntax
+		stemp = "AA";
+		objCounterAlphaM.setValueCurrent(stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		
+		stempold = stemp;
+		stemp = objCounterAlphaM.current();
+		assertEquals(stemp, stempold);
+			
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
+		assertEquals("BB",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		
+		
+		///..................... TODO GOON 20190307
+		//Erstelle einen Counter über den Konstruktor 
+		//A) Mit int Wert
+		//B) Mit String  Wert
+		
 
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
@@ -223,109 +234,76 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 
 }
 
-/*
- *TODO GOON: FEHLERFALL...
-//"SERIAL STRATEGIE"-Ergebnisse
-int itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MIN-1;
-String stemp = CounterByCharacterAsciiZZZ.getStringNumericForNumber(itemp);
-boolean btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
+public void testGetStringAlphanumericForNumber_FactoryBasedStrategy(){
 
-//+++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MIN;
+	try {	
+		int itemp; int itempold; String stemp; String stempold; boolean btemp;
+		
+		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)	
+		//A) Mache Alphabet-Counter per Factory und Miltiple Strategy
+		CounterStrategyAlphanumericMultipleZZZ objCounterStrategyAlphaNumM = new CounterStrategyAlphanumericMultipleZZZ();
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaNumM);
+		
+		///+++++++++++++++++++++++++++++++
+		//Hole Initialwert
+		itemp = objCounterAlphaM.getValueCurrent();
+		stemp = objCounterAlphaM.current();
+		assertEquals("0",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
+		assertEquals("1",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		//+++++++++++++++++++++++++++++++++	
+		//Setze den Counter durch String-Wert
+		//...ungültige Zeichen
+		try{
+			stemp = "+";
+			objCounterAlphaM.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... ungültige multiple  Syntax
+		try{
+			stemp = "90";
+			objCounterAlphaM.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... gültige multiple Syntax
+		stemp = "00";
+		objCounterAlphaM.setValueCurrent(stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		
+		stempold = stemp;
+		stemp = objCounterAlphaM.current();
+		assertEquals(stemp, stempold);
+			
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
+		assertEquals("11",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		
+		
+		///..................... TODO GOON 20190307
+		//Erstelle einen Counter über den Konstruktor 
+		//A) Mit int Wert
+		//B) Mit String  Wert
+		
 
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
 
-stemp = CounterByCharacterAsciiZZZ.getStringNumericForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals( "0",stemp);
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX;
-
-//"SERIAL STRATEGIE"-Ergebnisse
-stemp = CounterByCharacterAsciiZZZ.getStringNumericForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals("9",stemp);
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-//######################
-//Nun Werte eingeben, die über 10 liegen. Diese müssen erlaubt sein.
-//+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX+1;
-stemp = CounterByCharacterAsciiZZZ.getStringNumericForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals("90",stemp);
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//... weitere Tests
-	//"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX+2;
-stemp = CounterByCharacterAsciiZZZ.getStringNumericForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals( "91",stemp);
 }
-
-public void testGetStringNumericForNumber_StrategyMultiple(){
-
-//"MULTIPLE STRATEGIE"-Ergebnisse
-int itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MIN-1;
-String stemp = CounterByCharacterAsciiZZZ.getStringNumericMultipleForNumber(itemp);
-boolean btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-
-//+++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MIN;
-
-
-stemp = CounterByCharacterAsciiZZZ.getStringNumericMultipleForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals( "0",stemp);
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX;
-
-//"SERIAL STRATEGIE"-Ergebnisse
-stemp = CounterByCharacterAsciiZZZ.getStringNumericMultipleForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals("9",stemp);
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-//######################
-//Nun Werte eingeben, die über 10 liegen. Diese müssen erlaubt sein.
-//+++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX+1;
-stemp = CounterByCharacterAsciiZZZ.getStringNumericMultipleForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals("00",stemp);
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//... weitere Tests
-	//"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAsciiZZZ.iNUMERIC_POSITION_MAX+2;
-stemp = CounterByCharacterAsciiZZZ.getStringNumericMultipleForNumber(itemp);
-btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-assertTrue("Fehler beim Check auf Null Werte", btemp);
-assertEquals( "11",stemp);
-}
-*/
-
 
 private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
 	boolean bReturn = false;

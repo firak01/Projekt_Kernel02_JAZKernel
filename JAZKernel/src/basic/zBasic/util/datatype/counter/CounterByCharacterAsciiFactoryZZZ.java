@@ -128,7 +128,7 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 			throw ez;
 		}
 		
-		//if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
+		
 		if(objCounterStrategy instanceof CounterStrategyAlphabetSerialZZZ || objCounterStrategy instanceof CounterStrategyAlphabetMultipleZZZ){
 			objReturn = new CounterByCharacterAscii_AlphabetZZZ();
 			objReturn.setCounterStrategyObject(objCounterStrategy);			

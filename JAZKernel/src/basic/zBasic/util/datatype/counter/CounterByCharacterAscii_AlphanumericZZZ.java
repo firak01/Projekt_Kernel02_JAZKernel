@@ -285,17 +285,23 @@ public static boolean isValidCharacter(String s){
 }
 
 
-//### Aus Interface
-@Override
-public String peekChange(int iValue) throws ExceptionZZZ {
-	String sCurrent = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(iValue);
-	return sCurrent;
-}
-@Override
-public void setValueCurrent(String sValue) {
-	// TODO Auto-generated method stub
+	//### Aus Interface
+	@Override
+	public String peekChange(int iValue) throws ExceptionZZZ {	
+		String sReturn = null;
+		main:{
+			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+			sReturn = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(iValue, objCounterStrategy);	
+		}//end main:
+		return sReturn;
+	}
 	
-}
-
-
+	@Override
+	public void setValueCurrent(String sValue) throws ExceptionZZZ{			
+		main:{
+			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+			int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(sValue, objCounterStrategy);
+			this.setValueCurrent(iValue);
+		}//end main:
+	}	
 }

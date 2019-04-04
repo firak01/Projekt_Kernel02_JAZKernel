@@ -90,6 +90,10 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);		
 	}
 	
+	public static String getStringAlphabetForNumber(int i, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);
+	}
+	
 	private static String getStringAlphabetForNumber_(int iNumber, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		String sReturn = null;		
 		main:{
@@ -117,6 +121,10 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 		objCounterStrategy.isLowercase(bLowercase);
 		return CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet_(sValue, objCounterStrategy);
 	}
+	public static int getNumberForStringAlphabet(String sValue, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+		return CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet_(sValue, objCounterStrategy);
+	}
+
 	
 	public static int getNumberForStringAlphabetMultiple(String sValue) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();
@@ -137,7 +145,7 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
 			boolean bValid = CounterByCharacterAscii_AlphabetZZZ.isValidCharacter(sValue);
 			if(!bValid){
-				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphabetZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -145,7 +153,7 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 			//.... Besonderheiten der Zählerstrategien 
 			boolean bSyntaxValid = objCounterStrategy.checkSyntax(sValue);
 			if(!bSyntaxValid){
-				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Für die Strategy '" + objCounterStrategy.getClass().getName() + "' ist die Syntax des String snicht korrekt '" + sValue +"'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Für die Strategy '" + objCounterStrategy.getClass().getName() + "' ist die Syntax des String snicht korrekt '" + sValue +"'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphabetZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -241,22 +249,21 @@ public static boolean isValidCharacter(char c){
 	//### Aus Interface
 	
 	@Override
-	public String peekChange(int iValue) throws ExceptionZZZ {		
-		ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-		
-		//TODO GOON 20190403: Statische Methoden ansprechen. Vermutlich per 
-				//if (objCounterStrategy instanceof ...multiple...){
-		String sCurrent = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue, objCounterStrategy);
-		return sCurrent;
+	public String peekChange(int iValue) throws ExceptionZZZ {	
+		String sReturn = null;
+		main:{
+			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+			sReturn = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(iValue, objCounterStrategy);	
+		}//end main:
+		return sReturn;
 	}
 
 	@Override
-	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
-		ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-		
-		//TODO GOON 20190403: Statische Methoden ansprechen. Vermutlich per 
-				//if (objCounterStrategy instanceof ...multiple...){
-		int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(sValue, objCounterStrategy);
-		this.setValueCurrent(iValue);
+	public void setValueCurrent(String sValue) throws ExceptionZZZ{			
+		main:{
+			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
+			int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(sValue, objCounterStrategy);
+			this.setValueCurrent(iValue);
+		}//end main:
 	}	
 }//End class
