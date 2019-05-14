@@ -296,6 +296,24 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategy(){
 		///..................... TODO GOON 20190307
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,10);
+		itemp = objCounterAlphaM2.getValueCurrent();
+		stemp = objCounterAlphaM2.current();
+		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
+		
+		itempold = itemp;
+		stemp = objCounterAlphaM2.next();
+		assertEquals("A",stemp);
+		itemp = objCounterAlphaM2.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		objCounterStrategyAlphaNumM.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
+		itempold = itemp;
+		stemp = objCounterAlphaM2.next();
+		assertEquals("b",stemp);
+		itemp = objCounterAlphaM2.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
 		//B) Mit String  Wert
 		
 
