@@ -234,13 +234,16 @@ public void testGetStringAlphabetForNumber_FactoryBasedStrategyMultiple(){
 
 }
 
-public void testGetStringAlphanumericForNumber_FactoryBasedStrategy(){
+public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 
 	try {	
 		int itemp; int itempold; String stemp; String stempold; boolean btemp;
 		
-		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)	
-		//A) Mache Alphabet-Counter per Factory und Miltiple Strategy
+		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)
+		
+		//####################################
+		//A) Mache Alphabet-Counter per Factory und Multiple Strategy
+		//####################################
 		CounterStrategyAlphanumericMultipleZZZ objCounterStrategyAlphaNumM = new CounterStrategyAlphanumericMultipleZZZ();
 		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaNumM);
 		
@@ -293,7 +296,6 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategy(){
 		
 		
 		
-		///..................... TODO GOON 20190307
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
 		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,10);
@@ -314,9 +316,159 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategy(){
 		itemp = objCounterAlphaM2.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
-		//B) Mit String  Wert
+		//B) Mit String  Wert		
+		objCounterStrategyAlphaNumM.isLowercase(false);
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,"9");
+		itemp = objCounterAlphaM3.getValueCurrent();
+		stemp = objCounterAlphaM3.current();
+		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
+		
+		itempold = itemp;
+		stemp = objCounterAlphaM3.next();
+		assertEquals("A",stemp);
+		itemp = objCounterAlphaM3.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		objCounterStrategyAlphaNumM.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
+		itempold = itemp;
+		stemp = objCounterAlphaM3.next();
+		assertEquals("b",stemp);
+		itemp = objCounterAlphaM3.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
 		
 
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+
+}
+
+public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
+
+	try {	
+		int itemp; int itempold; String stemp; String stempold; boolean btemp;
+		
+		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)
+		
+		//####################################
+		//B) Mache Alphabet-Counter per Factory und Serieller Strategy
+		///..................... TODO GOON 20190515
+		//####################################
+		CounterStrategyAlphanumericSerialZZZ objCounterStrategyAlphaNumS = new CounterStrategyAlphanumericSerialZZZ();
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumS);
+		
+		///+++++++++++++++++++++++++++++++
+		//Hole Initialwert
+		itemp = objCounterAlphaS.getValueCurrent();
+		stemp = objCounterAlphaS.current();
+		assertEquals("0",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaS.next();
+		assertEquals("1",stemp);
+		itemp = objCounterAlphaS.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		//+++++++++++++++++++++++++++++++++	
+		//Setze den Counter durch String-Wert
+		//...ungültige Zeichen
+		try{
+			stemp = "+";
+			objCounterAlphaS.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... ungültige serielle  Syntax
+		try{
+			stemp = "99";
+			objCounterAlphaS.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... gültige serielle Syntax
+		stemp = "ZA";
+		objCounterAlphaS.setValueCurrent(stemp);
+		itemp = objCounterAlphaS.getValueCurrent();
+		
+		stempold = stemp;
+		stemp = objCounterAlphaS.current();
+		assertEquals(stemp, stempold);
+			
+		itempold = itemp;
+		stemp = objCounterAlphaS.next();
+		assertEquals("ZB",stemp);
+		itemp = objCounterAlphaS.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		
+		
+		//Erstelle einen Counter über den Konstruktor 
+		//A) Mit int Wert
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,10);
+		itemp = objCounterAlphaS2.getValueCurrent();
+		stemp = objCounterAlphaS2.current();
+		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
+		
+		itempold = itemp;
+		stemp = objCounterAlphaS2.next();
+		assertEquals("A",stemp);
+		itemp = objCounterAlphaS2.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		objCounterStrategyAlphaNumS.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
+		itempold = itemp;
+		stemp = objCounterAlphaS2.next();
+		assertEquals("b",stemp);
+		itemp = objCounterAlphaS2.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		//B) Mit String  Wert
+		///..................... TODO GOON 20190515
+		objCounterStrategyAlphaNumS.isLowercase(false);
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"9");
+		itemp = objCounterAlphaS3.getValueCurrent();
+		stemp = objCounterAlphaS3.current();
+		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
+		
+		itempold = itemp;
+		stemp = objCounterAlphaS3.next();
+		assertEquals("A",stemp);
+		itemp = objCounterAlphaS3.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		objCounterStrategyAlphaNumS.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
+		itempold = itemp;
+		stemp = objCounterAlphaS3.next();
+		assertEquals("b",stemp);
+		itemp = objCounterAlphaS3.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		//+++ Mit einem mehrstelligen String-Wert
+		objCounterStrategyAlphaNumS.isLowercase(false);
+		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"ZZA");
+		itemp = objCounterAlphaS4.getValueCurrent();
+		stemp = objCounterAlphaS4.current();
+		assertEquals("ZZA",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaS4.next();
+		assertEquals("ZZB",stemp);
+		itemp = objCounterAlphaS4.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		objCounterStrategyAlphaNumS.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
+		itempold = itemp;
+		stemp = objCounterAlphaS4.next();
+		assertEquals("zzc",stemp);
+		itemp = objCounterAlphaS4.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 
