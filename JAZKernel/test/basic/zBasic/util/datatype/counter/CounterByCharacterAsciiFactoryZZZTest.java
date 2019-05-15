@@ -353,7 +353,6 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		
 		//####################################
 		//B) Mache Alphabet-Counter per Factory und Serieller Strategy
-		///..................... TODO GOON 20190515
 		//####################################
 		CounterStrategyAlphanumericSerialZZZ objCounterStrategyAlphaNumS = new CounterStrategyAlphanumericSerialZZZ();
 		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumS);
@@ -428,7 +427,6 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		//B) Mit String  Wert
-		///..................... TODO GOON 20190515
 		objCounterStrategyAlphaNumS.isLowercase(false);
 		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"9");
 		itemp = objCounterAlphaS3.getValueCurrent();
