@@ -35,7 +35,7 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 			}
 			
 			//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
-			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighestInAlphanumeric(bLowerized);
+			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighest(bLowerized);
 			for (int icount=0;icount<=sTotal.length()-2;icount++){
 				String stemp = StringZZZ.letterAtPosition(sTotal,icount);
 				if(!sLetterMax.equals(stemp)){
@@ -59,7 +59,7 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 				char c = caValue[icounter];
 				
 				//Serielle Zählvariante
-				int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(c);
+				int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
 				if(icounter==(caValue.length-1)){
 					iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
 				}else{
@@ -84,11 +84,11 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 			
 			ArrayList<String>listas=new ArrayList<String>();			
 			for(int icount = 1; icount <= iDiv; icount++){
-				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
+				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
 				listas.add(stemp);
 			}
 			if(iMod>=1){
-				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(iMod,bLowercase);
+				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iMod,bLowercase);
 				listas.add(stemp);
 			}
 			

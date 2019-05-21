@@ -1543,7 +1543,7 @@ MeinTestParameter=blablaErgebnis
 			sSearchCounter = objCounter.current();
 			
 			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 			sSearchCounter = ": (" + sSearchCounter + ") "; 			
 			String sSection = null;						
 			if(sMainSection!=this.getSystemKey() && sMainSection!=this.getApplicationKey()){ //Damit keine doppelte Abfrage gemacht wird.
@@ -1568,7 +1568,7 @@ MeinTestParameter=blablaErgebnis
 				}
 				
 				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection=sMainSection;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
@@ -1593,7 +1593,7 @@ MeinTestParameter=blablaErgebnis
 			
 			iSearchCounter++;
 			System.out.println("iSearchCounter="+iSearchCounter);
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(sMainSection!=this.getSystemKey()){
 				sSection = this.getSystemKey();
@@ -1618,7 +1618,7 @@ MeinTestParameter=blablaErgebnis
 			}
 			
 			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(sMainSection!=this.getApplicationKey()){
 				sSection = this.getApplicationKey();
@@ -1647,7 +1647,7 @@ MeinTestParameter=blablaErgebnis
 			//3. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems.
 			//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines Programs zu ermitteln
 			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				String sSystemNumber= this.getSystemNumber();
@@ -1681,7 +1681,7 @@ MeinTestParameter=blablaErgebnis
 				
 				//##################################################################################
 				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection =  sProgramOrSection;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1707,7 +1707,7 @@ MeinTestParameter=blablaErgebnis
 				//TODO GOON 20190216: Dies in eine eine eigene Methode auslagern
 				//a) mit Systemkey
 				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1731,7 +1731,7 @@ MeinTestParameter=blablaErgebnis
 				
 				//b) mit Applicationkey
 				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1755,7 +1755,7 @@ MeinTestParameter=blablaErgebnis
 													
 				//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
 				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = sSection + "!" + this.getSystemNumber();
@@ -1780,7 +1780,7 @@ MeinTestParameter=blablaErgebnis
 									
 				//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
 				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 				sSearchCounter = ": (" + sSearchCounter + ") "; 
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = this.getSystemKey() + "!" + sSection;
@@ -1807,7 +1807,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1830,7 +1830,7 @@ MeinTestParameter=blablaErgebnis
 			}
 			
 			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
@@ -1855,7 +1855,7 @@ MeinTestParameter=blablaErgebnis
 			}
 			
 			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(iSearchCounter);
+			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
 			sSearchCounter = ": (" + sSearchCounter + ") "; 
 			if(!StringZZZ.isEmpty(sMainSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sMainSection);

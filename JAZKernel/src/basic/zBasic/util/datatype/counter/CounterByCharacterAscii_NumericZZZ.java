@@ -40,7 +40,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringNumericForNumber(int i){
+	public static String getStringForNumber(int i){
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
 	}
@@ -51,7 +51,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringNumericMultipleForNumber(int i){
+	public static String getStringMultipleForNumber(int i){
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
 	}
@@ -63,7 +63,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringNumericForNumber(int i,ICounterStrategyZZZ objCounterStrategy){	
+	public static String getStringForNumber(int i,ICounterStrategyZZZ objCounterStrategy){	
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
 	}
 	
@@ -94,16 +94,16 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	
 
 	
-	public static String getCharForPositionInNumeric(int i) {
+	public static String getCharForPosition(int i) {
 		return i > (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) && i < (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1) ? String.valueOf((char)(i + '0' - 1)) : null; //Merke: Es gibt keine Kleinbuchstaben Variante
 	}
-	public static String getCharHighestInNumeric(boolean bLowercase){
+	public static String getCharHighest(boolean bLowercase){
 		int  i= CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
-		return CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(i);
+		return CounterByCharacterAscii_NumericZZZ.getCharForPosition(i);
 	}
-	public static String getCharLowestInNumeric(boolean bLowercase){
+	public static String getCharLowest(boolean bLowercase){
 		int  i= CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
-		return CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(i);
+		return CounterByCharacterAscii_NumericZZZ.getCharForPosition(i);
 	}
 	
 	
@@ -112,7 +112,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	 * @return
 	 * @author Fritz Lindhauer, 16.03.2019, 08:46:42
 	 */
-	public static int getPositionInNumericForChar(char c){
+	public static int getPositionForChar(char c){
 		int iReturn = -1;
 		main:{
 			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
@@ -144,15 +144,15 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	
 	//##############################################
 	//Statische Methoden, um aus einer Buchstabenkombination eine Zahl zu machen.
-	public static int getNumberForStringNumeric(String sValue) throws ExceptionZZZ{			
+	public static int getNumberForString(String sValue) throws ExceptionZZZ{			
 				ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
 				return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);						
 	}
-	public static int getNumberForStringNumericMultiple(String sValue) throws ExceptionZZZ{			
+	public static int getNumberForStringMultiple(String sValue) throws ExceptionZZZ{			
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);						
 	}
-	public static int getNumberForStringNumeric(String sValue, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ{
+	public static int getNumberForString(String sValue, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ{
 		return CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric_(sValue, objCounterStrategy);
 	}
 	
@@ -210,13 +210,13 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	@Override
 	public String peekChange(int iValue) throws ExceptionZZZ {
 		ICounterStrategyNumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-		String sCurrent = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(iValue,objCounterStrategy);
+		String sCurrent = CounterByCharacterAscii_NumericZZZ.getStringForNumber(iValue,objCounterStrategy);
 		return sCurrent;
 	}
 	@Override
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{	
 		ICounterStrategyNumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-		int iValue = CounterByCharacterAscii_NumericZZZ.getNumberForStringNumeric(sValue,objCounterStrategy);
+		int iValue = CounterByCharacterAscii_NumericZZZ.getNumberForString(sValue,objCounterStrategy);
 		this.setValueCurrent(iValue);
 	}	
 	

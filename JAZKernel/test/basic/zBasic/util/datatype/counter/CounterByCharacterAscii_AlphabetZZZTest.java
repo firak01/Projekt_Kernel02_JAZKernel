@@ -90,13 +90,13 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     	String stemp; boolean btemp; int itemp; int iInputOld;
     	main:{    		    		
     		//Test zurückkonvertieren
-	    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itempNew);
+	    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itempNew);
 	    	btemp = assertCheckNullBordersAlphabet_(itempNew,stemp);
 	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
 	    	assertEquals("Abweichung beim Zurückkonvertieren.",sInputOld,stemp);
 	    	
 	    	iInputOld = itempNew; 
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
 	    	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
 	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
 	    	assertEquals("Abweichung beim Zurück-Zurückkonvertieren.",iInputOld,itemp);
@@ -112,13 +112,13 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     	String stemp; boolean btemp; int itemp; int iInputOld;
     	main:{    		    		
     		//Test zurückkonvertieren
-	    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itempNew);
+	    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itempNew);
 	    	btemp = assertCheckNullBordersAlphabet_(itempNew,stemp);
 	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
 	    	assertEquals("Abweichung beim Zurückkonvertieren.",sInputOld,stemp);
 	    	
 	    	iInputOld = itempNew; 
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabetMultiple(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringMultiple(stemp);
 	    	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
 	    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
 	    	assertEquals("Abweichung beim Zurück-Zurückkonvertieren.",iInputOld,itemp);
@@ -134,32 +134,32 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
      */
     public void testGetPositionInAlphabetForChar(){
     	char ctemp = '0';
-    	int itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	int itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(ctemp);
     	boolean btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	    	
     	//+++++++++++++++++++++++++++++++++++++++++
     	ctemp = 'A';
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(ctemp);
     	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(1,itemp);
     	
     	ctemp = 'a';
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(ctemp);
     	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(1,itemp);
     	
     	//++++++++++++++++++++++++++++++++++++++++
     	ctemp = 'Z';
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(ctemp);
     	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(26,itemp);
     	
     	ctemp = 'z';
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(ctemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(ctemp);
     	btemp = assertCheckNullBordersAlphabet_(ctemp,itemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(26,itemp);
@@ -168,36 +168,36 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     
     public void testGetCharForPositionInAlphabet(){	    		    	
     	int itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN-1;
-    	String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(itemp);
+    	String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(itemp);
     	boolean btemp = assertCheckNullBordersAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
     	
     	//+++++++++++++++++++++++++++++++++++++++++++++++
     	itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN;
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(itemp);
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(itemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("A",stemp);
     	
-		stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(itemp, true); //Kleinbuchstaben
+		stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(itemp, true); //Kleinbuchstaben
 		btemp = assertCheckNullBordersAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("a",stemp);
     	
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++
 		itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX+1;
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(itemp);
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(itemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 			    	
 		//++++++++++++++++++++++++++++++++
 		itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(itemp);
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(itemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("Z",stemp);
 		
-		stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(itemp, true); //Kleinbuchstaben
+		stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(itemp, true); //Kleinbuchstaben
 		btemp = assertCheckNullBordersAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("z",stemp);
@@ -210,7 +210,7 @@ public void testGetStringAlphabetForNumber_StrategySerial(){
     	
 		//"SERIAL STRATEGIE"-Ergebnisse
     	int itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN-1;
-    	String stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp);
+    	String stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp);
     	boolean btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
     	
@@ -218,12 +218,12 @@ public void testGetStringAlphabetForNumber_StrategySerial(){
     	itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN;
     	
     	
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp);
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp);
     	btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("A",stemp);
     	
-		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp, true); //Kleinbuchstaben
+		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, true); //Kleinbuchstaben
 		btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("a",stemp);
@@ -232,12 +232,12 @@ public void testGetStringAlphabetForNumber_StrategySerial(){
 		itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 		
 		//"SERIAL STRATEGIE"-Ergebnisse
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp);
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp);
     	btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("Z",stemp);
 		
-		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp, true); //Kleinbuchstaben
+		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, true); //Kleinbuchstaben
 		btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("z",stemp);
@@ -251,12 +251,12 @@ public void testGetStringAlphabetForNumber_StrategySerial(){
 		
     	//"SERIAL STRATEGIE"-Ergebnisse
 		itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX+1;
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp);
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp);
     	btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
     	assertEquals("ZA",stemp);
     	
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp, true); //Kleinbuchstaben
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, true); //Kleinbuchstaben
     	btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
     	assertEquals("za",stemp);
@@ -266,12 +266,12 @@ public void testGetStringAlphabetForNumber_StrategySerial(){
     	//... weitere Tests
      	//"SERIAL STRATEGIE"-Ergebnisse
 		itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX+2;
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp);
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp);
     	btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
     	assertEquals("ZB",stemp);
     	
-    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber(itemp, true); //Kleinbuchstaben
+    	stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, true); //Kleinbuchstaben
     	btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
     	assertTrue("Fehler beim Check auf Null Werte", btemp);
     	assertEquals("zb",stemp);
@@ -282,7 +282,7 @@ public void testGetNumberForStringAlphabet(){
 	try{
     	stemp = "0";
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -290,7 +290,7 @@ public void testGetNumberForStringAlphabet(){
     	
     	stemp = "AZ";//Ungültig hinsichtlich der Syntax
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -298,7 +298,7 @@ public void testGetNumberForStringAlphabet(){
     	
     	stemp = "az";//Ungültig hinsichtlich der Syntax
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp, true);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp, true);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -306,7 +306,7 @@ public void testGetNumberForStringAlphabet(){
     	
     	stemp = "AA"; //Serielle Strategie: Alle Zeichen links müssen den höchsten Wert haben. Korrekt wäre also "ZA"
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -314,7 +314,7 @@ public void testGetNumberForStringAlphabet(){
     	
     	stemp = "aa"; //Serielle Strategie: Alle Zeichen links müssen den höchsten Wert haben. Korrekt wäre also "ZA"
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp, true);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp, true);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -322,7 +322,7 @@ public void testGetNumberForStringAlphabet(){
 		    		    		    	 
     	//+++++++++++++++++++++++++++++++++++++++++
     	stemp = "A";
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(1,itemp);
@@ -332,7 +332,7 @@ public void testGetNumberForStringAlphabet(){
     	
     	//++++++++++++++++++++++++++++++++++++++++
     	stemp = "Z";
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);    	
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(26,itemp);
@@ -342,7 +342,7 @@ public void testGetNumberForStringAlphabet(){
     	//++++++++++++++++++++++++++++++++++++++++++
     	//Um +1 Weiter erhöht sollte sein ..."ZA", bei serieller Zählweise | "AA" bei Multiple-Strategy
     	stemp = "ZA";
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabet(stemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(27,itemp);
@@ -360,7 +360,7 @@ public void testGetNumberForStringAlphabet_StrategyMultiple(){
 	try{
     	stemp = "0";
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabetMultiple(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringMultiple(stemp);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -368,7 +368,7 @@ public void testGetNumberForStringAlphabet_StrategyMultiple(){
     	
     	stemp = "A0";
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabetMultiple(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringMultiple(stemp);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -379,7 +379,7 @@ public void testGetNumberForStringAlphabet_StrategyMultiple(){
     	//stemp = "AA";//Serielle Strategie: Alle Zeichen links müssen den höchsten Wert haben. Korrekt wäre also "ZA"
     	stemp = "AZ";//Multiple Strategie: Alle Zeichen müssen gleich sein.
     	try{
-	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabetMultiple(stemp);
+	    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringMultiple(stemp);
 	    	fail("Method should have thrown an exception for the string '"+stemp+"'");
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
@@ -387,7 +387,7 @@ public void testGetNumberForStringAlphabet_StrategyMultiple(){
 		    		    		    	 
     	//+++++++++++++++++++++++++++++++++++++++++
     	stemp = "A";
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabetMultiple(stemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringMultiple(stemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(1,itemp);
@@ -397,7 +397,7 @@ public void testGetNumberForStringAlphabet_StrategyMultiple(){
     	
     	//++++++++++++++++++++++++++++++++++++++++
     	stemp = "Z";
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabetMultiple(stemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringMultiple(stemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);    	
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(26,itemp);
@@ -407,7 +407,7 @@ public void testGetNumberForStringAlphabet_StrategyMultiple(){
     	//++++++++++++++++++++++++++++++++++++++++++
     	//Um +1 Weiter erhöht sollte sein ..."ZA", bei serieller Zählweise | "AA" bei Multiple-Strategy
     	stemp = "AA";
-    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringAlphabetMultiple(stemp);
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForStringMultiple(stemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
     	assertTrue("Fehler beim Check auf gültige Werte", btemp);
     	assertEquals(27,itemp);
@@ -424,7 +424,7 @@ public void testGetStringAlphabetForNumber_StrategyMultiple(){
 
 //"MULTIPLE STRATEGY"-Ergebnisse
 int itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN-1;
-String stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp);
+String stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp);
 boolean btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 
@@ -432,12 +432,12 @@ assertTrue("Fehler beim Check auf Null Werte", btemp);
 itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN;
 	
 //"MULTIPLE STRATEGY"-Ergebnisse
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp);
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp);
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("A",stemp);
 
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp, true); //Kleinbuchstaben
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp, true); //Kleinbuchstaben
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("a",stemp);
@@ -446,12 +446,12 @@ assertEquals("a",stemp);
 itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 
 //"MULTIPLE STRATEGY"-Ergebnisse
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp);
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp);
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("Z",stemp);
 
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp, true); //Kleinbuchstaben
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp, true); //Kleinbuchstaben
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("z",stemp);
@@ -464,12 +464,12 @@ assertEquals("z",stemp);
 itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX+1;
 
 //"MULTIPLE STRATEGY"-Ergebnisse
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp);
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp);
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("AA",stemp);
 
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp, true); //Kleinbuchstaben
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp, true); //Kleinbuchstaben
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("aa",stemp);
@@ -480,12 +480,12 @@ assertEquals("aa",stemp);
 itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX+2;
 
 //"MULTIPLE STRATEGY"-Ergebnisse
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp);
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp);
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("BB",stemp);
 
-stemp = CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetMultipleForNumber(itemp, true); //Kleinbuchstaben
+stemp = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(itemp, true); //Kleinbuchstaben
 btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals("bb",stemp);

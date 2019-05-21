@@ -35,7 +35,7 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			}
 			
 			//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
-			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighestInAlphanumeric(bLowerized);
+			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighest(bLowerized);
 			for (int icount=0;icount<=sTotal.length()-2;icount++){
 				String stemp = StringZZZ.letterAtPosition(sTotal,icount);
 				if(!sLetterMax.equals(stemp)){
@@ -61,7 +61,7 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			
 			//Berechnung...
 			char c = sLetterLast.toCharArray()[0];
-			int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
+			int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
 			if(sTotal.length()==1){					
 				iReturn = itemp;				    					
 			}else if(sTotal.length()>=2){
@@ -89,11 +89,11 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			
 			ArrayList<String>listas=new ArrayList<String>();			
 			for(int icount = 1; icount <= iDiv; icount++){
-				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
+				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
 				listas.add(stemp);
 			}
 			if(iMod>=1){
-				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);
+				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
 				listas.add(stemp);
 			}
 			

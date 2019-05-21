@@ -36,9 +36,9 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 			String sLetterFirst = StringZZZ.letterFirst(sTotal);
 			char c = sLetterFirst.toCharArray()[0];
 			if (sTotal.length()==1){	
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
+				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
 			}else if(sTotal.length()>=2){					
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
+				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
 				iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
 			}
 		}//end main
@@ -60,10 +60,10 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 			//Ermittle den "Modulo"-Wert und davon das Zeichen
 			String sCharacter=null;			
 			if(iMod>=1){
-				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);	
+				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);	
 				sReturn = sCharacter;
 			}else if(iMod==0){
-				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
+				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
 				sReturn = "";
 			}
 			

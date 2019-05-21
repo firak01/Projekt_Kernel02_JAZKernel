@@ -43,12 +43,12 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * Der Eingabestring darf nur entweder aus Groß- oder aus Kleinbuschsteben bestehen.
 	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
+	 * @throws ExceptionZZZ 
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
-	 * @throws ExceptionZZZ 
 	 */
-	public static int getNumberForStringAlphanumeric(String s) throws ExceptionZZZ{		
-		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(s, null);
+	public static int getNumberForString(String s) throws ExceptionZZZ{		
+		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(s, null);
 	}
 	
 	/**Behandlung der Werte nach der "Multiple"-Strategie, wenn bMultiple = true.
@@ -59,7 +59,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static int getNumberForStringAlphanumeric(String s, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{		
+	public static int getNumberForString(String s, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{		
 		return CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric_(s, objCounterStrategy);
 	}
 	
@@ -113,7 +113,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericForNumber(int i) throws ExceptionZZZ{
+	public static String getStringForNumber(int i) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
@@ -125,12 +125,12 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericForNumber(int i, boolean bLowercase) throws ExceptionZZZ{
+	public static String getStringForNumber(int i, boolean bLowercase) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		objCounterStrategy.isLowercase(bLowercase);
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
-	public static String getStringAlphanumericForNumber(int i, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
+	public static String getStringForNumber(int i, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
 		
@@ -143,7 +143,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericMultipleForNumber(int i) throws ExceptionZZZ{
+	public static String getStringMultipleForNumber(int i) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
@@ -155,7 +155,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringAlphanumericMultipleForNumber(int i, boolean bLowercase) throws ExceptionZZZ{
+	public static String getStringMultipleForNumber(int i, boolean bLowercase) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 		objCounterStrategy.isLowercase(bLowercase);
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
@@ -189,7 +189,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	 * @return
 	 * @author Fritz Lindhauer, 16.03.2019, 08:46:42
 	 */
-	public static int getPositionInAlphanumericForChar(char c){
+	public static int getPositionForChar(char c){
 		int iReturn = -1;
 		main:{
 			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
@@ -217,7 +217,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 		return iReturn;
 	}
 	
-	public static String getCharForPositionInAlphanumeric(int i) {		
+	public static String getCharForPosition(int i) {		
 		int iOffset;
 		if(i>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
 			iOffset = 7;
@@ -229,7 +229,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 		return iNormed > (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) && iNormed < (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null;
 	}
 	
-public static String getCharForPositionInAlphanumeric(int i, boolean bLowercase) {
+public static String getCharForPosition(int i, boolean bLowercase) {
 	if(bLowercase){		
 				int iOffset;
 				if(i>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
@@ -240,17 +240,17 @@ public static String getCharForPositionInAlphanumeric(int i, boolean bLowercase)
 				int iNormed = i + iOffset;
 				return iNormed > (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) && iNormed < (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null; //Bei Kleinbuchstaben sind das andere ASCII Werte. Aber mit 'Zeichen'/Characters kann man wie mit Integer rechnen
 	}else{
-		return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i);
+		return CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(i);
 	}
 }
 
-public static String getCharHighestInAlphanumeric(boolean bLowercase){
+public static String getCharHighest(boolean bLowercase){
 	int  i= CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
-	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i, bLowercase);
+	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(i, bLowercase);
 }
-public static String getCharLowestInAlphanumeric(boolean bLowercase){
+public static String getCharLowest(boolean bLowercase){
 	int  i= CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
-	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i, bLowercase);
+	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(i, bLowercase);
 }
 
 //++++++++++
@@ -291,7 +291,7 @@ public static boolean isValidCharacter(String s){
 		String sReturn = null;
 		main:{
 			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-			sReturn = CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber(iValue, objCounterStrategy);	
+			sReturn = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(iValue, objCounterStrategy);	
 		}//end main:
 		return sReturn;
 	}
@@ -300,7 +300,7 @@ public static boolean isValidCharacter(String s){
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{			
 		main:{
 			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-			int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForStringAlphanumeric(sValue, objCounterStrategy);
+			int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sValue, objCounterStrategy);
 			this.setValueCurrent(iValue);
 		}//end main:
 	}	

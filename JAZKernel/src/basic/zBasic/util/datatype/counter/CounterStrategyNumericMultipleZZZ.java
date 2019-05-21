@@ -37,12 +37,12 @@ public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNu
 				char c = caValue[caValue.length-1];
 				
 				//Serielle Zählvariante
-				int iC = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(c);				
+				int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);				
 				iReturn= iC + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (caValue.length-1));	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
 				
 			}else{				
 				char c = caValue[0];
-				iReturn = CounterByCharacterAscii_NumericZZZ.getPositionInNumericForChar(c);
+				iReturn = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
 			}
 		
 		}//end main;
@@ -62,10 +62,10 @@ public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNu
 			//Ermittle den "Modulo"-Wert und davon das Zeichen
 			String sCharacter=null;
 			if(iMod>=1){
-				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(iMod);	
+				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);	
 				sReturn = sCharacter;
 			}else if(iMod==0){
-				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
+				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
 				sReturn = "";
 			}
 			

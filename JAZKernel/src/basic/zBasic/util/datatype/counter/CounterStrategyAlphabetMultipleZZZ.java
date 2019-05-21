@@ -42,12 +42,12 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 				char c = caValue[caValue.length-1];
 				
 				//Multiple Zählvariante
-				int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(c);				
+				int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);				
 				iReturn= iC + (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX * (caValue.length-1));	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
 				
 			}else{				
 				char c = caValue[0];
-				iReturn = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(c);
+				iReturn = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
 			}
 		
 		}//end main;
@@ -70,10 +70,10 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 			//Ermittle den "Modulo"-Wert und davon das Zeichen
 			String sCharacter=null;
 			if(iMod>=1){
-				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(iMod,bLowercase);	
+				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iMod,bLowercase);	
 				sReturn = sCharacter;
 			}else if(iMod==0){
-				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
+				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
 				sReturn = "";
 			}
 			
