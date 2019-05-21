@@ -92,8 +92,8 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 	
 	//#### COUNTER UNTER ANGABE DER STRATEGY. DABEI GIBT ES VERSCHIEDENEN STRATEGIEN. Die haben auch ggfs. andere Methoden.
 	@Override
-	public ICounterStringStrategyNumericUserZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
-		ICounterStringStrategyNumericUserZZZ objReturn = null;
+	public ICounterNumericZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ {
+		ICounterNumericZZZ objReturn = null;
 		if(objCounterStrategy==null){
 			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
@@ -109,20 +109,20 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		return objReturn;
 	}
 	@Override
-	public ICounterStringStrategyNumericUserZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
-		ICounterStringStrategyNumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+	public ICounterNumericZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
+		ICounterNumericZZZ objReturn = this.createCounter(objCounterStrategy);
 		objReturn.setValueCurrent(iStart);
 		return objReturn;	
 	}
 	@Override
-	public ICounterStringStrategyNumericUserZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy,String sStart) throws ExceptionZZZ {
-		ICounterStringStrategyNumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+	public ICounterNumericZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy,String sStart) throws ExceptionZZZ {
+		ICounterNumericZZZ objReturn = this.createCounter(objCounterStrategy);
 		objReturn.setValueCurrent(sStart);
 		return objReturn;	
 	}
 	@Override
-	public ICounterStringStrategyAlphanumericUserZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
-		ICounterStringStrategyAlphanumericUserZZZ objReturn = null;
+	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
+		ICounterAlphanumericZZZ objReturn = null;
 		if(objCounterStrategy==null){
 			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
@@ -142,14 +142,14 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		return objReturn;
 	}
 	@Override
-	public ICounterStringStrategyAlphanumericUserZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
-		ICounterStringStrategyAlphanumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
+		ICounterAlphanumericZZZ objReturn = this.createCounter(objCounterStrategy);
 		objReturn.setValueCurrent(iStart);
 		return objReturn;
 	}
 	@Override
-	public ICounterStringStrategyAlphanumericUserZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sStart) throws ExceptionZZZ {
-		ICounterStringStrategyAlphanumericUserZZZ objReturn = this.createCounter(objCounterStrategy);
+	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sStart) throws ExceptionZZZ {
+		ICounterAlphanumericZZZ objReturn = this.createCounter(objCounterStrategy);
 		objReturn.setValueCurrent(sStart);
 		return objReturn;
 	}

@@ -9,8 +9,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharacterAsciiNumericZZZ{
 
-	public static int iNUMERIC_POSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
-	public static int iNUMERIC_POSITION_MAX=10;//die 10 Ziffern 0-9 dazu.
+	public static int iPOSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
+	public static int iPOSITION_MAX=10;//die 10 Ziffern 0-9 dazu.
 	
 	public static String sREGEX_CHARACTERS="[0-9]";
 	
@@ -18,7 +18,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	//Konstruktoren
 	public CounterByCharacterAscii_NumericZZZ(){
 		super();
-		this.setValueCurrent(CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN);
+		this.setValueCurrent(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);
 	}
 	public CounterByCharacterAscii_NumericZZZ(int iStartingValue){
 		super(iStartingValue);		
@@ -95,14 +95,14 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 
 	
 	public static String getCharForPositionInNumeric(int i) {
-		return i > (CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN-1) && i < (CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX+1) ? String.valueOf((char)(i + '0' - 1)) : null; //Merke: Es gibt keine Kleinbuchstaben Variante
+		return i > (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) && i < (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1) ? String.valueOf((char)(i + '0' - 1)) : null; //Merke: Es gibt keine Kleinbuchstaben Variante
 	}
 	public static String getCharHighestInNumeric(boolean bLowercase){
-		int  i= CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+		int  i= CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 		return CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(i);
 	}
 	public static String getCharLowestInNumeric(boolean bLowercase){
-		int  i= CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN;
+		int  i= CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
 		return CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(i);
 	}
 	

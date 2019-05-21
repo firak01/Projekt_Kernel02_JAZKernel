@@ -16,19 +16,19 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ{
-	public static int iALPHABET_POSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
-	public static int iALPHABET_POSITION_MAX=26;
+	public static int iPOSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
+	public static int iPOSITION_MAX=26;
 	
 	public static String sREGEX_CHARACTERS="[a-zA-Z]";
 
 	
 	public CounterByCharacterAscii_AlphabetZZZ(){
 		super();
-		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN);
+		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN);
 	}
 	public CounterByCharacterAscii_AlphabetZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		super(objCounterStrategy);
-		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN);
+		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN);
 	}
 	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		super(iStartingValue, objCounterStrategy);
@@ -202,12 +202,12 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	
 	
 	public static String getCharForPositionInAlphabet(int i) {
-			return i > (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN-1) && i < (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX+1) ? String.valueOf((char)(i + 'A' - 1)) : null;
+			return i > (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN-1) && i < (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX+1) ? String.valueOf((char)(i + 'A' - 1)) : null;
 	}
 		
 	public static String getCharForPositionInAlphabet(int i, boolean bLowercase) {
 		if(bLowercase){
-			return i > (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MIN-1) && i < (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX+1) ? String.valueOf((char)(i + 'a' - 1)) : null; //Bei Kleinbuchstaben sind das andere ASCII Werte. Aber mit 'Zeichen'/Characters kann man wie mit Integer rechnen
+			return i > (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN-1) && i < (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX+1) ? String.valueOf((char)(i + 'a' - 1)) : null; //Bei Kleinbuchstaben sind das andere ASCII Werte. Aber mit 'Zeichen'/Characters kann man wie mit Integer rechnen
 		}else{
 			return CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(i);
 		}

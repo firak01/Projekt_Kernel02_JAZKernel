@@ -35,22 +35,22 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
     	boolean bReturn = false;
     	main:{
-    		int iDiv = Math.abs(iInput / CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iInput% CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+    		int iDiv = Math.abs(iInput / CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iInput% CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
     		
     		if(iDiv<1){
-	    		if(iInput< CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
-		    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
-		    	}else if(iInput>CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){
-		    		assertNull("Bei >'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+	    		if(iInput< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
+		    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		    	}else if(iInput>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){
+		    		assertNull("Bei >'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
 		    	}
 		    		
-	    		if(iInput>=CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN && iInput <= CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){
-		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN +"' und <='" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+	    		if(iInput>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN && iInput <= CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){
+		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN +"' und <='" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
 		    	}	  
     		}else{
-    			if(iMod>=CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
-    	    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
+    			if(iMod>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
+    	    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
     	    	}	 
     		}
     		bReturn=true;
@@ -62,10 +62,10 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     	boolean bReturn = false;
     	main:{
     		boolean bIsValidCharacter=CounterByCharacterAscii_NumericZZZ.isValidCharacter(cInput);    		
-    		if(iResult< CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
-    				assertFalse("Bei <'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
-    		}else if(iResult>CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){
-    				assertFalse("Bei >'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+    		if(iResult< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
+    				assertFalse("Bei <'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
+    		}else if(iResult>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){
+    				assertFalse("Bei >'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird ein ungültiges Zeichen erwartet. Ergebnis '" + iResult + "' für " + cInput, bIsValidCharacter);
 	    	}
 	    		    		
     		bReturn=true;
@@ -112,15 +112,15 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     	boolean bReturn = false;
     	main:{
     		//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iResult / CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iResult % CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+			int iDiv = Math.abs(iResult / CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iResult % CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
     		
-			if(iDiv==0 && iMod< CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
-	    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+			if(iDiv==0 && iMod< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
+	    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
 	    	}
 	    		
-    		if(iMod>=CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
-	    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+    		if(iMod>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
+	    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
 	    	}	    		
     		bReturn=true;
     			    		    	
@@ -325,26 +325,26 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     	String stemp; boolean btemp; int itemp;
     	
     	main:{
-	    	itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN-1;
+	    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
 	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(itemp);
 	    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
 	    	assertFalse("Fehler beim Check auf Null Werte", btemp);
 	    	
 	    	//+++++++++++++++++++++++++++++++++++++++++++++++++++			
-	    	itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX+1;
+	    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1;
 	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(itemp);
 	    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
 	    	assertFalse("Fehler beim Check auf Null Werte", btemp);
 			
 	    	//############################################################	    	
-	    	itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN;
+	    	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
 	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(itemp);
 	    	btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
 	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 			assertEquals("0",stemp);
 	    					    					    	
 			//++++++++++++++++++++++++++++++++
-			itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+			itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 	    	stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(itemp);
 	        btemp = assertCheckNullBordersNumericChar_(stemp, itemp);
 	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -356,13 +356,13 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
 public void testGetStringNumericForNumber_StrategySerial(){
 
 //"SERIAL STRATEGIE"-Ergebnisse
-int itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN-1;
+int itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
 String stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(itemp);
 boolean btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 
 //+++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
 
 
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(itemp);
@@ -371,7 +371,7 @@ assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals( "0",stemp);
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 
 //"SERIAL STRATEGIE"-Ergebnisse
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(itemp);
@@ -387,7 +387,7 @@ assertEquals("9",stemp);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX+1;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1;
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(itemp);
 btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -397,7 +397,7 @@ assertEquals("90",stemp);
 
 //... weitere Tests
 	//"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX+2;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+2;
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber(itemp);
 btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -407,20 +407,20 @@ assertEquals( "91",stemp);
 public void testGetStringNumericForNumber_StrategyMultiple(){
 
 //"MULTIPLE STRATEGIE"-Ergebnisse
-int itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN-1;
+int itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
 String stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericMultipleForNumber(itemp);
 boolean btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 
 //+++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericMultipleForNumber(itemp);
 btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals( "0",stemp);
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 
 //"SERIAL STRATEGIE"-Ergebnisse
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericMultipleForNumber(itemp);
@@ -436,7 +436,7 @@ assertEquals("9",stemp);
 //+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX+1;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1;
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericMultipleForNumber(itemp);
 btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -446,7 +446,7 @@ assertEquals("00",stemp);
 
 //... weitere Tests
 	//"SERIAL STRATEGIE"-Ergebnisse
-itemp = CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX+2;
+itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+2;
 stemp = CounterByCharacterAscii_NumericZZZ.getStringNumericMultipleForNumber(itemp);
 btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 assertTrue("Fehler beim Check auf Null Werte", btemp);

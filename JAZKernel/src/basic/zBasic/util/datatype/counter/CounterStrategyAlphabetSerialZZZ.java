@@ -63,7 +63,7 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 				if(icounter==(caValue.length-1)){
 					iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
 				}else{
-					iReturn+= (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+					iReturn+= (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
 				}	
 			}
 		
@@ -77,14 +77,14 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX;
+			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 
 			boolean bLowercase = this.isLowercase();
 			
 			ArrayList<String>listas=new ArrayList<String>();			
 			for(int icount = 1; icount <= iDiv; icount++){
-				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX,bLowercase);
+				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
 				listas.add(stemp);
 			}
 			if(iMod>=1){

@@ -17,14 +17,14 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  */
 public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ {
 
-	public static int iALPHANUMERIC_POSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
-	public static int iALPHANUMERIC_POSITION_MAX=36;
+	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
+	public static int iPOSITION_MAX=36;
 	
 	public static String sREGEX_CHARACTERS="[a-zA-Z0-9]";
 	
 	public CounterByCharacterAscii_AlphanumericZZZ(){
 		super();
-		this.setValueCurrent(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
+		this.setValueCurrent(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
 	}
 	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue){
 		super(iStartingValue);		
@@ -34,7 +34,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public CounterByCharacterAscii_AlphanumericZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
+		super(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	
@@ -205,10 +205,10 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 					iReturn = i - '0' + 1;
 				}else if(i>='A' && i <='Z'){
 					iReturn = i - 'A' + 1;
-					iReturn = iReturn + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+					iReturn = iReturn + CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 				}else if(i>='a' && i <= 'z'){
 					iReturn = i - 'a' + 1;
-					iReturn = iReturn + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+					iReturn = iReturn + CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 				}else{
 					break main;
 				}
@@ -219,37 +219,37 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	
 	public static String getCharForPositionInAlphanumeric(int i) {		
 		int iOffset;
-		if(i>CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
+		if(i>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
 			iOffset = 7;
 		}else{
 			iOffset = 0; 
 		}
 		int iNormed = i + iOffset;
 		
-		return iNormed > (CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN-1) && iNormed < (CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null;
+		return iNormed > (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) && iNormed < (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null;
 	}
 	
 public static String getCharForPositionInAlphanumeric(int i, boolean bLowercase) {
 	if(bLowercase){		
 				int iOffset;
-				if(i>CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
-					iOffset = 7+6+CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX; //Also bei Kleinbuchstaben die Großbuchstabenlücke und noch weitere Sonderzeichen (6) überbrücken.
+				if(i>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){//Da es eine Lücke von 6 Postionen in den Sonderzeichen gibt, normiere den eingegebenen Wert!!!			
+					iOffset = 7+6+CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX; //Also bei Kleinbuchstaben die Großbuchstabenlücke und noch weitere Sonderzeichen (6) überbrücken.
 				}else{
 					iOffset = 0; 
 				}
 				int iNormed = i + iOffset;
-				return iNormed > (CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN-1) && iNormed < (CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null; //Bei Kleinbuchstaben sind das andere ASCII Werte. Aber mit 'Zeichen'/Characters kann man wie mit Integer rechnen
+				return iNormed > (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) && iNormed < (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+1+iOffset) ? String.valueOf((char)(iNormed + '0' - 1)) : null; //Bei Kleinbuchstaben sind das andere ASCII Werte. Aber mit 'Zeichen'/Characters kann man wie mit Integer rechnen
 	}else{
 		return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i);
 	}
 }
 
 public static String getCharHighestInAlphanumeric(boolean bLowercase){
-	int  i= CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
+	int  i= CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
 	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i, bLowercase);
 }
 public static String getCharLowestInAlphanumeric(boolean bLowercase){
-	int  i= CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN;
+	int  i= CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
 	return CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(i, bLowercase);
 }
 

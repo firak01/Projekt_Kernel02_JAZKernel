@@ -39,7 +39,7 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
 			}else if(sTotal.length()>=2){					
 				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionInAlphanumericForChar(c);
-				iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX);
+				iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
 			}
 		}//end main
 		return iReturn;
@@ -50,8 +50,8 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
+			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
 
 			if(iMod==0 && iDiv ==0) break main;
 			
@@ -63,7 +63,7 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(iMod, bLowercase);	
 				sReturn = sCharacter;
 			}else if(iMod==0){
-				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
+				sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
 				sReturn = "";
 			}
 			

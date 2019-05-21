@@ -64,7 +64,7 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 				if(icounter==(caValue.length-1)){
 					iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
 				}else{
-					iReturn+= (CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+					iReturn+= (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
 				}	
 			}
 		
@@ -77,13 +77,13 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX;
+			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 			
 			
 			ArrayList<String>listas=new ArrayList<String>();			
 			for(int icount = 1; icount <= iDiv; icount++){
-				String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX);
+				String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPositionInNumeric(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
 				listas.add(stemp);
 			}
 			if(iMod>=1){

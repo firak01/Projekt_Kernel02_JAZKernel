@@ -65,7 +65,7 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			if(sTotal.length()==1){					
 				iReturn = itemp;				    					
 			}else if(sTotal.length()>=2){
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX * (sTotal.length()-1);															
+				iReturn = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX * (sTotal.length()-1);															
 				iReturn = iReturn + itemp;
 			}
 			
@@ -82,14 +82,14 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
+			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
 
 			boolean bLowercase = this.isLowercase();
 			
 			ArrayList<String>listas=new ArrayList<String>();			
 			for(int icount = 1; icount <= iDiv; icount++){
-				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX, bLowercase);
+				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPositionInAlphanumeric(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
 				listas.add(stemp);
 			}
 			if(iMod>=1){

@@ -43,7 +43,7 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 				
 				//Multiple Zählvariante
 				int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionInAlphabetForChar(c);				
-				iReturn= iC + (CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX * (caValue.length-1));	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+				iReturn= iC + (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX * (caValue.length-1));	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
 				
 			}else{				
 				char c = caValue[0];
@@ -59,8 +59,8 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX;
+			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 
 			if(iMod==0 && iDiv ==0) break main;
 			
@@ -73,7 +73,7 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(iMod,bLowercase);	
 				sReturn = sCharacter;
 			}else if(iMod==0){
-				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX,bLowercase);
+				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPositionInAlphabet(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
 				sReturn = "";
 			}
 			

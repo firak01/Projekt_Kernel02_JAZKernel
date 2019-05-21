@@ -1526,7 +1526,7 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
-			int iSearchCounter=CounterByCharacterAscii_AlphabetZZZ.iALPHABET_POSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
+			int iSearchCounter=CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
 			String sSearchCounter=null;
 			System.out.println("First iSearchCounter="+iSearchCounter);
 			

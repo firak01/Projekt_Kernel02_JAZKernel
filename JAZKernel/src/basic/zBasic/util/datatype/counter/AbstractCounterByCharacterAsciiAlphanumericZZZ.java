@@ -2,7 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterStringStrategyAlphanumericUserZZZ{
+public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ{
 	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(){
@@ -16,7 +16,7 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MIN);
+		super(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(String sStartingValue) throws ExceptionZZZ{

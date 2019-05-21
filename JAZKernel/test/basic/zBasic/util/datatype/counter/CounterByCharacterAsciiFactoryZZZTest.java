@@ -106,7 +106,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//B) Definiere per Factory einen Counter mit Serieller Strategy
 	CounterStrategyNumericSerialZZZ objCounterStrategySerial = new CounterStrategyNumericSerialZZZ();
-	ICounterStringStrategyNumericUserZZZ objCounterStringSeriel = objCounterFactory.createCounter(objCounterStrategySerial);
+	ICounterNumericZZZ objCounterStringSeriel = objCounterFactory.createCounter(objCounterStrategySerial);
 	itemp = objCounterStringSeriel.getValueCurrent();
 	stemp = objCounterStringSeriel.current();
 	
@@ -171,7 +171,7 @@ public void testGetStringAlphabetForNumber_FactoryBasedStrategyMultiple(){
 		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)	
 		//A) Mache Alphabet-Counter per Factory und Miltiple Strategy
 		CounterStrategyAlphabetMultipleZZZ objCounterStrategyAlphaM = new CounterStrategyAlphabetMultipleZZZ();
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaM);
+		ICounterAlphanumericZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaM);
 		
 		///+++++++++++++++++++++++++++++++
 		//Hole Initialwert
@@ -245,7 +245,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 		//A) Mache Alphabet-Counter per Factory und Multiple Strategy
 		//####################################
 		CounterStrategyAlphanumericMultipleZZZ objCounterStrategyAlphaNumM = new CounterStrategyAlphanumericMultipleZZZ();
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaNumM);
+		ICounterAlphanumericZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaNumM);
 		
 		///+++++++++++++++++++++++++++++++
 		//Hole Initialwert
@@ -298,7 +298,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 		
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,10);
+		ICounterAlphanumericZZZ objCounterAlphaM2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,10);
 		itemp = objCounterAlphaM2.getValueCurrent();
 		stemp = objCounterAlphaM2.current();
 		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
@@ -318,7 +318,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 		
 		//B) Mit String  Wert		
 		objCounterStrategyAlphaNumM.isLowercase(false);
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaM3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,"9");
+		ICounterAlphanumericZZZ objCounterAlphaM3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,"9");
 		itemp = objCounterAlphaM3.getValueCurrent();
 		stemp = objCounterAlphaM3.current();
 		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
@@ -355,7 +355,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		//B) Mache Alphabet-Counter per Factory und Serieller Strategy
 		//####################################
 		CounterStrategyAlphanumericSerialZZZ objCounterStrategyAlphaNumS = new CounterStrategyAlphanumericSerialZZZ();
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumS);
+		ICounterAlphanumericZZZ objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumS);
 		
 		///+++++++++++++++++++++++++++++++
 		//Hole Initialwert
@@ -408,7 +408,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,10);
+		ICounterAlphanumericZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,10);
 		itemp = objCounterAlphaS2.getValueCurrent();
 		stemp = objCounterAlphaS2.current();
 		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
@@ -428,7 +428,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		
 		//B) Mit String  Wert
 		objCounterStrategyAlphaNumS.isLowercase(false);
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"9");
+		ICounterAlphanumericZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"9");
 		itemp = objCounterAlphaS3.getValueCurrent();
 		stemp = objCounterAlphaS3.current();
 		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
@@ -448,7 +448,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		
 		//+++ Mit einem mehrstelligen String-Wert
 		objCounterStrategyAlphaNumS.isLowercase(false);
-		ICounterStringStrategyAlphanumericUserZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"ZZA");
+		ICounterAlphanumericZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"ZZA");
 		itemp = objCounterAlphaS4.getValueCurrent();
 		stemp = objCounterAlphaS4.current();
 		assertEquals("ZZA",stemp);
@@ -476,14 +476,14 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
 	boolean bReturn = false;
 	main:{
-		if(iInput< CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
-    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
-    	}else if(iInput>CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){
-    		assertNull("Bei >'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		if(iInput< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
+    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+    	}else if(iInput>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){
+    		assertNull("Bei >'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}
     		
-		if(iInput>=CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN && iInput <= CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX){
-    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN +"' und <='" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MAX + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		if(iInput>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN && iInput <= CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){
+    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN +"' und <='" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}	    		
 		bReturn=true;
 			    		    	
@@ -493,12 +493,12 @@ private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
 private boolean assertCheckNullBordersNumericStrategyBased_(int iInput, String sResult){
 	boolean bReturn = false;
 	main:{
-		if(iInput< CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN){
-    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		if(iInput< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
+    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}
     		
-		if(iInput>=CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN ){
-    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iNUMERIC_POSITION_MIN  + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		if(iInput>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN ){
+    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN  + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}	    		
 		bReturn=true;
 			    		    	
