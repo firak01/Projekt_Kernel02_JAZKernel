@@ -404,6 +404,58 @@ assertTrue("Fehler beim Check auf Null Werte", btemp);
 assertEquals( "91",stemp);
 }
 
+public void testGetStringNumericForNumber_StrategySerialRightAligned(){
+
+	//"SERIAL STRATEGIE"-Ergebnisse
+	//1. true ist rightbound
+	int itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
+	String stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
+	boolean btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++
+	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN;
+
+
+	stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals( "0",stemp);
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
+
+	//"SERIAL STRATEGIE"-Ergebnisse
+	stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("9",stemp);
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+	//######################
+	//Nun Werte eingeben, die über 10 liegen. Diese müssen erlaubt sein.
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	//"SERIAL STRATEGIE"-Ergebnisse
+	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+1;
+	stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("09",stemp);
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	//... weitere Tests
+		//"SERIAL STRATEGIE"-Ergebnisse
+	itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX+2;
+	stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals( "19",stemp);
+	}
+
 public void testGetStringNumericForNumber_StrategyMultiple(){
 
 //"MULTIPLE STRATEGIE"-Ergebnisse

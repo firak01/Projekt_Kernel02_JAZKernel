@@ -21,6 +21,7 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 			String sLetterFirst = StringZZZ.letterFirst(sTotal);
 			
 			//A) Multiple: 
+			//Merke: Links/Rechtsbündig spielt keine Rolle
 			for(int icounter=1;icounter<=sTotal.length()-1;icounter++){
 				String stemp=StringZZZ.mid(sTotal, icounter, 1);
 			    if(!sLetterFirst.equals(stemp)){

@@ -33,14 +33,27 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 			    	ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen des ASCII-Zählers müssen gleich sein hinsichtlich der Groß-/Kleinschreibung. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;					
 			}
-			
-			//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
 			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighest(bLowerized);
-			for (int icount=0;icount<=sTotal.length()-2;icount++){
-				String stemp = StringZZZ.letterAtPosition(sTotal,icount);
-				if(!sLetterMax.equals(stemp)){
-					ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;	
+			
+			//Hier spielt links-/rechtsbündig eine Rolle:
+			boolean bRightAligned = this.isRightAligned();
+			if(!bRightAligned){
+				//B2a: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.				
+				for (int icount=0;icount<=sTotal.length()-2;icount++){
+					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
+					if(!sLetterMax.equals(stemp)){
+						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	
+					}
+				}
+			}else{
+				//B2b: Die Zeichen rechts müssen immer das höchste Zeichen des Zeichenraums sein.				
+				for (int icount=sTotal.length();icount>=2;icount--){
+					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
+					if(!sLetterMax.equals(stemp)){
+						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen rechts der linksten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	
+					}
 				}
 			}
 			
@@ -55,16 +68,34 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 	int iReturn = 0;
 		main:{
 			char[] caValue = sTotal.toCharArray();
-			for (int icounter=0; icounter<= caValue.length-1; icounter++){
-				char c = caValue[icounter];
+			
+			//Hier spielt links-/rechtsbündig eine Rolle:
+			boolean bRightAligned = this.isRightAligned();
+			if(!bRightAligned){			
+				for (int icounter=0; icounter<= caValue.length-1; icounter++){
+					char c = caValue[icounter];
+					
+					//Serielle Zählvariante
+					int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
+					if(icounter==(caValue.length-1)){
+						iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+					}else{
+						iReturn+= (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+					}	
+				}
+			}else{
+				for (int icounter=caValue.length; icounter>=1; icounter--){
+					char c = caValue[icounter];
+					
+					//Serielle Zählvariante
+					int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
+					if(icounter==(1)){
+						iReturn+= iC;	//An der ersten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+					}else{
+						iReturn+= (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+					}	
+				}
 				
-				//Serielle Zählvariante
-				int iC = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
-				if(icounter==(caValue.length-1)){
-					iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
-				}else{
-					iReturn+= (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
-				}	
 			}
 		
 		}//end main;
@@ -81,24 +112,38 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 			int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 
 			boolean bLowercase = this.isLowercase();
-			
-			ArrayList<String>listas=new ArrayList<String>();			
+						
+			ArrayList<String>listas=new ArrayList<String>();						
 			for(int icount = 1; icount <= iDiv; icount++){
 				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
 				listas.add(stemp);
 			}
+
 			if(iMod>=1){
 				String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iMod,bLowercase);
 				listas.add(stemp);
 			}
 			
 			//Zusammenfassen der Werte: Serial Strategie
-			for(int icount=1; icount <= listas.size(); icount++){
-				String sPosition = listas.get(icount-1);
-				if(sReturn==null){
-					sReturn=sPosition;
-				}else{
-					sReturn+=sPosition;
+			//Hier spielt links-/rechtsbündig eine Rolle:
+			boolean bRightAligned = this.isRightAligned();			
+			if(!bRightAligned){
+				for(int icount=1; icount <= listas.size(); icount++){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
+				}
+			}else{
+				for(int icount=listas.size(); icount >= 1 ; icount--){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
 				}
 			}
 		}//end main:

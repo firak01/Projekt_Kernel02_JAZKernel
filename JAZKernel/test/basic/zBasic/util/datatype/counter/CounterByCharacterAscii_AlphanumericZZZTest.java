@@ -767,8 +767,107 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	} 
 }
 
-public void testGetNumberForStringAlphanumeric_StrategySerial2(){
-	
+public void testGetStringAlphanumericForNumber_StrategySerialRightAligned(){
+	try{
+		
+		//"SERIAL STRATEGIE"-Ergebnisse, Grossbuchstaben und rechtsbündig 
+		int itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1;
+		String stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		boolean btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		
+		//+++++++++++++++++++++++++++++++++++++++++++++++
+		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
+		
+		//1. true ist lowercase, false ist uppercase | 2. true ist rightbound
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("0",stemp);
+		
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true); 
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("0",stemp); //die Kleinbuchstaben für Zahlen gibt es ja nicht
+			    	
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+		
+		//"SERIAL STRATEGIE"-Ergebnisse
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("Z",stemp);
+		
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true); //true ist lowercase, false ist uppercase
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("z",stemp);
+
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		
+		
+		//######################
+		//Nun Werte eingeben, die über 27 liegen. Diese müssen erlaubt sein.
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++
+		
+		//"SERIAL STRATEGIE"-Ergebnisse
+		//1. true ist lowercase, false ist uppercase | 2. true ist rightbound
+		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+1;
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("0Z",stemp);
+		
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true);
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("0z",stemp);
+		
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		
+		//... weitere Tests
+	 	//"SERIAL STRATEGIE"-Ergebnisse
+		//1. true ist lowercase, false ist uppercase | 2. true ist rightbound
+		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+2;
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("1Z",stemp);
+		
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true);
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("1z",stemp);
+		
+		//"SERIAL STRATEGIE"-Ergebnisse
+		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX*2;
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("ZZ",stemp);
+		
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true); //true ist lowercase, false ist uppercase
+		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("zz",stemp);
+		
+		//++++++ Mal einfach nur hochzählen... dann merkt man den Unterschied zu "Signifikant" Strategie
+		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+3;
+		for(int icount=itemp; icount <= 100; icount++){
+			stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(icount, false, true);
+			btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+			//assertTrue("Fehler beim Check auf Null Werte", btemp);
+			//assertEquals("1Z",stemp);
+		}
+		//Ergebnisse sind 2Z, 3Z, ... , AZ, BZ, ...
+		//Das sieht also anders aus als 10, 11, ..., 19, 20, 21, .... wie es bei einer "signifikatem Stellenwert" wäre.
+		
+		
+		
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
 }
 }//end class
 	

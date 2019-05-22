@@ -44,6 +44,18 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
 	}
+	
+	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 */
+	public static String getStringForNumber(int i, boolean bRightAligned){
+		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
+		objCounterStrategy.isRightAligned(bRightAligned);
+		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
+	}
 		
 	/**Behandlung der Werte nach der "Multiple"-Strategie.
 	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
@@ -55,6 +67,7 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
 	}
+	
 	
 	
 	/**Behandlung der Werte nach der "Multiple"-Strategie.

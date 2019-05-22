@@ -59,15 +59,30 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			
 			String sLetterLast = StringZZZ.letterLast(sTotal);
 			
-			//Berechnung...
-			char c = sLetterLast.toCharArray()[0];
-			int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-			if(sTotal.length()==1){					
-				iReturn = itemp;				    					
-			}else if(sTotal.length()>=2){
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX * (sTotal.length()-1);															
-				iReturn = iReturn + itemp;
-			}
+			//Hier spielt links-/rechtsbündig KEINE Rolle:
+//			boolean bRightAligned = this.isRightAligned();
+//			if(!bRightAligned){
+			
+				//Berechnung...
+				char c = sLetterLast.toCharArray()[0];
+				int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
+				if(sTotal.length()==1){					
+					iReturn = itemp;				    					
+				}else if(sTotal.length()>=2){
+					iReturn = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX * (sTotal.length()-1);															
+					iReturn = iReturn + itemp;
+				}
+//			}else{
+//				//Berechnung...
+//				char c = sLetterLast.toCharArray()[0];
+//				int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
+//				if(sTotal.length()==1){					
+//					iReturn = itemp;				    					
+//				}else if(sTotal.length()>=2){
+//					iReturn = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX * (sTotal.length()-1);															
+//					iReturn = iReturn + itemp;
+//				}
+//			}
 			
 			//Merke der umgekehrte Weg aus der Zahl einen String zu machen geht so:
 			//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
@@ -87,25 +102,41 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 
 			boolean bLowercase = this.isLowercase();
 			
-			ArrayList<String>listas=new ArrayList<String>();			
-			for(int icount = 1; icount <= iDiv; icount++){
-				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
-				listas.add(stemp);
-			}
-			if(iMod>=1){
-				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
-				listas.add(stemp);
-			}
+			ArrayList<String>listas=new ArrayList<String>();
+				for(int icount = 1; icount <= iDiv; icount++){
+					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
+					listas.add(stemp);
+				}
+				if(iMod>=1){
+					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
+					listas.add(stemp);
+				}
+
 			
 			//Zusammenfassen der Werte: Serial Strategie
-			for(int icount=1; icount <= listas.size(); icount++){
-				String sPosition = listas.get(icount-1);
-				if(sReturn==null){
-					sReturn=sPosition;
-				}else{
-					sReturn+=sPosition;
+			//Hier spielt links-/rechtsbündig eine Rolle:
+			boolean bRightAligned = this.isRightAligned();
+			if(!bRightAligned){
+				for(int icount=1; icount <= listas.size(); icount++){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
 				}
+			}else{
+				for(int icount=listas.size(); icount >= 1; icount--){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
+				}
+				
 			}
+				
 		}//end main:
 		return sReturn;
 	}

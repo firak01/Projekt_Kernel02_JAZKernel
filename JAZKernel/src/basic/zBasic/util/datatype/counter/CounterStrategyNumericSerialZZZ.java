@@ -92,16 +92,28 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 			}
 			
 			//Zusammenfassen der Werte: Serial Strategie
-			for(int icount=1; icount <= listas.size(); icount++){
-				String sPosition = listas.get(icount-1);
-				if(sReturn==null){
-					sReturn=sPosition;
-				}else{
-					sReturn+=sPosition;
+			//Hier spielt links-/rechtsbündig eine Rolle:
+			boolean bRightAligned = this.isRightAligned();
+			if(!bRightAligned){
+				for(int icount=1; icount <= listas.size(); icount++){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
+				}
+			}else{
+				for(int icount=listas.size(); icount >= 1 ; icount--){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
 				}
 			}
 		}//end main:
 		return sReturn;
 	}
-
 }

@@ -117,7 +117,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
-	
+		
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
 	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
@@ -128,6 +128,20 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	public static String getStringForNumber(int i, boolean bLowercase) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		objCounterStrategy.isLowercase(bLowercase);
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
+	}
+	
+	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 * @throws ExceptionZZZ 
+	 */
+	public static String getStringForNumber(int i, boolean bLowercase, boolean bRightAligned) throws ExceptionZZZ{
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
+		objCounterStrategy.isLowercase(bLowercase);
+		objCounterStrategy.isRightAligned(bRightAligned);
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
 	public static String getStringForNumber(int i, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{

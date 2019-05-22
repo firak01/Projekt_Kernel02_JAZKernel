@@ -66,6 +66,19 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);
 	}
 	
+	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
+	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
+	 * @param i
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
+	 */
+	public static String getStringForNumber(int i, boolean bLowercase, boolean bRightAligned){
+		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ();
+		objCounterStrategy.isLowercase(bLowercase);
+		objCounterStrategy.isRightAligned(bRightAligned);
+		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);
+	}
+	
 	/**Behandlung der Werte nach der "Multiple"-Strategie.
 	Z.B. 27 ==> ZA "Serielle" oder beim der "Multiplikator Strategie" AA. Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
