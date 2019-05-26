@@ -458,7 +458,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true);//true ist lowercase, false ist uppercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
 		    	
@@ -475,9 +475,237 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	
 		    	//Mache die Gegenprobe
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false);//true ist lowercase, false ist uppercase
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
 		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
 		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "9"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "Z9"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "A"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "ZA"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "Z"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp,  objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				stemp = "ZZ"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp,  objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+	    	
+	    }
+	    
+ public void testGetNumberForStringAlphanumeric_StrategySignificant(){
+	    	
+	    	String stemp; int itemp; int itempLeft; int itempRight; int itempCheck; boolean btemp;
+	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+	    	
+	    	//Ungültige Werte
+	    	try {
+				stemp = "?"; //Parameter false="Significant Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				fail("Method should have thrown an exception for the string '"+stemp+"'");
+				
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 
+	    	
+	    	
+	    	//Ungültige Werte, für die verschiedenen Strategien
+	    	//...serielle Strategie
+	    	try {
+		    	stemp = "0aA"; //Groß-/Kleinschreibung nicht mischen
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);//Parameter true="Serielle Strategy"
+		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
+						    	
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 
+	    	
+	    	//Merke: Bei der Signifikant-Strategie ist die Positon der Zeichen zueinander hinsichtlich der Gültigkeit egal....
+	    	//Gehe daher sofort zu den "Berechnungstests":
+	    	
+	    	
+	    	//"SIGNIFICANT STRATEGIE"-Ergebnisse	    		    	
+	    	try {
+				stemp = "0"; 
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	assertEquals("Erwarteter Wert ", 1,itemp);
+		    	
+		    	//Mache die Gegenprobe TODO GOON 20190527
+//		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+//		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+//		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+	    	
+	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	try {
+				stemp = "Z";
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	assertEquals("Erwarteter Wert ", 36,itemp);
+		    	
+		    	//Mache die Gegenprobe
+//		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+//		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+	    	} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+//		    			    	
+	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+		    	try {				
+					stemp = "00";
+			    	objCounterStrategy.isRightAligned(false);
+					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73
+					btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itempLeft);
+			    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+			    	
+			    	objCounterStrategy.isRightAligned(true);
+			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73
+					btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itempRight);
+			    	assertTrue("Fehler beim Check auf Null Werte", btemp);		    	
+			    	assertEquals("Links- oder Rechtsbündig soll den gleichen Zahlenwert haben", itempLeft, itempRight);
+			    	itempCheck = itempRight;
+			    				    					    	
+				} catch (ExceptionZZZ ez) {
+					fail("Method throws an exception." + ez.getMessageLast());
+				} 
+		    	
+		    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			try {				
+				stemp = "0Z";
+		    	objCounterStrategy.isRightAligned(false);
+				itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itempLeft);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	objCounterStrategy.isRightAligned(true);
+		    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itempRight);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);		    	
+		    	assertEquals("Links- oder Rechtsbündig soll den gleichen Zahlenwert haben", itempLeft, itempRight);
+		    	itempCheck = itempRight;
+		    	
+		    	//Drehe die Ziffern um..
+				stemp = "Z0";
+				objCounterStrategy.isRightAligned(false);
+				itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 1297
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itempLeft);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	objCounterStrategy.isRightAligned(true);
+		    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 1297
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itempRight);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);		    	
+		    	assertEquals("Links- oder Rechtsbündig soll den gleichen Zahlenwert haben", itempLeft, itempRight);
+
+		    	
+		    	
+		    	assertFalse("Umgedrehter String darf nicht den gleichen Wert haben bei gleicher Bündigkeit", itempRight==itempCheck);
+		    	
+		    	//Mache die Gegenprobe
+		    	objCounterStrategy.isRightAligned(false);
+		    	String sCheckLeft = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempLeft, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheckLeft);
+//		    			    	
 		    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());

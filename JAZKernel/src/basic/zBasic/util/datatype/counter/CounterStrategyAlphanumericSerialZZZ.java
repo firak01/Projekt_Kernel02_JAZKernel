@@ -34,13 +34,28 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 					throw ez;					
 			}
 			
-			//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
-			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighest(bLowerized);
-			for (int icount=0;icount<=sTotal.length()-2;icount++){
-				String stemp = StringZZZ.letterAtPosition(sTotal,icount);
-				if(!sLetterMax.equals(stemp)){
-					ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;	
+			//Hier spielt links-/rechtsbündig eine Rolle:
+			boolean bRightAligned = this.isRightAligned();
+			if(!bRightAligned){
+			
+				//B2a) Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
+				String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighest(bLowerized);
+				for (int icount=0;icount<=sTotal.length()-2;icount++){
+					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
+					if(!sLetterMax.equals(stemp)){
+						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeichen='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	
+					}
+				}
+			}else{
+				//B2a) Die Zeichen rechts müssen immer das höchste Zeichen des Zeichenraums sein.
+				String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighest(bLowerized);
+				for (int icount=sTotal.length();icount>=1;icount--){
+					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
+					if(!sLetterMax.equals(stemp)){
+						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen rechts der linksten Stelle müssen das höchste Zeichen sein (Höchstes Zeichen='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	
+					}
 				}
 			}
 			

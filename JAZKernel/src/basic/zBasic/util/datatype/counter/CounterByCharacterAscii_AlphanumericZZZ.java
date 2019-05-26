@@ -64,7 +64,6 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	}
 	
 	
-	
 	/** Merke: Es gibt auch Kleinbuchstaben bei NUMMERN
 	 * @param i
 	 * @param bMultipleStrategy
@@ -105,7 +104,9 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	}
 	
 	
-	//###################
+	
+	//###########################################
+	//###########################################
 	/**Behandlung der Werte nach der "Serial"-Strategie. Dies ist Default.
 	Z.B. 10 ==> "90" "Serielle" oder beim der "Multiplikator Strategie" "11". Multiplikator - Stategie bedeutet: Den Modulo Wert entsprechend häufig darstellen.
 	 * @param i
