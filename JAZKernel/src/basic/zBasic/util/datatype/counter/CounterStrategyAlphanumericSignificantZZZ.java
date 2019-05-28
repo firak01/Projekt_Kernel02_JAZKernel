@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.doublevalue.DoubleZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
@@ -83,6 +84,15 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					    //Berechnung...
 						char c = stemp.toCharArray()[0];
 						int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
+						
+						//Besonderheit, normalerweise darf eine führende 0 nicht sein, ausser man füllte auf: 
+//						if(icount==0){
+//							if(itemp==1){
+//								itemp=0;
+//							}
+							itemp--;
+//						}
+						
 						int icountSignificant = sTotal.length()-1-icount;
 						int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
 						int itempSignificant = itemp*icountSignificantValue;			
@@ -103,7 +113,17 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					    //Berechnung...
 						char c = stemp.toCharArray()[0];
 						int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-						int icountSignificant = sTotal.length()-1-icount;
+						
+						//Besonderheit, normalerweise darf eine führende 0 (hier die rechstausgerichtet Variante) nicht sein, ausser man füllte auf: 
+//						if(icount==sTotal.length()-1){
+//							if(itemp==1){
+//								itemp=0;
+//							}
+							itemp--;
+//						}
+						
+						
+						int icountSignificant = icount; //sTotal.length()-1-icount;
 						int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
 						int itempSignificant = itemp*icountSignificantValue;	
 						
@@ -117,19 +137,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 						
 			}
 				
-				
-//			}else{
-//				//Berechnung...
-//				char c = sLetterLast.toCharArray()[0];
-//				int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-//				if(sTotal.length()==1){					
-//					iReturn = itemp;				    					
-//				}else if(sTotal.length()>=2){
-//					iReturn = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX * (sTotal.length()-1);															
-//					iReturn = iReturn + itemp;
-//				}
-//			}
-			
+							
 			//Merke der umgekehrte Weg aus der Zahl einen String zu machen geht so:
 			//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
 			//int iDiv = Math.abs(i / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
@@ -142,38 +150,40 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
-			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
-
-			//TODO GOON 20190526
+			ArrayList<String>listas=new ArrayList<String>();
 			boolean bLowercase = this.isLowercase();
 			
-			ArrayList<String>listas=new ArrayList<String>();
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
-					listas.add(stemp);
-				}
-				if(iMod>=1){
-					//int iSignificant = 
-					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
-					listas.add(stemp);
-				}
-
+			//Variante, basierend auf "Stellenwert"
+			//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"			
+			int iRest = iNumber;
+			int iDigitposition=0;
+			int iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
+			//while(iRest >= CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX){
+			while(iRest >= iPositionValue){
+				//Gehe zur nächsten Stelle
+				iDigitposition++;
+				
+				//Hole jeweils die Werte hinter dem Komma
+				iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
+				float fRest = (float)iRest / iPositionValue; //Merke: damit das Ergebnis der Division zweiter int Werte float wird: Casten. 
+				double dtemp = DoubleZZZ.pointRight(fRest);
+				
+				//Bestimme daraus den Wert des Zeichens
+				double dtemp2 = (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+				int itemp = DoubleZZZ.toInt(dtemp2);//Merke: Das schneidet nur den Wert vor dem Komma ab: (int) (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+				int iChar = itemp+1; //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
+				
+				String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iChar, bLowercase);
+				listas.add(stemp);
+				
+				//2. Schritt: Den Rest um den gerade betrachteten Wert reduzieren
+				iRest = iRest - itemp;
+			}
 			
 			//Zusammenfassen der Werte: Serial Strategie
 			//Hier spielt links-/rechtsbündig eine Rolle:
 			boolean bRightAligned = this.isRightAligned();
 			if(!bRightAligned){
-				for(int icount=1; icount <= listas.size(); icount++){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}
-			}else{
 				for(int icount=listas.size(); icount >= 1; icount--){
 					String sPosition = listas.get(icount-1);
 					if(sReturn==null){
@@ -182,8 +192,41 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 						sReturn+=sPosition;
 					}
 				}
-				
+			}else{
+				for(int icount=1; icount <= listas.size(); icount++){
+					String sPosition = listas.get(icount-1);
+					if(sReturn==null){
+						sReturn=sPosition;
+					}else{
+						sReturn+=sPosition;
+					}
+				}								
 			}
+			
+			//###### alt...
+			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
+//			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+//			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+//
+//			
+//			
+//			
+//			//TODO GOON 20190526
+//			boolean bLowercase = this.isLowercase();
+//			
+//			ArrayList<String>listas=new ArrayList<String>();
+//				for(int icount = 1; icount <= iDiv; icount++){
+//					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
+//					listas.add(stemp);
+//				}
+//				if(iMod>=1){
+//					//int iSignificant = 
+//					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
+//					listas.add(stemp);
+//				}
+
+			
+			
 				
 		}//end main:
 		return sReturn;
