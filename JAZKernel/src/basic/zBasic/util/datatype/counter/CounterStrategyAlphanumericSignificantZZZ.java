@@ -157,8 +157,10 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"			
 			int iRest = iNumber;
 			int iDigitposition=0;
-			int iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
-			//while(iRest >= CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX){
+			int iPositionValue = 0;//-1 um "0" abzufangen.
+			if (iNumber>= 1){
+				iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
+			}
 			while(iRest >= iPositionValue){
 				//Gehe zur nächsten Stelle
 				iDigitposition++;

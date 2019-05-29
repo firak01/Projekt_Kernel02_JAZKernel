@@ -2210,7 +2210,34 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	//TODO GOON 20190205
+	/** Entferne den String von links kommend.
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
+	public static String stripLeft(String sString, String sStringToBeStripped){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringToBeStripped)) break main;
+			
+			boolean bGoon = false;
+			while(!bGoon){
+				if(sReturn.startsWith(sStringToBeStripped) && sReturn.length()>=2){
+					sReturn = StringZZZ.rightback(sString, sStringToBeStripped.length());
+				}else{
+					bGoon = true;
+				}
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	/** Entferne den String von rechts kommend.
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
 	public static String stripRight(String sString, String sStringToBeStripped){
 		String sReturn = sString;
 		main:{
@@ -2219,8 +2246,8 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			
 			boolean bGoon = false;
 			while(!bGoon){
-				if(sReturn.endsWith(sStringToBeStripped)){
-					sReturn = StringZZZ.rightback(sString, sStringToBeStripped.length());
+				if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
+					sReturn = StringZZZ.leftback(sString, sStringToBeStripped.length());
 				}else{
 					bGoon = true;
 				}
