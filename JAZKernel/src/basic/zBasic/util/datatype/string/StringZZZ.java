@@ -233,6 +233,21 @@ public class StringZZZ implements IConstantZZZ{
 		  }//End main
 		  return sReturn;
 	  }
+	
+	/** Drehe den String um.
+	 * @param s
+	 * @return
+	 * @author Fritz Lindhauer, 30.05.2019, 09:07:08
+	 */
+	public static String reverse(String s){
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(s)) break main;
+					
+			sReturn = new StringBuilder(s).reverse().toString();
+		}
+		return sReturn;
+	}
 	  
 	 
 
@@ -1183,6 +1198,24 @@ public class StringZZZ implements IConstantZZZ{
 	 */
 	public static boolean isNumeric(String sString){
 		return StringUtils.isNumeric(sString);
+	}
+	
+	/** Beispiel für ein Palindrom: "ANNA".
+	 * @param sString
+	 * @return
+	 * @author Fritz Lindhauer, 30.05.2019, 12:45:46
+	 */
+	public static boolean isPalindrom(String sString){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+			String sStringReversed = StringZZZ.reverse(sString);
+			if(sStringReversed.equals(sString)){
+				bReturn = true;
+			}			
+		}
+		return bReturn;
 	}
 	
 	/** Packt ein Stringarray und einen String zusammen.
