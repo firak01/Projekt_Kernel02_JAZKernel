@@ -1201,6 +1201,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	/** Beispiel für ein Palindrom: "ANNA".
+	 *   Ein einzelner Buchstabe ist kein Palindrom.
 	 * @param sString
 	 * @return
 	 * @author Fritz Lindhauer, 30.05.2019, 12:45:46
@@ -1209,6 +1210,7 @@ public class StringZZZ implements IConstantZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
+			if(sString.length()<=1) break main;
 			
 			String sStringReversed = StringZZZ.reverse(sString);
 			if(sStringReversed.equals(sString)){

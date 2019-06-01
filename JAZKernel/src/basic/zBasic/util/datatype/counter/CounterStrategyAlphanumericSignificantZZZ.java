@@ -71,89 +71,62 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	public int computeNumberForString(String sTotalUnnormed) {
 		int iReturn = -1;
 		
-		//wg. der Problematik der führenden 0: Arbeite nur mit dahingehend normiertem String.
-		boolean bLowercase = this.isLowercase();		
-		String sAlphanumericNormed = this.getAlphanumericNormed(sTotalUnnormed); //StringZZZ.stripLeft(sTotalUnnormed, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+		//wg. der Problematik der führenden 0: Arbeite nur mit dahingehend normiertem String. Also führende 0 wegtrimmen.	
+		String sAlphanumericNormed = this.getAlphanumericNormed(sTotalUnnormed); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 		String sTotal = sAlphanumericNormed;
 		
 		main:{
 			if(StringZZZ.isEmpty(sTotal)) break main;
-			int iTotalLength=sTotal.length();
+			int iTotalIndexLength=sTotal.length()-1;
 									
-			//Hier spielt links-/rechtsbündig EINE Rolle:
+			//Hier spielt links-/rechtsbündig eine Rolle:
 			boolean bRightAligned = this.isRightAligned();
 			if(!bRightAligned){
-				//Hier spielt der Stellenwert eine Rolle.
-				   for(int icount=0; icount<=sTotal.length()-1; icount++){
-					   String stemp = StringZZZ.letterAtPosition(sTotal, icount);
-					   
-					    //Berechnung...
-						char c = stemp.toCharArray()[0];
-						int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-						itemp--;
-						
-						//Besonderheit, normalerweise darf eine führende 0 nicht sein, ausser man füllte auf: 
-//						if(icount==0){
-//							if(itemp==1){
-//								itemp=0;
-//							}
-						
-//						  if(icount==sTotal.length()-1 || iTotalLength<=1) itemp--;
-						  
-//						}
-						
-						int icountSignificant = sTotal.length()-1-icount;
-						int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
-						int itempSignificant = itemp*icountSignificantValue;			
-						
-						if(iReturn<=0){
-					    	iReturn = itempSignificant;		    					
-						}
-						else{
-							iReturn = iReturn + itempSignificant;
-						}
-				   }				   		
-			
-			}else{
-				//Hier spielt der Stellenwert eine Rolle.
-				   for(int icount=sTotal.length()-1; icount>=0; icount--){
-					   String stemp = StringZZZ.letterAtPosition(sTotal, icount);
-					   
-					    //Berechnung...
-						char c = stemp.toCharArray()[0];
-						int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-						itemp--;
-						
-						//Besonderheit, normalerweise darf eine führende 0 (hier die rechstausgerichtet Variante) nicht sein, ausser man füllte auf: 
-//						if(icount==sTotal.length()-1){
-//							if(itemp==1){
-//								itemp=0;
-//							}
-						
-//						    if(icount==0 || iTotalLength<=1) itemp--;
-						    
-//						}
-						
-						
-						int icountSignificant = icount;
-						int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
-						int itempSignificant = itemp*icountSignificantValue;	
-						
-						if(iReturn<=0){
-					    	iReturn = itempSignificant;		    					
-						}
-						else{
-							iReturn = iReturn + itempSignificant;
-						}
-				   }
-						
-			}
 				
-							
-			//Merke der umgekehrte Weg aus der Zahl einen String zu machen geht so:
-			//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			//int iDiv = Math.abs(i / CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			//int iMod = i % CounterByCharacterAscii_AlphanumericZZZ.iALPHANUMERIC_POSITION_MAX;
+				//Hier spielt der Stellenwert eine Rolle.
+			   for(int icount=0; icount<=iTotalIndexLength; icount++){
+				   String stemp = StringZZZ.letterAtPosition(sTotal, icount);
+				   
+				    //Berechnung...
+					char c = stemp.toCharArray()[0];
+					int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
+					itemp--;
+											
+					int icountSignificant = sTotal.length()-1-icount;
+					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
+					int itempSignificant = itemp*icountSignificantValue;			
+					
+					if(iReturn<=0){
+				    	iReturn = itempSignificant;		    					
+					}
+					else{
+						iReturn = iReturn + itempSignificant;
+					}
+			   }				   					
+			}else{
+				
+				//Hier spielt der Stellenwert eine Rolle.
+			   for(int icount=iTotalIndexLength; icount>=0; icount--){
+				   String stemp = StringZZZ.letterAtPosition(sTotal, icount);
+				   
+				    //Berechnung...
+					char c = stemp.toCharArray()[0];
+					int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
+					itemp--;
+					
+					int icountSignificant = icount;
+					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
+					int itempSignificant = itemp*icountSignificantValue;	
+					
+					if(iReturn<=0){
+				    	iReturn = itempSignificant;		    					
+					}
+					else{
+						iReturn = iReturn + itempSignificant;
+					}
+			   }
+						
+			}				
 		}//end main;
 		return iReturn;			
 	}
@@ -172,11 +145,10 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			int iRest = iNumber;
 			int iDigitposition=1;
 			int iPositionValue = 0;//-1 um "0" abzufangen.
-			int iPositionValueMax;
 			int iPositionValueCur;
 			while(iRest >= iPositionValue){
 				iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
-				iPositionValueMax = iPositionValue * (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1);
+			
 				//Hole jeweils die Werte hinter dem Komma			
 				float fRest = (float)iRest / iPositionValue; //Merke: damit das Ergebnis der Division zweiter int Werte float wird: Casten. 								
 
@@ -196,7 +168,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iChar, bLowercase);
 					listas.add(stemp);
 					
-					iRest = -1;
+					iRest = -1;//Beende die Schleife auf jeden Fall...
 					
 				}else{
 			
@@ -204,10 +176,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					iRest = iPositionValueCur * iPositionValue;
 					iDigitposition++;	
 					iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
-				}
-																						
-				
-								
+				}			
 			}
 			
 			//Zusammenfassen der Werte: Serial Strategie
@@ -232,32 +201,6 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					}
 				}								
 			}
-			
-			//###### alt...
-			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-//			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-//			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
-//
-//			
-//			
-//			
-//			//TODO GOON 20190526
-//			boolean bLowercase = this.isLowercase();
-//			
-//			ArrayList<String>listas=new ArrayList<String>();
-//				for(int icount = 1; icount <= iDiv; icount++){
-//					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
-//					listas.add(stemp);
-//				}
-//				if(iMod>=1){
-//					//int iSignificant = 
-//					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
-//					listas.add(stemp);
-//				}
-
-			
-			
-				
 		}//end main:
 		return sReturn;
 	}
