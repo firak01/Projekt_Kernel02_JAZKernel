@@ -5,7 +5,7 @@ import basic.zBasic.ExceptionZZZ;
 public interface ICounterByCharacterAsciiFactoryZZZ {
 	public static int iCOUNTER_TYPE_NUMERIC=1;
 	public static int iCOUNTER_TYPE_ALPHABET=2;
-	public static int iCOUNTER_TYPE_ALPAHNUMERIC=3;
+	public static int iCOUNTER_TYPE_ALPHANUMERIC=3;
 	
 	//Default ist immer die Multiple-Strategy
 	public ICounterStringZZZ createCounter(int iCounterType)  throws ExceptionZZZ;

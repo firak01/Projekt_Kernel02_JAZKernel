@@ -134,7 +134,11 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 			objReturn.setCounterStrategyObject(objCounterStrategy);			
 		}else if(objCounterStrategy instanceof CounterStrategyAlphanumericMultipleZZZ || objCounterStrategy instanceof CounterStrategyAlphanumericSerialZZZ){				 
 			objReturn = new CounterByCharacterAscii_AlphanumericZZZ();
-			objReturn.setCounterStrategyObject(objCounterStrategy);			
+			objReturn.setCounterStrategyObject(objCounterStrategy);	
+		}else if(objCounterStrategy instanceof CounterStrategyAlphanumericSignificantZZZ){
+			//dito, ein AlphanumericCounter... 20190601: GGFs ein spezielles Interface dafür entwickeln??? 
+			objReturn = new CounterByCharacterAscii_AlphanumericZZZ();
+			objReturn.setCounterStrategyObject(objCounterStrategy);
 		}else{		
 			ExceptionZZZ ez = new ExceptionZZZ("CounterStategyObject-Type wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
