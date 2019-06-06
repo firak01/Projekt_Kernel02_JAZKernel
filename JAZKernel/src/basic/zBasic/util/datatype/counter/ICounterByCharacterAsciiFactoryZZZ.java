@@ -3,9 +3,12 @@ package basic.zBasic.util.datatype.counter;
 import basic.zBasic.ExceptionZZZ;
 
 public interface ICounterByCharacterAsciiFactoryZZZ {
+	//Merke: Für jeden hier definierten Typen gibt es ein eigenes Interface: ICounterStrategy.....ZZZ
 	public static int iCOUNTER_TYPE_NUMERIC=1;
 	public static int iCOUNTER_TYPE_ALPHABET=2;
 	public static int iCOUNTER_TYPE_ALPHANUMERIC=3;
+	public static int iCounter_TYPE_ALPHANUMERIC_SIGNIFICANT=4;
+	
 	
 	//Default ist immer die Multiple-Strategy
 	public ICounterStringZZZ createCounter(int iCounterType)  throws ExceptionZZZ;

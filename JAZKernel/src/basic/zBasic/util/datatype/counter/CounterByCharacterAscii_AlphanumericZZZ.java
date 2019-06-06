@@ -29,6 +29,9 @@ public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCh
 	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue){
 		super(iStartingValue);		
 	}
+	public CounterByCharacterAscii_AlphanumericZZZ(String sStartingValue) throws ExceptionZZZ{
+		super(sStartingValue);		
+	}
 	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		super(iStartingValue);
 		this.setCounterStrategyObject(objCounterStrategy);

@@ -42,6 +42,10 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 		this.setValueCurrent(iStartingValue);
 	}
 	
+	public AbstractCounterByCharacterAsciiZZZ(String sStartingValue) throws ExceptionZZZ{
+		this.setValueCurrent(sStartingValue);
+	}
+
 		
 	//Das Problem ist, dass der Integer Wert nur über eine CounterStrategy errechnet wird.
 	//Die Counter Strategy ist aber auf diese "Vererbungsebene" der Abstrakten Klassen nicht vorhanden!!!
@@ -53,7 +57,8 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 	
 	//### Aus Interface	
 	public abstract String peekChange(int iValue) throws ExceptionZZZ;
-		
+	public abstract void setValueCurrent(String sValue) throws ExceptionZZZ;	
+	
 	public int getValueCurrent(){
 		return this.iValueCurrent;
 	}
@@ -127,18 +132,18 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		public String toString(){
-			String s = this.getClass().getName();
-			try {
-				s+=" : " + this.getString();
-			} catch (ExceptionZZZ e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			return s;
+	public String toString(){
+		String s = this.getClass().getName();
+		try {
+			s+=" : " + this.getString();
+		} catch (ExceptionZZZ e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		//+++
+		
+		return s;
+	}
+	//+++
 		
 
 	

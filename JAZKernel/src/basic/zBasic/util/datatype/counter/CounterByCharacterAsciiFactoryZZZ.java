@@ -58,7 +58,11 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
 			objReturn = new CounterByCharacterAscii_NumericZZZ();
 		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET){
-			objReturn = new CounterByCharacterAscii_AlphabetZZZ();		
+			objReturn = new CounterByCharacterAscii_AlphabetZZZ();
+		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHANUMERIC){
+			objReturn = new CounterByCharacterAscii_AlphanumericZZZ();
+		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCounter_TYPE_ALPHANUMERIC_SIGNIFICANT){
+			objReturn = new CounterByCharacterAscii_AlphanumericSignificantZZZ();
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
@@ -71,7 +75,11 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
 			objReturn = new CounterByCharacterAscii_NumericZZZ(sStart);
 		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET){
-			objReturn = new CounterByCharacterAscii_AlphabetZZZ(sStart);		
+			objReturn = new CounterByCharacterAscii_AlphabetZZZ(sStart);	
+		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHANUMERIC){
+			objReturn = new CounterByCharacterAscii_AlphanumericZZZ(sStart);
+		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCounter_TYPE_ALPHANUMERIC_SIGNIFICANT){
+			objReturn = new CounterByCharacterAscii_AlphanumericSignificantZZZ(sStart);
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
@@ -83,6 +91,12 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		ICounterStringZZZ objReturn = null;
 		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
 			objReturn = new CounterByCharacterAscii_NumericZZZ(iStart);
+		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET){
+			objReturn = new CounterByCharacterAscii_AlphabetZZZ(iStart);	
+		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHANUMERIC){
+			objReturn = new CounterByCharacterAscii_AlphanumericZZZ(iStart);
+		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCounter_TYPE_ALPHANUMERIC_SIGNIFICANT){
+			objReturn = new CounterByCharacterAscii_AlphanumericSignificantZZZ(iStart);
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
@@ -137,7 +151,7 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 			objReturn.setCounterStrategyObject(objCounterStrategy);	
 		}else if(objCounterStrategy instanceof CounterStrategyAlphanumericSignificantZZZ){
 			//dito, ein AlphanumericCounter... 20190601: GGFs ein spezielles Interface dafür entwickeln??? 
-			objReturn = new CounterByCharacterAscii_AlphanumericZZZ();
+			objReturn = new CounterByCharacterAscii_AlphanumericSignificantZZZ();
 			objReturn.setCounterStrategyObject(objCounterStrategy);
 		}else{		
 			ExceptionZZZ ez = new ExceptionZZZ("CounterStategyObject-Type wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());

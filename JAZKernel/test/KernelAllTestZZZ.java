@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractList.VectorZZZTest;
 import basic.zBasic.util.data.DataStoreZZZTest;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAsciiFactoryZZZTest;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphabetZZZTest;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphanumericZZZTest;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_NumericZZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
@@ -53,6 +54,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(CounterByCharacterAscii_AlphabetZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAscii_NumericZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAscii_AlphanumericZZZTest.class);
+		objReturn.addTestSuite(CounterByCharacterAscii_AlphanumericSignificantZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAsciiFactoryZZZTest.class);
 		objReturn.addTestSuite(VectorZZZTest.class);
 		objReturn.addTestSuite(DataStoreZZZTest.class);

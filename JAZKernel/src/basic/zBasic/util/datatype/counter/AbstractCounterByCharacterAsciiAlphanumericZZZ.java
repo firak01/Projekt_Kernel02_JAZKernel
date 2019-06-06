@@ -10,7 +10,7 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 	}
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(int iStartingValue){
 		super(iStartingValue);
-	}
+	}	
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(int iStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy){
 		super(iStartingValue);
 		this.setCounterStrategyObject(objCounterStrategy);
@@ -69,6 +69,16 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 		this.getCounterStrategyObject().isLowercase(bValue);
 	}
 	
+	@Override
+	public void setValueCurrent(String sValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public String peekChange(int iValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 	
 
 }

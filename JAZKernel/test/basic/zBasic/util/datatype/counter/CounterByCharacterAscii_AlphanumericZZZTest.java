@@ -803,9 +803,18 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 						ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Fehler beim String '" + stemp + "'", KernelZZZ.iERROR_RUNTIME, CounterByCharacterAscii_AlphanumericZZZTest.class, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
+					
+					stemp = "B9Z1";
+					btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
+					if(!btemp){
+						ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Fehler beim String '" + stemp + "'", KernelZZZ.iERROR_RUNTIME, CounterByCharacterAscii_AlphanumericZZZTest.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
 				} catch (ExceptionZZZ ez) {
 					fail("Method throws an exception." + ez.getMessageLast());
 				}
+			
+			
 	    }
  
 	 private boolean getNumberForStringAlphanumeric_StrategySignificantTest_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric){

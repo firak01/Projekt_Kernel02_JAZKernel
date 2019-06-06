@@ -36,6 +36,9 @@ public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharac
 	public CounterByCharacterAscii_AlphabetZZZ(String sStartingValue) throws ExceptionZZZ{
 		super(sStartingValue);
 	}
+	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue) throws ExceptionZZZ{
+		super(iStartingValue);
+	}
 	public CounterByCharacterAscii_AlphabetZZZ(String sStartingValue, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
 		super(sStartingValue, objCounterStrategy);		
 	}
@@ -259,8 +262,7 @@ public static boolean isValidCharacter(char c){
 		return bReturn;
 	}
 
-	//### Aus Interface
-	
+	//### Aus Interface	
 	@Override
 	public String peekChange(int iValue) throws ExceptionZZZ {	
 		String sReturn = null;
