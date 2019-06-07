@@ -1,7 +1,7 @@
 package basic.zBasic.util.datatype.counter;
 
-public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ{
-	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
+public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ, ICounterCaseSensitiveZZZ{
+	//private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
 	public AbstractCounterByCharacterAsciiAlphabetZZZ(){
 		super();
@@ -20,16 +20,16 @@ public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends Abstrac
 	
 	
 	// ++++ Aus Interface
-	public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
-		if(this.objCounterStrategy==null){
-			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();//!!!!!!!!!!!
-			this.objCounterStrategy = objCounterStrategy;
-		}
-		return this.objCounterStrategy;
-	}
-	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		this.objCounterStrategy = objCounterStrategy;
-	}
+//	public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
+//		if(this.objCounterStrategy==null){
+//			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();//!!!!!!!!!!!
+//			this.objCounterStrategy = objCounterStrategy;
+//		}
+//		return this.objCounterStrategy;
+//	}
+//	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+//		this.objCounterStrategy = objCounterStrategy;
+//	}
 	
 	@Override
 	public boolean isLowercase() {

@@ -16,6 +16,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends AbstractCounterByStrategyAlphanumericSignificantZZZ{
+	private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;	
+	
 	public static int iPOSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
 	public static int iPOSITION_MAX=26;
 	
@@ -82,5 +84,20 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 			this.setValueCurrent(iValue);
 		}//end main:
 	}	
+	
+	//###################
+	// ++++ Aus Interface
+	@Override
+	public ICounterStrategyAlphanumericSignificantZZZ getCounterStrategyObject(){
+	if(this.objCounterStrategy==null){
+		ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+		this.objCounterStrategy = objCounterStrategy;
+	}
+	return this.objCounterStrategy;
+	}
+	@Override
+	public void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
+		this.objCounterStrategy = objCounterStrategy;
+	}
 	
 }

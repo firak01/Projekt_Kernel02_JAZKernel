@@ -2,8 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ{
-	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
+public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ, ICounterCaseSensitiveZZZ{
 	
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(){
 		super();
@@ -47,18 +46,7 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 	
 	
 	
-	// ++++ Aus Interface
-	public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
-		if(this.objCounterStrategy==null){
-			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
-			this.objCounterStrategy = objCounterStrategy;
-		}
-		return this.objCounterStrategy;
-	}
-	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		this.objCounterStrategy = objCounterStrategy;
-	}
-	
+	// ++++ Aus Interface		
 	@Override
 	public boolean isLowercase() {
 		return this.getCounterStrategyObject().isLowercase();
@@ -70,15 +58,9 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 	}
 	
 	@Override
-	public void setValueCurrent(String sValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void setValueCurrent(String sValue) throws ExceptionZZZ ;
 	@Override
-	public String peekChange(int iValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+	public abstract String peekChange(int iValue) throws ExceptionZZZ;
 	
 
 }

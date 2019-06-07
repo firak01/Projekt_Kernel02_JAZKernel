@@ -640,22 +640,24 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	//Merke: Bei der Signifikant-Strategie ist die Positon der Zeichen zueinander hinsichtlich der Gültigkeit egal....
 	    	//Gehe daher sofort zu den "Berechnungstests":
 	    	
-	    	
-	    	//"SIGNIFICANT STRATEGIE"-Ergebnisse	    		    	
 	    	try {
-				stemp = "0"; 
+				stemp = "00"; 
 				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
-				btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itemp);
-		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-		    	assertEquals("Erwarteter Wert ", 0,itemp); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
-
-		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    	
-		    	
+				fail("Method should have thrown an exception for the string '"+stemp+"'");		    	
 			} catch (ExceptionZZZ ez) {
-				fail("Method throws an exception." + ez.getMessageLast());
+				//Erwartetete Exception
 			} 
 	    	
+	        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    			try {				
+    				stemp = "0Z";
+    				btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
+    				fail("Method should have thrown an exception for the string '"+stemp+"'");    				
+    			} catch (ExceptionZZZ ez) {
+    				//Erwartetete Exception
+    			} 	
+	    	
+	    	//"SIGNIFICANT STRATEGIE"-Ergebnisse	    		    		    		    	
 	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	try {
 				stemp = "Z";
@@ -674,7 +676,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
 		    	try {				
-					stemp = "00";
+					stemp = "0";
 			    	objCounterStrategy.isRightAligned(false);
 					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73
 					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itempLeft);
@@ -771,18 +773,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
 		    	
-		    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			try {				
-				stemp = "0Z";
-				btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
-				if(!btemp){
-					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Fehler beim String '" + stemp + "'", KernelZZZ.iERROR_RUNTIME, CounterByCharacterAscii_AlphanumericZZZTest.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-			} catch (ExceptionZZZ ez) {
-				fail("Method throws an exception." + ez.getMessageLast());
-			} 	
-		    	
+				    	
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			try{
 					stemp = "1Z";
@@ -814,13 +805,32 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 					fail("Method throws an exception." + ez.getMessageLast());
 				}
 			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			try{
+					objCounterStrategy.isLowercase(true);
+					stemp = "1z9b";
+					btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
+					if(!btemp){
+						ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Fehler beim String '" + stemp + "'", KernelZZZ.iERROR_RUNTIME, CounterByCharacterAscii_AlphanumericZZZTest.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					
+					stemp = "B9Z1";
+					btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
+					if(!btemp){
+						ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Fehler beim String '" + stemp + "'", KernelZZZ.iERROR_RUNTIME, CounterByCharacterAscii_AlphanumericZZZTest.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+				} catch (ExceptionZZZ ez) {
+					fail("Method throws an exception." + ez.getMessageLast());
+				}
+			
 			
 	    }
  
-	 private boolean getNumberForStringAlphanumeric_StrategySignificantTest_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric){
+	 private boolean getNumberForStringAlphanumeric_StrategySignificantTest_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric) throws ExceptionZZZ{
 			boolean bReturn = false;
-			main:{
-				try{
+			main:{			
 					String stemp; String sCheckLeft; String sCheckRight; int itemp; int itempLeft; int itempRight; int itempRightCheck;  int itempLeftCheck; boolean btemp;													
 					String sAlphanumericNormed = null; String sAlphanumericReversedNormed = null;
 										
@@ -895,10 +905,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			    		assertTrue("Links- oder Rechtsbündig MUSS den gleichen Zahlenwert haben, da es ein 'Palindrom' wie z.B. AA. String ist '" + sAlphanumericReversedNormed + "'.", itempLeft==itempRight);
 			    	}
 			    			
-			    	bReturn = true;
-				} catch (ExceptionZZZ ez) {
-					fail("Method throws an exception." + ez.getMessageLast());
-				} 				    	    								
+			    	bReturn = true;							    	    								
 			}//end main:
 			return bReturn;
 		}

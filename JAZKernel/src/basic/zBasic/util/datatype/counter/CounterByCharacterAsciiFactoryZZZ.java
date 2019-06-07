@@ -27,29 +27,7 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 		}
 		return objCounterFactory;		
 	}
-	
-	
-	
-	
-	private ICounterStringZZZ createCounterAlphabet(){
-		return null;
-	}
-	private ICounterStringZZZ createCounterAlphabetStartingWithString(String s){
-		return null;
-	}
-	private ICounterStringZZZ createCounterAlphanumeric(){
-		return null;
-	}
-	private ICounterStringZZZ createCounterAlphanumericStartingWithString(String s){
-		return null;
-	}
-	private ICounterStringZZZ createCounterNumeric(){
-		return null;
-	}
-	private ICounterStringZZZ createCounterNumericStartingWithString(String s){
-		return null;
-	}
-	
+
 	//### AUS Interfaces
 	//COUNTER MIT DEFAULTSTRATEGY "MULTIPLE"
 	@Override
@@ -141,24 +119,19 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
-		
-		
+				
 		if(objCounterStrategy instanceof CounterStrategyAlphabetSerialZZZ || objCounterStrategy instanceof CounterStrategyAlphabetMultipleZZZ){
 			objReturn = new CounterByCharacterAscii_AlphabetZZZ();
 			objReturn.setCounterStrategyObject(objCounterStrategy);			
 		}else if(objCounterStrategy instanceof CounterStrategyAlphanumericMultipleZZZ || objCounterStrategy instanceof CounterStrategyAlphanumericSerialZZZ){				 
 			objReturn = new CounterByCharacterAscii_AlphanumericZZZ();
-			objReturn.setCounterStrategyObject(objCounterStrategy);	
-		}else if(objCounterStrategy instanceof CounterStrategyAlphanumericSignificantZZZ){
-			//dito, ein AlphanumericCounter... 20190601: GGFs ein spezielles Interface dafür entwickeln??? 
-			objReturn = new CounterByCharacterAscii_AlphanumericSignificantZZZ();
-			objReturn.setCounterStrategyObject(objCounterStrategy);
+			objReturn.setCounterStrategyObject(objCounterStrategy);			
 		}else{		
 			ExceptionZZZ ez = new ExceptionZZZ("CounterStategyObject-Type wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
 		return objReturn;
-	}
+	}		
 	@Override
 	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
 		ICounterAlphanumericZZZ objReturn = this.createCounter(objCounterStrategy);
@@ -168,6 +141,37 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 	@Override
 	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sStart) throws ExceptionZZZ {
 		ICounterAlphanumericZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(sStart);
+		return objReturn;
+	}
+	
+	@Override
+	public ICounterAlphanumericSignificantZZZ createCounter(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) throws ExceptionZZZ{
+		ICounterAlphanumericSignificantZZZ objReturn = null;
+		if(objCounterStrategy==null){
+			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		 if(objCounterStrategy instanceof CounterStrategyAlphanumericSignificantZZZ){
+			//dito, ein AlphanumericCounter... 20190601: GGFs ein spezielles Interface dafür entwickeln??? 
+			objReturn = new CounterByCharacterAscii_AlphanumericSignificantZZZ();
+			objReturn.setCounterStrategyObject(objCounterStrategy);
+		 }else{		
+				ExceptionZZZ ez = new ExceptionZZZ("CounterStategyObject-Type wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		 return objReturn;
+	}
+	@Override
+	public ICounterAlphanumericSignificantZZZ createCounter(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
+		ICounterAlphanumericSignificantZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(iStart);
+		return objReturn;
+	}
+	@Override
+	public ICounterAlphanumericSignificantZZZ createCounter(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy, String sStart) throws ExceptionZZZ {
+		ICounterAlphanumericSignificantZZZ objReturn = this.createCounter(objCounterStrategy);
 		objReturn.setValueCurrent(sStart);
 		return objReturn;
 	}

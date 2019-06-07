@@ -8,7 +8,8 @@ import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharacterAsciiNumericZZZ{
-
+	private ICounterStrategyNumericZZZ objCounterStrategy;
+	
 	public static int iPOSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
 	public static int iPOSITION_MAX=10;//die 10 Ziffern 0-9 dazu.
 	
@@ -232,6 +233,18 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 		int iValue = CounterByCharacterAscii_NumericZZZ.getNumberForString(sValue,objCounterStrategy);
 		this.setValueCurrent(iValue);
 	}	
+	
+	// ++++ Aus Interface
+	public ICounterStrategyNumericZZZ getCounterStrategyObject(){
+		if(this.objCounterStrategy==null){
+			ICounterStrategyNumericZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
+			this.objCounterStrategy = objCounterStrategy;
+		}
+		return this.objCounterStrategy;
+	}
+	public void setCounterStrategyObject(ICounterStrategyNumericZZZ objCounterStrategy){
+		this.objCounterStrategy = objCounterStrategy;
+	}
 	
 	
 }

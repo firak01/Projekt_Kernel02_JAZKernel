@@ -513,7 +513,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		//B) Mache Alphabet-Counter per Factory und Signifikant Strategy
 		//####################################
 		CounterStrategyAlphanumericSignificantZZZ objCounterStrategyAlphaNumSig = new CounterStrategyAlphanumericSignificantZZZ();
-		ICounterAlphanumericZZZ objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig);
+		ICounterAlphanumericSignificantZZZ objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig);
 		
 		///+++++++++++++++++++++++++++++++
 		//Hole Initialwert
@@ -566,7 +566,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
-		ICounterAlphanumericZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,10);
+		ICounterAlphanumericSignificantZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,10);
 		itemp = objCounterAlphaS2.getValueCurrent();
 		stemp = objCounterAlphaS2.current();
 		assertEquals("A",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
@@ -586,27 +586,27 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		
 		//B) Mit String  Wert
 		objCounterStrategyAlphaNumSig.isLowercase(false);
-		ICounterAlphanumericZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"9");
+		ICounterAlphanumericSignificantZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"9");
 		itemp = objCounterAlphaS3.getValueCurrent();
 		stemp = objCounterAlphaS3.current();
-		assertEquals("A",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
+		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
 		
 		itempold = itemp;
 		stemp = objCounterAlphaS3.next();
-		assertEquals("B",stemp);
+		assertEquals("A",stemp);
 		itemp = objCounterAlphaS3.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		objCounterStrategyAlphaNumSig.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 		itempold = itemp;
 		stemp = objCounterAlphaS3.next();
-		assertEquals("c",stemp);
+		assertEquals("b",stemp);
 		itemp = objCounterAlphaS3.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		//+++ Mit einem mehrstelligen String-Wert
 		objCounterStrategyAlphaNumSig.isLowercase(false);
-		ICounterAlphanumericZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"ZZA");
+		ICounterAlphanumericSignificantZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"ZZA");
 		itemp = objCounterAlphaS4.getValueCurrent();
 		stemp = objCounterAlphaS4.current();
 		assertEquals("ZZA",stemp);

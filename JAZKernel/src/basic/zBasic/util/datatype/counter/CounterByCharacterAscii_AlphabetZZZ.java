@@ -16,6 +16,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ{
+	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
+	
 	public static int iPOSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
 	public static int iPOSITION_MAX=26;
 	
@@ -281,4 +283,17 @@ public static boolean isValidCharacter(char c){
 			this.setValueCurrent(iValue);
 		}//end main:
 	}	
+	
+	// ++++ Aus Interface
+			public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
+				if(this.objCounterStrategy==null){
+					ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+					this.objCounterStrategy = objCounterStrategy;
+				}
+				return this.objCounterStrategy;
+			}
+			public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+				this.objCounterStrategy = objCounterStrategy;
+			}
+
 }//End class

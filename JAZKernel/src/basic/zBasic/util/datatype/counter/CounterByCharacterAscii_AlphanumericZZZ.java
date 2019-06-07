@@ -16,7 +16,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ {
-
+	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
+	
 	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
 	public static int iPOSITION_MAX=36;
 	
@@ -322,4 +323,17 @@ public static boolean isValidCharacter(String s){
 			this.setValueCurrent(iValue);
 		}//end main:
 	}	
+	
+	// ++++ Aus Interface
+			public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
+				if(this.objCounterStrategy==null){
+					ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+					this.objCounterStrategy = objCounterStrategy;
+				}
+				return this.objCounterStrategy;
+			}
+			public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+				this.objCounterStrategy = objCounterStrategy;
+			}
+
 }
