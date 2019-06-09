@@ -2256,10 +2256,10 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			if(StringZZZ.isEmpty(sString)) break main;
 			if(StringZZZ.isEmpty(sStringToBeStripped)) break main;
 			
-			boolean bGoon = false;
+			boolean bGoon = false;			
 			while(!bGoon){
 				if(sReturn.startsWith(sStringToBeStripped) && sReturn.length()>=2){
-					sReturn = StringZZZ.rightback(sString, sStringToBeStripped.length());
+					sReturn = StringZZZ.rightback(sReturn, sStringToBeStripped.length());
 				}else{
 					bGoon = true;
 				}

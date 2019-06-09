@@ -311,6 +311,9 @@ public static boolean isValidCharacter(String s){
 		main:{
 			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
 			sReturn = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(iValue, objCounterStrategy);	
+			
+			//Vor der Rückgabe noch den Wert "nacharbeiten", ggfs.
+			sReturn = this.postValueSetting(sReturn);
 		}//end main:
 		return sReturn;
 	}
@@ -318,6 +321,9 @@ public static boolean isValidCharacter(String s){
 	@Override
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{			
 		main:{
+			//Vor der Eingabe noch den Wert "vorverarbeiten", ggfs.
+			sValue = this.postValueSetting(sValue);
+		
 			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
 			int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sValue, objCounterStrategy);
 			this.setValueCurrent(iValue);

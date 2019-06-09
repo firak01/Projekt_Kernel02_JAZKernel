@@ -72,6 +72,9 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 		main:{
 			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
 			sReturn = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(iValue, objCounterStrategy);	
+			
+			//...Nachbearbeitung durchführen
+			sReturn = this.postValueSetting(sReturn);
 		}//end main:
 		return sReturn;
 	}
@@ -79,11 +82,83 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 	@Override
 	public void setValueCurrent(String sValue) throws ExceptionZZZ{			
 		main:{
+			//...Vorverarbeitug durchführen
+			sValue = this.preValueSetting(sValue);
+		
 			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
 			int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sValue, objCounterStrategy);
 			this.setValueCurrent(iValue);
 		}//end main:
 	}	
+	
+	@Override
+	public String preValueSetting(String sValue) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+		if(StringZZZ.isEmpty(sValue)){
+			ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein Wert für das PREPROCESSING übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		if(this.getCounterLength()>= 1){
+			//Führendes Füllzeichen entfernen, aber nur wenn es innerhalb der maximalen Zählergröße liegt. Merke: Nur dann schlägt ggfs. eine Validierung fehl. Was gewünscht ist!!!
+			int iTimes=this.getCounterLength() - sValue.length();
+			if(iTimes>=0){			
+				char cToBeStripped = this.getCounterFilling();
+				
+				String sStringToBeStripped = StringZZZ.char2String(cToBeStripped) ;
+				
+				
+				if(this.getCounterStrategyObject().isRightAligned()){
+					sReturn = StringZZZ.stripRight(sValue, sStringToBeStripped);
+				}else{
+					sReturn = StringZZZ.stripLeft(sValue, sStringToBeStripped);
+				}
+			}else{
+				sReturn = sValue;
+			}
+		}else{
+			sReturn = sValue;
+		}
+		
+		}//end main;
+		return sReturn;
+	}
+	@Override
+	public String postValueSetting(String sValue) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+		if(StringZZZ.isEmpty(sValue)){
+			ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein Wert für das POSTPROCESSING übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		
+		if(this.getCounterLength()>=1){
+			
+			//Führendes Füllzeichen hinzunehmen, aber nur bis zum Zählermaximum bzgl. der Länge.
+			int iTimes=this.getCounterLength() - sValue.length();
+			if(iTimes >= 1){			
+				char cFilling = this.getCounterFilling();
+				String sString = StringZZZ.char2String(cFilling);
+				String stemp = StringZZZ.repeat(sString, iTimes);
+				
+				if(this.getCounterStrategyObject().isRightAligned()){
+					sReturn = sValue + stemp;
+				}else{
+					sReturn = stemp + sValue;
+				}			
+				 
+			}else{
+				sReturn = sValue;
+			}
+		}else{
+			sReturn = sValue;
+		}
+		
+		}//end main;
+		return sReturn;
+	}
 	
 	//###################
 	// ++++ Aus Interface
@@ -99,5 +174,6 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 	public void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
 		this.objCounterStrategy = objCounterStrategy;
 	}
+	
 	
 }

@@ -44,7 +44,4 @@ public abstract class AbstractCounterByCharacterAsciiNumericZZZ extends Abstract
 		}//end main:
 		return bReturn;
 	}
-	
-	
-
 }

@@ -294,6 +294,5 @@ public static boolean isValidCharacter(char c){
 			}
 			public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
 				this.objCounterStrategy = objCounterStrategy;
-			}
-
+			}			
 }//End class

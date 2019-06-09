@@ -47,5 +47,12 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ extend
 	@Override
 	public abstract String peekChange(int iValue) throws ExceptionZZZ;
 	
-
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//Normalerweise ist Eingabe = Ausgabe, aber bei den Signifikant-Counter ist eine führende 0 erlaubt, wenn eine Zählerlänge vorgegeben wurde.
+	//Dann kann man beispielsweise diese führende 0 entfernen (vor der Verarbeitung) und wieder hinzufügen (bis zur Zählerlänge, nach der Verarbeitung)
+		@Override
+		public abstract String preValueSetting(String sValue) throws ExceptionZZZ;
+			
+		@Override
+		public abstract String postValueSetting(String sValue) throws ExceptionZZZ;
 }

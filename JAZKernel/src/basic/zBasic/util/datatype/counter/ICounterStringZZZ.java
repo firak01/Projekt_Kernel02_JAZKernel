@@ -25,12 +25,11 @@ public interface ICounterStringZZZ {
 	public String peekNext() throws ExceptionZZZ; //wie next(), ohne den Wert zu speichern.
 	public String peekChange(int iValue) throws ExceptionZZZ;//wie change() ohne den Wet zu speichern.
 
-	//TODO GOON: Setze den Counter per Zeichen.
+	//Setze den Counter per Zeichen.
 	public void setValueCurrent(String sValue) throws ExceptionZZZ;
 	
-	
-	//Merke: in den ICounterStrategyUserZZZ ... Interfaces git es 
-//	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
-	//bzw.
-//	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
+	//20190610: Vor- und Nacharbeiten des Wertsetzens. Hier können ggfs. Füllzeichen entfernt oder hinzugenommen werden.
+	public String preValueSetting(String sValue)  throws ExceptionZZZ;
+	public String postValueSetting(String sValue) throws ExceptionZZZ;	
+
 }

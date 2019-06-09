@@ -26,5 +26,20 @@ public class CharZZZ {
 		}//end main:
 		return bReturn;
 	}
+	
+	/**
+	 * @param c
+	 * @return
+	 * @author Fritz Lindhauer, 09.06.2019, 09:42:58
+	 * siehe: 
+	 * https://stackoverflow.com/questions/8534178/how-to-represent-empty-char-in-java-character-class
+	 */
+	public static boolean isEmpty(char c){
+		if(c == Character.MIN_VALUE){
+			return true;
+		}else{
+			return false;
+		}
+	}
 		
 }

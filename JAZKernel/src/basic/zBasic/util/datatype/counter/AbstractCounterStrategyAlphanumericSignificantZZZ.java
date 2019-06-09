@@ -2,6 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
 
 public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericZZZ implements ICounterStrategyAlphanumericSignificantZZZ{		
 	private int iCounterLength;
@@ -28,7 +29,11 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 
 		@Override
 		public char getCounterFilling() {		
-			return this.cCounterFilling;
+			if(CharZZZ.isEmpty(cCounterFilling)){
+				return "0".toCharArray()[0]; //das sollte dann auch "0" sein, oder?
+			}else{
+				return this.cCounterFilling;
+			}
 		}
 
 		@Override

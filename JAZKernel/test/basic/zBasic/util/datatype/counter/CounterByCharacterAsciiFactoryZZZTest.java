@@ -547,7 +547,56 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			//Erwartetete Exception
 		} 
 		
+		//... setze die Zählerlänge auf 3 fest... Dann wird das gültig
+		try{
+			objCounterAlphaS.setCounterLength(3);
+			
+			stemp = "0ZA";
+			objCounterAlphaS.setValueCurrent(stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			
+			stempold = stemp;
+			stemp = objCounterAlphaS.current();
+			assertEquals(stemp, stempold);
+				
+			itempold = itemp;
+			stemp = objCounterAlphaS.next();
+			assertEquals("0ZB",stemp); //...mit Zählerlänge lassen sich auch führende "0" en wiederherstellen.
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+		
+		//... aber das bleibt ungültig
+		try{
+			stemp = "00ZA";
+			objCounterAlphaS.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... und das wird nun im einfachen Vergleich ungültig
+		stemp = "ZA";
+		objCounterAlphaS.setValueCurrent(stemp);
+		itemp = objCounterAlphaS.getValueCurrent();
+		
+		stempold = stemp;
+		stemp = objCounterAlphaS.current();
+		assertFalse("Wegen des Füllzeichens dürfen die Strings nicht gleich sein. '(" + stemp + "')('"+stempold +"')", stemp.equals(stempold));
+			
+		itempold = itemp;
+		stemp = objCounterAlphaS.next();
+		assertEquals("0ZB",stemp);
+		itemp = objCounterAlphaS.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		//###########################################
 		//... gültige significant Syntax
+		objCounterAlphaS.setCounterLength(0);
+		
 		stemp = "ZA";
 		objCounterAlphaS.setValueCurrent(stemp);
 		itemp = objCounterAlphaS.getValueCurrent();

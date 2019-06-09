@@ -131,6 +131,18 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 		return this.getStringPrefix() + this.peekChange(iValue) + this.getStringSuffix();
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public String preValueSetting(String sValue) throws ExceptionZZZ {
+		//Da das normalerweise nicht verwendet wird einfach den Eingabewert zurückgeben. Wenn es gebraucht wird, die Methode überschreiben.
+		return sValue;
+	}
+	@Override
+	public String postValueSetting(String sValue) throws ExceptionZZZ {
+		//Da das normalerweise nicht verwendet wird einfach den Eingabewert zurückgeben. Wenn es gebraucht wird, die Methode überschreiben.
+		return sValue;
+	}
+	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public String toString(){
 		String s = this.getClass().getName();
