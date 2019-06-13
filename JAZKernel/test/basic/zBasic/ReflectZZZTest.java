@@ -105,6 +105,7 @@ public class ReflectZZZTest extends TestCase{
 	public void testGetCallingStack(){
 		//Ermittle aus dem Stacktrace den Klassennamen.Methodennamen. 
 		//Dies kann in diversen Möglichkeiten als Schlüssel für eine HashMap verwendet werden.
+		String[]saCalling = ReflectCodeZZZ.getCallingStack();
 		
 		
 	}
