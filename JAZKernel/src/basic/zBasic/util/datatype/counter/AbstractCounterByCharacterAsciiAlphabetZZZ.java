@@ -1,6 +1,8 @@
 package basic.zBasic.util.datatype.counter;
 
 public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ, ICounterCaseSensitiveZZZ{
+	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
+	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden. 
 	//private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
 	public AbstractCounterByCharacterAsciiAlphabetZZZ(){

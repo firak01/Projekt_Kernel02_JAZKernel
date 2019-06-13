@@ -328,7 +328,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  
 			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+					///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
 
 					final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 					if(stackTrace.length>=4){
@@ -548,6 +548,21 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			linestart = trace.indexOf("\n", linestart + 1);
 		}
 		return trace.substring(linestart + 5, trace.indexOf("(", linestart + 5));
+	}
+	
+	
+	/**Gib ein Array der Methoden des Stacktrace zurück.
+	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
+	 * z.B. in einer HashMap verwendet werden kann.
+	 * @return
+	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
+	 */
+	public static String[] getCallingStack(){
+		String[] saReturn=null;
+		main:{
+			
+		}//end main
+		return saReturn;
 	}
 
 	/**

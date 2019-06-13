@@ -102,5 +102,12 @@ public class ReflectZZZTest extends TestCase{
 		assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.endsWith(sMethodCurrentLined) && stemp.length() > sMethodCurrentLined.length());
 	}
 	
+	public void testGetCallingStack(){
+		//Ermittle aus dem Stacktrace den Klassennamen.Methodennamen. 
+		//Dies kann in diversen Möglichkeiten als Schlüssel für eine HashMap verwendet werden.
+		
+		
+	}
+	
 	
 }//END Class
