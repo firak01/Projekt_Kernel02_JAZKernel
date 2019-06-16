@@ -52,6 +52,7 @@ public class ReflectZZZTest extends TestCase{
 	}
 	
 	public void testIsJavaVersionMainCurrentEqualOrNewerThan(){
+//		try{
 		String stemp = ReflectEnvironmentZZZ.getJavaVersionCurrent();
 		assertNotNull("Kann nicht auf aktuelle Java-Version zugreifen (NULL)",stemp);
 		
@@ -60,11 +61,14 @@ public class ReflectZZZTest extends TestCase{
 		
 		boolean btemp = ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(stemp);
 		assertTrue("Fehler beim Java-Versionsvergleich",btemp);//Da man die aktuelle Version mit der aktuellen Version selbst vergleicht, muss einfach true herauskommen
-		
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		} 		
 	}
 	
 	
 	public void testGetMethodCurrentName(){
+//		try{
 		String sFunction = "testGetMethodCurrentName";
 		String  stemp = ReflectCodeZZZ.getMethodCurrentName();
 		assertNotNull("Fehler beim Ermitteln des aktuellen Methodennamens (NULL)", stemp);
@@ -73,41 +77,59 @@ public class ReflectZZZTest extends TestCase{
 		stemp = ReflectCodeZZZ.getMethodCurrentNameLined(0);
 		assertNotNull("Fehler beim Ermitteln des aktuellen Methodennamens mit Zeilennummer (NULL)", stemp);
 		assertTrue("Fehler beim Ermitteln des aktuellen Methodennamens: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.startsWith(sFunction) && stemp.length() > sFunction.length());
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		} 
 	}
 	
 	public void testGetClassCurrentName(){
-		String sClass = this.getClass().getName();
-		String  stemp = ReflectCodeZZZ.getClassCurrentName();
-		assertNotNull("Fehler beim Ermitteln des aktuellen Klassennamens (NULL)", stemp);
-		assertTrue("Fehler beim Ermitteln des aktuellen Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClass));
-		
+//		try{
+			String sClass = this.getClass().getName();
+			String  stemp = ReflectCodeZZZ.getClassCurrentName();
+			assertNotNull("Fehler beim Ermitteln des aktuellen Klassennamens (NULL)", stemp);
+			assertTrue("Fehler beim Ermitteln des aktuellen Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClass));
+//		} catch (ExceptionZZZ ez) {
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		} 
 	}
 	
 	public void testGetClassCallingName(){
-		String sClassCurrent = this.getClass().getName(); 
-		String  stemp = ReflectCodeZZZ.getClassCallingName(); //Das ist dann keine meiner Klassen, sondern von sun, etc.
-		assertNotNull("Fehler beim Ermitteln des aufrufenden Klassennamens (NULL)", stemp);
-		assertFalse("Fehler beim Ermitteln des aufrufenden Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClassCurrent));
-		
+		try{
+			String sClassCurrent = this.getClass().getName(); 
+			String  stemp = ReflectCodeZZZ.getClassCallingName(); //Das ist dann keine meiner Klassen, sondern von sun, etc.
+			assertNotNull("Fehler beim Ermitteln des aufrufenden Klassennamens (NULL)", stemp);
+			assertFalse("Fehler beim Ermitteln des aufrufenden Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClassCurrent));
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
 	}
 	
 	public void testGetPositionCurrent(){
-		String sClassCurrent = this.getClass().getName(); 
-		String sMethodCurrentLined = ReflectCodeZZZ.getMethodCurrentNameLined(2);//2 ist das Offset, weil die Zeilennummer erste f�r 2 Zeilen sp�ter berechnet werden soll. 
-		
-		String  stemp = ReflectCodeZZZ.getPositionCurrent(); //Das ist dann keine meiner Klassen, sondern von sun, etc.
-		assertNotNull("Fehler beim Ermitteln der aktuellen CodePosition (NULL)", stemp);
-		
-		assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Klassenname).", stemp.startsWith(sClassCurrent) && stemp.length() > sClassCurrent.length());
-		assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.endsWith(sMethodCurrentLined) && stemp.length() > sMethodCurrentLined.length());
+		try{
+			String sClassCurrent = this.getClass().getName(); 
+			String sMethodCurrentLined = ReflectCodeZZZ.getMethodCurrentNameLined(2);//2 ist das Offset, weil die Zeilennummer erste f�r 2 Zeilen sp�ter berechnet werden soll. 
+			
+			String  stemp = ReflectCodeZZZ.getPositionCurrent(); //Das ist dann keine meiner Klassen, sondern von sun, etc.
+			assertNotNull("Fehler beim Ermitteln der aktuellen CodePosition (NULL)", stemp);
+			
+			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Klassenname).", stemp.startsWith(sClassCurrent) && stemp.length() > sClassCurrent.length());
+			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.endsWith(sMethodCurrentLined) && stemp.length() > sMethodCurrentLined.length());
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
 	}
 	
 	public void testGetCallingStack(){
-		//Ermittle aus dem Stacktrace den Klassennamen.Methodennamen. 
-		//Dies kann in diversen Möglichkeiten als Schlüssel für eine HashMap verwendet werden.
-		String[]saCalling = ReflectCodeZZZ.getCallingStack();
-		
-		
+		try{
+			//Ermittle aus dem Stacktrace den Klassennamen.Methodennamen. 
+			//Dies kann in diversen Möglichkeiten als Schlüssel für eine HashMap verwendet werden.
+			String[]saCalling = ReflectCodeZZZ.getCallingStackKernel();
+			
+			String[]saCalling02 = ReflectCodeZZZ.getCallingStack();
+			
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
 	}
 	
 	

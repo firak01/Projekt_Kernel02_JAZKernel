@@ -35,7 +35,7 @@ public class DateTimeZZZTest extends TestCase{
 	 }
 	 
 	 public void testComputeTimestampUniqueString(){
-		// try{
+		 try{
 			 ///Date objDate = new Date(); //Hole die aktuelle Zeit  //Merke: Es ist nicht möglich für einen bestimmten String einen Unique-Wert zu holen. Dann sollte man eher auf reine Zufallszahlen ausweichen.
 			 String sTimestamp01 = DateTimeZZZ.computeTimestampUniqueString();
 			 assertNotNull("TimestampString01 is never NULL", sTimestamp01);
@@ -48,9 +48,9 @@ public class DateTimeZZZTest extends TestCase{
 			 //Merke: Dieser Timestamp ist in diesem Fall zwingend unique.
 			 assertFalse("Timestamps sollten verschieden sein, auch wenn nur wenige Milisekunden zwischen ihrer Erzeugung liegen.", sTimestamp01.equals(sTimestamp02) );
 			 
-//		 }catch(ExceptionZZZ ez){
-//				fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
 	 }
 	 
 }//End class

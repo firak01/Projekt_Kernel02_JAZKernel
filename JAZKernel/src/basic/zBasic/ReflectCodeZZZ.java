@@ -6,10 +6,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import base.collections.CollectionUtil;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.KernelZZZ;
 
 public class ReflectCodeZZZ  implements IConstantZZZ{
 	public static  final int iPOSITION_STACKTRACE_CURRENT = 2;
@@ -369,8 +377,9 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	  /**
 		 * @return Name (inkl. Package) der aktuellen Klasse
 		 * lindhaueradmin, 23.07.2013
+	 * @throws ExceptionZZZ 
 		 */
-		public static String getClassCallingName(){
+		public static String getClassCallingName() throws ExceptionZZZ{
 			  String sReturn = null;
 			  main:{
 				  
@@ -403,13 +412,14 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					}else{
 						
 							//Verarbeitung vor Java 1.4
-							  
+						ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	  
 					}//end Java Version
 			  }//end main:
 			  return sReturn;
 		  }
 		
-		public static String  getPositionCurrent(){
+		public static String  getPositionCurrent() throws ExceptionZZZ{
 			String sReturn = null;
 			  main:{
 				  
@@ -442,7 +452,8 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					}else{
 						
 							//Verarbeitung vor Java 1.4
-							  
+						ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	   
 					}//end Java Version
 			  }//end main:
 			  return sReturn;
@@ -504,7 +515,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		return sReturn;			
 	}
 	
-	/** Gibt den reinen Klassennamen (also ohne . oder / ) zur�ck.
+	/** Gibt den reinen Klassennamen (also ohne . oder / ) zurück.
 	 *   Diese Methode ist in statischen methoden zu verwenden, wenn kein "this" erlaubt ist.
 	* @param classOfObject
 	* @return
@@ -550,20 +561,119 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		return trace.substring(linestart + 5, trace.indexOf("(", linestart + 5));
 	}
 	
+	/**Gib ein Array der Methoden des Stacktrace zurück.
+	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
+	 * z.B. in einer HashMap verwendet werden kann.
+	 * @param sClassnameFilterRegEx : Schränke die Array-Einträge ein, auf Klassen, die diesen RegEx Ausdruck haben.
+	 * @return
+	 * @author Fritz Lindhauer, 16.06.2019, 07:42:03
+	 * @throws ExceptionZZZ 
+	 */
+	public static String[] getCallingStack(String sClassnameFilterRegEx) throws ExceptionZZZ{
+		String[] saReturn=null;
+		main:{
+			  ArrayList<String>listasTemp = new ArrayList<String>();
+			  String stemp; boolean btemp;
+			  org.apache.regexp.RE objReFilter = null;
+			  Matcher matcher = null;
+			  Pattern pattern = null;
+			  if(!StringZZZ.isEmpty(sClassnameFilterRegEx)){ //einmal den RegEx Ausdruck erzeugen und nicht jedesmal in der Schleife.
+				  //objReFilter = new org.apache.regexp.RE(sClassnameFilterRegEx);
+				  try{
+					  pattern = Pattern.compile(sClassnameFilterRegEx);
+				  }catch(Exception e){
+					  e.printStackTrace();
+				  }
+			  }
+			  				
+			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+
+					final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+					int iposition=0;
+					for(StackTraceElement element : stackTrace){
+						iposition++;
+						if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";																			
+							//if(objReFilter==null){
+							if(pattern==null){
+								stemp = element.getClassName() + "." + element.getMethodName();								
+								listasTemp.add(stemp);
+							}else{
+								stemp = element.getClassName();
+																
+								//btemp = objReFilter.match(stemp);
+								matcher = pattern.matcher(stemp);
+								btemp=matcher.find();
+								
+								if(btemp) {
+									stemp = element.getClassName() + "." + element.getMethodName();									
+									listasTemp.add(stemp);
+								}
+							}
+						}//end if
+					}//end for
+										
+				}else{
+					
+						//Verarbeitung vor Java 1.4
+					ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	  
+				}//end Java Version
+			  saReturn = ArrayListZZZ.toStringArray( listasTemp);
+		}//end main
+		return saReturn;
+	}
 	
 	/**Gib ein Array der Methoden des Stacktrace zurück.
 	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
 	 * z.B. in einer HashMap verwendet werden kann.
 	 * @return
 	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
+	 * @throws ExceptionZZZ 
 	 */
-	public static String[] getCallingStack(){
-		String[] saReturn=null;
-		main:{
-			
-		}//end main
-		return saReturn;
+	public static String[] getCallingStack() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getCallingStack(null);
 	}
+	
+	/**Gib ein Array der Methoden des Stacktrace zurück.
+	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
+	 * z.B. in einer HashMap verwendet werden kann.
+	 * @return
+	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
+	 * @throws ExceptionZZZ 
+	 */
+	public static String[] getCallingStackKernel() throws ExceptionZZZ{
+		String sRegEx = "(ZZZ$|ZZZ(T|t)est$)"; //Also: Am Ende des Klassennamens soll ZZZ stehen, bzw. ZZZTest, aber nicht der Reflection-Klassenname
+		
+		//sRegEx=sRegEx+"|^\\b"+ReflectCodeZZZ.class.getName()+"\\b"; //aber nicht der Reflection-Klassenname (Merke: Als ganzer String und nicht etwa mit ^ am Anfang
+		//String sRegEx="^!"+ReflectCodeZZZ.class.getName() + "$"; //aber nicht der Reflection-Klassenname (Merke: Als ganzer String und nicht etwa mit ^ am Anfang
+		String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ".", "\\.");
+		//String sRegEx="!(^"+sClassNameRegexed+"$)";
+		//String sRegEx="!"+sClassNameRegexed+"$";
+		
+		//https://stackoverflow.com/questions/8610743/how-to-negate-any-regular-expression-in-java
+/*
+You need to add anchors. The original regex (minus the unneeded parentheses):
+/.{0,4}
+...matches a string that contains a slash followed by zero to four more characters. But, because you're using the matches() method it's automatically anchored, as if it were really:
+^/.{0,4}$
+To achieve the inverse of that, you can't rely on automatic anchoring; you have to make at least the end anchor explicit within the lookahead. You also have to "pad" the regex with a .* because matches() requires the regex to consume the whole string:
+(?!/.{0,4}$).*
+But I recommend that you explicitly anchor the whole regex, like so:
+^(?!/.{0,4}$).*$
+It does no harm, and it makes your intention perfectly clear, especially to people who learned regexes from other flavors like Perl or JavaScript. The automatic anchoring of the matches() method is highly unusual.
+*/
+		//Versuche mit "negativem Voraussschauen"
+		//String sRegEx = "^(?!" + sClassNameRegexed +"$)";
+		//String sRegEx = "(?!" + sClassNameRegexed + "$).*";
+		//sRegEx = "(?!(^" + sClassNameRegexed + "$))" + sRegEx;
+		//sRegEx = "(?!(^" + sClassNameRegexed + "$))" ;
+		//sRegEx = "("+sRegEx+")\\b(?!(" + sClassNameRegexed + "))";//Mit word boundary \\b
+		sRegEx = "("+sRegEx+")(?!\\b(" + sClassNameRegexed + "))";//Mit word boundary \\b
+		return ReflectCodeZZZ.getCallingStack(sRegEx);
+	}
+
 
 	/**
 	 * Ermittelt den Namen der aufrufenden Funktion.
