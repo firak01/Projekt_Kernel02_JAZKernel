@@ -125,8 +125,14 @@ public class ReflectZZZTest extends TestCase{
 			//Dies kann in diversen Möglichkeiten als Schlüssel für eine HashMap verwendet werden.
 			String[]saCalling = ReflectCodeZZZ.getCallingStackKernel();
 			
-			String[]saCalling02 = ReflectCodeZZZ.getCallingStack();
+			//Weil nur die aufrufende  Test-Klasse darin auftauchen soll gilt:
+			assertTrue("Es sollte nur die aufrufende Testklasse im Ergebnis sein.", saCalling.length==1);
+			String sCalling = saCalling[0];
+			String scallingMethod = ReflectCodeZZZ.getClassCurrentName() + "." + ReflectCodeZZZ.getMethodCurrentName();
+			assertTrue("Es sollte die aufrufende Testklasse im Ergebnis sein", sCalling.equals(scallingMethod));
 			
+			String[]saCalling02 = ReflectCodeZZZ.getCallingStack();
+			assertTrue("Es sollte mehr als nur die aufrufende Testklasse im Ergebnis sein.", saCalling02.length>saCalling.length);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 

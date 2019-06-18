@@ -569,26 +569,98 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	 * @author Fritz Lindhauer, 16.06.2019, 07:42:03
 	 * @throws ExceptionZZZ 
 	 */
-	public static String[] getCallingStack(String sClassnameFilterRegEx) throws ExceptionZZZ{
+	public static String[] getCallingStack(String sRegEx) throws ExceptionZZZ{
 		String[] saReturn=null;
 		main:{
-			  ArrayList<String>listasTemp = new ArrayList<String>();
-			  String stemp; boolean btemp;
-			  org.apache.regexp.RE objReFilter = null;
-			  Matcher matcher = null;
-			  Pattern pattern = null;
-			  if(!StringZZZ.isEmpty(sClassnameFilterRegEx)){ //einmal den RegEx Ausdruck erzeugen und nicht jedesmal in der Schleife.
+		ArrayList<String>listasTemp = new ArrayList<String>();
+		String stemp; boolean btemp;
+		//org.apache.regexp.RE objReFilter = null;
+		Matcher matcher = null;
+		Pattern pattern = null;
+			  
+		//#####################DEBUG 						
+		//Filtere diese ReflectCodeZZZ-Klasse selber aus.
+		String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ".", "\\.");
+		sClassNameRegexed = StringZZZ.stripRight(sClassNameRegexed, "ZZZ");
+		
+		//Das Finden des passenden RegEx Ausdrucks war etws komplizierter.....
+				//Folgendes funktioniert: Es wird nur Fahrrad gefunden
+				/* Anwendung des "negiven lookaheads"
+				Matcher matcherTest = null;
+				Pattern patternTest = null;
+				String[] saTest = {"Auto", "Fahrrad", "Aua","Ausgibig"};
+				String sFilterRegExTest = "^(?!Au)[A-Z][a-z]";
+				try{
+					  patternTest = Pattern.compile(sFilterRegExTest);
+				  }catch(Exception e){
+					  e.printStackTrace();
+				  }
+				 for(String sElement :saTest){
+					 matcherTest = patternTest.matcher(sElement);
+					 btemp=matcherTest.find();
+					
+					if(btemp) {
+						System.out.println("GEFUNDEN");
+					}else{
+						System.out.println("nix");
+					}
+				 }
+				 */
+				
+		//https://stackoverflow.com/questions/8610743/how-to-negate-any-regular-expression-in-java
+		/*
+		You need to add anchors. The original regex (minus the unneeded parentheses):
+		/.{0,4}
+		...matches a string that contains a slash followed by zero to four more characters. But, because you're using the matches() method it's automatically anchored, as if it were really:
+		^/.{0,4}$
+		To achieve the inverse of that, you can't rely on automatic anchoring; you have to make at least the end anchor explicit within the lookahead. You also have to "pad" the regex with a .* because matches() requires the regex to consume the whole string:
+		(?!/.{0,4}$).*
+		But I recommend that you explicitly anchor the whole regex, like so:
+		^(?!/.{0,4}$).*$
+		It does no harm, and it makes your intention perfectly clear, especially to people who learned regexes from other flavors like Perl or JavaScript. The automatic anchoring of the matches() method is highly unusual.
+		*/
+				
+				
+				//Versuche mit "negativem Voraussschauen"		
+				//https://stackoverflow.com/questions/7317043/regex-not-operator
+				//     \((?!2001)\)
+				
+				//https://www.regextester.com/15
+				//		/^((?!badword).)*$/gm
+				// und den Test Strings, dabei hilft /gm die Zeilenumbrücke aufzulösen:
+				/*
+				 badword
+				 test
+				 one two
+				 abadwords
+				 three
+				*/
+				
+				//Negative Lookahead: Filtere vorher alle Klassen mit ReflectCode im Namen aus. 
+				//sRegEx = "^((?!ReflectCode).)*"+ sRegEx; //hard coded variante, mit nur dem Klassennamen
+				//sRegEx = "^((?!"+sClassNameRegexed+").)*"+ sRegEx;//dynamische Variante mit dem Packagenamen und dem Pfad der tatsächlich verwendeten Klasse.
+				String sClassNameFilterRegEx = null;
+				if(StringZZZ.isEmpty(sRegEx)){
+					sClassNameFilterRegEx = "^((?!"+sClassNameRegexed+").)[A-Za-z\\.]";
+				}else{
+					sClassNameFilterRegEx = "^((?!"+sClassNameRegexed+").)*"+ sRegEx;//dynamische Variante mit dem Packagenamen und dem Pfad der tatsächlich verwendeten Klasse.
+				}
+			  			  			  
+			//######################			 
+			  //Negative Lookahead: Filtere vorher alle Klassen mit ReflectCode im Namen aus. 			  
+			  if(!StringZZZ.isEmpty(sClassNameFilterRegEx)){ //einmal den RegEx Ausdruck erzeugen und nicht jedesmal in der Schleife.
 				  //objReFilter = new org.apache.regexp.RE(sClassnameFilterRegEx);
 				  try{
-					  pattern = Pattern.compile(sClassnameFilterRegEx);
+					  pattern = Pattern.compile(sClassNameFilterRegEx);
 				  }catch(Exception e){
+					  System.out.println("Error for RegEx: '" + sClassNameFilterRegEx + "'");
 					  e.printStackTrace();
 				  }
 			  }
 			  				
 			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-					///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+					///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
 
 					final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 					int iposition=0;
@@ -616,7 +688,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 										
 				}else{
 					
-						//Verarbeitung vor Java 1.4
+					//Verarbeitung vor Java 1.4
 					ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;	  
 				}//end Java Version
@@ -639,38 +711,18 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	/**Gib ein Array der Methoden des Stacktrace zurück.
 	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
 	 * z.B. in einer HashMap verwendet werden kann.
+	 * 
+	 * Besonderheit:
+	 * Schränke dies auf ZZZ-Klassen ein 
+	 * UND filtere ggfs. aufrufenden ReflectCode - Klassen aus, also z.B. den Aufruf selbst.
+	 * 
 	 * @return
 	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
 	 * @throws ExceptionZZZ 
 	 */
 	public static String[] getCallingStackKernel() throws ExceptionZZZ{
-		String sRegEx = "(ZZZ$|ZZZ(T|t)est$)"; //Also: Am Ende des Klassennamens soll ZZZ stehen, bzw. ZZZTest, aber nicht der Reflection-Klassenname
-		
-		//sRegEx=sRegEx+"|^\\b"+ReflectCodeZZZ.class.getName()+"\\b"; //aber nicht der Reflection-Klassenname (Merke: Als ganzer String und nicht etwa mit ^ am Anfang
-		//String sRegEx="^!"+ReflectCodeZZZ.class.getName() + "$"; //aber nicht der Reflection-Klassenname (Merke: Als ganzer String und nicht etwa mit ^ am Anfang
-		String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ".", "\\.");
-		//String sRegEx="!(^"+sClassNameRegexed+"$)";
-		//String sRegEx="!"+sClassNameRegexed+"$";
-		
-		//https://stackoverflow.com/questions/8610743/how-to-negate-any-regular-expression-in-java
-/*
-You need to add anchors. The original regex (minus the unneeded parentheses):
-/.{0,4}
-...matches a string that contains a slash followed by zero to four more characters. But, because you're using the matches() method it's automatically anchored, as if it were really:
-^/.{0,4}$
-To achieve the inverse of that, you can't rely on automatic anchoring; you have to make at least the end anchor explicit within the lookahead. You also have to "pad" the regex with a .* because matches() requires the regex to consume the whole string:
-(?!/.{0,4}$).*
-But I recommend that you explicitly anchor the whole regex, like so:
-^(?!/.{0,4}$).*$
-It does no harm, and it makes your intention perfectly clear, especially to people who learned regexes from other flavors like Perl or JavaScript. The automatic anchoring of the matches() method is highly unusual.
-*/
-		//Versuche mit "negativem Voraussschauen"
-		//String sRegEx = "^(?!" + sClassNameRegexed +"$)";
-		//String sRegEx = "(?!" + sClassNameRegexed + "$).*";
-		//sRegEx = "(?!(^" + sClassNameRegexed + "$))" + sRegEx;
-		//sRegEx = "(?!(^" + sClassNameRegexed + "$))" ;
-		//sRegEx = "("+sRegEx+")\\b(?!(" + sClassNameRegexed + "))";//Mit word boundary \\b
-		sRegEx = "("+sRegEx+")(?!\\b(" + sClassNameRegexed + "))";//Mit word boundary \\b
+		//Schränke die Suche auf Kernel-Klassen ein.
+		String sRegEx = "(ZZZ$|ZZZ(T|t)est)$"; //Also: Am Ende des Klassennamens soll ZZZ stehen, bzw. ZZZTest, aber nicht der Reflection-Klassenname	
 		return ReflectCodeZZZ.getCallingStack(sRegEx);
 	}
 

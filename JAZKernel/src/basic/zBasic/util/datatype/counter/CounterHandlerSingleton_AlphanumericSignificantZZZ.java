@@ -40,7 +40,7 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 //		return objApplicationSingleton;		
 //	}
 	
-	private ICounterAlphanumericSignificantZZZ getCounterFor(){
+	private ICounterAlphanumericSignificantZZZ getCounterFor() throws ExceptionZZZ{
 		ICounterAlphanumericSignificantZZZ objCounter = null;
 		main:{
 			//Ermittle die aktuelle Stacktraceposition und dann jeweils die aufrufende Methode.
