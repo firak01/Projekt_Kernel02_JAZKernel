@@ -44,17 +44,18 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 //		return objApplicationSingleton;		
 //	}
 	
-	private ICounterAlphanumericSignificantZZZ getCounterFor() throws ExceptionZZZ{
+	public ICounterAlphanumericSignificantZZZ getCounterFor() throws ExceptionZZZ{
 		ICounterAlphanumericSignificantZZZ objCounter = null;
 		main:{
+			
 			//Ermittle die aktuelle Stacktraceposition und dann jeweils die aufrufende Methode.
-			String[] saCalling = ReflectCodeZZZ.getCallingStack();
+			String[] saCalling = ReflectCodeZZZ.getCallingStackKernel();
 			
 			//Suche in der Hashmap nach einem String des Klassen.Methodennamens, der schon in der HashMap gespeichert ist.
 			//Wird er gefunden, dann soll der Counter wiederverwendet werden.			
 			HashMap<String,ICounterAlphanumericSignificantZZZ> hmCounter = this.getCounterHashMap();
-			for(String sCalling : saCalling){
-				objCounter = hmCounter.get(sCalling);
+			for(String sCallingTemp : saCalling){
+				objCounter = hmCounter.get(sCallingTemp);
 				if(objCounter!=null)break ;
 			}
 									
@@ -65,14 +66,15 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 				CounterByCharacterAsciiFactoryZZZ objCounterFactory = CounterByCharacterAsciiFactoryZZZ.getInstance();
 				objCounter = objCounterFactory.createCounter(objCounterStrategy, iStart);
 				
-				String sCalling = ReflectCodeZZZ.getMethodCallingName();
+				//Ermittle die Aufrufende Methode
+				String sCalling = ReflectCodeZZZ.getCallingStackName();			
 				this.setCounterFor(sCalling, objCounter);
 			}
 		}
 		return objCounter;
 	}
 	
-	private void setCounterFor(String sCalling, ICounterAlphanumericSignificantZZZ objCounter){
+	public void setCounterFor(String sCalling, ICounterAlphanumericSignificantZZZ objCounter){
 		this.getCounterHashMap().put(sCalling, objCounter);
 	}
 	

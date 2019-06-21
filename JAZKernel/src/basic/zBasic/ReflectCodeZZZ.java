@@ -725,6 +725,19 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		String sRegEx = "(ZZZ$|ZZZ(T|t)est)$"; //Also: Am Ende des Klassennamens soll ZZZ stehen, bzw. ZZZTest, aber nicht der Reflection-Klassenname	
 		return ReflectCodeZZZ.getCallingStack(sRegEx);
 	}
+	
+	public static String getCallingStackName() throws ExceptionZZZ{
+		String sReturn = "";
+		main:{
+			String sMethod=ReflectCodeZZZ.getMethodCallingName();
+			String sClass = ReflectCodeZZZ.getClassCallingName();
+			sReturn = sClass;
+			if(!StringZZZ.isEmpty(sMethod)){
+				sReturn = sReturn + "." + sMethod;
+			}
+		}
+		return sReturn;
+	}
 
 
 	/**
