@@ -15,7 +15,8 @@ import basic.zKernel.KernelConfigZZZ;
  *
  */
 public class ConfigZZZ extends KernelConfigZZZ{
-	private static String sDIRECTORY_CONFIG_DEFAULT = "c:\\fglKernel\\KernelConfig";
+	//private static String sDIRECTORY_CONFIG_DEFAULT = "c:\\fglKernel\\KernelConfig";//Wenn der String absolut angegeben ist, so muss er auch vorhanden sein.
+	private static String sDIRECTORY_CONFIG_DEFAULT = "<z:Null/>";//Merke: Ein Leerstring ist der Root vom Classpath, z.B. in Eclipse der src-Ordner. Ein "." oder ein NULL-Wert ist der Projektordner in Eclipse
 	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";
 	private static String sKEY_APPLICATION_DEFAULT = "FGL";
 	private static String sNUMBER_SYSTEM_DEFAULT= "01";

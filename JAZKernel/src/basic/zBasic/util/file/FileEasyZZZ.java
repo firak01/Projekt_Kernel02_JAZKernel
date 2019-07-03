@@ -48,6 +48,7 @@ public class FileEasyZZZ extends ObjectZZZ{
 	public static String sFILE_VALID_WINDOWS_REGEX="^(?>[a-z]:)?(?>\\|/)?([^\\/?%*:|\"<>\r\n]+(?>\\|/)?)+$";
 	
 	public static String sDIRECTORY_CONFIG_SOURCEFOLDER="src";//Dient zur Unterscheidung, ob die Applikation auf deinem Server oder lokal läuft. Der Ordner ist auf dem Server nicht vorhanden (Voraussetzung)!!!
+	public static String sDIRECTORY_CONFIG_TESTFOLDER="test";//FÜR DIE AUSFÜHRUNG VON TESTKLASSEN
 private FileEasyZZZ(){
 	//Zum Verstecken des Konstruktors
 }
@@ -267,7 +268,10 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (1) Normed Path for file is: '" + sDirectoryNormed+File.separator+sFileName + "'");
 				objReturn = FileEasyZZZ.getFile(sDirectoryNormed+File.separator+sFileName);
 				String sLog = null;
-				if(objReturn.exists()) {
+				if(objReturn==null){
+					 sLog = ReflectCodeZZZ.getPositionCurrent()+": (1) File does not exist (=null). '" + sDirectoryNormed+File.separator+sFileName + "'";	
+					 System.out.println(sLog);				     
+				}else if(objReturn.exists()) {
 					 sLog = ReflectCodeZZZ.getPositionCurrent()+": (1) File exists. '" + sDirectoryNormed+File.separator+sFileName + "'";	
 					 System.out.println(sLog);
 				     break main;
@@ -493,6 +497,9 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
 			sDirectory="";
 			bUseClasspathSource=true;
+		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+			sDirectory = sDirectoryIn;
+			bUseProjectBase=true;
 		}else{
 			//+++ Der Normalfall
 			sDirectory = sDirectoryIn;
@@ -517,6 +524,10 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
 		if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
 			sDirectory = FileEasyZZZ.getFileRootPath();
+			objReturn = FileEasyZZZ.getDirectory(sDirectory);
+		}else if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": TESTORDNER VERWENDET");
+			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
 			objReturn = FileEasyZZZ.getDirectory(sDirectory);
 		}else if(FileEasyZZZ.isPathRelative(sDirectory)){
 			sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	

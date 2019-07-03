@@ -23,21 +23,24 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	public static  final int iPOSITION_STACKTRACE_CURRENT = 2;
 	public static  final int iPOSITION_STACKTRACE_CALLING = 3;
 
+	public static String getMethodCurrentName(){
+		return getMethodCurrentName(1);
+	}
 	/**
 	 * use this method for the constructor of exceptionZZZ when throwing an exceptionZZZ, in an environment < JDK1.4
 	 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
 	   * @return Return the name of the routine that called getCurrentMethodName
 	   */
-	  public static String getMethodCurrentName() {		  
+	  public static String getMethodCurrentName(int iOffset) {		  
 			String method = null;
 			 
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 				///Siehe Artikel 'The surprisingly simple stack trace Element'");
-
 				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 				if(stackTrace.length>=3){
-					StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT];
+					int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
+					StackTraceElement element = stackTrace[iPositionInStacktrace];
 					method = element.getMethodName();
 				}
 				
@@ -107,7 +110,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	  }
 	  
 	  public static String getMethodCurrentNameLined(){
-		  return ReflectCodeZZZ.getMethodCurrentNameLined(0);
+		  return ReflectCodeZZZ.getMethodCurrentNameLined(1);
 	  }
 	  
 	  /**
@@ -120,11 +123,12 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				
 				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-					method = ReflectCodeZZZ.getMethodCallingName();
+					//int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset;
+					method = ReflectCodeZZZ.getMethodCallingName(iOffset);
 					
-					int iLine = ReflectCodeZZZ.getMethodCallingLine() + iOffset; //Berechne die gew�nschte Zeile
+					int iLine = ReflectCodeZZZ.getMethodCallingLine(iOffset); //Berechne die gewünschte Zeile
 					
-					method +=ReflectCodeZZZ.getMethodCallingLine(iLine); //Berechne den String  f�r die Zeilenausgabe.
+					method +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  f�r die Zeilenausgabe.
 					
 					
 //					OutputStream out = System.out;
@@ -192,21 +196,25 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  return method;
 		  }
 	  
+		  public static String getMethodCallingName() {
+			  return getMethodCallingName(1);
+		  }
+		  
 	  /**
 	 * @return Name der Methode, welche die aktuelle Methode aufgerufen hat.
 	 * lindhaueradmin, 23.07.2013
 	 */
-	public static String getMethodCallingName() {
+	public static String getMethodCallingName(int iOffset) {
 		String method = null;
 		
 		
 		if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 			//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 			///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
-
 			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			if(stackTrace.length>=4){
-				StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING];
+				int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
+				StackTraceElement element = stackTrace[iPositionInStacktrace];
 				method = element.getMethodName();
 			}
 			
@@ -278,26 +286,32 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	  }
 	
 	
-	 public static String getMethodCallingLine(int iLine){
+	 public static String formatMethodCallingLine(int iLine){
 		 
 		 return " - Line: " + iLine;
 		 
 	 }
+	 
+	
 	  /**
-		 * @return Name der Methode, welche die aktuelle Methode aufgerufen hat.
+		 * @return Zeile im Stacktrace für den Namen der Methode, welche die aktuelle Methode aufgerufen hat.
 		 * lindhaueradmin, 23.07.2013
 		 */
 		public static int getMethodCallingLine() {
+			return getMethodCallingLine(1);
+		}
+		
+		public static int getMethodCallingLine(int iOffset){
 			int iLine = -1;
 			
 			
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-				///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
-
+				///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
 				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+				int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
 				if(stackTrace.length>=4){
-					StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING];
+					StackTraceElement element = stackTrace[iPositionInStacktrace];
 					iLine = element.getLineNumber();
 				}
 				
@@ -323,7 +337,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  
 			}//end if java version
 			  return iLine;
-		  }
+		}
 	  
 	  
 	  /**
@@ -374,22 +388,26 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		  return sReturn;
 	  }
 	
+	public static String getClassCallingName() throws ExceptionZZZ{
+		return getClassCallingName(1);
+	}
+	
 	  /**
 		 * @return Name (inkl. Package) der aktuellen Klasse
 		 * lindhaueradmin, 23.07.2013
 	 * @throws ExceptionZZZ 
 		 */
-		public static String getClassCallingName() throws ExceptionZZZ{
+		public static String getClassCallingName(int iOffset) throws ExceptionZZZ{
 			  String sReturn = null;
 			  main:{
 				  
 				  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 						//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 						///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
-
 						final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 						if(stackTrace.length>=4){
-							StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING];
+							int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
+							StackTraceElement element = stackTrace[iPositionInStacktrace];
 							sReturn = element.getClassName();
 						}
 						
@@ -428,7 +446,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 						///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
 
 					  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
-					  	String sLine = ReflectCodeZZZ.getMethodCallingLine(iLine );
+					  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
 						String sLineTotal = ReflectCodeZZZ.getClassCallingName() + "."  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
 						
 						
@@ -729,8 +747,8 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	public static String getCallingStackName() throws ExceptionZZZ{
 		String sReturn = "";
 		main:{
-			String sMethod=ReflectCodeZZZ.getMethodCallingName();
-			String sClass = ReflectCodeZZZ.getClassCallingName();
+			String sMethod=ReflectCodeZZZ.getMethodCallingName(1);//0 wäre die aufrufende Methode, wir brauchen aber an dieser Stelle die auf-aufrufende Methode.
+			String sClass = ReflectCodeZZZ.getClassCallingName(1);//0 wäre die aufrufende Methode, wir brauchen aber an dieser Stelle die auf-aufrufende Methode.
 			sReturn = sClass;
 			if(!StringZZZ.isEmpty(sMethod)){
 				sReturn = sReturn + "." + sMethod;

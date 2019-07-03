@@ -18,10 +18,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends AbstractCounterByStrategyAlphanumericSignificantZZZ{
 	private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;	
 	
-	public static int iPOSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
-	public static int iPOSITION_MAX=26;
+	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
+	public static int iPOSITION_MAX=36;
 	
-	public static String sREGEX_CHARACTERS="[a-zA-Z]";
+	public static String sREGEX_CHARACTERS="[a-zA-Z0-9]";
 
 	public CounterByCharacterAscii_AlphanumericSignificantZZZ(){
 		super();	
@@ -51,7 +51,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 	}
 
 	@Override
-	public void setCounterLength(int iLength) {
+	public void setCounterLength(int iLength) throws ExceptionZZZ {
 		this.getCounterStrategyObject().setCounterLength(iLength);
 	}
 
@@ -172,7 +172,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 	}
 	@Override
 	public void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
-		this.objCounterStrategy = objCounterStrategy;
+		this.objCounterStrategy = objCounterStrategy;	
 	}
 	
 	

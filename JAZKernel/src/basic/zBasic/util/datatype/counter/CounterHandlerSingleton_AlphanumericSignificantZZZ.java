@@ -11,10 +11,7 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 	private static CounterHandlerSingleton_AlphanumericSignificantZZZ objCounterSingleton = null; //muss static sein, wg. getInstance()!!!
 	
 	private HashMap<String,ICounterAlphanumericSignificantZZZ>hmCounter=new HashMap<String, ICounterAlphanumericSignificantZZZ>();
-	int iStart;;
 	ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;
-	int iCounterLengthDefault = 4;
-	char cCounterFillingDefault = 0;
 	
 	/**Konstruktor ist private, wg. Singleton
 	 * @param objKernel
@@ -61,9 +58,9 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 									
 			//Wenn es solch einen String nicht gibt, erzeuge neuen Counter und speichere in Hashmap unter dem aktuellen Methodennamen.
 			if(objCounter==null){
-				int iStart = this.getValueStart();
 				ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = this.getCounterStrategy();
 				CounterByCharacterAsciiFactoryZZZ objCounterFactory = CounterByCharacterAsciiFactoryZZZ.getInstance();
+				int iStart = objCounterStrategy.getCounterStart();
 				objCounter = objCounterFactory.createCounter(objCounterStrategy, iStart);
 				
 				//Ermittle die Aufrufende Methode
@@ -89,23 +86,13 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 	private HashMap<String,ICounterAlphanumericSignificantZZZ> getCounterHashMap(){
 		return this.hmCounter;
 	}
-	
-	public int getValueStart(){
-		return this.iStart;
-	}
-	public void setValueStart(int iStart){
-		this.iStart = iStart;
-	}
-	public ICounterStrategyAlphanumericSignificantZZZ getCounterStrategy(){
+		
+	public ICounterStrategyAlphanumericSignificantZZZ getCounterStrategy() throws ExceptionZZZ{
 		ICounterStrategyAlphanumericSignificantZZZ objReturn = null;
 		main:{
 			objReturn = this.objCounterStrategy;
 			if(objReturn==null){
 				objReturn = new CounterStrategyAlphanumericSignificantZZZ();
-				int iLength = this.getCounterLengthDefault();
-				objReturn.setCounterLength(iLength);
-				char cFilling = this.getCounterFillingDefault();
-				objReturn.setCounterFilling(cFilling);
 			}
 		}//end main:
 		return objReturn;
@@ -114,16 +101,5 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 		this.objCounterStrategy = objCounterStrategy;
 	}
 	
-	public void setCounterLengthDefault(int iCounterLengthDefault){
-		this.iCounterLengthDefault = iCounterLengthDefault;		
-	}
-	public int getCounterLengthDefault(){
-		return this.iCounterLengthDefault;
-	}
-	public void setCounterFillingDefault(char cCounterFillingDefault){
-		this.cCounterFillingDefault = cCounterFillingDefault;
-	}
-	public char getCounterFillingDefault(){
-		return this.cCounterFillingDefault;
-	}
+
 }

@@ -9,6 +9,22 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericSignificantZZZ{
+	public CounterStrategyAlphanumericSignificantZZZ() {
+		super();
+	}
+	
+	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter) throws ExceptionZZZ{
+		super(iLength,sCounterFillingCharacter);
+	}
+	
+	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, int iStartValue) throws ExceptionZZZ{
+		super(iLength,sCounterFillingCharacter, iStartValue);
+	}
+	
+	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, String sStartValue) throws ExceptionZZZ{
+		super(iLength,sCounterFillingCharacter, sStartValue);
+	}
+
 	
 	@Override
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {

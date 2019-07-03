@@ -22,10 +22,10 @@ public class KernelZZZTest extends TestCase {
 	protected void setUp(){
 		try {			
 			//TODO: Diese Datei zuvor per Programm erstellen
-			objKernelFGL = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String[]) null);
+			objKernelFGL = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
 			
 			//TODO: Diese Datei zuvor per Programm erstellen
-			objKernelTest = new KernelZZZ("TEST", "01", "", "ZKernelConfigKernel_test.ini",(String[]) null);
+			objKernelTest = new KernelZZZ("TEST", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
 	
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());

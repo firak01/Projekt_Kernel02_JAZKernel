@@ -292,6 +292,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 			String sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
 			if(sReturnRaw==null) break main;
+			sReturn = sReturnRaw; //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			
 			//20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
 			if(this.getFlag("useFormula")==true){

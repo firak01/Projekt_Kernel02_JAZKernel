@@ -35,11 +35,15 @@ public class CharZZZ {
 	 * https://stackoverflow.com/questions/8534178/how-to-represent-empty-char-in-java-character-class
 	 */
 	public static boolean isEmpty(char c){
-		if(c == Character.MIN_VALUE){
+		if(c == CharZZZ.getEmpty()){
 			return true;
 		}else{
 			return false;
 		}
+	}
+	
+	public static char getEmpty(){
+		return Character.MIN_VALUE;
 	}
 		
 }

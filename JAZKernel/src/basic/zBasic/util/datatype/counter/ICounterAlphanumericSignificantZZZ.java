@@ -1,5 +1,7 @@
 package basic.zBasic.util.datatype.counter;
 
+import basic.zBasic.ExceptionZZZ;
+
 public interface ICounterAlphanumericSignificantZZZ extends ICounterStringZZZ{
 //20190521: Der Name war public interface ICounterStringStrategyAlphanumericUserZZZ extends ICounterStringZZZ{
 //          Damit ist der Name zwar zutreffend, aber viel zu lang. Da das Interface verwendet wird, um ein entsprechendes Counterobject zu erstellen.... kürzen
@@ -11,7 +13,7 @@ public interface ICounterAlphanumericSignificantZZZ extends ICounterStringZZZ{
 	
 	//Entsprechend in ICounterStrategyAlphanumeric
 	public int getCounterLength();
-	public void setCounterLength(int iLength);
+	public void setCounterLength(int iLength) throws ExceptionZZZ;
 	
 	public char getCounterFilling();
 	public void setCounterFilling(char cFilling);

@@ -25,6 +25,11 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAsciiFactoryZZZ;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphabetZZZ;
+import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphanumericZZZ;
+import basic.zBasic.util.datatype.counter.CounterHandlerSingleton_AlphanumericSignificantZZZ;
+import basic.zBasic.util.datatype.counter.CounterStrategyAlphanumericSignificantZZZ;
+import basic.zBasic.util.datatype.counter.ICounterAlphanumericSignificantZZZ;
+import basic.zBasic.util.datatype.counter.ICounterStrategyAlphanumericSignificantZZZ;
 import basic.zBasic.util.datatype.counter.ICounterStringZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -300,8 +305,12 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//MErke: Wenn diese Datei nicht existiert, wird im TEMP Verzeichnis eine temporäre Datei erstellt. z.B. C:\DOKUME~1\MYUSER~1\LOKALE~1\Temp\temp9018141784814640806ZZZ
 			//       Diese existiert demnach immer...
 			objReturn = FileEasyZZZ.searchFile(sDirectoryConfig, sFileConfig);
-					    		   
-		    if(objReturn.exists()==false){			
+			if(objReturn==null){
+				sLog = "'Configuration File' does not exist (null) in the current directory or in: " + sDirectoryConfig + this.sFileConfig + " or in the classpath.";
+				System.out.println(sLog);				
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName() );
+				throw ez;
+			}else if(objReturn.exists()==false){			
 				sLog = "'Configuration File' does not exist in the current directory or in: " + sDirectoryConfig + this.sFileConfig + " or in the classpath.";
 				System.out.println(sLog);				
 				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName() );
@@ -322,7 +331,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				
 				//Merke: Die einzige Methode eine neue temporäre Datei zu erkennen ist, dass die Dateigröße 0 ist.
 				if(objReturn.length()==0){				
-					sLog = "The configuration file '" + objReturn.getPath() + "' is empty. Probabley a temporary file because the original file does not exist.";
+					sLog = "The configuration file '" + objReturn.getPath() + "' is empty. Probabley a temporary file because the original file does not exist ('" + this.sDirectoryConfig + File.separator + this.sFileConfig+"').";
 					System.out.println(sLog);
 					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;	
@@ -812,7 +821,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}	
 		}//end check:
 
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Suche '"+ objIni.getFileName() + "'.");
+		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined() + ": Verwende als ini-Datei für die Suche '"+ objIni.getFileName() + "'.");
 		
 			//Merke 20190119: Wird ein "empty" Tag in der ZFormel Sprache definiert. Dieser muss hier ausgewertet werden und auch den Abbruch bedingen, wenn er gefunden wird.
 		    //Merke:               Das bedeutet eine Beschleunigung . Ein Leerstring bedingt nämlich, dass weitergesucht wird.
@@ -1042,7 +1051,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				sReturn = sValueFoundAny;
 			}
 		}//end main:
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE +++++++++++++++++++++++++++++++");
+		if(!StringZZZ.isEmpty(sReturn)) {
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++++++++++++++++++++++++++++++");
+		}else{
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++++++++++++++++++++++++++++++");
+		}
 		return sReturn;		
 	}
 	
@@ -1096,7 +1109,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 							ExceptionZZZ ez = new ExceptionZZZ("Configuration file '" + objFileModule.getAbsolutePath() + "' not filled for the module'" + sModuleAlias + "'",iERROR_CONFIGURATION_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 						}
-												
+																														
 						//+++ Now use another method
 						sReturn = this.getParameterByModuleFile(objFileModule, sParameter);
 			
@@ -1375,7 +1388,7 @@ MeinTestParameter=blablaErgebnis
 	return sReturn;		
 }//end function getParameterByProgramAlias(..)
 	
-	/**Gibt den Konfigurierten Wert eines Programms wieder. Dabei werden globale Werte durch "Speziell" f�r die SystemNumber definierte Werte �berschrieben
+	/**Gibt den Konfigurierten Wert eines Programms wieder. Dabei werden globale Werte durch "Speziell" für die SystemNumber definierte Werte �berschrieben
 	 * @param objFileIniConfig
 	 * @param sAliasProgramOrSection  
 	 * @param sProperty
@@ -1423,7 +1436,8 @@ MeinTestParameter=blablaErgebnis
 				String sProgramOrSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sAliasProgramOrSection);
 				if(StringZZZ.isEmpty(sProgramOrSection)){
 					sProgramOrSection = sAliasProgramOrSection;
-				}
+				}							
+				
 				sReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty);								
 	}//end main:
 	return sReturn;		
@@ -1453,7 +1467,7 @@ MeinTestParameter=blablaErgebnis
 					throw ez;
 				}	
 			}//END check:
-		
+				
 		sReturn = this.KernelGetParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty);
 
 		}//END main:
@@ -1499,18 +1513,54 @@ MeinTestParameter=blablaErgebnis
 		String sReturn = new String("");
 		
 		main:{		
+			//###################################################################################################			
+		    //TODO IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
+			//           Dementsprechend in solch einem Objekt den Startwert speichern ung ggfs. per Konstruktor erstellen.
+			//           Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
+			//            letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
+//			CounterByCharacterAsciiFactoryZZZ objFactoryCounter = CounterByCharacterAsciiFactoryZZZ.getInstance();
+//			ICounterStringZZZ objCounter = objFactoryCounter.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET, "AA");
+			//Counter an dieser zentralen Stelle vorbereiten.
+			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+			
+			//int iStartValue=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
+			String sStartValue= "AA";
+			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);
+			objHandler.setCounterStrategy(objCounterStrategy);
+			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+			objCounter.setStringPrefix(": (");
+			objCounter.setStringSuffix(") ");
+			String sSearchCounter=null;
+			
+			//#################################################################################################
 			//1. Konfigurationsfile des Systems holen
 			FileIniZZZ objFileIniConfig = null;
 		    if(objFileIniConfigIn==null){
 		    	String sSystemkey = this.getSystemKey();
-		    	objFileIniConfig = this.getFileConfigIniByAlias(sSystemkey);
+		    	try{		    	
+		    		String stemp = "Suche FileIniZZZ fuer Modul '" + sSystemkey + ".";
+		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+		    		objFileIniConfig = this.getFileConfigIniByAlias(sSystemkey);
+		    	}catch(ExceptionZZZ ez){
+		    		//Wenn der Alias keine Konfigurationsdatei findet, versuche den sMainSection, dies entspricht sModule.
+		    		try{		    	
+			    		String stemp = "Suche FileIniZZZ fuer Modul '" + sMainSection + ".";
+			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+			    		objFileIniConfig = this.getFileConfigIniByAlias(sMainSection);
+			    	}catch(ExceptionZZZ ez2){
+			    		System.out.println("auch null....");
+			    	}
+		    		
+		    	}
 		    	 if(objFileIniConfig==null){
-						String stemp = "FileIniZZZ fuer Modul '" + sSystemkey + "' ist NULL.";
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						String stemp = "FileIniZZZ fuer Modul '" + sSystemkey + "' oder Modul '" + sMainSection + "' ist NULL.";
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 						ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
 		    }else{
+		    	String stemp = "Verwende vorhandenes FileIniZZZ.";
+	    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 		    	objFileIniConfig = objFileIniConfigIn;
 		    }
 		   
@@ -1525,30 +1575,14 @@ MeinTestParameter=blablaErgebnis
 					sMainSectionUsed = sMainSection;
 				}
 			}
-			
-			int iSearchCounter=CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
-			String sSearchCounter=null;
-			System.out.println("First iSearchCounter="+iSearchCounter);
-			
+								
 			//#######################################################################
 			//+++ Ggfs. ohne Program deklarierter Wert
-		    //TODO IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
-			//           Dementsprechend in solch einem Objekt den Startwert speichern ung ggfs. per Konstruktor erstellen.
-			//           Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
-			//            letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
-			CounterByCharacterAsciiFactoryZZZ objFactoryCounter = CounterByCharacterAsciiFactoryZZZ.getInstance();
-			ICounterStringZZZ objCounter = objFactoryCounter.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET, "AA");
-			objCounter.setStringPrefix(": (");
-			objCounter.setStringSuffix(") ");
-			sSearchCounter = objCounter.current();
-			
-			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-			sSearchCounter = ": (" + sSearchCounter + ") "; 			
+			sSearchCounter = objCounter.getStringNext();
 			String sSection = null;						
 			if(sMainSection!=this.getSystemKey() && sMainSection!=this.getApplicationKey()){ //Damit keine doppelte Abfrage gemacht wird.
 				sSection=sMainSection+"!"+this.getSystemNumber();	//Immer zuerst die ggfs. überschreibende Variante
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined()+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
 				    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
@@ -1567,9 +1601,8 @@ MeinTestParameter=blablaErgebnis
 					}
 				}
 				
-				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-				sSearchCounter = ": (" + sSearchCounter + ") "; 
+				sSearchCounter = objCounter.getStringNext();
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 				sSection=sMainSection;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 				if(!StringZZZ.isEmpty(sSection)){
@@ -1591,13 +1624,11 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
-			iSearchCounter++;
-			System.out.println("iSearchCounter="+iSearchCounter);
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-			sSearchCounter = ": (" + sSearchCounter + ") "; 
+			sSearchCounter = objCounter.getStringNext();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined()+ sSearchCounter);
 			if(sMainSection!=this.getSystemKey()){
 				sSection = this.getSystemKey();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined()+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
 				if(!StringZZZ.isEmpty(sSection)){
 				    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 					if(bSectionExists==true){
@@ -1616,10 +1647,9 @@ MeinTestParameter=blablaErgebnis
 					}
 				}
 			}
-			
-			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-			sSearchCounter = ": (" + sSearchCounter + ") "; 
+				
+			sSearchCounter = objCounter.getStringNext();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 			if(sMainSection!=this.getApplicationKey()){
 				sSection = this.getApplicationKey();
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");			
@@ -1646,9 +1676,9 @@ MeinTestParameter=blablaErgebnis
 			//###############################################################################+
 			//3. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems.
 			//TODO GOON 20190206: Mache eine eigene Methode um den Aliasnamen eines Programs zu ermitteln
-			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-			sSearchCounter = ": (" + sSearchCounter + ") "; 
+
+			sSearchCounter = objCounter.getStringNext();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				String sSystemNumber= this.getSystemNumber();
 				ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
@@ -1679,10 +1709,9 @@ MeinTestParameter=blablaErgebnis
 				}
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");
 				
-				//##################################################################################
-				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-				sSearchCounter = ": (" + sSearchCounter + ") "; 
+				//##################################################################################		
+				sSearchCounter = objCounter.getStringNext();
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 				sSection =  sProgramOrSection;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
@@ -1705,10 +1734,9 @@ MeinTestParameter=blablaErgebnis
 				
 				//+++ Einen ggfs. definierten Aliasnamen
 				//TODO GOON 20190216: Dies in eine eine eigene Methode auslagern
-				//a) mit Systemkey
-				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-				sSearchCounter = ": (" + sSearchCounter + ") "; 
+				//a) mit Systemkey			
+				sSearchCounter = objCounter.getStringNext();
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
@@ -1729,10 +1757,9 @@ MeinTestParameter=blablaErgebnis
 					}
 				}
 				
-				//b) mit Applicationkey
-				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-				sSearchCounter = ": (" + sSearchCounter + ") "; 
+				//b) mit Applicationkey				
+				sSearchCounter = objCounter.getStringNext();
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 				if(!StringZZZ.isEmpty(sSection)){
@@ -1754,9 +1781,8 @@ MeinTestParameter=blablaErgebnis
 				}
 													
 				//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
-				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-				sSearchCounter = ": (" + sSearchCounter + ") "; 
+				sSearchCounter = objCounter.getStringNext();
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = sSection + "!" + this.getSystemNumber();
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1778,10 +1804,9 @@ MeinTestParameter=blablaErgebnis
 					}
 				}
 									
-				//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen
-				iSearchCounter++;
-				sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-				sSearchCounter = ": (" + sSearchCounter + ") "; 
+				//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen		
+				sSearchCounter = objCounter.getStringNext();
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
 				sSection = this.getSystemKey() + "!" + sSection;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1806,9 +1831,8 @@ MeinTestParameter=blablaErgebnis
 			//#################################################################################################
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-			sSearchCounter = ": (" + sSearchCounter + ") "; 
+			sSearchCounter = objCounter.getStringNext();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
@@ -1829,9 +1853,8 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 			
-			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-			sSearchCounter = ": (" + sSearchCounter + ") "; 
+			sSearchCounter = objCounter.getStringNext();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -1853,10 +1876,9 @@ MeinTestParameter=blablaErgebnis
 					}
 				}
 			}
-			
-			iSearchCounter++;
-			sSearchCounter = CounterByCharacterAscii_AlphabetZZZ.getStringMultipleForNumber(iSearchCounter);
-			sSearchCounter = ": (" + sSearchCounter + ") "; 
+
+			sSearchCounter = objCounter.getStringNext();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 			if(!StringZZZ.isEmpty(sMainSection)){
 				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sMainSection);
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
@@ -3514,7 +3536,9 @@ MeinTestParameter=blablaErgebnis
 				}
 				//Prüfe nun auf Vorhandensein und korregiere ggfs. auf das aktuelle Verzeichnis
 				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
-				if(objDirectoryProof==null){
+				if(objDirectoryProof==null){					
+					sLog = "Directory does not exists (='"+sDirectoryConfig+"'). Using CURRENT - directory.";
+					System.out.println(sLog);
 					sDirectoryConfig = FileEasyZZZ.sDIRECTORY_CURRENT;//Falls das Verzeichnis nicht existiert, verwende das aktuelle Verzeichnis.
 				}else{
 					sDirectoryConfig=objDirectoryProof.getAbsolutePath();						
@@ -3569,7 +3593,18 @@ MeinTestParameter=blablaErgebnis
 				//Wenn die Datei nicht existiert:
 				//Bei der Suche nach dem IniFile wird eine Datei im Temp-Ordner vermutet, z.B. C:\DOKUME~1\MYUSER~1\LOKALE~1\Temp\temp1401956673150772371ZZZ
 				//TODO 20190128: Vielleicht diese "vermutete" Konfigurationsdatei im Temp-Ordner mit den Kernel-Konigurationen füllen, die übergeben wurden. So als Dummy.
-
+				if(objFile==null){
+					sLog = "Configuration File does not exist (=null, für Directory='" + sDirectoryConfig +"', File='" + sFileConfig +"')'.";
+					System.out.println(sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}else if(!objFile.exists()){
+					sLog = "Configuration File does not exist '" + objFile.getAbsolutePath() + "'.";
+					System.out.println(sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
 				IniFile objIni = new IniFile(objFile.getPath());
 				if(this.getFlag ("DEBUG")) System.out.println("Konfigurationsdatei gefunden: '" + objFile.getPath() +"'");
 								
