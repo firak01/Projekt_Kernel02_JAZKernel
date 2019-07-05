@@ -471,6 +471,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 
 			//1. Hole den Dateinamen
 			String sFileName = this.searchPropertyForAlias(objIni, sAlias,"KernelConfigFile");
+			if(StringZZZ.isEmpty(sFileName)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein Dateiname konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
+				break main;
+			}
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
@@ -628,7 +632,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 						ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
-					}
+					} //20190705: UND ... WAS WIRD NUN MIT DER GEFUNDENEN INI-DATEI gemacht? Neu: Setze die Datei.
+					this.setFileIniConfigKernel(objIni);
+					
 					
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//1. Hole den Dateinamen
@@ -1541,14 +1547,18 @@ MeinTestParameter=blablaErgebnis
 		    		String stemp = "Suche FileIniZZZ fuer Modul '" + sSystemkey + ".";
 		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 		    		objFileIniConfig = this.getFileConfigIniByAlias(sSystemkey);
+		    		stemp = "Gefunden FileIniZZZ fuer Modul '" + sSystemkey + ".";
+		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 		    	}catch(ExceptionZZZ ez){
 		    		//Wenn der Alias keine Konfigurationsdatei findet, versuche den sMainSection, dies entspricht sModule.
 		    		try{		    	
 			    		String stemp = "Suche FileIniZZZ fuer Modul '" + sMainSection + ".";
 			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 			    		objFileIniConfig = this.getFileConfigIniByAlias(sMainSection);
+			    		stemp = "Gefunden FileIniZZZ fuer Modul '" + sMainSection + ".";
+			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 			    	}catch(ExceptionZZZ ez2){
-			    		System.out.println("auch null....");
+			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Auch zweiter Versuch über das Modul schlägt fehl. ...");
 			    	}
 		    		
 		    	}
@@ -1559,7 +1569,7 @@ MeinTestParameter=blablaErgebnis
 						throw ez;
 					}
 		    }else{
-		    	String stemp = "Verwende vorhandenes FileIniZZZ.";
+		    	String stemp = "Verwende übergebenes FileIniZZZ.";
 	    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 		    	objFileIniConfig = objFileIniConfigIn;
 		    }

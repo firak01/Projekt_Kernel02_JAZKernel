@@ -1572,7 +1572,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}else if(sFilePathRaw.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
 				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.						
+				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
 			}else{
 				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){				               				
 					sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;

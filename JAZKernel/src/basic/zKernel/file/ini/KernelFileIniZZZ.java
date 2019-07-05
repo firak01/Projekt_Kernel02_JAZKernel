@@ -149,43 +149,43 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 
 
 			if (this.getFlag("filenew")==false){		
-			if(objFileIn==null & (sDirectoryIn==null | sFileIn == null)){
-				ExceptionZZZ ez = new ExceptionZZZ("Missing Parameter File-Object or File-Path information", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez; 
-			}
-	
-			File objFile = null;			 
-			if(objFileIn !=null){
-				if(objFileIn.exists()==false){
-					ExceptionZZZ ez = new ExceptionZZZ("File not found '" + objFileIn.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				if(objFileIn==null & (sDirectoryIn==null | sFileIn == null)){
+					ExceptionZZZ ez = new ExceptionZZZ("Missing Parameter File-Object or File-Path information", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 				}
-				if(objFileIn.isDirectory()){
-					ExceptionZZZ ez = new ExceptionZZZ("Parameter File is a directory: '" + objFileIn.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez; 
-				}
-				objFile = objFileIn;
-					
-			}else if(sFileIn.equals("")){
-					ExceptionZZZ ez = new ExceptionZZZ( "Parameter Filename is empty: '" + objFile.getPath() + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez; 
-			}else{
-				String sDirectory = FileEasyZZZ.getFileUsedPath(sDirectoryIn);
-				if(sDirectory.equals("")){
-					objFile = new File(sFileIn);
-				}else{
-					objFile = new File(sDirectory + File.separator + sFileIn);
-					if(!objFile.exists()){
-						objFile = new File(sFileIn);
+		
+				File objFile = null;			 
+				if(objFileIn !=null){
+					if(objFileIn.exists()==false){
+						ExceptionZZZ ez = new ExceptionZZZ("File not found '" + objFileIn.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez; 
 					}
-				}				
-			}
-			
-			//create the ini-file-object from file-object
-			this.objFile = objFile;
-
-			IniFile objFileIni = new IniFile(objFile.getPath(), false); //the target is not to save the file, everytime an entry is made, performance !!!
-			this.objFileIni = objFileIni;		
+					if(objFileIn.isDirectory()){
+						ExceptionZZZ ez = new ExceptionZZZ("Parameter File is a directory: '" + objFileIn.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez; 
+					}
+					objFile = objFileIn;
+						
+				}else if(sFileIn.equals("")){
+						ExceptionZZZ ez = new ExceptionZZZ( "Parameter Filename is empty: '" + objFile.getPath() + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez; 
+				}else{
+					String sDirectory = FileEasyZZZ.getFileUsedPath(sDirectoryIn);
+					if(sDirectory.equals("")){
+						objFile = new File(sFileIn);
+					}else{
+						objFile = new File(sDirectory + File.separator + sFileIn);
+						if(!objFile.exists()){
+							objFile = new File(sFileIn);
+						}
+					}				
+				}
+				
+				//create the ini-file-object from file-object
+				this.objFile = objFile;
+	
+				IniFile objFileIni = new IniFile(objFile.getPath(), false); //the target is not to save the file, everytime an entry is made, performance !!!
+				this.objFileIni = objFileIni;		
 			}else{
 				IniFile objFileIni = new IniFile(); //the target is not to save the file, everytime an entry is made, performance !!!
 				this.objFileIni = objFileIni;	
