@@ -768,6 +768,43 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			return objReturn;
 		}
 	
+	
+	private FileIniZZZ KernelSearchConfigFileByProgramAlias_(String sMainSection, String sProgramOrSection) throws ExceptionZZZ{
+		FileIniZZZ objReturn=null;
+		main:{
+			
+			//1. Konfigurationsfile des Systems holen
+		    	String sSystemkey = this.getSystemKey();
+		    	try{		    	
+		    		String stemp = "Suche FileIniZZZ fuer Modul '" + sSystemkey + ".";
+		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+		    		objReturn = this.getFileConfigIniByAlias(sSystemkey);
+		    		stemp = "Gefunden FileIniZZZ fuer Modul '" + sSystemkey + ".";
+		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+		    	}catch(ExceptionZZZ ez){
+		    		//Wenn der Alias keine Konfigurationsdatei findet, versuche den sMainSection, dies entspricht sModule.
+		    		try{		    	
+			    		String stemp = "Suche FileIniZZZ fuer Modul '" + sMainSection + ".";
+			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+			    		objReturn = this.getFileConfigIniByAlias(sMainSection);
+			    		stemp = "Gefunden FileIniZZZ fuer Modul '" + sMainSection + ".";
+			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+			    	}catch(ExceptionZZZ ez2){
+			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Auch zweiter Versuch über das Modul schlägt fehl. ...");
+			    	}
+		    		
+		    	}
+		    	 if(objReturn==null){
+		    			String stemp = "FileIniZZZ für SystemKey " + this.getSystemKey() + ", fuer Modul '" + sProgramOrSection + "' oder Modul '" + sMainSection + "' ist NULL.";
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+		   		
+		}//end main:
+		return objReturn;								
+	}
+	
 	private String searchPropertyForAlias(String sAlias, String sProperty) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -1514,7 +1551,7 @@ MeinTestParameter=blablaErgebnis
 		}//END main:
 		return sReturn;
 	}
-	
+		
 	private String KernelGetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		String sReturn = new String("");
 		
@@ -1542,32 +1579,7 @@ MeinTestParameter=blablaErgebnis
 			//1. Konfigurationsfile des Systems holen
 			FileIniZZZ objFileIniConfig = null;
 		    if(objFileIniConfigIn==null){
-		    	String sSystemkey = this.getSystemKey();
-		    	try{		    	
-		    		String stemp = "Suche FileIniZZZ fuer Modul '" + sSystemkey + ".";
-		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-		    		objFileIniConfig = this.getFileConfigIniByAlias(sSystemkey);
-		    		stemp = "Gefunden FileIniZZZ fuer Modul '" + sSystemkey + ".";
-		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-		    	}catch(ExceptionZZZ ez){
-		    		//Wenn der Alias keine Konfigurationsdatei findet, versuche den sMainSection, dies entspricht sModule.
-		    		try{		    	
-			    		String stemp = "Suche FileIniZZZ fuer Modul '" + sMainSection + ".";
-			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-			    		objFileIniConfig = this.getFileConfigIniByAlias(sMainSection);
-			    		stemp = "Gefunden FileIniZZZ fuer Modul '" + sMainSection + ".";
-			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-			    	}catch(ExceptionZZZ ez2){
-			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Auch zweiter Versuch über das Modul schlägt fehl. ...");
-			    	}
-		    		
-		    	}
-		    	 if(objFileIniConfig==null){
-						String stemp = "FileIniZZZ fuer Modul '" + sSystemkey + "' oder Modul '" + sMainSection + "' ist NULL.";
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-						ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
+		    	objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sMainSection, sProgramOrSection);		    	
 		    }else{
 		    	String stemp = "Verwende übergebenes FileIniZZZ.";
 	    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
@@ -1992,18 +2004,12 @@ MeinTestParameter=blablaErgebnis
 			//1. Konfigurationsfile des Systems holen
 			FileIniZZZ objFileIniConfig = null;
 		    if(objFileIniConfigIn==null){
-		    	String sSystemkey = this.getSystemKey();
-		    	objFileIniConfig = this.getFileConfigIniByAlias(sSystemkey);
-		    	 if(objFileIniConfig==null){
-						String stemp = "FileIniZZZ fuer Modul '" + sSystemkey + "' ist NULL.";
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-						ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
+		    	objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sMainSection, sProgramOrSection);		    	
 		    }else{
 		    	objFileIniConfig = objFileIniConfigIn;
 		    }
-		    				    
+		    
+		    		    		    				    
 		  //2. Den Abschnitt holen
 			String sMainSectionUsed;
 			if(StringZZZ.isEmpty(sMainSection)){
