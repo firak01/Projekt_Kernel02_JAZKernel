@@ -2071,6 +2071,21 @@ public class StringZZZ implements IConstantZZZ{
 		return key;
 	}
 	
+	public static String toUtf8(String sValue) throws ExceptionZZZ{
+		
+		String sReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sValue))break main;
+			try {
+				sReturn = new String(sValue.getBytes(),"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				ExceptionZZZ ez = new ExceptionZZZ("UnsupportedEncodingException", iERROR_PARAMETER_VALUE, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}//end main
+		return sReturn;
+	}
+	
 	/**Merke: So einfach kann man sonst nicht nach float parsen
 	 * @param sValue
 	 * @return

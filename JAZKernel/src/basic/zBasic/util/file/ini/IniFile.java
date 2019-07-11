@@ -7,7 +7,7 @@
 // AUTOR		: Steve DeGroof, degroof@mindspring.com,                    //
 //				:                http://www.mindspring.com/~degroof         //
 //				                                                            //
-//                Peter K¸hn, CoCoNet GmbH                                  //
+//                Peter KÔøΩhn, CoCoNet GmbH                                  //
 //                Stephan Mecking, CoCoNet GmbH                             //
 //                                                                          //
 // COMPONENT    : MULTIWEB client -> some different componets               //
@@ -47,7 +47,9 @@ package basic.zBasic.util.file.ini;
 import java.io.*;
 import java.util.*;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ExtendedVectorZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 
 /**
@@ -160,22 +162,57 @@ public class IniFile extends Object
 		 ini.close();		 
 		 */
     	  
-    	 FileInputStream inStream = new FileInputStream(fileName);
-    	 BufferedReader iniReader = new BufferedReader(
-    			 														new InputStreamReader(inStream));    			    	
+    	  //MErke: Die ini Datei muss UTF-8 ohnee BOM sein. Ansonsten sind in der ersten Zeile immer 2 zus√§tzliche Bytes, wenn man iniReader.readLine() ausf√ºhrt.     	  
+    	 FileInputStream inStream = new FileInputStream(fileName);    	     	
+    	 String line = "";
+         //read all the lines in
+   	  	 int itest = 0;   	  
+         while (true)
+         {
+       	  itest++;
+       	  if(inStream.available()<=0){
+       		  break;
+       	  }
+            //Das liest garantiert nicht utf-8 ein line = dis.readLine();
+       	  	line = IniFile.readLine(inStream); //Ziel ist es UTF-8 einzulesen
+            if (line == null)
+               break;
+            else
+           	line = line.trim();
+            if(line.startsWith("TestParameterGlobal1FromClass")){
+            //if(itest<=1){
+           	 System.out.println("stop");
+            }
+            	String sLineUtf8 = new String(line.getBytes(),"UTF-8"); 
+               lines.addElement(sLineUtf8);
+         }
+
+         inStream.close();
+    	 
+    	 /*
+    	 BufferedReader iniReader = new BufferedReader(new InputStreamReader(inStream,"UTF-8"));//20190712: AUF UTF-8 ge√§ndert.    			    	
     	  String line = "";
           //read all the lines in
+    	  int itest = 0;
           while (true)
           {
+        	  itest++;
              line = iniReader.readLine();
              if (line == null)
                 break;
              else
-                lines.addElement(line.trim());
+            	line = line.trim();
+             //if(line.startsWith("TestParameterGlobal1FromClass")){
+             if(itest<=1){
+            	 System.out.println("stop");
+             }
+             	String sLineUtf8 = new String(line.getBytes(),"UTF-8"); 
+                lines.addElement(sLineUtf8);
           }
 
  		 iniReader.close();
- 		 
+ 		 */
+    	 
     	  
       }
       catch (IOException e)
@@ -184,6 +221,23 @@ public class IniFile extends Object
          e.printStackTrace();
 		 throw e;
       }
+   }
+   
+   
+   /** Reads UTF-8 character data; lines are terminated with '\n' */
+   public static String readLine(InputStream in) throws IOException {
+     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+     while (true) {
+       int b = in.read();
+       if (b < 0) {
+         throw new IOException("Data truncated");
+       }
+       if (b == 0x0A) {
+         break;
+       }
+       buffer.write(b);
+     }
+     return new String(buffer.toByteArray(), "UTF-8");
    }
 
 
@@ -214,7 +268,7 @@ public class IniFile extends Object
             currentSubject = currentLine.substring(1,currentLine.length()-1);
             
             //FGL 2008-02-19: !!! Ohne nachstehende Erweiterung werden leere Sections nicht als Section erfasst !!! Sections wurden sonst nur erstellt, wenn sie auch Inhalt hatten !!!
-            //             Die so gefundene Section muss sofort hinzugef¸gt werden.
+            //             Die so gefundene Section muss sofort hinzugefÔøΩgt werden.
             this.addSection(currentSubject);
          }
          else if (isanAssignment(currentLine)) //if line is an assignment, add it
@@ -257,7 +311,7 @@ public class IniFile extends Object
    * @param value the value of the variable (e.g. "green")
    * @return true if successful
    */
-   public boolean setValue(String subject, String variable, String value) throws IOException
+   public boolean setValue(String subject, String variable, String value) throws IOException,ExceptionZZZ
    {
       boolean result = addValue(subject, variable, value, true);
       if (saveOnChange) saveFile();
@@ -320,8 +374,8 @@ public class IniFile extends Object
       return true;
    }
 
-   /**FGL 2008-02-19 F¸gt eine Section hinzu, aber nur, wenn sie noch nicht existiert !!!
-    * Dadurch wird es auch mˆglich Sections hinzuzuf¸gen, die keine Werte beinhalten. Diese Sections wurden sonst ignoriert.
+   /**FGL 2008-02-19 FÔøΩgt eine Section hinzu, aber nur, wenn sie noch nicht existiert !!!
+    * Dadurch wird es auch mÔøΩglich Sections hinzuzufÔøΩgen, die keine Werte beinhalten. Diese Sections wurden sonst ignoriert.
 * @param sSection
 * @return
 * 
@@ -549,7 +603,7 @@ protected boolean addSection(String sSection){
       {
          return (String)(valVector.elementAt(valueIndex));
       }
-      //FGL 20061025 Falls der Wert nicht konfiguriert ist, null zur¸ckgeben
+      //FGL 20061025 Falls der Wert nicht konfiguriert ist, null zurÔøΩckgeben
       return null;
    }
 
@@ -559,7 +613,7 @@ protected boolean addSection(String sSection){
    * @param subject the subject heading (e.g. "Widget Settings")
    * @param variable the variable name (e.g. "Color")
    */
-   public void deleteValue(String subject, String variable) throws IOException
+   public void deleteValue(String subject, String variable) throws IOException,ExceptionZZZ
    {
       int subjectIndex = subjects.indexOfString(subject,true);
       if (subjectIndex == -1)
@@ -593,7 +647,7 @@ protected boolean addSection(String sSection){
    * delete a subject and all its variables
    * @param subject the subject heading (e.g. "Widget Settings")
    */
-   public void deleteSubject(String subject) throws IOException
+   public void deleteSubject(String subject) throws IOException,ExceptionZZZ
    {
       int subjectIndex = subjects.indexOfString(subject,true);
       if (subjectIndex == -1)
@@ -636,7 +690,7 @@ protected boolean addSection(String sSection){
    /**
    * save the lines vector back to the INI file
    */
-   public void saveFile() throws IOException
+   public void saveFile() throws IOException,ExceptionZZZ
    {
       try
       {
@@ -647,11 +701,23 @@ protected boolean addSection(String sSection){
          {
 
 			if (i>0) {
-				if (((String) lines.elementAt(i)).startsWith("[") && !((String) lines.elementAt(i-1)).equals(""))
-					outFile.writeBytes("\r\n");
+				if (((String) lines.elementAt(i)).startsWith("[") && !((String) lines.elementAt(i-1)).equals("")){
+					String sLineUTF8 = StringZZZ.toUtf8("\r\n");					
+					outFile.writeBytes(sLineUTF8);
+					//outFile.writeUTF("\r\n"); //20190711: Es wird UTF-8 gelesen, muss also auch geschrieben werden.
+				}
 			}
-
-            outFile.writeBytes((String)(lines.elementAt(i))+"\r\n");
+			 if(((String)lines.elementAt(i)).startsWith("TestParameterGlobal1FromClass")){
+            	 System.out.println("stop");
+             }
+			
+			String sLineRaw = (String)(lines.elementAt(i))+"\r\n";
+			String sLineUTF8 = StringZZZ.toUtf8(sLineRaw);			
+			outFile.writeBytes(sLineUTF8);
+            //outFile.writeBytes((String)(lines.elementAt(i))+"\r\n");
+			//outFile.writeUTF((String)(lines.elementAt(i))+"\r\n");//20190711: Es wird UTF-8 gelesen, muss also auch geschrieben werden.
+			//Das schreibt vorneweg immer noch √ºberfl√ºssige Bytes 
+			//outFile.writeUTF(sLineUTF8);
          }
 
          outFile.close();
@@ -669,7 +735,7 @@ protected boolean addSection(String sSection){
     * FGL 2004-11-15, uses the new setFileName(..) - method and then calls the saveFile() method
     * 
     */
-   public void saveFile(String sFileName) throws IOException
+   public void saveFile(String sFileName) throws IOException,ExceptionZZZ
    {
 	  this.setFileName(sFileName);	  
 	  this.saveFile();

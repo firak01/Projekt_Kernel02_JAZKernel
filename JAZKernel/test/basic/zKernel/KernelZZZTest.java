@@ -328,29 +328,28 @@ public void testParameterByProgramAlias(){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	
 	
-	try{
-//		E) Neu 20070116 Direktes Setzen eines Parameters auf Modulebene
-		String sToSet4 = new String("testwert for module");
-		String sClassname = this.getClass().getName(); 
-		sClassname = this.getClass().getName();
-		objKernelFGL.setParameterByModuleAlias(sClassname, "testProgramProperty5", sToSet4, true);
-		
-		String stemp6 = objKernelFGL.getParameterByModuleAlias(sClassname, "testProgramProperty5");
-		assertEquals("Expected as a value of the just setted property 'testProgramProperty5'", sToSet4, stemp6);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}	
-		
-		//Zuletzt) Behandlung "Parameter ist nicht vorhanden": Dann soll eine ExceptionZZZ geworfen werden.
-		//Zuletzt A) Übergabe als directe Section testen	
-		try{
-		String stempZuletzt = null;
-		stempZuletzt = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramPropertyNIXDA" );
-		assertNull("Expected an exception using not existing Property 'testProgramPropertyNIXDA'. Configured in the 'TestModule' of the Application 'FGL'", stempZuletzt);
-		
-		}catch(ExceptionZZZ ez){
-			fail("An exception happend testing: " + ez.getDetailAllLast());
-		}			
+//	try{
+////		E) Neu 20070116 Direktes Setzen eines Parameters auf Modulebene
+//		String sToSet4 = new String("testwert for module");
+//		String sClassname = this.getClass().getName(); 
+//		objKernelFGL.setParameterByModuleAlias(sClassname, "testProgramProperty5", sToSet4, true);
+//		
+//		String stemp6 = objKernelFGL.getParameterByModuleAlias(sClassname, "testProgramProperty5");
+//		assertEquals("Expected as a value of the just setted property 'testProgramProperty5'", sToSet4, stemp6);
+//	}catch(ExceptionZZZ ez){
+//		fail("An exception happend testing: " + ez.getDetailAllLast());
+//	}	
+//		
+//		//Zuletzt) Behandlung "Parameter ist nicht vorhanden": Dann soll eine ExceptionZZZ geworfen werden.
+//		//Zuletzt A) Übergabe als directe Section testen	
+//		try{
+//		String stempZuletzt = null;
+//		stempZuletzt = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramPropertyNIXDA" );
+//		assertNull("Expected an exception using not existing Property 'testProgramPropertyNIXDA'. Configured in the 'TestModule' of the Application 'FGL'", stempZuletzt);
+//		
+//		}catch(ExceptionZZZ ez){
+//			fail("An exception happend testing: " + ez.getDetailAllLast());
+//		}			
 				
 
 }
@@ -362,7 +361,7 @@ public void testGetParameterFromClass(){
 		File objFile = objKernelFGL.getFileConfigByAlias(sClassname);
 		assertNotNull(objFile);
 		
-		//a) PArameter per Methode holen
+		//a) Parameter per Methode holen
 		String stemp = objKernelFGL.getParameterByModuleAlias(sClassname, "TestParameter1FromClass");
 		assertEquals("TestValue1FromClass", stemp);
 		
@@ -370,21 +369,22 @@ public void testGetParameterFromClass(){
 		String sAgentSection = objKernelFGL.getSystemKey() + "!" + sClassname;
 		String stemp2 = objKernelFGL.getParameterByProgramAlias(sClassname, sAgentSection, "TestParameter2FromClass");
 		assertEquals("TestValue2FromClass", stemp2);
+			
 		
 		//b2) Nun soll der Klassenname ohne den Systemkey funktionieren
-		String stemp3 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass");
-		assertEquals("TestValue2FromClass", stemp3);   //Womit der Eintrag ein anderer w�re als der mit "SystemKey" - spezifizierte
-		assertEquals(stemp2, stemp3);
+		String stemp4 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass");
+		assertEquals("AnotherTestValue2FromClass", stemp4);   //Womit der Eintrag ein anderer wäre als der mit "SystemKey" - spezifizierte
+		
 		
 		//b3) Ein Parameterwert, der in der "speziellen" Section nicht gefunden werden kann, soll in der "allgemeinen" Section (d.h. der Section ohne die SystemNumber) gefunden werden
 		//TestParameterGlobal1FromClass=F�rAlleSystemNumberG�ltig
-		String stemp4 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameterGlobal1FromClass");
-		assertEquals("F�rAlleSystemNumberG�ltig", stemp4);
+		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameterGlobal1FromClass");
+		assertEquals("FürAlleSystemNumberGültig", stemp5); //Merke: Damit Java per Default als UTF-8 encodiert ist. Auf Systemebene setzen: -Dfile.encoding=UTF-8
 		
-		//C) "Verk�rzte Parameter"
+		//C) "Verkürzte Parameter"
 		//Wenn der Modulname und der Programname gleich sind, dann soll es m�glich sein ganz einfach nur den Programnamen und die gesuchte Property zu �bergeben
-		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated");
-		assertEquals("TestValue1Abbreviated", stemp5);
+		String stemp6 = objKernelFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated");
+		assertEquals("TestValue1Abbreviated", stemp6);
 		
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
