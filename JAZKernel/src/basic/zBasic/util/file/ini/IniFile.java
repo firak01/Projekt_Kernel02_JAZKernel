@@ -163,7 +163,7 @@ public class IniFile extends Object
 		 */
     	  
     	  //MErke: Die ini Datei muss UTF-8 ohnee BOM sein. Ansonsten sind in der ersten Zeile immer 2 zusätzliche Bytes, wenn man iniReader.readLine() ausführt.     	  
-    	 FileInputStream inStream = new FileInputStream(fileName);    	     	
+    	 FileInputStream inStream = new FileInputStream(fileName);    	      	 
     	 String line = "";
          //read all the lines in
    	  	 int itest = 0;   	  
@@ -246,8 +246,13 @@ public class IniFile extends Object
    */
    protected void createFile() throws IOException
    {
-         DataOutputStream newFile = new DataOutputStream(new FileOutputStream(fileName));
-         newFile.close();
+	   //20190712: Ziel ist es nun UTF-8 Datei zu erstellen
+        //DataOutputStream newFile = new DataOutputStream(new FileOutputStream(fileName));
+        //newFile.close();
+         
+	   //20190712: Ziel ist es nun UTF-8 Datei zu erstellen
+       OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName),"UTF-8");
+       writer.close();    
    }
 
 
@@ -603,7 +608,7 @@ protected boolean addSection(String sSection){
       {
          return (String)(valVector.elementAt(valueIndex));
       }
-      //FGL 20061025 Falls der Wert nicht konfiguriert ist, null zur�ckgeben
+      //FGL 20061025 Falls der Wert nicht konfiguriert ist, null zurückgeben
       return null;
    }
 
@@ -694,17 +699,21 @@ protected boolean addSection(String sSection){
    {
       try
       {
-         DataOutputStream outFile = new DataOutputStream(
-                                        new BufferedOutputStream(
-                                            new FileOutputStream(fileName)));
+    	  //20190712: Ziel ist es nun UTF-8 Datei zu erstellen
+//         DataOutputStream outFile = new DataOutputStream(
+//                                        new BufferedOutputStream(
+//                                            new FileOutputStream(fileName)));
+         
+         //20190712: Ziel ist es nun UTF-8 Datei zu erstellen
+         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName),"UTF-8");          
          for (int i=0;i<lines.size();i++)
          {
 
 			if (i>0) {
 				if (((String) lines.elementAt(i)).startsWith("[") && !((String) lines.elementAt(i-1)).equals("")){
 					String sLineUTF8 = StringZZZ.toUtf8("\r\n");					
-					outFile.writeBytes(sLineUTF8);
-					//outFile.writeUTF("\r\n"); //20190711: Es wird UTF-8 gelesen, muss also auch geschrieben werden.
+					//outFile.writeBytes(sLineUTF8);
+					writer.write(sLineUTF8);			
 				}
 			}
 			 if(((String)lines.elementAt(i)).startsWith("TestParameterGlobal1FromClass")){
@@ -713,14 +722,11 @@ protected boolean addSection(String sSection){
 			
 			String sLineRaw = (String)(lines.elementAt(i))+"\r\n";
 			String sLineUTF8 = StringZZZ.toUtf8(sLineRaw);			
-			outFile.writeBytes(sLineUTF8);
-            //outFile.writeBytes((String)(lines.elementAt(i))+"\r\n");
-			//outFile.writeUTF((String)(lines.elementAt(i))+"\r\n");//20190711: Es wird UTF-8 gelesen, muss also auch geschrieben werden.
-			//Das schreibt vorneweg immer noch überflüssige Bytes 
-			//outFile.writeUTF(sLineUTF8);
+			//outFile.writeBytes(sLineUTF8);
+			writer.write(sLineUTF8);
          }
-
-         outFile.close();
+         //outFile.close();
+         writer.close();
       }
       catch (IOException e)
       {

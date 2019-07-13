@@ -29,11 +29,14 @@ public class IniFileTest extends TestCase{
 			
 			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehängt.
 			//Merke: Es soll nicht versucht werden die Datei z.B. mit der Datei aus dem FileIniZZZTest 
-			//Merke: Erst wenn es �berhaupt einen Test gibt, wird diese Datei erstellt
+			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
 			String sFilePathTotal = null;
 			if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
-				sFilePathTotal = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
-			}else{
+				String sFilePathUsed = FileEasyZZZ.joinFilePathName(strFILE_DIRECTORY_DEFAULT, strFILE_NAME_DEFAULT );
+				if(FileEasyZZZ.exists(sFilePathUsed)) sFilePathTotal = sFilePathUsed;
+			}
+								
+			if(sFilePathTotal==null){
 				//Eclipse Workspace
 				File f = new File("");
 			    String sPathEclipse = f.getAbsolutePath();
@@ -67,6 +70,12 @@ public class IniFileTest extends TestCase{
 			
 			objStreamFile.println("#This section should be left empty for testing reasons.");
 			objStreamFile.println("[Section empty]");
+			
+			objStreamFile.println("#This section should contain 'deutsche Umlaute' for testing reasons. READING");
+			objStreamFile.println("[Section C]");
+			objStreamFile.println("Testentry1=Testvalü1");
+			objStreamFile.println("#This section should contain 'deutsche Umlaute' for testing reasons. WRITING");
+			objStreamFile.println("[Section D]");
 			objStreamFile.close();
 			
 			objFile = new File(sFilePathTotal);
@@ -82,11 +91,9 @@ public class IniFileTest extends TestCase{
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (FileNotFoundException e) {		
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {		
 			e.printStackTrace();
 		}		
 	}//END setup
@@ -105,10 +112,41 @@ public class IniFileTest extends TestCase{
 		assertNotNull("Unexpected: The array of properties is null", saProperties2);
 		assertEquals(5, saProperties2.length);
 	}
+		
+	public void testGetValue(){
+		
+		//Hole einen Wert mit deutschen Umlauten
+		String sValue1 = objIniFileTest.getValue("Section C", "Testentry1");
+		assertEquals("Testvalü1",sValue1);
+		assertEquals(9,sValue1.length());//Ein (heuristischer) Indikator für die "Nichtumcodierung" der Zeichen ist, dass die Länge des Strings gleich bleibt. 
+	
+	}
+	
+	public void testSetValue(){
+		
+		
+		try{
+			//Setze einen Wert mit deutschen Umlauten
+			boolean bValueSet = objIniFileTest.setValue("Section D", "Testentry1","Testvalü1");
+			assertTrue(bValueSet);
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} catch (IOException e) {		
+			e.printStackTrace();
+			fail("Method throws an exception." + e.getMessage());
+		}	
+		
+		String sValue1 = objIniFileTest.getValue("Section C", "Testentry1");
+		assertEquals("Testvalü1",sValue1);
+		assertEquals(9,sValue1.length());//Ein (heuristischer) Indikator für die "Nichtumcodierung" der Zeichen ist, dass die Länge des Strings gleich bleibt. 
+	
+		
+		assertEquals(9,sValue1.length());//Ein (heuristischer) Indikator für die "Nichtumcodierung" der Zeichen ist, dass die Länge des Strings gleich bleibt. 
+	}
 	
 	public void testGetSubject(){
 		String[] saSection = objIniFileTest.getSubjects();
 		assertNotNull("Unexpected: The array of sections is null", saSection);
-		assertEquals(5, saSection.length);
+		assertEquals(7, saSection.length);
 	}
 }
