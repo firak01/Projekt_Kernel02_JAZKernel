@@ -146,7 +146,7 @@ public void testConstructorConfigObject(){
 	
 	KernelZZZ objKerneltemp = null;
 	try{
-		String[] saArg ={"-k","TEST","-s","01" ,"-d","", "-f", "ZKernelConfigKernel_test.ini"};
+		String[] saArg ={"-k","TEST","-s","01" ,"-d","test", "-f", "ZKernelConfigKernel_test.ini"};
 		ConfigZZZ objConfig = new ConfigZZZ(saArg);
 		assertTrue(objConfig.isOptionObjectLoaded());
 		 
@@ -159,10 +159,14 @@ public void testConstructorConfigObject(){
 		
 //		Log-File entfernen
 		this.removeLogFile(objKerneltemp);
+	}catch(ExceptionZZZ ez){
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 		
 		//########################
-		String[] saArg2 ={"-s","01" ,"-d","", "-f", "ZKernelConfigKernel_test.ini"};
-		objConfig = new ConfigZZZ(saArg2);
+	try{
+		String[] saArg2 ={"-s","01" ,"-d","test", "-f", "ZKernelConfigKernel_test.ini"};
+		ConfigZZZ objConfig = new ConfigZZZ(saArg2);
 		assertTrue(objConfig.isOptionObjectLoaded());
 		
 		try{
@@ -177,8 +181,8 @@ public void testConstructorConfigObject(){
 			this.removeLogFile(objKerneltemp);
 		}
 		
-	}catch(ExceptionZZZ ez){
-		fail("Method throws an exception." + ez.getMessageLast());
+	}catch(Exception e){
+		fail("Method throws an exception." + e.getMessage());
 	}
 	
 
@@ -355,40 +359,60 @@ public void testParameterByProgramAlias(){
 }
 
 public void testGetParameterFromClass(){
-	try{
-		//Erst mal die Konfiguration per Klassennamen sicherstellen
-		String sClassname = this.getClass().getName();
+	
+	//Erst mal die Konfiguration per Klassennamen sicherstellen
+	String sClassname = this.getClass().getName();
+			
+	try{		
 		File objFile = objKernelFGL.getFileConfigByAlias(sClassname);
 		assertNotNull(objFile);
-		
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}	
+	
+	try{
 		//a) Parameter per Methode holen
 		String stemp = objKernelFGL.getParameterByModuleAlias(sClassname, "TestParameter1FromClass");
 		assertEquals("TestValue1FromClass", stemp);
-		
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}	
+	
+	try{
 		//b) Parameter aus dem Programm (das als Alias so aussieht wie der Klassenname) holen
 		String sAgentSection = objKernelFGL.getSystemKey() + "!" + sClassname;
 		String stemp2 = objKernelFGL.getParameterByProgramAlias(sClassname, sAgentSection, "TestParameter2FromClass");
 		assertEquals("TestValue2FromClass", stemp2);
-			
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}	
 		
+	try{
 		//b2) Nun soll der Klassenname ohne den Systemkey funktionieren
 		String stemp4 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass");
 		assertEquals("AnotherTestValue2FromClass", stemp4);   //Womit der Eintrag ein anderer wäre als der mit "SystemKey" - spezifizierte
-		
-		
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}	
+	
+	try{		
 		//b3) Ein Parameterwert, der in der "speziellen" Section nicht gefunden werden kann, soll in der "allgemeinen" Section (d.h. der Section ohne die SystemNumber) gefunden werden
-		//TestParameterGlobal1FromClass=F�rAlleSystemNumberG�ltig
+		//TestParameterGlobal1FromClass=FürAlleSystemNumberGültig
 		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameterGlobal1FromClass");
 		assertEquals("FürAlleSystemNumberGültig", stemp5); //Merke: Damit Java per Default als UTF-8 encodiert ist. Auf Systemebene setzen: -Dfile.encoding=UTF-8
-		
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}	
+	
+	try{
 		//C) "Verkürzte Parameter"
 		//Wenn der Modulname und der Programname gleich sind, dann soll es m�glich sein ganz einfach nur den Programnamen und die gesuchte Property zu �bergeben
 		String stemp6 = objKernelFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated");
 		assertEquals("TestValue1Abbreviated", stemp6);
-		
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	
+	
 }
 
 public void testGetModuleAliasFromFilename(){
@@ -408,35 +432,45 @@ public void testGetModuleAliasFromFilename(){
  */
 public void testGetModuleAliasAll(){
 	try{
-	//Hole alle Werte, die konfiguriert sind und existieren
-//		+++ Von den konfigurierten Modulen nur diejenige, die auch existieren.
-	ArrayList listaAlias = objKernelFGL.getModuleFileAliasAll(true, true);
-	assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias);
-	assertFalse("There is no alias configured and no module does exist (arraylist empty case)", listaAlias.isEmpty()==true);
-	assertTrue("There was the correct configuration expected of the module 'TestModule'. Application 'TEST'", listaAlias.contains("TestModule"));
+		//Hole alle Werte, die konfiguriert sind und existieren
+	//		+++ Von den konfigurierten Modulen nur diejenige, die auch existieren.
+		ArrayList listaAlias = objKernelFGL.getModuleFileAliasAll(true, true);
+		assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias);
+		assertFalse("There is no alias configured and no module does exist (arraylist empty case)", listaAlias.isEmpty()==true);
+		assertTrue("There was the correct configuration expected of the module 'TestModule'. Application 'TEST'", listaAlias.contains("TestModule"));
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
 	
-//	//+++ Von den konfigurierten Modulen diejenigen, deren Konfigurationsdatei fehlt
-	ArrayList listaAlias3 = objKernelTest.getModuleFileAliasAll(false, true);
-	assertNotNull("A configured module with missing configuraton file was expected (arraylist null case)", listaAlias3);
-	assertFalse("A configured module with missing configuraton file was expected (arraylist empty case)", listaAlias3.isEmpty()==true);
-	assertTrue("There was a missing configuration file expected. Application 'TEST'", listaAlias3.contains("NotExisting"));  //Das ist die Datei 'ZKernelConfigTestModuleNotExisting_test.ini'
-    assertFalse("There was only one missing configuration file expected. Application 'TEST", listaAlias3.size() > 1);
-
-	//+++ Von den in dem Kernel-Verzeichnis existierenden Moduldateien, diejenigen, deren Konfiguration noch nicht erfolgt ist.
-	ArrayList listaAlias2 = objKernelTest.getModuleFileAliasAll(true, false);
-	assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias2);
-	assertFalse("There is no file found wich is not configured (use a dummy configuration file at least. Starting the filename with 'ZKernelConfig ....' (arraylist empty case)", listaAlias2.isEmpty()==true);
-	assertTrue("The configuration file for the module  'Dummy' should exist. But was expected to be NOT configured in the applicationalias 'TEST'", listaAlias2.contains("Dummy")); //Das KernelModul wird in der Applikation FGL konfiguriert als Section der Ini-Datei:  [FGL#01]
+	try{
+	//	//+++ Von den konfigurierten Modulen diejenigen, deren Konfigurationsdatei fehlt
+		ArrayList listaAlias3 = objKernelTest.getModuleFileAliasAll(false, true);
+		assertNotNull("A configured module with missing configuraton file was expected (arraylist null case)", listaAlias3);
+		assertFalse("A configured module with missing configuraton file was expected (arraylist empty case)", listaAlias3.isEmpty()==true);
+		assertTrue("There was a missing configuration file expected. Application 'TEST'", listaAlias3.contains("NotExisting"));  //Das ist die Datei 'ZKernelConfigTestModuleNotExisting_test.ini'
+	    assertFalse("There was only one missing configuration file expected. Application 'TEST", listaAlias3.size() > 1);
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
+    	
+	try{
+		//+++ Von den in dem Kernel-Verzeichnis existierenden Moduldateien, diejenigen, deren Konfiguration noch nicht erfolgt ist.
+		ArrayList listaAlias2 = objKernelTest.getModuleFileAliasAll(true, false);
+		assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias2);
+		assertFalse("There is no file found wich is not configured (use a dummy configuration file at least. Starting the filename with 'ZKernelConfig ....' (arraylist empty case)", listaAlias2.isEmpty()==true);
+		assertTrue("The configuration file for the module  'ExistingButNotConfigured' should exist. But was expected to be NOT configured in the applicationalias 'TEST'", listaAlias2.contains("ExistingButNotConfigured")); //Das KernelModul wird in der Applikation FGL konfiguriert als Section der Ini-Datei:  [FGL#01]
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
 	
-	
-	//+++ Alle Module, sowohl aus der Konfiguration als auch aus dem Kernel-Verzeichnis 
-	ArrayList listaAlias4 = objKernelTest.getModuleFileAliasAll(false, false);
-	assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias4);
-	assertFalse("There is no alias configured and no module does exist (arraylist empty case)", listaAlias4.isEmpty()==true);
-	assertTrue("The module 'Kernel' was expected to be NOT configured in the application 'TEST' but a file should be there", listaAlias4.contains("Kernel")); //Das KernelModul wird in der Applikation FGL konfiguriert als Section der Ini-Datei:  [FGL#01]
-	assertTrue("The module 'NotExisting' was expected to be configured, but a file should be not there. Application 'TEST'", listaAlias4.contains("NotExisting"));  //Das ist die Datei 'ZKernelConfigTestModuleNotExisting_test.ini'
-    assertTrue("The module 'Test' was expected to be configured PLUS an existing file. Application 'TEST'", listaAlias4.contains("Test"));
-	
+	try{
+		//+++ Alle Module, sowohl aus der Konfiguration als auch aus dem Kernel-Verzeichnis 
+		ArrayList listaAlias4 = objKernelTest.getModuleFileAliasAll(false, false);
+		assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias4);
+		assertFalse("There is no alias configured and no module does exist (arraylist empty case)", listaAlias4.isEmpty()==true);
+		assertTrue("The module 'Kernel' was expected to be NOT configured in the application 'TEST' but a file should be there", listaAlias4.contains("Kernel")); //Das KernelModul wird in der Applikation FGL konfiguriert als Section der Ini-Datei:  [FGL#01]
+		assertTrue("The module 'NotExisting' was expected to be configured, but a file should be not there. Application 'TEST'", listaAlias4.contains("NotExisting"));  //Das ist die Datei 'ZKernelConfigTestModuleNotExisting_test.ini'
+	    assertTrue("The module 'Test' was expected to be configured PLUS an existing file. Application 'TEST'", listaAlias4.contains("Test"));	
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}

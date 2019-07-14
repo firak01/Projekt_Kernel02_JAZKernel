@@ -1776,9 +1776,14 @@ MeinTestParameter=blablaErgebnis
 				if(!StringZZZ.isEmpty(sReturn))break main;
 			}
 			
+			//###############################################################################
+			// Als Program definierte Werte (Merke: Die direkt definierten Werte - d.h. ohne Application/Systemkey - wurden schon eher abgefragt)
+			//###############################################################################
+			//3a. Für den Fall, dass der Programname direkt angegeben wurde. Suche ihn im System-/Applicationkey
+			sReturn = KernelGetParameterByProgramAlias_SystemLookup_("(2a)", sProgramOrSection, sProperty, objFileIniConfig);
+			if(!StringZZZ.isEmpty(sReturn))break main;
 			
-			//###############################################################################+
-			//3. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems			
+			//3b. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems			
 			String sSystemNumber= this.getSystemNumber();
 			ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
 								
@@ -1786,11 +1791,14 @@ MeinTestParameter=blablaErgebnis
 			Iterator<String> itAlias = listasAlias.iterator();
 			while(itAlias.hasNext()){					
 				sSection = itAlias.next(); //der verwendete Programalias zur Suche nach der  Section
-				sReturn = KernelGetParameterByProgramAlias_SystemLookup_("(2)", sSection, sProperty, objFileIniConfig);
+				sReturn = KernelGetParameterByProgramAlias_SystemLookup_("(2b)", sSection, sProperty, objFileIniConfig);
 				if(!StringZZZ.isEmpty(sReturn))break main;								
 			}//end while
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ "Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");
-			
+			if(listasAlias.size()==0){
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ "Keine möglichen Programaliaswerte gefunden. Suche direkter nach der Property.'" + sProperty +"'.");
+			}else{
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ "Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");
+			}
 			 //##################################################################################		
 			//+++ Die Section als einen ggfs. auf Systemkey definierten Aliasnamen vorhanden. Aber: Die Section hat keine erweiterung mit ! und irgendeiner Systemnumber.
 			sSearchCounter = objCounter.getStringNext();
@@ -2313,12 +2321,19 @@ MeinTestParameter=blablaErgebnis
 				if(bReturn)break main;
 			}//if(sSection!=this.getApplicationKey()){ 
 			
+			
+			//###############################################################################
+			// Als Program definierte Werte (Merke: Die direkt definierten Werte - d.h. ohne Application/Systemkey - wurden schon eher abgefragt)
+			//###############################################################################
+			//3a. Für den Fall, dass der Programname direkt angegeben wurde. Suche ihn im System-/Applicationkey
+			bReturn = KernelSetParameterByProgramAlias_SystemLookup_("(2a)", sProgramOrSection, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
+			if(bReturn)break main;
 		
 			//+++ Die Section als Program mit Alias und vorangestelltem Systemkey definiert:
 			Iterator<String> itAlias = listasAlias.iterator();
 			while(itAlias.hasNext()){				
 				sSection = itAlias.next(); //der verwendete Programalias zur Suche nach der  Section
-				bReturn = KernelSetParameterByProgramAlias_SystemLookup_("(2)", sSection, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
+				bReturn = KernelSetParameterByProgramAlias_SystemLookup_("(2b)", sSection, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn)break main;
 			}//end while
 			
@@ -3213,7 +3228,7 @@ MeinTestParameter=blablaErgebnis
 				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, hmFlag);
 					
 				String[] saProperty = null; String sSearch = null; int iIndex;
-				File objFileTemp=null; File[] objaFileTemp=null; String sDir=null; ArrayList listaConfigured=null; ArrayList listaFile = null;
+				File objFileTemp=null; File[] objaFileTemp=null; String sDir=null; ArrayList listaConfigured=null; ArrayList listaExisting = null; ArrayList listaFile = null;  
 					switch(iCase){
 					case 1:
 						//+++ Von den konfigurierten Modulen nur diejenige, die auch existieren.
@@ -3246,8 +3261,26 @@ MeinTestParameter=blablaErgebnis
 						listaReturn = ArrayListZZZ.unique(listaConfigured);
 						break;
 					case 2:
-						//+++ Von allen Moduldateien ausgehend diejenigen, deren Konfiguration fehlt
+						//######## Von allen gefundenen Moduldateien ausgehend diejenigen, deren Konfiguration fehlt
 						//(!!! hierbei wird das Kernel-Konfigurations-Verzeichnis nach Moduldateien durchsucht !!!)
+																	
+						//+++ 1. Die konfigurierten Module holen
+						//Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. 
+						saProperty = objFileIni.getPropertyAll(this.getSystemKey()); 
+						
+						sSearch = new String("kernelconfigfile");
+						iIndex = sSearch.length();	
+						
+						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
+						listaConfigured = new ArrayList();
+						for(int icount=0; icount < saProperty.length; icount++){
+							String stemp = saProperty[icount].toLowerCase();
+							if(stemp.startsWith(sSearch)){						
+								listaConfigured.add(saProperty[icount].substring(iIndex));
+							}
+						}
+												
+						//+++2. Hole alle Konfigurationsdateien im aktuellen Verzeichnis
 						objFileTemp = this.getFileConfigKernel();
 						sDir = objFileTemp.getParent();
 						if(sDir==null) sDir = "";     //Das ist nun m�glich     if(sDir.equals("")) break main;
@@ -3257,33 +3290,31 @@ MeinTestParameter=blablaErgebnis
 						if(objaFileTemp==null) break main;
 						if(objaFileTemp.length==0)break main;
 						
-						// Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. 
-						saProperty = objFileIni.getPropertyValueAll(this.getSystemKey());
 						
 						
-						listaConfigured = new ArrayList();
+						//+++3. Berechne aus den vorhandenen Konfigurationsdateien wie der Modulname sein sollte
+						listaExisting = new ArrayList();
 						if(saProperty!=null){
-							//Von den Konfigurierten Dateien das Modul ermitteln
-							for(int icount = 0; icount < saProperty.length; icount ++){
-								String stemp = computeModuleAliasByFilename(saProperty[icount]);
-								if(!stemp.equals("")) listaConfigured.add(stemp);	
+							//Von den vorhandenen Dateien das Modul ermitteln
+							//for(int icount = 0; icount < saProperty.length; icount ++){
+							for(int icount=0;icount < objaFileTemp.length; icount++){
+								String sFilename = FileEasyZZZ.getNameOnly(objaFileTemp[icount].getAbsolutePath());
+								String stemp = computeModuleAliasByFilename(sFilename);
+								if(!stemp.equals("")) listaExisting.add(stemp);	
 							}							
 						}
 						
-						//Die Module aus allen Dateinamen herausfiltern. D.h. ggf. gibt es ja mehrere Dateien zu einem Modul.
+						//+++ 4. Die Module aus allen Dateinamen herausfiltern. D.h. ggf. gibt es ja mehrere Dateien zu einem Modul.
 						listaFile = new ArrayList();
-						for(int icount=0; icount < objaFileTemp.length; icount ++){
-							String stemp = computeModuleAliasBy(objaFileTemp[icount]);
-							if(!stemp.equals("")) listaFile.add(stemp);	
+												
+						Iterator it = listaExisting.iterator();
+						while(it.hasNext()){
+							String sExisting = (String)it.next();
+							if(!listaConfigured.contains(sExisting)){
+								listaFile.add(sExisting);
+							}
 						}
-						
-						//Von der gesamtliste aller module nun diejenigen abziehen, die konfiguriert sind
-//						!!! Von hinten nach vorne die liste durchsehen, ansonsten werden die Indizes durcheinandergeworfen:	for(int icount = 0; icount < listaConfigured.size(); icount++){							
-						for(int icount=listaConfigured.size()-1; icount >= 0 ; icount--){		
-							listaFile.remove(listaConfigured.get(icount));  //Falls es in der Liste vorhanden ist, wird es entfernt												
-						}
-						
-						
+					
 						//Nun doppelte Modulnamen entfernen
 						listaReturn = ArrayListZZZ.unique(listaFile);
 						break;
@@ -3383,7 +3414,7 @@ MeinTestParameter=blablaErgebnis
 	
 	
 	
-	/**List aus der KernelKonfiguration alle Konfigurierten Modulenamen aus. Irgenwelche File - Eigenschaften (z.B. die Existenz) werden hier nicht ber�cksichtig
+	/**List aus der KernelKonfiguration alle Konfigurierten Modulenamen aus. Irgenwelche File - Eigenschaften (z.B. die Existenz) werden hier nicht berücksichtig
 	* @return
 	* 
 	* lindhaueradmin; 04.03.2007 10:00:37
@@ -3398,7 +3429,7 @@ MeinTestParameter=blablaErgebnis
 				throw ez;				
 			}
 			
-			String sSystemKey = this.getSystemKey(); //Also z.b. "MyApplication#01"
+			String sSystemKey = this.getSystemKey(); //Also z.b. "MyApplication!01"
 			String[] saVar = objFileIni.getVariables(sSystemKey);
 			for(int icount = 0; icount <= saVar.length-1; icount ++){
 				String sModule = KernelKernelZZZ.computeModuleAliasBySubject(saVar[icount]);

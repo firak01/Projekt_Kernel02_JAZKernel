@@ -53,22 +53,37 @@ public class KernelZZZIsolatedTest extends TestCase {
  * @author Fritz Lindhauer, 13.07.2019, 08:38:03
  */
 public void testParameterByProgramAlias(){
-//Merke: Mache folgendes
-//String sClassname = this.getClass().getName(); 
-//sClassname = StringZZZ.replace(sClassname, "Isolated", "");
+//Merke: Mache folgendes, damit kein Unterschied vom Isolated zum normalen Test besteht.
+String sClassname = this.getClass().getName(); 
+sClassname = StringZZZ.replace(sClassname, "Isolated", "");
 	
-	try{
-		//C2) Setzen als Programname testen (!!! SOFORTIGES SCHREIBEN. Merke: Verz�gertes Schreiben ist nicht m�glich)
-		String sToSet2 = new String("testwert progname");
-		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01!TestProg", "testProgramProperty3", sToSet2);
-		
-		String stemp4 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty3"); //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
-		assertEquals("Expected as a value of the just setted property 'testProgramProperty3'", sToSet2, stemp4);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}			
-				
+			
+}
 
+
+public void testGetModuleAliasAll(){
+	
+}
+
+public void testConstructorConfigObject(){
+	try{
+		String[] saArg2 ={"-s","01" ,"-d","test", "-f", "ZKernelConfigKernel_test.ini"};
+		ConfigZZZ objConfig = new ConfigZZZ(saArg2);
+		assertTrue(objConfig.isOptionObjectLoaded());
+		KernelZZZ objKerneltemp  = new KernelZZZ(objConfig, (String[]) null);
+		try{					
+			//Der Default - Applikation - key (des Config-Objekts)  sollte hier stehen, weil es wurde kein anderer �bergeben.
+			assertEquals(objKerneltemp.getApplicationKey(), objConfig.getApplicationKeyDefault());
+			assertFalse(objKerneltemp.getApplicationKey().equals(""));
+		}catch(ExceptionZZZ ez){
+			//erwarteter Fehler
+//			Log-File entfernen
+			this.removeLogFile(objKerneltemp);
+		}
+		
+	}catch(Exception e){
+		fail("Method throws an exception." + e.getMessage());
+	}
 }
 
 

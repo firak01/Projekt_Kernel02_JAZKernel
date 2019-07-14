@@ -852,6 +852,28 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		return bReturn;
 	}
 	
+	/**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
+	 *  Darum wird hier per classloader die Ressource geholt.
+	 * @param sFilePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	public static String getNameFromFilepath(String sFilePath) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(sFilePath==null){ //Merke: Anders als bei einer Datei, darf der Directory-Name leer sein.
+				ExceptionZZZ ez  = new ExceptionZZZ("sFilePath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
+	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
+	    	FileEasyZZZ.splitFilePathName(sFilePath, strDirectory, strFileName);
+	    	sReturn=strFileName.get();	    	
+		}//end main:
+		return sReturn;
+	}
 	
 	public static String getNameEnd(String sFilenameTotal) throws ExceptionZZZ{
 		String sReturn = new String("");
@@ -866,7 +888,9 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				}
 			}//END Check:
 		
-			sReturn = NameEndCompute(sFilenameTotal);
+			String sFileName = FileEasyZZZ.getNameFromFilepath(sFilenameTotal);
+		
+			sReturn = NameEndCompute(sFileName);
 		
 		return sReturn;
 		}//END main:
@@ -907,7 +931,10 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				}
 			}//END Check:
 		
-			sReturn = NameOnlyCompute(sFilenameTotal);
+			
+			String sFileName = FileEasyZZZ.getNameFromFilepath(sFilenameTotal);
+		
+			sReturn = NameOnlyCompute(sFileName);
 		
 		return sReturn;
 		}//END main:
