@@ -1,5 +1,6 @@
 package basic.zKernel;
 
+import custom.zKernel.ConfigZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
@@ -194,40 +195,45 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	//#########
 	//Aus Interface
 	//##########
-	public String getApplicationKeyDefault(){
-		if(this.sApplicationKey==null){
-			this.sApplicationKey = this.readApplicationKey();			
-		}
-		return this.sApplicationKey;
-	};
+//	public String getApplicationKeyDefault(){
+//		if(this.sApplicationKey==null){
+//			this.sApplicationKey = this.readApplicationKey();			
+//		}
+//		return this.sApplicationKey;
+//	};
 	
-	public String getConfigDirectoryNameDefault(){
-		if(this.sDirectory==null){
-			this.sDirectory = this.readConfigDirectoryName();
-		}
-		return this.sDirectory;
-	}
+//	@Override
+//	public String getApplicationKeyDefault() {
+//		return ConfigZZZ.sKEY_APPLICATION_DEFAULT;
+//	}
 	
-	
-	public String getConfigFileNameDefault(){
-		if(this.sFile==null){
-			this.sFile=this.readConfigFileName();
-		}
-		return this.sFile;
-	}
-
-	public String getSystemNumberDefault(){
-		if(this.sSystemNumber==null){
-			this.sSystemNumber=this.readSystemNumber();
-		}
-		return this.sSystemNumber;
-	}
-	
-	public String getPatternStringDefault(){
-		if(this.sPatternString==null){
-			this.sPatternString=this.readPatternString();
-		}
-		return this.sPatternString;
-	}
+//	public String getConfigDirectoryNameDefault(){
+//		if(this.sDirectory==null){
+//			this.sDirectory = this.readConfigDirectoryName();
+//		}
+//		return this.sDirectory;
+//	}
+//	
+//	
+//	public String getConfigFileNameDefault(){
+//		if(this.sFile==null){
+//			this.sFile=this.readConfigFileName();
+//		}
+//		return this.sFile;
+//	}
+//
+//	public String getSystemNumberDefault(){
+//		if(this.sSystemNumber==null){
+//			this.sSystemNumber=this.readSystemNumber();
+//		}
+//		return this.sSystemNumber;
+//	}
+//	
+//	public String getPatternStringDefault(){
+//		if(this.sPatternString==null){
+//			this.sPatternString=this.readPatternString();
+//		}
+//		return this.sPatternString;
+//	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.KernelZZZ;
+import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
 import custom.zUtil.io.FileZZZ;
 import junit.framework.TestCase;
@@ -16,7 +17,10 @@ public class KernelZZZTest extends TestCase {
 	 */
 	
 	private KernelZZZ objKernelFGL;
+	//TODO IFlag muss in IKernelZZZ rein, damit geht: IKernelZZZ objKernelFGL = new KernelZZZ();
+	
 	private KernelZZZ objKernelTest;
+	//TODO IFlag muss in IKernelZZZ rein, damit geht: IKernelZZZ objKernelTest = new KernelZZZ();
 	
 	
 	protected void setUp(){
@@ -32,6 +36,18 @@ public class KernelZZZTest extends TestCase {
 		}		
 	}
 	
+	private void removeLogFile(IKernelZZZ objKerneltemp){
+		//		Log-File entfernen
+		if(objKerneltemp != null){
+			LogZZZ objLog = objKerneltemp.getLogObject();
+			if(objLog != null){
+				FileZZZ objFile = objLog.getFileObject();
+				if(objFile!=null){
+					objFile.deleteOnExit();
+				}
+			}
+		}
+	}
 	private void removeLogFile(KernelZZZ objKerneltemp){
 		//		Log-File entfernen
 		if(objKerneltemp != null){
@@ -46,30 +62,33 @@ public class KernelZZZTest extends TestCase {
 	}
 	
 public void testContructor(){
-		KernelZZZ objKerneltemp=null; //Wird verwendet. Wichtig: Das Entfernen des Log-Files, das ja immer erzeugt wird bei der Kernel Initiierung explizit programmieren.
+		//Wichtig: Das Entfernen des Log-Files, das ja immer erzeugt wird bei der Kernel Initiierung explizit programmieren.
 	
 	
 		//Falls ein Datei nicht existiert, dann soll ein Fehler geworfen werden
+		IKernelZZZ objKerneltemp01=null;
 		try{
-			objKerneltemp = new KernelZZZ("TEST", "01", "c:\\fglkernel\\NotExisting", "ZKernelConfigKernel_test.ini",(String[]) null);
+			objKerneltemp01 = new KernelZZZ("TEST", "01", "c:\\fglkernel\\NotExisting", "ZKernelConfigKernel_test.ini",(String[]) null);
 			fail("Directory 'c:\\fglkernel\\NotExisting' was expected not to exist. An expected exception was not thrown");
 		}catch(ExceptionZZZ ez){
 			//Dieser Fehler wird erwartet.
 			//Log-File entfernen
-			this.removeLogFile(objKerneltemp);
+			this.removeLogFile(objKerneltemp01);
 		}
 		
+		IKernelZZZ objKerneltemp02=null;
 		try{
-			objKerneltemp = new KernelZZZ("TEST", "01", "", "ZKernelConfigKernel_testNotExisting.ini", (String[]) null);
+			objKerneltemp02 = new KernelZZZ("TEST", "01", "", "ZKernelConfigKernel_testNotExisting.ini", (String[]) null);
 			fail("Directory 'c:\\fglkernel\\NotExisting' was expected not to exist. An expected exception was not thrown");
 		}catch(ExceptionZZZ ez){
 			//Dieser Fehler wird erwartet.
 //			Log-File entfernen
-			this.removeLogFile(objKerneltemp);
+			this.removeLogFile(objKerneltemp02);
 		}
 
 		try{
 		//Dann wird das Objekt nur initialisiert, um statische Methoden zu verwenden
+		//TODO IFlag muss in IKernelZZZ rein, damit geht: IKernelZZZ objKernelInit = new KernelZZZ();
 		KernelZZZ objKernelInit = new KernelZZZ();
 		assertTrue(objKernelInit.getFlag("init")==true);
 		
@@ -97,6 +116,7 @@ public void testContructor(){
 		
 		
 		//TEST: Einen angegebenen Applikationsschlussel gibt es n der Datei nicht
+		IKernelZZZ objKerneltemp=null;
 		try{
 			objKerneltemp = new KernelZZZ("NichtDa", "01", "c:\\fglKernel\\KernelTest", "ZKernelConfigKernel_test.ini",(String)null); //Keine Objektzuweiseung durchf�hren, es geht nur darum die Exception auszul�sen !!!
 			fail("A not existing application-key should throw an error");
@@ -111,7 +131,8 @@ public void testContructor(){
 		}
 		
 		//###############################################
-		//Exceptions f�r fehlende Parameter im Construktor
+		//Exceptions für fehlende Parameter im Construktor
+		IKernelZZZ objKerneltemp=null;
 		try{
 			objKerneltemp = new KernelZZZ("", "01", "", "ZKernelConfigKernel_test.ini", (String)null);
 			fail("Application Key was not passed. An expected exception was not thrown");
@@ -141,44 +162,39 @@ public void testContructor(){
 }//END Function
 
 public void testConstructorConfigObject(){
-	//TODO: Ein ConfigZZZ Objekt erstelllen und dies an den neuen Konstruktor �bergeben
-	//				Danach die .getApplicationKey() - Werte, etc. vergleichen
-	
-	KernelZZZ objKerneltemp = null;
+
 	try{
 		String[] saArg ={"-k","TEST","-s","01" ,"-d","test", "-f", "ZKernelConfigKernel_test.ini"};
-		ConfigZZZ objConfig = new ConfigZZZ(saArg);
+		IKernelConfigZZZ objConfig = new ConfigFGL(saArg);
 		assertTrue(objConfig.isOptionObjectLoaded());
 		 
-		objKerneltemp = new KernelZZZ(objConfig, (String[]) null);
-		assertEquals("TEST", objKerneltemp.getApplicationKey());
-		assertEquals("01", objKerneltemp.getSystemNumber());
+		IKernelZZZ objKerneltemp01 = new KernelZZZ(objConfig, (String[]) null);
+		assertEquals("TEST", objKerneltemp01.getApplicationKey());
+		assertEquals("01", objKerneltemp01.getSystemNumber());
 		
-		File objFile = objKerneltemp.getFileConfigKernel();
+		File objFile = objKerneltemp01.getFileConfigKernel();
 		assertEquals("ZKernelConfigKernel_test.ini", objFile.getName());
 		
 //		Log-File entfernen
-		this.removeLogFile(objKerneltemp);
+		this.removeLogFile(objKerneltemp01);
 	}catch(ExceptionZZZ ez){
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
 		
-		//########################
+		//########################	
 	try{
 		String[] saArg2 ={"-s","01" ,"-d","test", "-f", "ZKernelConfigKernel_test.ini"};
-		ConfigZZZ objConfig = new ConfigZZZ(saArg2);
+		IKernelConfigZZZ objConfig = new ConfigFGL(saArg2);
 		assertTrue(objConfig.isOptionObjectLoaded());
-		
-		try{
-			objKerneltemp = new KernelZZZ(objConfig, (String[]) null);
-			
+		IKernelZZZ objKerneltemp02  = new KernelZZZ(objConfig, (String[]) null);
+		try{					
 			//Der Default - Applikation - key (des Config-Objekts)  sollte hier stehen, weil es wurde kein anderer �bergeben.
-			assertEquals(objKerneltemp.getApplicationKey(), objConfig.getApplicationKeyDefault());
-			assertFalse(objKerneltemp.getApplicationKey().equals(""));
+			assertEquals(objKerneltemp02.getApplicationKey(), objConfig.getApplicationKeyDefault());
+			assertFalse(objKerneltemp02.getApplicationKey().equals(""));
 		}catch(ExceptionZZZ ez){
 			//erwarteter Fehler
 //			Log-File entfernen
-			this.removeLogFile(objKerneltemp);
+			this.removeLogFile(objKerneltemp02);
 		}
 		
 	}catch(Exception e){

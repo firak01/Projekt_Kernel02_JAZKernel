@@ -36,6 +36,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 @Deprecated
 public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelContextUserZZZ,IKernelZZZ {
+	private static final long serialVersionUID = -2734877463371564724L;
+
 	/**  Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini

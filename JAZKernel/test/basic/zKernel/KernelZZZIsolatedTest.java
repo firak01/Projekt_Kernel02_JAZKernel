@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelZZZ;
+import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
 import custom.zUtil.io.FileZZZ;
 import junit.framework.TestCase;
@@ -66,24 +67,7 @@ public void testGetModuleAliasAll(){
 }
 
 public void testConstructorConfigObject(){
-	try{
-		String[] saArg2 ={"-s","01" ,"-d","test", "-f", "ZKernelConfigKernel_test.ini"};
-		ConfigZZZ objConfig = new ConfigZZZ(saArg2);
-		assertTrue(objConfig.isOptionObjectLoaded());
-		KernelZZZ objKerneltemp  = new KernelZZZ(objConfig, (String[]) null);
-		try{					
-			//Der Default - Applikation - key (des Config-Objekts)  sollte hier stehen, weil es wurde kein anderer �bergeben.
-			assertEquals(objKerneltemp.getApplicationKey(), objConfig.getApplicationKeyDefault());
-			assertFalse(objKerneltemp.getApplicationKey().equals(""));
-		}catch(ExceptionZZZ ez){
-			//erwarteter Fehler
-//			Log-File entfernen
-			this.removeLogFile(objKerneltemp);
-		}
-		
-	}catch(Exception e){
-		fail("Method throws an exception." + e.getMessage());
-	}
+	
 }
 
 

@@ -23,39 +23,24 @@ public class ConfigZZZ extends KernelConfigZZZ{
 	public ConfigZZZ(String[] saArg) throws ExceptionZZZ{
 		super(saArg);
 	}
-
+	
 	@Override
 	public String getApplicationKeyDefault() {
-		String sReturn = super.getApplicationKeyDefault();
-		if(sReturn==null){
-			return ConfigZZZ.sKEY_APPLICATION_DEFAULT;
-		}
-		return sReturn;
+		return ConfigZZZ.sKEY_APPLICATION_DEFAULT;
 	}
+	
 	@Override
 	public String getConfigDirectoryNameDefault() {
-		String sReturn = super.getConfigDirectoryNameDefault();
-		if(sReturn==null){
-			return ConfigZZZ.sDIRECTORY_CONFIG_DEFAULT;
-		}
-		return sReturn;
+		return ConfigZZZ.sDIRECTORY_CONFIG_DEFAULT;	
 	}
 	@Override
 	public String getConfigFileNameDefault() {
-		String sReturn = super.getConfigFileNameDefault();
-		if(sReturn==null){
-			return ConfigZZZ.sFILE_CONFIG_DEFAULT;
-		}
-		return sReturn;
+		return ConfigZZZ.sFILE_CONFIG_DEFAULT;		
 	}	
 
 	@Override
-	public String getSystemNumberDefault() {
-		String sReturn = super.getSystemNumberDefault();
-		if(sReturn==null){
-			return ConfigZZZ.sNUMBER_SYSTEM_DEFAULT;
-		}
-		return sReturn;
+	public String getSystemNumberDefault() {		
+		return ConfigZZZ.sNUMBER_SYSTEM_DEFAULT;		
 	}
 	
 	@Override
