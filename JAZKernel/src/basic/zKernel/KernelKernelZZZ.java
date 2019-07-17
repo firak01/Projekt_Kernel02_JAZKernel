@@ -225,7 +225,7 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		}//END main
 	}
 	
-	// DESTRICTOR
+	// DESTRUCTOR
 	protected void finalize(){
 		if(this.objIniConfig!=null) this.objIniConfig = null;
 		if(this.objFileKernelConfig!=null) this.objFileKernelConfig = null;
@@ -1673,6 +1673,8 @@ MeinTestParameter=blablaErgebnis
 					}else{							
 						if(objFileIniConfig.getValueRaw()!=null){
 							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sDebugKey + "Convertierten Value gefunden für Property '" + sProperty + "");
+							//TODO GOON: DAS IST KEINE ALTERNATIVE sReturn = objFileIniConfig.getValueRaw();
+							//           STATT DESSEN EIN bFoundAny Flag setzen und erfolgreich mit dem NULL Wert weiterarbeiten.
 							break main;
 						}else{
 							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sDebugKey + "Kein Value gefunden für Property '" + sProperty + "'");
