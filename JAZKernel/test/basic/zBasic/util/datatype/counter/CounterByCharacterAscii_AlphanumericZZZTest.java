@@ -649,13 +649,35 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			} 
 	    	
 	        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    			try {				
-    				stemp = "0Z";
-    				btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
-    				fail("Method should have thrown an exception for the string '"+stemp+"'");    				
-    			} catch (ExceptionZZZ ez) {
-    				//Erwartetete Exception
-    			} 	
+	    	stemp = "0Z";
+			try {				    				    				
+				btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
+				assertTrue("Fehler beim allgemeinen Test.", btemp);
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+			try{
+				objCounterStrategy.isRightAligned(true);
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				assertEquals(1260,itemp);
+				
+				//Gegenprobe
+				String stempRight = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+				assertEquals(stemp,stempRight);
+				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 	
+			
+			try{
+				objCounterStrategy.isRightAligned(true);
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 	
+			
 	    	
 	    	//"SIGNIFICANT STRATEGIE"-Ergebnisse	    		    		    		    	
 	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

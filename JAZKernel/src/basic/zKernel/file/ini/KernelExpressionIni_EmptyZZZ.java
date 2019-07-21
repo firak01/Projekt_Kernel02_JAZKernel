@@ -100,7 +100,7 @@ public class KernelExpressionIni_EmptyZZZ  extends KernelUseObjectZZZ implements
 					
 					//20080109 FGL: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
 					String sSystemNr = this.getKernelObject().getSystemNumber();
-					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr);
+					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
 					
 					//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
 					if(sValue!=null){

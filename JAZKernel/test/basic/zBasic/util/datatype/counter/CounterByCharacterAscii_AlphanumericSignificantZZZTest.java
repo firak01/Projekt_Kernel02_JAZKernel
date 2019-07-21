@@ -130,34 +130,43 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 			} 
 //		    			    	
 	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	try {				
+				stemp = "0";
+		    	objCounterStrategy.isRightAligned(false);
+				itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73		    	
+				btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itempLeft);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	assertEquals("Erwarteter Wert ", 0,itempLeft); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
+		    	
+		    	objCounterStrategy.isRightAligned(true);
+		    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73
+				btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itempRight);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);	
+		    	assertEquals("Erwarteter Wert ", 0,itempRight); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
+		    	assertEquals("Links- oder Rechtsbündig soll bei '0' (also gleichen Zeichen) den gleichen Zahlenwert haben", itempLeft, itempRight);		   		    
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    	
+	    	//++++++++++++++++++++++++++++++
 		    	try {				
 					stemp = "00";
 			    	objCounterStrategy.isRightAligned(false);
-					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73
-					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itempLeft);
-			    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-			    	assertEquals("Erwarteter Wert ", 0,itempLeft); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
-			    	
-			    	objCounterStrategy.isRightAligned(true);
-			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73
-					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itempRight);
-			    	assertTrue("Fehler beim Check auf Null Werte", btemp);	
-			    	assertEquals("Erwarteter Wert ", 0,itempRight); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
-			    	assertEquals("Links- oder Rechtsbündig soll bei '00' (also gleichen Zeichen) den gleichen Zahlenwert haben", itempLeft, itempRight);
+					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73		    
+					fail("Methode sollte eine Exception geworfen haben: Führende 0 ist nicht erlaubt, da sich der String aus dem Wert nicht wiederherstellen lässt.");
+		    	}catch (ExceptionZZZ ez){
+		    		//Erwarteter Fehler
+		    	}
 			    		
 			    	//Mache die Gegenprobe
-			    	//"0" wird allerdings weggetrimmt
-			    	objCounterStrategy.isRightAligned(false);
-			    	boolean bLowercase = false;
-			    	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
-			    	String stempStripped = StringZZZ.stripLeft(stemp, sCharToStrip);		    	
-			    	String sCheckLeft = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempLeft, objCounterStrategy);
-			    	assertEquals("Gegenprobe ('0' vorne entfernt) wurde erfolgreich erwartet.", stempStripped, sCheckLeft);		    			    	
-			    	
-				} catch (ExceptionZZZ ez) {
-					fail("Method throws an exception." + ez.getMessageLast());
-				} 
+		    	try {				
+					stemp = "00";
+			    	objCounterStrategy.isRightAligned(true);
+					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73		    
+					fail("Methode sollte eine Exception geworfen haben: Führende 0 ist nicht erlaubt, da sich der String aus dem Wert nicht wiederherstellen lässt.");
+		    	}catch (ExceptionZZZ ez){
+		    		//Erwarteter Fehler
+		    	}
 		    	
 		    	//###################################
 		    	//### Tests mit der "private" Funktion, die alles kann....
@@ -197,13 +206,25 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 				} 
 		    	
 		    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			try {				
+			try {		
+				objCounterStrategy.isRightAligned(false);
 				stemp = "0Z";
-				btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
-				if(!btemp){
-					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Fehler beim String '" + stemp + "'", KernelZZZ.iERROR_RUNTIME, CounterByCharacterAscii_AlphanumericSignificantZZZTest.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
+				itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig Fehler    
+				fail("Methode sollte eine Exception geworfen haben: Führende 0 ist nicht erlaubt, da sich der String aus dem Wert nicht wiederherstellen lässt.");
+	    	}catch (ExceptionZZZ ez){
+	    		//Erwarteter Fehler
+	    	}
+
+			try {				
+				objCounterStrategy.isRightAligned(true);
+				stemp = "0Z";
+				itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73		    
+				assertEquals("Erwarteter Wert ", 1260,itempRight); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
+				
+				//+++ Gegenprobe
+				String stempRight = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempRight, objCounterStrategy);
+				assertEquals("Erwarteter Wert ", stemp,stempRight);
+				
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 	

@@ -9,7 +9,9 @@ import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.*;
@@ -99,7 +101,7 @@ public class FileIniZZZTest extends TestCase {
 			
 			
 			//Kernel + Log - Object dem TestFixture hinzuf�gen. Siehe test.zzzKernel.KernelZZZTest
-			objKernel = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String)null);
+			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
 			objLog = objKernel.getLogObject();
 			
 			//### Die TestObjecte
@@ -190,22 +192,22 @@ public class FileIniZZZTest extends TestCase {
 	public void testGetProperty(){
 		try {
 			//Erst testen, dass auch kein Leerwert kommt
-			String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1");
+			String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
 			assertFalse("An empty entry was not expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
 			
 			//nun den Wert testen, wie er im setup definiert wurde
-			assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1"));
+			assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());
 			
-			//auch wenn es die Section �berhaupt nicht gibt, darf kein Fehler entstehen
-			assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry"));
+			//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
+			assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry").getValue());
 			
-			//NEU 20070306: Hier �ber eine Formel die Property auslesen
+			//NEU 20070306: Hier über eine Formel die Property auslesen
 			objFileIniTest.setFlag("useFormula", false);
-			String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
+			String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
 			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
 			
 			objFileIniTest.setFlag("useFormula", true);
-			sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
+			sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
 			assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
 			
 		} catch (ExceptionZZZ ez) {
@@ -333,20 +335,22 @@ public void testGetPropertyValueSystemNrSearched(){
 			objStreamFile.println("Value1=first value systemnr 01");
 	 */
 	try{
-		String sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","Value1", "01");
+		String sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","Value1", "01").getValue();
 		assertEquals("first value systemnr 01",sValue);
 		
 		//Wenn der Wert nicht gefunden wird, so wird im globalen nachgesehen
-		sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","ValueGlobalOnly", "01");
+		sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","ValueGlobalOnly", "01").getValue();
 		assertEquals("second value global",sValue);
 		
-		//Wird allerdings die Sektion schon lokal �bergeben, so wird nur in der lokalen konfiguration nachgesehen
-		sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched!01","ValueGlobalOnly", "01");
-		assertNull("Ein Wert f�r die Property 'ValueGlobalOnly' wurde bei der Verwendung einer explizit mit einer Systemnr versehenen Section nicht erwartet.",sValue);
-		
+		//Wird allerdings die Sektion schon lokal übergeben, so wird nur in der lokalen konfiguration nachgesehen
+		IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched!01","ValueGlobalOnly", "01"); 
+		sValue = objEntry.getValue();
+		assertTrue("Ein richtiger Wert für die Property 'ValueGlobalOnly' wurde bei der Verwendung einer explizit mit einer Systemnr versehenen Section nicht erwartet.",StringZZZ.isEmpty(sValue));
+		boolean bHasAnyValue = objEntry.hasAnyValue();
+		assertFalse("Ein Wert für die Property 'ValueGlobalOnly' wurde bei der Verwendung einer explizit mit einer Systemnr versehenen Section nicht erwartet.",bHasAnyValue);
 		
 		//Nun die Suche nach einem Wert, den es nicht global gibt, muss trotzdem funktionieren
-		sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","ValueLocalOnly", "01");
+		sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","ValueLocalOnly", "01").getValue();
 		assertEquals("local value systemnr 01",sValue);
 		
 		

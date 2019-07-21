@@ -1166,8 +1166,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @return String. Wert hinter dem Gleichheitszeichen
 	 * @throws ExceptionZZZ
 	 */
-	public String getParameterByModuleAlias(String sModuleAlias, String sParameter)  throws ExceptionZZZ{
-		String sReturn = new String("");
+	public IKernelConfigSectionEntryZZZ getParameterByModuleAlias(String sModuleAlias, String sParameter)  throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
 				check:{
 							if(sModuleAlias == null){
@@ -1203,10 +1203,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						}
 																														
 						//+++ Now use another method
-						sReturn = this.getParameterByModuleFile(objFileModule, sParameter);
+						objReturn = this.getParameterByModuleFile(objFileModule, sParameter);
 			
 					}//end main:
-	return sReturn;		
+	return objReturn;		
 }//end function getParameterByProgramAlias(..)
 	
 	
@@ -1299,13 +1299,13 @@ MeinTestParameter=blablaErgebnis
 	* lindhaueradmin; 13.07.2006 10:45:57
 	 * @throws ExceptionZZZ 
 	 */
-	public String getParameter(String sParameter) throws ExceptionZZZ{
-		String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getParameter(String sParameter) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			String sModulAlias = this.getApplicationKey();
-			sReturn = this.getParameterByModuleAlias(sModulAlias, sParameter);
+			objReturn = this.getParameterByModuleAlias(sModulAlias, sParameter);
 		}//END main:
-		return sReturn;
+		return objReturn;
 	}
 	
 	/**Wie get Parameter, aber jetzt wird in den Suchstring auch noch der SystemKey eingebunden.
@@ -1314,14 +1314,14 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 * lindhaueradmin, 07.07.2013
 	 */
-	public String getParameter4System(String sParameter) throws ExceptionZZZ{
-		String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getParameter4System(String sParameter) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			String sModul = this.getApplicationKey();
 			String sModulWithKey = this.getSystemKey(); //this.getApplicationKey();
-			sReturn = this.getParameterByProgramAlias(sModul, sModulWithKey, sParameter);
+			objReturn = this.getParameterByProgramAlias(sModul, sModulWithKey, sParameter);
 		}//END main:
-		return sReturn;
+		return objReturn;
 	}
 
 	/** Parameter f�r ein ganzes Modul holen, aus der Modul-.ini-Datei, die �bergeben wird.
@@ -1333,8 +1333,8 @@ MeinTestParameter=blablaErgebnis
 	 * @return String. Wert hinter dem Gleichheitszeichen
 	 * @throws ExceptionZZZ
 	 */
-	public String getParameterByModuleFile(File objFileConfig, String sParameter) throws ExceptionZZZ{
-		String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(File objFileConfig, String sParameter) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 				check:{
 					if(objFileConfig == null){
@@ -1359,7 +1359,7 @@ MeinTestParameter=blablaErgebnis
 							saFlagZpassed = StringArrayZZZ.remove(saFlagZpassed, "INIT", true);
 							FileIniZZZ objFileIniConfig = new FileIniZZZ(this,  objFileConfig, saFlagZpassed);						
 							
-							sReturn = this.getParameterByModuleFile(objFileIniConfig,  sParameter);
+							objReturn = this.getParameterByModuleFile(objFileIniConfig,  sParameter);
 							//1. Versuch: get the value by SystemKey
 //							String sModuleAlias = this.getSystemKey();
 //							if(StringZZZ.isEmpty(sModuleAlias)){
@@ -1377,11 +1377,11 @@ MeinTestParameter=blablaErgebnis
 //								sReturn = objIni.getPropertyValue(sModuleAlias, sParameter);
 //							}
 						}//end main:
-		return sReturn;		
+		return objReturn;		
 	}//end function getParameterByProgramAlias(..)
 
-	public String getParameterByModuleFile(FileIniZZZ objFileIniConfig, String sParameter) throws ExceptionZZZ{
-			String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(FileIniZZZ objFileIniConfig, String sParameter) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			main:{
 					check:{
 									if(objFileIniConfig == null){
@@ -1407,19 +1407,19 @@ MeinTestParameter=blablaErgebnis
 									ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 									throw ez;
 								}								
-								sReturn = KernelGetParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter);
+								objReturn = KernelGetParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter);
 
 							}//end main:
-			return sReturn;		
+			return objReturn;		
 		}//end function getParameterByModuleAlias(..)
 		
 	
-	private String KernelGetParameterByModuleFile_(FileIniZZZ objFileIniConfigIn, String sModuleAlias, String sProperty) throws ExceptionZZZ{
-		String sReturn = new String("");		
+	private IKernelConfigSectionEntryZZZ KernelGetParameterByModuleFile_(FileIniZZZ objFileIniConfigIn, String sModuleAlias, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
-			sReturn = KernelGetParameterByProgramAlias_(objFileIniConfigIn, sModuleAlias, null, sProperty);
+			objReturn = KernelGetParameterByProgramAlias_(objFileIniConfigIn, sModuleAlias, null, sProperty);
 		}//END main:
-		return sReturn;
+		return objReturn;
 	}
 	
 	/** String; Parameter basierend auf dem Systemkey holen und dem ALIAS eines Programms, innerhalb der Modul-.ini-Datei.
@@ -1442,42 +1442,42 @@ MeinTestParameter=blablaErgebnis
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
-	public String getParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
-	String sReturn = null;
-	main:{
+	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{
 			check:{
-							if(objFileConfig == null){
-								ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-								throw ez;
-							}else if(objFileConfig.exists()==false){
-								ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-								throw ez;
-							}else if(objFileConfig.isDirectory()==true){
-								ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' is as directory.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-								throw ez;
-							}
-								
-							if(StringZZZ.isEmpty(sProgramOrSection)){
-								ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'ProgramOrSection'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-								throw ez;
-							}
-								
-							if(StringZZZ.isEmpty(sProperty)){
-								ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Property'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-								throw ez;
-							}
-						}//end check:
+				if(objFileConfig == null){
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}else if(objFileConfig.exists()==false){
+					ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}else if(objFileConfig.isDirectory()==true){
+					ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' is as directory.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
 					
-						//first, get the Ini-file-object
-						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-						hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
-	
-						FileIniZZZ objIni = new FileIniZZZ(this, objFileConfig, hmFlag);
-	
-						//now call another method
-						sReturn = this.getParameterByProgramAlias(objIni, sProgramOrSection, sProperty);
-					}//end main:
-	return sReturn;		
+				if(StringZZZ.isEmpty(sProgramOrSection)){
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'ProgramOrSection'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+					
+				if(StringZZZ.isEmpty(sProperty)){
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Property'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+			}//end check:
+					
+			//first, get the Ini-file-object
+			HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+			hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+
+			FileIniZZZ objIni = new FileIniZZZ(this, objFileConfig, hmFlag);
+
+			//now call another method
+			objReturn = this.getParameterByProgramAlias(objIni, sProgramOrSection, sProperty);
+		}//end main:
+	return objReturn;		
 }//end function getParameterByProgramAlias(..)
 	
 	/**Gibt den Konfigurierten Wert eines Programms wieder. Dabei werden globale Werte durch "Speziell" für die SystemNumber definierte Werte �berschrieben
@@ -1489,9 +1489,9 @@ MeinTestParameter=blablaErgebnis
 	 *
 	 * javadoc created by: 0823, 20.10.2006 - 09:03:54
 	 */
-	public String getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sAliasProgramOrSection, String sProperty) throws ExceptionZZZ{
-	String sReturn = null;
-	main:{
+	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sAliasProgramOrSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{
 				check:{
 							if(objFileIniConfig == null){
 								String stemp = "Missing parameter: 'Configuration file-object'";
@@ -1525,19 +1525,19 @@ MeinTestParameter=blablaErgebnis
 							}
 						}//end check:
 
-				String sProgramOrSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sAliasProgramOrSection);
+				String sProgramOrSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sAliasProgramOrSection).getValue();
 				if(StringZZZ.isEmpty(sProgramOrSection)){
 					sProgramOrSection = sAliasProgramOrSection;
 				}							
 				
-				sReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty);								
+				objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty);								
 	}//end main:
-	return sReturn;		
+	return objReturn;		
 }//end function getParameterByProgramAlias(..)
 		
 	
-	public String getParameterByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
-		String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			check:{
 				if(StringZZZ.isEmpty(sModule)){
@@ -1560,14 +1560,14 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 				
-		sReturn = this.KernelGetParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty);
+		objReturn = this.KernelGetParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty);
 
 		}//END main:
-		return sReturn;
+		return objReturn;
 	}
 	
-	public String getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
-		String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			check:{
 				if(objFileIniConfig==null){
@@ -1596,39 +1596,39 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 
-			sReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty);
+			objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty);
 		}//END main:
-		return sReturn;
+		return objReturn;
 	}
 	
-	private String KernelGetParameterByProgramAlias_AliasSystemLookup_(String sDebugKey, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
-		String sReturn = new String("");
+	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_AliasSystemLookup_(String sDebugKey, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			if(!StringZZZ.isEmpty(sSection)){			
 				//a) mit Systemkey
 				String sDebugKeyUsed = sDebugKey + ".a";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + " Suche nach einem Alias in '"+ this.getSystemKey() + "' für das Programm oder die Section '" + sSection + "'");			
-				String sSectionUsed = objFileIniConfig.getPropertyValue(this.getSystemKey(), sSection);			
+				String sSectionUsed = objFileIniConfig.getPropertyValue(this.getSystemKey(), sSection).getValue();			
 				if(!StringZZZ.isEmpty(sSectionUsed)){
-					sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSectionUsed, sProperty, objFileIniConfig);
-					if(!StringZZZ.isEmpty(sReturn)) break main;
+					objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSectionUsed, sProperty, objFileIniConfig);
+					if(objReturn.hasAnyValue()) break main;
 				}
 				
 				//b) mit ApplicationKey
 				sDebugKeyUsed = sDebugKey + ".b";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + " Suche nach einem Alias in '"+ this.getApplicationKey() + "' für das Programm oder die Section '" + sSection + "'");
-				sSectionUsed = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sSection);			
+				sSectionUsed = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sSection).getValue();			
 				if(!StringZZZ.isEmpty(sSectionUsed)){
-					sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
-					if(!StringZZZ.isEmpty(sReturn)) break main;				
+					objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
+					if(objReturn.hasAnyValue()) break main;				
 				}
 			}
 		}//End main:
-		return sReturn;
+		return objReturn;
 	}
 	
-	private String KernelGetParameterByProgramAlias_SystemLookup_(String sDebugKey, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
-		String sReturn = new String("");
+	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_SystemLookup_(String sDebugKey, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			if(!StringZZZ.isEmpty(sSection)){
 				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
@@ -1641,8 +1641,8 @@ MeinTestParameter=blablaErgebnis
 
 				String sSectionUsed = this.getSystemKey() + "!" + sSection;			
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + "Suche in '"+ sSectionUsed + "' nach dem Wert '" + sProperty + "'");			
-				sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSectionUsed, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;
+				objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSectionUsed, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue()) break main;
 					
 				//b) mit ApplicationKey
 				sSearchCounter = objCounter.getStringNext();
@@ -1651,28 +1651,28 @@ MeinTestParameter=blablaErgebnis
 				
 				sSectionUsed = this.getApplicationKey() + "!" + sSection;			
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + "Suche in '"+ sSectionUsed + "' nach dem Wert '" + sProperty + "'");			
-				sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSectionUsed, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;	
+				objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSectionUsed, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue()) break main;	
 
 				}//if(!StringZZZ.isEmpty(sSection)){									
 		}//End main:
-		return sReturn;
+		return objReturn;
 	}
 	
-	private String KernelGetParameterByProgramAlias_DirectLookup_(String sDebugKey, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
-		String sReturn = new String("");
+	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_DirectLookup_(String sDebugKey, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined()+ sDebugKey + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
 			if(!StringZZZ.isEmpty(sSection)){
 			    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
 				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sDebugKey + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
+					objReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+					if(objReturn.hasAnyValue()){
+						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sDebugKey + "Value gefunden für Property '" + sProperty + "'='" + objReturn.getValue() + "'");
 						break main;
 					}else{							
-						if(objFileIniConfig.getValueRaw()!=null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sDebugKey + "Convertierten Value gefunden für Property '" + sProperty + "");
+						if(objReturn.isExpression()){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sDebugKey + "Convertierten Value gefunden für Property '" + sProperty + "' von " + objReturn.getRaw());
 							//TODO GOON: DAS IST KEINE ALTERNATIVE sReturn = objFileIniConfig.getValueRaw();
 							//           STATT DESSEN EIN bFoundAny Flag setzen und erfolgreich mit dem NULL Wert weiterarbeiten.
 							break main;
@@ -1685,11 +1685,11 @@ MeinTestParameter=blablaErgebnis
 				}
 			}
 		}//End main:
-		return sReturn;
+		return objReturn;
 	}
 	
-	private String KernelGetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
-		String sReturn = new String("");
+	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		
 		main:{		
 			//###################################################################################################			
@@ -1734,8 +1734,8 @@ MeinTestParameter=blablaErgebnis
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				if(sProgramOrSection!=this.getSystemKey() && sProgramOrSection!=this.getApplicationKey()){ //Damit keine doppelte Abfrage gemacht wird.
 					sSection=sProgramOrSection;
-					sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
-					if(!StringZZZ.isEmpty(sReturn))break main;
+					objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
+					if(objReturn.hasAnyValue()) break main;
 				}
 			}
 			
@@ -1746,16 +1746,16 @@ MeinTestParameter=blablaErgebnis
 								
 			if(sMainSection!=this.getSystemKey() && sMainSection!=this.getApplicationKey()){ //Damit keine doppelte Abfrage gemacht wird.
 				sSection=sMainSection+"!"+this.getSystemNumber();	//Immer zuerst die ggfs. überschreibende Variante
-				sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;
+				objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue()) break main;	
 				
 				sSearchCounter = objCounter.getStringNext();
 				sDebugKey = "(0b)"+ sSearchCounter;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 				
 				sSection=sMainSection;
-				sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;								
+				objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue()) break main;									
 			}
 			
 			//B2.  Suche Werte ohne Programm, nur nach Systemkey
@@ -1764,8 +1764,8 @@ MeinTestParameter=blablaErgebnis
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined()+ sSearchCounter);
 			if(sMainSection!=this.getSystemKey()){
 				sSection = this.getSystemKey();
-				sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;				
+				objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue()) break main;				
 			}
 			
 			//B3.  Suche Werte ohne Programm, nur nach Applicationkey
@@ -1774,16 +1774,16 @@ MeinTestParameter=blablaErgebnis
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
 			if(sMainSection!=this.getApplicationKey()){
 				sSection = this.getApplicationKey();
-				sReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;
+				objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue()) break main;	
 			}
 			
 			//###############################################################################
 			// Als Program definierte Werte (Merke: Die direkt definierten Werte - d.h. ohne Application/Systemkey - wurden schon eher abgefragt)
 			//###############################################################################
 			//3a. Für den Fall, dass der Programname direkt angegeben wurde. Suche ihn im System-/Applicationkey
-			sReturn = KernelGetParameterByProgramAlias_SystemLookup_("(2a)", sProgramOrSection, sProperty, objFileIniConfig);
-			if(!StringZZZ.isEmpty(sReturn))break main;
+			objReturn = KernelGetParameterByProgramAlias_SystemLookup_("(2a)", sProgramOrSection, sProperty, objFileIniConfig);
+			if(objReturn.hasAnyValue()) break main;	
 			
 			//3b. Ermittle ggfs. den Aliasnamen eines Programms immer aus der verwendeten "MainSection" des Systems			
 			String sSystemNumber= this.getSystemNumber();
@@ -1793,8 +1793,8 @@ MeinTestParameter=blablaErgebnis
 			Iterator<String> itAlias = listasAlias.iterator();
 			while(itAlias.hasNext()){					
 				sSection = itAlias.next(); //der verwendete Programalias zur Suche nach der  Section
-				sReturn = KernelGetParameterByProgramAlias_SystemLookup_("(2b)", sSection, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;								
+				objReturn = KernelGetParameterByProgramAlias_SystemLookup_("(2b)", sSection, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue()) break main;							
 			}//end while
 			if(listasAlias.size()==0){
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ "Keine möglichen Programaliaswerte gefunden. Suche direkter nach der Property.'" + sProperty +"'.");
@@ -1807,8 +1807,8 @@ MeinTestParameter=blablaErgebnis
 			sDebugKey = "(3)"+ sSearchCounter;
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				sSection =  sProgramOrSection;	
-				sReturn = KernelGetParameterByProgramAlias_AliasSystemLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
-				if(!StringZZZ.isEmpty(sReturn))break main;						
+				objReturn = KernelGetParameterByProgramAlias_AliasSystemLookup_(sDebugKey, sSection, sProperty, objFileIniConfig);
+				if(objReturn.hasAnyValue())break main;							
 			}//if(!StringZZZ.isEmpty(sProgramOrSection)){
 		
 			
@@ -2058,7 +2058,7 @@ MeinTestParameter=blablaErgebnis
 				throw ez;
 				}//END main:
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": ENDE DIESER SUCHE +-+-+-+-+-+-+-+-+-+-+-+-+-");
-				return sReturn;
+				return objReturn;
 	}
 	
 	private boolean KernelSetParameterByProgramAlias_DirectLookup_(String sDebugKey, String sSection, String sProperty, String sValue, boolean bSetNew, boolean bFlagDelete, boolean bFlagSaveImmidiate, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
@@ -2143,7 +2143,7 @@ MeinTestParameter=blablaErgebnis
 			//a) mit Systemkey
 			String sDebugKeyUsed = sDebugKey + ".a";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + " Suche nach einem Alias in '"+ this.getSystemKey() + "' für das Programm oder die Section '" + sProgramOrSection + "'");			
-			String sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);			
+			String sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection).getValue();			
 			if(!StringZZZ.isEmpty(sSection)){
 				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn) break main;
@@ -2189,7 +2189,7 @@ MeinTestParameter=blablaErgebnis
 			//b) mit Applicationkey
 			sDebugKeyUsed = sDebugKey + ".b";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + " Suche nach einem Alias in '"+ this.getApplicationKey() + "' für das Programm oder die Section '" + sProgramOrSection + "'");
-			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);			
+			sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection).getValue();			
 			if(!StringZZZ.isEmpty(sSection)){
 				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sDebugKey, sSection, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn) break main;
@@ -2678,8 +2678,8 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 12.01.2007 09:10:41
 	 */
-	public String getParameterByProgramAlias(String sModuleAndProgramAndSection, String sProperty) throws ExceptionZZZ{
-		String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(String sModuleAndProgramAndSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			check:{
 				if(StringZZZ.isEmpty(sModuleAndProgramAndSection)){
@@ -2690,9 +2690,9 @@ MeinTestParameter=blablaErgebnis
 		
 			//FGL TODO GOON 20180909: Müsste nicht eigentlich der ApplicationKey als ModulAlias verwendet werden?		
 			//sReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sModuleAndProgramAndSection, sProperty); 
-		sReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection, sProperty);
+			objReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection, sProperty);
 		}//END main:
-		return sReturn;
+		return objReturn;
 	}
 	
 	
@@ -2840,7 +2840,7 @@ MeinTestParameter=blablaErgebnis
 	public File getParameterFileByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
 		File fileReturn = null;
 		main:{
-			String sFileName = this.getParameterByModuleAlias(sModule, sProperty);
+			String sFileName = this.getParameterByModuleAlias(sModule, sProperty).getValue();
 			if(!StringZZZ.isEmpty(sFileName)){
 				
 				//20190220: Da die Datei im Classpath vermutet wird, ist der absolute Pfad ein anderer. Diesen suchen.
@@ -2870,7 +2870,7 @@ MeinTestParameter=blablaErgebnis
 	public File getParameterFileByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
 		File fileReturn = null;
 		main:{
-			String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty);
+			String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue(); 
 			if(!StringZZZ.isEmpty(sFileName)){
 				
 				//20190220: Da die Datei im Classpath vermutet wird, ist der absolute Pfad ein anderer. Diesen suchen.
@@ -2990,7 +2990,7 @@ MeinTestParameter=blablaErgebnis
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - Section als Grundlage gefunden '" + sSection + "'.");
 
 					//Nun in der Section nach dem Wert für das Programm suchen.
-					sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed);
+					sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed).getValue(); 
 					if(!StringZZZ.isEmpty(sProgramAliasUsed)){
 						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - in der Section als Grundlage '" + sSection + "' Wert für '" + sProgramNameUsed + "' gefunden = '" + sProgramAliasUsed +"'.");
 						listasReturn.add(sProgramAliasUsed+"!"+sSystemNumber);//Den gefundenen Programalias zuerst um die SystemNumber erweitern.					
@@ -3010,7 +3010,7 @@ MeinTestParameter=blablaErgebnis
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (b.b) - Section als Grundlage gefunden '" + sSection + "'.");
 
 					//Nun in der Section nach dem Wert für das Programm suchen.
-					sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed);
+					sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed).getValue(); 
 					if(!StringZZZ.isEmpty(sProgramAliasUsed)){					
 						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (b.b) - in der Section als Grundlage '" + sSection + "' Wert für '" + sProgramNameUsed + "' gefunden = '" + sProgramAliasUsed +"'.");
 						listasReturn.add(sProgramAliasUsed+"!"+sSystemNumber);//Den gefundenen Programalias zuerst um die SystemNumber erweitern.					
@@ -3031,7 +3031,7 @@ MeinTestParameter=blablaErgebnis
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Section als Grundlage gefunden '" + sSection + "'.");
 
 					//Nun in der Section nach dem Wert für das Programm suchen.
-					sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed);
+					sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed).getValue(); 
 					if(!StringZZZ.isEmpty(sProgramAliasUsed)){
 						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Value gefunden für Property '" + sProgramNameUsed + "'='" + sProgramAliasUsed + "'");
 						
@@ -3057,7 +3057,7 @@ MeinTestParameter=blablaErgebnis
 						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Section als Grundlage gefunden '" + sSection + "'.");
 					
 						//Nun in der Section nach dem Wert für das Programm suchen.
-						sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed);
+						sProgramAliasUsed = objFileIniConfig.getPropertyValue(sSection, sProgramNameUsed).getValue(); 
 						if(!StringZZZ.isEmpty(sProgramAliasUsed)){							
 							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Value gefunden für Property '" + sProgramNameUsed + "'='" + sProgramAliasUsed + "'");
 							
@@ -3816,8 +3816,8 @@ MeinTestParameter=blablaErgebnis
 						
 						//!!! Falls da nix konfiguriert ist, darf kein Fehler geworfen werden !!!
 						try{
-							sDirectoryLog = this.getParameterByProgramAlias(this.getContextUsed().getModuleName(), this.getContextUsed().getProgramName(), "KernelLogPath");
-							sFileLog = this.getParameterByProgramAlias(this.getContextUsed().getModuleName(), this.getContextUsed().getProgramName(), "KernelLogFile");
+							sDirectoryLog = this.getParameterByProgramAlias(this.getContextUsed().getModuleName(), this.getContextUsed().getProgramName(), "KernelLogPath").getValue(); 
+							sFileLog = this.getParameterByProgramAlias(this.getContextUsed().getModuleName(), this.getContextUsed().getProgramName(), "KernelLogFile").getValue(); 
 						}catch (ExceptionZZZ ez){
 							//nix tun, Ausgabe nur zum Test/Debug
 							System.out.println(ez.getDetailAllLast());

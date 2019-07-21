@@ -21,9 +21,11 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
 import basic.zKernel.IKernelExpressionIniZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -56,10 +58,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	private File objFile;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
 	
+	//20190718: Durch KernelConfigEntryZZZ - Klasse soll es nicht mehr notwendig sein die Werte in KernelFileIniZZZ zu speichern.
 	//20190226: Problem: Wenn ein Wert (z.B. <z:Empty/> konvertiert wurde, weiss das die aufrufenden Methode nicht.
 	//                   Um auf solch einen Wert reagieren zu können (also im genannten Beispiel zu merken: Der Wert ist absichtlich leer) das Flag und den 
-	private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
-	private String sValueRaw=null;
+	//private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
+	//private String sValueRaw=null;
 
 	public KernelFileIniZZZ() throws ExceptionZZZ{
 		super();
@@ -266,8 +269,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	 @return the string entry at the section for the specified property
 	 @throws ExceptionZZZ
 	 */
-	public String getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
-		String sReturn = null;
+	public IKernelConfigSectionEntryZZZ getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			String sSection; String sProperty;
 			check:{
@@ -292,13 +295,17 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 			String sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
 			if(sReturnRaw==null) break main;
-			sReturn = sReturnRaw; //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objReturn.setSection(sSection);
+			objReturn.setProperty(sProperty);
+			objReturn.setRaw(sReturnRaw);
+			objReturn.setValue(sReturnRaw);
 			
 			//20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
+			String sReturnFormula = sReturnRaw;
 			if(this.getFlag("useFormula")==true){
-				boolean bExpressionFound=false;
-				while(KernelExpressionIniSolverZZZ.isExpression(sReturnRaw)){//Schrittweise die Formel auflösen.
-					bExpressionFound= true;
+				boolean bAnyFormula = false;
+				while(KernelExpressionIniSolverZZZ.isExpression(sReturnFormula)){//Schrittweise die Formel auflösen.
+					bAnyFormula = true;
 					
 					//20180711: Die Flags an das neue Objekt der Klasse vererben
 					KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
@@ -307,28 +314,36 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 					//20180726: Damit mit Variablen gerechnet werden kann, hier die Hashmap übergeben.
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
-					sReturn = ex.compute(sReturnRaw);
-					if(!StringZZZ.equals(sReturn,sReturnRaw)){
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
-					}
-					sReturnRaw=sReturn;//Sonst Endlosschleife.
+					String stemp = ex.compute(sReturnFormula);
+					if(!StringZZZ.equals(stemp,sReturnFormula)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sReturnFormula + "' nach '" + stemp +"'");
+					}					
+					sReturnFormula=stemp;//Sonst Endlosschleife.
 				}
+				if(bAnyFormula){
+					objReturn.setValue(sReturnFormula);
+				}
+				objReturn.isFormula(bAnyFormula);
+				
 				
 				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
-				if(!bExpressionFound){
-					sReturn = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);
-					if(!StringZZZ.equals(sReturn,sReturnRaw)){
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
-						this.setValueRaw(sReturnRaw);
-					}else{
-						this.setValueRaw(null);
-					}
+				//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
+				boolean bAnyExpression = false;
+				String sReturnExpression = sReturnFormula;
+				String stemp = KernelExpressionIniConverterZZZ.getAsString(sReturnExpression);
+				if(!StringZZZ.equals(stemp,sReturnExpression)){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnExpression + "' nach '" + stemp +"'");
+					bAnyExpression = true;						
+				}					
+				if(bAnyExpression){
+					objReturn.setValue(sReturnExpression);
 				}
-			}
-			
-			
+				objReturn.isExpression(bAnyExpression);
+			}else{
+				objReturn.setValue(sReturnRaw);
+			}						
 		}//end main:
-		return sReturn;
+		return objReturn;
 	}//end function
 	
 	/** Returns a Value by SystemNr. If this doesn´t exists the global value will be returned (value without a SystemNr).
@@ -340,8 +355,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	* lindhauer; 09.01.2008 07:15:18
 	 * @throws ExceptionZZZ 
 	 */
-	public String getPropertyValueSystemNrSearched(String sSectionIn, String sPropertyIn, String sSystemNrIn) throws ExceptionZZZ{
-		String sReturn = new String("");
+	public IKernelConfigSectionEntryZZZ getPropertyValueSystemNrSearched(String sSectionIn, String sPropertyIn, String sSystemNrIn) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		
 		main:{
 			String sSection; String sProperty; String sSystemNr;
@@ -372,15 +387,17 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 					
 					//1. Versuch: Suche die spezielle Nr.
 					String stemp = sSection + "!" + sSystemNr;
-					sReturn = this.getPropertyValue(stemp, sProperty);
-			}// .isSectionWithSystemNrAny(...)
-	
-			//2. Versuch: Suche die globale Nr, d.h. wie angegeben
-			if(StringZZZ.isEmpty(sReturn)){
-				sReturn = this.getPropertyValue(sSection, sProperty);
-			}
+					objReturn = this.getPropertyValue(stemp, sProperty);
+					
+					//2. Versuch: Suche die globale Nr, d.h. wie angegeben
+					if(!objReturn.hasAnyValue()){
+						objReturn = this.getPropertyValue(sSection, sProperty);
+					}
+				}else{
+					objReturn = this.getPropertyValue(sSection, sProperty);
+				}// .isSectionWithSystemNrAny(...)				
 		}//end main:
-		return sReturn;
+		return objReturn;
 	}
 	
 	/** String[], All values of a section.
@@ -415,7 +432,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			
 			ArrayList listaString = new ArrayList(saPropertyAll.length);
 			for(int icount=0; icount < saPropertyAll.length; icount++){
-				String stemp = this.getPropertyValue(sSection, saPropertyAll[icount]);
+				 IKernelConfigSectionEntryZZZ objEntry = this.getPropertyValue(sSection, saPropertyAll[icount]);
+				 String stemp = objEntry.getValue();
 				listaString.add(icount, stemp);
 			}
 			
@@ -920,22 +938,22 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	//### Interface
 	//aus IKernelExpressionIniConverterUserZZZ
 	//Damit eine aufrufende Methode mitbekommt, ob ein Converter den Wert verändert hat.
-	public boolean isValueConverted(){
-		return this.bValueConverted;
-	}
-	public void isValueConverted(boolean bStatus){
-		this.bValueConverted=bStatus;
-	}
-	public String getValueRaw(){
-		return this.sValueRaw;
-	}
-	public void setValueRaw(String sValueRaw){
-		this.sValueRaw = sValueRaw;
-		if(this.sValueRaw!=null){
-			this.isValueConverted(true);
-		}else{
-			this.isValueConverted(false);
-		}
-	}
+//	public boolean isValueConverted(){
+//		return this.bValueConverted;
+//	}
+//	public void isValueConverted(boolean bStatus){
+//		this.bValueConverted=bStatus;
+//	}
+//	public String getValueRaw(){
+//		return this.sValueRaw;
+//	}
+//	public void setValueRaw(String sValueRaw){
+//		this.sValueRaw = sValueRaw;
+//		if(this.sValueRaw!=null){
+//			this.isValueConverted(true);
+//		}else{
+//			this.isValueConverted(false);
+//		}
+//	}
 	
 }

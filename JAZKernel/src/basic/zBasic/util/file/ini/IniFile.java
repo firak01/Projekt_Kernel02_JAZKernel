@@ -598,18 +598,20 @@ protected boolean addSection(String sSection){
    */
    public String getValue(String subject, String variable)
    {
-      int subjectIndex = subjects.indexOfString(subject,true);
-      if (subjectIndex == -1)
-         return "";
-      ExtendedVectorZZZ valVector = (ExtendedVectorZZZ)(values.elementAt(subjectIndex));
-      ExtendedVectorZZZ varVector = (ExtendedVectorZZZ)(variables.elementAt(subjectIndex));
-      int valueIndex = varVector.indexOfString(variable,true) ;
-      if (valueIndex != -1)
-      {
-         return (String)(valVector.elementAt(valueIndex));
-      }
-      //FGL 20061025 Falls der Wert nicht konfiguriert ist, null zurückgeben
-      return null;
+	   String sReturn = null;       //FGL 20061025 Falls der Wert nicht konfiguriert ist, null zurückgeben
+	   main:{
+	      int subjectIndex = subjects.indexOfString(subject,true);
+	      if (subjectIndex == -1) break main;	       //20190720: null zurückgeben, wenn die Section nicht definiert ist return "";
+	      
+	      ExtendedVectorZZZ valVector = (ExtendedVectorZZZ)(values.elementAt(subjectIndex));
+	      ExtendedVectorZZZ varVector = (ExtendedVectorZZZ)(variables.elementAt(subjectIndex));
+	      int valueIndex = varVector.indexOfString(variable,true) ;
+	      if (valueIndex != -1)
+	      {
+	         sReturn = (String)(valVector.elementAt(valueIndex));
+	      }
+	   }//end main:
+      return sReturn;
    }
 
 

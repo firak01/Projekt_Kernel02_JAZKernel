@@ -279,7 +279,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 										//saving the last ini-file																			
 										if(objIni != null){
 											//get a possible new filename from the ini-file
-												  sFileEnd = objIni.getPropertyValue("ZSystem","Filename");
+												  sFileEnd = objIni.getPropertyValue("ZSystem","Filename").getValue();
 												  if(sFileEnd==null){
 													sFileEnd = FileEasyZZZ.NameEndChange(sFileCSV, "ini"); 
 												  }else if(sFileEnd.equals("")){
@@ -313,7 +313,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 								    
 								     
 									//get the section
-									sSectionBase = this.getActionConfiguration().getPropertyValue("CC",sColumntemp);
+									sSectionBase = this.getActionConfiguration().getPropertyValue("CC",sColumntemp).getValue();
 									if(sSectionBase !=null){
 										if(sSectionBase.equals("")==false){																					
 												
@@ -342,7 +342,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 													stemp= intColumn.toString();
 														
 													//get the property (use the section base, no section counter appended)
-													sProperty =  this.getActionConfiguration().getPropertyValue(sSectionBase, stemp);
+													sProperty =  this.getActionConfiguration().getPropertyValue(sSectionBase, stemp).getValue();
 	
 													if(sProperty!=null){
 														if(sProperty.equals("")){ break;} //Schleife verlassen
@@ -378,7 +378,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 														
 						
 								//to save the last data-sets to the last ini-File
-								  sFileEnd = objIni.getPropertyValue("ZSystem","Filename");
+								  sFileEnd = objIni.getPropertyValue("ZSystem","Filename").getValue();
 								  if(sFileEnd==null){
 									sFileEnd = FileEasyZZZ.NameEndChange(sFileCSV, "ini"); 
 								  }else if(sFileEnd.equals("")){

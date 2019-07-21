@@ -4,8 +4,11 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private String sSection = null;
 	private String sProperty = null;
 	private String sRaw = null;
-	private String sValue = null;
+	private String sValue = new String("");
+	private boolean bSectionExists = false;
 	private boolean bAnyValue = false;
+	private boolean bExpression = false;
+	private boolean bFormula = false;
 	
 	@Override
 	public String getSection() {
@@ -14,7 +17,12 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 
 	@Override
 	public void setSection(String sSection) {
-		this.sSection=sSection;
+		if(sSection!=null){
+			this.sSection=sSection;
+			this.sectionExists(true);
+		}else{
+			this.sectionExists(false);
+		}
 	}
 
 	@Override
@@ -44,7 +52,12 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 
 	@Override
 	public void setValue(String sValue) {
-		this.sValue = sValue;
+		if(sValue!=null){
+			this.sValue = sValue;
+			this.hasAnyValue(true);
+		}else{
+			this.hasAnyValue(false);
+		}
 	}
 
 	@Override
@@ -55,6 +68,36 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void hasAnyValue(boolean bAnyValue) {
 		this.bAnyValue=bAnyValue;
+	}
+	
+	@Override
+	public boolean isExpression(){
+		return this.bExpression;
+	}
+	
+	@Override
+	public void isExpression(boolean bExpression){
+		this.bExpression = bExpression;
+	}
+
+	@Override
+	public boolean isFormula() {
+		return this.bFormula;
+	}
+
+	@Override
+	public void isFormula(boolean bFormula) {
+		this.bFormula = bFormula;
+	}
+	
+	@Override
+	public boolean sectionExists() {
+		return this.bSectionExists;
+	}
+
+	@Override
+	public void sectionExists(boolean bSectionExists) {
+		this.bSectionExists = bSectionExists;
 	}
 
 }

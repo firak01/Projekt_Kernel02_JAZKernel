@@ -113,7 +113,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		
 			
 			//Kernel + Log - Object dem TestFixture hinzuf�gen. Siehe test.zzzKernel.KernelZZZTest
-			objKernel = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String)null);	
+			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);	
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			 			
 			//### Die TestObjecte
@@ -154,12 +154,12 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		try {
 			//Anwenden der ersten Formel
 			objFileIniTest.setFlag("useformula", false); //Ansonsten wird der Wert sofort ausgerechnet
-			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1");
+			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			String sValue = objExpressionSolver.compute(sExpression);
 			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1");
+			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals(sValue, sExpression);
 			
 			//Anwenden der Formel, so da� ein localer Wert vor einem globalen Wert gefunden wird.
@@ -170,23 +170,23 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("Testentry2=Testvalue global. This should not be found");
 			*/
 			objFileIniTest.setFlag("useformula", false);//Ansonsten wird der Wert sofort ausgerechnet
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2");
+			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
 			sValue = objExpressionSolver.compute(sExpression);
 			assertEquals("Der dynamische Wert2 ist 'Testvalue local to be found'. FGL rulez.", sValue);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2");
+			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
 			assertEquals(sValue, sExpression);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Damit noch KEINE MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
 			sValue="Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertEquals(sValue, sExpression);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1").getValue();
 			sValue="Der dynamische Wert ist '23'. FGL rulez."; //Also der Wert ohne einen Operator auszurechnen.
 			assertTrue("Im Ergebnis wurde eine zusammengesetzte '23' erwartet.", StringZZZ.contains(sExpression, "23"));
 			assertEquals(sValue, sExpression);
@@ -194,7 +194,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
 			sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
 			assertEquals(sValue, sExpression);
@@ -202,7 +202,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält.
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula1");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula1").getValue();
 			sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
 			assertEquals(sValue, sExpression);
@@ -210,7 +210,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula2");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula2").getValue();
 			sValue="Der dynamische Wert2 ist '8'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '8' erwartet.", StringZZZ.contains(sExpression, "8"));
 			assertEquals(sValue, sExpression);
@@ -218,7 +218,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.... diesmal 2 Path Anweisungen!!!
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula3");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula3").getValue();
 			sValue="Der dynamische Wert3 ist '20'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '20' erwartet.", StringZZZ.contains(sExpression, "20"));
 			assertEquals(sValue, sExpression);
@@ -226,7 +226,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//+++ Die Tags brauchen nicht exact zu sein hinsichtlich der Groß-/Kleinescheibung. Außerdem wird der '+' Operator getestet.
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath NOT EXACTMATCH", "Formula1");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath NOT EXACTMATCH", "Formula1").getValue();
 			sValue="Der dynamische Wert ist '13'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '13' erwartet.", StringZZZ.contains(sExpression, "13"));
 			assertEquals(sValue, sExpression);
@@ -234,7 +234,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//+++ Teste das Rechnen mit Float-Werten
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath FLOAT", "Formula1");
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath FLOAT", "Formula1").getValue();
 			sValue="Der dynamische Wert ist '20.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
 			assertEquals(sValue, sExpression);
@@ -242,7 +242,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//+++ Teste Übergaebe von Variablen
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Math ist keine Voraussetzung für Variablen
-			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1"); //Wenn noch keine Formelvariable gesetzt ist...
+			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
 			sValue="Der dynamische Wert ist 'myTestVariableString'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete 'myTestVariableString' erwartet.", StringZZZ.contains(sExpression, "myTestVariableString"));
 			assertEquals(sValue, sExpression);
@@ -255,7 +255,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			hmVariable.put("myTestVariableString","Test erfolgreich");
 			hmVariable.put("myTestVariableFloat","2.5");
 			objFileIniTest.setHashMapVariable(hmVariable);
-			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula2"); //Wenn noch keine Formelvariable gesetzt ist...
+			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula2").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
 			sValue="Der dynamische Wert ist '10.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '10.0' erwartet.", StringZZZ.contains(sExpression, "10.0"));
 			assertEquals(sValue, sExpression);
@@ -265,7 +265,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			hmVariable02.put("myTestVariableString","Test erfolgreich");
 			hmVariable02.put("myTestVariableFloat","3.0");
 			objFileIniTest.setHashMapVariable(hmVariable02);
-			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula3"); //Wenn noch keine Formelvariable gesetzt ist...
+			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula3").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
 			sValue="Der dynamische Wert ist '12.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '12.0' erwartet.", StringZZZ.contains(sExpression, "12.0"));
 			assertEquals(sValue, sExpression);

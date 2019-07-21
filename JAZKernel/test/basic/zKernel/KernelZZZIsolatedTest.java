@@ -17,16 +17,16 @@ public class KernelZZZIsolatedTest extends TestCase {
 	 * Die Main Methode von AllTest kann ausgef�hrt werden.
 	 */
 	
-	private KernelZZZ objKernelFGL;
-	private KernelZZZ objKernelTest;
+	private IKernelZZZ objKernelFGL;
+	private IKernelZZZ objKernelTest;
 	
 	
 	protected void setUp(){
 		try {			
-			//TODO: Diese Datei zuvor per Programm erstellen
+			//TODO: Dies ini-Datei zuvor per Programm erstellen
 			objKernelFGL = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
 			
-			//TODO: Diese Datei zuvor per Programm erstellen
+			//TODO: Die ini-Datei zuvor per Programm erstellen
 			objKernelTest = new KernelZZZ("TEST", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
 	
 		} catch (ExceptionZZZ e) {
@@ -34,7 +34,7 @@ public class KernelZZZIsolatedTest extends TestCase {
 		}		
 	}
 	
-	private void removeLogFile(KernelZZZ objKerneltemp){
+	private void removeLogFile(IKernelZZZ objKerneltemp){
 		//		Log-File entfernen
 		if(objKerneltemp != null){
 			LogZZZ objLog = objKerneltemp.getLogObject();
@@ -63,10 +63,16 @@ sClassname = StringZZZ.replace(sClassname, "Isolated", "");
 
 
 public void testGetModuleAliasAll(){
+	//Merke: Mache folgendes, damit kein Unterschied vom Isolated zum normalen Test besteht.
+	String sClassname = this.getClass().getName(); 
+	sClassname = StringZZZ.replace(sClassname, "Isolated", "");
 	
 }
 
 public void testConstructorConfigObject(){
+	//Merke: Mache folgendes, damit kein Unterschied vom Isolated zum normalen Test besteht.
+	String sClassname = this.getClass().getName(); 
+	sClassname = StringZZZ.replace(sClassname, "Isolated", "");
 	
 }
 

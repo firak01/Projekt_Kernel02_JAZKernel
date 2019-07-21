@@ -54,7 +54,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 								//Dadurch dass sofort das IniZZZ-Object verwendet wird, braucht man es nur einmal einzulesen
 								
 								//Auslesen des Zielverzeichnisses 																				
-								sDirTarget= objKernel.getParameterByProgramAlias(objFileConfigIniExport,this.getProgramAliasCurrent(),"TargetPath");
+								sDirTarget= objKernel.getParameterByProgramAlias(objFileConfigIniExport,this.getProgramAliasCurrent(),"TargetPath").getValue();
 								if(sDirTarget==null){
 									stemp = "'Target Directory'";
 								   ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
@@ -76,8 +76,8 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 						 FileCsvZZZ objCsv= new FileCsvZZZ(objKernel, objLog, sBaseDirectory, sFileExpanded,null);
 
 						//!!! die configuration (quasi das mapping von csv-->ini)
-						String sDirConfigAction = objKernel.getParameterByProgramAlias(objFileConfigIniExport, this.getProgramAliasCurrent(), "ActionPath");
-						String sFileConfigAction = objKernel.getParameterByProgramAlias(objFileConfigIniExport, this.getProgramAliasCurrent(), "ActionFilenameBasis");
+						String sDirConfigAction = objKernel.getParameterByProgramAlias(objFileConfigIniExport, this.getProgramAliasCurrent(), "ActionPath").getValue();
+						String sFileConfigAction = objKernel.getParameterByProgramAlias(objFileConfigIniExport, this.getProgramAliasCurrent(), "ActionFilenameBasis").getValue();
 						FileIniZZZ objFileConfigIniAction = new FileIniZZZ(objKernel, sDirConfigAction,sFileConfigAction,(String[])null);
 						
 						//!!! die Transformation starten

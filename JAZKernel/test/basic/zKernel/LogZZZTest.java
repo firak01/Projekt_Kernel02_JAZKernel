@@ -16,7 +16,7 @@ public class LogZZZTest extends TestCase{
 	protected void setUp(){
 		try {
 			//objKernelTest = new KernelZZZ("FGL", "01", "c:\\fglKernel\\KernelTest", "ZKernelConfigKernel_test.ini",(String)null);
-			objKernelTest = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String)null);
+			objKernelTest = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
 			
 		/* damit wird logObject null und der test darf nicht weitergehen
 			String[] a = {"init"};
@@ -42,7 +42,7 @@ public class LogZZZTest extends TestCase{
 		
 			//20080106 Ein Log kann auch speziell auf Programmebene definiert werden
 			KernelContextZZZ objContext = new KernelContextZZZ(this.getClass());
-			KernelZZZ objKernelContext =new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini", objContext, (String)null);
+			KernelZZZ objKernelContext =new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini", objContext, (String)null);
 			
 			LogZZZ objLogContext = objKernelContext.getLogObject();
 			assertEquals("c:\\fglKernel\\KernelLog", objLogContext.getDirectory());

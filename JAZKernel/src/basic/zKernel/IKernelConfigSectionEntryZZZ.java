@@ -27,5 +27,14 @@ public interface IKernelConfigSectionEntryZZZ {
 	public void setValue(String sValue);
 	
 	public boolean hasAnyValue();
-	public void hasAnyValue(boolean bAnyValue);
+	abstract void hasAnyValue(boolean bAnyValue);
+	
+	public boolean isFormula();
+	abstract void isFormula(boolean bIsFormula);
+	
+	public boolean isExpression();
+	abstract void isExpression(boolean bIsExpression);	
+	
+	public boolean sectionExists();
+	abstract void sectionExists(boolean bSectionExists);
 }

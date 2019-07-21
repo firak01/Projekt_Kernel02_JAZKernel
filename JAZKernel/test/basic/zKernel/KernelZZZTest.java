@@ -266,7 +266,7 @@ public void testGetModuleAll(){
 public void testParameter(){
 	try{
 		// Dieses Modul soll existieren
-		String stemp = objKernelTest.getParameter("TestGetParameter");
+		String stemp = objKernelTest.getParameter("TestGetParameter").getValue();
 		assertEquals("Test erfolgreich", stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -280,7 +280,7 @@ public void testParameter(){
 public void testParameterByModuleAlias(){
 	try{
 		// In der Modulkonfiguration soll dieser Eintrag existieren
-		String stemp = objKernelFGL.getParameterByModuleAlias("TestModule", "testProgramName");
+		String stemp = objKernelFGL.getParameterByModuleAlias("TestModule", "testProgramName").getValue();
 		assertEquals("Expected 'TestProg' as a value of property 'testProgramName'. Configured in the 'TestModule' of the Application 'FGL'", "TestProg" , stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -290,7 +290,7 @@ public void testParameterByModuleAlias(){
 public void testParameterByProgramAlias(){
 	try{
 		//A) Übergabe als directe Section testen
-		String stemp = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramProperty" ); 
+		String stemp = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramProperty" ).getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -298,7 +298,7 @@ public void testParameterByProgramAlias(){
 		
 	try{
 		//B) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
-		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty");
+		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty").getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp2);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -306,7 +306,7 @@ public void testParameterByProgramAlias(){
 	
 	try{
 		//B2) 20061021 dieser Wert ist dann global definiert
-		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "TestProgramName", "testGlobalProperty");
+		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "TestProgramName", "testGlobalProperty").getValue(); 
 		assertEquals("testWert global", stemp2);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -318,7 +318,7 @@ public void testParameterByProgramAlias(){
 		String sToSet1 = new String("testwert section");
 		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01!TestProg", "testProgramProperty2", sToSet1);
 		
-		String stemp3 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty2"); //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
+		String stemp3 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty2").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty2'", sToSet1, stemp3);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -329,7 +329,7 @@ public void testParameterByProgramAlias(){
 		String sToSet2 = new String("testwert progname");
 		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01!TestProg", "testProgramProperty3", sToSet2);
 		
-		String stemp4 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty3"); //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
+		String stemp4 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty3").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty3'", sToSet2, stemp4);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -342,7 +342,7 @@ public void testParameterByProgramAlias(){
 		String sClassname = this.getClass().getName(); 
 		objKernelFGL.setParameterByProgramAlias(sClassname, "testProgramProperty4", sToSet3);
 		
-		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4");
+		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty4'", sToSet3, stemp5);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -388,7 +388,7 @@ public void testGetParameterFromClass(){
 	
 	try{
 		//a) Parameter per Methode holen
-		String stemp = objKernelFGL.getParameterByModuleAlias(sClassname, "TestParameter1FromClass");
+		String stemp = objKernelFGL.getParameterByModuleAlias(sClassname, "TestParameter1FromClass").getValue();
 		assertEquals("TestValue1FromClass", stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -397,7 +397,7 @@ public void testGetParameterFromClass(){
 	try{
 		//b) Parameter aus dem Programm (das als Alias so aussieht wie der Klassenname) holen
 		String sAgentSection = objKernelFGL.getSystemKey() + "!" + sClassname;
-		String stemp2 = objKernelFGL.getParameterByProgramAlias(sClassname, sAgentSection, "TestParameter2FromClass");
+		String stemp2 = objKernelFGL.getParameterByProgramAlias(sClassname, sAgentSection, "TestParameter2FromClass").getValue(); 
 		assertEquals("TestValue2FromClass", stemp2);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -405,7 +405,7 @@ public void testGetParameterFromClass(){
 		
 	try{
 		//b2) Nun soll der Klassenname ohne den Systemkey funktionieren
-		String stemp4 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass");
+		String stemp4 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass").getValue(); 
 		assertEquals("AnotherTestValue2FromClass", stemp4);   //Womit der Eintrag ein anderer wäre als der mit "SystemKey" - spezifizierte
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -414,7 +414,7 @@ public void testGetParameterFromClass(){
 	try{		
 		//b3) Ein Parameterwert, der in der "speziellen" Section nicht gefunden werden kann, soll in der "allgemeinen" Section (d.h. der Section ohne die SystemNumber) gefunden werden
 		//TestParameterGlobal1FromClass=FürAlleSystemNumberGültig
-		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameterGlobal1FromClass");
+		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameterGlobal1FromClass").getValue(); 
 		assertEquals("FürAlleSystemNumberGültig", stemp5); //Merke: Damit Java per Default als UTF-8 encodiert ist. Auf Systemebene setzen: -Dfile.encoding=UTF-8
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -423,7 +423,7 @@ public void testGetParameterFromClass(){
 	try{
 		//C) "Verkürzte Parameter"
 		//Wenn der Modulname und der Programname gleich sind, dann soll es m�glich sein ganz einfach nur den Programnamen und die gesuchte Property zu �bergeben
-		String stemp6 = objKernelFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated");
+		String stemp6 = objKernelFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated").getValue(); 
 		assertEquals("TestValue1Abbreviated", stemp6);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());

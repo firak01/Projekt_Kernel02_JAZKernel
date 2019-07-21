@@ -11,7 +11,7 @@ public class KernelUseObjectZZZTest extends TestCase {
 	protected void setUp() throws Exception {
 		try {			
 			//TODO: Diese Datei zuvor per Programm erstellen
-			objKernelFGL = new KernelZZZ("FGL", "01", "", "ZKernelConfigKernel_test.ini",(String[]) null);
+			objKernelFGL = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
 			
 			//Das eigentliche Testobjekt
 			objKernelUserTest = new KernelUseObjectZZZ(objKernelFGL);
@@ -26,11 +26,11 @@ public class KernelUseObjectZZZTest extends TestCase {
 	 */
 	public void testFlagHandling(){
 		//try{			
-			//Testen, ob das Setzen der Flags m�glich ist.
+			//Testen, ob das Setzen der Flags möglich ist.
 			assertTrue("Setting the Flag 'DEBUG' failed.", objKernelUserTest.setFlag("debug", true));			
 			assertTrue("Receiving the previously set Flag 'DEBUG' failed.", objKernelUserTest.getFlag("debug"));
 			
-			//Testen, ob das Setzen der Flags m�glich ist.
+			//Testen, ob das Setzen der Flags möglich ist.
 			assertTrue("Setting the Flag 'DEBUG' failed.", objKernelUserTest.setFlag("debug", false));			
 			assertFalse("Receiving the previously set Flag 'DEBUG' failed.", objKernelUserTest.getFlag("debug"));
 			
