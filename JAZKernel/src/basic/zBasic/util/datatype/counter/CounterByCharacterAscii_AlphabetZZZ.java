@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 03.03.2019, 12:49:22
  * 
  */
-public class CounterByCharacterAscii_AlphabetZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ{
+public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlphanumericZZZ> extends AbstractCounterByCharacterAsciiAlphanumericZZZ{
 	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
 	public static int iPOSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
@@ -285,14 +285,31 @@ public static boolean isValidCharacter(char c){
 	}	
 	
 	// ++++ Aus Interface
-			public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
-				if(this.objCounterStrategy==null){
-					ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
-					this.objCounterStrategy = objCounterStrategy;
-				}
-				return this.objCounterStrategy;
-			}
-			public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-				this.objCounterStrategy = objCounterStrategy;
-			}			
+//			public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
+//				if(this.objCounterStrategy==null){
+//					ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+//					this.objCounterStrategy = objCounterStrategy;
+//				}
+//				return this.objCounterStrategy;
+//			}
+	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+		this.objCounterStrategy = objCounterStrategy;
+	}		
+	
+	//nach Umstellung auf Generics
+	public T getCounterStrategyObject(){
+		if(this.objCounterStrategy==null){
+			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+			this.objCounterStrategy = objCounterStrategy;
+		}
+		return (T) this.objCounterStrategy;
+	}
+//	public <T> void setCounterStrategyObject(T objCounterStrategy){
+//		this.objCounterStrategy = (ICounterStrategyAlphanumericZZZ) objCounterStrategy;
+//	}				
+	@Override
+	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
+		// TODO Auto-generated method stub
+		
+	}
 }//End class

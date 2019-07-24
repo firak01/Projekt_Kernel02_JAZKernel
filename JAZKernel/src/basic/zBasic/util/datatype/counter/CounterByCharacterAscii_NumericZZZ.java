@@ -7,7 +7,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharacterAsciiNumericZZZ{
+public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumericZZZ> extends AbstractCounterByCharacterAsciiNumericZZZ{
 	private ICounterStrategyNumericZZZ objCounterStrategy;
 	
 	public static int iPOSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
@@ -235,15 +235,28 @@ public class CounterByCharacterAscii_NumericZZZ  extends AbstractCounterByCharac
 	}	
 	
 	// ++++ Aus Interface
-	public ICounterStrategyNumericZZZ getCounterStrategyObject(){
+//	public ICounterStrategyNumericZZZ getCounterStrategyObject(){
+//		if(this.objCounterStrategy==null){
+//			ICounterStrategyNumericZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
+//			this.objCounterStrategy = objCounterStrategy;
+//		}
+//		return this.objCounterStrategy;
+//	}
+	//nach Umstellung auf Generics
+	public T getCounterStrategyObject(){
 		if(this.objCounterStrategy==null){
 			ICounterStrategyNumericZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
-			this.objCounterStrategy = objCounterStrategy;
+			this.objCounterStrategy = (ICounterStrategyNumericZZZ) objCounterStrategy;
 		}
-		return this.objCounterStrategy;
+		return (T) this.objCounterStrategy;
 	}
+			
 	public void setCounterStrategyObject(ICounterStrategyNumericZZZ objCounterStrategy){
 		this.objCounterStrategy = objCounterStrategy;
+	}
+	@Override
+	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
+		this.objCounterStrategy = (ICounterStrategyNumericZZZ) objCounterStrategy;
 	}
 	
 	

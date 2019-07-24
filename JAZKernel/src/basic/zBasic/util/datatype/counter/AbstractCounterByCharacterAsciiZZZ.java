@@ -26,15 +26,15 @@ import basic.zBasic.IConstantZZZ;
 		      anfang++;
 		
 		    }
+ * @param <T>
 
  * 
  */
-public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ, ICounterStringZZZ{
+public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrategyZZZ> implements IConstantZZZ, ICounterStringZZZ<T>{
 	private String sSuffix="";
 	private String sPrefix="";	
 	private int iValueCurrent=-1; //Die berechneten Strings nicht speichern. Nur den Wert. Die Umrechnung wird dann den jeweiligen Static-Methoden überlassen.
-	
-	
+		
 	public AbstractCounterByCharacterAsciiZZZ(){		
 	}
 	
@@ -157,6 +157,15 @@ public abstract class AbstractCounterByCharacterAsciiZZZ implements IConstantZZZ
 	}
 	//+++
 		
-
+	//###### AUS Interface - Zugriff über CounterStrategy Objekt
+	@Override
+	public boolean isRightAligned(){
+		return this.getCounterStrategyObject().isRightAligned();
+	}
+	
+	@Override
+	public void isRightAligned(boolean bValue){
+		this.getCounterStrategyObject().isRightAligned(bValue);
+	}
 	
 }

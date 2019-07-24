@@ -480,16 +480,18 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 				
 		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)
 		//#############################################
-		//### A) Erzeugen per "Type"
+		//### A) Erzeugen per "Type" und CASTE anschliessend.
 		//#############################################
-		ICounterStringZZZ objCounterString = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCounter_TYPE_ALPHANUMERIC_SIGNIFICANT);
-
+		ICounterStringZZZ objCounterStringTemp = objCounterFactory.createCounter(CounterByCharacterAsciiFactoryZZZ.iCounter_TYPE_ALPHANUMERIC_SIGNIFICANT);
+		ICounterAlphanumericSignificantZZZ objCounterString = (ICounterAlphanumericSignificantZZZ) objCounterStringTemp;
+		
 		//Untenstehende Tests und Ergebnisse müssen auch mit der Factory und den daraus generierten Counter-Objekten erfüllbar sein.
 	    //A) OHNE STRATEGY-OBJEKT ZU ÜBERGEBEN
 		itemp = objCounterString.getValueCurrent();
 		stemp = objCounterString.current();
 		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals("Fehler beim Ermitteln des Default Stringwerts", "0001", stemp);	
 		
 		itempold = itemp;
 		stemp = objCounterString.next();
@@ -497,11 +499,13 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
 		itemp = objCounterString.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		assertEquals("Fehler beim Ermitteln des Default nächsten Stringwerts", "0002", stemp);
 		
 		itemp = 42;
+		objCounterString.setCounterLength(2);//!!!! Damit keine führende 0 vorhanden ist.
 		stemp = objCounterString.change(itemp);
 		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
-		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);		
 		assertEquals("Fehler beim Setzen des Counters", "16", stemp);
 		
 		itempold = itemp;
@@ -513,17 +517,17 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		//B) Mache Alphabet-Counter per Factory und Signifikant Strategy
 		//####################################
 		CounterStrategyAlphanumericSignificantZZZ objCounterStrategyAlphaNumSig = new CounterStrategyAlphanumericSignificantZZZ();
-		ICounterAlphanumericSignificantZZZ objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig);
-		
+		ICounterAlphanumericSignificantZZZ<CounterStrategyAlphanumericSignificantZZZ> objCounterAlphaS = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig);
+		objCounterAlphaS.setCounterLength(5);//setze die Counterlänge fest. Dann kann man die erwartetetn Stringwerte vergleichen.
 		///+++++++++++++++++++++++++++++++
 		//Hole Initialwert
 		itemp = objCounterAlphaS.getValueCurrent();
-		stemp = objCounterAlphaS.current();
-		assertEquals("1",stemp);
+		stemp = objCounterAlphaS.current();		
+		assertEquals("00001",stemp);
 		
 		itempold = itemp;
 		stemp = objCounterAlphaS.next();
-		assertEquals("2",stemp);
+		assertEquals("00002",stemp);
 		itemp = objCounterAlphaS.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
@@ -538,16 +542,52 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			//Erwartetete Exception
 		} 
 		
-		//... ungültige significant  Syntax (vorne keine "0")
+		//+++++++++++++++++++++++++++++++++++	
 		try{
 			stemp = "0ZA";
+			//... gültige significant Syntax (String beginnt zwar mit "0", wird aber von Rechts analysiert)
+			objCounterAlphaS.isRightAligned(true);
 			objCounterAlphaS.setValueCurrent(stemp);
-			fail("Method should have thrown an exception for the string '"+stemp+"'");
+			//NEIN, jetzt wird die führende 0 einfach weggetrimmt... also kein Fehler fail("Method should have thrown an exception for the string '"+stemp+"'");
+			int itempRight = objCounterAlphaS.getValueCurrent();
+			assertTrue(itempRight==14220);
+			
+			//Gegenprobe
+			objCounterAlphaS.setValueCurrent(itempRight);
+			String sCheck = objCounterAlphaS.getString(); 
+			assertEquals(stemp+"00", sCheck); //Merke: oben wurde als Zählerlänge 5 eingestellt. Wenn der Zähler rechts-ausgelegt ist, kommen die Füllzeichen nach rechts.
+			
+			//Gegen-Gegenprobe
+			objCounterAlphaS.setValueCurrent(sCheck);
+			//NEIN, jetzt wird die führende 0 einfach weggetrimmt... also kein Fehler fail("Method should have thrown an exception for the string '"+stemp+"'");
+			int itempCheckRight = objCounterAlphaS.getValueCurrent();
+			assertTrue(itempCheckRight==itempRight);
+			
+			
+			//... eigentlich ungültige significant Syntax (vorne keine "0" erlaubt), aber... die werden nun intern weggetrimmt.
+			objCounterAlphaS.isRightAligned(false);
+			objCounterAlphaS.setValueCurrent(stemp);
+			int itempLeft = objCounterAlphaS.getValueCurrent();
+			assertTrue(itempLeft==1270);
+
+			//Gegenprobe
+			objCounterAlphaS.setValueCurrent(itempLeft);
+			sCheck = objCounterAlphaS.getString();
+			assertEquals("00"+stemp, sCheck);//Merke: oben wurde als Zählerlänge 5 eingestellt. Wenn der Zähler links-ausgelegt ist, kommen die Füllzeichen nach links.
+			
+			//Gegen-Gegenprobe
+			objCounterAlphaS.setValueCurrent(sCheck);
+			//NEIN, jetzt wird die führende 0 einfach weggetrimmt... also kein Fehler fail("Method should have thrown an exception for the string '"+stemp+"'");
+			int itempCheckLeft = objCounterAlphaS.getValueCurrent();
+			assertTrue(itempCheckLeft==itempLeft);
+			
+			//+++++++++++++
+			assertFalse("Bei diesem String '" + stemp + "' müssen links-/rechtsbündig andere Werte herauskommen.",itempRight==itempLeft);
 		} catch (ExceptionZZZ ez) {
-			//Erwartetete Exception
+			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 		
-		//... setze die Zählerlänge auf 3 fest... Dann wird das gültig
+		//... setze die Zählerlänge auf 3 fest... Dann wird das gültig ..mit Zählerlänge lassen sich auch führende "0" en wiederherstellen.
 		try{
 			objCounterAlphaS.setCounterLength(3);
 			
@@ -569,16 +609,18 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 		
-		//... aber das bleibt ungültig
+		//... aber das bleibt ungültig, wenn Zählerlänge 3 und rechstbündig, d.h. nur rechts dürften beliebig viele Füllzeichen sein.
 		try{
 			stemp = "00ZA";
+			objCounterAlphaS.isRightAligned(true);
 			objCounterAlphaS.setValueCurrent(stemp);
-			fail("Method should have thrown an exception for the string '"+stemp+"'");
+			fail("Method should have thrown an exception for the string '"+stemp+"' with counterlength smaller and rightaligned.");
 		} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
 		} 
 		
 		//... und das wird nun im einfachen Vergleich ungültig
+		objCounterAlphaS.isRightAligned(false);
 		stemp = "ZA";
 		objCounterAlphaS.setValueCurrent(stemp);
 		itemp = objCounterAlphaS.getValueCurrent();
@@ -595,19 +637,19 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		
 		//###########################################
 		//... gültige significant Syntax
-		objCounterAlphaS.setCounterLength(0);
-		
+		objCounterAlphaS.setCounterLength(0); //dann wird wieder der DEFAULT Wert genommen.
+				
 		stemp = "ZA";
+		stempold = stemp;
 		objCounterAlphaS.setValueCurrent(stemp);
 		itemp = objCounterAlphaS.getValueCurrent();
-		
-		stempold = stemp;
-		stemp = objCounterAlphaS.current();
-		assertEquals(stemp, stempold);
-			
 		itempold = itemp;
+		
+		stemp = objCounterAlphaS.current();
+		assertEquals("00"+stempold, stemp);//wg. Defaultlänge von 4 und Couner ist linksbündig: Dann kommen passende Füllzeichen links.
+		
 		stemp = objCounterAlphaS.next();
-		assertEquals("ZB",stemp);
+		assertEquals("00ZB",stemp);
 		itemp = objCounterAlphaS.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
@@ -618,18 +660,18 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		ICounterAlphanumericSignificantZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,10);
 		itemp = objCounterAlphaS2.getValueCurrent();
 		stemp = objCounterAlphaS2.current();
-		assertEquals("A",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
+		assertEquals("000A",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
 		
 		itempold = itemp;
 		stemp = objCounterAlphaS2.next();
-		assertEquals("B",stemp);
+		assertEquals("000B",stemp);
 		itemp = objCounterAlphaS2.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		objCounterStrategyAlphaNumSig.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 		itempold = itemp;
 		stemp = objCounterAlphaS2.next();
-		assertEquals("c",stemp);
+		assertEquals("000c",stemp);
 		itemp = objCounterAlphaS2.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
@@ -638,18 +680,18 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		ICounterAlphanumericSignificantZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"9");
 		itemp = objCounterAlphaS3.getValueCurrent();
 		stemp = objCounterAlphaS3.current();
-		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
+		assertEquals("0009",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
 		
 		itempold = itemp;
 		stemp = objCounterAlphaS3.next();
-		assertEquals("A",stemp);
+		assertEquals("000A",stemp);
 		itemp = objCounterAlphaS3.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		objCounterStrategyAlphaNumSig.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 		itempold = itemp;
 		stemp = objCounterAlphaS3.next();
-		assertEquals("b",stemp);
+		assertEquals("000b",stemp);
 		itemp = objCounterAlphaS3.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
@@ -658,21 +700,31 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		ICounterAlphanumericSignificantZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"ZZA");
 		itemp = objCounterAlphaS4.getValueCurrent();
 		stemp = objCounterAlphaS4.current();
-		assertEquals("ZZA",stemp);
+		assertEquals("0ZZA",stemp);
 		
 		itempold = itemp;
 		stemp = objCounterAlphaS4.next();
-		assertEquals("ZZB",stemp);
+		assertEquals("0ZZB",stemp);
 		itemp = objCounterAlphaS4.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		objCounterStrategyAlphaNumSig.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 		itempold = itemp;
 		stemp = objCounterAlphaS4.next();
-		assertEquals("zzc",stemp);
+		assertEquals("0zzc",stemp);
 		itemp = objCounterAlphaS4.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
+		//Ohne Füllzeichen
+		itempold = itemp;
+		objCounterAlphaS4.setCounterFilling((Character) null);
+		
+		//TODO GOON 20190724: OHNE FÜLLWERT MUSS ES AUCH GEHEN
+		1111111
+		stemp = objCounterAlphaS4.next();
+		assertEquals("zzd",stemp);
+		itemp = objCounterAlphaS4.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());

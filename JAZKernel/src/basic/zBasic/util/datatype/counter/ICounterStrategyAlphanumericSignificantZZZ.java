@@ -12,5 +12,6 @@ public interface ICounterStrategyAlphanumericSignificantZZZ extends ICounterStra
 	
 	public char getCounterFilling();
 	public void setCounterFilling(char cFilling);
+	public void setCounterFilling(Character charFilling);
 	public void setCounterFilling(String sFilling) throws ExceptionZZZ;
 }

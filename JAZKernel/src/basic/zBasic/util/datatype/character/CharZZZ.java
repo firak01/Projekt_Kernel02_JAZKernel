@@ -42,6 +42,11 @@ public class CharZZZ {
 		}
 	}
 	
+	/**
+	 * Merke Char kann nie NULL sein.
+	 * @return
+	 * @author Fritz Lindhauer, 24.07.2019, 09:57:46
+	 */
 	public static char getEmpty(){
 		return Character.MIN_VALUE;
 	}

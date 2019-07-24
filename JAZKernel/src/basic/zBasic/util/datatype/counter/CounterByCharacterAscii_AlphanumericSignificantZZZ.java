@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 03.03.2019, 12:49:22
  * 
  */
-public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends AbstractCounterByStrategyAlphanumericSignificantZZZ{
+public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICounterStrategyAlphanumericSignificantZZZ> extends AbstractCounterByStrategyAlphanumericSignificantZZZ{
 	private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;	
 	
 	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
@@ -65,6 +65,11 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 		this.getCounterStrategyObject().setCounterFilling(cFilling);
 	}
 	
+	@Override
+	public void setCounterFilling(Character charFilling) {
+		this.getCounterStrategyObject().setCounterFilling(charFilling);
+	}
+	
 	//### Aus Interface
 	@Override
 	public String peekChange(int iValue) throws ExceptionZZZ {	
@@ -99,11 +104,13 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 			ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein Wert für das PREPROCESSING übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
-		
-		if(this.getCounterLength()>= 1){
+											
+		//if(this.getCounterLength()>= 1){
 			//Führendes Füllzeichen entfernen, aber nur wenn es innerhalb der maximalen Zählergröße liegt. Merke: Nur dann schlägt ggfs. eine Validierung fehl. Was gewünscht ist!!!
-			int iTimes=this.getCounterLength() - sValue.length();
-			if(iTimes>=0){			
+			//int iTimes=this.getCounterLength() - sValue.length();
+			//(if(iTimes>=0){			
+		
+		//Merke: 20190724: Jetzt immer Füllzeichen wegtrimmen. Damit mann den Zählerwert so wie er ist als erneuten Inputwert verwenden kann.
 				char cToBeStripped = this.getCounterFilling();
 				
 				String sStringToBeStripped = StringZZZ.char2String(cToBeStripped) ;
@@ -114,12 +121,20 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 				}else{
 					sReturn = StringZZZ.stripLeft(sValue, sStringToBeStripped);
 				}
-			}else{
-				sReturn = sValue;
+		//	}else{
+		//		sReturn = sValue;
+		//	}
+		//}else{
+		//	sReturn = sValue;
+		//}
+				
+				
+			//20190724: Wenn der Zähler länger ist alls die Zählerlänge, dann wirf einen Fehler
+			if(sReturn.length()>this.getCounterLength()){
+				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Auch nach dem Entfernen der Füllzeichen im PREPROCESSING ist der String länger als der Zähler erlaubt (" + sReturn.length() + " > " + this.getCounterLength() + ").", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}
-		}else{
-			sReturn = sValue;
-		}
+					
 		
 		}//end main;
 		return sReturn;
@@ -144,9 +159,9 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 				String stemp = StringZZZ.repeat(sString, iTimes);
 				
 				if(this.getCounterStrategyObject().isRightAligned()){
-					sReturn = sValue + stemp;
+					sReturn = sValue + stemp; //Wenn der Zähler links ausgerichtet ist, kommen die Füllzeichen nach rechts!
 				}else{
-					sReturn = stemp + sValue;
+					sReturn = stemp + sValue; //Wenn der Zähler rechts ausgerichtet ist, kommen die Füllzeichen nach links!
 				}			
 				 
 			}else{
@@ -162,17 +177,31 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ extends Abstract
 	
 	//###################
 	// ++++ Aus Interface
-	@Override
-	public ICounterStrategyAlphanumericSignificantZZZ getCounterStrategyObject(){
-	if(this.objCounterStrategy==null){
-		ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
-		this.objCounterStrategy = objCounterStrategy;
+//	@Override
+//	public ICounterStrategyAlphanumericSignificantZZZ getCounterStrategyObject(){
+//	if(this.objCounterStrategy==null){
+//		ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+//		this.objCounterStrategy = objCounterStrategy;
+//	}
+//	return this.objCounterStrategy;
+//	}
+	//nach Umstellung auf Generics
+	public T getCounterStrategyObject(){
+		if(this.objCounterStrategy==null){
+			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+			this.objCounterStrategy = objCounterStrategy;
+		}
+		return (T) this.objCounterStrategy;
 	}
-	return this.objCounterStrategy;
-	}
+	
 	@Override
 	public void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
 		this.objCounterStrategy = objCounterStrategy;	
+	}
+	
+	@Override
+	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
+		this.objCounterStrategy = (ICounterStrategyAlphanumericSignificantZZZ) objCounterStrategy;
 	}
 	
 	

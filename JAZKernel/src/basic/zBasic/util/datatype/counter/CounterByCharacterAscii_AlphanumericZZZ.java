@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 03.03.2019, 12:49:22
  * 
  */
-public class CounterByCharacterAscii_AlphanumericZZZ extends AbstractCounterByCharacterAsciiAlphanumericZZZ {
+public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategyAlphanumericZZZ> extends AbstractCounterByCharacterAsciiAlphanumericZZZ {
 	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
 	
 	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
@@ -331,15 +331,28 @@ public static boolean isValidCharacter(String s){
 	}	
 	
 	// ++++ Aus Interface
-			public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
-				if(this.objCounterStrategy==null){
-					ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
-					this.objCounterStrategy = objCounterStrategy;
-				}
-				return this.objCounterStrategy;
-			}
-			public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+//			public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
+//				if(this.objCounterStrategy==null){
+//					ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+//					this.objCounterStrategy = objCounterStrategy;
+//				}
+//				return this.objCounterStrategy;
+//			}
+	
+	//nach Umstellung auf Generics
+		public T getCounterStrategyObject(){
+			if(this.objCounterStrategy==null){
+				ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 				this.objCounterStrategy = objCounterStrategy;
 			}
-
+			return (T) this.objCounterStrategy;
+		}
+		
+		public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+			this.objCounterStrategy = objCounterStrategy;
+		}
+		@Override
+		public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
+			this.objCounterStrategy = (ICounterStrategyAlphanumericZZZ) objCounterStrategy;
+		}
 }

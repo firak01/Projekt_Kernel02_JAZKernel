@@ -838,6 +838,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 					}
 					
 					stemp = "B9Z1";
+					objCounterStrategy.isLowercase(false);
 					btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
 					if(!btemp){
 						ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Fehler beim String '" + stemp + "'", KernelZZZ.iERROR_RUNTIME, CounterByCharacterAscii_AlphanumericZZZTest.class, ReflectCodeZZZ.getMethodCurrentName());

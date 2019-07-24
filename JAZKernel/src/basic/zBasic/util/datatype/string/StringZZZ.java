@@ -2297,7 +2297,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			boolean bGoon = false;
 			while(!bGoon){
 				if(sReturn.endsWith(sStringToBeStripped) && sReturn.length()>=2){
-					sReturn = StringZZZ.leftback(sString, sStringToBeStripped.length());
+					sReturn = StringZZZ.leftback(sReturn, sStringToBeStripped.length());
 				}else{
 					bGoon = true;
 				}

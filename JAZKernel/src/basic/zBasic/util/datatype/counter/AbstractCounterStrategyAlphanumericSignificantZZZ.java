@@ -48,7 +48,7 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 	//+++ Aus Interfaces
 		@Override
 		public int getCounterLength() {
-			if(this.iCounterLength==0){
+			if(this.iCounterLength<=0){
 				this.iCounterLength= this.iCounterLengthDefault;
 			}
 			return this.iCounterLength;
@@ -56,8 +56,8 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 
 		@Override
 		public void setCounterLength(int iLength) throws ExceptionZZZ {
-			if(iLength<=0){				
-				ExceptionZZZ ez = new ExceptionZZZ("Ungültiger Wert für CounterLength (= "+iLength+")",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+			if(iLength<0){				
+				ExceptionZZZ ez = new ExceptionZZZ("Ungültiger Wert für CounterLength (= "+iLength+"). Merke: Bei 0 wird später wieder die Defaultlänge genommen.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			this.iCounterLength=iLength;
@@ -73,7 +73,20 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 
 		@Override
 		public void setCounterFilling(char cFilling) {
-			this.cCounterFilling=cFilling;
+			if(CharZZZ.isEmpty(cFilling)){
+				this.cCounterFilling=Character.MIN_VALUE;
+			}else{
+				this.cCounterFilling=cFilling;
+			}
+		}
+		
+		@Override
+		public void setCounterFilling(Character charFilling) {
+			if(charFilling==null){
+				this.cCounterFilling=Character.MIN_VALUE;
+			}else{
+				this.setCounterFilling(charFilling.charValue());				
+			}
 		}
 		
 		@Override

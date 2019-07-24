@@ -2,7 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface ICounterStringZZZ {
+public interface ICounterStringZZZ <T extends ICounterStrategyZZZ>{
 	public String toString(); //ein technischer debug String.
 	
 	public int getValueCurrent(); //der gespeicherte wert. Merke: Die Buchstabenkombinationen werden nicht gespeichert, sondern immer errechnet.
@@ -31,5 +31,17 @@ public interface ICounterStringZZZ {
 	//20190610: Vor- und Nacharbeiten des Wertsetzens. Hier können ggfs. Füllzeichen entfernt oder hinzugenommen werden.
 	public String preValueSetting(String sValue)  throws ExceptionZZZ;
 	public String postValueSetting(String sValue) throws ExceptionZZZ;	
-
+	
+	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
+			//darum diese Strategy-Objekte nur in den "Endklassen" verwenden.
+	//TODO GOON: Mache das generisch, so dass andere Counter nicht eine weitere Methode haben müssen, 
+	//           um ihr Strategy-Objekt zu holen.
+	//public ICounterStrategyZZZ getCounterStrategyObject();	
+	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
+	public T getCounterStrategyObject();
+	//public void setCounterStrategyObject(T objCounterStrategy);
+	
+	//Entsprechend des Strategy-Objekts. Nur so kann man hier direkter die Eigenschaft ansprechen.
+	public boolean isRightAligned();
+	public void isRightAligned(boolean bValue);
 }
