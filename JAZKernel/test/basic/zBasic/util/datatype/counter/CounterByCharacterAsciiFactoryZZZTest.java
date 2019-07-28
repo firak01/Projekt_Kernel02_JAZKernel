@@ -344,6 +344,92 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 
 }
 
+public void testGetStringAlphanumericForNumber_FactoryBasedStrategy_UsingDefault(){
+
+	try {	
+		int itemp; int itempold; String stemp; String stempold; boolean btemp;
+		
+		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)
+		
+		//####################################
+		//A) Mache Alphabet-Counter per Factory und nur der Typenangabe. 
+		//    Herauskommen soll ein Counter mit Multiple Strategy als Default-Einstellung
+		//####################################		
+		//CounterStrategyAlphanumericMultipleZZZ objCounterStrategyAlphaNumM = new CounterStrategyAlphanumericMultipleZZZ();
+		ICounterAlphanumericZZZ objCounterAlphaM = (ICounterAlphanumericZZZ) objCounterFactory.createCounter(ICounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHANUMERIC);
+		
+		///+++++++++++++++++++++++++++++++
+		//Hole Initialwert
+		itemp = objCounterAlphaM.getValueCurrent();
+		stemp = objCounterAlphaM.current();
+		assertEquals("0",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
+		assertEquals("1",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		//+++++++++++++++++++++++++++++++++	
+		//Setze den Counter durch String-Wert
+		//...ungültige Zeichen
+		try{
+			stemp = "+";
+			objCounterAlphaM.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... ungültige multiple  Syntax
+		try{
+			stemp = "90";
+			objCounterAlphaM.setValueCurrent(stemp);
+			fail("Method should have thrown an exception for the string '"+stemp+"'");
+		} catch (ExceptionZZZ ez) {
+			//Erwartetete Exception
+		} 
+		
+		//... gültige multiple Syntax
+		stemp = "00";
+		objCounterAlphaM.setValueCurrent(stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		
+		stempold = stemp;
+		stemp = objCounterAlphaM.current();
+		assertEquals(stemp, stempold);
+			
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
+		assertEquals("11",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		
+		
+		
+		//Arbeite mit dem Strategy-Objekt, das intern vorhanden ist.
+		stempold = "AA";
+		objCounterAlphaM.setValueCurrent(stempold);
+		ICounterStrategyAlphanumericZZZ objCounterStrategyAlphaNumM = objCounterAlphaM.getCounterStrategyObject();
+		objCounterStrategyAlphaNumM.isLowercase(true);
+		stemp = objCounterAlphaM.getString();
+		assertFalse("Fehler bei Manipulation des Counters über das Strategy Objekt", stempold.equals(stemp));
+		assertEquals("aa",stemp);
+
+		//Arbeite direkt mit dem Counter-Objekt, das über das Interface erstellt worden ist.
+		stempold = stemp;
+		objCounterAlphaM.isLowercase(false);
+		stemp = objCounterAlphaM.getString();
+		assertFalse("Fehler bei Manipulation des Counters über das Strategy Objekt", stempold.equals(stemp));
+		assertEquals("AA",stemp);
+		
+		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+
+}
+
 public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 
 	try {	
@@ -657,7 +743,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
-		ICounterAlphanumericSignificantZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,10);
+		ICounterAlphanumericSignificantZZZ<?> objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,10);
 		itemp = objCounterAlphaS2.getValueCurrent();
 		stemp = objCounterAlphaS2.current();
 		assertEquals("000A",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
@@ -668,7 +754,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		itemp = objCounterAlphaS2.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
-		objCounterStrategyAlphaNumSig.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
+		objCounterAlphaS2.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 		itempold = itemp;
 		stemp = objCounterAlphaS2.next();
 		assertEquals("000c",stemp);
@@ -677,7 +763,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		
 		//B) Mit String  Wert
 		objCounterStrategyAlphaNumSig.isLowercase(false);
-		ICounterAlphanumericSignificantZZZ objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"9");
+		ICounterAlphanumericSignificantZZZ<?> objCounterAlphaS3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"9");
 		itemp = objCounterAlphaS3.getValueCurrent();
 		stemp = objCounterAlphaS3.current();
 		assertEquals("0009",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "A" zurückgegeben.
@@ -696,7 +782,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		//+++ Mit einem mehrstelligen String-Wert
-		objCounterStrategyAlphaNumSig.isLowercase(false);
+		objCounterAlphaS3.isLowercase(false);
 		ICounterAlphanumericSignificantZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,"ZZA");
 		itemp = objCounterAlphaS4.getValueCurrent();
 		stemp = objCounterAlphaS4.current();
@@ -715,12 +801,9 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		itemp = objCounterAlphaS4.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
-		//Ohne Füllzeichen
+		//Überabeitetet am 20190724: OHNE FÜLLWERT-ZEICHEN MUSS ES AUCH GEHEN
 		itempold = itemp;
-		objCounterAlphaS4.setCounterFilling((Character) null);
-		
-		//TODO GOON 20190724: OHNE FÜLLWERT MUSS ES AUCH GEHEN
-		1111111
+		objCounterAlphaS4.setCounterFilling((Character) null);				
 		stemp = objCounterAlphaS4.next();
 		assertEquals("zzd",stemp);
 		itemp = objCounterAlphaS4.getValueCurrent();

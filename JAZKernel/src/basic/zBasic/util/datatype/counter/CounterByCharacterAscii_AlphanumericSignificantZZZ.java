@@ -16,7 +16,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICounterStrategyAlphanumericSignificantZZZ> extends AbstractCounterByStrategyAlphanumericSignificantZZZ{
-	private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;	
+	//Als generics in die Abstracte Klasse verschoben private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;
+	T objCounterStrategy;
 	
 	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
 	public static int iPOSITION_MAX=36;
@@ -25,6 +26,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 
 	public CounterByCharacterAscii_AlphanumericSignificantZZZ(){
 		super();	
+		
 	}
 	public CounterByCharacterAscii_AlphanumericSignificantZZZ(int iStartingValue){
 		super(iStartingValue);		
@@ -46,7 +48,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 
 	//### Aus Interface
 	@Override
-	public int getCounterLength() {
+	public int getCounterLength() throws ExceptionZZZ {
 		return this.getCounterStrategyObject().getCounterLength();
 	}
 
@@ -56,46 +58,26 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 	}
 
 	@Override
-	public char getCounterFilling() {		
+	public char getCounterFilling() throws ExceptionZZZ {		
 		return  this.getCounterStrategyObject().getCounterFilling();
 	}
 
 	@Override
-	public void setCounterFilling(char cFilling) {
+	public void setCounterFilling(char cFilling) throws ExceptionZZZ {
 		this.getCounterStrategyObject().setCounterFilling(cFilling);
 	}
 	
 	@Override
-	public void setCounterFilling(Character charFilling) {
+	public void setCounterFilling(Character charFilling) throws ExceptionZZZ {
 		this.getCounterStrategyObject().setCounterFilling(charFilling);
 	}
 	
-	//### Aus Interface
-	@Override
-	public String peekChange(int iValue) throws ExceptionZZZ {	
-		String sReturn = null;
-		main:{
-			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-			sReturn = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(iValue, objCounterStrategy);	
-			
-			//...Nachbearbeitung durchführen
-			sReturn = this.postValueSetting(sReturn);
-		}//end main:
-		return sReturn;
+	@Override 
+	public boolean hasCounterFilling() throws ExceptionZZZ{
+		return this.getCounterStrategyObject().hasCounterFilling();
 	}
 	
-	@Override
-	public void setValueCurrent(String sValue) throws ExceptionZZZ{			
-		main:{
-			//...Vorverarbeitug durchführen
-			sValue = this.preValueSetting(sValue);
-		
-			ICounterStrategyAlphanumericZZZ objCounterStrategy = this.getCounterStrategyObject();
-			int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sValue, objCounterStrategy);
-			this.setValueCurrent(iValue);
-		}//end main:
-	}	
-	
+	//### Aus Interface	
 	@Override
 	public String preValueSetting(String sValue) throws ExceptionZZZ {
 		String sReturn = null;
@@ -147,23 +129,25 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 			ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein Wert für das POSTPROCESSING übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
-		
-		
+				
 		if(this.getCounterLength()>=1){
 			
 			//Führendes Füllzeichen hinzunehmen, aber nur bis zum Zählermaximum bzgl. der Länge.
 			int iTimes=this.getCounterLength() - sValue.length();
-			if(iTimes >= 1){			
-				char cFilling = this.getCounterFilling();
-				String sString = StringZZZ.char2String(cFilling);
-				String stemp = StringZZZ.repeat(sString, iTimes);
-				
-				if(this.getCounterStrategyObject().isRightAligned()){
-					sReturn = sValue + stemp; //Wenn der Zähler links ausgerichtet ist, kommen die Füllzeichen nach rechts!
+			if(iTimes >= 1){		
+				if(this.hasCounterFilling()){
+					char cFilling = this.getCounterFilling();
+					String sString = StringZZZ.char2String(cFilling);
+					String stemp = StringZZZ.repeat(sString, iTimes);
+									
+					if(this.getCounterStrategyObject().isRightAligned()){
+						sReturn = sValue + stemp; //Wenn der Zähler links ausgerichtet ist, kommen die Füllzeichen nach rechts!
+					}else{
+						sReturn = stemp + sValue; //Wenn der Zähler rechts ausgerichtet ist, kommen die Füllzeichen nach links!
+					}
 				}else{
-					sReturn = stemp + sValue; //Wenn der Zähler rechts ausgerichtet ist, kommen die Füllzeichen nach links!
-				}			
-				 
+					sReturn = sValue;
+				}
 			}else{
 				sReturn = sValue;
 			}
@@ -174,6 +158,8 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 		}//end main;
 		return sReturn;
 	}
+	
+	
 	
 	//###################
 	// ++++ Aus Interface
@@ -186,6 +172,10 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 //	return this.objCounterStrategy;
 //	}
 	//nach Umstellung auf Generics
+	
+	/* in abstrakte Klasse verschoben */
+	/*
+	@Override
 	public T getCounterStrategyObject(){
 		if(this.objCounterStrategy==null){
 			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
@@ -203,6 +193,24 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
 		this.objCounterStrategy = (ICounterStrategyAlphanumericSignificantZZZ) objCounterStrategy;
 	}
+	*/
 	
+	//nach Umstellung auf Generics
+	public T getCounterStrategyObject() throws ExceptionZZZ{
+		if(this.objCounterStrategy==null){
+			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+			this.objCounterStrategy = (T) objCounterStrategy;
+		}
+		return (T) this.objCounterStrategy;
+	}
 	
+	@Override
+	public void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) {
+		this.objCounterStrategy = (T) objCounterStrategy;
+	}
+	
+	@Override
+	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
+		this.objCounterStrategy = (T) objCounterStrategy;
+	}
 }

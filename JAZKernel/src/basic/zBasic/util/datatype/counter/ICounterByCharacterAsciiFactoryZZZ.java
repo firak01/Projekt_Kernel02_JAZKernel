@@ -16,7 +16,7 @@ public interface ICounterByCharacterAsciiFactoryZZZ {
 	public ICounterStringZZZ createCounter(int iCounterType, String sStart) throws ExceptionZZZ ;
 	
 	//Alternative Strategy angeben
-	//Merke: Wenn man die Stratety angibt, braucht man nicht den iCounterType auch noch vorzugeben.
+	//Merke: Wenn man die Strategy angibt, braucht man nicht den iCounterType auch noch vorzugeben.
 //	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, ICounterStrategyNumericZZZ objCounterStrategy)  throws ExceptionZZZ;
 //	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, int iStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ ;
 //	public ICounterStringStrategyNumericUserZZZ createCounter(int iCounterType, String sStart, ICounterStrategyNumericZZZ objCounterStrategy) throws ExceptionZZZ ;

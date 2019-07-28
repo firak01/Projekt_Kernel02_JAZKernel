@@ -613,7 +613,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
  public void testGetNumberForStringAlphanumeric_StrategySignificant(){
 	    	
 	    	String stemp; int itemp; int itempLeft; int itempRight; int itempCheck; boolean btemp;
-	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = null;
+	    	try{
+	    		objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+	    	} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    	
 	    	//Ungültige Werte
 	    	try {

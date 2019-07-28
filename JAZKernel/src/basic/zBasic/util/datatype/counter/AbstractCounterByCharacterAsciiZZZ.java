@@ -30,7 +30,9 @@ import basic.zBasic.IConstantZZZ;
 
  * 
  */
-public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrategyZZZ> implements IConstantZZZ, ICounterStringZZZ<T>{
+public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrategyZZZ> implements IConstantZZZ, ICounterStringZZZ{
+	//T objCounterStrategy;
+	
 	private String sSuffix="";
 	private String sPrefix="";	
 	private int iValueCurrent=-1; //Die berechneten Strings nicht speichern. Nur den Wert. Die Umrechnung wird dann den jeweiligen Static-Methoden überlassen.
@@ -159,13 +161,34 @@ public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrat
 		
 	//###### AUS Interface - Zugriff über CounterStrategy Objekt
 	@Override
-	public boolean isRightAligned(){
+	public boolean isRightAligned() throws ExceptionZZZ{
 		return this.getCounterStrategyObject().isRightAligned();
 	}
 	
 	@Override
-	public void isRightAligned(boolean bValue){
+	public void isRightAligned(boolean bValue) throws ExceptionZZZ{
 		this.getCounterStrategyObject().isRightAligned(bValue);
 	}
+	
+
+	// ++++ Aus Interface
+//		public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
+//			if(this.objCounterStrategy==null){
+//				ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();//!!!!!!!!!!!
+//				this.objCounterStrategy = objCounterStrategy;
+//			}
+//			return this.objCounterStrategy;
+//		}
+//		public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+//			this.objCounterStrategy = objCounterStrategy;
+//		}
+		@Override
+		public abstract void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
+		
+		@Override
+		//public abstract void setCounterStrategyObject(T objCounterStrategy);	
+		public abstract T getCounterStrategyObject() throws ExceptionZZZ;
+		
+		
 	
 }

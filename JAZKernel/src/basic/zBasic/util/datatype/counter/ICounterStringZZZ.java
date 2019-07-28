@@ -37,11 +37,12 @@ public interface ICounterStringZZZ <T extends ICounterStrategyZZZ>{
 	//TODO GOON: Mache das generisch, so dass andere Counter nicht eine weitere Methode haben müssen, 
 	//           um ihr Strategy-Objekt zu holen.
 	//public ICounterStrategyZZZ getCounterStrategyObject();	
-	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
-	public T getCounterStrategyObject();
+	//public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
+	public void setCounterStrategyObject(T objCounterStrategy);
+	public T getCounterStrategyObject() throws ExceptionZZZ;
 	//public void setCounterStrategyObject(T objCounterStrategy);
 	
 	//Entsprechend des Strategy-Objekts. Nur so kann man hier direkter die Eigenschaft ansprechen.
-	public boolean isRightAligned();
-	public void isRightAligned(boolean bValue);
+	public boolean isRightAligned() throws ExceptionZZZ;
+	public void isRightAligned(boolean bValue) throws ExceptionZZZ;
 }

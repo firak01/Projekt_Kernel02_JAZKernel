@@ -69,9 +69,13 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	   
 	    
  public void testGetNumberForStringAlphanumeric_StrategySignificant(){
-	    	
 	    	String stemp; int itemp; int itempLeft; int itempRight; int itempCheck; boolean btemp;
-	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = null;
+	    	try{
+	    		objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ();
+	    	} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    	
 	    	//Ungültige Werte
 	    	try {
@@ -258,9 +262,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 					}
 				} catch (ExceptionZZZ ez) {
 					fail("Method throws an exception." + ez.getMessageLast());
-				}
-			
-			
+				}				    						
 	    }
  
 	 private boolean getNumberForStringAlphanumeric_StrategySignificantTest_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric){

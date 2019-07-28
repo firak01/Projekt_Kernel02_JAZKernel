@@ -6,17 +6,26 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericZZZ implements ICounterStrategyAlphanumericSignificantZZZ{		
+public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericZZZ implements ICounterStrategyAlphanumericSignificantZZZ{
+	
+	//TODO: Default Werte gehören eingentlich als Konstante ins Interface.
 	int iStartDefault = 0;
 	int iCounterLengthDefault = 4;
 	char cCounterFillingDefault = "0".toCharArray()[0]; //das sollte dann auch "0" sein, oder?;
-	
+		
 	private int iStart = -1;
 	private int iCounterLength;
-	private char cCounterFilling;
 	
-	public AbstractCounterStrategyAlphanumericSignificantZZZ(){
+	//20190724: Nicht als einzelnen char speichern, sondern als Array.  Hier kann man über die Länge abprüfen, ob ein Zeichen überhaupt gesetzt wurde
+	//https://stackoverflow.com/questions/8534178/how-to-represent-empty-char-in-java-character-class
+	//Ist noch nichts gesetzt wird dann der DefaultCharachter herangezogen	
+	//Ein Leerzeichen, d.h. wenn man die Filling Zeichen verzichten will wäre Character.MIN_VALUE;
+	private char[] caCounterFilling = new char[1]; 	//ist also besser als private char cCounterFilling;
+	
+	public AbstractCounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();
+		this.setCounterLength(iCounterLengthDefault);
+		this.setCounterFilling(cCounterFillingDefault);
 	}
 	public AbstractCounterStrategyAlphanumericSignificantZZZ(int iLength, char cCounterFilling) throws ExceptionZZZ{
 		this();
@@ -45,7 +54,7 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 		this.isLowercase(true);
 	}
 
-	//+++ Aus Interfaces
+	//+++ Aus Interfaces				
 		@Override
 		public int getCounterLength() {
 			if(this.iCounterLength<=0){
@@ -62,28 +71,42 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 			}
 			this.iCounterLength=iLength;
 		}
+		
+		@Override 
+		public boolean hasCounterFilling(){
+			boolean bReturn = false;		
+			if(this.caCounterFilling.length>=1){
+				char cFilling = this.caCounterFilling[0];
+				if(!CharZZZ.isEmpty(cFilling)){
+					bReturn=true; 
+				}				
+			}
+			return bReturn;
+		}
 
 		@Override
 		public char getCounterFilling() {		
-			if(CharZZZ.isEmpty(cCounterFilling)){
-				this.cCounterFilling = this.cCounterFillingDefault;
+			if(this.caCounterFilling.length==0){
+				this.caCounterFilling = new char[1];
+				this.caCounterFilling[0] = this.cCounterFillingDefault;//Merke: Wurde es einmal gesetzt, dann wird nicht wieder das Default-Füllzeichen verwendet werden.
 			}
-			return this.cCounterFilling;			
+			return this.caCounterFilling[0];			
 		}
 
 		@Override
 		public void setCounterFilling(char cFilling) {
 			if(CharZZZ.isEmpty(cFilling)){
-				this.cCounterFilling=Character.MIN_VALUE;
+				this.caCounterFilling[0]=Character.MIN_VALUE;
 			}else{
-				this.cCounterFilling=cFilling;
+				this.caCounterFilling[0]=cFilling;
 			}
 		}
 		
 		@Override
 		public void setCounterFilling(Character charFilling) {
 			if(charFilling==null){
-				this.cCounterFilling=Character.MIN_VALUE;
+				//Dadurch soll verhindert werden, dass NICHT wieder der DefaultCharachter herangezogen wird. Das Array hat dann nämlich eine Länge > 0.				
+				this.setCounterFilling(Character.MIN_VALUE);
 			}else{
 				this.setCounterFilling(charFilling.charValue());				
 			}

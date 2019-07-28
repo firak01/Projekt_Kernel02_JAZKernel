@@ -10,6 +10,7 @@ public interface ICounterStrategyAlphanumericSignificantZZZ extends ICounterStra
 	public int getCounterLength();
 	public void setCounterLength(int iLength) throws ExceptionZZZ;
 	
+	public boolean hasCounterFilling();
 	public char getCounterFilling();
 	public void setCounterFilling(char cFilling);
 	public void setCounterFilling(Character charFilling);

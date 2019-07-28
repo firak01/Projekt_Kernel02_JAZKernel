@@ -8,7 +8,8 @@ import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumericZZZ> extends AbstractCounterByCharacterAsciiNumericZZZ{
-	private ICounterStrategyNumericZZZ objCounterStrategy;
+	//private ICounterStrategyNumericZZZ objCounterStrategy;
+	private T objCounterStrategy;
 	
 	public static int iPOSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
 	public static int iPOSITION_MAX=10;//die 10 Ziffern 0-9 dazu.
@@ -246,17 +247,18 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	public T getCounterStrategyObject(){
 		if(this.objCounterStrategy==null){
 			ICounterStrategyNumericZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
-			this.objCounterStrategy = (ICounterStrategyNumericZZZ) objCounterStrategy;
+			this.objCounterStrategy = (T) objCounterStrategy;
 		}
 		return (T) this.objCounterStrategy;
 	}
 			
+	@Override
 	public void setCounterStrategyObject(ICounterStrategyNumericZZZ objCounterStrategy){
-		this.objCounterStrategy = objCounterStrategy;
+		this.objCounterStrategy = (T) objCounterStrategy;
 	}
 	@Override
 	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
-		this.objCounterStrategy = (ICounterStrategyNumericZZZ) objCounterStrategy;
+		this.objCounterStrategy = (T) objCounterStrategy;
 	}
 	
 	

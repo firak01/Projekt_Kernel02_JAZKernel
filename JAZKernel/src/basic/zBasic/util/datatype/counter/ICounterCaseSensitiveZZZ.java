@@ -1,8 +1,10 @@
 package basic.zBasic.util.datatype.counter;
 
-public interface ICounterCaseSensitiveZZZ {
+import basic.zBasic.ExceptionZZZ;
+
+public interface ICounterCaseSensitiveZZZ extends ICounterStringZZZ{
 	
 		//Entsprechend in ICounterStrategyAlphanumeric
-		public boolean isLowercase();
-		public void isLowercase(boolean bValue);
+		public boolean isLowercase() throws ExceptionZZZ;
+		public void isLowercase(boolean bValue) throws ExceptionZZZ;
 }

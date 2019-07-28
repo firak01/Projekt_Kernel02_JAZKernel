@@ -1,6 +1,6 @@
 package basic.zBasic.util.datatype.counter;
 
-public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ, ICounterCaseSensitiveZZZ{
+public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ<T extends ICounterStrategyAlphanumericZZZ> extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ, ICounterCaseSensitiveZZZ{
 	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
 	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden. 
 	//private ICounterStrategyAlphanumericZZZ objCounterStrategy;
@@ -32,6 +32,12 @@ public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ extends Abstrac
 //	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
 //		this.objCounterStrategy = objCounterStrategy;
 //	}
+	public abstract void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
+	
+	//public abstract void setCounterStrategyObject(T objCounterStrategy);	
+	public abstract T getCounterStrategyObject();
+	
+	
 	
 	@Override
 	public boolean isLowercase() {

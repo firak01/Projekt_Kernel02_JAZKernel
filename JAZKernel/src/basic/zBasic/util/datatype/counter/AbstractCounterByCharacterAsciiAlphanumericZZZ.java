@@ -2,7 +2,7 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ, ICounterCaseSensitiveZZZ{
+public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ <T extends ICounterStrategyAlphanumericZZZ>  extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericZZZ, ICounterCaseSensitiveZZZ{
 	
 	public AbstractCounterByCharacterAsciiAlphanumericZZZ(){
 		super();
@@ -74,4 +74,28 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ extends Abs
 	public abstract String peekChange(int iValue) throws ExceptionZZZ;
 	
 
+	
+	
+	// ++++ Aus Interface
+//	public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
+//		if(this.objCounterStrategy==null){
+//			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();//!!!!!!!!!!!
+//			this.objCounterStrategy = objCounterStrategy;
+//		}
+//		return this.objCounterStrategy;
+//	}
+//	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
+//		this.objCounterStrategy = objCounterStrategy;
+//	}
+	
+	@Override
+	public abstract void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
+	
+	//@Override
+	//public abstract void setCounterStrategyObject(T objCounterStrategy);
+	
+	@Override	
+	public abstract T getCounterStrategyObject();
+	
 }
+

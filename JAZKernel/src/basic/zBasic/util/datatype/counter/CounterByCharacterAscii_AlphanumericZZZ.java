@@ -16,7 +16,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategyAlphanumericZZZ> extends AbstractCounterByCharacterAsciiAlphanumericZZZ {
-	private ICounterStrategyAlphanumericZZZ objCounterStrategy;
+	//private ICounterStrategyAlphanumericZZZ objCounterStrategy;
+	private T objCounterStrategy;
 	
 	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
 	public static int iPOSITION_MAX=36;
@@ -342,17 +343,24 @@ public static boolean isValidCharacter(String s){
 	//nach Umstellung auf Generics
 		public T getCounterStrategyObject(){
 			if(this.objCounterStrategy==null){
-				ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+				//Hier den Konkreten Unter-Counter-Typen erzeugen. 				
+				T objCounterStrategy = this.getCounterStrategyObjectDefault();				
 				this.objCounterStrategy = objCounterStrategy;
 			}
 			return (T) this.objCounterStrategy;
 		}
 		
 		public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-			this.objCounterStrategy = objCounterStrategy;
+			this.objCounterStrategy = (T) objCounterStrategy;
 		}
 		@Override
 		public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
-			this.objCounterStrategy = (ICounterStrategyAlphanumericZZZ) objCounterStrategy;
+			this.objCounterStrategy = (T) objCounterStrategy;
+		}
+		
+		public T getCounterStrategyObjectDefault(){
+			//20190728: Verwende den global als Default eingestellten Typen
+			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+			return (T) objCounterStrategy;
 		}
 }

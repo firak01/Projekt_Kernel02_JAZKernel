@@ -9,7 +9,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericSignificantZZZ{
-	public CounterStrategyAlphanumericSignificantZZZ() {
+	public CounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
