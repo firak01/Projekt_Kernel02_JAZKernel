@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
@@ -23,6 +24,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAsciiFactoryZZZ;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphabetZZZ;
 import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphanumericZZZ;
@@ -869,7 +871,6 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}//end check:
 			
 			//first, get the Kernel-Configuration-INI-File
-			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileConfigKernelAsIni();			
 			sReturn = this.searchPropertyForAlias(objIni, sAlias, sProperty);
 		}//end main:
@@ -897,6 +898,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	
 	private String searchPropertyForAlias(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
 		String sReturn = null;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		String sDebug = "";String sValueFoundAny=null; 
+		
 		main:{
 			check:{
 			if(objIni==null){
@@ -913,17 +917,18 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}	
 		}//end check:
 
-		System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined() + ": Verwende als ini-Datei für die Suche '"+ objIni.getFileName() + "'.");
+		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Verwende als ini-Datei für die Suche '"+ objIni.getFileName() + "'.");
 		
 			//Merke 20190119: Wird ein "empty" Tag in der ZFormel Sprache definiert. Dieser muss hier ausgewertet werden und auch den Abbruch bedingen, wenn er gefunden wird.
 		    //Merke:               Das bedeutet eine Beschleunigung . Ein Leerstring bedingt nämlich, dass weitergesucht wird.
 		    String sValueFound=null;
-		    String sValueFoundAny=null; String sSectionFoundAny=null; String sPropertyUsedAny=null; //Sollte hier irgendwann einmal ein Leerstring gefunden worden sein, wird er zurückgegeben. Null bedeutet nämlich "überhaupt nicht konfiguriert".
+		    String sSectionFoundAny=null; String sPropertyUsedAny=null; //Sollte hier irgendwann einmal ein Leerstring gefunden worden sein, wird er zurückgegeben. Null bedeutet nämlich "überhaupt nicht konfiguriert".
 		    
 			//1. Versuch: Speziell für die Komponente/das Modul definiert
 			String sSection = sAlias;
 			String sPropertyUsed = sProperty;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
 			sValueFound=objIni.getValue(sSection,sPropertyUsed);
 			if(sValueFound!=null && sValueFoundAny==null){
 				sValueFoundAny = sValueFound;
@@ -931,38 +936,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				sPropertyUsedAny = sPropertyUsed; 
 			}
 			if(!StringZZZ.isEmpty(sValueFound)) {		
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-//20190214: Hier zunächst keine Formelauflösung einbauen
-//					boolean bExpressionFound=false;
-//					while(KernelExpressionIniSolverZZZ.isExpression(sReturnRaw)){//Schrittweise die Formel auflösen.
-//						bExpressionFound= true;
-//						
-//						//20180711: Die Flags an das neue Objekt der Klasse vererben
-//						KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
-//						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
-//																
-//						//20180726: Damit mit Variablen gerechnet werden kann, hier die Hashmap übergeben.
-//						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.get.getHashMapVariable();
-//						KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
-//						sReturn = ex.compute(sReturnRaw);
-//						if(!StringZZZ.equals(sReturn,sReturnRaw)){
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sReturnRaw + "' nach '" + sReturn +"'");
-//						}
-//						sReturnRaw=sReturn;//Sonst Endlosschleife.
-//					}
-//					
-//					//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
-//					if(!bExpressionFound){					   
-						sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
-						if(!StringZZZ.equals(sValueFound,sReturnRaw)){
-							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-							this.setValueRaw(sReturnRaw);
-						}else{
-							this.setValueRaw(null);
-						}
-//					}
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						this.setValueRaw(sReturnRaw);
+					}else{
+						this.setValueRaw(null);
+					}
 				}
 				sReturn = sValueFound;
 				break main;
@@ -972,7 +955,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
 			sSection = this.getSystemKey();		
 			sPropertyUsed = sProperty + sAlias;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
 			sValueFound =objIni.getValue(sSection,sPropertyUsed);
 			if(sValueFound!=null && sValueFoundAny==null){
 				sValueFoundAny = sValueFound;
@@ -999,7 +983,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty + sAlias;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
 			sValueFound =objIni.getValue(sSection,sPropertyUsed);	
 			if(sValueFound!=null && sValueFoundAny==null){
 				sValueFoundAny = sValueFound;
@@ -1025,7 +1010,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//3a. Versuch: Speziell für ein System konfiguriert.
 			sSection =  this.getSystemKey();
 			sPropertyUsed = sProperty;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
 			sValueFound =objIni.getValue(sSection,sPropertyUsed );	
 			if(sValueFound!=null && sValueFoundAny==null){
 				sValueFoundAny = sValueFound;
@@ -1051,7 +1037,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//3b. Versuch: Global für die Applikation konfiguriert
 			sSection = this.getApplicationKey();
 			sPropertyUsed = sProperty;
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
 			sValueFound =objIni.getValue(sSection,sPropertyUsed );
 			if(sValueFound!=null && sValueFoundAny==null){
 				sValueFoundAny = sValueFound;
@@ -1078,7 +1065,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//4a. Versuch: Global für die Applikation konfiguriert, mit dem SystemKey
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty + this.getSystemKey();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
 			sValueFound =objIni.getValue(sSection,sPropertyUsed);
 			if(sValueFound!=null && sValueFoundAny==null){
 				sValueFoundAny = sValueFound;
@@ -1104,7 +1092,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//4b. Versuch: Global für die Applikation konfiguriert, mit dem Applikationskey
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty +this.getApplicationKey();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
 			sValueFound =objIni.getValue(sSection,sPropertyUsed);	
 			if(sValueFound!=null && sValueFoundAny==null){
 				sValueFoundAny = sValueFound;
@@ -1143,10 +1132,24 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				sReturn = sValueFoundAny;
 			}
 		}//end main:
-		if(!StringZZZ.isEmpty(sReturn)) {
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++++++++++++++++++++++++++++++");
+		for(int i = 0; i<= hmDebug.getIndexLast(); i++){
+			Integer intTemp = new Integer(i);
+			HashMap hmInner = (HashMap) hmDebug.get(intTemp);
+			Set setKeyInner = hmInner.keySet();			
+			for(Object obj : setKeyInner){
+				if(sDebug.equals("")){
+					sDebug = (String) obj +  ":" + hmInner.get((String) obj);
+				}else{
+					sDebug = sDebug + "; " + (String) obj +  ":" + hmInner.get((String) obj);
+				}
+			}
+		}
+		
+		sDebug = hmDebug.debugString();
+		if(!StringZZZ.isEmpty(sValueFoundAny)) {
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug); 
 		}else{
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++++++++++++++++++++++++++++++");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
 		}
 		return sReturn;		
 	}

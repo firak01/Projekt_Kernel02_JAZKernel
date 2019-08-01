@@ -16,7 +16,7 @@ import basic.zBasic.ReflectCodeZZZ;
  *
  */
 public class HashtableSortedZZZ  implements IObjectZZZ{
-	//TODO Einen eigenen Comparator im Konstruktor hinzuf�gbar machen.
+	//TODO Einen eigenen Comparator im Konstruktor hinzufügbar machen.
 	
 	private Hashtable objHt;
 	private Vector objV;	
@@ -35,7 +35,7 @@ public class HashtableSortedZZZ  implements IObjectZZZ{
 		HashtableSortedNew_(objHt,"+");
 	}
 	
-	/** Konstruktor: Die �bergebene Hashtable wird mit abh�ngig von der sSortDirection sortiert.
+	/** Konstruktor: Die �bergebene Hashtable wird mit abhängig von der sSortDirection sortiert.
 	 * bei '+': wird aufsteigend sortiert
 	 * bei '-': wird absteigend sortiert (mit Collections.reverseOrder())
 	 * 

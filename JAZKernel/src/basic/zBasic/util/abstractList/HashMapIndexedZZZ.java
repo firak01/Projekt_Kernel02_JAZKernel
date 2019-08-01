@@ -55,7 +55,7 @@ public class HashMapIndexedZZZ<T,X> extends HashMap implements  IConstantZZZ{
 
 			//#####################################
 
-			//1. Pr�fe auf Integer Objekt des Keys
+			//1. Prüfe auf Integer Objekt des Keys
 			Set keySet = hmIndexed.keySet();
 			Iterator itKey = keySet.iterator();
 			while(itKey.hasNext()){
@@ -650,7 +650,7 @@ public class HashMapIndexedZZZ<T,X> extends HashMap implements  IConstantZZZ{
 		}			 
 		if(hmIndexed.size()==0) break main;
 		
-		//Pr�fe die Struktur der Index-Hash-Map
+		//Prüfe die Struktur der Index-Hash-Map
 		boolean btemp = hmIndexed.checkStructure(true);  //!!!Hier keine Fehler auswerfen.
 		if(btemp==false){
 		   String sMessage = null;	
@@ -678,7 +678,7 @@ public class HashMapIndexedZZZ<T,X> extends HashMap implements  IConstantZZZ{
 		/* Algorithmus:
 		 * Fasse alle ArrayListen der HashMapIndexed zu einer einzigen zusammen. 
 		 * Ignoriere dabei jeweils den ersten / bzw. letzten Eintrag.
-		 * Sorge auch daf�r, dass die Eintr�ge in der neuen ArrayList unique sind.
+		 * Sorge auch dafür, dass die Einträge in der neuen ArrayList unique sind.
 		 */
 		
 		//1. Zusammenfassen
@@ -754,7 +754,7 @@ public class HashMapIndexedZZZ<T,X> extends HashMap implements  IConstantZZZ{
 		}
 
 		
-		//Das eigentliche Entfernen aus der Hashmap �ber die Keys
+		//Das eigentliche Entfernen aus der Hashmap über die Keys
 		Iterator itRemove = alKeyRemove.iterator();
 		while(itRemove.hasNext()){
 			Object objKey = itRemove.next();

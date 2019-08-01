@@ -63,7 +63,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	 }		    	 		    	
  }
  */
-public class HashMapMultiZZZ implements IConstantZZZ, Map{
+public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 	private HashMap hmOuter=new HashMap();
 	
 	public HashMapMultiZZZ(){		
@@ -118,6 +118,44 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 		}//END main:
 	}
 	
+	public void put(Integer intAliasOuter, String sAliasInner, Object objToSet) throws ExceptionZZZ{
+		
+		main:{
+		//Guard Klauseln
+		if(intAliasOuter == null){
+			ExceptionZZZ ez = new ExceptionZZZ("intAliasOuter", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		if(StringZZZ.isEmpty(sAliasInner)){
+			ExceptionZZZ ez = new ExceptionZZZ("sAliasInner", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		HashMap hmInner = null;
+		if(objToSet!=null){
+			//Nun die Innere, gespeicherte HashMap holen				
+			if(hmOuter.containsKey(intAliasOuter)){
+			 hmInner = (HashMap) hmOuter.get(intAliasOuter); 
+			}else{
+				hmInner = new HashMap();
+				hmOuter.put(intAliasOuter, hmInner);
+			}
+		}else{
+//			Merke: Objekt == null bedeutet, es zu entfernen
+			if(hmOuter.containsKey(intAliasOuter)){
+				hmInner = (HashMap) hmOuter.get(intAliasOuter);
+				hmInner.remove(sAliasInner);
+			}
+			break main;			
+		}
+		
+		//Den neuen Wert in die innere gespeicherte HashMap ablegen
+		hmInner.put(sAliasInner, objToSet);
+		
+		
+		}//END main:
+	}
+	
 	public Object get(String sAliasOuter, String sAliasInner) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
@@ -141,7 +179,7 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 		return objReturn;
 	}
 	
-	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch f�r jeden neuen Eintrag.
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch für jeden neuen Eintrag.
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
@@ -152,11 +190,9 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 			//HashMapOuter durchgehen
 			if(this.hmOuter.size()==0) break main;
 			
-			String sLF = "\n";
-			String sTab = "\t";
-			String sTabDelim = sTab +"| ";
-			
-			
+			String sLF = HashMapMultiZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			String sTabDelim = HashMapMultiZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+						
 			Set setKeyOuter = this.hmOuter.keySet();
 			Iterator itOuter = setKeyOuter.iterator();
 			while(itOuter.hasNext()){
@@ -164,6 +200,10 @@ public class HashMapMultiZZZ implements IConstantZZZ, Map{
 				sReturn = sReturn + objOuter.toString();
 				
 				HashMap hmInner = (HashMap) this.hmOuter.get(objOuter);
+				
+				//TODO GOON 20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
+				//                    Das sollte eine (neue) statische Methode sein...
+				
 				if(hmInner!=null){
 					Set setKeyInner = hmInner.keySet();
 					Iterator itInner = setKeyInner.iterator();

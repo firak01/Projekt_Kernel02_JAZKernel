@@ -27,7 +27,7 @@ import basic.zBasic.util.math.MathZZZ;
  * @author lindhaueradmin
  *
  */
-public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, IObjectZZZ{
+public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, IObjectZZZ, IHashMapExtendedZZZ{
 	private static final long serialVersionUID = -576703130885041379L;
 	private ExceptionZZZ objException;
 	
@@ -36,7 +36,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	
 	
 	/** Versuche für das angegebene Objekt den Schlüsselwert zurückzugeben.
-	 *   Da ein Objetk mit mhereren Schlüsseln abgelegt sein kann: "First"...
+	 *   Da ein Objekt mit mehreren Schlüsseln abgelegt sein kann: "First"...
 	 * @param hm
 	 * @param value
 	 * @return
@@ -722,9 +722,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			//HashMapOuter durchgehen
 			if(this.size()==0) break main;
 			
-			String sLF = "\n";
-			String sTab = "\t";
-			String sTabDelim = sTab +"| ";
+			String sLF = HashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			String sTabDelim = HashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
 			
 			Set setKey = this.keySet();
 			Iterator it = setKey.iterator();
