@@ -719,22 +719,57 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	public String debugString(){
 		String sReturn = new String("");
 		main:{
+			
+			sReturn = HashMapExtendedZZZ.debugString(this);
+			
+		}//end main
+		return sReturn;
+	}
+	
+	public static String debugString(HashMap hmDebug){
+		String sReturn = new String("");
+		main:{		
+			String sEntryDelimiter = HashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			String sKeyDelimiter = HashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			sReturn = HashMapExtendedZZZ.debugString(hmDebug, sKeyDelimiter, sEntryDelimiter);
+		}//end main
+		return sReturn;
+	}
+	
+	public static String debugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
+		String sReturn = new String("");
+		main:{
 			//HashMapOuter durchgehen
-			if(this.size()==0) break main;
+			if(hmDebug==null)break main;
+			if(hmDebug.size()==0) break main;
 			
-			String sLF = HashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-			String sTabDelim = HashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			String sEntryDelimiter;			
+			if(sEntryDelimiterIn==null){
+				sEntryDelimiter = HashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			}else {
+				sEntryDelimiter = sEntryDelimiterIn;
+			}
+						
+			String sKeyDelimiter;
+			if(sKeyDelimiterIn==null){
+				sKeyDelimiter = HashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			}else{
+				sKeyDelimiter = sKeyDelimiterIn;
+			}
 			
-			Set setKey = this.keySet();
+			Set setKey = hmDebug.keySet();
 			Iterator it = setKey.iterator();
 			while(it.hasNext()){
+				if(!StringZZZ.isEmpty(sReturn)){
+					sReturn = sReturn + sEntryDelimiter;
+				}
+				
 				Object obj = it.next();
 				sReturn = sReturn + obj.toString();
 						
-				Object objValue = this.get(obj);
-				sReturn = sReturn + sTabDelim + objValue.toString();
-				sReturn = sReturn + sLF;
-				}//end while itInner.hasnext()
+				Object objValue = hmDebug.get(obj);
+				sReturn = sReturn + sKeyDelimiter + objValue.toString();				
+			}//end while itInner.hasnext()
 		}//end main
 		return sReturn;
 	}

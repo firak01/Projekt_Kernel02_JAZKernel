@@ -118,43 +118,7 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 		}//END main:
 	}
 	
-	public void put(Integer intAliasOuter, String sAliasInner, Object objToSet) throws ExceptionZZZ{
-		
-		main:{
-		//Guard Klauseln
-		if(intAliasOuter == null){
-			ExceptionZZZ ez = new ExceptionZZZ("intAliasOuter", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
-		if(StringZZZ.isEmpty(sAliasInner)){
-			ExceptionZZZ ez = new ExceptionZZZ("sAliasInner", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
-		
-		HashMap hmInner = null;
-		if(objToSet!=null){
-			//Nun die Innere, gespeicherte HashMap holen				
-			if(hmOuter.containsKey(intAliasOuter)){
-			 hmInner = (HashMap) hmOuter.get(intAliasOuter); 
-			}else{
-				hmInner = new HashMap();
-				hmOuter.put(intAliasOuter, hmInner);
-			}
-		}else{
-//			Merke: Objekt == null bedeutet, es zu entfernen
-			if(hmOuter.containsKey(intAliasOuter)){
-				hmInner = (HashMap) hmOuter.get(intAliasOuter);
-				hmInner.remove(sAliasInner);
-			}
-			break main;			
-		}
-		
-		//Den neuen Wert in die innere gespeicherte HashMap ablegen
-		hmInner.put(sAliasInner, objToSet);
-		
-		
-		}//END main:
-	}
+	
 	
 	public Object get(String sAliasOuter, String sAliasInner) throws ExceptionZZZ{
 		Object objReturn = null;
@@ -189,38 +153,67 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 		main:{
 			//HashMapOuter durchgehen
 			if(this.hmOuter.size()==0) break main;
-			
-			String sLF = HashMapMultiZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-			String sTabDelim = HashMapMultiZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
-						
-			Set setKeyOuter = this.hmOuter.keySet();
-			Iterator itOuter = setKeyOuter.iterator();
-			while(itOuter.hasNext()){
-				Object objOuter = itOuter.next();
-				sReturn = sReturn + objOuter.toString();
-				
-				HashMap hmInner = (HashMap) this.hmOuter.get(objOuter);
-				
-				//TODO GOON 20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
-				//                    Das sollte eine (neue) statische Methode sein...
-				
-				if(hmInner!=null){
-					Set setKeyInner = hmInner.keySet();
-					Iterator itInner = setKeyInner.iterator();
-					while(itInner.hasNext()){
-						Object objInner = itInner.next();
-						sReturn = sReturn + sTabDelim + objInner.toString();
-						
-						Object objValue = hmInner.get(objInner);
-						sReturn = sReturn + sTabDelim + objValue.toString();
-						sReturn = sReturn + sLF + sTab;
-					}//end while itInner.hasnext()
-					sReturn = sReturn + sLF;
-				}
-			}//end while itOuter.hasnext()
+								
+			String sEntryDelimiter = HashMapMultiZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			String sKeyDelimiter = HashMapMultiZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			sReturn = HashMapMultiZZZ.debugString(this, sKeyDelimiter, sEntryDelimiter);		
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String debugString(HashMapMultiZZZ hmDebug){
+		String sReturn = new String("");
+		main:{		
+			String sEntryDelimiter = HashMapMultiZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			String sKeyDelimiter = HashMapMultiZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			sReturn = HashMapMultiZZZ.debugString(hmDebug, sKeyDelimiter, sEntryDelimiter);
 		}//end main
 		return sReturn;
 	}
+	
+	public static String debugString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
+		String sReturn = new String("");
+		main:{
+			//HashMapOuter durchgehen
+			if(hmDebug==null)break main;
+			if(hmDebug.size()==0) break main;
+			
+			String sEntryDelimiter;			
+			if(sEntryDelimiterIn==null){
+				sEntryDelimiter = HashMapMultiZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			}else {
+				sEntryDelimiter = sEntryDelimiterIn;
+			}
+						
+			String sKeyDelimiter;
+			if(sKeyDelimiterIn==null){
+				sKeyDelimiter = HashMapMultiZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			}else{
+				sKeyDelimiter = sKeyDelimiterIn;
+			}
+		
+			Set setKeyOuter = hmDebug.keySet();
+			Iterator itOuter = setKeyOuter.iterator();
+			while(itOuter.hasNext()){
+				if(!StringZZZ.isEmpty(sReturn)){
+					sReturn = sReturn + sEntryDelimiter;
+				}
+				
+				Object objOuter = itOuter.next();
+				sReturn = sReturn + objOuter.toString();
+				
+				HashMap hmInner = (HashMap) hmDebug.get(objOuter);
+				
+				//20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
+				String stemp = HashMapExtendedZZZ.debugString(hmInner, sKeyDelimiter, sEntryDelimiter);
+				if(stemp!=null){
+					sReturn = sReturn + sKeyDelimiter + stemp;
+				}			
+			}//end while itOuter.hasnext()
+		}//end main
+		return sReturn;
+		}
+	
 	
 	
 	//### AUS Map implementierte Methoden
