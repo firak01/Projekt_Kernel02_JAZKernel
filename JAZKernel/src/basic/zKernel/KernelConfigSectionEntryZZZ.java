@@ -7,6 +7,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private String sValue = new String("");
 	private boolean bSectionExists = false;
 	private boolean bAnyValue = false;
+	private boolean bNullValue = false;
 	private boolean bExpression = false;
 	private boolean bFormula = false;
 	
@@ -47,7 +48,11 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 
 	@Override
 	public String getValue() {
-		return this.sValue;
+		if(this.hasNullValue()){
+			return null;
+		}else{
+			return this.sValue;
+		}
 	}
 
 	@Override
@@ -55,8 +60,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		if(sValue!=null){
 			this.sValue = sValue;
 			this.hasAnyValue(true);
+			this.hasNullValue(false);
 		}else{
-			this.hasAnyValue(false);
+			//WENN NULL als Ergebnis einer Expression/Formel herauskommt, dann IST DAS DER WERT
+			if(this.isExpression() || this.isFormula()){
+				this.hasAnyValue(true);
+				this.hasNullValue(true);
+			}else{
+				this.hasAnyValue(false);
+				this.hasNullValue(false);
+			}
 		}
 	}
 
@@ -64,11 +77,20 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	public boolean hasAnyValue() {
 		return this.bAnyValue;
 	}
-
-	@Override
-	public void hasAnyValue(boolean bAnyValue) {
+	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
+	private void hasAnyValue(boolean bAnyValue) {
 		this.bAnyValue=bAnyValue;
 	}
+	
+	
+	@Override
+	public boolean hasNullValue() {
+		return this.bNullValue;
+	}
+	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
+		private void hasNullValue(boolean bNullValue) {
+			this.bNullValue=bNullValue;
+		}
 	
 	@Override
 	public boolean isExpression(){

@@ -72,12 +72,6 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	private File objFileKernelConfig=null;
 	private FileIniZZZ objFileIniKernelConfig = null;
 		
-	//20190226: Problem: Wenn ein Wert (z.B. <z:Empty/> konvertiert wurde, weiss das die aufrufenden Methode nicht.
-	//                   Um auf solch einen Wert reagieren zu können (also im genannten Beispiel zu merken: Der Wert ist absichtlich leer) das Flag und den 
-	private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
-	private String sValueRaw=null;
-	
-	
 	private String sFileConfig="";
 	private String sApplicationKey="";
 	
@@ -472,29 +466,35 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			IniFile objIni = this.getFileConfigKernelAsIni(); 
 
 			//1. Hole den Dateinamen
-			String sFileName = this.searchPropertyForAlias(objIni, sAlias,"KernelConfigFile");
-			if(StringZZZ.isEmpty(sFileName)){
+			//String sFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile");
+			IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile");
+			if(!objEntryFileName.hasAnyValue()){
+			//if(StringZZZ.isEmpty(sFileName)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein Dateiname konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
 				break main;
 			}
-			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-				this.setValueRaw(sFileName);
-			}else{
-				this.setValueRaw(null);
-			}
-			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+			String sFileNameUsed = objEntryFileName.getValue();
+//			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+//			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+//				this.setValueRaw(sFileName);
+//			}else{
+//				this.setValueRaw(null);
+//			}
+//			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
 			
 			//2. Hole den Dateipfad
-			String sFilePath = this.searchPropertyForAlias(objIni, sAlias,"KernelConfigPath");
-			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
-			if(!StringZZZ.equals(sFilePath, sFilePathUsed)){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
-				this.setValueRaw(sFilePath);
-			}else{
-				this.setValueRaw(null);
-			}
+			//String sFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath");
+			IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath");
+			String sFilePathUsed = objEntryFilePath.getValue();			
+//			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
+//			if(!StringZZZ.equals(sFilePath, sFilePathUsed)){
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
+//				this.setValueRaw(sFilePath);
+//			}else{
+//				this.setValueRaw(null);
+//			}
+			
 			//NEIN, Weitermachen if(StringZZZ.isEmpty(sFilePathUsed)) break main;
 			File objDirTemp = FileEasyZZZ.searchDirectory(sFilePathUsed);
 			if(objDirTemp==null){
@@ -640,21 +640,29 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//1. Hole den Dateinamen
-					String sFileName = this.searchPropertyForAlias(sAlias,"KernelConfigFile");
-					if(StringZZZ.isEmpty(sFileName)){											
+					IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(sAlias,"KernelConfigFile");					
+					if(!objEntryFileName.hasAnyValue()){											
 							ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 					}
+					String sFileName = objEntryFileName.getValue();
 					
 					//2. Hole den Dateipfad
-					String sFilePath = this.searchPropertyForAlias(sAlias,"KernelConfigPath");									
-					if(sFilePath==null){
+					IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");	
+					String sFilePath = null;
+					if(!objEntryFilePath.hasAnyValue()){
 						//Merke: Wenn das NULL ist, dann wird intern der Projektroot verwendet. Auf gar keinen Fall Leerstring setzen. Das wäre der Src-Ordner.
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": KernelConfigPath für den Alias '" + sAlias + "' ist Null. Erwarte die Datei im Projektordner.");
-						File objDirProject = FileEasyZZZ.searchDirectory(sFilePath);
-						sFilePath = objDirProject.getAbsolutePath();
-//						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
-//						throw ez;
+//						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": KernelConfigPath für den Alias '" + sAlias + "' ist Null. Erwarte die Datei im Projektordner.");
+//						File objDirProject = FileEasyZZZ.searchDirectory(null);
+//						sFilePath = objDirProject.getAbsolutePath();
+						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}if(objEntryFilePath.hasNullValue()){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": KernelConfigPath für den Alias '" + sAlias + "' ist ABSICHTLICH NULL. Erwarte die Datei im Projektordner.");
+						File objDirProject = FileEasyZZZ.searchDirectory(null);
+						sFilePath = objDirProject.getAbsolutePath();			
+					}else{
+						sFilePath=objEntryFilePath.getValue();
 					}
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++			
 					if(this.objFileIniKernelConfig==null){												
@@ -756,11 +764,17 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						}//end check:
 																	
 						//1. Hole den Dateinamen
-						String sFileName = this.searchPropertyForAlias(sAlias,"KernelConfigFile");
-						if(StringZZZ.isEmpty(sFileName)) break main;
+						//String sFileName = this.searchPropertyByAlias(sAlias,"KernelConfigFile");
+						//if(StringZZZ.isEmpty(sFileName)) break main;
+						IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(sAlias,"KernelConfigFile");
+						if(!objEntryFileName.hasAnyValue()) break main;
+						String sFileName = objEntryFileName.getValue();
 						
 						//2. Hole den Dateipfad
-						String sFilePath = this.searchPropertyForAlias(sAlias,"KernelConfigPath");
+						//String sFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");
+						IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");
+						if(!objEntryFilePath.hasAnyValue()) break main;
+						String sFilePath = objEntryFilePath.getValue();
 						
 						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen*/					
 						//FGL 20181008: Relative Fileangaben verarbeitet und Suche auf dem Classpath (z.B. wg. verpackt in .war / .jar Datei, z.B. WebService - Fall.
@@ -856,8 +870,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;								
 	}
 	
-	private String searchPropertyForAlias(String sAlias, String sProperty) throws ExceptionZZZ{
-		String sReturn = null;
+	private IKernelConfigSectionEntryZZZ searchPropertyByAlias(String sAlias, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = null;
 		main:{
 			check:{
 			if(StringZZZ.isEmpty(sAlias)){								
@@ -872,9 +886,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			//first, get the Kernel-Configuration-INI-File
 			IniFile objIni = this.getFileConfigKernelAsIni();			
-			sReturn = this.searchPropertyForAlias(objIni, sAlias, sProperty);
+			objReturn = this.searchPropertyByAlias(objIni, sAlias, sProperty);
 		}//end main:
-		return sReturn;		
+		return objReturn;		
 	}
 	
 	/** Heuristische Lösung. 
@@ -893,11 +907,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return bReturn;
 	}
 	
-	
-	
-	
-	private String searchPropertyForAlias(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
-		String sReturn = null;
+	private IKernelConfigSectionEntryZZZ searchPropertyByAlias(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug = "";String sValueFoundAny=null; 
 		
@@ -942,12 +953,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-						this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
 					}else{
-						this.setValueRaw(null);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFound;
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);				
+				objReturn.setValue(sValueFound);
 				break main;
 			}
 				
@@ -970,12 +985,18 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-						this.setValueRaw(sReturnRaw);
+						//this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
 					}else{
-						this.setValueRaw(null);
+						//this.setValueRaw(null);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFound;
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
 				break main;
 			}
 			
@@ -998,12 +1019,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-						this.setValueRaw(sReturnRaw);
-					}else{
-						this.setValueRaw(null);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
+					}else{				
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFound;
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
 				break main;
 			}
 			
@@ -1025,12 +1050,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-						this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
 					}else{
-						this.setValueRaw(null);
+						objReturn.setSection(sSection);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFound;
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
 				break main;
 			}
 					
@@ -1052,12 +1081,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-						this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
 					}else{
-						this.setValueRaw(null);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFound;
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
 				break main;
 			}
 					
@@ -1080,12 +1113,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-						this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
 					}else{
-						this.setValueRaw(null);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFound;
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
 				break main;
 			}
 							
@@ -1107,12 +1144,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
-						this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
 					}else{
-						this.setValueRaw(null);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFound;
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
 				break main;
 			}
 			
@@ -1124,34 +1165,26 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					sValueFoundAny = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFoundAny,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFoundAny +"'");
-						this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
 					}else{
-						this.setValueRaw(null);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
 					}
 				}
-				sReturn = sValueFoundAny;
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
 			}
 		}//end main:
-		for(int i = 0; i<= hmDebug.getIndexLast(); i++){
-			Integer intTemp = new Integer(i);
-			HashMap hmInner = (HashMap) hmDebug.get(intTemp);
-			Set setKeyInner = hmInner.keySet();			
-			for(Object obj : setKeyInner){
-				if(sDebug.equals("")){
-					sDebug = (String) obj +  ":" + hmInner.get((String) obj);
-				}else{
-					sDebug = sDebug + "; " + (String) obj +  ":" + hmInner.get((String) obj);
-				}
-			}
-		}
 		
-		sDebug = hmDebug.debugString();
+		sDebug = hmDebug.debugString(":"," | ");
 		if(!StringZZZ.isEmpty(sValueFoundAny)) {
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug); 
 		}else{
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
 		}
-		return sReturn;		
+		return objReturn;
 	}
 	
 	
@@ -1814,213 +1847,6 @@ MeinTestParameter=blablaErgebnis
 				if(objReturn.hasAnyValue())break main;							
 			}//if(!StringZZZ.isEmpty(sProgramOrSection)){
 		
-			
-		/*	
-			sSearchCounter = objCounter.getStringNext();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-			if(!StringZZZ.isEmpty(sProgramOrSection)){
-							
-				//+++ Als Program mit Alias:
-				Iterator<String> itAlias = listasAlias.iterator();
-				while(itAlias.hasNext()){				
-					String sProgramAliasUsed = itAlias.next();
-					sSection = sProgramAliasUsed;
-					
-				}
-				
-				//##################################################################################		
-				sSearchCounter = objCounter.getStringNext();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-				sSection =  sProgramOrSection;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							break main;
-						}else{							
-							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-								break main;
-							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-							}
-						}
-					}
-				}
-				
-				//+++ Einen ggfs. definierten Aliasnamen
-				//TODO GOON 20190216: Dies in eine eine eigene Methode auslagern
-				//a) mit Systemkey			
-				sSearchCounter = objCounter.getStringNext();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							break main;
-						}else{							
-							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-								break main;
-							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-							}
-						}
-					}
-				}
-				
-				//b) mit Applicationkey				
-				sSearchCounter = objCounter.getStringNext();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							break main;
-						}else{							
-							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-								break main;
-							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-							}
-						}
-					}
-				}
-													
-				//+++ Einen ggfs. definierten Aliasnamen PLUS Systemnumber
-				sSearchCounter = objCounter.getStringNext();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-				sSection = sSection + "!" + this.getSystemNumber();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							break main;
-						}else{							
-							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-								break main;
-							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-							}
-						}
-					}
-				}
-									
-				//+++ Den Systemkey PLUS den ggfs. defnierten Aliasnamen		
-				sSearchCounter = objCounter.getStringNext();
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-				sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection);
-				sSection = this.getSystemKey() + "!" + sSection;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							break main;
-						}else{							
-							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-								break main;
-							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-							}
-						}
-					}
-				}				
-			}//end if(!StringZZZ.isEmpty(sProgramOrSection)){ //GROSSE KLAMMER
-			//#################################################################################################
-			
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			sSearchCounter = objCounter.getStringNext();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-			sSection = objFileIniConfig.getPropertyValue(this.getSystemKey(), sMainSection);
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-			if(!StringZZZ.isEmpty(sSection)){
-				boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
-					sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-					if(sReturn != null){
-						System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-						break main;
-					}else{						
-						if(objFileIniConfig.getValueRaw()!=null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-						}
-					}
-				}
-			}
-			
-			sSearchCounter = objCounter.getStringNext();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-			if(!StringZZZ.isEmpty(sProgramOrSection)){
-				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							break main;
-						}else{							
-							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-								break main;
-							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-							}
-						}
-					}
-				}
-			}
-
-			sSearchCounter = objCounter.getStringNext();
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter);
-			if(!StringZZZ.isEmpty(sMainSection)){
-				sSection = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sMainSection);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						sReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-						if(sReturn != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							break main;
-						}else{							
-							if(objFileIniConfig.getValueRaw()!=null){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Convertierten Value gefunden für Property '" + sProperty + "");
-								break main;
-							}else{
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ sSearchCounter + "Kein Value gefunden für Property '" + sProperty + "'");
-							}
-						}
-					}
-				}
-			}
-			
-			*/
 
 			//Falls der Parameter immer noch nicht gefunden wurde, hier eine Exception auswerfen.
 	        //Ansonsten droht die Gefahr einer Endlosschleife.
@@ -3486,9 +3312,9 @@ MeinTestParameter=blablaErgebnis
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-				this.setValueRaw(sFileName);
+				//this.setValueRaw(sFileName);
 			}else{
-				this.setValueRaw(null);
+				//this.setValueRaw(null);
 			}
 			
 			//2. Versuch: Applikationsebene
@@ -3497,9 +3323,9 @@ MeinTestParameter=blablaErgebnis
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-					this.setValueRaw(sFileName);
+					//this.setValueRaw(sFileName);
 				}else{
-					this.setValueRaw(null);
+					//this.setValueRaw(null);
 				}
 			}
 
@@ -3538,9 +3364,9 @@ MeinTestParameter=blablaErgebnis
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-				this.setValueRaw(sFileName);
+				//this.setValueRaw(sFileName);
 			}else{
-				this.setValueRaw(null);
+				//this.setValueRaw(null);
 			}
 			if(StringZZZ.isEmpty(sFileNameUsed)) {
 				
@@ -3550,9 +3376,9 @@ MeinTestParameter=blablaErgebnis
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-					this.setValueRaw(sFileName);
+					//this.setValueRaw(sFileName);
 				}else{
-					this.setValueRaw(null);
+					//this.setValueRaw(null);
 				}
 				if(StringZZZ.isEmpty(sFileNameUsed)) break main;
 				if(sFileNameUsed.equals(""))break main;								
@@ -3562,9 +3388,9 @@ MeinTestParameter=blablaErgebnis
 			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
-				this.setValueRaw(sFilePath);
+				//this.setValueRaw(sFilePath);
 			}else{
-				this.setValueRaw(null);
+				//this.setValueRaw(null);
 			}						
 			if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
 			
@@ -3872,28 +3698,7 @@ MeinTestParameter=blablaErgebnis
 	}
 	public void setContextUsed(IKernelContextZZZ objContext) {
 		this.objContext = objContext;
-	}
-	
-	
-	//aus IKernelExpressionIniConverterUserZZZ
-	//Damit eine aufrufende Methode mitbekommt, ob ein Converter den Wert verändert hat.
-		public boolean isValueConverted(){
-			return this.bValueConverted;
-		}
-		public void isValueConverted(boolean bStatus){
-			this.bValueConverted=bStatus;
-		}
-		public String getValueRaw(){
-			return this.sValueRaw;
-		}
-		public void setValueRaw(String sValueRaw){
-			this.sValueRaw = sValueRaw;
-			if(this.sValueRaw!=null){
-				this.isValueConverted(true);
-			}else{
-				this.isValueConverted(false);
-			}
-		}
+	}	
 	
 	//aus IRessourceHandlingObjectZZZ
 	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.

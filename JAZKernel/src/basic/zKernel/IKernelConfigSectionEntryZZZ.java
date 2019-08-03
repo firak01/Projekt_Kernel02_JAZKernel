@@ -27,7 +27,10 @@ public interface IKernelConfigSectionEntryZZZ {
 	public void setValue(String sValue);
 	
 	public boolean hasAnyValue();
-	abstract void hasAnyValue(boolean bAnyValue);
+	//soll nur private eingesetzt werden. abstract void hasAnyValue(boolean bAnyValue);
+	
+	boolean hasNullValue();
+	//soll nur private eingesetzt werden. abstract void hasNullValue(boolean bNullValue);
 	
 	public boolean isFormula();
 	abstract void isFormula(boolean bIsFormula);
@@ -37,4 +40,5 @@ public interface IKernelConfigSectionEntryZZZ {
 	
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);
+	
 }

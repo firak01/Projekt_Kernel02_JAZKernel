@@ -156,9 +156,13 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 								
 			String sEntryDelimiter = HashMapMultiZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 			String sKeyDelimiter = HashMapMultiZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
-			sReturn = HashMapMultiZZZ.debugString(this, sKeyDelimiter, sEntryDelimiter);		
+			sReturn = this.debugString(this, sKeyDelimiter, sEntryDelimiter);		
 		}//end main:
 		return sReturn;
+	}
+	
+	public String debugString(String sKeyDelimiter,String sEntryDelimiter){
+		return HashMapMultiZZZ.debugString(this, sKeyDelimiter, sEntryDelimiter);	
 	}
 	
 	public static String debugString(HashMapMultiZZZ hmDebug){
