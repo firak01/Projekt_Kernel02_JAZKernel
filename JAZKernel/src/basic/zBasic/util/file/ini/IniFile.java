@@ -178,42 +178,12 @@ public class IniFile extends Object
             if (line == null)
                break;
             else
-           	line = line.trim();
-            if(line.startsWith("TestParameterGlobal1FromClass")){
-            //if(itest<=1){
-           	 System.out.println("stop");
-            }
-            	String sLineUtf8 = new String(line.getBytes(),"UTF-8"); 
-               lines.addElement(sLineUtf8);
+           	line = line.trim();           
+           	String sLineUtf8 = new String(line.getBytes(),"UTF-8"); 
+            lines.addElement(sLineUtf8);
          }
 
-         inStream.close();
-    	 
-    	 /*
-    	 BufferedReader iniReader = new BufferedReader(new InputStreamReader(inStream,"UTF-8"));//20190712: AUF UTF-8 geändert.    			    	
-    	  String line = "";
-          //read all the lines in
-    	  int itest = 0;
-          while (true)
-          {
-        	  itest++;
-             line = iniReader.readLine();
-             if (line == null)
-                break;
-             else
-            	line = line.trim();
-             //if(line.startsWith("TestParameterGlobal1FromClass")){
-             if(itest<=1){
-            	 System.out.println("stop");
-             }
-             	String sLineUtf8 = new String(line.getBytes(),"UTF-8"); 
-                lines.addElement(sLineUtf8);
-          }
-
- 		 iniReader.close();
- 		 */
-    	 
-    	  
+         inStream.close();  
       }
       catch (IOException e)
       {
@@ -380,7 +350,7 @@ public class IniFile extends Object
    }
 
    /**FGL 2008-02-19 F�gt eine Section hinzu, aber nur, wenn sie noch nicht existiert !!!
-    * Dadurch wird es auch m�glich Sections hinzuzuf�gen, die keine Werte beinhalten. Diese Sections wurden sonst ignoriert.
+    * Dadurch wird es auch möglich Sections hinzuzufügen, die keine Werte beinhalten. Diese Sections wurden sonst ignoriert.
 * @param sSection
 * @return
 * 
@@ -700,12 +670,7 @@ protected boolean addSection(String sSection){
    public void saveFile() throws IOException,ExceptionZZZ
    {
       try
-      {
-    	  //20190712: Ziel ist es nun UTF-8 Datei zu erstellen
-//         DataOutputStream outFile = new DataOutputStream(
-//                                        new BufferedOutputStream(
-//                                            new FileOutputStream(fileName)));
-         
+      {         
          //20190712: Ziel ist es nun UTF-8 Datei zu erstellen
          OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName),"UTF-8");          
          for (int i=0;i<lines.size();i++)
@@ -714,20 +679,13 @@ protected boolean addSection(String sSection){
 			if (i>0) {
 				if (((String) lines.elementAt(i)).startsWith("[") && !((String) lines.elementAt(i-1)).equals("")){
 					String sLineUTF8 = StringZZZ.toUtf8("\r\n");					
-					//outFile.writeBytes(sLineUTF8);
 					writer.write(sLineUTF8);			
 				}
 			}
-			 if(((String)lines.elementAt(i)).startsWith("TestParameterGlobal1FromClass")){
-            	 System.out.println("stop");
-             }
-			
 			String sLineRaw = (String)(lines.elementAt(i))+"\r\n";
 			String sLineUTF8 = StringZZZ.toUtf8(sLineRaw);			
-			//outFile.writeBytes(sLineUTF8);
 			writer.write(sLineUTF8);
          }
-         //outFile.close();
          writer.close();
       }
       catch (IOException e)

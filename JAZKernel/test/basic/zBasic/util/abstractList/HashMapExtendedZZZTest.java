@@ -4,6 +4,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 
 public class HashMapExtendedZZZTest extends TestCase{
@@ -185,7 +186,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 			assertFalse(stemp==null);
 			assertFalse(stemp.equals(""));
 			
-			
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + " Ausgabe des Debug-Strings. Merke: Unsortiert ist erwartet: ");
 			System.out.println(stemp);
 			
 		} catch (Exception e) {

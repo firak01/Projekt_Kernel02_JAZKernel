@@ -12,6 +12,7 @@ import javax.swing.Box;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Diese Klasse erlaubt das "direktere" Arbeiten mit einer HashMap, die in einer anderen HashMap gespeichert ist.
@@ -147,8 +148,9 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
+	 * @throws ExceptionZZZ 
 	 */
-	public String debugString(){
+	public String debugString() throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
 			//HashMapOuter durchgehen
@@ -161,11 +163,11 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 		return sReturn;
 	}
 	
-	public String debugString(String sKeyDelimiter,String sEntryDelimiter){
+	public String debugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
 		return HashMapMultiZZZ.debugString(this, sKeyDelimiter, sEntryDelimiter);	
 	}
 	
-	public static String debugString(HashMapMultiZZZ hmDebug){
+	public static String debugString(HashMapMultiZZZ hmDebug) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{		
 			String sEntryDelimiter = HashMapMultiZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
@@ -175,7 +177,7 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 		return sReturn;
 	}
 	
-	public static String debugString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
+	public static String debugString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
 			//HashMapOuter durchgehen
@@ -196,6 +198,7 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 				sKeyDelimiter = sKeyDelimiterIn;
 			}
 		
+			String sKeyOuter = null;
 			Set setKeyOuter = hmDebug.keySet();
 			Iterator itOuter = setKeyOuter.iterator();
 			while(itOuter.hasNext()){
@@ -204,15 +207,19 @@ public class HashMapMultiZZZ implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 				}
 				
 				Object objOuter = itOuter.next();
-				sReturn = sReturn + objOuter.toString();
+				sKeyOuter = objOuter.toString();
 				
 				HashMap hmInner = (HashMap) hmDebug.get(objOuter);
 				
 				//20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
 				String stemp = HashMapExtendedZZZ.debugString(hmInner, sKeyDelimiter, sEntryDelimiter);
 				if(stemp!=null){
-					sReturn = sReturn + sKeyDelimiter + stemp;
-				}			
+					String[] saValue = StringZZZ.explode(stemp, sEntryDelimiter);
+					String[] saValueWithKey = StringArrayZZZ.plusString(saValue, sKeyOuter+sKeyDelimiter,"BEFORE");
+					sReturn = sReturn + StringArrayZZZ.implode(saValueWithKey,sEntryDelimiter);				
+				}else{
+					sReturn = sReturn + sKeyOuter;
+				}
 			}//end while itOuter.hasnext()
 		}//end main
 		return sReturn;

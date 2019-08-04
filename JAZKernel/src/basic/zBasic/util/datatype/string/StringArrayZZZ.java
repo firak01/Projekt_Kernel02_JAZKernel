@@ -472,6 +472,10 @@ output:
 		return StringUtils.join(saString);   //
 	}
 	
+	public static String implode(String[] saString, String sDelimiter){
+		return StringUtils.join(saString, sDelimiter);   //
+	}
+	
 	public static String[] intersect(String[] saString01, String[] saString02) throws ExceptionZZZ{
 		String[]saReturn = null;
 		main:{
