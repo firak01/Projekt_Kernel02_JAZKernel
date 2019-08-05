@@ -252,7 +252,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 		if(sDirectoryIn!=null){
 			boolean bIsAbsolut = FileEasyZZZ.isPathAbsolut(sDirectoryIn);
 			if(bIsAbsolut){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (0) Path is absolut. '" + sDirectoryIn + "'");
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (0) Path is absolut. '" + sDirectoryIn + "'");
 				File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectoryIn);
 				if(objDirectoryNormed==null){
 					String sLog = ReflectCodeZZZ.getPositionCurrent()+": (0) Directory does not exist. '" + sDirectoryIn + "'";
@@ -282,7 +282,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 			}//end if isAbsolut
 		}else{
 			//4. Bei NULL: Versuch den Projektordner verwenden
-			System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (2) Path is relativ. '" + sDirectoryIn + "'");
+			//System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (2) Path is relativ. '" + sDirectoryIn + "'");
 			String sDirectory = null;
 			File objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CURRENT); 
 			String sLog = null;
@@ -1342,13 +1342,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			URL workspaceURL = null; String sLog=null;
 			
 			//1. Versuch
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Searching for file be File .toURI().toURL()  '" + sPath +"'";
-		    System.out.println(sLog);
+//			sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Searching for file be File .toURI().toURL()  '" + sPath +"'";
+//		    System.out.println(sLog);
 			try {		
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){	
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Objekt nicht null für '" + sPath + "'";
-				    System.out.println(sLog);
+//					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Objekt nicht null für '" + sPath + "'";
+//				    System.out.println(sLog);
 					String sWorkspaceURL = workspaceURL.getPath();					
 					sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);
 					objReturn = new File(sWorkspaceURL);	
@@ -1361,8 +1361,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					    System.out.println(sLog);
 					}
 				}else{
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Objekt null für '" + sPath + "'";
-				    System.out.println(sLog);
+//					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Objekt null für '" + sPath + "'";
+//				    System.out.println(sLog);
 				}
 			} catch (MalformedURLException e) {	
 				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -1389,8 +1389,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					try {		
 						workspaceURL = new File(sPathTotal).toURI().toURL();
 						if(workspaceURL!=null){	
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Objekt nicht null für '" + sPathTotal + "'";
-						    System.out.println(sLog);
+//							sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Objekt nicht null für '" + sPathTotal + "'";
+//						    System.out.println(sLog);
 							String sWorkspaceURL = workspaceURL.getPath();					
 							sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);
 							objReturn = new File(sWorkspaceURL);	
@@ -1403,8 +1403,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							    System.out.println(sLog);
 							}
 						}else{
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Objekt null für '" + sPathTotal + "'";
-						    System.out.println(sLog);
+//							sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Objekt null für '" + sPathTotal + "'";
+//						    System.out.println(sLog);
 						}
 					} catch (MalformedURLException e) {	
 						ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -1415,8 +1415,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					//+++++++++
 				}
 			}else{
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Searching for file by classloader.getResource '" + sPath +"'";
-			    System.out.println(sLog);
+//				sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Searching for file by classloader.getResource '" + sPath +"'";
+//			    System.out.println(sLog);
 			}}
 			
 			
@@ -1427,8 +1427,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		    System.out.println(sLog);
 			objReturn = ResourceEasyZZZ.doClassloaderGetResource(sPath);
 			if(objReturn!=null){
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Objekt nicht null für '" + sPath + "'";
-			    System.out.println(sLog);
+//				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Objekt nicht null für '" + sPath + "'";
+//			    System.out.println(sLog);
 			
 				if(objReturn.exists()) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Datei gefunden '" + sPath + "'";
@@ -1436,9 +1436,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					break main;
 				}
 			}else{
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Objekt null für '" + sPath + "'";
-			    System.out.println(sLog);
-			
+//				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Objekt null für '" + sPath + "'";
+//			    System.out.println(sLog);			
 			}
 			
 			
@@ -1447,8 +1446,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		    System.out.println(sLog);
 			objReturn = ResourceEasyZZZ.doClassGetResource(sPath);
 			if(objReturn!=null){
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2) Objekt nicht null für '" + sPath + "'";
-			    System.out.println(sLog);
+//				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2) Objekt nicht null für '" + sPath + "'";
+//			    System.out.println(sLog);
 						    
 				if(objReturn.exists()) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2) Datei gefunden '" + sPath + "'";
