@@ -49,7 +49,7 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 		this.setCounterFilling(sCounterFilling);
 		this.setCounterStart(sCounterStart);
 	}
-	public AbstractCounterStrategyAlphanumericSignificantZZZ(boolean bLowercase){
+	public AbstractCounterStrategyAlphanumericSignificantZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super();
 		this.isLowercase(true);
 	}

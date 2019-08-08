@@ -42,7 +42,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringForNumber(int i){
+	public static String getStringForNumber(int i) throws ExceptionZZZ{
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
 	}
@@ -53,7 +53,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringForNumber(int i, boolean bRightAligned){
+	public static String getStringForNumber(int i, boolean bRightAligned) throws ExceptionZZZ{
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
 		objCounterStrategy.isRightAligned(bRightAligned);
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
@@ -65,7 +65,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringMultipleForNumber(int i){
+	public static String getStringMultipleForNumber(int i) throws ExceptionZZZ{
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
 	}
@@ -78,7 +78,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringForNumber(int i,ICounterStrategyZZZ objCounterStrategy){	
+	public static String getStringForNumber(int i,ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{	
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuschstaben
 	}
 	
@@ -89,7 +89,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 12:00:15
 	 */
-	private static String getStringNumericForNumber_(int iNumber, ICounterStrategyZZZ objCounterStrategy){
+	private static String getStringNumericForNumber_(int iNumber, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{
 		String sReturn = null;		
 		main:{
 				if(iNumber<0) break main;			
@@ -244,7 +244,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 //		return this.objCounterStrategy;
 //	}
 	//nach Umstellung auf Generics
-	public T getCounterStrategyObject(){
+	public T getCounterStrategyObject() throws ExceptionZZZ{
 		if(this.objCounterStrategy==null){
 			ICounterStrategyNumericZZZ objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 			this.objCounterStrategy = (T) objCounterStrategy;

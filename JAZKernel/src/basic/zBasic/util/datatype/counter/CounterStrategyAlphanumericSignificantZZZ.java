@@ -187,7 +187,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 				double dtemp = DoubleZZZ.pointRight(fRest);					
 				double dtemp2 = (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);				
 				itemp = DoubleZZZ.toInt(dtemp2);//Merke: Das schneidet nur den Wert vor dem Komma ab: (int) (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
-				iChar = itemp+1;//Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
+				iChar = itemp +1; //FGL 20190806 FEHLER ???: //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
 					
 				stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iChar, bLowercase);
 				listas.add(stemp);	

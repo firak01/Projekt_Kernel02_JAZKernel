@@ -1,14 +1,15 @@
 package basic.zBasic.util.datatype.counter;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 
 public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCounterStrategyZZZ implements ICounterStrategyAlphanumericZZZ{
 	private boolean bLowercase = false;
-	public AbstractCounterStrategyAlphanumericZZZ(){
-		super();
+	public AbstractCounterStrategyAlphanumericZZZ() throws ExceptionZZZ{
+		super();		
 	}
-	public AbstractCounterStrategyAlphanumericZZZ(boolean bLowercase){
-		super();
+	public AbstractCounterStrategyAlphanumericZZZ(boolean bLowercase) throws ExceptionZZZ{
+		super();		
 		this.isLowercase(true);
 	}
 	

@@ -22,7 +22,7 @@ import basic.zKernel.KernelZZZ;
 public class ReflectCodeZZZ  implements IConstantZZZ{
 	public static  final int iPOSITION_STACKTRACE_CURRENT = 2;
 	public static  final int iPOSITION_STACKTRACE_CALLING = 3;
-
+	
 	public static String getMethodCurrentName(){
 		return getMethodCurrentName(1);
 	}
@@ -37,29 +37,18 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 				///Siehe Artikel 'The surprisingly simple stack trace Element'");
-				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-				if(stackTrace.length>=3){
-					int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
-					StackTraceElement element = stackTrace[iPositionInStacktrace];
-					method = element.getMethodName();
-				}
-				
-//				OutputStream out = System.out;
-//				for (StackTraceElement element : stackTrace) {
-//					final String exceptionMsg = "Exception thrown from " + element.getMethodName()
-//					+ " in class " + element.getClassName() + " [on line number "
-//					+ element.getLineNumber() + " of file " + element.getFileName() + "]\n";
-//					
-//					try{					
-//						out.write(exceptionMsg.getBytes());
-//					} catch (IOException ioEx){
-//						System.err.println(
-//						"IOException encountered while trying to write "
-//						+ "StackTraceElement data to provided OutputStream.\n"
-//						+ ioEx.getMessage() );
-//					}
+				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();				
+//				if(stackTrace.length>=3){
+//					int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
+//					StackTraceElement element = stackTrace[iPositionInStacktrace];
+//					method = element.getMethodName();
 //				}
 				
+				if(stackTrace.length>=4){
+					StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset];
+					method = element.getMethodName();
+				}
+								
 			}else{
 				
 			//Verarbeitung vor Java 1.4
@@ -109,8 +98,12 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  return method;
 	  }
 	  
-	  public static String getMethodCurrentNameLined(){
-		  return ReflectCodeZZZ.getMethodCurrentNameLined(1);
+	  public static String getMethodCurrentNameLined() throws ExceptionZZZ{
+		  return ReflectCodeZZZ.getMethodCurrentNameLined(1,0);//0=iLineOffset
+	  }
+	  
+	  public static String getMethodCurrentNameLined(int iLineOffset) throws ExceptionZZZ{
+		  return ReflectCodeZZZ.getMethodCurrentNameLined(1,iLineOffset);
 	  }
 	  
 	  /**
@@ -118,7 +111,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
 		   * @return Return the name of the routine that called getCurrentMethodName
 		   */
-		  public static String getMethodCurrentNameLined(int iOffset) {		  
+		  public static String getMethodCurrentNameLined(int iOffset, int iLineOffset) throws ExceptionZZZ{		  
 				String method = null;
 				
 				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
@@ -127,26 +120,9 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					method = ReflectCodeZZZ.getMethodCallingName(iOffset);
 					
 					int iLine = ReflectCodeZZZ.getMethodCallingLine(iOffset); //Berechne die gewünschte Zeile
-					
-					method +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  f�r die Zeilenausgabe.
-					
-					
-//					OutputStream out = System.out;
-//					for (StackTraceElement element : stackTrace) {
-//						final String exceptionMsg = "Exception thrown from " + element.getMethodName()
-//						+ " in class " + element.getClassName() + " [on line number "
-//						+ element.getLineNumber() + " of file " + element.getFileName() + "]\n";
-//						
-//						try{					
-//							out.write(exceptionMsg.getBytes());
-//						} catch (IOException ioEx){
-//							System.err.println(
-//							"IOException encountered while trying to write "
-//							+ "StackTraceElement data to provided OutputStream.\n"
-//							+ ioEx.getMessage() );
-//						}
-//					}
-					
+					iLine = iLine + iLineOffset;
+					method +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe.
+										
 				}else{
 					
 				//Verarbeitung vor Java 1.4
@@ -210,30 +186,14 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		
 		if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 			//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-			///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+			///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
 			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			if(stackTrace.length>=4){
 				int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
 				StackTraceElement element = stackTrace[iPositionInStacktrace];
 				method = element.getMethodName();
 			}
-			
-//			OutputStream out = System.out;
-//			for (StackTraceElement element : stackTrace) {
-//				final String exceptionMsg = "Exception thrown from " + element.getMethodName()
-//				+ " in class " + element.getClassName() + " [on line number "
-//				+ element.getLineNumber() + " of file " + element.getFileName() + "]\n";
-//				
-//				try{					
-//					out.write(exceptionMsg.getBytes());
-//				} catch (IOException ioEx){
-//					System.err.println(
-//					"IOException encountered while trying to write "
-//					+ "StackTraceElement data to provided OutputStream.\n"
-//					+ ioEx.getMessage() );
-//				}
-//			}
-			
+	
 		}else{
 			
 		//Verarbeitung vor Java 1.4
@@ -297,14 +257,13 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		 * @return Zeile im Stacktrace für den Namen der Methode, welche die aktuelle Methode aufgerufen hat.
 		 * lindhaueradmin, 23.07.2013
 		 */
-		public static int getMethodCallingLine() {
+		public static int getMethodCallingLine() throws ExceptionZZZ{
 			return getMethodCallingLine(1);
 		}
 		
-		public static int getMethodCallingLine(int iOffset){
+		public static int getMethodCallingLine(int iOffset) throws ExceptionZZZ{
 			int iLine = -1;
-			
-			
+						
 			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 				///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
@@ -314,26 +273,12 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					StackTraceElement element = stackTrace[iPositionInStacktrace];
 					iLine = element.getLineNumber();
 				}
-				
-//				OutputStream out = System.out;
-//				for (StackTraceElement element : stackTrace) {
-//					final String exceptionMsg = "Exception thrown from " + element.getMethodName()
-//					+ " in class " + element.getClassName() + " [on line number "
-//					+ element.getLineNumber() + " of file " + element.getFileName() + "]\n";
-//					
-//					try{					
-//						out.write(exceptionMsg.getBytes());
-//					} catch (IOException ioEx){
-//						System.err.println(
-//						"IOException encountered while trying to write "
-//						+ "StackTraceElement data to provided OutputStream.\n"
-//						+ ioEx.getMessage() );
-//					}
-//				}
-				
+								
 			}else{
 				
 			//Verarbeitung vor Java 1.4
+				ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			  
 			}//end if java version
 			  return iLine;
@@ -343,47 +288,12 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	  /**
 	 * @return Name (inkl. Package) der aktuellen Klasse
 	 * lindhaueradmin, 23.07.2013
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getClassCurrentName(){
+	public static String getClassCurrentName() throws ExceptionZZZ{
 		  String sReturn = null;
-		  main:{
-			  
-			  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
-					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-					///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
-
-					final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-					if(stackTrace.length>=4){
-						StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT];
-						sReturn = element.getClassName();
-					}
-					
-//					OutputStream out = System.out;
-//					for (StackTraceElement element : stackTrace) {
-//						final String exceptionMsg = "Exception thrown from " + element.getMethodName()
-//						+ " in class " + element.getClassName() + " [on line number "
-//						+ element.getLineNumber() + " of file " + element.getFileName() + "]\n";
-//						
-//						try{					
-//							out.write(exceptionMsg.getBytes());
-//						} catch (IOException ioEx){
-//							System.err.println(
-//							"IOException encountered while trying to write "
-//							+ "StackTraceElement data to provided OutputStream.\n"
-//							+ ioEx.getMessage() );
-//						}
-//					}
-					
-				}else{
-					
-						//Verarbeitung vor Java 1.4
-						  
-					  String sMethodCalling = ReflectCodeZZZ.getMethodCallingName(); //... weil getMethodCurrentName(); DIESE Methode zur�ckgeben w�rde.
-					  if(StringZZZ.isEmpty(sMethodCalling)) break main;
-					  
-					  //Hole alles links von der Methode
-					  sReturn = StringZZZ.leftback(sMethodCalling, ".");
-				}//end Java Version
+		  main:{			  			  
+			 sReturn = ReflectCodeZZZ.getClassCallingName(0);
 		  }//end main:
 		  return sReturn;
 	  }
@@ -403,35 +313,28 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  
 				  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 						//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
-						///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+						///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
 						final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 						if(stackTrace.length>=4){
 							int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
 							StackTraceElement element = stackTrace[iPositionInStacktrace];
 							sReturn = element.getClassName();
-						}
-						
-//						OutputStream out = System.out;
-//						for (StackTraceElement element : stackTrace) {
-//							final String exceptionMsg = "Exception thrown from " + element.getMethodName()
-//							+ " in class " + element.getClassName() + " [on line number "
-//							+ element.getLineNumber() + " of file " + element.getFileName() + "]\n";
-//							
-//							try{					
-//								out.write(exceptionMsg.getBytes());
-//							} catch (IOException ioEx){
-//								System.err.println(
-//								"IOException encountered while trying to write "
-//								+ "StackTraceElement data to provided OutputStream.\n"
-//								+ ioEx.getMessage() );
-//							}
-//						}
-						
+						}												
 					}else{
 						
-							//Verarbeitung vor Java 1.4
+						//Verarbeitung vor Java 1.4
 						ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;	  
+						throw ez;	
+						
+						
+//						//Verarbeitung vor Java 1.4
+//						  
+//					  String sMethodCalling = ReflectCodeZZZ.getMethodCallingName(); //... weil getMethodCurrentName(); DIESE Methode zur�ckgeben w�rde.
+//					  if(StringZZZ.isEmpty(sMethodCalling)) break main;
+//					  
+//					  //Hole alles links von der Methode
+//					  sReturn = StringZZZ.leftback(sMethodCalling, ".");
+						
 					}//end Java Version
 			  }//end main:
 			  return sReturn;
@@ -448,24 +351,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 					  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
 						String sLineTotal = ReflectCodeZZZ.getClassCallingName() + "."  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
-						
-						
-//						OutputStream out = System.out;
-//						for (StackTraceElement element : stackTrace) {
-//							final String exceptionMsg = "Exception thrown from " + element.getMethodName()
-//							+ " in class " + element.getClassName() + " [on line number "
-//							+ element.getLineNumber() + " of file " + element.getFileName() + "]\n";
-//							
-//							try{					
-//								out.write(exceptionMsg.getBytes());
-//							} catch (IOException ioEx){
-//								System.err.println(
-//								"IOException encountered while trying to write "
-//								+ "StackTraceElement data to provided OutputStream.\n"
-//								+ ioEx.getMessage() );
-//							}
-//						}
-						
+				
 						sReturn = sLineTotal;
 					}else{
 						
@@ -726,24 +612,6 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		return ReflectCodeZZZ.getCallingStack(null);
 	}
 	
-	/**Gib ein Array der Methoden des Stacktrace zurück.
-	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
-	 * z.B. in einer HashMap verwendet werden kann.
-	 * 
-	 * Besonderheit:
-	 * Schränke dies auf ZZZ-Klassen ein 
-	 * UND filtere ggfs. aufrufenden ReflectCode - Klassen aus, also z.B. den Aufruf selbst.
-	 * 
-	 * @return
-	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
-	 * @throws ExceptionZZZ 
-	 */
-	public static String[] getCallingStackKernel() throws ExceptionZZZ{
-		//Schränke die Suche auf Kernel-Klassen ein.
-		String sRegEx = "(ZZZ$|ZZZ(T|t)est)$"; //Also: Am Ende des Klassennamens soll ZZZ stehen, bzw. ZZZTest, aber nicht der Reflection-Klassenname	
-		return ReflectCodeZZZ.getCallingStack(sRegEx);
-	}
-	
 	public static String getCallingStackName() throws ExceptionZZZ{
 		String sReturn = "";
 		main:{
@@ -756,8 +624,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		}
 		return sReturn;
 	}
-
-
+	
 	/**
 	 * Ermittelt den Namen der aufrufenden Funktion.
 	 */
@@ -789,4 +656,67 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
         }
         return size;
     }
+	public static StackTraceElement[] getStackTrace(String sRegEx) throws ExceptionZZZ{
+		StackTraceElement[] objaReturn = null;
+		main:{			
+			ArrayList<StackTraceElement>listaTemp = new ArrayList<StackTraceElement>();
+			String stemp; boolean btemp;
+	
+			Matcher matcher = null;
+			Pattern pattern = null;
+				  
+			//#####################DEBUG 						
+			//Filtere diese ReflectCodeZZZ-Klasse selber aus.
+			String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ".", "\\.");
+			sClassNameRegexed = StringZZZ.stripRight(sClassNameRegexed, "ZZZ");
+			
+			
+			String sClassNameFilterRegEx = null;
+			if(StringZZZ.isEmpty(sRegEx)){
+				sClassNameFilterRegEx = "^((?!"+sClassNameRegexed+").)[A-Za-z\\.]";
+			}else{
+				sClassNameFilterRegEx = "^((?!"+sClassNameRegexed+").)*"+ sRegEx;//dynamische Variante mit dem Packagenamen und dem Pfad der tatsächlich verwendeten Klasse.
+			}
+				  			  			  
+			//######################			 
+			 //Negative Lookahead: Filtere vorher alle Klassen mit ReflectCode im Namen aus. 			  
+			 if(!StringZZZ.isEmpty(sClassNameFilterRegEx)){ //einmal den RegEx Ausdruck erzeugen und nicht jedesmal in der Schleife.
+				  try{
+					  pattern = Pattern.compile(sClassNameFilterRegEx);
+				  }catch(Exception e){
+					  System.out.println("Error for RegEx: '" + sClassNameFilterRegEx + "'");
+					  e.printStackTrace();
+				  }
+			  }
+				  				
+			 if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+				 //Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+				int iposition=0;
+				for(StackTraceElement element : stackTrace){
+					iposition++;
+					if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";																			
+						if(pattern==null){
+							//stemp = element.getClassName() + "." + element.getMethodName();								
+							listaTemp.add(element);
+						}else{
+							stemp = element.getClassName();																				
+							matcher = pattern.matcher(stemp);
+							btemp=matcher.find();									
+							if(btemp) {
+								//stemp = element.getClassName() + "." + element.getMethodName();									
+								listaTemp.add(element);
+							}
+						}
+					}//end if
+				}//end for									
+			}else{					
+				//Verarbeitung vor Java 1.4
+				ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	  
+			}//end Java Version
+			objaReturn = listaTemp.toArray(new StackTraceElement[listaTemp.size()]);
+		}//end main:
+		return objaReturn;
+	}
 }

@@ -341,7 +341,7 @@ public static boolean isValidCharacter(String s){
 //			}
 	
 	//nach Umstellung auf Generics
-		public T getCounterStrategyObject(){
+		public T getCounterStrategyObject() throws ExceptionZZZ{
 			if(this.objCounterStrategy==null){
 				//Hier den Konkreten Unter-Counter-Typen erzeugen. 				
 				T objCounterStrategy = this.getCounterStrategyObjectDefault();				
@@ -358,7 +358,7 @@ public static boolean isValidCharacter(String s){
 			this.objCounterStrategy = (T) objCounterStrategy;
 		}
 		
-		public T getCounterStrategyObjectDefault(){
+		public T getCounterStrategyObjectDefault() throws ExceptionZZZ{
 			//20190728: Verwende den global als Default eingestellten Typen
 			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 			return (T) objCounterStrategy;

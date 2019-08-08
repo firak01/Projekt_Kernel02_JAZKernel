@@ -1,5 +1,8 @@
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import basic.zBasic.ReflectTHECodeKernelZZZTest;
+import basic.zBasic.ReflectTHECodeZZZTest;
+import basic.zBasic.ReflectEnvironmentZZZTest;
 import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZTest;
@@ -39,6 +42,11 @@ public class KernelAllTestZZZ {
 		TestSuite objReturn = new TestSuite();
 		//Merke: Die Tests bilden in ihrer Reihenfolge in etwa die Hierarchie im Framework ab. 
 		//            Dies beim Einfügen weiterer Tests bitte beachten.         
+		
+		//Tests für Reflection
+		objReturn.addTestSuite(ReflectEnvironmentZZZTest.class);
+		objReturn.addTestSuite(ReflectTHECodeZZZTest.class);
+		objReturn.addTestSuite(ReflectTHECodeKernelZZZTest.class);
 		
 		//Tests für Enum
 		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);

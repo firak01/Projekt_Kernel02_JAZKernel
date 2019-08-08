@@ -48,12 +48,12 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ <T extends 
 	
 	// ++++ Aus Interface		
 	@Override
-	public boolean isLowercase() {
+	public boolean isLowercase() throws ExceptionZZZ {
 		return this.getCounterStrategyObject().isLowercase();
 	}
 
 	@Override
-	public void isLowercase(boolean bValue) {
+	public void isLowercase(boolean bValue) throws ExceptionZZZ {
 		this.getCounterStrategyObject().isLowercase(bValue);
 	}
 	
@@ -95,7 +95,7 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ <T extends 
 	//public abstract void setCounterStrategyObject(T objCounterStrategy);
 	
 	@Override	
-	public abstract T getCounterStrategyObject();
+	public abstract T getCounterStrategyObject() throws ExceptionZZZ;
 	
 }
 

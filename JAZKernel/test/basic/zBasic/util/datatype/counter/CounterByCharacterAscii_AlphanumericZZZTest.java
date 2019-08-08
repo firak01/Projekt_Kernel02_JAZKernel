@@ -284,11 +284,14 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    
 	   
 	    public void testGetNumberForStringAlphanumeric_StrategyMultiple(){
-	    	
-	    	
 	    	//"MULTIPLE STRATEGY"-Ergebnisse
 	    	String stemp; int itemp; boolean btemp;
-	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+	    	ICounterStrategyAlphanumericZZZ objCounterStrategy=null;
+	    	try{	    	
+	    		objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
+	    	} catch (ExceptionZZZ ez) {
+	    		fail("Method throws an exception." + ez.getMessageLast());
+	    	} 
 	    	
 	    	try {
 				stemp = "0";				
@@ -315,9 +318,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 		    	//Mache die Gegenprobe
 		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
-		    			    	
-		    	
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    			    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -332,9 +333,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 		    	//Mache die Gegenprobe
 		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
-		    			    	
-		    	
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    			    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -349,9 +348,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 		    	//Mache die Gegenprobe
 		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
-		    			    	
-		    	
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    			    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -366,9 +363,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 		    	//Mache die Gegenprobe
 		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
-		    			    	
-		    	
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    			    
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -383,9 +378,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 		    	//Mache die Gegenprobe
 		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
-		    			    	
-		    	
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    			    
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -400,9 +393,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 		    	//Mache die Gegenprobe
 		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
-		    			    	
-		    	
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -417,9 +408,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 		    	//Mache die Gegenprobe
 		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
-		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
-		    			    	
-		    	
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    		    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 		
@@ -428,7 +417,12 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    public void testGetNumberForStringAlphanumeric_StrategySerial(){
 	    	
 	    	String stemp; int itemp; boolean btemp;
-	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
+	    	ICounterStrategyAlphanumericZZZ objCounterStrategy = null;
+	    	try{
+	    	 objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
+	    	} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 	
 	    	
 	    	//Ungültige Werte
 	    	try {

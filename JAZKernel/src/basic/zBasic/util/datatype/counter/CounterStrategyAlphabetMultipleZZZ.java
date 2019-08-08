@@ -5,10 +5,10 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyAlphanumericZZZ{
-	public CounterStrategyAlphabetMultipleZZZ(){
+	public CounterStrategyAlphabetMultipleZZZ() throws ExceptionZZZ{
 		super();
 	}
-	public CounterStrategyAlphabetMultipleZZZ(boolean bLowercase){
+	public CounterStrategyAlphabetMultipleZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super(bLowercase);
 	}
 	

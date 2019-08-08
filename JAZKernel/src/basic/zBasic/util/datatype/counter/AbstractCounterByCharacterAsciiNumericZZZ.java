@@ -64,5 +64,5 @@ public abstract class AbstractCounterByCharacterAsciiNumericZZZ <T extends ICoun
 		//public abstract void setCounterStrategyObject(T objCounterStrategy);
 		
 		@Override	
-		public abstract T getCounterStrategyObject();
+		public abstract T getCounterStrategyObject() throws ExceptionZZZ;
 }

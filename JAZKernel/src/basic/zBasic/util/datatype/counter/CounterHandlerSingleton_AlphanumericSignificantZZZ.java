@@ -3,6 +3,7 @@ package basic.zBasic.util.datatype.counter;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeKernelZZZ;
 //import basic.zBasic.KernelSingletonVIA;
 //import basic.zKernel.IKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -46,7 +47,7 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 		main:{
 			
 			//Ermittle die aktuelle Stacktraceposition und dann jeweils die aufrufende Methode.
-			String[] saCalling = ReflectCodeZZZ.getCallingStackKernel();
+			String[] saCalling = ReflectCodeKernelZZZ.getCallingStack();
 			
 			//Suche in der Hashmap nach einem String des Klassen.Methodennamens, der schon in der HashMap gespeichert ist.
 			//Wird er gefunden, dann soll der Counter wiederverwendet werden.			

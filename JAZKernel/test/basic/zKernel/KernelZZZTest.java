@@ -298,7 +298,17 @@ public void testParameterByProgramAlias(){
 		
 	try{
 		//B) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
+		//!!! GROSS-/Keinschreibung ist relevant
 		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty").getValue(); 
+		assertEquals("Expected NO value of property 'testProgramProperty', because Program is not configured starting with lowercase letter 't' for the 'TestModule' of the Application 'FGL'", "" , stemp2);
+		fail("An exception was expected ");
+	}catch(ExceptionZZZ ez){
+	}	
+	
+	try{
+		//B) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
+		//!!! GROSS-/Keinschreibung ist relevant		
+		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "TestProgramName", "testProgramProperty").getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp2);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
