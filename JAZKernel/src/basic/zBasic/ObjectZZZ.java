@@ -25,7 +25,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 		
 	private static final long serialVersionUID = 1L;
 
-	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
+	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
 	 * 
 	 */
 //	public enum FLAGZ{

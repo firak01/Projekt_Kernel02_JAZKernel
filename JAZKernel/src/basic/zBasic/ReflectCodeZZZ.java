@@ -23,6 +23,9 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	public static  final int iPOSITION_STACKTRACE_CURRENT = 2;
 	public static  final int iPOSITION_STACKTRACE_CALLING = 3;
 	
+	public static final String sCLASS_METHOD_SEPERATOR = ".";
+	public static final String sPACKAGE_SEPERATOR = ".";
+	
 	public static String getMethodCurrentName(){
 		return getMethodCurrentName(1);
 	}
@@ -87,7 +90,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  
 			  if(t!=null){
 				  String methodWithPackageName = t;
-				  int iDotPos = methodWithPackageName.lastIndexOf(".");
+				  int iDotPos = methodWithPackageName.lastIndexOf(ReflectCodeZZZ.sPACKAGE_SEPERATOR);
 				  if(iDotPos<=-1){
 					  method = methodWithPackageName;
 				  }else{
@@ -161,7 +164,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  
 				  if(t!=null){
 					  String methodWithPackageName = t;
-					  int iDotPos = methodWithPackageName.lastIndexOf(".");
+					  int iDotPos = methodWithPackageName.lastIndexOf(ReflectCodeZZZ.sPACKAGE_SEPERATOR);
 					  if(iDotPos<=-1){
 						  method = methodWithPackageName;
 					  }else{
@@ -234,7 +237,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		  
 		  if(t!=null){
 			  String methodWithPackageName = t;
-			  int iDotPos = methodWithPackageName.lastIndexOf(".");
+			  int iDotPos = methodWithPackageName.lastIndexOf(ReflectCodeZZZ.sPACKAGE_SEPERATOR);
 			  if(iDotPos<=-1){
 				  method = methodWithPackageName;
 			  }else{
@@ -350,7 +353,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 
 					  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 					  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
-						String sLineTotal = ReflectCodeZZZ.getClassCallingName() + "."  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
+						String sLineTotal = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
 				
 						sReturn = sLineTotal;
 					}else{
@@ -381,7 +384,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		  Package objPackage  = objClass.getPackage();
 		  if(objPackage!=null) {
 			  sReturn = objPackage.getName(); //Merke: Wenn Klassen in einem JAR-File zusammengefasst werden, dann haben sie ein leeres Package
-			  sReturn =StringZZZ.replace(sReturn, ".", File.separator);
+			  sReturn =StringZZZ.replace(sReturn,  ReflectCodeZZZ.sPACKAGE_SEPERATOR, File.separator);
 		  }else{
 			  sReturn = ".";
 		  }
@@ -410,7 +413,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		  Class objClass = obj.getClass();
 		  String sNameTotal = objClass.getName();
 		  
-		  StringTokenizer objToken = new StringTokenizer(sNameTotal, ".");
+		  StringTokenizer objToken = new StringTokenizer(sNameTotal, ReflectCodeZZZ.sPACKAGE_SEPERATOR);
 		  while(objToken.hasMoreTokens()){
 			  sReturn = objToken.nextToken();
 		  }
@@ -435,7 +438,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		  
 		  String sNameTotal = classOfObject.getName();
 		  
-		  StringTokenizer objToken = new StringTokenizer(sNameTotal, ".");
+		  StringTokenizer objToken = new StringTokenizer(sNameTotal, ReflectCodeZZZ.sPACKAGE_SEPERATOR);
 		  while(objToken.hasMoreTokens()){
 			  sReturn = objToken.nextToken();
 		  }
@@ -468,6 +471,17 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	/**Gib ein Array der Methoden des Stacktrace zurück.
 	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
 	 * z.B. in einer HashMap verwendet werden kann.
+	 * @return
+	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
+	 * @throws ExceptionZZZ 
+	 */
+	public static String[] getCallingStack() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getCallingStack(null);
+	}
+	
+	/**Gib ein Array der Methoden des Stacktrace zurück.
+	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
+	 * z.B. in einer HashMap verwendet werden kann.
 	 * @param sClassnameFilterRegEx : Schränke die Array-Einträge ein, auf Klassen, die diesen RegEx Ausdruck haben.
 	 * @return
 	 * @author Fritz Lindhauer, 16.06.2019, 07:42:03
@@ -484,7 +498,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  
 		//#####################DEBUG 						
 		//Filtere diese ReflectCodeZZZ-Klasse selber aus.
-		String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ".", "\\.");
+		String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ReflectCodeZZZ.sPACKAGE_SEPERATOR, "\\" + ReflectCodeZZZ.sPACKAGE_SEPERATOR);
 		sClassNameRegexed = StringZZZ.stripRight(sClassNameRegexed, "ZZZ");
 		
 		//Das Finden des passenden RegEx Ausdrucks war etws komplizierter.....
@@ -573,7 +587,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 						if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";																			
 							//if(objReFilter==null){
 							if(pattern==null){
-								stemp = element.getClassName() + "." + element.getMethodName();								
+								stemp = ReflectCodeZZZ.getClassMethodString(element);									
 								listasTemp.add(stemp);
 							}else{
 								stemp = element.getClassName();
@@ -583,7 +597,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 								btemp=matcher.find();
 								
 								if(btemp) {
-									stemp = element.getClassName() + "." + element.getMethodName();									
+									stemp = ReflectCodeZZZ.getClassMethodString(element);									
 									listasTemp.add(stemp);
 								}
 							}
@@ -601,29 +615,50 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		return saReturn;
 	}
 	
-	/**Gib ein Array der Methoden des Stacktrace zurück.
-	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
-	 * z.B. in einer HashMap verwendet werden kann.
-	 * @return
-	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
-	 * @throws ExceptionZZZ 
-	 */
-	public static String[] getCallingStack() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getCallingStack(null);
-	}
+
 	
-	public static String getCallingStackName() throws ExceptionZZZ{
+	public static String getClassMethodString() throws ExceptionZZZ{
 		String sReturn = "";
 		main:{
-			String sMethod=ReflectCodeZZZ.getMethodCallingName(1);//0 wäre die aufrufende Methode, wir brauchen aber an dieser Stelle die auf-aufrufende Methode.
-			String sClass = ReflectCodeZZZ.getClassCallingName(1);//0 wäre die aufrufende Methode, wir brauchen aber an dieser Stelle die auf-aufrufende Methode.
+			String sMethod=ReflectCodeZZZ.getMethodCallingName(1);//0 wäre die aktuelle Methode als aufrufende Methode, wir brauchen aber an dieser Stelle die auf-aufrufende Methode, also 1.
+			String sClass = ReflectCodeZZZ.getClassCallingName(1);//0 wäre die aktuelle Methode als aufrufende Methode, wir brauchen aber an dieser Stelle die auf-aufrufende Methode, also 1.
 			sReturn = sClass;
 			if(!StringZZZ.isEmpty(sMethod)){
-				sReturn = sReturn + "." + sMethod;
+				sReturn = sReturn + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + sMethod;
 			}
 		}
 		return sReturn;
 	}
+	
+	public static String getClassMethodString(StackTraceElement objStack) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			if(objStack==null){
+				//Hier mal vollkommen ungenerisch die Exception bauen. Hintergrund: Wenn diese Methode in den Reflect-Klassen verwendet wird, fürchte ich sonst eine Eindlosschleife.
+				ExceptionZZZ ez = new ExceptionZZZ("StackTraceElement fehlt'", iERROR_PARAMETER_MISSING, ReflectCodeKernelZZZ.class, "getClassMethodString(StackTraceElement objStack)");
+				throw ez;	
+			}
+			
+			String sMethod = objStack.getMethodName();
+			String sClass = objStack.getClassName();
+			sReturn = sClass + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + sMethod;
+		}//end main
+		return sReturn;
+	}
+	
+	public static String getClassMethodCallingString() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getClassMethodCallingString(1);
+	}
+	public static String getClassMethodCallingString(int iOffset) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sClass = ReflectCodeZZZ.getClassCallingName(iOffset);
+			String sMethod = ReflectCodeZZZ.getMethodCallingName(iOffset);
+			sReturn = sClass + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + sMethod;
+		}
+		return sReturn;
+	}
+	
 	
 	/**
 	 * Ermittelt den Namen der aufrufenden Funktion.
@@ -636,7 +671,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			if (lastCaller == null) {
 				return "keine aufrufende Methode";
 			}
-			if (lastCaller.indexOf(className + ".") < 0) {
+			if (lastCaller.indexOf(className + ReflectCodeZZZ.sPACKAGE_SEPERATOR) < 0) {
 				return lastCaller;
 			}
 		}
@@ -656,6 +691,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
         }
         return size;
     }
+	
 	public static StackTraceElement[] getStackTrace(String sRegEx) throws ExceptionZZZ{
 		StackTraceElement[] objaReturn = null;
 		main:{			
@@ -667,7 +703,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  
 			//#####################DEBUG 						
 			//Filtere diese ReflectCodeZZZ-Klasse selber aus.
-			String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ".", "\\.");
+			String sClassNameRegexed = StringZZZ.replace(ReflectCodeZZZ.class.getName(), ReflectCodeZZZ.sPACKAGE_SEPERATOR, "\\" + ReflectCodeZZZ.sPACKAGE_SEPERATOR);
 			sClassNameRegexed = StringZZZ.stripRight(sClassNameRegexed, "ZZZ");
 			
 			
@@ -696,15 +732,13 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				for(StackTraceElement element : stackTrace){
 					iposition++;
 					if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";																			
-						if(pattern==null){
-							//stemp = element.getClassName() + "." + element.getMethodName();								
+						if(pattern==null){													
 							listaTemp.add(element);
 						}else{
 							stemp = element.getClassName();																				
 							matcher = pattern.matcher(stemp);
 							btemp=matcher.find();									
-							if(btemp) {
-								//stemp = element.getClassName() + "." + element.getMethodName();									
+							if(btemp) {															
 								listaTemp.add(element);
 							}
 						}

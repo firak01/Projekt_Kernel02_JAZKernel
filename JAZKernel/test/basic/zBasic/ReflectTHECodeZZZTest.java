@@ -2,6 +2,14 @@ package basic.zBasic;
 
 import junit.framework.TestCase;
 
+/**
+ *  Merke: Das THE im Klassenanemn ist Absicht, weil nämlich die  Reflection - Klassen sellbst 
+ *            aus dem  errechneten Stacktrace, etc. herausgerechnet werden.
+ *            Darum weichen die Testklassen vom Schema ab.
+ * 
+ * @author Fritz Lindhauer, 08.08.2019, 23:15:52
+ * 
+ */
 public class ReflectTHECodeZZZTest  extends TestCase{
 	
 	private ObjectZZZ objObjectTest = null;

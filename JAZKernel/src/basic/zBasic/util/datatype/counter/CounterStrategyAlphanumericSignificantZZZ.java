@@ -9,20 +9,25 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericSignificantZZZ{
+		
 	public CounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();
+		this.initClassMethodCallingString();	
 	}
 	
 	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter);
+		this.initClassMethodCallingString();	
 	}
 	
 	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, int iStartValue) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter, iStartValue);
+		this.initClassMethodCallingString();	
 	}
 	
 	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, String sStartValue) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter, sStartValue);
+		this.initClassMethodCallingString();	
 	}
 
 	

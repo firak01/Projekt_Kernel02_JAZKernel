@@ -7,9 +7,11 @@ public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCou
 	private boolean bLowercase = false;
 	public AbstractCounterStrategyAlphanumericZZZ() throws ExceptionZZZ{
 		super();		
+		this.initClassMethodCallingString();
 	}
 	public AbstractCounterStrategyAlphanumericZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super();		
+		this.initClassMethodCallingString();	
 		this.isLowercase(true);
 	}
 	

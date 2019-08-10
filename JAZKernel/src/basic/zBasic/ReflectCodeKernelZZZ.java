@@ -34,5 +34,37 @@ public class ReflectCodeKernelZZZ implements IConstantZZZ{
 		String sRegEx = ReflectCodeKernelZZZ.sREGEX_KERNEL_CLASS;
 		return ReflectCodeZZZ.getStackTrace(sRegEx);
 	}
+	
+	public static StackTraceElement getCallingStackTraceElement() throws ExceptionZZZ{
+		StackTraceElement objReturn = null;
+		main:{
+			objReturn = ReflectCodeKernelZZZ.getCallingStackTraceElement(0);
+		}//end main:
+		return objReturn;
+	}
+	
+	public static StackTraceElement getCallingStackTraceElement(int iOffset) throws ExceptionZZZ{
+		StackTraceElement objReturn = null;
+		main:{
+			StackTraceElement[] stackTrace = ReflectCodeKernelZZZ.getStackTrace();
+			if(stackTrace.length>=4){
+				int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
+				objReturn = stackTrace[iPositionInStacktrace];				
+			}		
+		}//end main:
+		return objReturn;
+	}
+	
+	
+	public static String getCallingClassMethod() throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			StackTraceElement objStack = ReflectCodeKernelZZZ.getCallingStackTraceElement();
+			sReturn = ReflectCodeZZZ.getClassMethodString(objStack);			
+		}//end main
+		return sReturn;
+	}
+	
+	
 
 }

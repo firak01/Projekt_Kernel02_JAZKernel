@@ -65,7 +65,7 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 				objCounter = objCounterFactory.createCounter(objCounterStrategy, iStart);
 				
 				//Ermittle die Aufrufende Methode
-				String sCalling = ReflectCodeZZZ.getCallingStackName();			
+				String sCalling = ReflectCodeZZZ.getClassMethodString();			
 				this.setCounterFor(sCalling, objCounter);
 			}
 		}

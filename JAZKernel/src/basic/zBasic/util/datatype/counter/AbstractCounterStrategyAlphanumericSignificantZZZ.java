@@ -24,16 +24,17 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 	
 	public AbstractCounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();
+		this.initClassMethodCallingString();		
 		this.setCounterLength(iCounterLengthDefault);
 		this.setCounterFilling(cCounterFillingDefault);
 	}
 	public AbstractCounterStrategyAlphanumericSignificantZZZ(int iLength, char cCounterFilling) throws ExceptionZZZ{
-		this();
+		this();		
 		this.setCounterLength(iLength);
 		this.setCounterFilling(cCounterFilling);
 	}
 	public AbstractCounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFilling) throws ExceptionZZZ{
-		this();
+		this();		
 		this.setCounterLength(iLength);
 		this.setCounterFilling(sCounterFilling);		
 	}
@@ -51,6 +52,7 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 	}
 	public AbstractCounterStrategyAlphanumericSignificantZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super();
+		this.initClassMethodCallingString();	
 		this.isLowercase(true);
 	}
 
