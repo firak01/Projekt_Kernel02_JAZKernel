@@ -51,69 +51,29 @@ public class ReflectTHECodeKernelZZZTest  extends TestCase{
 			
 			String sCallingIntern02 = saCallingIntern01[saCallingIntern01.length-1];
 			assertTrue("Es sollte die aufrufende Testmethode im Ergebnis sein, als Wert mit dem höchsten Index", sCallingMethod.equals(sCallingIntern02));
-			
-			boolean btemp2 = objObjectTest.startAsSubInitialiseObject();
-			IObjectReflectableZZZ objCreatedInternal = objObjectTest.getObjectInitialisedInternal();			
-			String sMethodWhichHasObjectInitialized = objCreatedInternal.getClassMethodCallingString();
-			sCallingMethod = objObjectTest.getClass().getName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + "startAsSubInitialiseObject";
-			assertTrue("Es sollte die Objekt erstellende Testmethode im Ergebnis sein", sCallingMethod.equals(sMethodWhichHasObjectInitialized));
-			
-			
+									
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 
 	}
 	
-	public void testGetMethodCurrentName(){
+	public void testGetClassMethodCallingString(){
 		try{
-			String sFunction = "testGetMethodCurrentName";
-			String  stemp = ReflectCodeZZZ.getMethodCurrentName();
-			assertNotNull("Fehler beim Ermitteln des aktuellen Methodennamens (NULL)", stemp);
-			assertTrue("Fehler beim Ermitteln des aktuellen Methodennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sFunction));
+			//Verbereitende initialisierung:
+			String sCallingMethod = ReflectCodeZZZ.getClassCurrentName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + ReflectCodeZZZ.getMethodCurrentName();			
 			
-			stemp = ReflectCodeZZZ.getMethodCurrentNameLined(0);
-			assertNotNull("Fehler beim Ermitteln des aktuellen Methodennamens mit Zeilennummer (NULL)", stemp);
-			assertTrue("Fehler beim Ermitteln des aktuellen Methodennamens: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.startsWith(sFunction) && stemp.length() > sFunction.length());
+			//Ermittle aus einem Objekt, das innerhalb einer Methode erstellt wurde, den Namen der aufrufenden Methode.
+			boolean btemp2 = objObjectTest.startAsSubInitialiseObject();//der Aufruf der Methode, die das zu anlaylsierende Objekt erzeugt.
+			IObjectReflectableZZZ objCreatedInternal = objObjectTest.getObjectInitialisedInternal();			
+			String sMethodWhichHasObjectInitialized = objCreatedInternal.getClassMethodCallingString();
+			sCallingMethod = objObjectTest.getClass().getName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + "startAsSubInitialiseObject";
+			assertTrue("Es sollte die Objekt erstellende Testmethode im Ergebnis sein", sCallingMethod.equals(sMethodWhichHasObjectInitialized));
+						
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 	}
 	
-	public void testGetClassCurrentName(){
-		try{
-			String sClass = this.getClass().getName();
-			String  stemp = ReflectCodeZZZ.getClassCurrentName();
-			assertNotNull("Fehler beim Ermitteln des aktuellen Klassennamens (NULL)", stemp);
-			assertTrue("Fehler beim Ermitteln des aktuellen Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClass));
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		} 
-	}
 	
-	public void testGetClassCallingName(){
-		try{
-			String sClassCurrent = this.getClass().getName(); 
-			String  stemp = ReflectCodeZZZ.getClassCallingName(); //Das ist dann keine meiner Klassen, sondern von sun, etc.
-			assertNotNull("Fehler beim Ermitteln des aufrufenden Klassennamens (NULL)", stemp);
-			assertFalse("Fehler beim Ermitteln des aufrufenden Klassennamens: '" + stemp + "' wurde nicht erwartet.", stemp.equals(sClassCurrent));
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		} 
-	}
-	
-	public void testGetPositionCurrent(){
-		try{
-			String sClassCurrent = this.getClass().getName(); 
-			String sMethodCurrentLined = ReflectCodeZZZ.getMethodCurrentNameLined(2);//2 ist das Offset, weil die Zeilennummer erste f�r 2 Zeilen sp�ter berechnet werden soll. 
-			
-			String  stemp = ReflectCodeZZZ.getPositionCurrent(); //Das ist dann keine meiner Klassen, sondern von sun, etc.
-			assertNotNull("Fehler beim Ermitteln der aktuellen CodePosition (NULL)", stemp);
-			
-			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Klassenname).", stemp.startsWith(sClassCurrent) && stemp.length() > sClassCurrent.length());
-			assertTrue("Fehler beim Ermitteln der aktuellen CodePosition: '" + stemp + "' wurde nicht erwartet (Zeilennummer).", stemp.endsWith(sMethodCurrentLined) && stemp.length() > sMethodCurrentLined.length());
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		} 
-	}
 		
 }//END Class

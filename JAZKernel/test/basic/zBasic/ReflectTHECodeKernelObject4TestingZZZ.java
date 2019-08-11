@@ -6,7 +6,7 @@ package basic.zBasic;
  * @author Fritz Lindhauer, 09.08.2019, 08:43:27
  * 
  */
-public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ implements IObjectReflectableUserZZZ{
+public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ{
 	String[] saCallingStack = null;
 	IObjectReflectableZZZ objInitializedInternal = null;
 	
