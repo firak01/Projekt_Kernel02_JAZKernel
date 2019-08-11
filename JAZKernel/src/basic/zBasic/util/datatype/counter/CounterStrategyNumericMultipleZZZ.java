@@ -7,6 +7,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNumbersOnlyZZZ{
 	public CounterStrategyNumericMultipleZZZ() throws ExceptionZZZ{
 		super();
+		this.makeReflectableInitialization();
 	}
 	
 	@Override
@@ -81,6 +82,11 @@ public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNu
 			
 		}//end main:
 		return sReturn;
+	}
+
+	@Override
+	public boolean makeReflectableInitialization() throws ExceptionZZZ {
+		return this.initClassMethodCallingString();
 	}
 
 

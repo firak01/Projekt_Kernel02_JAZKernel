@@ -23,8 +23,7 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 	private char[] caCounterFilling = new char[1]; 	//ist also besser als private char cCounterFilling;
 	
 	public AbstractCounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
-		super();
-		this.initClassMethodCallingString();		
+		super();			
 		this.setCounterLength(iCounterLengthDefault);
 		this.setCounterFilling(cCounterFillingDefault);
 	}

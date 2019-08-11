@@ -6,11 +6,13 @@ package basic.zBasic;
  * @author Fritz Lindhauer, 09.08.2019, 08:43:27
  * 
  */
-public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ {
+public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ implements IObjectReflectableUserZZZ{
 	String[] saCallingStack = null;
+	IObjectReflectableZZZ objInitializedInternal = null;
 	
-	public ReflectTHECodeKernelObject4TestingZZZ(){
+	public ReflectTHECodeKernelObject4TestingZZZ() throws ExceptionZZZ{
 		super();
+		this.makeReflectableInitialization();
 	}
 	
 	public String[] getCallingStackComputed(){
@@ -67,8 +69,20 @@ public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ 
 			//this.setCallingStackComputed(saReturn);
 			
 			ReflectTHECodeKernelObject4TestingSubZZZ objTest = new ReflectTHECodeKernelObject4TestingSubZZZ();
-						
+			this.setObjectInitialisedInternal(objTest);
 		}//end main:
 		return bReturn;
+	}
+	
+	public void setObjectInitialisedInternal(IObjectReflectableZZZ obj){
+		this.objInitializedInternal = obj;
+	}
+	public IObjectReflectableZZZ getObjectInitialisedInternal(){
+		return this.objInitializedInternal;
+	}
+	
+	@Override
+	public boolean makeReflectableInitialization() throws ExceptionZZZ {
+		return this.initClassMethodCallingString();
 	}
 }

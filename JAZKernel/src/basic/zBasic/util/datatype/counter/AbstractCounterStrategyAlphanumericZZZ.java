@@ -6,8 +6,7 @@ import basic.zBasic.IConstantZZZ;
 public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCounterStrategyZZZ implements ICounterStrategyAlphanumericZZZ{
 	private boolean bLowercase = false;
 	public AbstractCounterStrategyAlphanumericZZZ() throws ExceptionZZZ{
-		super();		
-		this.initClassMethodCallingString();
+		super();				
 	}
 	public AbstractCounterStrategyAlphanumericZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super();		

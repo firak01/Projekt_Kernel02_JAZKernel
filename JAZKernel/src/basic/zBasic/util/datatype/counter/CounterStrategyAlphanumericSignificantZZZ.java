@@ -12,12 +12,12 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 		
 	public CounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();
-		this.initClassMethodCallingString();	
+		this.makeReflectableInitialization();
 	}
 	
 	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter);
-		this.initClassMethodCallingString();	
+		this.makeReflectableInitialization();	
 	}
 	
 	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, int iStartValue) throws ExceptionZZZ{
@@ -27,7 +27,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	
 	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, String sStartValue) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter, sStartValue);
-		this.initClassMethodCallingString();	
+		this.makeReflectableInitialization();
 	}
 
 	
@@ -258,5 +258,12 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 		 }//end main:
 		 return sReturn;
 	 }
+
+	@Override
+	public boolean makeReflectableInitialization() throws ExceptionZZZ {
+		return this.initClassMethodCallingString();
+	}
+
+
 
 }

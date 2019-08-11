@@ -2,18 +2,18 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.IObjectReflectableUserZZZ;
 import basic.zBasic.ObjectReflectableZZZ;
 import basic.zBasic.ReflectCodeKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ implements IConstantZZZ, ICounterStrategyZZZ{
+public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ implements IObjectReflectableUserZZZ, ICounterStrategyZZZ{
 	private boolean bRightAligned = false;
 	private boolean bIncreasableInOtherMethod = true;
 	
 	public AbstractCounterStrategyZZZ() throws ExceptionZZZ{
-		super();
-		this.initClassMethodCallingString();		
+		super();			
 	}
 	
 	//++++ Aus Interface
@@ -35,6 +35,9 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 	public void isIncreasableInOtherMethod(boolean bValue){
 		this.bIncreasableInOtherMethod = bValue;
 	}
+	
+	@Override
+	public abstract boolean makeReflectableInitialization() throws ExceptionZZZ;
 	
 	
 }

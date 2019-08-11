@@ -9,6 +9,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlphanumericZZZ{
 	public CounterStrategyAlphabetSerialZZZ() throws ExceptionZZZ {
 		super();
+		this.makeReflectableInitialization();
 	}
 	
 	@Override
@@ -151,5 +152,10 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 			}
 		}//end main:
 		return sReturn;
+	}
+	
+	@Override
+	public boolean makeReflectableInitialization() throws ExceptionZZZ {
+		return this.initClassMethodCallingString();
 	}
 }

@@ -7,9 +7,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyAlphanumericZZZ{
 	public CounterStrategyAlphabetMultipleZZZ() throws ExceptionZZZ{
 		super();
+		this.makeReflectableInitialization();
 	}
 	public CounterStrategyAlphabetMultipleZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super(bLowercase);
+		this.makeReflectableInitialization();
 	}
 	
 	@Override
@@ -86,5 +88,10 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 			
 		}//end main:
 		return sReturn;
+	}
+	
+	@Override
+	public boolean makeReflectableInitialization() throws ExceptionZZZ {
+		return this.initClassMethodCallingString();
 	}
 }

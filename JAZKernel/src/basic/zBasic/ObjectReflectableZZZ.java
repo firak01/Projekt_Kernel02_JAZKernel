@@ -5,25 +5,29 @@ import java.util.HashMap;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class ObjectReflectableZZZ <T> extends ObjectZZZ implements IObjectReflectableZZZ{
-	//private String sClassMethodCalling=null;		
+	private String sClassMethodCalling=null;		
 	private HashMap<String,String> hmClassMethodCalling = new HashMap<String,String>();
 	
 	public ObjectReflectableZZZ(){
-		super();
-		try{
-			this.initClassMethodCallingString();
-		}catch(ExceptionZZZ ez){
-			System.out.println("ExceptionZZZ:" + ez.getDetailAllLast());
-		}
+		super();		
 	}
 	@Override
 	public String getClassMethodCallingString() throws ExceptionZZZ {
-		TODO GOON: HIER EINE HASHMAP ALLER KONTRUKTOREN/KLASSEN UND DER SIE AUFRUFENDEN METHODE AUSLESEN.
 		//Basierend auf dem aktuellen Klassennamen...
 		
 		return this.sClassMethodCalling;
 	}
+	
+	@Override
+	public  void putClassMethodCallingHashMap(String sClassMethodCalling) throws ExceptionZZZ {
+		String sClass = this.getClass().getName();
+		this.getClassMethodCallingHashMap().put(sClass, sClassMethodCalling);
+	}
 
+	@Override
+	public HashMap<String,String> getClassMethodCallingHashMap() throws ExceptionZZZ {
+		return this.hmClassMethodCalling;
+	}
 	@Override
 	public void setClassMethodCallingString(String sClassMethodCalling) throws ExceptionZZZ {
 		main:{
@@ -38,18 +42,18 @@ public abstract class ObjectReflectableZZZ <T> extends ObjectZZZ implements IObj
 			if(!StringZZZ.contains(sClassMethodCalling, ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR)){
 				ExceptionZZZ ez = new ExceptionZZZ("StrategyObject: String Classenname.Methodenname erwartet. Es fehlt der Punkt!", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
-			}
-			TODO GOON HIER EINE HASHMAP ALLER KONTRUKTOREN/KLASSEN UND DER SIE AUFRUFENDEN METHODE FÜLLEN.
-			
+			}		
+			this.putClassMethodCallingHashMap(sClassMethodCalling);
 			this.sClassMethodCalling=sClassMethodCalling; 
 		}		
 	}
 	@Override
-	public void initClassMethodCallingString() throws ExceptionZZZ {
-		String sClassMethodCalling = ReflectCodeZZZ.getClassMethodCallingString(2);
+	public boolean initClassMethodCallingString() throws ExceptionZZZ {
+		String sClassMethodCalling = ReflectCodeZZZ.getClassMethodCallingString(3);//2 sowieso, wg. Aufruf aus Konstruktor  + 1 weill es aus makeReflectable... aufgerufen wird. 
 		this.setClassMethodCallingString(sClassMethodCalling);
+		return true;
 	}
-	
+		
 	
 //	@Override
 //	public void setClassMethodInitialisedName(Class<?>objClass, String sMethod) throws ExceptionZZZ{

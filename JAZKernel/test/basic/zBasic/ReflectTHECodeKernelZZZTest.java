@@ -15,22 +15,22 @@ public class ReflectTHECodeKernelZZZTest  extends TestCase{
 	private ReflectTHECodeKernelObject4TestingZZZ objObjectTest = null;
 
 	protected void setUp(){
-		//try {			
+	try {			
 			
 			//The main object used for testing
 			objObjectTest = new ReflectTHECodeKernelObject4TestingZZZ();
 			
 		
-//		} catch (ExceptionZZZ e) {
-//			fail("Method throws an exception." + e.getMessageLast());
-//		} 
+		} catch (ExceptionZZZ e) {
+			fail("Method throws an exception." + e.getMessageLast());
+		} 
 	}//END setup
 	 
 	// TODO: ALLE METHODNEN VON REFLECTCODEZZZ auch in einer KernelVariante anbieten, die sich nur auf die Kernel-Klassen bezieht.
 	public void testGetCallingStack(){		
 		try{
 			//Verbereitende initialisierung:
-			String scallingMethod = ReflectCodeZZZ.getClassCurrentName() + "." + ReflectCodeZZZ.getMethodCurrentName();			
+			String sCallingMethod = ReflectCodeZZZ.getClassCurrentName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + ReflectCodeZZZ.getMethodCurrentName();			
 			String[]saCalling = ReflectCodeZZZ.getCallingStack();
 						
 			//+++++++++++++++++++++++++++++++++++++++++++++
@@ -41,7 +41,7 @@ public class ReflectTHECodeKernelZZZTest  extends TestCase{
 			//Weil nur die aufrufende  Test-Klasse darin auftauchen soll gilt:
 			assertTrue("Es sollte nur die aufrufende Testmethode im Ergebnis sein.", saCallingIntern01.length==1);
 			String sCallingIntern01 = saCallingIntern01[0];			
-			assertTrue("Es sollte die aufrufende Testmethode im Ergebnis sein", sCallingIntern01.equals(scallingMethod));
+			assertTrue("Es sollte die aufrufende Testmethode im Ergebnis sein", sCallingMethod.equals(sCallingIntern01));
 			
 			
 			//### Nun die Methode innerhalb eines erzeugten Objekts aufrufen ##########################
@@ -50,10 +50,13 @@ public class ReflectTHECodeKernelZZZTest  extends TestCase{
 			assertTrue("Es sollte die Größe des Arrays höher sein als bei lokalem Funktionsaufruf", saCallingIntern01.length<saCallingIntern02.length);
 			
 			String sCallingIntern02 = saCallingIntern01[saCallingIntern01.length-1];
-			assertTrue("Es sollte die aufrufende Testmethode im Ergebnis sein, als Wert mit dem höchsten Index", sCallingIntern02.equals(scallingMethod));
+			assertTrue("Es sollte die aufrufende Testmethode im Ergebnis sein, als Wert mit dem höchsten Index", sCallingMethod.equals(sCallingIntern02));
 			
 			boolean btemp2 = objObjectTest.startAsSubInitialiseObject();
-			
+			IObjectReflectableZZZ objCreatedInternal = objObjectTest.getObjectInitialisedInternal();			
+			String sMethodWhichHasObjectInitialized = objCreatedInternal.getClassMethodCallingString();
+			sCallingMethod = objObjectTest.getClass().getName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + "startAsSubInitialiseObject";
+			assertTrue("Es sollte die Objekt erstellende Testmethode im Ergebnis sein", sCallingMethod.equals(sMethodWhichHasObjectInitialized));
 			
 			
 	} catch (ExceptionZZZ ez) {
