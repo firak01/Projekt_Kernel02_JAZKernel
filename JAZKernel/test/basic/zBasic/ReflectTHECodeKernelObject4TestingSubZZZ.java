@@ -10,5 +10,5 @@ public class ReflectTHECodeKernelObject4TestingSubZZZ extends ObjectReflectableZ
 	@Override
 	public boolean makeReflectableInitialization() throws ExceptionZZZ {
 		return this.initClassMethodCallingString();
-	}
+	}	
 }

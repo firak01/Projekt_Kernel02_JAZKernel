@@ -10,7 +10,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ, ICounterStrategyZZZ{
 	private boolean bRightAligned = false;
-	private boolean bIncreasableInOtherMethod = true;
+	private boolean bIncreasableInOtherMethod = false;
 	
 	public AbstractCounterStrategyZZZ() throws ExceptionZZZ{
 		super();			

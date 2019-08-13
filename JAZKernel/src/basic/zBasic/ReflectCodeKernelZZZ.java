@@ -1,5 +1,7 @@
 package basic.zBasic;
 
+import basic.zBasic.util.datatype.string.StringZZZ;
+
 
 /** Reflection-Klassen, die sich auf die Kernel-Klassen biezieht.
  *  Die Methoden hinsichtlich der Klasse ReflectCodeZZZ sind hierin enthalten, 
@@ -65,6 +67,48 @@ public class ReflectCodeKernelZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	
+	/** Holle den CallingString von einer Methode, die nicht der gleichen Klasse - wie die aktuell behandelte - entspricht.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author lindhaueradmin, 13.08.2019, 07:20:28
+	 */
+	public static String getClassMethodExternalCallingString() throws ExceptionZZZ{
+		return ReflectCodeKernelZZZ.getClassMethodExternalCallingString(2);//1 wäre die Methode, die  diese aufruft, aber um die echte auf-aufrufende Methode zu bekommen ein weiteres +1
+	}
+	/** Holle den CallingString von einer Methode, die nicht der gleichen Klasse - wie die aktuell behandelte - entspricht.
+	 * @param iOffset
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author lindhaueradmin, 13.08.2019, 07:20:28
+	 */
+	public static String getClassMethodExternalCallingString(int iOffset) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			//1. Name der aktuellen Klasse
+			String sClass = ReflectCodeZZZ.getClassCurrentName(iOffset);
+			
+			//2. Der komplette Stacktrace.
+			String[] saCallingStack = ReflectCodeKernelZZZ.getCallingStack();
+						
+			
+			for(int icount=0; icount<=saCallingStack.length-1;icount++){
+				String sCallingStack=saCallingStack[icount];
+				
+				//3. Suche den Namen der aktuellen Klasse links vom "."
+				String sCallingClass = StringZZZ.leftback(sCallingStack, ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR);
+						
+				//4. Suche die andere Klasse, die vorher aufgerufen woden ist.
+				if(sCallingClass.equals(sClass)){
+					
+				}else{
+					//andere Klasse gefunden
+					//5. Gib den gefundenene Klasse.Methode String zurück
+					sReturn = sCallingStack;
+					break;
+				}
+			}
+		}
+		return sReturn;
+	}
 
 }

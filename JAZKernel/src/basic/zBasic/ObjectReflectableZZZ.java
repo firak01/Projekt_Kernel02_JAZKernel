@@ -49,7 +49,7 @@ public abstract class ObjectReflectableZZZ <T> extends ObjectZZZ implements IObj
 	}
 	@Override
 	public boolean initClassMethodCallingString() throws ExceptionZZZ {
-		String sClassMethodCalling = ReflectCodeZZZ.getClassMethodCallingString(3);//2 sowieso, wg. Aufruf aus Konstruktor  + 1 weill es aus makeReflectable... aufgerufen wird. 
+		String sClassMethodCalling = ReflectCodeZZZ.getClassMethodCallingString(3);//2 sowieso, wg. Aufruf aus Konstruktor  + 1 weil es aus makeReflectable... aufgerufen wird. 
 		this.setClassMethodCallingString(sClassMethodCalling);
 		return true;
 	}

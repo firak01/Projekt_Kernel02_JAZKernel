@@ -300,6 +300,13 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		  }//end main:
 		  return sReturn;
 	  }
+	public static String getClassCurrentName(int iOffset) throws ExceptionZZZ{
+		  String sReturn = null;
+		  main:{			  			  
+			 sReturn = ReflectCodeZZZ.getClassCallingName(iOffset);
+		  }//end main:
+		  return sReturn;
+	  }
 	
 	public static String getClassCallingName() throws ExceptionZZZ{
 		return getClassCallingName(1);
@@ -647,7 +654,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	}
 	
 	public static String getClassMethodCallingString() throws ExceptionZZZ{
-		return ReflectCodeZZZ.getClassMethodCallingString(1);
+		return ReflectCodeZZZ.getClassMethodCallingString(2);//1 wäre die Methode, die  diese aufruft, aber um die echte auf-aufrufende Methode zu bekommen ein weiteres +1
 	}
 	public static String getClassMethodCallingString(int iOffset) throws ExceptionZZZ{
 		String sReturn = null;
@@ -658,6 +665,19 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		}
 		return sReturn;
 	}
+	
+	
+	/**Hohle den String, der aktuellen Klasse
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author lindhaueradmin, 13.08.2019, 07:22:51
+	 */
+	public static String getClassMethodCurrentString() throws ExceptionZZZ{
+		return ReflectCodeZZZ.getClassMethodCallingString(1);//1 wäre die Methode, die  diese aufruft
+	}
+	
+	
+	
 	
 	
 	/**

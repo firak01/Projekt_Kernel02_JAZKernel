@@ -20,7 +20,12 @@ public interface ICounterStringZZZ <T extends ICounterStrategyZZZ>{
 	public String getStringPeekChange(int iValue) throws ExceptionZZZ;//dito
 	
 	public String current() throws ExceptionZZZ; //gib den aktuellen String zurück
-	public String next() throws ExceptionZZZ; //gib den nächsten String zurück, aber mit Speicherung des internen Wertes.
+	
+	//Gibt den nächsten String zurück, aber mit Speicherung des internen Wertes.
+	//Prüft aber vohrer, ob die Strategie besagt, dass dies dafür eine erlaubte Methode ist (wenn der Zähler nur in der initialisierenden Methode erhöht werden darf..
+	public String next() throws ExceptionZZZ; 
+
+						
 	public String change(int iValue) throws ExceptionZZZ;
 	public String peekNext() throws ExceptionZZZ; //wie next(), ohne den Wert zu speichern.
 	public String peekChange(int iValue) throws ExceptionZZZ;//wie change() ohne den Wet zu speichern.

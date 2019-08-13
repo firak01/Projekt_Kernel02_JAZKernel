@@ -1578,7 +1578,7 @@ MeinTestParameter=blablaErgebnis
 				
 				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
 				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
-				String sSearchCounter = objCounter.current();
+				String sSearchCounter = objCounter.getStringNext(); //objCounter.current();
 				
 				
 				//a) mit Systemkey
@@ -1622,7 +1622,7 @@ MeinTestParameter=blablaErgebnis
 			if(!StringZZZ.isEmpty(sSection)){				
 				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
 				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
-				String sSearchCounter = objCounter.current();
+				String sSearchCounter = objCounter.getStringNext(); //objCounter.current();
 				
 				//a) mit Systemkey
 				
@@ -1686,7 +1686,7 @@ MeinTestParameter=blablaErgebnis
 			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);
 			objHandler.setCounterStrategy(objCounterStrategy);
 			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
-			String sSearchCounter = objCounter.current();
+			String sSearchCounter = objCounter.getStringNext(); // objCounter.current();
 			String sDebugKey=null;
 			//#################################################################################################
 			//1. Konfigurationsfile des Systems holen
@@ -1875,10 +1875,9 @@ MeinTestParameter=blablaErgebnis
 		main:{
 						
 			if(!StringZZZ.isEmpty(sSection)){
-				//TODO GOON 20190805: Den Counter als Singleton machen!!!
 				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
 				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
-				String sSearchCounter = objCounter.getString();
+				String sSearchCounter = objCounter.getStringNext();//.getString();
 				
 				//a) mit Systemkey								
 				String sSectionUsed = this.getSystemKey() + "!" + sSection;		
@@ -2486,7 +2485,7 @@ MeinTestParameter=blablaErgebnis
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ(); //Für die durchgeführten Suchen. Statt so vieler system.out Anweisungen.
 		CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
 		ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
-		String sSearchCounter = objCounter.current();
+		String sSearchCounter = objCounter.getStringNext(); // objCounter.current();
 		main:{
 			if(StringZZZ.isEmpty(sMainSection)){
 				ExceptionZZZ ez = new ExceptionZZZ("Module/Section",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());

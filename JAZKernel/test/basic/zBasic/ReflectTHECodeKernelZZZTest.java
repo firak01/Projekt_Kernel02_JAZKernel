@@ -64,10 +64,26 @@ public class ReflectTHECodeKernelZZZTest  extends TestCase{
 			
 			//Ermittle aus einem Objekt, das innerhalb einer Methode erstellt wurde, den Namen der aufrufenden Methode.
 			boolean btemp2 = objObjectTest.startAsSubInitialiseObject();//der Aufruf der Methode, die das zu anlaylsierende Objekt erzeugt.
-			IObjectReflectableZZZ objCreatedInternal = objObjectTest.getObjectInitialisedInternal();			
+			IObjectReflectableZZZ objCreatedInternal = (IObjectReflectableZZZ) objObjectTest.getObjectInitialisedInternal();			
 			String sMethodWhichHasObjectInitialized = objCreatedInternal.getClassMethodCallingString();
 			sCallingMethod = objObjectTest.getClass().getName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + "startAsSubInitialiseObject";
 			assertTrue("Es sollte die Objekt erstellende Testmethode im Ergebnis sein", sCallingMethod.equals(sMethodWhichHasObjectInitialized));
+						
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+	}
+	
+	public void testGetClassMethodExternalCallingString(){
+		try{
+			//Verbereitende initialisierung:
+			String sCallingMethod = ReflectCodeZZZ.getClassCurrentName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + ReflectCodeZZZ.getMethodCurrentName();			
+			
+			//Ermittle aus einem Objekt, das innerhalb einer Methode erstellt wurde, den Namen der aufrufenden Methode.
+			boolean btemp2 = objObjectTest.startAsSubInitialiseObject4ExternalTest();//der Aufruf der Methode, die das zu anlaylsierende Objekt erzeugt.
+			ReflectTHECodeKernelObject4TestingExternalSubZZZ objCreatedInternal = (ReflectTHECodeKernelObject4TestingExternalSubZZZ) objObjectTest.getObjectInitialisedInternal();			
+			String sExternalCallingMethod = objCreatedInternal.makeClassMethodExternalCallingString();			
+			assertTrue("Es sollte die aktuelle Methode also die externalCalling Methode des Objekts im Ergebnis sein", sCallingMethod.equals(sExternalCallingMethod));
 						
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

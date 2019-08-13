@@ -1,14 +1,16 @@
 package basic.zBasic;
 
+import basic.zBasic.util.datatype.counter.ICounterStrategyZZZ;
+
 /** Klasse, wird in den Testklassen aufgerufen.
  *   Sie ist Ausgangsposition für den Aufruf weiterer Testklassen, in denen dann die zu testenden Reflect-Methoden ausgeführt werden.
  *  
  * @author Fritz Lindhauer, 09.08.2019, 08:43:27
  * 
  */
-public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ{
+public class ReflectTHECodeKernelObject4TestingZZZ <T extends IObjectZZZ> extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ{
 	String[] saCallingStack = null;
-	IObjectReflectableZZZ objInitializedInternal = null;
+	T objInitializedInternal = null;
 	
 	public ReflectTHECodeKernelObject4TestingZZZ() throws ExceptionZZZ{
 		super();
@@ -32,6 +34,8 @@ public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ 
 		}//end main:
 		return bReturn;
 	}
+	
+
 	
 	public boolean startAsSub() throws ExceptionZZZ{
 		//Dummy Funktion zum Aufruf von Tests
@@ -64,20 +68,27 @@ public class ReflectTHECodeKernelObject4TestingZZZ extends ObjectReflectableZZZ 
 	public boolean startAsSubInitialiseObject() throws ExceptionZZZ{
 		//Dummy Funktion zum Aufruf von Tests
 		boolean bReturn = false;
-		main:{
-			String[] saReturn = ReflectCodeKernelZZZ.getCallingStack();
-			//this.setCallingStackComputed(saReturn);
-			
+		main:{					
 			ReflectTHECodeKernelObject4TestingSubZZZ objTest = new ReflectTHECodeKernelObject4TestingSubZZZ();
-			this.setObjectInitialisedInternal(objTest);
+			this.setObjectInitialisedInternal((T) objTest);
 		}//end main:
 		return bReturn;
 	}
 	
-	public void setObjectInitialisedInternal(IObjectReflectableZZZ obj){
+	public boolean startAsSubInitialiseObject4ExternalTest() throws ExceptionZZZ{
+		//Dummy Funktion zum Aufruf von Tests
+		boolean bReturn = false;
+		main:{
+			ReflectTHECodeKernelObject4TestingExternalSubZZZ objTest = new ReflectTHECodeKernelObject4TestingExternalSubZZZ();
+			this.setObjectInitialisedInternal((T) objTest);
+		}//end main:
+		return bReturn;
+	}
+	
+	public void setObjectInitialisedInternal(T obj){
 		this.objInitializedInternal = obj;
 	}
-	public IObjectReflectableZZZ getObjectInitialisedInternal(){
+	public T getObjectInitialisedInternal(){
 		return this.objInitializedInternal;
 	}
 	

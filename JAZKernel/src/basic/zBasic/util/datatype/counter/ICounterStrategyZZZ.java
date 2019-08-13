@@ -1,8 +1,9 @@
 package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectReflectableImplementerZZZ;
 
-public interface ICounterStrategyZZZ {
+public interface ICounterStrategyZZZ extends IObjectReflectableImplementerZZZ{
 	public boolean isRightAligned();
 	public void isRightAligned(boolean bValue);
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ;

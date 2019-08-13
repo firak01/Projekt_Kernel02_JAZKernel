@@ -2,6 +2,8 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ReflectCodeKernelZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 
 /**
  *  
@@ -88,8 +90,22 @@ public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrat
 		int iValueCurrent = this.getValueCurrent();
 		return this.peekChange(iValueCurrent);
 	}	
+	/* (non-Javadoc)
+	 * @see basic.zBasic.util.datatype.counter.ICounterStringZZZ#next()
+	 */
 	public String next() throws ExceptionZZZ{
-		//Gibt den wert mit dem Zähler erhöht
+		//Gibt den wert mit dem Zähler erhöht zurück
+		//Prüfe, ob die Strategie besagt, dass dies dafür eine erlaubte Methode ist.				
+		boolean btest = this.getCounterStrategyObject().isIncreasableInOtherMethod();
+		if(!btest){
+			String stest = ReflectCodeKernelZZZ.getClassMethodExternalCallingString();
+			String sMethodOfInit=this.getCounterStrategyObject().getClassMethodCallingString();
+			
+			//Wenn das Erhöhen des Zählers in einer anderen Methode nicht erlaubt ist, gib dann in der anderen Methode den aktuellen Wert zurück.
+			if(!stest.equals(sMethodOfInit)) return this.current();
+		}
+		
+		//Wenn erlaubt hisichtlich der Methode, erhöhe den Zähler
 		int iValueCurrent = this.getValueCurrent();
 		iValueCurrent++;
 		this.setValueCurrent(iValueCurrent);
