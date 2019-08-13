@@ -2,12 +2,13 @@ package basic.zBasic.util.datatype.counter;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zKernel.IKernelZZZ;
 
-public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICounterByCharacterAsciiFactoryZZZ {
+public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> extends ObjectZZZ implements ICounterByCharacterAsciiFactoryZZZ {
 	private static CounterByCharacterAsciiFactoryZZZ objCounterFactory = null;  //muss static sein, wg. getInstance()!!!
 	
 	/**Konstruktor ist private, wg. Singleton
@@ -34,7 +35,7 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 	public ICounterStringZZZ createCounter(int iCounterType) throws ExceptionZZZ {
 		ICounterStringZZZ objReturn = null;
 		if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_NUMERIC){
-			objReturn = new CounterByCharacterAscii_NumericZZZ();
+			objReturn = new CounterByCharacterAscii_NumericZZZ();						
 		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET){
 			objReturn = new CounterByCharacterAscii_AlphabetZZZ();
 		}else if(iCounterType==CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHANUMERIC){
@@ -45,6 +46,14 @@ public class CounterByCharacterAsciiFactoryZZZ extends ObjectZZZ implements ICou
 			ExceptionZZZ ez = new ExceptionZZZ("CounterType wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
+		
+		//wichtig: Die initialisierende Methode darf nicht eine beliebige sein, sondern muss eine Methode sein, die diese Methode aufruft. Am besten noch von einer anderen Klasse...
+		//Merke: Bei entsprechender Einstellung im Strategie - Objekt darf der Counter nur in der initialisierenden Methode erhöht werden.
+		T objCounterStrategy = (T) objReturn.getCounterStrategyObject();
+		String sMethodUsed4Init = ReflectCodeKernelZZZ.getClassMethodExternalCallingString();
+		objCounterStrategy.setClassMethodCallingString(sMethodUsed4Init);
+		
+		
 		return objReturn;
 	}
 	@Override

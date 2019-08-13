@@ -89,9 +89,10 @@ public class ReflectCodeKernelZZZ implements IConstantZZZ{
 			
 			//2. Der komplette Stacktrace.
 			String[] saCallingStack = ReflectCodeKernelZZZ.getCallingStack();
-						
-			
-			for(int icount=0; icount<=saCallingStack.length-1;icount++){
+									
+			//Diese Sortierreihenfolge ist wichtig. Ansonsten besteht die Gefahr von Elternklassen, wie z.B. ObjectZZZ, dass Sie ja auch einen anderen Klassennamen haben und im Stacktrace stehen.
+			String sCallingStackPrevious = null;
+			for(int icount=saCallingStack.length-1; icount>=0;icount--){
 				String sCallingStack=saCallingStack[icount];
 				
 				//3. Suche den Namen der aktuellen Klasse links vom "."
@@ -99,13 +100,16 @@ public class ReflectCodeKernelZZZ implements IConstantZZZ{
 						
 				//4. Suche die andere Klasse, die vorher aufgerufen woden ist.
 				if(sCallingClass.equals(sClass)){
-					
+					//andere Klasse gefunden 
+					sReturn = sCallingStackPrevious;
+					break;
 				}else{
 					//andere Klasse gefunden
 					//5. Gib den gefundenene Klasse.Methode String zurück
-					sReturn = sCallingStack;
-					break;
+					//sReturn = sCallingStack;
+					//break;
 				}
+				sCallingStackPrevious = sCallingStack;
 			}
 		}
 		return sReturn;
