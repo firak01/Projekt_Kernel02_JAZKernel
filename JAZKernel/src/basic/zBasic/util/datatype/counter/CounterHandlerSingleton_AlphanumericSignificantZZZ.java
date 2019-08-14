@@ -47,7 +47,9 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 		main:{
 			
 			//Ermittle die aktuelle Stacktraceposition und dann jeweils die aufrufende Methode.
-			String[] saCalling = ReflectCodeKernelZZZ.getCallingStack();
+			///TODO GOON 20190814: ReflectCodeKernelZZZ.getCallingStackExternal();
+			.....
+			String[] saCalling = ReflectCodeZZZ.getCallingStack();
 			
 			//Suche in der Hashmap nach einem String des Klassen.Methodennamens, der schon in der HashMap gespeichert ist.
 			//Wird er gefunden, dann soll der Counter wiederverwendet werden.			
@@ -65,6 +67,8 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 				objCounter = objCounterFactory.createCounter(objCounterStrategy, iStart);
 				
 				//Ermittle die Aufrufende Methode
+				//TODO Goon 20190814: ReflectCodeKernelZZZ.getClassMethodExternalString();
+				....
 				String sCalling = ReflectCodeZZZ.getClassMethodString();			
 				this.setCounterFor(sCalling, objCounter);
 			}

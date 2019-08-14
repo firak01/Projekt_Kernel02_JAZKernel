@@ -101,13 +101,23 @@ public void testUsingSingleton01(){
 	private boolean reuseCounterSingleton(){
 		boolean bReturn = false;
 		main:{
+			ICounterAlphanumericSignificantZZZ objCounter = null;
 			try{
 				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
-				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+				objCounter = objHandler.getCounterFor();
+				String sValue = objCounter.current();
+				assertNotNull("Nach der Initialisierung soll der Counterwert nicht NULL sein", sValue);
+				assertTrue("Nach der Initialisierung soll der Counter einen Defaultlänge von 4 haben", sValue.length()==4);
+				assertTrue("Nach der Initialisierung soll der Counter den Wert 0000 haben.", sValue.equals("0000"));
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 			
+			try{
 				String sValue = objCounter.next();
-				assertTrue("Nach der Initialisierung soll der Counter einen Defaultlänge von 4 haben", sValue.equals("0001"));
-				
+				assertNotNull("Nach der Erhöhung soll der Counterwert nicht NULL sein", sValue);
+				assertTrue("Nach der Erhöhung soll der Counter einen Defaultlänge von 4 haben", sValue.length()==4);
+				assertTrue("Nach der Erhöhung soll der Counter de Wert 0001 haben.", sValue.equals("0001"));
 							
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());

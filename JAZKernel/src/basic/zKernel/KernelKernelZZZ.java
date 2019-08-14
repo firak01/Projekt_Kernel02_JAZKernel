@@ -1670,19 +1670,16 @@ MeinTestParameter=blablaErgebnis
 		String sDebug;
 		main:{		
 			//###################################################################################################			
-		    //TODO IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
-			//           Dementsprechend in solch einem Objekt den Startwert speichern ung ggfs. per Konstruktor erstellen.
-			//           Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
-			//            letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
-//			CounterByCharacterAsciiFactoryZZZ objFactoryCounter = CounterByCharacterAsciiFactoryZZZ.getInstance();
-//			ICounterStringZZZ objCounter = objFactoryCounter.createCounter(CounterByCharacterAsciiFactoryZZZ.iCOUNTER_TYPE_ALPHABET, "AA");
-			//Counter an dieser zentralen Stelle vorbereiten.
+		    //IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
+			//      Dementsprechend in solch einem Objekt den Startwert speichern ung ggfs. per Konstruktor erstellen.
+			//      Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
+			//      letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
 			
 			//Hier einen SingletonCounter holen!!!
 			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
 			
 			//int iStartValue=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
-			String sStartValue= "AA";
+			String sStartValue= "A0";
 			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);
 			objHandler.setCounterStrategy(objCounterStrategy);
 			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
@@ -1799,10 +1796,20 @@ MeinTestParameter=blablaErgebnis
 						if(bModuleConfig==false){
 							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 						} //end if Versuch 3
-					} //end if Versuch 2
+					}else{
+						String stemp = "Wrong parameter (2): Module '" + sModuleUsed + "' is not configured in the ini File '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'.";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}//end if Versuch 2
+				}else{
+					String stemp = "Wrong parameter (1): Module '" + sMainSection + "' is not configured in the ini File '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'.";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
 				}//end if Versuch 1
 				
 				//B1. Prüfen, ob das Modul existiert
@@ -1810,7 +1817,7 @@ MeinTestParameter=blablaErgebnis
 				if(bModuleExists==false){
 					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 
@@ -1900,12 +1907,16 @@ MeinTestParameter=blablaErgebnis
 	(String sDebugKey, HashMapMultiIndexedZZZ hmDebug, String sProgramOrSection, String sProperty, String sValue, boolean bSetNew, boolean bFlagDelete, boolean bFlagSaveImmidiate, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
 		boolean  bReturn = false;
 		main:{
-		if(!StringZZZ.isEmpty(sProgramOrSection)){			
+		if(!StringZZZ.isEmpty(sProgramOrSection)){	
+			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+			String sSearchCounter = objCounter.getStringNext();
+			
 			//a) mit Systemkey
 			String sDebugKeyUsed = sDebugKey + ".a";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + " Suche nach einem Alias in '"+ this.getSystemKey() + "' für das Programm oder die Section '" + sProgramOrSection + "'");			
 			String sSectionUsed = objFileIniConfig.getPropertyValue(this.getSystemKey(), sProgramOrSection).getValue();	
-			hmDebug.put(sDebugKey + "." + sSectionUsed, sProperty);
+			hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 			if(!StringZZZ.isEmpty(sSectionUsed)){
 				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn) break main;		
@@ -1914,7 +1925,7 @@ MeinTestParameter=blablaErgebnis
 				
 			//b) mit Applicationkey			
 			sSectionUsed = objFileIniConfig.getPropertyValue(this.getApplicationKey(), sProgramOrSection).getValue();
-			hmDebug.put(sDebugKey + "." + sSectionUsed, sProperty);
+			hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 			if(!StringZZZ.isEmpty(sSectionUsed)){
 				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn) break main;				
@@ -1929,7 +1940,26 @@ MeinTestParameter=blablaErgebnis
 		boolean bReturn = false;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug; String sDebugKey;
-		main:{		
+		main:{	
+			//#######################################################################			
+			//TODO 20190711: COUNTER AUCH BEIM SETZEN EINBAUEN: sSearchCounter = objCounter.getStringNext();
+			//                                                  sDebugKey = "(00)"+ sSearchCounter;
+			//###################################################################################################			
+		    //IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
+			//      Dementsprechend in solch einem Objekt den Startwert speichern ung ggfs. per Konstruktor erstellen.
+			//      Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
+			//      letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
+			
+			//Hier einen SingletonCounter holen!!!
+			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+			
+			//int iStartValue=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
+			String sStartValue= "A0";
+			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);
+			objHandler.setCounterStrategy(objCounterStrategy);
+			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+			String sSearchCounter = objCounter.getStringNext();
+			//#################################################################################################
 		
 			//1. Konfigurationsfile des Systems holen
 			FileIniZZZ objFileIniConfig = null;
@@ -1969,17 +1999,13 @@ MeinTestParameter=blablaErgebnis
 			
 			//### B. SUCHE WERTE ####################################################################		
 			String sSectionUsed = null;
-			
-			//#######################################################################			
-			//TODO 20190711: COUNTER AUCH BEIM SETZEN EINBAUEN: sSearchCounter = objCounter.getStringNext();
-			//                                                  sDebugKey = "(00)"+ sSearchCounter;
-			
+												
 			//+++ Ggfs. direkt als Program deklarierter Wert		
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 				if(sProgramOrSection!=this.getSystemKey() && sProgramOrSection!=this.getApplicationKey()){ //Damit keine doppelte Abfrage gemacht wird.
 					sSectionUsed=sProgramOrSection;
 					sDebugKey = "(00)";
-					hmDebug.put(sDebugKey + "." + sSectionUsed, sProperty);
+					hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);					
 					bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 					if(bReturn)break main;
 				}
@@ -1991,14 +2017,14 @@ MeinTestParameter=blablaErgebnis
 					//1. Schritt mit Systemnumber
 					sSectionUsed=sMainSection+"!"+this.getSystemNumber();	//Immer zuerst die ggfs. überschreibende Variante
 					sDebugKey = "(01)";
-					hmDebug.put(sDebugKey + "." + sSectionUsed, sProperty);
+					hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 					bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 					if(bReturn)break main;
 					
 					//2. Schritt die Variante ohne Systemnumber
 					sSectionUsed=sMainSection;
 					sDebugKey = "(02)";
-					hmDebug.put(sDebugKey + "." + sSectionUsed, sProperty);
+					hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 					bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 					if(bReturn)break main;
 				}//if(sMainSection!=this.getSystemKey() && sMainSection!=this.getApplicationKey()){						
@@ -2008,7 +2034,7 @@ MeinTestParameter=blablaErgebnis
 			if(sMainSection!=this.getSystemKey()){  //doppelte Abfragen vermeiden
 				sSectionUsed = this.getSystemKey(); 
 				sDebugKey = "(03)";
-				hmDebug.put(sDebugKey + "." + sSectionUsed, sProperty);
+				hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn)break main;			
 			}//if(sMainSection!=this.getSystemKey()){
@@ -2017,7 +2043,7 @@ MeinTestParameter=blablaErgebnis
 			if(sSectionUsed!=this.getApplicationKey()){  //doppelte Abfragen vermeiden
 				sSectionUsed = this.getApplicationKey(); //als 2. Schritt dann den Applicationkey
 				sDebugKey = "(04)";
-				hmDebug.put(sDebugKey + "." + sSectionUsed, sProperty);
+				hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn)break main;
 			}//if(sSection!=this.getApplicationKey()){ 
@@ -2029,6 +2055,7 @@ MeinTestParameter=blablaErgebnis
 			//3a. Für den Fall, dass der Programname direkt angegeben wurde. Suche ihn im System-/Applicationkey
 			sSectionUsed = sProgramOrSection;
 			sDebugKey = "(05)";
+			//wird übergeben und daher nicht hier gefüllt hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 			bReturn = KernelSetParameterByProgramAlias_SystemLookup_(sDebugKey, hmDebug, sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 			if(bReturn)break main;
 		
@@ -2037,6 +2064,7 @@ MeinTestParameter=blablaErgebnis
 			while(itAlias.hasNext()){				
 				sSectionUsed = itAlias.next(); //der verwendete Programalias zur Suche nach der  Section
 				sDebugKey = "(06)";
+				//wird übergeben und daher nicht hier gefüllt hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 				bReturn = KernelSetParameterByProgramAlias_SystemLookup_(sDebugKey,hmDebug, sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 				if(bReturn)break main;
 			}//end while
@@ -2047,6 +2075,7 @@ MeinTestParameter=blablaErgebnis
 		if(!StringZZZ.isEmpty(sProgramOrSection)){
 			sSectionUsed =  sProgramOrSection;	
 			sDebugKey = "(07)";
+			//wird übergeben und daher nicht hier gefüllt hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sProperty);
 			bReturn = KernelSetParameterByProgramAlias_AliasSystemLookup_(sDebugKey, hmDebug, sSectionUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
 			if(bReturn)break main;						
 		}//if(!StringZZZ.isEmpty(sProgramOrSection)){
@@ -2501,7 +2530,7 @@ MeinTestParameter=blablaErgebnis
 			String sSectionUsed=null; String sPropertyUsed=null;String sDebugKey = null;
 			
 			String sProgramNameUsed=sProgramOrAlias;					
-			if(!StringZZZ.isEmpty(sPropertyUsed)){
+			if(!StringZZZ.isEmpty(sProgramNameUsed)){
 				//Suche nach einer überschreibenden Version mit Systemkey				
 				sSectionUsed = sMainSection+"!"+sSystemNumber;
 				sPropertyUsed = sProgramNameUsed;
