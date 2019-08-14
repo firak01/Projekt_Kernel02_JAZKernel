@@ -79,10 +79,10 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	private String sDirectoryConfig="";
 
 	private LogZZZ objLog = null;
-	private IKernelConfigZZZ objConfig = null;        //die Werte f�r den Applikationskey, Systemnummer, etc.
+	private IKernelConfigZZZ objConfig = null;        //die Werte für den Applikationskey, Systemnummer, etc.
 	private IKernelContextZZZ objContext = null;   //die Werte des aufrufenden PRogramms (bzw. sein Klassenname, etc.)
 	
-/**  Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
+/**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini
 	 * Diese Werte stammen aus ConfigZZZ im custom.zKernel - Verzeichnis.
