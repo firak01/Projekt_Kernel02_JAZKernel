@@ -35,17 +35,38 @@ public class ReflectEnvironmentZZZTest extends TestCase{
 	
 	public void testEnvironment(){
 		//try{
+			boolean btemp;
+		
 			//Init - Object
 			String stemp = ReflectEnvironmentZZZ.getJavaVersionCurrent();
 			assertNotNull("Kann nicht auf aktuelle Java-Version zugreifen (NULL)",stemp);
 			
 			stemp = stemp.trim();
-			assertFalse("Kann nicht auf aktuelle Java-Version zugreifen (Leerstring))", stemp.equals(""));
-						
+			assertFalse("Kann nicht auf aktuelle Java-Version zugreifen (Leerstring))", stemp.equals(""));					
 			System.out.println("Aktuelle Java-Version=" + stemp);
-			boolean btemp = ReflectEnvironmentZZZ.isJava6();
-			assertTrue("Version ist nicht Java 6", btemp);
-		
+						
+			String sVersionString = ReflectEnvironmentZZZ.getJavaVersionMain(stemp);
+			switch (sVersionString){//äh, switch mit String ist erst ab Java ... verfügbar
+			case ReflectEnvironmentZZZ.sJAVA4:
+				btemp = ReflectEnvironmentZZZ.isJava4();
+				assertTrue("Version ist nicht Java 4", btemp);
+				break;
+			case ReflectEnvironmentZZZ.sJAVA5:
+				btemp = ReflectEnvironmentZZZ.isJava5();
+				assertTrue("Version ist nicht Java 5", btemp);
+				break;
+			case ReflectEnvironmentZZZ.sJAVA6:
+				btemp = ReflectEnvironmentZZZ.isJava6();
+				assertTrue("Version ist nicht Java 6", btemp);
+				break;
+			case ReflectEnvironmentZZZ.sJAVA7:
+				btemp = ReflectEnvironmentZZZ.isJava7();
+				assertTrue("Version ist nicht Java 7", btemp);
+				break;
+			default:
+				fail("Java Version " + stemp + " wird noch nicht behandelt.");			
+			}
+			
 //		}catch(ExceptionZZZ ez){
 //			fail("An exception happend testing: " + ez.getDetailAllLast());
 //		}

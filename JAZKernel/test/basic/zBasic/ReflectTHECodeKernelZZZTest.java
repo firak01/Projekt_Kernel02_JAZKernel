@@ -26,7 +26,6 @@ public class ReflectTHECodeKernelZZZTest  extends TestCase{
 		} 
 	}//END setup
 	 
-	// TODO: ALLE METHODNEN VON REFLECTCODEZZZ auch in einer KernelVariante anbieten, die sich nur auf die Kernel-Klassen bezieht.
 	public void testGetCallingStack(){		
 		try{
 			//Verbereitende initialisierung:
@@ -90,6 +89,23 @@ public class ReflectTHECodeKernelZZZTest  extends TestCase{
 		} 
 	}
 	
+	public void testGetCallingStackExternal(){
+		try{
+			//Verbereitende initialisierung:
+			String sCallingMethod = ReflectCodeZZZ.getClassCurrentName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR + ReflectCodeZZZ.getMethodCurrentName();			
+			
+			//Ermittle aus einem Objekt, das innerhalb einer Methode erstellt wurde, den Namen der aufrufenden Methode.
+			boolean btemp2 = objObjectTest.startAsSubInitialiseObject4StackExternalTest();//der Aufruf der Methode, die das zu anlaylsierende Objekt erzeugt.
+			ReflectTHECodeKernelObject4TestingExternalSubZZZ objCreatedInternal = (ReflectTHECodeKernelObject4TestingExternalSubZZZ) objObjectTest.getObjectInitialisedInternal();			
+			String[] saExternalCallingStack = objCreatedInternal.makeClassMethodExternalCallingStack();			
+			assertNotNull("Es sollte ein errechnter Stacktrace im Ergebnis sein", saExternalCallingStack);
+			assertTrue("Die Länge des errechneten Stactrace sollte 1 sein.", saExternalCallingStack.length==1);
+			assertTrue("Es sollte die aktuelle Methode also die externalCalling Methode des Objekts im Ergebnis sein", sCallingMethod.equals(saExternalCallingStack[0]));
+						
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+	}
 	
 		
 }//END Class

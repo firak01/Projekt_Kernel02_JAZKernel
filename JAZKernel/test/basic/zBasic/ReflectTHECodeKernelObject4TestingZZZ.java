@@ -85,6 +85,16 @@ public class ReflectTHECodeKernelObject4TestingZZZ <T extends IObjectZZZ> extend
 		return bReturn;
 	}
 	
+	public boolean startAsSubInitialiseObject4StackExternalTest() throws ExceptionZZZ{
+		//Dummy Funktion zum Aufruf von Tests
+		boolean bReturn = false;
+		main:{
+			ReflectTHECodeKernelObject4TestingExternalSubZZZ objTest = new ReflectTHECodeKernelObject4TestingExternalSubZZZ();
+			this.setObjectInitialisedInternal((T) objTest);
+		}//end main:
+		return bReturn;
+	}
+	
 	public void setObjectInitialisedInternal(T obj){
 		this.objInitializedInternal = obj;
 	}

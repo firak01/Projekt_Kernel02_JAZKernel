@@ -85,11 +85,13 @@ public void testUsingSingleton01(){
 			if(bExecuted){
 				int iValueOld = iValue;
 				
-				sValue = objCounter.next();
-				assertTrue("Nach der Initialisierung soll der Counter einen Defaultlänge von 4 haben", sValue.equals("0002"));
-
+				sValue = objCounter.next();				
+				assertNotNull("Nach der Erhöhung soll der Counterwert nicht NULL sein", sValue);
+				assertTrue("Nach der Erhöhung soll der Counter einen Defaultlänge von 4 haben", sValue.length()==4);
+				assertTrue("Nach der Erhöhung soll der Counter de Wert 0001 haben. Grund: Der Counter wurde jetzt zum ersten Mal erhöht. ( Vorher wurde der Counter in einer anderen als der initialisierenden Methode erhöht, was wg. Strategyeinstellung nicht erlaubt ist.", sValue.equals("0001"));
+				
 				iValue = objCounter.getValueCurrent();
-				assertTrue("Der Zähler soll mehr als um 1 erhöht sein", iValue >= iValueOld +2);
+				assertTrue("Der Zähler soll NICHT mehr als um 1 erhöht sein", iValue >= iValueOld +1);
 				
 			}
 	
@@ -117,7 +119,7 @@ public void testUsingSingleton01(){
 				String sValue = objCounter.next();
 				assertNotNull("Nach der Erhöhung soll der Counterwert nicht NULL sein", sValue);
 				assertTrue("Nach der Erhöhung soll der Counter einen Defaultlänge von 4 haben", sValue.length()==4);
-				assertTrue("Nach der Erhöhung soll der Counter de Wert 0001 haben.", sValue.equals("0001"));
+				assertTrue("Nach der Erhöhung soll der Counter de Wert 0000 haben. Grund: Der Counter wurde in einer anderen als der initialisierenden Methode erhöht, was wg. Strategyeinstellung nicht erlaubt ist.", sValue.equals("0000"));
 							
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());

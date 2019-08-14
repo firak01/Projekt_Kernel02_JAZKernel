@@ -1,10 +1,15 @@
 package basic.zBasic;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 
 /** Reflection-Klassen, die sich auf die Kernel-Klassen biezieht.
- *  Die Methoden hinsichtlich der Klasse ReflectCodeZZZ sind hierin enthalten, 
+ *  Die Methoden wie in der Klasse ReflectCodeZZZ sind hier enthalten, 
  *  aber wenn es z.B. darum geht einen aufrufenden Methodennamen zu ermitteln, schränkt man sich auf die KernelZZZ Klassen ein. 
  *  
  * 
@@ -67,7 +72,93 @@ public class ReflectCodeKernelZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	/**Gib ein Array der Methoden des Stacktrace zurück.
+	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
+	 * z.B. in einer HashMap verwendet werden kann.
+	 * 
+	 * Besonderheit 1:
+	 * Im Ausgangsstacktrace sind nur Kernel-Klassen.Methodennamen enthalten.
+	 * 
+	 * Besonderheit 2:
+	 * Nur die Methoden sind darin enthalten, die von einer anderen Klasse ("external") stammen als die aktuell ausführende Klasse.
+	 * 
+	 * @return
+	 * @author Fritz Lindhauer, 12.06.2019, 10:08:16
+	 * @throws ExceptionZZZ 
+	 */
+	public static String[] getCallingStackExternal() throws ExceptionZZZ{
+		return ReflectCodeKernelZZZ.getCallingStackExternal(2);
+	}
+	
+	/**Gib ein Array der Methoden des Stacktrace zurück.
+	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
+	 * z.B. in einer HashMap verwendet werden kann.
+	 * 
+	 * Besonderheit 1:
+	 * Im Ausgangsstacktrace sind nur Kernel-Klassen.Methodennamen enthalten.
+	 * 
+	 * Besonderheit 2:
+	 * Nur die Methoden sind darin enthalten, die von einer anderen Klasse ("external") stammen als die aktuell ausführende Klasse.
+	 * 
+	 * @param sClassnameFilterRegEx : Schränke die Array-Einträge ein, auf Klassen, die diesen RegEx Ausdruck haben.
+	 * @return
+	 * @author Fritz Lindhauer, 16.06.2019, 07:42:03
+	 * @throws ExceptionZZZ 
+	 */
+	public static String[] getCallingStackExternal(int iOffset) throws ExceptionZZZ{
+		String[] saReturn=null;
+		main:{		
+		//++++++++++
+		//1. Name der aktuellen Klasse
+		String sClass = ReflectCodeZZZ.getClassCurrentName(iOffset);
+		
+		//2. Der komplette Stacktrace.
+		String[] saCallingStack = ReflectCodeKernelZZZ.getCallingStack();
+
+		//3. Hole die Indexposition der "external" Methode.
+		//Diese Sortierreihenfolge ist wichtig. Ansonsten besteht die Gefahr von Elternklassen, wie z.B. ObjectZZZ, dass Sie ja auch einen anderen Klassennamen haben und im Stacktrace stehen.		
+		String sCallingStackPrevious = null; 
+		int iCallingStackPrevious=saCallingStack.length-1;
+		int iCallingStack = iCallingStackPrevious;
+		for(int icount=saCallingStack.length-1; icount>=0;icount--){
+			String sCallingStack=saCallingStack[icount];
+			
+			//3. Suche den Namen der aktuellen Klasse links vom "."
+			String sCallingClass = StringZZZ.leftback(sCallingStack, ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR);
+					
+			//4. Suche die andere Klasse, die vorher aufgerufen woden ist.
+			if(sCallingClass.equals(sClass)){
+				//andere Klasse gefunden 
+				//sReturn = sCallingStackPrevious;
+				iCallingStack = iCallingStackPrevious;
+				break;
+			}else{
+				//andere Klasse gefunden
+				//5. Gib den gefundenene Klasse.Methode String zurück
+				//sReturn = sCallingStack;
+				//break;
+			}
+			sCallingStackPrevious = sCallingStack;
+			iCallingStackPrevious = icount;
+		}
+	
+		//5. Baue den neuen Stacktrace zusammen
+		ArrayList<String>listasTemp = new ArrayList<String>();
+		for(int icount = iCallingStack; icount <= saCallingStack.length-1;icount++){
+			listasTemp.add(saCallingStack[icount]);
+		}
+		
+		saReturn = ArrayListZZZ.toStringArray( listasTemp);
+	}//end main
+	return saReturn;
+	}
+	
+	
 	/** Holle den CallingString von einer Methode, die nicht der gleichen Klasse - wie die aktuell behandelte - entspricht.
+	 * 
+	 * Besonderheit:
+	 * Im Ausgangsstacktrace sind nur Kernel-Klassen.Methodennamen enthalten.
+	 * 
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author lindhaueradmin, 13.08.2019, 07:20:28
@@ -76,6 +167,9 @@ public class ReflectCodeKernelZZZ implements IConstantZZZ{
 		return ReflectCodeKernelZZZ.getClassMethodExternalCallingString(2);//1 wäre die Methode, die  diese aufruft, aber um die echte auf-aufrufende Methode zu bekommen ein weiteres +1
 	}
 	/** Holle den CallingString von einer Methode, die nicht der gleichen Klasse - wie die aktuell behandelte - entspricht.
+	 * 
+	 * Besonderheit:
+	 * Im Ausgangsstacktrace sind nur Kernel-Klassen.Methodennamen enthalten.
 	 * @param iOffset
 	 * @return
 	 * @throws ExceptionZZZ

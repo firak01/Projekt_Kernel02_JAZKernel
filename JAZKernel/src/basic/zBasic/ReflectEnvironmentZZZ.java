@@ -4,13 +4,45 @@ public class ReflectEnvironmentZZZ {
 	public static final String sJAVA4 = "1.4";
 	public static final String sJAVA5 = "1.5";
 	public static final String sJAVA6 = "1.6";
+	public static final String sJAVA7 = "1.7";
 	public static String getJavaVersionCurrent(){
 		    return System.getProperty("java.runtime.version");
 	}
+	
+	public static boolean isJava4() {
+		String sVersionString = ReflectEnvironmentZZZ.getJavaVersionCurrent();
+		String sVersionMain = ReflectEnvironmentZZZ.getJavaVersionMain(sVersionString);
+		if(sVersionMain.equals(ReflectEnvironmentZZZ.sJAVA4)){
+			return true;
+		}else{
+			return false;
+		}			
+	}
+	
+	public static boolean isJava5() {
+		String sVersionString = ReflectEnvironmentZZZ.getJavaVersionCurrent();
+		String sVersionMain = ReflectEnvironmentZZZ.getJavaVersionMain(sVersionString);
+		if(sVersionMain.equals(ReflectEnvironmentZZZ.sJAVA5)){
+			return true;
+		}else{
+			return false;
+		}			
+	}
+	
 	public static boolean isJava6() {
 		String sVersionString = ReflectEnvironmentZZZ.getJavaVersionCurrent();
 		String sVersionMain = ReflectEnvironmentZZZ.getJavaVersionMain(sVersionString);
 		if(sVersionMain.equals(ReflectEnvironmentZZZ.sJAVA6)){
+			return true;
+		}else{
+			return false;
+		}			
+	}
+	
+	public static boolean isJava7() {
+		String sVersionString = ReflectEnvironmentZZZ.getJavaVersionCurrent();
+		String sVersionMain = ReflectEnvironmentZZZ.getJavaVersionMain(sVersionString);
+		if(sVersionMain.equals(ReflectEnvironmentZZZ.sJAVA7)){
 			return true;
 		}else{
 			return false;
@@ -26,16 +58,16 @@ public class ReflectEnvironmentZZZ {
 		String sVersionMainCurrent = ReflectEnvironmentZZZ.getJavaVersionMain(ReflectEnvironmentZZZ.getJavaVersionCurrent());
 		String sVersionMain = ReflectEnvironmentZZZ.getJavaVersionMain(sVersionString);
 
-		//	Test waspassiert bei einer angenommenen JavaVersion der Umgebung
+		//Test was passiert bei einer angenommenen JavaVersion der Umgebung
 		//sVersionMainCurrent = "1.7";
 		
 		//Vergleich von Strings 
 		if(sVersionMainCurrent.compareTo(sVersionMain)>=1){
-			bReturn= true; //Also 1.7 ist neur als 1.6
+			bReturn= true; //Also 1.7 ist neuer als 1.6
 		}else if (sVersionMainCurrent.compareTo(sVersionMain)==0){
 			bReturn= true; //Also der Gleichheitsfall
 		}else{
-			bReturn = false;  //Also 1.4 ist älter als 1.6
+			bReturn = false;  //Also 1.4 ist Ã¤lter als 1.6
 		}
 		}//end main
 		return bReturn;

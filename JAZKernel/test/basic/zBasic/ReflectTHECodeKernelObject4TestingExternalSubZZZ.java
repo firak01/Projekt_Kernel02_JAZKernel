@@ -10,4 +10,8 @@ public class ReflectTHECodeKernelObject4TestingExternalSubZZZ extends ObjectZZZ 
 	public String makeClassMethodExternalCallingString() throws ExceptionZZZ {
 		return ReflectCodeKernelZZZ.getClassMethodExternalCallingString();
 	}	
+	
+	public String[] makeClassMethodExternalCallingStack() throws ExceptionZZZ {
+		return ReflectCodeKernelZZZ.getCallingStackExternal();
+	}
 }

@@ -47,10 +47,8 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 		main:{
 			
 			//Ermittle die aktuelle Stacktraceposition und dann jeweils die aufrufende Methode.
-			///TODO GOON 20190814: ReflectCodeKernelZZZ.getCallingStackExternal();
-			.....
-			String[] saCalling = ReflectCodeZZZ.getCallingStack();
-			
+			String[] saCalling = ReflectCodeKernelZZZ.getCallingStackExternal();
+						
 			//Suche in der Hashmap nach einem String des Klassen.Methodennamens, der schon in der HashMap gespeichert ist.
 			//Wird er gefunden, dann soll der Counter wiederverwendet werden.			
 			HashMap<String,ICounterAlphanumericSignificantZZZ> hmCounter = this.getCounterHashMap();
@@ -61,15 +59,18 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 									
 			//Wenn es solch einen String nicht gibt, erzeuge neuen Counter und speichere in Hashmap unter dem aktuellen Methodennamen.
 			if(objCounter==null){
-				ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = this.getCounterStrategy();
 				CounterByCharacterAsciiFactoryZZZ objCounterFactory = CounterByCharacterAsciiFactoryZZZ.getInstance();
+				
+				ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = this.getCounterStrategy();//Merke: Wenn die CounterStrategy neu erstellt wird, dann wird die ExterneInitialisierungsmethode über den StackTrace geholt.								
 				int iStart = objCounterStrategy.getCounterStart();
+
 				objCounter = objCounterFactory.createCounter(objCounterStrategy, iStart);
 				
-				//Ermittle die Aufrufende Methode
-				//TODO Goon 20190814: ReflectCodeKernelZZZ.getClassMethodExternalString();
-				....
-				String sCalling = ReflectCodeZZZ.getClassMethodString();			
+				//Ermittle die Aufrufende Methode. Alle gültig..
+				//String sCalling = ReflectCodeKernelZZZ.getClassMethodExternalCallingString();
+				//String sCalling = saCalling[saCalling.length-1]; //die vorherige Methode ist im StackTrace die mit dem höchsten Index
+				//... aber das erscheint mir am sichersten...
+				String sCalling = objCounterStrategy.getClassMethodCallingString();
 				this.setCounterFor(sCalling, objCounter);
 			}
 		}
@@ -98,6 +99,12 @@ public class CounterHandlerSingleton_AlphanumericSignificantZZZ {
 			objReturn = this.objCounterStrategy;
 			if(objReturn==null){
 				objReturn = new CounterStrategyAlphanumericSignificantZZZ();
+				
+				//Ermittle die aktuelle Stacktraceposition und dann jeweils die aufrufende Methode.
+				String[] saCalling = ReflectCodeKernelZZZ.getCallingStackExternal();
+				//wichtig: Momentan ist die getCounterStrategy() Methode die Initialisierungsmethode.  Diese aber überschreiben..
+				objReturn.setClassMethodCallingString(saCalling[saCalling.length-1]);//die vorherige Methode ist im StackTrace die mit dem höchsten Index
+				
 			}
 		}//end main:
 		return objReturn;
