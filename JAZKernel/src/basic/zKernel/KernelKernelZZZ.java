@@ -38,6 +38,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.cache.IKernelCacheZZZ;
+import basic.zKernel.cache.IObjectCachableZZZ;
+import basic.zKernel.cache.IObjectCacheUserZZZ;
+import basic.zKernel.cache.KernelCacheZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
@@ -55,7 +59,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelContextUserZZZ, IKernelExpressionIniConverterUserZZZ, IResourceHandlingObjectZZZ {
+public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelContextUserZZZ, IKernelExpressionIniConverterUserZZZ, IObjectCacheUserZZZ, IResourceHandlingObjectZZZ {
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
@@ -81,6 +85,8 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	private LogZZZ objLog = null;
 	private IKernelConfigZZZ objConfig = null;        //die Werte für den Applikationskey, Systemnummer, etc.
 	private IKernelContextZZZ objContext = null;   //die Werte des aufrufenden PRogramms (bzw. sein Klassenname, etc.)
+	
+	private IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
 	
 /**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
@@ -1152,7 +1158,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @throws ExceptionZZZ
 	 */
 	public IKernelConfigSectionEntryZZZ getParameterByModuleAlias(String sModuleAlias, String sParameter)  throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
 				check:{
 							if(sModuleAlias == null){
@@ -1285,7 +1291,7 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ 
 	 */
 	public IKernelConfigSectionEntryZZZ getParameter(String sParameter) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null; 
 		main:{
 			String sModulAlias = this.getApplicationKey();
 			objReturn = this.getParameterByModuleAlias(sModulAlias, sParameter);
@@ -1300,7 +1306,7 @@ MeinTestParameter=blablaErgebnis
 	 * lindhaueradmin, 07.07.2013
 	 */
 	public IKernelConfigSectionEntryZZZ getParameter4System(String sParameter) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			String sModul = this.getApplicationKey();
 			String sModulWithKey = this.getSystemKey(); //this.getApplicationKey();
@@ -1319,7 +1325,7 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 */
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(File objFileConfig, String sParameter) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 				check:{
 					if(objFileConfig == null){
@@ -1350,7 +1356,7 @@ MeinTestParameter=blablaErgebnis
 	}//end function getParameterByProgramAlias(..)
 
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(FileIniZZZ objFileIniConfig, String sParameter) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			main:{
 					check:{
 						if(objFileIniConfig == null){
@@ -1384,7 +1390,7 @@ MeinTestParameter=blablaErgebnis
 		
 	
 	private IKernelConfigSectionEntryZZZ KernelGetParameterByModuleFile_(FileIniZZZ objFileIniConfigIn, String sModuleAlias, String sProperty) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
 			objReturn = KernelGetParameterByProgramAlias_(objFileIniConfigIn, sModuleAlias, null, sProperty);
 		}//END main:
@@ -1412,7 +1418,7 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 */
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null;//new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			check:{
 				if(objFileConfig == null){
@@ -1459,7 +1465,7 @@ MeinTestParameter=blablaErgebnis
 	 * javadoc created by: 0823, 20.10.2006 - 09:03:54
 	 */
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sAliasProgramOrSection, String sProperty) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 				check:{
 					if(objFileIniConfig == null){
@@ -1506,7 +1512,7 @@ MeinTestParameter=blablaErgebnis
 		
 	
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
+		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		String sDebug = "";
 		main:{
 			check:{
@@ -1536,7 +1542,7 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = null;//new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			check:{
 				if(objFileIniConfig==null){
@@ -1668,7 +1674,27 @@ MeinTestParameter=blablaErgebnis
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug;
+		
+		//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
+		//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
+		String sSectionCacheUsed = null;					
+		if(StringZZZ.isEmpty(sProgramOrSection)){
+			sSectionCacheUsed = sMainSection;						
+		}else{
+			sSectionCacheUsed = sProgramOrSection;
+		}
+		String sPropertyCacheUsed = sProperty;
+		
+		
 		main:{		
+			//############################
+			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST
+			IKernelConfigSectionEntryZZZ objFromCache = (IKernelConfigSectionEntryZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
+			if(objFromCache!=null){
+				objReturn = objFromCache;
+				break main;
+			}
+			
 			//###################################################################################################			
 		    //IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
 			//      Dementsprechend in solch einem Objekt den Startwert speichern ung ggfs. per Konstruktor erstellen.
@@ -1829,8 +1855,28 @@ MeinTestParameter=blablaErgebnis
 				}//END main:
 				
 				sDebug = hmDebug.debugString(":"," | ");
-				if(objReturn.hasAnyValue()) {
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug); 
+				if(objReturn.hasAnyValue()) {										
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
+					
+					//################
+					//DEBUG: Entsprechen die oben eingegebenen Suchstrings auch dem 1. Suchschritt?
+					/*
+					Set<Integer> setKeyOuter = hmDebug.keySet();
+					Integer[] objaKeyOuter = (Integer[]) setKeyOuter.toArray(new Integer[setKeyOuter.size()]);
+					Integer obj = objaKeyOuter[0];
+					
+					//Nun diesen Wert in den Cache übernehmen.
+					HashMap<String,String>hmInner = hmDebug.getInnerHashMap(obj);//Das war der 1. Versuch. Er sollte die Eingabewerte beinhalten. Diese sollen die Keys für den Cache sein. Dann wird der Wert beim 2. Aufruf sofort gefunden.
+					Set<String> setKey = hmInner.keySet();
+					String[] saKey = (String[]) setKey.toArray(new String[setKey.size()]);				
+					String sKey = saKey[0];					
+					String sValue = hmInner.get(sKey);
+					*/
+					//###################
+					
+					//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
+					this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (IObjectCachableZZZ) objReturn);
+					
 				}else{
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
 				}				
@@ -1941,6 +1987,9 @@ MeinTestParameter=blablaErgebnis
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug; String sDebugKey;
 		main:{	
+			//TODO 20190815: CACHE VERWENDUNG AUCH BEIM SETZEN EINBAUEN
+			//
+			//			
 			//#######################################################################			
 			//TODO 20190711: COUNTER AUCH BEIM SETZEN EINBAUEN: sSearchCounter = objCounter.getStringNext();
 			//                                                  sDebugKey = "(00)"+ sSearchCounter;
@@ -3423,7 +3472,6 @@ MeinTestParameter=blablaErgebnis
 	}
 
 	
-	
 	//##### Interfaces
 	public IKernelConfigZZZ  getConfigObject() throws ExceptionZZZ{
 		return this.objConfig;
@@ -3438,6 +3486,18 @@ MeinTestParameter=blablaErgebnis
 	public void setContextUsed(IKernelContextZZZ objContext) {
 		this.objContext = objContext;
 	}	
+	
+
+	public IKernelCacheZZZ getCacheObject(){
+		if(this.objCache==null){
+			this.objCache = new KernelCacheZZZ();
+		}
+		return this.objCache;		
+	}
+	public void setCacheObject(IKernelCacheZZZ objCache){
+		this.objCache = objCache;
+	}
+	
 	
 	//aus IRessourceHandlingObjectZZZ
 	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.

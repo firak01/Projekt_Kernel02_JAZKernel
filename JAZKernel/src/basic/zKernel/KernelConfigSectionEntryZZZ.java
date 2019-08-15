@@ -1,6 +1,8 @@
 package basic.zKernel;
 
-public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ {
+import basic.zKernel.cache.IObjectCachableZZZ;
+
+public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, IObjectCachableZZZ {
 	private String sSection = null;
 	private String sProperty = null;
 	private String sRaw = null;
@@ -10,6 +12,8 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bNullValue = false;
 	private boolean bExpression = false;
 	private boolean bFormula = false;
+	
+	private boolean bSkipCache = false;
 	
 	@Override
 	public String getSection() {
@@ -120,6 +124,17 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void sectionExists(boolean bSectionExists) {
 		this.bSectionExists = bSectionExists;
+	}
+
+	//Aus Interface IObjectCachableZZZ
+	@Override
+	public boolean isCacheSkipped() {
+		return this.bSkipCache;
+	}
+
+	@Override
+	public void isCacheSkipped(boolean bSkip) {
+		this.bSkipCache = bSkip;
 	}
 
 }
