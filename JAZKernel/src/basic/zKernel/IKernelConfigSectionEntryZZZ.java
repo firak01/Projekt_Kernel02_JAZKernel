@@ -1,5 +1,7 @@
 package basic.zKernel;
 
+import basic.zKernel.cache.ICachableObjectZZZ;
+
 /** Ein Objekt dieser Klasse enthält die Werte aus einer konfigurierten ini-Datei.
  *  Gefüllt wird dieses Objekt in den Kernel.getParameter.... oder ähnlich lautenden Klassen.
  *  Diese geben das Objekt zurück.
@@ -13,7 +15,7 @@ package basic.zKernel;
  * @author Fritz Lindhauer, 17.07.2019, 09:27:00
  * 
  */
-public interface IKernelConfigSectionEntryZZZ {
+public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ{
 	public String getSection();
 	public void setSection(String sSection);
 	

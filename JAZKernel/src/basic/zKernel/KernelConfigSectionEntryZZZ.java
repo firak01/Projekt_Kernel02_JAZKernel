@@ -1,8 +1,11 @@
 package basic.zKernel;
 
-import basic.zKernel.cache.IObjectCachableZZZ;
+import java.util.regex.Pattern;
 
-public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, IObjectCachableZZZ {
+import basic.zKernel.cache.ICachableObjectZZZ;
+import basic.zKernel.cache.ICacheFilterZZZ;
+
+public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ {
 	private String sSection = null;
 	private String sProperty = null;
 	private String sRaw = null;
@@ -137,4 +140,24 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		this.bSkipCache = bSkip;
 	}
 
+	@Override
+	public String getValueForFilter() {
+		if(this.isFormula()){
+			return this.getRaw();
+		}else{
+			return this.getValue();
+		}
+	}
+
+	@Override
+	public boolean wasValueComputed() {
+		if(this.isFormula()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	
+	
 }

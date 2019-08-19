@@ -28,6 +28,8 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.cache.ICachableObjectZZZ;
+import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -36,7 +38,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpressionIniConverterUserZZZ{
+public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
@@ -63,6 +65,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	//                   Um auf solch einen Wert reagieren zu können (also im genannten Beispiel zu merken: Der Wert ist absichtlich leer) das Flag und den 
 	//private boolean bValueConverted=false;//Wenn durch einen Converter der Wert verändert wurde, dann wird das hier festgehalten.
 	//private String sValueRaw=null;
+	
+	private boolean bSkipCache=false;
 
 	public KernelFileIniZZZ() throws ExceptionZZZ{
 		super();
@@ -928,11 +932,53 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 		return this.hmVariable;
 	}
 	
+	/**Setze die Variable. 
+	 *   Besonderheit: Man kann steueren ob Formeln, die diese Variable enthalten kurfristig aus dem Cache genommen werden (skip).
+	 *                        Dadurch würden Sie erneut berechnet. 
+	 *                        Merke: Das ist Z.B. im TileHexMap Projekt beim Herein-/Herauszoomen und der Berechnung der Seitenlänge des Hexfelds notwendig.
+	 * @param sVariable
+	 * @param sValue
+	 * @param bUncacheFormula
+	 */
+	public void setVariable(String sVariable, String sValue, boolean bUncacheFormula){
+			this.getHashMapVariable().put(sVariable, sValue);		
+		
+			if(bUncacheFormula){
+				//20190817: Mit der Einführung des Cache für Ini - Einträge hat sich gezeigt, dass es notwendig ist, berechnete Ausdrücke nach Änderung der Variablen neu zu holen.
+				//                Darum wird für die Ausdrücke, die diese Variablen enthalten, der Cache "geskipped".
+				IKernelCacheZZZ objCache = this.getKernelObject().getCacheObject();		
+				objCache.isCacheSkippedContainingVariable(true, sVariable);
+			}
+	}
+	
 	public void setVariable(String sVariable, String sValue){
-		this.getHashMapVariable().put(sVariable, sValue);		
+		this.setVariable(sVariable, sValue, false);
 	}	
 	public String getVariable(String sVariable){
 		return (String) this.getHashMapVariable().get(sVariable);
+	}
+
+	//###### AUS INTERFACE ICachableObjectZZZ
+	@Override
+	public boolean isCacheSkipped() {
+		return this.bSkipCache;
+	}
+
+	@Override
+	public void isCacheSkipped(boolean bValue) {
+		this.bSkipCache=bValue;
+	}
+
+	@Override
+	public boolean wasValueComputed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getValueForFilter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	//### Interface

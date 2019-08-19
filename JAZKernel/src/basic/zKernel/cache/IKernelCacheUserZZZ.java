@@ -1,6 +1,6 @@
 package basic.zKernel.cache;
 
-public interface IObjectCacheUserZZZ {
+public interface IKernelCacheUserZZZ {
 	public IKernelCacheZZZ getCacheObject();
 	public void setCacheObject(IKernelCacheZZZ objCache);
 }

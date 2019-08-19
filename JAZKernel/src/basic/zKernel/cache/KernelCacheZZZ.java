@@ -1,39 +1,153 @@
 package basic.zKernel.cache;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.file.ini.KernelExpressionIni_VariableZZZ;
 
 public class KernelCacheZZZ extends AbstractKernelCacheZZZ{
-	private HashMapMultiZZZ<String, String, IObjectCachableZZZ>hmCache=null;
+	private HashMapMultiZZZ<String, String, ICachableObjectZZZ>hmCache=null;
 	
 	public KernelCacheZZZ(){
 		super();
 	}
 	
 	@Override
-	public HashMapMultiZZZ<String, String, IObjectCachableZZZ> getHashMapCache() {
+	public HashMapMultiZZZ<String, String, ICachableObjectZZZ> getHashMapCache() {
 		if(this.hmCache==null){
-			this.hmCache=new HashMapMultiZZZ<String,String,IObjectCachableZZZ>();
+			this.hmCache=new HashMapMultiZZZ<String,String,ICachableObjectZZZ>();
 		}
 		return this.hmCache;
 	}
 
 	@Override
-	public void setHashMapCache(HashMapMultiZZZ<String, String, IObjectCachableZZZ> hmCache) {
+	public void setHashMapCache(HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache) {
 		this.hmCache=hmCache;
 	}
 
 	@Override
-	public IObjectCachableZZZ getCacheEntry(String sSection, String sProperty) throws ExceptionZZZ {
-		HashMapMultiZZZ<String, String, IObjectCachableZZZ> hmCache = this.getHashMapCache();
-		IObjectCachableZZZ objEntry = (IObjectCachableZZZ) hmCache.get(sSection, sProperty);
-		return objEntry;
+	public ICachableObjectZZZ getCacheEntry(String sSection, String sProperty) throws ExceptionZZZ {
+		ICachableObjectZZZ objReturn = null;
+		main:{
+			HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
+			objReturn = (ICachableObjectZZZ) hmCache.get(sSection, sProperty);
+			if(objReturn!=null){
+				if(objReturn.isCacheSkipped()){ //d.h. es wurde erzwungen, dass der Eintrag neu gelesen werden muss.
+					objReturn=null;
+				}
+			}
+		}//end main:
+		return objReturn;
 	}
 
 	@Override
-	public void setCacheEntry(String sSection, String sProperty, IObjectCachableZZZ objEntry) throws ExceptionZZZ {
-		HashMapMultiZZZ<String, String, IObjectCachableZZZ> hmCache = this.getHashMapCache();
+	public void setCacheEntry(String sSection, String sProperty, ICachableObjectZZZ objEntry) throws ExceptionZZZ {
+		HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
 		hmCache.put(sSection, sProperty, objEntry);
 	}
 
+	@Override
+	public int isCacheSkippedContainingVariable(boolean bValue, String sVariableName) {
+		int iReturn = 0; //Die Anzahl der gefundenen und veränderten Einträge
+		main:{
+			if(StringZZZ.isEmpty(sVariableName)) break main;
+			
+			/*
+			 Java regex to match word with nonboundaries (!!!!! FGL !!!!!) – contain word example
+
+Suppose, you want to match “java” such that it should be able to match words like “javap” or “myjava” or “myjavaprogram” i.e. java word can lie anywhere in the data string. It could be start of word with additional characters in end, or could be in end of word with additional characters in start as well as in between a long word.
+
+"\B" matches at every position in the subject text where "\B" does not match. "\B" matches at every position that is not at the start or end of a word.
+
+To match such words, use below regex :
+
+    Solution Regex : \\Bword|word\\B
+
+String data1 = "Searching in words : javap myjava myjavaprogram";
+       
+String regex = "\\Bjava|java\\B";
+ 
+Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+Matcher matcher = pattern.matcher(data1);
+while (matcher.find())
+{
+    System.out.print("Start index: " + matcher.start());
+    System.out.print(" End index: " + matcher.end() + " ");
+    System.out.println(matcher.group());
+}
+ 
+Output:
+ 
+Start index: 21 End index: 25 java
+Start index: 29 End index: 33 java
+Start index: 36 End index: 40 java
+
+Please note that it will not match “java” word in first example i.e. “Today, java is object oriented language” because “\\B” does not match start and end of a word.
+			 */
+			
+			String sRegEx=KernelExpressionIni_VariableZZZ.getExpressionTagStarting() + sVariableName + KernelExpressionIni_VariableZZZ.getExpressionTagClosing(); //Den Namen einer Variablen finden, über diesen RegEx-Ausdruck
+			sRegEx = "\\B"+sRegEx+"|"+sRegEx+"\\B";
+			ArrayList<ICachableObjectZZZ> listaCacheEntry = this.getCacheEntriesWithPropertiesByRegEx(sRegEx);
+			for(ICachableObjectZZZ objCacheEntry: listaCacheEntry){				
+				objCacheEntry.isCacheSkipped(bValue);
+				iReturn++;
+			}
+		}//end main:
+		return iReturn;
+	}
+
+	@Override
+	public ArrayList<ICachableObjectZZZ> getCacheEntriesWithPropertiesByRegEx(String sRegEx) {
+		ArrayList<ICachableObjectZZZ>listaObjectReturn = new ArrayList<ICachableObjectZZZ>();
+		main:{
+			HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
+			ICacheFilterZZZ objFilter = this.getFilterObject(sRegEx); //Das ist performanter, da das Pattern Objekt schon kompiliert ist und so besser mehrfach aufgerufen werden kann.
+			
+			//20190818 : Diese MultiHashmap durchgehen und die einzelenen Elemente filtern. 
+			Set<String> setOuter = (Set<String>) hmCache.getOuterKeySet();
+			for(String sKeyOuter : setOuter){
+				HashMap<String,ICachableObjectZZZ>hmInner=hmCache.getInnerHashMap(sKeyOuter);
+				Set<String> setInner = (Set<String>) hmCache.getInnerKeySet(sKeyOuter);
+				for(String sKeyInner : setInner){
+					ICachableObjectZZZ objCachable = hmInner.get(sKeyInner);
+										
+					boolean btemp = objFilter.accept(objCachable);//Wende nun den Filter auf das gecachte Object an.
+					if(btemp)	listaObjectReturn.add(objCachable);   //Falls der Filter zutrifft, packe das Objekt in das Ergebnis. Damit kann dann, z.B. für alle Formeln mit einer bestimmten Variable, der Cache geskipped werden. 
+				}
+			}
+		}//end main:
+		return listaObjectReturn;
+	}
+	
+	@Override
+	//20190818: Gelöst als innere anonyme Klasse
+	public ICacheFilterZZZ getFilterObject(final String sRegEx){
+		//Erstelle innere anonyme Klasse
+		return new ICacheFilterZZZ(){
+			private Pattern pattern = Pattern.compile(sRegEx, Pattern.CASE_INSENSITIVE); //es muss der Ausdruck z.B. z:Var nicht casesensitive in der ini stehen!
+			
+			@Override
+			public boolean accept(ICachableObjectZZZ objCachable) {
+				boolean bReturn = false;
+				main:{
+					if(objCachable==null) break main;
+					if(!objCachable.wasValueComputed())break main; //soll etwas mehr Performance liefern, da der Aufwand ein Pattern  zu finden entfällt.
+					
+					String sStringToMatch = objCachable.getValueForFilter();
+					if(StringZZZ.isEmpty(sStringToMatch)) break main;
+										
+					Matcher matcher = pattern.matcher(sStringToMatch);
+					bReturn = matcher.find();//Merke: .matches() funktioniert nicht!!! weil: Attempts to match the entire region against the pattern.
+					                                                     //.find() Attempts to find the next subsequence of the input sequence that matches the pattern.
+				}//end main:
+				return bReturn; //Hier regeex pattern und objEntryConfiguration.getValueForFilter() matchen		
+			}//Ende der inneren Methode "accept"
+		}; //Ende der anonymen inneren Klasse	
+	}//end method: filter(...)
 }
