@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import base.collections.CollectionUtil;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.datatype.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
+import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelZZZ;
 

@@ -1,6 +1,6 @@
 package basic.zBasic;
 
-import basic.zBasic.util.datatype.counter.ICounterStrategyZZZ;
+import basic.zBasic.util.counter.ICounterStrategyZZZ;
 
 /** Klasse, wird in den Testklassen aufgerufen.
  *   Sie ist Ausgangsposition für den Aufruf weiterer Testklassen, in denen dann die zu testenden Reflect-Methoden ausgeführt werden.
