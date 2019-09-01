@@ -6,11 +6,28 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlphanumericZZZ{
+public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlphabetZZZ{
 	public CounterStrategyAlphabetSerialZZZ() throws ExceptionZZZ {
 		super();
 		this.makeReflectableInitialization();
 	}
+	
+	public CounterStrategyAlphabetSerialZZZ(String sStartValue) throws ExceptionZZZ {
+		super(sStartValue);
+		this.makeReflectableInitialization();
+	}
+	
+	public CounterStrategyAlphabetSerialZZZ(boolean bLowercase) throws ExceptionZZZ {
+		super(bLowercase);
+		this.makeReflectableInitialization();
+	}
+	
+	public CounterStrategyAlphabetSerialZZZ(String sStartValue, boolean bLowercase) throws ExceptionZZZ {
+		super(sStartValue, bLowercase);
+		this.makeReflectableInitialization();
+	}
+	
+	
 	
 	@Override
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {

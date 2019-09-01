@@ -24,4 +24,11 @@ public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCou
 	public void isLowercase(boolean bValue) {
 		this.bLowercase = bValue;
 	}
+	
+	//Aus Interface ICounterStrategyAlphabet
+	@Override
+	public void setCounterStart(String sStart) throws ExceptionZZZ{			
+		int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sStart, this);
+		this.setCounterStart(iValue);
+	}	
 }

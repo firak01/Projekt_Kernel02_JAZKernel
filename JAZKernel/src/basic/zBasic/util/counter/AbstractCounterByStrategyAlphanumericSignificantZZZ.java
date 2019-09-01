@@ -5,11 +5,9 @@ import basic.zBasic.IConstantZZZ;
 
 //public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ extends CounterByCharacterAscii_AlphanumericZZZ implements ICounterStrategyAlphanumericSignificantZZZ{
 public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T extends ICounterStrategyAlphanumericSignificantZZZ> extends AbstractCounterByCharacterAsciiZZZ implements ICounterAlphanumericSignificantZZZ, ICounterCaseSensitiveZZZ{ 
-	//Merke: Wenn man das in den jeweilgen abstrakten Klassen behält, bekommt man 2 objCounterStrategy - Objekte
-	//private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;	
-		 
-	//Testweise hier Generics auslagern.
-	//nun in übergeordnete abstrakte Klasse verschoben T objCounterStrategy;
+	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
+	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden. 
+	//T objCounterStrategy;
 	
 	public AbstractCounterByStrategyAlphanumericSignificantZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super();
@@ -43,12 +41,7 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T ext
 	public void isLowercase(boolean bValue) throws ExceptionZZZ {
 		this.getCounterStrategyObject().isLowercase(bValue);
 	}
-	
-//	@Override
-//	public abstract void setValueCurrent(String sValue) throws ExceptionZZZ ;
-	
-//	@Override
-//	public abstract String peekChange(int iValue) throws ExceptionZZZ;
+
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//Normalerweise ist Eingabe = Ausgabe, aber bei den Signifikant-Counter ist eine führende 0 erlaubt, wenn eine Zählerlänge vorgegeben wurde.
@@ -84,27 +77,9 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T ext
 			}//end main:
 		}	
 		
-		// ++++ Aus Interface		
-//		@Override
-//		public T getCounterStrategyObject(){
-//			if(this.objCounterStrategy==null){
-//				T objCounterStrategy = (T) new CounterStrategyAlphanumericSignificantZZZ();
-//				this.objCounterStrategy = objCounterStrategy;
-//			}
-//			return (T) this.objCounterStrategy;
-//		}
-		
-//		@Override
-//		public void setCounterStrategyObject(T objCounterStrategy){
-//			this.objCounterStrategy = objCounterStrategy;	
-//		}
-		
-				
+		// ++++ Aus Interface						
 		@Override
 		public abstract void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy);
-		
-//		@Override
-//		public abstract void setCounterStrategyObject(T objCounterStrategy);
 		
 		@Override	
 		public abstract T getCounterStrategyObject() throws ExceptionZZZ;

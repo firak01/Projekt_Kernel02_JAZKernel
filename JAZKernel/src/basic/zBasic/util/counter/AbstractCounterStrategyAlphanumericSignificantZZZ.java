@@ -9,11 +9,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericZZZ implements ICounterStrategyAlphanumericSignificantZZZ{
 	
 	//TODO: Default Werte gehören eingentlich als Konstante ins Interface.
-	int iStartDefault = 0;
 	int iCounterLengthDefault = 4;
 	char cCounterFillingDefault = "0".toCharArray()[0]; //das sollte dann auch "0" sein, oder?;
-		
-	private int iStart = -1;
 	private int iCounterLength;
 	
 	//20190724: Nicht als einzelnen char speichern, sondern als Array.  Hier kann man über die Länge abprüfen, ob ein Zeichen überhaupt gesetzt wurde
@@ -127,26 +124,4 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 			}
 		}
 		
-		@Override
-		public void setCounterStart(String sStart) throws ExceptionZZZ{			
-			int iValue = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sStart, this);
-			this.setCounterStart(iValue);
-		}
-		
-		@Override
-		public void setCounterStart(int iStart){
-			this.iStart = iStart;
-		}
-					
-		@Override
-		public int getCounterStart(){
-			if(this.iStart<=-1){
-				this.iStart = this.iStartDefault;
-			}
-			return this.iStart;
-		}
-		
-		
-		
-
 }

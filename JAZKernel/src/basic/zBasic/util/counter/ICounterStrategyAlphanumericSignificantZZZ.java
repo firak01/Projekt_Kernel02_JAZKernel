@@ -2,11 +2,7 @@ package basic.zBasic.util.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface ICounterStrategyAlphanumericSignificantZZZ extends ICounterStrategyAlphanumericZZZ {	
-	public int getCounterStart();
-	public void setCounterStart(int iStart);
-	public void setCounterStart(String sStart) throws ExceptionZZZ;
-	
+public interface ICounterStrategyAlphanumericSignificantZZZ extends ICounterStrategyAlphanumericZZZ {		
 	public int getCounterLength();
 	public void setCounterLength(int iLength) throws ExceptionZZZ;
 	

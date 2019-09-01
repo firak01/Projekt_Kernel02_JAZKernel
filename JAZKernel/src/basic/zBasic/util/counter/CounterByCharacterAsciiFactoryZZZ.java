@@ -121,9 +121,11 @@ public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> e
 		objReturn.setValueCurrent(sStart);
 		return objReturn;	
 	}
+	
+	//+++++++++++++++
 	@Override
-	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
-		ICounterAlphanumericZZZ objReturn = null;
+	public ICounterAlphabetZZZ createCounter(ICounterStrategyAlphabetZZZ objCounterStrategy) throws ExceptionZZZ {
+		ICounterAlphabetZZZ objReturn = null;
 		if(objCounterStrategy==null){
 			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
@@ -132,7 +134,39 @@ public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> e
 		if(objCounterStrategy instanceof CounterStrategyAlphabetSerialZZZ || objCounterStrategy instanceof CounterStrategyAlphabetMultipleZZZ){
 			objReturn = new CounterByCharacterAscii_AlphabetZZZ();
 			objReturn.setCounterStrategyObject(objCounterStrategy);			
-		}else if(objCounterStrategy instanceof CounterStrategyAlphanumericMultipleZZZ || objCounterStrategy instanceof CounterStrategyAlphanumericSerialZZZ){				 
+		}else{		
+			ExceptionZZZ ez = new ExceptionZZZ("CounterStategyObject-Type wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		return objReturn;
+	}	
+	@Override
+	public ICounterAlphabetZZZ createCounter(ICounterStrategyAlphabetZZZ objCounterStrategy, int iStart)throws ExceptionZZZ {
+		ICounterAlphabetZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(iStart);
+		return objReturn;
+	}
+	@Override
+	public ICounterAlphabetZZZ createCounter(ICounterStrategyAlphabetZZZ objCounterStrategy, String sStart) throws ExceptionZZZ {
+		ICounterAlphabetZZZ objReturn = this.createCounter(objCounterStrategy);
+		objReturn.setValueCurrent(sStart);
+		return objReturn;
+	}
+	
+	//+++++++++++++++
+	@Override
+	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
+		ICounterAlphanumericZZZ objReturn = null;
+		if(objCounterStrategy==null){
+			ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+				
+//		if(objCounterStrategy instanceof CounterStrategyAlphabetSerialZZZ || objCounterStrategy instanceof CounterStrategyAlphabetMultipleZZZ){
+//			objReturn = new CounterByCharacterAscii_AlphabetZZZ();
+//			objReturn.setCounterStrategyObject(objCounterStrategy);			
+//		}else 
+		if(objCounterStrategy instanceof CounterStrategyAlphanumericMultipleZZZ || objCounterStrategy instanceof CounterStrategyAlphanumericSerialZZZ){				 
 			objReturn = new CounterByCharacterAscii_AlphanumericZZZ();
 			objReturn.setCounterStrategyObject(objCounterStrategy);			
 		}else{		
@@ -184,4 +218,5 @@ public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> e
 		objReturn.setValueCurrent(sStart);
 		return objReturn;
 	}
+
 }

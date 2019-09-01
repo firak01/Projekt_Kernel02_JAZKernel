@@ -30,6 +30,10 @@ public interface ICounterByCharacterAsciiFactoryZZZ {
 	public ICounterNumericZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy,int iStart) throws ExceptionZZZ ;
 	public ICounterNumericZZZ createCounter(ICounterStrategyNumericZZZ objCounterStrategy, String sStart) throws ExceptionZZZ ;
 	
+	public ICounterAlphabetZZZ createCounter(ICounterStrategyAlphabetZZZ objCounterStrategy)  throws ExceptionZZZ;
+	public ICounterAlphabetZZZ createCounter(ICounterStrategyAlphabetZZZ objCounterStrategy, int iStart) throws ExceptionZZZ ;
+	public ICounterAlphabetZZZ createCounter(ICounterStrategyAlphabetZZZ objCounterStrategy, String sStart) throws ExceptionZZZ ;
+	
 	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy)  throws ExceptionZZZ;
 	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, int iStart) throws ExceptionZZZ ;
 	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sStart) throws ExceptionZZZ ;

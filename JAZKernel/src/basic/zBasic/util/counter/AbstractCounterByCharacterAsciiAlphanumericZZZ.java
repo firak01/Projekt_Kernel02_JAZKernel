@@ -76,23 +76,9 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ <T extends 
 
 	
 	
-	// ++++ Aus Interface
-//	public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
-//		if(this.objCounterStrategy==null){
-//			ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();//!!!!!!!!!!!
-//			this.objCounterStrategy = objCounterStrategy;
-//		}
-//		return this.objCounterStrategy;
-//	}
-//	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-//		this.objCounterStrategy = objCounterStrategy;
-//	}
-	
+	// ++++ Aus Interface	
 	@Override
 	public abstract void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
-	
-	//@Override
-	//public abstract void setCounterStrategyObject(T objCounterStrategy);
 	
 	@Override	
 	public abstract T getCounterStrategyObject() throws ExceptionZZZ;

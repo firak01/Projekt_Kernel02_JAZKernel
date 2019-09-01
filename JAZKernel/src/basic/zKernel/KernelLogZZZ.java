@@ -5,6 +5,7 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
@@ -69,8 +70,16 @@ public class KernelLogZZZ extends ObjectZZZ implements IObjectZZZ {
 			
 			//20190116: Suche nach dem Pfad. Er ist ggfs. als Serverapplication ohne den "src"-Ordner.
 			File objDirectory = FileEasyZZZ.searchDirectory(sDirectoryPath);
+			if(objDirectory==null) {
+				String sError = "Verzeichnis für das KernelLog  ='" + sDirectoryPath +"' existiert nicht.";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+": " + sError);
+				ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, KernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;					
+			}
+			
 			String sDirectoryPathNormed = objDirectory.getAbsolutePath();
-			System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter existierender Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+			
 			
 			FileZZZ objFile = new FileZZZ(sDirectoryPathNormed, sLogFile, 3,null);
 			String sLogFileNew = objFile.PathNameTotalExpandedNextCompute();

@@ -4,13 +4,24 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyAlphanumericZZZ{
+public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyAlphabetZZZ{
 	public CounterStrategyAlphabetMultipleZZZ() throws ExceptionZZZ{
 		super();
 		this.makeReflectableInitialization();
 	}
+	
+	public CounterStrategyAlphabetMultipleZZZ(String sStartValue) throws ExceptionZZZ{
+		super(sStartValue);
+		this.makeReflectableInitialization();
+	}
+	
 	public CounterStrategyAlphabetMultipleZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super(bLowercase);
+		this.makeReflectableInitialization();
+	}
+	
+	public CounterStrategyAlphabetMultipleZZZ(String sStartValue, boolean bLowercase) throws ExceptionZZZ {
+		super(sStartValue, bLowercase);
 		this.makeReflectableInitialization();
 	}
 	

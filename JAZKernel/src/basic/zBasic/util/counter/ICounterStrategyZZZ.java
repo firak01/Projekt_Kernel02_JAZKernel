@@ -4,6 +4,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectReflectableImplementerZZZ;
 
 public interface ICounterStrategyZZZ extends IObjectReflectableImplementerZZZ{
+	public int getCounterStart();
+	public void setCounterStart(int iStart);
+				
 	public boolean isRightAligned();
 	public void isRightAligned(boolean bValue);
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ;

@@ -18,11 +18,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICounterStrategyAlphanumericSignificantZZZ> extends AbstractCounterByStrategyAlphanumericSignificantZZZ{
 	//Als generics in die Abstracte Klasse verschoben private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;
 	T objCounterStrategy;
-	
-	public static int iPOSITION_MIN=1;  //Merke: die Sonderzeichen werden übersprungen bei Werten >10  und <=16
-	public static int iPOSITION_MAX=36;
-	
-	public static String sREGEX_CHARACTERS="[a-zA-Z0-9]";
 
 	public CounterByCharacterAscii_AlphanumericSignificantZZZ(){
 		super();	

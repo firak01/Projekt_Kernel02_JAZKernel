@@ -11,10 +11,6 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	//private ICounterStrategyNumericZZZ objCounterStrategy;
 	private T objCounterStrategy;
 	
-	public static int iPOSITION_MIN=1;  //Das Ziel sollte sein, dass iALPHABET_POSTION_MIN = 
-	public static int iPOSITION_MAX=10;//die 10 Ziffern 0-9 dazu.
-	
-	public static String sREGEX_CHARACTERS="[0-9]";
 	
 	//##### DAMIT DER COUNTER ÜBER DIE FACTORY ERZEUGT WERDEN KANN UND SICH DEN AKTUELLEN WERT, ETC. MERKT
 	//Konstruktoren

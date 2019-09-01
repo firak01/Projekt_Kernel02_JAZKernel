@@ -83,7 +83,5 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 	@Override
 	public boolean makeReflectableInitialization() throws ExceptionZZZ {		
 		return this.initClassMethodCallingString();
-	}
-
-	
+	}	
 }

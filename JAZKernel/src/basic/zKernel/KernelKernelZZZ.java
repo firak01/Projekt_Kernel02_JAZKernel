@@ -28,9 +28,13 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAsciiFactoryZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphabetZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
+import basic.zBasic.util.counter.CounterHandlerSingleton_AlphabetZZZ;
 import basic.zBasic.util.counter.CounterHandlerSingleton_AlphanumericSignificantZZZ;
+import basic.zBasic.util.counter.CounterStrategyAlphabetSerialZZZ;
 import basic.zBasic.util.counter.CounterStrategyAlphanumericSignificantZZZ;
+import basic.zBasic.util.counter.ICounterAlphabetZZZ;
 import basic.zBasic.util.counter.ICounterAlphanumericSignificantZZZ;
+import basic.zBasic.util.counter.ICounterStrategyAlphabetZZZ;
 import basic.zBasic.util.counter.ICounterStrategyAlphanumericSignificantZZZ;
 import basic.zBasic.util.counter.ICounterStringZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -1598,8 +1602,10 @@ MeinTestParameter=blablaErgebnis
 			if(!StringZZZ.isEmpty(sSection)){
 				IKernelConfigSectionEntryZZZ objTemp = null;
 				
-				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
-				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+//				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+//				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+				CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
+				ICounterAlphabetZZZ objCounter = objHandler.getCounterFor();
 				String sSearchCounter = objCounter.getStringNext(); //objCounter.current();
 				
 				
@@ -1642,8 +1648,11 @@ MeinTestParameter=blablaErgebnis
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			if(!StringZZZ.isEmpty(sSection)){				
-				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
-				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+//				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+//				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+				
+				CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
+				ICounterAlphabetZZZ objCounter = objHandler.getCounterFor();
 				String sSearchCounter = objCounter.getStringNext(); //objCounter.current();
 				
 				//a) mit Systemkey
@@ -1720,14 +1729,20 @@ MeinTestParameter=blablaErgebnis
 			//      Dann die objAsciiCounterZweistellig.next() bzw. die objAsciiCounterZweistellig.increase() Methode 
 			//      letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
 			
-			//Hier einen SingletonCounter holen!!!
-			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
-			
 			//int iStartValue=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
-			String sStartValue= "A0";
-			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);
+						
+			//Hier einen SingletonCounter holen!!!		
+			//CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+			//String sStartValue= "A0";
+			//ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);	
+			//objHandler.setCounterStrategy(objCounterStrategy);
+			//ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+			
+			CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
+			String sStartValue= "A";
+			ICounterStrategyAlphabetZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ(sStartValue);
 			objHandler.setCounterStrategy(objCounterStrategy);
-			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+			ICounterAlphabetZZZ objCounter = objHandler.getCounterFor();
 			String sSearchCounter = objCounter.getStringNext(); // objCounter.current();
 			String sDebugKey=null;
 			//#################################################################################################
@@ -1971,8 +1986,11 @@ MeinTestParameter=blablaErgebnis
 		main:{
 						
 			if(!StringZZZ.isEmpty(sSection)){
-				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
-				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+//				CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+//				ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+				
+				CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
+				ICounterAlphabetZZZ objCounter = objHandler.getCounterFor();
 				String sSearchCounter = objCounter.getStringNext();//.getString();
 				
 				//a) mit Systemkey								
@@ -1997,8 +2015,11 @@ MeinTestParameter=blablaErgebnis
 		boolean  bReturn = false;
 		main:{
 		if(!StringZZZ.isEmpty(sProgramOrSection)){	
-			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
-			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+//			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+//			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+			
+			CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
+			ICounterAlphabetZZZ objCounter = objHandler.getCounterFor();
 			String sSearchCounter = objCounter.getStringNext();
 			
 			//a) mit Systemkey
@@ -2043,13 +2064,17 @@ MeinTestParameter=blablaErgebnis
 			//      letztere zum Endgültigen setzen und erhöhen des Werts anbieten.
 			
 			//Hier einen SingletonCounter holen!!!
-			CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+			//CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+			//String sStartValue= "A0";
+			//ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);	
+			//objHandler.setCounterStrategy(objCounterStrategy);
+			//ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
 			
-			//int iStartValue=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;//Zählvariable (beginne anschliessend mit zweistelligen Strings), um im Log den Suchschritt unterscheidbar zu machen.
-			String sStartValue= "A0";
-			ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy = new CounterStrategyAlphanumericSignificantZZZ(4,"0", sStartValue);
+			CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
+			String sStartValue= "A";
+			ICounterStrategyAlphabetZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ(sStartValue);
 			objHandler.setCounterStrategy(objCounterStrategy);
-			ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+			ICounterAlphabetZZZ objCounter = objHandler.getCounterFor();
 			String sSearchCounter = objCounter.getStringNext();
 			//#################################################################################################
 		
@@ -2621,8 +2646,9 @@ MeinTestParameter=blablaErgebnis
 	public ArrayListExtendedZZZ<String> getProgramAliasUsed(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
 		ArrayListExtendedZZZ<String> listasReturn = new ArrayListExtendedZZZ<String>();
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ(); //Für die durchgeführten Suchen. Statt so vieler system.out Anweisungen.
-		CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
-		ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
+		//CounterHandlerSingleton_AlphanumericSignificantZZZ objHandler = CounterHandlerSingleton_AlphanumericSignificantZZZ.getInstance();
+		CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
+		ICounterAlphabetZZZ objCounter = objHandler.getCounterFor();
 		String sSearchCounter = objCounter.getStringNext(); // objCounter.current();
 		main:{
 			if(StringZZZ.isEmpty(sMainSection)){

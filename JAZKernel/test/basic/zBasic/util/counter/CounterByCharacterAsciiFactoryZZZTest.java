@@ -171,7 +171,7 @@ public void testGetStringAlphabetForNumber_FactoryBasedStrategyMultiple(){
 		//Damit die Counter per Factory erzeugt werden könnne: Konstruktoren in alle Counter einbauen (die lediglich static-Methoden reichen nicht)	
 		//A) Mache Alphabet-Counter per Factory und Miltiple Strategy
 		CounterStrategyAlphabetMultipleZZZ objCounterStrategyAlphaM = new CounterStrategyAlphabetMultipleZZZ();
-		ICounterAlphanumericZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaM);
+		ICounterAlphabetZZZ objCounterAlphaM = objCounterFactory.createCounter(objCounterStrategyAlphaM);
 		
 		///+++++++++++++++++++++++++++++++
 		//Hole Initialwert

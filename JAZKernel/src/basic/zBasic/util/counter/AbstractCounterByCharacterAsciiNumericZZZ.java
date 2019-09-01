@@ -3,6 +3,8 @@ package basic.zBasic.util.counter;
 import basic.zBasic.ExceptionZZZ;
 
 public abstract class AbstractCounterByCharacterAsciiNumericZZZ <T extends ICounterStrategyNumericZZZ>   extends AbstractCounterByCharacterAsciiZZZ implements ICounterNumericZZZ{
+	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
+	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden. 
 	//private ICounterStrategyNumericZZZ objCounterStrategy;
 	
 	public AbstractCounterByCharacterAsciiNumericZZZ(){
@@ -45,23 +47,9 @@ public abstract class AbstractCounterByCharacterAsciiNumericZZZ <T extends ICoun
 		return bReturn;
 	}
 	
-	// ++++ Aus Interface
-//		public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
-//			if(this.objCounterStrategy==null){
-//				ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyNumericZZZ();//!!!!!!!!!!!
-//				this.objCounterStrategy = objCounterStrategy;
-//			}
-//			return this.objCounterStrategy;
-//		}
-//		public void setCounterStrategyObject(ICounterStrategyNumericZZZ objCounterStrategy){
-//			this.objCounterStrategy = objCounterStrategy;
-//		}
-		
+	// ++++ Aus Interface		
 		@Override
 		public abstract void setCounterStrategyObject(ICounterStrategyNumericZZZ objCounterStrategy);
-		
-		//@Override
-		//public abstract void setCounterStrategyObject(T objCounterStrategy);
 		
 		@Override	
 		public abstract T getCounterStrategyObject() throws ExceptionZZZ;

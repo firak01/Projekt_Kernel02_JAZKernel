@@ -33,6 +33,8 @@ import basic.zBasic.ReflectCodeZZZ;
  * 
  */
 public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrategyZZZ> implements IConstantZZZ, ICounterStringZZZ{
+	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
+	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden. 
 	//T objCounterStrategy;
 	
 	private String sSuffix="";
@@ -188,23 +190,10 @@ public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrat
 	
 
 	// ++++ Aus Interface
-//		public ICounterStrategyAlphanumericZZZ getCounterStrategyObject(){
-//			if(this.objCounterStrategy==null){
-//				ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();//!!!!!!!!!!!
-//				this.objCounterStrategy = objCounterStrategy;
-//			}
-//			return this.objCounterStrategy;
-//		}
-//		public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-//			this.objCounterStrategy = objCounterStrategy;
-//		}
 		@Override
 		public abstract void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy);
 		
-		@Override
-		//public abstract void setCounterStrategyObject(T objCounterStrategy);	
+		@Override	
 		public abstract T getCounterStrategyObject() throws ExceptionZZZ;
 		
-		
-	
 }
