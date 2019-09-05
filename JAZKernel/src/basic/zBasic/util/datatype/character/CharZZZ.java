@@ -50,5 +50,9 @@ public class CharZZZ {
 	public static char getEmpty(){
 		return Character.MIN_VALUE;
 	}
+	
+	public static String toString(char c){
+		return Character.toString(c);
+	}
 		
 }

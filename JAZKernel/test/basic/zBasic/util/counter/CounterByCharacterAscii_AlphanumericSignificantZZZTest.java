@@ -89,7 +89,6 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	    	
 	    	
 	    	//Ungültige Werte, für die verschiedenen Strategien
-	    	//...serielle Strategie
 	    	try {
 		    	stemp = "0aA"; //Groß-/Kleinschreibung nicht mischen
 		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);//Parameter true="Serielle Strategy"

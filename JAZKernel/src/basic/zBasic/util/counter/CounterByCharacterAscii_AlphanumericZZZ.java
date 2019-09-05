@@ -78,7 +78,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 	 * @throws ExceptionZZZ 
 	 */
 	private static int getNumberForStringAlphanumeric_(String sTotal, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
-		int iReturn = 0;		
+		int iReturn = -1;		
 		main:{
 			if(StringZZZ.isEmpty(sTotal)) break main;
 			if(objCounterStrategy==null){

@@ -108,11 +108,11 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 	private static String getStringAlphabetForNumber_(int iNumber, ICounterStrategyAlphabetZZZ objCounterStrategy) throws ExceptionZZZ{
 		String sReturn = null;		
 		main:{
-				if(iNumber<=0) break main;			
+				if(iNumber<0) break main;			
 				if(objCounterStrategy==null){
-					objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();
-//					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-//					throw ez;
+//					objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();  //Es gibt soviele Strategien. Kann nicht entscheiden welche es nun sein soll.
+					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
 				}
 																			
 				sReturn = objCounterStrategy.computeStringForNumber(iNumber);
@@ -149,14 +149,14 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 	}
 	
 	private static int getNumberForStringAlphabet_(String sValue, ICounterStrategyAlphabetZZZ objCounterStrategy) throws ExceptionZZZ{
-		int iReturn = 0;
+		int iReturn = -1;
 		main:{
 			if(StringZZZ.isEmpty(sValue))break main;
 			
 			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
 			boolean bValid = CounterByCharacterAscii_AlphabetZZZ.isValidCharacter(sValue);
 			if(!bValid){
-				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Ungültiges Zeichen übergeben im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphabetZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("AlphabetCounter: Ungültiges Zeichen übergeben im String '" + sValue + "'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphabetZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -164,7 +164,7 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 			//.... Besonderheiten der Zählerstrategien 
 			boolean bSyntaxValid = objCounterStrategy.checkSyntax(sValue);
 			if(!bSyntaxValid){
-				ExceptionZZZ ez = new ExceptionZZZ("NumericCounter: Für die Strategy '" + objCounterStrategy.getClass().getName() + "' ist die Syntax des String snicht korrekt '" + sValue +"'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphabetZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("AlphabetCounter: Für die Strategy '" + objCounterStrategy.getClass().getName() + "' ist die Syntax des String snicht korrekt '" + sValue +"'", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphabetZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			

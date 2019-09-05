@@ -153,6 +153,38 @@ public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> e
 		return objReturn;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
+		@Override
+		public ICounterAlphabetSignificantZZZ createCounter(ICounterStrategyAlphabetSignificantZZZ objCounterStrategy) throws ExceptionZZZ{
+			ICounterAlphabetSignificantZZZ objReturn = null;
+			if(objCounterStrategy==null){
+				ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			 if(objCounterStrategy instanceof CounterStrategyAlphabetSignificantZZZ){
+				//dito, ein AlphanumericCounter... 20190601: GGFs ein spezielles Interface dafür entwickeln??? 
+				objReturn = new CounterByCharacterAscii_AlphabetSignificantZZZ();
+				objReturn.setCounterStrategyObject(objCounterStrategy);
+			 }else{		
+					ExceptionZZZ ez = new ExceptionZZZ("CounterStategyObject-Type wird (noch nicht?) behandelt", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+			 return objReturn;
+		}
+		@Override
+		public ICounterAlphabetSignificantZZZ createCounter(ICounterStrategyAlphabetSignificantZZZ objCounterStrategy, int iStart) throws ExceptionZZZ {
+			ICounterAlphabetSignificantZZZ objReturn = this.createCounter(objCounterStrategy);
+			objReturn.setValueCurrent(iStart);
+			return objReturn;
+		}
+		@Override
+		public ICounterAlphabetSignificantZZZ createCounter(ICounterStrategyAlphabetSignificantZZZ objCounterStrategy, String sStart) throws ExceptionZZZ {
+			ICounterAlphabetSignificantZZZ objReturn = this.createCounter(objCounterStrategy);
+			objReturn.setValueCurrent(sStart);
+			return objReturn;
+		}
+	
 	//+++++++++++++++
 	@Override
 	public ICounterAlphanumericZZZ createCounter(ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ {
@@ -188,6 +220,8 @@ public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> e
 		return objReturn;
 	}
 	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public ICounterAlphanumericSignificantZZZ createCounter(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy) throws ExceptionZZZ{
 		ICounterAlphanumericSignificantZZZ objReturn = null;

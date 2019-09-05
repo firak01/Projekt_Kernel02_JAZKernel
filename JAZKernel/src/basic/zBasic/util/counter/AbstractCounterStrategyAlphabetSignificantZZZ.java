@@ -6,7 +6,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericZZZ implements ICounterStrategyAlphanumericSignificantZZZ{
+public abstract class AbstractCounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrategyAlphabetZZZ implements ICounterStrategyAlphabetSignificantZZZ{
 	
 	//TODO: Default Werte gehören eingentlich als Konstante ins Interface.
 	int iCounterLengthDefault = 4;
@@ -19,34 +19,34 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 	//Ein Leerzeichen, d.h. wenn man die Filling Zeichen verzichten will wäre Character.MIN_VALUE;
 	private char[] caCounterFilling = new char[1]; 	//ist also besser als private char cCounterFilling;
 	
-	public AbstractCounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
+	public AbstractCounterStrategyAlphabetSignificantZZZ() throws ExceptionZZZ{
 		super();			
 		this.setCounterLength(iCounterLengthDefault);
 		this.setCounterFilling(cCounterFillingDefault);
 	}
-	public AbstractCounterStrategyAlphanumericSignificantZZZ(int iLength, char cCounterFilling) throws ExceptionZZZ{
+	public AbstractCounterStrategyAlphabetSignificantZZZ(int iLength, char cCounterFilling) throws ExceptionZZZ{
 		this();		
 		this.setCounterLength(iLength);
 		this.setCounterFilling(cCounterFilling);
 	}
-	public AbstractCounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFilling) throws ExceptionZZZ{
+	public AbstractCounterStrategyAlphabetSignificantZZZ(int iLength, String sCounterFilling) throws ExceptionZZZ{
 		this();		
 		this.setCounterLength(iLength);
 		this.setCounterFilling(sCounterFilling);		
 	}
-	public AbstractCounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFilling, int iCounterStart) throws ExceptionZZZ{
+	public AbstractCounterStrategyAlphabetSignificantZZZ(int iLength, String sCounterFilling, int iCounterStart) throws ExceptionZZZ{
 		this();
 		this.setCounterLength(iLength);
 		this.setCounterFilling(sCounterFilling);
 		this.setCounterStart(iCounterStart);
 	}
-	public AbstractCounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFilling, String sCounterStart) throws ExceptionZZZ{
+	public AbstractCounterStrategyAlphabetSignificantZZZ(int iLength, String sCounterFilling, String sCounterStart) throws ExceptionZZZ{
 		this();
 		this.setCounterLength(iLength);
 		this.setCounterFilling(sCounterFilling);
 		this.setCounterStart(sCounterStart);
 	}
-	public AbstractCounterStrategyAlphanumericSignificantZZZ(boolean bLowercase) throws ExceptionZZZ{
+	public AbstractCounterStrategyAlphabetSignificantZZZ(boolean bLowercase) throws ExceptionZZZ{
 		super();
 		this.initClassMethodCallingString();	
 		this.isLowercase(true);
@@ -143,7 +143,5 @@ public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends 
 			 }//end main:
 			 return sReturn;
 		 }
-		
-		
 		
 }

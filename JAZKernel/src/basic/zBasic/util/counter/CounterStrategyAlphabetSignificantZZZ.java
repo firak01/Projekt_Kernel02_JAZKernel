@@ -9,24 +9,24 @@ import basic.zBasic.util.datatype.doublevalue.DoubleZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
-public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericSignificantZZZ{
+public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrategyAlphabetSignificantZZZ{
 		
-	public CounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
+	public CounterStrategyAlphabetSignificantZZZ() throws ExceptionZZZ{
 		super();
 		this.makeReflectableInitialization();
 	}
 	
-	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter) throws ExceptionZZZ{
+	public CounterStrategyAlphabetSignificantZZZ(int iLength, String sCounterFillingCharacter) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter);
 		this.makeReflectableInitialization();	
 	}
 	
-	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, int iStartValue) throws ExceptionZZZ{
+	public CounterStrategyAlphabetSignificantZZZ(int iLength, String sCounterFillingCharacter, int iStartValue) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter, iStartValue);
 		this.initClassMethodCallingString();	
 	}
 	
-	public CounterStrategyAlphanumericSignificantZZZ(int iLength, String sCounterFillingCharacter, String sStartValue) throws ExceptionZZZ{
+	public CounterStrategyAlphabetSignificantZZZ(int iLength, String sCounterFillingCharacter, String sStartValue) throws ExceptionZZZ{
 		super(iLength,sCounterFillingCharacter, sStartValue);
 		this.makeReflectableInitialization();
 	}
@@ -61,16 +61,16 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			//Nur gültig ohne führende "0"
 			//Allerdings "0" selbst darf übergeben werden. Man bekommt die führenden "0" Werte nämlich nicht durch den Zahlenwert wieder "rekonstruiert".
 			//Merke: Ggfs. verwendete Füllzeichen wurden in diesem Überprüfungsschritt schon zuvor entfernt.
-			if(!sTotal.equals("0")){				
-				if(sTotal.startsWith("0") && !this.isRightAligned()){
-					ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Ein Wert mit führender '0' darf nicht übergeben werden - führende 0 läßt sich nicht wiederherstellen. Nur als einzelnes Zeichen ist führende '0' erlaubt. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				if(sTotal.endsWith("0") && this.isRightAligned()){
-					ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Ein Wert mit führender '0' darf nicht übergeben werden - führende 0 läßt sich nicht wiederherstellen. Nur als einzelnes Zeichen ist führende '0' erlaubt. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-			}
+//			if(!sTotal.equals("0")){				
+//				if(sTotal.startsWith("0") && !this.isRightAligned()){
+//					ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Ein Wert mit führender '0' darf nicht übergeben werden - führende 0 läßt sich nicht wiederherstellen. Nur als einzelnes Zeichen ist führende '0' erlaubt. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
+//				if(sTotal.endsWith("0") && this.isRightAligned()){
+//					ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Ein Wert mit führender '0' darf nicht übergeben werden - führende 0 läßt sich nicht wiederherstellen. Nur als einzelnes Zeichen ist führende '0' erlaubt. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
+//			}
 			
 			//Hier spielt links-/rechtsbündig KEINE Rolle bzgl. der Gültigkeit:
 //			boolean bRightAligned = this.isRightAligned();
@@ -107,8 +107,9 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	public int computeNumberForString(String sTotalUnnormed) {
 		int iReturn = -1;
 		
-		//wg. der Problematik der führenden 0: Arbeite nur mit dahingehend normiertem String. Also führende 0 wegtrimmen.	
-		//String sAlphanumericNormed = this.getAlphanumericNormed(sTotalUnnormed); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+		//wg. der Problematik der Füllzeichen. Arbeite nur mit dahingehend normiertem String. Also führende Füllzeichen wegtrimmen.		
+		//String sFiller = CharZZZ.toString(this.getCounterFilling());
+		//String sAlphanumericNormed = this.getAlphabetNormed(sTotalUnnormed, sFiller); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 		String sAlphanumericNormed = this.getCounterStringNormed(sTotalUnnormed); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 		String sTotal = sAlphanumericNormed;
 		
@@ -118,27 +119,33 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 									
 			//Hier spielt links-/rechtsbündig eine Rolle:
 			boolean bRightAligned = this.isRightAligned();
-			if(!bRightAligned){
+			if(bRightAligned){
 				
-				//Hier spielt der Stellenwert eine Rolle.
+				//Hier spielt der Stellenwert eine Rolle.				
 			   for(int icount=0; icount<=iTotalIndexLength; icount++){
 				   String stemp = StringZZZ.letterAtPosition(sTotal, icount);
 				   
 				    //Berechnung...
 					char c = stemp.toCharArray()[0];
-					int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-					itemp--;
+					int itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
+					//itemp--; //es gibt keine 0
 											
-					int icountSignificant = sTotal.length()-1-icount;
-					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
-					int itempSignificant = itemp*icountSignificantValue;			
+					int icountSignificant = icount; //sTotal.length()-1-icount;
+					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,icountSignificant);//-1, es gibt keine 0
+					int itempSignificant=0; 
+					if(icountSignificant==0){
+						itempSignificant = itemp*icountSignificantValue-1;//es gibt keine 0, darum -1			
+					}else{
+						itempSignificant = itemp*icountSignificantValue;
+					}
 					
-					if(iReturn<=0){
-				    	iReturn = itempSignificant;		    					
+					
+					if(iReturn<0){
+				    	iReturn = itempSignificant;	    					
 					}
 					else{
 						iReturn = iReturn + itempSignificant;
-					}
+					}					
 			   }				   					
 			}else{
 				
@@ -148,14 +155,20 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 				   
 				    //Berechnung...
 					char c = stemp.toCharArray()[0];
-					int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-					itemp--;
+					int itemp = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
+					//itemp--;
+														
+					int icountSignificant = sTotal.length()-icount-1; //
+										
+					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,icountSignificant);
+					int itempSignificant=0;						
+					if(icountSignificant==0){
+						itempSignificant = itemp*icountSignificantValue-1;//es gibt keine 0, darum -1			
+					}else{
+						itempSignificant = itemp*icountSignificantValue;
+					}		
 					
-					int icountSignificant = icount;
-					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
-					int itempSignificant = itemp*icountSignificantValue;	
-					
-					if(iReturn<=0){
+					if(iReturn<0){
 				    	iReturn = itempSignificant;		    					
 					}
 					else{
@@ -184,7 +197,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			int iPositionValue = 0;//-1 um "0" abzufangen.
 			int iPositionValueCur;
 			while(iRest >= iPositionValue){
-				iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
+				iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX, iDigitposition);
 			
 				//Hole jeweils die Werte hinter dem Komma			
 				float fRest = (float)iRest / iPositionValue; //Merke: damit das Ergebnis der Division zweiter int Werte float wird: Casten. 								
@@ -192,28 +205,38 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 				//Bestimme daraus den Wert des Zeichens								
 				//1. Schritt: Den Rest um den gerade betrachteten Wert reduzieren						
 				double dtemp = DoubleZZZ.pointRight(fRest);					
-				double dtemp2 = (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);				
-				itemp = DoubleZZZ.toInt(dtemp2);//Merke: Das schneidet nur den Wert vor dem Komma ab: (int) (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
-				iChar = itemp +1; //FGL 20190806 FEHLER ???: //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
-					
-				stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iChar, bLowercase);
+				double dtemp2 = (dtemp * CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX);				
+				itemp = DoubleZZZ.toInt(dtemp2);//rundet... Merke: Das schneidet nur den Wert vor dem Komma ab: (int) (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+				//TODO GOON 20190905 würde immer aufgerundet nicht besser sein???
+				
+				iPositionValueCur = itemp; //DoubleZZZ.pointLeft(fRest);
+				//if(iPositionValueCur <= CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX && iPositionValueCur >= 1){
+				//if(DoubleZZZ.pointLeft(fRest)>=iPositionValue || iPositionValue == CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ){
+				if(iDigitposition==1){
+					iChar = itemp+1; //+1, weil es keine 0 gibt. //FGL 20190806 FEHLER ???: //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
+				}else{
+					iChar = itemp; //FGL 20190806 FEHLER ???: //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
+				}
+			
+				stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iChar, bLowercase);
 				listas.add(stemp);	
 				
-				iPositionValueCur = DoubleZZZ.pointLeft(fRest);
-				if(iPositionValueCur <= CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1 && iPositionValueCur >= 1){
-					iChar = iPositionValueCur+1;
-					stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iChar, bLowercase);
-					listas.add(stemp);
-					
-					iRest = -1;//Beende die Schleife auf jeden Fall...
-					
-				}else{
+				
+//				if(iPositionValueCur <= CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX && iPositionValueCur >= 1){
+//					iChar = iPositionValueCur; //Keine 0 vorhanden, also kein +1;
+//					stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iChar, bLowercase);
+//					listas.add(stemp);
+//					
+//					iRest = -1;//Beende die Schleife auf jeden Fall...
+//					
+//				}else{
 			
 					//Gehe zur nächsten Stelle										
-					iRest = iPositionValueCur * iPositionValue;
+					iRest = iNumber - (iPositionValueCur * iPositionValue);
+					iNumber = iRest;
 					iDigitposition++;	
-					iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
-				}			
+					//iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX, iDigitposition);
+//				}			
 			}
 			
 			//Zusammenfassen der Werte: Serial Strategie
@@ -243,24 +266,23 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	}
 
 	 /**TODO: Das als Bestandteil eines eigenen Interfaces
-	 * @param sAlphanumeric
+	 * @param sAlphabet
 	 * @return
 	 * @author Fritz Lindhauer, 30.05.2019, 13:28:43
 	 */
-	public String getAlphanumericNormed(String sAlphanumeric, String sCharToStrip){
+	public String getAlphabetNormed(String sAlphabet, String sCharToStrip){
 		 String sReturn = null;
 		 main:{
-			 boolean bLowercase = this.isLowercase();		 	
+			 boolean bLowercase = this.isLowercase();
+		 	//String sCharToStrip = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN, bLowercase);
 			if(!this.isRightAligned()){
-				sReturn = StringZZZ.stripLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+				sReturn = StringZZZ.stripLeft(sAlphabet, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 			}else{
-				sReturn = StringZZZ.stripRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+				sReturn = StringZZZ.stripRight(sAlphabet, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 			}
 		 }//end main:
 		 return sReturn;
 	 }
-	
-	
 
 	@Override
 	public boolean makeReflectableInitialization() throws ExceptionZZZ {
