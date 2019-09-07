@@ -25,9 +25,24 @@ public class DoubleZZZ {
 	
 	public static int toInt(double d){
 		//Merke: Einfaches casten würde nur den Wert vor dem Komma holen. also bei 10.9999 käme 10 heraus.
+		//        Diesen Wert also einfach um +1, zum Aufrunden.	
+		int iReturn = (int)d;	
+		return iReturn;
+	}
+	
+	public static int toIntRound(double d){
+		//Merke: Einfaches casten würde nur den Wert vor dem Komma holen. also bei 10.9999 käme 10 heraus.
 		//       Besser ist es daher zu runden.
 		long ltemp = Math.round(d);
 		int iReturn = (int)ltemp;
+		return iReturn;
+	}
+	
+	public static int toIntRoundUp(double d){
+		//Merke: Einfaches casten würde nur den Wert vor dem Komma holen. also bei 10.9999 käme 10 heraus.
+		//        Diesen Wert also einfach um +1, zum Aufrunden.	
+		int iReturn = (int)d;
+		iReturn = iReturn +1;
 		return iReturn;
 	}
 	

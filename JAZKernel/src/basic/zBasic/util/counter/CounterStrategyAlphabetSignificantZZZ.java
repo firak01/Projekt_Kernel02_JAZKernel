@@ -182,66 +182,84 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 	}
 
 	@Override
-	public String computeStringForNumber(int iNumber) {
+	public String computeStringForNumber(int iNumberIn) {
+		//Variante, basierend auf "Stellenwert"
+		
+		//Analog zu: https://www.mathe-lexikon.at/mengenlehre/zahlensysteme/dezimalzahlen/dezimalzahl-in-hexadezimalzahl-umrechnen.html
+		//Aber: Hier will ich nicht, dass die neue Stelle um +1 erhöht ist, wie z.B. auch im Dezimalsystem 0,..., 9 , 10,11,12
+		//         Sondern A,...,Z, AA,AB,AC....
 		String sReturn = null;
 		main:{
-			ArrayList<String>listas=new ArrayList<String>();
-			boolean bLowercase = this.isLowercase();
-			
 			int itemp; int iChar;String stemp;
 			
-			//Variante, basierend auf "Stellenwert"
-			//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"			
-			int iRest = iNumber;
-			int iDigitposition=1;
-			int iPositionValue = 0;//-1 um "0" abzufangen.
-			int iPositionValueCur;
-			while(iRest >= iPositionValue){
-				iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX, iDigitposition);
+			ArrayList<String>listas=new ArrayList<String>();
+			boolean bLowercase = this.isLowercase();
+			boolean bRightAligned = this.isRightAligned();
 			
+			int iNumber = iNumberIn;
+			int iRest = iNumber+1; //um "0" bei Anfangs-iNumber abzufangen.
+			int iDigitpositionCur=0;		
+			int iDigitPostionValueUsed = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+
+			//GGfs. für Debuggen, etwas Reflection
+//			int iDigitpositionNext=iDigitpositionCur+1;
+//			int iPositionValueCur;
+//			boolean bWasIncreased=false;
+//			boolean bWasReduced=true;
+//			boolean bFinalDigitReached=false;
+			
+			boolean bDebug=false;			
+//			if(iNumberIn==35777){
+//				System.out.println("Fehler debuggen " + iNumberIn);
+//				bDebug=true;
+//			}
+
+			while(iRest > 0){
+				//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"
 				//Hole jeweils die Werte hinter dem Komma			
-				float fRest = (float)iRest / iPositionValue; //Merke: damit das Ergebnis der Division zweiter int Werte float wird: Casten. 								
+				float fRest = (float)iNumber / iDigitPostionValueUsed;  								
 
 				//Bestimme daraus den Wert des Zeichens								
 				//1. Schritt: Den Rest um den gerade betrachteten Wert reduzieren						
 				double dtemp = DoubleZZZ.pointRight(fRest);					
-				double dtemp2 = (dtemp * CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX);				
-				itemp = DoubleZZZ.toInt(dtemp2);//rundet... Merke: Das schneidet nur den Wert vor dem Komma ab: (int) (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
-				//TODO GOON 20190905 würde immer aufgerundet nicht besser sein???
+				double dtemp2 = (dtemp * iDigitPostionValueUsed);	
 				
-				iPositionValueCur = itemp; //DoubleZZZ.pointLeft(fRest);
-				//if(iPositionValueCur <= CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX && iPositionValueCur >= 1){
-				//if(DoubleZZZ.pointLeft(fRest)>=iPositionValue || iPositionValue == CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ){
-				if(iDigitposition==1){
-					iChar = itemp+1; //+1, weil es keine 0 gibt. //FGL 20190806 FEHLER ???: //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
+				itemp  = DoubleZZZ.toIntRound(dtemp2);
+				iChar = itemp+1;//wegen meiner Zeichenholerrei.
+				iRest = DoubleZZZ.pointLeft(fRest);	//iNumber - (iPositionValueCur * iDigitPositionValueUsed);
+				
+				//Problem: Normalerweise ist dann bei eine Stellenübersprung die vordere Ziffer um +1 erhöht. Also 25 => Z , 26 würde zu BA.
+				//              Ich will aber AA als Zählerwert erreichen.
+				if(iDigitpositionCur>=1){
+					if(bDebug) System.out.println(iDigitpositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " reduziere wert um -1.");
+					
+					iChar=iChar-1;
+					//bWasReduced = true;
+					
+					//Hier einen Übertrag quasi wieder rückgängig machen.
+					if(iChar==0){
+						iChar = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+						//bWasReduced=false;
+					}
+					
+					if(DoubleZZZ.toInt(dtemp)==0 && DoubleZZZ.toInt(dtemp2)==0){
+						iRest=iRest-1;//Damit ggfs. die Schleife verlassen, Ende.
+					}
 				}else{
-					iChar = itemp; //FGL 20190806 FEHLER ???: //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
+					if(bDebug)  System.out.println(iDigitpositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " übernehme Wert.");				
 				}
-			
+				
 				stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iChar, bLowercase);
 				listas.add(stemp);	
 				
-				
-//				if(iPositionValueCur <= CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX && iPositionValueCur >= 1){
-//					iChar = iPositionValueCur; //Keine 0 vorhanden, also kein +1;
-//					stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iChar, bLowercase);
-//					listas.add(stemp);
-//					
-//					iRest = -1;//Beende die Schleife auf jeden Fall...
-//					
-//				}else{
-			
-					//Gehe zur nächsten Stelle										
-					iRest = iNumber - (iPositionValueCur * iPositionValue);
-					iNumber = iRest;
-					iDigitposition++;	
-					//iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX, iDigitposition);
-//				}			
+				//Gehe zur nächsten Stelle
+				iNumber = iRest;
+				iDigitpositionCur++;
+				//iDigitpositionNext=iDigitpositionCur+1;	
 			}
 			
-			//Zusammenfassen der Werte: Serial Strategie
+			//Zusammenfassen der Werte: 
 			//Hier spielt links-/rechtsbündig eine Rolle:
-			boolean bRightAligned = this.isRightAligned();
 			if(bRightAligned){
 				for(int icount=1; icount <= listas.size(); icount++){
 					String sPosition = listas.get(icount-1);
