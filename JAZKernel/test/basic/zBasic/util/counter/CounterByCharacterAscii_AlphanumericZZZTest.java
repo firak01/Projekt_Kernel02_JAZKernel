@@ -446,9 +446,13 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 				//Erwartetete Exception
 			} 
 	    	
-	    	//...multiple Strategie
+	    	
+	    	
+	    	
+	    	//Ungültige Werte, da die Zeichen nicht in Relation zueinander passen.
+	    	//... serielle Strategie
 	    	try {
-		    	stemp = "01"; //Alle Zeichen müssen gleich sein
+		    	stemp = "01"; //Merke: Die Zeichen rechts müssen immer das höchste Zeichen des Zeichenraums sein.
 		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);//Parameter true="Multiple Strategy"
 		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
 				
@@ -456,11 +460,8 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 				//Erwartetete Exception
 			} 
 	    	
-	    	
-	    	//Ungültige Werte, da die Zeichen nicht in Relation zueinander passen.
-	    	//... serielle Strategie
 	    	try {
-		    	stemp = "0A";//Merke: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein. 
+		    	stemp = "0AZZ";//Merke: Die Zeichen rechts müssen immer das höchste Zeichen des Zeichenraums sein. 
 		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);//Parameter false="Serielle Strategy"
 		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
 				
@@ -468,9 +469,24 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 				//Erwartetete Exception
 			} 
 	    	
-	    	//"SERIAL STRATEGIE"-Ergebnisse	    		    	
+	    	//Ungültige Werte, da die Zeichen nicht in Relation zueinander passen.
+	    	//... serielle Strategie
+	    	objCounterStrategy.isRightAligned(true);
 	    	try {
-				stemp = "0"; //Parameter false="Serielle Strategy"
+		    	stemp = "ZZA0";//Merke: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein. 
+		    	itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);//Parameter false="Serielle Strategy"
+		    	fail("Method should have thrown an exception for the string '"+stemp+"'");
+				
+			} catch (ExceptionZZZ ez) {
+				//Erwartetete Exception
+			} 
+	    	
+	    	
+	    	
+	    	//"SERIAL STRATEGIE"-Ergebnisse
+	    	//Merke: Einzelner Wert braucht nicht der höchste Wert zu sein.
+	    	try {
+				stemp = "0"; 
 				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
 				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -486,8 +502,9 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
-			try {				
-				stemp = "Z0"; //Parameter true="Multiple Strategy"
+			try {		
+				objCounterStrategy.isRightAligned(false);
+				stemp = "Z0";
 				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
 				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -521,6 +538,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
 			try {
+				objCounterStrategy.isRightAligned(false);
 				stemp = "Z9"; //Parameter true="Multiple Strategy"
 				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
 				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
@@ -555,6 +573,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
 			try {
+				objCounterStrategy.isRightAligned(false);
 				stemp = "ZA"; //Parameter true="Multiple Strategy"
 				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
 				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
@@ -649,7 +668,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	
 	        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	stemp = "0Z";
-			try {				    				    				
+			try {					
 				btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
 				assertTrue("Fehler beim allgemeinen Test.", btemp);
 			} catch (ExceptionZZZ ez) {
@@ -1176,12 +1195,12 @@ public void testGetStringAlphanumericForNumber_StrategySerialRightAligned(){
 		//"SERIAL STRATEGIE"-Ergebnisse
 		//1. true ist lowercase, false ist uppercase | 2. true ist rightbound
 		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+1;
-		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);//bRightAligned=true
 		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("0Z",stemp);
 		
-		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true);
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true);//bRightAligned=true
 		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("0z",stemp);
@@ -1192,19 +1211,19 @@ public void testGetStringAlphanumericForNumber_StrategySerialRightAligned(){
 	 	//"SERIAL STRATEGIE"-Ergebnisse
 		//1. true ist lowercase, false ist uppercase | 2. true ist rightbound
 		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+2;
-		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);//bRightAligned=true
 		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("1Z",stemp);
 		
-		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true);
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, true, true);//bRightAligned=true
 		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("1z",stemp);
 		
 		//"SERIAL STRATEGIE"-Ergebnisse
 		itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX*2;
-		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);
+		stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, false, true);//bRightAligned=true
 		btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
 		assertEquals("ZZ",stemp);
@@ -1222,16 +1241,13 @@ public void testGetStringAlphanumericForNumber_StrategySerialRightAligned(){
 			//assertTrue("Fehler beim Check auf Null Werte", btemp);
 			//assertEquals("1Z",stemp);
 		}
-		//Ergebnisse sind 2Z, 3Z, ... , AZ, BZ, ...
-		//Das sieht also anders aus als 10, 11, ..., 19, 20, 21, .... wie es bei einer "signifikatem Stellenwert" wäre.
-		
-		
-		
+		//Ergebnisse sind Z2, Z3, ... , ZA, ZB, ...
+		//Das sieht also anders aus als 10, 11, ..., 19, 20 (!!!), 21, .... wie es bei einer "signifikatem Stellenwert" wäre.
+						
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 }
-
 
 }//end class
 	

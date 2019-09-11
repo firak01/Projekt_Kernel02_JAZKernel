@@ -470,7 +470,7 @@ public void testGetStringNumericForNumber_StrategySerialRightAligned(){
 		stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
 		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
-		assertEquals("09",stemp);
+		assertEquals("90",stemp);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 
@@ -484,7 +484,7 @@ public void testGetStringNumericForNumber_StrategySerialRightAligned(){
 		stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
 		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
-		assertEquals( "19",stemp);
+		assertEquals( "91",stemp);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 

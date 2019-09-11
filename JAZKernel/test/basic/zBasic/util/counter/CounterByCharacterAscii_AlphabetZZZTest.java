@@ -329,12 +329,12 @@ public void testGetStringAlphabetForNumber_StrategySerialRightAligned(){
 		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, false, true);
 		btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
-		assertEquals("AZ",stemp);
+		assertEquals("ZA",stemp);
 		
 		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, true, true); //Kleinbuchstaben
 		btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
-		assertEquals("az",stemp);
+		assertEquals("za",stemp);
 		
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		
@@ -344,12 +344,12 @@ public void testGetStringAlphabetForNumber_StrategySerialRightAligned(){
 		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, false, true);
 		btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
-		assertEquals("BZ",stemp);
+		assertEquals("ZB",stemp);
 		
 		stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, true, true); //Kleinbuchstaben
 		btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
-		assertEquals("bz",stemp);
+		assertEquals("zb",stemp);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 
@@ -416,9 +416,13 @@ public void testGetNumberForStringAlphabet(){
     	assertEquals(26,itemp);
     	btemp = assertCheckReconvertAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf gelungene Rekonvertierung", btemp);
-    	
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+	
     	//++++++++++++++++++++++++++++++++++++++++++
     	//Um +1 Weiter erhöht sollte sein ..."ZA", bei serieller Zählweise | "AA" bei Multiple-Strategy
+	try{
     	stemp = "ZA";
     	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
     	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
@@ -427,6 +431,21 @@ public void testGetNumberForStringAlphabet(){
     	btemp = assertCheckReconvertAlphabet_(itemp, stemp);
     	assertTrue("Fehler beim Check auf gelungene Rekonvertierung", btemp);
     	
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+	
+	//++++++++++++++++++++++++++++++++++++++++++
+	//Um +1 Weiter erhöht sollte sein ..."ZB", bei serieller Zählweise | "AAA" bei Multiple-Strategy
+	try{
+		stemp = "ZB";
+		itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
+		btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
+		assertTrue("Fehler beim Check auf gültige Werte", btemp);
+		assertEquals(28,itemp);
+		btemp = assertCheckReconvertAlphabet_(itemp, stemp);
+		assertTrue("Fehler beim Check auf gelungene Rekonvertierung", btemp);
+		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 

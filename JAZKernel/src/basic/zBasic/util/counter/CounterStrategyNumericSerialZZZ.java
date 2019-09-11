@@ -59,19 +59,34 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 		int iReturn = 0;
 		
 		main:{
-			char[] caValue = sTotal.toCharArray();
-			for (int icounter=0; icounter<= caValue.length-1; icounter++){
-				char c = caValue[icounter];
-				
-				//Serielle Zählvariante
-				int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
-				if(icounter==(caValue.length-1)){
-					iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
-				}else{
-					iReturn+= (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
-				}	
-			}
-		
+			boolean bRightAligned = this.isRightAligned();
+			if(bRightAligned){				
+				char[] caValue = sTotal.toCharArray();
+				for (int icounter=caValue.length-1; icounter>=0 ; icounter--){
+					char c = caValue[icounter];
+					
+					//Serielle Zählvariante
+					int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+					if(icounter==0){
+						iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+					}else{
+						iReturn+= (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+					}	
+				}
+			}else{
+				char[] caValue = sTotal.toCharArray();
+				for (int icounter=0; icounter<= caValue.length-1; icounter++){
+					char c = caValue[icounter];
+					
+					//Serielle Zählvariante
+					int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+					if(icounter==(caValue.length-1)){
+						iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+					}else{
+						iReturn+= (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+					}	
+				}
+			}		
 		}//end main;
 		return iReturn;			
 	}
@@ -85,38 +100,33 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 			int iMod = iNumber % CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
 			
 			
-			ArrayList<String>listas=new ArrayList<String>();			
-			for(int icount = 1; icount <= iDiv; icount++){
-				String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
-				listas.add(stemp);
-			}
-			if(iMod>=1){
-				String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);
-				listas.add(stemp);
-			}
-			
-			//Zusammenfassen der Werte: Serial Strategie
-			//Hier spielt links-/rechtsbündig eine Rolle:
+			ArrayList<String>listas=new ArrayList<String>();
 			boolean bRightAligned = this.isRightAligned();
-			if(!bRightAligned){
-				for(int icount=1; icount <= listas.size(); icount++){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
+			//boolean bLowercase = this.isLowercase(); //numerisch nicht vorhanden.		
+			
+			if(bRightAligned){
+				for(int icount = 1; icount <= iDiv; icount++){
+					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
+					listas.add(stemp);
+				}
+				if(iMod>=1){
+					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);
+					listas.add(stemp);
 				}
 			}else{
-				for(int icount=listas.size(); icount >= 1 ; icount--){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
+				if(iMod>=1){
+					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);
+					listas.add(stemp);
 				}
+				
+				for(int icount = 1; icount <= iDiv; icount++){
+					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
+					listas.add(stemp);
+				}				
 			}
+			
+			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);					
 		}//end main:
 		return sReturn;
 	}

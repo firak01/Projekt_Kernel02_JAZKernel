@@ -258,27 +258,8 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 				//iDigitpositionNext=iDigitpositionCur+1;	
 			}
 			
-			//Zusammenfassen der Werte: 
-			//Hier spielt links-/rechtsbündig eine Rolle:
-			if(bRightAligned){
-				for(int icount=1; icount <= listas.size(); icount++){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}
-			}else{
-				for(int icount=listas.size(); icount >= 1; icount--){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}											
-			}
+			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);					
 		}//end main:
 		return sReturn;
 	}

@@ -73,13 +73,8 @@ public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNu
 				sReturn = "";
 			}
 			
-			
 			//Zusammenfassen der Werte: Multiple Strategie
-			for(int icount=1; icount <= iDiv; icount++){					
-					sReturn+=sCharacter;
-			}
-			
-			
+			sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolitated(sCharacter, iDiv);		
 		}//end main:
 		return sReturn;
 	}

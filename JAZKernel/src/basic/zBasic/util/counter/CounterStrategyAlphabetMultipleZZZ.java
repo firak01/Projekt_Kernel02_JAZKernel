@@ -85,18 +85,14 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 			String sCharacter=null;
 			if(iMod>=1){
 				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iMod,bLowercase);	
-				sReturn = sCharacter;
+				sReturn = sCharacter;				
 			}else if(iMod==0){
 				sCharacter = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
-				sReturn = "";
+				sReturn = "";				
 			}
-			
-			
+						
 			//Zusammenfassen der Werte: Multiple Strategie
-			for(int icount=1; icount <= iDiv; icount++){					
-					sReturn+=sCharacter;
-			}
-			
+			sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolitated(sCharacter, iDiv);
 		}//end main:
 		return sReturn;
 	}

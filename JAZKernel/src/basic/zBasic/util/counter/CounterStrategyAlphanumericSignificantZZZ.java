@@ -171,11 +171,14 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	@Override
 	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
-		main:{
+		main:{			
+			int itemp; int iChar;String stemp;
+			
 			ArrayList<String>listas=new ArrayList<String>();
+			boolean bRightAligned = this.isRightAligned();
 			boolean bLowercase = this.isLowercase();
 			
-			int itemp; int iChar;String stemp;
+			
 			
 			//Variante, basierend auf "Stellenwert"
 			//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"			
@@ -193,7 +196,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 				//1. Schritt: Den Rest um den gerade betrachteten Wert reduzieren						
 				double dtemp = DoubleZZZ.pointRight(fRest);					
 				double dtemp2 = (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);				
-				itemp = DoubleZZZ.toInt(dtemp2);//Merke: Das schneidet nur den Wert vor dem Komma ab: (int) (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+				itemp = DoubleZZZ.toIntRound(dtemp2);//Merke: Das schneidet nur den Wert vor dem Komma ab: (int) (dtemp * CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
 				iChar = itemp +1; //FGL 20190806 FEHLER ???: //Merke: itemp++ erhöht nur itemp, nicht aber iChar an dieser Stelle.
 					
 				stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iChar, bLowercase);
@@ -216,28 +219,8 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 				}			
 			}
 			
-			//Zusammenfassen der Werte: Serial Strategie
-			//Hier spielt links-/rechtsbündig eine Rolle:
-			boolean bRightAligned = this.isRightAligned();
-			if(bRightAligned){
-				for(int icount=1; icount <= listas.size(); icount++){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}
-			}else{
-				for(int icount=listas.size(); icount >= 1; icount--){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}											
-			}
+			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);						
 		}//end main:
 		return sReturn;
 	}
