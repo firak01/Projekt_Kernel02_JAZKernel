@@ -169,7 +169,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 	}
 
 	@Override
-	public String computeStringForNumber(int iNumber) {
+	public String computeStringForNumber(int iNumberIn) {
 		String sReturn = null;
 		main:{			
 			int itemp; int iChar;String stemp;
@@ -181,13 +181,72 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			
 			
 			//Variante, basierend auf "Stellenwert"
-			//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"			
-			int iRest = iNumber;
-			int iDigitposition=1;
-			int iPositionValue = 0;//-1 um "0" abzufangen.
-			int iPositionValueCur;
-			while(iRest >= iPositionValue){
-				iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
+			//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"
+			int iNumber = iNumberIn;
+			int iRest = iNumber+1;  //um "0" bei Anfangs-iNumber abzufangen.
+			int iDigitPositionCur=0;
+			
+			//TODO GOON: Erweiterer Interface um Methode getCharacterPositionMax() und packe jeweilige static Klasse hineine.
+			...
+			int iDigitPositionValueUsed = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+					
+					
+			//int iDigitposition=1;
+		//	int iPositionValue = 0;//-1 um "0" abzufangen.
+		//	int iPositionValueCur;
+			
+						
+			while(iRest > 0){
+				//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"
+				//Hole jeweils die Werte hinter dem Komma			
+				float fRest = (float)iNumber / iDigitPositionValueUsed;  								
+
+				//Bestimme daraus den Wert des Zeichens								
+				//1. Schritt: Den Rest um den gerade betrachteten Wert reduzieren						
+				double dtemp = DoubleZZZ.pointRight(fRest);					
+				double dtemp2 = (dtemp * iDigitPositionValueUsed);	
+				
+				itemp  = DoubleZZZ.toIntRound(dtemp2);
+				iChar = itemp+1;//wegen meiner Zeichenholerrei.
+				iRest = DoubleZZZ.pointLeft(fRest);	//iNumber - (iPositionValueCur * iDigitPositionValueUsed);
+				
+				/* RAUSNEHMEN, wenn 0 existiert
+				//Problem: Normalerweise ist dann bei eine Stellenübersprung die vordere Ziffer um +1 erhöht. Also 25 => Z , 26 würde zu BA.
+				//              Ich will aber AA als Zählerwert erreichen.
+				if(iDigitPositionCur>=1){
+					//if(bDebug) System.out.println(iDigitpositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " reduziere wert um -1.");
+					
+					iChar=iChar-1;
+					//bWasReduced = true;
+					
+					//Hier einen Übertrag quasi wieder rückgängig machen.
+					if(iChar==0){
+						iChar = iDigitPositionValueUsed;//CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+						//bWasReduced=false;
+					}
+					
+					if(DoubleZZZ.toInt(dtemp)==0 && DoubleZZZ.toInt(dtemp2)==0){
+						iRest=iRest-1;//Damit ggfs. die Schleife verlassen, Ende.
+					}
+				}else{
+					//if(bDebug)  System.out.println(iDigitPositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " übernehme Wert.");				
+				}
+				*/
+				
+				//TODO GOON: Erweiterer Interface um Methode getCharForPosition(iChar) und packe jeweilige static Klasse hineine.
+				...
+				stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iChar, bLowercase);
+				listas.add(stemp);	
+				
+				//Gehe zur nächsten Stelle
+				iNumber = iRest;
+				iDigitPositionCur++;
+				//iDigitpositionNext=iDigitpositionCur+1;	
+			}
+				
+				/* nicht vereinheitlichte Version
+			//while(iRest >= iPositionValue){
+				//iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
 			
 				//Hole jeweils die Werte hinter dem Komma			
 				float fRest = (float)iRest / iPositionValue; //Merke: damit das Ergebnis der Division zweiter int Werte float wird: Casten. 								
@@ -218,6 +277,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					iPositionValue = MathZZZ.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, iDigitposition);
 				}			
 			}
+			*/
 			
 			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
 			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);						

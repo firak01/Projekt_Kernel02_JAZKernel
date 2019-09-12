@@ -198,8 +198,11 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 			
 			int iNumber = iNumberIn;
 			int iRest = iNumber+1; //um "0" bei Anfangs-iNumber abzufangen.
-			int iDigitpositionCur=0;		
-			int iDigitPostionValueUsed = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+			int iDigitPositionCur=0;
+			
+			//TODO GOON: Erweiterer Interface um Methode getCharacterPositionMax() und packe jeweilige static Klasse hineine.
+			...
+			int iDigitPositionValueUsed = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 
 			//GGfs. für Debuggen, etwas Reflection
 //			int iDigitpositionNext=iDigitpositionCur+1;
@@ -217,12 +220,12 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 			while(iRest > 0){
 				//1. Schritt: Teilen durch die Anzahl des "Zeichenraums"
 				//Hole jeweils die Werte hinter dem Komma			
-				float fRest = (float)iNumber / iDigitPostionValueUsed;  								
+				float fRest = (float)iNumber / iDigitPositionValueUsed;  								
 
 				//Bestimme daraus den Wert des Zeichens								
 				//1. Schritt: Den Rest um den gerade betrachteten Wert reduzieren						
 				double dtemp = DoubleZZZ.pointRight(fRest);					
-				double dtemp2 = (dtemp * iDigitPostionValueUsed);	
+				double dtemp2 = (dtemp * iDigitPositionValueUsed);	
 				
 				itemp  = DoubleZZZ.toIntRound(dtemp2);
 				iChar = itemp+1;//wegen meiner Zeichenholerrei.
@@ -230,15 +233,15 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 				
 				//Problem: Normalerweise ist dann bei eine Stellenübersprung die vordere Ziffer um +1 erhöht. Also 25 => Z , 26 würde zu BA.
 				//              Ich will aber AA als Zählerwert erreichen.
-				if(iDigitpositionCur>=1){
-					if(bDebug) System.out.println(iDigitpositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " reduziere wert um -1.");
+				if(iDigitPositionCur>=1){
+					if(bDebug) System.out.println(iDigitPositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " reduziere wert um -1.");
 					
 					iChar=iChar-1;
 					//bWasReduced = true;
 					
 					//Hier einen Übertrag quasi wieder rückgängig machen.
 					if(iChar==0){
-						iChar = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+						iChar = iDigitPositionValueUsed; //CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
 						//bWasReduced=false;
 					}
 					
@@ -246,15 +249,17 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 						iRest=iRest-1;//Damit ggfs. die Schleife verlassen, Ende.
 					}
 				}else{
-					if(bDebug)  System.out.println(iDigitpositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " übernehme Wert.");				
+					if(bDebug)  System.out.println(iDigitPositionCur + " . TEST " + iNumberIn + " - Charakter " + iChar + " übernehme Wert.");				
 				}
 				
+				//TODO GOON: Erweiterer Interface um Methode getCharForPosition(iChar) und packe jeweilige static Klasse hineine.
+				...
 				stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iChar, bLowercase);
 				listas.add(stemp);	
 				
 				//Gehe zur nächsten Stelle
 				iNumber = iRest;
-				iDigitpositionCur++;
+				iDigitPositionCur++;
 				//iDigitpositionNext=iDigitpositionCur+1;	
 			}
 			

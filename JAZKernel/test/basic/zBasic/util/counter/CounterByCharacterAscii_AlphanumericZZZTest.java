@@ -518,6 +518,55 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
 			
+			try {		
+				objCounterStrategy.isRightAligned(false);
+				stemp = "ZZ0";
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+			
+			try {		
+				objCounterStrategy.isRightAligned(false);
+				stemp = "ZZ1";
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+			try {		
+				objCounterStrategy.isRightAligned(false);
+				stemp = "ZZZZ";
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);
+		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	
 			try {

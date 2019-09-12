@@ -2,12 +2,8 @@ package basic.zBasic.util.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface ICounterAlphabetZZZ  <T extends ICounterStrategyAlphabetZZZ>  extends ICounterCaseSensitiveZZZ{	
-	public static int iPOSITION_MIN=1; //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
-	public static int iPOSITION_MAX=26;
-	
-	public static String sREGEX_CHARACTERS="[a-zA-Z]";
-	
+public interface ICounterAlphabetZZZ  <T extends ICounterStrategyAlphabetZZZ>  extends ICounterCaseSensitiveZZZ,ICounterAlphabetConstantsZZZ{	
+		
 	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
 	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden. 
 	//public ICounterStrategyAlphabetZZZ getCounterStrategyObject() throws ExceptionZZZ;
