@@ -25,6 +25,21 @@ public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCou
 		this.bLowercase = bValue;
 	}
 	
+	@Override
+	public int getCharacterPositionMax() {
+		return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+	}
+	
+	@Override
+	public int getCharacterPositionMin() {
+		return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
+	}
+	
+	@Override
+	public String getCharForPosition(int iPositionInMinMaxRange, boolean bLowercase) throws ExceptionZZZ{
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(iPositionInMinMaxRange, bLowercase);
+	}
+	
 	//Aus Interface ICounterStrategyAlphabet
 	@Override
 	public void setCounterStart(String sStart) throws ExceptionZZZ{			

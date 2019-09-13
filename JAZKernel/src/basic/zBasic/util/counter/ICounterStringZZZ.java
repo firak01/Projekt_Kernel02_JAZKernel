@@ -50,4 +50,10 @@ public interface ICounterStringZZZ <T extends ICounterStrategyZZZ>{
 	//Entsprechend des Strategy-Objekts. Nur so kann man hier direkter die Eigenschaft ansprechen.
 	public boolean isRightAligned() throws ExceptionZZZ;
 	public void isRightAligned(boolean bValue) throws ExceptionZZZ;
+	
+	//Entsprechende Konstante gibt es im jeweiligen Interface ICounter...ConstantsZZZ, z.B. ICounterAlphabetConstantsZZZ
+	//In den Klassen, die ICounterStringZZZ implementieren, können nun die jeweils passenden Statischen Werte zurückgegeben werden.
+	//public int getCharacterPositionMax();
+	//public int getCharacterPositionMin();
+	
 }

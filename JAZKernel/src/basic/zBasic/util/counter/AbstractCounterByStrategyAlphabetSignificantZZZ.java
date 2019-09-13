@@ -28,7 +28,7 @@ public abstract class AbstractCounterByStrategyAlphabetSignificantZZZ <T extends
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public AbstractCounterByStrategyAlphabetSignificantZZZ(ICounterStrategyAlphabetSignificantZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
+		super(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN);		
 		this.setCounterStrategyObject(objCounterStrategy);
 	}	
 		
@@ -76,6 +76,16 @@ public abstract class AbstractCounterByStrategyAlphabetSignificantZZZ <T extends
 				this.setValueCurrent(iValue);
 			}//end main:
 		}	
+	
+//		@Override
+//		public int getCharacterPositionMax() {
+//			return CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+//		}
+//		
+//		@Override
+//		public int getCharacterPositionMin() {
+//			return CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN;
+//		}
 		
 		// ++++ Aus Interface						
 		@Override
@@ -83,4 +93,6 @@ public abstract class AbstractCounterByStrategyAlphabetSignificantZZZ <T extends
 		
 		@Override	
 		public abstract T getCounterStrategyObject() throws ExceptionZZZ;
+		
+	
 }

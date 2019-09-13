@@ -73,7 +73,15 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ <T extends 
 	@Override
 	public abstract String peekChange(int iValue) throws ExceptionZZZ;
 	
-
+//	@Override
+//	public int getCharacterPositionMax() {
+//		return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+//	}
+//	
+//	@Override
+//	public int getCharacterPositionMin() {
+//		return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
+//	}
 	
 	
 	// ++++ Aus Interface	

@@ -144,4 +144,14 @@ public abstract class AbstractCounterStrategyAlphabetSignificantZZZ extends Abst
 			 return sReturn;
 		 }
 		
+		@Override
+		public int getCharacterPositionMax() {
+			return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+		}
+		
+		@Override
+		public int getCharacterPositionMin() {
+			return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
+		}
+		
 }

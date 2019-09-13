@@ -208,4 +208,5 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZ<T extends ICounterSt
 	public void setCounterStrategyObject(ICounterStrategyZZZ objCounterStrategy) {
 		this.objCounterStrategy = (T) objCounterStrategy;
 	}
+	
 }

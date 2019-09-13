@@ -6,6 +6,12 @@ import basic.zBasic.IObjectReflectableImplementerZZZ;
 public interface ICounterStrategyZZZ extends IObjectReflectableImplementerZZZ{
 	public int getCounterStart();
 	public void setCounterStart(int iStart);
+	
+	//Entsprechende Konstante gibt es im jeweiligen Interface ICounter...ConstantsZZZ, z.B. ICounterAlphabetConstantsZZZ
+	//In den Klassen, die ICounterStrategyZZZ implementieren, können nun die jeweils passenden Statischen Werte zurückgegeben werden.
+	public int getCharacterPositionMax();
+	public int getCharacterPositionMin();
+		
 				
 	public boolean isRightAligned();
 	public void isRightAligned(boolean bValue);

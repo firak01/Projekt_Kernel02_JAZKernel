@@ -200,9 +200,9 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 			int iRest = iNumber+1; //um "0" bei Anfangs-iNumber abzufangen.
 			int iDigitPositionCur=0;
 			
-			//TODO GOON: Erweiterer Interface um Methode getCharacterPositionMax() und packe jeweilige static Klasse hineine.
-			...
-			int iDigitPositionValueUsed = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+			//TODO GOON: Erweiterer Interface um Methode getCharacterPositionMax() und packe jeweilige static Klasse hineine.			
+			//int iDigitPositionValueUsed = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+			int iDigitPositionValueUsed = this.getCharacterPositionMax();
 
 			//GGfs. für Debuggen, etwas Reflection
 //			int iDigitpositionNext=iDigitpositionCur+1;
@@ -253,8 +253,9 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 				}
 				
 				//TODO GOON: Erweiterer Interface um Methode getCharForPosition(iChar) und packe jeweilige static Klasse hineine.
-				...
-				stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iChar, bLowercase);
+				//stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iChar, bLowercase);
+				stemp = this.getCharForPosition(iChar, bLowercase);
+		
 				listas.add(stemp);	
 				
 				//Gehe zur nächsten Stelle

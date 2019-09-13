@@ -77,6 +77,16 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T ext
 			}//end main:
 		}	
 		
+//		@Override
+//		public int getCharacterPositionMax() {
+//			return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+//		}
+//		
+//		@Override
+//		public int getCharacterPositionMin() {
+//			return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
+//		}
+		
 		// ++++ Aus Interface						
 		@Override
 		public abstract void setCounterStrategyObject(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy);

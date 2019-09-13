@@ -7,4 +7,8 @@ public interface ICounterStrategyAlphabetZZZ extends ICounterStrategyZZZ {
 	
 	public boolean isLowercase();
 	public void isLowercase(boolean bValue);
+	
+	//Entsprechende Konstante gibt es im jeweiligen Interface ICounter...ConstantsZZZ, z.B. ICounterAlphabetConstantsZZZ
+	//In den Klassen, die ICounterStrategyZZZ implementieren, können nun die jeweils passenden Statischen Werte zurückgegeben werden.
+	public String getCharForPosition(int iPositionInMinMaxRange, boolean bLowercase) throws ExceptionZZZ;
 }
