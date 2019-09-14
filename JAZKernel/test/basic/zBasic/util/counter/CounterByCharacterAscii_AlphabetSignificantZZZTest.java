@@ -67,7 +67,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 	    
 	   
 	    
- public void testGetNumberForStringAlphanumeric_StrategySignificant(){
+ public void testGetNumberForStringAlphabet_StrategySignificant(){
 	    	String stemp; int itemp; int itempLeft; int itempRight; int itempCheck; boolean btemp;
 	    	ICounterStrategyAlphabetSignificantZZZ objCounterStrategy = null;
 	    	try{

@@ -10,5 +10,5 @@ public interface ICounterStrategyAlphabetZZZ extends ICounterStrategyZZZ {
 	
 	//Entsprechende Konstante gibt es im jeweiligen Interface ICounter...ConstantsZZZ, z.B. ICounterAlphabetConstantsZZZ
 	//In den Klassen, die ICounterStrategyZZZ implementieren, können nun die jeweils passenden Statischen Werte zurückgegeben werden.
-	public String getCharForPosition(int iPositionInMinMaxRange, boolean bLowercase) throws ExceptionZZZ;
+	//public String getCharForPosition(int iPositionInMinMaxRange, boolean bLowercase) throws ExceptionZZZ;
 }

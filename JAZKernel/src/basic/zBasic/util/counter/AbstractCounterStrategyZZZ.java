@@ -35,6 +35,11 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 		this.bRightAligned = bValue;
 	}
 	
+	//Merke: Das gibt es in der Numerischen Variante (ohne LowerCase) und in der Alphabet Variante (mit LowerCase)
+	//TODO GOON 201909014: 
+//	@Override
+//	public abstract String getCharForPosition(int iPositionInMinMaxRange) throws ExceptionZZZ;
+	
 	
 	@Override
 	public boolean isIncreasableInOtherMethod(){
@@ -47,6 +52,7 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 	
 	@Override
 	public abstract boolean makeReflectableInitialization() throws ExceptionZZZ;
+	
 	
 	//Aus Interface ICounterStrategy
 	@Override

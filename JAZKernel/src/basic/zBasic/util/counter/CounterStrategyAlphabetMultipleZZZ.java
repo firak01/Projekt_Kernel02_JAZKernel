@@ -92,7 +92,7 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 			}
 						
 			//Zusammenfassen der Werte: Multiple Strategie
-			sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolitated(sCharacter, iDiv);
+			sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);
 		}//end main:
 		return sReturn;
 	}
