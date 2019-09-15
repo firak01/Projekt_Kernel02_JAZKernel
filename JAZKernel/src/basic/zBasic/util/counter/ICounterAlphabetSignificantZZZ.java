@@ -2,16 +2,10 @@ package basic.zBasic.util.counter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface ICounterAlphabetSignificantZZZ <T extends ICounterStrategyAlphabetSignificantZZZ> extends ICounterCaseSensitiveZZZ{
+public interface ICounterAlphabetSignificantZZZ <T extends ICounterStrategyAlphabetSignificantZZZ> extends ICounterCaseSensitiveZZZ,ICounterAlphabetSignificantConstantsZZZ{
 //20190521: Der Name war public interface ICounterStringStrategyAlphanumericUserZZZ extends ICounterStringZZZ{
 //          Damit ist der Name zwar zutreffend, aber viel zu lang. Da das Interface verwendet wird, um ein entsprechendes Counterobject zu erstellen.... kürzen
-	
-	public static int iPOSITION_MIN=1;   //Merke: Als Alphabetgrundlage wird hier der ASCII Satz gesehen
-	public static int iPOSITION_MAX=26;
-	
-	public static String sREGEX_CHARACTERS="[a-zA-Z]";
-	
-	
+		
 	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
 	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden.
 	//Jetzt durch eine Generic Lösung in ICounterStringZZZ ersetzt
