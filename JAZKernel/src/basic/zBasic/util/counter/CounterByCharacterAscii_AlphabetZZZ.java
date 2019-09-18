@@ -19,11 +19,11 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 		
 	public CounterByCharacterAscii_AlphabetZZZ(){
 		super();
-		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN);
+		this.setValueCurrent(this.getDigitValueMin());
 	}
 	public CounterByCharacterAscii_AlphabetZZZ(ICounterStrategyAlphabetZZZ objCounterStrategy){
 		super(objCounterStrategy);
-		this.setValueCurrent(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN);
+		this.setValueCurrent(this.getDigitValueMin());
 	}
 	public CounterByCharacterAscii_AlphabetZZZ(int iStartingValue, ICounterStrategyAlphabetZZZ objCounterStrategy){
 		super(iStartingValue, objCounterStrategy);

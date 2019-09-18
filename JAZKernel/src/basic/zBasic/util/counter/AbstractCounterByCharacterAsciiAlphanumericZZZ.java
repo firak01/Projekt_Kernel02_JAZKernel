@@ -83,6 +83,16 @@ public abstract class AbstractCounterByCharacterAsciiAlphanumericZZZ <T extends 
 //		return CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN;
 //	}
 	
+	@Override
+	public int getDigitValueMin(){
+		return ICounterAlphanumericConstantsZZZ.iPOSITION_MIN-1;
+	}
+	
+	@Override
+	public int getDigitValueMax(){
+		return ICounterAlphanumericConstantsZZZ.iPOSITION_MAX-1;
+	}
+	
 	
 	// ++++ Aus Interface	
 	@Override

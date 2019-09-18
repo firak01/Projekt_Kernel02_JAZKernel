@@ -148,5 +148,5 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 	@Override
 	public boolean makeReflectableInitialization() throws ExceptionZZZ {
 		return this.initClassMethodCallingString();
-	}
+	}	
 }

@@ -9,7 +9,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ, ICounterStrategyZZZ{
-	//TODO: Default Werte gehören eingentlich als Konstante ins Interface.
+	//TODO: Default Werte gehören eigentlich als Konstante ins Interface.
 	int iStartDefault = 0;		
 	private int iStart = -1;
 	
@@ -67,4 +67,32 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 		}
 		return this.iStart;
 	}
+	
+	@Override
+	public int getDigitValueMin(){
+		return this.getCharacterPositionMin()-1;
+	}
+	
+	@Override
+	public int getDigitValueMax(){
+		return this.getCharacterPositionMax()-1;
+	}
+	
+	@Override
+	public String getCharForDigitValue(int iDigitValueInMinMaxRange) throws ExceptionZZZ{		
+		int iPositionValue = this.getPositionValueForDigitValue(iDigitValueInMinMaxRange);
+		return this.getCharForPosition(iPositionValue);
+	}
+	
+		
+	@Override
+	public int getPositionValueForDigitValue(int iDigitValueInMinMaxRange){
+		return iDigitValueInMinMaxRange + 1;
+	}
+	
+	@Override
+	public int getDigitValueForPositionValue(int iPositionValueInMinMaxRange){		
+		return iPositionValueInMinMaxRange - 1;
+	}
+
 }

@@ -20,5 +20,6 @@ public interface ICounterAlphabetZZZ  <T extends ICounterStrategyAlphabetZZZ>  e
 	public void setCounterStrategyObject(T objCounterStrategy);
 	public T getCounterStrategyObject() throws ExceptionZZZ;
 
-	
+	public int getDigitValueMin();
+	public int getDigitValueMax();
 }

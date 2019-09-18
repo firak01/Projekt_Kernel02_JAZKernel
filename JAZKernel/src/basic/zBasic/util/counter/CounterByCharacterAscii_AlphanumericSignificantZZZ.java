@@ -34,7 +34,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public CounterByCharacterAscii_AlphanumericSignificantZZZ(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_AlphanumericSignificantZZZ.iPOSITION_MIN);
+		super(CounterByCharacterAscii_AlphanumericSignificantZZZ.iPOSITION_MIN-1);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	

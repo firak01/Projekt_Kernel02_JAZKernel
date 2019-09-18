@@ -52,21 +52,25 @@ public abstract class AbstractCounterStrategyAlphabetZZZ extends AbstractCounter
 	}
 	
 	@Override
+	public int getPositionValueForDigitValue(int iDigitValueInMinMaxRange){
+		return iDigitValueInMinMaxRange + 1;
+	}
+	
+	@Override
+	public int getDigitValueForPositionValue(int iPositionInMinMaxRange){
+		return iPositionInMinMaxRange - 1;
+	}
+	
+	@Override
 	public String getCharForPosition(int iPositionInMinMaxRange) throws ExceptionZZZ{
 		boolean bLowercase = this.isLowercase();
 		return CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(iPositionInMinMaxRange, bLowercase);
 	}
-	
-		//Aus Interface ICounterStrategyAlphabet
-		@Override
-		public void setCounterStart(String sStart) throws ExceptionZZZ{			
-			int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(sStart, this);
-			this.setCounterStart(iValue);
-		}
 		
-		
-		
-		
-		
-		
+	//Aus Interface ICounterStrategyAlphabet
+	@Override
+	public void setCounterStart(String sStart) throws ExceptionZZZ{			
+		int iValue = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(sStart, this);
+		this.setCounterStart(iValue);
+	}		
 }

@@ -10,5 +10,8 @@ public interface ICounterAlphanumericZZZ extends ICounterCaseSensitiveZZZ, ICoun
 	//20190606: Merke: Wenn man das in den abstrakten Klassen hält, bekommt man 2 objCounterStrategy - Objekte,
 	//darum diese Strategy-Objekte nur in den "Endklassen" verwenden. 
 	public ICounterStrategyAlphanumericZZZ getCounterStrategyObject() throws ExceptionZZZ;
-	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);		
+	public void setCounterStrategyObject(ICounterStrategyAlphanumericZZZ objCounterStrategy);
+	
+	public int getDigitValueMin();
+	public int getDigitValueMax();
 }

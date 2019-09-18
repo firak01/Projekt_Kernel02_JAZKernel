@@ -204,14 +204,9 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 		 }//end main:
 		 return sReturn;
 	 }
-	
-	
 
 	@Override
 	public boolean makeReflectableInitialization() throws ExceptionZZZ {
 		return this.initClassMethodCallingString();
 	}
-
-
-
 }

@@ -27,7 +27,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 	
 	public CounterByCharacterAscii_AlphanumericZZZ(){
 		super();
-		this.setValueCurrent(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
+		this.setValueCurrent(this.getDigitValueMin());
 	}
 	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue){
 		super(iStartingValue);		
@@ -40,7 +40,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public CounterByCharacterAscii_AlphanumericZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
+		super(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	

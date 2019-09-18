@@ -54,15 +54,15 @@ public abstract class AbstractCounterByCharacterAsciiAlphabetZZZ<T extends ICoun
 		return bReturn;
 	}
 	
-//	@Override
-//	public int getCharacterPositionMax() {
-//		return CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
-//	}
-//	
-//	@Override
-//	public int getCharacterPositionMin() {
-//		return CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN;
-//	}
+	@Override
+	public int getDigitValueMin(){
+		return ICounterAlphabetConstantsZZZ.iPOSITION_MIN-1;
+	}
+	
+	@Override
+	public int getDigitValueMax(){
+		return ICounterAlphabetConstantsZZZ.iPOSITION_MAX-1;
+	}
 	
 	// ++++ Aus Interface
 	public abstract void setCounterStrategyObject(ICounterStrategyAlphabetZZZ objCounterStrategy);

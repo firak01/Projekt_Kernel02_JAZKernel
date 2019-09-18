@@ -119,6 +119,7 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 			}
 		
 		}//end main;
+		iReturn = this.getDigitValueForPositionValue(iReturn); //weil der Stellenwert nicht gleich der CharacterPosition ist
 		return iReturn;			
 	}
 
@@ -128,37 +129,55 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
-
-			ArrayList<String>listas=new ArrayList<String>();	
-			boolean bLowercase = this.isLowercase();
-			boolean bRightAligned = this.isRightAligned();
-			if(bRightAligned){
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
-					listas.add(stemp);
-				}
-	
-				if(iMod>=1){
-					String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iMod,bLowercase);
-					listas.add(stemp);
-				}								
+			//int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			//int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
+			int iDiv = Math.abs(iNumber / this.getDigitValueMax()); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % this.getDigitValueMax();
+				
+			boolean bLowercase = this.isLowercase();			
+			if(iMod==0 && iDiv==0){
+				sReturn = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN,bLowercase);
+				break main;
 			}else{
-				if(iMod>=1){
-					String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iMod,bLowercase);
-					listas.add(stemp);
+				ArrayList<String>listas=new ArrayList<String>();
+				boolean bRightAligned = this.isRightAligned();
+				
+				
+				//TODO GOON 20190917 WO IST DER FEHLER? MUSS iMod um -1 reduziert werden, wenn iDiv >= 1?
+				int iModPosition = this.getPositionValueForDigitValue(iMod);
+				if(iDiv>=1){
+					iModPosition=iModPosition-1;//Übertrag
+				}
+				if(bRightAligned){
+					//for(int icount = 1; icount <= iDiv; icount++){
+					for(int icount = 1; icount <= iDiv; icount++){
+						String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
+						listas.add(stemp);
+					}
+					
+					if(iMod>=1){
+						//String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iMod,bLowercase);						 
+						String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iModPosition,bLowercase);
+						listas.add(stemp);
+					}								
+				}else{
+					if(iMod>=1){											
+						String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(iModPosition,bLowercase);
+						listas.add(stemp);
+					}
+					
+					//for(int icount = 1; icount <= iDiv; icount++){
+					for(int icount = 1; icount <= iDiv; icount++){
+						String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
+						listas.add(stemp);
+					}				
 				}
 				
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX,bLowercase);
-					listas.add(stemp);
-				}				
+				//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
+				sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);
 			}
 			
-			
-			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);														
+																	
 		}//end main:
 		return sReturn;
 	}

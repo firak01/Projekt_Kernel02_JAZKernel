@@ -12,8 +12,16 @@ public interface ICounterStrategyZZZ extends IObjectReflectableImplementerZZZ{
 	public int getCharacterPositionMax();
 	public int getCharacterPositionMin();	
 	public String getCharForPosition(int iPositionInMinMaxRange) throws ExceptionZZZ;
-		
-				
+	
+	public int getDigitValueMax();
+	public int getDigitValueMin();
+	public String getCharForDigitValue(int iDigitValueInMinMaxRange) throws ExceptionZZZ;
+
+	//Für die Transformation zwischen Stellenwert und Zeichenwert
+	public int getPositionValueForDigitValue(int iDigitValueInMinMaxRange);
+	public int getDigitValueForPositionValue(int iPositionInMinMaxRange);
+	
+	
 	public boolean isRightAligned();
 	public void isRightAligned(boolean bValue);
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ;
