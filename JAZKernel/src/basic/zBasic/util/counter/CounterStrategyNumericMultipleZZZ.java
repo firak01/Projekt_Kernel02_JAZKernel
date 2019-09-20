@@ -41,12 +41,18 @@ public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNu
 				char c = caValue[caValue.length-1];
 				
 				//Serielle Zählvariante
-				int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);				
-				iReturn= iC + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (caValue.length-1));	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
-				
-			}else{				
-				char c = caValue[0];
-				iReturn = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+				int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+				iC = this.getDigitValueForPositionValue(iC);
+				iReturn= iC + (this.getDigitValueMax() * (caValue.length-1));	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen						
+			}
+			
+			char c = caValue[0];
+			int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+			if(caValue.length<=1){
+				//Ohne Übertrag
+				iReturn = this.getDigitValueForPositionValue(iC);
+			}else{
+				iReturn = iReturn + iC;
 			}
 		
 		}//end main;
@@ -58,23 +64,36 @@ public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNu
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
+			int iDiv = Math.abs(iNumber / (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1);
 	
-			if(iMod==0 && iDiv ==0) break main;
-			
+			if(iMod==0 && iDiv==0){
+				sReturn = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);
+				break main;
+			}else{
+				int iModPosition = this.getPositionValueForDigitValue(iMod);
+				if(iDiv>=1){
+					iModPosition=iModPosition-1;//Übertrag
+				}
 			//Ermittle den "Modulo"-Wert und davon das Zeichen
 			String sCharacter=null;
 			if(iMod>=1){
-				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);	
+				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iModPosition);	
 				sReturn = sCharacter;
-			}else if(iMod==0){
+			}
+			else if(iMod==0){
 				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
 				sReturn = "";
 			}
 			
 			//Zusammenfassen der Werte: Multiple Strategie
-			sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);		
+			boolean bLeftAligned = this.isLeftAligned();
+			if(bLeftAligned){
+				sReturn = CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv) + sReturn;
+			}else{
+				sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);
+			}
+			}
 		}//end main:
 		return sReturn;
 	}

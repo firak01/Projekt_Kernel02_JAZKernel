@@ -13,7 +13,7 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 	int iStartDefault = 0;		
 	private int iStart = -1;
 	
-	private boolean bRightAligned = false;
+	private boolean bLeftAligned = false;
 	private boolean bIncreasableInOtherMethod = false;
 	
 	public AbstractCounterStrategyZZZ() throws ExceptionZZZ{
@@ -27,12 +27,12 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 	
 	//++++ Aus Interface
 	@Override
-	public boolean isRightAligned() {
-		return this.bRightAligned;
+	public boolean isLeftAligned() {
+		return this.bLeftAligned;
 	}
 	@Override
-	public void isRightAligned(boolean bValue) {
-		this.bRightAligned = bValue;
+	public void isLeftAligned(boolean bValue) {
+		this.bLeftAligned = bValue;
 	}
 	
 	//Merke: Das gibt es in der Numerischen Variante (ohne LowerCase) und in der Alphabet Variante (mit LowerCase)

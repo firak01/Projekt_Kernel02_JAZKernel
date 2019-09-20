@@ -135,7 +135,7 @@ public abstract class AbstractCounterStrategyAlphabetSignificantZZZ extends Abst
 				 }else{
 					 sCharToStrip = sCharToStrip.toUpperCase();
 				 }
-				if(!this.isRightAligned()){
+				if(!this.isLeftAligned()){
 					sReturn = StringZZZ.stripLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 				}else{
 					sReturn = StringZZZ.stripRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.

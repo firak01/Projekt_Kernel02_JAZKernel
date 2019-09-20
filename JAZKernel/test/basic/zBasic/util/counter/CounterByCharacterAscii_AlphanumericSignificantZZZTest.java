@@ -135,13 +135,13 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	    	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    	try {				
 				stemp = "0";
-		    	objCounterStrategy.isRightAligned(false);
+		    	objCounterStrategy.isLeftAligned(false);
 				itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73		    	
 				btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itempLeft);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
 		    	assertEquals("Erwarteter Wert ", 0,itempLeft); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
 		    	
-		    	objCounterStrategy.isRightAligned(true);
+		    	objCounterStrategy.isLeftAligned(true);
 		    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73
 				btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itempRight);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);	
@@ -154,7 +154,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	    	//++++++++++++++++++++++++++++++
 		    	try {				
 					stemp = "00";
-			    	objCounterStrategy.isRightAligned(false);
+			    	objCounterStrategy.isLeftAligned(false);
 					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73		    
 					fail("Methode sollte eine Exception geworfen haben: Führende 0 ist nicht erlaubt, da sich der String aus dem Wert nicht wiederherstellen lässt.");
 		    	}catch (ExceptionZZZ ez){
@@ -164,7 +164,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 			    	//Mache die Gegenprobe
 		    	try {				
 					stemp = "00";
-			    	objCounterStrategy.isRightAligned(true);
+			    	objCounterStrategy.isLeftAligned(true);
 					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73		    
 					fail("Methode sollte eine Exception geworfen haben: Führende 0 ist nicht erlaubt, da sich der String aus dem Wert nicht wiederherstellen lässt.");
 		    	}catch (ExceptionZZZ ez){
@@ -210,7 +210,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 		    	
 		    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			try {		
-				objCounterStrategy.isRightAligned(false);
+				objCounterStrategy.isLeftAligned(false);
 				stemp = "0Z";
 				itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig Fehler    
 				fail("Methode sollte eine Exception geworfen haben: Führende 0 ist nicht erlaubt, da sich der String aus dem Wert nicht wiederherstellen lässt.");
@@ -219,7 +219,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	    	}
 
 			try {				
-				objCounterStrategy.isRightAligned(true);
+				objCounterStrategy.isLeftAligned(true);
 				stemp = "0Z";
 				itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73		    
 				assertEquals("Erwarteter Wert ", 1260,itempRight); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
@@ -274,7 +274,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 					//##################################################
 			    	//### Den String testen
 			    	//##################################################	
-					objCounterStrategy.isRightAligned(false);
+					objCounterStrategy.isLeftAligned(false);
 					sAlphanumericNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumeric);				
 					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormed,objCounterStrategy); 
 					itempLeftCheck = itempLeft; //Variable speichern für die Umkehrung des Strings
@@ -286,7 +286,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericNormed, sCheckLeft);	
 			    	
 			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isRightAligned(true);
+			    	objCounterStrategy.isLeftAligned(true);
 			    	sAlphanumericNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumeric);	
 			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormed,objCounterStrategy); 
 			    	itempRightCheck = itempRight; //Variable speichern für die Umkehrung des Strings
@@ -312,7 +312,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 			    	String sAlphanumericReversed = StringZZZ.reverse(sAlphanumeric);
 			    	
 			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isRightAligned(false);
+			    	objCounterStrategy.isLeftAligned(false);
 			    	sAlphanumericReversedNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumericReversed);					    
 			    	itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericReversedNormed,objCounterStrategy); 
 			    	btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericReversedNormed, itempLeft);
@@ -324,7 +324,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericReversedNormed, sCheckLeft);		    			    				    	    					    	    	
 		    	
 			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isRightAligned(true);
+			    	objCounterStrategy.isLeftAligned(true);
 			    	sAlphanumericReversedNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumericReversed);	
 			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericReversedNormed,objCounterStrategy); 
 					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericReversedNormed, itempRight);
@@ -361,7 +361,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 		 main:{
 			 boolean bLowercase = objCounterStrategy.isLowercase();
 		 	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
-			if(!objCounterStrategy.isRightAligned()){
+			if(!objCounterStrategy.isLeftAligned()){
 				sReturn = StringZZZ.stripLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 			}else{
 				sReturn = StringZZZ.stripRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.

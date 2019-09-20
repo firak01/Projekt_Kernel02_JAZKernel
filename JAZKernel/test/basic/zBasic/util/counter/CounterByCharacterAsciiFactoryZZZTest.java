@@ -219,15 +219,12 @@ public void testGetStringAlphabetForNumber_FactoryBasedStrategyMultiple(){
 		assertEquals("BB",stemp);
 		itemp = objCounterAlphaM.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
-		
-		
-		
+					
 		///..................... TODO GOON 20190307
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
 		//B) Mit String  Wert
 		
-
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	} 
@@ -286,7 +283,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 		
 		stempold = stemp;
 		stemp = objCounterAlphaM.current();
-		assertEquals(stemp, stempold);
+		assertEquals(stempold, stemp);
 			
 		itempold = itemp;
 		stemp = objCounterAlphaM.next();
@@ -476,7 +473,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		} 
 		
 		//... gültige serielle Syntax
-		objCounterStrategyAlphaNumS.isRightAligned(false);
+		objCounterStrategyAlphaNumS.isLeftAligned(false);
 		try{			
 			stemp = "ZA";
 			objCounterAlphaS.setValueCurrent(stemp);
@@ -496,7 +493,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 		
-		objCounterStrategyAlphaNumS.isRightAligned(true);
+		objCounterStrategyAlphaNumS.isLeftAligned(true);
 		try{			
 			stemp = "AZ";
 			objCounterAlphaS.setValueCurrent(stemp);
@@ -564,7 +561,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		try{		
 			//+++ Mit einem mehrstelligen String-Wert
 			objCounterStrategyAlphaNumS.isLowercase(false);
-			objCounterStrategyAlphaNumS.isRightAligned(false);
+			objCounterStrategyAlphaNumS.isLeftAligned(false);
 			ICounterAlphanumericZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"ZZA");
 			itemp = objCounterAlphaS4.getValueCurrent();
 			stemp = objCounterAlphaS4.current();

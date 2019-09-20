@@ -62,11 +62,11 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			//Allerdings "0" selbst darf übergeben werden. Man bekommt die führenden "0" Werte nämlich nicht durch den Zahlenwert wieder "rekonstruiert".
 			//Merke: Ggfs. verwendete Füllzeichen wurden in diesem Überprüfungsschritt schon zuvor entfernt.
 			if(!sTotal.equals("0")){				
-				if(sTotal.startsWith("0") && !this.isRightAligned()){
+				if(sTotal.startsWith("0") && !this.isLeftAligned()){
 					ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Ein Wert mit führender '0' darf nicht übergeben werden - führende 0 läßt sich nicht wiederherstellen. Nur als einzelnes Zeichen ist führende '0' erlaubt. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
-				if(sTotal.endsWith("0") && this.isRightAligned()){
+				if(sTotal.endsWith("0") && this.isLeftAligned()){
 					ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Ein Wert mit führender '0' darf nicht übergeben werden - führende 0 läßt sich nicht wiederherstellen. Nur als einzelnes Zeichen ist führende '0' erlaubt. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
@@ -117,7 +117,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			int iTotalIndexLength=sTotal.length()-1;
 									
 			//Hier spielt links-/rechtsbündig eine Rolle:
-			boolean bRightAligned = this.isRightAligned();
+			boolean bRightAligned = this.isLeftAligned();
 			if(!bRightAligned){
 				
 				//Hier spielt der Stellenwert eine Rolle.
@@ -175,14 +175,14 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			int itemp; int iChar;String stemp;
 			
 			ArrayList<String>listas=new ArrayList<String>();
-			boolean bRightAligned = this.isRightAligned();
+			boolean bLeftAligned = this.isLeftAligned();
 			boolean bLowercase = this.isLowercase();
 			
 			//Variante, basierend auf "Stellenwert", allerdings soll eine neue Stelle nicht Minimum sein, das wäre wie im Dezimalsystem 8,9,10,.. Statt 8,9,00 oder in der Anwendung: x,y,z,aa,...ab
-			listas = CounterStrategyHelperZZZ.makeSignificantCharsForNumber(this, iNumberIn, bRightAligned, bLowercase, false);
+			listas = CounterStrategyHelperZZZ.makeSignificantCharsForNumber(this, iNumberIn, bLeftAligned, bLowercase, false);
 			
 			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);						
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);						
 		}//end main:
 		return sReturn;
 	}
@@ -196,7 +196,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 		 String sReturn = null;
 		 main:{
 			 boolean bLowercase = this.isLowercase();		 	
-			if(!this.isRightAligned()){
+			if(!this.isLeftAligned()){
 				sReturn = StringZZZ.stripLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 			}else{
 				sReturn = StringZZZ.stripRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.

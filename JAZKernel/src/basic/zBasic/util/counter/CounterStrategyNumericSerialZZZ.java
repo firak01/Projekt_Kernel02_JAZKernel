@@ -38,14 +38,25 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 					throw ez;					
 			}
 			
-			//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
 			String sLetterMax = CounterByCharacterAscii_NumericZZZ.getCharHighest(bLowerized);
-			for (int icount=0;icount<=sTotal.length()-2;icount++){
-				String stemp = StringZZZ.letterAtPosition(sTotal,icount);
-				if(!sLetterMax.equals(stemp)){
-					ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;	
+			if(this.isLeftAligned()){
+				//B2: Die Zeichen links müssen immer das höchste Zeichen des Zeichenraums sein.
+				for (int icount=0;icount<=sTotal.length()-2;icount++){
+					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
+					if(!sLetterMax.equals(stemp)){
+						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	
+					}
 				}
+			}else{
+				//B2b: Die Zeichen rechts müssen immer das höchste Zeichen des Zeichenraums sein.
+				for (int icount=sTotal.length()-1;icount>=1;icount--){
+					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
+					if(!sLetterMax.equals(stemp)){
+						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen links der rechtesten Stelle müssen das höchste Zeichen sein (Höchstes Zeiche='"+sLetterMax+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	
+					}
+				}				
 			}
 			
 			bReturn = true;
@@ -59,18 +70,22 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 		int iReturn = 0;
 		
 		main:{
-			boolean bRightAligned = this.isRightAligned();
-			if(bRightAligned){				
+			boolean bLeftAligned = this.isLeftAligned();
+			if(bLeftAligned){				
 				char[] caValue = sTotal.toCharArray();
 				for (int icounter=caValue.length-1; icounter>=0 ; icounter--){
 					char c = caValue[icounter];
 					
-					//Serielle Zählvariante
-					int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+					//Serielle Zählvariante				
 					if(icounter==0){
-						iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+						int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+						iC = this.getDigitValueForPositionValue(iC);
+						iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen
+						if(caValue.length>=2){
+							iReturn+=1; //Stellenübertrag
+						}
 					}else{
-						iReturn+= (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+						iReturn+= this.getDigitValueMax() * icounter;//Den "Stellenwert" ermitteln und hinzuzählen.
 					}	
 				}
 			}else{
@@ -78,12 +93,16 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 				for (int icounter=0; icounter<= caValue.length-1; icounter++){
 					char c = caValue[icounter];
 					
-					//Serielle Zählvariante
-					int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+					//Serielle Zählvariante					
 					if(icounter==(caValue.length-1)){
-						iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen		
+						int iC = CounterByCharacterAscii_NumericZZZ.getPositionForChar(c);
+						iC = this.getDigitValueForPositionValue(iC);
+						iReturn+= iC;	//An der letzten Stelle den ermittelten Wert nehmen	 und hinzuzählen
+						if(caValue.length>=2){
+							iReturn+=1; //Stellenübertrag
+						}
 					}else{
-						iReturn+= (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX * (icounter+1));//Den "Stellenwert" ermitteln und hinzuzählen.
+						iReturn+= this.getDigitValueMax() * icounter;//Den "Stellenwert" ermitteln und hinzuzählen.
 					}	
 				}
 			}		
@@ -96,37 +115,57 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX;
-			
-			
-			ArrayList<String>listas=new ArrayList<String>();
-			boolean bRightAligned = this.isRightAligned();
-			//boolean bLowercase = this.isLowercase(); //numerisch nicht vorhanden.		
-			
-			if(bRightAligned){
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
-					listas.add(stemp);
+			int iDiv = Math.abs(iNumber / this.getDigitValueMax() ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % this.getDigitValueMax();
+				
+			if(iMod==0 && iDiv==0){
+				sReturn = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);
+				break main;
+			}else{	
+				ArrayList<String>listas=new ArrayList<String>();
+				boolean bLeftAligned = this.isLeftAligned();
+				//boolean bLowercase = this.isLowercase(); //numerisch nicht vorhanden.
+				
+				int iModPosition = this.getPositionValueForDigitValue(iMod);
+				
+				//DA NICHT SIGNIFIKANZ ALSO 0 GÜLTIGES ZEICHEN 
+				iModPosition=iModPosition-1;
+				
+				if(iDiv>=1){
+					iModPosition=iModPosition-1;//Übertrag										
 				}
-				if(iMod>=1){
-					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);
-					listas.add(stemp);
-				}
-			}else{
-				if(iMod>=1){
-					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);
-					listas.add(stemp);
+				if(bLeftAligned){
+					//von Links die Liste beginnen
+					for(int icount = 1; icount <= iDiv; icount++){					
+						String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
+						listas.add(stemp);
+					}
+					if(iMod>=1){
+						iMod = this.getPositionValueForDigitValue(iModPosition);
+						String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);					
+						listas.add(stemp);
+					}
+					
+					
+				}else{
+					if(iMod>=1){
+						iMod = this.getPositionValueForDigitValue(iModPosition);
+						String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iMod);
+						listas.add(stemp);
+					}
+					
+					for(int icount = 1; icount <= iDiv; icount++){
+						String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
+						listas.add(stemp);
+					}	
+								
 				}
 				
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
-					listas.add(stemp);
-				}				
+				//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
+				sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);	
 			}
 			
-			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);					
+								
 		}//end main:
 		return sReturn;
 	}

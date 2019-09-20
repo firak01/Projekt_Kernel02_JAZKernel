@@ -70,10 +70,10 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringForNumber(int i, boolean bLowercase, boolean bRightAligned) throws ExceptionZZZ{
+	public static String getStringForNumber(int i, boolean bLowercase, boolean bLeftAligned) throws ExceptionZZZ{
 		ICounterStrategyAlphabetZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ();
 		objCounterStrategy.isLowercase(bLowercase);
-		objCounterStrategy.isRightAligned(bRightAligned);
+		objCounterStrategy.isLeftAligned(bLeftAligned);
 		return CounterByCharacterAscii_AlphabetZZZ.getStringAlphabetForNumber_(i, objCounterStrategy);
 	}
 	

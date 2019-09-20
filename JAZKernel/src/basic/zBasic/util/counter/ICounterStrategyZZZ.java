@@ -22,8 +22,8 @@ public interface ICounterStrategyZZZ extends IObjectReflectableImplementerZZZ{
 	public int getDigitValueForPositionValue(int iPositionInMinMaxRange);
 	
 	
-	public boolean isRightAligned();
-	public void isRightAligned(boolean bValue);
+	public boolean isLeftAligned();
+	public void isLeftAligned(boolean bValue);
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ;
 	public int computeNumberForString(String sTotal);
 	public String computeStringForNumber(int iNumber) throws ExceptionZZZ; 

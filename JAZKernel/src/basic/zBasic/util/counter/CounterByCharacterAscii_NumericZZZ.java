@@ -49,9 +49,9 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	 * @return
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 */
-	public static String getStringForNumber(int i, boolean bRightAligned) throws ExceptionZZZ{
+	public static String getStringForNumber(int i, boolean bLeftAligned) throws ExceptionZZZ{
 		ICounterStrategyZZZ objCounterStrategy = new CounterStrategyNumericSerialZZZ();
-		objCounterStrategy.isRightAligned(bRightAligned);
+		objCounterStrategy.isLeftAligned(bLeftAligned);
 		return CounterByCharacterAscii_NumericZZZ.getStringNumericForNumber_(i, objCounterStrategy);//es gibt keine Kleinbuchstaben
 	}
 		

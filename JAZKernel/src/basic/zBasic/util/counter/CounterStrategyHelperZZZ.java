@@ -123,18 +123,18 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 	}
 
 	/**Zusammenfassen der Werte: z.B. auch Serial Strategie
-	   Hier spielt links-/rechtsbündig eine Rolle:
+	   Hier spielt links-/rechtsbündig keine Rolle, es wird nur zusammengefasst:
 	 * @param listas
-	 * @param bRightAligned
 	 * @return
 	 * @author lindhaueradmin, 10.09.2019, 07:21:53
 	 */
-	public static String getStringConsolidated(ArrayList<String>listas, boolean bRightAligned){
+	public static String getStringConsolidated(ArrayList<String>listas){
 		String sReturn = null;
 		main:{
 			if(listas==null)break main;
 			
-			if(bRightAligned){
+				//Die Listenwerte werden von Links beginnend gefüllt, wenn linksbündig, 
+			    //von rechts beginnend gefüllt, wenn rechtsbündig
 				for(int icount=1; icount <= listas.size(); icount++){
 					String sPosition = listas.get(icount-1);
 					if(sReturn==null){
@@ -142,17 +142,7 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 					}else{
 						sReturn+=sPosition;
 					}
-				}
-			}else{
-				for(int icount=listas.size(); icount >= 1; icount--){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}											
-			}
+				}																			
 		}//end main:
 		return sReturn;
 	}

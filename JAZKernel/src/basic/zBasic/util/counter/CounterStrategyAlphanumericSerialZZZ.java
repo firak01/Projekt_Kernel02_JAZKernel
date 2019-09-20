@@ -39,7 +39,7 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			}
 			
 			//Hier spielt links-/rechtsbündig eine Rolle:
-			boolean bRightAligned = this.isRightAligned();
+			boolean bRightAligned = this.isLeftAligned();
 			String sLetterMax = CounterByCharacterAscii_AlphanumericZZZ.getCharHighest(bLowerized);
 			if(bRightAligned){
 				//B2a) Die Zeichen rechts müssen immer das höchste Zeichen des Zeichenraums sein.
@@ -79,7 +79,7 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			
 			
 			//Bei der Ermittlung der "zählenden" Stelle spielt links-/rechtsbündig EINE Rolle:
-			boolean bRightAligned = this.isRightAligned();
+			boolean bRightAligned = this.isLeftAligned();
 			String sLetterCounter = null;
 			if(bRightAligned){
 				sLetterCounter = StringZZZ.letterFirst(sTotal);				
@@ -91,10 +91,13 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 			//Berechnung...
 			char c = sLetterCounter.toCharArray()[0];
 			int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-			if(sTotal.length()==1){					
+			if(sTotal.length()==1){	
+				itemp = this.getDigitValueForPositionValue(itemp);
 				iReturn = itemp;				    					
 			}else if(sTotal.length()>=2){
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX * (sTotal.length()-1);															
+				itemp = this.getDigitValueForPositionValue(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+				iReturn =  itemp * (sTotal.length()-1);
+				
 				iReturn = iReturn + itemp;
 			}
 		
@@ -112,35 +115,51 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 		String sReturn = null;
 		main:{
 			 //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+//			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+//			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
 
-			ArrayList<String>listas=new ArrayList<String>();
-			boolean bRightAligned = this.isRightAligned();
+			int iDiv = Math.abs(iNumber / this.getDigitValueMax() ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % this.getDigitValueMax();
+
 			boolean bLowercase = this.isLowercase();
-//			if(bRightAligned){ //Rechts-/Linksorientiert spielt bei der Berechung selbst keine Rolle
-				if(iMod>=1){
-					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
-					listas.add(stemp);
+			if(iMod==0 && iDiv==0){
+				sReturn = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN,bLowercase);
+				break main;
+			}else{
+				ArrayList<String>listas=new ArrayList<String>();
+				boolean bLeftAligned = this.isLeftAligned();
+										
+				int iModPosition = this.getPositionValueForDigitValue(iMod);
+				if(iDiv>=1){
+					iModPosition=iModPosition-1;//Übertrag
 				}
-				for(int icount = 1; icount <= iDiv; icount++){
-					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
-					listas.add(stemp);
+				if(bLeftAligned){
+					for(int icount = 1; icount <= iDiv; icount++){
+						String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,bLowercase);
+						listas.add(stemp);
+					}	
+					
+					if(iMod>=1){											
+						String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iModPosition,bLowercase);
+						listas.add(stemp);
+					}																					
+				}else{					
+					
+					if(iMod>=1){												
+						String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iModPosition,bLowercase);
+						listas.add(stemp);
+					}
+					
+					for(int icount = 1; icount <= iDiv; icount++){
+						String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,bLowercase);
+						listas.add(stemp);
+					}
+					
 				}					
-//			}else{
-//				if(iMod>=1){
-//					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iMod, bLowercase);
-//					listas.add(stemp);
-//				}
-//				
-//				for(int icount = 1; icount <= iDiv; icount++){
-//					String stemp = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX, bLowercase);
-//					listas.add(stemp);
-//				}					
-//			}
 
 			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);											
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);
+			}
 		}//end main:
 		return sReturn;
 	}

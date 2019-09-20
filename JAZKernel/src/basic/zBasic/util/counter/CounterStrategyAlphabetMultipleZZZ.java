@@ -72,14 +72,12 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
-			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			//int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			//int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
-
+			//Ermittle den "Teiler" und den Rest, Also Modulo - Operation			
 			int iDiv = Math.abs(iNumber / this.getDigitValueMax()); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 			int iMod = iNumber % this.getDigitValueMax();
 			
 			boolean bLowercase = this.isLowercase();
+			boolean bRightAligned = this.isLeftAligned();
 			if(iMod==0 && iDiv ==0){
 				sReturn = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN,bLowercase);
 				break main;
@@ -102,7 +100,11 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 				}
 										
 				//Zusammenfassen der Werte: Multiple Strategie
-				sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);
+				if(bRightAligned){
+					sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);
+				}else{
+					sReturn = CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv) + sReturn;
+				}
 			}
 		}//end main:
 		return sReturn;

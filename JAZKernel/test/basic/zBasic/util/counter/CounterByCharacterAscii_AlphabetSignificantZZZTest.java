@@ -146,7 +146,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 				
 				//++++++++
 				objCounterStrategy.isLowercase(true);
-		    	objCounterStrategy.isRightAligned(false);
+		    	objCounterStrategy.isLeftAligned(false);
 				itempLeft = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp,objCounterStrategy); //linksbündig 73		    	
 				btemp = assertCheckNullBordersAlphabetStrategyBasedSignificant_(stemp, itempLeft);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -158,7 +158,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 		    	
 		    	
 		    	//++++++++
-		    	objCounterStrategy.isRightAligned(true);
+		    	objCounterStrategy.isLeftAligned(true);
 		    	itempRight = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp,objCounterStrategy); //rechtsbündig 73
 				btemp = assertCheckNullBordersAlphabetStrategyBasedSignificant_(stemp, itempRight);
 		    	assertTrue("Fehler beim Check auf Null Werte", btemp);	
@@ -300,7 +300,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 					//##################################################
 			    	//### Den String testen
 			    	//##################################################	
-					objCounterStrategy.isRightAligned(false);					
+					objCounterStrategy.isLeftAligned(false);					
 					sAlphabetNormed = getAlphabetNormed_(objCounterStrategy, sAlphabet);				
 					itempLeft = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(sAlphabetNormed,objCounterStrategy); 
 					itempLeftCheck = itempLeft; //Variable speichern für die Umkehrung des Strings
@@ -312,7 +312,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphabetNormed, sCheckLeft);	
 			    	
 			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isRightAligned(true);			    	
+			    	objCounterStrategy.isLeftAligned(true);			    	
 			    	sAlphabetNormed = getAlphabetNormed_(objCounterStrategy, sAlphabet);	
 			    	itempRight = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(sAlphabetNormed,objCounterStrategy); 
 			    	itempRightCheck = itempRight; //Variable speichern für die Umkehrung des Strings
@@ -338,7 +338,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 			    	String sAlphabetReversed = StringZZZ.reverse(sAlphabet);
 			    	
 			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isRightAligned(false);
+			    	objCounterStrategy.isLeftAligned(false);
 			    	sAlphabetReversedNormed = getAlphabetNormed_(objCounterStrategy, sAlphabetReversed);					    
 			    	itempLeft = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(sAlphabetReversedNormed,objCounterStrategy); 
 			    	btemp = assertCheckNullBordersAlphabetStrategyBasedSignificant_(sAlphabetReversedNormed, itempLeft);
@@ -350,7 +350,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphabetReversedNormed, sCheckLeft);		    			    				    	    					    	    	
 		    	
 			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isRightAligned(true);
+			    	objCounterStrategy.isLeftAligned(true);
 			    	sAlphabetReversedNormed = getAlphabetNormed_(objCounterStrategy, sAlphabetReversed);	
 			    	itempRight = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(sAlphabetReversedNormed,objCounterStrategy); 
 					btemp = assertCheckNullBordersAlphabetStrategyBasedSignificant_(sAlphabetReversedNormed, itempRight);
@@ -387,7 +387,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 		 main:{
 			 boolean bLowercase = objCounterStrategy.isLowercase();
 		 	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
-			if(!objCounterStrategy.isRightAligned()){
+			if(!objCounterStrategy.isLeftAligned()){
 				sReturn = StringZZZ.stripLeft(sAlphabet, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 			}else{
 				sReturn = StringZZZ.stripRight(sAlphabet, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.

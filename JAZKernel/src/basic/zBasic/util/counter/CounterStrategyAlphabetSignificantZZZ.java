@@ -118,7 +118,7 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 			int iTotalIndexLength=sTotal.length()-1;
 									
 			//Hier spielt links-/rechtsbündig eine Rolle:
-			boolean bRightAligned = this.isRightAligned();
+			boolean bRightAligned = this.isLeftAligned();
 			if(bRightAligned){
 				
 				//Hier spielt der Stellenwert eine Rolle.				
@@ -191,13 +191,13 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 			
 			ArrayList<String>listas=new ArrayList<String>();
 			boolean bLowercase = this.isLowercase();
-			boolean bRightAligned = this.isRightAligned();
+			boolean bLeftAligned = this.isLeftAligned();
 			
 			//Variante, basierend auf "Stellenwert", allerdings soll eine neue Stelle das Minimum sein, also nicht wie im Dezimalsystem 8,9,10,.. Statt dessen 8,9,00 oder in der Anwendung: x,y,z,aa,...ab
-			listas = CounterStrategyHelperZZZ.makeSignificantCharsForNumber(this, iNumberIn, bRightAligned, bLowercase, true);
+			listas = CounterStrategyHelperZZZ.makeSignificantCharsForNumber(this, iNumberIn, bLeftAligned, bLowercase, true);
 						
 			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas, bRightAligned);					
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);					
 		}//end main:
 		return sReturn;
 	}
@@ -212,7 +212,7 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 		 main:{
 			 boolean bLowercase = this.isLowercase();
 		 	//String sCharToStrip = CounterByCharacterAscii_AlphabetZZZ.getCharForPosition(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN, bLowercase);
-			if(!this.isRightAligned()){
+			if(!this.isLeftAligned()){
 				sReturn = StringZZZ.stripLeft(sAlphabet, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
 			}else{
 				sReturn = StringZZZ.stripRight(sAlphabet, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.

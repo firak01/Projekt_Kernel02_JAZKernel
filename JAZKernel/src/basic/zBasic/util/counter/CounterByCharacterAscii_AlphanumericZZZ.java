@@ -148,7 +148,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 	public static String getStringForNumber(int i, boolean bLowercase, boolean bRightAligned) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		objCounterStrategy.isLowercase(bLowercase);
-		objCounterStrategy.isRightAligned(bRightAligned);
+		objCounterStrategy.isLeftAligned(bRightAligned);
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
 	public static String getStringForNumber(int i, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{

@@ -93,7 +93,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZ<T extends ICounterSt
 				String sStringToBeStripped = StringZZZ.char2String(cToBeStripped) ;
 				
 				
-				if(this.getCounterStrategyObject().isRightAligned()){
+				if(this.getCounterStrategyObject().isLeftAligned()){
 					sReturn = StringZZZ.stripRight(sValue, sStringToBeStripped);
 				}else{
 					sReturn = StringZZZ.stripLeft(sValue, sStringToBeStripped);
@@ -135,7 +135,7 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZ<T extends ICounterSt
 					String sString = StringZZZ.char2String(cFilling);
 					String stemp = StringZZZ.repeat(sString, iTimes);
 									
-					if(this.getCounterStrategyObject().isRightAligned()){
+					if(this.getCounterStrategyObject().isLeftAligned()){
 						sReturn = sValue + stemp; //Wenn der Zähler links ausgerichtet ist, kommen die Füllzeichen nach rechts!
 					}else{
 						sReturn = stemp + sValue; //Wenn der Zähler rechts ausgerichtet ist, kommen die Füllzeichen nach links!
