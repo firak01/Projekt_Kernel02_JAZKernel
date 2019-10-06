@@ -1,6 +1,8 @@
 package basic.zBasic.util.abstractList;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
@@ -8,21 +10,76 @@ import basic.zBasic.ReflectCodeZZZ;
 
 public class ArrayListZZZ<T> extends ObjectZZZ {
 
-public static ArrayList unique(ArrayList lista){
-	ArrayList listaReturn = null;
+public static boolean isSameSize(ArrayList objAL1, ArrayList objAL2) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(objAL1== null){
+				ExceptionZZZ ez = new ExceptionZZZ("ArrayList1 to compare'", iERROR_PARAMETER_MISSING,  HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				throw ez;	
+			  }
+			if(objAL2== null){
+				ExceptionZZZ ez = new ExceptionZZZ("ArrayList2 to compare'", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				throw ez;	
+			  }
+			//###################
+			int iSize1 = objAL1.size();
+			int iSize2 = objAL2.size();
+			
+			if (iSize1 == iSize2) bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+
+public static String implode(ArrayList<?>lista, String sDelimiterIn){
+	String sReturn = null;
 	main:{
-		check:{
-			if(lista==null)break main;			
-		}//END check:
-	
-	listaReturn=new ArrayList();
-	for(int icount=0; icount < lista.size(); icount++ ){
-		if(! listaReturn.contains(lista.get(icount))) listaReturn.add(lista.get(icount));
-	}	
-	}//End main:
-	return listaReturn;
+		if(lista==null)break main;
+		if(lista.size()==0)break main;
+		
+		String sDelimiter;
+		if(sDelimiterIn==null){
+			sDelimiter="";
+		}else{
+			sDelimiter=sDelimiterIn;
+		}
+		
+		for(int icount=0; icount <= lista.size()-1; icount++){
+			String sPosition = (String) lista.get(icount);
+			if(sReturn==null){
+				sReturn=sPosition+sDelimiter;
+			}else{
+				sReturn+=sPosition+sDelimiter;
+			}
+		}
+	}
+	return sReturn;
 }
 
+public static String implodeReversed(ArrayList<?>lista, String sDelimiterIn){
+	String sReturn = null;
+	main:{
+		if(lista==null)break main;
+		if(lista.size()==0)break main;
+		
+		String sDelimiter;
+		if(sDelimiterIn==null){
+			sDelimiter="";
+		}else{
+			sDelimiter=sDelimiterIn;
+		}
+		
+		for(int icount = lista.size()-1; icount >= 0; icount--){
+			String sPosition = (String) lista.get(icount);
+			if(sReturn==null){
+				sReturn=sPosition;
+			}else{
+				sReturn+=sPosition;
+			}
+		}		
+	}
+	return sReturn;
+}
+	
 public static ArrayList join(ArrayList lista1, ArrayList lista2, boolean bFlagUnique){
 	ArrayList listaReturn = null;
 	main:{
@@ -67,27 +124,6 @@ public static ArrayList join(ArrayList lista1, ArrayList lista2, boolean bFlagUn
 	return listaReturn;
 }
 
-
-public static boolean isSameSize(ArrayList objAL1, ArrayList objAL2) throws ExceptionZZZ{
-	boolean bReturn = false;
-	main:{
-		if(objAL1== null){
-			ExceptionZZZ ez = new ExceptionZZZ("ArrayList1 to compare'", iERROR_PARAMETER_MISSING,  HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
-			throw ez;	
-		  }
-		if(objAL2== null){
-			ExceptionZZZ ez = new ExceptionZZZ("ArrayList2 to compare'", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
-			throw ez;	
-		  }
-		//###################
-		int iSize1 = objAL1.size();
-		int iSize2 = objAL2.size();
-		
-		if (iSize1 == iSize2) bReturn = true;
-	}//end main:
-	return bReturn;
-}
-
 public static void remove(ArrayList<?> lista, String sToRemove, boolean bIgnoreCase){
 	main:{
 	if(lista==null) break main;
@@ -122,6 +158,52 @@ public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove){
 	}//end main:
 }
 
+/**
+ * @param lista
+ * @return
+ * 
+ * https://stackoverflow.com/questions/10766492/what-is-the-simplest-way-to-reverse-an-arraylist
+ */
+//public static void  reverse(ArrayList<String> lista) {
+//	main:{
+//		if(lista==null) break main;
+//		if(lista.size()==0) break main;
+//		
+//		 	
+//	}//end main	
+//}
+public static <T> List<T> reverse(final List<T> list) {
+    final int size = list.size();
+    final int last = size - 1;
+
+    // create a new list, with exactly enough initial capacity to hold the (reversed) list
+    final List<T> result = new ArrayList<>(size);
+
+    // iterate through the list in reverse order and append to the result
+    for (int i = last; i >= 0; --i) {
+        final T element = list.get(i);
+        result.add(element);
+    }
+
+    // result now holds a reversed copy of the original list
+    return result;
+}
+
+/**
+ * @param lista
+ * @return
+ * 
+ * siehe: https://javahungry.blogspot.com/2017/11/how-to-sort-arraylist-in-descending-order-in-java.html
+ */
+public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
+	main:{
+		if(lista==null) break main;
+		if(lista.size()==0) break main;
+		
+		 Collections.sort(lista, Collections.reverseOrder());		
+	}//end main	
+}
+
 	public static String[]toStringArray(ArrayList<?> lista){
 		String[] saReturn = null;
 		main:{
@@ -137,5 +219,22 @@ public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove){
 		}//end main:
 		return saReturn;	
 	}
+	
+	public static ArrayList unique(ArrayList lista){
+		ArrayList listaReturn = null;
+		main:{
+			check:{
+				if(lista==null)break main;			
+			}//END check:
+		
+		listaReturn=new ArrayList();
+		for(int icount=0; icount < lista.size(); icount++ ){
+			if(! listaReturn.contains(lista.get(icount))) listaReturn.add(lista.get(icount));
+		}	
+		}//End main:
+		return listaReturn;
+	}
+
+	
 
 }//END class

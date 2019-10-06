@@ -162,7 +162,8 @@ public class CounterStrategyNumericSerialZZZ extends AbstractCounterStrategyNumb
 				}
 				
 				//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-				sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);	
+				//sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas,bLeftAligned);	
+				sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);
 			}
 			
 								

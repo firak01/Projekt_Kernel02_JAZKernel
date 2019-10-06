@@ -181,6 +181,7 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 				}
 				
 				//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
+				//sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas,bLeftAligned);
 				sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);
 			}
 			

@@ -197,7 +197,8 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 			listas = CounterStrategyHelperZZZ.makeSignificantCharsForNumber(this, iNumberIn, bLeftAligned, bLowercase, true);
 						
 			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);					
+			//sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas,bLeftAligned);					
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);
 		}//end main:
 		return sReturn;
 	}

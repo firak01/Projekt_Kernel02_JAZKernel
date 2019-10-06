@@ -39,11 +39,12 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 			
 			String sLetterFirst = StringZZZ.letterFirst(sTotal);
 			char c = sLetterFirst.toCharArray()[0];
-			if (sTotal.length()==1){	
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-			}else if(sTotal.length()>=2){					
-				iReturn = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
-				iReturn = iReturn + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+			int itemp = CounterByCharacterAscii_AlphanumericZZZ.getPositionForChar(c);
+			if (sTotal.length()==1){					
+				iReturn = this.getDigitValueForPositionValue(itemp);
+			}else if(sTotal.length()>=2){									
+				int iReturntemp = itemp + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+				iReturn = this.getDigitValueForPositionValue(iReturntemp);
 			}
 		}//end main
 		return iReturn;

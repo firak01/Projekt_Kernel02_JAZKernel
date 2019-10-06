@@ -38,7 +38,8 @@ public abstract class AbstractCounterStrategyAlphanumericZZZ extends AbstractCou
 	@Override
 	public String getCharForPosition(int iPositionInMinMaxRange) throws ExceptionZZZ{
 		boolean bLowercase = this.isLowercase();
-		return CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(iPositionInMinMaxRange, bLowercase);
+		int iDigitValue = this.getDigitValueForPositionValue(iPositionInMinMaxRange);
+		return CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(iDigitValue, bLowercase);
 	}
 	
 	//Aus Interface ICounterStrategyAlphabet

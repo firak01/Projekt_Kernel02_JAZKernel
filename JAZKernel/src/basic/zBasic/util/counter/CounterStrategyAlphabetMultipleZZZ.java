@@ -64,7 +64,7 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 				iReturn = CounterByCharacterAscii_AlphabetZZZ.getPositionForChar(c);
 			}		
 		}//end main; 
-		iReturn = this.getDigitValueForPositionValue(iReturn); //weil der Stellenwert nicht gleich der CharacterPosition ist
+		iReturn = this.getDigitValueForPositionValue(iReturn); //weil die CharacterPosition nicht gleich dem Stellenwert ist.
 		return iReturn;			
 	}
 

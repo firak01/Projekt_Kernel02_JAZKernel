@@ -13,7 +13,7 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 	int iStartDefault = 0;		
 	private int iStart = -1;
 	
-	private boolean bLeftAligned = false;
+	private boolean bLeftAligned = false;//d.h. rechts stehen dann die Werte mit dem niedrigsten DigitValue, wie man es vom Dezimalsystem her kennt.
 	private boolean bIncreasableInOtherMethod = false;
 	
 	public AbstractCounterStrategyZZZ() throws ExceptionZZZ{
@@ -33,6 +33,15 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 	@Override
 	public void isLeftAligned(boolean bValue) {
 		this.bLeftAligned = bValue;
+	}
+	
+	@Override
+	public boolean isRightAligned() {
+		return !this.bLeftAligned;
+	}
+	@Override
+	public void isRightAligned(boolean bValue) {
+		this.bLeftAligned = !bValue;
 	}
 	
 	//Merke: Das gibt es in der Numerischen Variante (ohne LowerCase) und in der Alphabet Variante (mit LowerCase)

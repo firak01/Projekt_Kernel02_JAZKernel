@@ -145,10 +145,10 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 	 * @author Fritz Lindhauer, 04.03.2019, 09:03:52
 	 * @throws ExceptionZZZ 
 	 */
-	public static String getStringForNumber(int i, boolean bLowercase, boolean bRightAligned) throws ExceptionZZZ{
+	public static String getStringForNumber(int i, boolean bLowercase, boolean bLeftAligned) throws ExceptionZZZ{
 		ICounterStrategyAlphanumericZZZ objCounterStrategy = new CounterStrategyAlphanumericSerialZZZ();
 		objCounterStrategy.isLowercase(bLowercase);
-		objCounterStrategy.isLeftAligned(bRightAligned);
+		objCounterStrategy.isLeftAligned(bLeftAligned);
 		return CounterByCharacterAscii_AlphanumericZZZ.getStringAlphanumericForNumber_(i, objCounterStrategy);
 	}
 	public static String getStringForNumber(int i, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{

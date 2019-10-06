@@ -115,6 +115,8 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 		main:{
 			if(StringZZZ.isEmpty(sTotal)) break main;
 			int iTotalIndexLength=sTotal.length()-1;
+			
+			int iDigitValue_Position_Max = this.getDigitValueMax()+1;
 									
 			//Hier spielt links-/rechtsbündig eine Rolle:
 			boolean bRightAligned = this.isLeftAligned();
@@ -130,7 +132,8 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					itemp--;
 											
 					int icountSignificant = sTotal.length()-1-icount;
-					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
+					//int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
+					int icountSignificantValue = (int) Math.pow(iDigitValue_Position_Max,icountSignificant);
 					int itempSignificant = itemp*icountSignificantValue;			
 					
 					if(iReturn<=0){
@@ -152,7 +155,8 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					itemp--;
 					
 					int icountSignificant = icount;
-					int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
+					//int icountSignificantValue = (int) Math.pow(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,icountSignificant);
+					int icountSignificantValue = (int) Math.pow(iDigitValue_Position_Max,icountSignificant);
 					int itempSignificant = itemp*icountSignificantValue;	
 					
 					if(iReturn<=0){
@@ -182,7 +186,8 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			listas = CounterStrategyHelperZZZ.makeSignificantCharsForNumber(this, iNumberIn, bLeftAligned, bLowercase, false);
 			
 			//Das Zusammenfassen der Werte in eine HelperKlasse verlagert						
-			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);						
+			//sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas,bLeftAligned);						
+			sReturn = CounterStrategyHelperZZZ.getStringConsolidated(listas);
 		}//end main:
 		return sReturn;
 	}

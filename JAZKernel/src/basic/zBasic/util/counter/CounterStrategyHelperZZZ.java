@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.doublevalue.DoubleZZZ;
 
 /** Enthält statische Methoden, die in mehreren CounterStrategy-Klassen verwendet werden.
@@ -26,7 +27,7 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author lindhaueradmin, 14.09.2019, 08:54:34
 	 */
-	public static ArrayList<String> makeSignificantCharsForNumber(ICounterStrategyZZZ objStrategy, int iNumberIn, boolean bRightAligned,boolean bLowercase, boolean bNewDigitAsMin) throws ExceptionZZZ{
+	public static ArrayList<String> makeSignificantCharsForNumber(ICounterStrategyZZZ objStrategy, int iNumberIn, boolean bLeftAligned,boolean bLowercase, boolean bNewDigitAsMin) throws ExceptionZZZ{
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{
 			if(objStrategy==null){
@@ -36,9 +37,9 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 						
 			int itemp; int iChar;String stemp;
 			int iNumber = iNumberIn;
-			int iRest = iNumber+1; //um "0" bei Anfangs-iNumber abzufangen.
+			int iRest = iNumberIn+1; //+1 um "0" bei Anfangs-iNumber abzufangen.
 			int iDigitPositionCur=0;
-			int iDigitPositionValueUsed = objStrategy.getCharacterPositionMax();
+			int iDigitPositionValueUsed = objStrategy.getDigitValueMax()+1;
 			
 			//GGfs. für Debuggen, etwas Reflection
 //			int iDigitpositionNext=iDigitpositionCur+1;
@@ -100,6 +101,12 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 				//iDigitpositionNext=iDigitpositionCur+1;	
 			}
 		}
+		
+		//Idee: Wenn nicht linksorientert, dann hier Umsortieren der Liste.
+		if(bLeftAligned==false){ 
+			listasReturn = (ArrayList<String>) ArrayListZZZ.reverse(listasReturn);
+		}
+		
 		return listasReturn;
 	}
 	
@@ -123,26 +130,24 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 	}
 
 	/**Zusammenfassen der Werte: z.B. auch Serial Strategie
-	   Hier spielt links-/rechtsbündig keine Rolle, es wird nur zusammengefasst:
 	 * @param listas
 	 * @return
 	 * @author lindhaueradmin, 10.09.2019, 07:21:53
 	 */
 	public static String getStringConsolidated(ArrayList<String>listas){
+	//public static String getStringConsolidated(ArrayList<String>listas, boolean bLeftAsigned){
 		String sReturn = null;
 		main:{
 			if(listas==null)break main;
 			
-				//Die Listenwerte werden von Links beginnend gefüllt, wenn linksbündig, 
-			    //von rechts beginnend gefüllt, wenn rechtsbündig
-				for(int icount=1; icount <= listas.size(); icount++){
-					String sPosition = listas.get(icount-1);
-					if(sReturn==null){
-						sReturn=sPosition;
-					}else{
-						sReturn+=sPosition;
-					}
-				}																			
+			//Die Listenwerte werden von Links beginnend gefüllt, wenn linksbündig,
+//			if(bLeftAsigned){	
+//				//Reihenfolge in ArrayList umgedreht zusammenfassen.
+//				sReturn = ArrayListZZZ.implodeReversed(listas,"");												
+//			}else{
+				//von rechts beginnend gefüllt, wenn rechtsbündig
+				sReturn = ArrayListZZZ.implode(listas, "");						
+//			}
 		}//end main:
 		return sReturn;
 	}
