@@ -64,24 +64,31 @@ public class CounterStrategyNumericMultipleZZZ extends AbstractCounterStrategyNu
 		String sReturn = null;
 		main:{
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iNumber / (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iNumber % (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1);
+			int iDiv = Math.abs(iNumber / this.getDigitValueMax() ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iNumber % this.getDigitValueMax();
 	
 			if(iMod==0 && iDiv==0){
 				sReturn = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);
 				break main;
 			}else{
-				int iModPosition = this.getPositionValueForDigitValue(iMod);
-				if(iDiv>=1){
-					iModPosition=iModPosition-1;//Übertrag
+//				int iModPosition = this.getPositionValueForDigitValue(iMod);
+//				if(iDiv>=1){
+//					iModPosition=iModPosition-1;//Übertrag
+//				}
+				//Ermittle den "Modulo"-Wert und davon das Zeichen
+				int iModPosition;
+				if(iDiv==0){
+					iModPosition = iMod +1;
+				}else{
+					iModPosition = iMod;
 				}
+				
 			//Ermittle den "Modulo"-Wert und davon das Zeichen
 			String sCharacter=null;
 			if(iMod>=1){
 				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPosition(iModPosition);	
 				sReturn = sCharacter;
-			}
-			else if(iMod==0){
+			}else if(iMod==0){
 				sCharacter = CounterByCharacterAscii_NumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX);
 				sReturn = "";
 			}

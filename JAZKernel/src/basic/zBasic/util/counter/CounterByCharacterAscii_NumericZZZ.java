@@ -16,7 +16,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	//Konstruktoren
 	public CounterByCharacterAscii_NumericZZZ(){
 		super();
-		this.setValueCurrent(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);
+		this.setValueCurrent(this.getDigitValueMin());
 	}
 	public CounterByCharacterAscii_NumericZZZ(int iStartingValue){
 		super(iStartingValue);		

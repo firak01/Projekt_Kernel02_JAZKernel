@@ -412,6 +412,42 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 		
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	int itemptestForNext=0;
+			try {
+				stemp = "ZZZ"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				itemptestForNext = itemp;
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 	
+			
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    	
+			try {
+				itemptestForNext = itemptestForNext+1;
+				
+				stemp = "0000"; //Parameter true="Multiple Strategy"
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				assertEquals(itemptestForNext, itemp);
+				itemptestForNext = itemp;
+				
+				btemp = assertCheckNullBordersAlphanumericStrategyBased_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    					
+		    	//Mache die Gegenprobe
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 		
 	    }
 	    	   
 	    public void testGetNumberForStringAlphanumeric_StrategySerial(){
@@ -1229,6 +1265,21 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("11",stemp);
 	
+	//... weitere Tests
+	itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX+2;
+	
+	//"MULTIPLE STRATEGY"-Ergebnisse
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
+	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("22",stemp);
+	
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp, true); //true ist lowercase, false ist uppercase
+	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("22",stemp);
+	
+	
 	//... weitere Tests	
 	itemp = (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1)*2;
 	
@@ -1242,6 +1293,21 @@ public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("zz",stemp);
+	
+	//... weitere Tests
+	itemp = (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1)*2 + 1;
+		
+	//"MULTIPLE STRATEGY"-Ergebnisse
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp);
+	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("000",stemp);
+	
+	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringMultipleForNumber(itemp, true); //true ist lowercase, false ist uppercase
+	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("000",stemp);
+	
 	
 } catch (ExceptionZZZ ez) {
 	fail("Method throws an exception." + ez.getMessageLast());

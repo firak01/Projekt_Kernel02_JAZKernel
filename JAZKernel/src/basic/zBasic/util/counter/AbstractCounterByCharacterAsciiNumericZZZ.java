@@ -18,7 +18,7 @@ public abstract class AbstractCounterByCharacterAsciiNumericZZZ <T extends ICoun
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public AbstractCounterByCharacterAsciiNumericZZZ(ICounterStrategyNumericZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);
+		super(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1);
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public AbstractCounterByCharacterAsciiNumericZZZ(String sStartingValue) throws ExceptionZZZ{
@@ -63,4 +63,14 @@ public abstract class AbstractCounterByCharacterAsciiNumericZZZ <T extends ICoun
 		
 		@Override	
 		public abstract T getCounterStrategyObject() throws ExceptionZZZ;
+		
+		@Override
+		public int getDigitValueMax(){
+			return CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX - 1;
+		}
+		
+		@Override 
+		public int getDigitValueMin(){
+			return CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN - 1;
+		}
 }

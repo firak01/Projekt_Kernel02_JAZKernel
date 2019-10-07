@@ -8,4 +8,7 @@ public interface ICounterNumericZZZ extends ICounterStringZZZ, ICounterNumericCo
 	
 	public ICounterStrategyNumericZZZ getCounterStrategyObject() throws ExceptionZZZ;
 	public void setCounterStrategyObject(ICounterStrategyNumericZZZ objCounterStrategy);
+	
+	public int getDigitValueMin();
+	public int getDigitValueMax();
 }

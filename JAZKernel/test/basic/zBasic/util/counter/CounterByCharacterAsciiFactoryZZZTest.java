@@ -92,12 +92,101 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	itemp = objCounterString.getValueCurrent();
 	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+
+	//++++++++++++++++++++++++++++
+	itemp = 9;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "9", stemp);
 	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+	
+	//++++++++++++++++++++++++++++
+	itemp = 10;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "00", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+	
+	//++++++++++++++++++++++++++++
+	itemp = 11;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "11", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+	
+	//++++++++++++++++++++++++++++
+	itemp = 12;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "22", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+	
+	//++++++++++++++++++++++++++++
+	itemp = 18;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "99", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+	
+	//++++++++++++++++++++++++++++
+	itemp = 19;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "000", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+	
+	//++++++++++++++++++++++++++++
+	itemp = 20;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "111", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+	
+	//++++++++++++++++++++++++++++
+	itemp = 41;
+	stemp = objCounterString.change(itemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	assertEquals("Fehler beim Setzen des Counters", "44444", stemp);
+	
+	itempold = itemp;
+	itemp = objCounterString.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold==itemp);
+					
+	//++++++++++++++++++++++++++++
 	itemp = 42;
 	stemp = objCounterString.change(itemp);
 	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	assertEquals("Fehler beim Setzen des Counters", "11111", stemp);
+	assertEquals("Fehler beim Setzen des Counters", "55555", stemp);
 	
 	itempold = itemp;
 	itemp = objCounterString.getValueCurrent();
@@ -135,9 +224,28 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 		//Erwartetete Exception
 	} 
 	
-	stemp = "90";
+	//++++++++++++++++++
+	stemp = "0";
 	objCounterStringSeriel.setValueCurrent(stemp);
 	itemp = objCounterStringSeriel.getValueCurrent();
+	
+	stempold = stemp;
+	stemp = objCounterStringSeriel.current();
+	assertEquals(stemp, stempold);
+		
+	itempold = itemp;
+	stemp = objCounterStringSeriel.next();
+	itemp = objCounterStringSeriel.getValueCurrent();
+	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);	
+	stemp = objCounterStringSeriel.current();
+	assertEquals("1", stemp);
+	
+	//++++++++++++++++++
+	stemp = "09";
+	objCounterStringSeriel.setValueCurrent(stemp);
+	itemp = objCounterStringSeriel.getValueCurrent();
+	assertEquals(10,itemp); //es wird vorne keine 1, sondern halt der niedrigste Wert des Zeichensatzes gestellt.
+	//Merke: "10" wäre auch nicht gültig
 	
 	stempold = stemp;
 	stemp = objCounterStringSeriel.current();
@@ -298,18 +406,18 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 		ICounterAlphanumericZZZ objCounterAlphaM2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,10);
 		itemp = objCounterAlphaM2.getValueCurrent();
 		stemp = objCounterAlphaM2.current();
-		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
+		assertEquals("A",stemp);//0=>"0",..9=>"9", 10=>"A"
 		
 		itempold = itemp;
 		stemp = objCounterAlphaM2.next();
-		assertEquals("A",stemp);
+		assertEquals("B",stemp);
 		itemp = objCounterAlphaM2.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		objCounterStrategyAlphaNumM.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 		itempold = itemp;
 		stemp = objCounterAlphaM2.next();
-		assertEquals("b",stemp);
+		assertEquals("c",stemp);
 		itemp = objCounterAlphaM2.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
@@ -318,7 +426,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 		ICounterAlphanumericZZZ objCounterAlphaM3 = objCounterFactory.createCounter(objCounterStrategyAlphaNumM,"9");
 		itemp = objCounterAlphaM3.getValueCurrent();
 		stemp = objCounterAlphaM3.current();
-		assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
+		assertEquals("9",stemp);
 		
 		itempold = itemp;
 		stemp = objCounterAlphaM3.next();
@@ -474,31 +582,31 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		
 		//... gültige serielle Syntax
 		objCounterStrategyAlphaNumS.isLeftAligned(false);
-		try{			
-			stemp = "ZA";
+		try{		
+			stemp = "0";
 			objCounterAlphaS.setValueCurrent(stemp);
 			itemp = objCounterAlphaS.getValueCurrent();
-			assertEquals(itemp, 47);
+			assertEquals(0, itemp);
 			
-			stempold = stemp;
-			stemp = objCounterAlphaS.current();
-			assertEquals(stemp, stempold);
-				
-			itempold = itemp;
-			stemp = objCounterAlphaS.next();
-			assertEquals("ZB",stemp);
+			stemp = "A";
+			objCounterAlphaS.setValueCurrent(stemp);
 			itemp = objCounterAlphaS.getValueCurrent();
-			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
-		} catch (ExceptionZZZ ez) {
-			fail("Method throws an exception." + ez.getMessageLast());
-		} 
-		
-		objCounterStrategyAlphaNumS.isLeftAligned(true);
-		try{			
+			assertEquals(10, itemp);
+			
+			stemp = "Z";
+			objCounterAlphaS.setValueCurrent(stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertEquals(35, itemp);
+			
+			stemp = "0Z";
+			objCounterAlphaS.setValueCurrent(stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertEquals(36, itemp);
+						
 			stemp = "AZ";
 			objCounterAlphaS.setValueCurrent(stemp);
 			itemp = objCounterAlphaS.getValueCurrent();
-			assertEquals(itemp, 47);
+			assertEquals(46, itemp);
 			
 			stempold = stemp;
 			stemp = objCounterAlphaS.current();
@@ -513,6 +621,26 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 		
+		objCounterStrategyAlphaNumS.isLeftAligned(true);
+		try{			
+			stemp = "ZA";
+			objCounterAlphaS.setValueCurrent(stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertEquals(itemp, 46);
+			
+			stempold = stemp;
+			stemp = objCounterAlphaS.current();
+			assertEquals(stemp, stempold);
+				
+			itempold = itemp;
+			stemp = objCounterAlphaS.next();
+			assertEquals("ZB",stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+		
 		
 		//Erstelle einen Counter über den Konstruktor 
 		try{
@@ -520,18 +648,18 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 			ICounterAlphanumericZZZ objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,10);
 			itemp = objCounterAlphaS2.getValueCurrent();
 			stemp = objCounterAlphaS2.current();
-			assertEquals("9",stemp);//Merke: int Wert 10==>Ziffern 0 bis 9 => es wird "9" zurückgegeben.
+			assertEquals("A",stemp);//Merke: Ziffern 0 bis 9 => es wird "0" bis "9" zurückgegeben. 10 ist dann "A"
 			
 			itempold = itemp;
 			stemp = objCounterAlphaS2.next();
-			assertEquals("A",stemp);
+			assertEquals("B",stemp);
 			itemp = objCounterAlphaS2.getValueCurrent();
 			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 			
 			objCounterStrategyAlphaNumS.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 			itempold = itemp;
 			stemp = objCounterAlphaS2.next();
-			assertEquals("b",stemp);
+			assertEquals("c",stemp);
 			itemp = objCounterAlphaS2.getValueCurrent();
 			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 			
@@ -562,21 +690,21 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 			//+++ Mit einem mehrstelligen String-Wert
 			objCounterStrategyAlphaNumS.isLowercase(false);
 			objCounterStrategyAlphaNumS.isLeftAligned(false);
-			ICounterAlphanumericZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"ZZA");
+			ICounterAlphanumericZZZ objCounterAlphaS4 = objCounterFactory.createCounter(objCounterStrategyAlphaNumS,"AZZ");
 			itemp = objCounterAlphaS4.getValueCurrent();
 			stemp = objCounterAlphaS4.current();
-			assertEquals("ZZA",stemp);
+			assertEquals("AZZ",stemp);
 			
 			itempold = itemp;
 			stemp = objCounterAlphaS4.next();
-			assertEquals("ZZB",stemp);
+			assertEquals("BZZ",stemp);
 			itemp = objCounterAlphaS4.getValueCurrent();
 			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 			
 			objCounterStrategyAlphaNumS.isLowercase(true);//Teste, ob die Änderung am Strategie-Objekt auch zu einer Änderung am Ergebnis führt.
 			itempold = itemp;
 			stemp = objCounterAlphaS4.next();
-			assertEquals("zzc",stemp);
+			assertEquals("czz",stemp);
 			itemp = objCounterAlphaS4.getValueCurrent();
 			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		} catch (ExceptionZZZ ez) {
@@ -866,12 +994,12 @@ private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
 private boolean assertCheckNullBordersNumericStrategyBased_(int iInput, String sResult){
 	boolean bReturn = false;
 	main:{
-		if(iInput< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
-    		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		if(iInput< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1){
+    		assertNull("Bei <'" + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}
     		
-		if(iInput>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN ){
-    		assertNotNull("Bei >= '" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN  + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
+		if(iInput>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1 ){
+    		assertNotNull("Bei >= '" + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1)  + "' wird keine NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}	    		
 		bReturn=true;
 			    		    	

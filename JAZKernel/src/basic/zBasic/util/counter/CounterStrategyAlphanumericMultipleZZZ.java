@@ -43,8 +43,16 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 			if (sTotal.length()==1){					
 				iReturn = this.getDigitValueForPositionValue(itemp);
 			}else if(sTotal.length()>=2){									
-				int iReturntemp = itemp + ((sTotal.length()-1)*CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
-				iReturn = this.getDigitValueForPositionValue(iReturntemp);
+//				int iReturntemp = this.getDigitValueForPositionValue(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+//				iReturntemp = itemp + ((sTotal.length()-1)*iReturntemp);
+//				iReturn = this.getDigitValueForPositionValue(iReturntemp);
+				int iReturntemp = this.getDigitValueForPositionValue(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX);
+				if(itemp==CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX){
+					iReturntemp = (sTotal.length()-1)*iReturntemp;//+1 Übertrag
+				}else{
+					iReturntemp = (sTotal.length()-1)*iReturntemp+1;//+1 Übertrag
+				}
+				iReturn = iReturntemp + this.getDigitValueForPositionValue(itemp);
 			}
 		}//end main
 		return iReturn;
@@ -62,26 +70,23 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 			if(iMod==0 && iDiv ==0){
 				sReturn = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN,bLowercase);
 				break main;
+			}else if(iMod==0 && iDiv >= 1){
+				iDiv=iDiv-1; //Übertrag
+				String sCharacter=CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,bLowercase);			
+				sReturn =  sCharacter + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);
+				break main;
 			}else{
-				//Ermittle den "Modulo"-Wert und davon das Zeichen
-				int iModPosition;
-				if(iDiv==0){
-					iModPosition = iMod +1;
-				}else{
-					iModPosition = iMod;
+			
+				//Ermittle den "Modulo"-Wert und davon das Zeichen				
+				//Da das Zeichen immer gleich ist, ist die Ausrichtung eigentlich egal.
+				//boolean bLeftAligned = this.isLeftAligned();				
+				int iModPosition = this.getPositionValueForDigitValue(iMod);
+				if(iDiv>=1){
+					iModPosition=iModPosition-1;//Übertrag
 				}
-				
-				String sCharacter=null;
-				if(iMod>=1){
-					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iModPosition,bLowercase);	
-					sReturn = sCharacter;				
-				}else if(iMod==0){
-					sCharacter = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX,bLowercase);
-					sReturn = "";				
-				}
-										
-				//Zusammenfassen der Werte: Multiple Strategie
-				sReturn = sReturn + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);
+//				//Zusammenfassen der Werte: Multiple Strategie
+				String sCharacter=CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(iModPosition,bLowercase);			
+				sReturn =  sCharacter + CounterStrategyHelperZZZ.getStringConsolidated(sCharacter, iDiv);				
 			}
 		}//end main:
 		return sReturn;
