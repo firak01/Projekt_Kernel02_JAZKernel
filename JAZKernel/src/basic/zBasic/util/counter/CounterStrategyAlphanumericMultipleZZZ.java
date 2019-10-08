@@ -63,7 +63,7 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 		String sReturn = null;
 		main:{
 			//Ermittle den "Teiler" und den Rest, Also Modulo - Operation			
-			int iDiv = Math.abs(iNumber / this.getDigitValueMax()); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iDiv = Math.abs(iNumber / this.getDigitValueMax()); //durch abs wird also intern in ein Integer umgewandel.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 			int iMod = iNumber % this.getDigitValueMax();
 			
 			boolean bLowercase = this.isLowercase();
