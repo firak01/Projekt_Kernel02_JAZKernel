@@ -56,6 +56,7 @@ public abstract class AbstractCounterByStrategyAlphabetSignificantZZZ <T extends
 		public String peekChange(int iValue) throws ExceptionZZZ {	
 			String sReturn = null;
 			main:{
+				Fehlermarker: Für 1 Kommt C heraus, muss aber A sein!!! Merke: Es geht hier um die Zeichensatzposition und nicht um den Digitvalue
 				T objCounterStrategy = (T) this.getCounterStrategyObject();
 				sReturn = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(iValue, objCounterStrategy);	
 				

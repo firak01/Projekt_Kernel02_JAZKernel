@@ -213,6 +213,7 @@ public void testGetStringAlphabetForNumber_StrategySerial(){
 	    	String stemp = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp);
 	    	boolean btemp = assertCheckNullBordersAlphabetStrategyBased_(itemp, stemp);
 	    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+	    	assertEquals("A",stemp);
 	    	
 	    	//+++++++++++++++++++++++++++++++++++++++++++++++
 	    	itemp = CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN;
