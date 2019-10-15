@@ -19,7 +19,7 @@ public abstract class AbstractCounterStrategyNumbersOnlyZZZ extends AbstractCoun
 		}
 		
 		@Override
-		public String getCharForPosition(int iPositionInMinMaxRange) throws ExceptionZZZ{
+		public String getCharForPosition(int iPositionInMinMaxRange) throws ExceptionZZZ{			
 			return CounterByCharacterAscii_NumericZZZ.getCharForPosition(iPositionInMinMaxRange);
 		}
 }
