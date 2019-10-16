@@ -109,8 +109,21 @@ public class CounterByCharacterAscii_AlphabetSignificantZZZTest  extends TestCas
 	    	//Merke: Bei der Signifikant-Strategie ist die Positon der Zeichen zueinander hinsichtlich der Gültigkeit egal....
 	    	//Gehe daher sofort zu den "Berechnungstests":
 	    	
+	    	//################## GÜLTIGE WERTE 
+	    	try {
+				stemp = ""; 
+				itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphabetStrategyBasedSignificant_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	assertEquals("Erwarteter Wert ", -1,itemp); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichenwert von "0"=1
+
+		    	String sCheck = CounterByCharacterAscii_AlphabetZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    	
-	    	//"SIGNIFICANT STRATEGIE"-Ergebnisse	    		    	
 	    	try {
 				stemp = "A"; 
 				itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp,objCounterStrategy);

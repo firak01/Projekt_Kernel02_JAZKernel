@@ -313,6 +313,7 @@ public void testGetStringAlphabetForNumber_FactoryBasedStrategyMultiple(){
 			//Erwartetete Exception
 		} 
 		
+		
 		//... gültige multiple Syntax
 		stemp = "AA";
 		objCounterAlphaM.setValueCurrent(stemp);
@@ -356,7 +357,13 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategyMultiple(){
 		//Hole Initialwert
 		itemp = objCounterAlphaM.getValueCurrent();
 		stemp = objCounterAlphaM.current();
+		assertEquals("",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
 		assertEquals("0",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		itempold = itemp;
 		stemp = objCounterAlphaM.next();
@@ -467,7 +474,13 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategy_UsingDefault
 		//Hole Initialwert
 		itemp = objCounterAlphaM.getValueCurrent();
 		stemp = objCounterAlphaM.current();
+		assertEquals("",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaM.next();
 		assertEquals("0",stemp);
+		itemp = objCounterAlphaM.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		itempold = itemp;
 		stemp = objCounterAlphaM.next();
@@ -552,7 +565,13 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySerial(){
 		//Hole Initialwert
 		itemp = objCounterAlphaS.getValueCurrent();
 		stemp = objCounterAlphaS.current();
+		assertEquals("",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaS.next();
 		assertEquals("0",stemp);
+		itemp = objCounterAlphaS.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		itempold = itemp;
 		stemp = objCounterAlphaS.next();
@@ -767,7 +786,13 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 		//Hole Initialwert
 		itemp = objCounterAlphaS.getValueCurrent();
 		stemp = objCounterAlphaS.current();		
+		assertEquals("00000",stemp);
+		
+		itempold = itemp;
+		stemp = objCounterAlphaS.next();
 		assertEquals("00001",stemp);
+		itemp = objCounterAlphaS.getValueCurrent();
+		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 		
 		itempold = itemp;
 		stemp = objCounterAlphaS.next();

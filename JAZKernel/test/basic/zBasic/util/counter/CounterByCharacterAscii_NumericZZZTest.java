@@ -371,6 +371,18 @@ public void testGetStringNumericForNumber_StrategySerial(){
 	//"SERIAL STRATEGIE"-Ergebnisse
 	int itemp; String stemp; boolean btemp;
 	try{
+		itemp = -1;
+		stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp);
+		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals( "",stemp);
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+
+//+++++++++++++++++++++++++++++++++++++++++++++++
+	
+	try{
 		itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
 		stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp);
 		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
@@ -441,6 +453,17 @@ public void testGetStringNumericForNumber_StrategySerialRightAligned(){
 	//"SERIAL STRATEGIE"-Ergebnisse
 	//1. true ist rightbound
 	try{
+		itemp = -1;
+		stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
+		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals( "",stemp);
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	} 
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++
+	try{
 		itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
 		stemp = CounterByCharacterAscii_NumericZZZ.getStringForNumber(itemp, true);
 		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
@@ -508,6 +531,18 @@ public void testGetStringNumericForNumber_StrategySerialRightAligned(){
 public void testGetStringNumericForNumber_StrategyMultiple(){
 	int itemp; String stemp; boolean btemp;
 //"MULTIPLE STRATEGIE"-Ergebnisse
+	try{
+		itemp = -1;
+		stemp = CounterByCharacterAscii_NumericZZZ.getStringMultipleForNumber(itemp);
+		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+		assertTrue("Fehler beim Check auf Null Werte", btemp);
+		assertEquals( "",stemp);
+} catch (ExceptionZZZ ez) {
+	fail("Method throws an exception." + ez.getMessageLast());
+} 
+
+//+++++++++++++++++++++++++++++++++++++++++++++++
+
 	try{
 		itemp = CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1;
 		stemp = CounterByCharacterAscii_NumericZZZ.getStringMultipleForNumber(itemp);

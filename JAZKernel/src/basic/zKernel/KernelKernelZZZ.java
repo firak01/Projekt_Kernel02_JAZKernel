@@ -1747,7 +1747,7 @@ MeinTestParameter=blablaErgebnis
 			//ICounterAlphanumericSignificantZZZ objCounter = objHandler.getCounterFor();
 			
 						
-			String sStartValue= "A";
+			String sStartValue= "";
 			//CounterHandlerSingleton_AlphabetZZZ objHandler = CounterHandlerSingleton_AlphabetZZZ.getInstance();
 			//ICounterStrategyAlphabetZZZ objCounterStrategy = new CounterStrategyAlphabetSerialZZZ(sStartValue);
 			//objHandler.setCounterStrategy(objCounterStrategy);

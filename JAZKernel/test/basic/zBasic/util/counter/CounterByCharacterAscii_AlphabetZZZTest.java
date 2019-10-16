@@ -33,6 +33,18 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     private boolean assertCheckNullBordersAlphabet_(int iInput, String sResult){
     	boolean bReturn = false;
     	main:{
+    		if(iInput==-1){
+    			if(sResult==null){
+    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+    			}else{
+    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+    			}
+    			bReturn = true;
+    			break main;
+    		}
+    		
+    		
+    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     		int iDiv = Math.abs(iInput / (CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 			int iMod = iInput%(CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX-1);
     		
@@ -421,6 +433,16 @@ public void testGetNumberForStringAlphabet(){
     	} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
 		} 
+    	
+    	
+    	//################# GÜLTIGE VARIANTEN #############
+    	stemp = "";
+    	itemp = CounterByCharacterAscii_AlphabetZZZ.getNumberForString(stemp);
+    	btemp = assertCheckNullBordersAlphabet_(itemp,stemp);
+    	assertTrue("Fehler beim Check auf gültige Werte", btemp);
+    	assertEquals(-1,itemp);
+    	btemp = assertCheckReconvertAlphabet_(itemp, stemp);
+    	assertTrue("Fehler beim Check auf gelungene Rekonvertierung", btemp);
 		    		    		    	 
     	//+++++++++++++++++++++++++++++++++++++++++
     	stemp = "A";

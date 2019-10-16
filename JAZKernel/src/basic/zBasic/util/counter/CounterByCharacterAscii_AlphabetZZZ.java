@@ -108,7 +108,7 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 	private static String getStringAlphabetForNumber_(int iNumber, ICounterStrategyAlphabetZZZ objCounterStrategy) throws ExceptionZZZ{
 		String sReturn = null;		
 		main:{
-				if(iNumber<0) break main;			
+				if(iNumber<-1) break main;			
 				if(objCounterStrategy==null){
 //					objCounterStrategy = new CounterStrategyAlphabetMultipleZZZ();  //Es gibt soviele Strategien. Kann nicht entscheiden welche es nun sein soll.
 					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -151,7 +151,7 @@ public class CounterByCharacterAscii_AlphabetZZZ<T extends ICounterStrategyAlpha
 	private static int getNumberForStringAlphabet_(String sValue, ICounterStrategyAlphabetZZZ objCounterStrategy) throws ExceptionZZZ{
 		int iReturn = -1;
 		main:{
-			if(StringZZZ.isEmpty(sValue))break main;
+			if(sValue==null)break main;
 			
 			//1. Prüfen, ist das überhaupt ein erlaubtes Zeichen?
 			boolean bValid = CounterByCharacterAscii_AlphabetZZZ.isValidCharacter(sValue);
@@ -239,7 +239,11 @@ public static boolean isValidCharacter(char c){
 	public static boolean isValidCharacter(String s){
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(s)) break main;
+			if(s==null) break main;
+			if(s.equals("")){ //initialisierung des Werts mit -1
+				bReturn = true;
+				break main;
+			}
 			
 			String sRegex = CounterByCharacterAscii_AlphabetZZZ.sREGEX_CHARACTERS;
 			

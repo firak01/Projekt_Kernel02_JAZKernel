@@ -102,7 +102,21 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	    	//Gehe daher sofort zu den "Berechnungstests":
 	    	
 	    	
-	    	//"SIGNIFICANT STRATEGIE"-Ergebnisse	    		    	
+	    	//##### GÜLTIGE WERTE
+	    	try {
+				stemp = ""; 
+				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
+				btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(stemp, itemp);
+		    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+		    	assertEquals("Erwarteter Wert ", -1,itemp); //Merke: Hier wird der Stellenwert berechnet. Und der ist um -1 kleiner als derASCII-Zeichnewert von "0"=1
+
+		    	String sCheck = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp, objCounterStrategy);
+		    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", stemp, sCheck);		    			    	
+		    	
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+	    	
 	    	try {
 				stemp = "0"; 
 				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);

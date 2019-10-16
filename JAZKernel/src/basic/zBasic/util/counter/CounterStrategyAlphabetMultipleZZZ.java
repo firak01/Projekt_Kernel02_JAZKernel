@@ -29,7 +29,11 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;
+			if(sTotal==null) break main;
+			if(sTotal.equals("")){ //initialisierung mit -1
+				bReturn=true;
+				break main;
+			}
 			
 			String sLetterFirst = StringZZZ.letterFirst(sTotal);
 			
@@ -49,8 +53,14 @@ public class CounterStrategyAlphabetMultipleZZZ extends AbstractCounterStrategyA
 
 	@Override
 	public int computeNumberForString(String sTotal) {
-		int iReturn = -1;
+		int iReturn = -99;
 		main:{
+			if(sTotal==null) break main;
+			if(sTotal.equals("")){
+				iReturn = -1;
+				break main;
+			}
+			
 			char[] caValue = sTotal.toCharArray();
 			if(caValue.length>=2){
 				char c = caValue[caValue.length-1];

@@ -33,7 +33,11 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;			
+			if(sTotal==null) break main;
+			if(sTotal.equals("")){
+				bReturn=true;
+				break main;
+			}
 			
 			String sLetterLast = StringZZZ.letterLast(sTotal);						
 			
@@ -86,12 +90,19 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 
 	@Override
 	public int computeNumberForString(String sTotal) {
-	int iReturn = 0;
+	int iReturn = -99;
 		main:{
+			if(sTotal==null)break main;
+			if(sTotal.equals("")){
+				iReturn = -1;
+				break main;
+			}
 			char[] caValue = sTotal.toCharArray();
 			
 			//Hier spielt links-/rechtsbündig eine Rolle:
 			boolean bLeftAligned = this.isLeftAligned();
+			
+			iReturn = 0;
 			if(bLeftAligned){
 				for (int icounter=0; icounter<= caValue.length-1; icounter++){
 					char c = caValue[icounter];
@@ -138,6 +149,12 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
+			if(iNumber<-1)break main;
+			if(iNumber==-1){
+				sReturn="";
+				break main;
+			}
+			
 			  //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
 			//int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 			//int iMod = iNumber % CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MAX;
