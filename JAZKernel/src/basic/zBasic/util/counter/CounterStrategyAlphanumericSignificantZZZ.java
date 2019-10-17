@@ -10,7 +10,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericSignificantZZZ{
-		
+	//Wichtig: Die zugreifende Methode if iStartDefault muss final sein, damit auch wirklich auf die Variable dieser Klasse zugegriffen wird. Ansonsten wird auf die Variable der abstrakten Klasse zugegriffen.
+	protected int iStartDefault = 0; //Also anders als bei den reinen AlphabetCountern hier mit 0 und nicht mit Leerzeichen beginnen.
+	
 	public CounterStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();
 		this.makeReflectableInitialization();
@@ -30,15 +32,29 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 		super(iLength,sCounterFillingCharacter, sStartValue);
 		this.makeReflectableInitialization();
 	}
+	
+	@Override 
+	public final int getCounterStartDefault(){
+		return this.iStartDefault;
+	}
+	
+	@Override
+	public final void setCounterStartDefault(int iStart){
+		this.iStartDefault = iStart; //Wichtig: Diese Methode muss final sein, damit auch wirklich auf die Variable dieser Klasse zugegriffen wird. Ansonsten wird auf die Variable der abstrakten Klasse zugegriffen.
+	}
 
 	
 	@Override
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;			
+			if(sTotal==null) break main;
+			if(sTotal.equals("")){ //initialisierung des Werts mit -1
+				bReturn = true;
+				break main;
+			}			
 			
-			String sLetterLast = StringZZZ.letterLast(sTotal);						
+						
 			
 			//C) Significant			   
 			//C1) Überprüfe hinsichtlich der Groß-/Kleinschreibung. Die Zeichen müssen hier durchgängig groß oder klein sein.
@@ -70,33 +86,7 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 					ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Ein Wert mit führender '0' darf nicht übergeben werden - führende 0 läßt sich nicht wiederherstellen. Nur als einzelnes Zeichen ist führende '0' erlaubt. String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
-			}
-			
-			//Hier spielt links-/rechtsbündig KEINE Rolle bzgl. der Gültigkeit:
-//			boolean bRightAligned = this.isRightAligned();
-//			if(!bRightAligned){
-//			
-//				//C2a) Die Zeichen links müssen immer das kleinste Zeichen des Zeichenraums sein.
-//				String sLetterMin = CounterByCharacterAscii_AlphanumericZZZ.getCharLowest(bLowerized);
-//				for (int icount=1;icount<=sTotal.length()-1;icount++){
-//					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
-//					if(!sLetterMin.equals(stemp)){
-//						ExceptionZZZ ez = new ExceptionZZZ("SignificantStrategy: Alle Zeichen links der rechtesten Stelle müssen das kleinste Zeichen sein (kleinstes Zeichen='"+sLetterMin+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-//						throw ez;	
-//					}
-//				}
-//			}else{
-//				//C2a) Die Zeichen links müssen immer das kleinste Zeichen des Zeichenraums sein.
-//				String sLetterMin = CounterByCharacterAscii_AlphanumericZZZ.getCharLowest(bLowerized);
-//				for (int icount=sTotal.length()-1;icount>=1;icount--){
-//					String stemp = StringZZZ.letterAtPosition(sTotal,icount);
-//					if(!sLetterMin.equals(stemp)){
-//						ExceptionZZZ ez = new ExceptionZZZ("SerialStrategy: Alle Zeichen rechts der linksten Stelle müssen das kleinste Zeichen sein (kleinstes Zeichen='"+sLetterMin+"'), String='"+sTotal+"'.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-//						throw ez;	
-//					}
-//				}
-//			}
-			
+			}			
 			bReturn = true;
 		}//end main
 		return bReturn;
@@ -105,15 +95,18 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 
 	@Override
 	public int computeNumberForString(String sTotalUnnormed) {
-		int iReturn = -1;
+		int iReturn = -99;
 		
-		//wg. der Problematik der führenden 0: Arbeite nur mit dahingehend normiertem String. Also führende 0 wegtrimmen.	
-		//String sAlphanumericNormed = this.getAlphanumericNormed(sTotalUnnormed); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
-		String sAlphanumericNormed = this.getCounterStringNormed(sTotalUnnormed); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
-		String sTotal = sAlphanumericNormed;
-		
-		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;
+		main:{				
+			//wg. der Problematik der führenden 0: Arbeite nur mit dahingehend normiertem String. Also führende 0 wegtrimmen.		
+			String sAlphanumericNormed = this.getCounterStringNormed(sTotalUnnormed); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+			String sTotal = sAlphanumericNormed;
+			if(sTotal==null)break main;
+			if(sTotal.equals("")){
+				iReturn = -1;
+				break main;
+			}
+			
 			int iTotalIndexLength=sTotal.length()-1;
 			
 			int iDigitValue_Position_Max = this.getDigitValueMax()+1;
@@ -192,23 +185,24 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 		return sReturn;
 	}
 
-	 /**TODO: Das als Bestandteil eines eigenen Interfaces
-	 * @param sAlphanumeric
-	 * @return
-	 * @author Fritz Lindhauer, 30.05.2019, 13:28:43
-	 */
-	public String getAlphanumericNormed(String sAlphanumeric, String sCharToStrip){
-		 String sReturn = null;
-		 main:{
-			 boolean bLowercase = this.isLowercase();		 	
-			if(!this.isLeftAligned()){
-				sReturn = StringZZZ.stripLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
-			}else{
-				sReturn = StringZZZ.stripRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
-			}
-		 }//end main:
-		 return sReturn;
-	 }
+// Ist jetzt in einer Helper Klasse
+//	 /**TODO: Das als Bestandteil eines eigenen Interfaces
+//	 * @param sAlphanumeric
+//	 * @return
+//	 * @author Fritz Lindhauer, 30.05.2019, 13:28:43
+//	 */
+//	public String getAlphanumericNormed(String sAlphanumeric, String sCharToStrip){
+//		 String sReturn = null;
+//		 main:{
+//			 boolean bLowercase = this.isLowercase();		 	
+//			if(!this.isLeftAligned()){
+//				sReturn = StringZZZ.stripLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+//			}else{
+//				sReturn = StringZZZ.stripRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+//			}
+//		 }//end main:
+//		 return sReturn;
+//	 }
 
 	@Override
 	public boolean makeReflectableInitialization() throws ExceptionZZZ {

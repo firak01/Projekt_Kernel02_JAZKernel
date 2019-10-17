@@ -14,7 +14,11 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;
+			if(sTotal==null) break main;
+			if(sTotal.equals("")){ //initialisierung des Werts mit -1
+				bReturn = true;
+				break main;
+			}
 			
 			String sLetterFirst = StringZZZ.letterFirst(sTotal);
 			
@@ -35,7 +39,11 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 	public int computeNumberForString(String sTotal) {
 		int iReturn = -1;
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;
+			if(sTotal==null)break main;
+			if(sTotal.equals("")){
+				iReturn = -1;
+				break main;
+			}
 			
 			String sLetterFirst = StringZZZ.letterFirst(sTotal);
 			char c = sLetterFirst.toCharArray()[0];
@@ -62,6 +70,12 @@ public class CounterStrategyAlphanumericMultipleZZZ extends AbstractCounterStrat
 	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
+			if(iNumber<-1)break main;
+			if(iNumber==-1){
+				sReturn="";
+				break main;
+			}
+						
 			//Ermittle den "Teiler" und den Rest, Also Modulo - Operation			
 			int iDiv = Math.abs(iNumber / this.getDigitValueMax()); //durch abs wird also intern in ein Integer umgewandelt.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 			int iMod = iNumber % this.getDigitValueMax();

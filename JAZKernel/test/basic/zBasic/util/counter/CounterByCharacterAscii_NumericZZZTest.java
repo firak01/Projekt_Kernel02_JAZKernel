@@ -35,6 +35,17 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
     	boolean bReturn = false;
     	main:{
+    		if(iInput==-1){
+    			if(sResult==null){
+    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+    			}else{
+    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+    			}
+    			bReturn = true;
+    			break main;
+    		}
+    		
+    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     		int iDiv = Math.abs(iInput / (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 			int iMod = iInput% (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1);
     		
@@ -74,14 +85,17 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
     	return bReturn;	    	
     }
     
-    private boolean assertCheckNullBordersNumericChar_(String sInput,int iResult){
+    private boolean assertCheckNullBordersNumericChar_(String sResult,int iInput){
     	boolean bReturn = false;
     	main:{
-    		if(StringZZZ.isEmpty(sInput)) break main;
-    		char[]ca=sInput.toCharArray();
+    		//Char - Ermittlung ist nicht String - Ermittlung. D.h. 0 => null. Es gibt kein -1 => ""
+    		if(StringZZZ.isEmpty(sResult)) break main;
+    		
+    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    		char[]ca=sResult.toCharArray();
     		for(int icount=0;icount<=ca.length-1;icount++){
     			char cInput = ca[icount];
-    			bReturn = assertCheckNullBordersNumeric_(cInput, iResult);
+    			bReturn = assertCheckNullBordersNumeric_(cInput, iInput);
     			if(!bReturn)break main;	    		
     		}
 	    		    		
@@ -108,19 +122,31 @@ public class CounterByCharacterAscii_NumericZZZTest   extends TestCase{
 //    	return bReturn;	    	
 //    }
     
-    private boolean assertCheckNullBordersNumericStrategyBased_(int iResult,String sInput){
+    private boolean assertCheckNullBordersNumericStrategyBased_(int iInput,String sResult){
     	boolean bReturn = false;
     	main:{
+    		if(iInput==-1){
+    			if(sResult==null){
+    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+    			}else{
+    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+    			}
+    			bReturn = true;
+    			break main;
+    		}
+    		
+    		
+    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     		//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-			int iDiv = Math.abs(iResult / (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-			int iMod = iResult % (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1);
+			int iDiv = Math.abs(iInput / (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+			int iMod = iInput % (CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX-1);
     		
 			if(iDiv==0 && iMod< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1){
-	    		assertNull("Bei <'" + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) + "' wird NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+	    		assertNull("Bei <'" + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) + "' wird NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
 	    	}
 	    		
     		if(iMod>=CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1){
-	    		assertNotNull("Bei >= '" + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+	    		assertNotNull("Bei >= '" + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) + "' wird keine NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
 	    	}	    		
     		bReturn=true;
     			    		    	

@@ -8,7 +8,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractCounterStrategyAlphanumericSignificantZZZ extends AbstractCounterStrategyAlphanumericZZZ implements ICounterStrategyAlphanumericSignificantZZZ{
 	
-	//TODO: Default Werte gehören eingentlich als Konstante ins Interface.
+	//TODO: Default Werte gehören eingentlich als Konstante ins Interface.	 	
 	int iCounterLengthDefault = 4;
 	char cCounterFillingDefault = "0".toCharArray()[0]; //das sollte dann auch "0" sein, oder?;
 	private int iCounterLength;

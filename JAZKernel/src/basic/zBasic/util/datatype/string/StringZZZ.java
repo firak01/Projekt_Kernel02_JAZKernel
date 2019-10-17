@@ -2220,6 +2220,82 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return iReturn;
 	}
 	
+	public static String trimLeft(String sString, String sStringToBeTrimmed){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringToBeTrimmed)) break main;
+			
+			sReturn = StringZZZ.trimLeft(sString, sStringToBeTrimmed, 0); //Es soll kein Zeichen (0) übrigbleiben.
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String trimLeft(String sString, String sStringToBeTrimmed, int iStringLengthMinRemainingIn){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringToBeTrimmed)) break main;
+			int iStringLengthMinRemaining;
+			if(iStringLengthMinRemainingIn<0){
+				iStringLengthMinRemaining = 0;
+			}else{
+				iStringLengthMinRemaining = iStringLengthMinRemainingIn;
+			}
+			
+			int iStringIndexMinRemaining = 1 + iStringLengthMinRemaining;			
+			boolean bGoon = false;			
+			while(!bGoon){
+				if(sReturn.startsWith(sStringToBeTrimmed) && sReturn.length()>=iStringIndexMinRemaining){
+					sReturn = StringZZZ.rightback(sReturn, sStringToBeTrimmed.length());
+				}else{
+					bGoon = true;
+				}
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String trimRight(String sString, String sStringToBeTrimmed){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringToBeTrimmed)) break main;
+			
+			sReturn = StringZZZ.trimLeft(sString, sStringToBeTrimmed, 0); //Es soll kein Zeichen (0) übrigbleiben.
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String trimRight(String sString, String sStringToBeTrimmed, int iStringLengthMinRemainingIn){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sStringToBeTrimmed)) break main;
+			int iStringLengthMinRemaining;
+			if(iStringLengthMinRemainingIn<0){
+				iStringLengthMinRemaining = 0;
+			}else{
+				iStringLengthMinRemaining = iStringLengthMinRemainingIn;
+			}
+			
+			int iStringIndexMinRemaining = 1 + iStringLengthMinRemaining;			
+			boolean bGoon = false;
+			while(!bGoon){
+				if(sReturn.endsWith(sStringToBeTrimmed) && sReturn.length()>=iStringIndexMinRemaining){
+					sReturn = StringZZZ.leftback(sReturn, sStringToBeTrimmed.length());
+				}else{
+					bGoon = true;
+				}
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	
 	/* Trimme den String, schneide links und rechts jeweils ein Anf�hrungszeichen weg, trimme wieder, ...  schneide Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
 	 */
 	public static String trimQuotationMarked(String sString){
@@ -2260,7 +2336,8 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	/** Entferne den String von links kommend.
+	/** Entferne den String von links kommend, lasse mindestens 1 Zeichen übrig.
+	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimLeft(...)
 	 * @param sString
 	 * @param sStringToBeStripped
 	 * @return
@@ -2283,7 +2360,8 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	/** Entferne den String von rechts kommend.
+	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 * @param sString
 	 * @param sStringToBeStripped
 	 * @return
@@ -2318,6 +2396,12 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
+	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
+	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
 	public static String stripRight(String sString, String[] saStringsToBeStripped){
 		String sReturn = sString;
 		main:{

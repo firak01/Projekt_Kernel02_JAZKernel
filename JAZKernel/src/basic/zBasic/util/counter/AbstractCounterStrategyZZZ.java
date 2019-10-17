@@ -10,7 +10,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ, ICounterStrategyZZZ{
 	//TODO: Default Werte gehören eigentlich als Konstante ins Interface.
-	int iStartDefault = 0;		
+	private int iStartDefault = -1;		
 	private int iStart = -1;
 	
 	private boolean bLeftAligned = false;//d.h. rechts stehen dann die Werte mit dem niedrigsten DigitValue, wie man es vom Dezimalsystem her kennt.
@@ -71,10 +71,20 @@ public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ im
 				
 	@Override
 	public int getCounterStart(){
-		if(this.iStart<=-1){
-			this.iStart = this.iStartDefault;
+		if(this.iStart<=this.getCounterStartDefault()){
+			this.iStart = this.getCounterStartDefault();
 		}
 		return this.iStart;
+	}
+	
+	@Override
+	public void setCounterStartDefault(int iStart){
+		this.iStartDefault = iStart;
+	}
+				
+	@Override
+	public int getCounterStartDefault(){		
+		return this.iStartDefault;
 	}
 	
 	@Override

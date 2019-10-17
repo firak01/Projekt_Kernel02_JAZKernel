@@ -17,10 +17,12 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;			
-			
-			//String sLetterLast = StringZZZ.letterLast(sTotal);						
-			
+			if(sTotal==null) break main;
+			if(sTotal.equals("")){ //initialisierung des Werts mit -1
+				bReturn = true;
+				break main;
+			}			
+						
 			//B) Seriell			   
 			//B1) Überprüfe hinsichtlich der Groß-/Kleinschreibung. Die Zeichen müssen hier durchgängig groß oder klein sein.
 			//Das prüft man am besten durch Kleinsetzung ab und durch Großsetzung.
@@ -70,13 +72,16 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 
 	@Override
 	public int computeNumberForString(String sTotal) {
-		int iReturn = -1;
+		int iReturn = -99;
 		
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;			
+			if(sTotal==null)break main;
+			if(sTotal.equals("")){
+				iReturn = -1;
+				break main;
+			}			
 			
-			
-			
+						
 			//Bei der Ermittlung der "zählenden" Stelle spielt links-/rechtsbündig EINE Rolle:
 			boolean bLeftAligned = this.isLeftAligned();
 			String sLetterCounter = null;
@@ -121,6 +126,12 @@ public class CounterStrategyAlphanumericSerialZZZ extends AbstractCounterStrateg
 	public String computeStringForNumber(int iNumber) {
 		String sReturn = null;
 		main:{
+			if(iNumber<-1)break main;
+			if(iNumber==-1){
+				sReturn="";
+				break main;
+			}
+			
 			 //Ermittle den "Teiler" und den Rest, Also Modulo - Operation
 //			int iDiv = Math.abs(iNumber / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
 //			int iMod = iNumber % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;

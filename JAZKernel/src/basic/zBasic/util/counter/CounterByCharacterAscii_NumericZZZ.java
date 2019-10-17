@@ -87,8 +87,7 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	 */
 	private static String getStringNumericForNumber_(int iNumber, ICounterStrategyZZZ objCounterStrategy) throws ExceptionZZZ{
 		String sReturn = null;		
-		main:{
-				if(iNumber<0) break main;			
+		main:{	
 				if(objCounterStrategy==null){
 					objCounterStrategy = new CounterStrategyNumericMultipleZZZ();
 //					ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -199,7 +198,11 @@ public class CounterByCharacterAscii_NumericZZZ <T extends ICounterStrategyNumer
 	public static boolean isValidCharacter(String s){
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(s)) break main;
+			if(s==null) break main;
+			if(s.equals("")){ //initialisierung des Werts mit -1
+				bReturn = true;
+				break main;
+			}
 			
 			String sRegex = CounterByCharacterAscii_NumericZZZ.sREGEX_CHARACTERS;
 			

@@ -97,6 +97,8 @@ public class CounterStrategyAlphabetSerialZZZ extends AbstractCounterStrategyAlp
 				iReturn = -1;
 				break main;
 			}
+			
+			
 			char[] caValue = sTotal.toCharArray();
 			
 			//Hier spielt links-/rechtsbündig eine Rolle:

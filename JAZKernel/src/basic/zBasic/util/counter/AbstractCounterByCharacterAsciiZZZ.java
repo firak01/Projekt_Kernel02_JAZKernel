@@ -180,11 +180,21 @@ public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrat
 	//###### AUS Interface - Zugriff über CounterStrategy Objekt
 	@Override
 	public boolean isRightAligned() throws ExceptionZZZ{
-		return this.getCounterStrategyObject().isLeftAligned();
+		return this.getCounterStrategyObject().isRightAligned();
 	}
 	
 	@Override
 	public void isRightAligned(boolean bValue) throws ExceptionZZZ{
+		this.getCounterStrategyObject().isRightAligned(bValue);
+	}
+	
+	@Override
+	public boolean isLeftAligned() throws ExceptionZZZ{
+		return this.getCounterStrategyObject().isLeftAligned();
+	}
+	
+	@Override
+	public void isLeftAligned(boolean bValue) throws ExceptionZZZ{
 		this.getCounterStrategyObject().isLeftAligned(bValue);
 	}
 	

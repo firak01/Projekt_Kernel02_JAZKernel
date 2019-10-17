@@ -78,6 +78,17 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    private boolean assertCheckNullBordersAlphanumeric_(int iInput, String sResult){
 	    	boolean bReturn = false;
 	    	main:{
+	    		if(iInput==-1){
+	    			if(sResult==null){
+	    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+	    			}else{
+	    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+	    			}
+	    			bReturn = true;
+	    			break main;
+	    		}
+	    		
+	    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    		if(iInput< CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN){
 		    		assertNull("Bei <'" + CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
 		    	}else if(iInput>CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX){
@@ -92,6 +103,17 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(int iInput, String sResult){
 	    	boolean bReturn = false;
 	    	main:{
+	    		if(iInput==-1){
+	    			if(sResult==null){
+	    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+	    			}else{
+	    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+	    			}
+	    			bReturn = true;
+	    			break main;
+	    		}
+	    		
+	    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    		if(iInput< CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1){
 		    		assertNull("Bei <'" + (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
 		    	}
@@ -105,19 +127,30 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	return bReturn;	    	
 	    }
 	    
-	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(String sInput, int iResult){
+	    private boolean assertCheckNullBordersAlphanumericStrategyBased_(String sResult, int iInput){
 	    	boolean bReturn = false;
 	    	main:{
+	    		if(iInput==-1){
+	    			if(sResult==null){
+	    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+	    			}else{
+	    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+	    			}
+	    			bReturn = true;
+	    			break main;
+	    		}
+	    		
+	    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    		//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-				int iDiv = Math.abs(iResult / (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-				int iMod = iResult % (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1);
+				int iDiv = Math.abs(iInput / (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1) ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+				int iMod = iInput % (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX-1);
 	    		
 				if(iDiv==0 && iMod< CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1){
-		    		assertEquals("Bei <'" + (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) + "' wird NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+		    		assertEquals("Bei <'" + (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) + "' wird NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
 		    	}
 		    		
 	    		if(iMod>=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1){
-		    		assertNotNull("Bei >= '" + (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+		    		assertNotNull("Bei >= '" + (CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1) + "' wird keine NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
 		    	}	    		
 	    		bReturn=true;
 	    			    		    	
@@ -125,12 +158,24 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	    	return bReturn;	    	
 	    }
 	    
-	    private boolean assertCheckNullBordersAlphanumericStrategyBasedSignificant_(String sInput, int iResult){
+	    private boolean assertCheckNullBordersAlphanumericStrategyBasedSignificant_(String sResult, int iInput){
 	    	boolean bReturn = false;
 	    	main:{
+	    		if(iInput==-1){
+	    			if(sResult==null){
+	    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+	    			}else{
+	    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+	    			}
+	    			bReturn = true;
+	    			break main;
+	    		}
+	    		
+	    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	    		
 	    		//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-				int iDiv = Math.abs(iResult / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-				int iMod = iResult % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+				int iDiv = Math.abs(iInput / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+				int iMod = iInput % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
 	    		
 				//Wenn Die 1 = "0" in den Wert 0 geändert wurde (wg. der Berchung des Stellenwerts), dann geht das nicht mehr.
 //				if(iDiv==0 && iMod < CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN){
@@ -138,7 +183,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 //		    	}
 		    		
 	    		if(iMod>=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN){
-		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
 		    	}	    		
 	    		bReturn=true;
 	    			    		    	
@@ -1150,7 +1195,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			    	//### Den String testen
 			    	//##################################################	
 					objCounterStrategy.isLeftAligned(false);
-					sAlphanumericNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumeric);				
+					sAlphanumericNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumeric);				
 					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormed,objCounterStrategy); 
 					itempLeftCheck = itempLeft; //Variable speichern für die Umkehrung des Strings
 					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericNormed, itempLeft);
@@ -1162,7 +1207,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			    	
 			    	//+++++++++++++++++++++++++++++++++++
 			    	objCounterStrategy.isLeftAligned(true);
-			    	sAlphanumericNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumeric);	
+			    	sAlphanumericNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumeric);	
 			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormed,objCounterStrategy); 
 			    	itempRightCheck = itempRight; //Variable speichern für die Umkehrung des Strings
 					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericNormed, itempRight);
@@ -1188,7 +1233,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			    	
 			    	//+++++++++++++++++++++++++++++++++++
 			    	objCounterStrategy.isLeftAligned(false);//reverse und anders orientiert.
-			    	sAlphanumericReversedNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumericReversed);					    
+			    	sAlphanumericReversedNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumericReversed);					    
 			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericReversedNormed,objCounterStrategy); 
 			    	btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericReversedNormed, itempRight);
 			    	assertTrue("Fehler beim Check auf Null Werte", btemp);
@@ -1200,7 +1245,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 		    	
 			    	//+++++++++++++++++++++++++++++++++++
 			    	objCounterStrategy.isLeftAligned(true);
-			    	sAlphanumericReversedNormed = getAlphanumericNormed_(objCounterStrategy, sAlphanumericReversed);	
+			    	sAlphanumericReversedNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumericReversed);	
 			    	itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericReversedNormed,objCounterStrategy); 
 					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericReversedNormed, itempLeft);
 			    	assertTrue("Fehler beim Check auf Null Werte", btemp);	
@@ -1222,26 +1267,6 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			return bReturn;
 		}
 	 
-	 /** TODO GOON IcounterStrategyAlphanumericSignificant als neues Interface und diese Methode darin einbauen.
-	 * @param objCounterStrategy
-	 * @param sAlphanumeric
-	 * @return
-	 * @author Fritz Lindhauer, 30.05.2019, 13:33:20
-	 */
-	private String getAlphanumericNormed_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric){
-		 String sReturn = null;
-		 main:{
-			 boolean bLowercase = objCounterStrategy.isLowercase();
-		 	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
-			if(objCounterStrategy.isLeftAligned()){
-				sReturn = StringZZZ.stripRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.				
-			}else{
-				sReturn = StringZZZ.stripLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.								
-			}
-		 }//end main:
-		 return sReturn;
-	 }
-
 public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	try{
 		
@@ -1375,17 +1400,12 @@ public void testGetStringAlphanumericForNumber_StrategySerial(){
 	
 	//"SERIAL STRATEGIE"-Ergebnisse
 	int itemp = -1;
+	
 	String stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp);
 	boolean btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	assertEquals("0",stemp);
-	
-		//+++++++++++++++++++++++++++++++++++++++++++++++
-	itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-2;
-	stemp = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itemp);
-	btemp = assertCheckNullBordersAlphanumericStrategyBased_(itemp, stemp);
-	assertTrue("Fehler beim Check auf Null Werte", btemp);
-	
+	assertEquals("",stemp);
+		
 	//+++++++++++++++++++++++++++++++++++++++++++++++
 	itemp = CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1;
 	

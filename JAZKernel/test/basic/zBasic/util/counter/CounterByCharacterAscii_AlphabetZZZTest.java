@@ -84,6 +84,17 @@ public class CounterByCharacterAscii_AlphabetZZZTest  extends TestCase{
     private boolean assertCheckNullBordersAlphabetStrategyBased_(int iInput, String sResult){
     	boolean bReturn = false;
     	main:{
+    		if(iInput==-1){
+    			if(sResult==null){
+    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+    			}else{
+    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+    			}
+    			bReturn = true;
+    			break main;
+    		}
+    		
+    		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     		if(iInput< CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN-2){
 	    		assertNull("Bei <'" + CounterByCharacterAscii_AlphabetZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
 	    	}	

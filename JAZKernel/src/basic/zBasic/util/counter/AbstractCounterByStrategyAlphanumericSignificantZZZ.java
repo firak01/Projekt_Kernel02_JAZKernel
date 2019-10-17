@@ -16,9 +16,9 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T ext
 	public AbstractCounterByStrategyAlphanumericSignificantZZZ(String sStartingValue) throws ExceptionZZZ{
 		super(sStartingValue);		
 	}	
-	public AbstractCounterByStrategyAlphanumericSignificantZZZ(){
+	public AbstractCounterByStrategyAlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();
-		this.setValueCurrent(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
+		this.setValueCurrent(this.getCounterStrategyObject().getCounterStart());
 	}
 	public AbstractCounterByStrategyAlphanumericSignificantZZZ(int iStartingValue){
 		super(iStartingValue);		
@@ -28,7 +28,7 @@ public abstract class AbstractCounterByStrategyAlphanumericSignificantZZZ <T ext
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public AbstractCounterByStrategyAlphanumericSignificantZZZ(ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN);
+		super(objCounterStrategy.getCounterStart());
 		this.setCounterStrategyObject(objCounterStrategy);
 	}	
 		

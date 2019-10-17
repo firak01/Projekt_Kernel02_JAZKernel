@@ -7,6 +7,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.doublevalue.DoubleZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 /** Enthält statische Methoden, die in mehreren CounterStrategy-Klassen verwendet werden.
  * @author lindhaueradmin, 10.09.2019, 07:19:24
@@ -34,7 +35,15 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 			 	ExceptionZZZ ez = new ExceptionZZZ("CounterStrategyObject", iERROR_PARAMETER_MISSING, CounterStrategyHelperZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-						
+			
+			if(iNumberIn<-1)break main;
+			if(iNumberIn==-1){
+				listasReturn.add("");	
+				break main;
+			}
+
+			
+			//Nachdem die Ausnahmen abgefangen wurden, die reguläre Verarbeitung
 			int itemp; int iChar;String stemp;
 			int iNumber = iNumberIn;
 			int iRest = iNumberIn+1; //+1 um "0" bei Anfangs-iNumber abzufangen.
@@ -151,4 +160,50 @@ public class CounterStrategyHelperZZZ implements IConstantZZZ{
 		}//end main:
 		return sReturn;
 	}
+	
+	 /** TODO GOON IcounterStrategyAlphanumericSignificant als neues Interface und diese Methode darin einbauen.
+		 * @param objCounterStrategy
+		 * @param sAlphanumeric
+		 * @return
+		 * @author Fritz Lindhauer, 30.05.2019, 13:33:20
+		 */
+		public static String getAlphanumericNormed(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric){
+			 String sReturn = null;
+			 main:{
+				 boolean bLowercase = objCounterStrategy.isLowercase();
+				 boolean bLeftAligned = objCounterStrategy.isLeftAligned();
+				 sReturn = CounterStrategyHelperZZZ.getAlphanumericNormed(sAlphanumeric, bLowercase, bLeftAligned);
+			 }//end main:
+			 return sReturn;
+		 }
+		
+		public static String getAlphanumericNormed(String sAlphanumeric, boolean bLowercase, boolean bLeftAligned){
+			 String sReturn = null;
+			 main:{				
+			 	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN, bLowercase);
+				if(bLeftAligned){
+					//Fehlermaker: Wenn Leerstring erlaubt ist, dann ist "0000" auch erlaubt. Also muss alles getrimmt werden.
+					sReturn = StringZZZ.trimRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.				
+				}else{
+					sReturn = StringZZZ.trimLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.								
+				}
+			 }//end main:
+			 return sReturn;
+		 }
+		
+		public static String getNumericNormed(String sAlphanumeric, boolean bLeftAligned){
+			 String sReturn = null;
+			 main:{				
+			 	String sCharToStrip = CounterByCharacterAscii_AlphanumericZZZ.getCharForPosition(CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN);
+				if(bLeftAligned){
+					//Wenn Leerstring erlaubt ist, dann ist "0000" auch erlaubt. Also muss alles getrimmt werden.
+					sReturn = StringZZZ.trimRight(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.
+				}else{
+					sReturn = StringZZZ.trimLeft(sAlphanumeric, sCharToStrip); //Merke: Führende "0" Werte können nicht wiederhergestelllt werden, aus dem Zahlenwert.								
+				}
+			 }//end main:
+			 return sReturn;
+		 }
+		
+		
 }

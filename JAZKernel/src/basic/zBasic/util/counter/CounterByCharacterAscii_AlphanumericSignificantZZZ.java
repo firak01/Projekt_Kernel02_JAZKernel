@@ -19,7 +19,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 	//Als generics in die Abstracte Klasse verschoben private ICounterStrategyAlphanumericSignificantZZZ objCounterStrategy;
 	T objCounterStrategy;
 
-	public CounterByCharacterAscii_AlphanumericSignificantZZZ(){
+	public CounterByCharacterAscii_AlphanumericSignificantZZZ() throws ExceptionZZZ{
 		super();	
 		
 	}
@@ -120,7 +120,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZ<T extends ICount
 	public String postValueSetting(String sValue) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-		if(StringZZZ.isEmpty(sValue)){
+		if(sValue==null){
 			ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein Wert für das POSTPROCESSING übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericSignificantZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}

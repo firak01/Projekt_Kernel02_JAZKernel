@@ -25,9 +25,10 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 //	
 //	public static String sREGEX_CHARACTERS="[a-zA-Z0-9]";
 	
-	public CounterByCharacterAscii_AlphanumericZZZ(){
+	public CounterByCharacterAscii_AlphanumericZZZ() throws ExceptionZZZ{
 		super();
-		this.setValueCurrent(this.getDigitValueMin());
+		int iStartingValue = this.getCounterStrategyObjectDefault().getCounterStart();
+		this.setValueCurrent(iStartingValue);
 	}
 	public CounterByCharacterAscii_AlphanumericZZZ(int iStartingValue){
 		super(iStartingValue);		
@@ -40,7 +41,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	public CounterByCharacterAscii_AlphanumericZZZ(ICounterStrategyAlphanumericZZZ objCounterStrategy){
-		super(CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN-1);
+		super(objCounterStrategy.getCounterStart());
 		this.setCounterStrategyObject(objCounterStrategy);
 	}
 	
@@ -80,7 +81,6 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 	private static int getNumberForStringAlphanumeric_(String sTotal, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
 		int iReturn = -1;		
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;
 			if(objCounterStrategy==null){
 				objCounterStrategy = new CounterStrategyAlphanumericMultipleZZZ();
 //				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
@@ -191,8 +191,7 @@ public class CounterByCharacterAscii_AlphanumericZZZ <T extends ICounterStrategy
 	 */
 	private static String getStringAlphanumericForNumber_(int iNumber, ICounterStrategyAlphanumericZZZ objCounterStrategy) throws ExceptionZZZ{
 		String sReturn = null;		
-		main:{
-			if(iNumber<0) break main;			
+		main:{							
 			if(objCounterStrategy==null){
 				ExceptionZZZ ez = new ExceptionZZZ("AlphanumericCounter: Kein CounterStrategy-Objekt übergeben.", iERROR_PARAMETER_VALUE, CounterByCharacterAscii_AlphanumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -287,7 +286,11 @@ public static boolean isValidCharacter(char c){
 public static boolean isValidCharacter(String s){
 	boolean bReturn = false;
 	main:{
-		if(StringZZZ.isEmpty(s)) break main;
+		if(s==null) break main;
+		if(s.equals("")){ //initialisierung des Werts mit -1
+			bReturn = true;
+			break main;
+		}
 		
 		String sRegex = CounterByCharacterAscii_AlphanumericZZZ.sREGEX_CHARACTERS;
 		

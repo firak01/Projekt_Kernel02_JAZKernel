@@ -45,12 +45,24 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 	    
 	   
 	    
-	    private boolean assertCheckNullBordersAlphanumericStrategyBasedSignificant_(String sInput, int iResult){
+	    private boolean assertCheckNullBordersAlphanumericStrategyBasedSignificant_(String sResult, int iInput){
 	    	boolean bReturn = false;
 	    	main:{
+	    		if(iInput==-1){
+	    			if(sResult==null){
+	    				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+	    			}else{
+	    				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+	    			}
+	    			bReturn = true;
+	    			break main;
+	    		}
+	    		
+	    		
+	    		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    		//Ermittle den "Teiler" und den Rest, Also Modulo - Operation
-				int iDiv = Math.abs(iResult / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
-				int iMod = iResult % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
+				int iDiv = Math.abs(iInput / CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX ); //durch abs wird also intern in ein Integer umgewandetl.... nicht nur das Weglassen des ggfs. negativen Vorzeichens.
+				int iMod = iInput % CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MAX;
 	    		
 				//Wenn Die 1 = "0" in den Wert 0 geändert wurde (wg. der Berchung des Stellenwerts), dann geht das nicht mehr.
 //				if(iDiv==0 && iMod < CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN){
@@ -58,7 +70,7 @@ public class CounterByCharacterAscii_AlphanumericSignificantZZZTest  extends Tes
 //		    	}
 		    		
 	    		if(iMod>=CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN){
-		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iResult + "' für " + sInput, sInput);
+		    		assertNotNull("Bei >= '" + CounterByCharacterAscii_AlphanumericZZZ.iPOSITION_MIN + "' wird keine NULL erwartet. Ergebnis '" + iInput + "' für " + sResult, sResult);
 		    	}	    		
 	    		bReturn=true;
 	    			    		    	

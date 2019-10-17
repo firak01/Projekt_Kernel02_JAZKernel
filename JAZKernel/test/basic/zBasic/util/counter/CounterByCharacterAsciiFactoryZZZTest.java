@@ -83,12 +83,12 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
     //A) OHNE STRATEGY-OBJEKT ZU ÜBERGEBEN
 	itemp = objCounterString.getValueCurrent();
 	stemp = objCounterString.current();
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	
 	itempold = itemp;
 	stemp = objCounterString.next();
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	itemp = objCounterString.getValueCurrent();
 	assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
@@ -96,7 +96,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 9;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "9", stemp);
 	
@@ -107,7 +107,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 10;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "00", stemp);
 	
@@ -118,7 +118,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 11;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "11", stemp);
 	
@@ -129,7 +129,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 12;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "22", stemp);
 	
@@ -140,7 +140,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 18;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "99", stemp);
 	
@@ -151,7 +151,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 19;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "000", stemp);
 	
@@ -162,7 +162,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 20;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "111", stemp);
 	
@@ -173,7 +173,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 41;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "44444", stemp);
 	
@@ -184,7 +184,7 @@ public void testGetStringNumericForNumber_FactoryBasedStrategySerial(){
 	//++++++++++++++++++++++++++++
 	itemp = 42;
 	stemp = objCounterString.change(itemp);
-	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+	btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 	assertTrue("Fehler beim Check auf Null Werte", btemp);
 	assertEquals("Fehler beim Setzen des Counters", "55555", stemp);
 	
@@ -752,22 +752,22 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 	    //A) OHNE STRATEGY-OBJEKT ZU ÜBERGEBEN
 		itemp = objCounterString.getValueCurrent();
 		stemp = objCounterString.current();
-		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
-		assertEquals("Fehler beim Ermitteln des Default Stringwerts", "0001", stemp);	
+		assertEquals("Fehler beim Ermitteln des Default Stringwerts", "0000", stemp);	
 		
 		itempold = itemp;
 		stemp = objCounterString.next();
-		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 		assertTrue("Fehler beim Check auf Null Werte", btemp);
 		itemp = objCounterString.getValueCurrent();
 		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
-		assertEquals("Fehler beim Ermitteln des Default nächsten Stringwerts", "0002", stemp);
+		assertEquals("Fehler beim Ermitteln des Default nächsten Stringwerts", "0001", stemp);
 		
 		itemp = 42;
 		objCounterString.setCounterLength(2);//!!!! Damit keine führende 0 vorhanden ist.
 		stemp = objCounterString.change(itemp);
-		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp);
+		btemp = assertCheckNullBordersNumericStrategyBased_(itemp, stemp, objCounterString.isLeftAligned());
 		assertTrue("Fehler beim Check auf Null Werte", btemp);		
 		assertEquals("Fehler beim Setzen des Counters", "16", stemp);
 		
@@ -1002,6 +1002,17 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
 	boolean bReturn = false;
 	main:{
+		if(iInput==-1){
+			if(sResult==null){
+				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+			}else{
+				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+			}
+			bReturn = true;
+			break main;
+		}
+		
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		if(iInput< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN){
     		assertNull("Bei <'" + CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}else if(iInput>CounterByCharacterAscii_NumericZZZ.iPOSITION_MAX){
@@ -1016,9 +1027,21 @@ private boolean assertCheckNullBordersNumeric_(int iInput, String sResult){
 	}//end main:
 	return bReturn;	    	
 }
-private boolean assertCheckNullBordersNumericStrategyBased_(int iInput, String sResult){
+private boolean assertCheckNullBordersNumericStrategyBased_(int iInput, String sResultIn, boolean bLeftAligned){
 	boolean bReturn = false;
 	main:{
+		String sResult = CounterStrategyHelperZZZ.getNumericNormed(sResultIn, bLeftAligned);
+		if(iInput==-1){
+			if(sResult==null){
+				assertNotNull("Bei -1  wird keine NULL erwartet. Ergebnis: '" + sResult + "' für " + iInput, sResult);
+			}else{
+				assertEquals("Bei -1 wird der Leerstring erwartet","",sResult);
+			}
+			bReturn = true;
+			break main;
+		}
+		
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		if(iInput< CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1){
     		assertNull("Bei <'" + (CounterByCharacterAscii_NumericZZZ.iPOSITION_MIN-1) + "' wird NULL erwartet. Ergebnis '" + sResult + "' für " + iInput, sResult);
     	}
