@@ -819,12 +819,12 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			objCounterAlphaS.setValueCurrent(stemp);
 			//NEIN, jetzt wird die führende 0 einfach weggetrimmt... also kein Fehler fail("Method should have thrown an exception for the string '"+stemp+"'");
 			int itempRight = objCounterAlphaS.getValueCurrent();
-			assertTrue(itempRight==14220);
+			assertTrue(itempRight==1270);
 			
 			//Gegenprobe
 			objCounterAlphaS.setValueCurrent(itempRight);
 			String sCheck = objCounterAlphaS.getString(); 
-			assertEquals(stemp+"00", sCheck); //Merke: oben wurde als Zählerlänge 5 eingestellt. Wenn der Zähler rechts-ausgelegt ist, kommen die Füllzeichen nach rechts.
+			assertEquals("00" + stemp, sCheck); //Merke: oben wurde als Zählerlänge 5 eingestellt. Wenn der Zähler rechts-ausgelegt ist, kommen die Füllzeichen nach links.
 			
 			//Gegen-Gegenprobe
 			objCounterAlphaS.setValueCurrent(sCheck);
@@ -837,12 +837,12 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			objCounterAlphaS.isRightAligned(false);
 			objCounterAlphaS.setValueCurrent(stemp);
 			int itempLeft = objCounterAlphaS.getValueCurrent();
-			assertTrue(itempLeft==1270);
+			assertTrue(itempLeft==14220);
 
 			//Gegenprobe
 			objCounterAlphaS.setValueCurrent(itempLeft);
 			sCheck = objCounterAlphaS.getString();
-			assertEquals("00"+stemp, sCheck);//Merke: oben wurde als Zählerlänge 5 eingestellt. Wenn der Zähler links-ausgelegt ist, kommen die Füllzeichen nach links.
+			assertEquals(stemp+"00", sCheck);//Merke: oben wurde als Zählerlänge 5 eingestellt. Wenn der Zähler links-ausgelegt ist, kommen die Füllzeichen nach links.
 			
 			//Gegen-Gegenprobe
 			objCounterAlphaS.setValueCurrent(sCheck);

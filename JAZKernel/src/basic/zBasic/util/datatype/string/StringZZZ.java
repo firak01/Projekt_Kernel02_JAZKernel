@@ -2263,7 +2263,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			if(StringZZZ.isEmpty(sString)) break main;
 			if(StringZZZ.isEmpty(sStringToBeTrimmed)) break main;
 			
-			sReturn = StringZZZ.trimLeft(sString, sStringToBeTrimmed, 0); //Es soll kein Zeichen (0) übrigbleiben.
+			sReturn = StringZZZ.trimRight(sString, sStringToBeTrimmed, 0); //Es soll kein Zeichen (0) übrigbleiben.
 			
 		}//end main:
 		return sReturn;

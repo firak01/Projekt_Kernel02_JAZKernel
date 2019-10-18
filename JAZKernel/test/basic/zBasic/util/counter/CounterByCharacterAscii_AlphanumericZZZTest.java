@@ -990,10 +990,9 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			} 
 	    	
 	    	//Merke: Bei der Signifikant-Strategie ist die Positon der Zeichen zueinander hinsichtlich der Gültigkeit egal....
-	    	//Gehe daher sofort zu den "Berechnungstests":
-	    	
+	    	//Gehe daher sofort zu den "Berechnungstests":	    	
 	    	try {
-				stemp = "00"; 
+				stemp = "00"; //Nur gültig ohne führende "0", Allerdings "0" selbst darf übergeben werden.
 				itemp = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(stemp,objCounterStrategy);
 				fail("Method should have thrown an exception for the string '"+stemp+"'");		    	
 			} catch (ExceptionZZZ ez) {
@@ -1001,7 +1000,7 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 			} 
 	    	
 	        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	    	stemp = "0Z";
+	    	stemp = "0Z";//Die führende 0 wird internenin dem Test  "wegnormiert"
 			try {					
 				btemp = getNumberForStringAlphanumeric_StrategySignificantTest_(objCounterStrategy,stemp);
 				assertTrue("Fehler beim allgemeinen Test.", btemp);
@@ -1188,84 +1187,69 @@ public class CounterByCharacterAscii_AlphanumericZZZTest  extends TestCase{
 	 private boolean getNumberForStringAlphanumeric_StrategySignificantTest_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric) throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{			
-					String stemp; String sCheckLeft; String sCheckRight; int itemp; int itempLeft; int itempRight; int itempRightCheck;  int itempLeftCheck; boolean btemp;													
-					String sAlphanumericNormed = null; String sAlphanumericReversedNormed = null;
-										
-					//##################################################
-			    	//### Den String testen
-			    	//##################################################	
-					objCounterStrategy.isLeftAligned(false);
-					sAlphanumericNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumeric);				
-					itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormed,objCounterStrategy); 
-					itempLeftCheck = itempLeft; //Variable speichern für die Umkehrung des Strings
-					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericNormed, itempLeft);
-			    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-			    	
-			    	//Mache die Gegenprobe, itempleft = 13368
-			    	sCheckLeft = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempLeft, objCounterStrategy);			    	
-			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericNormed, sCheckLeft);	
-			    	
-			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isLeftAligned(true);
-			    	sAlphanumericNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumeric);	
-			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormed,objCounterStrategy); 
-			    	itempRightCheck = itempRight; //Variable speichern für die Umkehrung des Strings
-					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericNormed, itempRight);
-			    	assertTrue("Fehler beim Check auf Null Werte", btemp);		
-			    				    	
-			    	//Mache die Gegenprobe, itempRight = 1260
-			    	sCheckRight = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempRight, objCounterStrategy);
-			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericNormed, sCheckRight);	
-			    	
-			    	
-			    	//+++++++++++++++++++++++++++++++++++
-			    	if(!StringZZZ.isPalindrom(sAlphanumericNormed)){
-			    		assertFalse("Links- oder Rechtsbündig darf NICHT den gleichen Zahlenwert haben, außer bei 'Palindrom' wie z.B. AA. String ist '" + sAlphanumericNormed + "'.", itempLeft==itempRight);
-			    	}else{
-			    		assertTrue("Links- oder Rechtsbündig MUSS den gleichen Zahlenwert haben, da es ein 'Palindrom' wie z.B. AA. String ist '" + sAlphanumericNormed + "'.", itempLeft==itempRight);
-			    	}
-			    	
+				
+					bReturn = this.getNumberForStringAlphanumeric_StrategySignificantStringTest_(objCounterStrategy, sAlphanumeric);
+			    	if(!bReturn) break main;
 			    	
 			    	//##################################################
 			    	//### Den String umdrehen und erneut testen
 			    	//##################################################			    	
 			    	String sAlphanumericReversed = StringZZZ.reverse(sAlphanumeric);
-			    	
-			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isLeftAligned(false);//reverse und anders orientiert.
-			    	sAlphanumericReversedNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumericReversed);					    
-			    	itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericReversedNormed,objCounterStrategy); 
-			    	btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericReversedNormed, itempRight);
-			    	assertTrue("Fehler beim Check auf Null Werte", btemp);
-			    	//DAS IST NICHT IMMER MÖGLICH, Z.B. wenn wg. der Normierung eine führende 0 wegfällt.   assertEquals("Umgedrehter String soll den gleichen Zahlenwert haben wie andersherum und andersbündig orientiert.  '" + sAlphanumericReversedNormed +"'", itempRight,itempLeftCheck);
-
-			    	//Mache die Gegenprobe, itempRight = 1260 xx
-			    	sCheckRight = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempRight, objCounterStrategy);
-			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericReversedNormed, sCheckRight);		    			    				    	    					    	    	
-		    	
-			    	//+++++++++++++++++++++++++++++++++++
-			    	objCounterStrategy.isLeftAligned(true);
-			    	sAlphanumericReversedNormed = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumericReversed);	
-			    	itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericReversedNormed,objCounterStrategy); 
-					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericReversedNormed, itempLeft);
-			    	assertTrue("Fehler beim Check auf Null Werte", btemp);	
-			    	//DAS IST NICHT IMMER MÖGLICH, Z.B. wenn wg. der Normierung eine führende 0 wegfällt.   assertEquals("Umgedrehter String soll den gleichen Zahlenwert haben wie anders-bündig orientiert.  '" + sAlphanumericReversedNormed +"'", itempLeft,itempRightCheck);
-			    	
-			    	//Mache die Gegenprobe
-			    	sCheckLeft = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempLeft, objCounterStrategy);
-			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericReversedNormed, sCheckLeft);
-			    	
-			    	//+++++++++++++++++++++++++++++++++++
-			    	if(!StringZZZ.isPalindrom(sAlphanumericReversedNormed)){
-			    		assertFalse("Links- oder Rechtsbündig darf NICHT den gleichen Zahlenwert haben, außer bei 'Palindrom' wie z.B. AA. String ist '" + sAlphanumericReversedNormed + "'.", itempLeft==itempRight);
-			    	}else{
-			    		assertTrue("Links- oder Rechtsbündig MUSS den gleichen Zahlenwert haben, da es ein 'Palindrom' wie z.B. AA. String ist '" + sAlphanumericReversedNormed + "'.", itempLeft==itempRight);
-			    	}
-			    			
-			    	bReturn = true;							    	    								
+			    	bReturn = this.getNumberForStringAlphanumeric_StrategySignificantStringTest_(objCounterStrategy, sAlphanumericReversed);
+			    	if(!bReturn) break main;
+						    	    								
 			}//end main:
 			return bReturn;
 		}
+	 
+	 private boolean getNumberForStringAlphanumeric_StrategySignificantStringTest_(ICounterStrategyAlphanumericZZZ objCounterStrategy, String sAlphanumeric) throws ExceptionZZZ{
+		 boolean bReturn = false;
+			main:{			
+					String stemp; String sCheckLeft; String sCheckRight; int itemp; int itempLeft; int itempRight; int itempRightCheck;  int itempLeftCheck; boolean btemp;													
+					String sAlphanumericNormedLeft = null; String sAlphanumericNormedRight = null; String sAlphanumericReversedNormed = null;
+										
+					//##################################################
+			    	//### Den String testen
+			    	//##################################################	
+					objCounterStrategy.isLeftAligned(false);
+					sAlphanumericNormedRight = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumeric);				
+					itempRight = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormedRight,objCounterStrategy); 
+					itempRightCheck = itempRight; //Variable speichern für die Umkehrung des Strings
+					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericNormedRight, itempRight);
+			    	assertTrue("Fehler beim Check auf Null Werte", btemp);
+			    	
+			    	//Mache die Gegenprobe, itempRight = 13368
+			    	sCheckRight = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempRight, objCounterStrategy);			    	
+			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericNormedRight, sCheckRight);	
+			    	
+			    	//+++++++++++++++++++++++++++++++++++
+			    	objCounterStrategy.isLeftAligned(true);
+			    	sAlphanumericNormedLeft = CounterStrategyHelperZZZ.getAlphanumericNormed(objCounterStrategy, sAlphanumeric);	
+			    	itempLeft = CounterByCharacterAscii_AlphanumericZZZ.getNumberForString(sAlphanumericNormedLeft,objCounterStrategy); 
+			    	itempLeftCheck = itempLeft; //Variable speichern für die Umkehrung des Strings
+					btemp = assertCheckNullBordersAlphanumericStrategyBasedSignificant_(sAlphanumericNormedLeft, itempLeft);
+			    	assertTrue("Fehler beim Check auf Null Werte", btemp);		
+			    				    	
+			    	//Mache die Gegenprobe, itempLeft = 15958
+			    	sCheckLeft = CounterByCharacterAscii_AlphanumericZZZ.getStringForNumber(itempLeft, objCounterStrategy);
+			    	assertEquals("Gegenprobe wurde erfolgreich erwartet.", sAlphanumericNormedLeft, sCheckLeft);	
+			    	
+			    	
+			    	//+++++++++++++++++++++++++++++++++++
+			    	if(StringZZZ.isPalindrom(sAlphanumericNormedLeft) && StringZZZ.isPalindrom(sAlphanumericNormedRight)){
+			    		assertTrue("Links- oder Rechtsbündig MUSS den gleichen Zahlenwert haben, da es ein 'Palindrom' wie z.B. AA. String ist '" + sAlphanumericNormedLeft + "'.", itempLeft==itempRight);
+			    	}else{
+			    		if(sAlphanumericNormedLeft.length()==1 && sAlphanumericNormedRight.length()==1){//Merke: Bei längerern String ist der String zwar gleich, wird aber aus unterschiedlichen Richtungen gelesen ==> unterschiedliche Zahlenwerte.
+			    			assertTrue("Links- oder Rechtsbündig MUSS den gleichen Zahlenwert haben, da sie die Länge 1 haben. String ist jeweils  '" + sAlphanumericNormedLeft + "'.", itempLeft==itempRight);
+			    		}else{
+			    			assertFalse("Links- oder Rechtsbündig darf NICHT den gleichen Zahlenwert haben, außer bei 'Palindrom' wie z.B. AA. String ist '" + sAlphanumericNormedLeft + "'.", itempLeft==itempRight);
+			    		}
+			    	}
+			    	
+			    	bReturn = true;
+	 }//end main:
+		return bReturn;
+	 }
 	 
 public void testGetStringAlphanumericForNumber_StrategyMultiple(){
 	try{
