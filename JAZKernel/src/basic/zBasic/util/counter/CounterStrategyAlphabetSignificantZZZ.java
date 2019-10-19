@@ -36,7 +36,11 @@ public class CounterStrategyAlphabetSignificantZZZ extends AbstractCounterStrate
 	public boolean checkSyntax(String sTotal) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sTotal)) break main;			
+			if(sTotal==null) break main;
+			if(sTotal.equals("")){ //initialisierung des Werts mit -1
+				bReturn = true;
+				break main;
+			}					
 			
 			String sLetterLast = StringZZZ.letterLast(sTotal);						
 			

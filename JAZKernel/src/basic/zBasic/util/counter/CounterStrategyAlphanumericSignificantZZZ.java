@@ -112,8 +112,8 @@ public class CounterStrategyAlphanumericSignificantZZZ extends AbstractCounterSt
 			int iDigitValue_Position_Max = this.getDigitValueMax()+1;
 									
 			//Hier spielt links-/rechtsbündig eine Rolle:
-			boolean bRightAligned = this.isLeftAligned();
-			if(!bRightAligned){
+			boolean bRightAligned = this.isRightAligned();
+			if(bRightAligned){
 				
 				//Hier spielt der Stellenwert eine Rolle.
 			   for(int icount=0; icount<=iTotalIndexLength; icount++){

@@ -856,6 +856,7 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 		
+		//+++++ TESTS BZGL ZÄHLERLÄNGE ++++++++++++++
 		//... setze die Zählerlänge auf 3 fest... Dann wird das gültig ..mit Zählerlänge lassen sich auch führende "0" en wiederherstellen.
 		try{
 			objCounterAlphaS.setCounterLength(3);
@@ -869,8 +870,8 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			assertEquals(stemp, stempold);
 				
 			itempold = itemp;
-			stemp = objCounterAlphaS.next();
-			assertEquals("0ZB",stemp); //...mit Zählerlänge lassen sich auch führende "0" en wiederherstellen.
+			stemp = objCounterAlphaS.next();//Da linksorientiert und signifikant, wird wie im Dezimalsystem die niedrigste Stelle um +1 erhöht.
+			assertEquals("1ZA",stemp); //...mit Zählerlänge lassen sich auch führende "0" en wiederherstellen.
 			itemp = objCounterAlphaS.getValueCurrent();
 			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
 			
@@ -878,52 +879,100 @@ public void testGetStringAlphanumericForNumber_FactoryBasedStrategySignificant()
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
 		
-		//... aber das bleibt ungültig, wenn Zählerlänge 3 und rechstbündig, d.h. nur rechts dürften beliebig viele Füllzeichen sein.
+		//... aber das bleibt ungültig, wenn Zählerlänge 3 und linksbündig, d.h. nur rechts dürften beliebig viele Füllzeichen sein.
 		try{
-			stemp = "00ZA";
-			objCounterAlphaS.isRightAligned(true);
+			stemp = "00ZA";//Fehlerfall: Der String ist länger als erlaubt
+			objCounterAlphaS.isRightAligned(false);
 			objCounterAlphaS.setValueCurrent(stemp);
 			fail("Method should have thrown an exception for the string '"+stemp+"' with counterlength smaller and rightaligned.");
 		} catch (ExceptionZZZ ez) {
 			//Erwartetete Exception
 		} 
 		
-		//... und das wird nun im einfachen Vergleich ungültig
-		objCounterAlphaS.isRightAligned(false);
-		stemp = "ZA";
-		objCounterAlphaS.setValueCurrent(stemp);
-		itemp = objCounterAlphaS.getValueCurrent();
-		
-		stempold = stemp;
-		stemp = objCounterAlphaS.current();
-		assertFalse("Wegen des Füllzeichens dürfen die Strings nicht gleich sein. '(" + stemp + "')('"+stempold +"')", stemp.equals(stempold));
+		//... aber das wird gültig, wenn Zählerlänge 3 und rechtsbündig, weil links Füllzeichen weggetrimmt werden.
+		int itempRight=-99; int itempLeft=-99;String stempRight=null; String stempLeft=null;
+		try{
+			stemp = "00ZA";
+			objCounterAlphaS.isRightAligned(true);
+			objCounterAlphaS.setValueCurrent(stemp);
+			itempRight = objCounterAlphaS.getValueCurrent();
+			assertTrue(itempRight==1270);
 			
-		itempold = itemp;
-		stemp = objCounterAlphaS.next();
-		assertEquals("0ZB",stemp);
-		itemp = objCounterAlphaS.getValueCurrent();
-		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+			stempold = stemp;
+			stempRight = objCounterAlphaS.current();
+			assertTrue(stempRight.equals("0ZA"));
+			assertFalse("Rückumwandlung darf nicht die gleichen Werte ergeben, da überflüssige Füllzeichen weggetrimmt wurden ", stempold.equals(stempRight));
+					
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+		try{
+			itempold = itempRight;
+			objCounterAlphaS.isRightAligned(true);
+			stemp = objCounterAlphaS.next();
+			assertEquals("0ZB",stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+		
+		
+
+		try{
+			//... und das wird nun im einfachen Vergleich ungültig
+			objCounterAlphaS.isRightAligned(false);
+			stemp = "ZA";
+			objCounterAlphaS.setValueCurrent(stemp);
+			itempLeft = objCounterAlphaS.getValueCurrent();
+			assertTrue(itempLeft==395);
+			
+			stempold = stemp;
+			stempLeft = objCounterAlphaS.current();
+			assertTrue(stempLeft.equals("ZA0"));
+			assertFalse("Rückumwandlung darf nicht die gleichen Werte ergeben, da zusätzliche Füllzeichen hinzugefügt wurden ", stempold.equals(stempLeft));
+		
+			//++++++++++
+			assertTrue("Wegen der anderen Ausrichtung dürfen die Zahlenwerte nicht gleich sein. '(" + itempRight + "')('"+itempLeft +"')", itempRight!=itempLeft);
+			assertFalse("Wegen der anderen Ausrichtung und der Zählerlänge dürfen die String nicht gleich sein. '(" + itempRight + "')('"+itempLeft +"')", stempRight.equals(stempLeft));
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+		try{
+			itempold = itempLeft;
+			objCounterAlphaS.isRightAligned(false);
+			stemp = objCounterAlphaS.next();
+			assertEquals("0B0",stemp); //Linksbündig. Z=>0 und die Stelle mit dem A => B, dann noch Füllzeichen auffüllen.
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+		
+	
+		//++++++++
+		try{			
+			objCounterAlphaS.setCounterLength(0); //dann wird wieder der DEFAULT Wert genommen.
+			objCounterAlphaS.isRightAligned(true);
+			
+			stemp = "ZA";
+			stempold = stemp;
+			objCounterAlphaS.setValueCurrent(stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			itempold = itemp;
+			
+			stemp = objCounterAlphaS.current();
+			assertEquals("00"+stempold, stemp);//wg. Defaultlänge von 4 und Couner ist rechtsbündig: Dann kommen passende Füllzeichen links.
+			
+			stemp = objCounterAlphaS.next();
+			assertEquals("00ZB",stemp);
+			itemp = objCounterAlphaS.getValueCurrent();
+			assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
 		
 		//###########################################
-		//... gültige significant Syntax
-		objCounterAlphaS.setCounterLength(0); //dann wird wieder der DEFAULT Wert genommen.
-				
-		stemp = "ZA";
-		stempold = stemp;
-		objCounterAlphaS.setValueCurrent(stemp);
-		itemp = objCounterAlphaS.getValueCurrent();
-		itempold = itemp;
-		
-		stemp = objCounterAlphaS.current();
-		assertEquals("00"+stempold, stemp);//wg. Defaultlänge von 4 und Couner ist linksbündig: Dann kommen passende Füllzeichen links.
-		
-		stemp = objCounterAlphaS.next();
-		assertEquals("00ZB",stemp);
-		itemp = objCounterAlphaS.getValueCurrent();
-		assertTrue("Fehler beim Erhöhen des Counters", itempold+1==itemp);
-		
-		
-		
 		//Erstelle einen Counter über den Konstruktor 
 		//A) Mit int Wert
 		ICounterAlphanumericSignificantZZZ<?> objCounterAlphaS2 = objCounterFactory.createCounter(objCounterStrategyAlphaNumSig,10);

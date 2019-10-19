@@ -1755,9 +1755,10 @@ MeinTestParameter=blablaErgebnis
 			
 			CounterHandlerSingleton_AlphabetSignificantZZZ objHandler = CounterHandlerSingleton_AlphabetSignificantZZZ.getInstance();
 			ICounterStrategyAlphabetSignificantZZZ objCounterStrategy = new CounterStrategyAlphabetSignificantZZZ(4,"0",sStartValue);
+			objCounterStrategy.isIncreasableInOtherMethod(false);//Merke: Die erste Suche geht schon für die Suche nach dem Modul drauf, z.B. KernelConfigPathTestModule. So dass hier schon der 2. Zähler verwendet würde.
 			objHandler.setCounterStrategy(objCounterStrategy);
 			ICounterAlphabetSignificantZZZ objCounter = objHandler.getCounterFor();
-			String sSearchCounter = objCounter.getStringNext(); // objCounter.current();
+			String sSearchCounter = objCounter.getStringNext();  // objCounter.current();
 			String sDebugKey=null;
 			//#################################################################################################
 			//1. Konfigurationsfile des Systems holen
