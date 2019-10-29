@@ -478,17 +478,41 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			try{
 			//Hole zuerst das "Basis-File"
 			IniFile objIni = this.getFileConfigKernelAsIni(); 
-
+			
 			//1. Hole den Dateinamen
 			IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile");
 			if(!objEntryFileName.hasAnyValue()){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein Dateiname konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
-				break main;
+				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
+				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
+				//Der PropertyName sollte aber über alle Systeme gleich sein.
+				//DAHER DARF KEINE PROPERTY DEN "!SYSTEMNUMBER" IM NAMEN HABEN. 
+				//ABER DER APPLICATIONKEY IST ERLAUBT
+				
+				String sApplicationKey = this.getApplicationKey();
+				objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile"+sApplicationKey);
+				if(!objEntryFileName.hasAnyValue()){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein Dateiname konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
+					break main;
+				}
 			}
 			String sFileNameUsed = objEntryFileName.getValue();
 			
 			//2. Hole den Dateipfad
 			IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath");
+			if(!objEntryFilePath.hasAnyValue()){
+				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
+				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
+				//Der PropertyName sollte aber über alle Systeme gleich sein.
+				//DAHER DARF KEINE PROPERTY DEN "!SYSTEMNUMBER" IM NAMEN HABEN. 
+				//ABER DER APPLICATIONKEY IST ERLAUBT
+								
+				String sApplicationKey = this.getApplicationKey();
+				objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath"+sApplicationKey);
+				if(!objEntryFilePath.hasAnyValue()){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein DateiPfad konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
+					//break main; Auch mit leerem Dateipfad weitermachen....
+				}
+			}						
 			String sFilePathUsed = objEntryFilePath.getValue();			
 			
 			//NEIN, Weitermachen if(StringZZZ.isEmpty(sFilePathUsed)) break main;
@@ -636,6 +660,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//1. Hole den Dateinamen
+					
+					FEHLERMARKER
 					IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(sAlias,"KernelConfigFile");					
 					if(!objEntryFileName.hasAnyValue()){											
 							ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
