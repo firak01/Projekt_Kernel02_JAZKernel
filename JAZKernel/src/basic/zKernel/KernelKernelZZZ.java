@@ -73,7 +73,7 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 		USEFORMULA, USEFORMULA_MATH;
 	}
 	
-	public static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
+	public final static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
 	private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
     //Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
@@ -479,51 +479,21 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//Hole zuerst das "Basis-File"
 			IniFile objIni = this.getFileConfigKernelAsIni(); 
 			
-			//1. Hole den Dateinamen
-			IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile");
-			if(!objEntryFileName.hasAnyValue()){
-				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
-				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
-				//Der PropertyName sollte aber über alle Systeme gleich sein.
-				//DAHER DARF KEINE PROPERTY DEN "!SYSTEMNUMBER" IM NAMEN HABEN. 
-				//ABER DER APPLICATIONKEY IST ERLAUBT
-				
-				String sApplicationKey = this.getApplicationKey();
-				objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile"+sApplicationKey);
-				if(!objEntryFileName.hasAnyValue()){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein Dateiname konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
-					break main;
-				}
-			}
-			String sFileNameUsed = objEntryFileName.getValue();
 			
-			//2. Hole den Dateipfad
-			IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath");
-			if(!objEntryFilePath.hasAnyValue()){
-				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
-				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
-				//Der PropertyName sollte aber über alle Systeme gleich sein.
-				//DAHER DARF KEINE PROPERTY DEN "!SYSTEMNUMBER" IM NAMEN HABEN. 
-				//ABER DER APPLICATIONKEY IST ERLAUBT
-								
-				String sApplicationKey = this.getApplicationKey();
-				objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath"+sApplicationKey);
-				if(!objEntryFilePath.hasAnyValue()){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein DateiPfad konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
-					//break main; Auch mit leerem Dateipfad weitermachen....
-				}
-			}						
-			String sFilePathUsed = objEntryFilePath.getValue();			
-			
-			//NEIN, Weitermachen if(StringZZZ.isEmpty(sFilePathUsed)) break main;
-			File objDirTemp = FileEasyZZZ.searchDirectory(sFilePathUsed);
-			if(objDirTemp==null){
-				String sLog = "Dirctory with name '" + sFilePathUsed + "' not found.";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-				ExceptionZZZ ez  = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_VALUE, ReflectCodeZZZ.getMethodCurrentName());
+			//1. Hole den Dateinamen			
+			String sFileNameUsed = this.searchFileConfigIniNameByAlias(objIni, sAlias);			
+			if(StringZZZ.isEmpty(sFileNameUsed)){			
+				ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			sFilePathUsed = objDirTemp.getAbsolutePath();
+			
+			//2. Hole den Dateipfad						
+			String sFilePathUsed = this.searchFileConfigIniPathByAlias(objIni, sAlias);
+			//Mache ruhig eine Überprüfung. Bei einem Leerstring wird nämlich normalerweise das Root zurückgegeben.
+			if(StringZZZ.isEmpty(sFilePathUsed)){											
+				ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null or Empty. PLUS: BaseDirectory not found.", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 			
 			//3. Mache das neue Ini-Objekt
 			String sPathTotalToUse = sFilePathUsed + File.separator + sFileNameUsed;
@@ -659,34 +629,25 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					
 					
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++
-					//1. Hole den Dateinamen
+					//FEHLERMARKER
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++
 					
-					FEHLERMARKER
-					IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(sAlias,"KernelConfigFile");					
-					if(!objEntryFileName.hasAnyValue()){											
-							ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-					}
-					String sFileName = objEntryFileName.getValue();
-					
-					//2. Hole den Dateipfad
-					IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");	
-					String sFilePath = null;
-					if(!objEntryFilePath.hasAnyValue()){
-						//Merke: Wenn das NULL ist, dann wird intern der Projektroot verwendet. Auf gar keinen Fall Leerstring setzen. Das wäre der Src-Ordner.
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": KernelConfigPath für den Alias '" + sAlias + "' ist Null. Erwarte die Datei im Projektordner.");
-//						File objDirProject = FileEasyZZZ.searchDirectory(null);
-//						sFilePath = objDirProject.getAbsolutePath();
-						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+					//1. Hole den Dateinamen										
+					String sFileName = this.searchFileConfigIniNameByAlias(objIni, sAlias);
+					if(StringZZZ.isEmpty(sFileName)){											
+						ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
-					}if(objEntryFilePath.hasNullValue()){
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": KernelConfigPath für den Alias '" + sAlias + "' ist ABSICHTLICH NULL. Erwarte die Datei im Projektordner.");
-						File objDirProject = FileEasyZZZ.searchDirectory(null);
-						sFilePath = objDirProject.getAbsolutePath();			
-					}else{
-						sFilePath=objEntryFilePath.getValue();
 					}
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++			
+														
+					//2. Hole den Dateipfad	
+					String sFilePath = this.searchFileConfigIniPathByAlias(objIni, sAlias);
+					if(StringZZZ.isEmpty(sFilePath)){											
+						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null or Empty. PLUS: BaseDirectory not found.", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+														
+					//++++++++++++++++++++++++++++++++++++++++++++++++++++	
+					//3. Neues FileIniZZZ Objekt erstellen, ggfs.
 					if(this.objFileIniKernelConfig==null){												
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
 						FileIniZZZ exDummy = new FileIniZZZ();					
@@ -720,6 +681,97 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					
 				}//end main:
 		return objReturn;
+	}
+		
+	public String searchFileConfigIniNameByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ {
+		String sReturn="";
+		main:{
+			check:{
+				if(objIni == null) {
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'inifile'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				if(sAlias == null){							
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				if(sAlias.equals("")){							
+					ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}						
+			}//end check:
+		
+			IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile");					
+			if(!objEntryFileName.hasAnyValue()){											
+				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
+				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
+				//Der PropertyName sollte aber über alle Systeme gleich sein.
+				//DAHER DARF KEINE PROPERTY DEN "!SYSTEMNUMBER" IM NAMEN HABEN. 
+				//ABER DER APPLICATIONKEY IST ERLAUBT
+				
+				String sApplicationKey = this.getApplicationKey();
+				objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigFile"+sApplicationKey);
+				if(!objEntryFileName.hasAnyValue()){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein Dateiname konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
+					break main;
+				}
+			}
+			sReturn = objEntryFileName.getValue();
+		}//end main:		
+		return sReturn;
+	}
+	
+	public String searchFileConfigIniPathByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ {
+		String sReturn="";
+		main:{
+			check:{
+				if(sAlias == null){							
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				if(sAlias.equals("")){							
+					ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}						
+			}//end check:
+		
+			String sFilePathUsed = null;
+			IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath");
+			if(!objEntryFilePath.hasAnyValue()){
+				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
+				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
+				//Der PropertyName sollte aber über alle Systeme gleich sein.
+				//DAHER DARF KEINE PROPERTY DEN "!SYSTEMNUMBER" IM NAMEN HABEN. 
+				//ABER DER APPLICATIONKEY IST ERLAUBT
+								
+				String sApplicationKey = this.getApplicationKey();
+				objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,"KernelConfigPath"+sApplicationKey);
+				if(!objEntryFilePath.hasAnyValue()){						
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein DateiPfad konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
+					//break main; Auch mit leerem Dateipfad weitermachen....
+				}else if(objEntryFilePath.hasNullValue()){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+": KernelConfigPath für den Alias '" + sAlias + "' ist ABSICHTLICH NULL. Erwarte die Datei im Projektordner.");
+					File objDirProject = FileEasyZZZ.searchDirectory(null);
+					sFilePathUsed = objDirProject.getAbsolutePath();
+				}else{						
+					sFilePathUsed = objEntryFilePath.getValue();
+				}
+			}else {
+				sFilePathUsed = objEntryFilePath.getValue();
+			}
+			
+			//NEIN, Weitermachen if(StringZZZ.isEmpty(sFilePathUsed)) break main;
+			File objDirTemp = FileEasyZZZ.searchDirectory(sFilePathUsed);
+			if(objDirTemp==null){
+				String sLog = "Dirctory with name '" + sFilePathUsed + "' not found.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				ExceptionZZZ ez  = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_VALUE, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			sReturn = objDirTemp.getAbsolutePath();
+		}//end main:
+		
+		return sReturn;
 	}
 	
 	/** File[], returns all files of a directory, which matches the Kernel File Filter
@@ -795,7 +847,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						//2. Hole den Dateipfad
 						//String sFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");
 						IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");
-						if(!objEntryFilePath.hasAnyValue()) break main;
+						//Auch wenn der Dateipfad nicht gepflegt ist weiterarbeiten. Es wird dann ein Standard genommen. if(!objEntryFilePath.hasAnyValue()) break main;
 						String sFilePath = objEntryFilePath.getValue();
 						
 						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen*/					
@@ -930,6 +982,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}//end main:
 		return objReturn;		
 	}
+		
 	
 	/** Heuristische Lösung. 
 	 *  Funktioniert so im Vergleich "Webservice" vs. "Swing Standalone in Eclipse"
@@ -1000,7 +1053,36 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				break main;
 			}
 				
-			//2a. Versuch: Speziel für das System konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
+			//2.1a. Versuch: Speziel für das System konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
+			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
+			sSection = this.getSystemKey();		
+			sPropertyUsed = sProperty;
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
+			sValueFound =objIni.getValue(sSection,sPropertyUsed);
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						//this.setValueRaw(sReturnRaw);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
+					}else{
+						//this.setValueRaw(null);
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
+					}
+				}
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
+				break main;
+			}
+			
+			//2.1b. Versuch: Speziel für das System konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
 			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
 			sSection = this.getSystemKey();		
 			sPropertyUsed = sProperty + sAlias;
@@ -1029,7 +1111,34 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				break main;
 			}
 			
-			//2b. Versuch: Global für die Applikation konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
+			//2.2a. Versuch: Global für die Applikation konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
+			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
+			sSection = this.getApplicationKey();		
+			sPropertyUsed = sProperty;
+			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sPropertyUsed + "'");
+			hmDebug.put(sSection, sPropertyUsed);
+			sValueFound =objIni.getValue(sSection,sPropertyUsed);	
+			if(!StringZZZ.isEmpty(sValueFound)) {		
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
+				if(this.getFlag("useFormula")==true){
+					String sReturnRaw = sValueFound;
+					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
+						objReturn.setRaw(sReturnRaw);
+						objReturn.isExpression(true);
+					}else{				
+						objReturn.setRaw(null);
+						objReturn.isExpression(false);
+					}
+				}
+				objReturn.setSection(sSection);
+				objReturn.setProperty(sPropertyUsed);
+				objReturn.setValue(sValueFound);
+				break main;
+			}
+			
+			//2.2b. Versuch: Global für die Applikation konfiguriert, mit dem Modulnamen (der dann ggfs. einer Klasse und deren Package entspricht)
 			//                                                                         also z.B. KernelConfigFilebasic.zBasic.util.log.ReportLogZZZ
 			sSection = this.getApplicationKey();		
 			sPropertyUsed = sProperty + sAlias;
