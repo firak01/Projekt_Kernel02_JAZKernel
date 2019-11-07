@@ -15,12 +15,14 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zKernel.config.IEnumSetKernelConfigDefaultEntryZZZ;
 
 public class EnumSetUtilZZZ extends ObjectZZZ{
-	private EnumSet<?> enumSetCurrent=null;
-	private IEnumSetFactoryZZZ objEnumSetFactory=null;
+	protected EnumSet<?> enumSetCurrent=null;
+	protected IEnumSetFactoryZZZ objEnumSetFactory=null;
 	
 	public EnumSetUtilZZZ(){		
 	}
@@ -415,10 +417,107 @@ public class EnumSetUtilZZZ extends ObjectZZZ{
 		    return intReturn;
 		}
 		
+		//#############################
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public static Integer readEnumConstant_IndexValue(Class<IEnumSetZZZ> clazz, String name) {
+			Integer intValue = null;
+			main:{
+		    if (clazz==null || name==null || name.isEmpty()) break main;
+		  
+		    
+		    IEnumSetZZZ[] enumaSetMapped = clazz.getEnumConstants();
+		    if(enumaSetMapped==null) break main; //Das ist der Fall, wenn es isch um die übergebene Klasse nicht um eine Enumeration handelt
+		    
+			for(IEnumSetZZZ driver : enumaSetMapped) {
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
+				
+				  if(driver.getName().equals(name)){
+					 int iValue = driver.getIndex();
+					intValue = new Integer(iValue);
+				  }
+		
+			}//end for
+			}//end main:
+			return intValue;
+		}
 		
 		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public static Integer readEnumConstant_PositionValue(Class<IEnumSetZZZ> clazz, String name) {
+			Integer intValue = null;
+			main:{
+		    if (clazz==null || name==null || name.isEmpty()) break main;
+		  
+		    
+		    IEnumSetZZZ[] enumaSetMapped = clazz.getEnumConstants();
+		    if(enumaSetMapped==null) break main; //Das ist der Fall, wenn es isch um die übergebene Klasse nicht um eine Enumeration handelt
+		    
+			for(IEnumSetZZZ driver : enumaSetMapped) {
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
+				
+				  if(driver.getName().equals(name)){
+					 int iValue = driver.getPosition();
+					intValue = new Integer(iValue);
+				  }
+		
+			}//end for
+			}//end main:
+			return intValue;
+		}
+		
+		
+		public static boolean startsWithAnyAlias(String sToFind, EnumSet<?> setEnumCurrent){
+			boolean bReturn = false;
+			main:{
+				if(setEnumCurrent==null) break main; 			
+				
+				@SuppressWarnings("unchecked")
+				Set<IEnumSetZZZ> drivers = (Set<IEnumSetZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
+			    
+				for(IEnumSetZZZ driver : drivers) {
+//				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
+//				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
+//				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
+					
+					
+					if(!StringZZZ.isEmpty(driver.getName())){
+						if(StringZZZ.startsWithIgnoreCase(driver.getName(),sToFind)){
+						  bReturn = true;
+						  break;
+					  }
+				  }
+				}
+			}
+			return bReturn;
+		}
 	
-		
+		public static IEnumSetZZZ startsWithAnyAlias_EnumMappedObject(String sToFind, EnumSet<?> setEnumCurrent){
+			IEnumSetZZZ objReturn = null;
+			main:{
+				if(setEnumCurrent==null) break main; 
+				
+				@SuppressWarnings("unchecked")
+				Set<IEnumSetZZZ> drivers = (Set<IEnumSetZZZ>) setEnumCurrent;//..allOf(JdbcDriverClassTypeZZZ.class);
+				for(IEnumSetZZZ driver : drivers) {
+//				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
+//				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
+//				  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
+					
+					
+					if(!StringZZZ.isEmpty(driver.getName())){
+						if(StringZZZ.startsWithIgnoreCase(sToFind, driver.getName())){
+						  objReturn = driver;
+						  break;
+					  }
+				  }
+				}
+			}
+			return objReturn;
+		}
 	
 		
 		

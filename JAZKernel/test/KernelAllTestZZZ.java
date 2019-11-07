@@ -32,6 +32,7 @@ import basic.zKernel.KernelPropertyZZZTest;
 import basic.zKernel.KernelUseObjectZZZTest;
 import basic.zKernel.KernelZZZTest;
 import basic.zKernel.LogZZZTest;
+import basic.zKernel.config.EnumSetKernelConfigDefaultEntryUtilZZZTest;
 import basic.zKernel.file.ini.FileIniZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZTest;
 import basic.zUtil.io.FileZZZTest;
@@ -84,6 +85,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(KernelZZZTest.class);
 		objReturn.addTestSuite(KernelUseObjectZZZTest.class);
 		objReturn.addTestSuite(LogZZZTest.class);
+		objReturn.addTestSuite(EnumSetKernelConfigDefaultEntryUtilZZZTest.class);
 		objReturn.addTestSuite(FileTextParserZZZTest.class);
 		objReturn.addTestSuite(FileIniZZZTest.class);
 		objReturn.addTestSuite(KernelExpressionIniSolverZZZTest.class);

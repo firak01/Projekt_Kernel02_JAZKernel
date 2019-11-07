@@ -141,5 +141,10 @@ public String getDescription(){
 public int getIndex() {
 	return ordinal();
 }
+
+@Override
+public String getName() {	
+	return name();
+}
 	
 }

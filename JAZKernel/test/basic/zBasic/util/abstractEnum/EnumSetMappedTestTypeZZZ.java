@@ -167,6 +167,11 @@ public int getPosition() {
 	return getIndex() + 1;
 }
 
+@Override
+public String getName() {	
+	return name();
+}
+
 
 
 

@@ -7,7 +7,7 @@ import basic.zBasic.IFlagZZZ;
  * @author lindhauer
  *
  */
-public interface IKernelConfigZZZ extends IFlagZZZ{
+public interface IKernelConfigZZZ extends IFlagZZZ,IKernelConfigConstantZZZ{
 	/**Falls Kein entsprechender Parameter in der Kommandozeile übergeben worden ist, so wird der hier definierte Wert verwendet für den Initialisierung des Kernels
 	* @return
 	* 
