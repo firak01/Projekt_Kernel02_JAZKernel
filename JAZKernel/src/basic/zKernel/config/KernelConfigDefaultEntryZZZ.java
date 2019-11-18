@@ -56,11 +56,14 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	//#######################################################
 	public enum EnumConfigDefaultEntryZZZ implements IEnumSetKernelConfigDefaultEntryZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 		
-	   	 //@IFieldDescription(description = "DTXT01 TEXTVALUES") 
-	   	 T01(1,"KernelConfigPath","<zNull/>","The default path of the configuration"),
+		//Merke1: Die Defaultwerte in der Kernel-Konfiguration richten sich nach den in der INI-Konfiguration verwedendeten Werten.
+		//        z.B. KernelExpressionIni_NullZZZ liefert <z:Null> als Tag.
+		//Merke2: In den Testklassen wird aber als Pfad verwendet: test
+	    //@IFieldDescription(description = "DTXT01 TEXTVALUES") 
+	   	T01(1,"KernelConfigPath","<z:Null/>","The default path of the configuration"),
 	   	
-		  //@IFieldDescription(description = "DTXT02 TEXTVALUES") 
-		  T02(2,"KernelConfigFile","", "The default filename of the configuration");
+		//@IFieldDescription(description = "DTXT02 TEXTVALUES") 
+		T02(2,"KernelConfigFile","ZKernelConfigKernel_test.ini", "The default filename of the configuration");
    	   	
 		private int iId;
 		private String sProperty;
@@ -159,7 +162,7 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 
    	  //##################################################
 	  //#### Folgende Methoden bring Enumeration von Hause aus mit. 
-   			//Merke: Diese Methoden können nicht in eine abstrakte verschoben werden, zum extenden. Grund: Enum erweitert schon eine Klasse.
+   			//Merke: Diese Methoden können aber nicht in eine abstrakte Klasse verschoben werden, zum daraus Erben. Grund: Enum erweitert schon eine Klasse.
 	   public String getName(){
 		   return super.name();
 	   }

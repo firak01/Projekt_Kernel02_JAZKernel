@@ -169,7 +169,7 @@ public int getPosition() {
 
 @Override
 public String getName() {	
-	return name();
+	return name;
 }
 
 

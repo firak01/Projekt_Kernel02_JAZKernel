@@ -416,7 +416,7 @@ public class EnumSetUtilZZZ extends ObjectZZZ{
 		    Integer intReturn = new Integer(iReturn);
 		    return intReturn;
 		}
-		
+								
 		//#############################
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static Integer readEnumConstant_IndexValue(Class<IEnumSetZZZ> clazz, String name) {
@@ -443,7 +443,7 @@ public class EnumSetUtilZZZ extends ObjectZZZ{
 			return intValue;
 		}
 		
-		
+				
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static Integer readEnumConstant_PositionValue(Class<IEnumSetZZZ> clazz, String name) {
 			Integer intValue = null;
