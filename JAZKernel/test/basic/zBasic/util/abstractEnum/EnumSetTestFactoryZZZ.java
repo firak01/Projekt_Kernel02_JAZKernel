@@ -64,23 +64,21 @@ private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein,
 			//Merke: Switch Anweisung mit String ist erst ab Java 1.7 möglich			
 			if (sClassNameEnum.equals("basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ")){
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
-	        	//out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
-				String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
-				System.out.print(sInfo);
+//				String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
+//				System.out.print(sInfo);
 	        	objEnumSetReturn= EnumSetMappedTestTypeZZZ.getEnumSet();    
 	        	
-	        	//TODO: Dieser Typ ist im THM-Projekt definiert. Das darf aber im Kernel nicht eingebunden werden
-	        	//TODO: Den Typen auch im Kernel einbauen.
 //			}else if(sClassNameEnum.equals("basic.zBasic.util.abstractEnum.EnumSetDefaulttextTestTypeZZZ")){
-//				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
-//	        	out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
-//	        	objEnumSetReturn= EnumSetDefaulttextTestTypeZZZ.getEnumSet();     
+	        	//Beispiel für weiteren Enum-Typen im Projekt.
+	        	//Merke: Dieser Typ ist im THM-Projekt definiert. Das darf aber im Kernel nicht eingebunden werden, implementiert er doch IEnumSetTextTHM
+				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
+	        	//out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
+	        	//objEnumSetReturn= EnumSetDefaulttextTestTypeZZZ.getEnumSet();     
 	        }else if (sClassNameEnum.equals("basic.zKernel.config.KernelConfigDefaultEntryZZZ$EnumConfigDefaultEntryZZZ")) {//beachte: Innere Klasse, mit $ getrennt.
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
-	        	String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
-				System.out.print(sInfo);	        	
-	        	objEnumSetReturn= KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ.getEnumSet();    
-	        		        	
+//	        	String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
+//				System.out.print(sInfo);	        	
+	        	objEnumSetReturn= KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ.getEnumSet();    	        		        
 			}else{
 	        	//Wenn es die Klasse nicht gibt. Keinen Fehler werfen, da ggfs. über einen Vererbungsmechanismus ja zuerst in der Superklasse nachgesehen wurde und dann ggfs. weiter in Kindklassen gesucht wird.
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
