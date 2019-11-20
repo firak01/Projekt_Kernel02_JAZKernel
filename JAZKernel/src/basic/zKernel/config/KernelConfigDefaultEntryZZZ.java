@@ -40,7 +40,7 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	}
 	
 	//### Statische Methode (um einfacher darauf zugreifen zu können)
-    public static Class getThiskeyEnumClassStatic(){
+    public static Class getEnumClassStatic(){
     	try{
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Diese Methode muss in den daraus erbenden Klassen überschrieben werden.");
     	}catch(ExceptionZZZ ez){

@@ -69,11 +69,26 @@ public class EnumSetFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ {
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 				out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
 				objEnumSetReturn= JdbcDriverClassTypeZZZ.getEnumSet();             
-	        }else{
-	        	//Wenn es die Klasse nicht gibt. Keinen Fehler werfen, da ggfs. über einen Vererbungsmechanismus ja zuerst in der Superklasse nachgesehen wurde und dann ggfs. weiter in Kindklassen gesucht wird.
+	        }else{	        	     	
+	          	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
+	        	//out.format("%s# sClassNameEnum wird hier NICHT gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
+				//String sError = out.toString(); //geht nicht, der Stream ist schon längst zuende
+				
+				//Lösung ist:
+//				StringBuilder sbuf = new StringBuilder();
+//				Formatter fmt = new Formatter(sbuf);
+//				//Beispiel fmt.format("PI = %f%n", Math.PI);
+//				fmt.format(": %1$s # als sClassNameEnum wird hier NICHT gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
+//				String sError=sbuf.toString();
+				
+				//Oder noch kürzere Lösung ist:
+				String sError = String.format("%1$s # als sClassNameEnum wird hier NICHT gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
+				System.out.print(sError);	
+				
+				//Wenn es die Klasse nicht gibt. Keinen Fehler werfen, da ggfs. über einen Vererbungsmechanismus ja zuerst in der Superklasse nachgesehen wurde und dann ggfs. weiter in Kindklassen gesucht wird.
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
-	        	out.format("%s# sClassNameEnum wird hier NICHT gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
-	        	objEnumSetReturn=null;
+//	        	ExceptionZZZ ez  = new ExceptionZZZ(": " + sError, iERROR_PARAMETER_MISSING, this.getClass().getName(), ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
 	        }
 		
 	}//end main:
