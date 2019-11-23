@@ -9,9 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ;
-import basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ;
-import basic.zKernel.KernelZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 
 public class EnumSetTestFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ{
@@ -22,7 +20,7 @@ private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein,
 	 * @param objKernel
 	 * @throws ExceptionZZZ
 	 */
-	private EnumSetTestFactoryZZZ(KernelZZZ objKernel) throws ExceptionZZZ{
+	private EnumSetTestFactoryZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
 	}
 	private EnumSetTestFactoryZZZ(){

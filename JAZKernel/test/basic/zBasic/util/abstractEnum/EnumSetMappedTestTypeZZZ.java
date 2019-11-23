@@ -9,7 +9,6 @@ import java.util.EnumSet;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ;
 
 /*
 Properties that are database specific are:

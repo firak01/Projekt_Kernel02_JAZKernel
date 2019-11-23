@@ -9,10 +9,11 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ;
-import basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ;
+import basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ;
+import basic.zBasic.util.persistence.jdbc.JdbcDriverMappedValueZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 
 public class EnumSetFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ {
 	private static EnumSetFactoryZZZ objEnumFactory = null;  //muss static sein, wg. getInstance()!!!
@@ -61,14 +62,25 @@ public class EnumSetFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ {
 			}
 			
 			//Merke: Switch Anweisung mit String ist erst ab Java 1.7 möglich			
-			if (sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ")){
+			if (sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ$JdbcDatabaseTypeZZZ")){
+			//if (sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ")){
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 	        	out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
-	        	objEnumSetReturn= JdbcDatabaseTypeZZZ.getEnumSet();     
-			}else if(sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ")){	  
+	        	//objEnumSetReturn= JdbcDatabaseTypeZZZ.getEnumSet();     
+	        	objEnumSetReturn= JdbcDatabaseMappedValueZZZ.JdbcDatabaseTypeZZZ.getEnumSet();
+			}else if(sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDriverMappedValueZZZ$JdbcDriverClassTypeZZZ")){
+		 //}else if(sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ")){
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 				out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
-				objEnumSetReturn= JdbcDriverClassTypeZZZ.getEnumSet();             
+				//objEnumSetReturn= JdbcDriverClassTypeZZZ.getEnumSet();
+				objEnumSetReturn= JdbcDriverMappedValueZZZ.JdbcDriverClassTypeZZZ.getEnumSet();				
+				
+		   }else if (sClassNameEnum.equals("basic.zKernel.config.KernelConfigDefaultEntryZZZ$EnumConfigDefaultEntryZZZ")) {//beachte: Innere Klasse, mit $ getrennt.
+	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
+//		        	String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
+//					System.out.print(sInfo);	        	
+	        	objEnumSetReturn= KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ.getEnumSet();
+	        	
 	        }else{	        	     	
 	          	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 	        	//out.format("%s# sClassNameEnum wird hier NICHT gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);

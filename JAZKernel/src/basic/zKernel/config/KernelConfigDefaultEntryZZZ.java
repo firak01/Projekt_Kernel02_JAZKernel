@@ -73,6 +73,10 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 		//#############################################
 		//#### Konstruktoren
 	   //Merke: Enums haben keinen public Konstruktor, können also nicht instantiiert werden, z.B. durch Java-Reflektion.
+		//In der Util-Klasse habe ich aber einen Workaround gefunden.  ( basic/zBasic/util/abstractEnum/EnumSetMappedUtilZZZ.java ).
+		   EnumConfigDefaultEntryZZZ(){	
+		   }
+		   
 	   EnumConfigDefaultEntryZZZ(int iId, String sProperty, String sValueDefault, String sDescription){
 	       this.iId = iId;
 	       this.sProperty = sProperty;
@@ -80,10 +84,6 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	       this.sDescription = sDescription;
 	   }
 	   	   
-	   //Merke: Enums haben keinen public Konstruktor, können also nicht instantiiert werden, z.B. durch Java-Reflektion.
-	   //           In der Util-Klasse habe ich aber einen Workaround gefunden ( basic/zBasic/util/abstractEnum/EnumSetMappedUtilZZZ.java ).
-	   EnumConfigDefaultEntryZZZ(){	
-	   }
 
    //##################################################
    //#### Folgende Methoden holen die definierten Werte.
@@ -112,17 +112,7 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 //	public Long getThiskey() {
 //		return this.lKey;
 //	}
-
 	
-   // the valueOfMethod <--- Translating from DB
-   public static EnumConfigDefaultEntryZZZ fromShorttext(String s) {
-       for (EnumConfigDefaultEntryZZZ state : values()) {
-           if (s.equals(state.getConfigProperty()))
-               return state;
-       }
-       throw new IllegalArgumentException("Not a correct shorttext: " + s);
-   }
-
    @Override
    public EnumSet<?>getEnumSetUsed(){
    	return EnumConfigDefaultEntryZZZ.getEnumSet();
@@ -159,6 +149,16 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
    	  }
    	  return set;
    	}
+   
+ //+++ Das könnte auch in einer Utility-Klasse sein.
+   // the valueOfMethod <--- Translating from DB
+   public static EnumConfigDefaultEntryZZZ fromShorttext(String s) {
+       for (EnumConfigDefaultEntryZZZ state : values()) {
+           if (s.equals(state.getConfigProperty()))
+               return state;
+       }
+       throw new IllegalArgumentException("Not a correct shorttext: " + s);
+   }
 
    	  //##################################################
 	  //#### Folgende Methoden bring Enumeration von Hause aus mit. 
@@ -172,13 +172,15 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	       return this.sProperty+"="+this.sValueDefault+"#"+this.iId + " "+ this.sDescription;
 	   }
 
+	   @Override
 	   public int getIndex() {
 	   	return ordinal();
 	   }
 	   
-	   //### Folgende Methoden sind zum komfortablen arbeiten gedacht.
+	   //### Folgende Methoden sind zum komfortablen Arbeiten gedacht.
+	   @Override
 	   public int getPosition() {
-	   	return getIndex() + 1;
+	   		return getIndex() + 1;
 	   }
    }//End inner classs
 	
