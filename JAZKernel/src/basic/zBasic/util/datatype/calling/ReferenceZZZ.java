@@ -16,8 +16,11 @@ package basic.zBasic.util.datatype.calling;
  *       
  */
 public class ReferenceZZZ<T> {
-    private T referent;
+    private T referent=null;
 
+    public ReferenceZZZ() {    	
+    }
+    
     public ReferenceZZZ(T initialValue) {
        referent = initialValue;
     }
