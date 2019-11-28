@@ -1,8 +1,8 @@
 package basic.zKernel;
 
 public interface IKernelConfigConstantZZZ {
-	public final static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
-	FEHLERMARKER
 	//Zum Auslesen der Konfigurationseinträge in der INI-Datei
-	public final static String iConfig="c:\\fglkernel\\kernelconfig";
+	//Merke: Dies wird in KernelConfigDefaultEntryZZZ, in der Enumeration ggfs. verwendet.
+	public final static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
+	public final static String sFILE_CONFIG_DEFAULT="ZKernelConfigKernel.ini";
 }

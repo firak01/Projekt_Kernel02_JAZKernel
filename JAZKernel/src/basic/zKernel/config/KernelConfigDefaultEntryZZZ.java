@@ -4,8 +4,9 @@ import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zKernel.IKernelConfigConstantZZZ;
 
-public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZZZ>{
+public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZZZ> implements IKernelConfigConstantZZZ{
 	private int iId;
 	private String sProperty;
 	private String sValueDefault;
@@ -63,7 +64,7 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	   	T01(1,"KernelConfigPath","<z:Null/>","The default path of the configuration"),
 	   	
 		//@IFieldDescription(description = "DTXT02 TEXTVALUES") 
-		T02(2,"KernelConfigFile","ZKernelConfigKernel_test.ini", "The default filename of the configuration");
+		T02(2,"KernelConfigFile",KernelConfigDefaultEntryZZZ.sFILE_CONFIG_DEFAULT, "The default filename of the configuration");
    	   	
 		private int iId;
 		private String sProperty;

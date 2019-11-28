@@ -135,7 +135,7 @@ public class EnumSetKernelConfigDefaultEntryUtilZZZTest  extends TestCase{
 				//+++ ValueDefault By Property
 				String sProperty = enumSetUtil.readEnumConstant_DefaultValueByProperty("KernelConfigFile");
 				assertNotNull(intIndex);
-				assertEquals("ZKernelConfigKernel_test.ini",sProperty);
+				assertEquals("ZKernelConfigKernel.ini",sProperty);
 				
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
