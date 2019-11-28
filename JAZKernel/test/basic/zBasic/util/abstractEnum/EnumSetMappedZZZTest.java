@@ -8,7 +8,6 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ;
 import basic.zBasic.util.persistence.jdbc.UrlLogicZZZ;
 
 public class EnumSetMappedZZZTest extends TestCase{

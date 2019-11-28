@@ -193,7 +193,7 @@ public class FileIniZZZTest extends TestCase {
 		try {
 			//Erst testen, dass auch kein Leerwert kommt
 			String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
-			assertFalse("An empty entry was not expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
+			assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
 			
 			//nun den Wert testen, wie er im setup definiert wurde
 			assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());

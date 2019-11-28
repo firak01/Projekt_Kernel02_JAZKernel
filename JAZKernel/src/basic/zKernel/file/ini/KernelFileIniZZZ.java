@@ -17,6 +17,7 @@ import java.util.Set;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -30,6 +31,7 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -304,48 +306,28 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			objReturn.setRaw(sReturnRaw);
 			objReturn.setValue(sReturnRaw);
 			
-			//20070306 dieser Wert kann ggf. eine Formel sein, die sich auf eine andere Section bezieht. Darum:
-			String sReturnFormula = sReturnRaw;
-			if(this.getFlag("useFormula")==true){
-				boolean bAnyFormula = false;
-				while(KernelExpressionIniSolverZZZ.isExpression(sReturnFormula)){//Schrittweise die Formel auflösen.
-					bAnyFormula = true;
-					
-					//20180711: Die Flags an das neue Objekt der Klasse vererben
-					KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
-					String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
-															
-					//20180726: Damit mit Variablen gerechnet werden kann, hier die Hashmap übergeben.
-					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ((FileIniZZZ)this, hmVariable, saFlagZpassed);
-					String stemp = ex.compute(sReturnFormula);
-					if(!StringZZZ.equals(stemp,sReturnFormula)){
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sReturnFormula + "' nach '" + stemp +"'");
-					}					
-					sReturnFormula=stemp;//Sonst Endlosschleife.
-				}
-				if(bAnyFormula){
-					objReturn.setValue(sReturnFormula);
-				}
-				objReturn.isFormula(bAnyFormula);
-				
-				
-				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
-				//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
-				boolean bAnyExpression = false;
-				String sReturnExpression = sReturnFormula;
-				String stemp = KernelExpressionIniConverterZZZ.getAsString(sReturnExpression);
-				if(!StringZZZ.equals(stemp,sReturnExpression)){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnExpression + "' nach '" + stemp +"'");
-					bAnyExpression = true;						
-				}					
-				if(bAnyExpression){
-					objReturn.setValue(sReturnExpression);
-				}
-				objReturn.isExpression(bAnyExpression);
-			}else{
-				objReturn.setValue(sReturnRaw);
-			}						
+			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
+			boolean bUseFormula = this.getFlag("useFormula");
+			KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
+			String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
+			HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+			
+			//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+			ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
+			ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
+			ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
+			boolean bAnyExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ)this, sReturnRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
+			//++++ usw. das Ergebnis als String in objReturn packen.
+			String sReturnFormula = objsReturnValueExpressionSolved.get();			
+			if(sReturnFormula!=null) {
+				objReturn.isFormula(true);
+			}
+			String sReturnExpression = objsReturnValueConverted.get();
+			if(sReturnExpression!=null) {
+				objReturn.isExpression(true);
+			}
+			String sReturnValue = objsReturnValue.get();
+			objReturn.setValue(sReturnValue);			
 		}//end main:
 		return objReturn;
 	}//end function

@@ -40,7 +40,7 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	}
 	
 	//### Statische Methode (um einfacher darauf zugreifen zu können)
-    public static Class getThiskeyEnumClassStatic(){
+    public static Class getEnumClassStatic(){
     	try{
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Diese Methode muss in den daraus erbenden Klassen überschrieben werden.");
     	}catch(ExceptionZZZ ez){
@@ -56,11 +56,14 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	//#######################################################
 	public enum EnumConfigDefaultEntryZZZ implements IEnumSetKernelConfigDefaultEntryZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 		
-	   	 //@IFieldDescription(description = "DTXT01 TEXTVALUES") 
-	   	 T01(1,"KernelConfigPath","<zNull/>","The default path of the configuration"),
+		//Merke1: Die Defaultwerte in der Kernel-Konfiguration richten sich nach den in der INI-Konfiguration verwedendeten Werten.
+		//        z.B. KernelExpressionIni_NullZZZ liefert <z:Null> als Tag.
+		//Merke2: In den Testklassen wird aber als Pfad verwendet: test
+	    //@IFieldDescription(description = "DTXT01 TEXTVALUES") 
+	   	T01(1,"KernelConfigPath","<z:Null/>","The default path of the configuration"),
 	   	
-		  //@IFieldDescription(description = "DTXT02 TEXTVALUES") 
-		  T02(2,"KernelConfigFile","", "The default filename of the configuration");
+		//@IFieldDescription(description = "DTXT02 TEXTVALUES") 
+		T02(2,"KernelConfigFile","ZKernelConfigKernel_test.ini", "The default filename of the configuration");
    	   	
 		private int iId;
 		private String sProperty;
@@ -70,6 +73,10 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 		//#############################################
 		//#### Konstruktoren
 	   //Merke: Enums haben keinen public Konstruktor, können also nicht instantiiert werden, z.B. durch Java-Reflektion.
+		//In der Util-Klasse habe ich aber einen Workaround gefunden.  ( basic/zBasic/util/abstractEnum/EnumSetMappedUtilZZZ.java ).
+		   EnumConfigDefaultEntryZZZ(){	
+		   }
+		   
 	   EnumConfigDefaultEntryZZZ(int iId, String sProperty, String sValueDefault, String sDescription){
 	       this.iId = iId;
 	       this.sProperty = sProperty;
@@ -77,10 +84,6 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	       this.sDescription = sDescription;
 	   }
 	   	   
-	   //Merke: Enums haben keinen public Konstruktor, können also nicht instantiiert werden, z.B. durch Java-Reflektion.
-	   //           In der Util-Klasse habe ich aber einen Workaround gefunden ( basic/zBasic/util/abstractEnum/EnumSetMappedUtilZZZ.java ).
-	   EnumConfigDefaultEntryZZZ(){	
-	   }
 
    //##################################################
    //#### Folgende Methoden holen die definierten Werte.
@@ -109,17 +112,7 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 //	public Long getThiskey() {
 //		return this.lKey;
 //	}
-
 	
-   // the valueOfMethod <--- Translating from DB
-   public static EnumConfigDefaultEntryZZZ fromShorttext(String s) {
-       for (EnumConfigDefaultEntryZZZ state : values()) {
-           if (s.equals(state.getConfigProperty()))
-               return state;
-       }
-       throw new IllegalArgumentException("Not a correct shorttext: " + s);
-   }
-
    @Override
    public EnumSet<?>getEnumSetUsed(){
    	return EnumConfigDefaultEntryZZZ.getEnumSet();
@@ -156,10 +149,20 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
    	  }
    	  return set;
    	}
+   
+ //+++ Das könnte auch in einer Utility-Klasse sein.
+   // the valueOfMethod <--- Translating from DB
+   public static EnumConfigDefaultEntryZZZ fromShorttext(String s) {
+       for (EnumConfigDefaultEntryZZZ state : values()) {
+           if (s.equals(state.getConfigProperty()))
+               return state;
+       }
+       throw new IllegalArgumentException("Not a correct shorttext: " + s);
+   }
 
    	  //##################################################
 	  //#### Folgende Methoden bring Enumeration von Hause aus mit. 
-   			//Merke: Diese Methoden können nicht in eine abstrakte verschoben werden, zum extenden. Grund: Enum erweitert schon eine Klasse.
+   			//Merke: Diese Methoden können aber nicht in eine abstrakte Klasse verschoben werden, zum daraus Erben. Grund: Enum erweitert schon eine Klasse.
 	   public String getName(){
 		   return super.name();
 	   }
@@ -169,13 +172,15 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 	       return this.sProperty+"="+this.sValueDefault+"#"+this.iId + " "+ this.sDescription;
 	   }
 
+	   @Override
 	   public int getIndex() {
 	   	return ordinal();
 	   }
 	   
-	   //### Folgende Methoden sind zum komfortablen arbeiten gedacht.
+	   //### Folgende Methoden sind zum komfortablen Arbeiten gedacht.
+	   @Override
 	   public int getPosition() {
-	   	return getIndex() + 1;
+	   		return getIndex() + 1;
 	   }
    }//End inner classs
 	
