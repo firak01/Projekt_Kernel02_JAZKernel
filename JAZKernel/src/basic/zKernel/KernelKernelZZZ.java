@@ -3563,17 +3563,20 @@ MeinTestParameter=blablaErgebnis
 							throw ez;
 						}
 					}else{
-						sLog = "Directory for configuration unavailable, Config-Object not loaded, USING DEFAULTS";
+						sLog = "Directory for configuration unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
 						System.out.println(sLog);
 						
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
 						sDirectoryConfig = this.getConfigObject().getConfigDirectoryNameDefault();
 						if(sDirectoryConfig==null){
-							sLog = "Directory for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
-							System.out.println(sLog);
-							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
+//							sLog = "Directory for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+//							System.out.println(sLog);
+//							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//							throw ez;
+							
+							sLog = "Directory is null in Configuration-Object passed. Using Project - directory later.";
+							System.out.println(sLog);												
 						}
 					}										
 				}else{
@@ -3607,7 +3610,7 @@ MeinTestParameter=blablaErgebnis
 							throw ez;
 						}	
 					}else{
-						sLog = "ConfigurationFilename unavailable, Config-Object not loaded, USING DEFAULTS";
+						sLog = "ConfigurationFilename unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
 						System.out.println(sLog);
 					
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen

@@ -520,7 +520,7 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 			}
 		}
 		
-		//+++ Normafall			
+		//+++ Normalfall			
 		//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
 		if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
 			sDirectory = FileEasyZZZ.getFileRootPath();
