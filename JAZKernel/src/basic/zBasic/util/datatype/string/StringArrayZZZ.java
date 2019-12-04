@@ -11,6 +11,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.ArrayUniqueZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 /**
@@ -141,6 +142,12 @@ output:
 	public static String[] sort(Object[] saSource) throws ExceptionZZZ{
 		StringArrayZZZ saObj = new StringArrayZZZ(saSource);
 		return saObj.sort();					
+	}
+	
+	public String[] unique() throws ExceptionZZZ{
+		String[] sa = this.saIntern;
+		this.saIntern = ArrayUniqueZZZ.toUniqueArrayString(sa);
+		return this.saIntern;
 	}
 	
 	
@@ -384,7 +391,7 @@ output:
 		int iSize = MathZZZ.max(saString1.length, saString2.length);
 		objReturn = new String[iSize];
 		
-		if(sFlag.equals("BEHIND")){//MErke: Diese if-Abfrage ist aus performance-gr�nden ausserhalb der Schleife
+		if(sFlag.equals("BEHIND")){//MErke: Diese if-Abfrage ist aus performance-gründen ausserhalb der Schleife
 			for(int icount = 0; icount<=iSize-1;icount++){
 				if(saString1.length-1>=icount && saString2.length-1>= icount){
 					objReturn[icount]=saString1[icount] + saString2[icount];

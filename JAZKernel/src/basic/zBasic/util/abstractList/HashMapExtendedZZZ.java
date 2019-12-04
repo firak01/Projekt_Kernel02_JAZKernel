@@ -50,6 +50,38 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	    return null;
 	  }
 	
+	/** Versuche für das angegebene Objekt die Schlüsselwert zurückzugeben.
+	 * @param hm
+	 * @param value
+	 * @return
+	 */
+	public static Object[] getKeysFromValue(Map hm, Object value) {
+		ArrayList<Object>listasObject = new ArrayList<Object>();
+		
+	    for (Object o : hm.keySet()) {
+	      if (hm.get(o).equals(value)) {
+	        listasObject.add(o);
+	      }
+	    }
+	    return listasObject.toArray();
+	  }
+	
+	/** Versuche für das angegebene Objekt die Schlüsselwert zurückzugeben.
+	 * @param hm
+	 * @param value
+	 * @return
+	 */
+	public static String[] getKeysAsStringFromValue(Map<String,Boolean> hm, Boolean value) {
+		ArrayList<String>listasObject = new ArrayList<String>();
+		
+	    for (Object o : hm.keySet()) {
+	      if (hm.get(o).equals(value)) {
+	        listasObject.add(o.toString());
+	      }
+	    }
+	    return ArrayListZZZ.toStringArray(listasObject);
+	  }
+	
 	/** Vergleiche die Werte der in der HashMap gespeicherten Objekte. 
 	 *   Aber: Gib eine Methode an, über die die Werte der Objekte erst einmal ermittelt werden sollen.
 	 *   Die daraus reslutierenden Werte werden mit .equals() miteinander verglichen.

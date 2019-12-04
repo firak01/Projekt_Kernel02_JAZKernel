@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -24,6 +25,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAsciiFactoryZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphabetZZZ;
@@ -3448,44 +3450,69 @@ MeinTestParameter=blablaErgebnis
 				String stemp=null; boolean btemp=false; String sLog = null;
 				System.out.println("Initializing KernelObject");
 				
+				//ggf. Config Object setzen
+				this.setConfigObject(objConfig);
 				
 				//TODO GOON 20191204: Umstrukturierung:
 				//Zusätzlich zu übergebenen Flags müssen auch die Flags vom Config-Objekt übernommen werden, wenn sie vorhanden sind als Flags im KernelObjekt.
-				//Es geht dabei z.B. um "useFormula
-				FEHLERMARKER
+				//siehe die Erstellung eines FileIniZZZ Objekts in: KernelKernelZZZ.getFileConfigIniByAlias(String sAlias) throws ExceptionZZZ{
+				/*... siehe
+				 * 		//Übernimm die gesetzten FlagZ...
+						HashMap<String,Boolean>hmFlagZ = this.objFileIniKernelConfig.getHashMapFlagZ();
+						
+						//Übernimm die gesetzten Variablen...
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.objFileIniKernelConfig.getHashMapVariable();
+						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlagZ);
+						objReturn.setHashMapVariable(hmVariable);	
+						
+						//Übernimm das ggfs. veränderte ini-File Objekt
+						File objFile = this.objFileIniKernelConfig.getFileObject();
+						objReturn.setFileObject(objFile);
+				 */
 				
+				//Es geht dabei z.B. darum "useFormula" zu übergeben.												
+				String[] saFlag = null;				
+				if(objConfig!=null) {
+					//Übernimm die gesetzten FlagZ...
+					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlagZ();
+					saFlag = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
+				}
+												
+				//TODO Diese StringArrayBehandlung als static MEthoden
+				StringArrayZZZ objSA = new StringArrayZZZ(saFlag);					
+				objSA.append(saFlagControlIn, "SKIPNULL");
+				objSA.unique();
+				String[]saFlagUsed = objSA.getArray();
+								  
+				//setzen der übergebenen Flags
+				  for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
+					  stemp = saFlagUsed[iCount];
+					  if(!StringZZZ.isEmpty(stemp)){
+						  btemp = setFlag(stemp, true);
+						  if(btemp==false){
+							  sLog = "the flag '" + stemp + "' is not available.";
+							  System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+							  throw ez;		 
+						  }
+					  }
+				  }
+				if(this.getFlag("INIT")==true){
+					bReturn = true;
+					break main; 
+				}		
+				 
+				//+++++++++++++++++++++++++++++++
+				//ggfs Context Object setzen
+				this.setContextUsed(objContext);
+				  
+				//++++++++++++++++++++++++++++++++
 				String sDirectoryLog = null;
 				String sFileLog = null;
 				String sApplicationKey = null;
 				String sSystemNumber = null;
 				String sFileConfig = null;
 				String sDirectoryConfig = null;
-								
-				 //setzen der übergebenen Flags	
-				  if(saFlagControlIn != null){
-					  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						  stemp = saFlagControlIn[iCount];
-						  if(!StringZZZ.isEmpty(stemp)){
-							  btemp = setFlag(stemp, true);
-							  if(btemp==false){
-								  sLog = "the flag '" + stemp + "' is not available.";
-								  System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-								  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-								  throw ez;		 
-							  }
-						  }
-					  }
-						if(this.getFlag("INIT")==true){
-							bReturn = true;
-							break main; 
-						}		
-				  }
-			
-				//ggf. Config Object setzen
-				this.setConfigObject(objConfig);
-				this.setContextUsed(objContext);
-				  
-
 				if(!StringZZZ.isEmpty(sApplicationKeyIn)){
 					sApplicationKey = sApplicationKeyIn;
 				}else if(this.getConfigObject()==null){
