@@ -20,7 +20,12 @@ import basic.zBasic.util.file.JarEasyZZZ;
  * @author lindhauer
  * 
  */
-public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, IKernelConfigZZZ{	
+public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
+	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
+	public enum FLAGZ{
+		USEFORMULA, USEFORMULA_MATH;
+	}
+	
 	private GetOptZZZ objOpt = null;
 	private String sDirectory = null;
 	private String sFile = null;
@@ -29,36 +34,75 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	private String sPatternString = null;
 	 
 	public KernelConfigZZZ() throws ExceptionZZZ{
-		String sPattern = this.getPatternStringDefault();
-		String[] saArg = new String[8];
-		saArg[0] = "-k";
-		saArg[1] = this.getApplicationKeyDefault();
-		saArg[2] = "-s";
-		saArg[3] = this.getSystemNumberDefault();
-		saArg[4] = "-f";
-		saArg[5] = this.getConfigFileNameDefault();
-		saArg[6] = "-d";
-		saArg[7] = this.getConfigDirectoryNameDefault();
-		
-		//Das Objekt, das f�r die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
-		this.objOpt = new GetOptZZZ(sPattern, saArg);
+		ConfigNew_(null, null);
 	}
 	public KernelConfigZZZ(String[] saArg) throws ExceptionZZZ{
-	 
-		
-		//Das Argument-Array darf auch leer sein.
-		/*
-		if(saArg==null){
-			ExceptionZZZ ez = new ExceptionZZZ("Argument - Array", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
+	 	ConfigNew_(saArg, null);
+	}	
+	public KernelConfigZZZ(String[] saArg, String[]saFlagControl) throws ExceptionZZZ{
+	 	ConfigNew_(saArg, saFlagControl);	 	
+	}
+	public KernelConfigZZZ(String[] saArg, String sFlagControl) throws ExceptionZZZ{
+		String[] saFlagControl = new String[1];
+		saFlagControl[0]=sFlagControl;
+	 	ConfigNew_(saArg, saFlagControl);	 	
+	}
+	
+	
+	private boolean ConfigNew_(String[] saArgIn, String[] saFlagControlIn) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{	
+			String stemp=null; boolean btemp=false; String sLog = null;
+			System.out.println("Initializing ConfigObject");
+			
+			//setzen der übergebenen Flags	
+			 if(saFlagControlIn != null){
+				  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+					  stemp = saFlagControlIn[iCount];
+					  if(!StringZZZ.isEmpty(stemp)){
+						  btemp = setFlag(stemp, true);
+						  if(btemp==false){
+							  sLog = "the flag '" + stemp + "' is not available.";
+							  System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+							  throw ez;		 
+						  }
+					  }
+				  }
+					if(this.getFlag("INIT")==true){
+						bReturn = true;
+						break main; 
+					}		
+			  }
+			
+			String[] saArg = null;
+			if(saArgIn==null || saArgIn.length==0){
+				//Das Argument-Array darf auch leer sein.
+//				ExceptionZZZ ez = new ExceptionZZZ("Argument - Array", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+				
+				saArg = new String[8];
+				saArg[0] = "-k";
+				saArg[1] = this.getApplicationKeyDefault();
+				saArg[2] = "-s";
+				saArg[3] = this.getSystemNumberDefault();
+				saArg[4] = "-f";
+				saArg[5] = this.getConfigFileNameDefault();
+				saArg[6] = "-d";
+				saArg[7] = this.getConfigDirectoryNameDefault();
+			}else {
+				saArg = saArgIn;
+			}
+			
+			//Nun den konfigurierten String holen
+			String sPattern = this.getPatternStringDefault();
+			
+			//Das Objekt, das für die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
+			this.objOpt = new GetOptZZZ(sPattern, saArg);
+			
+			bReturn = true;
 		}
-		 */
-		
-		//Nun den konfigurierten String holen
-		String sPattern = this.getPatternStringDefault();
-		
-		//Das Objekt, das f�r die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
-		this.objOpt = new GetOptZZZ(sPattern, saArg);
+		return bReturn;
 	}
 	
 

@@ -67,13 +67,12 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelContextUserZZZ, IKernelExpressionIniConverterUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ {
+public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelContextUserZZZ, IKernelExpressionIniConverterUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ {
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
 	}
 	
-	public final static String sDIRECTORY_CONFIG_DEFAULT="c:\\fglkernel\\kernelconfig";
 	private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
     //Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
@@ -838,14 +837,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						}//end check:
 																	
 						//1. Hole den Dateinamen
-						//String sFileName = this.searchPropertyByAlias(sAlias,"KernelConfigFile");
-						//if(StringZZZ.isEmpty(sFileName)) break main;
 						IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(sAlias,"KernelConfigFile");
 						if(!objEntryFileName.hasAnyValue()) break main;
 						String sFileName = objEntryFileName.getValue();
 						
 						//2. Hole den Dateipfad
-						//String sFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");
 						IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(sAlias,"KernelConfigPath");
 						//Auch wenn der Dateipfad nicht gepflegt ist weiterarbeiten. Es wird dann ein Standard genommen. if(!objEntryFilePath.hasAnyValue()) break main;
 						String sFilePath = objEntryFilePath.getValue();
@@ -3446,11 +3442,17 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	private boolean KernelNew_(IKernelConfigZZZ objConfig, IKernelContextZZZ objContext, String sApplicationKeyIn,String sSystemNumberIn, String sDirectoryConfigIn, String sFileConfigIn, LogZZZ objLogIn, String[] saFlagControlIn) throws ExceptionZZZ{
-		boolean bReturn = false;
-		String stemp; boolean btemp;
-		main:{
+		boolean bReturn = false;		
+		main:{			
 			try{
+				String stemp=null; boolean btemp=false; String sLog = null;
 				System.out.println("Initializing KernelObject");
+				
+				
+				//TODO GOON 20191204: Umstrukturierung:
+				//Zusätzlich zu übergebenen Flags müssen auch die Flags vom Config-Objekt übernommen werden, wenn sie vorhanden sind als Flags im KernelObjekt.
+				//Es geht dabei z.B. um "useFormula
+				FEHLERMARKER
 				
 				String sDirectoryLog = null;
 				String sFileLog = null;
@@ -3458,8 +3460,7 @@ MeinTestParameter=blablaErgebnis
 				String sSystemNumber = null;
 				String sFileConfig = null;
 				String sDirectoryConfig = null;
-				String sLog = null;
-				
+								
 				 //setzen der übergebenen Flags	
 				  if(saFlagControlIn != null){
 					  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
@@ -3552,16 +3553,18 @@ MeinTestParameter=blablaErgebnis
 				//A) Directory
 				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
 				if(!StringZZZ.isEmpty(sDirectoryConfigIn)){
-					sDirectoryConfig = sDirectoryConfigIn;					
+					sDirectoryConfig = sDirectoryConfigIn;	
+				}else if(this.getConfigObject()==null){
+					sLog = "Configuration Directory not passed, Config-Object not available";
+					System.out.println(sLog);	
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
 				}else if(this.getConfigObject()!=null){
 					if(this.getConfigObject().isOptionObjectLoaded()){
 						sDirectoryConfig = this.getConfigObject().readConfigDirectoryName();
-						if(sDirectoryConfig==null){
-							sLog = "Directory for configuration DEFAULT not receivable from Config-Object, although Config-Object  was loaded.";
-							System.out.println(sLog);
-							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-						}
+						//20191204: NULL Werte sind als Verzeichnis erlaubt. <z:Null/> würde in der Konfiguration als NULL-Wert übersetzt.
+						sLog = "Directory is null in Configuration-Object passed. Using Project - directory.";
+						System.out.println(sLog);
 					}else{
 						sLog = "Directory for configuration unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
 						System.out.println(sLog);
@@ -3569,13 +3572,8 @@ MeinTestParameter=blablaErgebnis
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
 						sDirectoryConfig = this.getConfigObject().getConfigDirectoryNameDefault();
-						if(sDirectoryConfig==null){
-//							sLog = "Directory for configuration DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
-//							System.out.println(sLog);
-//							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//							throw ez;
-							
-							sLog = "Directory is null in Configuration-Object passed. Using Project - directory later.";
+						if(sDirectoryConfig==null){							
+							sLog = "Directory is null in Configuration-Object passed for first load. Using Project - directory as default later.";
 							System.out.println(sLog);												
 						}
 					}										
@@ -3600,6 +3598,11 @@ MeinTestParameter=blablaErgebnis
 				//B) FileName
 				if(! StringZZZ.isEmpty(sFileConfigIn)){
 					sFileConfig = sFileConfigIn;
+				}else if(this.getConfigObject()==null){
+					sLog = "Configuration Filename not passed, Config-Object not available";
+					System.out.println(sLog);	
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
 				}else if(this.getConfigObject()!=null){
 					if(this.getConfigObject().isOptionObjectLoaded()){
 						sFileConfig=this.getConfigObject().readConfigFileName();
