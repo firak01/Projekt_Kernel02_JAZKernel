@@ -10,8 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.abstractList.ArrayUniqueZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 /**
@@ -53,6 +53,117 @@ public class StringArrayZZZ implements IConstantZZZ{
 		this.bIsString = true;
 	}
 	
+	public static String[] append(String[] saString1, String[] saString2, String sFlagin) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+			String[]saFlag=new String[1];
+			saFlag[0]=sFlagin;
+			objReturn = StringArrayZZZ.append(saString1, saString2, saFlag);
+		}//end main:
+		return objReturn;
+	}
+	
+	public static String[] append(String[] saString1, String[] saString2, String[] saFlagin) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+		if(saString1==null && saString2==null) break main;
+		if(saString1==null){
+			objReturn = new String[saString2.length];
+			System.arraycopy(saString2,0,objReturn, 0, saString2.length);
+			break main;
+		}else if(saString2 == null){
+			objReturn = new String[saString1.length];
+			System.arraycopy(saString1,0,objReturn, 0, saString1.length);
+			break main;			
+		}
+		
+		boolean bBehind=false; boolean bSkipNull=false; 
+		
+		String sFlag = null;
+		if(saFlagin==null){
+			bBehind=true;
+		}else{
+			if(StringArrayZZZ.contains(saFlagin, "BEHIND")) {
+				bBehind=true;
+			}else if(StringArrayZZZ.contains(saFlagin, "BEFORE")) {
+				bBehind=false;
+			}
+			
+			if(StringArrayZZZ.contains(saFlagin, "SKIPNULL")) {
+				bSkipNull=true;
+			}else {
+				bSkipNull=false;
+			}
+			
+			String[] saFlagAllowed = {"BEHIND","BEFORE","SKIPNULL"};
+			if(!(StringArrayZZZ.containsOtherThan(saFlagin, saFlagAllowed))){
+				String sError = "Flags='"+StringArrayZZZ.implode(saFlagin,", ")+"' - but expected: '" + StringArrayZZZ.implode(saFlagAllowed,", ")+"'";
+				ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}
+				
+		
+		if(bBehind){//Merke: Diese if-Abfragen sind aus Performance-Gründen ausserhalb der Schleife
+			if(bSkipNull) {
+				ArrayList<String>listas = new ArrayList<String>();
+				int iSize = saString2.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString2[icount]!=null) {
+						listas.add(saString2[icount]);
+					}
+				}
+				
+				iSize = saString1.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString1[icount]!=null) {
+						listas.add(saString1[icount]);
+					}
+				}
+				
+				objReturn = new String[listas.size()];
+				System.arraycopy(listas.toArray(objReturn),0,objReturn, 0, listas.size());				
+			}else {
+				int iSize = saString1.length + saString2.length;
+				
+				objReturn = new String[iSize];
+				System.arraycopy(saString2,0,objReturn, 0, saString2.length);
+				System.arraycopy(saString1,0,objReturn, saString2.length, saString1.length);							
+			}
+			break main;			
+		}else{
+			if(bSkipNull) {
+				ArrayList<String>listas = new ArrayList<String>();
+				int iSize = saString1.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString1[icount]!=null) {
+						listas.add(saString1[icount]);
+					}
+				}
+												
+				iSize = saString2.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString2[icount]!=null) {
+						listas.add(saString2[icount]);
+					}
+				}
+				
+				objReturn = new String[listas.size()];
+				System.arraycopy(listas.toArray(objReturn),0,objReturn, 0, listas.size());	
+			}else {
+				int iSize = saString1.length + saString2.length;
+				
+				objReturn = new String[iSize];
+				System.arraycopy(saString1,0,objReturn, 0, saString1.length);
+				System.arraycopy(saString2,0,objReturn, saString1.length, saString2.length);	
+				}
+				break main;
+			}
+		
+		}//End main:
+		return objReturn;
+	}
+	
 	
 	public boolean contains(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -83,6 +194,64 @@ public class StringArrayZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	public static boolean containsExact(String[] saSource, String sToFind) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(saSource==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			 for(int iCounter = 0; iCounter <= saSource.length -1; iCounter++){
+			 	String sTemp = saSource[iCounter];
+			 	if (sTemp.equals(sToFind)){	
+			 		bReturn = true;
+			 		break main;
+			 	}
+			 } // end for	
+		}//end main;		
+		return bReturn;
+	}
+		
+	public static boolean containsOtherThan(String[] saSource, String[] saToFind) throws ExceptionZZZ{
+		boolean bReturn = true;
+		main:{			
+			if(saSource==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(saToFind==null) break main;
+									
+			 for(int iCounter = 0; iCounter <= saSource.length -1; iCounter++){
+			 	String sTemp = saSource[iCounter];
+			 	if (!StringArrayZZZ.contains(saToFind, sTemp)){	
+			 		bReturn = false;
+			 		break main;
+			 	}
+			 } // end for	
+		}//end main;		
+		return bReturn;
+	}
+	
+	public static boolean containsOtherThanExact(String[] saSource, String[] saToFind) throws ExceptionZZZ{
+		boolean bReturn = true;
+		main:{			
+			if(saSource==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(saToFind==null) break main;
+									
+			 for(int iCounter = 0; iCounter <= saSource.length -1; iCounter++){
+			 	String sTemp = saSource[iCounter];
+			 	if (!StringArrayZZZ.containsExact(saToFind, sTemp)){	
+			 		bReturn = false;
+			 		break main;
+			 	}
+			 } // end for	
+		}//end main;		
+		return bReturn;
+	}
 	
 	/** long, returns the index of the first sToFind in the string Array
 	* Lindhauer; 16.05.2006 07:42:37
@@ -366,55 +535,75 @@ output:
 	public static String[] plusStringArray(String[] saString1, String[] saString2, String sFlagin) throws ExceptionZZZ{
 		String[] objReturn = null;
 		main:{
-		if(saString1==null && saString2==null) break main;
-		if(saString1==null){
-			objReturn = new String[saString2.length];
-			System.arraycopy(saString2,0,objReturn, 0, saString2.length);
-			break main;
-		}else if(saString2 == null){
-			objReturn = new String[saString1.length];
-			System.arraycopy(saString1,0,objReturn, 0, saString1.length);
-			break main;			
-		}
-		
-		String sFlag = null;
-		if(StringZZZ.isEmpty(sFlagin)){
-			sFlag = "BEHIND";
-		}else{
-			sFlag = sFlagin.toUpperCase();
-			if(!(sFlag.equals("BEHIND")|sFlag.equals("BEFORE"))){
-				ExceptionZZZ ez = new ExceptionZZZ("Flag='"+sFlagin+"', but expected '', 'BEFORE', 'BEHIND'", iERROR_PARAMETER_VALUE, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
+			if(sFlagin!=null) {
+				String[] saFlag = new String[1];
+				saFlag[0]=sFlagin;
+				objReturn = StringArrayZZZ.plusStringArray(saString1, saString2, saFlag);
 			}
-		}
-				
-		int iSize = MathZZZ.max(saString1.length, saString2.length);
-		objReturn = new String[iSize];
-		
-		if(sFlag.equals("BEHIND")){//MErke: Diese if-Abfrage ist aus performance-gründen ausserhalb der Schleife
-			for(int icount = 0; icount<=iSize-1;icount++){
-				if(saString1.length-1>=icount && saString2.length-1>= icount){
-					objReturn[icount]=saString1[icount] + saString2[icount];
-				}else if(saString1.length-1<icount && saString2.length-1 >= icount){
-					objReturn[icount] = saString2[icount];
-				}else if(saString1.length-1 >= icount && saString2.length-1 < icount){
-					objReturn[icount] = saString1[icount];
+		}//end main:
+		return objReturn;
+	}	
+	public static String[] plusStringArray(String[] saString1, String[] saString2, String[] saFlagin) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+			if(saString1==null && saString2==null) break main;
+			
+			if(saString1==null){
+				objReturn = new String[saString2.length];
+				System.arraycopy(saString2,0,objReturn, 0, saString2.length);
+				break main;
+			}else if(saString2 == null){
+				objReturn = new String[saString1.length];
+				System.arraycopy(saString1,0,objReturn, 0, saString1.length);
+				break main;			
+			}
+			
+			boolean bBehind=false;
+			
+			String sFlag = null;
+			if(saFlagin==null){
+				bBehind=true;
+			}else{
+				if(StringArrayZZZ.contains(saFlagin, "BEHIND")) {
+					bBehind=true;
+				}else if(StringArrayZZZ.contains(saFlagin, "BEFORE")) {
+					bBehind=false;
+				}
+							
+				String[] saFlagAllowed = {"BEHIND","BEFORE"};
+				if(!(StringArrayZZZ.containsOtherThan(saFlagin, saFlagAllowed))){
+					String sError = "Flags='"+StringArrayZZZ.implode(saFlagin,", ")+"' - but expected: '" + StringArrayZZZ.implode(saFlagAllowed,", ")+"'";
+					ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
 				}
 			}
-			break main;
-		}else{
-			for(int icount = 0; icount<=iSize-1;icount++){
-				if(saString1.length-1>=icount && saString2.length-1>= icount){
-					objReturn[icount]= saString2[icount] + saString1[icount] ;                    //Hier dann die Reihenfolge anders
-				}else if(saString1.length-1<icount && saString2.length-1 >= icount){
-					objReturn[icount] = saString2[icount];
-				}else if(saString1.length-1 >= icount && saString2.length-1 < icount){
-					objReturn[icount] = saString1[icount];
+					
+			int iSize = MathZZZ.max(saString1.length, saString2.length);
+			objReturn = new String[iSize];
+			
+			if(bBehind){//Merke: Diese if-Abfragen sind aus performance-gründen ausserhalb der Schleife			
+				for(int icount = 0; icount<=iSize-1;icount++){
+					if(saString1.length-1>=icount && saString2.length-1>= icount){
+						objReturn[icount]=saString1[icount] + saString2[icount];
+					}else if(saString1.length-1<icount && saString2.length-1 >= icount){
+						objReturn[icount] = saString2[icount];
+					}else if(saString1.length-1 >= icount && saString2.length-1 < icount){
+						objReturn[icount] = saString1[icount];
+					}
 				}
-			}
-			break main;
-		}
-		
+				break main;				
+			}else{
+				for(int icount = 0; icount<=iSize-1;icount++){
+					if(saString1.length-1>=icount && saString2.length-1>= icount){							
+						objReturn[icount]= saString2[icount] + saString1[icount] ;                    //Hier dann die Reihenfolge anders
+					}else if(saString1.length-1<icount && saString2.length-1 >= icount){
+						objReturn[icount] = saString2[icount];
+					}else if(saString1.length-1 >= icount && saString2.length-1 < icount){
+						objReturn[icount] = saString1[icount];
+					}
+				}			
+				break main;	
+			}		
 		}//End main:
 		return objReturn;
 	}

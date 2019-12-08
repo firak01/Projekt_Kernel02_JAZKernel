@@ -3470,7 +3470,7 @@ MeinTestParameter=blablaErgebnis
 						objReturn.setFileObject(objFile);
 				 */
 				
-				//Es geht dabei z.B. darum "useFormula" zu übergeben.												
+				//Es geht dabei darum die Flags aus dem Configuration-Objekt zu überhnehmen, alsos z.B. "useFormula" zu übernehmen.												
 				String[] saFlag = null;				
 				if(objConfig!=null) {
 					//Übernimm die gesetzten FlagZ...
@@ -3478,9 +3478,9 @@ MeinTestParameter=blablaErgebnis
 					saFlag = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
 				}
 												
-				//TODO Diese StringArrayBehandlung als static MEthoden
-				StringArrayZZZ objSA = new StringArrayZZZ(saFlag);					
-				objSA.append(saFlagControlIn, "SKIPNULL");
+				String[]sa = StringArrayZZZ.append(saFlag, saFlagControlIn, "SKIPNULL");
+				//TODO Diese StringArrayBehandlung als static Methoden
+				StringArrayZZZ objSA = new StringArrayZZZ(saFlag);								
 				objSA.unique();
 				String[]saFlagUsed = objSA.getArray();
 								  

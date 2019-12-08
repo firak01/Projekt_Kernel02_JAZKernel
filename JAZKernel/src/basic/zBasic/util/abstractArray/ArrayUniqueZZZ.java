@@ -1,4 +1,4 @@
-package basic.zBasic.util.abstractList;
+package basic.zBasic.util.abstractArray;
 
 public class ArrayUniqueZZZ {
 
