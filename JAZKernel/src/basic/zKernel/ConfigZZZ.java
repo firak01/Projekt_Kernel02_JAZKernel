@@ -40,7 +40,8 @@ public class ConfigZZZ extends KernelConfigZZZ{
 
 	@Override
 	public String getSystemNumberDefault() {		
-		return ConfigZZZ.sNUMBER_SYSTEM_DEFAULT;		
+		//return ConfigZZZ.sNUMBER_SYSTEM_DEFAULT;
+		return "02";
 	}
 	
 	@Override
