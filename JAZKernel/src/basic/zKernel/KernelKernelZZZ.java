@@ -1827,9 +1827,13 @@ MeinTestParameter=blablaErgebnis
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			if(!StringZZZ.isEmpty(sSection)){
+				objReturn.setSection(sSection);
 			    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){
+				if(bSectionExists==true){					
+					objReturn.sectionExists(true);
 					objReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
+				}else{					
+					objReturn.sectionExists(false);
 				}
 			}
 		}//End main:

@@ -318,15 +318,23 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
 			boolean bAnyExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ)this, sReturnRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
 			//++++ usw. das Ergebnis als String in objReturn packen.
+			String sReturnValue=null;
+			
 			String sReturnFormula = objsReturnValueExpressionSolved.get();			
 			if(sReturnFormula!=null) {
 				objReturn.isFormula(true);
+				sReturnValue=sReturnFormula;
 			}
-			String sReturnExpression = objsReturnValueConverted.get();
+			
+			String sReturnExpression = objsReturnValueConverted.get();			
 			if(sReturnExpression!=null) {
 				objReturn.isExpression(true);
+				sReturnValue = sReturnExpression;
 			}
-			String sReturnValue = objsReturnValue.get();
+			
+			if(sReturnFormula==null && sReturnExpression==null) {
+				sReturnValue = objsReturnValue.get();			
+			}
 			objReturn.setValue(sReturnValue);			
 		}//end main:
 		return objReturn;

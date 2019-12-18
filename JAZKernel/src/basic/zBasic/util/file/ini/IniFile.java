@@ -50,12 +50,13 @@ import java.util.*;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ExtendedVectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
 
 
 /**
 * A class for handling Windows-style INI files. The file format is as 
 * follows:
-*   [subject]       - anything beginning with [ and ending with ] is a subject 
+*   [subject]       - anything beginning with [ and ending with ] is a subject . FGL: Nun kann man dahinter noch Semikolon setzen, um einen Kommentar zu setzen. Leerzeichen werden weggetrimmt
 *   ;comment        - anything beginning with a ; is a comment 
 *   variable=value  - anything of the format string=string is an assignment 
 *  comment         - anything that doesn't match any of the above is a comment 
@@ -64,6 +65,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class IniFile extends Object
 {
+	public static final String sINI_COMMENT = ";";
+	public static final String sINI_SUBJECT_START = "[";
+	public static final String sINI_SUBJECT_END = "]";
+	public static final String sINI_PROPERTY_SEPERATOR="=";
+	
    /**Actual text lines of the file stored in a vector.*/
    protected ExtendedVectorZZZ lines;       
    /**A vector of all subjects*/
@@ -240,10 +246,11 @@ public class IniFile extends Object
          currentLine = (String)lines.elementAt(i); 
          if (isaSubject(currentLine)) //if line is a subject, set currentSubject
          {
-            currentSubject = currentLine.substring(1,currentLine.length()-1);
+        	int iIndexOfEnd = currentLine.indexOf(IniFile.sINI_SUBJECT_END);//FGL 2019-12-18: Damit kann man Kommentare (hinter einem Semikolon) hinzufügen und Leerzeichen sind auch egal
+            currentSubject = currentLine.substring(1,iIndexOfEnd);
             
             //FGL 2008-02-19: !!! Ohne nachstehende Erweiterung werden leere Sections nicht als Section erfasst !!! Sections wurden sonst nur erstellt, wenn sie auch Inhalt hatten !!!
-            //             Die so gefundene Section muss sofort hinzugef�gt werden.
+            //             Die so gefundene Section muss sofort hinzugefügt werden.
             this.addSection(currentSubject);
          }
          else if (isanAssignment(currentLine)) //if line is an assignment, add it
@@ -377,7 +384,16 @@ protected boolean addSection(String sSection){
    */
    protected boolean isaSubject(String line)
    {
-      return (line.startsWith("[") && line.endsWith("]"));
+	   if(line.startsWith(IniFile.sINI_SUBJECT_START)) {
+		   //FGL: 20191218: Versehentlich war ein Semikolon hinter dem Subject gelandet. Es wurde daraufhin nicht erkannt.
+		   //               Idee: Kommentare und Leerzeichen hinter dem Subject erlauben.
+		   String sLineNormed = StringZZZ.left(line+IniFile.sINI_COMMENT, IniFile.sINI_COMMENT);
+		   sLineNormed = sLineNormed.trim();
+		   return (sLineNormed.startsWith(IniFile.sINI_SUBJECT_START) && sLineNormed.endsWith(IniFile.sINI_SUBJECT_END));
+	   }else {
+		   return false;
+	   }
+	   
    }
 
    /**
@@ -436,7 +452,7 @@ protected boolean addSection(String sSection){
       for (int i=start;i<end;i++)
       {
 		  // toLowerCase() was inserted because of treading variables case-independent. See history for details.
-		  if (((String)lines.elementAt(i)).toLowerCase().startsWith(variable.toLowerCase()+"="))
+		  if (((String)lines.elementAt(i)).toLowerCase().startsWith(variable.toLowerCase()+IniFile.sINI_PROPERTY_SEPERATOR))
             return i;
       }
       return -1;
@@ -459,7 +475,7 @@ protected boolean addSection(String sSection){
    protected int findSubjectLine(String subject)
    {
       String line;
-      String formattedSubject = "["+subject+"]";
+      String formattedSubject = IniFile.sINI_SUBJECT_START+subject+IniFile.sINI_SUBJECT_END;
       for (int i=0;i<lines.size();i++)
       {
          line = (String)lines.elementAt(i);
@@ -496,7 +512,7 @@ protected boolean addSection(String sSection){
    */
    protected boolean isanAssignment(String line)
    {
-      if ((line.indexOf("=")!=-1) && (!line.startsWith(";") && ((!line.startsWith("[")))))
+      if ((line.indexOf("=")!=-1) && (!line.startsWith(IniFile.sINI_COMMENT) && ((!line.startsWith(IniFile.sINI_SUBJECT_START)))))
          return true;
       else
          return false;
@@ -579,6 +595,10 @@ protected boolean addSection(String sSection){
 	      if (valueIndex != -1)
 	      {
 	         sReturn = (String)(valVector.elementAt(valueIndex));
+	         if(StringZZZ.isEmpty(sReturn)) {
+	        	//FGL 20191218: Wenn der Wert Konfiguriert wurde, aber ein Leerstring enthalten soll, dann kann man ihn nur mit diesem "Formelausdruck" erkennen.
+		    	sReturn = KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty();
+	         }	    	 
 	      }
 	   }//end main:
       return sReturn;
