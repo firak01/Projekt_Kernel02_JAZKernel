@@ -316,24 +316,29 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
 			ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
 			ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
-			boolean bAnyExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ)this, sReturnRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
+			boolean bAnyExpression = false;
+			int iAnyExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ)this, sReturnRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
+			if(iAnyExpression>=1){
+				bAnyExpression=true;
+			}
+			
 			//++++ usw. das Ergebnis als String in objReturn packen.
 			String sReturnValue=null;
 			
 			String sReturnFormula = objsReturnValueExpressionSolved.get();			
-			if(sReturnFormula!=null) {
+			if(iAnyExpression==1 | iAnyExpression==3) {
 				objReturn.isFormula(true);
 				sReturnValue=sReturnFormula;
 			}
 			
 			String sReturnExpression = objsReturnValueConverted.get();			
-			if(sReturnExpression!=null) {
+			if(iAnyExpression==2 | iAnyExpression==3) {
 				objReturn.isExpression(true);
 				sReturnValue = sReturnExpression;
-			}
+			}	
 			
-			if(sReturnFormula==null && sReturnExpression==null) {
-				sReturnValue = objsReturnValue.get();			
+			if(!bAnyExpression){
+				sReturnValue = objsReturnValue.get();
 			}
 			objReturn.setValue(sReturnValue);			
 		}//end main:

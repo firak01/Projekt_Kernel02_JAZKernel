@@ -10,14 +10,35 @@ import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelConfigEntryUtilZZZ {
-	public static boolean getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved, ReferenceZZZ<String>objsReturnValueConverted, ReferenceZZZ<String>objsReturnValue) throws ExceptionZZZ{
-		boolean bReturn = false;
+	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
+	 *  0 = nix
+	 *  1 = Formel
+	 *  2 = Expression
+	 *  3 = Formel UND Expression
+	 *  usw. denkbar fortsetzbar
+	 *  
+	 *  
+	 * @param objFileIni
+	 * @param sRaw
+	 * @param bUseFormula
+	 * @param hmVariable
+	 * @param saFlagZpassed
+	 * @param objsReturnValueExpressionSolved
+	 * @param objsReturnValueConverted
+	 * @param objsReturnValue
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 19.12.2019, 11:18:39
+	 */
+	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved, ReferenceZZZ<String>objsReturnValueConverted, ReferenceZZZ<String>objsReturnValue) throws ExceptionZZZ{
+		int iReturn = 0;
 		main:{
 			String sRawExpressionSolved = null;
 			boolean bExpressionSolved = KernelConfigEntryUtilZZZ.getValueExpressionSolved(objFileIni, sRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved);							
 			if(bExpressionSolved) {
 				sRawExpressionSolved = objsReturnValueExpressionSolved.get();
-				objsReturnValue.set(sRawExpressionSolved);				
+				objsReturnValue.set(sRawExpressionSolved);
+				iReturn = iReturn + 1;
 			}else {
 				sRawExpressionSolved = sRaw;
 			}
@@ -25,18 +46,15 @@ public class KernelConfigEntryUtilZZZ {
 			String sRawConverted = null;
 			boolean bConverted = KernelConfigEntryUtilZZZ.getValueConverted(objFileIni, sRawExpressionSolved, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueConverted);
 			if(bConverted) {
-				sRawConverted = objsReturnValueExpressionSolved.get();				
+				sRawConverted = objsReturnValueExpressionSolved.get();
+				iReturn = iReturn + 2;
 			}else {
 				sRawConverted = sRawExpressionSolved;
 			}
-			
-			
-			objsReturnValue.set(sRawConverted);
-			if(bExpressionSolved || bConverted){
-				bReturn = true;					
-			}						
+						
+			objsReturnValue.set(sRawConverted);						
 		}//end main:
-		return bReturn;
+		return iReturn;
 	}
 	
 	public static boolean getValueExpressionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved) throws ExceptionZZZ{
