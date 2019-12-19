@@ -3457,37 +3457,20 @@ MeinTestParameter=blablaErgebnis
 				//ggf. Config Object setzen
 				this.setConfigObject(objConfig);
 				
-				//TODO GOON 20191204: Umstrukturierung:
+				//20191204: Umstrukturierung:
 				//Zusätzlich zu übergebenen Flags müssen auch die Flags vom Config-Objekt übernommen werden, wenn sie vorhanden sind als Flags im KernelObjekt.
-				//siehe die Erstellung eines FileIniZZZ Objekts in: KernelKernelZZZ.getFileConfigIniByAlias(String sAlias) throws ExceptionZZZ{
-				/*... siehe
-				 * 		//Übernimm die gesetzten FlagZ...
-						HashMap<String,Boolean>hmFlagZ = this.objFileIniKernelConfig.getHashMapFlagZ();
-						
-						//Übernimm die gesetzten Variablen...
-						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.objFileIniKernelConfig.getHashMapVariable();
-						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlagZ);
-						objReturn.setHashMapVariable(hmVariable);	
-						
-						//Übernimm das ggfs. veränderte ini-File Objekt
-						File objFile = this.objFileIniKernelConfig.getFileObject();
-						objReturn.setFileObject(objFile);
-				 */
-				
+				//siehe als schon realisiertes Beispiel: Die Erstellung eines FileIniZZZ Objekts in: KernelKernelZZZ.getFileConfigIniByAlias(String sAlias) throws ExceptionZZZ{
+							
 				//Es geht dabei darum die Flags aus dem Configuration-Objekt zu überhnehmen, alsos z.B. "useFormula" zu übernehmen.												
 				String[] saFlag = null;				
 				if(objConfig!=null) {
 					//Übernimm die gesetzten FlagZ...
 					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlagZ();
 					saFlag = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
-				}
-												
+				}												
 				String[]sa = StringArrayZZZ.append(saFlag, saFlagControlIn, "SKIPNULL");
-				//TODO Diese StringArrayBehandlung als static Methoden
-				StringArrayZZZ objSA = new StringArrayZZZ(saFlag);								
-				objSA.unique();
-				String[]saFlagUsed = objSA.getArray();
-								  
+				String[]saFlagUsed = StringArrayZZZ.unique(sa);
+												 
 				//setzen der übergebenen Flags
 				  for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
 					  stemp = saFlagUsed[iCount];

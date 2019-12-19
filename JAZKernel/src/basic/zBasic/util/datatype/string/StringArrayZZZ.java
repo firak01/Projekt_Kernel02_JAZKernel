@@ -299,27 +299,6 @@ output:
 		return lFunction;
 	}//end IndexFirstGet
 	
-	public static long searchIndexFirst(String[] saSource, String sToFind){
-		return StringArrayZZZ.getIndexFirst(saSource, sToFind);
-	}
-	
-	public String[] sort() throws ExceptionZZZ{
-		String[] sa = this.saIntern;
-		Arrays.sort(sa);
-		return sa;
-	}
-	public static String[] sort(Object[] saSource) throws ExceptionZZZ{
-		StringArrayZZZ saObj = new StringArrayZZZ(saSource);
-		return saObj.sort();					
-	}
-	
-	public String[] unique() throws ExceptionZZZ{
-		String[] sa = this.saIntern;
-		this.saIntern = ArrayUniqueZZZ.toUniqueArrayString(sa);
-		return this.saIntern;
-	}
-	
-	
 	public static String getLast(Object[] saSource){
 		String sReturn = null;
 		main:{
@@ -370,6 +349,18 @@ output:
 		return sReturn;
 	}
 	
+	public static String implode(String[] saString){
+		return StringUtils.join(saString);   //
+	}
+	
+	public static String implode(String[] saString, String sDelimiter){
+		return StringUtils.join(saString, sDelimiter);   //
+	}	
+	
+	public void insertSorted(String sString, String sFlagin) throws ExceptionZZZ{
+		String[] saNew = StringArrayZZZ.insertSorted(this.getArray(), sString, sFlagin);
+		this.setArray(saNew);
+	}
 	
 	public static String[] insertSorted(String[] saSorted, String sString, String sFlagIn) throws ExceptionZZZ{
 		String[] objReturn = null;
@@ -458,23 +449,24 @@ output:
 		return objReturn;
 	}
 	
-	public static String[] remove(String[] saString, String sStringToRemove, boolean bIgnoreCase) throws ExceptionZZZ{
-		String[] objReturn = null;
+	public static String[] intersect(String[] saString01, String[] saString02) throws ExceptionZZZ{
+		String[]saReturn = null;
 		main:{
-		if(saString==null) break main;
-		if(StringZZZ.isEmpty(sStringToRemove)) break main;
-				
-		if(bIgnoreCase){
-			ArrayList<String>listas = StringArrayZZZ.toArrayList(saString);
-			ArrayListZZZ.remove(listas, sStringToRemove, true);
-			objReturn = ArrayListZZZ.toStringArray(listas);
-		}else{
-			objReturn = (String[]) ArrayUtils.removeElement(saString, sStringToRemove);
-		}
-		
+			if(saString01==null)break main;
+			if(saString02==null)break main;
+			if(saString01.length==0) break main;
+			if(saString02.length==0) break main;
+						
+			ArrayList<String>listasTemp = new ArrayList<String>();
+			for(String s01 : saString01){
+				if(StringArrayZZZ.contains(saString02, s01)){
+					listasTemp.add(s01);
+				}				
+			}			
+			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
 		}//End main:
-		return objReturn;
-	}
+		return saReturn;
+	}		
 	
 	/**Alle Elemente des String Arrays werden um einen weiteren String erweitert.
 	 * @param saString
@@ -611,12 +603,39 @@ output:
 		String[] saNew = StringArrayZZZ.plusStringArray(this.getArray(), saString, sFlagin);
 		this.setArray(saNew);
 	}
-	
-	public void insertSorted(String sString, String sFlagin) throws ExceptionZZZ{
-		String[] saNew = StringArrayZZZ.insertSorted(this.getArray(), sString, sFlagin);
-		this.setArray(saNew);
+		
+	public static String[] remove(String[] saString, String sStringToRemove, boolean bIgnoreCase) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+		if(saString==null) break main;
+		if(StringZZZ.isEmpty(sStringToRemove)) break main;
+				
+		if(bIgnoreCase){
+			ArrayList<String>listas = StringArrayZZZ.toArrayList(saString);
+			ArrayListZZZ.remove(listas, sStringToRemove, true);
+			objReturn = ArrayListZZZ.toStringArray(listas);
+		}else{
+			objReturn = (String[]) ArrayUtils.removeElement(saString, sStringToRemove);
+		}
+		
+		}//End main:
+		return objReturn;
 	}
 	
+	public static long searchIndexFirst(String[] saSource, String sToFind){
+		return StringArrayZZZ.getIndexFirst(saSource, sToFind);
+	}
+	
+	public String[] sort() throws ExceptionZZZ{
+		String[] sa = this.saIntern;
+		Arrays.sort(sa);
+		return sa;
+	}
+	public static String[] sort(Object[] saSource) throws ExceptionZZZ{
+		StringArrayZZZ saObj = new StringArrayZZZ(saSource);
+		return saObj.sort();					
+	}
+		
 	public static Vector toVector(String[] saString){
 		Vector objReturn = new Vector();
 		main:{
@@ -664,35 +683,21 @@ output:
 		return listaString;
 	}
 	
-	public static String implode(String[] saString){
-		return StringUtils.join(saString);   //
-	}
-	
-	public static String implode(String[] saString, String sDelimiter){
-		return StringUtils.join(saString, sDelimiter);   //
-	}
-	
-	public static String[] intersect(String[] saString01, String[] saString02) throws ExceptionZZZ{
-		String[]saReturn = null;
+	public static String[] unique(String[] saString1) throws ExceptionZZZ{
+		String[] objReturn = null;
 		main:{
-			if(saString01==null)break main;
-			if(saString02==null)break main;
-			if(saString01.length==0) break main;
-			if(saString02.length==0) break main;
-						
-			ArrayList<String>listasTemp = new ArrayList<String>();
-			for(String s01 : saString01){
-				if(StringArrayZZZ.contains(saString02, s01)){
-					listasTemp.add(s01);
-				}				
-			}			
-			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
-		}//End main:
-		return saReturn;
+				if(saString1==null) break main;
+			
+				objReturn = ArrayUniqueZZZ.toUniqueArrayString(saString1);
+		}//end main:
+		return objReturn;
+	}	
+	
+	public String[] unique() throws ExceptionZZZ{
+		String[] sa = this.saIntern;
+		this.saIntern = StringArrayZZZ.unique(sa);
+		return this.saIntern;
 	}
-
-	
-	
 	
 	//#### GETTER / SETTER
 	public String[] getArray(){
