@@ -1,13 +1,20 @@
 package basic.zKernel;
 
 import custom.zKernel.ConfigZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
+
+import static java.lang.System.out;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 
 /**Klasse wertet Kommandozeilenparamter aus, hinsichtlich der zu verwendenden Kernel-Konfiguration
  * -k = ApplicationKey
@@ -27,11 +34,6 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	}
 	
 	private GetOptZZZ objOpt = null;
-	private String sDirectory = null;
-	private String sFile = null;
-	private String sApplicationKey = null;
-	private String sSystemNumber= null;
-	private String sPatternString = null;
 	 
 	public KernelConfigZZZ() throws ExceptionZZZ{
 		ConfigNew_(null, null);
@@ -106,6 +108,34 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	}
 	
 
+	public String expressionSolveConfigDirectoryNameDefault(String sDirectoryNameReadIn) {
+		String sReturn=null;
+		main:{		
+		boolean bUseFormula = this.getFlagZ("useFormula");
+		String sDirectoryNameRead = sDirectoryNameReadIn;//z.B. auch "<z:Null/>"
+		//20191031: Dieser Wert muss vom Programm verarbeitet/Übersetzt werden werden - wie ein ini-Datei Eintrag auch übersetzt würde.
+		//return "<z:Null/>";//Merke '.' oder Leerstring '' = src Verzeichnis
+		ReferenceZZZ<String> objsReturnValueExpressionSolved= new ReferenceZZZ<String>();
+		ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>();
+		ReferenceZZZ<String> objsReturnValue= new ReferenceZZZ<String>();
+		try {
+			//TODO: Wenn das klappt eine statische Methode anbieten, bei der alle null-Parameter weggelassen werden können.
+			int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ) null, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
+			sReturn = objsReturnValue.get();
+		}catch(ExceptionZZZ ez){
+			String sError = ez.getMessageLast();
+			try {
+				out.format("%s# Error thrown: %s%n", ReflectCodeZZZ.getPositionCurrent(),sError);
+			} catch (ExceptionZZZ e) {
+				String sErrorInt = ez.getMessageLast();
+				out.format("%s# Error thrown: %s%n", "Holen der akutellen Position",sErrorInt);
+				e.printStackTrace();
+			}
+		}
+		}//end main
+		return sReturn;
+	}
+	
 	public String readPatternString(){
 		String sReturn = null;
 		main:{
@@ -158,13 +188,11 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			if(objOpt==null) break main;
 			if(objOpt.getFlag("isLoaded")==false) break main;
 			
-			sReturn = objOpt.readValue("d");
-//			!!! Falls es ein Leerstring ist, dann wird das aktuelle Verzeichnis verwendet.
-//			if(StringZZZ.isEmpty(sReturn)) sReturn = "."; //Merke: Bei der Suche nach der Datei dann geändert in: KernelKernelZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Damit ist diese Datei auch auf dem WebServer findbar.
-			
+			sReturn = objOpt.readValue("d");			
 			if(sReturn==null){
-				sReturn = this.getConfigDirectoryNameDefault();
+				sReturn = this.getConfigDirectoryNameDefault();				
 			}
+			sReturn = this.expressionSolveConfigDirectoryNameDefault(sReturn);
 		}//end main:						
 		return sReturn;
 	} 
@@ -226,58 +254,12 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		}
 		return bReturn;
 	}
-	
-	
-	
+
 	//##########
 	// Getter / Setter
 	//##########
 	public GetOptZZZ getOptObject(){
 		return this.objOpt;
 	}
-	
-	//#########
-	//Aus Interface
-	//##########
-//	public String getApplicationKeyDefault(){
-//		if(this.sApplicationKey==null){
-//			this.sApplicationKey = this.readApplicationKey();			
-//		}
-//		return this.sApplicationKey;
-//	};
-	
-//	@Override
-//	public String getApplicationKeyDefault() {
-//		return ConfigZZZ.sKEY_APPLICATION_DEFAULT;
-//	}
-	
-//	public String getConfigDirectoryNameDefault(){
-//		if(this.sDirectory==null){
-//			this.sDirectory = this.readConfigDirectoryName();
-//		}
-//		return this.sDirectory;
-//	}
-//	
-//	
-//	public String getConfigFileNameDefault(){
-//		if(this.sFile==null){
-//			this.sFile=this.readConfigFileName();
-//		}
-//		return this.sFile;
-//	}
-//
-//	public String getSystemNumberDefault(){
-//		if(this.sSystemNumber==null){
-//			this.sSystemNumber=this.readSystemNumber();
-//		}
-//		return this.sSystemNumber;
-//	}
-//	
-//	public String getPatternStringDefault(){
-//		if(this.sPatternString==null){
-//			this.sPatternString=this.readPatternString();
-//		}
-//		return this.sPatternString;
-//	}
 	
 }

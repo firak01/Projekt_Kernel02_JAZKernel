@@ -3576,8 +3576,7 @@ MeinTestParameter=blablaErgebnis
 				}else if(this.getConfigObject()!=null){
 					if(this.getConfigObject().isOptionObjectLoaded()){
 						sDirectoryConfig = this.getConfigObject().readConfigDirectoryName();
-						//20191204: NULL Werte sind als Verzeichnis erlaubt. <z:Null/> würde in der Konfiguration als NULL-Wert übersetzt.
-						sLog = "Directory is null in Configuration-Object passed. Using Project - directory.";
+						sLog = "Directory from Configuration-Object passed: " + sDirectoryConfig;
 						System.out.println(sLog);
 					}else{
 						sLog = "Directory for configuration unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
@@ -3586,6 +3585,8 @@ MeinTestParameter=blablaErgebnis
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
 						sDirectoryConfig = this.getConfigObject().getConfigDirectoryNameDefault();
+						
+						//20191204: NULL Werte sind als Verzeichnis erlaubt. <z:Null/> würde in der Konfiguration als NULL-Wert übersetzt.
 						if(sDirectoryConfig==null){							
 							sLog = "Directory is null in Configuration-Object passed for first load. Using Project - directory as default later.";
 							System.out.println(sLog);												
@@ -3596,6 +3597,7 @@ MeinTestParameter=blablaErgebnis
 					System.out.println(sLog);					
 					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
 				}
+				
 				//Prüfe nun auf Vorhandensein und korregiere ggfs. auf das aktuelle Verzeichnis
 				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
 				if(objDirectoryProof==null){					

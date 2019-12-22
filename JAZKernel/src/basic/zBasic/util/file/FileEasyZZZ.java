@@ -469,8 +469,8 @@ public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strD
 	return objReturn;	
 }
 
-/** Eine NULL Angabe bedeutet "Projekt-Ordner-Ebene".
- *  Ein Leerstring "." bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
+/** Eine NULL oder ".." Angabe bedeutet "Projekt-Ordner-Ebene".
+ *  Ein Leerstring, Empty oder "." bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
  * @param sDirectoryIn
  * @return
  * @throws ExceptionZZZ
@@ -481,37 +481,46 @@ public static File searchDirectory(String sDirectoryIn)throws ExceptionZZZ{
 	main:{
 		String sDirectory = null;
 		boolean bUseProjectBase=false;
+		boolean bUseProjectBaseForTest=false;
 		boolean bUseClasspathSource=false;
-		if(sDirectoryIn==null){
-			sDirectory=".";
-			bUseProjectBase=true;
-		}else if(sDirectoryIn.equals(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){
-			sDirectory=".";
-			bUseProjectBase=true;
-		}else if(sDirectoryIn.equals("")){
-			sDirectory="";
+		if(sDirectoryIn==null){			
+			bUseProjectBase=true;		
+		}else if(sDirectoryIn.equals(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){		
+			bUseProjectBase=true;			
+		}else if(sDirectoryIn.equals("")){			
 			bUseClasspathSource=true;
-		}else if(sDirectoryIn.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty())){
-			sDirectory="";
-			bUseClasspathSource=true;
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-			sDirectory="";
-			bUseClasspathSource=true;
+		}else if(sDirectoryIn.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty())){			
+			bUseClasspathSource=true;		
+		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+			bUseClasspathSource=true;			
+		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_PARENT)){
+			bUseProjectBase=true;			
 		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
-			sDirectory = sDirectoryIn;
-			bUseProjectBase=true;
+			bUseProjectBaseForTest=true;			
 		}else{
 			//+++ Der Normalfall
 			sDirectory = sDirectoryIn;
 		}
 		
-		//+++ Spezialfälle (Null, Empty...)
-		if(bUseProjectBase){
+		//+++ Spezialfall (Null)
+		if(bUseProjectBase){		
+			sDirectory=sDirectoryIn;
 			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
 		}
+		
+		//+++ Spezialfall ('test')
+		if(bUseProjectBaseForTest){		
+			sDirectory = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);
+			if(objReturn!=null){
+				if(objReturn.exists()) break main;
+			}
+		}
+		
+		//+++ Spezialfälle (Empty, ".")
 		if(bUseClasspathSource){
 			sDirectory = FileEasyZZZ.getFileRootPath();
 			objReturn = FileEasyZZZ.getDirectory(sDirectory);
@@ -1275,9 +1284,16 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	public static File getFileObjectInProjectPath(String sFile) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": Suche auf Projektebene.";
+		    System.out.println(sLog);
+		    
 			//Problem: WAS MIT NULL!!!!
 			//Lösungsidee 3: Merke: "." holt doch tatsächlich den Ordner des Projekts!!!
-			if(sFile==null)	sFile=".";
+			if(sFile==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": NULL in '.' umgeändert.";
+			    System.out.println(sLog);
+				sFile=".";
+			}
 			objReturn = getFileObject_(sFile);
 								
 			//Lösungsidee 2:
