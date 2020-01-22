@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 /**
  * This class handles every exception in the Z-Kernel-Framework.
- * TODO Mapping-Methode, in der aus einem ErrorCode der zugehörige Fehelrtext geholt wird. Dieser Fehlertext wird dann vor der übergebenen Meldung gesetzt.
+ * TODO Mapping-Methode, in der aus einem ErrorCode der zugehï¿½rige Fehelrtext geholt wird. Dieser Fehlertext wird dann vor der ï¿½bergebenen Meldung gesetzt.
  * @author 0823
  */
 public class ExceptionZZZ extends Exception implements IConstantZZZ{
@@ -19,13 +19,13 @@ public class ExceptionZZZ extends Exception implements IConstantZZZ{
 	 String[] saFunction;
 	  int[] iaCode;
 	
- /*TODO: Ein Konstruktor, dem ein Array übergeben werden kann.
-  * Dann kann zusätzlich zu dem Z-Kernel Error - Hinweis noch der exception.getMessage() Hinweis eines anderen Objekts hinzugefügt werden
+ /*TODO: Ein Konstruktor, dem ein Array ï¿½bergeben werden kann.
+  * Dann kann zusï¿½tzlich zu dem Z-Kernel Error - Hinweis noch der exception.getMessage() Hinweis eines anderen Objekts hinzugefï¿½gt werden
   * 
   * TODO: Ein Konstruktor, dem ein ExceptionZZZ-Objekt mitgegeben werden kann. Und ein Array/bzw. ein String.
   * Dann kann eine Aufeinanderfolge von Exception-Strings generiert werden.
   * 
-  *TODO: Eine Methode, mit der die Exception-Strings in das XML-Format gebracht werden können (s. LotusScript-Z-Kernel)
+  *TODO: Eine Methode, mit der die Exception-Strings in das XML-Format gebracht werden kï¿½nnen (s. LotusScript-Z-Kernel)
   *
   */ 
   
@@ -70,6 +70,8 @@ public ExceptionZZZ(String sInfo, int iCode, String sClassName,String sFunctionC
 	this(sInfo, iCode, sClassName + "/" + sFunctionCurrent);
 }
 
+
+
 /**
  * Only use this in a JDK 1.4 or above environment !!!
  * @param Errormessage
@@ -80,22 +82,28 @@ public ExceptionZZZ(String sInfo, int iCode, String sClassName,String sFunctionC
  * 
  * from the current object the classname will be extracted and from the exception the last executed methodname will be used.
  * 
- * 		   //doesn´t work. Only works when > JDK 1.4
+ * 		   //doesnï¿½t work. Only works when > JDK 1.4
 			   //Exception e = new Exception();
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
  */
-public ExceptionZZZ(String sInfo, int iCode, Object obj, Exception e){
-			this(sInfo, iCode,obj.getClass() + "/" + e.getStackTrace()[0].getMethodName());			
+public ExceptionZZZ(String sInfo, int iCode, Object objCurrent, Exception e){
+	String sFunctionCurrent=null;
+	try {
+		sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+	ExceptionNew_(sInfo, iCode, objCurrent, e, sFunctionCurrent);			
 }
 
 private void ExceptionNew_(String sInfoin, int iCode, Object object, Exception e, String sFunctionCurrentIn){
-	//TODO: Falls ein Objekt die Methode setExceptionObject() hat, dann soll die Exception sich selbst dem Object hinzufügen.
+	//TODO: Falls ein Objekt die Methode setExceptionObject() hat, dann soll die Exception sich selbst dem Object hinzufï¿½gen.
 	
 	String sInfo = null;
 	if(sInfoin==null){
 		sInfo = "No message provided";
 	}else{
-		//TODO: In Abhängigkeit von dem standardisierten Code, soll der Message ein standardiesierter Text vorangestellt werden.
+		//TODO: In Abhï¿½ngigkeit von dem standardisierten Code, soll der Message ein standardiesierter Text vorangestellt werden.
 		sInfo = sInfoin;
 	}
 	
