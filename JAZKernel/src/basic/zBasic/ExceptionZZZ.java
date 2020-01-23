@@ -59,17 +59,35 @@ public class ExceptionZZZ extends Exception implements IConstantZZZ{
   * internally the errorcode 101 will be set.
   */
  public ExceptionZZZ(String sMessage, int iErrorCode, String sFunction){
-	 ExceptionNew_(sMessage, iErrorCode, null, null, sFunction);
+	 ExceptionNew_(sMessage, iErrorCode, null, null, null, sFunction);
  }
 
 public ExceptionZZZ(String sInfo, int iCode, Object objCurrent,String sFunctionCurrent){
-	ExceptionNew_(sInfo, iCode, objCurrent, null, sFunctionCurrent);
+	ExceptionNew_(sInfo, iCode, objCurrent, null, null, sFunctionCurrent);
 }
 
 public ExceptionZZZ(String sInfo, int iCode, String sClassName,String sFunctionCurrent){
 	this(sInfo, iCode, sClassName + "/" + sFunctionCurrent);
 }
 
+/**
+ * @param sInfo
+ * @param iCode
+ * @param sClassName
+ * @param e
+ * 23.01.2020, 09:45:58, Fritz Lindhauer
+ * Idealerweise eingesetzt in static Methoden, ohne Objekt, aber mit dem Namen der Klasse.
+ * 
+ */
+public ExceptionZZZ(String sInfo, int iCode, String sClassName, Exception e){
+	String sFunctionCurrent=null;
+	try {
+		sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+	ExceptionNew_(sInfo, iCode, null, sClassName, e, sFunctionCurrent);
+}
 
 
 /**
@@ -93,18 +111,23 @@ public ExceptionZZZ(String sInfo, int iCode, Object objCurrent, Exception e){
 	} catch (ExceptionZZZ e1) {		
 		e1.printStackTrace();
 	}
-	ExceptionNew_(sInfo, iCode, objCurrent, e, sFunctionCurrent);			
+	ExceptionNew_(sInfo, iCode, objCurrent, null, e, sFunctionCurrent);			
 }
 
-private void ExceptionNew_(String sInfoin, int iCode, Object object, Exception e, String sFunctionCurrentIn){
-	//TODO: Falls ein Objekt die Methode setExceptionObject() hat, dann soll die Exception sich selbst dem Object hinzuf�gen.
+private void ExceptionNew_(String sInfoin, int iCode, Object object, String sClassname, Exception e, String sFunctionCurrentIn){
 	
 	String sInfo = null;
 	if(sInfoin==null){
-		sInfo = "No message provided";
+		sInfo = "No ZKernel Message, but... ";
 	}else{
 		//TODO: In Abh�ngigkeit von dem standardisierten Code, soll der Message ein standardiesierter Text vorangestellt werden.
 		sInfo = sInfoin;
+	}
+	
+	if(e!=null) {
+		sInfo = sInfo + ": " + e.getMessage();		
+	}else {
+		//TODO: Falls ein Objekt die Methode setExceptionObject() hat, dann soll die Exception sich selbst dem Object hinzuf�gen.		
 	}
 	
 	String sFunctionCalling=null;
@@ -120,6 +143,8 @@ private void ExceptionNew_(String sInfoin, int iCode, Object object, Exception e
 	
 	if(object!=null){
 		sFunctionCalling = object.getClass() + "/" + sFunctionCalling;
+	}else if(sClassname!=null) {
+		sFunctionCalling = sClassname + "/" + sFunctionCalling;
 	}
 	
 	
