@@ -55,7 +55,7 @@ public class FileFilterSuffixZZZ extends ObjectZZZ implements FilenameFilter  {
 			
 			//Ende berechnen		
 			String sSuffixCur = FileEasyZZZ.NameEndCompute(sName);
-			if(sSuffixCur.equals(this.sFileSuffix)) bReturn = true;			
+			if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;			
 		}//END main:
 		return bReturn;
 	}
