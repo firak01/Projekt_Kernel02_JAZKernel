@@ -25,4 +25,17 @@ public class EnvironmentZZZ implements IConstantZZZ{
 		}
 		return sReturn;		
 	}
+	
+	
+	public static String getHostIp() throws ExceptionZZZ{
+		String sReturn = null;
+		try {			
+			InetAddress objInet = InetAddress.getLocalHost();
+			sReturn = objInet.getHostAddress();						
+		} catch (UnknownHostException e) {			
+			ExceptionZZZ ez = new ExceptionZZZ("UnknownHostException: ", iERROR_RUNTIME,  EnvironmentZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName()); 
+			throw ez;
+		}
+		return sReturn;		
+	}
 }
