@@ -11,13 +11,20 @@ import basic.zKernel.KernelLogZZZ;
 public class FileTextWriterZZZ extends ObjectZZZ{
 	public static final String sFILE_NAME_DEFAULT= "NewTextfile_default.txt";
 	private Stream objStream = null;
+	private String sFileName = null;
+	
+	public FileTextWriterZZZ() {		
+	}
+	public FileTextWriterZZZ(String sFileName) {
+		this.setFileName(sFileName);
+	}
 	
 	private boolean createStreamInternal(String sFileNameIn){
 		boolean bReturn = false;
 		try {
 			String sFileName;
 			if(StringZZZ.isEmpty(sFileNameIn)){
-				sFileName = FileTextWriterZZZ.sFILE_NAME_DEFAULT;
+				sFileName = this.getFileName();
 			}else{
 				sFileName = sFileNameIn;
 			}
@@ -30,14 +37,33 @@ public class FileTextWriterZZZ extends ObjectZZZ{
 	}
 	
 	//##############################################################
-	public synchronized boolean WriteLine(String stemp){
+	public synchronized boolean writeLine(String stemp){
 		boolean bHasStream = true;
 		if(this.objStream==null) bHasStream = createStreamInternal("");
 		if(bHasStream){
 			this.objStream.println(stemp);
 		}
 		return bHasStream;
+	}
+
+
+	public synchronized boolean write(String stemp){
+		boolean bHasStream = true;
+		if(this.objStream==null) bHasStream = createStreamInternal("");
+		if(bHasStream){
+			this.objStream.print(stemp);
 		}
-
-
+		return bHasStream;
+	}
+	
+	//##### Getter / Setter ###################
+	public String getFileName() {
+		if(StringZZZ.isEmpty(this.sFileName)) {
+			this.sFileName = FileTextWriterZZZ.sFILE_NAME_DEFAULT;
+		}		
+		return this.sFileName;
+	}
+	public void setFileName(String sFileName) {
+		this.sFileName = sFileName;
+	}
 }

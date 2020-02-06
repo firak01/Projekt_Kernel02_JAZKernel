@@ -8,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.FileTextWriterZZZ;
 
 import java.io.*;
 import java.util.Calendar;
@@ -25,18 +26,19 @@ import custom.zUtil.io.FileZZZ;
  */
 public class KernelLogZZZ extends ObjectZZZ implements IObjectZZZ {
 	public static final String sLOG_FILE_NAME_DEFAULT= "ZKernelLog_default.txt";
-	
-	private FileZZZ objFileZZZ;
-	private Stream objStream = null;
+	private FileTextWriterZZZ objFileTextWriter = null;
+	private FileZZZ objFileZZZ = null;
+	//private Stream objStream = null;
 	
 		//Constructor
 		public KernelLogZZZ(){	
-			boolean btemp = createStreamInternal(KernelLogZZZ.sLOG_FILE_NAME_DEFAULT);
-			if(btemp) {
-				WriteLineDate("Default Log created");
-			}else{
-				System.out.println("Unable to create default Log.");	
-			}
+//			20200206: DAS AUSSTELLEN
+//			boolean btemp = createStreamInternal(KernelLogZZZ.sLOG_FILE_NAME_DEFAULT);
+//			if(btemp) {
+//				WriteLineDate("Default Log created");
+//			}else{
+//				System.out.println("Unable to create default Log.");	
+//			}
 		}
 
 
@@ -82,33 +84,43 @@ public class KernelLogZZZ extends ObjectZZZ implements IObjectZZZ {
 			
 			
 			FileZZZ objFile = new FileZZZ(sDirectoryPathNormed, sLogFile, 3,null);
-			String sLogFileNew = objFile.PathNameTotalExpandedNextCompute();
-			boolean btemp = createStreamInternal(sLogFileNew);
-			if(btemp) {
-				WriteLineDate("Log '" + sLogFileNew + "' created");
-			}else{
-				System.out.println("Unable to create Log '" + sLogFileNew + "'.");	
-			}
-						
-			//die ermittelten Werte als Property - übernehmen			
 			this.setFileObject(objFile);
-			
+								
+			FileTextWriterZZZ objFileTextWriter = this.getFileTextWriterObject();
+			if(objFileTextWriter!=null) {
+				this.WriteLineDate("Log created");
+			}else {
+				System.out.println("Unable to create FileWriterObject for Log '" + objFile.getNameExpandedCurrent() + "'.");
+			}			
 		}//end main:
 		}
 
 		
 		
 		//##############################################################
-public synchronized boolean WriteLine(String stemp){
-	boolean bHasStream = true;
-	if(this.objStream==null) bHasStream = createStreamInternal("");
-	if(bHasStream){
-		this.objStream.println(stemp);
+public FileTextWriterZZZ getFileTextWriterObject(){
+	if(this.objFileTextWriter==null) {
+		FileZZZ objFile = this.getFileObject();
+		String sFilename;
+		try {
+			sFilename = objFile.PathNameTotalExpandedNextCompute();
+			this.objFileTextWriter = createFileTextWriterInternal(sFilename);
+		} catch (ExceptionZZZ e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
-	return bHasStream;
+	return this.objFileTextWriter;
+}
+public synchronized boolean WriteLine(String stemp) throws ExceptionZZZ{
+	boolean bReturn = false;
+	FileTextWriterZZZ objFileWriter = this.getFileTextWriterObject();
+	bReturn = objFileWriter.writeLine(stemp);
+	return bReturn;
 	}
 
 synchronized public boolean WriteLineDate(String stemp){
+	boolean bReturn = false;
 	GregorianCalendar d = new GregorianCalendar();
 	 Integer iDateYear = new Integer(d.get(Calendar.YEAR));
 	 Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
@@ -119,8 +131,13 @@ synchronized public boolean WriteLineDate(String stemp){
 	 + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString()); 
 	
 	String sLine = new String(sDate + ": " + stemp);
-	WriteLine(sLine);
-	return true;
+	try {
+		bReturn = WriteLine(sLine);
+	} catch (ExceptionZZZ e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return bReturn;
 }
 public void setFileObject(FileZZZ objFile){
 	this.objFileZZZ = objFile;
@@ -141,42 +158,25 @@ public String getFilename(){
 	return this.objFileZZZ.getName();
 }
 		
+
 public synchronized boolean Write(String stemp){
-	boolean bHasStream = true;
-	if(this.objStream==null) bHasStream = createStreamInternal("");
-	if(bHasStream){
-		this.objStream.print(stemp);
-	}
-	return bHasStream;
-}
-
-private boolean createStreamInternal(String sFileNameIn){
 	boolean bReturn = false;
-	try {
-		String sFileName;
-		if(StringZZZ.isEmpty(sFileNameIn)){
-			sFileName = KernelLogZZZ.sLOG_FILE_NAME_DEFAULT;
-		}else{
-			sFileName = sFileNameIn;
-		}
-		this.objStream = new Stream(sFileName,1); //1 = Write
-		bReturn = true;
-	} catch (FileNotFoundException e) {
-	} catch (IOException e) {
-	} 
+	FileTextWriterZZZ objFileWriter = this.getFileTextWriterObject();
+	bReturn = objFileWriter.write(stemp);
 	return bReturn;
-}
+	}
 
+private FileTextWriterZZZ createFileTextWriterInternal(String sFilepath) {
+	FileTextWriterZZZ objReturn = null;
+	main:{
+		if(StringZZZ.isEmpty(sFilepath))break main;
+	
+		objReturn = new FileTextWriterZZZ(sFilepath);
+	}
+	return objReturn;
+}
 
 //############################################
 //### Functions implemented by interface
-public ExceptionZZZ getExceptionObject() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-public void setExceptionObject(ExceptionZZZ objException) {
-	// TODO Auto-generated method stub
-	
-}
+//.....
 }//end class
