@@ -38,7 +38,9 @@ import basic.zBasic.ReflectCodeZZZ;
  *                    */
 @SuppressWarnings("rawtypes")
 public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ{
-
+	public final static int iSORT_DIRECTION_ASCENDING = 1;
+	public final static int iSORT_DIRECTION_DESCENDING = -1;
+	
 	/**
 	 * 
 	 */
@@ -150,6 +152,46 @@ public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ{
 	public int indexOfString(String string, boolean ignoreCase, int fromIndex) {
 		return getIndexOfString(string, ignoreCase, fromIndex);
 	}
+	
+	//###################################
+	// Sortierung
+	//###################################
+	/**Nur sort() reicht mir nicht. Ich will das steuern, dafür habe ich ja die VectorExtendedZZZ-Klasse im Einsatz. 
+	 * https://www.java-examples.com/sort-java-vector-descending-order-using-comparator-example
+	 * @param intNew
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	public boolean addSorted(Integer intNew, int iSortDirectionAscDesc) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(intNew==null) break main;
+			if(iSortDirectionAscDesc!=VectorExtendedZZZ.iSORT_DIRECTION_ASCENDING && iSortDirectionAscDesc != VectorExtendedZZZ.iSORT_DIRECTION_DESCENDING);
+			
+			Comparator comparator = null;
+			if(iSortDirectionAscDesc==VectorExtendedZZZ.iSORT_DIRECTION_ASCENDING) {
+				//Merke: Erst in Java 8 gibt es das 
+				//https://stackoverflow.com/questions/3241063/does-a-natural-comparator-exist-in-the-standard-api
+				comparator = Collections.reverseOrder(Collections.reverseOrder());//Das ist ein dreckiger Workaround
+			}else {
+				comparator = Collections.reverseOrder();
+			}
+			
+			//Nun den Vector um das neue Element erweitern
+			this.addElement(intNew);
+			
+			//Anschliessenden sortieren
+			
+			/*
+		      To sort an Vector using comparator use,
+		      static void sort(List list, Comparator c) method of Collections class.
+		    */		   
+		    Collections.sort(this,comparator);
+			bReturn = true;
+		}//End main:
+		return bReturn;
+	}
+	
 	
 	//###################################
 	// CompareTo vereinfacht einsetzen

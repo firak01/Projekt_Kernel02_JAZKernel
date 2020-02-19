@@ -264,9 +264,7 @@ public class HashtableIndexedZZZ<T,X>  extends ObjectZZZ{
 			//Merke: DER VECTOR MUSS IMMER AUFSTEIGEND SORTIERT SEIN !!!! Das wirkt sich hier beim Updaten aus.			
 			if(vecIndex.isLastElementGreaterThan(intIndex)) {
 				//Neue sortierung notwendig
-				vecIndex.addSorted(intIndex);
-				//also nur sort() reicht mir nicht. Ich will das steueren, dafür habe ich ja die VectorExtendedZZZ-Klasse im Einsatz.
-				//https://www.java-examples.com/sort-java-vector-descending-order-using-comparator-example
+				vecIndex.addSorted(intIndex, VectorExtendedZZZ.iSORT_DIRECTION_ASCENDING);			
 			}
 			
 		}
