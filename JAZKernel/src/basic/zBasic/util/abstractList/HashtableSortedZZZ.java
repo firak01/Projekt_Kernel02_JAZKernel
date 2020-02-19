@@ -15,7 +15,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author Lindhauer
  *
  */
-public class HashtableSortedZZZ  implements IObjectZZZ{
+public class HashtableSortedZZZ<T,X>  implements IObjectZZZ{
 	//TODO Einen eigenen Comparator im Konstruktor hinzufügbar machen.
 	
 	private Hashtable objHt;

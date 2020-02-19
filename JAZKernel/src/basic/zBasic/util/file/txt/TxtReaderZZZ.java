@@ -15,11 +15,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *
  */
 public class TxtReaderZZZ extends TxtCommonZZZ{
-//	private boolean bFlagIsFileSorted = false;
-//	private boolean bFlagIgnoreCase = false;
-//	private boolean bFlagIgnoreEmptyLine=false;
-//	private boolean bFlagIgnoreCommentLine=false;
-//	
 	public enum FLAGZ{
 		IsFileSorted, IgnoreCase, IgnoreEmptyLine, IgnoreCommentLine;
 	}
@@ -297,6 +292,8 @@ public Vector readVectorStringByByte(long lStartByteIn) throws ExceptionZZZ{
 	}//end main:
 	return vecReturn;
 }
+
+
 
 
 
