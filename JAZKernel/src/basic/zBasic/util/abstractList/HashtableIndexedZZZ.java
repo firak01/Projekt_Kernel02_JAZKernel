@@ -213,13 +213,19 @@ public class HashtableIndexedZZZ<T,X>  extends ObjectZZZ{
 	 * @return Hashtable
 	 */
 	public Hashtable<Integer,Object> getHashtable(){
-		return objHt;		
+		if(this.objHt==null) {
+			this.objHt = new Hashtable<Integer,Object>();
+		}
+		return this.objHt;		
 	}
 	private void setHashtable(Hashtable<Integer,Object>objHt) {
 		this.objHt=objHt;
 	}
 	
 	public VectorExtendedZZZ<Integer> getVectorIndex() {
+		if(this.objVx==null) {
+			this.objVx = new VectorExtendedZZZ<Integer>();
+		}
 		return this.objVx;
 	}
 	/**Ist private, da der Vector immer sortiert sein muss, also darf man ihn von Aussen nicht setzen.

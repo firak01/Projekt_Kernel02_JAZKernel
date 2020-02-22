@@ -196,19 +196,32 @@ public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ{
 	//###################################
 	// CompareTo vereinfacht einsetzen
 	//###################################
+	public boolean hasAnyElement() {
+		boolean bReturn = false;
+		main:{
+			try {
+				Object obj = this.lastElement();//prüfe ob der Vector einfach leer ist. Also noch nicht einmal NULL.			
+				bReturn = true;
+			}catch(NoSuchElementException nsee) {
+				//mache nix.			
+			}	
+		}//End main:
+		return bReturn;		
+	}
 	public boolean isLastElementGreaterThan(Integer intToCompare) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(intToCompare==null) break main;
+			if(!this.hasAnyElement()) break main;
 			
 			int itemp = this.compareToLastElement(intToCompare);
 			if (itemp>0) {
-				bReturn =true;
-			}
-					
+				bReturn = true;
+			}						
 		}//end main:
 		return bReturn;
 	}
+	
 	/**
 	 * @param intToCompare
 	 * @return
@@ -220,6 +233,10 @@ public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ{
 	public int compareToLastElement(Integer intToCompare) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
+			if(!this.hasAnyElement()) {
+				ExceptionZZZ ez = new ExceptionZZZ("Not any element available '",  iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+				throw ez;
+			}
 			Object obj = this.lastElement();			
 			if(obj instanceof Integer) {				
 				iReturn = ObjectUtils.compare((Comparable) obj,intToCompare);
