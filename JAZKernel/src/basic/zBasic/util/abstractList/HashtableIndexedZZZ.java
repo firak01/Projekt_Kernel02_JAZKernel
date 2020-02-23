@@ -260,6 +260,7 @@ public class HashtableIndexedZZZ<T,X>  extends ObjectZZZ{
 		return objReturn;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void put(Integer intIndex, Object objValue) throws ExceptionZZZ {		
 		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
 		boolean bExists = vecIndex.contains(intIndex);
@@ -271,6 +272,8 @@ public class HashtableIndexedZZZ<T,X>  extends ObjectZZZ{
 			if(vecIndex.isLastElementGreaterThan(intIndex)) {
 				//Neue sortierung notwendig
 				vecIndex.addSorted(intIndex, VectorExtendedZZZ.iSORT_DIRECTION_ASCENDING);			
+			}else {
+				vecIndex.add(intIndex);//einfach anhängen.
 			}
 			
 		}
