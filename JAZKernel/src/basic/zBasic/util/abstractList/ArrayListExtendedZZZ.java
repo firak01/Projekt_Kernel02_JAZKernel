@@ -95,10 +95,10 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 		}//end main
 	}
 	
-	public HashMapIndexedZZZ getValueDupsIndexedByMethod(String sMethodName) throws ExceptionZZZ{
-		HashMapIndexedZZZ hmReturn = null;
+	public HashMapExtendedIndexedZZZ getValueDupsIndexedByMethod(String sMethodName) throws ExceptionZZZ{
+		HashMapExtendedIndexedZZZ hmReturn = null;
 		main:{
-			hmReturn = HashMapIndexedZZZ.getValueDupsIndexedByMethod(this, sMethodName);
+			hmReturn = HashMapExtendedIndexedZZZ.getValueDupsIndexedByMethod(this, sMethodName);
 		}
 		return hmReturn;
 	}
@@ -334,10 +334,10 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 	* 
 	* lindhauer; 17.05.2011 11:37:46
 	 */
-	public int removeDupsFromByIndex( HashMapIndexedZZZ hmIndexed, String sFlagRemainIn) throws ExceptionZZZ{
+	public int removeDupsFromByIndex( HashMapExtendedIndexedZZZ hmIndexed, String sFlagRemainIn) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
-			iReturn = HashMapIndexedZZZ.removeDupsFromByIndex(this, hmIndexed, sFlagRemainIn);
+			iReturn = HashMapExtendedIndexedZZZ.removeDupsFromByIndex(this, hmIndexed, sFlagRemainIn);
 		}//end main
 		return iReturn;
 	}

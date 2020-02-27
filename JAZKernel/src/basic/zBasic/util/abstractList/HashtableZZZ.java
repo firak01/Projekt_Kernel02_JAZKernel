@@ -22,8 +22,8 @@ public class HashtableZZZ extends ObjectZZZ{
 			//Merke: Der Indexvektor soll aufsteigend sortiert sein.
 			for(Object objIndex : vecIndex) {
 				Integer intIndex = (Integer) objIndex;
-				String sValue = (String) htIndexed.getValue(intIndex);				
-				hmReturn.put(intIndex.toString(), sValue);
+				String sValue = (String) htIndexed.getValue(intIndex);					
+				hmReturn.put(intIndex.toString(), sValue);//Merke: Die Sortierung in der HashMap ist dann aber verloren gegangen.
 			}
 			
 			/* ANDERE IDEE, z.B.: 

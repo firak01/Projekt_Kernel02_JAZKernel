@@ -92,8 +92,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	* lindhaueradmin; 18.05.2011 06:02:54
 	 * @throws ExceptionZZZ 
 	 */
-	public static HashMapIndexedZZZ getValueDupsIndexedByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ{
-		HashMapIndexedZZZ hmIndexed = new HashMapIndexedZZZ();
+	public static HashMapExtendedIndexedZZZ getValueDupsIndexedByMethod(HashMap objHashMap, String sMethodName) throws ExceptionZZZ{
+		HashMapExtendedIndexedZZZ hmIndexed = new HashMapExtendedIndexedZZZ();
 		main:{
 			if(objHashMap== null){
 				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
@@ -103,7 +103,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 				ExceptionZZZ ez = new ExceptionZZZ("String MethodName", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
 				throw ez;	
 			}
-			hmIndexed = HashMapIndexedZZZ.getValueDupsIndexedByMethod(objHashMap, sMethodName);
+			hmIndexed = HashMapExtendedIndexedZZZ.getValueDupsIndexedByMethod(objHashMap, sMethodName);
 		}//end main
 		return hmIndexed;
 	}
@@ -718,30 +718,6 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	          }
 	     });
 	} 
-	
-	/**Sortiere die Map. !!! Die Werte m�ssen vergleichbar sein!!!
-	 *   http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
-	* @param map
-	* @return
-	* 
-	* lindhaueradmin; 22.05.2011 08:54:37
-	 */
-	static void sortByKeyInteger(Map map) {
-	     List list = new LinkedList(map.keySet());
-	     Collections.sort(list, new Comparator() {
-	          public int compare(Object o1, Object o2) {
-	        	  int iReturn = 0;
-	        	  
-	        	//  iReturn =( ((Map.Entry)o1).getValue()) .compareTo((Comparable)((Map.Entry)o2).getValue());
-	        	Integer int1 = ((Integer) o1);
-	        	Integer int2 = ((Integer) o2);
-	        	iReturn = int1.compareTo(int2);
-	      
-	               return iReturn; 
-	          }
-	     });
-	} 
-	
 	
 	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch f�r jeden neuen Eintrag.
 	* @return

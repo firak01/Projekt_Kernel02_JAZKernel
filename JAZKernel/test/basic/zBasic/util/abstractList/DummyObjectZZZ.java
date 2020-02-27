@@ -8,7 +8,7 @@ import basic.zBasic.ObjectZZZ;
  *
  */
 public class DummyObjectZZZ extends ObjectZZZ {
-
+		private String sValue=null;
 	
 		/** Damit kann man RefelectionTesten. Z.B. beim Aufruf von Objektvergleichen mit bestimmten Methoden.
 		 *   Die folgenden Methode soll es nur in Objekten dieser DummyObjectZZZ - Klasse geben.
@@ -18,5 +18,12 @@ public class DummyObjectZZZ extends ObjectZZZ {
 		 */
 		public String gibtsNurImDummy(){
 			return new String("Testwert");
+		}
+		
+		public String getValue() {
+			return this.sValue;
+		}
+		public void setValue(String sValue) {
+			this.sValue = sValue;
 		}
 }
