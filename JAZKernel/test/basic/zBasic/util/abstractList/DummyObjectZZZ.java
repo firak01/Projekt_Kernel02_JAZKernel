@@ -10,7 +10,11 @@ import basic.zBasic.ObjectZZZ;
 public class DummyObjectZZZ extends ObjectZZZ {
 		private String sValue=null;
 	
-		/** Damit kann man RefelectionTesten. Z.B. beim Aufruf von Objektvergleichen mit bestimmten Methoden.
+		public DummyObjectZZZ() {
+			super();
+		}
+		
+		/** Damit kann man ReflectionTesten. Z.B. beim Aufruf von Objektvergleichen mit bestimmten Methoden.
 		 *   Die folgenden Methode soll es nur in Objekten dieser DummyObjectZZZ - Klasse geben.
 		* @return
 		* 

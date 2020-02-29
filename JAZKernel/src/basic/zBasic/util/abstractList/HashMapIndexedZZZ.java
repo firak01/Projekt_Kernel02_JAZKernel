@@ -65,12 +65,13 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	public Object getKeyFirst(){
 		Object objReturn = null;
 		try{
-		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
-		if(vecIndex!=null){
-			objReturn =  vecIndex.elementAt(0);			
-			this.setKeyCurrent(0); 			
-		}
-
+			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();		
+			if(vecIndex!=null){
+				if(vecIndex.hasAnyElement()) {
+					objReturn =  vecIndex.elementAt(0);			
+					this.setKeyCurrent(0); 			
+				}
+			}
 		}catch(ExceptionZZZ ez){
 			objReturn=null;
 		}
@@ -84,12 +85,13 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	public Object getKeyLast(){
 		Object objReturn = null;
 		try{
-		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
-		if(vecIndex!=null){
-			objReturn=vecIndex.lastElement();
-			this.setKeyCurrent(vecIndex.size()-1);
-		}
-
+			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+			if(vecIndex!=null){
+				if(vecIndex.hasAnyElement()) {
+					objReturn=vecIndex.lastElement();
+					this.setKeyCurrent(vecIndex.size()-1);
+				}
+			}
 		}catch(ExceptionZZZ ez){
 			objReturn=null;
 		}
@@ -104,12 +106,16 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		Object objReturn = null;
 		main:{
 			try{
-			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
-			int iIndexTest = this.iIndex + 1;
-			if(iIndexTest > vecIndex.size()-1) break main;
-			
-			objReturn =  vecIndex.elementAt(iIndexTest);			
-			this.setKeyCurrent(iIndexTest);
+				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+				if(vecIndex!=null){
+					if(vecIndex.hasAnyElement()) {
+						int iIndexTest = this.iIndex + 1;
+						if(iIndexTest > vecIndex.size()-1) break main;
+				
+						objReturn =  vecIndex.elementAt(iIndexTest);			
+						this.setKeyCurrent(iIndexTest);
+					}
+				}
 			}catch(ExceptionZZZ ez){
 				System.out.println(ez.getDetailAllLast());
 			}
@@ -169,17 +175,23 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	* Lindhauer; 27.04.2006 14:05:33
 	 * @param objKey
 	 * @return Object
+	 * @throws ExceptionZZZ 
 	 */
-	public Object getValue(Object objKey){
+	public Object getValue(Integer objKey) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 			check:{
 				if(objKey==null) break main;
 				
 				//Das Key-Objekt muss ja im Vektor vorhanden sein
-				VectorExtendedZZZ<Integer> vexIndex = this.getVectorIndex();
-				if(!vexIndex.contains(objKey)) break main;
-								
+				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+				if(vecIndex==null) break main;
+				if(!vecIndex.hasAnyElement()) break main;				
+				if(!vecIndex.contains(objKey)) break main;
+				
+				//Nicht vergessen: Den aktuell verarbeiteten Index setzten
+				int iIndex = objKey.intValue();
+				this.setKeyCurrent(iIndex);
 			}//END check:
 			
 			HashMap<Integer,Object>hmIndexed = this.getHashMap();
@@ -204,6 +216,13 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 					  throw ez;		 
 				}
 				VectorExtendedZZZ<Integer> vexIndex = this.getVectorIndex();
+				if(!vecIndex.hasAnyElement()) {
+					ExceptionZZZ ez = new ExceptionZZZ("no element exists iIndex cann not be set.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+					  //doesn�t work. Only works when > JDK 1.4
+					  //Exception e = new Exception();
+					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
+					  throw ez;	
+				}
 				if(iIndex > vexIndex.size() - 1){
 					  ExceptionZZZ ez = new ExceptionZZZ("iIndex > " + (vexIndex.size() -1) + ", but expected to be <= Vector.size()", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 					  //doesn�t work. Only works when > JDK 1.4
@@ -258,8 +277,11 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	@SuppressWarnings("unchecked")
 	public void put(Integer intIndex, Object objValue) throws ExceptionZZZ {		
 		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
-		boolean bExists = vecIndex.contains(intIndex);
 		
+		boolean bExists = false;		
+		if(vecIndex.hasAnyElement()) {
+			bExists = vecIndex.contains(intIndex);
+		}
 		if(bExists) {
 			this.getHashMap().remove(intIndex);			
 		}else {			
@@ -278,10 +300,13 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	@SuppressWarnings("unchecked")
 	public void put(Object objValue) throws ExceptionZZZ {		
 		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
-		Integer intMax = (Integer) vecIndex.lastElement();
 		int iMax = -1;
-		if(intMax!=null) {
-			iMax = intMax.intValue();		
+		
+		if(vecIndex.hasAnyElement()) {
+			Integer intMax = (Integer) vecIndex.lastElement();
+			if(intMax!=null) {
+				iMax = intMax.intValue();
+			}
 		}
 		iMax=iMax+1;
 		Integer intMaxNew = new Integer(iMax);
@@ -304,25 +329,52 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	@Override
     public Iterator<T> iterator() {
         Iterator<T> it = new Iterator<T>() {
-
+        	private int iIndexIterator=-1; //Der Index des gerade verarbeiteten Keys im Iterator
+        	private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
+        	
+        	
             @Override
             public boolean hasNext() {
             	boolean bReturn = false;
             	main:{
 	            	VectorExtendedZZZ<Integer> vec = getVectorIndex();
 	            	if(vec==null)break main;
+	            	if(!vec.hasAnyElement())break main;
+	            	
 	            	
 	            	Integer intLast = (Integer) vec.lastElement();
-	            	Integer intCur = new Integer(iIndex);
-	            	bReturn = iIndex < intLast.intValue() && getHashMap().get(intCur) != null;
+	            		            
+	            	iIndexWatched = iIndexWatched+1;//das nächste Element halt, ausgehend von -1
+	            	Integer intNext = new Integer(iIndexWatched);
+	            	bReturn = iIndexWatched <= intLast.intValue() && getHashMap().get(intNext) != null;	            	
             	}//end main:
             	return bReturn;
             }
 
-            @Override
+            @SuppressWarnings("unchecked")
+			@Override
             public T next() {
-                //return arrayList[currentIndex++];
-            	return null;
+                T objReturn = null;
+                main:{
+                	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+	            	if(vec==null)break main;
+	            	if(!vec.hasAnyElement())break main;
+	            	
+                	int iIndexCur = this.iIndexIterator;
+                	if(iIndexCur<this.iIndexWatched) {
+                		iIndexCur = this.iIndexWatched;
+                	}else {
+                		iIndexCur = iIndexCur + 1;
+                	}
+                	
+	            	Integer intLast = (Integer) vec.lastElement();
+	            	boolean bReturn = iIndexCur <= intLast.intValue() && getHashMap().get(iIndexCur) != null;	 
+	            	if(bReturn) {
+	            		this.iIndexIterator = iIndexCur;
+	            		objReturn = (T) getHashMap().get(iIndexCur);
+	            	}
+                }//end main:
+            	return objReturn;
             }
 
             @Override

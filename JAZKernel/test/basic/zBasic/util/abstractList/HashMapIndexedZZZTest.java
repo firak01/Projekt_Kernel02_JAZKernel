@@ -41,7 +41,7 @@ public class HashMapIndexedZZZTest extends TestCase{
 	}//END setup
 	    
 	    public void testGetElement() {
-//	    	try{
+	    	try{
 				DummyObjectZZZ objTest01 = (DummyObjectZZZ) this.hmTest.getValueFirst();
 				assertNotNull(objTest01);
 				assertTrue(objTest01.getValue().equals("1"));
@@ -55,7 +55,7 @@ public class HashMapIndexedZZZTest extends TestCase{
 				assertNull(objTestNULL);
 				//#############################
 				
-				Integer intKey = new Integer(2);
+				Integer intKey = new Integer(1);//Merke: Index beginnt mit 0, also ist das der zweite Wert.
 				DummyObjectZZZ objTest02 = (DummyObjectZZZ) this.hmTest.getValue(intKey);
 				assertNotNull(objTest02);
 				assertTrue(objTest02.getValue().equals("2"));
@@ -64,18 +64,26 @@ public class HashMapIndexedZZZTest extends TestCase{
 				assertNotNull(objTestX);
 				assertTrue(objTestX.equals(objTest03));
 				
+				DummyObjectZZZ objTestY = (DummyObjectZZZ) this.hmTest.getValueNext();
+				assertNull(objTestY);
 				
-//			} catch (ExceptionZZZ ez) {
-//				fail("Method throws an exception." + ez.getMessageLast());
-//			} 
+				DummyObjectZZZ objTestZ = (DummyObjectZZZ) this.hmTest.getValueNext();
+				assertNull(objTestZ);
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 	    }
 	    public void testIterate(){
 //			try{
+	    		int iSumme = 0;
 				Iterator<Object>itObject=this.hmTest.iterator();
 				while(itObject.hasNext()) {
-					System.out.println("TEST");
+					DummyObjectZZZ objDummyTemp = (DummyObjectZZZ) itObject.next();
+					Integer intValue = new Integer(objDummyTemp.getValue());
+					iSumme = iSumme + intValue.intValue();
+					System.out.println("Summe bisher: " + iSumme);
 				}
-			
+				assertTrue(iSumme == 6);
 				
 //			} catch (ExceptionZZZ ez) {
 //				fail("Method throws an exception." + ez.getMessageLast());
