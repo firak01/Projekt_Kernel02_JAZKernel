@@ -15,12 +15,12 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class HashMapZZZ<T,X> extends ObjectZZZ {
 
 	/**
-	 * Z.B. Einsetzen in OVPN: ServerConfigMapper4BatchOVPN.readTaskHashMap
+	 * Merke: Eine normale HashMap ist NIE sortierbar.
 	 * @param map
 	 * @return
 	 * @author Fritz Lindhauer, 26.02.2020, 17:50:30
 	 */
-	public static Map<String, String> sortByKeyAsInteger(Map<String,String> map){
+	public static HashMapIterableZZZ<String, String> sortByKeyAsInteger(Map<String,String> map){
 		Map<String, String>hmReturn=null;
 		main:{					
 			if(map==null)break main;
@@ -45,12 +45,12 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 	}
 
 	/**
-	 * Z.B. Einsetzen in OVPN: ServerConfigMapper4BatchOVPN.readTaskHashMap
+	 * Merke: Eine normale HashMap ist NIE sortierbar.
 	 * @param map
 	 * @return
 	 * @author Fritz Lindhauer, 26.02.2020, 17:49:20
 	 */
-	public static HashMap<Integer,String> sortByKeyInteger(Map<Integer,String> map) {
+	public static HashMapIterableZZZ<Integer,String> sortByKeyInteger(Map<Integer,String> map) {
 		HashMap<Integer,String>hmReturn=null;
 		main:{
 			if(map==null)break main;
