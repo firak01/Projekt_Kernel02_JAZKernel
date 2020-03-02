@@ -61,64 +61,105 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	/** Object, Den Key des ersten Objekts zur�ckgeben. (Das ist das erste Element des internen Vectors.)
 	* Lindhauer; 27.04.2006 08:13:07
 	 * @return Object
+	 * @throws ExceptionZZZ 
 	 */
-	public Object getKeyFirst(){
+	public Object getKeyFirst() throws ExceptionZZZ{
 		Object objReturn = null;
-		try{
+//		try{
 			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();		
 			if(vecIndex!=null){
 				if(vecIndex.hasAnyElement()) {
-					objReturn =  vecIndex.elementAt(0);			
-					this.setKeyCurrent(0); 			
+					Integer intIndex  =  (Integer) vecIndex.elementAt(0);			
+					this.setIndexCurrent(0); 
+					
+					HashMap<Integer,Object>hmIndexed = this.getHashMap();
+					objReturn = hmIndexed.get(intIndex);
 				}
 			}
-		}catch(ExceptionZZZ ez){
-			objReturn=null;
-		}
+//		}catch(ExceptionZZZ ez){
+//			objReturn=null;
+//		}
 		return objReturn;
 	}
 	
 	/** Object, Den Key des letzten Objekts zurückgeben. (Das ist das letzte Objekt des inneren Vektors.)
 	* Lindhauer; 27.04.2006 08:13:38
 	 * @return Object
+	 * @throws ExceptionZZZ 
 	 */
-	public Object getKeyLast(){
+	public Object getKeyLast() throws ExceptionZZZ{
 		Object objReturn = null;
-		try{
+//		try{
 			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
 			if(vecIndex!=null){
 				if(vecIndex.hasAnyElement()) {
-					objReturn=vecIndex.lastElement();
-					this.setKeyCurrent(vecIndex.size()-1);
+					Integer intIndex=(Integer) vecIndex.lastElement();
+					this.setIndexCurrent(vecIndex.size()-1);
+					
+					HashMap<Integer,Object>hmIndexed = this.getHashMap();
+					objReturn = hmIndexed.get(intIndex);
 				}
 			}
-		}catch(ExceptionZZZ ez){
-			objReturn=null;
-		}
+//		}catch(ExceptionZZZ ez){
+//			objReturn=null;
+//		}
 		 return objReturn;
 	}
 	
 	/** Object, Den Key an der nächsten Indexposition holen. Dabei wird der Index im 1 erhöht.
 	* Lindhauer; 27.04.2006 14:16:21
 	 * @return Object
+	 * @throws ExceptionZZZ 
 	 */
-	public Object getKeyNext(){
+	public Object getKeyNext() throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
-			try{
+			//try{
 				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
 				if(vecIndex!=null){
 					if(vecIndex.hasAnyElement()) {
-						int iIndexTest = this.iIndex + 1;
+						int iIndexTest = this.getIndexCurrent() + 1;
 						if(iIndexTest > vecIndex.size()-1) break main;
 				
-						objReturn =  vecIndex.elementAt(iIndexTest);			
-						this.setKeyCurrent(iIndexTest);
+						Integer intIndex =  (Integer) vecIndex.elementAt(iIndexTest);			
+						this.setIndexCurrent(iIndexTest);
+						
+						HashMap<Integer,Object>hmIndexed = this.getHashMap();
+						objReturn = hmIndexed.get(intIndex);
 					}
 				}
-			}catch(ExceptionZZZ ez){
-				System.out.println(ez.getDetailAllLast());
-			}
+//			}catch(ExceptionZZZ ez){
+//				System.out.println(ez.getDetailAllLast());
+//			}
+		}
+		return objReturn;
+	}
+	
+	/** Object, Den Key an der nächsten Indexposition holen. Dabei wird der Index im 1 erhöht.
+	* Lindhauer; 27.04.2006 14:16:21
+	 * @return Object
+	 * @throws ExceptionZZZ 
+	 */
+	public Object getKeyCurrent() throws ExceptionZZZ{
+		Object objReturn = null;
+		main:{
+//			try{
+				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+				if(vecIndex!=null){
+					if(vecIndex.hasAnyElement()) {
+						int iIndexTest = this.getIndexCurrent() + 1;
+						if(iIndexTest > vecIndex.size()-1) break main;
+				
+						Integer intIndex =  (Integer) vecIndex.elementAt(iIndexTest);
+						this.setIndexCurrent(iIndexTest);
+						
+						HashMap<Integer,Object>hmIndexed = this.getHashMap();
+						objReturn = hmIndexed.get(intIndex);
+					}
+				}
+//			}catch(ExceptionZZZ ez){
+//				System.out.println(ez.getDetailAllLast());
+//			}
 		}
 		return objReturn;
 	}
@@ -126,8 +167,9 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	/** Object, Gibt den Wert der Hashtable f�r den ersten Key (gem�� der Sortierung) zur�ck.
 	* Lindhauer; 27.04.2006 11:30:25
 	 * @return Object
+	 * @throws ExceptionZZZ 
 	 */
-	public Object getValueFirst(){
+	public Object getValueFirst() throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 			Object objKey = this.getKeyFirst();
@@ -142,8 +184,9 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	/** Object, Gibt den Wert der Hashtable f�r den letzten Key (gem�� der Sortierung) zur�ck.
 	* Lindhauer; 27.04.2006 11:30:25
 	 * @return Object
+	 * @throws ExceptionZZZ 
 	 */
-	public Object getValueLast(){
+	public Object getValueLast() throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 			Object objKey = this.getKeyLast();
@@ -155,11 +198,12 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtalbe f�r den n�chsten Key (gem�� der Sortierung) zur�ck und schiebt den Index-Wert um 1 weiter.
+	/** Object, Gibt den Wert der Hashtalbe für den nächsten Key (gemäß der Sortierung) zurück und schiebt den Index-Wert um 1 weiter.
 	* Lindhauer; 27.04.2006 12:39:15
 	 * @return Object
+	 * @throws ExceptionZZZ 
 	 */
-	public Object getValueNext(){
+	public Object getValueNext() throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 			Object objKeyNext = this.getKeyNext();
@@ -171,7 +215,7 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert f�r den aktullen Key/den �bergebenen Key zur�ck, ohne den Indexwert weiterzuschieben.
+	/** Object, Gibt den Wert für den aktullen Key/den übergebenen Key zurück, ohne den Indexwert weiterzuschieben.
 	* Lindhauer; 27.04.2006 14:05:33
 	 * @param objKey
 	 * @return Object
@@ -191,7 +235,7 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 				
 				//Nicht vergessen: Den aktuell verarbeiteten Index setzten
 				int iIndex = objKey.intValue();
-				this.setKeyCurrent(iIndex);
+				this.setIndexCurrent(iIndex);
 			}//END check:
 			
 			HashMap<Integer,Object>hmIndexed = this.getHashMap();
@@ -205,7 +249,7 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	 * @param objCur
 	 * @throws ExceptionZZZ 
 	 */
-	public void setKeyCurrent(int iIndex) throws ExceptionZZZ{
+	public void setIndexCurrent(int iIndex) throws ExceptionZZZ{
 		main:{
 			check:{
 				if(iIndex <= -1){
@@ -234,6 +278,10 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 	
 			this.iIndex = iIndex;
 		}//END main:
+	}
+	
+	public int getIndexCurrent() {
+		return this.iIndex;
 	}
 	
 	/** HashMap, die Im Kontruktor übergebene HashMap, unver�ndert.

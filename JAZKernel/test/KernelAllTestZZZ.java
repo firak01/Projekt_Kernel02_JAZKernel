@@ -7,9 +7,11 @@ import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZTest;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZTest;
+import basic.zBasic.util.abstractList.HashMapIterableKeyZZZTest;
 import basic.zBasic.util.abstractList.HashMapExtendedIndexedZZZTest;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZTest;
 import basic.zBasic.util.abstractList.HashMapMultiZZZTest;
+import basic.zBasic.util.abstractList.HashMapZZZTest;
 import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
 import basic.zBasic.util.abstractList.VectorZZZTest;
 import basic.zBasic.util.data.DataStoreZZZTest;
@@ -57,6 +59,8 @@ public class KernelAllTestZZZ {
 		//Tests für Datentypen etc.
 		objReturn.addTestSuite(ArrayListExtendedZZZTest.class);		
 		
+		objReturn.addTestSuite(HashMapZZZTest.class);
+		objReturn.addTestSuite(HashMapIterableKeyZZZTest.class);
 		objReturn.addTestSuite(HashMapIndexedZZZTest.class);
 		
 		objReturn.addTestSuite(HashMapExtendedZZZTest.class);

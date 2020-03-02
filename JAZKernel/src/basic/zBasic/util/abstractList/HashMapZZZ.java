@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -19,14 +20,15 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 	 * @param map
 	 * @return
 	 * @author Fritz Lindhauer, 26.02.2020, 17:50:30
+	 * @throws ExceptionZZZ 
 	 */
-	public static HashMapIterableKeyZZZ<String, String> sortByKeyAsInteger(Map<String,String> map){
-		HashMapIterableKeyZZZ<String, String>hmReturn=null;
+	public static HashMapIterableKeyZZZ<String, Object> sortByKeyAsInteger_StringObject(Map<String,Object> map) throws ExceptionZZZ{
+		HashMapIterableKeyZZZ<String, Object>hmReturn=null;
 		main:{					
 			if(map==null)break main;
 			
 			//1. Hole das KeySet, als Liste sortiert
-			hmReturn = new HashMapIterableKeyZZZ<String,String>();//new HashMap<String, ?>() funktioniert dagegen nicht. ? ist zu unspezifisch;
+			hmReturn = new HashMapIterableKeyZZZ<String,Object>();//new HashMap<String, ?>() funktioniert dagegen nicht. ? ist zu unspezifisch;
 			
 			Set<String> setStrToBeSorted = map.keySet();			
 			if(setStrToBeSorted.size()==0) break main;
@@ -37,26 +39,60 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {
 				String sKey = intSorted.toString();
-				String sValue = map.get(sKey);
+				String sValue = (String) map.get(sKey);
 				hmReturn.put(sKey, sValue);				
 			}						
 		}//end main:
 		return hmReturn;
 	}
+	
 
 	/**
 	 * Merke: Eine normale HashMap ist NIE sortierbar.
 	 * @param map
 	 * @return
-	 * @author Fritz Lindhauer, 26.02.2020, 17:49:20
+	 * @author Fritz Lindhauer, 26.02.2020, 17:50:30
+	 * @throws ExceptionZZZ 
 	 */
-	public static HashMapIterableKeyZZZ<Integer,String> sortByKeyInteger(Map<Integer,String> map) {
-		HashMap<Integer,String>hmReturn=null;
+	public static HashMapIterableKeyZZZ<String, Object> sortByKeyAsInteger_StringString(Map<String,String> map) throws ExceptionZZZ{
+		HashMapIterableKeyZZZ<String, Object>hmReturn=null;
+		main:{					
+			if(map==null)break main;
+			
+			//1. Hole das KeySet, als Liste sortiert
+			hmReturn = new HashMapIterableKeyZZZ<String,Object>();//new HashMap<String, ?>() funktioniert dagegen nicht. ? ist zu unspezifisch;
+			
+			Set<String> setStrToBeSorted = map.keySet();			
+			if(setStrToBeSorted.size()==0) break main;
+			
+			Set<Integer> setIntToBeSorted = SetZZZ.toInteger(setStrToBeSorted);
+			List<Integer> listIntSorted = SetZZZ.sortToIntegerReversed(setIntToBeSorted);
+			
+			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
+			for(Integer intSorted : listIntSorted) {
+				String sKey = intSorted.toString();
+				String sValue = (String) map.get(sKey);
+				hmReturn.put(sKey, sValue);				
+			}						
+		}//end main:
+		return hmReturn;
+	}
+	
+	
+	/**
+	 * Merke: Eine normale HashMap ist NIE sortierbar.
+	 * @param map
+	 * @return
+	 * @author Fritz Lindhauer, 26.02.2020, 17:49:20
+	 * @throws ExceptionZZZ 
+	 */
+	public static HashMapIterableKeyZZZ<Integer,Object> sortByKeyInteger(Map<Integer,Object> map) throws ExceptionZZZ {
+		HashMapIterableKeyZZZ<Integer,Object>hmReturn=null;
 		main:{
 			if(map==null)break main;
 			
 			//1. Hole das KeySet, als Liste sortiert
-			hmReturn = new HashMap<Integer,String>();//new HashMap<String, ?>() funktioniert dagegen nicht. ? ist zu unspezifisch;
+			hmReturn = new HashMapIterableKeyZZZ<Integer,Object>();//new HashMap<String, ?>() funktioniert dagegen nicht. ? ist zu unspezifisch;
 			
 			Set<Integer> setIntToBeSorted = map.keySet();			
 			if(setIntToBeSorted.size()==0) break main;
@@ -65,7 +101,7 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 					
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {
-				String sValue = map.get(intSorted);
+				String sValue = (String) map.get(intSorted);
 				hmReturn.put(intSorted, sValue);				
 			}						
 		}//end main:

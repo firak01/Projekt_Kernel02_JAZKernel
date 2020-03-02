@@ -7,11 +7,11 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class HashMapIterableKeyZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
-	private HashMap<X,T> hmOriginal=null;
-	private HashMapIndexedZZZ<Integer,X> hmIndexedKey=null;//also integer als Sortierkrierium , X als originaler Key
+public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements Iterable<T>{
+	private HashMap<T,X> hmOriginal=null;
+	private HashMapIndexedZZZ<Integer,T> hmIndexedKey=null;//also integer als Sortierkrierium , X als originaler Key
 	
-	public void put(X arg0, T arg1)throws ExceptionZZZ {	
+	public void put(T arg0, X arg1)throws ExceptionZZZ {	
 		main:{
 			if(arg0==null) {
 				ExceptionZZZ ez = new ExceptionZZZ("null key element. Index can not be set.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
@@ -21,85 +21,85 @@ public class HashMapIterableKeyZZZ<X,T>  extends ObjectZZZ implements Iterable<T
 				  throw ez;
 			}
 			
-			HashMapIndexedZZZ<Integer,X> hmIndexed = this.getHashMapIndexedKey();
+			HashMapIndexedZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();
 			hmIndexed.put(arg0);
 			
-			HashMap<X,T> hmOriginal = this.getHashMap();
+			HashMap<T,X> hmOriginal = this.getHashMap();
 			hmOriginal.put(arg0, arg1);
 									
 		}//end main:			
 	}
 
-	public X getKeyFirst() throws ExceptionZZZ {
-		X objReturn = null;
+	public T getKeyFirst() throws ExceptionZZZ {
+		T objReturn = null;
 		main:{
 			
-			HashMapIndexedZZZ<Integer,X> hmIndex = this.getHashMapIndexedKey();
-			objReturn = (X) hmIndex.getKeyFirst();
+			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
+			objReturn = (T) hmIndex.getKeyFirst();
 			
 		}//end main:
 		return objReturn;
 	}
-	public T getValueFirst() throws ExceptionZZZ {
-		T objReturn = null;
+	public X getValueFirst() throws ExceptionZZZ {
+		X objReturn = null;
 		main:{
-			X objKey = this.getKeyFirst();
+			T objKey = this.getKeyFirst();
 			if(objKey==null) break main;
 			
-			HashMap<X,T>hmOriginal =this.getHashMap();
+			HashMap<T,X>hmOriginal =this.getHashMap();
 			objReturn = hmOriginal.get(objKey);
 			
 		}//end main:
 		return objReturn;
 	}
 	
-	public X getKeyLast()  throws ExceptionZZZ {
-		X objReturn = null;
+	public T getKeyLast()  throws ExceptionZZZ {
+		T objReturn = null;
 		main:{
 			
-			HashMapIndexedZZZ<Integer,X> hmIndex = this.getHashMapIndexedKey();
-			objReturn = (X) hmIndex.getKeyLast();
+			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
+			objReturn = (T) hmIndex.getKeyLast();
 			
 		}//end main:
 		return objReturn;
 	}
-	public T getValueLast() throws ExceptionZZZ {
-		T objReturn = null;
+	public X getValueLast() throws ExceptionZZZ {
+		X objReturn = null;
 		main:{
-			X objKey = this.getKeyLast();
+			T objKey = this.getKeyLast();
 			if(objKey==null) break main;
 			
-			HashMap<X,T>hmOriginal =this.getHashMap();
+			HashMap<T,X>hmOriginal =this.getHashMap();
 			objReturn = hmOriginal.get(objKey);
 			
 		}//end main:
 		return objReturn;
 	}
-	public X getKeyNext()  throws ExceptionZZZ {
-		X objReturn = null;
+	public T getKeyNext()  throws ExceptionZZZ {
+		T objReturn = null;
 		main:{
 			
-			HashMapIndexedZZZ<Integer,X> hmIndex = this.getHashMapIndexedKey();
-			objReturn = (X) hmIndex.getKeyNext();
+			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
+			objReturn = (T) hmIndex.getKeyNext();
 			
 		}//end main:
 		return objReturn;
 	}
-	public T getValueNext() throws ExceptionZZZ {
-		T objReturn = null;
+	public X getValueNext() throws ExceptionZZZ {
+		X objReturn = null;
 		main:{
-			X objKey = this.getKeyNext();
+			T objKey = this.getKeyNext();
 			if(objKey==null) break main;
 			
-			HashMap<X,T>hmOriginal =this.getHashMap();
+			HashMap<T,X>hmOriginal =this.getHashMap();
 			objReturn = hmOriginal.get(objKey);
 			
 		}//end main:
 		return objReturn;
 	}
 	
-	public T getValue(int iIndex) throws ExceptionZZZ {
-		T objReturn = null;
+	public X getValue(int iIndex) throws ExceptionZZZ {
+		X objReturn = null;
 		main:{
 			Integer intIndex = new Integer(iIndex);
 			objReturn = this.getValue(intIndex);
@@ -107,24 +107,24 @@ public class HashMapIterableKeyZZZ<X,T>  extends ObjectZZZ implements Iterable<T
 		}//end main;
 		return objReturn;
 	}
-	public T getValue(Integer intIndex) throws ExceptionZZZ {
-		T objReturn = null;
+	public X getValue(Integer intIndex) throws ExceptionZZZ {
+		X objReturn = null;
 		main:{
-			HashMapIndexedZZZ<Integer,X> hmIndex = this.getHashMapIndexedKey();
-			X objKey = (X) hmIndex.getValue(intIndex);
+			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
+			T objKey = (T) hmIndex.getValue(intIndex);
 			if(objKey==null)break main;
 			
-			HashMap<X,T> hmOriginal = this.getHashMap();
-			objReturn = (T) hmOriginal.get(objKey);
+			HashMap<T,X> hmOriginal = this.getHashMap();
+			objReturn = (X) hmOriginal.get(objKey);
 		}//end main;
 		return objReturn;
 	}
 	
 	
 	//### GETTER / SETTER
-	public HashMap<X,T>getHashMap() {
+	public HashMap<T,X>getHashMap() {
 		if(this.hmOriginal==null) {
-			this.hmOriginal=new HashMap<X,T>();
+			this.hmOriginal=new HashMap<T,X>();
 		}
 		return this.hmOriginal;
 	}
@@ -132,17 +132,17 @@ public class HashMapIterableKeyZZZ<X,T>  extends ObjectZZZ implements Iterable<T
 	 * @param hmOriginal
 	 * @author Fritz Lindhauer, 02.03.2020, 08:03:50
 	 */
-	private void setHashMap(HashMap<X,T> hmOriginal) {
+	private void setHashMap(HashMap<T,X> hmOriginal) {
 		this.hmOriginal=hmOriginal;
 	}
 	
-	public HashMapIndexedZZZ<Integer,X>getHashMapIndexedKey() throws ExceptionZZZ{
+	public HashMapIndexedZZZ<Integer,T>getHashMapIndexedKey() throws ExceptionZZZ{
 		if(this.hmIndexedKey==null) {
-			this.hmIndexedKey=new HashMapIndexedZZZ<Integer,X>();			
+			this.hmIndexedKey=new HashMapIndexedZZZ<Integer,T>();			
 		}
 		return this.hmIndexedKey;
 	}
-	private void setHashMapIndexedKey(HashMapIndexedZZZ<Integer,X>hmIndexedKey) {
+	private void setHashMapIndexedKey(HashMapIndexedZZZ<Integer,T>hmIndexedKey) {
 		this.hmIndexedKey=hmIndexedKey;
 	}
 	

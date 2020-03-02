@@ -23,7 +23,7 @@ public class HashMapIterableKeyZZZTest extends TestCase{
 				DummyObjectZZZ objTest02 = new DummyObjectZZZ();
 				objTest02.setFlag("init", true);
 				objTest02.setValue("2");
-				this.hmTest.put("Kaffee",objTest02);
+				this.hmTest.put("Kaffee machen",objTest02);
 				
 				DummyObjectZZZ objTest03 = new DummyObjectZZZ();
 				objTest03.setFlag("init", true);
