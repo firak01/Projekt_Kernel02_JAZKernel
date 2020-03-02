@@ -20,13 +20,13 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 26.02.2020, 17:50:30
 	 */
-	public static HashMapIterableZZZ<String, String> sortByKeyAsInteger(Map<String,String> map){
-		Map<String, String>hmReturn=null;
+	public static HashMapIterableKeyZZZ<String, String> sortByKeyAsInteger(Map<String,String> map){
+		HashMapIterableKeyZZZ<String, String>hmReturn=null;
 		main:{					
 			if(map==null)break main;
 			
 			//1. Hole das KeySet, als Liste sortiert
-			hmReturn = new HashMap<String,String>();//new HashMap<String, ?>() funktioniert dagegen nicht. ? ist zu unspezifisch;
+			hmReturn = new HashMapIterableKeyZZZ<String,String>();//new HashMap<String, ?>() funktioniert dagegen nicht. ? ist zu unspezifisch;
 			
 			Set<String> setStrToBeSorted = map.keySet();			
 			if(setStrToBeSorted.size()==0) break main;
@@ -50,7 +50,7 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 26.02.2020, 17:49:20
 	 */
-	public static HashMapIterableZZZ<Integer,String> sortByKeyInteger(Map<Integer,String> map) {
+	public static HashMapIterableKeyZZZ<Integer,String> sortByKeyInteger(Map<Integer,String> map) {
 		HashMap<Integer,String>hmReturn=null;
 		main:{
 			if(map==null)break main;
