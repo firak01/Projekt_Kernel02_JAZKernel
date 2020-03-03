@@ -58,7 +58,7 @@ public class HashMapZZZTest extends TestCase{
 					//#############################
 					
 					Integer intKey = new Integer(1);//Merke: Index beginnt mit 0, also ist das der zweite Wert.
-					DummyObjectZZZ objTest02 = (DummyObjectZZZ)hmIndexed.getValue(intKey);
+					DummyObjectZZZ objTest02 = (DummyObjectZZZ)hmIndexed.getValueByIndex(intKey);
 					assertNotNull(objTest02);
 					assertTrue(objTest02.getValue().equals("2"));
 					

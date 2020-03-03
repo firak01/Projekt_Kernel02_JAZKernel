@@ -53,7 +53,7 @@ public class HashMapIterableKeyZZZTest extends TestCase{
 					//#############################
 					
 					Integer intKey = new Integer(1);//Merke: Index beginnt mit 0, also ist das der zweite Wert.
-					DummyObjectZZZ objTest02 = (DummyObjectZZZ) this.hmTest.getValue(intKey);
+					DummyObjectZZZ objTest02 = (DummyObjectZZZ) this.hmTest.getValueByIndex(intKey);
 					assertNotNull(objTest02);
 					assertTrue(objTest02.getValue().equals("2"));
 					
@@ -74,11 +74,15 @@ public class HashMapIterableKeyZZZTest extends TestCase{
 //				try{
 		    		int iSumme = 0;
 					Iterator<Object>itObject=this.hmTest.iterator();
-					while(itObject.hasNext()) {
-						DummyObjectZZZ objDummyTemp = (DummyObjectZZZ) itObject.next();
-						Integer intValue = new Integer(objDummyTemp.getValue());
-						iSumme = iSumme + intValue.intValue();
-						System.out.println("Summe bisher: " + iSumme);
+					while(itObject.hasNext()) { //Merke: Das ist ja ein Iterator über die Schlüsselwerte
+						//DummyObjectZZZ objDummyTemp = (DummyObjectZZZ) itObject.next();
+						Object objKey = itObject.next();
+						if(objKey!=null) {
+							DummyObjectZZZ objDummyTemp = (DummyObjectZZZ) this.hmTest.getValue(objKey);
+							Integer intValue = new Integer(objDummyTemp.getValue());
+							iSumme = iSumme + intValue.intValue();
+							System.out.println("Summe bisher: " + iSumme);						
+						}
 					}
 					assertTrue(iSumme == 6);
 					
