@@ -2,6 +2,7 @@ package basic.zBasic.util.abstractList;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
@@ -267,4 +268,20 @@ public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements ICollectio
 	        };
 	        return it;
 	    }
+
+	public boolean isEmpty() {
+		return this.getHashMap().isEmpty();
+	}
+
+	public Set<T> keySet() {
+		return this.getHashMap().keySet();
+	}
+
+	public int size() {
+		return this.getHashMap().size();
+	}
+
+	public X get(String sConfig) {
+		return this.getHashMap().get(sConfig);
+	}
 }
