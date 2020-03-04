@@ -242,8 +242,24 @@ public class SetZZZ extends ObjectZZZ implements ICollectionConstantZZZ{
 			if(setToBeSorted==null)break main;
 			
 			//Aber: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
-			HashSet<Integer> hsKey = new HashSet<Integer>((Collection<? extends Integer>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
-			List<Integer> numbersList = new ArrayList<Integer>(hsKey) ;        //set -> list
+			//HashSet<Integer> hsKey = new HashSet<Integer>((Collection<? extends Integer>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
+			//List<Integer> numbersList = new ArrayList<Integer>(hsKey) ;        //set -> list			
+			//Aber: Eine automatische Umwandlung nach Integer ist das noch nicht. Das muss man von Hand machen.
+			//      Falls hier dann der Datentyp nicht passt... wird der Fehler geworfen...
+			
+			List<Integer> numbersList = new ArrayList<Integer>();
+			for(Object objTemp : setToBeSorted) {				
+				Integer intTemp = null;
+				if(objTemp instanceof Integer) {
+					intTemp = (Integer) objTemp;
+				}else if(objTemp instanceof String) {
+					intTemp = new Integer((String) objTemp);
+				}else {
+					intTemp = new Integer((int)objTemp);
+				}
+				numbersList.add(intTemp);
+			}
+			
 			Collections.sort(numbersList);//Sort the list
 			listReturn = numbersList;
 		}//end main:

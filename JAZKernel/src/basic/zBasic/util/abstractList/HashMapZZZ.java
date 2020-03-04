@@ -65,8 +65,9 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 			Set<String> setStrToBeSorted = map.keySet();			
 			if(setStrToBeSorted.size()==0) break main;
 			
-			Set<Integer> setIntToBeSorted = SetZZZ.toInteger(setStrToBeSorted);
-			List<Integer> listIntSorted = SetZZZ.sortToIntegerReversed(setIntToBeSorted);
+			//Set<Integer> setIntToBeSorted = SetZZZ.toInteger(setStrToBeSorted);
+			//List<Integer> listIntSorted = SetZZZ.sortToInteger(setIntToBeSorted);
+			List<Integer> listIntSorted = SetZZZ.sortToInteger(setStrToBeSorted);
 			
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {
