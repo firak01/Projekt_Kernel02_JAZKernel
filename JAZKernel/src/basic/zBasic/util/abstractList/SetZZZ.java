@@ -240,26 +240,9 @@ public class SetZZZ extends ObjectZZZ implements ICollectionConstantZZZ{
 		List<Integer> listReturn = null;
 		main:{
 			if(setToBeSorted==null)break main;
-			
-			//Aber: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
-			//HashSet<Integer> hsKey = new HashSet<Integer>((Collection<? extends Integer>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
-			//List<Integer> numbersList = new ArrayList<Integer>(hsKey) ;        //set -> list			
-			//Aber: Eine automatische Umwandlung nach Integer ist das noch nicht. Das muss man von Hand machen.
+						
 			//      Falls hier dann der Datentyp nicht passt... wird der Fehler geworfen...
-			
-			List<Integer> numbersList = new ArrayList<Integer>();
-			for(Object objTemp : setToBeSorted) {				
-				Integer intTemp = null;
-				if(objTemp instanceof Integer) {
-					intTemp = (Integer) objTemp;
-				}else if(objTemp instanceof String) {
-					intTemp = new Integer((String) objTemp);
-				}else {
-					intTemp = new Integer((int)objTemp);
-				}
-				numbersList.add(intTemp);
-			}
-			
+			List<Integer> numbersList = SetZZZ.toListInteger(setToBeSorted);					
 			Collections.sort(numbersList);//Sort the list
 			listReturn = numbersList;
 		}//end main:
@@ -288,17 +271,8 @@ public class SetZZZ extends ObjectZZZ implements ICollectionConstantZZZ{
 		return listReturn;
 	}
 	
-	public static List<Integer>toListInteger(Set<Integer>setInt){
-		List<Integer> listIntReturn = null;
-		main:{
-			if(setInt == null) break main;
-
-			listIntReturn =new ArrayList<Integer>(setInt) ;        //set -> list
-		}//end main:
-		return listIntReturn;
-	}
-		
-	public static List<String>toListString(Set<String>setString){
+	//################################
+	public static List<String>asListString(Set<String>setString){
 		List<String> listStringReturn = null;
 		main:{
 			if(setString == null) break main;
@@ -308,14 +282,100 @@ public class SetZZZ extends ObjectZZZ implements ICollectionConstantZZZ{
 		return listStringReturn;
 	}
 	
+	/**
+	 *Aber: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+			//HashSet<Integer> hsKey = new HashSet<Integer>((Collection<? extends Integer>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
+			//List<Integer> numbersList = new ArrayList<Integer>(hsKey) ;        //set -> list			
+			//Aber: Eine automatische Umwandlung nach Integer ist das noch nicht. Das muss man von Hand machen.
+	 * @param setIn
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2020, 20:07:01
+	 */
+	public static List<String>toListString(Set<?>setIn){
+		List<String> listStringReturn = null;
+		main:{
+			if(setIn == null) break main;
+
+			listStringReturn = new ArrayList<String>();
+			for(Object objTemp : setIn) {				
+				String sTemp = null;
+				if(objTemp instanceof Integer) {
+					sTemp = objTemp.toString();
+				}else if(objTemp instanceof String) {
+					sTemp = objTemp.toString();
+				}else {
+					sTemp = objTemp.toString();
+				}
+				listStringReturn.add(sTemp);
+			}			       
+		}//end main:
+		return listStringReturn;
+	}
+		
+	public static Set<String>toString(Set<Integer>setIntIn){
+		Set<String> setStrReturn = null;
+		main:{
+			if(setIntIn == null) break main;
+			
+			HashSet<String> hsStr = new HashSet<String>();
+			for(Integer intTemp : setIntIn) {
+				String sTemp=intTemp.toString();
+				hsStr.add(sTemp);								
+			}
+			setStrReturn = hsStr;
+		}//end main:
+		return setStrReturn;
+	}
 	
-	public static Set<Integer>toInteger(Set<String>setStrToBeSorted){
+	
+	//################################
+	public static List<Integer>asListInteger(Set<Integer>setInt){
+		List<Integer> listIntReturn = null;
+		main:{
+			if(setInt == null) break main;
+
+			listIntReturn =new ArrayList<Integer>(setInt) ;        //set -> list
+		}//end main:
+		return listIntReturn;
+	}
+	
+	/**
+	 *Aber: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+			//HashSet<Integer> hsKey = new HashSet<Integer>((Collection<? extends Integer>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
+			//List<Integer> numbersList = new ArrayList<Integer>(hsKey) ;        //set -> list			
+			//Aber: Eine automatische Umwandlung nach Integer ist das noch nicht. Das muss man von Hand machen.
+	 * @param setIn
+	 * @return
+	 * @author Fritz Lindhauer, 04.03.2020, 20:05:12
+	 */
+	public static List<Integer>toListInteger(Set<?>setIn){
+		List<Integer> listIntReturn = null;
+		main:{
+			if(setIn == null) break main;
+
+			listIntReturn = new ArrayList<Integer>();
+			for(Object objTemp : setIn) {				
+				Integer intTemp = null;
+				if(objTemp instanceof Integer) {
+					intTemp = (Integer) objTemp;
+				}else if(objTemp instanceof String) {
+					intTemp = new Integer((String) objTemp);
+				}else {
+					intTemp = new Integer((int)objTemp);
+				}
+				listIntReturn.add(intTemp);
+			}			       
+		}//end main:
+		return listIntReturn;
+	}
+		
+	public static Set<Integer>toInteger(Set<String>setStrIn){
 		Set<Integer> setIntReturn = null;
 		main:{
-			if(setStrToBeSorted == null) break main;
+			if(setStrIn == null) break main;
 			
 			HashSet<Integer> hsInt = new HashSet<Integer>();
-			for(String stemp : setStrToBeSorted) {
+			for(String stemp : setStrIn) {
 				Integer intTemp=new Integer(stemp);
 				hsInt.add(intTemp);								
 			}
