@@ -336,7 +336,7 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 			//Merke: DER VECTOR MUSS IMMER AUFSTEIGEND SORTIERT SEIN !!!! Das wirkt sich hier beim Updaten aus.			
 			if(vecIndex.isLastElementGreaterThan(intIndex)) {
 				//Neue Sortierung notwendig
-				vecIndex.addSorted(intIndex, VectorExtendedZZZ.iSORT_DIRECTION_ASCENDING);			
+				vecIndex.addSorted(intIndex, ICollectionConstantZZZ.iSORT_DIRECTION_ASCENDING);			
 			}else {
 				vecIndex.add(intIndex);//einfach anhängen.
 			}			

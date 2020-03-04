@@ -7,7 +7,36 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SetZZZ {
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+
+public class SetZZZ extends ObjectZZZ implements ICollectionConstantZZZ{
+	
+	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
+	 * @param setToBeSorted
+	 * @return
+	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
+	 * @throws ExceptionZZZ 
+	 */
+	public static List<?>sortAsString(Set<?> setToBeSorted, int iSortDirection) throws ExceptionZZZ{
+		List<?> listReturn = null;
+		main:{
+			if(setToBeSorted==null)break main;
+			
+			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetZZZ.sortAsString(setToBeSorted);
+			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetZZZ.sortAsStringReversed(setToBeSorted);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				throw ez;
+			}
+		}//end main:
+		return listReturn;
+	}
+	
 	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
 	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
 	 * @param setToBeSorted
@@ -34,6 +63,50 @@ public class SetZZZ {
 	 * @return
 	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
 	 */
+	public static List<?>sortAsStringReversed(Set<?> setToBeSorted){
+		List<?> listReturn = null;
+		main:{
+			if(setToBeSorted==null)break main;
+			
+			//Aber: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+			HashSet<String> hsKey = new HashSet<String>((Collection<? extends String>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
+			List<String> numbersList = new ArrayList<String>(hsKey) ;        //set -> list
+			Collections.sort(numbersList, Collections.reverseOrder());//Sort the list
+			listReturn = numbersList;
+		}//end main:
+		return listReturn;
+	}
+	
+	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
+	 * @param setToBeSorted
+	 * @return
+	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
+	 * @throws ExceptionZZZ 
+	 */
+	public static List<String>sortToString(Set<?> setToBeSorted, int iSortDirection) throws ExceptionZZZ{
+		List<String> listReturn = null;
+		main:{
+			if(setToBeSorted==null)break main;
+			
+			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetZZZ.sortToString(setToBeSorted);
+			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetZZZ.sortToStringReversed(setToBeSorted);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				throw ez;
+			}
+		}//end main:
+		return listReturn;
+	}
+	
+	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
+	 * @param setToBeSorted
+	 * @return
+	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
+	 */
 	public static List<String>sortToString(Set<?> setToBeSorted){
 		List<String> listReturn = null;
 		main:{
@@ -48,6 +121,49 @@ public class SetZZZ {
 		return listReturn;
 	}
 	
+	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
+	 * @param setToBeSorted
+	 * @return
+	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
+	 */
+	public static List<String>sortToStringReversed(Set<?> setToBeSorted){
+		List<String> listReturn = null;
+		main:{
+			if(setToBeSorted==null)break main;
+			
+			//Aber: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+			HashSet<String> hsKey = new HashSet<String>((Collection<? extends String>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
+			List<String> numbersList = new ArrayList<String>(hsKey) ;        //set -> list
+			Collections.sort(numbersList, Collections.reverseOrder());//Sort the list
+			listReturn = numbersList;
+		}//end main:
+		return listReturn;
+	}
+	
+	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
+	 * @param setToBeSorted
+	 * @return
+	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
+	 * @throws ExceptionZZZ 
+	 */
+	public static List<?>sortAsInteger(Set<?> setToBeSorted, int iSortDirection) throws ExceptionZZZ{
+		List<?> listReturn = null;
+		main:{
+			if(setToBeSorted==null)break main;
+			
+			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetZZZ.sortAsInteger(setToBeSorted);
+			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetZZZ.sortAsIntegerReversed(setToBeSorted);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				throw ez;
+			}
+		}//end main:
+		return listReturn;
+	}
 	
 	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
 	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
@@ -65,6 +181,50 @@ public class SetZZZ {
 			List<Integer> numbersList = new ArrayList<Integer>(hsKey) ;        //set -> list
 			Collections.sort(numbersList);//Sort the list
 			listReturn = numbersList;
+		}//end main:
+		return listReturn;
+	}
+	
+	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
+	 * @param setToBeSorted
+	 * @return
+	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
+	 */
+	public static List<?>sortAsIntegerReversed(Set<?> setToBeSorted){
+		List<?> listReturn = null;
+		main:{
+			if(setToBeSorted==null)break main;
+			
+			//Aber: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+			HashSet<Integer> hsKey = new HashSet<Integer>((Collection<? extends Integer>) setToBeSorted);//Ist wohl notwendig: https://stackoverflow.com/questions/31279495/how-to-convert-from-an-immutable-set-to-a-hashset
+			List<Integer> numbersList = new ArrayList<Integer>(hsKey) ;        //set -> list
+			Collections.sort(numbersList, Collections.reverseOrder());//Sort the list
+			listReturn = numbersList;
+		}//end main:
+		return listReturn;
+	}
+	
+	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
+	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
+	 * @param setToBeSorted
+	 * @return
+	 * @author Fritz Lindhauer, 23.02.2020, 08:47:15
+	 * @throws ExceptionZZZ 
+	 */
+	public static List<Integer>sortToInteger(Set<?> setToBeSorted, int iSortDirection) throws ExceptionZZZ{
+		List<Integer> listReturn = null;
+		main:{
+			if(setToBeSorted==null)break main;
+			
+			if(iSortDirection==SetZZZ.iSORT_DIRECTION_ASCENDING) {
+				listReturn = SetZZZ.sortToInteger(setToBeSorted);
+			}else if (iSortDirection==SetZZZ.iSORT_DIRECTION_DESCENDING) {
+				listReturn = SetZZZ.sortToIntegerReversed(setToBeSorted);
+			}else {
+				ExceptionZZZ ez = new ExceptionZZZ("Only Ascending or Descending as Constant 1 or -1 is allowed. Value is ='" + iSortDirection + "'",  iERROR_PARAMETER_VALUE, SetZZZ.class,  ReflectCodeZZZ.getMethodCurrentName()); 
+				throw ez;
+			}
 		}//end main:
 		return listReturn;
 	}

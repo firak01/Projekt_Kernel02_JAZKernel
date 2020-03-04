@@ -9,7 +9,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements Iterable<T>{
+public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements ICollectionConstantZZZ, Iterable<T>{
 	private HashMap<T,X> hmOriginal=null;
 	private HashMapIndexedZZZ<Integer,T> hmIndexedKey=null;//also integer als Sortierkrierium , X als originaler Key
 	

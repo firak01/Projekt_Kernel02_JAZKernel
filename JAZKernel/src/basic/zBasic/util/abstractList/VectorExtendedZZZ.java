@@ -37,10 +37,7 @@ import basic.zBasic.ReflectCodeZZZ;
  *  20200219: Die Methoden aus der alten klasse in die neue Klasse übernommen
  *                    */
 @SuppressWarnings("rawtypes")
-public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ{
-	public final static int iSORT_DIRECTION_ASCENDING = 1;
-	public final static int iSORT_DIRECTION_DESCENDING = -1;
-	
+public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ, ICollectionConstantZZZ{
 	/**
 	 * 
 	 */
@@ -166,10 +163,10 @@ public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ{
 		boolean bReturn = false;
 		main:{
 			if(intNew==null) break main;
-			if(iSortDirectionAscDesc!=VectorExtendedZZZ.iSORT_DIRECTION_ASCENDING && iSortDirectionAscDesc != VectorExtendedZZZ.iSORT_DIRECTION_DESCENDING);
+			if(iSortDirectionAscDesc!=ICollectionConstantZZZ.iSORT_DIRECTION_ASCENDING && iSortDirectionAscDesc != ICollectionConstantZZZ.iSORT_DIRECTION_DESCENDING);
 			
 			Comparator comparator = null;
-			if(iSortDirectionAscDesc==VectorExtendedZZZ.iSORT_DIRECTION_ASCENDING) {
+			if(iSortDirectionAscDesc==ICollectionConstantZZZ.iSORT_DIRECTION_ASCENDING) {
 				//Merke: Erst in Java 8 gibt es das 
 				//https://stackoverflow.com/questions/3241063/does-a-natural-comparator-exist-in-the-standard-api
 				comparator = Collections.reverseOrder(Collections.reverseOrder());//Das ist ein dreckiger Workaround

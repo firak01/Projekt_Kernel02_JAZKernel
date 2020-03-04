@@ -22,7 +22,7 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 	 * @author Fritz Lindhauer, 26.02.2020, 17:50:30
 	 * @throws ExceptionZZZ 
 	 */
-	public static HashMapIterableKeyZZZ<String, Object> sortByKeyAsInteger_StringObject(Map<String,Object> map) throws ExceptionZZZ{
+	public static HashMapIterableKeyZZZ<String, Object> sortByKeyAsInteger_StringObject(Map<String,Object> map, int iSortDirection) throws ExceptionZZZ{
 		HashMapIterableKeyZZZ<String, Object>hmReturn=null;
 		main:{					
 			if(map==null)break main;
@@ -34,13 +34,13 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 			if(setStrToBeSorted.size()==0) break main;
 			
 			Set<Integer> setIntToBeSorted = SetZZZ.toInteger(setStrToBeSorted);
-			List<Integer> listIntSorted = SetZZZ.sortToIntegerReversed(setIntToBeSorted);
+			List<Integer> listIntSorted = (List<Integer>) SetZZZ.sortToInteger(setIntToBeSorted, iSortDirection);
 			
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {
 				String sKey = intSorted.toString();
-				String sValue = (String) map.get(sKey);
-				hmReturn.put(sKey, sValue);				
+				Object objValue = map.get(sKey);
+				hmReturn.put(sKey, objValue);				
 			}						
 		}//end main:
 		return hmReturn;
@@ -101,8 +101,8 @@ public class HashMapZZZ<T,X> extends ObjectZZZ {
 					
 			//2. Gehe die sortierte Liste durch, hole den Wert und füge alles der neuen Hashmap hinzu.
 			for(Integer intSorted : listIntSorted) {
-				String sValue = (String) map.get(intSorted);
-				hmReturn.put(intSorted, sValue);				
+				Object objValue = map.get(intSorted);
+				hmReturn.put(intSorted, objValue);				
 			}						
 		}//end main:
 		return hmReturn;
