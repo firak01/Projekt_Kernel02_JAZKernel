@@ -50,6 +50,7 @@ import java.util.*;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ExtendedVectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.UtfEasyZZZ;
 import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
 
 
@@ -60,6 +61,9 @@ import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
 *   ;comment        - anything beginning with a ; is a comment 
 *   variable=value  - anything of the format string=string is an assignment 
 *  comment         - anything that doesn't match any of the above is a comment 
+*  
+*  
+*  FGL 20200316: Erweitert um UTF-8 und BOM Behandlung.  
 */
 
 
@@ -69,6 +73,17 @@ public class IniFile extends Object
 	public static final String sINI_SUBJECT_START = "[";
 	public static final String sINI_SUBJECT_END = "]";
 	public static final String sINI_PROPERTY_SEPERATOR="=";
+	
+
+	/*
+	Java does not handle BOM properly. In fact Java handles a BOM like every other char.
+	Found this:
+	http://www.rgagnon.com/javadetails/java-handle-utf8-file-with-bom.html
+	
+	May be I would use apache IO instead:
+	http://commons.apache.org/proper/commons-io/apidocs/org/apache/commons/io/input/BOMInputStream.html
+	*/
+	public static final String UTF8_BOM = "\uFEFF";
 	
    /**Actual text lines of the file stored in a vector.*/
    protected ExtendedVectorZZZ lines;       
@@ -186,6 +201,12 @@ public class IniFile extends Object
             else
            	line = line.trim();           
            	String sLineUtf8 = new String(line.getBytes(),"UTF-8"); 
+           	
+           	//ABER: Falls es UTF-8 mit BOM ist, wird das allereste Zeichen mit BOM versehen.
+           	if(itest==1) {//also nur für die 1. Zeile
+           		sLineUtf8 = UtfEasyZZZ.removeUTF8BOM(sLineUtf8);
+           	}
+           	
             lines.addElement(sLineUtf8);
          }
 
@@ -733,8 +754,7 @@ protected boolean addSection(String sSection){
    protected void finalize() throws IOException
    {
       //saveFile();
-   }
-
+   }   
 }
 
 

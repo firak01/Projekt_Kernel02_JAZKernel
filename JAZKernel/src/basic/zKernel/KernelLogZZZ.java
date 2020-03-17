@@ -119,8 +119,7 @@ public synchronized boolean WriteLine(String stemp) throws ExceptionZZZ{
 	return bReturn;
 	}
 
-synchronized public boolean WriteLineDate(String stemp){
-	boolean bReturn = false;
+public synchronized static String computeLineDate(String stemp) {	
 	GregorianCalendar d = new GregorianCalendar();
 	 Integer iDateYear = new Integer(d.get(Calendar.YEAR));
 	 Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
@@ -130,8 +129,13 @@ synchronized public boolean WriteLineDate(String stemp){
 	 String sDate =new String( iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
 	 + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString()); 
 	
-	String sLine = new String(sDate + ": " + stemp);
+	String sReturn = new String(sDate + ": " + stemp);
+	return sReturn;
+}
+synchronized public boolean WriteLineDate(String stemp){
+	boolean bReturn = false;	
 	try {
+		String sLine = KernelLogZZZ.computeLineDate(stemp);
 		bReturn = WriteLine(sLine);
 	} catch (ExceptionZZZ e) {
 		// TODO Auto-generated catch block

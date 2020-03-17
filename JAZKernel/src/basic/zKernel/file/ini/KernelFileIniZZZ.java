@@ -27,6 +27,7 @@ import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
 import basic.zKernel.IKernelExpressionIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.KernelKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
@@ -848,14 +849,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	public boolean proofSectionExists(String sSection) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			check:{
-				if(StringZZZ.isEmpty(sSection)){
-					String stemp = "'Section'";
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-					ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;	
-				}
-			}//END check:
+			if(StringZZZ.isEmpty(sSection)){
+				String stemp = "'Section'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
 		
 		//Das Array aller Sections nach der einen Section durchsuchen
 		String[] saSectionAll = this.getSectionAll();
@@ -864,6 +863,30 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 				
 		}//END main
 		return bReturn;
+	}
+	
+	public boolean proofSectionExistsSearched(String sSection) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sSection)){
+				String stemp = "'Section'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+		
+			//1. Suche nach sSection PLUS Systemnumber
+			String sSystemNumber = this.getKernelObject().getSystemNumber();
+			String sSectionSearch  = KernelKernelZZZ.computeSystemKeyForSection(sSection, sSystemNumber);
+			bReturn = this.proofSectionExists(sSectionSearch);
+			if(bReturn)break main;
+			
+			//2. Suche nach sSection pur.
+			sSectionSearch  = sSection;
+			bReturn = this.proofSectionExists(sSectionSearch);
+				
+		}//END main
+		return bReturn;				
 	}
 	
 	/** boolean, searches all sections of the ini-file for sSection and Value. Returns true if there is a match.
