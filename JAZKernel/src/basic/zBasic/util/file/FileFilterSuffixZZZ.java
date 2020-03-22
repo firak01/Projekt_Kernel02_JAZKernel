@@ -20,10 +20,12 @@ public class FileFilterSuffixZZZ extends ObjectZZZ implements FilenameFilter  {
 	public boolean accept(File objFile, String sName) {
 		boolean bReturn=false;
 		main:{
-			check:{
-				//if(objFile==null) break main;
-				if(sName==null) break main;				
-			}//END check:
+			//if(objFile==null) break main;
+			if(sName==null) break main;				
+			if(StringZZZ.isEmpty(this.getSuffix())) {
+				bReturn = true;
+				break main;
+			}
 		
 			
 			//Ende des Dateinamens berechnen			
@@ -47,9 +49,7 @@ public class FileFilterSuffixZZZ extends ObjectZZZ implements FilenameFilter  {
 	public boolean accept(File objFile){
 		boolean bReturn = false;
 		main:{
-			check:{
-				if(objFile==null) break main;				
-			}//END check:
+			if(objFile==null) break main;				
 		
 			String sName = objFile.getPath();
 			

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import basic.zBasic.ObjectZZZ;
-
+import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public class FileFilterEndingZZZ extends ObjectZZZ implements FilenameFilter  {
@@ -19,10 +19,12 @@ public class FileFilterEndingZZZ extends ObjectZZZ implements FilenameFilter  {
 	public boolean accept(File objFile, String sName) {
 		boolean bReturn=false;
 		main:{
-			check:{
-				//if(objFile==null) break main;
-				if(sName==null) break main;				
-			}//END check:
+			//if(objFile==null) break main;
+			if(sName==null) break main;				
+			if(StringZZZ.isEmpty(this.getEnding())) {
+				bReturn = true;
+				break main;
+			}
 			
 					
 			//Ende berechnen
@@ -41,9 +43,7 @@ public class FileFilterEndingZZZ extends ObjectZZZ implements FilenameFilter  {
 	public boolean accept(File objFile){
 		boolean bReturn = false;
 		main:{
-			check:{
-				if(objFile==null) break main;				
-			}//END check:
+			if(objFile==null) break main;				
 		
 			String sName = objFile.getPath();
 			

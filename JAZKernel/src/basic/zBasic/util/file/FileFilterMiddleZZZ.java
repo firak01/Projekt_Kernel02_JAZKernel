@@ -20,17 +20,19 @@ public class FileFilterMiddleZZZ extends ObjectZZZ implements FilenameFilter  {
 	public boolean accept(File objFile, String sName) {
 		boolean bReturn=false;
 		main:{
-			check:{
-				//if(objFile==null) break main;
-				if(sName==null) break main;				
-			}//END check:
+			//if(objFile==null) break main;
+			if(sName==null) break main;				
+			if(StringZZZ.isEmpty(this.getMiddle())) {
+				bReturn = true;
+				break main;
+			}
 		
 			
 			//"Mitte" des Dateinamens berechnen			
 			String sMiddleCur;
 			try {				
-				sMiddleCur = FileEasyZZZ.getNameOnly(sName);
-				sMiddleCur = StringZZZ.midLeftRight(sMiddleCur, 1, 1);
+				sMiddleCur = FileEasyZZZ.getNameOnly(sName);				
+				sMiddleCur = StringZZZ.midBounds(sMiddleCur, 1, 1);
 				if(StringZZZ.contains(sMiddleCur, this.getMiddle())) bReturn = true;
 			} catch (ExceptionZZZ e) {			
 				e.printStackTrace();
@@ -48,9 +50,7 @@ public class FileFilterMiddleZZZ extends ObjectZZZ implements FilenameFilter  {
 	public boolean accept(File objFile){
 		boolean bReturn = false;
 		main:{
-			check:{
-				if(objFile==null) break main;				
-			}//END check:
+			if(objFile==null) break main;				
 		
 			String sName = objFile.getPath();
 			
