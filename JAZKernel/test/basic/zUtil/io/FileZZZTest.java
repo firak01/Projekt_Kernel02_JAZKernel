@@ -9,6 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
 import junit.framework.TestCase;
+import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public class FileZZZTest extends TestCase {	
@@ -39,7 +40,6 @@ public class FileZZZTest extends TestCase {
 			objStreamFile.close();
 
 			//The main object used for testing
-			//objFileTest = new FileZZZ(sFilePathTotal, strFILE_NAME_DEFAULT, (String[]) null);
 			objFileTest = new FileZZZ(sFilePathTotal, strFILE_NAME_DEFAULT, "ExpansionAppend");
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
@@ -125,25 +125,31 @@ public class FileZZZTest extends TestCase {
 	public void testPathNameExpansion(){
 try{
 		//First, no file expected to be there or only one file is there
-		assertEquals("", objFileTest.getExpansionCurrent(3));
+		assertEquals("", objFileTest.getExpansionCurrent());
 		
-		// Now there should be a file available, but the ending ?
-		assertEquals("", objFileTest.getExpansionCurrent(3));
+		// unverändert ?
+		//3stellig
+		assertEquals("", objFileTest.getExpansionCurrent());
+		assertEquals("001",objFileTest.getExpansionNext());
 		
-		//Now get the next expansion
-		assertEquals("001",objFileTest.getExpansionNext(3));				
-		assertEquals("0001",objFileTest.getExpansionNext(4));
+		//4stelling
+		objFileTest.setExpansionLength(4);
+		assertEquals("",objFileTest.getExpansionCurrent());
+		assertEquals("0001",objFileTest.getExpansionNext());
 		
 		objFileTest.setExpansionFilling('-');
 		assertEquals("-", objFileTest.getExpansionFilling());
 		
 		//	Now get the next expansion
-		assertEquals("--1",objFileTest.getExpansionNext(3));				
-		assertEquals("---1",objFileTest.getExpansionNext(4));
+		objFileTest.setExpansionLength(3);
+		assertEquals("--1",objFileTest.getExpansionNext());		
+		objFileTest.setExpansionLength(4);
+		assertEquals("---1",objFileTest.getExpansionNext());
 		
 		//#### 
+		objFileTest.setExpansionLength(3);
 		String sDirectory = objFileTest.getParent();
-		String sReturn = objFileTest.PathNameTotalExpandedNextCompute(null, null, 3);
+		String sReturn = objFileTest.PathNameTotalExpandedNextCompute(null, null);
 		assertEquals( sDirectory + File.separator + "JUnitTest--1.txt", sReturn);
 		//System.out.println("the expanded filename: '" + sReturn + "'");
 }catch(ExceptionZZZ ez){
@@ -156,32 +162,43 @@ try{
 	 * a) Computing the biggest expansion number which could be created, by a given number of digits 
 	* Lindhauer; 21.04.2006 09:51:08
 	 */
-	public void testExpansionLookalike(){ 
+	public void testExpansionLookalike(){
+		try {
 		//wichtig: Ich will die Gewissheit haben, dass das auch mit anderen Werten als dem Standardfall von 3 Ziffern funktioniert
 		//Zu beachten ist, das die Funktion einen String zur�ckliefert.
-		assertEquals("99",FileZZZ.getExpansionMax(2));
-		assertEquals("999",FileZZZ.getExpansionMax(3));
-		assertEquals("9999",FileZZZ.getExpansionMax(4));
-		assertEquals("99999",FileZZZ.getExpansionMax(5));
+		
+		assertEquals("99",FileExpansionZZZ.getExpansionMax(2));		
+		assertEquals("999",FileExpansionZZZ.getExpansionMax(3));
+		assertEquals("9999",FileExpansionZZZ.getExpansionMax(4));
+		assertEquals("99999",FileExpansionZZZ.getExpansionMax(5));
 		
 		//Hier wird eine F�llvariable zur Berechnung verwendet.
 		//Dies soll auch wieder mit den unterschiedlichsten Werten m�glich sein
-		assertEquals("",objFileTest.ExpansionCompute("0",2,0));
-		assertEquals("2",objFileTest.ExpansionCompute("0",2,1));
-		assertEquals("002",objFileTest.ExpansionCompute("0",2,3));
-		assertEquals("0002",objFileTest.ExpansionCompute("0",2,4));
+		objFileTest.setExpansionLength(0);
+		assertEquals("",objFileTest.ExpansionCompute("0",2));
+		
+		objFileTest.setExpansionLength(1);
+		assertEquals("2",objFileTest.ExpansionCompute("0",2));
+		
+		objFileTest.setExpansionLength(3);
+		assertEquals("002",objFileTest.ExpansionCompute("0",2));
+		
+		objFileTest.setExpansionLength(4);
+		assertEquals("0002",objFileTest.ExpansionCompute("0",2));
 		
 		//Falls ein anderes F�llzeichen �bergeben werden soll
 		// Hier 3 Unterstriche vor der Ziffer
-		assertEquals("___2",objFileTest.ExpansionCompute("_",2,4));
+		assertEquals("___2",objFileTest.ExpansionCompute("_",2));
 		
 		// Hier 2 Unterstriche und die Zahl ist 2 stellig
-		assertEquals("__32",objFileTest.ExpansionCompute("_",32,4));
+		assertEquals("__32",objFileTest.ExpansionCompute("_",32));
 		
 //		 Hier kein Unterstrich und die Zahl ist 4 stellig
-		assertEquals("4321",objFileTest.ExpansionCompute("_",4321,4));
+		assertEquals("4321",objFileTest.ExpansionCompute("_",4321));
 		
 		
-		
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
 	}
 }

@@ -1,5 +1,7 @@
 package basic.zBasic.util.math;
 
+import basic.zBasic.util.datatype.character.CharZZZ;
+
 /**
  * @author Lindhauer
  *
@@ -30,7 +32,7 @@ public abstract class MathZZZ {
 	}
 	
 	/**
-	 * Gibt die 10er Potenz von <b>number</b> zurück.
+	 * Gibt die 10er Potenz von <b>number</b> zurï¿½ck.
 	 * @param number
 	 * @return 10er Potenz von number
 	 */

@@ -27,6 +27,24 @@ public class CharZZZ {
 		return bReturn;
 	}
 	
+	public static boolean isNumericPrefix(char c) {
+		boolean bReturn = false;
+		main:{
+			if(CharZZZ.isEmpty(c))break main;
+			
+			if("-".toCharArray()[0] == c) {
+				bReturn = true;
+				break main;
+			}
+			if("+".toCharArray()[0] == c) {
+				bReturn = true;
+				break main;
+			}
+		}
+		return bReturn;
+	}
+	
+	
 	/**
 	 * @param c
 	 * @return

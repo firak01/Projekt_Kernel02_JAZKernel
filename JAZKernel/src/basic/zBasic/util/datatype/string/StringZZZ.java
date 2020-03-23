@@ -27,6 +27,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
@@ -1198,6 +1199,23 @@ public class StringZZZ implements IConstantZZZ{
 	 */
 	public static boolean isNumeric(String sString){
 		return StringUtils.isNumeric(sString);
+	}
+	public static boolean isNumericWithPrefix(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(sString.length()<=1) break main; //Für einen Wert mit Vorzeichen muss es zumindest 2 Zeichen geben....
+			
+			//Hole das 1. Zeichen.
+			char c = sString.toCharArray()[0];
+			boolean bHasNumericPrefix = CharZZZ.isNumericPrefix(c);
+			if(!bHasNumericPrefix) break main;
+			
+			String sRest = StringZZZ.rightback(sString, 1);
+			if(StringZZZ.isNumeric(sRest)) bReturn = true;
+						
+		}//end main:
+		return bReturn;		
 	}
 	
 	/** Beispiel für ein Palindrom: "ANNA".

@@ -1056,4 +1056,33 @@ public void testVecMidFirst(){
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 	}
+	
+	public void testIsNumericWithPrefix() {
+		//try{
+			String sString = "Lorem Ipsum";
+			boolean bTest = StringZZZ.isNumericWithPrefix(sString);	
+			assertFalse(bTest);
+			
+			sString="---1";		
+			bTest = StringZZZ.isNumericWithPrefix(sString);	
+			assertFalse(bTest);
+			
+			sString = "-1";
+			bTest = StringZZZ.isNumericWithPrefix(sString);	
+			assertTrue(bTest);		
+			
+			//######
+			sString="+++1";		
+			bTest = StringZZZ.isNumericWithPrefix(sString);	
+			assertFalse(bTest);
+			
+			sString = "+1";
+			bTest = StringZZZ.isNumericWithPrefix(sString);	
+			assertTrue(bTest);
+			
+			
+//		}catch(ExceptionZZZ ez){
+//			fail("Method throws an exception." + ez.getMessageLast());
+//		}		
+	}
 }//End class
