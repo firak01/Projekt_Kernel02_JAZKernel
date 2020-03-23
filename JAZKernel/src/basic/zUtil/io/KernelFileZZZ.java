@@ -37,7 +37,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFl
 	private String sFileNameExpandedNext = new String("");
 	private String sFileNameExpandedFirst = new String("");
 	private String sFileNameExpandedCurrent = new String("");
-	//private String sFileNameExpanded = new String("");
+
 	private ExceptionZZZ objException;
 	private int iExpansionLength;
 	
