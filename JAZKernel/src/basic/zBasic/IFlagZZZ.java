@@ -11,12 +11,6 @@ public interface IFlagZZZ {
 	public enum FLAGZ{
 		DEBUG, INIT ; //20170307 - Verschoben aus ObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Java spezifischen Klasse erben).
 	}
-//	public HashMap<String, Boolean>getHashMapFlagZ();
-//	public boolean proofFlagZExists(String sFlagName);
-//	public boolean setFlagZ(String sFlagName, boolean bFlagValue) throws ExceptionZZZ;
-//	public boolean getFlagZ(String sFlagName);
-	
-	
 	
 	public abstract HashMap<String, Boolean>getHashMapFlagZ();
 	public abstract boolean proofFlagZExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.	

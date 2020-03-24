@@ -19,29 +19,26 @@ import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zKernel.IKernelConfigZZZ;
 
 public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
-	//Flags, die alle Z-Objekte haben
-//	private boolean bFlagDebug;
-//	private boolean bFlagInit;
-		
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
 	 * 
 	 */
+//Flags, die alle Z-Objekte haben
 //	public enum FLAGZ{
-//		DEBUG, INIT; //20170307 Verschoben nach IObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
+//		DEBUG, INIT; //Verschoben nach IFlagZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
 //	}
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
 	
 	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	
-	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu k�nnen.
+	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	
 	public ObjectZZZ() {
 	}
 	public ObjectZZZ(String sFlag) {
-		if(!StringZZZ.isEmpty(sFlag))	this.setFlag(sFlag, true);
+		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);
 	}
 	public ObjectZZZ(String[] saFlag) {
 		if(saFlag!=null){

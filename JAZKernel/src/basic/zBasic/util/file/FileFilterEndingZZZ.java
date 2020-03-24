@@ -7,10 +7,14 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterEndingZZZ extends ObjectZZZ implements FilenameFilter  {
+public class FileFilterEndingZZZ extends ObjectZZZ implements IFilenameFilterZZZ  {
 	private String sFileEnding;
 	
+	public FileFilterEndingZZZ() {
+		super();
+	}
 	public FileFilterEndingZZZ(String sFileEnding){
+		super();
 		this.setEnding(sFileEnding);
 	}
 	/* (non-Javadoc)
@@ -61,6 +65,16 @@ public class FileFilterEndingZZZ extends ObjectZZZ implements FilenameFilter  {
 	}
 	public void setEnding(String sEnding){
 		this.sFileEnding = sEnding;
+	}
+	
+	//### Aus Interface
+	@Override
+	public void setCriterion(String sCriterion) {
+		this.setEnding(sCriterion);		
+	}
+	@Override
+	public String getCriterion() {
+		return this.getEnding();
 	}
 
 }

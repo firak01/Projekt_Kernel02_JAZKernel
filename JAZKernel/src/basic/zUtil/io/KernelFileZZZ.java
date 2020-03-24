@@ -64,7 +64,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		String stemp; boolean btemp;
 		main:{
 			
-		//seten der übergebenen Flags	
+		//setzen der übergebenen Flags	
 			if(saFlagControlIn != null){
 				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 					stemp = saFlagControlIn[iCount];

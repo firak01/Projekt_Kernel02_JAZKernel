@@ -8,10 +8,14 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterSuffixZZZ extends ObjectZZZ implements FilenameFilter  {
+public class FileFilterSuffixZZZ extends ObjectZZZ implements IFilenameFilterZZZ  {
 	private String sFileSuffix;
 	
+	public FileFilterSuffixZZZ() {
+		super();
+	}
 	public FileFilterSuffixZZZ(String sFileSuffix){
+		super();
 		this.setSuffix(sFileSuffix);
 	}
 	/* (non-Javadoc)
@@ -53,9 +57,20 @@ public class FileFilterSuffixZZZ extends ObjectZZZ implements FilenameFilter  {
 		
 			String sName = objFile.getPath();
 			
-			//Ende berechnen		
-			String sSuffixCur = FileEasyZZZ.NameEndCompute(sName);
-			if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;			
+			if(StringZZZ.isEmpty(this.getSuffix())) {
+				bReturn = true;
+				break main;
+			}
+		
+			
+			//Ende des Dateinamens berechnen			
+			String sSuffixCur;
+			try {				
+				sSuffixCur = FileEasyZZZ.getNameOnly(sName);
+				if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;
+			} catch (ExceptionZZZ e) {			
+				e.printStackTrace();
+			} 								
 		}//END main:
 		return bReturn;
 	}
@@ -68,5 +83,13 @@ public class FileFilterSuffixZZZ extends ObjectZZZ implements FilenameFilter  {
 	public void setSuffix(String sSuffix){
 		this.sFileSuffix = sSuffix;
 	}
-
+	//### Aus Interface
+	@Override
+	public void setCriterion(String sCriterion) {
+		this.setSuffix(sCriterion);		
+	}
+	@Override
+	public String getCriterion() {
+		return this.getSuffix();
+	}
 }

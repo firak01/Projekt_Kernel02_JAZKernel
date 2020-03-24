@@ -8,10 +8,14 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterMiddleZZZ extends ObjectZZZ implements FilenameFilter  {
+public class FileFilterMiddleZZZ extends ObjectZZZ implements IFilenameFilterZZZ  {
 	private String sFileMiddle;
 	
+	public FileFilterMiddleZZZ() {
+		super();
+	}
 	public FileFilterMiddleZZZ(String sFileMiddle){
+		super();
 		this.setMiddle(sFileMiddle);
 	}
 	/* (non-Javadoc)
@@ -76,6 +80,16 @@ public class FileFilterMiddleZZZ extends ObjectZZZ implements FilenameFilter  {
 	}
 	public void setMiddle(String sMiddle){
 		this.sFileMiddle = sMiddle;
+	}
+	
+	//### Aus Interface
+	@Override
+	public void setCriterion(String sCriterion) {
+		this.setMiddle(sCriterion);		
+	}
+	@Override
+	public String getCriterion() {
+		return this.getMiddle();
 	}
 
 }

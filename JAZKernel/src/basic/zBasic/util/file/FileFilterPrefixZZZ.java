@@ -8,10 +8,14 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterPrefixZZZ extends ObjectZZZ implements FilenameFilter  {
+public class FileFilterPrefixZZZ extends ObjectZZZ implements IFilenameFilterZZZ  {
 	private String sFilePrefix;
 	
+	public FileFilterPrefixZZZ() {
+		super();
+	}
 	public FileFilterPrefixZZZ(String sFilePrefix){
+		super();
 		this.setPrefix(sFilePrefix);
 	}
 	/* (non-Javadoc)
@@ -74,6 +78,16 @@ public class FileFilterPrefixZZZ extends ObjectZZZ implements FilenameFilter  {
 	}
 	public void setPrefix(String sPrefix){
 		this.sFilePrefix = sPrefix;
+	}
+	
+	//### Aus Interface
+	@Override
+	public void setCriterion(String sCriterion) {
+		this.setPrefix(sCriterion);		
+	}
+	@Override
+	public String getCriterion() {
+		return this.getPrefix();
 	}
 
 }
