@@ -8,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.integer.IntegerZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import custom.zUtil.io.FileZZZ;
 
@@ -19,7 +20,7 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 	
 	//flags 		
 	public enum FLAGZ{
-		EXPANSIONAPPEND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
+		EXPANSIONAPPEND,FILE_CURRENT_FOUND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
 	}
 	
 	public KernelFileExpansionZZZ() {
@@ -103,10 +104,15 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 		main:{
 			FileZZZ objFileBase = this.getFileBase();
 			
-			//if the current file exists, then a expansion must be appended
-			if(objFileBase.exists()){
-				sReturn = "";
-				this.setFlag("ExpansionAppend", true);	
+			//if the current file exists, then a expansion must be appended, except the expansion must be appended.
+			if(this.getFlag("ExpansionAppend")==false) {
+				if(objFileBase.exists()){
+					this.setFlag("ExpansionAppend", true);	
+				}else {
+					this.setFlag("ExpansionAppend", false);
+					sReturn = "";
+					break main;
+				}
 			}
 		
 			//get file details
@@ -147,10 +153,9 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 				this.setFlag("ExpansionAppend", true);
 				sReturn = sExpansionFoundLast; 
 			}else {
-				this.setFlag("ExpansionAppend", false);
-				
+								
 				//Keiner gefunden, also ist das ein rein rechnerischer Wert.
-				sReturn = computeExpansion(this.getExpansionFilling(),0, iExpansionLength);
+				sReturn = computeExpansion(this.getExpansionFilling(),1, iExpansionLength);
 			}
 			
 		}//end main:
@@ -192,8 +197,11 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 					File f = new File(sPath + objFileBase.getNameOnly() + sExpansion + sEnding);
 					if(f.exists() == true){
 						this.setFlag("ExpansionAppend",true);
+						this.setFlag("File_Current_found", true);
 						sReturn = sExpansion;
 						break main;
+					}else {
+						this.setFlag("File_Current_found", false);
 					}
 			}
 		
@@ -216,20 +224,23 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 	public String getExpansionNext(int iExpansionLength) throws ExceptionZZZ{
 		String sReturn = new String("");				
 		main:{									
-			String sExpansionCur = getExpansionCurrent(iExpansionLength);
+			String sExpansionCur = getExpansionCurrent(iExpansionLength);//Merke: Das dauert lange bei langen Dateiexpansionen, weil rückwärts alles gesucht wird.
 			//System.out.println("Gefundene letzte Datei-Expansion: '" + sExpansionCur + "'");
-			if(sExpansionCur.length() > 0){
+			if(sExpansionCur.length() > 0 && this.getFlag("FILE_CURRENT_FOUND")){
 				
 				//Zahlenwerte von hinten einlesen, finden, .... . Füllzeichen, die keine Zahl sind werden ignoriert
 				Integer intTemp = IntegerZZZ.parseAbsolutFromRight(sExpansionCur);
 								
 				//Integer intTemp = new Integer(sExpansionCur);				
 				sReturn = computeExpansion(this.getExpansionFilling(),intTemp.intValue() + 1, iExpansionLength);				
-			}else{				
-				sReturn =  computeExpansion(this.getExpansionFilling(), 1, iExpansionLength);
-				this.setFlag("ExpansionAppend",true);
+			}else{
+				if(this.getFlag("ExpansionAppend")) {
+					sReturn =  computeExpansion(this.getExpansionFilling(), 1, iExpansionLength);
+				}else {
+					sReturn = "";//Das ist der Fall, wenn die Ausgangsdatei (also die Datei ohne Expansion) noch nicht vorhanden ist.				
 				}
-			}//end main:		
+			}
+		}//end main:		
 		return sReturn;
 	} // end function
 	
@@ -315,5 +326,42 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 		}else {
 			this.cExpansionFilling = CharZZZ.getEmpty();
 		}
-	}						
+	}		
+	
+	public static boolean isExpansionOfFilename(File fileToCheck, String sBasicFilename, int iExpansionLength) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(fileToCheck==null) break main;
+			if(StringZZZ.isEmpty(sBasicFilename)) break main;
+			if(iExpansionLength<=0)break main;
+			if(sBasicFilename.length()<=iExpansionLength) break main;
+
+			String sNameOnly = FileEasyZZZ.getNameOnly(fileToCheck); //Das lässt die Dateiendung weg.
+			String sNameOnlyWithoutExpansion = StringZZZ.leftback(sNameOnly, iExpansionLength);
+			
+			String sEnding = FileEasyZZZ.getNameEnd(fileToCheck);
+			String sNameWithoutExpansion = sNameOnlyWithoutExpansion + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnding;
+			if(sBasicFilename.equalsIgnoreCase(sNameWithoutExpansion)) bReturn = true;			
+		}
+		return bReturn;
+	}
+	
+	public static boolean isExpansionOrSameFilename(File fileToCheck, String sBasicFilename, int iExpansionLength) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(fileToCheck==null) break main;
+			if(StringZZZ.isEmpty(sBasicFilename)) break main;
+			if(iExpansionLength<=0)break main;
+			if(sBasicFilename.length()<=iExpansionLength) break main;
+			
+			String sNameToCheck = fileToCheck.getName(); //Das würde die Dateiendung weglassen. FileEasyZZZ.getNameOnly(fileToCheck);			
+			if(sNameToCheck.equalsIgnoreCase(sBasicFilename)) {
+				bReturn = true;
+				break main;				
+			}
+			
+			bReturn = KernelFileExpansionZZZ.isExpansionOfFilename(fileToCheck, sBasicFilename, iExpansionLength);			
+		}
+		return bReturn;
+	}
 }

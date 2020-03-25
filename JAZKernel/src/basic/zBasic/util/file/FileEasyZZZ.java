@@ -884,6 +884,26 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		return sReturn;
 	}
 	
+	public static String getNameEnd(File objFile) throws ExceptionZZZ{
+		String sReturn = new String("");
+		main:{
+			check:{
+				if(objFile==null){
+					 ExceptionZZZ ez = new ExceptionZZZ("Missing Fileobject parameter.", 101, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					  //doesn�t work. Only works when > JDK 1.4
+					  //Exception e = new Exception();
+					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
+					  throw ez;		 
+				}
+			}//END Check:
+		
+			String sFileName = objFile.getName();		
+			sReturn = NameEndCompute(sFileName);
+		
+		return sReturn;
+		}//END main:
+	}
+	
 	public static String getNameEnd(String sFilenameTotal) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
@@ -897,8 +917,7 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				}
 			}//END Check:
 		
-			String sFileName = FileEasyZZZ.getNameFromFilepath(sFilenameTotal);
-		
+			String sFileName = FileEasyZZZ.getNameFromFilepath(sFilenameTotal);		
 			sReturn = NameEndCompute(sFileName);
 		
 		return sReturn;
@@ -926,7 +945,22 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 	} // end function
 	
 	
-
+	public static String getNameOnly(File objFile) throws ExceptionZZZ {
+		String sReturn = new String("");
+		main:{
+			if(objFile == null) {
+				 ExceptionZZZ ez = new ExceptionZZZ("Missing Fileobject as parameter.", 101, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				  //doesn�t work. Only works when > JDK 1.4
+				  //Exception e = new Exception();
+				  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
+				  throw ez;
+			}
+			
+			String sFilenameTotal = objFile.getAbsolutePath();
+			sReturn = FileEasyZZZ.getNameOnly(sFilenameTotal);
+		}//end main:
+		return sReturn;
+	}
 	public static String getNameOnly(String sFilenameTotal) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{

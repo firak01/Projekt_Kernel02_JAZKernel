@@ -130,18 +130,39 @@ try{
 		// unverändert ?
 		//3stellig
 		assertEquals("", objFileTest.getExpansionCurrent());
-		assertEquals("001",objFileTest.getExpansionNext());
+		assertEquals("", objFileTest.getExpansionNext());
 		
-		//4stelling
+		//Erst mit dem Flag, dass kennzeichnet, das angehängt werden soll wird der Name erweitert.
+		//Merke: Das passiert dann, wenn die Ausgangsdatei tatsächlich existiert
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.EXPANSIONAPPEND.name(), true);
+		assertEquals("001", objFileTest.getExpansionCurrent());
+		assertEquals("001", objFileTest.getExpansionNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
+		
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), true);
+		assertEquals("001", objFileTest.getExpansionCurrent()); //Da es die Datei nicht gibt, bleibt es beim Wert
+		assertEquals("002", objFileTest.getExpansionNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
+		
+		
+		//4stelling: Merke: Das dauer wg. der Suche der Dateinamen von 9999 bis 0000 lange....
 		objFileTest.setExpansionLength(4);
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.EXPANSIONAPPEND.name(), false);
 		assertEquals("",objFileTest.getExpansionCurrent());
-		assertEquals("0001",objFileTest.getExpansionNext());
+		
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.EXPANSIONAPPEND.name(), true);
+		assertEquals("0001",objFileTest.getExpansionCurrent());
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), false);
+		assertEquals("0001",objFileTest.getExpansionNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert
+		
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), true);
+		assertEquals("0002",objFileTest.getExpansionNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert
+		
 		
 		objFileTest.setExpansionFilling('-');
 		assertEquals("-", objFileTest.getExpansionFilling());
 		
 		//	Now get the next expansion
 		objFileTest.setExpansionLength(3);
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), false);
 		assertEquals("--1",objFileTest.getExpansionNext());		
 		objFileTest.setExpansionLength(4);
 		assertEquals("---1",objFileTest.getExpansionNext());
