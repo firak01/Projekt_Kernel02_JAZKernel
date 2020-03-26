@@ -20,7 +20,7 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 	
 	//flags 		
 	public enum FLAGZ{
-		EXPANSIONAPPEND,FILE_CURRENT_FOUND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
+		FILE_EXPANSION_APPEND,FILE_CURRENT_FOUND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
 	}
 	
 	public KernelFileExpansionZZZ() {
@@ -105,11 +105,11 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 			FileZZZ objFileBase = this.getFileBase();
 			
 			//if the current file exists, then a expansion must be appended, except the expansion must be appended.
-			if(this.getFlag("ExpansionAppend")==false) {
+			if(this.getFlag("FILE_Expansion_Append")==false) {
 				if(objFileBase.exists()){
-					this.setFlag("ExpansionAppend", true);	
+					this.setFlag("FILE_Expansion_Append", true);	
 				}else {
-					this.setFlag("ExpansionAppend", false);
+					this.setFlag("FILE_Expansion_Append", false);
 					sReturn = "";
 					break main;
 				}
@@ -150,7 +150,7 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 			
 			//das wird ausserhalb der Schleife gemacht, performance
 			if(bFound==true){
-				this.setFlag("ExpansionAppend", true);
+				this.setFlag("FILE_Expansion_Append", true);
 				sReturn = sExpansionFoundLast; 
 			}else {
 								
@@ -196,7 +196,7 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 					String sExpansion = computeExpansion("0", iCount, iExpansionLength);
 					File f = new File(sPath + objFileBase.getNameOnly() + sExpansion + sEnding);
 					if(f.exists() == true){
-						this.setFlag("ExpansionAppend",true);
+						this.setFlag("FILE_Expansion_Append",true);
 						this.setFlag("File_Current_found", true);
 						sReturn = sExpansion;
 						break main;
@@ -234,7 +234,7 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 				//Integer intTemp = new Integer(sExpansionCur);				
 				sReturn = computeExpansion(this.getExpansionFilling(),intTemp.intValue() + 1, iExpansionLength);				
 			}else{
-				if(this.getFlag("ExpansionAppend")) {
+				if(this.getFlag("FILE_Expansion_Append")) {
 					sReturn =  computeExpansion(this.getExpansionFilling(), 1, iExpansionLength);
 				}else {
 					sReturn = "";//Das ist der Fall, wenn die Ausgangsdatei (also die Datei ohne Expansion) noch nicht vorhanden ist.				

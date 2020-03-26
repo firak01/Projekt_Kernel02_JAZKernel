@@ -40,7 +40,7 @@ public class FileZZZTest extends TestCase {
 			objStreamFile.close();
 
 			//The main object used for testing
-			objFileTest = new FileZZZ(sFilePathTotal, strFILE_NAME_DEFAULT, "ExpansionAppend");
+			objFileTest = new FileZZZ(sFilePathTotal, strFILE_NAME_DEFAULT, "use_file_expansion");
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
 		} catch (FileNotFoundException e) {
@@ -73,7 +73,7 @@ public class FileZZZTest extends TestCase {
 			assertTrue(objFileInit.getFlag("init")==true);
 			
 			//Flags aus der FileZZZ-Klasse
-			assertTrue(objFileTest.getFlag("ExpansionAppend")==true);
+			assertTrue(objFileTest.getFlag("use_file_expansion")==true);
 			
 			
 		} catch (ExceptionZZZ ez) {
@@ -134,7 +134,7 @@ try{
 		
 		//Erst mit dem Flag, dass kennzeichnet, das angehängt werden soll wird der Name erweitert.
 		//Merke: Das passiert dann, wenn die Ausgangsdatei tatsächlich existiert
-		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.EXPANSIONAPPEND.name(), true);
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), true);
 		assertEquals("001", objFileTest.getExpansionCurrent());
 		assertEquals("001", objFileTest.getExpansionNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
 		
@@ -145,10 +145,10 @@ try{
 		
 		//4stelling: Merke: Das dauer wg. der Suche der Dateinamen von 9999 bis 0000 lange....
 		objFileTest.setExpansionLength(4);
-		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.EXPANSIONAPPEND.name(), false);
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), false);
 		assertEquals("",objFileTest.getExpansionCurrent());
 		
-		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.EXPANSIONAPPEND.name(), true);
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), true);
 		assertEquals("0001",objFileTest.getExpansionCurrent());
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), false);
 		assertEquals("0001",objFileTest.getExpansionNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert

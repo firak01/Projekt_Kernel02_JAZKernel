@@ -38,19 +38,18 @@ TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben
  * @author Lindhauer
  */
 public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFlagZZZ{ //IFunctionZZZ {
-	private IFileExpansionZZZ objExpansion;
-	private ExceptionZZZ objException;
+	private IFileExpansionZZZ objExpansion=null;
+	private ExceptionZZZ objException=null;
 	
-	private String sFileEnding = new String("");        // die Endung, z.B. txt
-	private String sFileNameOnly = new String("");      // der Dateiname ohne Endung, also FileNamePure + Expansion
 	private String sDirectoryPath = new String("");
-	private String sFileName = new String(""); // Der ganze Dateiname, also: FileNamePure + Expansion + "." + Ending
+	private String sFileName = new String(""); // Der ganze Dateiname, also: FileNameOnly + "." + Ending
 		
 	//flags 
-	//private boolean bFlagExpansionAppend; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
+	//private boolean bFlagUse_FILE_Expansion; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
 	public enum FLAGZ{
-		EXPANSIONAPPEND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
+		USE_FILE_EXPANSION; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
 	}
+	
 	
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); 
 	
@@ -85,10 +84,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 			btemp = this.getFlag("init");
 			if(btemp==true) break main;
 		
-		this.sDirectoryPath = sDirectoryPath;
-		this.sFileName = sFileName;
-		IFileExpansionZZZ objFileExpansion=new FileExpansionZZZ((FileZZZ) this);
-		this.setFileExpansionObject(objFileExpansion);		
+		this.setPathDirectory(sDirectoryPath);
+		this.setName(sFileName);
+		if(this.getFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+			IFileExpansionZZZ objFileExpansion=new FileExpansionZZZ((FileZZZ) this);
+			this.setFileExpansionObject(objFileExpansion);
+		}
 		}//end main		
 	}
 	
@@ -128,11 +129,13 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 					if(this.getFlag("init")) break main;
 				}
 				
-				this.sDirectoryPath = sDirectoryPath;
-				this.sFileName = sFileName;
+				this.setPathDirectory(sDirectoryPath);
+				this.setName(sFileName);
 				
-				IFileExpansionZZZ objFileExpansion=new FileExpansionZZZ((FileZZZ) this, iExpansionLength);
-				this.setFileExpansionObject(objFileExpansion);			
+				if(this.getFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+					IFileExpansionZZZ objFileExpansion=new FileExpansionZZZ((FileZZZ) this, iExpansionLength);
+					this.setFileExpansionObject(objFileExpansion);	
+				}
 		}//End main:
 		
 	}
@@ -140,17 +143,21 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	
 	//### Acessor - Methods ###################
 	//+++++++++++++++++++++++++++++++++++++++++
-	public String getNameEnd(){
-		if(this.sFileEnding.equals("")){
-			this.sFileEnding =FileEasyZZZ.NameEndCompute(this.sFileName);
-		}
-		return this.sFileEnding;
+	public String getName() {
+		return this.sFileName;
+	}
+	public void setName(String sFileName) {
+		this.sFileName = sFileName;
+	}
+	
+	public String getNameEnd(){	
+		return FileEasyZZZ.NameEndCompute(this.getName());
 	}
 	
 	public String getNameWithChangedEnd(String sEnd) throws ExceptionZZZ{
 		String sReturn = null;
 		
-		String sFileName = this.sFileName;
+		String sFileName = this.getName();
 		sReturn = FileEasyZZZ.getNameWithChangedEnd(sFileName, sEnd);
 		/*
 		int iFileOnlyLength = sFileName.lastIndexOf(".");
@@ -170,11 +177,8 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	
 	
 	//++++++++++++++++++++++++++++++++++++++++++
-	public String getNameOnly() throws ExceptionZZZ{
-		if(this.sFileNameOnly.equals("")){
-			this.sFileNameOnly =FileEasyZZZ.NameOnlyCompute(this.sFileName);	
-		}
-		return this.sFileNameOnly;
+	public String getNameOnly() throws ExceptionZZZ{		
+		return FileEasyZZZ.NameOnlyCompute(this.getName());	
 	}
 	
 	
@@ -282,8 +286,8 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 //			
 //			main:{
 //				String sTemp = sFlagAlias.toLowerCase();
-//				if(sTemp.equals("expansionappend")){
-//						bFunction = this.bFlagExpansionAppend;
+//				if(sTemp.equals("use_file_expansion")){
+//						bFunction = this.bFlag_use_file_Expansion;
 //				}
 //			}
 //			end:{
@@ -297,8 +301,8 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 //			
 //			main:{
 //				String sTemp = sFlagAlias.toLowerCase();
-//				if(sTemp.equals("expansionappend")){
-//					this.bFlagExpansionAppend = bValue;
+//				if(sTemp.equals("use_file_expansion")){
+//					this.bFlag_use_file_Expansion = bValue;
 //					bFunction = true;
 //				}			
 //			}
@@ -566,34 +570,27 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	 */
 	public String PathNameTotalExpandedNextCompute(String sDirectoryNameIn, String sFileNameIn) throws ExceptionZZZ{
 		String sReturn = new String("");
-		main:{
-			int iFileLength;
-			int iExpandLength;
-			String sFileName = new String("");
-			String sDirectoryName = new String("");
+		main:{					
+			String sDirectoryName;
+			if(StringZZZ.isEmpty(sDirectoryNameIn)){
+				sDirectoryName = this.getPathDirectory();
+			}else{
+				sDirectoryName = sDirectoryNameIn;
+			}
 			
-			//////
-			paramcheck:
-			{
-				if(sDirectoryNameIn == null){
-					sDirectoryName = this.sDirectoryPath;
-				}else if(sDirectoryNameIn.equals("")){
-					sDirectoryName = this.sDirectoryPath;
-				}
-				
-				
-				if(sFileNameIn == null){
-					sFileName = this.sFileName;
-				}else if(sFileNameIn.equals("")){
-					sFileName = this.sFileName;
-				}
-				
-				//Leere Dateinamen können nicht "expanidert" werden.
-				iFileLength = sFileName.length();
-				if(iFileLength <= 0){
-					break main;
-				}											 
-			}//end paramcheck
+			String sFileName;	
+			if(sFileNameIn == null){
+				sFileName = this.getName();
+			}else{
+				sFileName = sFileNameIn;
+			}
+			
+			//Leere Dateinamen können nicht "expanidert" werden.
+			int iFileLength = sFileName.length();
+			if(iFileLength <= 0){
+				break main;
+			}											 
+		
  	 	
  	 		sReturn = PathNameTotalExpandedNextCompute_(sDirectoryName, sFileName);
 		
@@ -604,34 +601,26 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	public String PathNameTotalExpandedFirstCompute(String sDirectoryNameIn, String sFileNameIn) throws ExceptionZZZ{
 	String sReturn = new String("");
 	main:{
-		int iFileLength;
-		int iExpandLength;
-		String sFileName = new String("");
-		String sDirectoryName = new String("");
+		String sDirectoryName;
+		if(StringZZZ.isEmpty(sDirectoryNameIn)){
+			sDirectoryName = this.getPathDirectory();
+		}else{
+			sDirectoryName = sDirectoryNameIn;
+		}
 			
-		//////
-		paramcheck:
-		{
-			if(sDirectoryNameIn == null){
-				sDirectoryName = this.sDirectoryPath;
-			}else if(sDirectoryNameIn.equals("")){
-				sDirectoryName = this.sDirectoryPath;
-			}
-				
-				
-			if(sFileNameIn == null){
-				sFileName = this.sFileName;
-			}else if(sFileNameIn.equals("")){
-				sFileName = this.sFileName;
-			}
-				
-			//Leere Dateinamen können nicht "expanidert" werden.
-			iFileLength = sFileName.length();
-			if(iFileLength <= 0){
-				break main;
-			}				
-												
-		}//end paramcheck
+		String sFileName;	
+		if(sFileNameIn == null){
+			sFileName = this.getName();
+		}else{
+			sFileName = sFileNameIn;
+		}
+			
+		//Leere Dateinamen können nicht "expanidert" werden.
+		int iFileLength = sFileName.length();
+		if(iFileLength <= 0){
+			break main;
+		}				
+
  	 	
 		sReturn = PathNameTotalExpandedFirstCompute_(sDirectoryName, sFileName);
 		
@@ -642,36 +631,27 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 
 public String PathNameTotalExpandedCurrentCompute(String sDirectoryNameIn, String sFileNameIn) throws ExceptionZZZ{
 	String sReturn = new String("");
-	main:{
-		int iFileLength;
-		int iExpandLength;
-		String sFileName = new String("");
-		String sDirectoryName = new String("");
-			
-		//////
-		paramcheck:
-		{
-			if(sDirectoryNameIn == null){
-				sDirectoryName = this.sDirectoryPath;
-			}else if(sDirectoryNameIn.equals("")){
-				sDirectoryName = this.sDirectoryPath;
-			}
+	main:{		
+		String sDirectoryName;
+		if(StringZZZ.isEmpty(sDirectoryNameIn)) {
+			sDirectoryName = this.getPathDirectory();
+		}else {
+			sDirectoryName = sDirectoryNameIn;
+		}
 				
+		String sFileName;
+		if(StringZZZ.isEmpty(sFileNameIn)){
+			sFileName = this.getName();
+		}else {
+			sFileName = sFileNameIn;
+		}
 				
-			if(sFileNameIn == null){
-				sFileName = this.sFileName;
-			}else if(sFileNameIn.equals("")){
-				sFileName = this.sFileName;
-			}
-				
-			//Leere Dateinamen k�nnen nicht "expanidert" werden.
-			iFileLength = sFileName.length();
-			if(iFileLength <= 0){
-				break main;
-			}				
-												
-		}//end paramcheck
- 	 	
+		//Leere Dateinamen können nicht "expanidert" werden.
+		int iFileLength = sFileName.length();
+		if(iFileLength <= 0){
+			break main;
+		}				
+
 		sReturn = PathNameTotalExpandedCurrentCompute_(sDirectoryName, sFileName);
 		
 	}//end main
@@ -704,63 +684,111 @@ return sReturn;
 	return sReturn;
 	}
 	
-	private String PathNameTotalExpandedNextCompute_(String sDirectory, String sFile) throws ExceptionZZZ{
+	private String PathNameTotalExpandedNextCompute_(String sDirectoryIn, String sFileIn) throws ExceptionZZZ{
 		String sReturn = new String("");
-		main:{
-			String sExpandValue = this.getExpansionNext();
-			String sFileOnly = this.getNameOnly();
-			String sEnding = this.getNameEnd();
+		main:{								
+			String sDirectory;
+			if(StringZZZ.isEmpty(sDirectoryIn)) {
+				sDirectory = this.getPathDirectory();
+			}else {
+				sDirectory=sDirectoryIn;
+			}
+			
+			String sFile; String sFileOnly;String sEnding;
+			if(StringZZZ.isEmpty(sFileIn)) {
+				sFile = this.getName();
+				sFileOnly = this.getNameOnly();	
+				sEnding = this.getNameEnd();
+			}else {
+				sFile = sFileIn;
+				sFileOnly = FileEasyZZZ.NameOnlyCompute(sFile);
+				sEnding = FileEasyZZZ.NameEndCompute(this.getName());
+			}			 
 			if(sEnding.length() > 0){
 				sEnding = "." + sEnding;
 			}
-
-			if(this.getFileExpansionObject().getFlagZ("ExpansionAppend") == false){
-				sReturn =  this.getPathDirectory() + File.separator + sFileOnly + sEnding;							
+			
+			//Merke: Nur mit dem Flag "use_file_expansion" ist das Expansion Objekt normalerweise gefüllt.			
+			if(this.getFileExpansionObject()==null) {
+				sReturn =  sDirectory + File.separator + sFileOnly + sEnding;							
 				break main;
-			}else{
-				sReturn = this.getPathDirectory() + File.separator + sFileOnly + sExpandValue + sEnding;						
+			}else {
+				String sExpandValue = this.getExpansionNext();
+				sReturn = sDirectory + File.separator + sFileOnly + sExpandValue + sEnding;						
 				break main;			
-			}			 
+			}				
 		}//end main
 		return sReturn;
 	}
 	
-	private String PathNameTotalExpandedFirstCompute_(String sDirectory, String sFile) throws ExceptionZZZ{
+	private String PathNameTotalExpandedFirstCompute_(String sDirectoryIn, String sFileIn) throws ExceptionZZZ{
 	String sReturn = new String("");
 	main:{
-			String sExpandValue = this.getExpansionFirst();
-			String sFileOnly = this.getNameOnly();
-			String sEnding = this.getNameEnd();
-			if(sEnding.length() > 0){
-				sEnding = "." + sEnding;
-			}
-	
-			if(this.getFileExpansionObject().getFlagZ("ExpansionAppend") == false){
-				sReturn =  this.getPathDirectory() +File.separator + sFileOnly + sEnding;							
-				break main;
-			}else{
-				sReturn = this.getPathDirectory() + File.separator + sFileOnly + sExpandValue + sEnding;					
-				break main;			
-			}			 
-	}//end main
-	return sReturn;
-}
-
-private String PathNameTotalExpandedCurrentCompute_(String sDirectory, String sFile) throws ExceptionZZZ{
-	String sReturn = new String("");
-	main:{
-		String sExpandValue = this.getExpansionCurrent();
-		String sFileOnly = this.getNameOnly();
-		String sEnding = this.getNameEnd();
+		String sDirectory;
+		if(StringZZZ.isEmpty(sDirectoryIn)) {
+			sDirectory = this.getPathDirectory();
+		}else {
+			sDirectory=sDirectoryIn;
+		}
+		
+		String sFile; String sFileOnly;String sEnding;
+		if(StringZZZ.isEmpty(sFileIn)) {
+			sFile = this.getName();
+			sFileOnly = this.getNameOnly();	
+			sEnding = this.getNameEnd();
+		}else {
+			sFile = sFileIn;
+			sFileOnly = FileEasyZZZ.NameOnlyCompute(sFile);
+			sEnding = FileEasyZZZ.NameEndCompute(this.getName());
+		}	
 		if(sEnding.length() > 0){
 			sEnding = "." + sEnding;
 		}
 
-		if(this.getFileExpansionObject().getFlagZ("ExpansionAppend") == false){
-			sReturn =  this.getPathDirectory() + File.separator + sFileOnly + sEnding;						
+		//Merke: Nur mit dem Flag "use_file_expansion" ist das Expansion Objekt normalerweise gefüllt.			
+		if(this.getFileExpansionObject()==null) {
+			sReturn =  sDirectory +File.separator + sFileOnly + sEnding;							
 			break main;
 		}else{
-			sReturn = this.getPathDirectory() + File.separator + sFileOnly + sExpandValue + sEnding;				
+			String sExpandValue = this.getExpansionFirst();						
+			sReturn = sDirectory + File.separator + sFileOnly + sExpandValue + sEnding;					
+			break main;			
+		}			 
+	}//end main
+	return sReturn;
+}
+
+private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String sFileIn) throws ExceptionZZZ{
+	String sReturn = new String("");
+	main:{
+		String sDirectory;
+		if(StringZZZ.isEmpty(sDirectoryIn)) {
+			sDirectory = this.getPathDirectory();
+		}else {
+			sDirectory=sDirectoryIn;
+		}
+		
+		String sFile; String sFileOnly;String sEnding;
+		if(StringZZZ.isEmpty(sFileIn)) {
+			sFile = this.getName();
+			sFileOnly = this.getNameOnly();	
+			sEnding = this.getNameEnd();
+		}else {
+			sFile = sFileIn;
+			sFileOnly = FileEasyZZZ.NameOnlyCompute(sFile);
+			sEnding = FileEasyZZZ.NameEndCompute(this.getName());
+		}	
+		if(sEnding.length() > 0){
+			sEnding = "." + sEnding;
+		}
+
+		//Merke: Nur mit dem Flag "use_file_expansion" ist das Expansion Objekt normalerweise gefüllt.			
+		if(this.getFileExpansionObject()==null) {
+			sReturn =  sDirectory + File.separator + sFileOnly + sEnding;						
+			break main;
+		}else{
+			String sExpandValue = this.getExpansionCurrent();
+			sReturn = sDirectory + File.separator + sFileOnly + sExpandValue + sEnding;				
 			break main;			
 		}			 
 	}//end main
