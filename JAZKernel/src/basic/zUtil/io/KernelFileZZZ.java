@@ -155,15 +155,9 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	}
 	
 	public String getNameWithChangedEnd(String sEnd) throws ExceptionZZZ{
-		String sReturn = null;
-		
 		String sFileName = this.getName();
-		sReturn = FileEasyZZZ.getNameWithChangedEnd(sFileName, sEnd);	
-		
-		return sReturn;
+		return FileEasyZZZ.getNameWithChangedEnd(sFileName, sEnd);	
 	}
-	
-	
 	
 	//++++++++++++++++++++++++++++++++++++++++++
 	public String getNameOnly() throws ExceptionZZZ{		
