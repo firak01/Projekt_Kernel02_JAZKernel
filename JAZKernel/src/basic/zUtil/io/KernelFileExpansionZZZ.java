@@ -26,13 +26,13 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 	public KernelFileExpansionZZZ() {
 		super();
 	}
-	public KernelFileExpansionZZZ(FileZZZ objFile) {		
+	public KernelFileExpansionZZZ(FileZZZ objFileBase) {		
 		super();
-		this.setFileBase(objFile);
+		this.setFileBase(objFileBase);
 	}
 	
-	public KernelFileExpansionZZZ(FileZZZ objFile, int iExpansionLength) {
-		this(objFile);
+	public KernelFileExpansionZZZ(FileZZZ objFileBase, int iExpansionLength) {
+		this(objFileBase);
 		this.setExpansionLength(iExpansionLength);		
 	}
 	

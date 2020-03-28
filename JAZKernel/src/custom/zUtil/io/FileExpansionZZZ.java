@@ -7,11 +7,11 @@ public class FileExpansionZZZ extends KernelFileExpansionZZZ{
 	public FileExpansionZZZ() {
 		super();
 	}
-	public FileExpansionZZZ(FileZZZ objFileZZZ) {
-		super(objFileZZZ);
+	public FileExpansionZZZ(FileZZZ objFileBase) {
+		super(objFileBase);
 	}
-	public FileExpansionZZZ(FileZZZ objFileZZZ, int iExpansionLength) {
-		super(objFileZZZ, iExpansionLength);
+	public FileExpansionZZZ(FileZZZ objFileBase, int iExpansionLength) {
+		super(objFileBase, iExpansionLength);
 	}
 	
 }

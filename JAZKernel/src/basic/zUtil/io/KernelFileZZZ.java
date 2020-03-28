@@ -158,19 +158,8 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		String sReturn = null;
 		
 		String sFileName = this.getName();
-		sReturn = FileEasyZZZ.getNameWithChangedEnd(sFileName, sEnd);
-		/*
-		int iFileOnlyLength = sFileName.lastIndexOf(".");
-		if(iFileOnlyLength > -1){
-			sReturn = StringZZZ.left(sFileName, iFileOnlyLength + 1);
-			if(StringZZZ.isEmpty(sReturn)){
-				sReturn = sFileName + File.separator + sEnd;
-			}else{
-				sReturn = sReturn + sEnd;
-			}
-		}else{
-			sReturn = sFileName + File.separator + sEnd;
-		}*/
+		sReturn = FileEasyZZZ.getNameWithChangedEnd(sFileName, sEnd);	
+		
 		return sReturn;
 	}
 	
