@@ -37,7 +37,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFlagZZZ{ //IFunctionZZZ {
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZZZ{ //IFunctionZZZ {
 	private IFileExpansionZZZ objExpansion=null;
 	private ExceptionZZZ objException=null;
 	
