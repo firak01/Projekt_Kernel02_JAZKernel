@@ -1,10 +1,12 @@
 package basic.zUtil.io;
 
 import java.io.File;
+import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.integer.IntegerZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -12,7 +14,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZZZ {
+public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansionZZZ, Iterable<T> {
 	private FileZZZ objFileBase=null;
 	
 	private int iExpansionLength = -1; //Merke: Bei -1 wird der Defaultwert genommen, definiert als Konstante
@@ -364,4 +366,74 @@ public class KernelFileExpansionZZZ extends ObjectZZZ implements IFileExpansionZ
 		}
 		return bReturn;
 	}
+	
+//	@Override
+//	public Iterator<T> iterator() {
+//		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+//				
+//		//Iterator<Integer> itIndex = vecIndex.iterator();
+//		//return (Iterator<T>) itIndex;
+//		
+//		//ABER: Man iteriert nicht über den Index, sondern über die Objekte der HashMap.
+//		
+//	}
+	
+	@Override
+    public Iterator<T> iterator() {
+        Iterator<T> it = new Iterator<T>() {
+        	private int iIndexIterator=-1; //Der Index des gerade verarbeiteten Keys im Iterator
+        	private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
+        	
+        	
+            @Override
+            public boolean hasNext() {
+            	boolean bReturn = false;
+            	main:{
+//	            	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+//	            	if(vec==null)break main;
+//	            	if(!vec.hasAnyElement())break main;
+//	            	
+//	            	
+//	            	Integer intLast = (Integer) vec.lastElement();
+//	            		            
+//	            	iIndexWatched = iIndexWatched+1;//das nächste Element halt, ausgehend von -1
+//	            	Integer intNext = new Integer(iIndexWatched);
+//	            	bReturn = iIndexWatched <= intLast.intValue() && getHashMap().get(intNext) != null;	            	
+            	}//end main:
+            	return bReturn;
+            }
+
+            @SuppressWarnings("unchecked")
+			@Override
+            public T next() {
+                T objReturn = null;
+                main:{
+//                	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+//	            	if(vec==null)break main;
+//	            	if(!vec.hasAnyElement())break main;
+//	            	
+//                	int iIndexCur = this.iIndexIterator;
+//                	if(iIndexCur<this.iIndexWatched) {
+//                		iIndexCur = this.iIndexWatched;
+//                	}else {
+//                		iIndexCur = iIndexCur + 1;
+//                	}
+//                	
+//	            	Integer intLast = (Integer) vec.lastElement();
+//	            	boolean bReturn = iIndexCur <= intLast.intValue() && getHashMap().get(iIndexCur) != null;	 
+//	            	if(bReturn) {
+//	            		this.iIndexIterator = iIndexCur;
+//	            		objReturn = (T) getHashMap().get(iIndexCur);
+//	            	}
+                }//end main:
+            	return objReturn;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+        return it;
+    }
 }

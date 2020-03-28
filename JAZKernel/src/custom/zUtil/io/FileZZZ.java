@@ -22,6 +22,9 @@ public class FileZZZ extends KernelFileZZZ{
 	 * @param sPathTarget
 	 * @param sFileTarget
 	 */
+	public FileZZZ(String sPathTarget, String sFileTarget) throws ExceptionZZZ {
+		super(sPathTarget, sFileTarget);
+	}
 	public FileZZZ(String sPathTarget, String sFileTarget, String[] saFlagControl) throws ExceptionZZZ {
 		super(sPathTarget, sFileTarget, saFlagControl);
 	}

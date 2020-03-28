@@ -58,39 +58,45 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		this("","","init");
 	}
 	
+	public KernelFileZZZ(String sDirectoryPath, String sFileName) throws ExceptionZZZ{
+		super(sDirectoryPath + "\\" + sFileName);
+		KernelFileNew_(sDirectoryPath, sFileName, 0, (String[])null);
+	}
+	
 	public KernelFileZZZ(String sDirectoryPath, String sFileName, String[] saFlagControlIn) throws ExceptionZZZ{
 		super(sDirectoryPath + "\\" + sFileName);
-		String stemp; boolean btemp;
-		main:{
-			
-		//setzen der übergebenen Flags	
-			if(saFlagControlIn != null){
-				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-					stemp = saFlagControlIn[iCount];
-					btemp = setFlag(stemp, true);
-					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-						   //doesn�t work. Only works when > JDK 1.4
-						   //Exception e = new Exception();
-						   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
-						   throw ez;		 
-					}
-				}
-				}
-
-			//+++ Falls das Debug-Flag gesetzt ist, muss nun eine Session �ber das Factory-Objekt erzeugt werden. 
-			// Damit kann auf andere Datenbanken zugegriffen werden (z.B. im Eclipse Debugger)
-			// Besser jedoch ist es beim Debuggen mit einem anderen Tool eine Notes-ID zu verwenden, die ein leeres Passwort hat.
-			btemp = this.getFlag("init");
-			if(btemp==true) break main;
-		
-		this.setPathDirectory(sDirectoryPath);
-		this.setName(sFileName);
-		if(this.getFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
-			IFileExpansionZZZ objFileExpansion=new FileExpansionZZZ((FileZZZ) this);
-			this.setFileExpansionObject(objFileExpansion);
-		}
-		}//end main		
+		KernelFileNew_(sDirectoryPath, sFileName, 0, saFlagControlIn);
+//		String stemp; boolean btemp;
+//		main:{
+//			
+//		//setzen der übergebenen Flags	
+//			if(saFlagControlIn != null){
+//				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//					stemp = saFlagControlIn[iCount];
+//					btemp = setFlag(stemp, true);
+//					if(btemp==false){ 								   
+//						   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+//						   //doesn�t work. Only works when > JDK 1.4
+//						   //Exception e = new Exception();
+//						   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
+//						   throw ez;		 
+//					}
+//				}
+//				}
+//
+//			//+++ Falls das Debug-Flag gesetzt ist, muss nun eine Session �ber das Factory-Objekt erzeugt werden. 
+//			// Damit kann auf andere Datenbanken zugegriffen werden (z.B. im Eclipse Debugger)
+//			// Besser jedoch ist es beim Debuggen mit einem anderen Tool eine Notes-ID zu verwenden, die ein leeres Passwort hat.
+//			btemp = this.getFlag("init");
+//			if(btemp==true) break main;
+//		
+//		this.setPathDirectory(sDirectoryPath);
+//		this.setName(sFileName);
+//		if(this.getFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+//			IFileExpansionZZZ objFileExpansion=new FileExpansionZZZ((FileZZZ) this);
+//			this.setFileExpansionObject(objFileExpansion);
+//		}
+//		}//end main		
 	}
 	
 	
