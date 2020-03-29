@@ -60,12 +60,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	
 	public KernelFileZZZ(String sDirectoryPath, String sFileName) throws ExceptionZZZ{
 		super(sDirectoryPath + "\\" + sFileName);
-		KernelFileNew_(sDirectoryPath, sFileName, 0, (String[])null);
+		KernelFileNew_(sDirectoryPath, sFileName, null, (String[])null);
 	}
 	
 	public KernelFileZZZ(String sDirectoryPath, String sFileName, String[] saFlagControlIn) throws ExceptionZZZ{
 		super(sDirectoryPath + "\\" + sFileName);
-		KernelFileNew_(sDirectoryPath, sFileName, 0, saFlagControlIn);
+		KernelFileNew_(sDirectoryPath, sFileName, null, saFlagControlIn);
 //		String stemp; boolean btemp;
 //		main:{
 //			
@@ -104,7 +104,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		super(sDirectoryPath + "\\" + sFileName);
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
-		KernelFileNew_(sDirectoryPath, sFileName, -1, saFlagControl);		//-1; der Defaultwert (aus einer Konstante) wird dann genommen 
+		KernelFileNew_(sDirectoryPath, sFileName, null, saFlagControl);		 
 	}
 
 	
@@ -115,11 +115,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	 @param iExpansionLength
 	 * @throws ExceptionZZZ 
 	 */
-	public KernelFileZZZ(String sDirectoryPath, String sFileName, int iExpansionLength, String[] saFlagControl) throws ExceptionZZZ {		
+	public KernelFileZZZ(String sDirectoryPath, String sFileName, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ {		
 		super(sDirectoryPath + "\\" + sFileName);
-		KernelFileNew_(sDirectoryPath, sFileName, iExpansionLength, saFlagControl);
+		KernelFileNew_(sDirectoryPath, sFileName, objFileExpansion, saFlagControl);
 	}
-	private void KernelFileNew_(String sDirectoryPath, String sFileName, int iExpansionLength, String[] saFlagControl) throws ExceptionZZZ {
+	private void KernelFileNew_(String sDirectoryPath, String sFileName, IFileExpansionZZZ objFileExpansionIn, String[] saFlagControl) throws ExceptionZZZ {
 			main:{
 				if(saFlagControl!=null){
 					boolean btemp = false;
@@ -138,10 +138,16 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				this.setPathDirectory(sDirectoryPath);
 				this.setName(sFileName);
 				
-				if(this.getFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
-					IFileExpansionZZZ objFileExpansion=new FileExpansionZZZ((FileZZZ) this, iExpansionLength);
-					this.setFileExpansionObject(objFileExpansion);	
+				IFileExpansionZZZ objFileExpansion = null;
+				if(objFileExpansionIn!=null) {
+					objFileExpansion = objFileExpansionIn;
+					this.setFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name(),true);
+				}else{
+					if(this.getFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+						objFileExpansion = new FileExpansionZZZ((FileZZZ) this);							
+					}
 				}
+				this.setFileExpansionObject(objFileExpansion);
 		}//End main:
 		
 	}

@@ -34,7 +34,7 @@ public class KernelZZZIsolatedTest extends TestCase {
 		}		
 	}
 	
-	private void removeLogFile(IKernelZZZ objKerneltemp){
+	private void removeLogFile(IKernelZZZ objKerneltemp) throws ExceptionZZZ{
 		//		Log-File entfernen
 		if(objKerneltemp != null){
 			LogZZZ objLog = objKerneltemp.getLogObject();

@@ -1,6 +1,7 @@
 package custom.zUtil.io;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zUtil.io.IFileExpansionZZZ;
 import basic.zUtil.io.KernelFileZZZ;
 
 /**
@@ -33,8 +34,8 @@ public class FileZZZ extends KernelFileZZZ{
 		super(sPathTarget, sFileTarget, sFlagControl);
 	}
 	 
-	public FileZZZ(String sPathTarget, String sFileTarget, int iExpansionLength, String[] saFlagControl) throws ExceptionZZZ{
-		super(sPathTarget, sFileTarget, iExpansionLength, saFlagControl);
+	public FileZZZ(String sPathTarget, String sFileTarget, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ{
+		super(sPathTarget, sFileTarget, objFileExpansion, saFlagControl);
 	}
 
 }

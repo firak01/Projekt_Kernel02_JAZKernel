@@ -36,7 +36,7 @@ public class KernelZZZTest extends TestCase {
 		}		
 	}
 	
-	private void removeLogFile(IKernelZZZ objKerneltemp){
+	private void removeLogFile(IKernelZZZ objKerneltemp) throws ExceptionZZZ{
 		//		Log-File entfernen
 		if(objKerneltemp != null){
 			LogZZZ objLog = objKerneltemp.getLogObject();
@@ -48,7 +48,7 @@ public class KernelZZZTest extends TestCase {
 			}
 		}
 	}
-	private void removeLogFile(KernelZZZ objKerneltemp){
+	private void removeLogFile(KernelZZZ objKerneltemp) throws ExceptionZZZ{
 		//		Log-File entfernen
 		if(objKerneltemp != null){
 			LogZZZ objLog = objKerneltemp.getLogObject();
@@ -73,7 +73,12 @@ public void testContructor(){
 		}catch(ExceptionZZZ ez){
 			//Dieser Fehler wird erwartet.
 			//Log-File entfernen
-			this.removeLogFile(objKerneltemp01);
+			try {
+				this.removeLogFile(objKerneltemp01);
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		IKernelZZZ objKerneltemp02=null;
@@ -83,7 +88,12 @@ public void testContructor(){
 		}catch(ExceptionZZZ ez){
 			//Dieser Fehler wird erwartet.
 //			Log-File entfernen
-			this.removeLogFile(objKerneltemp02);
+			try {
+				this.removeLogFile(objKerneltemp02);
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		try{
@@ -139,7 +149,12 @@ public void testContructor(){
 		}catch(ExceptionZZZ ez){
 			//Dieser Fehler wird erwartet.
 //			Log-File entfernen
-			this.removeLogFile(objKerneltemp);
+			try {
+				this.removeLogFile(objKerneltemp);
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		try{
@@ -148,7 +163,12 @@ public void testContructor(){
 		}catch(ExceptionZZZ ez){
 			//Dieser Fehler wird erwartet.
 //			Log-File entfernen
-			this.removeLogFile(objKerneltemp);
+			try {
+				this.removeLogFile(objKerneltemp);
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		try{
@@ -157,7 +177,12 @@ public void testContructor(){
 		}catch(ExceptionZZZ ez){
 			//Dieser Fehler wird erwartet.
 //			Log-File entfernen
-			this.removeLogFile(objKerneltemp);
+			try {
+				this.removeLogFile(objKerneltemp);
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 }//END Function
 

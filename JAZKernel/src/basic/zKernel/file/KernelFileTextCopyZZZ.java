@@ -15,6 +15,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
+import basic.zUtil.io.IFileExpansionZZZ;
 import basic.zKernel.IKernelZZZ;
 
 
@@ -402,8 +403,8 @@ public class KernelFileTextCopyZZZ   extends KernelUseObjectZZZ{
 					   boolean bGotoNextExpansion = true;
 					   String sFileSourceExpandedLast = new String("");
 					   do{ //Solange es ein Source-File mit einer "Folge"-Expansion gibt, soll kopiert werden.       		        	
-						   //sFileSourceExpanded = NameFileSourceCompute(sDirectorySource, sFileSourceBasis, 3);
-						   FileZZZ objFileSource = new FileZZZ(sDirectorySourceFinal, sFileSourceBasis, 3, null);
+						   IFileExpansionZZZ objFileExpansion = new FileExpansionZZZ('0',3);
+						   FileZZZ objFileSource = new FileZZZ(sDirectorySourceFinal, sFileSourceBasis, objFileExpansion, null);
 						   sFileSourceExpanded = objFileSource.PathNameTotalExpandedFirstCompute();
         					        					
         					objFileTemp = new File(sFileSourceExpanded);        					
@@ -414,9 +415,8 @@ public class KernelFileTextCopyZZZ   extends KernelUseObjectZZZ{
 								//Falls die Source-Datei nicht gel�scht oder umbenannt wurde, wird so die Quelldatei immer wieder aufgegriffen, also:
         						bGotoNextExpansion = false;  //dadurch kommt man dann aus der Schleife raus !!!
         					}else{ 
-        						sFileSourceExpandedLast = sFileSourceExpanded;
-        							
-        						FileZZZ objFileTarget = new FileZZZ(sDirectoryTargetFinal, sFileTargetBasis, 3, null);
+        						sFileSourceExpandedLast = sFileSourceExpanded;        						
+        						FileZZZ objFileTarget = new FileZZZ(sDirectoryTargetFinal, sFileTargetBasis, objFileExpansion, null);
         						sFileTargetExpanded = objFileTarget.PathNameTotalExpandedNextCompute();
         						
         						objLog.WriteLineDate("Kopiere Datei '" + sFileSourceExpanded + "' --> '" + sFileTargetExpanded + "'");

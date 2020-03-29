@@ -28,6 +28,11 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 	public KernelFileExpansionZZZ() {
 		super();
 	}
+	public KernelFileExpansionZZZ(char cExpansionFilling, int iExpansionLength) {		
+		super();
+		this.setExpansionLength(iExpansionLength);
+		this.setExpansionFilling(cExpansionFilling);
+	}	
 	public KernelFileExpansionZZZ(FileZZZ objFileBase) {		
 		super();
 		this.setFileBase(objFileBase);
@@ -105,6 +110,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 		String sReturn = new String("");								
 		main:{
 			FileZZZ objFileBase = this.getFileBase();
+			if(objFileBase==null) break main;
 			
 			//if the current file exists, then a expansion must be appended, except the expansion must be appended.
 			if(this.getFlag("FILE_Expansion_Append")==false) {
@@ -180,6 +186,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 			if(iExpansionLength <= 0) break main;	
 				
 			FileZZZ objFileBase = this.getFileBase();
+			if(objFileBase==null) break main;
 			if(objFileBase.exists()) break main; //falls die Originaldatei existiert, so gilt diese als erste Datei in der Reihenfolge.		
 															
 			String sPath = objFileBase.getPathDirectory();
