@@ -140,14 +140,8 @@ private FileTextWriterZZZ createFileTextWriterInternal(String sFilepath) {
 public FileTextWriterZZZ getFileTextWriterObject() throws ExceptionZZZ{
 	if(this.objFileTextWriter==null) {
 		FileZZZ objFile = this.getFileObject();
-		String sFilename;
-		try {
-			sFilename = objFile.PathNameTotalExpandedNextCompute();
-			this.objFileTextWriter = createFileTextWriterInternal(sFilename);
-		} catch (ExceptionZZZ e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		String sFilename = objFile.PathNameTotalExpandedNextCompute();
+		this.objFileTextWriter = createFileTextWriterInternal(sFilename);		
 	}
 	return this.objFileTextWriter;
 }
