@@ -112,7 +112,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 			FileZZZ objFileBase = this.getFileBase();
 			if(objFileBase==null) break main;
 			
-			//if the current file exists, then a expansion must be appended, except the expansion must be appended.
+			//if the current file exists, then a expansion must be appended.
 			if(this.getFlag("FILE_Expansion_Append")==false) {
 				if(objFileBase.exists()){
 					this.setFlag("FILE_Expansion_Append", true);	
@@ -151,7 +151,8 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 				if(f.exists() == true){
 					bFound = true;
 					sExpansionFoundLast = sExpansion;
-					//Remark: Don't leave this loop, because there can be a gap
+					//Remark: Leave this loop, we don´t care about a gap.
+					break;
 				}
 				iCounter--;			
 			}while(iCounter >= 0 && bFound == false);
@@ -235,7 +236,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 		main:{									
 			String sExpansionCur = getExpansionCurrent(iExpansionLength);//Merke: Das dauert lange bei langen Dateiexpansionen, weil rückwärts alles gesucht wird.
 			//System.out.println("Gefundene letzte Datei-Expansion: '" + sExpansionCur + "'");
-			if(sExpansionCur.length() > 0 && this.getFlag("FILE_CURRENT_FOUND")){
+			if(sExpansionCur.length() > 0 && this.getFlag("FILE_Expansion_Append")){
 				
 				//Zahlenwerte von hinten einlesen, finden, .... . Füllzeichen, die keine Zahl sind werden ignoriert
 				Integer intTemp = IntegerZZZ.parseAbsolutFromRight(sExpansionCur);
@@ -243,7 +244,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 				//Integer intTemp = new Integer(sExpansionCur);				
 				sReturn = computeExpansion(this.getExpansionFilling(),intTemp.intValue() + 1, iExpansionLength);				
 			}else{
-				if(this.getFlag("FILE_Expansion_Append")) {
+				if(this.getFlag("FILE_CURRENT_FOUND")) {
 					sReturn =  computeExpansion(this.getExpansionFilling(), 1, iExpansionLength);
 				}else {
 					sReturn = "";//Das ist der Fall, wenn die Ausgangsdatei (also die Datei ohne Expansion) noch nicht vorhanden ist.				
