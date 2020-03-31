@@ -708,7 +708,7 @@ return sReturn;
 				sReturn =  sDirectory + File.separator + sFileOnly + sEnding;							
 				break main;
 			}else {
-				String sExpandValue = this.getExpansionNext();
+				String sExpandValue = this.searchExpansionFreeNext();
 				sReturn = sDirectory + File.separator + sFileOnly + sExpandValue + sEnding;						
 				break main;			
 			}				
@@ -745,7 +745,7 @@ return sReturn;
 			sReturn =  sDirectory +File.separator + sFileOnly + sEnding;							
 			break main;
 		}else{
-			String sExpandValue = this.getExpansionFirst();						
+			String sExpandValue = this.searchExpansionFreeLowest();						
 			sReturn = sDirectory + File.separator + sFileOnly + sExpandValue + sEnding;					
 			break main;			
 		}			 
@@ -782,7 +782,7 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String 
 			sReturn =  sDirectory + File.separator + sFileOnly + sEnding;						
 			break main;
 		}else{
-			String sExpandValue = this.getExpansionCurrent();
+			String sExpandValue = this.searchExpansionCurrent();
 			sReturn = sDirectory + File.separator + sFileOnly + sExpandValue + sEnding;				
 			break main;			
 		}			 
@@ -894,37 +894,37 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String 
 	}
 
 	@Override
-	public String getExpansionNext() throws ExceptionZZZ {
+	public String searchExpansionFreeNext() throws ExceptionZZZ {
 		String sReturn = new String("");		
 		main:{
 			IFileExpansionZZZ objFileExpansion = this.getFileExpansionObject();
 			if(objFileExpansion==null)break main;
 			
-			sReturn = objFileExpansion.getExpansionNext();
+			sReturn = objFileExpansion.searchExpansionFreeNext();
 		}
 		return sReturn;
 	}
 
 	@Override
-	public String getExpansionCurrent() throws ExceptionZZZ {
+	public String searchExpansionCurrent() throws ExceptionZZZ {
 		String sReturn = new String("");		
 		main:{
 			IFileExpansionZZZ objFileExpansion = this.getFileExpansionObject();
 			if(objFileExpansion==null)break main;
 			
-			sReturn = objFileExpansion.getExpansionCurrent();
+			sReturn = objFileExpansion.searchExpansionCurrent();
 		}
 		return sReturn;
 	}
 
 	@Override
-	public String getExpansionFirst() throws ExceptionZZZ {
+	public String searchExpansionFreeLowest() throws ExceptionZZZ {
 		String sReturn = new String("");		
 		main:{
 			IFileExpansionZZZ objFileExpansion = this.getFileExpansionObject();
 			if(objFileExpansion==null)break main;
 			
-			sReturn = objFileExpansion.getExpansionFirst();
+			sReturn = objFileExpansion.searchExpansionFreeLowest();
 		}
 		return sReturn;
 	}

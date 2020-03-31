@@ -16,10 +16,20 @@ public interface IFileExpansionZZZ extends IFileExpansionProxyZZZ,IFlagZZZ {
 	public void setExpansionFilling(char cExpansionFilling);
 	public void setExpansionFilling(String sExpansionFillingCharacter) throws ExceptionZZZ;
 	
+	public int getExpansionValueCurrent();
+	public void setExpansionValueCurrent(int iExpansionValue);
 	
-	public String getExpansionCurrent(int iExpansionLength) throws ExceptionZZZ;	
-	public String getExpansionFirst(int iExpansionLength) throws ExceptionZZZ;
-	public String getExpansionNext(int iExpansionLength) throws ExceptionZZZ;
+	public String searchExpansionCurrent() throws ExceptionZZZ;
+	public String searchExpansionCurrent(int iExpansionLength) throws ExceptionZZZ;
+	
+	public String searchExpansionFreeLowest() throws ExceptionZZZ;
+	public String searchExpansionFreeLowest(int iExpansionLength) throws ExceptionZZZ;
+	
+	public String searchExpansionFreeNext() throws ExceptionZZZ;
+	public String searchExpansionFreeNext(int iExpansionLength) throws ExceptionZZZ;
+	
+	public String computeExpansionValueCurrentString();
+	public String computeExpansionValueCurrentString(int iExpansionLength);
 	
 	public String computeExpansion(int iExpansionValue);
 	public String computeExpansion(String sFilling, int iExpansionValue);

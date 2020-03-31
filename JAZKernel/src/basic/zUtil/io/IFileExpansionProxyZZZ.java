@@ -7,7 +7,7 @@ import basic.zBasic.ExceptionZZZ;
  *
  */
 public interface IFileExpansionProxyZZZ extends IFileExpansionConstZZZ{
-	public String getExpansionCurrent() throws ExceptionZZZ;
-	public String getExpansionFirst() throws ExceptionZZZ;
-	public String getExpansionNext() throws ExceptionZZZ;	
+	public String searchExpansionCurrent() throws ExceptionZZZ;
+	public String searchExpansionFreeLowest() throws ExceptionZZZ;
+	public String searchExpansionFreeNext() throws ExceptionZZZ;	
 }

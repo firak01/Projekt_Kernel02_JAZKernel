@@ -3,9 +3,11 @@ package basic.zUtil.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.DummyObjectZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
 import junit.framework.TestCase;
@@ -126,4 +128,21 @@ public class FileExpansionZZZTest extends TestCase {
 //		fail("An exception happend testing: " + ez.getDetailAllLast());
 //	}
 	}
+	
+	public void testIterateExpansionAll(){
+//		try {
+		int icounter=0;
+		Iterator<String> itExpansion = objExpansionTest.iterator();		
+		while(itExpansion.hasNext()) {
+			String sExpansion = (String) itExpansion.next();			
+			System.out.print("Expansion: " + sExpansion);
+			if(icounter%10==0)System.out.println();
+		}
+				
+//	}catch(ExceptionZZZ ez){
+//		fail("An exception happend testing: " + ez.getDetailAllLast());
+//	}
+	}
+	
+	
 }

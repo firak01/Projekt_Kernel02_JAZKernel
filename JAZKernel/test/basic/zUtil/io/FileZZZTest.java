@@ -125,36 +125,36 @@ public class FileZZZTest extends TestCase {
 	public void testPathNameExpansion(){
 try{
 		//First, no file expected to be there or only one file is there
-		assertEquals("", objFileTest.getExpansionCurrent());
+		assertEquals("", objFileTest.searchExpansionCurrent());
 		
 		// unverändert ?
 		//3stellig
-		assertEquals("", objFileTest.getExpansionCurrent());
-		assertEquals("", objFileTest.getExpansionNext());
+		assertEquals("", objFileTest.searchExpansionCurrent());
+		assertEquals("", objFileTest.searchExpansionFreeNext());
 		
 		//Erst mit dem Flag, dass kennzeichnet, das angehängt werden soll wird der Name erweitert.
 		//Merke: Das passiert dann, wenn die Ausgangsdatei tatsächlich existiert
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), true);
-		assertEquals("001", objFileTest.getExpansionCurrent());
-		assertEquals("001", objFileTest.getExpansionNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
+		assertEquals("001", objFileTest.searchExpansionCurrent());
+		assertEquals("001", objFileTest.searchExpansionFreeNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
 		
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), true);
-		assertEquals("001", objFileTest.getExpansionCurrent()); //Da es die Datei nicht gibt, bleibt es beim Wert
-		assertEquals("002", objFileTest.getExpansionNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
+		assertEquals("001", objFileTest.searchExpansionCurrent()); //Da es die Datei nicht gibt, bleibt es beim Wert
+		assertEquals("002", objFileTest.searchExpansionFreeNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
 		
 		
 		//4stelling: Merke: Das dauer wg. der Suche der Dateinamen von 9999 bis 0000 lange....
 		objFileTest.setExpansionLength(4);
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), false);
-		assertEquals("",objFileTest.getExpansionCurrent());
+		assertEquals("",objFileTest.searchExpansionCurrent());
 		
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), true);
-		assertEquals("0001",objFileTest.getExpansionCurrent());
+		assertEquals("0001",objFileTest.searchExpansionCurrent());
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), false);
-		assertEquals("0001",objFileTest.getExpansionNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert
+		assertEquals("0001",objFileTest.searchExpansionFreeNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert
 		
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), true);
-		assertEquals("0002",objFileTest.getExpansionNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert
+		assertEquals("0002",objFileTest.searchExpansionFreeNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert
 		
 		
 		objFileTest.setExpansionFilling('-');
@@ -163,9 +163,9 @@ try{
 		//	Now get the next expansion
 		objFileTest.setExpansionLength(3);
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), false);
-		assertEquals("--1",objFileTest.getExpansionNext());		
+		assertEquals("--1",objFileTest.searchExpansionFreeNext());		
 		objFileTest.setExpansionLength(4);
-		assertEquals("---1",objFileTest.getExpansionNext());
+		assertEquals("---1",objFileTest.searchExpansionFreeNext());
 		
 		//#### 
 		objFileTest.setExpansionLength(3);

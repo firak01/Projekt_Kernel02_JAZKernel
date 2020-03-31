@@ -16,6 +16,7 @@ import custom.zUtil.io.FileZZZ;
 
 public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansionZZZ, Iterable<T> {
 	private FileZZZ objFileBase=null;
+	private int iExpansionUsedCurrent=0;
 	
 	private int iExpansionLength = -1; //Merke: Bei -1 wird der Defaultwert genommen, definiert als Konstante
 	private char cExpansionFilling = CharZZZ.getEmpty();
@@ -96,9 +97,9 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 	} //end function
 	
 		
-	public String getExpansionCurrent() throws ExceptionZZZ{
+	public String searchExpansionCurrent() throws ExceptionZZZ{
 		int iExpansionLenght = this.getExpansionLength();		
-		return this.getExpansionCurrent(iExpansionLenght);
+		return this.searchExpansionCurrent(iExpansionLenght);
 	}
 	
 	/**
@@ -106,7 +107,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 	 @return String, last used expansion, e.g. 000 ---> 999
 	 * @throws ExceptionZZZ 
 	 */
-	public String getExpansionCurrent(int iExpansionLength) throws ExceptionZZZ{
+	public String searchExpansionCurrent(int iExpansionLength) throws ExceptionZZZ{
 		String sReturn = new String("");								
 		main:{
 			FileZZZ objFileBase = this.getFileBase();
@@ -151,6 +152,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 				if(f.exists() == true){
 					bFound = true;
 					sExpansionFoundLast = sExpansion;
+					this.setExpansionValueCurrent(iCounter);
 					//Remark: Leave this loop, we don´t care about a gap.
 					break;
 				}
@@ -171,9 +173,9 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 		return sReturn;	
 	} // end function
 	
-	public String getExpansionFirst() throws ExceptionZZZ{
+	public String searchExpansionFreeLowest() throws ExceptionZZZ{
 		int iExpansionLenght = this.getExpansionLength();		
-		return this.getExpansionFirst(iExpansionLenght);
+		return this.searchExpansionFreeLowest(iExpansionLenght);
 	}
 	
 	/**
@@ -181,7 +183,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 	 @return String, the first found expansion for the file (e.g. the filename itself when there are no files  or  000 --> 999
 	 * @throws ExceptionZZZ 
 	 */
-	public String getExpansionFirst(int iExpansionLength) throws ExceptionZZZ{
+	public String searchExpansionFreeLowest(int iExpansionLength) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{	
 			if(iExpansionLength <= 0) break main;	
@@ -221,9 +223,9 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 		return sReturn;	
 	}
 	
-	public String getExpansionNext() throws ExceptionZZZ{
+	public String searchExpansionFreeNext() throws ExceptionZZZ{
 		int iExpansionLenght = this.getExpansionLength();		
-		return this.getExpansionNext(iExpansionLenght);
+		return this.searchExpansionFreeNext(iExpansionLenght);
 	}
 	
 	/**
@@ -231,10 +233,10 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 	 @return String, the Expansion which has not been used by any other file, e.g. 000 --> 999
 	 * @throws ExceptionZZZ 
 	 */
-	public String getExpansionNext(int iExpansionLength) throws ExceptionZZZ{
+	public String searchExpansionFreeNext(int iExpansionLength) throws ExceptionZZZ{
 		String sReturn = new String("");				
 		main:{									
-			String sExpansionCur = getExpansionCurrent(iExpansionLength);//Merke: Das dauert lange bei langen Dateiexpansionen, weil rückwärts alles gesucht wird.
+			String sExpansionCur = searchExpansionCurrent(iExpansionLength);//Merke: Das dauert lange bei langen Dateiexpansionen, weil rückwärts alles gesucht wird.
 			//System.out.println("Gefundene letzte Datei-Expansion: '" + sExpansionCur + "'");
 			if(sExpansionCur.length() > 0 && this.getFlag("FILE_Expansion_Append")){
 				
@@ -375,24 +377,21 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 		return bReturn;
 	}
 	
-//	@Override
-//	public Iterator<T> iterator() {
-//		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
-//				
-//		//Iterator<Integer> itIndex = vecIndex.iterator();
-//		//return (Iterator<T>) itIndex;
-//		
-//		//ABER: Man iteriert nicht über den Index, sondern über die Objekte der HashMap.
-//		
-//	}
 	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 * 
+	 * Merke: 
+	 * Hier wird von der niedrigsten, VORHANDENEN Datei (ausgehend von 0) zur aktuellen vorhandenenen Datei in Richtung iExpansionUsedCurrent iteriert.
+	 * 
+	 */
 	@Override
-    public Iterator<T> iterator() {
+    public Iterator<T> iterator() {		
         Iterator<T> it = new Iterator<T>() {
-        	private int iIndexIterator=-1; //Der Index des gerade verarbeiteten Keys im Iterator
-        	private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
-        	
-        	
+        	private int iExpansionIteratedCurrent=0; //Der Index des gerade verarbeiteten Keys im Iterator
+        	//private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
+        
             @Override
             public boolean hasNext() {
             	boolean bReturn = false;
@@ -416,23 +415,17 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
             public T next() {
                 T objReturn = null;
                 main:{
-//                	VectorExtendedZZZ<Integer> vec = getVectorIndex();
-//	            	if(vec==null)break main;
-//	            	if(!vec.hasAnyElement())break main;
-//	            	
-//                	int iIndexCur = this.iIndexIterator;
-//                	if(iIndexCur<this.iIndexWatched) {
-//                		iIndexCur = this.iIndexWatched;
-//                	}else {
-//                		iIndexCur = iIndexCur + 1;
-//                	}
-//                	
-//	            	Integer intLast = (Integer) vec.lastElement();
-//	            	boolean bReturn = iIndexCur <= intLast.intValue() && getHashMap().get(iIndexCur) != null;	 
-//	            	if(bReturn) {
-//	            		this.iIndexIterator = iIndexCur;
-//	            		objReturn = (T) getHashMap().get(iIndexCur);
-//	            	}
+                	//Hier gibt es keinen Vektor, etc. sondern immer nur einen "frisch" errechneten String.
+                	try {
+                		1111
+                		TODO GOON:
+                			boolean bExists = KernelFileExpansionZZZ.existsWithExpansion(File objFileBase, char cExpansionFilling, int iExpansionLength);
+                		
+						//objReturn = (T) searchExpansionFreeNext();
+					} catch (ExceptionZZZ ez) {						
+						ez.printStackTrace();						
+					}
+                	
                 }//end main:
             	return objReturn;
             }
@@ -444,4 +437,25 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
         };
         return it;
     }
+	@Override
+	public int getExpansionValueCurrent() {
+		return this.iExpansionUsedCurrent;
+	}
+	@Override
+	public void setExpansionValueCurrent(int iExpansionValue) {
+		this.iExpansionUsedCurrent = iExpansionValue;
+	}
+	@Override
+	public String computeExpansionValueCurrentString() {
+		String sFilling = this.getExpansionFilling();
+		int iExpansionValue = this.getExpansionValueCurrent();
+		int iExpansionLEngth = this.getExpansionLength();
+		return this.computeExpansion(sFilling, iExpansionValue, iExpansionLength);
+	}
+	@Override
+	public String computeExpansionValueCurrentString(int iExpansionLength) {
+		String sFilling = this.getExpansionFilling();
+		int iExpansionValue = this.getExpansionValueCurrent();
+		return this.computeExpansion(sFilling, iExpansionValue, iExpansionLength);
+	}
 }
