@@ -22,8 +22,8 @@ public interface IFileExpansionZZZ extends IFileExpansionProxyZZZ,IFlagZZZ {
 	public String searchExpansionCurrent() throws ExceptionZZZ;
 	public String searchExpansionCurrent(int iExpansionLength) throws ExceptionZZZ;
 	
-	public String searchExpansionFreeLowest() throws ExceptionZZZ;
-	public String searchExpansionFreeLowest(int iExpansionLength) throws ExceptionZZZ;
+	public String searchExpansionUsedLowest() throws ExceptionZZZ;
+	public String searchExpansionUsedLowest(int iExpansionLength) throws ExceptionZZZ;
 	
 	public String searchExpansionFreeNext() throws ExceptionZZZ;
 	public String searchExpansionFreeNext(int iExpansionLength) throws ExceptionZZZ;

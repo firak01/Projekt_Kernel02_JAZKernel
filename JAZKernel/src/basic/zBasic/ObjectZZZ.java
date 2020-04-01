@@ -35,7 +35,8 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	
-	public ObjectZZZ() {
+	public ObjectZZZ() {	
+		this.setFlag("init", true);
 	}
 	public ObjectZZZ(String sFlag) {
 		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);

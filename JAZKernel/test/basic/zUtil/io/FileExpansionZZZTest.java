@@ -16,7 +16,7 @@ import custom.zUtil.io.FileZZZ;
 
 public class FileExpansionZZZTest extends TestCase {	
 	private FileExpansionZZZ objExpansionTest;
-	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
+	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglkernel\\kerneltest");
 	private final static String strFILE_NAME_DEFAULT = new String("JUnitTest.txt");
 	
 
@@ -35,14 +35,14 @@ public class FileExpansionZZZTest extends TestCase {
 			    
 			    sFilePathUsed = sPathEclipse + File.separator + "test";		   
 			}
-			String sFilePathTotal =  FileEasyZZZ.joinFilePathName(sFilePathUsed, strFILE_NAME_DEFAULT );
 			
+			String sFilePathTotal =  FileEasyZZZ.joinFilePathName(sFilePathUsed, strFILE_NAME_DEFAULT );			
 			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
 			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
 			objStreamFile.close();
 
 			//The main object used for testing
-			FileZZZ objFileTest = new FileZZZ(sFilePathTotal, strFILE_NAME_DEFAULT);
+			FileZZZ objFileTest = new FileZZZ(sFilePathUsed, strFILE_NAME_DEFAULT);
 			objExpansionTest = new FileExpansionZZZ(objFileTest);
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
@@ -69,7 +69,7 @@ public class FileExpansionZZZTest extends TestCase {
 			}
 			
 			//TestKonfiguration prüfen
-			assertFalse(objExpansionTest.getFlag("init")==true); //Nun wäre init falsch		
+			assertTrue(objExpansionTest.getFlag("init")==false); //Nun wäre init falsch		
 			
 			//An object just initialized
 			FileExpansionZZZ objFileExpansionInit = new FileExpansionZZZ();
@@ -131,12 +131,15 @@ public class FileExpansionZZZTest extends TestCase {
 	
 	public void testIterateExpansionAll(){
 //		try {
-		int icounter=0;
+		int iCounter=0;
+		objExpansionTest.setExpansionFilling('0');
+		objExpansionTest.setExpansionLength(3);
 		Iterator<String> itExpansion = objExpansionTest.iterator();		
 		while(itExpansion.hasNext()) {
 			String sExpansion = (String) itExpansion.next();			
-			System.out.print("Expansion: " + sExpansion);
-			if(icounter%10==0)System.out.println();
+			System.out.print("Expansion: '" + sExpansion + "':");
+			if(iCounter%10==0)System.out.println();
+			iCounter++;
 		}
 				
 //	}catch(ExceptionZZZ ez){
