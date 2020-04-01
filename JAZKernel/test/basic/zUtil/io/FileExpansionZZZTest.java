@@ -137,7 +137,7 @@ public class FileExpansionZZZTest extends TestCase {
 		Iterator<String> itExpansion = objExpansionTest.iterator();		
 		while(itExpansion.hasNext()) {
 			String sExpansion = (String) itExpansion.next();			
-			System.out.print("Expansion: '" + sExpansion + "':");
+			System.out.print("Expansion: '" + sExpansion + "', ");
 			if(iCounter%10==0)System.out.println();
 			iCounter++;
 		}

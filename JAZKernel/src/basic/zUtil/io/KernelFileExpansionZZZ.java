@@ -512,8 +512,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
                 			String sExpansionFilling = getExpansionFilling();
                 			
                 			FileZZZ objFileBase = getFileBase();
-                			if(objFileBase==null) break main;
-                			//if(objFileBase.exists()) break main; //falls die Originaldatei existiert, so gilt diese als erste Datei in der Reihenfolge.		
+                			if(objFileBase==null) break main;                					
                 															
                 			String sPath = objFileBase.getPathDirectory();
                 			if(sPath.length() > 0){
