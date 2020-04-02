@@ -17,7 +17,7 @@ import custom.zUtil.io.FileZZZ;
 public class FileExpansionZZZTest extends TestCase {	
 	private FileExpansionZZZ objExpansionTest;
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglkernel\\kerneltest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnitTest.txt");
+	private final static String strFILE_NAME_DEFAULT = new String("JUnitTestExpansion.txt");
 	
 
 	protected void setUp(){
@@ -36,22 +36,23 @@ public class FileExpansionZZZTest extends TestCase {
 			    sFilePathUsed = sPathEclipse + File.separator + "test";		   
 			}
 			
-			String sFilePathTotal =  FileEasyZZZ.joinFilePathName(sFilePathUsed, strFILE_NAME_DEFAULT );			
-			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
-			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
-			objStreamFile.close();
+			//NEIN: Nicht pauschal Dateien erzeugen. Das sollte den einzelnen Tests überlassen bleiben.
+//			String sFilePathTotal =  FileEasyZZZ.joinFilePathName(sFilePathUsed, strFILE_NAME_DEFAULT );			
+//			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
+//			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
+//			objStreamFile.close();
 
 			//The main object used for testing
 			FileZZZ objFileTest = new FileZZZ(sFilePathUsed, strFILE_NAME_DEFAULT);
 			objExpansionTest = new FileExpansionZZZ(objFileTest);
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		}		
 	}//END setup
 	
@@ -136,11 +137,13 @@ public class FileExpansionZZZTest extends TestCase {
 		objExpansionTest.setExpansionLength(3);
 		Iterator<String> itExpansion = objExpansionTest.iterator();		
 		while(itExpansion.hasNext()) {
+			iCounter++;
+			
 			String sExpansion = (String) itExpansion.next();			
 			System.out.print("Expansion: '" + sExpansion + "', ");
-			if(iCounter%10==0)System.out.println();
-			iCounter++;
+			if(iCounter%10==0)System.out.println();			
 		}
+		System.out.println("Expansionsuche beendet.");
 				
 //	}catch(ExceptionZZZ ez){
 //		fail("An exception happend testing: " + ez.getDetailAllLast());
