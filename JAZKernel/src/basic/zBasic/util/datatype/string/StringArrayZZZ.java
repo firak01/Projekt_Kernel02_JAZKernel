@@ -469,6 +469,8 @@ output:
 	}		
 	
 	/**Alle Elemente des String Arrays werden um einen weiteren String erweitert.
+	 * Merke: Bei "BEFORE" gilt, dass ein String um die Elemente eines Arrays erweitert wird.
+	 *        
 	 * @param saString
 	 * @param sString
 	 * @param sFlagin, BEFORE oder BEHIND

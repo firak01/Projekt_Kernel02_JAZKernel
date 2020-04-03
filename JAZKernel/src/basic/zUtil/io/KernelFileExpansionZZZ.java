@@ -465,90 +465,32 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
         	private int iExpansionIteratedWatched=-1; //Der Index des gerade mit hasNext() betrachteten Keys im Iterator
         	private T objCachedFromHasNext=null;
         	
+            /* Besonderheit:
+             * Da es sich um Wete handelt, die in keiner Collection handelt, 
+             * wird der über hasNext() ermittelte Wert "gecached", so dass er in "next()" sofort zur Verfügung steht 
+             * und das Prozedere den Wert zu ermitteln nicht erneut gemacht werden muss.
+             *  
+             * (non-Javadoc)
+             * @see java.util.Iterator#hasNext()           
+             */
             @Override
             public boolean hasNext() {
             	boolean bReturn = false;
             	T objReturn = null;
             	main:{
-            		try {
-	//	            	VectorExtendedZZZ<Integer> vec = getVectorIndex();
-	//	            	if(vec==null)break main;
-	//	            	if(!vec.hasAnyElement())break main;
-	//	            	
-	//	            	
-	//	            	Integer intLast = (Integer) vec.lastElement();
-	//	            		            
-	//	            	iIndexWatched = iIndexWatched+1;//das nächste Element halt, ausgehend von -1
-	//	            	Integer intNext = new Integer(iIndexWatched);
-	//	            	bReturn = iIndexWatched <= intLast.intValue() && getHashMap().get(intNext) != null;	
-	            		
-            			//Hole den zu untersuchenden Wert Abfrage
-            			int iValue=-1;
-            			if(this.iExpansionIteratedWatched<=-1) {
-            				if(this.iExpansionIteratedCurrent<=-1) {;
-            				}else {
-            					iValue = this.iExpansionIteratedCurrent;
-            				}
-            			}else {
-            				iValue=this.iExpansionIteratedWatched;
-            			}
-            			
-	            		
-	            		if(iValue<=-1) {
-	            			T sExpansion = (T) searchExpansionUsedLowest();
-	            			int iCounter = 0;
-	            			if(!StringZZZ.isEmpty((String) sExpansion)) {
-	            				iCounter = StringZZZ.toInteger((String) sExpansion);                			                			
-	            			}
-	            			this.iExpansionIteratedWatched = iCounter;
-	            			objReturn = (T) sExpansion;                			
-	            		}else{
-	            			                			                		
-	            			boolean bFound = false;											
-	            			int iExpansionMax = StringZZZ.toInteger(getExpansionMax(iExpansionLength));
-	            			
-	            			//create new expansions and try their existance.
-	            			String sExpansionFoundLast = null;
-	            			String sExpansionFilling = getExpansionFilling();
-	            			
-	            			FileZZZ objFileBase = getFileBase();
-	            			if(objFileBase==null) break main;                					
-	            															
-	            			String sPath = objFileBase.getPathDirectory();
-	            			if(sPath.length() > 0){
-	            				sPath = sPath + "\\";
-	            			}
-	            			String sEnding = objFileBase.getNameEnd();
-	            			if(sEnding.length() > 0){
-	            				sEnding = "." + sEnding;
-	            			}
-	            			
-	            			int iCounter = iValue;
-	            			do{
-	            				iCounter++;	
-	            			
-	            				T sExpansion = (T) computeExpansion(sExpansionFilling, iCounter, iExpansionLength);
-	            				File f = new File(sPath + objFileBase.getNameOnly() + (String) sExpansion + sEnding);
-	            				if(f.exists() == true){
-	            					bFound = true;
-	            					this.iExpansionIteratedWatched=iCounter;
-	            					sExpansionFoundLast = (String) sExpansion;
-	            					break;
-	            				}
-	            						
-	            			}while(iCounter <= iExpansionMax && bFound == false);
-	            			objReturn = (T) sExpansionFoundLast;
-	            		}            		
-	            	} catch (ExceptionZZZ ez) {						
-						ez.printStackTrace();						
-					}
+            		objReturn = nextByContext_("hasNext");
+            		
 	            	this.objCachedFromHasNext = objReturn;
 	            	if(objReturn!=null) bReturn = true;	            	
             	}//end main:
             	return bReturn;
             }
 
-            /**
+            /**Besonderheit:
+             * Erst wird geprüft, ob über hasNext() ein Wert geholt wurde.
+             * Falls ja, wird dieser "gecachte Wert" verwendet, 
+             * falls nein, wird der Wert neu ermittelt. 
+             * 
              * @return Beginnend von dem niedrigsten "gefundenen" Wert bis hin zum höchsten gefundenen Wert in den Dateien.
              * @author Fritz Lindhauer, 01.04.2020, 08:48:57
              */
@@ -564,19 +506,12 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
                 		
                 		this.iExpansionIteratedWatched=-1;
                 		this.objCachedFromHasNext = null;
-                	} else {
-                		int iValue = this.iExpansionIteratedCurrent;
-                		
-                		
-                		//darin...this.iExpansionIteratedWatched = iCounter;
-                		//     ...this.iExpansionIteratedCurrent = iCounter;
-                		
-                		//TODO GOON: 
+                	} else {                		
                 		//Wie kommt man an die Variante, dass, kein "hasNext" gemacht wird....
                 		//Lösung: Gemeinsame private Methode aufrufen.
                 		//        Nur mit einer anderen Zählvariablen als Input, oder besser: Contextangabe, um die andere Zählvariable auszuwählen.
-                	}
-                	
+                		objReturn = nextByContext_("next");
+                	}                	
                 }//end main:
             	return objReturn;
             }
@@ -596,72 +531,87 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
             }
             
             //+++ Aufrufbar aus next()) und hasNext();
-            private T nextByContext(String sContextFlag) {
+            private T nextByContext_(String sContextFlagIn) {
             	T objReturn = null;
-
-//            	try {                		
-//            		if(this.iExpansionIteratedCurrent==-1) {
-//            			String sExpansion = searchExpansionUsedLowest();
-//            			int iCounter = 0;
-//            			if(!StringZZZ.isEmpty(sExpansion)) {
-//            				Integer intCounter = new Integer(sExpansion);
-//            				iCounter = intCounter.intValue();                			                				
-//            			}
-//            			this.iExpansionIteratedCurrent = iCounter;
-//            			objReturn = (T) sExpansion;                			
-//            		}else{
-//            			                			                		
-//            			boolean bFound = false;											
-//            			Integer intExpansionMax = new Integer(getExpansionMax(iExpansionLength));
-//            			int iExpansionMax = intExpansionMax.intValue();
-//            			
-//            			//create new expansions and try their existance.
-//            			String sExpansionFoundLast = new String("");
-//            			String sExpansionFilling = getExpansionFilling();
-//            			
-//            			FileZZZ objFileBase = getFileBase();
-//            			if(objFileBase==null) break main;                					
-//            															
-//            			String sPath = objFileBase.getPathDirectory();
-//            			if(sPath.length() > 0){
-//            				sPath = sPath + "\\";
-//            			}
-//            			String sEnding = objFileBase.getNameEnd();
-//            			if(sEnding.length() > 0){
-//            				sEnding = "." + sEnding;
-//            			}
-//            			
-//            			int iCounter = this.iExpansionIteratedCurrent;
-//            			do{
-//            				iCounter++;	
-//            			
-//            				String sExpansion = computeExpansion(sExpansionFilling, iCounter, iExpansionLength);
-//            				File f = new File(sPath + objFileBase.getNameOnly() + sExpansion + sEnding);
-//            				if(f.exists() == true){
-//            					bFound = true;
-//            					this.iExpansionIteratedCurrent=iCounter;
-//            					sExpansionFoundLast = sExpansion;
-//            					break;
-//            				}
-//            						
-//            			}while(iCounter <= iExpansionMax && bFound == false);
-//            			
-//            			//das wird ausserhalb der Schleife gemacht, performance
-//            			if(bFound==true){
-//            				setFlag("FILE_Expansion_Append", true);
-//            				objReturn = (T) sExpansionFoundLast; 
-//            			}else {
-//            								
-//            				//Keiner gefunden, also ist das ein rein rechnerischer Wert.
-//            				objReturn = (T) computeExpansion(sExpansionFilling,1, iExpansionLength);
-//            			}
-//            			
-//            			
-//            		}                		
-//				} catch (ExceptionZZZ ez) {						
-//					ez.printStackTrace();						
-//				}
-            
+            	main:{
+            	try {
+            		String sContextFlag;
+            		if(StringZZZ.isEmpty(sContextFlagIn)) {
+            			sContextFlag="";
+            		}else {
+            			sContextFlag=sContextFlagIn;
+            		}
+            		
+            		//Hole den zu untersuchenden Wert Abfrage
+            		//Merke: Unten in der Schleife gibt es ein icounter++. Diese Zeile ist alleinig für das "Vorankommen" des Zählers wichtig.
+            		int iValue=-1;
+            		if(sContextFlag.equalsIgnoreCase("hasNext")) {        			        			
+	        			if(this.iExpansionIteratedWatched<=-1) {
+	        				if(this.iExpansionIteratedCurrent<=-1) {;
+	        				}else {
+	        					iValue = this.iExpansionIteratedCurrent;
+	        				}
+	        			}else {
+	        				iValue=this.iExpansionIteratedWatched;
+	        			}
+            		}else {
+            			//z.B. "next"-Fall, wenn er ohne ein hasNext() durchgeführt wird.
+            			//Merke: Mit einem hasNext() würde auf das "gecachte Objekt" zurückgegriffen.
+            			iValue = this.iExpansionIteratedCurrent; 
+            		}
+        			
+            		
+            		if(iValue<=-1) {
+            			T sExpansion = (T) searchExpansionUsedLowest();
+            			int iCounter = 0;
+            			if(!StringZZZ.isEmpty((String) sExpansion)) {
+            				iCounter = StringZZZ.toInteger((String) sExpansion);                			                			
+            			}
+            			this.iExpansionIteratedWatched = iCounter;
+            			this.iExpansionIteratedCurrent = iCounter;
+            			objReturn = (T) sExpansion;                			
+            		}else{
+            			                			                		
+            			boolean bFound = false;											
+            			int iExpansionMax = StringZZZ.toInteger(getExpansionMax(iExpansionLength));
+            			
+            			//create new expansions and try their existence.
+            			String sExpansionFoundLast = null;
+            			String sExpansionFilling = getExpansionFilling();
+            			
+            			FileZZZ objFileBase = getFileBase();
+            			if(objFileBase==null) break main;                					
+            															
+            			String sPath = objFileBase.getPathDirectory();
+            			if(sPath.length() > 0){
+            				sPath = sPath + "\\";
+            			}
+            			String sEnding = objFileBase.getNameEnd();
+            			if(sEnding.length() > 0){
+            				sEnding = FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnding;
+            			}
+            			
+            			int iCounter = iValue;
+            			do{
+            				iCounter++;	//Merke: Die einzige Stelle, die den Zähler um 1 weiterbewegt.
+            			
+            				T sExpansion = (T) computeExpansion(sExpansionFilling, iCounter, iExpansionLength);
+            				File f = new File(sPath + objFileBase.getNameOnly() + (String) sExpansion + sEnding);
+            				if(f.exists() == true){
+            					bFound = true;
+            					this.iExpansionIteratedWatched = iCounter;
+            					this.iExpansionIteratedCurrent = iCounter; 
+            					sExpansionFoundLast = (String) sExpansion;
+            					break;
+            				}
+            						
+            			}while(iCounter <= iExpansionMax && bFound == false);
+            			objReturn = (T) sExpansionFoundLast;
+            		}            		
+            	} catch (ExceptionZZZ ez) {						
+					ez.printStackTrace();						
+				}
+            	}//end main:
             	return objReturn;
             }            
         };
