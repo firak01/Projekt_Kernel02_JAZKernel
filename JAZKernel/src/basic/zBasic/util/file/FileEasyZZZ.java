@@ -43,9 +43,13 @@ import basic.zKernel.file.ini.KernelExpressionIni_NullZZZ;
 public class FileEasyZZZ extends ObjectZZZ{
 	public static String sDIRECTORY_CURRENT = ".";
 	public static String sDIRECTORY_PARENT = "..";
+	public static String sDIRECTORY_SEPARATOR = File.separator; //z.B. Backslash in Windows
+
 	public static String sFILE_ENDING_SEPARATOR = ".";
 	public static String sFILE_ABSOLUT_REGEX="^[A-Za-z]:[\\\\/]"; //Merke: Um 1 Backslash auszukommentieren 4 verwenden zum ausmaskieren.
 	public static String sFILE_VALID_WINDOWS_REGEX="^(?>[a-z]:)?(?>\\|/)?([^\\/?%*:|\"<>\r\n]+(?>\\|/)?)+$";
+	
+	
 	
 	public static String sDIRECTORY_CONFIG_SOURCEFOLDER="src";//Dient zur Unterscheidung, ob die Applikation auf deinem Server oder lokal läuft. Der Ordner ist auf dem Server nicht vorhanden (Voraussetzung)!!!
 	public static String sDIRECTORY_CONFIG_TESTFOLDER="test";//FÜR DIE AUSFÜHRUNG VON TESTKLASSEN

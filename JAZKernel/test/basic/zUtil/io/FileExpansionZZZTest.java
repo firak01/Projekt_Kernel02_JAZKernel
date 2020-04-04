@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.DummyObjectZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -133,95 +134,221 @@ public class FileExpansionZZZTest extends TestCase {
 //	}
 	}
 	
-	public void testIterateExpansionAll(){
+	public void testIterateExpansionAll_WhileHasNext_Next1x(){	
+		
+				
+		//TODO GOON)
+				//B) Schleife mit hasNext() und 2x darin next()
+				//C) Schleife mit hasNext() imd 3x darin next()
+				//D) Ohne Schleife, nur 3x hintereinder next() aufrufen. Anschliessend eine Schleife mit 1x next()
 		try {
-		//######## Erstellen der Testdateien
-		String sFilePathUsed = null;		
+			objExpansionTest.setExpansionFilling('0');
+			objExpansionTest.setExpansionLength(3);
+			
+			String sFileNameOnly = FileEasyZZZ.getNameOnly(strFILE_NAME_DEFAULT);
+			String sFilePathUsed = computeFilePath_();
+			String sEnding = computeFileEnding_();
+			
+		//####################################################
+		//######## Generelles Entfernen ggfs. vorhandener Testdateien		
+		removeGeneratedTestFileAll_(sFilePathUsed, sFileNameOnly, sEnding);	
+		
+		//######## Der eigentliche Test
+		//######## A) Schleife mit hasNext() und 1x darin next(
+		//Die einzelnen Tests immmer mit verschiedenenen Varianten des Arrays ( Elemente: Lücken in der Folge und Anzahl) durchführen.
+		int iTestCase=-1;boolean bErg;
+		String[][] saString = {
+							  {"002","003","004","005","006","007","008","009","010","011","012","013","014","015","016"},
+				              {"001","002","003","004","005","006","007","008","009","010","011","012"},
+				              {"002","003","004","005","006","007","008","009","010","011","012"}
+		                      };
+		
+		System.out.println(("##################################"));
+		System.out.println("### TESTCASES hasnext() + next() 1x");
+		iTestCase++;
+		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
+		bErg = iterateExpansionAll_WhileHasNext_Next1x_();	
+		assertTrue(bErg);				
+		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);	
+
+		//++++++++++++++++++++++++
+		iTestCase++;
+		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
+		bErg = iterateExpansionAll_WhileHasNext_Next1x_();	
+		assertTrue(bErg);
+		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);	
+
+		//++++++++++++++++++++++++
+		iTestCase++;
+		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
+		bErg = iterateExpansionAll_WhileHasNext_Next1x_();	
+		assertTrue(bErg);
+		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);	
+		
+		//###########
+		System.out.println(("##################################"));
+		System.out.println("### TESTCASES hasnext() + next() 2x");
+		iTestCase=-1;
+		iTestCase++;
+		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
+		bErg = iterateExpansionAll_WhileHasNext_Next2x_();	
+		assertTrue(bErg);
+		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
+
+						
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	} 
+	}
+	
+	private String computeFilePath_() throws ExceptionZZZ {
+		String sReturn=null;
 		if(FileEasyZZZ.exists(strFILE_DIRECTORY_DEFAULT)){
-			sFilePathUsed = strFILE_DIRECTORY_DEFAULT;
+			sReturn = strFILE_DIRECTORY_DEFAULT;
 		}else{
 			//Eclipse Workspace
 			File f = new File("");
 		    String sPathEclipse = f.getAbsolutePath();
 		    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
 		    
-		    sFilePathUsed = sPathEclipse + File.separator + "test";		   
+		    sReturn = sPathEclipse + FileEasyZZZ.sDIRECTORY_SEPARATOR + "test";		   
 		}
-		
-		//Variante OHNE Basisdatei		
-		String sFilename = FileEasyZZZ.getNameOnly(strFILE_NAME_DEFAULT);
-		String sEnding = FileEasyZZZ.getNameEnd(strFILE_NAME_DEFAULT);
-		if(!StringZZZ.isEmpty(sEnding)) {
-			sEnding = FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnding;
-		}
-		
-		//Die einzelnen Tests immmer mit verschiedenenen Varianten des Arrays ( Elemente: Lücken in der Folge und Anzahl) durchführen.
-		//Zudem mit einer beliebig häufigen Nutzung von next(); mit oder ohne hasNext();
-		//String[] saString = {"001","002","003","004","005","006"};
-		//String[] saString = {"002","003","004","005","006","007"};
-		String[] saString = {"002","004","005","006","007","008"};
-		
-		
-		
-		
-		
-		String[] saFileName = StringArrayZZZ.plusString(saString, sFilename, "BEFORE");
+		return sReturn;
+	}
+	
+	private String computeFileEnding_() throws ExceptionZZZ {
+				String sReturn = null;						
+				String sEnding = FileEasyZZZ.getNameEnd(strFILE_NAME_DEFAULT);
+				if(!StringZZZ.isEmpty(sEnding)) {
+					sReturn = FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnding;
+				}else {
+					sReturn = sEnding;
+				}
+				return sReturn;				
+	}
+	
+	private void removeGeneratedTestFileAll_(String sFilePathUsed, String sFileNameOnly, String sEnding) throws ExceptionZZZ {
+		//ZUM "VOR DEM TEST ALLE DATEIEN LÖSCHEN"!!!!
+		//Alle verwendeten Dateiexpansions
+		String[] saStringAll = {"","001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016"};
+		removeGeneratedTestFileExpansionWanted_(saStringAll, sFilePathUsed, sFileNameOnly, sEnding );
+	}
+	
+	private void removeGeneratedTestFileExpansionWanted_(String[] saExpansionWanted, String sFilePathUsed, String sFileNameOnly, String sEnding) throws ExceptionZZZ {
+				
+		//Alle verwendeten Dateiexpansions
+		String[] saStringAll = {"","001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016"};
+		String[] saFileNameAll = StringArrayZZZ.plusString(saStringAll, sFileNameOnly, "BEFORE");
+		String[] saFileNameAllWithEnding = StringArrayZZZ.plusString(saFileNameAll, sEnding, "BEHIND");		
+		for(int iCount=0;iCount<=saFileNameAllWithEnding.length-1;iCount++) {
+			String sFilePathName = sFilePathUsed + FileEasyZZZ.sDIRECTORY_SEPARATOR + saFileNameAllWithEnding[iCount];
+			FileEasyZZZ.removeFile(sFilePathName);			
+		}		
+}
+	
+	private void generateTestFileExpansionWanted_(String[] saExpansionWanted, String sFilePathUsed, String sFileNameOnly, String sEnding) throws ExceptionZZZ{
+		String[] saFileName = StringArrayZZZ.plusString(saExpansionWanted, sFileNameOnly, "BEFORE");
 		String[] saFileNameWithEnding = StringArrayZZZ.plusString(saFileName, sEnding, "BEHIND");
 		
+		//Anschliessend die speziellen Testdateien neu erzeugen.
 		for(int iCount=0;iCount<=saFileNameWithEnding.length-1;iCount++) {
 			String sFileNameWithEnding = saFileNameWithEnding[iCount];
 			String sFilePathTotal =  FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameWithEnding );			
-			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
-			objStreamFile.println("This is a temporarily test file: " + iCount);      //Now the File is created
-			objStreamFile.close();
-		}
-		
-		//TODO GOON: NACH DEM TEST ALLE DATEIEN LÖSCHEN!!!!
-		
-		
-		
-		
-		//######## Der eigentliche Test
-		//TODO GOON
-		//A) Schleife mit hasNext() und 1x darin next()
-		//B) Schleife mit hasNext() und 2x darin next()
-		//C) Schleife mit hasNext() imd 3x darin next()
-		//D) Ohne Schleife, nur 3x hintereinder next() aufrufen.
-		int iCounter=0;
-		objExpansionTest.setExpansionFilling('0');
-		objExpansionTest.setExpansionLength(3);
-		Iterator<String> itExpansion = objExpansionTest.iterator();		
-		while(itExpansion.hasNext()) {
-			iCounter++;			
-			String sExpansion = (String) itExpansion.next();			
-			System.out.print("Expansion: '" + sExpansion + "', ");
-			if(iCounter%10==0)System.out.println();
-			
-			//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
-			iCounter++;
-			sExpansion = (String) itExpansion.next();			
-			System.out.print("Expansion: '" + sExpansion + "', ");
-			if(iCounter%10==0)System.out.println();
-			
-			//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
-			iCounter++;
-			sExpansion = (String) itExpansion.next();			
-			System.out.print("Expansion: '" + sExpansion + "', ");
-			if(iCounter%10==0)System.out.println();
-							
-		}
-		System.out.println("Expansionsuche beendet.");
+			Stream objStreamFile;
+			try {
+				objStreamFile = new Stream(sFilePathTotal, 1);
+				objStreamFile.println("This is a temporarily test file: " + iCount);      //Now the File is created
+				objStreamFile.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 				
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+				ExceptionZZZ ez = new ExceptionZZZ(e.getMessage());
+				throw ez;
+			}  		
+		}
 	}
 	
+	private boolean iterateExpansionAll_WhileHasNext_Next1x_() {
+		boolean bReturn = false;
+		main:{
+			String sScript = ReflectCodeZZZ.getMethodCurrentName();
+			System.out.println("++++++++++++++++++++++++");
+			System.out.println("+++ Starting: " + sScript);
+			
+			int iCounter=0;
+			Iterator<String> itExpansion = objExpansionTest.iterator();		
+			while(itExpansion.hasNext()) {
+				iCounter++;			
+				String sExpansion = (String) itExpansion.next();			
+				System.out.print("Expansion: '" + sExpansion + "', ");
+				if(iCounter%10==0)System.out.println();										
+			}
+			System.out.println("Expansionsuche beendet.");
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	private boolean iterateExpansionAll_WhileHasNext_Next2x_() {
+		boolean bReturn = false;
+		main:{
+			String sScript = ReflectCodeZZZ.getMethodCurrentName();
+			System.out.println("++++++++++++++++++++++++");
+			System.out.println("+++ Starting: " + sScript);
+			
+			int iCounter=0;
+			Iterator<String> itExpansion = objExpansionTest.iterator();		
+			while(itExpansion.hasNext()) {
+				iCounter++;			
+				String sExpansion = (String) itExpansion.next();			
+				System.out.print("Expansion: '" + sExpansion + "', ");
+				if(iCounter%10==0)System.out.println();
+				
+				//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
+				iCounter++;
+				sExpansion = (String) itExpansion.next();			
+				System.out.print("Expansion: '" + sExpansion + "', ");
+				if(iCounter%10==0)System.out.println();											
+			}
+			System.out.println("Expansionsuche beendet.");
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	private boolean iterateExpansionAll_WhileHasNext_Next3x_() {
+		boolean bReturn = false;
+		main:{
+			String sScript = ReflectCodeZZZ.getMethodCurrentName();
+			System.out.println("++++++++++++++++++++++++");
+			System.out.println("+++ Starting: " + sScript);
+			
+			int iCounter=0;
+			Iterator<String> itExpansion = objExpansionTest.iterator();		
+			while(itExpansion.hasNext()) {
+				iCounter++;			
+				String sExpansion = (String) itExpansion.next();			
+				System.out.print("Expansion: '" + sExpansion + "', ");
+				if(iCounter%10==0)System.out.println();
+				
+				//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
+				iCounter++;
+				sExpansion = (String) itExpansion.next();			
+				System.out.print("Expansion: '" + sExpansion + "', ");
+				if(iCounter%10==0)System.out.println();
+				
+				//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
+				iCounter++;
+				sExpansion = (String) itExpansion.next();			
+				System.out.print("Expansion: '" + sExpansion + "', ");
+				if(iCounter%10==0)System.out.println();							
+			}
+			System.out.println("Expansionsuche beendet.");
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
 	
 }
