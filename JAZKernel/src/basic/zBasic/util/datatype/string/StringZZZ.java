@@ -2219,7 +2219,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	
-	/** Merke: Integer.paseInt(...) wirft beispielsweise eine java.lang.NumberFormatException, wenn man einen float-String, (z.B. "2.0") übergibt.
+	/** Merke: Integer.parseInt(...) wirft beispielsweise eine java.lang.NumberFormatException, wenn man einen float-String, (z.B. "2.0") übergibt.
 	 *              Das wird hier vermieden.
 	 * @param sValue
 	 */

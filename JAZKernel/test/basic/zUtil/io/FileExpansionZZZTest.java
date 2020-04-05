@@ -135,12 +135,6 @@ public class FileExpansionZZZTest extends TestCase {
 	}
 	
 	public void testIterateExpansionAll_WhileHasNext_Next1x(){	
-		
-				
-		//TODO GOON)
-				//B) Schleife mit hasNext() und 2x darin next()
-				//C) Schleife mit hasNext() imd 3x darin next()
-				//D) Ohne Schleife, nur 3x hintereinder next() aufrufen. Anschliessend eine Schleife mit 1x next()
 		try {
 			objExpansionTest.setExpansionFilling('0');
 			objExpansionTest.setExpansionLength(3);
@@ -153,48 +147,69 @@ public class FileExpansionZZZTest extends TestCase {
 		//######## Generelles Entfernen ggfs. vorhandener Testdateien		
 		removeGeneratedTestFileAll_(sFilePathUsed, sFileNameOnly, sEnding);	
 		
-		//######## Der eigentliche Test
-		//######## A) Schleife mit hasNext() und 1x darin next(
+		//######## Der eigentliche Test		
 		//Die einzelnen Tests immmer mit verschiedenenen Varianten des Arrays ( Elemente: Lücken in der Folge und Anzahl) durchführen.
-		int iTestCase=-1;boolean bErg;
+		int iErg;
 		String[][] saString = {
-							  {"002","003","004","005","006","007","008","009","010","011","012","013","014","015","016"},
-				              {"001","002","003","004","005","006","007","008","009","010","011","012"},
-				              {"002","003","004","005","006","007","008","009","010","011","012"}
+								{"","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016"},
+								{"002","003","004","005","006","007","008","009","010","011","012","013","014","015","016"},
+								{"001","002","003","004","005","006","007","008","009","010","011","012"},
+								{"002","003","004","005","006","007","008","009","010","011","012"},
+								{"002","003","005","006","008","009","011","012","013","014","015","016"}
 		                      };
+		int[] iaSummeQuer = StringArrayZZZ.toInteger(saString);
 		
-		System.out.println(("##################################"));
-		System.out.println("### TESTCASES hasnext() + next() 1x");
-		iTestCase++;
-		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
-		bErg = iterateExpansionAll_WhileHasNext_Next1x_();	
-		assertTrue(bErg);				
-		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);	
-
-		//++++++++++++++++++++++++
-		iTestCase++;
-		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
-		bErg = iterateExpansionAll_WhileHasNext_Next1x_();	
-		assertTrue(bErg);
-		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);	
-
-		//++++++++++++++++++++++++
-		iTestCase++;
-		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
-		bErg = iterateExpansionAll_WhileHasNext_Next1x_();	
-		assertTrue(bErg);
-		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);	
 		
-		//###########
+		int iTestCaseIndexMax = saString.length-1;
+		
+		//####################################################
+		//######## A) Schleife mit hasNext() und 1x darin next(
+		System.out.println(("##################################"));		
+		System.out.println("### TESTCASES hasnext() + next() 1x");		
+		for(int iTestCaseIndex = 0 ; iTestCaseIndex <= iTestCaseIndexMax;iTestCaseIndex++) {
+			generateTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);
+			iErg = iterateExpansionAll_WhileHasNext_Next1x_();
+			int iSummeQuer = iaSummeQuer[iTestCaseIndex];
+			assertEquals(iSummeQuer,iErg);				
+			removeGeneratedTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);	
+		}
+		
+	
+		//####################################################
+		//##### B) Schleife mit hasNext() und 2x darin next()
 		System.out.println(("##################################"));
-		System.out.println("### TESTCASES hasnext() + next() 2x");
-		iTestCase=-1;
-		iTestCase++;
-		generateTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
-		bErg = iterateExpansionAll_WhileHasNext_Next2x_();	
-		assertTrue(bErg);
-		removeGeneratedTestFileExpansionWanted_(saString[iTestCase], sFilePathUsed, sFileNameOnly, sEnding);
-
+		System.out.println("### TESTCASES hasnext() + next() 2x");	
+		for(int iTestCaseIndex = 0 ; iTestCaseIndex <= iTestCaseIndexMax;iTestCaseIndex++) {
+			generateTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);
+			iErg = iterateExpansionAll_WhileHasNext_Next2x_();	
+			int iSummeQuer = iaSummeQuer[iTestCaseIndex];
+			assertEquals(iSummeQuer,iErg);			
+			removeGeneratedTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);	
+		}
+		
+		//####################################################
+		//##### C) Schleife mit hasNext() und 3x darin next()
+		System.out.println(("##################################"));
+		System.out.println("### TESTCASES hasnext() + next() 3x");	
+		for(int iTestCaseIndex = 0 ; iTestCaseIndex <= iTestCaseIndexMax;iTestCaseIndex++) {
+			generateTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);
+			iErg = iterateExpansionAll_WhileHasNext_Next3x_();	
+			int iSummeQuer = iaSummeQuer[iTestCaseIndex];
+			assertEquals(iSummeQuer,iErg);				
+			removeGeneratedTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);	
+		}
+		
+		//####################################################
+		//##### D) Zuerst ohne Schleife 3x hintereinder next() aufrufen. Anschliessend eine Schleife mit 1x next()
+		System.out.println(("##################################"));
+		System.out.println("### TESTCASES next() 3x + hasnext()");	
+		for(int iTestCaseIndex = 0 ; iTestCaseIndex <= iTestCaseIndexMax;iTestCaseIndex++) {
+			generateTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);
+			iErg = iterateExpansionAll_WhileNext3x_HasNext_();	
+			int iSummeQuer = iaSummeQuer[iTestCaseIndex];
+			assertEquals(iSummeQuer,iErg);				
+			removeGeneratedTestFileExpansionWanted_(saString[iTestCaseIndex], sFilePathUsed, sFileNameOnly, sEnding);	
+		}
 						
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -269,8 +284,8 @@ public class FileExpansionZZZTest extends TestCase {
 		}
 	}
 	
-	private boolean iterateExpansionAll_WhileHasNext_Next1x_() {
-		boolean bReturn = false;
+	private int iterateExpansionAll_WhileHasNext_Next1x_() {
+		int iReturn = 0;
 		main:{
 			String sScript = ReflectCodeZZZ.getMethodCurrentName();
 			System.out.println("++++++++++++++++++++++++");
@@ -282,17 +297,17 @@ public class FileExpansionZZZTest extends TestCase {
 				iCounter++;			
 				String sExpansion = (String) itExpansion.next();			
 				System.out.print("Expansion: '" + sExpansion + "', ");
-				if(iCounter%10==0)System.out.println();										
+				if(iCounter%10==0)System.out.println();				
+				iReturn = iReturn + StringZZZ.toInteger(sExpansion);
 			}
-			System.out.println("Expansionsuche beendet.");
-			bReturn = true;
+			System.out.println("Expansionsuche beendet.");		
 		}//end main:
-		return bReturn;
+		return iReturn;
 	}
 	
 	
-	private boolean iterateExpansionAll_WhileHasNext_Next2x_() {
-		boolean bReturn = false;
+	private int iterateExpansionAll_WhileHasNext_Next2x_() {
+		int iReturn = 0;
 		main:{
 			String sScript = ReflectCodeZZZ.getMethodCurrentName();
 			System.out.println("++++++++++++++++++++++++");
@@ -305,21 +320,22 @@ public class FileExpansionZZZTest extends TestCase {
 				String sExpansion = (String) itExpansion.next();			
 				System.out.print("Expansion: '" + sExpansion + "', ");
 				if(iCounter%10==0)System.out.println();
+				iReturn = iReturn + StringZZZ.toInteger(sExpansion);
 				
 				//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
 				iCounter++;
 				sExpansion = (String) itExpansion.next();			
 				System.out.print("Expansion: '" + sExpansion + "', ");
 				if(iCounter%10==0)System.out.println();											
+				iReturn = iReturn + StringZZZ.toInteger(sExpansion);
 			}
-			System.out.println("Expansionsuche beendet.");
-			bReturn = true;
+			System.out.println("Expansionsuche beendet.");		
 		}//end main:
-		return bReturn;
+		return iReturn;
 	}
 	
-	private boolean iterateExpansionAll_WhileHasNext_Next3x_() {
-		boolean bReturn = false;
+	private int iterateExpansionAll_WhileHasNext_Next3x_() {
+		int iReturn = 0;
 		main:{
 			String sScript = ReflectCodeZZZ.getMethodCurrentName();
 			System.out.println("++++++++++++++++++++++++");
@@ -332,23 +348,69 @@ public class FileExpansionZZZTest extends TestCase {
 				String sExpansion = (String) itExpansion.next();			
 				System.out.print("Expansion: '" + sExpansion + "', ");
 				if(iCounter%10==0)System.out.println();
+				iReturn = iReturn + StringZZZ.toInteger(sExpansion);
 				
 				//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
 				iCounter++;
 				sExpansion = (String) itExpansion.next();			
 				System.out.print("Expansion: '" + sExpansion + "', ");
 				if(iCounter%10==0)System.out.println();
+				iReturn = iReturn + StringZZZ.toInteger(sExpansion);
 				
 				//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
 				iCounter++;
 				sExpansion = (String) itExpansion.next();			
 				System.out.print("Expansion: '" + sExpansion + "', ");
 				if(iCounter%10==0)System.out.println();							
+				iReturn = iReturn + StringZZZ.toInteger(sExpansion);
 			}
-			System.out.println("Expansionsuche beendet.");
-			bReturn = true;
+			System.out.println("Expansionsuche beendet.");		
 		}//end main:
-		return bReturn;
+		return iReturn;
+	}
+	
+	private int iterateExpansionAll_WhileNext3x_HasNext_() {
+		int iReturn = 0;
+		main:{
+			String sScript = ReflectCodeZZZ.getMethodCurrentName();
+			System.out.println("++++++++++++++++++++++++");
+			System.out.println("+++ Starting: " + sScript);
+			
+			
+			Iterator<String> itExpansion = objExpansionTest.iterator();	
+			int iCounter=0;
+			iCounter++;
+			
+			//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
+			String sExpansion = (String) itExpansion.next();			
+			System.out.print("Expansion: '" + sExpansion + "', ");
+			if(iCounter%10==0)System.out.println();
+			iReturn = iReturn + StringZZZ.toInteger(sExpansion);
+			
+			//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
+			iCounter++;
+			sExpansion = (String) itExpansion.next();			
+			System.out.print("Expansion: '" + sExpansion + "', ");
+			if(iCounter%10==0)System.out.println();	
+			iReturn = iReturn + StringZZZ.toInteger(sExpansion);
+			
+			//Test: wiederholt next() aufrufen muss klappen. Dann wird auf das durch hasNext() gecachte Objekt nicht zugegriffen.
+			iCounter++;
+			sExpansion = (String) itExpansion.next();			
+			System.out.print("Expansion: '" + sExpansion + "', ");
+			if(iCounter%10==0)System.out.println();	
+			iReturn = iReturn + StringZZZ.toInteger(sExpansion);
+						
+			while(itExpansion.hasNext()) {
+				iCounter++;			
+				sExpansion = (String) itExpansion.next();			
+				System.out.print("Expansion: '" + sExpansion + "', ");
+				if(iCounter%10==0)System.out.println();		
+				iReturn = iReturn + StringZZZ.toInteger(sExpansion);
+			}
+			System.out.println("Expansionsuche beendet.");		
+		}//end main:
+		return iReturn;
 	}
 	
 }

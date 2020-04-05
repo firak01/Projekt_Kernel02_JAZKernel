@@ -685,6 +685,44 @@ output:
 		return listaString;
 	}
 	
+	/** Merke: Integer.parseInt(...) wirft beispielsweise eine java.lang.NumberFormatException, wenn man einen float-String, (z.B. "2.0") übergibt.
+	 *              Das wird hier vermieden.
+	 * @param sValue
+	 */
+	public static int[] toInteger(String[][] samValue){
+		int iaReturn[];
+		main:{
+			if(samValue==null) {
+				iaReturn=null;
+				break main;
+			}
+			iaReturn = new int[samValue.length];
+			
+			int iIndexMax = samValue.length-1;
+			for(int iIndex = 0; iIndex <= iIndexMax; iIndex++) {
+				String[] saValue = samValue[iIndex];
+				int iValue = StringArrayZZZ.toInteger(saValue);
+				iaReturn[iIndex]=iValue;
+			}			
+		}//end main:
+		return iaReturn;
+	}
+	
+	public static int toInteger(String[] saValue) {
+		int iReturn=0;
+		main:{
+			if(saValue==null) break main;
+						
+			int iIndexMax = saValue.length-1;
+			for(int iIndex = 0; iIndex <= iIndexMax; iIndex++) {
+				String sValue = saValue[iIndex];
+				int iValue = StringZZZ.toInteger(sValue);
+				iReturn=iReturn + iValue;
+			}			
+		}//end main:
+		return iReturn;
+	}
+	
 	public static String[] unique(String[] saString1) throws ExceptionZZZ{
 		String[] objReturn = null;
 		main:{
@@ -700,6 +738,8 @@ output:
 		this.saIntern = StringArrayZZZ.unique(sa);
 		return this.saIntern;
 	}
+	
+	
 	
 	//#### GETTER / SETTER
 	public String[] getArray(){
