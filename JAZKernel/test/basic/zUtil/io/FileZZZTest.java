@@ -140,17 +140,18 @@ try{
 		
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), true);
 		assertEquals("001", objFileTest.searchExpansionCurrent()); //Da es die Datei nicht gibt, bleibt es beim Wert
-		assertEquals("002", objFileTest.searchExpansionFreeNext()); //Da es die Datei nicht gibt, bleibt es beim Wert
+		assertEquals("002", objFileTest.searchExpansionFreeNext());//Da es die Datei laut Flag gibt, kommt ein Wert drauf.
+		assertEquals("002", objFileTest.searchExpansionCurrent());//Da es die Datei laut Flag gibt, kommt ein Wert drauf.
 		
 		
 		//4stelling: Merke: Das dauer wg. der Suche der Dateinamen von 9999 bis 0000 lange....
 		objFileTest.setExpansionLength(4);
+		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), false);
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), false);
 		assertEquals("",objFileTest.searchExpansionCurrent());
 		
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_EXPANSION_APPEND.name(), true);
-		assertEquals("0001",objFileTest.searchExpansionCurrent());
-		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), false);
+		assertEquals("0001",objFileTest.searchExpansionCurrent());		
 		assertEquals("0001",objFileTest.searchExpansionFreeNext()); //Nur wenn es die Datei nicht gibt, bleibt es beim Wert
 		
 		objFileTest.getFileExpansionObject().setFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name(), true);

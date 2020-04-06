@@ -36,7 +36,13 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	
 	public ObjectZZZ() {	
-		this.setFlag("init", true);
+		//Darf so nicht definiert werden, da dieser Konstruktor implizit immer aufgerufen wird. 
+		//wenn dieser Defaultkonstruktor nicht explizit definiert ist in der Kindklasse 
+		//this.setFlag("init", true);
+		//
+		//Lösung dies trotzdem zu setzten:
+		//rufe im Default Konstuktor der Kindklasse auf:
+		//super("init");		
 	}
 	public ObjectZZZ(String sFlag) {
 		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);

@@ -27,15 +27,15 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 	}
 	
 	public KernelFileExpansionZZZ() {
-		super();
+		super("init");
 	}
 	public KernelFileExpansionZZZ(char cExpansionFilling, int iExpansionLength) {		
-		super("");
+		super();
 		this.setExpansionLength(iExpansionLength);
 		this.setExpansionFilling(cExpansionFilling);
 	}	
 	public KernelFileExpansionZZZ(FileZZZ objFileBase) {		
-		super("");//Damit kein init Flag gesetzt wird
+		super();
 		this.setFileBase(objFileBase);
 	}
 	
@@ -164,9 +164,16 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 				this.setFlag("FILE_Expansion_Append", true);
 				sReturn = sExpansionFoundLast; 
 			}else {
-								
-				//Keiner gefunden, also ist das ein rein rechnerischer Wert.
-				sReturn = computeExpansion(this.getExpansionFilling(),1, iExpansionLength);
+				//Keiner gefunden, also ist das ein rein rechnerischer Wert, der von aussen ggfs. gesteuert werden kann um mit 1 anzufangen.
+				if(this.getFlag("FILE_Expansion_Append") && !this.getFlag("File_Current_Found")){	
+					this.setExpansionValueCurrent(1);
+					sReturn = computeExpansion(this.getExpansionFilling(),this.getExpansionValueCurrent(), iExpansionLength);
+				}else if(this.getFlag("FILE_Expansion_Append") && this.getFlag("File_Current_Found")){
+					sReturn = computeExpansion(this.getExpansionFilling(),this.getExpansionValueCurrent(), iExpansionLength);
+				}else {				
+					this.setExpansionValueCurrent(0);
+					sReturn = "";
+				}
 			}
 			
 		}//end main:
@@ -310,18 +317,25 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 		main:{									
 			String sExpansionCur = searchExpansionCurrent(iExpansionLength);//Merke: Das dauert lange bei langen Dateiexpansionen, weil rückwärts alles gesucht wird.
 			//System.out.println("Gefundene letzte Datei-Expansion: '" + sExpansionCur + "'");
-			if(sExpansionCur.length() > 0 && this.getFlag("FILE_Expansion_Append")){
+			if(sExpansionCur.length() > 0 && this.getFlag("FILE_Expansion_Append") && this.getFlag("FILE_CURRENT_FOUND")){
 				
 				//Zahlenwerte von hinten einlesen, finden, .... . Füllzeichen, die keine Zahl sind werden ignoriert
 				Integer intTemp = IntegerZZZ.parseAbsolutFromRight(sExpansionCur);
 								
 				//Integer intTemp = new Integer(sExpansionCur);				
-				sReturn = computeExpansion(this.getExpansionFilling(),intTemp.intValue() + 1, iExpansionLength);				
+				sReturn = computeExpansion(this.getExpansionFilling(),intTemp.intValue() + 1, iExpansionLength);
+				
+				//HOCHZÄHLEN:
+				this.setExpansionValueCurrent(intTemp.intValue() + 1);
 			}else{
-				if(this.getFlag("FILE_CURRENT_FOUND")) {
-					sReturn =  computeExpansion(this.getExpansionFilling(), 1, iExpansionLength);
-				}else {
-					sReturn = "";//Das ist der Fall, wenn die Ausgangsdatei (also die Datei ohne Expansion) noch nicht vorhanden ist.				
+				if(this.getFlag("FILE_Expansion_Append") && !this.getFlag("FILE_CURRENT_FOUND")) {
+					//Das ist der Fall, wenn die Ausgangsdatei (also die Datei ohne Expansion) noch nicht vorhanden ist.
+					//aber von aussen "übersteuert" wird, so dass unbeding eine 1 angehängt werden soll.
+					sReturn = sExpansionCur; //computeExpansion(this.getExpansionFilling(), 1, iExpansionLength);
+				}else {			
+					//Das ist der Fall, wenn die Ausgangsdatei (also die Datei ohne Expansion) noch nicht vorhanden ist.
+					//und nicht von aussen "übersteuert" wird.
+					sReturn = "";				
 				}
 			}
 		}//end main:		
