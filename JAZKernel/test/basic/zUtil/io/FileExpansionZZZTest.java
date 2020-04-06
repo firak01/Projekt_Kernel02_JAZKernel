@@ -134,7 +134,7 @@ public class FileExpansionZZZTest extends TestCase {
 //	}
 	}
 	
-	public void testIterateExpansionAll_WhileHasNext_Next1x(){	
+	public void testIterateExpansionAll_While_HasNext_Next(){	
 		try {
 			objExpansionTest.setExpansionFilling('0');
 			objExpansionTest.setExpansionLength(3);
