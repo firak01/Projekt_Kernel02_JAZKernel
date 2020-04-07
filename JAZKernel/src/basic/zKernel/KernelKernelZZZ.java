@@ -2674,6 +2674,66 @@ MeinTestParameter=blablaErgebnis
 		}
 	}
 	
+	/**Returns an array-object of a configured ini value. 
+	 * Because it is used very often, this comfortabel method is available.
+	 * Remark: If the Separator is not provided a default one will be used.
+	 *  
+	 * @param sModule
+	 * @param sProperty
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 07.04.2020, 08:06:58
+	 */
+	public String[] getParameterArrayByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			String sFileName = this.getParameterByModuleAlias(sModule, sProperty).getValue();
+			
+			//TODO GOON: Definiere einen Default Separator für MEhrfachwerte
+			
+			if(!StringZZZ.isEmpty(sFileName)){
+				
+				//20190220: Da die Datei im Classpath vermutet wird, ist der absolute Pfad ein anderer. Diesen suchen.
+				fileReturn = FileEasyZZZ.searchFile(sFileName);
+								
+			}else{
+				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
+				throw ez;
+			}
+		}
+		return saReturn;
+	}
+	
+	/**Returns an array-object on a configured value. 
+	 * Because it is used very often, this comfortabel method is available.
+	 * Remark: If the Separator is not provided a default one will be used.
+	 *  
+	 * @param sModule
+	 * @param sSectionOrProgram
+	 * @param sProperty
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 07.04.2020, 08:10:43
+	 */
+	public String[] getParameterArrayByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue(); 
+			if(!StringZZZ.isEmpty(sFileName)){
+				
+				//TODO GOON: Definiere einen Default Separator für MEhrfachwerte
+				
+				//20190220: Da die Datei im Classpath vermutet wird, ist der absolute Pfad ein anderer. Diesen suchen.
+				fileReturn = FileEasyZZZ.searchFile(sFileName);
+							
+			}else{
+				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
+				throw ez;
+			}
+		}
+		return saReturn;
+	}
+	
 	
 	/** Return a file-object on a configured file name. 
 	 * Because it is used very often, this comfortabel method is available.
