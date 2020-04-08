@@ -73,6 +73,7 @@ public class IniFile extends Object
 	public static final String sINI_SUBJECT_START = "[";
 	public static final String sINI_SUBJECT_END = "]";
 	public static final String sINI_PROPERTY_SEPERATOR="=";
+	public static final String sINI_MULTIVALUE_SEPARATOR="|";
 	
 
 	/*
@@ -624,6 +625,36 @@ protected boolean addSection(String sSection){
 	   }//end main:
       return sReturn;
    }
+   
+   /** Lies eine Zeile aus und gib sie als Array zurück. Dabei wird ein Separator String angegeben oder ein Defaultwert genommen.
+ * @param subject
+ * @param variable
+ * @return
+ * @author Fritz Lindhauer, 08.04.2020, 08:28:33
+ */
+public String[] getValueAsArray(String subject, String variable) {
+	 String[] saReturn = null;
+	   main:{
+		   saReturn = this.getValueAsArray(subject, variable, null);
+	   }
+	   return saReturn;
+ }
+
+public String[] getValueAsArray(String subject, String variable, String sSeparatorIn) {
+	   String[] saReturn = null;
+	   main:{
+		   String sSeparator;
+		   if(StringZZZ.isEmpty(sSeparatorIn)) {
+			   sSeparator = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+		   }else {
+			   sSeparator = sSeparatorIn;
+		   }
+		   
+		   String sValue = this.getValue(subject, variable);
+		   saReturn = StringZZZ.explode(sValue, sSeparator);
+	   }
+	   return saReturn;
+}
 
 
    /**

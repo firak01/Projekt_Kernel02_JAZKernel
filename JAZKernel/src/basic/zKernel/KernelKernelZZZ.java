@@ -2684,12 +2684,12 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 07.04.2020, 08:06:58
 	 */
-	public String[] getParameterArrayByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
+	public String[] getParameterArrayStringByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			String sFileName = this.getParameterByModuleAlias(sModule, sProperty).getValue();
 			
-			//TODO GOON: Definiere einen Default Separator für MEhrfachwerte
+			//TODO GOON: Definiere einen Default Separator für Mehrfachwerte
 			
 			if(!StringZZZ.isEmpty(sFileName)){
 				
@@ -2715,10 +2715,11 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 07.04.2020, 08:10:43
 	 */
-	public String[] getParameterArrayByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
+	public String[] getParameterArrayStringByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue(); 
+			//String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue();
+			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterAsArrayByProgramAlias(sModule, sSectionOrProgram, sPoperty);
 			if(!StringZZZ.isEmpty(sFileName)){
 				
 				//TODO GOON: Definiere einen Default Separator für MEhrfachwerte
