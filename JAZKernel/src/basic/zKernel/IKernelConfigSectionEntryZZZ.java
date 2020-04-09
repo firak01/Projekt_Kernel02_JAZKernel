@@ -15,7 +15,7 @@ import basic.zKernel.cache.ICachableObjectZZZ;
  * @author Fritz Lindhauer, 17.07.2019, 09:27:00
  * 
  */
-public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ{
+public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Cloneable{
 	public String getSection();
 	public void setSection(String sSection);
 	
@@ -42,5 +42,8 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ{
 	
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);
+	
+	//In clonable protected
+	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException;
 	
 }

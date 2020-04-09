@@ -2547,6 +2547,94 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	
+	//############################################################################
+	public IKernelConfigSectionEntryZZZ[] getParameterByProgramAliasAsArray(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ[] objaReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
+		String sDebug = "";
+		main:{
+			check:{
+				if(StringZZZ.isEmpty(sModule)){
+					String stemp = "'String Module'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+				if(StringZZZ.isEmpty(sProgramOrSection)){
+					String stemp = "'String ProgramOrSection'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);					
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+				if(StringZZZ.isEmpty(sProperty)){
+					String stemp = "'String Property'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+			}//END check:
+				  
+			objaReturn = this.KernelGetParameterByProgramAliasAsArray_(null, sModule, sProgramOrSection, sProperty);
+		}//END main:
+		return objaReturn;
+	}
+	
+	
+	private IKernelConfigSectionEntryZZZ[] KernelGetParameterByProgramAliasAsArray_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ[] objaReturn = null;
+		ArrayList<IKernelConfigSectionEntryZZZ>listaReturn= new ArrayList<IKernelConfigSectionEntryZZZ>();				
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		String sDebug;
+		
+		main:{				
+		//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
+		//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
+		//Aber: Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
+			//  Darum findet hier nicht das Nachsehen im Cache statt. 
+					
+		//############################
+		hmDebug.put("+++ ArrayMethod calling StringMethod for search. Input: " + sMainSection + "," + sProgramOrSection ,sProperty);
+		
+		IKernelConfigSectionEntryZZZ objReturn = null;
+		objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty);
+		
+		sDebug = hmDebug.debugString(":"," | ");
+		if(objReturn.hasAnyValue()) {										
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ ArrayMethod calling StringMethod for search. Zerlege gefundenen Wert nun in Array" + sDebug);			
+			try {
+				objaReturn = KernelConfigSectionEntryZZZ.explode(objReturn, IniFile.sINI_MULTIVALUE_SEPARATOR);
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+				
+				//################
+				//DEBUG: Entsprechen die oben eingegebenen Suchstrings auch dem 1. Suchschritt?
+				/*
+				Set<Integer> setKeyOuter = hmDebug.keySet();
+				Integer[] objaKeyOuter = (Integer[]) setKeyOuter.toArray(new Integer[setKeyOuter.size()]);
+				Integer obj = objaKeyOuter[0];
+				
+				//Nun diesen Wert in den Cache übernehmen.
+				HashMap<String,String>hmInner = hmDebug.getInnerHashMap(obj);//Das war der 1. Versuch. Er sollte die Eingabewerte beinhalten. Diese sollen die Keys für den Cache sein. Dann wird der Wert beim 2. Aufruf sofort gefunden.
+				Set<String> setKey = hmInner.keySet();
+				String[] saKey = (String[]) setKey.toArray(new String[setKey.size()]);				
+				String sKey = saKey[0];					
+				String sValue = hmInner.get(sKey);
+				*/
+				//###################
+				
+				
+			}else{
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ ArrayMethod calling StringMethod for search. Kein Wert zum Zerlegen gefunden." + sDebug);
+			}			
+		}//END main:
+		return objaReturn;
+	}
+	
+	
+	
+	//################################################################################################
 	/** set the parameter of a program to the Module - Configuration - File
 	 * Remark: The file will be immediately saved !!! 
 	 * @param objFileConfig,       the Module-Configuration-File
@@ -2719,10 +2807,10 @@ MeinTestParameter=blablaErgebnis
 		String[] saReturn = null;
 		main:{
 			//String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue();
-			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterAsArrayByProgramAlias(sModule, sSectionOrProgram, sPoperty);
-			if(!StringZZZ.isEmpty(sFileName)){
+			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterByProgramAliasAsArray(sModule, sSectionOrProgram, sProperty);
+			if(objaEntry!=null){
 				
-				//TODO GOON: Definiere einen Default Separator für MEhrfachwerte
+				//TODO GOON: hole getValue aus jedem entry und packe es in eine ArrayList, die dann als StringArray zurückgegeben wird.
 				
 				//20190220: Da die Datei im Classpath vermutet wird, ist der absolute Pfad ein anderer. Diesen suchen.
 				fileReturn = FileEasyZZZ.searchFile(sFileName);

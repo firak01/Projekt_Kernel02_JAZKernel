@@ -1,11 +1,14 @@
 package basic.zKernel;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.ICacheFilterZZZ;
 
-public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ {
+public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
 	private String sSection = null;
 	private String sProperty = null;
 	private String sRaw = null;
@@ -18,6 +21,30 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	
 	private boolean bSkipCache = false;
 	
+	//############################
+	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiter) throws CloneNotSupportedException {
+		IKernelConfigSectionEntryZZZ[] objaReturn = null;
+		ArrayList<IKernelConfigSectionEntryZZZ> listReturn = new ArrayList<IKernelConfigSectionEntryZZZ>();
+		main:{
+			if(objEntry==null) break main;
+			if(!objEntry.hasAnyValue()) {
+				listReturn.add(objEntry);				
+			}else {
+				String sValue = objEntry.getValue();
+				String[] saValue = StringZZZ.explode(sValue, sDelimiter);
+				for(int iCounter = 0; iCounter<=saValue.length-1;iCounter++) {
+					IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone();
+					//IKernelConfigSectionEntryZZZ objEntrytemp = (IKernelConfigSectionEntryZZZ) objTemp;
+					objEntrytemp.setValue(saValue[iCounter]);		//Merke: sRaw wird nicht zerlegt!!!			
+				}			
+			}
+			objaReturn = (IKernelConfigSectionEntryZZZ[]) ArrayListZZZ.toArray(listReturn);		
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	//#############################
 	@Override
 	public String getSection() {
 		return this.sSection;
@@ -157,6 +184,14 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 			return false;
 		}
 	}
+	
+	//Interface clonable
+	//s. https://howtodoinjava.com/java/cloning/a-guide-to-object-cloning-in-java/
+	 @Override
+	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException {
+	        return (IKernelConfigSectionEntryZZZ) super.clone();
+	    }
+	
 
 	
 	
