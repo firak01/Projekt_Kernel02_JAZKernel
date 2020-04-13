@@ -21,5 +21,7 @@ public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCach
 			
 	public boolean isOnServer() throws ExceptionZZZ;
 	public boolean isInJar() throws ExceptionZZZ;
+
+	
 			
 }

@@ -1366,6 +1366,37 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	return objReturn;		
 }//end function getParameterByProgramAlias(..)
 	
+	public IKernelConfigSectionEntryZZZ[] getParameterByModuleAliasAsArray(String sModule, String sProperty) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ[] objaReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
+		String sDebug = "";
+		main:{
+			check:{
+				if(StringZZZ.isEmpty(sModule)){
+					String stemp = "'String Module'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}					
+				if(StringZZZ.isEmpty(sProperty)){
+					String stemp = "'String Property'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+			}//END check:
+				  
+			IKernelConfigSectionEntryZZZ objReturn = this.getParameterByModuleAlias(sModule, sProperty);
+			
+			//Aber das wäre nur ein Stringwert, diesen versuchen zu splitten.
+			try {
+				objaReturn = KernelConfigSectionEntryZZZ.explode(objReturn, "");
+			} catch (CloneNotSupportedException e) {			
+				e.printStackTrace();
+			}
+		}//END main:
+		return objaReturn;
+	}
+	
 	
 	public synchronized void setParameterByModuleAlias(String sModuleAlias, String sParameter, String sValue, boolean bSaveImmediate) throws ExceptionZZZ{
 		main:{
@@ -2601,7 +2632,7 @@ MeinTestParameter=blablaErgebnis
 		if(objReturn.hasAnyValue()) {										
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ ArrayMethod calling StringMethod for search. Zerlege gefundenen Wert nun in Array" + sDebug);			
 			try {
-				objaReturn = KernelConfigSectionEntryZZZ.explode(objReturn, IniFile.sINI_MULTIVALUE_SEPARATOR);
+				objaReturn = KernelConfigSectionEntryZZZ.explode(objReturn, null);
 			} catch (CloneNotSupportedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -2775,15 +2806,18 @@ MeinTestParameter=blablaErgebnis
 	public String[] getParameterArrayStringByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			String sFileName = this.getParameterByModuleAlias(sModule, sProperty).getValue();
-			
-			//TODO GOON: Definiere einen Default Separator für Mehrfachwerte
-			
-			if(!StringZZZ.isEmpty(sFileName)){
+			//String sFileName = this.getParameterByModuleAlias(sModule, sProperty).getValue();			
+			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterByModuleAliasAsArray(sModule, sProperty);
+			if(objaEntry!=null){
 				
-				//20190220: Da die Datei im Classpath vermutet wird, ist der absolute Pfad ein anderer. Diesen suchen.
-				fileReturn = FileEasyZZZ.searchFile(sFileName);
-								
+				//Hole getValue aus jedem entry und packe es in eine ArrayList, die dann als StringArray zurückgegeben wird.
+				ArrayList<String> listasEntry = new ArrayList<String>();
+				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
+					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
+					String sEntry = objEntry.getValue();					
+					listasEntry.add(sEntry);
+				}
+				saReturn = ArrayListZZZ.toStringArray(listasEntry);			
 			}else{
 				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
 				throw ez;
@@ -2810,11 +2844,14 @@ MeinTestParameter=blablaErgebnis
 			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterByProgramAliasAsArray(sModule, sSectionOrProgram, sProperty);
 			if(objaEntry!=null){
 				
-				//TODO GOON: hole getValue aus jedem entry und packe es in eine ArrayList, die dann als StringArray zurückgegeben wird.
-				
-				//20190220: Da die Datei im Classpath vermutet wird, ist der absolute Pfad ein anderer. Diesen suchen.
-				fileReturn = FileEasyZZZ.searchFile(sFileName);
-							
+				//Hole getValue aus jedem entry und packe es in eine ArrayList, die dann als StringArray zurückgegeben wird.
+				ArrayList<String> listasEntry = new ArrayList<String>();
+				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
+					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
+					String sEntry = objEntry.getValue();					
+					listasEntry.add(sEntry);
+				}
+				saReturn = ArrayListZZZ.toStringArray(listasEntry);			
 			}else{
 				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
 				throw ez;

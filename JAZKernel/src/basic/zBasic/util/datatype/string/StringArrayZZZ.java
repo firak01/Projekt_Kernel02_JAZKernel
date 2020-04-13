@@ -468,6 +468,41 @@ output:
 		return saReturn;
 	}		
 	
+	/**returns true if the string is empty or null.
+	 * FGL: D.h. NULL oder Leerstring 
+	 * 
+	 * Uses Jakarta commons.lang.
+	 * @param sString
+	 * @return, 
+	 *
+	 * @return boolean
+	 *
+	 * javadoc created by: 0823, 24.07.2006 - 08:52:50
+	 */
+	public static boolean isEmpty(String[] saString){
+		if (StringArrayZZZ.isEmptyNull(saString)) return true;
+		for(int iCounter = 0; iCounter <= saString.length-1; iCounter++) {
+			String sString = saString[iCounter];
+			if(!StringZZZ.isEmpty(sString)) return false;
+		}
+		return true;
+	}
+	
+	public static boolean isEmptyNull(String[] saString){		
+		if(saString==null) return true;
+		if(saString.length==0) return true;
+		return false;
+	}
+	
+	public static boolean isEmptyTrimmed(String[] saString){		
+		if (StringArrayZZZ.isEmptyNull(saString)) return true;
+		for(int iCounter = 0; iCounter <= saString.length-1; iCounter++) {
+			String sString = saString[iCounter];
+			if(!StringZZZ.isEmpty(sString.trim())) return false;
+		}
+		return true;
+	}
+	
 	/**Alle Elemente des String Arrays werden um einen weiteren String erweitert.
 	 * Merke: Bei "BEFORE" gilt, dass ein String um die Elemente eines Arrays erweitert wird.
 	 *        

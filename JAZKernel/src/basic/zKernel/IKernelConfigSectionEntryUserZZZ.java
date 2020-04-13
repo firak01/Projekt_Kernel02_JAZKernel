@@ -22,10 +22,16 @@ public interface IKernelConfigSectionEntryUserZZZ extends IKernelConfigFileUserZ
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(FileIniZZZ objFileIni, String sParameterName) throws ExceptionZZZ;
 	public IKernelConfigSectionEntryZZZ getParameter(String sParameterName) throws ExceptionZZZ;
 	
+	public String[] getParameterArrayStringByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
+	
+	
 	public File getParameterFileByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ;
 	public File getParameterFileByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ;
 	public ImageIcon getParameterImageIconByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ;
 	public ImageIcon getParameterImageIconByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ;
+	
+	
+	
 	
 	public void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue) throws ExceptionZZZ;
 }

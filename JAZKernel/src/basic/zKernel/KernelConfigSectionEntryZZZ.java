@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.ICacheFilterZZZ;
 
@@ -22,23 +24,32 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bSkipCache = false;
 	
 	//############################
-	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiter) throws CloneNotSupportedException {
+	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiterIn) throws CloneNotSupportedException {
 		IKernelConfigSectionEntryZZZ[] objaReturn = null;
-		ArrayList<IKernelConfigSectionEntryZZZ> listReturn = new ArrayList<IKernelConfigSectionEntryZZZ>();
 		main:{
 			if(objEntry==null) break main;
 			if(!objEntry.hasAnyValue()) {
-				listReturn.add(objEntry);				
+				objaReturn = new IKernelConfigSectionEntryZZZ[1];
+				objaReturn[0] = objEntry;
 			}else {
+				String sDelimiter;
+				if(StringZZZ.isEmpty(sDelimiterIn)) {
+					sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR;
+				}else {
+					sDelimiter = sDelimiterIn;
+					}
+					
 				String sValue = objEntry.getValue();
 				String[] saValue = StringZZZ.explode(sValue, sDelimiter);
+				if(StringArrayZZZ.isEmpty(saValue))break main;
+				
+				objaReturn = new IKernelConfigSectionEntryZZZ[saValue.length];
 				for(int iCounter = 0; iCounter<=saValue.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone();
-					//IKernelConfigSectionEntryZZZ objEntrytemp = (IKernelConfigSectionEntryZZZ) objTemp;
-					objEntrytemp.setValue(saValue[iCounter]);		//Merke: sRaw wird nicht zerlegt!!!			
+					objEntrytemp.setValue(saValue[iCounter]);		//Merke: sRaw wird nicht zerlegt!!!	
+					objaReturn[iCounter] = objEntrytemp;
 				}			
 			}
-			objaReturn = (IKernelConfigSectionEntryZZZ[]) ArrayListZZZ.toArray(listReturn);		
 		}//end main:
 		return objaReturn;
 	}
