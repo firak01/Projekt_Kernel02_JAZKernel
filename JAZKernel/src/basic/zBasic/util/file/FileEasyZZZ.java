@@ -1077,18 +1077,47 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	}
 	
 	
+	public static String joinFilePathName(File objFileForDirectory, String sFileNameIn) throws ExceptionZZZ{
+		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
+		main:{
+			//An empty string is allowed
+			if(objFileForDirectory==null){
+				//here is the code throwing an ExceptionZZZ
+				String stemp = " 'FileObject for directory'";
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING,  ReflectCodeZZZ.getMethodCurrentName(), "");
+				   //doesn�t work. Only works when > JDK 1.4
+				   //Exception e = new Exception();
+				   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
+				   throw ez;	
+			}
+			
+			String sFilePath=objFileForDirectory.getAbsolutePath();
+			String sDirectory;
+			if(objFileForDirectory.isFile()) {
+				File objFileDirectory = FileEasyZZZ.getDirectoryFromFilepath(sFilePath);
+				sDirectory = objFileDirectory.getAbsolutePath();
+			}else {
+				sDirectory = sFilePath;
+			}
+			
+			sReturn = FileEasyZZZ.joinFilePathName(sDirectory, sFileNameIn);
+		
+		}//end main:
+		return sReturn;
+	}
+
 	/** Joins any Filepath-String with the Filename. E.g. in the case the filepath has an backslash at the end
 	 * @param sFilePath
 	 * @param sFileName
 	 * @throws ExceptionZZZ 
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		String sReturn = "";
+		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
+		main:{
 		String stemp;
 		String sFilePath; 	String sFileName; 
 		
-		check:{
-			//An empty string is allowed
+		//An empty string is allowed
 		if(sFileNameIn==null){
 			//here is the code throwing an ExceptionZZZ
 			stemp = " 'FileName'";
@@ -1113,10 +1142,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}else{
 			sFilePath = StringZZZ.stripRightFileSeparators(sFilePathIn);
 		}
-		}//END Check
-		
-		
-		main:{
+					
 			StringTokenizer objToken;
 			char[] caSep = new char[1];  //String has no constructor for a single char, but for an array
 			caSep[0] = File.separatorChar;
