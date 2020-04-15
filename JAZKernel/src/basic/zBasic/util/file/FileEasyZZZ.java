@@ -1791,6 +1791,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return objReturn;
 	}
 	
+	public static boolean  createDirectory(String sDirectoryName) throws ExceptionZZZ{
+		return FileEasyZZZ.makeDirectory(sDirectoryName);
+	}
+	
 
 
 }//END class
