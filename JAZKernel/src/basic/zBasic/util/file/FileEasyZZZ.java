@@ -831,7 +831,13 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		return bReturn;
 	}
 	
-	
+	/** Entferne das Verzeichnis. Wenn eine Datei übergeben wird, entferne das Elternverzeichnis. 
+	 * @param objFileIn
+	 * @param bEmptyDirectoryBefore
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
+	 */
 	public static boolean removeDirectory(String sDirectoryPath, boolean bEmptyDirectoryBefore) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -840,26 +846,54 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				throw ez;
 			}
 			File objFile =  FileEasyZZZ.searchDirectory(sDirectoryPath); //Soll auch auf einem Web Server die passende Datei finden.
-			if(objFile.exists()==false){
-				bReturn = true;
-				break main;
-			}
-			
-			if(objFile.isDirectory()==false){
-				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+			bReturn = FileEasyZZZ.removeDirectory(objFile, bEmptyDirectoryBefore);
+		}
+		return bReturn;
+	}
+	
+	/** Entferne das Verzeichnis. Wenn eine Datei übergeben wird, entferne das Elternverzeichnis. 
+	 * @param objFileIn
+	 * @param bEmptyDirectoryBefore
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
+	 */
+	public static boolean removeDirectory(File objFileIn, boolean bEmptyDirectoryBefore) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(objFileIn==null){
+				ExceptionZZZ ez  = new ExceptionZZZ("File Object for DirectoryPath ", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
+			//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
+			File objFileDirectory;
+//			if(objFile.isDirectory()==false){
+//				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+//			}
+			if(objFileIn.isFile()) {
+				objFileDirectory = objFileIn.getParentFile();
+				if(objFileDirectory==null) break main;			
+			}else {
+				objFileDirectory = objFileIn;
+			}
+			if(objFileDirectory.exists()==false){
+				bReturn = true;
+				break main;
+			}
+			if(FileEasyZZZ.isRoot(objFileDirectory)) break main;
+			
 			if(bEmptyDirectoryBefore==true){
 				//Hole alle dateien und läsche diese
-				File[] objaFile =  objFile.listFiles();
+				File[] objaFile =  objFileDirectory.listFiles();
 				for(int icount = 0; icount <= objaFile.length - 1; icount++){
 					objaFile[icount].delete();
 				}		
-				bReturn = objFile.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
+				bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
 			}else{			
 				//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
-				bReturn = objFile.delete();
+				bReturn = objFileDirectory.delete();
 			}
 		}
 		return bReturn;
