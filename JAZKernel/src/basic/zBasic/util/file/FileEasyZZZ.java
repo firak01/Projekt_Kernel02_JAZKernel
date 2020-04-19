@@ -872,7 +872,9 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 //				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 //			}
+			boolean bFileStart = false;
 			if(objFileIn.isFile()) {
+				bFileStart = true;
 				objFileDirectory = objFileIn.getParentFile();
 				if(objFileDirectory==null) break main;			
 			}else {
@@ -884,13 +886,26 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			}
 			if(FileEasyZZZ.isRoot(objFileDirectory)) break main;
 			
-			if(bEmptyDirectoryBefore==true){
-				//Hole alle dateien und läsche diese
+			if(bEmptyDirectoryBefore || bFileStart){
+				//Hole alle dateien und lösche diese ggfs.
 				File[] objaFile =  objFileDirectory.listFiles();
-				for(int icount = 0; icount <= objaFile.length - 1; icount++){
-					objaFile[icount].delete();
-				}		
-				bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
+				if(objaFile.length==1) {
+					//Es ist nur die Ausgangsdatei vorhanden, also löschen
+					objaFile[0].delete();
+					bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
+				}else {
+					//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
+					if(bEmptyDirectoryBefore) {
+						for(int icount = 0; icount <= objaFile.length - 1; icount++){
+							objaFile[icount].delete();
+						}		
+						bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
+					}else {
+						//Das Verzeichnis wird nicht geleert, darf also nicht gelöscht werden.
+						ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not an empty directory. Call this method with the 'emptyDirectoryBefore=true' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;						
+					}
+				}				
 			}else{			
 				//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
 				bReturn = objFileDirectory.delete();
