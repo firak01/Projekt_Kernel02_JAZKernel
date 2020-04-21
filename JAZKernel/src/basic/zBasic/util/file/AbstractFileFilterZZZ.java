@@ -11,7 +11,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractOVPNFileFilterZZZ extends ObjectZZZ implements FilenameFilter, IFileExpansionUserZZZ{
+public abstract class AbstractFileFilterZZZ extends ObjectZZZ implements FilenameFilter, IFileExpansionUserZZZ{
 	public enum FLAGZ{
 		REGARD_FILE_EXPANSION_ALL, REGARD_FILE_EXPANSION_LAST;
 	}
@@ -31,20 +31,20 @@ public abstract class AbstractOVPNFileFilterZZZ extends ObjectZZZ implements Fil
 	protected IFileExpansionZZZ objExpansion = null;
 	
 	
-	public AbstractOVPNFileFilterZZZ() throws ExceptionZZZ {
+	public AbstractFileFilterZZZ() throws ExceptionZZZ {
 		this("");
 	}		
-	public AbstractOVPNFileFilterZZZ(String sOvpnContextServerOrClient) throws ExceptionZZZ {
+	public AbstractFileFilterZZZ(String sOvpnContextServerOrClient) throws ExceptionZZZ {
 		super();
 		AbstractOVPNFileFilterNew_(sOvpnContextServerOrClient, null);
 	} 
-	public AbstractOVPNFileFilterZZZ(String sOvpnContextServerOrClient, String sFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileFilterZZZ(String sOvpnContextServerOrClient, String sFlagControlIn) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControlIn;
 		AbstractOVPNFileFilterNew_(sOvpnContextServerOrClient, saFlagControl);
 	}
-	public AbstractOVPNFileFilterZZZ(String sOvpnContextServerOrClient, String[] saFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileFilterZZZ(String sOvpnContextServerOrClient, String[] saFlagControlIn) throws ExceptionZZZ {
 		super();
 		AbstractOVPNFileFilterNew_(sOvpnContextServerOrClient, saFlagControlIn);
 	} 
