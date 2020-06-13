@@ -52,7 +52,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) in .jar searching.";
 				System.out.println(sLog);
 				if(workspaceURL!=null){
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) URL is not null '" + workspaceURL.toString() + "')";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) WorkspaceURL is not null '" + workspaceURL.toString() + "')";
 				    System.out.println(sLog);
 				    try {
 				    	objReturn = FileEasyZZZ.createTempFile();
@@ -85,7 +85,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 						    System.out.println(sLog);
 						}
 						
-						//close streams to preven errors
+						//close streams to prevent errors
 						isClass.close();
 						fosResource.close();
 				
@@ -97,8 +97,24 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					throw ez;
 				}
 				}else{
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) URL is null'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) WorkspaceURL is null";
 				    System.out.println(sLog);
+				    
+				    objReturn = JarEasyZZZ.searchRessource(sPath);
+				    if(objReturn==null){
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Datei NICHT gefunden '" + sPath + "' (NULL CASE)";
+					    System.out.println(sLog);
+						break main;
+					}
+				    if(objReturn.exists()){
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Datei gefunden '" + sPath + "'";
+					    System.out.println(sLog);
+						break main;
+					}else {
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Datei NICHT gefunden '" + sPath + "'";
+					    System.out.println(sLog);
+						break main;
+					}
 				}
 				
 			}else{								
@@ -110,14 +126,22 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					try {			
 						objReturn = new File(workspaceURL.toURI());
 						if(objReturn.exists()){
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BB) Datei gefunden '" + sPath + "'";
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBA) Datei gefunden '" + sPath + "'";
+						    System.out.println(sLog);
+							break main;
+						}else {
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBA) Datei NICHT gefunden '" + sPath + "'";
 						    System.out.println(sLog);
 							break main;
 						}
 					} catch(URISyntaxException e) {
 						objReturn = new File(workspaceURL.getPath());
 						if(objReturn.exists()){
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BB) Datei gefunden '" + sPath + "'";
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBB) Datei gefunden '" + sPath + "'";
+						    System.out.println(sLog);
+							break main;
+						}else {
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBB) Datei NICHT gefunden '" + sPath + "'";
 						    System.out.println(sLog);
 							break main;
 						}

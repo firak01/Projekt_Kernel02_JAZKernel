@@ -3829,7 +3829,7 @@ MeinTestParameter=blablaErgebnis
 				}
 				
 				//Prüfe nun auf Vorhandensein und korregiere ggfs. auf das aktuelle Verzeichnis
-				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig);
+				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig, true);
 				if(objDirectoryProof==null){					
 					sLog = "Directory does not exists (='"+sDirectoryConfig+"'). Using CURRENT - directory.";
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);

@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.JarURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -21,31 +23,90 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 	*  @param filePath The filepath is the directory within the .jar from which to extract the file.
 	*  @return A file object to the extracted file
 	**/
-	public static File extractFromJar(String filePath) throws ExceptionZZZ {
+	public static File extractFromJar(JarFile objJarFile, String sFilePath, boolean bIsDirectory) throws ExceptionZZZ {
 		File objReturn=null;
 		main:{
-			if(StringZZZ.isEmpty(filePath)){
+			if(StringZZZ.isEmpty(sFilePath)){
 				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 
+			if(!bIsDirectory) {
+				objReturn = JarEasyZZZ.extractFileFromJar(objJarFile, sFilePath);
+			}else {
+				objReturn = JarEasyZZZ.extractDirectoryFromJar(objJarFile, sFilePath);
+			}
+			}//end main:
+			return objReturn;
+	}
+	
+	public static File extractFileFromJar(JarFile objJarFile, String sFilePath) throws ExceptionZZZ {
+			File objReturn=null;
+			main:{
+				//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
+				if(StringZZZ.isEmpty(sFilePath)){
+					ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+
+				try{
+			        File f = File.createTempFile(sFilePath, null);
+			        FileOutputStream resourceOS = new FileOutputStream(f);
+			        byte[] byteArray = new byte[1024];
+			        int i;
+			        //InputStream classIS = getClass().getClassLoader().getResourceAsStream("Resources/"+filePath);
+			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePath);
+			//While the input stream has bytes
+			        while ((i = classIS.read(byteArray)) > 0) 
+			        {
+			//Write the bytes to the output stream
+			            resourceOS.write(byteArray, 0, i);
+			        }
+			//Close streams to prevent errors
+			        classIS.close();
+			        resourceOS.close();
+			        objReturn = f;		    
+				}catch (Exception e){
+			    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+			    }	    
+				}//end main:
+				return objReturn;
+		}
+	
+	/**
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File extractDirectoryFromJar(JarFile objJarFile, String sFilePath) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sFilePath)){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(objJarFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+
 			try{
-		        File f = File.createTempFile(filePath, null);
-		        FileOutputStream resourceOS = new FileOutputStream(f);
-		        byte[] byteArray = new byte[1024];
-		        int i;
-		        //InputStream classIS = getClass().getClassLoader().getResourceAsStream("Resources/"+filePath);
-		        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(filePath);
-		//While the input stream has bytes
-		        while ((i = classIS.read(byteArray)) > 0) 
-		        {
-		//Write the bytes to the output stream
-		            resourceOS.write(byteArray, 0, i);
-		        }
-		//Close streams to prevent errors
-		        classIS.close();
-		        resourceOS.close();
-		        objReturn = f;		    
+				//https://stackoverflow.com/questions/8014099/how-do-i-convert-a-jarfile-uri-to-the-path-of-jar-file
+				String sName = objJarFile.getName();
+				
+				String sUrl = "jar:file:/" + sName + "!/" + sFilePath;
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": String to fetch URL from JarFileObject '" + sUrl + "'" ;
+			    System.out.println(sLog);			   
+			    
+				URL url = new URL(sUrl);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": URL created from JarFileObject '" + url + "'" ;
+			    System.out.println(sLog);
+			    
+				JarURLConnection connection = (JarURLConnection) url.openConnection();
+				objReturn = new File(connection.getJarFileURL().toURI());			    
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -53,6 +114,8 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 			}//end main:
 			return objReturn;
 	}
+	
+	
 	
 	public static File getJarCurrent() throws ExceptionZZZ{
 		File objReturn=null;
@@ -172,21 +235,26 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 			    JarFile jar;
 				try {
 					jar = new JarFile(jarFile);
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 				    System.out.println(sLog);
 				    String sPathInJar = StringZZZ.replace(sPath, File.separator, "/"); //Innerhalb der JAR-Datei wird immer mit / gearbeitet.
+				    sPathInJar = StringZZZ.stripLeft(sPathInJar, "/"); 
+				    sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Searching for '" + sPathInJar + "'";
+				    System.out.println(sLog);
 				    JarEntry entry = jar.getJarEntry(sPathInJar);
 				    if(entry==null){
 				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPathInJar +"'";
 				    	System.out.println(sLog);			    	
 				    }else{
+				    	
 				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND: '" + sPathInJar +"'";
 				    	System.out.println(sLog);
-				    	if(!entry.isDirectory()){
-				    		objReturn = JarEasyZZZ.extractFromJar(sPathInJar);
-				    	}
+				    	
+				    	//Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
+				    	objReturn = JarEasyZZZ.extractFromJar(jar, sPathInJar, entry.isDirectory());
 				    }
 				    
+//Aus Doku gründen stehen lassen: Alle Einträge eines Jar-Files durchgehen:				    
 //			    final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
 //			    while(entries.hasMoreElements()) {
 //			        final String name = entries.nextElement().getName();
