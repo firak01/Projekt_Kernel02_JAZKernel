@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.JarURLConnection;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.jar.JarEntry;
@@ -18,6 +19,18 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ{
 
+	public static String computeUrlPathForContainingResource(JarFile objJar, String sResourcePath) {
+		String sReturn = null;
+		main:{
+			if(objJar==null) break main;
+			if(StringZZZ.isEmpty(sResourcePath)) break main;
+				
+			String sJarFile = objJar.getName();
+			sReturn = "jar:file:/" + sJarFile + "!/" + sResourcePath; //Merke das Ausrufezeichen ist wichtig. Sonst Fehler: no !/ in spec
+		}//end main:
+		return sReturn;
+	}
+	
 	/**
 	*  This method is responsible for extracting resource files from within the .jar to the temporary directory.
 	*  @param filePath The filepath is the directory within the .jar from which to extract the file.
@@ -97,7 +110,7 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 				//https://stackoverflow.com/questions/8014099/how-do-i-convert-a-jarfile-uri-to-the-path-of-jar-file
 				String sName = objJarFile.getName();
 				
-				String sUrl = "jar:file:/" + sName + "!/" + sFilePath;
+				String sUrl = JarEasyZZZ.computeUrlPathForContainingResource(objJarFile, sFilePath); 
 				String sLog = ReflectCodeZZZ.getPositionCurrent()+": String to fetch URL from JarFileObject '" + sUrl + "'" ;
 			    System.out.println(sLog);			   
 			    
@@ -106,7 +119,11 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 			    System.out.println(sLog);
 			    
 				JarURLConnection connection = (JarURLConnection) url.openConnection();
-				objReturn = new File(connection.getJarFileURL().toURI());			    
+				URI uri = connection.getJarFileURL().toURI();
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": URI.getPath created from JarFileObject '" + uri.getPath() + "'" ;
+			    System.out.println(sLog);
+			    
+				objReturn = new File(uri);			    
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;

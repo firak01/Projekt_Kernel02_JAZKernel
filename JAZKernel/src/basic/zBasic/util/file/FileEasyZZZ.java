@@ -1,5 +1,7 @@
 package basic.zBasic.util.file;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +17,8 @@ import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 import java.util.regex.Matcher;
 
 import org.apache.commons.io.FileUtils;
@@ -483,6 +487,8 @@ public static File searchDirectory(String sDirectoryIn) throws ExceptionZZZ {
 }
 /** Eine NULL oder ".." Angabe bedeutet "Projekt-Ordner-Ebene".
  *  Ein Leerstring, Empty oder "." bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
+ *  
+ *  Merke: Wenn das Verzeichnis in einer .jar Datei liegt, kann man nur die JAR - Datei selbst zurückgeben.
  * @param sDirectoryIn
  * @return
  * @throws ExceptionZZZ
@@ -1383,6 +1389,68 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}
 			return bReturn;
 		}
+		
+		 /**
+		   * Determine whether a file is a JAR File.
+		   * Idee aus: http://www.java2s.com/Code/Java/File-Input-Output/DeterminewhetherafileisaJARFile.htm
+		   */
+		public static boolean isJar(File objFile) throws ExceptionZZZ{
+			boolean bReturn = false;
+			main:{
+				if(objFile==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No fileobject provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+								 
+				try {
+					ZipFile zip = new ZipFile(objFile);
+					bReturn = zip.getEntry("META-INF/MANIFEST.MF") != null;
+					zip.close();
+				} catch (ZipException e) {
+					ExceptionZZZ ez = new ExceptionZZZ("ZIPExpeption for '" + objFile.getAbsolutePath() + "' : " + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				} catch (IOException e) {
+					ExceptionZZZ ez = new ExceptionZZZ("IOExpeption for '" + objFile.getAbsolutePath() + "' : "  + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}				 								
+			}//end main
+			return bReturn;
+		}
+		
+	
+		  /**
+		   * Determine whether a file is a ZIP File.
+		   * Idee aus: http://www.java2s.com/Code/Java/File-Input-Output/DeterminewhetherafileisaJARFile.htm
+		   */
+		  public static boolean isZip(File objFile) throws ExceptionZZZ{
+			  boolean bReturn = false;
+				main:{
+					if(objFile==null){
+						ExceptionZZZ ez = new ExceptionZZZ("No fileobject provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					
+		      if(objFile.isDirectory())  break main;
+		      
+		      if(!objFile.canRead()) {
+		    		ExceptionZZZ ez = new ExceptionZZZ("Cannot read file '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+		      }
+
+		      if(objFile.length() < 4)  break main;
+
+		      try {
+			      DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(objFile)));
+			      int test = in.readInt();
+			      in.close();
+			      bReturn = (test == 0x504b0304);
+		      } catch (IOException e) {
+					ExceptionZZZ ez = new ExceptionZZZ("IOExpeption for '" + objFile.getAbsolutePath() + "' : "  + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+			  }//end main;
+			  return bReturn;
+		  }
 		
 	/** Holt eine Datei / Ressource auch aus einer JAR-Datei.
 	 *   Merke: In einer .jar Datei kann kein Zugriff über File-Objekte erfolgen.
