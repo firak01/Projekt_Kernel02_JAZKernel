@@ -1,4 +1,4 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
 
 
 
@@ -17,9 +17,9 @@ package com.ack.tools.jarinfo.testing;
  * to cache classes loaded from the jar file
  * that JarInfoClassLoader is reading.
  */
-public class TestJarInfoClassLoader extends TestCase {
+public class JarInfoClassLoaderTest extends TestCase {
 
-  public TestJarInfoClassLoader( String s ) {
+  public JarInfoClassLoaderTest( String s ) {
     super( s );
   }
 
@@ -32,7 +32,7 @@ public class TestJarInfoClassLoader extends TestCase {
   public void testingJarInfoClassLoader() {
     // use JarInfoClassLoader for loading resources in myjarfile.jar
     JarInfoClassLoader jClassLoader = null;
-    String archiveFile = TestJarInfoConstants.kJAR_FILE_ONE;
+    String archiveFile = JarInfoTestConstants.kJAR_FILE_ONE;
     try {
       jClassLoader = new JarInfoClassLoader( archiveFile );
       System.out.println( "\nLoading archive file: " + archiveFile );
@@ -51,7 +51,7 @@ public class TestJarInfoClassLoader extends TestCase {
     }
     catch( ClassNotFoundException cnfe ) {
       System.err.println( cnfe );
-      fail();
+      fail(cnfe.getMessage());
     }
 
   }

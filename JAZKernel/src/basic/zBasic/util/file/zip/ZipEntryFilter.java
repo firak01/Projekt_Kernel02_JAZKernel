@@ -1,4 +1,4 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.zip;
 
 import java.util.zip.ZipEntry;
 

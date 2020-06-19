@@ -1,8 +1,10 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.zip.ZipEntry;
+
+import basic.zBasic.util.file.SuffixZipEntryFilter;
 
 /** https://java.happycodings.com/other/code26.html
  * This class provides an abstraction for classes within
@@ -15,8 +17,8 @@ import java.util.zip.ZipEntry;
  *  to create your own cache of resources using JarInfo
  *  and JarByteLoader classes.
  *
- * @see com.ack.tools.jarinfo.JarInfo
- * @see com.ack.tools.jarinfo.JarByteLoader
+ * @see basic.zBasic.util.file.jar.ack.tools.jarinfo.JarInfo
+ * @see basic.zBasic.util.file.jar.ack.tools.jarinfo.JarByteLoader
  */
 public class JarClassByteCache {
   private static final String kCLASS_SUFFIX = ".class";

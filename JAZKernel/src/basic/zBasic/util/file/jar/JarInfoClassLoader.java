@@ -1,4 +1,4 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
 
 import java.net.MalformedURLException;
 import java.net.URL;

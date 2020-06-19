@@ -1,10 +1,13 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import basic.zBasic.util.file.ByteLoader;
+import basic.zBasic.util.file.zip.ZipEntryFilter;
 
 
 /**
@@ -25,7 +28,7 @@ public class JarByteLoader {
    * Create a JarClassTable that is a cache for bytes
    * for classes within the supplied zip file
    *
-   * @exception com.ack.tools.jarinfo.JarInfoException reports problems reading the zip file
+   * @exception basic.zBasic.util.file.jar.ack.tools.jarinfo.JarInfoException reports problems reading the zip file
    * @param the jar/zip file to search for classes
    * @param filter to be applied to the zip file
    */
@@ -41,7 +44,7 @@ public class JarByteLoader {
    *
    * @param a view on a jar file
    * @return reports problems with the JarInfo object
-   * @exception com.ack.tools.jarinfo.JarInfoException reports problems with JarInfo
+   * @exception basic.zBasic.util.file.jar.ack.tools.jarinfo.JarInfoException reports problems with JarInfo
    */
   public JarByteLoader( JarInfo info ) throws JarInfoException {
     if( ( fInfo = info ) == null )
@@ -58,7 +61,7 @@ public class JarByteLoader {
    * @param the class name
    * @return bytes for the named class.  if it can't be found
    * this method returns null
-   * @exception com.ack.tools.jarinfo.JarInfoException reports problems getting resources from jar
+   * @exception basic.zBasic.util.file.jar.ack.tools.jarinfo.JarInfoException reports problems getting resources from jar
    */
   public byte[] getResourceAsBytes( String resourceName ) throws JarInfoException {
     if( resourceName == null )
@@ -77,7 +80,7 @@ public class JarByteLoader {
    *
    * @param the ZipEntry to be loaded
    * @return the byte array holding the contains of the ZipEntry
-   * @exception com.ack.tools.jarinfo.JarInfoException reports problems trying to load supplied resource
+   * @exception basic.zBasic.util.file.jar.ack.tools.jarinfo.JarInfoException reports problems trying to load supplied resource
    */
   public byte[] getResourceAsBytes( ZipEntry resource ) throws JarInfoException {
     return loadBytes( resource );
@@ -96,7 +99,7 @@ public class JarByteLoader {
    * Extract the bytes for a resource from the jar/zip file
    * based on the supplied resource name
    *
-   * @exception com.ack.tools.jarinfo.JarInfoException reports any problem trying to get the
+   * @exception basic.zBasic.util.file.jar.ack.tools.jarinfo.JarInfoException reports any problem trying to get the
    * the resource bytes from the ZipEntry
    * @param the full pathname of the resource
    * @return the bytes for the named resource

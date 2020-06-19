@@ -1,5 +1,7 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
 
+import basic.zBasic.util.file.SuffixZipEntryFilter;
+import basic.zBasic.util.file.zip.ZipEntryFilter;
 //import com.ack.tools.jarinfo.JarByteLoader;
 //import com.ack.tools.jarinfo.JarInfoException;
 //import com.ack.tools.jarinfo.SuffixZipEntryFilter;
@@ -14,9 +16,9 @@ package com.ack.tools.jarinfo.testing;
  * a given jar using the JarInfo package.
  */
 
-public class TestReadingJarResources extends TestCase {
-
-  public TestReadingJarResources( String s ) {
+public class JarResourcesReadingTest extends TestCase {
+  
+  public JarResourcesReadingTest( String s ) {
     super( s );
   }
 
@@ -27,20 +29,21 @@ public class TestReadingJarResources extends TestCase {
   }
 
   public void testAccessingJarResources() {
-    String archiveName = TestJarInfoConstants.kZIP_FILE_ONE;
-    ZipEntryFilter zipFilter = new SuffixZipEntryFilter( ".xsl" );
-
+    String archiveName = JarInfoTestConstants.kJAR_FILE_ONE;
+    ZipEntryFilter zipFilter = new SuffixZipEntryFilter( ".ovpn" );
+    //String resourceName = "org/apache/tools/ant/taskdefs/optional/junit/xsl/junit-frames.xsl";
+    String resourceName = "template/template_server_TCP_443.ovpn";
+    
     JarByteLoader jarByteLoader = null;
     try {
       // load zip entries based upon filter
       jarByteLoader = new JarByteLoader( archiveName, zipFilter );
       System.out.println( "\nJarByteLoader successfully loaded -> " + archiveName );
 
-      // view contents of zip entries match ".xsl"
+      // view contents of zip entries match the filter
       System.out.println( jarByteLoader.getJarInfo() );
 
-      // load the specified resource
-      String resourceName = "org/apache/tools/ant/taskdefs/optional/junit/xsl/junit-frames.xsl";
+      //load the specified resource      
       byte[] theBytes = jarByteLoader.getResourceAsBytes( resourceName );
       System.out.println( "\nJarByteLoader loaded " + theBytes.length + " bytes for "
                           + resourceName + " from " + archiveName );
@@ -48,9 +51,9 @@ public class TestReadingJarResources extends TestCase {
       // print out the resource
       System.out.println( new String( theBytes ) );
     }
-    catch( JarInfoException jie ) {
-      jie.printStackTrace();
-      fail();
+    catch( JarInfoException jie ) {    	
+      jie.printStackTrace();      
+      fail(jie.getDetailAllLast());
     }
   }
 }

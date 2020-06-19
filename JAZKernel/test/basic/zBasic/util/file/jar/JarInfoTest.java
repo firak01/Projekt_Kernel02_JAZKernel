@@ -1,4 +1,7 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
+
+import basic.zBasic.util.file.SuffixZipEntryFilter;
+import basic.zBasic.util.file.zip.ZipEntryFilter;
 
 //package com.ack.tools.jarinfo.testing;
 
@@ -14,9 +17,9 @@ import junit.framework.TestCase;
 * on Java archive files.
 *
 */
-public class TestJarInfo extends TestCase {
+public class JarInfoTest extends TestCase {
 
-public TestJarInfo( String s ) {
+public JarInfoTest( String s ) {
   super( s );
 }
 
@@ -29,7 +32,7 @@ protected void tearDown() {
 public void testFilteringClassFiles() {
   // create jar file filter
   ZipEntryFilter classFilter = new SuffixZipEntryFilter( ".class" );
-  String archiveName = TestJarInfoConstants.kZIP_FILE_ONE;
+  String archiveName = JarInfoTestConstants.kJAR_FILE_ONE;
 
   JarInfo jarInfo = null;
   try {
@@ -41,7 +44,7 @@ public void testFilteringClassFiles() {
   catch( JarInfoException jie ) {
     jie.printStackTrace();
     System.err.println( jie );
-    fail();
+    fail(jie.getDetailAllLast());
   }
 }
 }

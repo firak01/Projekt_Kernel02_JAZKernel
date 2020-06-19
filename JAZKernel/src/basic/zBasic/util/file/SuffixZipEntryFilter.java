@@ -2,6 +2,8 @@ package basic.zBasic.util.file;
 
 import java.util.zip.ZipEntry;
 
+import basic.zBasic.util.file.zip.ZipEntryFilter;
+
 /**
  * A filter for ZipEntries that is based on whether
  * the entry has the specified suffix.

@@ -1,4 +1,4 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
 
 /**
  * import com.ack.tools.jarinfo.SuffixZipEntryFilter;
@@ -16,12 +16,14 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import basic.zBasic.util.file.zip.ZipEntryFilter;
+
 /**
  * Reads the header part of a zip/jar file and creates
  * an array of ZipEntry objects.  JarInfo also allows to
  * apply a filter to get the zip entries of their choice
  *
- * @see com.ack.tools.jarinfo.ZipEntryFilter
+ * @see basic.zBasic.util.file.zip.ack.tools.jarinfo.ZipEntryFilter
  */
 
 public class JarInfo {
@@ -34,7 +36,7 @@ public class JarInfo {
    * @param the jar/zip file to interrogate
    * @exception is thrown if any errors occur trying read the
    *            the jar/zip file
-   * @see com.ack.tools.jarinfo.ZipEntryFilter#accept
+   * @see basic.zBasic.util.file.zip.ack.tools.jarinfo.ZipEntryFilter#accept
    */
   public JarInfo( String fileName, ZipEntryFilter filter ) throws JarInfoException {
     if( ( fZipFileName = fileName ) == null )

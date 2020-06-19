@@ -1,4 +1,4 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.jar;
 
 
 
@@ -10,6 +10,9 @@ import java.util.Hashtable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import basic.zBasic.util.file.ByteLoader;
+import basic.zBasic.util.file.zip.HtmlZipEntryFilter;
+import basic.zBasic.util.file.zip.ZipEntryFilter;
 //import com.ack.tools.jarinfo.ByteLoader;
 //import com.ack.tools.jarinfo.JarInfo;
 //import com.ack.tools.jarinfo.JarInfoException;
@@ -19,9 +22,9 @@ import junit.framework.TestCase;
 
 //https://java.happycodings.com/other/code63.html
 //package com.ack.tools.jarinfo.testing;
-public class TestJavaInfoFeatures extends TestCase {
+public class JarInfoFeaturesTest extends TestCase {
 
-  public TestJavaInfoFeatures( String s ) {
+  public JarInfoFeaturesTest( String s ) {
     super( s );
   }
 
@@ -32,7 +35,7 @@ public class TestJavaInfoFeatures extends TestCase {
   }
 
   public void testJarInfoFeatures() {
-    String archiveName = "resources\\doctree.zip";
+	String archiveName = JarInfoTestConstants.kZIP_FILE_ONE;   
     try {
       // create the HtmlZipEntryFilter and passed is the maximum size in bytes
       ZipEntryFilter htmlFilter = new HtmlZipEntryFilter( 500 );
@@ -76,32 +79,12 @@ public class TestJavaInfoFeatures extends TestCase {
     }
     catch( JarInfoException jie ) {
       jie.printStackTrace();
+      fail(jie.getDetailAllLast());
     }
     catch( IOException ioe ) {
       ioe.printStackTrace();
+      fail(ioe.getMessage());
     }
-  }
-}
-
-/**
- * ZipEntryFilter for HTML files that are less
- * than <b>fSize</b> bytes in size
- */
-class HtmlZipEntryFilter implements ZipEntryFilter {
-  private static final String kHTMLSUFFIX = ".html";
-  private long fSize;
-
-  public HtmlZipEntryFilter( long size ) {
-    fSize = size;
-  }
-
-  public boolean accept( ZipEntry ze ) {
-    boolean outcome = false;
-    if( ze != null ) {
-      if( ze.getName().endsWith( kHTMLSUFFIX ) && ze.getSize() < fSize )
-        outcome = true;
-    }
-    return outcome;
   }
 }
 
