@@ -31,7 +31,7 @@ public class FileFilterEndingZZZ extends ObjectZZZ implements IFilenameFilterZZZ
 			}
 			
 					
-			//Ende berechnen
+			//Dateiendung berechnen
 			String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
 			if(sEndingCur.equals(this.sFileEnding)) bReturn = true;			
 		}//END main:

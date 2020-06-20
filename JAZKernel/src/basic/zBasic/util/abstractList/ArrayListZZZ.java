@@ -1,5 +1,6 @@
 package basic.zBasic.util.abstractList;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -229,6 +230,22 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 			aReturn = lista.toArray(new Object[lista.size()]);
 			int iIndex = -1;
 			for(Object obj : lista){
+				iIndex++;
+				aReturn[iIndex] = obj;
+			}
+		}//end main:
+		return aReturn;	
+	}
+	
+	public static File[]toFileArray(ArrayList<File> lista){
+		File[] aReturn = null;
+		main:{
+			if(lista==null) break main;
+			if(lista.size()==0) break main;
+			
+			aReturn = lista.toArray(new File[lista.size()]);
+			int iIndex = -1;
+			for(File obj : lista){
 				iIndex++;
 				aReturn[iIndex] = obj;
 			}

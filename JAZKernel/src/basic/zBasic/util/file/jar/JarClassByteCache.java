@@ -4,7 +4,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.zip.ZipEntry;
 
-import basic.zBasic.util.file.SuffixZipEntryFilter;
+import basic.zBasic.util.file.zip.SuffixZipEntryFilter;
 
 /** https://java.happycodings.com/other/code26.html
  * This class provides an abstraction for classes within

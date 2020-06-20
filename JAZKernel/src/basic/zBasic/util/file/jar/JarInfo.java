@@ -26,7 +26,8 @@ import basic.zBasic.util.file.zip.ZipEntryFilter;
  * @see basic.zBasic.util.file.zip.ack.tools.jarinfo.ZipEntryFilter
  */
 
-public class JarInfo {
+public class JarInfo { 
+  private ZipFile zipFile=null;
   private Hashtable fEntries;
   private String fZipFileName;
 
@@ -48,11 +49,10 @@ public class JarInfo {
 
     fEntries = new Hashtable();
     ZipFile zipFile = null;
-
     try {
-      // create a ZipFile for the supplied 'fileName'
-      zipFile = new ZipFile( fZipFileName );
-
+    	// create a ZipFile for the supplied 'fileName'
+    	zipFile = this.getZipFile();
+      
       // cycle through the header information with the zipFile
       Enumeration e = zipFile.entries();
       while( e.hasMoreElements() ) {
@@ -74,23 +74,38 @@ public class JarInfo {
       throw new JarInfoException( "Security problems reading " + fZipFileName + "\n"
                                   + se.getMessage() );
     }
-    finally {
-      if( zipFile != null )
+    
+    //ERST IM DESTRUKTOR DAS ZIP FILE SCHLIESSEN
+//    finally {
+//      if( zipFile != null )
+//        try {
+//          zipFile.close();          
+//        }
+//        catch( IOException ioe ) {
+//        }
+//    }
+  }
+  
+  //DESTRUKTOR
+  public void finalize() {
+	  if( zipFile != null )
         try {
-          zipFile.close();
+          zipFile.close();          
         }
         catch( IOException ioe ) {
         }
-    }
-  }
+ }
 
   /**
    * accessor method to get the name of the jar
    * @return the jar/zip filename
    */
-  public String zipFileName() {
-    return fZipFileName;
+  public String getZipFileName() {
+    return this.fZipFileName;
   }
+//  public void setZipFileName(String sFileName) {
+//	  this.fZipFileName = sFileName;
+//  }
 
   /**
    * accessor method to get a handle on the ZipEntries for JarInfo
@@ -155,4 +170,15 @@ public class JarInfo {
     }
     return buf.toString();
   }
+  
+  //######
+  //### GETTER / SETTER
+  public ZipFile getZipFile() throws IOException {
+	  if(this.zipFile==null) {
+		  String sFileName = this.getZipFileName();		 
+		  this.zipFile = new ZipFile( sFileName );		
+	  }	  
+	  return this.zipFile;
+  }
+  
 }

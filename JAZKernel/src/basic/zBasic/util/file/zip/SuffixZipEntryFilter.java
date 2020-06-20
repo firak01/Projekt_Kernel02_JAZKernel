@@ -1,8 +1,6 @@
-package basic.zBasic.util.file;
+package basic.zBasic.util.file.zip;
 
 import java.util.zip.ZipEntry;
-
-import basic.zBasic.util.file.zip.ZipEntryFilter;
 
 /**
  * A filter for ZipEntries that is based on whether

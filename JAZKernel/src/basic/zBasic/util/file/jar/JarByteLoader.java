@@ -70,7 +70,7 @@ public class JarByteLoader {
     ZipEntry ze = fInfo.getZipEntry( resourceName );
     if( ze == null )
       throw new JarInfoException( "no such resource '" +
-                                  resourceName + "' in archive -> " + fInfo.zipFileName() );
+                                  resourceName + "' in archive -> " + fInfo.getZipFileName() );
     return loadBytes( ze );
   }
 
@@ -108,12 +108,12 @@ public class JarByteLoader {
     // get the zip entry for the named class from JarInfo
     if( zentry == null )
       throw new JarInfoException( "supplied zip entry to Java archive '" +
-                                  fInfo.zipFileName() + "' was null" );
+                                  fInfo.getZipFileName() + "' was null" );
     byte[] b = null;
     ZipInputStream zis = null;
     try {
       // if there is such a ZipEntry, open up the jar/zip file
-      FileInputStream fis = new FileInputStream( fInfo.zipFileName() );
+      FileInputStream fis = new FileInputStream( fInfo.getZipFileName() );
       BufferedInputStream bis = new BufferedInputStream( fis );
       zis = new ZipInputStream( bis );
       b = fByteLoader.loadBytesFromZipEntry( zis, zentry );
@@ -137,7 +137,7 @@ public class JarByteLoader {
 
     if( b == null )
       throw new JarInfoException( "no such resource '" + zentry.getName() +
-                                  "' inside Java archive -> " + fInfo.zipFileName() );
+                                  "' inside Java archive -> " + fInfo.getZipFileName() );
 
     return b;
   }

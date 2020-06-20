@@ -10,15 +10,21 @@ public class HtmlZipEntryFilter implements ZipEntryFilter {
   private static final String kHTMLSUFFIX = ".html";
   private long fSize;
 
+  public HtmlZipEntryFilter() {
+	  fSize = 0;
+  }
   public HtmlZipEntryFilter( long size ) {
     fSize = size;
   }
-
+  
   public boolean accept( ZipEntry ze ) {
     boolean outcome = false;
     if( ze != null ) {
-      if( ze.getName().endsWith( kHTMLSUFFIX ) && ze.getSize() < fSize )
-        outcome = true;
+      if(fSize>0) {
+    	  if( ze.getName().endsWith( kHTMLSUFFIX ) && ze.getSize() < fSize ) outcome = true;      	  
+      }else {
+    	  if( ze.getName().endsWith( kHTMLSUFFIX )) outcome = true; 
+      }
     }
     return outcome;
   }

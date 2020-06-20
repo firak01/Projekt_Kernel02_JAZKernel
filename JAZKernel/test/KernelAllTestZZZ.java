@@ -29,6 +29,10 @@ import basic.zBasic.util.datatype.string.StringArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZTest;
 import basic.zBasic.util.file.FileTextParserZZZTest;
 import basic.zBasic.util.file.ini.IniFileTest;
+import basic.zBasic.util.file.jar.JarInfoClassLoaderTest;
+import basic.zBasic.util.file.jar.JarInfoFeaturesTest;
+import basic.zBasic.util.file.jar.JarInfoTest;
+import basic.zBasic.util.file.jar.JarResourcesReadingTest;
 import basic.zBasic.util.file.txt.TxtReaderZZZTest;
 import basic.zBasic.util.file.txt.TxtWriterZZZTest;
 import basic.zKernel.GetOptZZZTest;
@@ -88,7 +92,12 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(TxtReaderZZZTest.class);
 		objReturn.addTestSuite(TxtWriterZZZTest.class);
 		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht
-				
+			
+		//Test für Filter auf jar/zip Dateien
+		objReturn.addTestSuite(JarInfoClassLoaderTest.class);
+		objReturn.addTestSuite(JarInfoFeaturesTest.class);
+		objReturn.addTestSuite(JarInfoTest.class);
+		objReturn.addTestSuite(JarResourcesReadingTest.class);
 		
 		//Echte KernelObjekte testen
 		objReturn.addTestSuite(KernelPropertyZZZTest.class);

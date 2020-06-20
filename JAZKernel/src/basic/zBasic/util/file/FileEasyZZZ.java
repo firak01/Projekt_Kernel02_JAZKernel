@@ -1403,6 +1403,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}
 								 
 				try {
+					//Merke: Wenn es kein ZipFile ist, so wird ein Fehler (IOException) geworfen. Dieses vorher prüfen und so die Exception vermeiden. 
+					if(!FileEasyZZZ.isZip(objFile)) break main;
+					
 					ZipFile zip = new ZipFile(objFile);
 					bReturn = zip.getEntry("META-INF/MANIFEST.MF") != null;
 					zip.close();

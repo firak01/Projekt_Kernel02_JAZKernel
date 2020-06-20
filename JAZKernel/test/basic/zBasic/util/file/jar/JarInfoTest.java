@@ -1,6 +1,6 @@
 package basic.zBasic.util.file.jar;
 
-import basic.zBasic.util.file.SuffixZipEntryFilter;
+import basic.zBasic.util.file.zip.SuffixZipEntryFilter;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 
 //package com.ack.tools.jarinfo.testing;

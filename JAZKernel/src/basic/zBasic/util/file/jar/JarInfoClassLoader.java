@@ -102,7 +102,7 @@ public class JarInfoClassLoader extends SecureClassLoader {
   private String getJarURL() {
     if( fJarURLPath == null ) {
       StringBuffer buf = new StringBuffer( "jar:file:" );
-      String jarFile = fClassTable.getJarInfo().zipFileName();
+      String jarFile = fClassTable.getJarInfo().getZipFileName();
       buf.append( jarFile.replace( '\\', '/' ) );
       buf.append( "!/" );
       fJarURLPath = buf.toString();
