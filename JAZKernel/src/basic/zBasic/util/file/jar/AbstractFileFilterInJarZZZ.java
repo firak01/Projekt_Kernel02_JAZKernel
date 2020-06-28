@@ -11,6 +11,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.zip.FileFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FileFilterMiddleZipZZZ;
+import basic.zBasic.util.file.zip.FileFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FileFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FileFilterSuffixZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
@@ -18,6 +19,7 @@ import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements ZipEntryFilter{
+	protected FileFilterPathZipZZZ objFilterPath;
 	protected FileFilterPrefixZipZZZ objFilterPrefix;
 	protected FileFilterMiddleZipZZZ objFilterMiddle;
 	protected FileFilterSuffixZipZZZ objFilterSuffix;	
@@ -25,6 +27,7 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 	
 	protected String sOvpnContext="";
 	
+	protected String sDirectoryPath="";
 	protected String sPrefix="";
 	protected String sMiddle="";
 	protected String sSuffix="";
@@ -82,7 +85,8 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 //		this.setPrefix(ConfigFileTemplateOvpnOVPN.sFILE_TEMPLATE_PREFIX);
 //		this.setMiddle(this.getOvpnContext());
 
-//Auch die konkreten Ausprägungen können erst in der konkreten Kindklasse gefüllt werden.		
+//Auch die konkreten Ausprägungen können erst in der konkreten Kindklasse gefüllt werden.
+		objFilterPath = new FileFilterPathZipZZZ();
 		objFilterPrefix = new FileFilterPrefixZipZZZ();
 		objFilterMiddle = new FileFilterMiddleZipZZZ();
 		objFilterSuffix = new FileFilterSuffixZipZZZ();
@@ -97,6 +101,9 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 			if(ze==null) break main;				
 			
 			//Merke: Die Reihenfolge ist so gewählt, dass im Template Verzeichnis frühestmöglich ein "break main" erreicht wird.
+			
+			//Falls das Verzeichnis nicht passt
+			this.objFilterPath.setCriterion(this.getDirectoryPath());
 			
 			//Falls der OvpnContext nicht passt
 			this.objFilterMiddle.setCriterion(this.getMiddle());
@@ -127,6 +134,16 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 			return this.sOvpnContext;
 		}
 	
+		protected void setDirectoryPath(String sDirectoryPath) {
+			this.sDirectoryPath = sDirectoryPath;
+		}
+		protected String getDirectoryPath() {
+			if(StringZZZ.isEmpty(this.sDirectoryPath)) {
+				this.setDirectoryPath("");
+			}
+			return this.sDirectoryPath;
+		}
+		
 		protected void setPrefix(String sPrefix) {
 			this.sPrefix = sPrefix;
 		}
