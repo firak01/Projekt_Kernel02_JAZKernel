@@ -2405,10 +2405,10 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	public static String stripRightFileSeparators(String sString){
 		String sReturn = sString;
 		main:{
-            //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das KEnnzeichen "." als lokales Kennzeichen weggetrimmt wird.
+            //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
 			if(StringZZZ.isEmpty(sString)) break main;
 			if(sString.length()<=FileEasyZZZ.sDIRECTORY_CURRENT.length())break main;
-			String[] saStringsToBeStripped = {File.separator, FileEasyZZZ.sDIRECTORY_CURRENT,"/"};
+			String[] saStringsToBeStripped = {FileEasyZZZ.sDIRECTORY_SEPARATOR, FileEasyZZZ.sDIRECTORY_CURRENT,"/"};
 			sReturn = StringZZZ.stripRight(sString, saStringsToBeStripped);
 		}//end main:
 		return sReturn;

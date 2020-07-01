@@ -34,13 +34,15 @@ public class FileFilterPathZipZZZ extends ObjectZZZ implements IFilenameFilterZi
 				
 				//Pfad des Dateinamens berechnen			
 				String sDirectoryPath;
-				try {				
-					TODOGOON; //String zurückgeben, einfach den Parent des Dateipfads: FileEasyZZZ.getParent(sName);
-					sDirectoryPath = FileEasyZZZ.getFileUsedPath(sName);
-					if(StringZZZ.startsWithIgnoreCase(sName, this.getDirectoryPath())) bReturn = true;
-				} catch (ExceptionZZZ e) {			
-					e.printStackTrace();
-				} 					
+//				try {				
+					//String zurückgeben, einfach den Parent des Dateipfads. 
+					sDirectoryPath = FileEasyZZZ.getParent(sName,"/");//Also: In der aktuell  betrachteten JAR - Datei sind die Pfade mit "SLASH" getrennt.
+					if(StringZZZ.startsWithIgnoreCase(sDirectoryPath+"/", this.getDirectoryPath()+"/"))	{					
+						bReturn = true;//Merke: Die "/" dienen jetzt dazu den Verzeichnisnamen "zu normieren". So dass in "tester/" nicht "test/" gefunden wird.
+					}
+//				} catch (ExceptionZZZ e) {			
+//					e.printStackTrace();
+//				} 					
 			}//END main:
 			return bReturn;
 	}

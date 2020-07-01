@@ -874,14 +874,14 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 	
 	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 
 	 *  Wird eine Datei übergeben, wird sie gelöscht, sofern sie alleine im Verzeichnis ist.
-	 *  Löschen mehrerer Dateien des Parent-Verzeichnis nur  wenn bEmptyDirectoryWithMoreThanOneFile true ist.
+	 *  Löschen mehrerer Dateien des Parent-Verzeichnis nur  wenn bEmptyDirectoryContainingMoreFiles true ist.
 	 * @param objFileIn
-	 * @param bEmptyDirectoryWithMoreThanOneFile    Sicherheitsflag
+	 * @param bEmptyDirectoryContainingMoreFile    Sicherheitsflag
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
 	 */
-	public static boolean removeDirectoryContent(File objFileIn, boolean bEmptyDirectoryWithMoreThanOneFile) throws ExceptionZZZ{
+	public static boolean removeDirectoryContent(File objFileIn, boolean bEmptyDirectoryContainingMoreFiles) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(objFileIn==null){
@@ -909,29 +909,26 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			}
 			
 			
-			if(bFileStart){
+			
 				//Hole alle dateien und lösche diese ggfs.
 				File[] objaFile =  objFileDirectory.listFiles();
 				if(objaFile.length==1) {
-					//Es ist nur die Ausgangsdatei vorhanden, also löschen
+					//Es ist ggfs. nur die Ausgangsdatei vorhanden, also löschen
 					objaFile[0].delete();
 					bReturn = true; //Merke: Das Verzeichnis selbst soll ja nicht gelöscht werden und andere sind nicht im Verzeichnis.
 				}else {
 					//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
-					if(bEmptyDirectoryWithMoreThanOneFile) {
+					if(bEmptyDirectoryContainingMoreFiles) {
 						for(int icount = 0; icount <= objaFile.length - 1; icount++){
 							objaFile[icount].delete();
 						}		
 						bReturn = true; //Merke: Das Verzeichnis selbst soll ja nicht gelöscht werden.
 					}else {
 						//Das Verzeichnis wird nicht geleert, darf also nicht gelöscht werden.
-						ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not a single file containing directory. Call this method with the 'bEmptyDirectoryWithMoreThanOneFile' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+						ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not a single file containing directory. Call this method with the 'bEmptyDirectoryContainingMoreFiles' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;						
 					}
-				}				
-			}else{			
-				bReturn = true;
-			}
+				}							
 		}
 		return bReturn;
 	}
@@ -1143,6 +1140,54 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			
 			sReturn = sFileNameLeft + sSuffix + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sFileNameRight;
 		
+		}//end main:
+		return sReturn;
+	}
+
+	public static String getParent(String sFilePathIn) throws ExceptionZZZ{
+		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
+		main:{
+			sReturn = FileEasyZZZ.getParent(sFilePathIn, null);
+		}//end main:
+		return sReturn;
+	}
+	public static String getParent(String sFilePathIn, String sDirectorySeparatorUsedIn) {
+		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
+		main:{
+			
+			//An empty string is allowed
+			if(StringZZZ.isEmpty(sFilePathIn)) break main;
+			String sFilePath=StringZZZ.stripRightFileSeparators(sFilePathIn);			
+			
+			String sDirectorySeparatorUsed;
+			if(StringZZZ.isEmpty(sDirectorySeparatorUsedIn)) {
+				sDirectorySeparatorUsed = FileEasyZZZ.sDIRECTORY_SEPARATOR;
+			}else {
+				sDirectorySeparatorUsed = sDirectorySeparatorUsedIn;
+			}
+			
+			
+			StringTokenizer token = new StringTokenizer(sFilePath, sDirectorySeparatorUsed);
+			while(token.hasMoreTokens()) {
+				String stemp = (String) token.nextToken();			
+				if(token.hasMoreTokens()) {
+					if(sReturn.equals("")) {
+						sReturn = stemp; //Merke: Es geht ja darum den "Vorletzten" Eintrag zu finden.
+					}else {
+						sReturn = sReturn + sDirectorySeparatorUsed + stemp;
+					}
+				}else {					
+					break; //Merke: Es geht ja darum den "Vorletzten" Eintrag zu finden.
+				}
+				
+					//Auskommentiert, weil in einer JAR-Datei alle Pfade des  ZipEntries mit "Slash" sind. Also wäre "\\" falsch extra anzuhängen.
+//					if(!StringZZZ.isEmpty(stemp)) {
+//						if(! stemp.endsWith(File.separator)){
+//							stemp = stemp + File.separator;
+//						}
+//					}					
+			}
+			
 		}//end main:
 		return sReturn;
 	}
@@ -1842,8 +1887,17 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			String sPathTotal = file2read.getAbsolutePath();
 			if(StringZZZ.isEmpty(sPathTotal)) break main;
 			
-			//###################################
-			StringTokenizer token = new StringTokenizer(sPathTotal, File.separator );
+			sReturn = FileEasyZZZ.getRoot(sPathTotal);			
+		}
+		return sReturn;
+	}
+	
+	public static String getRoot(String sFilePath) {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sFilePath)) break main;
+			
+			StringTokenizer token = new StringTokenizer(sFilePath, File.separator );
 			sReturn = (String) token.nextElement();
 			if(! sReturn.endsWith(File.separator)){
 				sReturn = sReturn + File.separator;

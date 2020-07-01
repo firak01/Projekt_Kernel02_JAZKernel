@@ -102,8 +102,11 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 			
 			//Merke: Die Reihenfolge ist so gewählt, dass im Template Verzeichnis frühestmöglich ein "break main" erreicht wird.
 			
-			//Falls das Verzeichnis nicht passt
-			this.objFilterPath.setCriterion(this.getDirectoryPath());
+			//Falls das Verzeichnis nicht passt	
+			if(!StringZZZ.isEmpty(this.getDirectoryPath())){
+				this.objFilterPath.setCriterion(this.getDirectoryPath());
+				if(this.objFilterPath.accept(ze)==false) break main;
+			}
 			
 			//Falls der OvpnContext nicht passt
 			this.objFilterMiddle.setCriterion(this.getMiddle());
