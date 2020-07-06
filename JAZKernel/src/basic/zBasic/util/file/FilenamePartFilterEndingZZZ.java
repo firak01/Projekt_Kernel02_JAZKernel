@@ -3,20 +3,19 @@ package basic.zBasic.util.file;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterPrefixZZZ extends ObjectZZZ implements IFilenameFilterZZZ  {
-	private String sFilePrefix;
+public class FilenamePartFilterEndingZZZ extends ObjectZZZ implements IFilenamePartFilterZZZ  {
+	private String sFileEnding;
 	
-	public FileFilterPrefixZZZ() {
+	public FilenamePartFilterEndingZZZ() {
 		super();
 	}
-	public FileFilterPrefixZZZ(String sFilePrefix){
+	public FilenamePartFilterEndingZZZ(String sFileEnding){
 		super();
-		this.setPrefix(sFilePrefix);
+		this.setEnding(sFileEnding);
 	}
 	/* (non-Javadoc)
 	 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)	 
@@ -26,26 +25,21 @@ public class FileFilterPrefixZZZ extends ObjectZZZ implements IFilenameFilterZZZ
 		main:{
 			//if(objFile==null) break main;
 			if(sName==null) break main;				
-			if(StringZZZ.isEmpty(this.getPrefix())) {
+			if(StringZZZ.isEmpty(this.getEnding())) {
 				bReturn = true;
 				break main;
 			}
-		
 			
-			//Anfang des Dateinamens berechnen			
-			String sPrefixCur;
-			try {				
-				sPrefixCur = FileEasyZZZ.getNameOnly(sName);
-				if(StringZZZ.startsWithIgnoreCase(sPrefixCur, this.getPrefix())) bReturn = true;
-			} catch (ExceptionZZZ e) {			
-				e.printStackTrace();
-			} 					
+					
+			//Dateiendung berechnen
+			String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
+			if(sEndingCur.equals(this.sFileEnding)) bReturn = true;			
 		}//END main:
 		return bReturn;
 	}
 	
 	/**A file filter, but unlike the method, implemented be the interface,
-	 * this method doesn�t need a string as parameter.
+	 * this method doesn't need a string as parameter.
 	 * @return boolean
 	 *
 	 * javadoc created by: 0823, 14.07.2006 - 11:43:07
@@ -54,40 +48,33 @@ public class FileFilterPrefixZZZ extends ObjectZZZ implements IFilenameFilterZZZ
 		boolean bReturn = false;
 		main:{
 			if(objFile==null) break main;				
-					
+		
 			String sName = objFile.getPath();
 			
 			//Ende berechnen		
-			String sPrefixCur;
-			try {
-				sPrefixCur = FileEasyZZZ.getNameOnly(sName);
-				if(StringZZZ.startsWithIgnoreCase(sPrefixCur, this.getPrefix())) bReturn = true;
-			} catch (ExceptionZZZ e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-					
+			String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
+			if(sEndingCur.equals(this.sFileEnding)) bReturn = true;			
 		}//END main:
 		return bReturn;
 	}
 	
 	//########################
 	//### Getter / Setter
-	public String getPrefix(){
-		return this.sFilePrefix;
+	public String getEnding(){
+		return this.sFileEnding;
 	}
-	public void setPrefix(String sPrefix){
-		this.sFilePrefix = sPrefix;
+	public void setEnding(String sEnding){
+		this.sFileEnding = sEnding;
 	}
 	
 	//### Aus Interface
 	@Override
 	public void setCriterion(String sCriterion) {
-		this.setPrefix(sCriterion);		
+		this.setEnding(sCriterion);		
 	}
 	@Override
 	public String getCriterion() {
-		return this.getPrefix();
+		return this.getEnding();
 	}
 
 }

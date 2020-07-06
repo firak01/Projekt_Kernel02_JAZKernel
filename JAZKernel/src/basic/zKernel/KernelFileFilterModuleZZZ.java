@@ -3,13 +3,13 @@ package basic.zKernel;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import basic.zBasic.util.file.FileFilterSuffixZZZ;
+import basic.zBasic.util.file.FilenamePartFilterSuffixZZZ;
 
 public class KernelFileFilterModuleZZZ implements FilenameFilter {
-	FileFilterSuffixZZZ objFilterSuffix;
+	FilenamePartFilterSuffixZZZ objFilterSuffix;
 	
 	public KernelFileFilterModuleZZZ(){
-		objFilterSuffix = new FileFilterSuffixZZZ("ini");
+		objFilterSuffix = new FilenamePartFilterSuffixZZZ("ini");
 	}
 	public boolean accept(File objFileDir, String sName) {
 		boolean bReturn=false;

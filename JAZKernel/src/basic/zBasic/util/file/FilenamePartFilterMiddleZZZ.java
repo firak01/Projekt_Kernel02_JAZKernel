@@ -8,13 +8,13 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterMiddleZZZ extends ObjectZZZ implements IFilenameFilterZZZ  {
+public class FilenamePartFilterMiddleZZZ extends ObjectZZZ implements IFilenamePartFilterZZZ  {
 	private String sFileMiddle;
 	
-	public FileFilterMiddleZZZ() {
+	public FilenamePartFilterMiddleZZZ() {
 		super();
 	}
-	public FileFilterMiddleZZZ(String sFileMiddle){
+	public FilenamePartFilterMiddleZZZ(String sFileMiddle){
 		super();
 		this.setMiddle(sFileMiddle);
 	}

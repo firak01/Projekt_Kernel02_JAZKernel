@@ -8,13 +8,13 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterSuffixZZZ extends ObjectZZZ implements IFilenameFilterZZZ  {
+public class FilenamePartFilterSuffixZZZ extends ObjectZZZ implements IFilenamePartFilterZZZ  {
 	private String sFileSuffix;
 	
-	public FileFilterSuffixZZZ() {
+	public FilenamePartFilterSuffixZZZ() {
 		super();
 	}
-	public FileFilterSuffixZZZ(String sFileSuffix){
+	public FilenamePartFilterSuffixZZZ(String sFileSuffix){
 		super();
 		this.setSuffix(sFileSuffix);
 	}

@@ -11,14 +11,14 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractFileFilterZZZ extends ObjectZZZ implements FilenameFilter, IFileExpansionUserZZZ{
+public abstract class AbstractFileFilterZZZ extends ObjectZZZ implements IFilenameFilterExpansionUserZZZ{
 	public enum FLAGZ{
 		REGARD_FILE_EXPANSION_ALL, REGARD_FILE_EXPANSION_LAST;
 	}
-	protected FileFilterPrefixZZZ objFilterPrefix;
-	protected FileFilterMiddleZZZ objFilterMiddle;
-	protected FileFilterSuffixZZZ objFilterSuffix;	
-	protected FileFilterEndingZZZ objFilterEnding;
+	protected FilenamePartFilterPrefixZZZ objFilterPrefix;
+	protected FilenamePartFilterMiddleZZZ objFilterMiddle;
+	protected FilenamePartFilterSuffixZZZ objFilterSuffix;	
+	protected FilenamePartFilterEndingZZZ objFilterEnding;
 	
 	protected String sOvpnContext="";
 	
@@ -80,10 +80,10 @@ public abstract class AbstractFileFilterZZZ extends ObjectZZZ implements Filenam
 //		this.setMiddle(this.getOvpnContext());
 
 //Auch die konkreten Ausprägungen können erst in der konkreten Kindklasse gefüllt werden.		
-		objFilterPrefix = new FileFilterPrefixZZZ();
-		objFilterMiddle = new FileFilterMiddleZZZ();
-		objFilterSuffix = new FileFilterSuffixZZZ();
-		objFilterEnding = new FileFilterEndingZZZ();
+		objFilterPrefix = new FilenamePartFilterPrefixZZZ();
+		objFilterMiddle = new FilenamePartFilterMiddleZZZ();
+		objFilterSuffix = new FilenamePartFilterSuffixZZZ();
+		objFilterEnding = new FilenamePartFilterEndingZZZ();
 		
 		}//end main:		
 	}
