@@ -578,7 +578,9 @@ public static File searchDirectory(String sDirectoryIn, boolean bNotInJar)throws
 			//##################################################
 			//Suche nach dem Verzeichnis in einer JAR DAtei:
 			objReturn = JarEasyZZZ.searchRessource(sDirectory);
-			
+			if(objReturn!=null){
+				if(objReturn.exists()) break main;
+			}
 												
 			//+++ Wenn noch nichts existiert NULL 
 			objReturn = null;						
@@ -1243,7 +1245,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
 		}else{
-			sFileName = sFileNameIn;
+			sFileName = StringZZZ.stripLeftFileSeparators(sFileNameIn);
 		}
 		
 		//An empty string is allowed
@@ -1273,10 +1275,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				String sFilePathTemp = new String("");
 				int iNrOfTokenTotal = objToken.countTokens(); //Merke: Dies wird durch den Aufruf von .nextToken() immer ver�ndert/weniger. Darum vorher in einer Variablen sichern.
 				for( int icount = 1;icount <= iNrOfTokenTotal; icount++){
-					stemp = objToken.nextToken();
-					if(!stemp.equals("")){
+					stemp = objToken.nextToken();									
+					if(!stemp.equals("") && !stemp.equals(FileEasyZZZ.sDIRECTORY_SEPARATOR)){
 							if(!sFilePathTemp.equals("")){
-								sFilePathTemp = sFilePathTemp + File.separatorChar + stemp;
+								sFilePathTemp = sFilePathTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + stemp;
 							}else{
 								sFilePathTemp = stemp;
 							}
@@ -1292,7 +1294,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}
 			
 			//+++  Join the strings
-			//A)
+			//A)			
 			if(sFilePath.equals("")){
 				sReturn = sFileName;
 			}else{
@@ -1301,7 +1303,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				sReturn = sFilePath;	
 				}else{
 				//C)					
-				sReturn = sFilePath + File.separatorChar + sFileName;
+				sReturn = sFilePath + FileEasyZZZ.sDIRECTORY_SEPARATOR + sFileName;
 				}
 			}
 			

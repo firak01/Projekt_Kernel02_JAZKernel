@@ -10,13 +10,13 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterPathZipZZZ extends ObjectZZZ implements IFilenameFilterZipZZZ  {
+public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
 	private String sDirectoryPath;
 	
-	public FileFilterPathZipZZZ() {
+	public FilenamePartFilterPathZipZZZ() {
 		super();
 	}
-	public FileFilterPathZipZZZ(String sDirectoryPath){
+	public FilenamePartFilterPathZipZZZ(String sDirectoryPath){
 		super();
 		this.setDirectoryPath(sDirectoryPath);
 	}

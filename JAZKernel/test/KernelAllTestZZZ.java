@@ -28,6 +28,7 @@ import basic.zBasic.util.datatype.integer.IntegerZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZTest;
 import basic.zBasic.util.file.FileTextParserZZZTest;
+import basic.zBasic.util.file.JarEasyZZZTest;
 import basic.zBasic.util.file.ini.IniFileTest;
 import basic.zBasic.util.file.jar.JarInfoClassLoaderTest;
 import basic.zBasic.util.file.jar.JarInfoFeaturesTest;
@@ -89,6 +90,10 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(IntegerArrayZZZTest.class);
 		objReturn.addTestSuite(StringArrayZZZTest.class);
 		objReturn.addTestSuite(StringZZZTest.class);
+		
+		
+		//Dateiverarbeitung - Tests
+		objReturn.addTestSuite(JarEasyZZZTest.class);
 		objReturn.addTestSuite(TxtReaderZZZTest.class);
 		objReturn.addTestSuite(TxtWriterZZZTest.class);
 		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht

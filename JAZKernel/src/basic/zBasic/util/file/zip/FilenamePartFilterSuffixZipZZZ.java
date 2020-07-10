@@ -10,15 +10,15 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterMiddleZipZZZ extends ObjectZZZ implements IFilenameFilterZipZZZ  {
-	private String sFileMiddle;
+public class FilenamePartFilterSuffixZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
+	private String sFileSuffix;
 	
-	public FileFilterMiddleZipZZZ() {
+	public FilenamePartFilterSuffixZipZZZ() {
 		super();
 	}
-	public FileFilterMiddleZipZZZ(String sFileMiddle){
+	public FilenamePartFilterSuffixZipZZZ(String sFileSuffix){
 		super();
-		this.setMiddle(sFileMiddle);
+		this.setSuffix(sFileSuffix);
 	}
 	
 	@Override
@@ -26,42 +26,41 @@ public class FileFilterMiddleZipZZZ extends ObjectZZZ implements IFilenameFilter
 		    boolean bReturn=false;
 			main:{
 				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getMiddle())) {
+				if(StringZZZ.isEmpty(this.getSuffix())) {
 					bReturn = true;
 					break main;
 				}				
 				String sName = ze.getName();
 				
-				//"Mitte" des Dateinamens berechnen			
-				String sMiddleCur;
+				//Ende des Dateinamens berechnen			
+				String sSuffixCur;
 				try {				
-					sMiddleCur = FileEasyZZZ.getNameOnly(sName);				
-					sMiddleCur = StringZZZ.midBounds(sMiddleCur, 1, 1);
-					if(StringZZZ.contains(sMiddleCur, this.getMiddle())) bReturn = true;
+					sSuffixCur = FileEasyZZZ.getNameOnly(sName);
+					if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;
 				} catch (ExceptionZZZ e) {			
 					e.printStackTrace();
-				} 							
+				} 					
 			}//END main:
 			return bReturn;
 	}
 	
 	//########################
 	//### Getter / Setter
-		public String getMiddle(){
-			return this.sFileMiddle;
+		public String getSuffix(){
+			return this.sFileSuffix;
 		}
-		public void setMiddle(String sMiddle){
-			this.sFileMiddle = sMiddle;
+		public void setSuffix(String sSuffix){
+			this.sFileSuffix = sSuffix;
 		}
 	
 	//### Aus Interface
 	@Override
 	public void setCriterion(String sCriterion) {
-		this.setMiddle(sCriterion);		
+		this.setSuffix(sCriterion);		
 	}
 	@Override
 	public String getCriterion() {
-		return this.getMiddle();
+		return this.getSuffix();
 	}
 	
 

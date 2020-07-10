@@ -10,15 +10,15 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterEndingZipZZZ extends ObjectZZZ implements IFilenameFilterZipZZZ  {
-	private String sFileEnding;
+public class FilenamePartFilterPrefixZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
+	private String sFilePrefix;
 	
-	public FileFilterEndingZipZZZ() {
+	public FilenamePartFilterPrefixZipZZZ() {
 		super();
 	}
-	public FileFilterEndingZipZZZ(String sFileEnding){
+	public FilenamePartFilterPrefixZipZZZ(String sFilePrefix){
 		super();
-		this.setEnding(sFileEnding);
+		this.setPrefix(sFilePrefix);
 	}
 	
 	@Override
@@ -26,36 +26,41 @@ public class FileFilterEndingZipZZZ extends ObjectZZZ implements IFilenameFilter
 		    boolean bReturn=false;
 			main:{
 				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getEnding())) {
+				if(StringZZZ.isEmpty(this.getPrefix())) {
 					bReturn = true;
 					break main;
 				}				
 				String sName = ze.getName();
 				
-				//Dateiendung berechnen
-				String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
-				if(sEndingCur.equals(this.sFileEnding)) bReturn = true;	
+				//Anfang des Dateinamens berechnen			
+				String sPrefixCur;
+				try {				
+					sPrefixCur = FileEasyZZZ.getNameOnly(sName);
+					if(StringZZZ.startsWithIgnoreCase(sPrefixCur, this.getPrefix())) bReturn = true;
+				} catch (ExceptionZZZ e) {			
+					e.printStackTrace();
+				} 					
 			}//END main:
 			return bReturn;
 	}
 	
 	//########################
 	//### Getter / Setter
-	public String getEnding(){
-		return this.sFileEnding;
+	public String getPrefix(){
+		return this.sFilePrefix;
 	}
-	public void setEnding(String sEnding){
-		this.sFileEnding = sEnding;
+	public void setPrefix(String sPrefix){
+		this.sFilePrefix = sPrefix;
 	}
 	
 	//### Aus Interface
 	@Override
 	public void setCriterion(String sCriterion) {
-		this.setEnding(sCriterion);		
+		this.setPrefix(sCriterion);		
 	}
 	@Override
 	public String getCriterion() {
-		return this.getEnding();
+		return this.getPrefix();
 	}
 	
 

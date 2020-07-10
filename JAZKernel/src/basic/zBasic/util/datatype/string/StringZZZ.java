@@ -2378,6 +2378,46 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
+	/** Entferne den String von links kommend, lasse mindestens 1 Zeichen übrig.
+	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
+	public static String stripLeft(String sString, String[] saStringsToBeStripped){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(saStringsToBeStripped==null) break main;
+									
+			boolean bGoon = false;
+			while(!bGoon){
+				bGoon = true;
+				String sStringTemp = "";
+				for(String sStringToBeStripped:saStringsToBeStripped){
+					if(StringZZZ.startsWithIgnoreCase(sReturn, sStringToBeStripped)){
+						bGoon = false;
+						sStringTemp = StringZZZ.rightback(sReturn, sStringToBeStripped.length());
+						sReturn = sStringTemp;
+					}
+				}				
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String stripLeftFileSeparators(String sString){
+		String sReturn = sString;
+		main:{
+            //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(sString.length()<=FileEasyZZZ.sDIRECTORY_CURRENT.length())break main;
+			String[] saStringsToBeStripped = {FileEasyZZZ.sDIRECTORY_SEPARATOR, FileEasyZZZ.sDIRECTORY_CURRENT,"/"};
+			sReturn = StringZZZ.stripLeft(sString, saStringsToBeStripped);
+		}//end main:
+		return sReturn;
+	}
+	
 	/** Entferne den String von rechts kommend, lasse mindestens 1 Zeichen übrig.
 	 *   Ohne ein Zeichen übrig zu lassen StringZZZ.trimRight(...)
 	 * @param sString

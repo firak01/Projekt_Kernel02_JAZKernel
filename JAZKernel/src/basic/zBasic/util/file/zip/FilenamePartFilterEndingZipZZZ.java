@@ -10,15 +10,15 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FileFilterSuffixZipZZZ extends ObjectZZZ implements IFilenameFilterZipZZZ  {
-	private String sFileSuffix;
+public class FilenamePartFilterEndingZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
+	private String sFileEnding;
 	
-	public FileFilterSuffixZipZZZ() {
+	public FilenamePartFilterEndingZipZZZ() {
 		super();
 	}
-	public FileFilterSuffixZipZZZ(String sFileSuffix){
+	public FilenamePartFilterEndingZipZZZ(String sFileEnding){
 		super();
-		this.setSuffix(sFileSuffix);
+		this.setEnding(sFileEnding);
 	}
 	
 	@Override
@@ -26,41 +26,36 @@ public class FileFilterSuffixZipZZZ extends ObjectZZZ implements IFilenameFilter
 		    boolean bReturn=false;
 			main:{
 				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getSuffix())) {
+				if(StringZZZ.isEmpty(this.getEnding())) {
 					bReturn = true;
 					break main;
 				}				
 				String sName = ze.getName();
 				
-				//Ende des Dateinamens berechnen			
-				String sSuffixCur;
-				try {				
-					sSuffixCur = FileEasyZZZ.getNameOnly(sName);
-					if(StringZZZ.endsWithIgnoreCase(sSuffixCur, this.getSuffix())) bReturn = true;
-				} catch (ExceptionZZZ e) {			
-					e.printStackTrace();
-				} 					
+				//Dateiendung berechnen
+				String sEndingCur = FileEasyZZZ.NameEndCompute(sName);
+				if(sEndingCur.equals(this.sFileEnding)) bReturn = true;	
 			}//END main:
 			return bReturn;
 	}
 	
 	//########################
 	//### Getter / Setter
-		public String getSuffix(){
-			return this.sFileSuffix;
-		}
-		public void setSuffix(String sSuffix){
-			this.sFileSuffix = sSuffix;
-		}
+	public String getEnding(){
+		return this.sFileEnding;
+	}
+	public void setEnding(String sEnding){
+		this.sFileEnding = sEnding;
+	}
 	
 	//### Aus Interface
 	@Override
 	public void setCriterion(String sCriterion) {
-		this.setSuffix(sCriterion);		
+		this.setEnding(sCriterion);		
 	}
 	@Override
 	public String getCriterion() {
-		return this.getSuffix();
+		return this.getEnding();
 	}
 	
 

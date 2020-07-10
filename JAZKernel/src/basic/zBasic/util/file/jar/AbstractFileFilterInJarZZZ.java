@@ -9,21 +9,21 @@ import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.zip.FileFilterEndingZipZZZ;
-import basic.zBasic.util.file.zip.FileFilterMiddleZipZZZ;
-import basic.zBasic.util.file.zip.FileFilterPathZipZZZ;
-import basic.zBasic.util.file.zip.FileFilterPrefixZipZZZ;
-import basic.zBasic.util.file.zip.FileFilterSuffixZipZZZ;
+import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
+import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
+import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
+import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
+import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements ZipEntryFilter{
-	protected FileFilterPathZipZZZ objFilterPath;
-	protected FileFilterPrefixZipZZZ objFilterPrefix;
-	protected FileFilterMiddleZipZZZ objFilterMiddle;
-	protected FileFilterSuffixZipZZZ objFilterSuffix;	
-	protected FileFilterEndingZipZZZ objFilterEnding;
+public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements ZipEntryFilter,IFileExpansionUserZZZ{
+	protected FilenamePartFilterPathZipZZZ objFilterPath;
+	protected FilenamePartFilterPrefixZipZZZ objFilterPrefix;
+	protected FilenamePartFilterMiddleZipZZZ objFilterMiddle;
+	protected FilenamePartFilterSuffixZipZZZ objFilterSuffix;	
+	protected FilenamePartFilterEndingZipZZZ objFilterEnding;
 	
 	protected String sOvpnContext="";
 	
@@ -79,18 +79,17 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 		if(btemp==true) break main;
 		
 		
-		this.setOvpnContext(sOvpnContextServerOrClient);
-		
-//Diese Angaben gelten eben nicht für alle FileFilter, darum nicht in dieser abstrakten Elternklasse verwenden.
-//		this.setPrefix(ConfigFileTemplateOvpnOVPN.sFILE_TEMPLATE_PREFIX);
-//		this.setMiddle(this.getOvpnContext());
+		this.setOvpnContext(sOvpnContextServerOrClient);		
 
-//Auch die konkreten Ausprägungen können erst in der konkreten Kindklasse gefüllt werden.
-		objFilterPath = new FileFilterPathZipZZZ();
-		objFilterPrefix = new FileFilterPrefixZipZZZ();
-		objFilterMiddle = new FileFilterMiddleZipZZZ();
-		objFilterSuffix = new FileFilterSuffixZipZZZ();
-		objFilterEnding = new FileFilterEndingZipZZZ();
+		//Die konkreten Ausprägungen können erst in der accept Methode gefüllt werden, mit den konkreten Werten.
+		//Z.B. für Middle-Wert steht in der accept-Methode:
+		//		this.objFilterMiddle.setCriterion(this.getMiddle());
+		//      if(this.objFilterMiddle.accept(ze)==false) break main;
+		objFilterPath = new FilenamePartFilterPathZipZZZ();
+		objFilterPrefix = new FilenamePartFilterPrefixZipZZZ();
+		objFilterMiddle = new FilenamePartFilterMiddleZipZZZ();
+		objFilterSuffix = new FilenamePartFilterSuffixZipZZZ();
+		objFilterEnding = new FilenamePartFilterEndingZipZZZ();
 		
 		}//end main:		
 	}
@@ -187,4 +186,11 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 			}
 			return this.sEnding;
 		}				
+		
+		public IFileExpansionZZZ getFileExpansionObject() {
+			return this.objExpansion;
+		}
+		public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion) {
+			this.objExpansion = objFileExpansion;
+		}
 }//END class
