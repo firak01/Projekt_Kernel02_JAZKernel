@@ -1159,7 +1159,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			
 			//An empty string is allowed
 			if(StringZZZ.isEmpty(sFilePathIn)) break main;
-			String sFilePath=StringZZZ.stripRightFileSeparators(sFilePathIn);			
+			String sFilePath=StringZZZ.stripFileSeparatorsRight(sFilePathIn);			
 			
 			String sDirectorySeparatorUsed;
 			if(StringZZZ.isEmpty(sDirectorySeparatorUsedIn)) {
@@ -1245,7 +1245,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
 		}else{
-			sFileName = StringZZZ.stripLeftFileSeparators(sFileNameIn);
+			sFileName = StringZZZ.stripFileSeparatorsLeft(sFileNameIn);
 		}
 		
 		//An empty string is allowed
@@ -1258,7 +1258,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
 		}else{
-			sFilePath = StringZZZ.stripRightFileSeparators(sFilePathIn);
+			sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
 		}
 					
 			StringTokenizer objToken;
@@ -1609,7 +1609,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){	
 					String sWorkspaceURL = workspaceURL.getPath();					
-					sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);
+					sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);
 					objReturn = new File(sWorkspaceURL);	
 					if(objReturn.exists()) {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Datei gefunden '" + sPath + "'";
@@ -1651,7 +1651,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 //							sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Objekt nicht null für '" + sPathTotal + "'";
 //						    System.out.println(sLog);
 							String sWorkspaceURL = workspaceURL.getPath();					
-							sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);
+							sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);
 							objReturn = new File(sWorkspaceURL);	
 							if(objReturn.exists()) {
 								sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Datei gefunden '" + sPathTotal + "'";

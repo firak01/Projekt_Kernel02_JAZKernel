@@ -387,7 +387,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					try {
 						workspaceURL = new File(sDirectoryConfig).toURI().toURL();
 						String sWorkspaceURL = workspaceURL.getPath();					
-						sWorkspaceURL = StringZZZ.stripRightFileSeparators(sWorkspaceURL);				
+						sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);				
 						objDir = FileEasyZZZ.getDirectory(sWorkspaceURL);
 						if(objDir.exists()){
 							sDirectoryConfig = objDir.getAbsolutePath();

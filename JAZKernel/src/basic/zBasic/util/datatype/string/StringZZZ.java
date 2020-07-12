@@ -2406,7 +2406,20 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String stripLeftFileSeparators(String sString){
+	public static String stripFileSeparators(String sString){
+		String sReturn = sString;
+		main:{
+            //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(sString.length()<=FileEasyZZZ.sDIRECTORY_CURRENT.length())break main;
+
+			sReturn = StringZZZ.stripFileSeparatorsLeft(sString);
+			sReturn = StringZZZ.stripFileSeparatorsRight(sReturn);
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String stripFileSeparatorsLeft(String sString){
 		String sReturn = sString;
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
@@ -2442,7 +2455,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	public static String stripRightFileSeparators(String sString){
+	public static String stripFileSeparatorsRight(String sString){
 		String sReturn = sString;
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.

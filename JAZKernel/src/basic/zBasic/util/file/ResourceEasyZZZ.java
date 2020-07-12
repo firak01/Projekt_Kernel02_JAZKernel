@@ -24,6 +24,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.JarInfo;
 import basic.zBasic.util.file.zip.IDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
+import basic.zBasic.util.machine.EnvironmentZZZ;
 
 public class ResourceEasyZZZ extends ObjectZZZ{
 	private ResourceEasyZZZ(){
@@ -263,16 +264,26 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				//File objJarAsDirectoryMock = new File(sJarPath);
 				//String archiveName = objJarAsDirectoryMock.getAbsolutePath();
 				
+				String sDirTemp = EnvironmentZZZ.getHostDirectoryTemp();
+			
 				//Falls noch nicht vorhanden: Verzeichnis neu erstellen. Falls vorhanden, leer machen.
 				String sDirPath;
 				if(StringZZZ.isEmpty(sDirPathInJar))
-					sDirPath = "c:\\temp"+ FileEasyZZZ.sDIRECTORY_SEPARATOR + sApplicationKeyAsSubDirectoryTemp;
+					sDirPath = FileEasyZZZ.joinFilePathName(sDirTemp, sApplicationKeyAsSubDirectoryTemp);
 				else {
-					sDirPath = "c:\\temp"+ FileEasyZZZ.sDIRECTORY_SEPARATOR + sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sDirPathInJar;
-				File objFileTemp = new File(sDirPathInJar);
+					sDirPath = FileEasyZZZ.joinFilePathName(sDirTemp, sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sDirPathInJar);
+				}
+				//Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
+				sDirPath = StringZZZ.replace(sDirPath, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
+				
+				//UND: Abschliessend gibt es bei Verzeichnissen ein \ ... aber NUR 1x
+				sDirPath=StringZZZ.stripFileSeparatorsRight(sDirPath);
+				
+				
+				File objFileTemp = new File(sDirPath);
 				boolean bSuccess = false;
 				if(!objFileTemp.exists()) {
-					bSuccess = FileEasyZZZ.createDirectory(sDirPathInJar);
+					bSuccess = FileEasyZZZ.createDirectory(sDirPath);
 				}else {
 					bSuccess = FileEasyZZZ.removeDirectoryContent(objFileTemp, true);
 				}
@@ -280,6 +291,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem temporären Verzeichnis möglich '" + sDirPath + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
 					throw ez;
 				}
+				
 				
 				String archiveName = objFileJar.getAbsolutePath();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterInJar );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
@@ -306,20 +318,21 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 						//Entferne ggf. künstlich hinzugefügte DirectorySeparatoren am Anfang/Ende.
 						//z.B. in Jar - Dateien steht für Verzeichnisse immer ein /  am Ende.
 						//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
-						String sDirName = StringZZZ.stripRightFileSeparators(sKey);
-						sDirName = StringZZZ.stripLeftFileSeparators(sDirName);
+						String sDirName = StringZZZ.stripFileSeparators(sKey);
 						
 						//Ggfs. in den Jar/Zip Verzeichnissen verwendete / wieder in Backslashes abändern.
 						String sDirNameNormed = StringZZZ.replace(sDirName, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
-						String sPath = "c:\\temp"+ FileEasyZZZ.sDIRECTORY_SEPARATOR + sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sDirNameNormed;
+						String sPath = FileEasyZZZ.joinFilePathName(sDirTemp, sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sDirNameNormed);
 						
 						if(ht.get(sKey).isDirectory()) {
-							//!!! Bereits existierendes Verzeichnis und Inhalt  löschen
-							File objFileDir = new File(sPath);
-							FileEasyZZZ.removeDirectoryContent(objFileDir,true);
-							
-							//Nun das Verzeichnis wieder leer erstellen.
-							FileEasyZZZ.createDirectory(sPath);						
+							File objFileDir = new File(sPath);							
+							if(objFileDir.exists()) {
+								//!!! Bereits existierende Inhalte  löschen
+								FileEasyZZZ.removeDirectoryContent(objFileDir,true);
+							}else{
+								//Nun das Verzeichnis erstellen.
+								FileEasyZZZ.createDirectory(sPath);
+							}
 						}else {
 							//Dateiene kopieren						
 							Files.copy(is, Paths.get(sPath));
@@ -333,7 +346,6 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	
-			}
 		}//End main		 	
 		return objaReturn;
 	}

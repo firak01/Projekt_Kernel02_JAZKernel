@@ -38,4 +38,15 @@ public class EnvironmentZZZ implements IConstantZZZ{
 		}
 		return sReturn;		
 	}
+	
+	public static String getHostDirectoryTemp() throws ExceptionZZZ{
+		String sReturn = null;
+//		try {
+			sReturn = System.getProperty("java.io.tmpdir");
+//		} catch (UnknownHostException e) {			
+//			ExceptionZZZ ez = new ExceptionZZZ("UnknownHostException: ", iERROR_RUNTIME,  EnvironmentZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName()); 
+//			throw ez;
+//		}
+		return sReturn;		
+	}
 }

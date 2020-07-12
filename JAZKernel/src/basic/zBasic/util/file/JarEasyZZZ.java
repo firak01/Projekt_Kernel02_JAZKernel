@@ -113,8 +113,7 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 				sTargetTempDirectorySubFilepath="";
 			else {
 				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.
-				sTargetTempDirectorySubFilepath=StringZZZ.stripRightFileSeparators(sTargetTempDirectorySubFilepathIn);
-				sTargetTempDirectorySubFilepath=StringZZZ.stripLeftFileSeparators(sTargetTempDirectorySubFilepath);
+				sTargetTempDirectorySubFilepath=StringZZZ.stripFileSeparators(sTargetTempDirectorySubFilepathIn);				
 			}
 
 			try{
@@ -180,7 +179,7 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 				sDirectoryFilePathInJar = StringZZZ.replace(sDirectoryFilePathInJarIn, FileEasyZZZ.sDIRECTORY_SEPARATOR, "/");
 				
 				//UND: Abschliessend gibt es bei Verzeichnissen ein / ... aber NUR 1x
-				sDirectoryFilePathInJar=StringZZZ.stripRightFileSeparators(sDirectoryFilePathInJar);
+				sDirectoryFilePathInJar=StringZZZ.stripFileSeparatorsRight(sDirectoryFilePathInJar);
 				sDirectoryFilePathInJar=sDirectoryFilePathInJar+"/";
 			}
 			
@@ -189,11 +188,10 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 				sTargetDirectoryFilepath="";  //TEMP VERZEICHNIS???
 			else {
 				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
-				sTargetDirectoryFilepath=StringZZZ.stripRightFileSeparators(sTargetDirectoryFilepathIn);
-				sTargetDirectoryFilepath=StringZZZ.stripLeftFileSeparators(sTargetDirectoryFilepath);						
+				sTargetDirectoryFilepath=StringZZZ.stripFileSeparators(sTargetDirectoryFilepathIn);									
 			}
 			
-			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeicnis auch tatsächlich erstellt wird ++++++++++++
+			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
 			try {
 				IDirectoryFilterZipZZZ objFilterInJar = new DirectoryFilterZipZZZ(sDirectoryFilePathInJar);
 				File[] objaDir = ResourceEasyZZZ.findDirectoryInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterInJar, "FGLTEST");
@@ -232,8 +230,7 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 				sTargetTempDirectorySubFilepath="";
 			else {
 				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.
-				sTargetTempDirectorySubFilepath=StringZZZ.stripRightFileSeparators(sTargetTempDirectorySubFilepathIn);
-				sTargetTempDirectorySubFilepath=StringZZZ.stripLeftFileSeparators(sTargetTempDirectorySubFilepath);
+				sTargetTempDirectorySubFilepath=StringZZZ.stripFileSeparators(sTargetTempDirectorySubFilepathIn);				
 			}
 
 			try{
