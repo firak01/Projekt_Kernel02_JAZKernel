@@ -49,7 +49,7 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 			if(!bIsDirectory) {
 				objReturn = JarEasyZZZ.extractFileFromJarToTemp(objJarFile, sFilePath, sTargetTempDirectorySubFilepath);
 			}else {
-				objReturn = JarEasyZZZ.extractDirectoryToTemp(objJarFile, sFilePath, sTargetTempDirectorySubFilepath);
+				objReturn = JarEasyZZZ.extractDirectoryToTemp(objJarFile, sFilePath, sTargetTempDirectorySubFilepath, false);
 			}
 			}//end main:
 			return objReturn;
@@ -89,14 +89,16 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 				return objReturn;
 		}
 	
-	/**
+	/** Merke: Wenn ein Verzeichnis aus der JAR Datei zu extrahieren ist, dann wird lediglich die JAR Datei zurückgegeben.
+	 *         Verwende für die Behandlung eines ganzen Verzeichnisses (oder auch nur des Verzeichnisses) 
+	 *         die Methode, die ein Verzeichnis im TEMP-Ordner des HOST Rechners erstellt. 
 	 * @param filePath
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File extractDirectoryToTemp(JarFile objJarFile, String sFilePath, String sTargetTempDirectorySubFilepathIn) throws ExceptionZZZ {
+	public static File extractDirectoryToTemp(JarFile objJarFile, String sFilePath, String sTargetTempDirectorySubFilepathIn, boolean bExtractFiles) throws ExceptionZZZ {
 		File objReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sFilePath)){
@@ -152,7 +154,6 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	//public static File extractDirectory(JarFile objJarFile, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
 	public static File extractDirectory(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
 		File objReturn=null;
 		main:{			
@@ -193,10 +194,19 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 			
 			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
 			try {
+				File[] objaDir = null;			
+				//Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
 				IDirectoryFilterZipZZZ objFilterInJar = new DirectoryFilterZipZZZ(sDirectoryFilePathInJar);
-				File[] objaDir = ResourceEasyZZZ.findDirectoryInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterInJar, "FGLTEST");
+				objaDir = ResourceEasyZZZ.findDirectoryInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterInJar, sTargetDirectoryFilepath);
 			    objReturn = objaDir[0];
 			
+			    if(bWithFiles) {
+					TODOGOON; 
+					//Analog zu FileFilterConfigOvpnTemplateInJarOVPN, aber:
+					//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
+					IDirectoryFileFilterZipZZZ objFilterInJar = new DirectoryFileFilterZipZZZ(sDirectoryFilePathInJar);
+					objaDir = ResourceEasyZZZ.findDirectoryInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterInJar, sTargetDirectoryFilepath);
+				}
 			
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -259,7 +269,9 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 			return objReturn;
 	}
 	
-	/**
+	/** Merke: Wenn ein Verzeichnis aus der JAR Datei zu extrahieren ist, dann wird lediglich die JAR Datei zurückgegeben.
+	 *         Verwende für die Behandlung eines ganzen Verzeichnisses (oder auch nur des Verzeichnisses) 
+	 *         die Methode, die ein Verzeichnis im TEMP-Ordner des HOST Rechners erstellt. 
 	 * @param filePath
 	 * @return
 	 * @throws ExceptionZZZ
