@@ -10,33 +10,38 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.zip.DirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
-import basic.zBasic.util.file.zip.IDirectoryFilterZipUserZZZ;
-import basic.zBasic.util.file.zip.IDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractDirectoryFilterInJarZZZ extends ObjectZZZ implements IDirectoryFilterZipUserZZZ{
-	protected IDirectoryFilterZipZZZ objFilterDirectory;			
+public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
+	protected IFileDirectoryPartFilterZipZZZ objFilterDirectory;			
 	protected String sDirectoryPath="";
 		
-	public AbstractDirectoryFilterInJarZZZ() throws ExceptionZZZ {
+	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
 		this("","init");
 	}		
-	public AbstractDirectoryFilterInJarZZZ(String sDirectoryPath, String sFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileDirectoryFilterInJarZZZ(String sDirectoryPath, String sFlagControlIn) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControlIn;
 		AbstractDirectoryFilterInJarNew_(sDirectoryPath, saFlagControl);
 	}
-	public AbstractDirectoryFilterInJarZZZ(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileDirectoryFilterInJarZZZ(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
 		super();
 		AbstractDirectoryFilterInJarNew_(sDirectoryPath, saFlagControlIn);
+	} 
+	public AbstractFileDirectoryFilterInJarZZZ(String sDirectoryPath) throws ExceptionZZZ {
+		super();
+		AbstractDirectoryFilterInJarNew_(sDirectoryPath, null);
 	} 
 	private void AbstractDirectoryFilterInJarNew_(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
 		String stemp; boolean btemp;
@@ -101,16 +106,12 @@ public abstract class AbstractDirectoryFilterInJarZZZ extends ObjectZZZ implemen
 			return this.sDirectoryPath;
 		}
 		
-		public void setDirectoryFilter(IDirectoryFilterZipZZZ objFilterDirectory) {
-			this.objFilterDirectory = objFilterDirectory;
+		@Override
+		public void setDirectoryFilter(IFileDirectoryPartFilterZipZZZ objDirectoryFilterZip) {
+			this.objFilterDirectory = objDirectoryFilterZip;
 		}
-		public IDirectoryFilterZipZZZ getDirectoryFilter() {
-			if(this.objFilterDirectory==null) {
-				this.objFilterDirectory = new DirectoryFilterZipZZZ();
-			}
+		@Override
+		public IFileDirectoryPartFilterZipZZZ getDirectoryFilter() {
 			return this.objFilterDirectory;
 		}
-		
-		
-
 }//END class

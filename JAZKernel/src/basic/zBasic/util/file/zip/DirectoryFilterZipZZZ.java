@@ -6,7 +6,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-public class DirectoryFilterZipZZZ extends ObjectZZZ implements IDirectoryFilterZipZZZ{
+public class DirectoryFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
 	private String sDirectoryPath;
 	
 	public DirectoryFilterZipZZZ() {

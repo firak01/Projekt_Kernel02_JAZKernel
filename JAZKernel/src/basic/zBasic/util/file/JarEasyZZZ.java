@@ -16,8 +16,12 @@ import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.jar.FileDirectoryFilterInJarZZZ;
 import basic.zBasic.util.file.zip.DirectoryFilterZipZZZ;
-import basic.zBasic.util.file.zip.IDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.ZipEntryFilter;
 
 public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ{
 
@@ -196,16 +200,16 @@ public class JarEasyZZZ  extends ObjectZZZ implements IResourceHandlingObjectZZZ
 			try {
 				File[] objaDir = null;			
 				//Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
-				IDirectoryFilterZipZZZ objFilterInJar = new DirectoryFilterZipZZZ(sDirectoryFilePathInJar);
-				objaDir = ResourceEasyZZZ.findDirectoryInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterInJar, sTargetDirectoryFilepath);
+				IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInZipZZZ(sDirectoryFilePathInJar);
+				objaDir = ResourceEasyZZZ.findFileInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterDirInJar, sTargetDirectoryFilepath);
 			    objReturn = objaDir[0];
 			
 			    if(bWithFiles) {
 					TODOGOON; 
 					//Analog zu FileFilterConfigOvpnTemplateInJarOVPN, aber:
 					//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
-					IDirectoryFileFilterZipZZZ objFilterInJar = new DirectoryFileFilterZipZZZ(sDirectoryFilePathInJar);
-					objaDir = ResourceEasyZZZ.findDirectoryInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterInJar, sTargetDirectoryFilepath);
+					IFileDirectoryPartFilterZipUserZZZ objFilterFileInJar = new FileDirectoryFilterInJarZZZ(sDirectoryFilePathInJar);
+					objaDir = ResourceEasyZZZ.findFileInJar(objFileAsJar, sDirectoryFilePathInJar, objFilterFileInJar, sTargetDirectoryFilepath);
 				}
 			
 			}catch (Exception e){
