@@ -7,13 +7,13 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterDirectoryZZZ2 extends ObjectZZZ implements IFilenamePartFilterZZZ  {
+public class FilenamePartFilterDirectoryZZZ extends ObjectZZZ implements IFilenamePartFilterZZZ  {
 	private String sFileEnding;
 	
-	public FilenamePartFilterDirectoryZZZ2() {
+	public FilenamePartFilterDirectoryZZZ() {
 		super();
 	}
-	public FilenamePartFilterDirectoryZZZ2(String sFileEnding){
+	public FilenamePartFilterDirectoryZZZ(String sFileEnding){
 		super();
 		this.setEnding(sFileEnding);
 	}

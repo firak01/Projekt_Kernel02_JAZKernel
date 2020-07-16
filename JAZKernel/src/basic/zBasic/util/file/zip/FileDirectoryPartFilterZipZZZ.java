@@ -6,13 +6,13 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-public class DirectoryFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
+public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
 	private String sDirectoryPath;
 	
-	public DirectoryFilterZipZZZ() {
+	public FileDirectoryPartFilterZipZZZ() {
 		super();
 	}
-	public DirectoryFilterZipZZZ(String sDirectoryPath) {
+	public FileDirectoryPartFilterZipZZZ(String sDirectoryPath) {
 		super();
 		this.setDirectoryPath(sDirectoryPath);
 	}

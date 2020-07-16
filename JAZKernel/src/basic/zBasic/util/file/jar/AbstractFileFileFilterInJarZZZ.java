@@ -14,47 +14,41 @@ import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements ZipEntryFilter,IFileExpansionUserZZZ{
+public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionUserZZZ{
 	protected FilenamePartFilterPathZipZZZ objFilterPath;
 	protected FilenamePartFilterPrefixZipZZZ objFilterPrefix;
 	protected FilenamePartFilterMiddleZipZZZ objFilterMiddle;
 	protected FilenamePartFilterSuffixZipZZZ objFilterSuffix;	
 	protected FilenamePartFilterEndingZipZZZ objFilterEnding;
-	
-	protected String sOvpnContext="";
-	
-	protected String sDirectoryPath="";
-	protected String sPrefix="";
-	protected String sMiddle="";
-	protected String sSuffix="";
-	protected String sEnding="";
-	
+		
 	//wg. des Interfaces IFileExpansionUserZZZ
 	protected IFileExpansionZZZ objExpansion = null;
 	
 	
-	public AbstractFileFilterInJarZZZ() throws ExceptionZZZ {
+	public AbstractFileFileFilterInJarZZZ() throws ExceptionZZZ {
 		this("");
 	}		
-	public AbstractFileFilterInJarZZZ(String sOvpnContextServerOrClient) throws ExceptionZZZ {
+	public AbstractFileFileFilterInJarZZZ(String sDirectoryPath) throws ExceptionZZZ {
 		super();
-		AbstractOVPNFileFilterInJarNew_(sOvpnContextServerOrClient, null);
+		AbstractOVPNFileFilterInJarNew_(sDirectoryPath, null);
 	} 
-	public AbstractFileFilterInJarZZZ(String sOvpnContextServerOrClient, String sFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileFileFilterInJarZZZ(String sDirectoryPath, String sFlagControlIn) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControlIn;
-		AbstractOVPNFileFilterInJarNew_(sOvpnContextServerOrClient, saFlagControl);
+		AbstractOVPNFileFilterInJarNew_(sDirectoryPath, saFlagControl);
 	}
-	public AbstractFileFilterInJarZZZ(String sOvpnContextServerOrClient, String[] saFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileFileFilterInJarZZZ(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
 		super();
-		AbstractOVPNFileFilterInJarNew_(sOvpnContextServerOrClient, saFlagControlIn);
+		AbstractOVPNFileFilterInJarNew_(sDirectoryPath, saFlagControlIn);
 	} 
-	private void AbstractOVPNFileFilterInJarNew_(String sOvpnContextServerOrClient, String[] saFlagControlIn) throws ExceptionZZZ {
+	private void AbstractOVPNFileFilterInJarNew_(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
 		String stemp; boolean btemp;
 		main:{
 		//setzen der übergebenen Flags	
@@ -78,14 +72,11 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 		btemp = this.getFlag("init");
 		if(btemp==true) break main;
 		
-		
-		this.setOvpnContext(sOvpnContextServerOrClient);		
-
 		//Die konkreten Ausprägungen können erst in der accept Methode gefüllt werden, mit den konkreten Werten.
 		//Z.B. für Middle-Wert steht in der accept-Methode:
 		//		this.objFilterMiddle.setCriterion(this.getMiddle());
 		//      if(this.objFilterMiddle.accept(ze)==false) break main;
-		objFilterPath = new FilenamePartFilterPathZipZZZ();
+		objFilterPath = new FilenamePartFilterPathZipZZZ(sDirectoryPath);
 		objFilterPrefix = new FilenamePartFilterPrefixZipZZZ();
 		objFilterMiddle = new FilenamePartFilterMiddleZipZZZ();
 		objFilterSuffix = new FilenamePartFilterSuffixZipZZZ();
@@ -128,63 +119,78 @@ public abstract class AbstractFileFilterInJarZZZ extends ObjectZZZ implements Zi
 		return bReturn;		
 	}
 	
-	//##### GETTER / SETTER	
-		public void setOvpnContext(String sContext) {
-			this.sOvpnContext=sContext;
-		}
-		public String getOvpnContext() {
-			return this.sOvpnContext;
-		}
+	//##### GETTER / SETTER
+	public void setDirectoryPartFilter(FilenamePartFilterPathZipZZZ objDirectoryFilterZip) {
+		this.objFilterPath = objDirectoryFilterZip;
+	}
+	public FilenamePartFilterPathZipZZZ getDirectoryPartFilter() {
+		return this.objFilterPath;
+	}
+	
+	public void setPrefixPartFilter(FilenamePartFilterPrefixZipZZZ objPrefixFilterZip) {
+		this.objFilterPrefix = objPrefixFilterZip;
+	}
+	public FilenamePartFilterPrefixZipZZZ getPrefixPartFilter() {
+		return this.objFilterPrefix;
+	}
+		
+	public void setMiddlePartFilter(FilenamePartFilterMiddleZipZZZ objMiddleFilterZip) {
+		this.objFilterMiddle = objMiddleFilterZip;
+	}
+	public FilenamePartFilterMiddleZipZZZ getMiddlePartFilter() {
+		return this.objFilterMiddle;
+	}
+	
+	
+	public void setSuffixPartFilter(FilenamePartFilterSuffixZipZZZ objSuffixFilterZip) {
+		this.objFilterSuffix = objSuffixFilterZip;
+	}
+	public FilenamePartFilterSuffixZipZZZ getSuffixPartFilter() {
+		return this.objFilterSuffix;
+	}
+	
+	public void setEndingPartFilter(FilenamePartFilterEndingZipZZZ objEndingFilterZip) {
+		this.objFilterEnding = objEndingFilterZip;
+	}
+	public FilenamePartFilterEndingZipZZZ getEndingPartFilter() {
+		return this.objFilterEnding;
+	}
+	
 	
 		protected void setDirectoryPath(String sDirectoryPath) {
-			this.sDirectoryPath = sDirectoryPath;
+			this.getDirectoryPartFilter().setDirectoryPath(sDirectoryPath);			
 		}
 		protected String getDirectoryPath() {
-			if(StringZZZ.isEmpty(this.sDirectoryPath)) {
-				this.setDirectoryPath("");
-			}
-			return this.sDirectoryPath;
+			return this.getDirectoryPartFilter().getDirectoryPath();
 		}
 		
 		protected void setPrefix(String sPrefix) {
-			this.sPrefix = sPrefix;
+			this.getPrefixPartFilter().setPrefix(sPrefix);
 		}
 		protected String getPrefix() {
-			if(StringZZZ.isEmpty(this.sPrefix)) {
-				this.setPrefix("");
-			}
-			return this.sPrefix;
+			return this.getPrefixPartFilter().getPrefix();
 		}
 		
 		protected void setMiddle(String sMiddle) {
-			this.sMiddle = sMiddle;
+			this.getMiddlePartFilter().setMiddle(sMiddle);
 		}
 		protected String getMiddle() {
-			if(StringZZZ.isEmpty(this.sMiddle)) {
-				this.setMiddle("");
-			}
-			return this.sMiddle;
+			return this.getMiddlePartFilter().getMiddle();
 		}
 
 		
 		protected void setSuffix(String sSuffix) {
-			this.sSuffix = sSuffix;
+			this.getSuffixPartFilter().setSuffix(sSuffix);
 		}
 		protected String getSuffix() {
-			if(StringZZZ.isEmpty(this.sSuffix)) {
-				this.setSuffix("");
-			}
-			return this.sSuffix;
+			return this.getSuffixPartFilter().getSuffix();
 		}
 		
 		protected void setEnding(String sEnding){
-			this.sEnding = sEnding;
+			this.getEndingPartFilter().setEnding(sEnding);
 		}
 		protected String getEnding() {
-			if(StringZZZ.isEmpty(this.sEnding)) {
-				this.setEnding("");
-			}
-			return this.sEnding;
+			return this.getEndingPartFilter().getEnding();
 		}				
 		
 		public IFileExpansionZZZ getFileExpansionObject() {

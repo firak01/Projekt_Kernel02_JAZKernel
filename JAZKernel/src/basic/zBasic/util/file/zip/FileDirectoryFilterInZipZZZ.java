@@ -11,7 +11,7 @@ import basic.zBasic.util.file.FilenamePartFilterMiddleZZZ;
 import basic.zBasic.util.file.FilenamePartFilterPrefixZZZ;
 import basic.zBasic.util.file.FilenamePartFilterSuffixZZZ;
 import basic.zBasic.util.file.jar.AbstractFileDirectoryFilterInJarZZZ;
-import basic.zBasic.util.file.jar.AbstractFileFilterInJarZZZ;
+import basic.zBasic.util.file.jar.AbstractFileFileFilterInJarZZZ;
 
 public class FileDirectoryFilterInZipZZZ extends AbstractFileDirectoryFilterInJarZZZ{
 //	public static String sDIRECTORY_PATH="template";

@@ -248,7 +248,10 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	public boolean setFlagZ(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
-			if(StringZZZ.isEmpty(sFlagName)) break main;
+			if(StringZZZ.isEmpty(sFlagName)) {
+				bFunction = true;
+				break main;
+			}
 			
 
 			bFunction = this.proofFlagZExists(sFlagName);												

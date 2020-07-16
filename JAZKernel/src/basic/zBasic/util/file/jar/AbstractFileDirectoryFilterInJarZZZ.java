@@ -9,7 +9,7 @@ import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.zip.DirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
@@ -23,7 +23,7 @@ import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
-	protected IFileDirectoryPartFilterZipZZZ objFilterDirectory;			
+	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;			
 	protected String sDirectoryPath="";
 		
 	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
@@ -67,12 +67,7 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 		btemp = this.getFlag("init");
 		if(btemp==true) break main;
 
-
-		//Die konkreten Ausprägungen können erst in der accept Methode gefüllt werden, mit den konkreten Werten.
-		//Z.B. für Middle-Wert steht in der FilenamePartFilter - accept-Methode:
-		//		this.objFilterMiddle.setCriterion(this.getMiddle());
-		//      if(this.objFilterMiddle.accept(ze)==false) break main;
-		objFilterDirectory = this.getDirectoryFilter();
+		this.setDirectoryPath(sDirectoryPath);
 		
 		}//end main:		
 	}
@@ -86,8 +81,8 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			
 			//Falls das Verzeichnis nicht passt	
 			if(!StringZZZ.isEmpty(this.getDirectoryPath())){
-				this.objFilterDirectory.setCriterion(this.getDirectoryPath());
-				if(this.objFilterDirectory.accept(ze)==false) break main;
+				this.objPartFilterDirectory.setCriterion(this.getDirectoryPath());
+				if(this.objPartFilterDirectory.accept(ze)==false) break main;
 			}
 														
 			bReturn = true;
@@ -107,11 +102,14 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 		}
 		
 		@Override
-		public void setDirectoryFilter(IFileDirectoryPartFilterZipZZZ objDirectoryFilterZip) {
-			this.objFilterDirectory = objDirectoryFilterZip;
+		public void setDirectoryPartFilter(IFileDirectoryPartFilterZipZZZ objDirectoryFilterZip) {
+			this.objPartFilterDirectory = objDirectoryFilterZip;
 		}
 		@Override
-		public IFileDirectoryPartFilterZipZZZ getDirectoryFilter() {
-			return this.objFilterDirectory;
+		public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() {
+			if(this.objPartFilterDirectory==null) {
+				this.objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ(this.getDirectoryPath());
+			}
+			return this.objPartFilterDirectory;
 		}
 }//END class

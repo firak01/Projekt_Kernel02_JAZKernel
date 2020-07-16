@@ -1,0 +1,20 @@
+package basic.zBasic.util.file.zip;
+
+public interface IFileFilePartFilterZipUserZZZ {
+	public void setDirectoryPartFilter(FilenamePartFilterPathZipZZZ objDirectoryFilterZip);
+	public FilenamePartFilterPathZipZZZ getDirectoryPartFilter();
+	
+	public void setPrefixPartFilter(FilenamePartFilterPrefixZipZZZ objPrefixFilterZip);
+	public FilenamePartFilterPrefixZipZZZ getPrefixPartFilter();
+		
+	public void setMiddlePartFilter(FilenamePartFilterMiddleZipZZZ objMiddleFilterZip);
+	public FilenamePartFilterMiddleZipZZZ getMiddlePartFilter();
+	
+	
+	public void setSuffixPartFilter(FilenamePartFilterSuffixZipZZZ objSuffixFilterZip);
+	public FilenamePartFilterSuffixZipZZZ getSuffixPartFilter();
+	
+	public void setEndingPartFilter(FilenamePartFilterEndingZipZZZ objEndingFilterZip);
+	public FilenamePartFilterEndingZipZZZ getEndingPartFilter();
+	
+}
