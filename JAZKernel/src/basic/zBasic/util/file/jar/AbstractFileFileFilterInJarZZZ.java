@@ -72,6 +72,8 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		btemp = this.getFlag("init");
 		if(btemp==true) break main;
 		
+		
+		
 		//Die konkreten Ausprägungen können erst in der accept Methode gefüllt werden, mit den konkreten Werten.
 		//Z.B. für Middle-Wert steht in der accept-Methode:
 		//		this.objFilterMiddle.setCriterion(this.getMiddle());

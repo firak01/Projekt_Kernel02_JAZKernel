@@ -211,7 +211,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		return objaReturn;
 	}
 		
-	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
+	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sPathInJarIn) throws ExceptionZZZ{
 		File[] objaReturn = null;
 		main:{
 			check:{				
@@ -238,10 +238,10 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			}//End check
 		
 			String sApplicationKeyAsSubDirectoryTemp;
-			if(StringZZZ.isEmpty(sApplicationKeyAsSubDirectoryTempIn)) {
+			if(StringZZZ.isEmpty(sPathInJarIn)) {
 				sApplicationKeyAsSubDirectoryTemp = "FGL";
 			}else {
-				sApplicationKeyAsSubDirectoryTemp = sApplicationKeyAsSubDirectoryTempIn;
+				sApplicationKeyAsSubDirectoryTemp = sPathInJarIn;
 			}
 				
 			
@@ -269,7 +269,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				//String archiveName = objJarAsDirectoryMock.getAbsolutePath();
 				
 				String sPathDirTemp;
-				if(FileEasyZZZ.isPathRelative(sApplicationKeyAsSubDirectoryTempIn)){
+				if(FileEasyZZZ.isPathRelative(sApplicationKeyAsSubDirectoryTemp)){
 					String sDirTemp = EnvironmentZZZ.getHostDirectoryTemp();									
 					sPathDirTemp = FileEasyZZZ.joinFilePathName(sDirTemp, sApplicationKeyAsSubDirectoryTemp);					
 				}else {
@@ -277,10 +277,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				}
 					
 				//Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
-				sPathDirTemp = StringZZZ.replace(sPathDirTemp, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
-				
-				//UND: Abschliessend gibt es bei Verzeichnissen ein \ ... aber NUR 1x
-				sPathDirTemp=StringZZZ.stripFileSeparatorsRight(sPathDirTemp);
+				sPathDirTemp = JarEasyZZZ.toFilePath(sPathDirTemp);
 				
 				//Falls Verzeichnis noch nicht vorhanden: Neu erstellen - Falls vorhanden: Leer machen.
 				File objFileTemp = new File(sPathDirTemp);
@@ -344,6 +341,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 						File objFileTempInTemp = new File(sPath);	
 						objaFileTempInTemp.add(objFileTempInTemp);						
 					}
+					zf = objJarInfo.getZipFile();		
 					if(zf!=null) zf.close();
 					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
 				} catch (IOException e) {
@@ -448,14 +446,13 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				Set<String> setEntryName = ht.keySet();
 				Iterator<String> itEntryName = setEntryName.iterator();
 				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-				try {
-					ZipFile zf = null;
+				try {					
+					ZipFile zf = objJarInfo.getZipFile();
 					while(itEntryName.hasNext()) {
 						String sKey = itEntryName.next();
 						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 						
-						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)					
-						zf = objJarInfo.getZipFile();						
+						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)																
 						InputStream is = zf.getInputStream(zeTemp);
 						String sKeyNormed = StringZZZ.replace(sKey, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
 						String sPath = FileEasyZZZ.joinFilePathName(sDirPathRoot, sKeyNormed);
@@ -466,7 +463,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 						Files.copy(is, Paths.get(sPath));
 						File objFileTempInTemp = new File(sPath);	
 						objaFileTempInTemp.add(objFileTempInTemp);
-					}
+					}					
 					if(zf!=null) zf.close();
 					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
 				} catch (IOException e) {
@@ -565,13 +562,12 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				Iterator<String> itEntryName = setEntryName.iterator();
 				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
 				try {
-					ZipFile zf = null;
+					ZipFile zf = objJarInfo.getZipFile();
 					while(itEntryName.hasNext()) {
 						String sKey = itEntryName.next();
 						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 						
-						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)					
-						zf = objJarInfo.getZipFile();						
+						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)														
 						InputStream is = zf.getInputStream(zeTemp);
 						String sKeyNormed = StringZZZ.replace(sKey, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
 						String sPath = "c:\\temp"+ FileEasyZZZ.sDIRECTORY_SEPARATOR + sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sKeyNormed;
@@ -582,7 +578,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 						Files.copy(is, Paths.get(sPath));
 						File objFileTempInTemp = new File(sPath);	
 						objaFileTempInTemp.add(objFileTempInTemp);
-					}
+					}						
 					if(zf!=null) zf.close();
 					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
 				} catch (IOException e) {
