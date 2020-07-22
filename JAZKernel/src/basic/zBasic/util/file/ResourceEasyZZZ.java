@@ -27,6 +27,7 @@ import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
+import basic.zBasic.util.file.zip.ZipEasyZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
@@ -418,6 +419,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				if(StringZZZ.isEmpty(sDirPathInJar)) {
 					sDirPath = sDirPathRoot;
 				}else {
+					sDirPathInJar = JarEasyZZZ.toFilePath(sDirPathInJar);
 					sDirPath = FileEasyZZZ.joinFilePathName(sDirPathRoot, sDirPathInJar);
 				}
 				File objFileTemp = new File(sDirPath);
@@ -435,7 +437,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				String archiveName = objFileJar.getAbsolutePath();
 				
 				IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
-				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter );
+				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
 				
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();
@@ -452,16 +454,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 						String sKey = itEntryName.next();
 						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 						
-						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)																
-						InputStream is = zf.getInputStream(zeTemp);
-						String sKeyNormed = StringZZZ.replace(sKey, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
-						String sPath = FileEasyZZZ.joinFilePathName(sDirPathRoot, sKeyNormed);
-						
-						//!!! Bereits existierende Datei ggfs. löschen, Merke: Das ist aber immer noch nicht das Verzeichnis und die Datei, mit der in der Applikation gearbeitet wird.
-						FileEasyZZZ.removeFile(sPath);
-												
-						Files.copy(is, Paths.get(sPath));
-						File objFileTempInTemp = new File(sPath);	
+						File objFileTempInTemp = ZipEasyZZZ.extractZipEntry(zf, zeTemp, sDirPathRoot);	
 						objaFileTempInTemp.add(objFileTempInTemp);
 					}					
 					if(zf!=null) zf.close();
@@ -534,9 +527,10 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				//Falls noch nicht vorhanden: Verzeichnis neu erstellen. Falls vorhanden, leer machen.
 				String sDirPath;
 				if(StringZZZ.isEmpty(sDirPathInJar))
-					sDirPath = "c:\\temp"+ FileEasyZZZ.sDIRECTORY_SEPARATOR + sApplicationKeyAsSubDirectoryTemp;
+					sDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sApplicationKeyAsSubDirectoryTemp);
 				else {
-					sDirPath = "c:\\temp"+ FileEasyZZZ.sDIRECTORY_SEPARATOR + sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sDirPathInJar;
+					sDirPathInJar = JarEasyZZZ.toFilePath(sDirPathInJar);
+					sDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sDirPathInJar);
 				File objFileTemp = new File(sDirPathInJar);
 				boolean bSuccess = false;
 				if(!objFileTemp.exists()) {
@@ -570,7 +564,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)														
 						InputStream is = zf.getInputStream(zeTemp);
 						String sKeyNormed = StringZZZ.replace(sKey, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
-						String sPath = "c:\\temp"+ FileEasyZZZ.sDIRECTORY_SEPARATOR + sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sKeyNormed;
+						String sPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sKeyNormed);
 						
 						//!!! Bereits existierende Datei ggfs. löschen, Merke: Das ist aber immer noch nicht das Verzeichnis und die Datei, mit der in der Applikation gearbeitet wird.
 						FileEasyZZZ.removeFile(sPath);
