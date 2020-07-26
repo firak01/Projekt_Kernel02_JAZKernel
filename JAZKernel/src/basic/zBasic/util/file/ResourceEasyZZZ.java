@@ -359,7 +359,6 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		File[] objaReturn = null;
 		main:{
 			check:{				
-				String sDirPath = null;
 				if(objFileJar==null) {
 					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
 					throw ez;
@@ -380,89 +379,14 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					throw ez;
 				}														
 			}//End check
-		
-			String sApplicationKeyAsSubDirectoryTemp;
-			if(StringZZZ.isEmpty(sApplicationKeyAsSubDirectoryTempIn)) {
-				sApplicationKeyAsSubDirectoryTemp = "FGL";
-			}else {
-				sApplicationKeyAsSubDirectoryTemp = sApplicationKeyAsSubDirectoryTempIn;
-			}
-				
+												
+			//Falls noch nicht vorhanden: Verzeichnis neu erstellen. Falls vorhanden, leer machen.
+			String sDirPathInJar = objFilterFileInJar.getDirectoryPartFilter().getDirectoryPath();
 			
-			//##############################################################
-//			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
-			//B) IN JAR Datei
-			//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html
-			//String archiveName = objDirectory.getAbsolutePath();
-			
-			
-				//Einschränken der Hashtable auf ein Verzeichnis
-				//NEUE KLASSE JarDirectoryInfoZZZ oder JarInfo um ein Array der zu holenden Verzeichnisse erweitern.
-				//            a) ohne Unterverzeichnisse
-				//            b) mit Unterverzeichnisse				
-				//Aus der ht die des gesuchten Verzeichnisses holen.
-				//String sDirTemplate = this.readDirectoryTemplatePath();
-			
-				//TODOGOON;
-				//Das muss auf Dateien des Template Verzeichnis beschränkt sein.
-				//FileFilterConfigOvpnTemplateInJarOVPN objFilterConfig = new FileFilterConfigOvpnTemplateInJarOVPN(this.getOvpnContextUsed());
-				//IApplicationOVPN objApplication = this.getApplicationObject();
-				//IMainOVPN objMain = objApplication.getMainObject();
-				//String sJarPath = objMain.getJarFilePathUsed();
-				//File objJarAsDirectoryMock = new File(sJarPath);
-				//String archiveName = objJarAsDirectoryMock.getAbsolutePath();
-				
-				//Falls noch nicht vorhanden: Verzeichnis neu erstellen. Falls vorhanden, leer machen.
-				String sDirPath;
-				String sDirPathInJar = objFilterFileInJar.getDirectoryPartFilter().getDirectoryPath();
-				String sDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sApplicationKeyAsSubDirectoryTemp);
-				if(StringZZZ.isEmpty(sDirPathInJar)) {
-					sDirPath = sDirPathRoot;
-				}else {
-					sDirPathInJar = JarEasyZZZ.toFilePath(sDirPathInJar);
-					sDirPath = FileEasyZZZ.joinFilePathName(sDirPathRoot, sDirPathInJar);
-				}
-				File objFileTemp = new File(sDirPath);
-				boolean bSuccess = false;
-				if(!objFileTemp.exists()) {
-					bSuccess = FileEasyZZZ.createDirectory(sDirPath);
-				}else {
-					bSuccess = FileEasyZZZ.removeDirectoryContent(objFileTemp, true);
-				}
-				if(!bSuccess) {
-					ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem temporären Verzeichnis möglich '" + sDirPath + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
-					throw ez;
-				}
-				
-				String archiveName = objFileJar.getAbsolutePath();
-				
-				IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
-				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
-				
-				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
-				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();
-				
-				//Wie nun vom ht nach objaReturn ???
-				//objaReturn = objDirectory.listFiles(objFilterConfig);
-				//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
-				Set<String> setEntryName = ht.keySet();
-				Iterator<String> itEntryName = setEntryName.iterator();
-				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-				try {					
-					ZipFile zf = objJarInfo.getZipFile();
-					while(itEntryName.hasNext()) {
-						String sKey = itEntryName.next();
-						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
-						
-						File objFileTempInTemp = ZipEasyZZZ.extractZipEntry(zf, zeTemp, sDirPathRoot);	
-						objaFileTempInTemp.add(objFileTempInTemp);
-					}					
-					if(zf!=null) zf.close();
-					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
+			String archiveName = objFileJar.getAbsolutePath();
+			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
+			JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
+			objaReturn = ResourceEasyZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);					
 		}//End main		 	
 		return objaReturn;
 	}
@@ -471,7 +395,6 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		File[] objaReturn = null;
 		main:{
 			check:{				
-				String sDirPath = null;
 				if(objFileJar==null) {
 					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
 					throw ez;
@@ -493,13 +416,54 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				}														
 			}//End check
 		
-			String sApplicationKeyAsSubDirectoryTemp;
-			if(StringZZZ.isEmpty(sApplicationKeyAsSubDirectoryTempIn)) {
-				sApplicationKeyAsSubDirectoryTemp = "FGL";
-			}else {
-				sApplicationKeyAsSubDirectoryTemp = sApplicationKeyAsSubDirectoryTempIn;
+			
+			String archiveName = objFileJar.getAbsolutePath();
+			JarInfo objJarInfoFiltered = new JarInfo( archiveName, objFilterInJar );
+			objaReturn = ResourceEasyZZZ.findFileInJar(objJarInfoFiltered,sDirPathInJar ,sApplicationKeyAsSubDirectoryTempIn);			
+		}//End main		 	
+		return objaReturn;
+	}
+
+	public static File[] findFileInJar(JarInfo objJarInfoFiltered, String sDirPathInJar, String sTargetDirPathRootIn) throws ExceptionZZZ{
+		File[] objaReturn = null;
+		main:{
+			if(objJarInfoFiltered==null) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarInfo missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
 			}
-				
+			
+			String sTargetDirPathRoot;
+			if(StringZZZ.isEmpty(sTargetDirPathRootIn)){
+				sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), "FGL");				
+			}else {
+				if(FileEasyZZZ.isPathAbsolut(sTargetDirPathRootIn)) {
+					sTargetDirPathRoot = sTargetDirPathRootIn;
+				}else {
+					sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirPathRootIn);
+				}
+			}
+			
+			String sTargetDirPath;
+			if(StringZZZ.isEmpty(sDirPathInJar)) {
+				sTargetDirPath = sTargetDirPathRoot;
+			}else {
+				sDirPathInJar = JarEasyZZZ.toFilePath(sDirPathInJar);
+				sTargetDirPath = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sDirPathInJar);
+			}
+			
+			
+			File objFileTemp = new File(sTargetDirPath);
+			boolean bSuccess = false;
+			if(!objFileTemp.exists()) {
+				bSuccess = FileEasyZZZ.createDirectory(sTargetDirPath);
+			}else {
+				bSuccess = FileEasyZZZ.removeDirectoryContent(objFileTemp, true);
+			}
+			if(!bSuccess) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem temporären Verzeichnis möglich '" + sTargetDirPath + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			
 			
 			//##############################################################
 //			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
@@ -523,64 +487,32 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				//String sJarPath = objMain.getJarFilePathUsed();
 				//File objJarAsDirectoryMock = new File(sJarPath);
 				//String archiveName = objJarAsDirectoryMock.getAbsolutePath();
-				
-				//Falls noch nicht vorhanden: Verzeichnis neu erstellen. Falls vorhanden, leer machen.
-				String sDirPath;
-				if(StringZZZ.isEmpty(sDirPathInJar))
-					sDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sApplicationKeyAsSubDirectoryTemp);
-				else {
-					sDirPathInJar = JarEasyZZZ.toFilePath(sDirPathInJar);
-					sDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sDirPathInJar);
-				File objFileTemp = new File(sDirPathInJar);
-				boolean bSuccess = false;
-				if(!objFileTemp.exists()) {
-					bSuccess = FileEasyZZZ.createDirectory(sDirPathInJar);
-				}else {
-					bSuccess = FileEasyZZZ.removeDirectoryContent(objFileTemp, true);
-				}
-				if(!bSuccess) {
-					ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem temporären Verzeichnis möglich '" + sDirPath + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
-					throw ez;
-				}
-				
-				String archiveName = objFileJar.getAbsolutePath();
-				JarInfo objJarInfo = new JarInfo( archiveName, objFilterInJar );
-				
-				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
-				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();
-				
-				//Wie nun vom ht nach objaReturn ???
-				//objaReturn = objDirectory.listFiles(objFilterConfig);
-				//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
-				Set<String> setEntryName = ht.keySet();
-				Iterator<String> itEntryName = setEntryName.iterator();
-				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-				try {
-					ZipFile zf = objJarInfo.getZipFile();
-					while(itEntryName.hasNext()) {
-						String sKey = itEntryName.next();
-						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
-						
-						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)														
-						InputStream is = zf.getInputStream(zeTemp);
-						String sKeyNormed = StringZZZ.replace(sKey, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
-						String sPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sKeyNormed);
-						
-						//!!! Bereits existierende Datei ggfs. löschen, Merke: Das ist aber immer noch nicht das Verzeichnis und die Datei, mit der in der Applikation gearbeitet wird.
-						FileEasyZZZ.removeFile(sPath);
-												
-						Files.copy(is, Paths.get(sPath));
-						File objFileTempInTemp = new File(sPath);	
-						objaFileTempInTemp.add(objFileTempInTemp);
-					}						
-					if(zf!=null) zf.close();
-					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
+		
+			//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
+			Hashtable<String,ZipEntry> ht = objJarInfoFiltered.zipEntryTable();
+	
+			//Wie nun vom ht nach objaReturn ???
+			//objaReturn = objDirectory.listFiles(objFilterConfig);
+			//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
+			Set<String> setEntryName = ht.keySet();
+			Iterator<String> itEntryName = setEntryName.iterator();
+			ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
+			try {					
+				ZipFile zf = objJarInfoFiltered.getZipFile();
+				while(itEntryName.hasNext()) {
+					String sKey = itEntryName.next();
+					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+					
+					File objFileTempInTemp = ZipEasyZZZ.extractZipEntry(zf, zeTemp, sTargetDirPathRoot);	
+					objaFileTempInTemp.add(objFileTempInTemp);
+				}					
+				if(zf!=null) zf.close();
+				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}//End main		 	
-		return objaReturn;
+	return objaReturn;
 	}
 }
