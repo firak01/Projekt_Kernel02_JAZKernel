@@ -538,23 +538,16 @@ public class JarEasyZZZ implements IConstantZZZ{
 				Set<String> setEntryName = ht.keySet();
 				Iterator<String> itEntryName = setEntryName.iterator();
 				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-				try {
-					ZipFile zf = null;
-					while(itEntryName.hasNext()) {
-						String sKey = itEntryName.next();
-						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
-						
-						//Nun aus dem ZipEntry ein File Objekt machen 
-						//https://www.rgagnon.com/javadetails/java-0429.html
-						File objFileTemp = new File(sTargetDirectoryPath, zeTemp.getName());
-						objaFileTempInTemp.add(objFileTemp);					
-					}
-					if(zf!=null) zf.close();
-					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}					
+				while(itEntryName.hasNext()) {
+					String sKey = itEntryName.next();
+					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+					
+					//Nun aus dem ZipEntry ein File Objekt machen 
+					//https://www.rgagnon.com/javadetails/java-0429.html
+					File objFileTemp = new File(sTargetDirectoryPath, zeTemp.getName());
+					objaFileTempInTemp.add(objFileTemp);					
+				}
+				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
 				
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
