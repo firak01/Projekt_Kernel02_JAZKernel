@@ -232,7 +232,7 @@ public class JarEasyZZZTest extends TestCase{
 	}
 	
 	
-	public void testExtractFileFromJarAsTemp() {
+	public void testSaveTrunkEntryToDirectory() {
 		
 	}
 	

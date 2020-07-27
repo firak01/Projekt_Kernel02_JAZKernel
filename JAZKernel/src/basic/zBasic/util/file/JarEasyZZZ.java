@@ -451,58 +451,6 @@ public class JarEasyZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	/**
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
-	public static File extractFileToTemp_TODO_LOESCHEN(JarFile objJarFile, String sFilePath, String sTargetTempDirectorySubFilepathIn) throws ExceptionZZZ {
-		File objReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sFilePath)){
-				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(objJarFile==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			String sTargetTempDirectorySubFilepath;
-			if(sTargetTempDirectorySubFilepathIn==null)
-				sTargetTempDirectorySubFilepath="";
-			else {
-				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.
-				sTargetTempDirectorySubFilepath=StringZZZ.stripFileSeparators(sTargetTempDirectorySubFilepathIn);				
-			}
-
-			try{
-				//https://stackoverflow.com/questions/8014099/how-do-i-convert-a-jarfile-uri-to-the-path-of-jar-file
-				String sName = objJarFile.getName();
-				
-				String sUrl = JarEasyZZZ.computeUrlPathForContainingResource(objJarFile, sFilePath); 
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+": String to fetch URL from JarFileObject '" + sUrl + "'" ;
-			    System.out.println(sLog);			   
-			    
-				URL url = new URL(sUrl);
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": URL created from JarFileObject '" + url + "'" ;
-			    System.out.println(sLog);
-			    
-				JarURLConnection connection = (JarURLConnection) url.openConnection();
-				URI uri = connection.getJarFileURL().toURI();
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": URI.getPath created from JarFileObject '" + uri.getPath() + "'" ;
-			    System.out.println(sLog);
-			    
-				objReturn = new File(uri);			    
-			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-		    }	    
-			}//end main:
-			return objReturn;
-	}
 	
 	public static File[] extractFilesFromJarAsTrunkFileDummy(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
 		File[] objaReturn=null;
@@ -555,6 +503,88 @@ public class JarEasyZZZ implements IConstantZZZ{
 		    }	    
 			}//end main:
 			return objaReturn;
+	}
+	
+	public static boolean saveTrunkEntryAsFile(JarFile jf, ZipEntry ze, File fileAsTrunk) throws ExceptionZZZ {
+		boolean bReturn=false;
+		main:{
+			try {
+				if(jf==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}
+				
+				if(fileAsTrunk==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "File Object as trunk", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}
+				
+				if(fileAsTrunk.exists()) {					
+					boolean bErg = FileEasyZZZ.removeFile(fileAsTrunk);//!!! Bereits existierende Datei ggfs. löschen.
+					if(!bErg) {
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "File Object as trunk existed, but was not replacable", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+					}
+				}
+				
+				String sPath = fileAsTrunk.getAbsolutePath();
+				
+			
+				//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)																
+				InputStream is = jf.getInputStream(ze);
+				Files.copy(is, Paths.get(sPath));
+				bReturn = true;
+			} catch (IOException e) {
+				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;	
+			}
+			
+		}//end main:
+		return bReturn;
+	}
+	
+	public static File saveTrunkEntryToDirectory(JarFile jf, ZipEntry ze, String sTargetDirectoryPathIn ) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{
+			try {
+				if(jf==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}
+				
+				if(ze==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "ZipEntry Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}
+				
+				String sTargetDirectoryPath;
+				if(StringZZZ.isEmpty(sTargetDirectoryPathIn)){
+					sTargetDirectoryPath= ".";
+				}else {
+					sTargetDirectoryPath = sTargetDirectoryPathIn;
+				}
+				
+							
+				//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)																
+				InputStream is = jf.getInputStream(ze);
+				objReturn = new File(sTargetDirectoryPath, ze.getName());
+				if(objReturn.exists()) {
+					boolean bErg = FileEasyZZZ.removeFile(objReturn);//!!! Bereits existierende Datei ggfs. löschen.
+					if(!bErg) {
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "File Object as trunk existed, but was not replacable", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+					}
+				}
+				
+				String sPath = objReturn.getAbsolutePath();
+				Files.copy(is, Paths.get(sPath));				
+			} catch (IOException e) {
+				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;	
+			}
+			
+		}//end main:
+		return objReturn;
 	}
 	
 	public static File getJarCurrent() throws ExceptionZZZ{

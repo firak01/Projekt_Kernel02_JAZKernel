@@ -676,21 +676,33 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 				throw ez;
 			}
 			File objFile = new File(sFilePathName);
-			if(objFile.exists()==false){
-				bReturn = true;
-				break main;
-			}
-			
-			if(objFile.isFile()==false){
-				ExceptionZZZ ez = new ExceptionZZZ("FilePathName='" + sFilePathName + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			bReturn = objFile.delete();
-			
+			bReturn = FileEasyZZZ.removeFile(objFile);
 		}
 		return bReturn;
 }
+	
+public static boolean removeFile(File objFile) throws ExceptionZZZ{
+	boolean bReturn = false;
+	main:{
+		if(objFile==null){
+			ExceptionZZZ ez  = new ExceptionZZZ("File Object", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		if(objFile.exists()==false){
+			bReturn = true;
+			break main;
+		}
+		
+		if(objFile.isFile()==false){
+			ExceptionZZZ ez = new ExceptionZZZ("File='" + objFile.getAbsolutePath() + "' is not a file.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		bReturn = objFile.delete();			
+	}
+	return bReturn;
+}
+	
 	
 	/** Löscht ein Verzeichnis.
 	* @return boolean,	 true, wenn das Verzeichnis nicht existiert hat oder erfolgreich gel�scht werden konnte.
