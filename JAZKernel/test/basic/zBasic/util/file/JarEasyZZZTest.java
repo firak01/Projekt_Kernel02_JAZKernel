@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -233,7 +234,86 @@ public class JarEasyZZZTest extends TestCase{
 	
 	
 	public void testSaveTrunkEntryToDirectory() {
-		
+		try{
+			JarFile objJar = JarEasyZZZ.toJarFile(objFileJarAsSource);
+			String sDirToExtract="template";
+			String sDirToExtractTo; 
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
+			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
+			sDirToExtractTo = "FGL_TRUNKENTRY_OF_DIRECTORY";
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+			
+			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
+			File[] objaCreated01 = JarEasyZZZ.extractFromJarAsTrunkFileDummy(objJar,sDirToExtract, sDirToExtractTo, false);
+			if(objaCreated01[0].exists()) {
+				fail("Verzeichnis '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+			}
+			
+			
+			TODOGOON;
+			//Es muss eine .extractFromJarAsTrunk(objJar,sDirToExtraxt,objTrunkHolder) Methode geben.
+			//objTrunkHolder hat dann sowohl ein Array von ZipEntry[] als auch von File[].
+			//bzw.: vielleicht eine hashMap von File-Objekten, die zum ZipEntry Passen.
+			//HashMap<ZipEntry>() ... mit File Objekt als Wert.
+			//Also; 
+			//Es muss eine .extractFromJarAsTrunk(objJar,sDirToExtraxt,HashMap<ZipEntry,File) Methode geben.
+			//... besser noch eine HashMapZZZ....
+			
+			HashMap<ZipEntry,File>hmZe = new HashMap<ZipEntry,File>();
+			JarEasyZZZ.saveTrunkEntryAsFile(objJar, hmZe);
+			
+			//Ab) Erfolgsfall, mit Dateien erzeugen						
+			sDirToExtractTo = "FGL_TRUNK_OF_FILES";
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
+			File[] objaCreated02 = JarEasyZZZ.extractFromJarAsTrunkFileDummy(objJar, sDirToExtract, sDirToExtractTo, true);
+			if(objaCreated02[0].exists()) {
+				fail("Verzeichnis '" + sDirToExtractTo + "' sollte nicht erstellt sein.");
+			}
+			
+			//####################################################################
+			//Merke: Mit diesen File-Objekten kann man eigentlich nur die Existenz in der JAR-Datei prüfen.
+			//Einen Input Stream zu bekommen ist die Voraussetzung für das Erstellen der Datei als Kopie
+			//
+			//BEISPIEL, aus Dokugründen stehen lassen;
+			//ZipFile zf = objJarInfo.getZipFile();
+			//while(itEntryName.hasNext()) {
+			//	String sKey = itEntryName.next();
+			//	ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+			//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)														
+			//InputStream is = zf.getInputStream(zeTemp);
+			//String sKeyNormed = StringZZZ.replace(sKey, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
+			//String sPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sApplicationKeyAsSubDirectoryTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + sKeyNormed);			
+			//!!! Bereits existierende Datei ggfs. löschen, Merke: Das ist aber immer noch nicht das Verzeichnis und die Datei, mit der in der Applikation gearbeitet wird.
+			//FileEasyZZZ.removeFile(sPath);								
+			//Files.copy(is, Paths.get(sPath))
+			
+			//Um also auf ein echtes File-Objekt zugreifen zu können als "TRUNK" ein ZipFileEntry-Array zurückliefern.
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
+			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
+			sDirToExtractTo = "FGL_TRUNK2_OF_DIRECTORY";
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+			
+			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
+			ZipEntry[] objaCreated03 = JarEasyZZZ.extractFromJarAsTrunkEntry(objJar,sDirToExtract, sDirToExtractTo, false);
+			if(!objaCreated03[0].isDirectory()) {
+				fail("Verzeichnis '" + sDirToExtractTo + "' sollte  als TRUNK zurückgeliefert worden sein.");
+			}
+			
+			//Ab) Erfolgsfall, mit Dateien erzeugen						
+			sDirToExtractTo = "FGL_TRUNK2_OF_FILES";
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
+			ZipEntry[] objaCreated04 = JarEasyZZZ.extractFromJarAsTrunkEntry(objJar, sDirToExtract, sDirToExtractTo, true);
+			if(objaCreated04[0].isDirectory()) {
+				fail("Kein Verzeichnis '" + sDirToExtractTo + "' sollte als TRUNK zurückgeliefert worden sein.");
+			}
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 	}
 	
 	
