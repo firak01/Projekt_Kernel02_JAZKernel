@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -103,7 +104,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47	
 	 */
-	public static File[] extractFromJarAsTrunkFileDummy(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn, boolean bExtractFiles) throws ExceptionZZZ {
+	public static File[] extractFromJarAsTrunkFileDummies(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn, boolean bExtractFiles) throws ExceptionZZZ {
 		File[] objaReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sSourceFilePath)){
@@ -122,7 +123,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 			}
 			
 			if(bExtractFiles) {
-				objaReturn = JarEasyZZZ.extractFilesFromJarAsTrunkFileDummy(objJarFile, sSourceFilePath,sTargetDirectoryPath);				
+				objaReturn = JarEasyZZZ.extractFilesFromJarAsTrunkFileDummies(objJarFile, sSourceFilePath,sTargetDirectoryPath);				
 			}else {				
 				File objReturn = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(objJarFile, sSourceFilePath,sTargetDirectoryPath);
 				objaReturn = new File[1];
@@ -238,7 +239,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47	
 	 */
-	public static ZipEntry[] extractFromJarAsTrunkEntry(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn, boolean bExtractFiles) throws ExceptionZZZ {
+	public static ZipEntry[] extractFromJarAsTrunkZipEntries(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn, boolean bExtractFiles) throws ExceptionZZZ {
 		ZipEntry[] objaReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sSourceFilePath)){
@@ -257,7 +258,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 			}
 			
 			if(bExtractFiles) {
-				objaReturn = JarEasyZZZ.extractFilesFromJarAsTrunkEntry(objJarFile, sSourceFilePath,sTargetDirectoryPath);				
+				objaReturn = JarEasyZZZ.extractFilesFromJarAsTrunkZipEntries(objJarFile, sSourceFilePath,sTargetDirectoryPath);				
 			}else {				
 				ZipEntry objReturn = JarEasyZZZ.extractDirectoryFromJarAsTrunkEntry(objJarFile, sSourceFilePath,sTargetDirectoryPath);
 				objaReturn = new ZipEntry[1];
@@ -326,7 +327,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static ZipEntry[] extractFilesFromJarAsTrunkEntry(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+	public static ZipEntry[] extractFilesFromJarAsTrunkZipEntries(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
 		ZipEntry[] objaReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sSourceDirectoryPath)){
@@ -370,6 +371,58 @@ public class JarEasyZZZ implements IConstantZZZ{
 		    }	    
 			}//end main:
 			return objaReturn;
+	}
+	
+	public static File extractFromJarAsTrunk(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn,HashMap<ZipEntry,File>hmTrunk) throws ExceptionZZZ {
+		File objReturn = null; //Das soll das Target - Directory sein
+		main:{
+			if(StringZZZ.isEmpty(sSourceDirectoryPath)){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(objJarFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sTargetDirectoryPath;
+			if(StringZZZ.isEmpty(sTargetDirectoryPathIn)){
+				sTargetDirectoryPath= ".";
+			}else {
+				sTargetDirectoryPath = sTargetDirectoryPathIn;
+			}
+			objReturn = new File(sTargetDirectoryPath);
+			
+			try{
+				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
+				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
+				String archiveName = objJarFile.getName();
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sSourceDirectoryPath);
+				FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
+				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );//Das dauert laaange
+				
+				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
+				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();			
+				Set<String> setEntryName = ht.keySet();
+				Iterator<String> itEntryName = setEntryName.iterator();				
+				while(itEntryName.hasNext()) {
+						String sKey = itEntryName.next();
+						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+						
+						//Nun aus dem ZipEntry ein File Objekt machen 
+						//https://www.rgagnon.com/javadetails/java-0429.html
+						File objFileTemp = new File(sTargetDirectoryPath, zeTemp.getName());
+						
+						//Das Ergebnis in die Trunk - HashMap packen
+						hmTrunk.put(zeTemp, objFileTemp);
+				}
+								
+			}catch (Exception e){
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+		    }	    
+			}//end main:
+			return objReturn;
 	}
 	
 	/**
@@ -452,7 +505,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 	}
 	
 	
-	public static File[] extractFilesFromJarAsTrunkFileDummy(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+	public static File[] extractFilesFromJarAsTrunkFileDummies(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
 		File[] objaReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sSourceDirectoryPath)){
@@ -505,7 +558,40 @@ public class JarEasyZZZ implements IConstantZZZ{
 			return objaReturn;
 	}
 	
-	public static boolean saveTrunkEntryAsFile(JarFile jf, ZipEntry ze, File fileAsTrunk) throws ExceptionZZZ {
+	public static boolean saveTrunkAsFile(JarFile jf, HashMap<ZipEntry,File> hmTrunk) throws ExceptionZZZ {
+		boolean bReturn=false;
+		main:{
+//			try {
+				if(jf==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}
+				
+				if(hmTrunk==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "HashMap with Trunk ZipEntry, File - Objects", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}
+				
+				
+				
+				Set<ZipEntry> setEntry = hmTrunk.keySet();
+				Iterator<ZipEntry> itEntry = setEntry.iterator();				
+				while(itEntry.hasNext()) {
+					ZipEntry zeTemp = itEntry.next();
+					File fileTemp = (File)hmTrunk.get(zeTemp);
+					
+					bReturn = JarEasyZZZ.saveTrunkToFile(jf, zeTemp, fileTemp);
+					if(bReturn=false)break main;
+				}
+//			} catch (IOException e) {
+//				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+//				throw ez;	
+//			}		
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean saveTrunkToFile(JarFile jf, ZipEntry ze, File fileAsTrunk) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 			try {
@@ -529,6 +615,8 @@ public class JarEasyZZZ implements IConstantZZZ{
 				
 				String sPath = fileAsTrunk.getAbsolutePath();
 				
+				TODOGOON; 
+				//Das Verzeichnis (inkl. Parentverzeichnisse) erstellen.
 			
 				//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)																
 				InputStream is = jf.getInputStream(ze);
@@ -543,7 +631,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static File saveTrunkEntryToDirectory(JarFile jf, ZipEntry ze, String sTargetDirectoryPathIn ) throws ExceptionZZZ {
+	public static File saveTrunkToDirectory(JarFile jf, ZipEntry ze, String sTargetDirectoryPathIn ) throws ExceptionZZZ {
 		File objReturn=null;
 		main:{
 			try {
