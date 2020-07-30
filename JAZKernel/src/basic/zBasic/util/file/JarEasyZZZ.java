@@ -391,7 +391,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 			}else {
 				sTargetDirectoryPath = sTargetDirectoryPathIn;
 			}
-			objReturn = new File(sTargetDirectoryPath);
+			objReturn = new File(sTargetDirectoryPath);//Aber: Das sollte damit nicht automatisch erstellt sein.
 			
 			try{
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
@@ -581,8 +581,13 @@ public class JarEasyZZZ implements IConstantZZZ{
 					File fileTemp = (File)hmTrunk.get(zeTemp);
 					
 					bReturn = JarEasyZZZ.saveTrunkToFile(jf, zeTemp, fileTemp);
-					if(bReturn=false)break main;
+					if(bReturn=false) {
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Unable to save File - Object '" + fileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+						//break main;
+					}
 				}
+				bReturn = true;
 //			} catch (IOException e) {
 //				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
 //				throw ez;	
@@ -615,9 +620,9 @@ public class JarEasyZZZ implements IConstantZZZ{
 				
 				String sPath = fileAsTrunk.getAbsolutePath();
 				
-				TODOGOON; 
-				//Das Verzeichnis (inkl. Parentverzeichnisse) erstellen.
-			
+				//Das Verzeichnis (inkl. Parentverzeichnisse) erstellen.				
+				boolean bErg = FileEasyZZZ.createDirectoryForFile(fileAsTrunk);
+				
 				//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)																
 				InputStream is = jf.getInputStream(ze);
 				Files.copy(is, Paths.get(sPath));

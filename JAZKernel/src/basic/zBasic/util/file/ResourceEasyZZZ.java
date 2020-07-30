@@ -245,30 +245,8 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				sApplicationKeyAsSubDirectoryTemp = sPathInJarIn;
 			}
 				
-			
-			//##############################################################
-//			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
-			//B) IN JAR Datei
-			//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html
-			//String archiveName = objDirectory.getAbsolutePath();
-			
-			
-				//Einschränken der Hashtable auf ein Verzeichnis
-				//NEUE KLASSE JarDirectoryInfoZZZ oder JarInfo um ein Array der zu holenden Verzeichnisse erweitern.
-				//            a) ohne Unterverzeichnisse
-				//            b) mit Unterverzeichnisse				
-				//Aus der ht die des gesuchten Verzeichnisses holen.
-				//String sDirTemplate = this.readDirectoryTemplatePath();
-			
-				//TODOGOON;
-				//Das muss auf Dateien des Template Verzeichnis beschränkt sein.
-				//FileFilterConfigOvpnTemplateInJarOVPN objFilterConfig = new FileFilterConfigOvpnTemplateInJarOVPN(this.getOvpnContextUsed());
-				//IApplicationOVPN objApplication = this.getApplicationObject();
-				//IMainOVPN objMain = objApplication.getMainObject();
-				//String sJarPath = objMain.getJarFilePathUsed();
-				//File objJarAsDirectoryMock = new File(sJarPath);
-				//String archiveName = objJarAsDirectoryMock.getAbsolutePath();
 				
+			//####################
 				String sPathDirTemp;
 				if(FileEasyZZZ.isPathRelative(sApplicationKeyAsSubDirectoryTemp)){
 					String sDirTemp = EnvironmentZZZ.getHostDirectoryTemp();									
@@ -293,7 +271,9 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					throw ez;
 				}
 				
-				
+				//##############################################################
+//				Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
+				//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html			
 				String archiveName = objFileJar.getAbsolutePath();
 				IFileDirectoryPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
@@ -301,8 +281,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();
 								
-				//Wie nun vom ht nach objaReturn ???
-				//objaReturn = objDirectory.listFiles(objFilterConfig);
+				//Wie nun vom ht nach objaReturn, also dem fertigen File-Objekt ???
 				//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
 				Set<String> setEntryName = ht.keySet();
 				Iterator<String> itEntryName = setEntryName.iterator();
@@ -464,35 +443,14 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				throw ez;
 			}
 			
-			
 			//##############################################################
 //			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
-			//B) IN JAR Datei
 			//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html
-			//String archiveName = objDirectory.getAbsolutePath();
-			
-			
-				//Einschränken der Hashtable auf ein Verzeichnis
-				//NEUE KLASSE JarDirectoryInfoZZZ oder JarInfo um ein Array der zu holenden Verzeichnisse erweitern.
-				//            a) ohne Unterverzeichnisse
-				//            b) mit Unterverzeichnisse				
-				//Aus der ht die des gesuchten Verzeichnisses holen.
-				//String sDirTemplate = this.readDirectoryTemplatePath();
-			
-				//TODOGOON;
-				//Das muss auf Dateien des Template Verzeichnis beschränkt sein.
-				//FileFilterConfigOvpnTemplateInJarOVPN objFilterConfig = new FileFilterConfigOvpnTemplateInJarOVPN(this.getOvpnContextUsed());
-				//IApplicationOVPN objApplication = this.getApplicationObject();
-				//IMainOVPN objMain = objApplication.getMainObject();
-				//String sJarPath = objMain.getJarFilePathUsed();
-				//File objJarAsDirectoryMock = new File(sJarPath);
-				//String archiveName = objJarAsDirectoryMock.getAbsolutePath();
-		
+				
 			//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 			Hashtable<String,ZipEntry> ht = objJarInfoFiltered.zipEntryTable();
 	
-			//Wie nun vom ht nach objaReturn ???
-			//objaReturn = objDirectory.listFiles(objFilterConfig);
+			//Wie nun vom ht nach objaReturn, also dem fertigen File-Objekt ???
 			//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
 			Set<String> setEntryName = ht.keySet();
 			Iterator<String> itEntryName = setEntryName.iterator();

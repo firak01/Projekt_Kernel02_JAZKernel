@@ -3,6 +3,7 @@ package basic.zBasic.util.file;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -656,16 +657,46 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 	return bReturn;
 }
 
-	/** prüft ob ein gegebener dirName ein Directory repräsentiert und erzeugt gegebenenfalls ein solches dir */
-	public static boolean makeDirectory (String dirName) {
-		File d = new File (dirName);
-		if (d.exists() && !d.isDirectory()) {
+	public static boolean makeDirectory(File objFile) throws ExceptionZZZ {
+		if(objFile==null) {
+			ExceptionZZZ ez  = new ExceptionZZZ("FileObject", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		if (objFile.exists() && !objFile.isDirectory()) {
 			return false;
 		}
-		if (d.exists() && d.isDirectory()) {
+		if (objFile.exists() && objFile.isDirectory()) {
 			return true;
 		}
-		return d.mkdirs ();
+		return objFile.mkdirs ();
+	}
+
+	/** prüft ob ein gegebener dirName ein Directory repräsentiert und erzeugt gegebenenfalls ein solches dir */
+	public static boolean makeDirectoryForFile (String sFileName) throws ExceptionZZZ{
+		File f = new File (sFileName);
+		return FileEasyZZZ.makeDirectoryForFile(f);
+	}
+	
+	public static boolean makeDirectoryForFile(File objFile) throws ExceptionZZZ {
+		if(objFile==null) {
+			ExceptionZZZ ez  = new ExceptionZZZ("FileObject", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		if (objFile.exists() && !objFile.isFile()) {
+			return false;
+		}
+		if (objFile.exists() && objFile.isFile()) {
+			return true;
+		}
+		
+		File objDir = objFile.getParentFile();
+		return objDir.mkdirs ();
+	}
+
+	/** prüft ob ein gegebener dirName ein Directory repräsentiert und erzeugt gegebenenfalls ein solches dir */
+	public static boolean makeDirectory (String dirName) throws ExceptionZZZ{
+		File d = new File (dirName);
+		return FileEasyZZZ.makeDirectory(d);
 	}
 	
 	public static boolean removeFile(String sFilePathName) throws ExceptionZZZ{
@@ -895,6 +926,27 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
 	 */
+	public static boolean removeDirectoryContent(String sDirectoryPath, boolean bEmptyDirectoryContainingMoreFiles) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sDirectoryPath)){
+				ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			File objFile =  FileEasyZZZ.searchDirectory(sDirectoryPath); //Soll auch auf einem Web Server die passende Datei finden.
+			bReturn = FileEasyZZZ.removeDirectoryContent(objFile, bEmptyDirectoryContainingMoreFiles);
+		}
+		return bReturn;
+	}
+	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 
+	 *  Wird eine Datei übergeben, wird sie gelöscht, sofern sie alleine im Verzeichnis ist.
+	 *  Löschen mehrerer Dateien des Parent-Verzeichnis nur  wenn bEmptyDirectoryContainingMoreFiles true ist.
+	 * @param objFileIn
+	 * @param bEmptyDirectoryContainingMoreFile    Sicherheitsflag
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
+	 */
 	public static boolean removeDirectoryContent(File objFileIn, boolean bEmptyDirectoryContainingMoreFiles) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -905,13 +957,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 			
 			//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
 			File objFileDirectory;
-//			if(objFile.isDirectory()==false){
-//				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;
-//			}
-			boolean bFileStart = false;
 			if(objFileIn.isFile()) {
-				bFileStart = true;
 				objFileDirectory = objFileIn.getParentFile();
 				if(objFileDirectory==null) break main;			
 			}else {
@@ -923,25 +969,41 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 			}
 			
 			
-			
-				//Hole alle dateien und lösche diese ggfs.
-				File[] objaFile =  objFileDirectory.listFiles();
-				if(objaFile.length==1) {
-					//Es ist ggfs. nur die Ausgangsdatei vorhanden, also löschen
-					objaFile[0].delete();
-					bReturn = true; //Merke: Das Verzeichnis selbst soll ja nicht gelöscht werden und andere sind nicht im Verzeichnis.
+			//Hole alle dateien und lösche diese ggfs.
+			File[] objaFile =  objFileDirectory.listFiles();
+			if(objaFile.length==1) {
+				//Es ist ggfs. nur die Ausgangsdatei vorhanden, also löschen
+				File objFileTemp = objaFile[0];
+				if(objFileTemp.isFile()) {
+					bReturn = objFileTemp.delete();
+					}else {	
+						bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryContainingMoreFiles);			
+					} 
+					if(!bReturn) {
+						ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object (a) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
 				}else {
 					//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
 					if(bEmptyDirectoryContainingMoreFiles) {
 						for(int icount = 0; icount <= objaFile.length - 1; icount++){
-							objaFile[icount].delete();
-						}		
+							File objFileTemp = objaFile[icount];
+							if(objFileTemp.isFile()) {
+								bReturn = objaFile[icount].delete();
+							}else {
+								bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryContainingMoreFiles);
+							}
+							if(!bReturn) {
+								ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object(b) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}
+						}							
 						bReturn = true; //Merke: Das Verzeichnis selbst soll ja nicht gelöscht werden.
 					}else {
 						//Das Verzeichnis wird nicht geleert, darf also nicht gelöscht werden.
 						ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not a single file containing directory. Call this method with the 'bEmptyDirectoryContainingMoreFiles' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;						
-					}
+					}										
 				}							
 		}
 		return bReturn;
@@ -1515,6 +1577,20 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			  return bReturn;
 		  }
 		
+		public static File[] listDirectories(File fileDirectoryIn) {
+			File[] objaReturn = null;
+			main:{
+				FileFilter directoryFilter = new FileFilter() {
+					public boolean accept(File file) {
+						return file.isDirectory();
+					}
+				};
+
+				objaReturn = fileDirectoryIn.listFiles(directoryFilter);
+			}//end main:
+			return objaReturn;
+		}
+		  
 	/** Holt eine Datei / Ressource auch aus einer JAR-Datei.
 	 *   Merke: In einer .jar Datei kann kein Zugriff über File-Objekte erfolgen.
 	 *  
@@ -1989,6 +2065,15 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	public static boolean  createDirectory(String sDirectoryName) throws ExceptionZZZ{
 		return FileEasyZZZ.makeDirectory(sDirectoryName);
 	}
+	public static boolean  createDirectory(File file) throws ExceptionZZZ{
+		return FileEasyZZZ.makeDirectory(file);
+	}
+	public static boolean  createDirectoryForFile(String sFilePath) throws ExceptionZZZ{
+		return FileEasyZZZ.makeDirectoryForFile(sFilePath);
+	}
+	public static boolean  createDirectoryForFile(File file) throws ExceptionZZZ{
+		return FileEasyZZZ.makeDirectoryForFile(file);
+	}
 
 	/** Entferne das Verzeichnis. Wenn eine Datei übergeben wird, entferne das Elternverzeichnis. 
 		 * @param objFileIn
@@ -2007,10 +2092,6 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				
 				//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
 				File objFileDirectory;
-	//			if(objFile.isDirectory()==false){
-	//				ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + sDirectoryPath + "' is not a directory.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
-	//				throw ez;
-	//			}
 				boolean bFileStart = false;
 				if(objFileIn.isFile()) {
 					bFileStart = true;
@@ -2029,14 +2110,23 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					//Hole alle dateien und lösche diese ggfs.
 					File[] objaFile =  objFileDirectory.listFiles();
 					if(objaFile.length==1) {
-						//Es ist nur die Ausgangsdatei vorhanden, also löschen
-						objaFile[0].delete();
-						bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
+						File objFileTemp = objaFile[0];
+						if(objFileTemp.isFile()) {
+							//Es ist nur die Ausgangsdatei vorhanden, also löschen
+							bReturn = objFileTemp.delete();
+						}else {
+							bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryBefore);
+						}						
 					}else {
 						//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
 						if(bEmptyDirectoryBefore) {
 							for(int icount = 0; icount <= objaFile.length - 1; icount++){
-								objaFile[icount].delete();
+								File objFileTemp = objaFile[icount];
+								if(objFileTemp.isFile()) {
+									bReturn = objFileTemp.delete();
+								}else {
+									bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryBefore);
+								}//if(!bReturn).....
 							}		
 							bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
 						}else {
@@ -2044,7 +2134,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not an empty directory. Call this method with the 'emptyDirectoryBefore=true' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;						
 						}
-					}				
+					}	
 				}else{			
 					//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
 					bReturn = objFileDirectory.delete();
