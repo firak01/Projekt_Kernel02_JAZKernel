@@ -481,7 +481,7 @@ public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strD
 public static File searchDirectory(String sDirectoryIn) throws ExceptionZZZ {
 	File objReturn = null;
 	main:{
-		objReturn = FileEasyZZZ.searchDirectory(sDirectoryIn, false);//DER NORMALFALL IST ES ALSO IN EINER JAR DATEI ZU SUCHEN
+		objReturn = FileEasyZZZ.searchDirectory(sDirectoryIn, false);//DER NORMALFALL IST ES ALSO NACH DER NORMALEN SUCHE AUCH IN EINER JAR DATEI ZU SUCHEN
 		if(objReturn!=null)break main;				
 	}//end main:
 	return objReturn;
@@ -880,6 +880,11 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				throw ez;
 			}
 			File objFile = FileEasyZZZ.searchDirectory(sDirectoryPath); //Soll auch auf einem Web Server die passende Datei finden.
+			if(objFile==null) { //Dann wird das Verzeichnis nicht gefunden.
+				bReturn = true;
+				break main;
+			}
+			
 			if(objFile.exists()==false){
 				bReturn = true;
 				break main;
@@ -934,6 +939,8 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				throw ez;
 			}
 			File objFile =  FileEasyZZZ.searchDirectory(sDirectoryPath); //Soll auch auf einem Web Server die passende Datei finden.
+			if(objFile==null) break main;
+			
 			bReturn = FileEasyZZZ.removeDirectoryContent(objFile, bEmptyDirectoryContainingMoreFiles);
 		}
 		return bReturn;
