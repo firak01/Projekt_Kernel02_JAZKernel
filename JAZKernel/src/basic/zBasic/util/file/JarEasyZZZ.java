@@ -1,6 +1,7 @@
 package basic.zBasic.util.file;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,14 +112,29 @@ public class JarEasyZZZ implements IConstantZZZ{
 					throw ez;
 				}
 				String sFilePath = entry.getName();
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Extracting Entry '" + sFilePath + "'";
+				System.out.println(sLog);
+				
 				sFilePath = JarEasyZZZ.toFilePath(sFilePath);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Entry to FilePath '" + sFilePath + "'";
+				System.out.println(sLog);
 				try{
 			        File f = File.createTempFile(sFilePath, null);
+			        if(f.exists()==false) {
+			        	ExceptionZZZ ez  = new ExceptionZZZ("Temp File not created for: '" + sFilePath + "'", iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			        	throw ez;
+			        }else {
+			        	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Temp File created '" + f.getAbsolutePath() + "'";
+						System.out.println(sLog);
+			        }
+			        
 			        FileOutputStream resourceOS = new FileOutputStream(f);
+					
 			        byte[] byteArray = new byte[1024];
 			        int i;
 			        //InputStream classIS = getClass().getClassLoader().getResourceAsStream("Resources/"+filePath);
-			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePath);
+			        //bleibt null, also den entrynamen versuchen InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePath);
+			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(entry.getName());
 			//While the input stream has bytes
 			        while ((i = classIS.read(byteArray)) > 0) 
 			        {
@@ -128,11 +144,14 @@ public class JarEasyZZZ implements IConstantZZZ{
 			//Close streams to prevent errors
 			        classIS.close();
 			        resourceOS.close();
-			        objReturn = f;		    
-				}catch (Exception e){
-			    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			        objReturn = f;	
+				} catch (FileNotFoundException e) {
+					ExceptionZZZ ez  = new ExceptionZZZ("FileNotFoundException: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
-			    }	    
+				} catch (IOException e) {
+					ExceptionZZZ ez  = new ExceptionZZZ("IOException: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				} 
 				}//end main:
 				return objReturn;
 		}
@@ -207,7 +226,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 			
 				//1. Aus der Jar Datei nur das Verzeichnis herausfiltern.						
 				String archiveName = objJarFile.getName();				
-				sSourceDirectoryPath = JarEasyZZZ.toJarPath(sSourceDirectoryPath);				
+				sSourceDirectoryPath = JarEasyZZZ.toJarFilePath(sSourceDirectoryPath);				
 				IFileDirectoryPartFilterZipUserZZZ objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(sSourceDirectoryPath);
 				IFileDirectoryPartFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );  //Merke: Das dauert laaange
@@ -342,7 +361,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 			
 				//1. Aus der Jar Datei nur das Verzeichnis herausfiltern.						
 				String archiveName = objJarFile.getName();				
-				sSourceDirectoryPath = JarEasyZZZ.toJarPath(sSourceDirectoryPath);				
+				sSourceDirectoryPath = JarEasyZZZ.toJarFilePath(sSourceDirectoryPath);				
 				IFileDirectoryPartFilterZipUserZZZ objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(sSourceDirectoryPath);
 				IFileDirectoryPartFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );
@@ -510,7 +529,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("No source filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}			
-			sDirectoryFilePathInJar = JarEasyZZZ.toJarPath(sDirectoryFilePathInJar);
+			sDirectoryFilePathInJar = JarEasyZZZ.toJarFilePath(sDirectoryFilePathInJar);
 			
 			
 			String sTargetDirectoryFilepath;
@@ -723,20 +742,18 @@ public class JarEasyZZZ implements IConstantZZZ{
 	
 	public static File getJarCurrent() throws ExceptionZZZ{
 		File objReturn=null;
-		try {
-			String sPath = JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-			objReturn = new File(sPath);
-		} catch (URISyntaxException e) {
-			ExceptionZZZ ez = new ExceptionZZZ("URISyntaxException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
-			throw ez;			
+		main:{
+			/*
+			https://stackoverflow.com/questions/320542/how-to-get-the-path-of-a-running-jar-file						
+			 */
+			
+			//1.Schritt die URL holen
+			URL url = JarEasyHelperZZZ.getLocation(JarEasyZZZ.class);
+			
+			//Step 2: URL to File
+			objReturn = JarEasyHelperZZZ.urlToFile(url);
 		}
 		return objReturn;
-		
-		
-		// ABER WAS TUN, WENN URI Null ist
-		/*
-		https://stackoverflow.com/questions/320542/how-to-get-the-path-of-a-running-jar-file
-		 */
 	}
 	
 	public static File getJarDirectoryCurrent() throws ExceptionZZZ{
@@ -919,7 +936,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 	 * @author Fritz Lindhauer, 19.07.2020, 07:35:31
 	 * @throws ExceptionZZZ 
 	 */
-	public static String toJarPath(String sFilePath) throws ExceptionZZZ {
+	public static String toJarFilePath(String sFilePath) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sFilePath)){
@@ -933,6 +950,25 @@ public class JarEasyZZZ implements IConstantZZZ{
 		
 			//UND: Abschliessend gibt es bei Verzeichnissen ein / ... aber NUR 1x
 			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);
+		}
+		return sReturn;
+	}
+	
+	/** Innerhalb der JAR-Datei wird immer mit / gearbeitet.
+	 *  Also einen Dateipfad dahingehend normieren.
+	 *  
+	 *  Verzeichnisse sind mit / abgeschlossen.
+	 * @param sFilePath
+	 * @return
+	 * @author Fritz Lindhauer, 19.07.2020, 07:35:31
+	 * @throws ExceptionZZZ 
+	 */
+	public static String toJarDirectoryPath(String sFilePath) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			sReturn = JarEasyZZZ.toJarFilePath(sFilePath);
+			
+			//UND: Abschliessend gibt es bei Verzeichnissen ein / ... aber NUR 1x
 			sReturn=sReturn+"/";
 		}
 		return sReturn;

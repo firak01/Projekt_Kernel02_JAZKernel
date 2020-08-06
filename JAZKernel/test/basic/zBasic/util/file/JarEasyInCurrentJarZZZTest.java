@@ -107,6 +107,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		}
 	}//END tearDown
 		
+	
 	public void testSearchRessourceAsTempFile(){
 		try{
 			
@@ -118,8 +119,6 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
 			}
-			
-			
 			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());

@@ -67,6 +67,24 @@ public class JarEasyZZZTest extends TestCase{
 			}
 		}
 	}//END tearDown
+	
+	public void testGetJarCurrent() {
+		try{
+			
+			File objFileJar=null;			
+			if(JarEasyZZZ.isInJarStatic())	{
+				objFileJar = JarEasyZZZ.getJarCurrent();
+			}
+			if(objFileJar!=null) {
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": JAR FILE FOUND '" + objFileJar.getAbsolutePath() + "'";
+			    System.out.println(sLog);
+			}
+			assertNotNull(objFileJar);												
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
 		
 	public void testExtractDirectoryToTemp(){
 		try{

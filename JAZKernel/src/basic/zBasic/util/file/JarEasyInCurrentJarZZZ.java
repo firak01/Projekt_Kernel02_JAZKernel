@@ -25,17 +25,14 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 				}
 				
 				String sLog = null;
-				final File jarFile = new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+				final File jarFile = JarEasyZZZ.getJarCurrent(); //new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 				if(jarFile.isFile()) {  // Run with JAR file
 				    JarFile jar;
 					try {
 						jar = new JarFile(jarFile);
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 					    System.out.println(sLog);
-					    String sPathInJar = JarEasyZZZ.toJarPath(sPath); 
-					    		
-	//				    StringZZZ.replace(sPath, File.separator, "/"); //Innerhalb der JAR-Datei wird immer mit / gearbeitet.
-	//				    sPathInJar = StringZZZ.stripLeft(sPathInJar, "/"); 
+					    String sPathInJar = JarEasyZZZ.toJarFilePath(sPath); 
 					    sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Searching for '" + sPathInJar + "'";
 					    System.out.println(sLog);
 					    JarEntry entry = jar.getJarEntry(sPathInJar);
@@ -48,9 +45,10 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 					    	System.out.println(sLog);
 					    	
 					    	//Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
-					    	if(entry.isDirectory()) { //Dateien nicht extrahieren!!!				    		
-					    	}else {
-					    		//TODOGOON; //Das gibt es schon mit einem String, nun als Parameter entry...
+					    	if(entry.isDirectory()) { //Dateien nicht extrahieren!!!
+					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE";
+						    	System.out.println(sLog);
+					    	}else {					    	
 					    		objReturn = JarEasyZZZ.extractFileFromJarAsTemp(jar, entry);
 					    	}
 					    }
