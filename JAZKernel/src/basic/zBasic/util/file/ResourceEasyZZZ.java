@@ -118,7 +118,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) WorkspaceURL is null";
 				    System.out.println(sLog);
 				    
-				    objReturn = JarEasyZZZ.searchRessource(sPath);
+				    objReturn = JarEasyInCurrentJarZZZ.searchRessourceAsTempFile(sPath);
 				    if(objReturn==null){
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Datei NICHT gefunden '" + sPath + "' (NULL CASE)";
 					    System.out.println(sLog);

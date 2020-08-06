@@ -55,7 +55,6 @@ public class JarEasyZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
-		
 	/**
 	*  This method is responsible for extracting resource files from within the .jar to an temporarily existing file.
 	*  NOT a file peristed in the temp - Directory !!!
@@ -71,6 +70,48 @@ public class JarEasyZZZ implements IConstantZZZ{
 					throw ez;
 				}
 
+				try{
+			        File f = File.createTempFile(sFilePath, null);
+			        FileOutputStream resourceOS = new FileOutputStream(f);
+			        byte[] byteArray = new byte[1024];
+			        int i;
+			        //InputStream classIS = getClass().getClassLoader().getResourceAsStream("Resources/"+filePath);
+			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePath);
+			//While the input stream has bytes
+			        while ((i = classIS.read(byteArray)) > 0) 
+			        {
+			//Write the bytes to the output stream
+			            resourceOS.write(byteArray, 0, i);
+			        }
+			//Close streams to prevent errors
+			        classIS.close();
+			        resourceOS.close();
+			        objReturn = f;		    
+				}catch (Exception e){
+			    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+			    }	    
+				}//end main:
+				return objReturn;
+		}
+	
+		
+	/**
+	*  This method is responsible for extracting resource files from within the .jar to an temporarily existing file.
+	*  NOT a file peristed in the temp - Directory !!!
+	*  @param filePath The filepath is the directory within the .jar from which to extract the file.
+	*  @return A file object to the extracted file
+	*  **/
+	public static File extractFileFromJarAsTemp(JarFile objJarFile, JarEntry entry) throws ExceptionZZZ {
+			File objReturn=null;
+			main:{
+				//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
+				if(entry==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No JarEntry-Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				String sFilePath = entry.getName();
+				sFilePath = JarEasyZZZ.toFilePath(sFilePath);
 				try{
 			        File f = File.createTempFile(sFilePath, null);
 			        FileOutputStream resourceOS = new FileOutputStream(f);
@@ -690,6 +731,12 @@ public class JarEasyZZZ implements IConstantZZZ{
 			throw ez;			
 		}
 		return objReturn;
+		
+		
+		// ABER WAS TUN, WENN URI Null ist
+		/*
+		https://stackoverflow.com/questions/320542/how-to-get-the-path-of-a-running-jar-file
+		 */
 	}
 	
 	public static File getJarDirectoryCurrent() throws ExceptionZZZ{
@@ -833,69 +880,6 @@ public class JarEasyZZZ implements IConstantZZZ{
 		
 		   //Alternativer Ansatz: https://www.edureka.co/community/5035/retrieving-the-path-of-a-running-jar-file			   
 		   //return new File(AbcClass.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
-	}
-	
-	public static File searchRessource(String sPath) throws ExceptionZZZ {
-		File objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sPath)){
-				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			String sLog = null;
-			final File jarFile = new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-			if(jarFile.isFile()) {  // Run with JAR file
-			    JarFile jar;
-				try {
-					jar = new JarFile(jarFile);
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
-				    System.out.println(sLog);
-				    String sPathInJar = StringZZZ.replace(sPath, File.separator, "/"); //Innerhalb der JAR-Datei wird immer mit / gearbeitet.
-				    sPathInJar = StringZZZ.stripLeft(sPathInJar, "/"); 
-				    sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Searching for '" + sPathInJar + "'";
-				    System.out.println(sLog);
-				    JarEntry entry = jar.getJarEntry(sPathInJar);
-				    if(entry==null){
-				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPathInJar +"'";
-				    	System.out.println(sLog);			    	
-				    }else{
-				    	
-				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND: '" + sPathInJar +"'";
-				    	System.out.println(sLog);
-				    	
-				    	//Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
-				    	if(entry.isDirectory()) {
-				    		
-				    	}else {
-				    		objReturn = JarEasyZZZ.extractFileFromJarAsTemp(jar, sPathInJar);
-				    	}
-				    }
-				    
-//Aus Doku gründen stehen lassen: Alle Einträge eines Jar-Files durchgehen:				    
-//			    final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
-//			    while(entries.hasMoreElements()) {
-//			        final String name = entries.nextElement().getName();
-//			        if (name.startsWith(sFile)) { //filter according to the path
-//			        	System.out.println("BINGO");
-//			            System.out.println(name);
-//			            break main;
-//			        }else{
-//			        	//System.out.println(name);
-//			        }
-//			    }
-			    jar.close();
-				} catch (IOException e1) {
-					ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-			}else{
-				//Keine Jar Datei
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) NO JAR FILE FOUND'";
-				System.out.println(sLog);			
-			}						
-		}//end main:
-		return objReturn;
 	}
 	
 	public static JarFile toJarFile(File objFileAsJar) throws ExceptionZZZ{
