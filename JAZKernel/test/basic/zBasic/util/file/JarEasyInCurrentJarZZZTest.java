@@ -108,12 +108,12 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 	}//END tearDown
 		
 	
-	public void testSearchRessourceAsTempFile(){
+	public void testExtractFileAsTemp(){
 		try{
 			
 			File objFileCreated;			
 			if(JarEasyZZZ.isInJarStatic())	{
-				objFileCreated = JarEasyInCurrentJarZZZ.searchRessourceAsTempFile("template/template_server_starter.txt");
+				objFileCreated = JarEasyInCurrentJarZZZ.extractFileAsTemp("template/template_server_starter.txt");
 				assertNotNull(objFileCreated);
 				if(!objFileCreated.exists()) {
 					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
@@ -123,6 +123,39 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
+	}
+	
+	public void testSearchResourceToTempAsTrunkFileDummy() {		
+		try{
+			
+			File objFileCreated;	
+			
+			//FALL A: NUR VERZEICHNIS FINDEN
+			if(JarEasyZZZ.isInJarStatic())	{
+				String sPath = "debug/zBasic";
+				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
+				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTempAsTrunkFileDummy(sPath, sTargetDirectoryPathRoot);
+				assertNotNull(objFileCreated);
+				if(!objFileCreated.exists()) {
+					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}
+			}
+			
+			//FALL B: DATEI FINDEN
+			if(JarEasyZZZ.isInJarStatic())	{
+				String sPath = "template/template_server_starter.txt";
+				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
+				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTempAsTrunkFileDummy(sPath, sTargetDirectoryPathRoot);
+				assertNotNull(objFileCreated);
+				if(!objFileCreated.exists()) {
+					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}
+			}
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
 	}
 
 	

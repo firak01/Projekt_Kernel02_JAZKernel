@@ -580,7 +580,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bNotInJar)throws
 			//Suche nach dem Verzeichnis in der gleichen JAR DAtei:
 			//ABER: Verzeichnisse können nur zurückgegeben  werden, wenn Sie als Kopie irgendwo erstellt werden. 
 			//TODOGOON 20200805;
-			objReturn = JarEasyInCurrentJarZZZ.searchRessourceAsTempFile(sDirectory);
+			objReturn = JarEasyInCurrentJarZZZ.searchResourceToTempAsTrunkFileDummy(sDirectory, "ZZZ");
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
@@ -1866,7 +1866,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(FileEasyZZZ.isInJarStatic()){
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Searching for file by JarFile-Class '" + sPath +"'";
 			    System.out.println(sLog);
-				objReturn = JarEasyInCurrentJarZZZ.searchRessourceAsTempFile(sPath);
+				objReturn = JarEasyInCurrentJarZZZ.extractFileAsTemp(sPath);
 				if(objReturn!=null){
 					if(objReturn.exists()) {
 						if(objReturn.length()>0){

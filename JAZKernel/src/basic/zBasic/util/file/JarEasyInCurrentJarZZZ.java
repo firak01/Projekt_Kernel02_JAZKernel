@@ -9,6 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.machine.EnvironmentZZZ;
 
 /** Methoden für die Arbeit mit der gleichen Jar Datei, wenn die Methoden aus der Jar-Datei aufgerufen werden.
  * @author Fritz Lindhauer, 05.08.2020, 14:05:25
@@ -16,7 +17,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  */
 public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 
-	public static File searchRessourceAsTempFile(String sPath) throws ExceptionZZZ {
+	public static File extractFileAsTemp(String sPath) throws ExceptionZZZ {
 			File objReturn = null;
 			main:{
 				if(StringZZZ.isEmpty(sPath)){
@@ -79,7 +80,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 			return objReturn;
 		}
 
-	public static File searchRessourceToTempAsTrunkFileDummy(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File searchResourceToTempAsTrunkFileDummy(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 			File objReturn = null;
 			main:{
 				if(StringZZZ.isEmpty(sPath)){
@@ -95,7 +96,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 				
 				
 				String sLog = null;
-				final File jarFile = new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+				final File jarFile = JarEasyZZZ.getJarCurrent(); //new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 				if(jarFile.isFile()) {  // Run with JAR file
 				    JarFile jar;
 					try {
@@ -108,18 +109,41 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 					    System.out.println(sLog);
 					    JarEntry entry = jar.getJarEntry(sPathInJar);
 					    if(entry==null){
-					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPathInJar +"'";
+					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR PATH IN JAR: '" + sPathInJar +"'";
 					    	System.out.println(sLog);			    	
-					    }else{
-					    	
-					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND: '" + sPathInJar +"'";
+					    }else{					    	
+					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND FOR PATH IN JAR: '" + sPathInJar +"'";
 					    	System.out.println(sLog);
+					    	
+					    	String sTargetDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirectoryPathRoot);
+					    	
 					    	
 					    	//Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
 					    	if(entry.isDirectory()) { //Dateien nicht extrahieren!!!
-					    		//TODOGOON; 20200805 
-					    		//objReturn = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(jar, entry,sTargetDirectoryPathRoot, false);
+					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
+						    	System.out.println(sLog);
+					    		
+					    		File fileDirTemp = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(jar, entry,sTargetDirectoryPath, false);
+					    		if(fileDirTemp!=null) {
+					    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK FILE OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'";
+							    	System.out.println(sLog);
+					    			
+					    			boolean bErg= FileEasyZZZ.createDirectory(fileDirTemp);
+					    			if(bErg) {
+					    				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY SUCCESFULLY CREATED '" + fileDirTemp.getAbsolutePath() +"'";
+								    	System.out.println(sLog);
+								    	
+					    				objReturn = fileDirTemp;
+					    			}else {
+					    				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY NOT CREATED '" + fileDirTemp.getAbsolutePath() +"'";
+								    	System.out.println(sLog);
+					    			}
+					    		}
 					    	}else {
+					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS NOT A DIRECTORY: '" + entry.getName() +"'";
+						    	System.out.println(sLog);
+
+						    	
 					    		//TODOGOON; 20200805 
 					    		//objReturn = JarEasyZZZ.extractFileFromJarAsTrunkFileDummy(jar, entry, sTargetDirectoryPathRoot);//JarEasyZZZ.extractFileFromJarAsTemp(jar, sPathInJar);
 					    	}
