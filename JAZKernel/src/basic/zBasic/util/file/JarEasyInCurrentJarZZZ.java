@@ -123,7 +123,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 						    	System.out.println(sLog);
 					    		
-					    		File fileDirTemp = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(jar, entry,sTargetDirectoryPath, false);
+					    		File fileDirTemp = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath, false);
 					    		if(fileDirTemp!=null) {
 					    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK FILE OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'";
 							    	System.out.println(sLog);
