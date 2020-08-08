@@ -5,9 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.JarURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -44,18 +41,6 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
 
 public class JarEasyZZZ implements IConstantZZZ{
 
-	public static String computeUrlPathForContainingResource(JarFile objJar, String sResourcePath) {
-		String sReturn = null;
-		main:{
-			if(objJar==null) break main;
-			if(StringZZZ.isEmpty(sResourcePath)) break main;
-				
-			String sJarFile = objJar.getName();
-			sReturn = "jar:file:/" + sJarFile + "!/" + sResourcePath; //Merke das Ausrufezeichen ist wichtig. Sonst Fehler: no !/ in spec
-		}//end main:
-		return sReturn;
-	}
-	
 	/**
 	*  This method is responsible for extracting resource files from within the .jar to an temporarily existing file.
 	*  NOT a file peristed in the temp - Directory !!!
@@ -71,13 +56,18 @@ public class JarEasyZZZ implements IConstantZZZ{
 					throw ez;
 				}
 
-				try{
-			        File f = File.createTempFile(sFilePath, null);
+				try{					
+			        File f = FileEasyZZZ.createTempFile(sFilePath); 
 			        FileOutputStream resourceOS = new FileOutputStream(f);
 			        byte[] byteArray = new byte[1024];
 			        int i;
-			        //InputStream classIS = getClass().getClassLoader().getResourceAsStream("Resources/"+filePath);
-			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePath);
+
+			      //Der Pfad muss so sein, wie in der JAR - Datei abgelegt. Also mit Slashes, z.B.: InputStream classIS = getClass().getClassLoader().getResourceAsStream("Resources/"+filePath);
+			        String sFilePathInJar = JarEasyZZZ.toJarFilePath(sFilePath);
+			        String sLog = ReflectCodeZZZ.getPositionCurrent()+": (G) Trying to create InputStream for : '" + sFilePathInJar + "'";
+					System.out.println(sLog);
+					
+			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePathInJar);
 			//While the input stream has bytes
 			        while ((i = classIS.read(byteArray)) > 0) 
 			        {
@@ -118,42 +108,11 @@ public class JarEasyZZZ implements IConstantZZZ{
 				sFilePath = JarEasyZZZ.toFilePath(sFilePath);
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Entry to FilePath '" + sFilePath + "'";
 				System.out.println(sLog);
-				try{
-			        File f = File.createTempFile(sFilePath, null);
-			        if(f.exists()==false) {
-			        	ExceptionZZZ ez  = new ExceptionZZZ("Temp File not created for: '" + sFilePath + "'", iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-			        	throw ez;
-			        }else {
-			        	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Temp File created '" + f.getAbsolutePath() + "'";
-						System.out.println(sLog);
-			        }
-			        
-			        FileOutputStream resourceOS = new FileOutputStream(f);
-					
-			        byte[] byteArray = new byte[1024];
-			        int i;
-			        //InputStream classIS = getClass().getClassLoader().getResourceAsStream("Resources/"+filePath);
-			        //bleibt null, also den entrynamen versuchen InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(sFilePath);
-			        InputStream classIS = JarEasyZZZ.class.getClassLoader().getResourceAsStream(entry.getName());
-			//While the input stream has bytes
-			        while ((i = classIS.read(byteArray)) > 0) 
-			        {
-			//Write the bytes to the output stream
-			            resourceOS.write(byteArray, 0, i);
-			        }
-			//Close streams to prevent errors
-			        classIS.close();
-			        resourceOS.close();
-			        objReturn = f;	
-				} catch (FileNotFoundException e) {
-					ExceptionZZZ ez  = new ExceptionZZZ("FileNotFoundException: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				} catch (IOException e) {
-					ExceptionZZZ ez  = new ExceptionZZZ("IOException: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				} 
-				}//end main:
-				return objReturn;
+				
+				objReturn = JarEasyZZZ.extractFileFromJarAsTemp(objJarFile, sFilePath);
+				
+			}//end main:
+			return objReturn;
 		}
 	
 	
@@ -710,6 +669,40 @@ public class JarEasyZZZ implements IConstantZZZ{
 			return objaReturn;
 	}
 	
+	public static File extractFileFromJarAsTrunkFileDummy(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{
+
+			if(objJarFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(entry==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("No JarEntry provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sTargetDirectoryPath;
+			if(StringZZZ.isEmpty(sTargetDirectoryPathIn)){
+				sTargetDirectoryPath= ".";
+			}else {
+				sTargetDirectoryPath = sTargetDirectoryPathIn;
+			}
+			
+			
+
+			try{				
+					objReturn = new File(sTargetDirectoryPath, entry.getName());									
+				
+			}catch (Exception e){
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+		    }	    
+			}//end main:
+			return objReturn;
+	}
+	
 	public static boolean saveTrunkAsFile(JarFile jf, HashMap<ZipEntry,File> hmTrunk) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
@@ -872,57 +865,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	/** Wenn man einen Pfad innerhalb einer JAR-Datei übergibt, bekommt man hier die JAR-als File Objekt zurück.
-	 *  https://stackoverflow.com/questions/8014099/how-do-i-convert-a-jarfile-uri-to-the-path-of-jar-file
-	 *  Eine URL wird aussehen wie in JarEasyZZZ.computeUrlPathForContainingResource(...) erstellt.
-	 * @author Fritz Lindhauer, 19.07.2020, 08:43:29
-	 * @throws ExceptionZZZ 
-	 */
-	public static File getJarCurrentFromUrl(JarFile objJarFile, String sUrl) throws ExceptionZZZ {
-		File objReturn = null;
-		main:{
-			try {
-			if(StringZZZ.isEmpty(sUrl)){
-				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(objJarFile==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			//							
-			//String sUrl = JarEasyZZZ.computeUrlPathForContainingResource(objJarFile, sDirectoryPath); 
-	//		String sUrl = JarEasyZZZ.computeUrlPathForContainingResource(objJarFile, sKey);
-	//		String sLog = ReflectCodeZZZ.getPositionCurrent()+": String to fetch URL from JarFileObject '" + sUrl + "'" ;
-	//	    System.out.println(sLog);			   
-		    
-			URL url = new URL(sUrl);		
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": URL created from JarFileObject '" + url + "'" ;
-		    System.out.println(sLog);
-		    
-			
-			//DAS Holt immer nur die JAR - Datei selbst:
-		    JarURLConnection connection = (JarURLConnection) url.openConnection();
-			URI uri = connection.getJarFileURL().toURI();
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": URI.getPath created from JarFileObject '" + uri.getPath() + "'" ;
-		    System.out.println(sLog);
-		    	    
-		    objReturn = new File(uri);
-	    
-			} catch (MalformedURLException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("MalformedURLException '" + e.getMessage() + "'", iERROR_PARAMETER_VALUE, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			} catch (IOException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("IOException '" + e.getMessage() + "'", iERROR_PARAMETER_VALUE, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			} catch (URISyntaxException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("URISyntaxException '" + e.getMessage() + "'", iERROR_PARAMETER_VALUE, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-		}//end main:
-		return objReturn;
-	}
+	
 	
 	
 	//### Interfaces

@@ -580,7 +580,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bNotInJar)throws
 			//Suche nach dem Verzeichnis in der gleichen JAR DAtei:
 			//ABER: Verzeichnisse können nur zurückgegeben  werden, wenn Sie als Kopie irgendwo erstellt werden. 
 			//TODOGOON 20200805;
-			objReturn = JarEasyInCurrentJarZZZ.searchResourceToTempAsTrunkFileDummy(sDirectory, "ZZZ");
+			objReturn = JarEasyInCurrentJarZZZ.searchResourceToTemp(sDirectory, "ZZZ");
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
@@ -1277,6 +1277,21 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return sReturn;
 	}
 	
+	
+	/** Sinnvolle Methode, wenn es ausreicht einen simplen Dateinamen zu haben, ohne die Verzeichnisstruktur.
+	 *  Wird z.b. verwendet beim Speichern einer Ressource als echte temp-Datei.
+	 * @param sFilePath
+	 * @return
+	 * @author Fritz Lindhauer, 08.08.2020, 12:59:00
+	 */
+	public static String flattenFilePathToFileName(String sFilePath) {
+		String sReturn = null;
+		main:{
+			String sFilePathNormedForTempFile = StringZZZ.replace(sFilePath, FileEasyZZZ.sDIRECTORY_SEPARATOR, "_");													
+			sReturn = StringZZZ.replace(sFilePathNormedForTempFile, "/", "_");
+		}//end main:
+		return sReturn;
+	}
 	
 	public static String joinFilePathName(File objFileForDirectory, String sFileNameIn) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
@@ -2068,6 +2083,31 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}					
 			
 		}
+		return objReturn;
+	}
+	
+	public static File createTempFile(String sFilePath) throws ExceptionZZZ{
+		File objReturn = null;
+		main:{
+			try {
+				if(StringZZZ.isEmpty(sFilePath)) {
+					objReturn = FileEasyZZZ.createTempFile();
+					break main;
+				}
+						
+				//Falls ein Verzeichnispfad übergeben wird, wird dieser "flach" gemacht. Man kann als temp-Datei keine Verzeichnisse bauen.
+				String sFilePathNormedForTempFile = FileEasyZZZ.flattenFilePathToFileName(sFilePath);
+				
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": (F) To FileName flattended Path: '" + sFilePathNormedForTempFile + "'";
+				System.out.println(sLog);
+				
+				objReturn = File.createTempFile(sFilePathNormedForTempFile, null);
+			} catch (IOException ioe) {
+				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			
+		}//end main:
 		return objReturn;
 	}
 	

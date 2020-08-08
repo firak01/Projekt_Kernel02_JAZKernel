@@ -49,7 +49,10 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 					    	if(entry.isDirectory()) { //Dateien nicht extrahieren!!!
 					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE";
 						    	System.out.println(sLog);
-					    	}else {					    	
+					    	}else {				
+					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
+						    	System.out.println(sLog);
+					    		
 					    		objReturn = JarEasyZZZ.extractFileFromJarAsTemp(jar, entry);
 					    	}
 					    }
@@ -80,7 +83,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 			return objReturn;
 		}
 
-	public static File searchResourceToTempAsTrunkFileDummy(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File searchResourceToTemp(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 			File objReturn = null;
 			main:{
 				if(StringZZZ.isEmpty(sPath)){
@@ -128,6 +131,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 					    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK FILE OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'";
 							    	System.out.println(sLog);
 					    			
+							    	//Merke, damit es kein TRUNK-OBJEKT bleibt, das Verzeichnis erstellen.
 					    			boolean bErg= FileEasyZZZ.createDirectory(fileDirTemp);
 					    			if(bErg) {
 					    				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY SUCCESFULLY CREATED '" + fileDirTemp.getAbsolutePath() +"'";
@@ -146,6 +150,22 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 						    	
 					    		//TODOGOON; 20200805 
 					    		//objReturn = JarEasyZZZ.extractFileFromJarAsTrunkFileDummy(jar, entry, sTargetDirectoryPathRoot);//JarEasyZZZ.extractFileFromJarAsTemp(jar, sPathInJar);
+						    	File fileTemp = JarEasyZZZ.extractFileFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath);
+					    		if(fileTemp!=null) {
+					    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'";
+							    	System.out.println(sLog);
+							    	
+							    	boolean bErg = JarEasyZZZ.saveTrunkToFile(jar, entry, fileTemp);
+							    	if(bErg) {
+							    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT PERSISTED AS: '" + fileTemp.getAbsolutePath() +"'";
+								    	System.out.println(sLog);
+								    	
+								    	objReturn = fileTemp;
+							    	}else {
+							    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT NOT PERSISTED AS: '" + fileTemp.getAbsolutePath() +"'";
+								    	System.out.println(sLog);
+							    	}
+					    		}
 					    	}
 					    }
 					    

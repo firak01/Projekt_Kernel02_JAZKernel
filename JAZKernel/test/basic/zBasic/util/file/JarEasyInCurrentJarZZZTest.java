@@ -125,7 +125,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		}
 	}
 	
-	public void testSearchResourceToTempAsTrunkFileDummy() {		
+	public void testSearchResourceToTemp() {		
 		try{
 			
 			File objFileCreated;	
@@ -134,7 +134,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			if(JarEasyZZZ.isInJarStatic())	{
 				String sPath = "debug/zBasic";
 				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
-				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTempAsTrunkFileDummy(sPath, sTargetDirectoryPathRoot);
+				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
 				assertNotNull(objFileCreated);
 				if(!objFileCreated.exists()) {
 					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
@@ -143,9 +143,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			
 			//FALL B: DATEI FINDEN
 			if(JarEasyZZZ.isInJarStatic())	{
-				String sPath = "template/template_server_starter.txt";
+				String sPath = "template/template_server_TCP_443.ovpn";
 				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
-				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTempAsTrunkFileDummy(sPath, sTargetDirectoryPathRoot);
+				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
 				assertNotNull(objFileCreated);
 				if(!objFileCreated.exists()) {
 					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
