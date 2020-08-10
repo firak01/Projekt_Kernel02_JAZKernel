@@ -985,6 +985,9 @@ public class JarEasyZZZ implements IConstantZZZ{
 		
 			//UND: Abschliessend gibt es bei Verzeichnissen ein / ... aber NUR 1x
 			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);
+			
+			//UND: Links gibt es keinen /
+			sReturn=StringZZZ.stripLeft(sReturn, "/");
 		}
 		return sReturn;
 	}
