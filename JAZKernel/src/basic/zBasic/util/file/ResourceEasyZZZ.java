@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -115,25 +116,53 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					throw ez;
 				}
 				}else{
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) WorkspaceURL is null";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) WorkspaceURL is null, searching for JarFile.";
 				    System.out.println(sLog);
+				    try {
+					    //Nun muss mann die Ressource aus einer .jar-Datei holen.
+					    //Für das Return - Objekt muss man differenziert verfahren: Verzeichnis oder Datei
+					    //0. JarFile holen
+					    JarFile jar = JarEasyInCurrentJarZZZ.getJarFileCurrent();
+					    if(jar==null) {
+						    sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) JarFileCurrent not available.";
+						    System.out.println(sLog);
+						    break main;
+					    }
+					    
+					    //1. Prüfe auf Verzeichnis / Datei
+					    boolean bEntryIsDirectory = JarEasyInCurrentJarZZZ.isDirectory(jar, sPath);
+					    if(bEntryIsDirectory) {
+					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE, BUT AS REAL TEMP DIRECTORY.";
+					    	System.out.println(sLog);
+					    	objReturn = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, "");
+					    }else {
+					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
+						    System.out.println(sLog);						    	
+					    	objReturn = JarEasyInCurrentJarZZZ.extractFileAsTemp(sPath);
+					    }
+					    
+					    if(objReturn==null){
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource NICHT gefunden '" + sPath + "' (NULL CASE)";
+						    System.out.println(sLog);
+						}else {
+						    if(objReturn.exists()){
+								sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource gefunden '" + sPath + "'";
+							    System.out.println(sLog);							
+							}else {
+								sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource NICHT gefunden '" + sPath + "'";
+							    System.out.println(sLog);								
+							}
+						}
 				    
-				    objReturn = JarEasyInCurrentJarZZZ.extractFileAsTemp(sPath);
-				    if(objReturn==null){
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Datei NICHT gefunden '" + sPath + "' (NULL CASE)";
-					    System.out.println(sLog);
-						break main;
-					}
-				    if(objReturn.exists()){
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Datei gefunden '" + sPath + "'";
-					    System.out.println(sLog);
-						break main;
-					}else {
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Datei NICHT gefunden '" + sPath + "'";
-					    System.out.println(sLog);
-						break main;
+					  //JarFile wieder schliessen.
+					  jar.close();
+				    } catch (IOException ioe) {
+						ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
 					}
 				}
+				
+				
 				
 			}else{								
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (BB) not in .jar searching for path '" + sPath + "'";
