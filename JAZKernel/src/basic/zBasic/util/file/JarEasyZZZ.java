@@ -504,6 +504,8 @@ public class JarEasyZZZ implements IConstantZZZ{
 			}
 			objReturn = new File(sTargetDirectoryPath);//Aber: Das sollte damit nicht automatisch erstellt sein.
 			
+			TODOGOON;//HIER DAS VERZEICHNIS ERSTELLEN, FALLS ES NCITH EXISTIERT....
+			
 			try{
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
 				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
