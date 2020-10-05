@@ -495,7 +495,7 @@ public static File searchDirectory(String sDirectoryIn) throws ExceptionZZZ {
  * @throws ExceptionZZZ
  * @author lindhaueradmin, 13.02.2019, 07:14:31
  */
-public static File searchDirectory(String sDirectoryIn, boolean bNotInJar)throws ExceptionZZZ{
+public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		String sDirectory = null;
@@ -574,7 +574,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bNotInJar)throws
 				if(objReturn.exists()) break main;
 			}
 			
-			if(bNotInJar) break main;
+			if(!bSearchInJar) break main;
 			
 			//##################################################
 			//Suche nach dem Verzeichnis in der gleichen JAR DAtei:

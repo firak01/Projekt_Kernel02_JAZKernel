@@ -231,7 +231,10 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 					    	
 					    	
 				    //Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
-				    if(entry.isDirectory()) { //Dateien nicht extrahieren!!!
+				    if(entry.isDirectory()) { TODOGOON 20201005 //DATEIEN DOCH AUCH SOFORT EXTRAHIEREN!!! Grund: Ggfs. wird dann in dem zurückgegebenen Verzeichnis sofort nach den Dateien gesucht. 
+				    	
+				    	
+				    	//Dateien erst mal nicht extrahieren!!!
 				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 					   	System.out.println(sLog);
 					    		

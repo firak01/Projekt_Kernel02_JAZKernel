@@ -504,7 +504,15 @@ public class JarEasyZZZ implements IConstantZZZ{
 			}
 			objReturn = new File(sTargetDirectoryPath);//Aber: Das sollte damit nicht automatisch erstellt sein.
 			
-			TODOGOON;//HIER DAS VERZEICHNIS ERSTELLEN, FALLS ES NCITH EXISTIERT....
+			//HIER DAS VERZEICHNIS ERSTELLEN, FALLS ES NICHT EXISTIERT....
+			if(!FileEasyZZZ.exists(sTargetDirectoryPath)) {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Directory does not exist '" + sTargetDirectoryPath +"'");				
+				boolean bErg = FileEasyZZZ.createDirectory(sTargetDirectoryPath);
+				if(!bErg) {
+					ExceptionZZZ ez = new ExceptionZZZ("Unable to create Directory '" + sTargetDirectoryPath +"'", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+			}
 			
 			try{
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
