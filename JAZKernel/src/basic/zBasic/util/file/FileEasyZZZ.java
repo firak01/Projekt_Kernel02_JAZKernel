@@ -1601,7 +1601,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			  return bReturn;
 		  }
 		
-		public static File[] listDirectories(File fileDirectoryIn) {
+		public static File[] listDirectoriesOnly(File fileDirectoryIn) {
 			File[] objaReturn = null;
 			main:{
 				FileFilter directoryFilter = new FileFilter() {
@@ -1611,6 +1611,26 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				};
 
 				objaReturn = fileDirectoryIn.listFiles(directoryFilter);
+			}//end main:
+			return objaReturn;
+		}
+		
+		/** Listet Dateiobjekte auf, aber auch nur Dateiobjekte und keine Verzeichnisse.
+		 *  Anders als File.listFiles(), bei dem auch Verzeichnisobjekte zurückgegeben werden. 
+		 * @param fileDirectoryIn
+		 * @return
+		 * @author Fritz Lindhauer, 10.10.2020, 07:29:10
+		 */
+		public static File[] listFilesOnly(File fileDirectoryIn) {
+			File[] objaReturn = null;
+			main:{
+				FileFilter fileFilter = new FileFilter() {
+					public boolean accept(File file) {						
+						return file.isFile();
+					}
+				};
+
+				objaReturn = fileDirectoryIn.listFiles(fileFilter);
 			}//end main:
 			return objaReturn;
 		}

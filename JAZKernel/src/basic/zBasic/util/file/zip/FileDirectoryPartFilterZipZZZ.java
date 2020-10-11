@@ -2,9 +2,11 @@ package basic.zBasic.util.file.zip;
 
 import java.util.zip.ZipEntry;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
 
 public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
 	private String sDirectoryPath;
@@ -12,12 +14,13 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 	public FileDirectoryPartFilterZipZZZ() {
 		super();
 	}
-	public FileDirectoryPartFilterZipZZZ(String sDirectoryPath) {
-		super();
+	public FileDirectoryPartFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
+		super();		
 		this.setDirectoryPath(sDirectoryPath);
 	}
 	
-	public void setDirectoryPath(String sDirectoryPath) {
+	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
+		String sDirectoryPath = JarEasyZZZ.toJarDirectoryPath(sDirectoryPathIn);
 		this.sDirectoryPath = sDirectoryPath;
 	}
 	public String getDirectoryPath() {
@@ -45,7 +48,7 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 	}
 
 	@Override
-	public void setCriterion(String sCriterion) {
+	public void setCriterion(String sCriterion) throws ExceptionZZZ {
 		this.setDirectoryPath(sCriterion);
 	}
 

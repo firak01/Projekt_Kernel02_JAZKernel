@@ -10,6 +10,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
@@ -80,9 +81,14 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			//Merke: Die Reihenfolge ist so gewählt, dass im Template Verzeichnis frühestmöglich ein "break main" erreicht wird.
 			
 			//Falls das Verzeichnis nicht passt	
-			if(!StringZZZ.isEmpty(this.getDirectoryPath())){
-				this.objPartFilterDirectory.setCriterion(this.getDirectoryPath());
-				if(this.objPartFilterDirectory.accept(ze)==false) break main;
+			try {
+				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
+					this.objPartFilterDirectory.setCriterion(this.getDirectoryPath());
+					if(this.objPartFilterDirectory.accept(ze)==false) break main;
+				}
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 														
 			bReturn = true;
@@ -91,10 +97,11 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 	}
 	
 	//##### GETTER / SETTER			
-		protected void setDirectoryPath(String sDirectoryPath) {
+		protected void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
+			String sDirectoryPath = JarEasyZZZ.toJarDirectoryPath(sDirectoryPathIn);
 			this.sDirectoryPath = sDirectoryPath;
 		}
-		protected String getDirectoryPath() {
+		protected String getDirectoryPath() throws ExceptionZZZ {
 			if(StringZZZ.isEmpty(this.sDirectoryPath)) {
 				this.setDirectoryPath("");
 			}
@@ -106,7 +113,7 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			this.objPartFilterDirectory = objDirectoryFilterZip;
 		}
 		@Override
-		public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() {
+		public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ {
 			if(this.objPartFilterDirectory==null) {
 				this.objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ(this.getDirectoryPath());
 			}

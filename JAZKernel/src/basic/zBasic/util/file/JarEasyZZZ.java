@@ -25,6 +25,7 @@ import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.FileDirectoryFilterInJarZZZ;
 import basic.zBasic.util.file.jar.FileFileFilterInJarZZZ;
@@ -484,7 +485,7 @@ public class JarEasyZZZ implements IConstantZZZ{
 			return objaReturn;
 	}
 	
-	public static File extractFromJarAsTrunk(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn,HashMap<ZipEntry,File>hmTrunk) throws ExceptionZZZ {
+	public static File extractFromJarAsTrunk(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn,ReferenceZZZ<HashMap<ZipEntry,File>>hashmapTrunk) throws ExceptionZZZ {	
 		File objReturn = null; //Das soll das Target - Directory sein
 		main:{
 			if(StringZZZ.isEmpty(sSourceDirectoryPath)){
@@ -504,15 +505,18 @@ public class JarEasyZZZ implements IConstantZZZ{
 			}
 			objReturn = new File(sTargetDirectoryPath);//Aber: Das sollte damit nicht automatisch erstellt sein.
 			
-			//HIER DAS VERZEICHNIS ERSTELLEN, FALLS ES NICHT EXISTIERT....
-			if(!FileEasyZZZ.exists(sTargetDirectoryPath)) {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Directory does not exist '" + sTargetDirectoryPath +"'");				
-				boolean bErg = FileEasyZZZ.createDirectory(sTargetDirectoryPath);
-				if(!bErg) {
-					ExceptionZZZ ez = new ExceptionZZZ("Unable to create Directory '" + sTargetDirectoryPath +"'", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-			}
+			//Merke: Weil es "trunk" ist, wird das Verzeichnis HIER nicht erstellt, sondern erst beim Speichern des Trunk-Inhalts.
+			//Merke: Hier gibt es eine "Call by Reference" Problematik, darum über ein Zwischenobjekt arbeiten und dort hinein die Objekte ablegen.
+			HashMap<ZipEntry,File> hmTrunk = hashmapTrunk.get();
+			hmTrunk = JarEasyZZZ.extractFromJarAsTrunk(objJarFile, sSourceDirectoryPath, sTargetDirectoryPath);	//DAS DAUERT LANGE					
+			hashmapTrunk.set(hmTrunk);
+		}//end main:
+		return objReturn;
+	}
+	
+	public static HashMap<ZipEntry,File>extractFromJarAsTrunk(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPath) throws ExceptionZZZ{
+		HashMap<ZipEntry,File>hmReturn = new HashMap<ZipEntry,File>();
+		main:{
 			
 			try{
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
@@ -535,15 +539,16 @@ public class JarEasyZZZ implements IConstantZZZ{
 						File objFileTemp = new File(sTargetDirectoryPath, zeTemp.getName());
 						
 						//Das Ergebnis in die Trunk - HashMap packen
-						hmTrunk.put(zeTemp, objFileTemp);
+						hmReturn.put(zeTemp, objFileTemp);
 				}
 								
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 		    }	    
-			}//end main:
-			return objReturn;
+			
+		}//end main:
+		return hmReturn;
 	}
 	
 	/**
@@ -993,11 +998,13 @@ public class JarEasyZZZ implements IConstantZZZ{
 			//Innerhalb der JAR-Datei wird immer mit / gearbeitet.
 			sReturn = StringZZZ.replace(sFilePath, FileEasyZZZ.sDIRECTORY_SEPARATOR, "/");
 		
-			//UND: Abschliessend gibt es bei Verzeichnissen ein / ... aber NUR 1x
+			//UND: Abschliessend gibt es NUR bei Verzeichnissen ein / ... aber NUR 1x
 			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);
-			
+						
 			//UND: Links gibt es keinen /
 			sReturn=StringZZZ.stripLeft(sReturn, "/");
+			
+			
 		}
 		return sReturn;
 	}

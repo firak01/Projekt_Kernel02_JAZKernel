@@ -128,16 +128,21 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 	public void testSearchResourceToTemp() {		
 		try{
 			
-			File objFileCreated;	
+			File objDirectoryCreated;	
 			
 			//FALL A: NUR VERZEICHNIS FINDEN
 			if(JarEasyZZZ.isInJarStatic())	{
 				String sPath = "debug/zBasic";
 				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
-				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
-				assertNotNull(objFileCreated);
-				if(!objFileCreated.exists()) {
-					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
+				assertNotNull(objDirectoryCreated);
+				if(!objDirectoryCreated.exists()) {
+					fail("Datei '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}
+				
+				File[] objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
+				if(FileArrayEasyZZZ.isEmpty(objaFile)){
+					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurden nicht erstellt.");
 				}
 			}
 			
@@ -145,11 +150,23 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			if(JarEasyZZZ.isInJarStatic())	{
 				String sPath = "template/template_server_TCP_443.ovpn";
 				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
-				objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
-				assertNotNull(objFileCreated);
-				if(!objFileCreated.exists()) {
-					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
+				assertNotNull(objDirectoryCreated);
+				if(!objDirectoryCreated.exists()) {
+					fail("Datei '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
+				
+				File[] objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
+				if(FileArrayEasyZZZ.isEmpty(objaFile)){
+					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurden nicht erstellt.");
+				}
+				
+				String sFileName = FileEasyZZZ.getNameFromFilepath(sPath);
+				if(!FileArrayEasyZZZ.contains(objaFile,sPath)){
+					fail("Datei '" + sFileName + "' innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}
+				
+				
 			}
 			
 		}catch(ExceptionZZZ ez){

@@ -2,8 +2,10 @@ package basic.zBasic.util.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -231,14 +233,14 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 					    	
 					    	
 				    //Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
-				    if(entry.isDirectory()) { TODOGOON 20201005 //DATEIEN DOCH AUCH SOFORT EXTRAHIEREN!!! Grund: Ggfs. wird dann in dem zurückgegebenen Verzeichnis sofort nach den Dateien gesucht. 
+				    if(entry.isDirectory()) { //DATEIEN DOCH AUCH SOFORT EXTRAHIEREN!!! Grund: Ggfs. wird dann in dem zurückgegebenen Verzeichnis sofort nach den Dateien gesucht. 
 				    	
 				    	
-				    	//Dateien erst mal nicht extrahieren!!!
+				    	//Dateien erst mal nicht extrahieren, später schon!!!
 				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 					   	System.out.println(sLog);
 					    		
-				    	File fileDirTemp = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath, false);
+				    	File fileDirTemp = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath, false);				    	
 				    	if(fileDirTemp!=null) {
 				    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK FILE OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'";
 					    	System.out.println(sLog);
@@ -250,6 +252,21 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 						    	System.out.println(sLog);
 								    	
 				    			objReturn = fileDirTemp;
+				    			
+				    			//Nun die Dateien des Verzeichnisses extrahieren.
+				    			//ABER: SO KANN MAN DIE INHALTE DER DATEIEN NICHT SPEICHERN
+//				    			File[] objaReturn = JarEasyZZZ.extractFilesFromJarAsTrunkFileDummies(jar, entry.getName(), sTargetDirPath);				    			
+//				    			if(!FileArrayEasyZZZ.isEmpty(objaReturn)) {
+//				    				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) FILES IN DIRECTORY FOUND: '" + objaReturn.length + "'";
+//								   	System.out.println(sLog);
+//				    				JarEasyZZZ.saveTrunkToDirectory(jar, ze, sTargetDirPath)
+//				    			}else {
+//				    				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) NO FILES IN DIRECTORY FOUND";
+//								   	System.out.println(sLog);
+//				    			}
+				    			
+				    			HashMap<ZipEntry,File> hmTrunk = JarEasyZZZ.extractFromJarAsTrunk(jar, sPath, sTargetDirPath);
+				    			JarEasyZZZ.saveTrunkAsFile(jar, hmTrunk);
 				    		}else {
 				    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY NOT CREATED '" + fileDirTemp.getAbsolutePath() +"'";
 						    	System.out.println(sLog);

@@ -33,7 +33,7 @@ public class FileDirectoryFilterInZipZZZ extends AbstractFileDirectoryFilterInJa
 	public FileDirectoryFilterInZipZZZ() throws ExceptionZZZ {
 		super();		
 			}
-	private void FileDirectoryFilterNew_(String sDirectoryPath) {
+	private void FileDirectoryFilterNew_(String sDirectoryPath) throws ExceptionZZZ {
 		this.setDirectoryPath(sDirectoryPath);
 	}
 	

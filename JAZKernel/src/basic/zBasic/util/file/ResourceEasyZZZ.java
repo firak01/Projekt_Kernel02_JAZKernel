@@ -241,10 +241,14 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		return objaReturn;
 	}
 		
-	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sPathInJarIn) throws ExceptionZZZ{
+	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn) throws ExceptionZZZ{
 		File[] objaReturn = null;
 		main:{
-			check:{				
+			
+			TODOGOON; //20201011: Unterteile diese Methode in NEU .findDirectoryInJarAsTrunk(...)
+			//                    und .saveTrunkAsFile(...)
+			
+			check:{								
 				String sDirPath = null;
 				if(objFileJar==null) {
 					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
@@ -268,10 +272,10 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			}//End check
 		
 			String sApplicationKeyAsSubDirectoryTemp;
-			if(StringZZZ.isEmpty(sPathInJarIn)) {
+			if(StringZZZ.isEmpty(sTargetDirectoryPathIn)) {
 				sApplicationKeyAsSubDirectoryTemp = "FGL";
 			}else {
-				sApplicationKeyAsSubDirectoryTemp = sPathInJarIn;
+				sApplicationKeyAsSubDirectoryTemp = sTargetDirectoryPathIn;
 			}
 				
 				
