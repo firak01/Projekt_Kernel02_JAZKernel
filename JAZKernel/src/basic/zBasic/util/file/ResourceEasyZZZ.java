@@ -10,6 +10,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -207,6 +208,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 	public static File[] findFile(File objDirectory, IFilenameFilterExpansionUserZZZ objFilter) throws ExceptionZZZ{
 		File[] objaReturn = null;
 		main:{
+			
 			check:{				
 				String sDirPath = null;
 				if(objDirectory==null) {
@@ -243,11 +245,21 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		
 	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn) throws ExceptionZZZ{
 		File[] objaReturn = null;
+		main:{	
+			
+			HashMap<ZipEntry,File> hmTrunk = ResourceEasyZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn);
+			
+			JarFile jf = JarEasyZZZ.toJarFile(objFileJar);
+			objaReturn = JarEasyZZZ.saveTrunkAsFiles(jf, hmTrunk);
+						
+		}//End main		 	
+		return objaReturn;
+	}
+	
+	public static HashMap<ZipEntry,File> findDirectoryInJarAsTrunk(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn) throws ExceptionZZZ{
+		HashMap<ZipEntry,File>hmReturn = new HashMap<ZipEntry,File>();
 		main:{
-			
-			TODOGOON; //20201011: Unterteile diese Methode in NEU .findDirectoryInJarAsTrunk(...)
-			//                    und .saveTrunkAsFile(...)
-			
+			try {
 			check:{								
 				String sDirPath = null;
 				if(objFileJar==null) {
@@ -277,94 +289,103 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			}else {
 				sApplicationKeyAsSubDirectoryTemp = sTargetDirectoryPathIn;
 			}
-				
-				
+			
 			//####################
-				String sPathDirTemp;
-				if(FileEasyZZZ.isPathRelative(sApplicationKeyAsSubDirectoryTemp)){
-					String sDirTemp = EnvironmentZZZ.getHostDirectoryTemp();									
-					sPathDirTemp = FileEasyZZZ.joinFilePathName(sDirTemp, sApplicationKeyAsSubDirectoryTemp);					
-				}else {
-					sPathDirTemp = sApplicationKeyAsSubDirectoryTemp;
-				}
-					
-				//Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
-				sPathDirTemp = JarEasyZZZ.toFilePath(sPathDirTemp);
+			String sPathDirTemp;
+			if(FileEasyZZZ.isPathRelative(sApplicationKeyAsSubDirectoryTemp)){
+				String sDirTemp = EnvironmentZZZ.getHostDirectoryTemp();									
+				sPathDirTemp = FileEasyZZZ.joinFilePathName(sDirTemp, sApplicationKeyAsSubDirectoryTemp);					
+			}else {
+				sPathDirTemp = sApplicationKeyAsSubDirectoryTemp;
+			}
 				
-				//Falls Verzeichnis noch nicht vorhanden: Neu erstellen - Falls vorhanden: Leer machen.
-				File objFileTemp = new File(sPathDirTemp);
-				boolean bSuccess = false;
-				if(!objFileTemp.exists()) {
-					bSuccess = FileEasyZZZ.createDirectory(sPathDirTemp);
-				}else {
-					bSuccess = FileEasyZZZ.removeDirectoryContent(objFileTemp, true);
-				}
-				if(!bSuccess) {
-					ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem temporären Verzeichnis möglich '" + sPathDirTemp + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
-					throw ez;
-				}
+			//Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
+			sPathDirTemp = JarEasyZZZ.toFilePath(sPathDirTemp);
+			
+			//##############################################################
+//			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
+			//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html			
+			String archiveName = objFileJar.getAbsolutePath();
+			IFileDirectoryPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();
+			JarInfo objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
+			
+			//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
+			Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();																		
+			Set<String> setEntryName = ht.keySet();
+			Iterator<String> itEntryName = setEntryName.iterator();			
+			while(itEntryName.hasNext()) {
+				String sKey = itEntryName.next();
+				ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+				String sNameTemp = JarEasyZZZ.toFilePath(zeTemp.getName());
 				
-				//##############################################################
-//				Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
-				//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html			
-				String archiveName = objFileJar.getAbsolutePath();
-				IFileDirectoryPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();
-				JarInfo objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
+				//Nun aus dem ZipEntry ein File Objekt machen 
+				//https://www.rgagnon.com/javadetails/java-0429.html				
+				File objFileTemp = new File(sPathDirTemp, sNameTemp);
 				
-				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
-				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();
-								
-				//Wie nun vom ht nach objaReturn, also dem fertigen File-Objekt ???
-				//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
-				Set<String> setEntryName = ht.keySet();
-				Iterator<String> itEntryName = setEntryName.iterator();
-				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-				try {
-					ZipFile zf = null;
-					while(itEntryName.hasNext()) {
-						String sKey = itEntryName.next();
-						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+				//Das Ergebnis in die Trunk - HashMap packen
+				hmReturn.put(zeTemp, objFileTemp);
+		}
 						
-						//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)					
-						zf = objJarInfo.getZipFile();						
-						InputStream is = zf.getInputStream(zeTemp);
+	}catch (Exception e){
+    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+		throw ez;
+    }	    
+			
+			
+			//Wie nun vom ht nach objaReturn, also dem fertigen File-Objekt ???
+			//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.
 						
-						//Entferne ggf. künstlich hinzugefügte DirectorySeparatoren am Anfang/Ende.
-						//z.B. in Jar - Dateien steht für Verzeichnisse immer ein /  am Ende.
-						//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
-						String sDirName = StringZZZ.stripFileSeparators(sKey);
-						
-						//Ggfs. in den Jar/Zip Verzeichnissen verwendete / wieder in Backslashes abändern.
-						String sDirNameNormed = StringZZZ.replace(sDirName, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
-						String sPath = FileEasyZZZ.joinFilePathName(sPathDirTemp, sDirNameNormed);
-						
-						if(ht.get(sKey).isDirectory()) {
-							File objFileDir = new File(sPath);							
-							if(objFileDir.exists()) {
-								//!!! Bereits existierende Inhalte  löschen
-								FileEasyZZZ.removeDirectoryContent(objFileDir,true);
-							}else{
-								//Nun das Verzeichnis erstellen.
-								FileEasyZZZ.createDirectory(sPath);
-							}
-						}else {
-							//Dateiene kopieren						
-							Files.copy(is, Paths.get(sPath));
-						}
-						File objFileTempInTemp = new File(sPath);	
-						objaFileTempInTemp.add(objFileTempInTemp);						
-					}
-					zf = objJarInfo.getZipFile();		
-					if(zf!=null) zf.close();
-					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-		}//End main		 	
-		return objaReturn;
+			//NEIN, jetzt als HashMap-Trunk zurückgeben
+//			ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
+//			try {
+//				ZipFile zf = null;
+//				while(itEntryName.hasNext()) {
+//					String sKey = itEntryName.next();
+//					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+//					
+//					//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)					
+//					zf = objJarInfo.getZipFile();						
+//					InputStream is = zf.getInputStream(zeTemp);
+//					
+//					//Entferne ggf. künstlich hinzugefügte DirectorySeparatoren am Anfang/Ende.
+//					//z.B. in Jar - Dateien steht für Verzeichnisse immer ein /  am Ende.
+//					//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
+//					String sDirName = StringZZZ.stripFileSeparators(sKey);
+//					
+//					//Ggfs. in den Jar/Zip Verzeichnissen verwendete / wieder in Backslashes abändern.
+//					String sDirNameNormed = StringZZZ.replace(sDirName, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
+//					String sPath = FileEasyZZZ.joinFilePathName(sPathDirTemp, sDirNameNormed);
+//					
+//					File objFileTempInTemp = null;
+//					if(ht.get(sKey).isDirectory()) {
+//						objFileTempInTemp = new File(sPath);
+//						
+////						File objFileDir = new File(sPath);							
+////						if(objFileDir.exists()) {
+////							//!!! Bereits existierende Inhalte  löschen
+////							FileEasyZZZ.removeDirectoryContent(objFileDir,true);
+////						}else{
+////							//Nun das Verzeichnis erstellen.
+////							FileEasyZZZ.createDirectory(sPath);
+////						}
+//					}else {
+//						//Dateiene kopieren						
+////						Files.copy(is, Paths.get(sPath));
+//					}
+//					File objFileTempInTemp = new File(sPath);	
+//					objaFileTempInTemp.add(objFileTempInTemp);						
+//				}
+//				zf = objJarInfo.getZipFile();		
+//				if(zf!=null) zf.close();
+//				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+				
+	}//End main		 	
+	return hmReturn;
 	}
-	
 	
 	
 	public static File[] findFileInJar(File objFileJar, IFileFilePartFilterZipUserZZZ objFilterFileInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{

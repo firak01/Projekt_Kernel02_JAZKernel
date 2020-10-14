@@ -694,6 +694,18 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 		File objDir = objFile.getParentFile();
 		return objDir.mkdirs ();
 	}
+	
+	public static boolean makeDirectoryForDirectory(File objFile) throws ExceptionZZZ {
+		if(objFile==null) {
+			ExceptionZZZ ez  = new ExceptionZZZ("FileObject", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		if (objFile.exists()) {
+			return true;
+		}
+		
+		return objFile.mkdirs ();
+	}
 
 	/** prüft ob ein gegebener dirName ein Directory repräsentiert und erzeugt gegebenenfalls ein solches dir */
 	public static boolean makeDirectory (String dirName) throws ExceptionZZZ{
@@ -2142,6 +2154,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	}
 	public static boolean  createDirectoryForFile(File file) throws ExceptionZZZ{
 		return FileEasyZZZ.makeDirectoryForFile(file);
+	}
+	public static boolean  createDirectoryForDirectory(File file) throws ExceptionZZZ{
+		return FileEasyZZZ.makeDirectoryForDirectory(file);
 	}
 
 	/** Entferne das Verzeichnis. Wenn eine Datei übergeben wird, entferne das Elternverzeichnis. 
