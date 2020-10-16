@@ -1616,13 +1616,22 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		public static File[] listDirectoriesOnly(File fileDirectoryIn) {
 			File[] objaReturn = null;
 			main:{
+				if(fileDirectoryIn==null) break main;
+				
+				File fileDirectory = null;
+				if(!fileDirectoryIn.isDirectory()) {
+					fileDirectory = fileDirectoryIn;
+				}else {
+					fileDirectory = fileDirectoryIn.getParentFile();
+				}
+				
 				FileFilter directoryFilter = new FileFilter() {
 					public boolean accept(File file) {
 						return file.isDirectory();
 					}
 				};
 
-				objaReturn = fileDirectoryIn.listFiles(directoryFilter);
+				objaReturn = fileDirectory.listFiles(directoryFilter);
 			}//end main:
 			return objaReturn;
 		}
@@ -1636,13 +1645,22 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		public static File[] listFilesOnly(File fileDirectoryIn) {
 			File[] objaReturn = null;
 			main:{
+				if(fileDirectoryIn==null) break main;
+				
+				File fileDirectory = null;
+				if(!fileDirectoryIn.isDirectory()) {
+					fileDirectory = fileDirectoryIn;
+				}else {
+					fileDirectory = fileDirectoryIn.getParentFile();
+				}
+				
 				FileFilter fileFilter = new FileFilter() {
 					public boolean accept(File file) {						
 						return file.isFile();
 					}
 				};
 
-				objaReturn = fileDirectoryIn.listFiles(fileFilter);
+				objaReturn = fileDirectory.listFiles(fileFilter);
 			}//end main:
 			return objaReturn;
 		}

@@ -83,7 +83,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": USE TEMP DIRECTORY '" + sTargetDirPath + "'";
 		    System.out.println(sLog);	
 			    
-				//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.			 
+				//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test selbst. Aber nicht im Setup, dann das würde das vor jedem Test ausgeführt.			 
 				
 			} catch (IOException e1) {
 				ExceptionZZZ ez  = new ExceptionZZZ("Beim setUp - IOException: " + e1.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyInCurrentJarZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -129,34 +129,42 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		try{
 			
 			File objDirectoryCreated;	
-			
-			//FALL A: NUR VERZEICHNIS FINDEN
-			if(JarEasyZZZ.isInJarStatic())	{
-				String sPath = "debug/zBasic";
-				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
-				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
+			String sPath; String sTargetDirectoryPathRoot;File[] objaFile;
+			if(!JarEasyZZZ.isInJarStatic())	{
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}else {
+				//FALL A: NUR VERZEICHNIS FINDEN			
+				sPath = "debug/zBasic";
+				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
+				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);				
 				assertNotNull(objDirectoryCreated);
 				if(!objDirectoryCreated.exists()) {
-					fail("Datei '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
 				
-				File[] objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
+				objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
 				if(FileArrayEasyZZZ.isEmpty(objaFile)){
 					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurden nicht erstellt.");
 				}
-			}
 			
-			//FALL B: DATEI FINDEN
-			if(JarEasyZZZ.isInJarStatic())	{
-				String sPath = "template/template_server_TCP_443.ovpn";
-				String sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
-				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
+			
+				//FALL B: DATEI FINDEN
+				sPath = "template/template_server_TCP_443.ovpn";
+				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
+				File objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
+				assertNotNull(objFileCreated);
+				
+				objDirectoryCreated = objFileCreated.getParentFile();
 				assertNotNull(objDirectoryCreated);
 				if(!objDirectoryCreated.exists()) {
-					fail("Datei '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}					
+				if(!objFileCreated.exists()) {
+					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
-				
-				File[] objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
+												
+				objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
 				if(FileArrayEasyZZZ.isEmpty(objaFile)){
 					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurden nicht erstellt.");
 				}
@@ -164,9 +172,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				String sFileName = FileEasyZZZ.getNameFromFilepath(sPath);
 				if(!FileArrayEasyZZZ.contains(objaFile,sPath)){
 					fail("Datei '" + sFileName + "' innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
-				}
-				
-				
+				}							
 			}
 			
 		}catch(ExceptionZZZ ez){

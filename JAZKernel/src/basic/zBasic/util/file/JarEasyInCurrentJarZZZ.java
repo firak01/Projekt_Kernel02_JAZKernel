@@ -240,15 +240,19 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 					   	System.out.println(sLog);
 					    		
-				    	File fileDirTemp = JarEasyZZZ.extractDirectoryFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath, false);				    	
-				    	if(fileDirTemp!=null) {
-				    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK FILE OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'";
+					   	TODOGOON; //HIER NICHT DUMMIES VERWENDEN
+					   	//TODO GOON: Mache JarEasyInCurrentJarZZZ.searchResource(String, String)
+					   	//           Darin dann verwenden File[] fileaDirTemp = JarEasyZZZ.extractDirectoryFromJarAsFileDummies(jar, entry,sTargetDirPath, false);
+				    	File[] fileaDirTemp = JarEasyZZZ.extractDirectoryFromJarAsFileDummies(jar, entry,sTargetDirPath, false);				    	
+				    	if(fileaDirTemp!=null) {
+				    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) Dummy - FILE OBJECTS FROM JARENTRY CREATED: '" + entry.getName() +"'";
 					    	System.out.println(sLog);
 					    			
 					    	//Merke, damit es kein TRUNK-OBJEKT bleibt, das Verzeichnis erstellen.
+					    	File fileDirTemp = fileaDirTemp[0];
 				    		boolean bErg= FileEasyZZZ.createDirectory(fileDirTemp);
 				    		if(bErg) {
-				    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY SUCCESFULLY CREATED '" + fileDirTemp.getAbsolutePath() +"'";
+				    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) FIRST FOUND DIRECTORY SUCCESFULLY CREATED '" + fileDirTemp.getAbsolutePath() +"'";
 						    	System.out.println(sLog);
 								    	
 				    			objReturn = fileDirTemp;

@@ -80,7 +80,7 @@ public static boolean isEmpty(File[] objaFile){
 	if (FileArrayEasyZZZ.isEmptyNull(objaFile)) return true;
 	for(int iCounter = 0; iCounter <= objaFile.length-1; iCounter++) {
 		File objFile = objaFile[iCounter];
-		if(objFile!=null) return false;
+		if(objFile!=null) return false;//Falls nur ein Objekt vorhanden ist, ist das Array nicht leer
 	}
 	return true;
 }

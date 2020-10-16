@@ -279,11 +279,56 @@ public class JarEasyZZZTest extends TestCase{
 				fail("Kein Verzeichnis '" + sDirToExtractTo + "' sollte als TRUNK zurückgeliefert worden sein, nur Dateien.");
 			}
 			
+			
+			//Ba) Verzeichnis mit Unterverzeichnissen
+			sDirToExtractTo = "FGL_TRUNK3_OF_DIRECTORY";
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+			
+			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}
 	
+	public void testExtractFromJarAsTrunk_WithoutCreatingIt() {
+		try{
+			JarFile objJar = JarEasyZZZ.toJarFile(objFileJarAsSource);
+			String sDirToExtract="template";
+			String sDirToExtractTo; 
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
+			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
+			sDirToExtractTo = "FGL_TRUNKENTRY_OF_DIRECTORYDUMMY"; //D.h. dieses Verzeichnis darf nicht erstellt werden.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+					    
+			//VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+
+						
+			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN ZipEntry und FILE OBJEKTE, die es noch nicht auf der Platte zu geben braucht.
+			HashMap<ZipEntry,File> hmTrunk = new HashMap<ZipEntry,File>();
+			
+			//Merke: hmTrunk ist sonst leer. CallByReference-Problematik, Lösung mit Zwischenobjekt
+			ReferenceZZZ<HashMap<ZipEntry,File>> hashmapTrunk=new ReferenceZZZ<HashMap<ZipEntry,File>>(hmTrunk);			
+			File objDir = JarEasyZZZ.extractFromJarAsTrunk(objJar, sDirToExtract, sDirToExtractTo, hashmapTrunk);
+			if(objDir.exists()) {
+				fail("Verzeichnis '" + sDirToExtractTo + "' sollte noch nicht erstellt sein.");
+			}			
+			hmTrunk = hashmapTrunk.get();
+			
+			assertFalse(hmTrunk.size()==0);
+			assertTrue(hmTrunk.size()>=1);
+								
+			
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
 	
 	public void testSaveTrunkAsFile() {
 		try{
