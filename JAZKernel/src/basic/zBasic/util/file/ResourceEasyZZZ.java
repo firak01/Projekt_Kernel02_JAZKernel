@@ -243,11 +243,11 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		return objaReturn;
 	}
 		
-	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn) throws ExceptionZZZ{
+	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ{
 		File[] objaReturn = null;
 		main:{	
 			
-			HashMap<ZipEntry,File> hmTrunk = ResourceEasyZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn);
+			HashMap<ZipEntry,File> hmTrunk = ResourceEasyZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);
 			
 			JarFile jf = JarEasyZZZ.toJarFile(objFileJar);
 			objaReturn = JarEasyZZZ.saveTrunkAsFiles(jf, hmTrunk);
@@ -256,7 +256,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		return objaReturn;
 	}
 	
-	public static HashMap<ZipEntry,File> findDirectoryInJarAsTrunk(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn) throws ExceptionZZZ{
+	public static HashMap<ZipEntry,File> findDirectoryInJarAsTrunk(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ{
 		HashMap<ZipEntry,File>hmReturn = new HashMap<ZipEntry,File>();
 		main:{
 			try {
@@ -312,19 +312,36 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 			Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();																		
 			Set<String> setEntryName = ht.keySet();
-			Iterator<String> itEntryName = setEntryName.iterator();			
-			while(itEntryName.hasNext()) {
-				String sKey = itEntryName.next();
-				ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
-				String sNameTemp = JarEasyZZZ.toFilePath(zeTemp.getName());
+			Iterator<String> itEntryName = setEntryName.iterator();	
+			if(bWithFiles) { //Fall: Mit Dateien
+				while(itEntryName.hasNext()) {
+					String sKey = itEntryName.next();
+					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+					String sNameTemp = JarEasyZZZ.toFilePath(zeTemp.getName());
+					
+					//Nun aus dem ZipEntry ein File Objekt machen 
+					//https://www.rgagnon.com/javadetails/java-0429.html				
+					File objFileTemp = new File(sPathDirTemp, sNameTemp);
+					
+					//Das Ergebnis in die Trunk - HashMap packen
+					hmReturn.put(zeTemp, objFileTemp);
+				}
+			}else { //Fall: Ohne Dateien
+				while(itEntryName.hasNext()) {
+					String sKey = itEntryName.next();
+					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+					if(zeTemp.isDirectory()) {
+						String sNameTemp = JarEasyZZZ.toFilePath(zeTemp.getName());
 				
-				//Nun aus dem ZipEntry ein File Objekt machen 
-				//https://www.rgagnon.com/javadetails/java-0429.html				
-				File objFileTemp = new File(sPathDirTemp, sNameTemp);
+						//Nun aus dem ZipEntry ein File Objekt machen 
+						//https://www.rgagnon.com/javadetails/java-0429.html				
+						File objFileTemp = new File(sPathDirTemp, sNameTemp);
 				
-				//Das Ergebnis in die Trunk - HashMap packen
-				hmReturn.put(zeTemp, objFileTemp);
-		}
+						//Das Ergebnis in die Trunk - HashMap packen
+						hmReturn.put(zeTemp, objFileTemp);
+					}
+				}
+			}
 						
 	}catch (Exception e){
     	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());

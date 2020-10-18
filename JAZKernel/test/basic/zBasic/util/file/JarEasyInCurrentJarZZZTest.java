@@ -34,6 +34,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 	
 	protected void setUp(){
 		try {		
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": SETUP ###############################################.";
+		    System.out.println(sLog);
+		    
 			File objFileJarAsSource = null;
 			if(JarEasyInCurrentJarZZZ.isInJarStatic()) {
 //				ProtectionDomain dom = JarEasyInCurrentJarZZZ.class.getProtectionDomain();
@@ -74,13 +77,13 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				objFileJarAsSource = new File(sJarFilePath);
 				if(objFileJarAsSource.isFile()) {  // Run with JAR file		
 					objJarAsSource = new JarFile(objFileJarAsSource);
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": JAR FILE FOUND.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": JAR FILE FOUND.";
 				    System.out.println(sLog);
 				}
 			}
 			
 			sTargetDirPath=EnvironmentZZZ.getHostDirectoryTemp();
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": USE TEMP DIRECTORY '" + sTargetDirPath + "'";
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": USE TEMP DIRECTORY '" + sTargetDirPath + "'";
 		    System.out.println(sLog);	
 			    
 				//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test selbst. Aber nicht im Setup, dann das würde das vor jedem Test ausgeführt.			 
@@ -96,21 +99,31 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			
 	}//END setUp
 	protected void tearDown() {
-		if(objJarAsSource!=null) {
-			try {
-				objJarAsSource.close();
-			} catch (IOException e) {
-				ExceptionZZZ ez  = new ExceptionZZZ("Beim tearDown - IOExcepiton: " + e.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyInCurrentJarZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
-				ez.printStackTrace();
-				fail("An exception happend testing: " + ez.getDetailAllLast());
+		try {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": TEARDOWN ###############################################.";
+		    System.out.println(sLog);
+		    
+			if(objJarAsSource!=null) {
+				try {
+					objJarAsSource.close();
+				} catch (IOException e) {
+					ExceptionZZZ ez  = new ExceptionZZZ("Beim tearDown - IOExcepiton: " + e.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyInCurrentJarZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
+					ez.printStackTrace();
+					fail("An exception happend testing: " + ez.getDetailAllLast());
+				}
 			}
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}//END tearDown
 		
 	
 	public void testExtractFileAsTemp(){
 		try{
-			
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
 			File objFileCreated;			
 			if(JarEasyZZZ.isInJarStatic())	{
 				objFileCreated = JarEasyInCurrentJarZZZ.extractFileAsTemp("template/template_server_starter.txt");
@@ -125,31 +138,80 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		}
 	}
 	
+	public void testSearchResource() {
+		try{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+			File objFileDummy;	
+			String sPath; String sTargetDirectoryPathRoot;
+			if(!JarEasyZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}else {
+				//Fall AA: Nur Verzeichnis als Dummy suchen, nicht erstellen
+				sPath = "debug/zBasic";
+				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_DUMMY";
+				objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);				
+				assertNotNull(objFileDummy);
+				if(objFileDummy.exists()) {
+					fail("Verzeichnis '" + objFileDummy.getAbsolutePath() + "' sollte nicht erstellt worden sein.");
+				}
+				
+				//Fall AB: Nur Daei als Dummy suchen, nicht erstellen.								
+				sPath = "template/template_server_TCP_443.ovpn";
+				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_DUMMY";
+				objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
+				assertNotNull(objFileDummy);
+				if(objFileDummy.exists()) {
+					fail("Datei '" + objFileDummy.getAbsolutePath() + "' sollte nicht erstellt worden sein.");
+				}												
+			}
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
+	
 	public void testSearchResourceToTemp() {		
 		try{
-			
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
 			File objDirectoryCreated;	
 			String sPath; String sTargetDirectoryPathRoot;File[] objaFile;
 			if(!JarEasyZZZ.isInJarStatic())	{
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
 			}else {
-				//FALL A: NUR VERZEICHNIS FINDEN			
+				//Fall AA: Nur Verzeichnis als Dummy suchen, nicht erstellen
+				sPath = "debug/zBasic";
+				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP_DUMMY";
+				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);				
+				assertNotNull(objDirectoryCreated);
+				if(objDirectoryCreated.exists()) {
+					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' sollte nicht erstellt worden sein.");
+				}
+				
+				
+				
+				//FALL BA: NUR VERZEICHNIS ERSTELLEN			
 				sPath = "debug/zBasic";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
-				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);				
+				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot, false);				
 				assertNotNull(objDirectoryCreated);
 				if(!objDirectoryCreated.exists()) {
 					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
 				
 				objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
-				if(FileArrayEasyZZZ.isEmpty(objaFile)){
-					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurden nicht erstellt.");
+				if(!FileArrayEasyZZZ.isEmpty(objaFile)){
+					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' sollten nicht erstellt worden sein.");
 				}
 			
 			
-				//FALL B: DATEI FINDEN
+				//FALL BB: DATEI FINDEN
 				sPath = "template/template_server_TCP_443.ovpn";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
 				File objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
@@ -157,22 +219,43 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				
 				objDirectoryCreated = objFileCreated.getParentFile();
 				assertNotNull(objDirectoryCreated);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Parent=Directory='" + objDirectoryCreated.getAbsolutePath() + "'.";
+			    System.out.println(sLog);
+				
 				if(!objDirectoryCreated.exists()) {
 					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}					
-				if(!objFileCreated.exists()) {
-					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
-				}
-												
+																
 				objaFile = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
 				if(FileArrayEasyZZZ.isEmpty(objaFile)){
 					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurden nicht erstellt.");
 				}
+				for(File objFileTemp : objaFile) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": File='" + objFileTemp.getAbsolutePath() + "'.";
+				    System.out.println(sLog);
+				}
 				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": sPath='" + sPath + "'.";
+			    System.out.println(sLog);
+			    
+			    String sFilePath = JarEasyZZZ.toFilePath(sPath);
+			    sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePath='" + sFilePath + "'.";
+			    System.out.println(sLog);
+			    
 				String sFileName = FileEasyZZZ.getNameFromFilepath(sPath);
-				if(!FileArrayEasyZZZ.contains(objaFile,sPath)){
-					fail("Datei '" + sFileName + "' innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
-				}							
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": sFileName='" + sFileName + "'.";
+			    System.out.println(sLog);
+			    
+				if(!FileArrayEasyZZZ.contains(objaFile,sFilePath)){
+					fail("Datei '" + sFilePath + "' innerhalb des Auflistung des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}
+								
+				if(!objFileCreated.exists()) {
+					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}
+				if(!objFileCreated.isFile()) {
+					fail("Datei '" + objFileCreated.getAbsolutePath() + "' gilt nicht als Datei.");
+				}
 			}
 			
 		}catch(ExceptionZZZ ez){

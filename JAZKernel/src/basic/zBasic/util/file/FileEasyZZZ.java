@@ -1613,16 +1613,18 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			  return bReturn;
 		  }
 		
-		public static File[] listDirectoriesOnly(File fileDirectoryIn) {
+		public static File[] listDirectoriesOnly(File fileDirectoryIn) throws ExceptionZZZ {
 			File[] objaReturn = null;
 			main:{
 				if(fileDirectoryIn==null) break main;
 				
 				File fileDirectory = null;
-				if(!fileDirectoryIn.isDirectory()) {
+				if(fileDirectoryIn.isDirectory()) {
 					fileDirectory = fileDirectoryIn;
 				}else {
 					fileDirectory = fileDirectoryIn.getParentFile();
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Verwende Parent '" + fileDirectory.getAbsolutePath() +"'";
+					System.out.println(sLog);
 				}
 				
 				FileFilter directoryFilter = new FileFilter() {
@@ -1641,17 +1643,20 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		 * @param fileDirectoryIn
 		 * @return
 		 * @author Fritz Lindhauer, 10.10.2020, 07:29:10
+		 * @throws ExceptionZZZ 
 		 */
-		public static File[] listFilesOnly(File fileDirectoryIn) {
+		public static File[] listFilesOnly(File fileDirectoryIn) throws ExceptionZZZ {
 			File[] objaReturn = null;
 			main:{
 				if(fileDirectoryIn==null) break main;
 				
 				File fileDirectory = null;
-				if(!fileDirectoryIn.isDirectory()) {
+				if(fileDirectoryIn.isDirectory()) {
 					fileDirectory = fileDirectoryIn;
-				}else {
+				}else {					
 					fileDirectory = fileDirectoryIn.getParentFile();
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Verwende Parent '" + fileDirectory.getAbsolutePath() +"'";
+					System.out.println(sLog);
 				}
 				
 				FileFilter fileFilter = new FileFilter() {

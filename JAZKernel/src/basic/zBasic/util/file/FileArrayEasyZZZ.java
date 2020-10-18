@@ -52,18 +52,60 @@ private FileArrayEasyZZZ(){
 	//Zum Verstecken des Konstruktors
 }
 
-public static boolean contains(File[] objaFile, String sFileName) {
-	if (FileArrayEasyZZZ.isEmptyNull(objaFile)) return false;
+public static boolean contains(File[] objaFile, String sFilePath) {
+	boolean bReturn = false;
+	main:{
+	if (FileArrayEasyZZZ.isEmptyNull(objaFile)) break main;
 	
-	for(int iCounter = 0; iCounter <= objaFile.length-1; iCounter++) {
-		if(objaFile[iCounter]!=null) {
-			String sName = objaFile[iCounter].getName();
-			if(sName.endsWith(sFileName)){
-				return true;
+	for(File objFileTemp:objaFile) {
+		if(objFileTemp!=null) {
+			String sPath = objFileTemp.getAbsolutePath();
+			if(sPath.endsWith(sFilePath)){
+				bReturn = true;
+				break;
 			}
 		}
 	}
-	return false;	 
+	}//end main
+	return bReturn;	 
+}
+
+public static boolean containsAbsolute(File[] objaFile, String sFilePath) {
+	boolean bReturn = false;
+	main:{
+	if (FileArrayEasyZZZ.isEmptyNull(objaFile)) break main;
+	
+	for(File objFileTemp:objaFile) {
+		if(objFileTemp!=null) {
+			String sPath = objFileTemp.getAbsolutePath();
+			if(sPath.equals(sFilePath)){
+				bReturn = true;
+				break;
+			}
+		}
+	}
+	
+	}//end main
+	return bReturn;	 
+}
+
+public static boolean containsName(File[] objaFile, String sFileName) {
+	boolean bReturn = false;
+	main:{
+	if (FileArrayEasyZZZ.isEmptyNull(objaFile)) break main;
+	
+	for(File objFileTemp:objaFile) {
+		if(objFileTemp!=null) {
+			String sName = objFileTemp.getName();
+			if(sName.equals(sFileName)){
+				bReturn = true;
+				break;
+			}
+		}
+	}
+	
+}//end main
+return bReturn;	 	 
 }
 
 /**returns true if the string is empty or null.
