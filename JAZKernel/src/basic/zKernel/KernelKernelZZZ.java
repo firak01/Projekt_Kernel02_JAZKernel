@@ -46,7 +46,7 @@ import basic.zBasic.util.counter.ICounterStringZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
@@ -4014,7 +4014,7 @@ MeinTestParameter=blablaErgebnis
 	public boolean isInJar() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			bReturn = JarEasyZZZ.isInJar(this.getClass());
+			bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
 		}
 		return bReturn;
 	}

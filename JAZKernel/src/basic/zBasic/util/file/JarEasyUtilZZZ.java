@@ -1,14 +1,13 @@
 package basic.zBasic.util.file;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -33,176 +32,15 @@ import basic.zBasic.util.file.zip.ZipEasyZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
-public class ResourceEasyZZZ extends ObjectZZZ{
-	private ResourceEasyZZZ(){
+/**
+ *  
+ * 
+ * @author Fritz Lindhauer, 19.10.2020, 08:10:14
+ * 
+ */
+public class JarEasyUtilZZZ extends ObjectZZZ{
+	private JarEasyUtilZZZ(){
 		//Zum Verstecken des Konstruktors
-	}
-	
-	public static File doClassloaderGetResource(String sPath) throws ExceptionZZZ{
-		File objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sPath))break main;
-			
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) isearching for path '" + sPath + "'";
-			System.out.println(sLog);
-			URL workspaceURL = ResourceEasyZZZ.class.getClassLoader().getResource(sPath);
-			objReturn = ResourceEasyZZZ.getResource(workspaceURL, sPath, true);		
-		}
-		return objReturn;
-	}
-	
-	public static File doClassGetResource(String sPath) throws ExceptionZZZ{
-		File objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sPath))break main;
-			
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) isearching for path '" + sPath + "'";
-			System.out.println(sLog);
-			URL workspaceURL = ResourceEasyZZZ.class.getResource(sPath);
-			objReturn = ResourceEasyZZZ.getResource(workspaceURL, sPath, false);			
-		}
-		return objReturn;
-	}
-	
-	private static File getResource(URL workspaceURL, String sPath, boolean byClassloader) throws ExceptionZZZ{
-		File objReturn = null;
-		main:{
-			String sLog=null;
-			if(JarEasyZZZ.isInJarStatic()){				
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) in .jar searching.";
-				System.out.println(sLog);
-				if(workspaceURL!=null){
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) WorkspaceURL is not null '" + workspaceURL.toString() + "')";
-				    System.out.println(sLog);
-				    try {
-				    	objReturn = FileEasyZZZ.createTempFile();
-				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) temp File created.";
-					    System.out.println(sLog);
-					    
-				    	FileOutputStream fosResource = new FileOutputStream(objReturn);
-				   
-					    int i; boolean bAnyFound=false;
-					    byte[] ba = new byte[1024];
-					    InputStream isClass = null;
-					    if(byClassloader){
-					    	isClass = ResourceEasyZZZ.class.getClassLoader().getResourceAsStream(sPath);
-					    }else{
-					    	isClass = ResourceEasyZZZ.class.getResourceAsStream(sPath);
-					    }
-					   
-					   //while the InputStram has bytes				   
-						while((i=isClass.read(ba))>0){
-							bAnyFound=true;
-							
-							 //write the bytes to the output stream
-							fosResource.write(ba,0,i);						  					
-						}
-						if(bAnyFound){
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) any Bytes found.";
-						    System.out.println(sLog);
-						}else{
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) no Bytes found!!!";
-						    System.out.println(sLog);
-						}
-						
-						//close streams to prevent errors
-						isClass.close();
-						fosResource.close();
-				
-				} catch (FileNotFoundException fnfe) {
-					ExceptionZZZ ez = new ExceptionZZZ("FileNotFoundException: '" + fnfe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
-					throw ez;
-				} catch (IOException ioe) {
-					ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
-					throw ez;
-				}
-				}else{
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) WorkspaceURL is null, searching for JarFile.";
-				    System.out.println(sLog);
-				    try {
-					    //Nun muss mann die Ressource aus einer .jar-Datei holen.
-					    //Für das Return - Objekt muss man differenziert verfahren: Verzeichnis oder Datei
-					    //0. JarFile holen
-					    JarFile jar = JarEasyInCurrentJarZZZ.getJarFileCurrent();
-					    if(jar==null) {
-						    sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) JarFileCurrent not available.";
-						    System.out.println(sLog);
-						    break main;
-					    }
-					    
-					    //1. Prüfe auf Verzeichnis / Datei
-					    boolean bEntryIsDirectory = JarEasyInCurrentJarZZZ.isDirectory(jar, sPath);
-					    if(bEntryIsDirectory) {
-					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE, BUT AS REAL TEMP DIRECTORY.";
-					    	System.out.println(sLog);
-					    	objReturn = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, "");
-					    }else {
-					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
-						    System.out.println(sLog);						    	
-					    	objReturn = JarEasyInCurrentJarZZZ.extractFileAsTemp(sPath);
-					    }
-					    
-					    if(objReturn==null){
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource NICHT gefunden '" + sPath + "' (NULL CASE)";
-						    System.out.println(sLog);
-						}else {
-						    if(objReturn.exists()){
-								sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource gefunden '" + sPath + "'";
-							    System.out.println(sLog);							
-							}else {
-								sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource NICHT gefunden '" + sPath + "'";
-							    System.out.println(sLog);								
-							}
-						}
-				    
-					  //JarFile wieder schliessen.
-					  jar.close();
-				    } catch (IOException ioe) {
-						ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
-						throw ez;
-					}
-				}
-				
-				
-				
-			}else{								
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (BB) not in .jar searching for path '" + sPath + "'";
-				System.out.println(sLog);
-				if(workspaceURL!=null){
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (BB) URL is not null for path '" + sPath + "' ('" + workspaceURL.toString() + "')";
-				    System.out.println(sLog);
-					try {			
-						objReturn = new File(workspaceURL.toURI());
-						if(objReturn.exists()){
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBA) Datei gefunden '" + sPath + "'";
-						    System.out.println(sLog);
-							break main;
-						}else {
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBA) Datei NICHT gefunden '" + sPath + "'";
-						    System.out.println(sLog);
-							break main;
-						}
-					} catch(URISyntaxException e) {
-						objReturn = new File(workspaceURL.getPath());
-						if(objReturn.exists()){
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBB) Datei gefunden '" + sPath + "'";
-						    System.out.println(sLog);
-							break main;
-						}else {
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BBB) Datei NICHT gefunden '" + sPath + "'";
-						    System.out.println(sLog);
-							break main;
-						}
-					}
-				}else{
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B) URL is null'";
-				    System.out.println(sLog);
-				}
-				
-			}
-			
-		}
-		return objReturn;
 	}
 	
 	public static File[] findFile(File objDirectory, IFilenameFilterExpansionUserZZZ objFilter) throws ExceptionZZZ{
@@ -247,9 +85,9 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 		File[] objaReturn = null;
 		main:{	
 			
-			HashMap<ZipEntry,File> hmTrunk = ResourceEasyZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);
+			HashMap<ZipEntry,File> hmTrunk = JarEasyUtilZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);
 			
-			JarFile jf = JarEasyZZZ.toJarFile(objFileJar);
+			JarFile jf = JarEasyUtilZZZ.toJarFile(objFileJar);
 			objaReturn = JarEasyZZZ.saveTrunkAsFiles(jf, hmTrunk);
 						
 		}//End main		 	
@@ -300,7 +138,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			}
 				
 			//Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
-			sPathDirTemp = JarEasyZZZ.toFilePath(sPathDirTemp);
+			sPathDirTemp = JarEasyUtilZZZ.toFilePath(sPathDirTemp);
 			
 			//##############################################################
 //			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
@@ -317,7 +155,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				while(itEntryName.hasNext()) {
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
-					String sNameTemp = JarEasyZZZ.toFilePath(zeTemp.getName());
+					String sNameTemp = JarEasyUtilZZZ.toFilePath(zeTemp.getName());
 					
 					//Nun aus dem ZipEntry ein File Objekt machen 
 					//https://www.rgagnon.com/javadetails/java-0429.html				
@@ -331,7 +169,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 					if(zeTemp.isDirectory()) {
-						String sNameTemp = JarEasyZZZ.toFilePath(zeTemp.getName());
+						String sNameTemp = JarEasyUtilZZZ.toFilePath(zeTemp.getName());
 				
 						//Nun aus dem ZipEntry ein File Objekt machen 
 						//https://www.rgagnon.com/javadetails/java-0429.html				
@@ -436,7 +274,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			String archiveName = objFileJar.getAbsolutePath();
 			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
 			JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
-			objaReturn = ResourceEasyZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);					
+			objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);					
 		}//End main		 	
 		return objaReturn;
 	}
@@ -469,7 +307,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			
 			String archiveName = objFileJar.getAbsolutePath();
 			JarInfo objJarInfoFiltered = new JarInfo( archiveName, objFilterInJar );
-			objaReturn = ResourceEasyZZZ.findFileInJar(objJarInfoFiltered,sDirPathInJar ,sApplicationKeyAsSubDirectoryTempIn);			
+			objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfoFiltered,sDirPathInJar ,sApplicationKeyAsSubDirectoryTempIn);			
 		}//End main		 	
 		return objaReturn;
 	}
@@ -497,7 +335,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			if(StringZZZ.isEmpty(sDirPathInJar)) {
 				sTargetDirPath = sTargetDirPathRoot;
 			}else {
-				sDirPathInJar = JarEasyZZZ.toFilePath(sDirPathInJar);
+				sDirPathInJar = JarEasyUtilZZZ.toFilePath(sDirPathInJar);
 				sTargetDirPath = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sDirPathInJar);
 			}
 			
@@ -543,5 +381,224 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 			}
 		}//End main		 	
 	return objaReturn;
+	}
+
+	/** Prüft, ob die Datei / Ressource einer JAR-Datei liegt.
+	 *  Merke: In einer .jar Datei kann kein Zugriff über File-Objekte erfolgen.
+	 *  
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	public static boolean isInJar(Class classObject) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(classObject==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No class object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Siehe https://www.rgagnon.com/javadetails/java-0391.html
+			String className = classObject.getName().replace('.', '/');
+			//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": className='"+className+"'");
+						
+			String classJar = classObject.getResource("/" + className + ".class").toString();
+			//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": classJar='"+classJar+"'");
+			
+			if (classJar.startsWith("jar:")) {
+			    System.out.println("*** running from jar!");
+				 bReturn=true;
+			}else{
+				 System.out.println("*** NOT running from jar!");
+			}
+		}//end main:
+		return bReturn;
+		
+		   //Alternativer Ansatz: https://www.edureka.co/community/5035/retrieving-the-path-of-a-running-jar-file			   
+		   //return new File(AbcClass.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+	}
+
+	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
+	 *   Merke: Static Klassen müssen diese Methode selbst implementieren. Das ist dann das Beispiel.
+	 * @return
+	 * @author lindhaueradmin, 21.02.2019
+	 * @throws ExceptionZZZ 
+	 */
+	public static boolean isInJarStatic() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			bReturn = isInJar(JarEasyZZZ.class);
+		}
+		return bReturn;
+	}
+
+	public static File getJarCurrent() throws ExceptionZZZ{
+		File objReturn=null;
+		main:{
+			/*
+			https://stackoverflow.com/questions/320542/how-to-get-the-path-of-a-running-jar-file						
+			 */
+			
+			//1.Schritt die URL holen
+			URL url = JarEasyHelperZZZ.getLocation(JarEasyZZZ.class);
+			
+			//Step 2: URL to File
+			objReturn = JarEasyHelperZZZ.urlToFile(url);
+		}
+		return objReturn;
+	}
+
+	public static File getJarDirectoryCurrent() throws ExceptionZZZ{
+		File objReturn = null;
+		main:{
+		try {			
+			String sLog = null;
+			if(isInJarStatic()){
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Running in a jar file.";
+				System.out.println(sLog);
+				
+				
+				//TODOGOON; //Hier eine NULLPOINTER EXCEPTION, WENN MAN DAS ÜBER EINE JAR STARTET. ALSO AUFTEILEN....
+				ProtectionDomain pd = JarEasyZZZ.class.getProtectionDomain();
+				if(pd==null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": No ProtectionDomain Object ==> no handle on current jar-file position.";
+					System.out.println(sLog);
+					break main;
+				}
+				CodeSource cd = pd.getCodeSource();
+				if(cd==null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": No CodeSource Object ==> no handle on current jar-file position.";
+					System.out.println(sLog);
+					break main;					
+				}
+				
+				URL url = cd.getLocation();
+				if(url==null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": No URL object for the location ==> no handle on current jar-file position.";
+					System.out.println(sLog);
+					break main;	
+				}
+				String sPath = url.toURI().getPath();
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Current Directory of jar: '" + sPath + "'";
+				System.out.println(sLog);
+				
+				objReturn = FileEasyZZZ.getDirectoryFromFilepath(sPath);
+			}else{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Not running in a jar file.";
+				System.out.println(sLog);
+			}		
+		} catch (URISyntaxException e) {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": URISyntaxException: '" + e.getMessage() + "'";
+			System.out.println(sLog);	
+			
+			ExceptionZZZ ez = new ExceptionZZZ("URISyntaxException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+			throw ez;			
+		}
+		}//end main:
+		return objReturn;
+	}
+
+	public static File toFile(JarFile objJar) {
+		File objReturn = null;
+		main:{
+			if(objJar==null)break main;
+			
+			String sFileAsJar = objJar.getName();
+			objReturn = new File (sFileAsJar);
+		}//end main:
+		return objReturn;
+	}
+
+	/**Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
+	 * @param sJarPath
+	 * @return
+	 * @author Fritz Lindhauer, 19.07.2020, 07:35:08
+	 * @throws ExceptionZZZ 
+	 */
+	public static String toFilePath(String sJarPath) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sJarPath)){
+				//ODER: ROOT DER JAR DATEI, WIE?
+				ExceptionZZZ ez = new ExceptionZZZ("No source JarPath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			sReturn = StringZZZ.replace(sJarPath, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
+			
+			//UND: Abschliessend gibt es bei Verzeichnissen ein \ ... aber NUR 1x
+			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);
+			
+		}
+		return sReturn;
+		
+	}
+
+	/** Innerhalb der JAR-Datei wird immer mit / gearbeitet.
+	 *  Also einen Dateipfad dahingehend normieren.
+	 *  
+	 *  Verzeichnisse sind mit / abgeschlossen.
+	 * @param sFilePath
+	 * @return
+	 * @author Fritz Lindhauer, 19.07.2020, 07:35:31
+	 * @throws ExceptionZZZ 
+	 */
+	public static String toJarDirectoryPath(String sFilePath) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			sReturn = JarEasyUtilZZZ.toJarFilePath(sFilePath);
+			
+			//UND: Abschliessend gibt es bei Verzeichnissen ein / ... aber NUR 1x
+			sReturn=sReturn+"/";
+		}
+		return sReturn;
+	}
+
+	public static JarFile toJarFile(File objFileAsJar) throws ExceptionZZZ{
+		JarFile objReturn = null;
+		main:{
+			if(objFileAsJar==null)break main;
+			if(!FileEasyZZZ.isJar(objFileAsJar)){
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+					
+			try {
+				objReturn = new JarFile(objFileAsJar);
+			} catch (IOException e) {
+				ExceptionZZZ ez = new ExceptionZZZ("IOException happend: " + e.getMessage(),ExceptionZZZ.iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}//end main:
+		return objReturn;
+	}
+
+	/** Innerhalb der JAR-Datei wird immer mit / gearbeitet.
+	 *  Also einen Dateipfad dahingehend normieren.
+	 * @param sFilePath
+	 * @return
+	 * @author Fritz Lindhauer, 19.07.2020, 07:35:31
+	 * @throws ExceptionZZZ 
+	 */
+	public static String toJarFilePath(String sFilePath) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sFilePath)){
+				//ODER: ROOT DER JAR DATEI, WIE?
+				ExceptionZZZ ez = new ExceptionZZZ("No source FilePath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Innerhalb der JAR-Datei wird immer mit / gearbeitet.
+			sReturn = StringZZZ.replace(sFilePath, FileEasyZZZ.sDIRECTORY_SEPARATOR, "/");
+		
+			//UND: Abschliessend gibt es NUR bei Verzeichnissen ein / ... aber NUR 1x
+			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);
+						
+			//UND: Links gibt es keinen /
+			sReturn=StringZZZ.stripLeft(sReturn, "/");
+			
+			
+		}
+		return sReturn;
 	}
 }

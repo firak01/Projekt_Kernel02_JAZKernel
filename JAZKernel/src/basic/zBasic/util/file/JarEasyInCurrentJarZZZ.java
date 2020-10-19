@@ -9,6 +9,7 @@ import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
@@ -17,13 +18,13 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  * @author Fritz Lindhauer, 05.08.2020, 14:05:25
  * 
  */
-public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
+public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingObjectZZZ{
 
 	public static JarFile getJarFileCurrent() throws ExceptionZZZ {
 		JarFile objReturn = null;
 		main:{
 			String sLog = null;
-			final File jarFile = JarEasyZZZ.getJarCurrent(); //new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+			final File jarFile = JarEasyUtilZZZ.getJarCurrent(); //new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 			if(jarFile.isFile()) {  // Run with JAR file
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) JAR FILE FOUND.";
 			    System.out.println(sLog);
@@ -54,7 +55,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 			}
 				
 			String sLog = null;
-			String sPathInJar = JarEasyZZZ.toJarFilePath(sPath); 
+			String sPathInJar = JarEasyUtilZZZ.toJarFilePath(sPath); 
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for '" + sPathInJar + "'";				
 			System.out.println(sLog);
 				
@@ -449,8 +450,26 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ{
 	public static boolean isInJarStatic() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			bReturn = JarEasyZZZ.isInJar(JarEasyInCurrentJarZZZ.class);
+			bReturn = JarEasyUtilZZZ.isInJar(JarEasyInCurrentJarZZZ.class);
 		}
 		return bReturn;
 	}
+	
+	//### Interfaces
+		//aus iRessourceHandlingObjectZZZ
+		
+		//### Ressourcen werden anders geholt, wenn die Klasse in einer JAR-Datei gepackt ist. Also:
+			/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
+			 *   Merke: Static Klassen müssen diese Methode selbst implementieren.
+			 * @return
+			 * @author lindhaueradmin, 21.02.2019
+			 * @throws ExceptionZZZ 
+			 */
+			public boolean isInJar() throws ExceptionZZZ{
+				boolean bReturn = false;
+				main:{
+					bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
+				}
+				return bReturn;
+			}
 }

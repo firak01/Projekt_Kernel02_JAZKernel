@@ -15,7 +15,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import custom.zKernel.ConfigZZZ;
@@ -143,7 +143,7 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		public boolean isInJar() throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
-				bReturn = JarEasyZZZ.isInJar(this.getClass());
+				bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
 			}
 			return bReturn;
 		}
@@ -157,7 +157,7 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		public static boolean isInJarStatic() throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
-				bReturn = JarEasyZZZ.isInJar(KernelZZZ.class);
+				bReturn = JarEasyUtilZZZ.isInJar(KernelZZZ.class);
 			}
 			return bReturn;
 		}

@@ -1543,7 +1543,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		public static boolean isInJarStatic() throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
-				bReturn = JarEasyZZZ.isInJar(FileEasyZZZ.class);
+				bReturn = JarEasyUtilZZZ.isInJar(FileEasyZZZ.class);
 			}
 			return bReturn;
 		}
@@ -1797,8 +1797,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			
 			//Wenn in einer jar Datei ausgeführt wird, das lokale Verzeichnis der jar holen.
 			//Ziel ist es, dass eine lokale Datei immer die Datei im .jar übersteuert.			
-			if(JarEasyZZZ.isInJarStatic()){
-			File objTest = JarEasyZZZ.getJarDirectoryCurrent();			
+			if(JarEasyUtilZZZ.isInJarStatic()){
+			File objTest = JarEasyUtilZZZ.getJarDirectoryCurrent();			
 			if(objTest!=null){
 				String sPathJarDirectoryCurrent = objTest.getAbsolutePath();
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) JarDirectoryCurrent= '" + sPathJarDirectoryCurrent +"'";

@@ -13,7 +13,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 
 /**Klasse wertet Kommandozeilenparamter aus, hinsichtlich der zu verwendenden Kernel-Konfiguration
@@ -234,7 +234,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	public boolean isInJar() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			bReturn = JarEasyZZZ.isInJar(this.getClass());
+			bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
 		}
 		return bReturn;
 	}

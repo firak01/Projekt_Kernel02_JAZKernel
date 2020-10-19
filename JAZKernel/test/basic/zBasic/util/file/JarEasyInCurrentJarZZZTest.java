@@ -71,7 +71,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 //						
 //					}
 //				}
-				objFileJarAsSource = JarEasyZZZ.getJarCurrent();
+				objFileJarAsSource = JarEasyUtilZZZ.getJarCurrent();
 			}else {
 				String sJarFilePath = JarEasyTestConstantsZZZ.sJAR_FILEPATH;
 				objFileJarAsSource = new File(sJarFilePath);
@@ -125,7 +125,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    System.out.println(sLog);
 		    
 			File objFileCreated;			
-			if(JarEasyZZZ.isInJarStatic())	{
+			if(JarEasyUtilZZZ.isInJarStatic())	{
 				objFileCreated = JarEasyInCurrentJarZZZ.extractFileAsTemp("template/template_server_starter.txt");
 				assertNotNull(objFileCreated);
 				if(!objFileCreated.exists()) {
@@ -145,7 +145,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    
 			File objFileDummy;	
 			String sPath; String sTargetDirectoryPathRoot;
-			if(!JarEasyZZZ.isInJarStatic())	{
+			if(!JarEasyUtilZZZ.isInJarStatic())	{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
 			}else {
@@ -181,7 +181,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    
 			File objDirectoryCreated;	
 			String sPath; String sTargetDirectoryPathRoot;File[] objaFile;
-			if(!JarEasyZZZ.isInJarStatic())	{
+			if(!JarEasyUtilZZZ.isInJarStatic())	{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
 			}else {
@@ -238,7 +238,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": sPath='" + sPath + "'.";
 			    System.out.println(sLog);
 			    
-			    String sFilePath = JarEasyZZZ.toFilePath(sPath);
+			    String sFilePath = JarEasyUtilZZZ.toFilePath(sPath);
 			    sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePath='" + sFilePath + "'.";
 			    System.out.println(sLog);
 			    

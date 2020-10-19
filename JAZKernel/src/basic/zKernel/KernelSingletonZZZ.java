@@ -3,7 +3,7 @@ package basic.zKernel;
 import basic.zKernel.ConfigZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
-import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 
 public class KernelSingletonZZZ extends KernelKernelZZZ{
 	private static final long serialVersionUID = 1L;
@@ -104,7 +104,7 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 		public boolean isInJar() throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
-				bReturn = JarEasyZZZ.isInJar(this.getClass());
+				bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
 			}
 			return bReturn;
 		}
@@ -118,7 +118,7 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 		public static boolean isInJarStatic() throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
-				bReturn = JarEasyZZZ.isInJar(KernelSingletonZZZ.class);
+				bReturn = JarEasyUtilZZZ.isInJar(KernelSingletonZZZ.class);
 			}
 			return bReturn;
 		}

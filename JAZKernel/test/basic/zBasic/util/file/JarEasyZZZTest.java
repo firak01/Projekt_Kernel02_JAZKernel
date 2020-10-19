@@ -73,8 +73,8 @@ public class JarEasyZZZTest extends TestCase{
 		try{
 			
 			File objFileJar=null;			
-			if(JarEasyZZZ.isInJarStatic())	{
-				objFileJar = JarEasyZZZ.getJarCurrent();
+			if(JarEasyUtilZZZ.isInJarStatic())	{
+				objFileJar = JarEasyUtilZZZ.getJarCurrent();
 				
 				if(objFileJar!=null) {
 					String sLog = ReflectCodeZZZ.getPositionCurrent()+": IN CURRNET JAR FILE RUNNING '" + objFileJar.getAbsolutePath() + "'";
@@ -113,7 +113,8 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_DIRECTORY_ONLY";;			
+			sDirToExtractTo = "FGL_DIRECTORY_ONLY";
+						
 			objDirCreated = JarEasyZZZ.extractDirectoryToTemp(objFileJarAsSource, sDirToExtract, sDirToExtractTo);
 			if(!objDirCreated.exists()) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt.");
@@ -216,7 +217,7 @@ public class JarEasyZZZTest extends TestCase{
 	
 	public void testExtractFromJarAsTrunk() {
 		try{
-			JarFile objJar = JarEasyZZZ.toJarFile(objFileJarAsSource);
+			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileJarAsSource);
 			String sDirToExtract="template";
 			String sDirToExtractTo; 
 			
@@ -292,7 +293,7 @@ public class JarEasyZZZTest extends TestCase{
 	
 	public void testExtractFromJarAsTrunk_WithoutCreatingIt() {
 		try{
-			JarFile objJar = JarEasyZZZ.toJarFile(objFileJarAsSource);
+			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileJarAsSource);
 			String sDirToExtract="template";
 			String sDirToExtractTo; 
 			
@@ -332,7 +333,7 @@ public class JarEasyZZZTest extends TestCase{
 	
 	public void testSaveTrunkAsFile() {
 		try{
-			JarFile objJar = JarEasyZZZ.toJarFile(objFileJarAsSource);
+			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileJarAsSource);
 			String sDirToExtract="template";
 			String sDirToExtractTo; 
 			

@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 
 public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
 	private String sDirectoryPath;
@@ -20,7 +20,7 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 	}
 	
 	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
-		String sDirectoryPath = JarEasyZZZ.toJarDirectoryPath(sDirectoryPathIn);
+		String sDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPathIn);
 		this.sDirectoryPath = sDirectoryPath;
 	}
 	public String getDirectoryPath() {

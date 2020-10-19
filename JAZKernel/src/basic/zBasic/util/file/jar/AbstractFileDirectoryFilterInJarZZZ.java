@@ -10,7 +10,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
-import basic.zBasic.util.file.JarEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
@@ -98,7 +98,7 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 	
 	//##### GETTER / SETTER			
 		protected void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
-			String sDirectoryPath = JarEasyZZZ.toJarDirectoryPath(sDirectoryPathIn);
+			String sDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPathIn);
 			this.sDirectoryPath = sDirectoryPath;
 		}
 		protected String getDirectoryPath() throws ExceptionZZZ {
