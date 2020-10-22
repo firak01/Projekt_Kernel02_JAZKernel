@@ -32,30 +32,22 @@ public class JarEasyZZZTest extends TestCase{
 	
 	protected void setUp(){
 		try {		
-			//final File jarFile = new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-			String sJarFilePath = JarEasyTestConstantsZZZ.sJAR_FILEPATH;
-			objFileJarAsSource = new File(sJarFilePath);
-				if(objFileJarAsSource.isFile()) {  // Run with JAR file		
-					objJarAsSource = new JarFile(objFileJarAsSource);
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": JAR FILE '" + sJarFilePath + "' FOUND.";
-				    System.out.println(sLog);
-				}
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": SETUP ###############################################.";
+		    System.out.println(sLog);
+		    
+			objFileJarAsSource = JarEasyUtilZZZ.getJarFileUsedAsFile();
+						
 				
-				sTargetDirPath=EnvironmentZZZ.getHostDirectoryTemp();
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+": USE TEMP DIRECTORY '" + sTargetDirPath + "'";
-			    System.out.println(sLog);	
-			    
-				//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.			 
-				
-			} catch (IOException e1) {
-				ExceptionZZZ ez  = new ExceptionZZZ("Beim setUp - IOException: " + e1.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				ez.printStackTrace();
-				fail("An exception happend testing: " + ez.getDetailAllLast());
-			} catch (ExceptionZZZ ez) {
-				ez.printStackTrace();
-				fail("An exception happend testing: " + ez.getDetailAllLast());
-			}
-			
+			sTargetDirPath=EnvironmentZZZ.getHostDirectoryTemp();
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": USE TEMP DIRECTORY '" + sTargetDirPath + "'";
+		    System.out.println(sLog);	
+		    
+			//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.			 
+						
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}			
 	}//END setUp
 	protected void tearDown() {
 		if(objJarAsSource!=null) {
@@ -69,39 +61,7 @@ public class JarEasyZZZTest extends TestCase{
 		}
 	}//END tearDown
 	
-	public void testGetJarCurrent() {
-		try{
-			
-			File objFileJar=null;			
-			if(JarEasyUtilZZZ.isInJarStatic())	{
-				objFileJar = JarEasyUtilZZZ.getJarCurrent();
-				
-				if(objFileJar!=null) {
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": IN CURRNET JAR FILE RUNNING '" + objFileJar.getAbsolutePath() + "'";
-				    System.out.println(sLog);
-				}
-			}else {
-				String sJarFilePath = JarEasyTestConstantsZZZ.sJAR_FILEPATH;
-				objFileJar = new File(sJarFilePath);
-				
-				if(objFileJar!=null) {
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": NOT IN JAR FILE RUNNING. USING JAR FILE AS SOURCE '" + objFileJar.getAbsolutePath() + "'";
-				    System.out.println(sLog);				    				    
-				}
-				
-			
-			}
-			
-			assertNotNull(objFileJar);		
-			
-			boolean bExists = objFileJar.exists();
-			assertTrue("Jar File does not exist: '" + objFileJar.getAbsolutePath() + "'", bExists);
-					
-		}catch(ExceptionZZZ ez){
-			fail("An exception happend testing: " + ez.getDetailAllLast());
-		}
-		
-	}
+	
 		
 	public void testExtractDirectoryToTemp(){
 		try{

@@ -1,5 +1,6 @@
 package basic.zBasic.util.file;
 
 public interface ITestJarEasyConstantsZZZ {
-	public static final String sJAR_FILEPATH = "c:\\1fgl\\client\\OVPN\\OpenVPNZZZ_V20201005.jar";	
+	public static final String sJAR_DIRECTORYPATH = "c:\\\\1fgl\\\\client\\\\OVPN";
+	public static final String sJAR_FILENAME = "OpenVPNZZZ_V20201005.jar";
 }

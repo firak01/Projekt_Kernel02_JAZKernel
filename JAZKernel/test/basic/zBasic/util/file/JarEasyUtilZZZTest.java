@@ -27,40 +27,32 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextParserZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
-public class ResourceEasyZZZTest extends TestCase{
+public class JarEasyUtilZZZTest extends TestCase{
 	private File objFileJarAsSource=null;
 	private JarFile objJarAsSource=null;
 	private String sTargetDirPath=null;
 	
 	protected void setUp(){
-		try {		
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": SETUP ###############################################.";
-		    System.out.println(sLog);
-		    
-			objFileJarAsSource = JarEasyUtilZZZ.getJarFileUsedAsFile();
-						
-			sTargetDirPath=EnvironmentZZZ.getHostDirectoryTemp();
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": USE TEMP DIRECTORY '" + sTargetDirPath + "'";
-		    System.out.println(sLog);	
-			    
-				//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test selbst. Aber nicht im Setup, dann das würde das vor jedem Test ausgeführt.			 
-				
-			} catch (ExceptionZZZ ez) {
-				ez.printStackTrace();
-				fail("An exception happend testing: " + ez.getDetailAllLast());
+
+			String sLog;
+			try {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ############################################### SETUP .";
+				 System.out.println(sLog);
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
 	}//END setUp
 	protected void tearDown() {
 		try {
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": TEARDOWN ###############################################.";
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": ############################################### TEARDOWN.";
 		    System.out.println(sLog);
 		    
 			if(objJarAsSource!=null) {
 				try {
 					objJarAsSource.close();
 				} catch (IOException e) {
-					ExceptionZZZ ez  = new ExceptionZZZ("Beim tearDown - IOExcepiton: " + e.getMessage(), ExceptionZZZ.iERROR_RUNTIME, ResourceEasyZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
+					ExceptionZZZ ez  = new ExceptionZZZ("Beim tearDown - IOExcepiton: " + e.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyUtilZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());				
 					ez.printStackTrace();
 					fail("An exception happend testing: " + ez.getDetailAllLast());
 				}
@@ -71,35 +63,160 @@ public class ResourceEasyZZZTest extends TestCase{
 		}
 	}//END tearDown
 	
-	public void testIsInSameJar() {
+	public void testGetCodeLocationCurrent() {
 		try {
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
 		    
-		    assertNotNull(objFileJarAsSource);
-		    if(ResourceEasyZZZ.isInJarStatic()) {
-		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
-			    System.out.println(sLog);
-			    
-		    	File objFileJar = JarEasyUtilZZZ.getCodeLocationJar();
-		    	assertNotNull(objFileJar);
-		    	assertEquals(objFileJar, objFileJarAsSource);
-		    	
-		    	boolean bErg = ResourceEasyZZZ.isInSameJarStatic(objFileJarAsSource);
-		    	assertTrue(bErg);
-		    }else {
-		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
-			    System.out.println(sLog);
-			    
-			    File objFileJar = JarEasyUtilZZZ.getCodeLocationJar();
-			    assertNotNull(objFileJar);
-			    assertTrue(objFileJar.isDirectory());
-		    }
+			File objFile = null;
 			
+			//Vorab zur Info, was das ausführende Verzeichnis ist.
+			  objFile = FileEasyZZZ.getDirectoryOfExecution();
+			  sLog = ReflectCodeZZZ.getPositionCurrent()+": Directory of Execution = '" + objFile.getAbsolutePath() +"'";
+			  System.out.println(sLog);
+				
+			if(JarEasyUtilZZZ.isInJarStatic()) { //FALL: IN JAR AUSFÜHREN
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+			    System.out.println(sLog);
+			    
+			    objFile = JarEasyUtilZZZ.getCodeLocationJar();
+			    assertNotNull(objFile);
+			    sLog = ReflectCodeZZZ.getPositionCurrent()+": objFile.getAbsolutePath() = '" + objFile.getAbsolutePath() + "'";
+			    System.out.println(sLog);
+			    
+			    assertTrue(objFile.isFile());
+			    assertTrue(FileEasyZZZ.isJar(objFile));
+			    			    
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt, vermutlich eclipse: !IsInJarStatic";
+			    System.out.println(sLog);
+			    objFile = JarEasyUtilZZZ.getCodeLocationJar();
+			    assertNotNull(objFile);
+			}
+			    
+			    
+			    //++++++++++
+				//Merke: Das wird in JarEasyUtilZZZ.getCodeLocationCurrent() gemacht....
+				
+//			    ProtectionDomain dom = JarEasyInCurrentJarZZZ.class.getProtectionDomain();
+//				if(dom==null) {
+//					sLog = ReflectCodeZZZ.getPositionCurrent()+": No Protection Domain available";
+//				    System.out.println(sLog);
+//				}else {
+//					CodeSource codeSource = dom.getCodeSource();
+//					if(codeSource==null) {
+//						sLog = ReflectCodeZZZ.getPositionCurrent()+": No CodeSource available";
+//						System.out.println(sLog);
+//					}else {					
+//						sLog = ReflectCodeZZZ.getPositionCurrent()+": CodeSource available";
+//						System.out.println(sLog);
+//	
+//						URL url = codeSource.getLocation();//https://stackoverflow.com/questions/19033391/java-codesource-null-pointers-when-trying-to-to-get-local-jar-paths
+//						//also wenn keine url, dann toURI versuchen
+//						if(url==null) {
+//							sLog = ReflectCodeZZZ.getPositionCurrent()+": No URL available";
+//							System.out.println(sLog);	
+//							
+//							url = JarEasyHelperZZZ.getLocation(JarEasyUtilZZZ.class);
+//							File objFileTemp = JarEasyHelperZZZ.urlToFile(url);
+//							
+							
+//							JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileJar);							
+//							objFileJarAsSource = JarEasyZZZ.getJarCurrentFromUrl(objJar, "file:///template");
+//						}else {
+//							url = JarEasyUtilZZZ.class.getClassLoader().getResource(".");
+//							sLog = ReflectCodeZZZ.getPositionCurrent()+": URL used '" + url.getPath() +"'";
+//							System.out.println(sLog);
+//							
+//							//objFileJarAsSource = new File(url.getPath());
+//						}		
+//					}
+//				}
+			    //+++++++++
+				//String sJarFilePath = JarEasyTestConstantsZZZ.sJAR_FILEPATH;
+				//objFile = JarEasyUtilZZZ.getCodeLocationCurrent();				
+			
+		  
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
-		}
+		} 
 	}
+	
+	
+	
+	public void testGetJarFileCurrentAsFile() {
+		try {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+			File objFile = null;
+			if(JarEasyUtilZZZ.isInJarStatic()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+			    System.out.println(sLog);
+			    objFile = JarEasyUtilZZZ.getJarFileCurrentAsFile();
+			    
+			    assertNotNull(objFile);
+			    assertTrue(objFile.isFile());
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
+			    System.out.println(sLog);								
+			}		    		  		    
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		} 
+	}
+	
+	public void testGetJarFileUsedAsFile() {
+		try {
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+	    System.out.println(sLog);
+		
+		objFileJarAsSource = null;
+		if(JarEasyUtilZZZ.isInJarStatic()) {
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": ISinJarStatic.";
+		    System.out.println(sLog);			
+		}else {
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": NOT ISinJarStatic.";
+		    System.out.println(sLog);		    
+		}
+		File objFile = JarEasyUtilZZZ.getJarFileUsedAsFile();
+		assertNotNull(objFile);
+		assertTrue(objFile.isFile());
+		    
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		} 		
+	}
+	
+//	public void testIsInSameJar() {
+//		try {
+//			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+//		    System.out.println(sLog);
+//		    
+//		    assertNotNull(objFileJarAsSource);
+//		    if(ResourceEasyZZZ.isInJarStatic()) {
+//		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+//			    System.out.println(sLog);
+//			    
+//		    	File objFileJar = JarEasyUtilZZZ.getCodeLocationCurrent();
+//		    	assertNotNull(objFileJar);
+//		    	assertEquals(objFileJar, objFileJarAsSource);
+//		    	
+//		    	boolean bErg = ResourceEasyZZZ.isInSameJarStatic(objFileJarAsSource);
+//		    	assertTrue(bErg);
+//		    }else {
+//		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
+//			    System.out.println(sLog);
+//			    
+//			    File objFileJar = JarEasyUtilZZZ.getCodeLocationCurrent();
+//			    assertNotNull(objFileJar);
+//			    assertTrue(objFileJar.isDirectory());
+//		    }
+//			
+//		}catch(ExceptionZZZ ez){
+//			fail("An exception happend testing: " + ez.getDetailAllLast());
+//		}
+//	}
 		
 	
 //	public void testFindDirectoryInJar(){

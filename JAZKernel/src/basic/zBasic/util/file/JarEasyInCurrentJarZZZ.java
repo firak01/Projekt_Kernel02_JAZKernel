@@ -20,28 +20,6 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  */
 public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingObjectZZZ{
 
-	public static JarFile getJarFileCurrent() throws ExceptionZZZ {
-		JarFile objReturn = null;
-		main:{
-			String sLog = null;
-			final File jarFile = JarEasyUtilZZZ.getJarCurrent(); //new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-			if(jarFile.isFile()) {  // Run with JAR file
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) JAR FILE FOUND.";
-			    System.out.println(sLog);
-				try {
-					objReturn = new JarFile(jarFile);									
-				} catch (IOException e1) {
-					ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) JAR FILE NOT FOUND.";
-			    System.out.println(sLog);
-			}
-		}//end main:
-		return objReturn;
-	}
-		
 	public static JarEntry getEntry(JarFile jar, String sPath) throws ExceptionZZZ {
 		JarEntry objReturn = null;
 		main:{
@@ -145,7 +123,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				
 				String sLog = null;			    
 				try {			
-					JarFile jar = JarEasyInCurrentJarZZZ.getJarFileCurrent();
+					JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
 					if(jar==null) {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 					    System.out.println(sLog);
@@ -219,7 +197,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				}
 
 				String sLog = null;
-				JarFile jar = JarEasyInCurrentJarZZZ.getJarFileCurrent();
+				JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
 				if(jar==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 				    System.out.println(sLog);
@@ -306,7 +284,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				}
 
 				String sLog = null;
-				JarFile jar = JarEasyInCurrentJarZZZ.getJarFileCurrent();
+				JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
 				if(jar==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 				    System.out.println(sLog);
@@ -456,7 +434,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 	}
 	
 	//### Interfaces
-		//aus iRessourceHandlingObjectZZZ
+		//aus IRessourceHandlingObjectZZZ
 		
 		//### Ressourcen werden anders geholt, wenn die Klasse in einer JAR-Datei gepackt ist. Also:
 			/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.

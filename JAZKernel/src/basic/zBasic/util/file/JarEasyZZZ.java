@@ -1198,7 +1198,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	}
 	
 	//### Interfaces
-	//aus iRessourceHandlingObjectZZZ
+	//aus IRessourceHandlingObjectZZZ
 	
 	//### Ressourcen werden anders geholt, wenn die Klasse in einer JAR-Datei gepackt ist. Also:
 		/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.

@@ -10,11 +10,12 @@ import java.net.URL;
 import java.util.jar.JarFile;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class ResourceEasyZZZ extends ObjectZZZ{
+public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjectZZZ{
 	private ResourceEasyZZZ(){
 		//Zum Verstecken des Konstruktors
 	}
@@ -104,7 +105,7 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 					    //Nun muss mann die Ressource aus einer .jar-Datei holen.
 					    //Für das Return - Objekt muss man differenziert verfahren: Verzeichnis oder Datei
 					    //0. JarFile holen
-					    JarFile jar = JarEasyInCurrentJarZZZ.getJarFileCurrent();
+					    JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
 					    if(jar==null) {
 						    sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) JarFileCurrent not available.";
 						    System.out.println(sLog);
@@ -182,9 +183,72 @@ public class ResourceEasyZZZ extends ObjectZZZ{
 				
 			}
 			
-		}
+		}//end main:
 		return objReturn;
 	}
 	
 	
+	public static File findDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			if(objFileAsJar==null)break main;			
+			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {
+				
+			}else {
+				
+			}
+			
+		}//end main:
+		return objReturn;
+	}
+	
+	
+	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
+	 *   Merke: Static Klassen müssen diese Methode selbst implementieren. Das ist dann das Beispiel.
+	 * @return
+	 * @author lindhaueradmin, 21.02.2019
+	 * @throws ExceptionZZZ 
+	 */
+	public static boolean isInJarStatic() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			bReturn = JarEasyUtilZZZ.isInJar(ResourceEasyZZZ.class);
+		}
+		return bReturn;
+	}
+	
+	public static boolean isInSameJarStatic(File objFileAsJar) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(objFileAsJar==null)break main;
+			if(!ResourceEasyZZZ.isInJarStatic()) break main;			
+			if(!FileEasyZZZ.isJar(objFileAsJar)){
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			
+		}//end main;
+		return bReturn;
+	}
+	
+	//### Interfaces
+		//aus IRessourceHandlingObjectZZZ
+		
+		//### Ressourcen werden anders geholt, wenn die Klasse in einer JAR-Datei gepackt ist. Also:
+			/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
+			 *   Merke: Static Klassen müssen diese Methode selbst implementieren.
+			 * @return
+			 * @author lindhaueradmin, 21.02.2019
+			 * @throws ExceptionZZZ 
+			 */
+			public boolean isInJar() throws ExceptionZZZ{
+				boolean bReturn = false;
+				main:{
+					bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
+				}
+				return bReturn;
+			}
 }
+

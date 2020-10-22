@@ -37,7 +37,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": SETUP ###############################################.";
 		    System.out.println(sLog);
 		    
-			File objFileJarAsSource = null;
+			objFileJarAsSource = null;
 			if(JarEasyInCurrentJarZZZ.isInJarStatic()) {
 //				ProtectionDomain dom = JarEasyInCurrentJarZZZ.class.getProtectionDomain();
 //				if(dom==null) {
@@ -71,9 +71,11 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 //						
 //					}
 //				}
-				objFileJarAsSource = JarEasyUtilZZZ.getJarCurrent();
-			}else {
-				String sJarFilePath = JarEasyTestConstantsZZZ.sJAR_FILEPATH;
+				objFileJarAsSource = JarEasyUtilZZZ.getCodeLocationJar();
+			}else {				
+				File fileDir = JarEasyUtilZZZ.getCodeLocationUsed();								
+				String sJarFile = JarEasyTestConstantsZZZ.sJAR_FILENAME;				
+				String sJarFilePath = FileEasyZZZ.joinFilePathName(fileDir, sJarFile);
 				objFileJarAsSource = new File(sJarFilePath);
 				if(objFileJarAsSource.isFile()) {  // Run with JAR file		
 					objJarAsSource = new JarFile(objFileJarAsSource);

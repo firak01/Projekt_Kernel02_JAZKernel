@@ -1798,8 +1798,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			//Wenn in einer jar Datei ausgeführt wird, das lokale Verzeichnis der jar holen.
 			//Ziel ist es, dass eine lokale Datei immer die Datei im .jar übersteuert.			
 			if(JarEasyUtilZZZ.isInJarStatic()){
-			File objTest = JarEasyUtilZZZ.getJarDirectoryCurrent();			
-			if(objTest!=null){
+			File objTestJar = JarEasyUtilZZZ.getJarFileCurrentAsFile();
+			if(objTestJar!=null){
+				File objTest = objTestJar.getParentFile();
 				String sPathJarDirectoryCurrent = objTest.getAbsolutePath();
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) JarDirectoryCurrent= '" + sPathJarDirectoryCurrent +"'";
 			    System.out.println(sLog);
@@ -2073,6 +2074,19 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}
 		}
 		return sReturn;
+	}
+	
+	/** Wenn der Code in Eclipse läuft, wird der Pfad zum Projekt zurückgegeben, z.B.:
+	 * C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZKernel\JAZKernel
+	 * Wenn der Code z.B. über eine JarDatei und ein startendes Batch - File ausgefürht wird,
+	 * wird der Pfad zu dem Ausfürhenden Verzeichnis ausgegeben, z.B.: 
+	 * C:\1fgl\client\OVPN
+	 * 
+	 * @return
+	 * @author Fritz Lindhauer, 22.10.2020, 09:23:23
+	 */
+	public static File getDirectoryOfExecution() {
+		return new File("");
 	}
 	
 	public static void copyFile(File src, File dest, int bufSize,  boolean force) throws ExceptionZZZ {
