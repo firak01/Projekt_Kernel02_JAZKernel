@@ -74,9 +74,13 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			            resourceOS.write(byteArray, 0, i);
 			        }
 			//Close streams to prevent errors
-			        classIS.close();
-			        resourceOS.close();
-			        objReturn = f;		    
+			        if(classIS!=null) classIS.close();
+			        if(resourceOS!=null) resourceOS.close();
+			        if(f==null) {
+			        	break main;		    
+			        }else {
+			        	objReturn = f;
+			        }
 				}catch (Exception e){
 			    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
@@ -804,6 +808,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 		File objReturn = null;		
 		main:{
 				File[] objaDir = JarEasyZZZ.extractDirectoryToTemps(objJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, bWithFiles);
+				if(objaDir==null) break main;
 			    objReturn = objaDir[0];					
 		}//end main:
 		return objReturn;
@@ -1104,7 +1109,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 							throw ez;
 						}												
 					}else{						
-						boolean bErg = FileEasyZZZ.removeDirectory(fileAsTrunk,true);//Verzeichnis löschen und zuvor leeren												
+						boolean bErg = FileEasyZZZ.removeDirectory(fileAsTrunk,true,true);//Verzeichnis löschen und zuvor leeren												
 						if(!bErg) {
 							ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "File Object as trunk existed - Directory case -, but was not replacable", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
 							throw ez;
