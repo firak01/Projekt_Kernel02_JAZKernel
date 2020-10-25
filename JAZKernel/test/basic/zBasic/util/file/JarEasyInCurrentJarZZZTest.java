@@ -39,38 +39,6 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    
 			objFileJarAsSource = null;
 			if(JarEasyInCurrentJarZZZ.isInJarStatic()) {
-//				ProtectionDomain dom = JarEasyInCurrentJarZZZ.class.getProtectionDomain();
-//				if(dom==null) {
-//					String sLog = ReflectCodeZZZ.getPositionCurrent()+": No Protection Domain available";
-//				    System.out.println(sLog);
-//				}else {
-//					CodeSource codeSource = dom.getCodeSource();
-//					if(codeSource==null) {
-//						String sLog = ReflectCodeZZZ.getPositionCurrent()+": No CodeSource available";
-//						System.out.println(sLog);
-//					}else {						
-//						URL url = codeSource.getLocation();
-//						if(url==null) {
-//							String sLog = ReflectCodeZZZ.getPositionCurrent()+": No URL available";
-//							System.out.println(sLog);	
-//							
-//							sLog = ReflectCodeZZZ.getPositionCurrent()+": Using jar file '" + JarEasyTestConstantsZZZ.sJAR_FILEPATH + "'";
-//							System.out.println(sLog);	
-//							File objFileJar = new File(JarEasyTestConstantsZZZ.sJAR_FILEPATH);
-//							JarFile objJar = JarEasyZZZ.toJarFile(objFileJar);
-//							
-//							objFileJarAsSource = JarEasyZZZ.getJarCurrentFromUrl(objJar, "file:///template");
-//						}else {
-//							url = JarEasyInCurrentJarZZZ.class.getClassLoader().getResource(".");
-//							String sLog = ReflectCodeZZZ.getPositionCurrent()+": URL used '" + url.getPath() +"'";
-//							System.out.println(sLog);
-//							
-//							objFileJarAsSource = new File(url.getPath());
-//						}
-//						
-//						
-//					}
-//				}
 				objFileJarAsSource = JarEasyUtilZZZ.getCodeLocationJar();
 			}else {				
 				File fileDir = JarEasyUtilZZZ.getCodeLocationUsed();								
