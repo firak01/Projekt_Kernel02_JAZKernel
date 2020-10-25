@@ -128,7 +128,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					fail("Verzeichnis '" + objFileDummy.getAbsolutePath() + "' sollte nicht erstellt worden sein.");
 				}
 				
-				//Fall AB: Nur Daei als Dummy suchen, nicht erstellen.								
+				//Fall AB: Nur Datei als Dummy suchen, nicht erstellen.								
 				sPath = "template/template_server_TCP_443.ovpn";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_DUMMY";
 				objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
