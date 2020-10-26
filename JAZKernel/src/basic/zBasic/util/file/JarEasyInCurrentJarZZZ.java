@@ -174,6 +174,15 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			return objReturn;
 		}
 
+	public static File searchResourceToDummy(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			TODOGOO; //MAche eine private MEthode, der dann der PAramater übergben wird
+			         //bSpeichern
+		}//end main:
+		return objReturn;
+	}
+	
 	/** Man sucht hiermit die Datei als File-Dummy, diese wird nicht existieren.
 	 * @param sPath
 	 * @param sTargetDirectoryPathRootIn

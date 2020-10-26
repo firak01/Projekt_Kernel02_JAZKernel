@@ -193,9 +193,12 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		main:{
 			if(objFileAsJar==null)break main;			
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {
+				//NEIN, DAS WÜRDE EXTRAHieREN objReturn = JarEasyInCurrentJarZZZ.searchResource(sPath, sDirExtractTo);
+				//NEIN, AUCH DAS EXTRAHIERT objReturn = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sDirExtractTo);
 				
+				objReturn = JarEasyInCurrentJarZZZ.searchResourceToDummy(sPath, sDirExtractTo);
 			}else {
-				
+			    
 			}
 			
 		}//end main:
@@ -221,14 +224,23 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		boolean bReturn = false;
 		main:{
 			if(objFileAsJar==null)break main;
-			if(!ResourceEasyZZZ.isInJarStatic()) break main;			
+			if(!ResourceEasyZZZ.isInJarStatic()) {
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": Not running from jar file.";
+			    System.out.println(sLog);
+				break main;			
+			}
 			if(!FileEasyZZZ.isJar(objFileAsJar)){
-				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_VALUE, ResourceEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			
-			
+			 File objFileJar = JarEasyUtilZZZ.getCodeLocationJar();
+			 if(objFileJar==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Unable to get CodeLocation for running jar", iERROR_RUNTIME, ResourceEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			 }
+			  
+			 bReturn = objFileJar.equals(objFileAsJar);
 		}//end main;
 		return bReturn;
 	}

@@ -442,8 +442,17 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			URL url = JarEasyHelperZZZ.getLocation(JarEasyUtilZZZ.class);
 			if(url==null)break main;
 			
-			//Step 2: URL to File			
+			//Step 2: URL to File	
+//			String sLog = ReflectCodeZZZ.getPositionCurrent()+": C1) File from url '"+url.toString()+"'";
+//			System.out.println(sLog);
 			objReturn = JarEasyHelperZZZ.urlToFile(url);
+//			if(objReturn==null) {
+//				sLog = ReflectCodeZZZ.getPositionCurrent()+": C2) File is NULL";
+//				System.out.println(sLog);
+//			}else {
+//				sLog = ReflectCodeZZZ.getPositionCurrent()+": C2) File = '" + objReturn.getAbsolutePath() +"'";
+//				System.out.println(sLog);
+//			}
 		}
 		return objReturn;
 	}
