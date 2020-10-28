@@ -786,6 +786,24 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 */
 	public static File extractDirectoryToTemp(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
 		File objReturn=null;
+		main:{									
+			objReturn = JarEasyZZZ.extractDirectoryToTemp(objFileAsJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn,true);
+		}//end main:
+		return objReturn;
+	}
+	
+	/**
+	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
+			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File extractDirectoryToTemp(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File objReturn=null;
 		main:{			
 			if(objFileAsJar==null){
 				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -797,7 +815,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			}
 			
 			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);			
-			objReturn = JarEasyZZZ.extractDirectoryToTemp(objJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn,true);
+			objReturn = JarEasyZZZ.extractDirectoryToTemp(objJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn,bWithFiles);
 			
 			
 			}//end main:
@@ -1006,7 +1024,9 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			    String sFilePath = JarEasyUtilZZZ.toFilePath(sEntryName);
 			    sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePath='" + sFilePath + "'.";
 			    System.out.println(sLog);
-				objReturn = new File(sTargetDirectoryPath, sFilePath);									
+			    
+			    String sPathTotal = FileEasyZZZ.joinFilePathName(sTargetDirectoryPath, sFilePath);
+				objReturn = new File(sPathTotal);									
 				
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());

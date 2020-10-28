@@ -36,6 +36,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.KernelKernelZZZ;
 import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
@@ -1380,9 +1381,14 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
 			   throw ez;	
 		}else{
-			sFileName = StringZZZ.stripFileSeparatorsLeft(sFileNameIn);
-		}
-		
+			//Falls sFileNameIn ein Teil von sFilePathIn ist, oder in einem anderen Verzeichnis
+			if(FileEasyZZZ.isPathAbsolut(sFileNameIn)){	
+				sFileName = FileEasyZZZ.getNameFromFilepath(sFileNameIn);							   	
+			 }else {
+			 	sFileName = StringZZZ.stripFileSeparatorsLeft(sFileNameIn);
+			 }
+			
+		}		
 		//An empty string is allowed
 		if(sFilePathIn==null){
 			//here is the code throwing an ExceptionZZZ

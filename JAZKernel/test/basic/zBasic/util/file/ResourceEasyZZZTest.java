@@ -112,9 +112,9 @@ public class ResourceEasyZZZTest extends TestCase{
 			String sPath = "debug/zBasic";
 			String sTargetDirectoryPathRoot = "FIND_RESOURCE_DIRECTORY_DUMMY";
 			
-			//VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
-			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true);
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			
 			if(JarEasyUtilZZZ.isInJarStatic())	{

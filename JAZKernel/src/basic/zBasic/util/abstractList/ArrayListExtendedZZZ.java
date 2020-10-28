@@ -38,16 +38,25 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 	 * @param iCapacityInitial
 	 */
 	public ArrayListExtendedZZZ(int iCapacityInitial) {
-		ArrayListExtendedNew_(iCapacityInitial, true);		
+		super(iCapacityInitial);			
 	}
 	public ArrayListExtendedZZZ(){		
-		ArrayListExtendedNew_(0, false);
+		super();
+	}
+	public ArrayListExtendedZZZ(T[]obja) {	
+		ArrayListExtendedNew_(obja);
+	
 	}
 	
-	private boolean ArrayListExtendedNew_(int iCapacityInitial, boolean bFlagUseCapacity){
+	private boolean ArrayListExtendedNew_(T[] obja){		
 		boolean bReturn = false;
 		main:{
-		
+			if(obja==null) break main;
+			
+			for(T obj : obja) {
+				this.add(obj);
+			}
+			bReturn = true;
 		}//end main:
 				
 		return bReturn;

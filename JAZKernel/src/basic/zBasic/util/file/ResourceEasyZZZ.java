@@ -198,7 +198,11 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 				
 				objReturn = JarEasyInCurrentJarZZZ.searchResourceToDummy(sPath, sDirExtractTo);
 			}else {
-			    
+				JarFile objFileJar = JarEasyUtilZZZ.getJarFileUsed();
+				File[] objaReturn = JarEasyZZZ.extractFromJarAsTrunkFileDummies(objFileJar, sPath, sDirExtractTo, false);
+				if(objaReturn==null) break main;
+				
+				objReturn = objaReturn[0];
 			}
 			
 		}//end main:

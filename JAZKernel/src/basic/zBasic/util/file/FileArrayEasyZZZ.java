@@ -13,7 +13,9 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -37,6 +39,8 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zKernel.KernelKernelZZZ;
 import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
@@ -50,6 +54,16 @@ public class FileArrayEasyZZZ extends ObjectZZZ{
 	
 private FileArrayEasyZZZ(){
 	//Zum Verstecken des Konstruktors
+}
+
+public static File[] add(File[] objaFile, File objFile) {
+	File[] objaReturn = null;
+	main:{
+		ArrayList<File> listaFile = new ArrayListExtendedZZZ<File>(objaFile);		
+		listaFile.add(objFile);
+		objaReturn = ArrayListZZZ.toFileArray(listaFile);
+	}//end main:
+	return objaReturn;
 }
 
 public static boolean contains(File[] objaFile, String sFilePath) {

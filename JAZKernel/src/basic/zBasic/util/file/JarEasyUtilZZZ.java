@@ -589,6 +589,33 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		}//end main:
 		return objReturn;
 	}
+	
+	/**Versuche erst das JarFileCurrentAsFile zu holen. Wenn das nicht vorhanden ist, wird über das Excecution-Verzeichnis ein definierter .Jar-Dateiname gesucht.
+	 * 
+	 * @return
+	 * @author Fritz Lindhauer, 22.10.2020, 14:36:19
+	 * @throws ExceptionZZZ 
+	 */
+	public static JarFile getJarFileUsed() throws ExceptionZZZ {
+		JarFile objReturn = null;
+		main:{
+			String sLog = null;
+			objReturn = JarEasyUtilZZZ.getJarFileCurrent();
+			if(objReturn!=null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) JAR FILE CURRENT FOUND.";
+			    System.out.println(sLog);
+				break main;
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) NOT RUNNING IN JAR FILE.";
+			    System.out.println(sLog);			    
+			    final File jarFile = JarEasyUtilZZZ.getJarFileDefaultAsFile();
+			    objReturn = JarEasyUtilZZZ.toJarFile(jarFile);
+			}
+		}//end main:
+		return objReturn;
+	}
+	
+	
 	public static File getJarFileCurrentAsFile() throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
