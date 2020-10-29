@@ -188,6 +188,14 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 	}
 	
 	
+	/** Finde nur das Verzeichnis in der JAr Datei. Es wird ein Dummy-Objekt zurückgegeben, das NICHT auf der Platte ist.
+	 * @param objFileAsJar
+	 * @param sPath
+	 * @param sDirExtractTo
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 29.10.2020, 13:01:39
+	 */
 	public static File findDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
@@ -200,6 +208,35 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 				if(objaReturn==null) break main;
 				
 				objReturn = objaReturn[0];
+			}
+			
+		}//end main:
+		return objReturn;
+	}
+	
+	/** Finde das Verzeichnis in der JAr Datei. Es wird ein File-Objekt zurückgegeben, das auf der Platte gespeichert ist.
+	 * @param objFileAsJar
+	 * @param sPath
+	 * @param sDirExtractTo
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 29.10.2020, 13:01:39
+	 */
+	public static File searchDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			TODOGOON // mache auch in den JAREasy-Klassen die Konvention: 
+			//find => nix erzeugen
+			//search => im Temp erzeugen
+			if(objFileAsJar==null)break main;			
+			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
+			//	objReturn = JarEasyInCurrentJarZZZ.searchResourceToDummy(sPath, sDirExtractTo);
+			}else {
+				JarFile objFileJar = JarEasyUtilZZZ.getJarFileUsed();
+			//	File[] objaReturn = JarEasyZZZ.searchResourceToDummies(objFileJar, sPath, sDirExtractTo, false);
+			//	if(objaReturn==null) break main;
+				
+			//	objReturn = objaReturn[0];
 			}
 			
 		}//end main:
