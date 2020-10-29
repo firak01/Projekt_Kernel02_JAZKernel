@@ -33,29 +33,6 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  */
 public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingObjectZZZ{
 
-	public static JarEntry getEntry(JarFile jar, String sPath) throws ExceptionZZZ {
-		JarEntry objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sPath)){
-				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(jar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No JarFile-Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-				
-			String sLog = null;
-			String sPathInJar = JarEasyUtilZZZ.toJarFilePath(sPath); 
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for '" + sPathInJar + "'";				
-			System.out.println(sLog);
-				
-			objReturn = jar.getJarEntry(sPathInJar);
-				  
-		}//end main:
-		return objReturn;
-	}
-	
 	public static boolean  isDirectory(JarFile jar, String sPath) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -69,7 +46,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			}
 			
 			String sLog=null;
-			JarEntry entry = JarEasyInCurrentJarZZZ.getEntry(jar,sPath);
+			JarEntry entry = JarEasyUtilZZZ.getEntry(jar,sPath);
 		    if(entry==null){
 		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPath +"'";
 		    	System.out.println(sLog);			    	
@@ -107,7 +84,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 					    System.out.println(sLog);
 					
-					   JarEntry entry = JarEasyInCurrentJarZZZ.getEntry(jar, sPath); 
+					   JarEntry entry = JarEasyUtilZZZ.getEntry(jar, sPath); 
 					   if(entry==null){
 						   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPath +"'";
 						   System.out.println(sLog);			    	
@@ -181,7 +158,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			    System.out.println(sLog);
 			}
 			
-			JarEntry entry = JarEasyInCurrentJarZZZ.getEntry(jar, sPath);
+			JarEntry entry = JarEasyUtilZZZ.getEntry(jar, sPath);
 			if(entry==null){
 			  	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR PATH: '" + sPath +"'";
 			   	System.out.println(sLog);			    	
@@ -192,15 +169,17 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			   	String sTargetDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirectoryPathRoot);
 			   	
 			    //Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
-			    if(entry.isDirectory()) { //DATEIEN DOCH AUCH SOFORT EXTRAHIEREN!!! Grund: Ggfs. wird dann in dem zurückgegebenen Verzeichnis sofort nach den Dateien gesucht. 
-			    	
-			    	
-			    	//Dateien erst mal nicht extrahieren, später schon!!!
+			    if(entry.isDirectory()) { //DATEIEN NICHT SOFORT EXTRAHIEREN!!!  
+
 			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 				   	System.out.println(sLog);
-				    		
-				   	//HIER NICHT FILE DUMMIES VERWENDEN sondern TRUNK
-			    	objaReturn = JarEasyZZZ.extractDirectoryToTemps(jar, entry,sTargetDirPath, bWithFiles);				    	
+				    
+				   	if(bSave) {
+				   		objaReturn = JarEasyZZZ.extractDirectoryToTemps(jar, entry, sTargetDirPath, bWithFiles);
+				   	}else {
+				   		objaReturn = JarEasyZZZ.searchResourceToDummies(jar, entry,sTargetDirPath, bWithFiles);
+				   	}
+				   	
 			    	if(objaReturn!=null) {
 			    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY - FILE OBJECTS FROM JARENTRY CREATED: '" + entry.getName() +"'";
 				    	System.out.println(sLog);
@@ -294,7 +273,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				    System.out.println(sLog);
 				}
 				
-				JarEntry entry = JarEasyInCurrentJarZZZ.getEntry(jar, sPath);
+				JarEntry entry = JarEasyUtilZZZ.getEntry(jar, sPath);
 				if(entry==null){
 				  	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR PATH: '" + sPath +"'";
 				   	System.out.println(sLog);			    	
@@ -309,7 +288,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 					   	System.out.println(sLog);
 					   	
-				    	File[] objaFile = JarEasyZZZ.extractDirectoryFromJarAsFileDummies(jar, entry, sTargetDirectoryPathRootIn, false);
+				    	File[] objaFile = JarEasyZZZ.searchResourceToDummies(jar, entry, sTargetDirectoryPathRootIn, false);
 				    	objReturn = objaFile[0];
 				    	
 				    }else {
@@ -365,7 +344,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				    System.out.println(sLog);
 				}
 				
-				JarEntry entry = JarEasyInCurrentJarZZZ.getEntry(jar, sPath);
+				JarEntry entry = JarEasyUtilZZZ.getEntry(jar, sPath);
 				if(entry==null){
 				  	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR PATH: '" + sPath +"'";
 				   	System.out.println(sLog);			    	

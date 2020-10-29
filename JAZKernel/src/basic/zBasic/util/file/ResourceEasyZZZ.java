@@ -192,14 +192,11 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		File objReturn = null;
 		main:{
 			if(objFileAsJar==null)break main;			
-			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {
-				//NEIN, DAS WÜRDE EXTRAHieREN objReturn = JarEasyInCurrentJarZZZ.searchResource(sPath, sDirExtractTo);
-				//NEIN, AUCH DAS EXTRAHIERT objReturn = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sDirExtractTo);
-				
+			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
 				objReturn = JarEasyInCurrentJarZZZ.searchResourceToDummy(sPath, sDirExtractTo);
 			}else {
 				JarFile objFileJar = JarEasyUtilZZZ.getJarFileUsed();
-				File[] objaReturn = JarEasyZZZ.extractFromJarAsTrunkFileDummies(objFileJar, sPath, sDirExtractTo, false);
+				File[] objaReturn = JarEasyZZZ.searchResourceToDummies(objFileJar, sPath, sDirExtractTo, false);
 				if(objaReturn==null) break main;
 				
 				objReturn = objaReturn[0];

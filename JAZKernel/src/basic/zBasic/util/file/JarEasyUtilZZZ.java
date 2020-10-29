@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -709,6 +710,29 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				System.out.println(sLog);
 				break main;
 			}
+		}//end main:
+		return objReturn;
+	}
+
+	public static JarEntry getEntry(JarFile jar, String sPath) throws ExceptionZZZ {
+		JarEntry objReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sPath)){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(jar==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile-Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+				
+			String sLog = null;
+			String sPathInJar = toJarFilePath(sPath); 
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for '" + sPathInJar + "'";				
+			System.out.println(sLog);
+				
+			objReturn = jar.getJarEntry(sPathInJar);
+				  
 		}//end main:
 		return objReturn;
 	}
