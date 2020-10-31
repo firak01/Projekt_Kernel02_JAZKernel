@@ -204,9 +204,9 @@ public class JarEasyZZZTest extends TestCase{
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
 			
 			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
-			File[] objaCreated01 = JarEasyZZZ.searchResourceToDummies(objJar,sDirToExtract, sDirToExtractTo, false);
+			File[] objaCreated01 = JarEasyZZZ.peekResourceDirectory(objJar,sDirToExtract, sDirToExtractTo, false);
 			if(objaCreated01==null) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
+				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht gefunden (NULL-WERT).");
 			}
 			if(objaCreated01[0].exists()) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
@@ -215,9 +215,9 @@ public class JarEasyZZZTest extends TestCase{
 			//Ab) Erfolgsfall, mit Dateien erzeugen						
 			sDirToExtractTo = "FGL_TRUNK_OF_FILES";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
-			File[] objaCreated02 = JarEasyZZZ.searchResourceToDummies(objJar, sDirToExtract, sDirToExtractTo, true);
+			File[] objaCreated02 = JarEasyZZZ.peekResourceDirectory(objJar, sDirToExtract, sDirToExtractTo, true);
 			if(objaCreated02==null) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
+				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht gefunden (NULL-WERT).");
 			}
 			if(objaCreated02[0].exists()) {
 				fail("Datei sollte nicht erstellt sein '" + objaCreated02[0] + "' und das Verzeichnis '" + sDirToExtractTo + "' sollte auch nicht erstellt sein.");

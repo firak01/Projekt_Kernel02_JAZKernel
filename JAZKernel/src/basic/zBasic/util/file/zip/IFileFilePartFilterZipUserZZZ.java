@@ -4,6 +4,9 @@ public interface IFileFilePartFilterZipUserZZZ {
 	public void setDirectoryPartFilter(FilenamePartFilterPathZipZZZ objDirectoryFilterZip);
 	public FilenamePartFilterPathZipZZZ getDirectoryPartFilter();
 	
+	public void setNamePartFilter(FilenamePartFilterNameZipZZZ objNameFilterZip);//Der ganze Name
+	public FilenamePartFilterNameZipZZZ getNamePartFilter();
+		
 	public void setPrefixPartFilter(FilenamePartFilterPrefixZipZZZ objPrefixFilterZip);
 	public FilenamePartFilterPrefixZipZZZ getPrefixPartFilter();
 		

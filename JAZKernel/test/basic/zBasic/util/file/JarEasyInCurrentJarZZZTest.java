@@ -169,7 +169,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				//FALL BA: NUR VERZEICHNIS ERSTELLEN			
 				sPath = "debug/zBasic";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
-				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot, false);				
+				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot, false);				
 				assertNotNull(objDirectoryCreated);
 				if(!objDirectoryCreated.exists()) {
 					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
@@ -184,7 +184,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				//FALL BB: DATEI FINDEN
 				sPath = "template/template_server_TCP_443.ovpn";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
-				File objFileCreated = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, sTargetDirectoryPathRoot);
+				File objFileCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
 				assertNotNull(objFileCreated);
 				
 				objDirectoryCreated = objFileCreated.getParentFile();

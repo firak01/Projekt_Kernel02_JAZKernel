@@ -12,23 +12,24 @@ import basic.zBasic.util.file.FilenamePartFilterPrefixZZZ;
 import basic.zBasic.util.file.FilenamePartFilterSuffixZZZ;
 import basic.zBasic.util.file.jar.AbstractFileFileFilterInJarZZZ;
 
-public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
+public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{	
 	public static String sDIRECTORY_PATH="";
+	public static String sNAME=""; //Der ganze Dateiname
 	public static String sPREFIX="";
 	public static String sMIDDLE="";
 	public static String sSUFFIX="";
 	public static String sENDING="";
 	
-	public FileFileFilterInJarZZZ(String sDirectroyPath, String[] saFlagControl) throws ExceptionZZZ {
-		super(sDirectroyPath, saFlagControl);	
+	public FileFileFilterInJarZZZ(String sName, String[] saFlagControl) throws ExceptionZZZ {
+		super(sName, saFlagControl);	
 		FileFilterInJarNew_();
 	} 
-	public FileFileFilterInJarZZZ(String sDirectroyPath, String sFlagControl) throws ExceptionZZZ {
-		super(sDirectroyPath, sFlagControl);
+	public FileFileFilterInJarZZZ(String sName, String sFlagControl) throws ExceptionZZZ {
+		super(sName, sFlagControl);
 		FileFilterInJarNew_();
 	} 
-	public FileFileFilterInJarZZZ(String sDirectoryPath) throws ExceptionZZZ {
-		super(sDirectoryPath);		
+	public FileFileFilterInJarZZZ(String sName) throws ExceptionZZZ {
+		super(sName);		
 		FileFilterInJarNew_();
 	} 
 	public FileFileFilterInJarZZZ() throws ExceptionZZZ {
@@ -47,6 +48,14 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 			super.setDirectoryPath(FileFileFilterInJarZZZ.sDIRECTORY_PATH);
 		}else {
 			super.setDirectoryPath(sDirectoyPath);
+		}
+	}
+	
+	public void setName(String sName) {
+		if(StringZZZ.isEmpty(sName)) {
+			super.setName(FileFileFilterInJarZZZ.sNAME);
+		}else {
+			super.setName(sName);
 		}
 	}
 	

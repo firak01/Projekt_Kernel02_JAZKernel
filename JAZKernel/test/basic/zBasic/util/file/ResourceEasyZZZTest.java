@@ -103,14 +103,14 @@ public class ResourceEasyZZZTest extends TestCase{
 	}
 		
 	
-	public void testFindDirectoryInJar(){
+	public void testPeekDirectoryInJar(){
 		try{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
 		    
 			File objFileCreated;
 			String sPath = "debug/zBasic";
-			String sTargetDirectoryPathRoot = "FIND_RESOURCE_DIRECTORY_DUMMY";
+			String sTargetDirectoryPathRoot = "PEEK_RESOURCE_DIRECTORY_DUMMY";
 			
 			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
@@ -125,7 +125,7 @@ public class ResourceEasyZZZTest extends TestCase{
 			    System.out.println(sLog);
 			}
 			
-			File objFileDir = ResourceEasyZZZ.findDirectoryInJar(objFileJarAsSource, sPath, sDirToExtractTo);
+			File objFileDir = ResourceEasyZZZ.peekDirectoryInJar(objFileJarAsSource, sPath, sDirToExtractTo);
 		    assertNotNull(objFileDir);
 		    if(objFileDir.exists()) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
@@ -135,45 +135,83 @@ public class ResourceEasyZZZTest extends TestCase{
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}
-//	
-//	public void testFindDirectoryInJarAsTrunk() {
-//		try{
-//			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
-//		    System.out.println(sLog);
-//		    
-//			File objFileDummy;	
-//			String sPath; String sTargetDirectoryPathRoot;
-//			if(JarEasyUtilZZZ.isInJarStatic())	{
-//				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
-//			    System.out.println(sLog);
-//			}else {
-//				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
-//			    System.out.println(sLog);
-//			    
-//				//Fall AA: Nur Verzeichnis als Dummy suchen, nicht erstellen
-////				sPath = "debug/zBasic";
-////				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_DUMMY";
-////				objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);				
-////				assertNotNull(objFileDummy);
-////				if(objFileDummy.exists()) {
-////					fail("Verzeichnis '" + objFileDummy.getAbsolutePath() + "' sollte nicht erstellt worden sein.");
-////				}
-////				
-////				//Fall AB: Nur Daei als Dummy suchen, nicht erstellen.								
-////				sPath = "template/template_server_TCP_443.ovpn";
-////				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_DUMMY";
-////				objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
-////				assertNotNull(objFileDummy);
-////				if(objFileDummy.exists()) {
-////					fail("Datei '" + objFileDummy.getAbsolutePath() + "' sollte nicht erstellt worden sein.");
-////				}												
-//			}
-//			
-//		}catch(ExceptionZZZ ez){
-//			fail("An exception happend testing: " + ez.getDetailAllLast());
-//		}
-//		
-//	}
+	
+	public void testPeekFileInJar(){
+		try{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+			File objFileCreated;
+			String sPath = "template/readmeFGL.txt";
+			String sTargetDirectoryPathRoot = "PEEK_RESOURCE_FILE_DUMMY";
+			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			if(JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}
+			
+			File objFile = ResourceEasyZZZ.peekFileInJar(objFileJarAsSource, sPath, sDirToExtractTo);
+		    assertNotNull(objFile);
+		    if(objFile.exists()) {
+				fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+			}
+		    		    		    			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
+	
+	
+	
+	public void testSearchDirectoryInJar() {
+		try{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+			File objFileDummy;	
+			String sPath; String sTargetDirectoryPathRoot;
+			if(JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			} 
+			 
+			
+			
+			//Fall AA: Nur Verzeichnis suchen, in temp erstellen
+			sPath = "debug/zBasic";
+			sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_DUMMY";
+			objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);				
+			assertNotNull(objFileDummy);
+			if(!objFileDummy.exists()) {
+				fail("Verzeichnis '" + objFileDummy.getAbsolutePath() + "' sollte erstellt worden sein.");
+			}
+			
+				
+			//Fall AB: Nur Datei suchen, in temp  erstellen.								
+			sPath = "template/template_server_TCP_443.ovpn";
+			sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_DUMMY";
+			objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
+			assertNotNull(objFileDummy);
+			if(!objFileDummy.exists()) {
+				fail("Datei '" + objFileDummy.getAbsolutePath() + "' sollte erstellt worden sein.");
+			}												
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
 //	
 //	public void testFindFile() {		
 //		try{

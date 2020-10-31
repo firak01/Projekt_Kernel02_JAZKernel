@@ -117,7 +117,7 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 					    if(bEntryIsDirectory) {
 					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE, BUT AS REAL TEMP DIRECTORY.";
 					    	System.out.println(sLog);
-					    	objReturn = JarEasyInCurrentJarZZZ.searchResourceToTemp(sPath, "");
+					    	objReturn = JarEasyInCurrentJarZZZ.searchResource(sPath, "");
 					    }else {
 					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
 						    System.out.println(sLog);						    	
@@ -196,15 +196,41 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 29.10.2020, 13:01:39
 	 */
-	public static File findDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
+	public static File peekDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			if(objFileAsJar==null)break main;			
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
-				objReturn = JarEasyInCurrentJarZZZ.searchResourceToDummy(sPath, sDirExtractTo);
+				objReturn = JarEasyInCurrentJarZZZ.peekDirectory(sPath, sDirExtractTo);
 			}else {
 				JarFile objFileJar = JarEasyUtilZZZ.getJarFileUsed();
-				File[] objaReturn = JarEasyZZZ.searchResourceToDummies(objFileJar, sPath, sDirExtractTo, false);
+				File[] objaReturn = JarEasyZZZ.peekResourceDirectory(objFileJar, sPath, sDirExtractTo, false);
+				if(objaReturn==null) break main;
+				
+				objReturn = objaReturn[0];
+			}
+			
+		}//end main:
+		return objReturn;
+	}
+	
+	/** Finde nur das Verzeichnis in der JAr Datei. Es wird ein Dummy-Objekt zurückgegeben, das NICHT auf der Platte ist.
+	 * @param objFileAsJar
+	 * @param sPath
+	 * @param sDirExtractTo
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 29.10.2020, 13:01:39
+	 */
+	public static File peekFileInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			if(objFileAsJar==null)break main;			
+			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
+				objReturn = JarEasyInCurrentJarZZZ.peekFile(sPath, sDirExtractTo);
+			}else {
+				JarFile objFileJar = JarEasyUtilZZZ.getJarFileUsed();
+				File[] objaReturn = JarEasyZZZ.peekResourceFile(objFileJar, sPath, sDirExtractTo);
 				if(objaReturn==null) break main;
 				
 				objReturn = objaReturn[0];
@@ -225,8 +251,8 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 	public static File searchDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
-			TODOGOON // mache auch in den JAREasy-Klassen die Konvention: 
-			//find => nix erzeugen
+			//TODOGOON // mache auch in den JAREasy-Klassen die Konvention: 
+			//peek => nix erzeugen
 			//search => im Temp erzeugen
 			if(objFileAsJar==null)break main;			
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				

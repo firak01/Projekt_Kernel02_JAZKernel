@@ -714,7 +714,23 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		return objReturn;
 	}
 
-	public static JarEntry getEntry(JarFile jar, String sPath) throws ExceptionZZZ {
+	public static JarEntry getEntryAsFile(JarFile jar, String sPath) throws ExceptionZZZ {
+		JarEntry objReturn = null;
+		main:{
+			objReturn = JarEasyUtilZZZ.getEntry_(jar, sPath, false);
+		}//end main:
+		return objReturn;
+	}
+	
+	public static JarEntry getEntryAsDirectory(JarFile jar, String sPath) throws ExceptionZZZ {
+		JarEntry objReturn = null;
+		main:{
+			objReturn = JarEasyUtilZZZ.getEntry_(jar, sPath, true);
+		}//end main:
+		return objReturn;
+	}
+	
+	private static JarEntry getEntry_(JarFile jar, String sPath, boolean bAsDirectory) throws ExceptionZZZ {
 		JarEntry objReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sPath)){
@@ -726,8 +742,13 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				throw ez;
 			}
 				
-			String sLog = null;
-			String sPathInJar = toJarFilePath(sPath); 
+			String sLog = null;			
+			String sPathInJar = null;
+			if(bAsDirectory) {
+				sPathInJar = toJarDirectoryPath(sPath);
+			}else{
+				sPathInJar = toJarFilePath(sPath); 
+			}
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for '" + sPathInJar + "'";				
 			System.out.println(sLog);
 				

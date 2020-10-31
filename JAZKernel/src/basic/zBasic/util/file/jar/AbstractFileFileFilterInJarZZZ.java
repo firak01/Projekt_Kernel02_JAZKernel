@@ -11,6 +11,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
+import basic.zBasic.util.file.zip.FilenamePartFilterNameZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
@@ -22,6 +23,7 @@ import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionUserZZZ{
 	protected FilenamePartFilterPathZipZZZ objFilterPath;
+	protected FilenamePartFilterNameZipZZZ objFilterName; //Der ganze Name
 	protected FilenamePartFilterPrefixZipZZZ objFilterPrefix;
 	protected FilenamePartFilterMiddleZipZZZ objFilterMiddle;
 	protected FilenamePartFilterSuffixZipZZZ objFilterSuffix;	
@@ -34,21 +36,21 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 	public AbstractFileFileFilterInJarZZZ() throws ExceptionZZZ {
 		this("");
 	}		
-	public AbstractFileFileFilterInJarZZZ(String sDirectoryPath) throws ExceptionZZZ {
+	public AbstractFileFileFilterInJarZZZ(String sFileName) throws ExceptionZZZ {
 		super();
-		AbstractOVPNFileFilterInJarNew_(sDirectoryPath, null);
+		AbstractOVPNFileFilterInJarNew_(sFileName, null);
 	} 
-	public AbstractFileFileFilterInJarZZZ(String sDirectoryPath, String sFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileFileFilterInJarZZZ(String sFileName, String sFlagControlIn) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControlIn;
-		AbstractOVPNFileFilterInJarNew_(sDirectoryPath, saFlagControl);
+		AbstractOVPNFileFilterInJarNew_(sFileName, saFlagControl);
 	}
-	public AbstractFileFileFilterInJarZZZ(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
+	public AbstractFileFileFilterInJarZZZ(String sFileName, String[] saFlagControlIn) throws ExceptionZZZ {
 		super();
-		AbstractOVPNFileFilterInJarNew_(sDirectoryPath, saFlagControlIn);
+		AbstractOVPNFileFilterInJarNew_(sFileName, saFlagControlIn);
 	} 
-	private void AbstractOVPNFileFilterInJarNew_(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
+	private void AbstractOVPNFileFilterInJarNew_(String sFileName, String[] saFlagControlIn) throws ExceptionZZZ {
 		String stemp; boolean btemp;
 		main:{
 		//setzen der übergebenen Flags	
@@ -78,7 +80,8 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		//Z.B. für Middle-Wert steht in der accept-Methode:
 		//		this.objFilterMiddle.setCriterion(this.getMiddle());
 		//      if(this.objFilterMiddle.accept(ze)==false) break main;
-		objFilterPath = new FilenamePartFilterPathZipZZZ(sDirectoryPath);
+		objFilterPath = new FilenamePartFilterPathZipZZZ();
+		objFilterName = new FilenamePartFilterNameZipZZZ(sFileName); //Der ganze Dateiname
 		objFilterPrefix = new FilenamePartFilterPrefixZipZZZ();
 		objFilterMiddle = new FilenamePartFilterMiddleZipZZZ();
 		objFilterSuffix = new FilenamePartFilterSuffixZipZZZ();
@@ -98,6 +101,11 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 			if(!StringZZZ.isEmpty(this.getDirectoryPath())){
 				this.objFilterPath.setCriterion(this.getDirectoryPath());
 				if(this.objFilterPath.accept(ze)==false) break main;
+			}
+			
+			if(!StringZZZ.isEmpty(this.getName())){
+				this.objFilterName.setCriterion(this.getName());
+				if(this.objFilterName.accept(ze)==false) break main;
 			}
 			
 			//Falls der OvpnContext nicht passt
@@ -127,6 +135,13 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 	}
 	public FilenamePartFilterPathZipZZZ getDirectoryPartFilter() {
 		return this.objFilterPath;
+	}
+	
+	public void setNamePartFilter(FilenamePartFilterNameZipZZZ objNameFilterZip) {
+		this.objFilterName = objNameFilterZip;
+	}
+	public FilenamePartFilterNameZipZZZ getNamePartFilter() {
+		return this.objFilterName;
 	}
 	
 	public void setPrefixPartFilter(FilenamePartFilterPrefixZipZZZ objPrefixFilterZip) {
@@ -164,6 +179,13 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		}
 		protected String getDirectoryPath() {
 			return this.getDirectoryPartFilter().getDirectoryPath();
+		}
+		
+		protected void setName(String sName) {
+			this.getNamePartFilter().setName(sName);
+		}
+		protected String getName() {
+			return this.getNamePartFilter().getName();
 		}
 		
 		protected void setPrefix(String sPrefix) {

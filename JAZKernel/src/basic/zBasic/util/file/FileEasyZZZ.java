@@ -581,7 +581,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//Suche nach dem Verzeichnis in der gleichen JAR DAtei:
 			//ABER: Verzeichnisse können nur zurückgegeben  werden, wenn Sie als Kopie irgendwo erstellt werden. 
 			//TODOGOON 20200805;
-			objReturn = JarEasyInCurrentJarZZZ.searchResourceToTemp(sDirectory, "ZZZ");
+			objReturn = JarEasyInCurrentJarZZZ.searchResource(sDirectory, "ZZZ");
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
