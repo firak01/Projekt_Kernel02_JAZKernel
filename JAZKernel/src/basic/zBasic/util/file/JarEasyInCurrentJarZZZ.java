@@ -136,10 +136,10 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		return objReturn;
 	}
 	
-	public static File[] peekFilesInDirectory(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File[] peekFilesOfDirectory(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File[] objaReturn = null;
 		main:{
-			objaReturn = JarEasyInCurrentJarZZZ.searchResources_(sPath, sTargetDirectoryPathRootIn, true, true, false);			
+			objaReturn = JarEasyInCurrentJarZZZ.searchResources_(sPath, sTargetDirectoryPathRootIn, false, true, false);			
 		}//end main:
 		return objaReturn;
 	}
@@ -202,8 +202,8 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				    
 				   	if(bSave) {
 				   		objaReturn = JarEasyZZZ.extractDirectoryToTemps(jar, entry, sTargetDirPath, bWithFiles);
-				   	}else {
-				   		objaReturn = JarEasyZZZ.peekResourceDirectory(jar, entry,sTargetDirPath, bWithFiles);
+				   	}else {				   		
+				   		objaReturn = JarEasyZZZ.peekResourceDirectory(jar, entry,sTargetDirPath, bWithFiles);				   		
 				   	}
 				   	
 			    	if(objaReturn!=null) {
@@ -218,7 +218,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 					    	System.out.println(sLog);
 				    	}				    		
 		    		}else {
-		    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY NOT CREATED '" + sTargetDirPath + "'";
+		    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY NOT CREATED '" + sTargetDirPath + "' (NULL CASE)";
 				    	System.out.println(sLog);
 		    		}
 		    	
@@ -245,7 +245,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 							    	System.out.println(sLog);
 						    	}						    							    	
 					    	}else {
-					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT NOT PERSISTED AS: '" + objReturn.getAbsolutePath() +"'";
+					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT NOT PERSISTED AS: '" + objReturn.getAbsolutePath() +"' (NULL CASE)";
 						    	System.out.println(sLog);
 					    	}
 					    	objaReturn = FileArrayEasyZZZ.add(objaReturn, objReturn);

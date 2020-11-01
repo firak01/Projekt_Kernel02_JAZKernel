@@ -9,7 +9,7 @@ import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
@@ -18,13 +18,13 @@ import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
-	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;			
+	protected IFileDirectoryFilterZipZZZ objPartFilterDirectory;			
 	protected String sDirectoryPath="";
 		
 	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
@@ -109,13 +109,13 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 		}
 		
 		@Override
-		public void setDirectoryPartFilter(IFileDirectoryPartFilterZipZZZ objDirectoryFilterZip) {
+		public void setDirectoryPartFilter(IFileDirectoryFilterZipZZZ objDirectoryFilterZip) {
 			this.objPartFilterDirectory = objDirectoryFilterZip;
 		}
 		@Override
-		public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ {
+		public IFileDirectoryFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ {
 			if(this.objPartFilterDirectory==null) {
-				this.objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ(this.getDirectoryPath());
+				this.objPartFilterDirectory = new FileDirectoryFilterZipZZZ(this.getDirectoryPath());
 			}
 			return this.objPartFilterDirectory;
 		}

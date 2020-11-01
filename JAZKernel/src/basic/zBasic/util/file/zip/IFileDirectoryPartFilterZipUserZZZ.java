@@ -5,6 +5,6 @@ import java.io.FilenameFilter;
 import basic.zBasic.ExceptionZZZ;
 
 public interface IFileDirectoryPartFilterZipUserZZZ {
-	public void setDirectoryPartFilter(IFileDirectoryPartFilterZipZZZ objDirectoryFilterZip);
-	public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ;
+	public void setDirectoryPartFilter(IFileDirectoryFilterZipZZZ objDirectoryFilterZip);
+	public IFileDirectoryFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ;
 }

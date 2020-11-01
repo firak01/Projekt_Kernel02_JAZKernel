@@ -8,13 +8,13 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 
-public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
+public class FileDirectoryFilterZipZZZ extends ObjectZZZ implements IFileDirectoryFilterZipZZZ{
 	private String sDirectoryPath;
 	
-	public FileDirectoryPartFilterZipZZZ() {
+	public FileDirectoryFilterZipZZZ() {
 		super();
 	}
-	public FileDirectoryPartFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
+	public FileDirectoryFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
 		super();		
 		this.setDirectoryPath(sDirectoryPath);
 	}

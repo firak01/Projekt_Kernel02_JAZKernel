@@ -162,7 +162,48 @@ public class ResourceEasyZZZTest extends TestCase{
 		    assertNotNull(objFile);
 		    if(objFile.exists()) {
 				fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Datei als Dummy * '" + objFile.getAbsolutePath() + "'";
+			    System.out.println(sLog);
 			}
+		    		    		    			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
+	
+	public void testPeekFilesOfDirectoryInJar(){
+		try{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+			File objFileCreated;
+			String sPath = "template";
+			String sTargetDirectoryPathRoot = "PEEK_RESOURCE_FILES_DUMMY";
+			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			if(JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}
+			
+			File[] objaFile = ResourceEasyZZZ.peekFilesOfDirectoryInJar(objFileJarAsSource, sPath, sDirToExtractTo);
+		    assertNotNull(objaFile);
+		    for(File objFile : objaFile) {
+			    if(objFile.exists()) {
+					fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": FileDummy * '" + objFile.getAbsolutePath() + "'";
+				    System.out.println(sLog);
+				}
+		    }
 		    		    		    			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());

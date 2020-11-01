@@ -15,7 +15,7 @@ import basic.zBasic.util.file.zip.FilenamePartFilterNameZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;

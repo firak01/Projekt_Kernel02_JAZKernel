@@ -26,7 +26,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.JarInfo;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEasyZZZ;
@@ -145,7 +145,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 //			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
 			//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html			
 			String archiveName = objFileJar.getAbsolutePath();
-			IFileDirectoryPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();
+			IFileDirectoryFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();
 			JarInfo objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
 			
 			//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
