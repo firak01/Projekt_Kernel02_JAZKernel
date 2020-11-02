@@ -10,6 +10,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryWithContentFilterZipZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
@@ -18,13 +19,15 @@ import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryWithContentFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
-	protected IFileDirectoryFilterZipZZZ objPartFilterDirectory;			
+	protected IFileDirectoryFilterZipZZZ objPartFilterDirectory;	
+	protected IFileDirectoryWithContentFilterZipZZZ objPartFilterDirectoryWithContent;
 	protected String sDirectoryPath="";
 		
 	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
@@ -84,14 +87,25 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			try {
 				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
 					this.objPartFilterDirectory.setCriterion(this.getDirectoryPath());
-					if(this.objPartFilterDirectory.accept(ze)==false) break main;
+					if(this.objPartFilterDirectory.accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+						
+					
+					this.objPartFilterDirectoryWithContent.setCriterion(this.getDirectoryPath());
+					if(this.objPartFilterDirectory.accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+					
 				}
+				
+				
 			} catch (ExceptionZZZ e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-														
-			bReturn = true;
 		}//END main:
 		return bReturn;		
 	}
@@ -119,4 +133,19 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			}
 			return this.objPartFilterDirectory;
 		}
+		
+		
+		@Override
+		public void setDirectoryPartFilterWithContent(IFileDirectoryWithContentFilterZipZZZ objDirectoryFilterZip) {
+			this.objPartFilterDirectoryWithContent = objDirectoryFilterZip;
+		}
+
+		@Override
+		public IFileDirectoryWithContentFilterZipZZZ getDirectoryPartFilterWithConent() throws ExceptionZZZ {
+			if(this.objPartFilterDirectoryWithContent==null) {
+				this.objPartFilterDirectoryWithContent = new FileDirectoryWithContentFilterZipZZZ(this.getDirectoryPath());
+			}
+			return this.objPartFilterDirectoryWithContent;
+		}
+		
 }//END class

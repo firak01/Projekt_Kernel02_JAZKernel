@@ -145,125 +145,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 	}
 	
 	
-	/** Private Methode, um Redundanz zu vermeiden
-	 * @param sPath
-	 * @param sTargetDirectoryPathRootIn
-	 * @param bSave
-	 * @return
-	 * @author Fritz Lindhauer, 28.10.2020, 10:48:25
-	 * @throws ExceptionZZZ 
-	 */
-	private static File[] searchResources_(String sPath, String sTargetDirectoryPathRootIn, boolean bAsDirectory, boolean bWithFiles, boolean bSave) throws ExceptionZZZ {
-		File[] objaReturn = null;
-		main:{
-			try {
-			if(StringZZZ.isEmpty(sPath)){
-				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			String sTargetDirectoryPathRoot=null;
-			if(StringZZZ.isEmpty(sTargetDirectoryPathRootIn)) {
-				sTargetDirectoryPathRoot =  "ZZZ";
-			}else {
-				sTargetDirectoryPathRoot = sTargetDirectoryPathRootIn;				
-			}
-
-			String sLog = null;
-			JarFile jar = JarEasyUtilZZZ.getJarFileUsed();
-			if(jar==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
-			    System.out.println(sLog);
-			    break main;
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND: '" + jar.getName() + "'";
-			    System.out.println(sLog);
-			}
-			
-			JarEntry entry = null;
-			if(bAsDirectory) {
-				entry = JarEasyUtilZZZ.getEntryAsDirectory(jar, sPath);
-			} else {
-				entry = JarEasyUtilZZZ.getEntryAsFile(jar, sPath);
-			}
-			if(entry==null){
-			  	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR PATH: '" + sPath +"'";
-			   	System.out.println(sLog);			    	
-			}else{					    	
-			   	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND FOR PATH: '" + sPath +"'";
-			   	System.out.println(sLog);
-				    	
-			   	String sTargetDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirectoryPathRoot);
-			   	
-			    //Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
-			    if(entry.isDirectory()) { //DATEIEN NICHT SOFORT EXTRAHIEREN!!!  
-
-			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
-				   	System.out.println(sLog);
-				    
-				   	if(bSave) {
-				   		objaReturn = JarEasyZZZ.extractDirectoryToTemps(jar, entry, sTargetDirPath, bWithFiles);
-				   	}else {				   		
-				   		objaReturn = JarEasyZZZ.peekResourceDirectory(jar, entry,sTargetDirPath, bWithFiles);				   		
-				   	}
-				   	
-			    	if(objaReturn!=null) {
-			    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY - FILE OBJECTS FROM JARENTRY CREATED: '" + entry.getName() +"'";
-				    	System.out.println(sLog);
-				    	
-				    	if(objaReturn[0].exists()) {
-				    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK OBJECT EXISTS AS: '" + objaReturn[0].getAbsolutePath() +"'";
-					    	System.out.println(sLog);
-				    	}else {
-				    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK OBJECT NOT(!) EXISTS AS: '" + objaReturn[0].getAbsolutePath() +"'";
-					    	System.out.println(sLog);
-				    	}				    		
-		    		}else {
-		    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY NOT CREATED '" + sTargetDirPath + "' (NULL CASE)";
-				    	System.out.println(sLog);
-		    		}
-		    	
-			    }else {
-			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS NOT A DIRECTORY: '" + entry.getName() +"'";
-				   	System.out.println(sLog);
-
-				   	File objReturnTrunk = JarEasyZZZ.extractFileFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath);
-			    	if(objReturnTrunk!=null) {
-			    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'->'"+objReturnTrunk.getAbsolutePath()+"'";
-				    	System.out.println(sLog);
-
-				    	if(bSave) {
-					    	File objReturn = JarEasyZZZ.saveTrunkToFile(jar, entry, objReturnTrunk);
-					    	if(objReturn!=null) {
-					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT PERSISTED AS: '" + objReturn.getAbsolutePath() +"'";
-						    	System.out.println(sLog);
-								    	
-						    	if(objReturn.exists()) {
-						    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT EXISTS AS: '" + objReturn.getAbsolutePath() +"'";
-							    	System.out.println(sLog);
-						    	}else {
-						    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT NOT(!) EXISTS AS: '" + objReturn.getAbsolutePath() +"'";
-							    	System.out.println(sLog);
-						    	}						    							    	
-					    	}else {
-					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT NOT PERSISTED AS: '" + objReturn.getAbsolutePath() +"' (NULL CASE)";
-						    	System.out.println(sLog);
-					    	}
-					    	objaReturn = FileArrayEasyZZZ.add(objaReturn, objReturn);
-				    	}else {
-				    		objaReturn = FileArrayEasyZZZ.add(objaReturn, objReturnTrunk);
-				    	}
-				    					    	
-			    	}
-			    }
-			}
-				jar.close();
-			} catch (IOException e1) {
-				ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}			
-		}// end main:
-		return objaReturn;
-	}
+	
 	
 	
 	/** Man sucht hiermit die Datei, diese wird in ein  existieren.
@@ -499,6 +381,129 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			}//end main:
 			return objaReturn;
 		}
+	
+	
+	
+	/** Private Methode, um Redundanz zu vermeiden
+	 * @param sPath
+	 * @param sTargetDirectoryPathRootIn
+	 * @param bSave
+	 * @return
+	 * @author Fritz Lindhauer, 28.10.2020, 10:48:25
+	 * @throws ExceptionZZZ 
+	 */
+	private static File[] searchResources_(String sPath, String sTargetDirectoryPathRootIn, boolean bAsDirectory, boolean bWithFiles, boolean bSave) throws ExceptionZZZ {
+		File[] objaReturn = null;
+		main:{
+			try {
+			if(StringZZZ.isEmpty(sPath)){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			String sTargetDirectoryPathRoot=null;
+			if(StringZZZ.isEmpty(sTargetDirectoryPathRootIn)) {
+				sTargetDirectoryPathRoot =  "ZZZ";
+			}else {
+				sTargetDirectoryPathRoot = sTargetDirectoryPathRootIn;				
+			}
+
+			String sLog = null;
+			JarFile jar = JarEasyUtilZZZ.getJarFileUsed();
+			if(jar==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
+			    System.out.println(sLog);
+			    break main;
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND: '" + jar.getName() + "'";
+			    System.out.println(sLog);
+			}
+			
+			JarEntry entry = null;
+			if(bAsDirectory) {
+				entry = JarEasyUtilZZZ.getEntryAsDirectory(jar, sPath);
+			} else {
+				entry = JarEasyUtilZZZ.getEntryAsFile(jar, sPath);
+			}
+			if(entry==null){
+			  	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR PATH: '" + sPath +"'";
+			   	System.out.println(sLog);			    	
+			}else{					    	
+			   	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND FOR PATH: '" + sPath +"'";
+			   	System.out.println(sLog);
+				    	
+			   	String sTargetDirPath = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirectoryPathRoot);
+			   	
+			    //Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
+			    if(entry.isDirectory()) { //DATEIEN NICHT SOFORT EXTRAHIEREN!!!  
+
+			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
+				   	System.out.println(sLog);
+				    
+				   	if(bSave) {
+				   		objaReturn = JarEasyZZZ.extractDirectoryToTemps(jar, entry, sTargetDirPath, bWithFiles);
+				   	}else {				   		
+				   		objaReturn = JarEasyZZZ.peekResourceDirectory(jar, entry,sTargetDirPath, bWithFiles);				   		
+				   	}
+				   	
+			    	if(objaReturn!=null) {
+			    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY - FILE OBJECTS FROM JARENTRY CREATED: '" + entry.getName() +"'";
+				    	System.out.println(sLog);
+				    	
+				    	if(objaReturn[0].exists()) {
+				    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK OBJECT EXISTS AS: '" + objaReturn[0].getAbsolutePath() +"'";
+					    	System.out.println(sLog);
+				    	}else {
+				    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK OBJECT NOT(!) EXISTS AS: '" + objaReturn[0].getAbsolutePath() +"'";
+					    	System.out.println(sLog);
+				    	}				    		
+		    		}else {
+		    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY NOT CREATED '" + sTargetDirPath + "' (NULL CASE)";
+				    	System.out.println(sLog);
+		    		}
+		    	
+			    }else {
+			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS NOT A DIRECTORY: '" + entry.getName() +"'";
+				   	System.out.println(sLog);
+
+				   	File objReturnTrunk = JarEasyZZZ.extractFileFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath);
+			    	if(objReturnTrunk!=null) {
+			    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'->'"+objReturnTrunk.getAbsolutePath()+"'";
+				    	System.out.println(sLog);
+
+				    	if(bSave) {
+					    	File objReturn = JarEasyZZZ.saveTrunkToFile(jar, entry, objReturnTrunk);
+					    	if(objReturn!=null) {
+					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT PERSISTED AS: '" + objReturn.getAbsolutePath() +"'";
+						    	System.out.println(sLog);
+								    	
+						    	if(objReturn.exists()) {
+						    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT EXISTS AS: '" + objReturn.getAbsolutePath() +"'";
+							    	System.out.println(sLog);
+						    	}else {
+						    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT NOT(!) EXISTS AS: '" + objReturn.getAbsolutePath() +"'";
+							    	System.out.println(sLog);
+						    	}						    							    	
+					    	}else {
+					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT NOT PERSISTED AS: '" + objReturn.getAbsolutePath() +"' (NULL CASE)";
+						    	System.out.println(sLog);
+					    	}
+					    	objaReturn = FileArrayEasyZZZ.add(objaReturn, objReturn);
+				    	}else {
+				    		objaReturn = FileArrayEasyZZZ.add(objaReturn, objReturnTrunk);
+				    	}
+				    					    	
+			    	}
+			    }
+			}
+				jar.close();
+			} catch (IOException e1) {
+				ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+		}// end main:
+		return objaReturn;
+	}
+	
 
 	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
 	 *   Merke: Static Klassen müssen diese Methode selbst implementieren. Das ist dann das Beispiel.

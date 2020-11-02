@@ -25,6 +25,10 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextParserZZZ;
+import basic.zBasic.util.file.jar.FileDirectoryFilterInJarZZZ;
+import basic.zBasic.util.file.jar.FileFileFilterInJarZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
+import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
 public class JarEasyUtilZZZTest extends TestCase{
@@ -37,7 +41,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			String sLog;
 			try {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": ############################################### SETUP .";
-				 System.out.println(sLog);
+				System.out.println(sLog);
 			} catch (ExceptionZZZ e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -171,7 +175,6 @@ public class JarEasyUtilZZZTest extends TestCase{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 	    System.out.println(sLog);
 		
-		objFileJarAsSource = null;
 		if(JarEasyUtilZZZ.isInJarStatic()) {
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": ISinJarStatic.";
 		    System.out.println(sLog);			
@@ -188,35 +191,34 @@ public class JarEasyUtilZZZTest extends TestCase{
 		} 		
 	}
 	
-//	public void testIsInSameJar() {
-//		try {
-//			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
-//		    System.out.println(sLog);
-//		    
-//		    assertNotNull(objFileJarAsSource);
-//		    if(ResourceEasyZZZ.isInJarStatic()) {
-//		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
-//			    System.out.println(sLog);
-//			    
-//		    	File objFileJar = JarEasyUtilZZZ.getCodeLocationCurrent();
-//		    	assertNotNull(objFileJar);
-//		    	assertEquals(objFileJar, objFileJarAsSource);
-//		    	
-//		    	boolean bErg = ResourceEasyZZZ.isInSameJarStatic(objFileJarAsSource);
-//		    	assertTrue(bErg);
-//		    }else {
-//		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
-//			    System.out.println(sLog);
-//			    
-//			    File objFileJar = JarEasyUtilZZZ.getCodeLocationCurrent();
-//			    assertNotNull(objFileJar);
-//			    assertTrue(objFileJar.isDirectory());
-//		    }
-//			
-//		}catch(ExceptionZZZ ez){
-//			fail("An exception happend testing: " + ez.getDetailAllLast());
-//		}
-//	}
+	public void testIsInSameJar() {
+		try {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+		    if(ResourceEasyZZZ.isInJarStatic()) {
+		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+			    System.out.println(sLog);
+			    
+		    	File objFileJar = JarEasyUtilZZZ.getCodeLocationUsed();
+		    	assertNotNull(objFileJar);
+		    	assertEquals(objFileJar, objFileJarAsSource);
+		    	
+		    	boolean bErg = ResourceEasyZZZ.isInSameJarStatic(objFileJarAsSource);
+		    	assertTrue(bErg);
+		    }else {
+		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
+			    System.out.println(sLog);
+			    
+			    File objFileJar = JarEasyUtilZZZ.getCodeLocationUsed();
+			    assertNotNull(objFileJar);
+			    assertTrue(objFileJar.isDirectory());
+		    }
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
 		
 	
 //	public void testFindDirectoryInJar(){
@@ -392,6 +394,93 @@ public class JarEasyUtilZZZTest extends TestCase{
 //	}
 
 	
+	public void testFindFileInJar() {
+		try{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+		    if(JarEasyUtilZZZ.isInJarStatic()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
+			    System.out.println(sLog);								
+			}	
+		    
+		    JarFile objFileAsJar = JarEasyUtilZZZ.getJarFileUsed();		    
+		    assertNotNull(objFileAsJar);
+		    	
+		    String sTargetDirectoryPathRoot = "FIND_RESOURCE_FILE";
+		    String sPath = "bat/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
+		
+			//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
+			IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sPath);
+			File[] objaReturn = JarEasyUtilZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPathRoot);					
+			assertNotNull(objaReturn);
+			assertTrue("Sollte nur 1 Element haben", objaReturn.length==1);
+			
+			File objFile = objaReturn[0];
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objFile.getAbsolutePath() + "'";
+			System.out.println(sLog);	
+			assertTrue("Dies sollte auf der Platte existieren", objFile.exists());
+			assertTrue("Das sollte eine Datei sein: " + objFile.getAbsolutePath(), objFile.isFile());
+			
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}	
+	}
 	
+	public void testFindDirectoryInJar() {
+		try{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+		    if(JarEasyUtilZZZ.isInJarStatic()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
+			    System.out.println(sLog);								
+			}	
+		    
+		    JarFile objFileAsJar = JarEasyUtilZZZ.getJarFileUsed();		    
+		    assertNotNull(objFileAsJar);
+		    
+			//A) Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
+		    String sTargetDirectoryPathRoot = "FIND_RESOURCE_DIRECTORY_EMPTY";
+		    String sPath = "bat";
+			IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
+			File[] objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, false);
+			assertNotNull(objaReturn);
+			for(File objDir : objaReturn) {
+				assertNotNull(objDir);	
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Directory * '" + objDir.getAbsolutePath() + "'";
+				System.out.println(sLog);									
+				assertTrue("Das sollte ein Verzeichnis sein: " + objDir.getAbsolutePath(), objDir.isDirectory());
+			}
+			
+			//B) Das Verzeichnis mit allen darin enthaltenen Dateien erstellen
+			sTargetDirectoryPathRoot = "FIND_RESOURCE_DIRECTORY";
+		    sPath = "bat";
+			objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
+			objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, true);
+			assertNotNull(objaReturn);
+			assertTrue("Es sollten mehrere Dateien enthalten sein in dem Verzeichnis '" + sPath + "'", objaReturn.length>=2);
+			for(File objFile : objaReturn) {
+				assertNotNull(objFile);
+				assertTrue("Das File-objekt sollte auf der Platte existieren: " + objFile.getAbsolutePath(), objFile.exists());
+				if(objFile.isDirectory()){
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Directory * '" + objFile.getAbsolutePath() + "'";
+					System.out.println(sLog);
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objFile.getAbsolutePath() + "'";
+					System.out.println(sLog);
+				}				
+			}
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}	
+	}
 	
 }//END Class

@@ -26,6 +26,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.JarInfo;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryWithContentFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
@@ -81,11 +82,25 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		}//End main		 	
 		return objaReturn;
 	}
+	
+	public static File[] findDirectoryInJar(JarFile objJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ{
+		File[] objaReturn = null;
+		main:{		
+			if(objJar==null) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile-Object missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}				
+			File objFileJar = JarEasyUtilZZZ.toFile(objJar);				
+			objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);					
+		}//End main		 	
+		return objaReturn;
+	}
 		
 	public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ{
 		File[] objaReturn = null;
 		main:{	
 			
+			//Wenn im Ergebnis Dateien sein sollen, dann einen anderen FileFilter verwenden			
 			HashMap<ZipEntry,File> hmTrunk = JarEasyUtilZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);
 			
 			JarFile jf = JarEasyUtilZZZ.toJarFile(objFileJar);
@@ -145,8 +160,14 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 //			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
 			//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html			
 			String archiveName = objFileJar.getAbsolutePath();
-			IFileDirectoryFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();
-			JarInfo objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
+			JarInfo objJarInfo = null;
+			if(bWithFiles) {
+				IFileDirectoryWithContentFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilterWithConent();		
+				objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
+			}else {
+				IFileDirectoryFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();			
+				objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
+			}
 			
 			//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 			Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();																		
@@ -159,9 +180,9 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 					String sNameTemp = JarEasyUtilZZZ.toFilePath(zeTemp.getName());
 					
 					//Nun aus dem ZipEntry ein File Objekt machen 
-					//https://www.rgagnon.com/javadetails/java-0429.html				
-					File objFileTemp = new File(sPathDirTemp, sNameTemp);
-					
+					//https://www.rgagnon.com/javadetails/java-0429.html	
+					File objFileTemp = objFileTemp = new File(sPathDirTemp, sNameTemp);
+										
 					//Das Ergebnis in die Trunk - HashMap packen
 					hmReturn.put(zeTemp, objFileTemp);
 				}
@@ -243,6 +264,18 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 	return hmReturn;
 	}
 	
+	public static File[] findFileInJar(JarFile objJar, IFileFilePartFilterZipUserZZZ objFilterFileInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
+		File[] objaReturn = null;
+		main:{		
+			if(objJar==null) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile-Object missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}				
+			File objFileJar = JarEasyUtilZZZ.toFile(objJar);				
+			objaReturn = JarEasyUtilZZZ.findFileInJar(objFileJar, objFilterFileInJar, sApplicationKeyAsSubDirectoryTempIn);					
+		}//End main		 	
+		return objaReturn;
+	}
 	
 	public static File[] findFileInJar(File objFileJar, IFileFilePartFilterZipUserZZZ objFilterFileInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
 		File[] objaReturn = null;
@@ -270,12 +303,27 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			}//End check
 												
 			//Falls noch nicht vorhanden: Verzeichnis neu erstellen. Falls vorhanden, leer machen.
+			//TODOGOON
+		
+			//SUCHE IN JAR FILE		
+			String archiveName = objFileJar.getAbsolutePath();		
 			String sDirPathInJar = objFilterFileInJar.getDirectoryPartFilter().getDirectoryPath();
 			
-			String archiveName = objFileJar.getAbsolutePath();
+			//A) VERZEICHNIS-FILTER
 			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
-			JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
-			objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);					
+			if(objPartFilter.getCriterion()!=null) {
+				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
+				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
+				break main;
+			}
+			
+			//B) Kompletter Dateinamensfilter (mit Verzeichnis)
+			objPartFilter = objFilterFileInJar.getNamePartFilter();
+			if(objPartFilter.getCriterion()!=null) {
+				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
+				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
+				break main;
+			}
 		}//End main		 	
 		return objaReturn;
 	}

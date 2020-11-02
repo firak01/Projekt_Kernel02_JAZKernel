@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -46,8 +47,12 @@ public class ZipEasyZZZ implements IConstantZZZ {
 				
 				//!!! Bereits existierende Datei ggfs. löschen, Merke: Das ist aber immer noch nicht das Verzeichnis und die Datei, mit der in der Applikation gearbeitet wird.
 				FileEasyZZZ.removeFile(sPath);
-										
-				Files.copy(is, Paths.get(sPath));
+				
+				//!!! Notwendige Unterverzeichnisse wieder erstellen
+				FileEasyZZZ.createDirectoryForFile(sPath);
+						
+				Path target = Paths.get(sPath);
+				Files.copy(is, target);
 				objReturn = new File(sPath);
 			} catch (IOException e) {
 				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + e.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
