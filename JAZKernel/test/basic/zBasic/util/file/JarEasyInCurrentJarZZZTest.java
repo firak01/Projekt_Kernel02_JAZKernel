@@ -42,7 +42,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				objFileJarAsSource = JarEasyUtilZZZ.getCodeLocationJar();
 			}else {				
 				File fileDir = JarEasyUtilZZZ.getCodeLocationUsed();								
-				String sJarFile = JarEasyTestConstantsZZZ.sJAR_FILENAME;				
+				String sJarFile = JarEasyTestConstantsZZZ.sJAR_FILENAME_KERNEL;				
 				String sJarFilePath = FileEasyZZZ.joinFilePathName(fileDir, sJarFile);
 				objFileJarAsSource = new File(sJarFilePath);
 				if(objFileJarAsSource.isFile()) {  // Run with JAR file		

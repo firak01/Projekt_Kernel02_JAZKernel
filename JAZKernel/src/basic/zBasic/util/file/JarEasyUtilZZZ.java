@@ -479,6 +479,47 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		}
 		return bReturn;
 	}
+	
+	public static boolean isInSameJar(Class classObject, File objFileAsJar) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(objFileAsJar==null)break main;
+			if(!JarEasyUtilZZZ.isInJar(classObject)) {
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": Not running from jar file.";
+			    System.out.println(sLog);
+				break main;			
+			}
+			if(!FileEasyZZZ.isJar(objFileAsJar)){
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile: '" + objFileAsJar.getAbsolutePath() + "'", iERROR_PARAMETER_VALUE, ResourceEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			 File objFileJarCodeLocation = JarEasyUtilZZZ.getCodeLocationJar();
+			 if(objFileJarCodeLocation==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Unable to get CodeLocation for running jar", iERROR_RUNTIME, ResourceEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			 }
+			 
+			 String sLog = ReflectCodeZZZ.getPositionCurrent()+": A) File from JarEasyUtilZZZ.getCodeLocationUsed() = '" + objFileJarCodeLocation.getAbsolutePath() + "'";
+			 System.out.println(sLog);
+
+			  sLog = ReflectCodeZZZ.getPositionCurrent()+": B) File provided as argument, to be tested = '" + objFileAsJar.getAbsolutePath() + "'";
+			  System.out.println(sLog);
+			  
+			 bReturn = objFileJarCodeLocation.equals(objFileAsJar);
+		}//end main;
+		return bReturn;
+	}
+	
+	public static boolean isInSameJarStatic(File objFileAsJar) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(objFileAsJar==null)break main;
+			
+			bReturn = isInSameJar(JarEasyUtilZZZ.class, objFileAsJar);			
+		}//end main;
+		return bReturn;
+	}
 
 	public static File getCodeLocationJar() throws ExceptionZZZ{
 		File objReturn=null;
@@ -492,16 +533,25 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			if(url==null)break main;
 			
 			//Step 2: URL to File	
-//			String sLog = ReflectCodeZZZ.getPositionCurrent()+": C1) File from url '"+url.toString()+"'";
-//			System.out.println(sLog);
-			objReturn = JarEasyHelperZZZ.urlToFile(url);
-//			if(objReturn==null) {
-//				sLog = ReflectCodeZZZ.getPositionCurrent()+": C2) File is NULL";
-//				System.out.println(sLog);
-//			}else {
-//				sLog = ReflectCodeZZZ.getPositionCurrent()+": C2) File = '" + objReturn.getAbsolutePath() +"'";
-//				System.out.println(sLog);
-//			}
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": C1) URL as location '"+url.toString()+"'";
+			System.out.println(sLog);
+			File objTemp = JarEasyHelperZZZ.urlToFile(url);
+			if(objTemp==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": C2) File is NULL";
+				System.out.println(sLog);
+				break main;
+			}
+			if(!objTemp.exists()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": C2) File does not exist '" + objTemp.getAbsolutePath() + "'";
+				System.out.println(sLog);
+				break main;
+			}
+			if(!objTemp.isFile()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": C2) Fileobject is not a file '" + objTemp.getAbsolutePath() + "'";
+				System.out.println(sLog);
+				break main;
+			}
+			objReturn = objTemp;
 		}
 		return objReturn;
 	}
@@ -716,6 +766,18 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		return objReturn;
 	}
 	
+	/**Für Tests, z.B. ob eine Resource in der gleichen Jar-Datei liegt.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 03.11.2020, 10:34:34
+	 */
+	public static File getJarFileDummyAsFile() throws ExceptionZZZ{
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DUMMY";
+		System.out.println(sLog);
+		
+		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestConstantsZZZ.sJAR_DIRECTORYPATH_DUMMY,JarEasyTestConstantsZZZ.sJAR_FILENAME_DUMMY);
+	}
+	
 	public static File getJarFileDefaultAsFile() throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
@@ -731,28 +793,18 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) NO EXECUTION DIRECTORY FOUND IS NOT A DIRECTORY, RETURNING NULL";
 				    System.out.println(sLog);
 				    break main; //Aufgeben....
-			}else if(objFileExcecutionDirectory.isDirectory()) {  // Run with Eclipse or so.					
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) EXECUTION DIRECTORY FOUND, RUNNING IN DIRECTORY: '" + objFileExcecutionDirectory.getAbsolutePath() +"'";
-					System.out.println(sLog);
-
-					//1. Suche: Im Eclipse Workspace. Das wäre ggfs. für Ressource angesagt.
-					String sFileName = JarEasyTestConstantsZZZ.sJAR_FILENAME;
-					String sFilePathTotal = FileEasyZZZ.joinFilePathName(objFileExcecutionDirectory, sFileName);
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE '" + sFilePathTotal + "'";
-					System.out.println(sLog);					
-					objReturn = new File(sFilePathTotal);
-					if(objReturn.exists())break main;
-					
-					//2. Suche in einem absoluten Verzeichnis. Das wäre der Normalfall beim Testen.
-					String sFileDirectory = JarEasyTestConstantsZZZ.sJAR_DIRECTORYPATH;					
-					sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectory, sFileName);
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE '" + sFilePathTotal + "'";
-					System.out.println(sLog);
-					objReturn = new File(sFilePathTotal);
-					if(objReturn.exists())break main;
-					
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) UNABLE TO FIND JAR FILE";
-					System.out.println(sLog);
+			}else if(objFileExcecutionDirectory.isDirectory()) {  // Run with Eclipse or so.
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) EXECUTION DIRECTORY FOUND, RUNNING IN DIRECTORY: '" + objFileExcecutionDirectory.getAbsolutePath() +"'";
+				System.out.println(sLog);
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM WORKSPACE AND FROM CONSTANTS DEFAULT";
+				System.out.println(sLog);
+				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestConstantsZZZ.sJAR_FILENAME_KERNEL);
+				if(objReturn!=null) break main;
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DEFAULT";
+				System.out.println(sLog);
+				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestConstantsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestConstantsZZZ.sJAR_FILENAME_KERNEL);
 			}else {				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DD) UNEXPECTED CASE.";
 				System.out.println(sLog);
@@ -760,6 +812,35 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			}
 		}//end main:
 		return objReturn;
+	}
+	
+	private static File getJarFileByConstants_(String sFileDirectory, String sFileName) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{				
+					//1. Suche: Im Eclipse Workspace. Das wäre ggfs. für Ressource angesagt.
+					if(StringZZZ.isEmpty(sFileName)) {
+						ExceptionZZZ ez = new ExceptionZZZ("No JarFileName provided", iERROR_PARAMETER_MISSING, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}					
+					
+					//2. Suche in einem absoluten Verzeichnis. Das wäre der Normalfall beim Testen.
+					if(StringZZZ.isEmpty(sFileDirectory)) {
+						ExceptionZZZ ez = new ExceptionZZZ("No JarFileDirectory provided", iERROR_PARAMETER_MISSING, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}				
+					String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectory, sFileName);
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE '" + sFilePathTotal + "'";
+					System.out.println(sLog);
+					File objTemp  = new File(sFilePathTotal);
+					if(objTemp.exists()) {
+						objReturn = objTemp;
+						break main;
+					}
+										
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) UNABLE TO FIND JAR FILE";
+					System.out.println(sLog);			
+		}//end main:
+		return objReturn;		
 	}
 
 	public static JarEntry getEntryAsFile(JarFile jar, String sPath) throws ExceptionZZZ {

@@ -1590,10 +1590,34 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					ExceptionZZZ ez = new ExceptionZZZ("No fileobject provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
+				if(!objFile.exists()) {
+					//Keine Exception werfen. Der Test ist halt nur fehlgeschlagen					
+					//ExceptionZZZ ez = new ExceptionZZZ("Fileobject existiert nicht: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					//throw ez;
+					
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Provided File Objekt does not exist = '" + objFile.getAbsolutePath() +"'";
+					System.out.println(sLog);
+					break main;
+				}
+				if(!objFile.isFile()) {
+					//Keine Exception werfen. Der Test ist halt nur fehlgeschlagen					
+					//ExceptionZZZ ez = new ExceptionZZZ("Fileobject ist keine Datei: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					//throw ez;
+					
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Provided File Objekt is no file = '" + objFile.getAbsolutePath() +"'";
+					System.out.println(sLog);
+					break main;
+				}
+				
+				
 								 
 				try {
 					//Merke: Wenn es kein ZipFile ist, so wird ein Fehler (IOException) geworfen. Dieses vorher prüfen und so die Exception vermeiden. 
-					if(!FileEasyZZZ.isZip(objFile)) break main;
+					if(!FileEasyZZZ.isZip(objFile)) {
+						String sLog = ReflectCodeZZZ.getPositionCurrent()+": Provided File Objekt is no zip-file-Type = '" + objFile.getAbsolutePath() +"'";
+						System.out.println(sLog);
+						break main;
+					}
 					
 					ZipFile zip = new ZipFile(objFile);
 					bReturn = zip.getEntry("META-INF/MANIFEST.MF") != null;
@@ -1621,8 +1645,14 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 						ExceptionZZZ ez = new ExceptionZZZ("No fileobject provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
-					
-		      if(objFile.isDirectory())  break main;
+					if(!objFile.exists()){
+						ExceptionZZZ ez = new ExceptionZZZ("Fileobject not exists: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					if(!objFile.isFile()) {
+						ExceptionZZZ ez = new ExceptionZZZ("Fileobject is no file: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
 		      
 		      if(!objFile.canRead()) {
 		    		ExceptionZZZ ez = new ExceptionZZZ("Cannot read file '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -2117,7 +2147,19 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 22.10.2020, 09:23:23
 	 */
 	public static File getDirectoryOfExecution() {
-		return new File("");
+		File objReturn = null;
+		main:{
+			//Das aktuelle Verzeichnis herausfinden, z.B. wenn der Code in einem Eclipse Projekt augeführt wird.
+			//Trick: .....
+			File fileTemp = new File(FileEasyZZZ.sDIRECTORY_CURRENT);
+			
+			//Allerdings hat der Pfad ggfs. ein \. am Ende. Dies entfernen
+			String sPathTotal = fileTemp.getAbsolutePath();
+			sPathTotal = StringZZZ.stripRight(sPathTotal, FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CURRENT);
+			
+			objReturn = new File(sPathTotal);
+		}
+		return objReturn;		
 	}
 	
 	public static void copyFile(File src, File dest, int bufSize,  boolean force) throws ExceptionZZZ {
