@@ -724,207 +724,10 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File extractDirectoryToTemp(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
-		File objReturn=null;
-		main:{			
-			if(objFileAsJar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(!FileEasyZZZ.isJar(objFileAsJar)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_VALUE, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-									
-			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);			
-			objReturn = JarEasyZZZ.extractDirectoryToTemp(objJar, jarEntryOfDirectory, sTargetDirectoryFilepathIn);
-			
-			}//end main:
-			return objReturn;
-	}
-	
-	/**
-	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
-			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
-	public static File[] extractDirectoryToTemps(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
-		File[] objaReturn=null;
-		main:{					    
-			objaReturn = JarEasyZZZ.extractDirectoryToTemps(objFileAsJar, jarEntryOfDirectory, sTargetDirectoryFilepathIn, true);			
-			}//end main:
-			return objaReturn;
-	}
-	
-	/**
-	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
-			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
-	public static File extractDirectoryToTemp(JarFile objJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
-		File objReturn=null;
-		main:{			
-			if(objJar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No JarFile Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-						
-			if(jarEntryOfDirectory==null){
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
-			if(!jarEntryOfDirectory.isDirectory()) {
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
-						
-			objReturn = JarEasyZZZ.extractDirectoryToTemp(objJar, jarEntryOfDirectory, sTargetDirectoryFilepathIn);
-			
-			}//end main:
-			return objReturn;
-	}
-	
-	/**
-	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
-			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
-	public static File[] extractDirectoryToTemps(JarFile objJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
-		File[] objaReturn=null;
-		main:{	
-			if(objJar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			if(jarEntryOfDirectory==null){
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
-			if(!jarEntryOfDirectory.isDirectory()) {
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
-			
-			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
-		    System.out.println(sLog);
-		    
-			objaReturn = JarEasyZZZ.extractDirectoryToTemps(objJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, bWithFiles);						
-		}//end main:
-		return objaReturn;
-	}
-	
-	/**
-	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
-			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
-	public static File[] extractDirectoryToTemps(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
-		File[] objaReturn=null;
-		main:{			
-			if(objFileAsJar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(!FileEasyZZZ.isJar(objFileAsJar)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_VALUE, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			if(jarEntryOfDirectory==null){
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
-			if(!jarEntryOfDirectory.isDirectory()) {
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
-									
-			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);	
-			
-			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
-		    System.out.println(sLog);
-		    
-			objaReturn = JarEasyZZZ.extractDirectoryToTemps(objJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, bWithFiles);
-			
-			}//end main:
-			return objaReturn;
-	}
-	
-	/**
-	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
-			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
-//	public static File[] extractDirectoryToTemps(JarFile objJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
-//		File[] objaReturn=null;
-//		main:{			
-//			if(objJar==null){
-//				ExceptionZZZ ez = new ExceptionZZZ("No JarFile Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;
-//			}
-//						
-//			if(jarEntryOfDirectory==null){
-//				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-//				throw ez;
-//			}
-//			if(!jarEntryOfDirectory.isDirectory()) {
-//				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
-//				throw ez;
-//			}
-//			
-//			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
-//			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
-//		    System.out.println(sLog);
-//		    
-//			objaReturn = JarEasyZZZ.extractDirectoryToTemps(objJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn);
-//			
-//			}//end main:
-//			return objaReturn;
-//	}
-	
-	
-	/**
-	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
-			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
-	 * 
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
 	public static File extractDirectoryToTemp(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
 		File objReturn=null;
-		main:{									
-			objReturn = JarEasyZZZ.extractDirectoryToTemp(objFileAsJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn,true);
+		main:{		
+			objReturn = JarEasyZZZ.extractDirectoryToTemp_(objFileAsJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn, true);		
 		}//end main:
 		return objReturn;
 	}
@@ -941,67 +744,265 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 */
 	public static File extractDirectoryToTemp(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
 		File objReturn=null;
-		main:{			
-			if(objFileAsJar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(!FileEasyZZZ.isJar(objFileAsJar)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);			
-			objReturn = JarEasyZZZ.extractDirectoryToTemp(objJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn,bWithFiles);
-			
-			
-			}//end main:
-			return objReturn;
-	}
-	
-	public static File extractDirectoryToTemp(JarFile objJar, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
-		File objReturn = null;		
-		main:{
-				File[] objaDir = JarEasyZZZ.extractDirectoryToTemps(objJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, bWithFiles);
-				if(objaDir==null) break main;
-			    objReturn = objaDir[0];					
+		main:{						
+			objReturn = JarEasyZZZ.extractDirectoryToTemp_(objFileAsJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn, bWithFiles);
 		}//end main:
 		return objReturn;
 	}
 	
-	public static File[] extractDirectoryToTemps(JarFile objJar, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
-		File[] objaReturn = null;
-		
+	public static File extractDirectoryToTemp(JarFile objJarAsFile, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File objReturn = null;		
 		main:{
-			if(objJar==null){
+			if(objJarAsFile==null){
 				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-
-			if(StringZZZ.isEmpty(sDirectoryFilePathInJar)){
-				//ODER: ROOT DER JAR DATEI, WIE?
-				ExceptionZZZ ez = new ExceptionZZZ("No source filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						
+			File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);
+			
+			objReturn = JarEasyZZZ.extractDirectoryToTemp_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, bWithFiles);
+		}//end main:
+		return objReturn;
+	}
+	
+	/**
+	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
+			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File extractDirectoryToTemp(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{			
+			if(jarEntryOfDirectory==null){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
-			}			
-			sDirectoryFilePathInJar = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryFilePathInJar);
-			
-			
-			String sTargetDirectoryFilepath;
-			if(sTargetDirectoryFilepathIn==null)
-				sTargetDirectoryFilepath="";  //TEMP VERZEICHNIS???
-			else {
-				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
-				sTargetDirectoryFilepath=StringZZZ.stripFileSeparators(sTargetDirectoryFilepathIn);									
+			}
+			if(!jarEntryOfDirectory.isDirectory()) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
 			}
 			
-			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
+			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
+		    System.out.println(sLog);			
+			
+			objReturn = JarEasyZZZ.extractDirectoryToTemp_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, true);
+		}//end main:
+		return objReturn;
+	}
+	
+	
+	
+	/**
+	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
+			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File extractDirectoryToTemp(JarFile objJarAsFile, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{			
+			if(objJarAsFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+						
+			if(jarEntryOfDirectory==null){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			if(!jarEntryOfDirectory.isDirectory()) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+						
+			File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);
+			
+			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
+		    System.out.println(sLog);	
+			
+			objReturn = JarEasyZZZ.extractDirectoryToTemp_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, true);
+
+		}//end main:
+		return objReturn;
+	}
+	
+	private static File extractDirectoryToTemp_(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{
+			File[] objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn, bWithFiles);
+			if(objaReturn==null) break main;
+			objReturn = objaReturn[0];	
+		}//end main:
+		return objReturn;
+	}
+	
+	/**
+	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
+			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] extractDirectoryToTemps(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{						
+			if(jarEntryOfDirectory==null){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			if(!jarEntryOfDirectory.isDirectory()) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			
+			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
+		    System.out.println(sLog);
+		    
+			objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar,sTargetDirectoryFilepathIn, true);
+											
+			}//end main:
+			return objaReturn;
+	}
+	
+	/**
+	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
+			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] extractDirectoryToTemps(JarFile objJarAsFile, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{	
+			if(objJarAsFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(jarEntryOfDirectory==null){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			if(!jarEntryOfDirectory.isDirectory()) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			
+			File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);
+			
+			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
+		    System.out.println(sLog);
+		    
+			objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar,sTargetDirectoryFilepathIn, bWithFiles);			
+		}//end main:
+		return objaReturn;
+	}
+	
+	/**
+	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
+			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] extractDirectoryToTemps(JarFile objJarAsFile, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{	
+			if(objJarAsFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(jarEntryOfDirectory==null){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			if(!jarEntryOfDirectory.isDirectory()) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+									
+			File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);
+			
+			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
+		    System.out.println(sLog);
+		    
+			objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, true);
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	/**
+	 * Merke: Wenn das nur ein Verzeichnis ist, dann würde die JAR Datei selbst zurückgegeben.
+			  In dem Fall ist es besser die Variante für die Arbeit mit dem Temp-Verzeichnis zu wählen.
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] extractDirectoryToTemps(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{								
+			if(jarEntryOfDirectory==null){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			if(!jarEntryOfDirectory.isDirectory()) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+															
+			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
+		    System.out.println(sLog);
+		    
+			objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, bWithFiles);
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	
+	
+	public static File[] extractDirectoryToTemps(JarFile objJarAsFile, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
+File[] objaReturn = null;
+		
+		main:{
 			try {
-				File[] objaDir = null;			
-				//Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
-				IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sDirectoryFilePathInJar);
-				
-				File objFileAsJar = JarEasyUtilZZZ.toFile(objJar);
-				objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryFilepath, true);			    			
+				if(objJarAsFile==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+							
+				File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);
+				objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar,sTargetDirectoryFilepathIn, true);
+			
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -1013,7 +1014,36 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	
 	public static File[] extractDirectoryToTemps(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
 		File[] objaReturn=null;
-		main:{			
+		main:{									
+			objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn, bWithFiles);
+		}//end main:
+		return objaReturn;
+	}
+	public static File[] extractDirectoryToTemps(JarFile objJarAsFile, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File[] objaReturn = null;
+		
+		main:{
+			try {
+				if(objJarAsFile==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+							
+				File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);
+				objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar,sTargetDirectoryFilepathIn, bWithFiles);
+			
+			}catch (Exception e){
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+		    }	    
+		}//end main:
+		return objaReturn;
+	}
+	
+	private static File[] extractDirectoryToTemps_(File objFileAsJar, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File[] objaReturn = null;
+		
+		main:{
 			if(objFileAsJar==null){
 				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -1023,21 +1053,6 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				throw ez;
 			}
 			
-			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);			
-			objaReturn = JarEasyZZZ.extractDirectoryToTemps(objJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn, bWithFiles);
-			
-			
-			}//end main:
-			return objaReturn;
-	}
-	public static File[] extractDirectoryToTemps(JarFile objJar, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
-		File[] objaReturn = null;
-		
-		main:{
-			if(objJar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
 
 			if(StringZZZ.isEmpty(sDirectoryFilePathInJar)){
 				//ODER: ROOT DER JAR DATEI, WIE?
@@ -1057,7 +1072,6 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			
 			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
 			try {			
-				File objFileAsJar = JarEasyUtilZZZ.toFile(objJar);
 			    if(bWithFiles) {			
 					//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 					IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sDirectoryFilePathInJar);

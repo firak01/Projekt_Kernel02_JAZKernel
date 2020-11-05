@@ -72,18 +72,8 @@ public class JarEasyZZZTest extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
-			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_DIRECTORY_ONLY";
-						
-			objDirCreated = JarEasyZZZ.extractDirectoryToTemp(objFileJarAsSource, sDirToExtract, sDirToExtractTo);
-			if(objDirCreated==null) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
-			}
-			if(!objDirCreated.exists()) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt.");
-			}
-			
-			sDirToExtractTo = "FGL_WITHOUTFILES";;			
+			//Aa) Erfolgsfall, ohne Dateien zu erzeugen										
+			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHOUTFILES";;			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo,false);
 			if(objaDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -94,8 +84,20 @@ public class JarEasyZZZTest extends TestCase{
 				}
 			}
 			
-			//Ab) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL_WITHFILES";			
+			//Ab) Erfolgsfall, mit Dateien erzeugen	
+		TODOGOON; //HIER WIRD DAS UNTERVERZEICHNIS IRGENDWIE ALS DATEI ERZEUGT...
+			
+			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES";			
+			objDirCreated = JarEasyZZZ.extractDirectoryToTemp(objFileJarAsSource, sDirToExtract, sDirToExtractTo);
+			if(objDirCreated==null) {
+				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
+			}
+			if(!objDirCreated.exists()) {
+				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt.");
+			}
+			
+			//Ac) Erfolgsfall, mit Dateien erzeugen						
+			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES02";			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, true);
 			if(objDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -108,8 +110,10 @@ public class JarEasyZZZTest extends TestCase{
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//B) Fall: Dateien exitieren bereits. D.h. alles komplett löschen in der Methode und neu anlegen.
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
 			//Ba) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_WITHOUTFILES";				
+			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHOUTFILES";				
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, false);
 			if(objDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -121,7 +125,19 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Bb) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL_WITHFILES";					
+			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES";					
+			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, true);
+			if(objDirCreated==null) {
+				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
+			}
+			for(File objFileTemp : objaDirCreated ) {
+				if(!objFileTemp.exists()) {
+					fail("Datei '" + objFileTemp.getAbsolutePath() + " im Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt.");
+				}
+			}
+			
+			//Bc) Erfolgsfall, mit Dateien erzeugen						
+			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES02";			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, true);
 			if(objDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
