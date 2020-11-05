@@ -85,7 +85,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Ab) Erfolgsfall, mit Dateien erzeugen	
-		TODOGOON; //HIER WIRD DAS UNTERVERZEICHNIS IRGENDWIE ALS DATEI ERZEUGT...
+		//TODOGOON; //HIER WIRD DAS UNTERVERZEICHNIS IRGENDWIE ALS DATEI ERZEUGT...
 			
 			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES";			
 			objDirCreated = JarEasyZZZ.extractDirectoryToTemp(objFileJarAsSource, sDirToExtract, sDirToExtractTo);
@@ -99,7 +99,7 @@ public class JarEasyZZZTest extends TestCase{
 			//Ac) Erfolgsfall, mit Dateien erzeugen						
 			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES02";			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, true);
-			if(objDirCreated==null) {
+			if(objaDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
 			}
 			for(File objFileTemp : objaDirCreated ) {

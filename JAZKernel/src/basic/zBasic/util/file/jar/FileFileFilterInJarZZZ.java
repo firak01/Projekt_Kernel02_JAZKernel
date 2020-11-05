@@ -20,16 +20,16 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	public static String sSUFFIX="";
 	public static String sENDING="";
 	
-	public FileFileFilterInJarZZZ(String sName, String[] saFlagControl) throws ExceptionZZZ {
-		super(sName, saFlagControl);	
+	public FileFileFilterInJarZZZ(String sDirectory, String sName, String[] saFlagControl) throws ExceptionZZZ {
+		super(sDirectory, sName, saFlagControl);	
 		FileFilterInJarNew_();
 	} 
-	public FileFileFilterInJarZZZ(String sName, String sFlagControl) throws ExceptionZZZ {
-		super(sName, sFlagControl);
+	public FileFileFilterInJarZZZ(String sDirectory, String sName, String sFlagControl) throws ExceptionZZZ {
+		super(sDirectory, sName, sFlagControl);
 		FileFilterInJarNew_();
 	} 
-	public FileFileFilterInJarZZZ(String sName) throws ExceptionZZZ {
-		super(sName);		
+	public FileFileFilterInJarZZZ(String sDirectory, String sName) throws ExceptionZZZ {
+		super(sDirectory, sName);		
 		FileFilterInJarNew_();
 	} 
 	public FileFileFilterInJarZZZ() throws ExceptionZZZ {

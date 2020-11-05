@@ -210,7 +210,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			
 				//1. Aus der Jar Datei nur die Datei herausfiltern.						
 				String archiveName = objJarFile.getName();								
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(entry.getName());
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, entry.getName());
 				IFilenamePartFilterZipZZZ objFilterFilePathPart = objFilterFileInJar.getNamePartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );  //Merke: Das dauert laaange
 				
@@ -313,7 +313,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				if(bWithFiles) { //Dateien im Verzeichnis
 					//1. Aus der Jar Datei nur das Verzeichnis herausfiltern.						
 					String archiveName = objJarFile.getName();								
-					IFileFilePartFilterZipUserZZZ objFilterDirectoryInJar = new FileFileFilterInJarZZZ(entry.getName());
+					IFileFilePartFilterZipUserZZZ objFilterDirectoryInJar = new FileFileFilterInJarZZZ(null, entry.getName());
 					IFilenamePartFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
 					objFilterFilePathPart.setCriterion(entry.getName());
 					JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );  //Merke: Das dauert laaange
@@ -625,7 +625,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
 				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 				String archiveName = objJarFile.getName();
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sSourceDirectoryPath);
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceDirectoryPath);
 				FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );
 				
@@ -685,7 +685,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
 				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 				String archiveName = objJarFile.getName();
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sSourceDirectoryPath);
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceDirectoryPath);
 				FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );//Das dauert laaange
 				
@@ -842,7 +842,10 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 		main:{
 			File[] objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJarIn, sTargetDirectoryFilepathIn, bWithFiles);
 			if(objaReturn==null) break main;
-			objReturn = objaReturn[0];	
+			
+			//Problem: In dem Array sind nun alle extrahierten Dateien. Aber nicht das Verzeichnis selbst.
+			//Daher parent zurückgeben
+			objReturn = objaReturn[0].getParentFile();	
 		}//end main:
 		return objReturn;
 	}
@@ -1074,7 +1077,7 @@ File[] objaReturn = null;
 			try {			
 			    if(bWithFiles) {			
 					//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
-					IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sDirectoryFilePathInJar);
+					IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sDirectoryFilePathInJar, null);
 					objaReturn = JarEasyUtilZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryFilepath);					
 				}else {
 					//Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
@@ -1116,7 +1119,7 @@ File[] objaReturn = null;
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
 				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 				String archiveName = objJarFile.getName();
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sSourceDirectoryPath);
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceDirectoryPath);
 				FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );
 				

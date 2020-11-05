@@ -738,6 +738,10 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 			bReturn = true;
 			break main;
 		}
+		if(objFile.isDirectory()){
+			bReturn = false;
+			break main;
+		}
 		
 		if(objFile.isFile()==false){
 			ExceptionZZZ ez = new ExceptionZZZ("File='" + objFile.getAbsolutePath() + "' is not a file.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
@@ -927,7 +931,10 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				throw ez;
 			}
 			File objFile =  FileEasyZZZ.searchDirectory(sDirectoryPath); //Soll auch auf einem Web Server die passende Datei finden.
-			if(objFile==null)break main;
+			if(objFile==null) {
+				bReturn = true; //Wenn nix da ist, war das Löschen trotzdem erfolgreich.
+				break main;
+			}
 			bReturn = FileEasyZZZ.removeDirectory(objFile, bEmptyDirectoryBefore,bRemoveSubDirectories);
 		}
 		return bReturn;
@@ -997,6 +1004,8 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				ExceptionZZZ ez  = new ExceptionZZZ("File Object for DirectoryPath ", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+				
+			TODOGOON; //Lösche Verzeichnis mit Unterverzeichnissen. Mache dafür einen JUnit Test!!!
 			
 			//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
 			File objFileDirectory;
@@ -1010,11 +1019,6 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				bReturn = true;
 				break main;
 			}
-			
-			
-			
-			
-			
 			
 			//Hole alle dateien und lösche diese ggfs.
 			File[] objaFile =  objFileDirectory.listFiles();

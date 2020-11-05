@@ -307,11 +307,11 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		
 			//SUCHE IN JAR FILE		
 			String archiveName = objFileJar.getAbsolutePath();		
-			String sDirPathInJar = objFilterFileInJar.getDirectoryPartFilter().getDirectoryPath();
 			
 			//A) VERZEICHNIS-FILTER
 			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
 			if(objPartFilter.getCriterion()!=null) {
+				String sDirPathInJar = objPartFilter.getCriterion();
 				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
 				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
 				break main;
@@ -320,8 +320,9 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			//B) Kompletter Dateinamensfilter (mit Verzeichnis)
 			objPartFilter = objFilterFileInJar.getNamePartFilter();
 			if(objPartFilter.getCriterion()!=null) {
+				String sFilePathTotalInJar = objPartFilter.getCriterion();
 				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
-				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
+				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sFilePathTotalInJar, sApplicationKeyAsSubDirectoryTempIn);
 				break main;
 			}
 		}//End main		 	

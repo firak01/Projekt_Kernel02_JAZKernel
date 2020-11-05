@@ -42,34 +42,10 @@ public class JarEasyUtilZZZTest extends TestCase{
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": ############################################### SETUP .";
 			System.out.println(sLog);
 
-//			File objFileJar = null;			
-//			if(JarEasyInCurrentJarZZZ.isInJarStatic()) {					
-//				objFileJar = JarEasyUtilZZZ.getCodeLocationJar();
-//				objJarAsSource = JarEasyUtilZZZ.toJarFile(objFileJar);
-//			}else {				
-//				File fileDir = JarEasyUtilZZZ.getCodeLocationUsed();									
-//				String sJarFile = JarEasyTestConstantsZZZ.sJAR_FILENAME_KERNEL;				
-//				String sJarFilePath = FileEasyZZZ.joinFilePathName(fileDir, sJarFile);
-//				objFileJar = new File(sJarFilePath);
-//				if(objFileJar.isFile()) {  // Run with JAR file		
-//					objJarAsSource = new JarFile(objFileJar);
-//					sLog = ReflectCodeZZZ.getPositionCurrent()+": JAR FILE FOUND.";
-//				    System.out.println(sLog);
-//				    break main;				    				    
-//				}
-//				
-//				
-//			}
-			
 			objJarAsSource = JarEasyUtilZZZ.getJarFileUsed();
-			
 				
 			//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test selbst. Aber nicht im Setup, dann das würde das vor jedem Test ausgeführt.			 
-			
-//		} catch (IOException e1) {
-//			ExceptionZZZ ez  = new ExceptionZZZ("Beim setUp - IOException: " + e1.getMessage(), ExceptionZZZ.iERROR_RUNTIME, JarEasyInCurrentJarZZZTest.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-//			ez.printStackTrace();
-//			fail("An exception happend testing: " + ez.getDetailAllLast());
+
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -447,7 +423,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 		    String sPath = "bat/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		
 			//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
-			IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sPath);
+			IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sPath);
 			File[] objaReturn = JarEasyUtilZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPathRoot);					
 			assertNotNull(objaReturn);
 			assertTrue("Sollte nur 1 Element haben", objaReturn.length==1);

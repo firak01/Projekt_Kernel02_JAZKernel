@@ -35,7 +35,10 @@ public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilename
 				//Ende des Dateinamens berechnen			
 				String sNameCur;
 //				try {									
-					if(sName.equals(this.getName())) bReturn = true;
+					if(sName.equals(this.getName())) {
+						bReturn = true;
+						break main;
+					}
 //				} catch (ExceptionZZZ e) {			
 //					e.printStackTrace();
 //				} 					

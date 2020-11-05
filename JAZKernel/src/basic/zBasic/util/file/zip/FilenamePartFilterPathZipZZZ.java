@@ -39,6 +39,7 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 					sDirectoryPath = FileEasyZZZ.getParent(sName,"/")+"/";//Also: In der aktuell  betrachteten JAR - Datei sind die Pfade mit "SLASH" getrennt.
 					if(StringZZZ.startsWithIgnoreCase(sDirectoryPath+"/", this.getDirectoryPath()+"/"))	{					
 						bReturn = true;//Merke: Die "/" dienen jetzt dazu den Verzeichnisnamen "zu normieren". So dass in "tester/" nicht "test/" gefunden wird.
+						break main;
 					}
 //				} catch (ExceptionZZZ e) {			
 //					e.printStackTrace();
