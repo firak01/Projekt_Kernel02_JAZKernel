@@ -815,6 +815,18 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		return objReturn;
 	}
 	
+	/**Für Tests, z.B. ob eine Resource in der gleichen Jar-Datei liegt.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 03.11.2020, 10:34:34
+	 */
+	public static File getJarFileTestAsFile() throws ExceptionZZZ{
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
+		System.out.println(sLog);
+		
+		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestConstantsZZZ.sJAR_DIRECTORYPATH_TEST,JarEasyTestConstantsZZZ.sJAR_FILENAME_TEST);
+	}
+	
 	private static File getJarFileByConstants_(String sFileDirectory, String sFileName) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{				

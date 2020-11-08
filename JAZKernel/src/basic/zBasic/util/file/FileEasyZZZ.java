@@ -1004,9 +1004,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				ExceptionZZZ ez  = new ExceptionZZZ("File Object for DirectoryPath ", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-				
-			TODOGOON; //Lösche Verzeichnis mit Unterverzeichnissen. Mache dafür einen JUnit Test!!!
-			
+							
 			//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
 			File objFileDirectory;
 			if(objFileIn.isFile()) {
@@ -1041,13 +1039,24 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 						File objFileTemp = objaFile[icount];
 						if(objFileTemp.isFile()) {
 							bReturn = objaFile[icount].delete();
+							if(!bReturn) {
+								ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object(b) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}
 						}else {
 							bReturn = FileEasyZZZ.removeDirectoryContent(objFileTemp, bEmptyDirectoryContainingMoreFiles,bRemoveSubDirectories);
-						}
-						if(!bReturn) {
-							ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object(b) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-						}
+							if(!bReturn) {
+								ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete Content for Directory (c) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}
+							if(bRemoveSubDirectories) {
+								bReturn = FileEasyZZZ.removeDirectory(objFileTemp, false);
+								if(!bReturn) {
+									ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete Directory (d) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
+									throw ez;
+								}
+							}
+						}						
 					}							
 					bReturn = true; //Merke: Das Verzeichnis selbst soll ja nicht gelöscht werden.
 				}else {
