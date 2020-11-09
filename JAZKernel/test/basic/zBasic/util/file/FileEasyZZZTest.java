@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
 public class FileEasyZZZTest extends TestCase{
@@ -57,8 +58,14 @@ public class FileEasyZZZTest extends TestCase{
 			File[] objaDirCreated;
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//TESTDATEIEN UND VERZEICHNISSE ERZEUGEN								
-			sDirToExtractTo = "FGL_TEST_REMOVE_DIRECTORY";;			
+			//TESTDATEIEN UND VERZEICHNISSE ERZEUGEN, 
+			//Merke: Verzeichnisnamen mit Zeitstempel versehen, damit ist es immer wieder neu
+			//       Das ist wichtig, da beim Extrahieren in ein bestehndes Verzeichnis versucht würde dies zu löschen
+			//       aber das Löschen soll ja erst hier getestet werden!!!
+			sDirToExtractTo = "FGL_TEST_REMOVE_DIRECTORY";
+			String sTimestamp = DateTimeZZZ.computeTimestampString();
+			sDirToExtractTo = sDirToExtractTo+sTimestamp;
+			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo,true);
 			if(objaDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -66,10 +73,22 @@ public class FileEasyZZZTest extends TestCase{
 			for(File objFileTemp : objaDirCreated ) {
 				if(!objFileTemp.exists()) {
 					fail("Verzeichnis '" + objFileTemp.getAbsolutePath() + "' wurde nicht erstellt.");
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": File: '" + objFileTemp.getAbsolutePath() + "'";
+				    System.out.println(sLog);
 				}
 			}
+			assertTrue("Es sollten mehrere Dateien/Verzeichnisse entpackt worden sein", objaDirCreated.length>=2);
 			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//LÖSCHEN DES VERZEICHNISSES: Inhalt mit Verzeichnissen
+			String sTargetDirPathTotal = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sDirToExtractTo);
+			boolean bErg = FileEasyZZZ.removeDirectoryContent(sTargetDirPathTotal, true, true);//1. true: remove Files, 2. true: remove Direcotories
 			
+			//Es bleibt nur das Ausgangsverzeichnis mit dem DateTimeStamp im Namen erhalten
+			File objDir = new File(sTargetDirPathTotal);
+			File[] objaDirRemoved = objDir.listFiles();
+			assertFalse("Es sollte kein Verzeichnis/Datei nach dem entfernen übrig sein", objaDirRemoved.length>=1);
 			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());

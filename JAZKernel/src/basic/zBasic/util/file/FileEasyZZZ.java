@@ -950,7 +950,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
 	 */
 	public static boolean removeDirectoryContent(File objFile, boolean bEmptyDirectoryContainingMoreFiles) throws ExceptionZZZ{
-		return FileEasyZZZ.removeDirectoryContent(objFile, bEmptyDirectoryContainingMoreFiles, false);
+		return FileEasyZZZ.removeDirectoryContent(objFile, bEmptyDirectoryContainingMoreFiles, true);
 	}
 	
 	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 
@@ -2326,11 +2326,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				
 				//REKURSION: Wenn Unterverzeichnisse gelöscht werden sollen. Diese hier holen.
 				if(bEmptyDirectoryBefore || bFileStart){
-					//Hole alle dateien und lösche diese ggfs.
+					//Hole alle Dateien und Verzeichniss			
 					File[] objaFile =  objFileDirectory.listFiles();
 					if(objaFile.length==0) {
 						if(bRemoveSubDirectories) {
-							bReturn = objFileDirectory.delete();
+							bReturn = objFileDirectory.delete();//Lösche das aktuelle Verzeichnis, es sollte nun leer sein.
 						}
 					}else {
 						//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
