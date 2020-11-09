@@ -942,6 +942,19 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	
 	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 
 	 *  Wird eine Datei übergeben, wird sie gelöscht, sofern sie alleine im Verzeichnis ist.
+	 *  ACHTUNG: Löscht IMMER mehrerer Dateien des Parent-Verzeichnis.
+	 * @param objFileIn
+	 * @param bEmptyDirectoryContainingMoreFile    Sicherheitsflag
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
+	 */
+	public static boolean removeDirectoryContent(File objFile) throws ExceptionZZZ{
+		return FileEasyZZZ.removeDirectoryContent(objFile, true, true);
+	}
+	
+	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 
+	 *  Wird eine Datei übergeben, wird sie gelöscht, sofern sie alleine im Verzeichnis ist.
 	 *  Löschen mehrerer Dateien des Parent-Verzeichnis nur  wenn bEmptyDirectoryContainingMoreFiles true ist.
 	 * @param objFileIn
 	 * @param bEmptyDirectoryContainingMoreFile    Sicherheitsflag
@@ -951,6 +964,19 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	 */
 	public static boolean removeDirectoryContent(File objFile, boolean bEmptyDirectoryContainingMoreFiles) throws ExceptionZZZ{
 		return FileEasyZZZ.removeDirectoryContent(objFile, bEmptyDirectoryContainingMoreFiles, true);
+	}
+	
+	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 
+	 *  Wird eine Datei übergeben, wird sie gelöscht, sofern sie alleine im Verzeichnis ist.
+	 *  ACHTUNG: Löscht immer auch mehrerer Dateien des Parent-Verzeichnis, wenn eine Datei übergeben wurde.
+	 * @param objFileIn
+	 * @param bEmptyDirectoryContainingMoreFile    Sicherheitsflag
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
+	 */
+	public static boolean removeDirectoryContent(String sDirectoryPath) throws ExceptionZZZ{
+		return FileEasyZZZ.removeDirectoryContent(sDirectoryPath, true, true);
 	}
 	
 	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 

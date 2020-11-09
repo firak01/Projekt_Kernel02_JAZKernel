@@ -351,7 +351,7 @@ public class JarEasyZZZTest extends TestCase{
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
 					    
 			//VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
-			boolean bErg = FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true,true);
+			boolean bErg = FileEasyZZZ.removeDirectoryContent(sDirToExtractTo);
 			bErg = FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			if(!bErg) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' konnte zu Testbeginn nicht geloescht werden.");
