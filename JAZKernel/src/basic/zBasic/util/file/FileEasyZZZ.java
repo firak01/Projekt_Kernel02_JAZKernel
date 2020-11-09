@@ -963,7 +963,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	 * @author Fritz Lindhauer, 17.04.2020, 09:49:51
 	 */
 	public static boolean removeDirectoryContent(String sDirectoryPath, boolean bEmptyDirectoryContainingMoreFiles) throws ExceptionZZZ{
-		return FileEasyZZZ.removeDirectoryContent(sDirectoryPath, bEmptyDirectoryContainingMoreFiles, false);
+		return FileEasyZZZ.removeDirectoryContent(sDirectoryPath, bEmptyDirectoryContainingMoreFiles, true);
 	}
 	/** Entferne nur den Inhalt eines Verzeichnisses. Das Verzeichnis selbst bleibt besthen. 
 	 *  Wird eine Datei übergeben, wird sie gelöscht, sofern sie alleine im Verzeichnis ist.
