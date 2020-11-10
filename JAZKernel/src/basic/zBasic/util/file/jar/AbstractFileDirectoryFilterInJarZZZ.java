@@ -15,6 +15,7 @@ import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
+import basic.zBasic.util.file.zip.FilenamePartFilterNameZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
@@ -73,6 +74,9 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 
 		this.setDirectoryPath(sDirectoryPath);
 		
+		objPartFilterDirectory = new FileDirectoryFilterZipZZZ(sDirectoryPath); //Das Verzeichnis
+		objPartFilterDirectoryWithContent = new FileDirectoryWithContentFilterZipZZZ(sDirectoryPath); //Der ganze Dateiname
+		
 		}//end main:		
 	}
 	
@@ -94,7 +98,7 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 						
 					
 					this.objPartFilterDirectoryWithContent.setCriterion(this.getDirectoryPath());
-					if(this.objPartFilterDirectory.accept(ze)==true) {
+					if(this.objPartFilterDirectoryWithContent.accept(ze)==true) {
 						bReturn = true;
 						break main;
 					}

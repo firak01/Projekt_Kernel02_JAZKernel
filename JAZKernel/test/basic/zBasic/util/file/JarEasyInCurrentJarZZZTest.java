@@ -230,7 +230,10 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
 			}else {											
-				//FALL AA: NUR VERZEICHNIS ERSTELLEN, keine Dateien darin			
+				//FALL AA: NUR VERZEICHNIS ERSTELLEN, keine Dateien darin	
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL AA ##########.";
+			    System.out.println(sLog);
+			    
 				sPath = "bat";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP_EMPTY";
 				File objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot, false);				
@@ -248,6 +251,8 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				}
 				
 				//Fall AB: Anders als beim Peek wird beim Suchen das Verzeichnis erstellt, MIT Inhalt.
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL AB ##########.";
+			    System.out.println(sLog);
 				sPath = "debug/zBasic";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
 				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot,true);				
@@ -272,6 +277,8 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				
 				//Fall BA: Anders als beim Peek wird beim Suchen die Datei im Verzeichnis erstellt.
 				//         Merke: Das ist schwieriger, da hier zuerst erkannt werden muss, dass es sich um eine Datei und nicht um ein Verzeichnis handelt!
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL BA ##########.";
+			    System.out.println(sLog);
 				sPath = "template/template_server_TCP_443.ovpn";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
 				objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
@@ -286,6 +293,8 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				//Fall BB: Anders als beim Peek wird beim Suchen die Datei im Verzeichnis erstellt.
 				//         Merke: Das ist schwieriger, da hier zuerst erkannt werden muss, dass es sich um eine Datei und nicht um ein Verzeichnis handelt!
 				//TODOGOON: Das sollte ein Array aller erstellten Dateien sein als Rückgabewert.
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL BB ##########.";
+			    System.out.println(sLog);
 				sPath = "custom/zKernel";
 				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP02";
 				objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);

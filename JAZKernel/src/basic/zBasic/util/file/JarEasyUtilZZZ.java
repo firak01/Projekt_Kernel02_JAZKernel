@@ -206,60 +206,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 	}catch (Exception e){
     	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 		throw ez;
-    }	    
-			
-			
-			//Wie nun vom ht nach objaReturn, also dem fertigen File-Objekt ???
-			//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.
-						
-			//NEIN, jetzt als HashMap-Trunk zurückgeben
-//			ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-//			try {
-//				ZipFile zf = null;
-//				while(itEntryName.hasNext()) {
-//					String sKey = itEntryName.next();
-//					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
-//					
-//					//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)					
-//					zf = objJarInfo.getZipFile();						
-//					InputStream is = zf.getInputStream(zeTemp);
-//					
-//					//Entferne ggf. künstlich hinzugefügte DirectorySeparatoren am Anfang/Ende.
-//					//z.B. in Jar - Dateien steht für Verzeichnisse immer ein /  am Ende.
-//					//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
-//					String sDirName = StringZZZ.stripFileSeparators(sKey);
-//					
-//					//Ggfs. in den Jar/Zip Verzeichnissen verwendete / wieder in Backslashes abändern.
-//					String sDirNameNormed = StringZZZ.replace(sDirName, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
-//					String sPath = FileEasyZZZ.joinFilePathName(sPathDirTemp, sDirNameNormed);
-//					
-//					File objFileTempInTemp = null;
-//					if(ht.get(sKey).isDirectory()) {
-//						objFileTempInTemp = new File(sPath);
-//						
-////						File objFileDir = new File(sPath);							
-////						if(objFileDir.exists()) {
-////							//!!! Bereits existierende Inhalte  löschen
-////							FileEasyZZZ.removeDirectoryContent(objFileDir,true);
-////						}else{
-////							//Nun das Verzeichnis erstellen.
-////							FileEasyZZZ.createDirectory(sPath);
-////						}
-//					}else {
-//						//Dateiene kopieren						
-////						Files.copy(is, Paths.get(sPath));
-//					}
-//					File objFileTempInTemp = new File(sPath);	
-//					objaFileTempInTemp.add(objFileTempInTemp);						
-//				}
-//				zf = objJarInfo.getZipFile();		
-//				if(zf!=null) zf.close();
-//				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-				
+    }	    			
 	}//End main		 	
 	return hmReturn;
 	}
@@ -304,13 +251,18 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 												
 			//Falls noch nicht vorhanden: Verzeichnis neu erstellen. Falls vorhanden, leer machen.
 			//TODOGOON
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (E) XXXXXXXXXXXXXX.";
+	   	System.out.println(sLog);
 		
 			//SUCHE IN JAR FILE		
 			String archiveName = objFileJar.getAbsolutePath();		
 			
 			//A) VERZEICHNIS-FILTER
 			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
-			if(objPartFilter.getCriterion()!=null) {
+			if(!StringZZZ.isEmpty(objPartFilter.getCriterion())) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (FA) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
 				String sDirPathInJar = objPartFilter.getCriterion();
 				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
 				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
@@ -319,7 +271,10 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			
 			//B) Kompletter Dateinamensfilter (mit Verzeichnis)
 			objPartFilter = objFilterFileInJar.getNamePartFilter();
-			if(objPartFilter.getCriterion()!=null) {
+			if(!StringZZZ.isEmpty(objPartFilter.getCriterion())) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (FB) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
 				String sFilePathTotalInJar = objPartFilter.getCriterion();
 				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
 				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sFilePathTotalInJar, sApplicationKeyAsSubDirectoryTempIn);
@@ -389,15 +344,24 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				sTargetDirPath = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sDirPathInJar);
 			}
 			
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (G) XXXXXXXXXXXXXX.";
+		   	System.out.println(sLog);
 			
 			File objFileTemp = new File(sTargetDirPath);
 			boolean bSuccess = false;
 			if(!objFileTemp.exists()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (HA) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
 				bSuccess = FileEasyZZZ.createDirectory(sTargetDirPath);
 			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (HB) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
 				bSuccess = FileEasyZZZ.removeDirectoryContent(objFileTemp, true);
 			}
 			if(!bSuccess) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (I) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem temporären Verzeichnis möglich '" + sTargetDirPath + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
 			}
@@ -408,7 +372,9 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				
 			//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 			Hashtable<String,ZipEntry> ht = objJarInfoFiltered.zipEntryTable();
-	
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": (JA) XXXXXXXXXXXXXX.";
+		   	System.out.println(sLog);
+			
 			//Wie nun vom ht nach objaReturn, also dem fertigen File-Objekt ???
 			//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
 			Set<String> setEntryName = ht.keySet();
@@ -417,15 +383,29 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			try {					
 				ZipFile zf = objJarInfoFiltered.getZipFile();
 				while(itEntryName.hasNext()) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 					
-					File objFileTempInTemp = ZipEasyZZZ.extractZipEntry(zf, zeTemp, sTargetDirPathRoot);	
+					File objFileTempInTemp = ZipEasyZZZ.extractZipEntry(zf, zeTemp, sTargetDirPathRoot);
+					
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JC) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
 					objaFileTempInTemp.add(objFileTempInTemp);
 				}					
 				if(zf!=null) zf.close();
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JD) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
 				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
 			} catch (IOException e) {
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (J ERROR) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

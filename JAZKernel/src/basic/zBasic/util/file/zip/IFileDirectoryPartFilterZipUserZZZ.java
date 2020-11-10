@@ -4,7 +4,7 @@ import java.io.FilenameFilter;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface IFileDirectoryPartFilterZipUserZZZ {
+public interface IFileDirectoryPartFilterZipUserZZZ extends ZipEntryFilter{
 	public void setDirectoryPartFilter(IFileDirectoryFilterZipZZZ objDirectoryFilterZip);
 	public IFileDirectoryFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ;
 	

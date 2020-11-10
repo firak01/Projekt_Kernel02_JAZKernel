@@ -1043,41 +1043,73 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				bReturn = true;
 				break main;
 			}
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (J) XXXXXXXXXXXXXX.";
+		   	System.out.println(sLog);
 			
 			//Hole alle dateien und lösche diese ggfs.
 			File[] objaFile =  objFileDirectory.listFiles();
 			if(objaFile.length==1) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JA) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
 				//Es ist ggfs. nur die Ausgangsdatei vorhanden, also löschen
 				File objFileTemp = objaFile[0];
 				if(objFileTemp.isFile()) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JAA) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					bReturn = objFileTemp.delete();
 				}else {	
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JAB) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryContainingMoreFiles,bRemoveSubDirectories);			
 				} 
 				if(!bReturn) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (K) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object (a) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
 				//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
 				if(bEmptyDirectoryContainingMoreFiles) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBA) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					for(int icount = 0; icount <= objaFile.length - 1; icount++){
 						File objFileTemp = objaFile[icount];
 						if(objFileTemp.isFile()) {
 							bReturn = objaFile[icount].delete();
 							if(!bReturn) {
+								sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBAA) XXXXXXXXXXXXXX.";
+							   	System.out.println(sLog);
+							   	
 								ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object(b) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}
 						}else {
 							bReturn = FileEasyZZZ.removeDirectoryContent(objFileTemp, bEmptyDirectoryContainingMoreFiles,bRemoveSubDirectories);
 							if(!bReturn) {
+								sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBAB) XXXXXXXXXXXXXX.";
+							   	System.out.println(sLog);
+							   	
 								ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete Content for Directory (c) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}
 							if(bRemoveSubDirectories) {
+								sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBBB) XXXXXXXXXXXXXX.";
+							   	System.out.println(sLog);
+							   	
 								bReturn = FileEasyZZZ.removeDirectory(objFileTemp, false);
 								if(!bReturn) {
+									sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBBBA) XXXXXXXXXXXXXX.";
+								   	System.out.println(sLog);
+								   	
 									ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete Directory (d) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
 									throw ez;
 								}
@@ -1086,6 +1118,9 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 					}							
 					bReturn = true; //Merke: Das Verzeichnis selbst soll ja nicht gelöscht werden.
 				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBB) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					//Das Verzeichnis wird nicht geleert, darf also nicht gelöscht werden.
 					ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not a single file containing directory. Call this method with the 'bEmptyDirectoryContainingMoreFiles' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;						
@@ -2334,54 +2369,94 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					throw ez;
 				}
 				
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+				
 				//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
 				File objFileDirectory;
 				boolean bFileStart = false;
 				if(objFileIn.isFile()) {
 					bFileStart = true;
 					objFileDirectory = objFileIn.getParentFile();
+					
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->X) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
 					if(objFileDirectory==null) break main;			
 				}else {
 					objFileDirectory = objFileIn;
 				}
 				if(objFileDirectory.exists()==false){
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->Y) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					bReturn = true;
 					break main;
 				}
-				if(FileEasyZZZ.isRoot(objFileDirectory)) break main;
+				if(FileEasyZZZ.isRoot(objFileDirectory)) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->Z) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
+				   break main;
+				}
 				
 				//REKURSION: Wenn Unterverzeichnisse gelöscht werden sollen. Diese hier holen.
 				if(bEmptyDirectoryBefore || bFileStart){
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAA) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+				   	
 					//Hole alle Dateien und Verzeichniss			
 					File[] objaFile =  objFileDirectory.listFiles();
 					if(objaFile.length==0) {
 						if(bRemoveSubDirectories) {
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAAA) XXXXXXXXXXXXXX.";
+						   	System.out.println(sLog);
+						   	
 							bReturn = objFileDirectory.delete();//Lösche das aktuelle Verzeichnis, es sollte nun leer sein.
 						}
 					}else {
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAAB) XXXXXXXXXXXXXX.";
+					   	System.out.println(sLog);
+					   	
 						//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
 						if(bEmptyDirectoryBefore) {
 							for(int icount = 0; icount <= objaFile.length - 1; icount++){
 								File objFileTemp = objaFile[icount];
 								if(objFileTemp.isFile()) {
+									sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAABA) XXXXXXXXXXXXXX.";
+								   	System.out.println(sLog); 
+								   	
 									bReturn = objFileTemp.delete();
 								}else {
 									if(bRemoveSubDirectories) {
+										sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAABB) XXXXXXXXXXXXXX.";
+									   	System.out.println(sLog); 
+									   	
 										bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryBefore, bRemoveSubDirectories);
 									}else {
 								}	
 							}//if(!bReturn).....
 						}		
+							
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAABC) XXXXXXXXXXXXXX.";
+						System.out.println(sLog); 
 						bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
 					}else {
 							//Das Verzeichnis wird nicht geleert, darf also nicht gelöscht werden.
-							ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not an empty directory. Call this method with the 'emptyDirectoryBefore=true' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;						
+							//Hier keinen Fehler werfen, da die Eingabeparameter das so wünschen
+//							ExceptionZZZ ez = new ExceptionZZZ("DirectoryPath='" + objFileDirectory.getAbsolutePath() + "' is not an empty directory. Call this method with the 'emptyDirectoryBefore=true' argument.", iERROR_PARAMETER_VALUE, null, ReflectCodeZZZ.getMethodCurrentName());
+//							throw ez;	
+							bReturn = true; //Da das Verzeichnis ja existiert... 							
 						}
 					}
 				}else{			
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->ZZ) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+					
 					//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
 					bReturn = objFileDirectory.delete();
+					
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->ZZ) bReturn = " + bReturn;
+				   	System.out.println(sLog);
 				}
 			}
 			return bReturn;

@@ -22,14 +22,14 @@ import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionUserZZZ{
-	protected FilenamePartFilterPathZipZZZ objFilterPath; //Der Dateipfad
-	protected FilenamePartFilterNameZipZZZ objFilterName; //Der ganze Name
+	protected FilenamePartFilterPathZipZZZ objFilterPath=null; //Der Dateipfad
+	protected FilenamePartFilterNameZipZZZ objFilterName=null;; //Der ganze Name
 	
 	//Weitere Filter werden nicht über den Konstruktor gesetzt.
-	protected FilenamePartFilterPrefixZipZZZ objFilterPrefix;
-	protected FilenamePartFilterMiddleZipZZZ objFilterMiddle;
-	protected FilenamePartFilterSuffixZipZZZ objFilterSuffix;	
-	protected FilenamePartFilterEndingZipZZZ objFilterEnding;
+	protected FilenamePartFilterPrefixZipZZZ objFilterPrefix=null;;
+	protected FilenamePartFilterMiddleZipZZZ objFilterMiddle=null;;
+	protected FilenamePartFilterSuffixZipZZZ objFilterSuffix=null;;	
+	protected FilenamePartFilterEndingZipZZZ objFilterEnding=null;;
 		
 	//wg. des Interfaces IFileExpansionUserZZZ
 	protected IFileExpansionZZZ objExpansion = null;
@@ -76,18 +76,13 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		btemp = this.getFlag("init");
 		if(btemp==true) break main;
 		
-		
+		this.setDirectoryPath(sDirectoryName);
+		this.setName(sFileName);
 		
 		//Die konkreten Ausprägungen können erst in der accept Methode gefüllt werden, mit den konkreten Werten.
 		//Z.B. für Middle-Wert steht in der accept-Methode:
 		//		this.objFilterMiddle.setCriterion(this.getMiddle());
 		//      if(this.objFilterMiddle.accept(ze)==false) break main;
-		objFilterPath = new FilenamePartFilterPathZipZZZ(sDirectoryName); //Das Verzeichnis
-		objFilterName = new FilenamePartFilterNameZipZZZ(sFileName); //Der ganze Dateiname
-		objFilterPrefix = new FilenamePartFilterPrefixZipZZZ();
-		objFilterMiddle = new FilenamePartFilterMiddleZipZZZ();
-		objFilterSuffix = new FilenamePartFilterSuffixZipZZZ();
-		objFilterEnding = new FilenamePartFilterEndingZipZZZ();
 		
 		}//end main:		
 	}
@@ -136,6 +131,9 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		this.objFilterPath = objDirectoryFilterZip;
 	}
 	public FilenamePartFilterPathZipZZZ getDirectoryPartFilter() {
+		if(this.objFilterPath==null) {
+			this.objFilterPath = new FilenamePartFilterPathZipZZZ(); //Das Verzeichnis
+		}
 		return this.objFilterPath;
 	}
 	
@@ -143,6 +141,9 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		this.objFilterName = objNameFilterZip;
 	}
 	public FilenamePartFilterNameZipZZZ getNamePartFilter() {
+		if(this.objFilterName==null) {
+			this.objFilterName = new FilenamePartFilterNameZipZZZ();
+		}
 		return this.objFilterName;
 	}
 	
@@ -150,6 +151,9 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		this.objFilterPrefix = objPrefixFilterZip;
 	}
 	public FilenamePartFilterPrefixZipZZZ getPrefixPartFilter() {
+		if(this.objFilterPrefix==null) {
+			this.objFilterPrefix = new FilenamePartFilterPrefixZipZZZ();
+		}
 		return this.objFilterPrefix;
 	}
 		
@@ -157,6 +161,9 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		this.objFilterMiddle = objMiddleFilterZip;
 	}
 	public FilenamePartFilterMiddleZipZZZ getMiddlePartFilter() {
+		if(this.objFilterMiddle==null) {
+			this.objFilterMiddle = new FilenamePartFilterMiddleZipZZZ();
+		}
 		return this.objFilterMiddle;
 	}
 	
@@ -165,6 +172,9 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		this.objFilterSuffix = objSuffixFilterZip;
 	}
 	public FilenamePartFilterSuffixZipZZZ getSuffixPartFilter() {
+		if(this.objFilterSuffix==null) {
+			this.objFilterSuffix = new FilenamePartFilterSuffixZipZZZ();
+		}
 		return this.objFilterSuffix;
 	}
 	
@@ -172,6 +182,9 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		this.objFilterEnding = objEndingFilterZip;
 	}
 	public FilenamePartFilterEndingZipZZZ getEndingPartFilter() {
+		if(this.objFilterEnding==null) {
+			this.objFilterEnding = new FilenamePartFilterEndingZipZZZ();
+		}
 		return this.objFilterEnding;
 	}
 	

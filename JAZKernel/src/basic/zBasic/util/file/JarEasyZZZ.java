@@ -685,9 +685,13 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
 				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 				String archiveName = objJarFile.getName();
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceDirectoryPath);
-				FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
-				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );//Das dauert laaange
+				//IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceDirectoryPath);
+				//FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
+				//JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );//Das dauert laaange
+				
+				IFileDirectoryPartFilterZipUserZZZ objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(sSourceDirectoryPath);
+				JarInfo objJarInfo = new JarInfo( archiveName, objFilterDirectoryInJar );//Das dauert laaange
+				
 				
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();			
@@ -1072,14 +1076,22 @@ File[] objaReturn = null;
 				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
 				sTargetDirectoryFilepath=StringZZZ.stripFileSeparators(sTargetDirectoryFilepathIn);									
 			}
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) sTargetDirectoryFilepath='" + sTargetDirectoryFilepath +"'.";
+		   	System.out.println(sLog);
 			
 			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
 			try {			
-			    if(bWithFiles) {			
+			    if(bWithFiles) {
+			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) With Files Case.";
+				   	System.out.println(sLog);
+				   	
 					//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 					IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sDirectoryFilePathInJar, null);
 					objaReturn = JarEasyUtilZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryFilepath);					
 				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Without Files Case.";
+				   	System.out.println(sLog);
+				   	
 					//Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
 					IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sDirectoryFilePathInJar);										
 					objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryFilepath, false);
@@ -1283,11 +1295,11 @@ File[] objaReturn = null;
 							throw ez;
 						}												
 					}else{						
-						boolean bErg = FileEasyZZZ.removeDirectory(fileAsTrunk,true,true);//Verzeichnis löschen und zuvor leeren												
-						if(!bErg) {
-							ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "File Object as trunk existed - Directory case -, but was not replacable", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
-							throw ez;
-						}										
+						boolean bErg = FileEasyZZZ.removeDirectory(fileAsTrunk,false,true);//!!! NUR LEERE Verzeichnis löschen und zuvor leeren												
+//						if(!bErg) {
+//							ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "File Object as trunk existed - Directory case -, but was not replacable", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+//							throw ez;
+//						}										
 					}
 				}
 				
