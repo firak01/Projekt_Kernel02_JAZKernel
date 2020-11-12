@@ -315,8 +315,8 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			    }else {
 			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS NOT A DIRECTORY: '" + entry.getName() +"'";
 				   	System.out.println(sLog);
-
-				   	File objReturnTrunk = JarEasyZZZ.extractFileFromJarAsTrunkFileDummy(jar, entry,sTargetDirPath);
+				   	
+				   	File objReturnTrunk = JarEasyZZZ.createFileDummy(entry,sTargetDirPath);
 			    	if(objReturnTrunk!=null) {
 			    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'->'"+objReturnTrunk.getAbsolutePath()+"'";
 				    	System.out.println(sLog);

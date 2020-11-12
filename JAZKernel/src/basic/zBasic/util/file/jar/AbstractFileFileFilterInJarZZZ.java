@@ -8,7 +8,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterNameZipZZZ;
@@ -76,9 +79,25 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		btemp = this.getFlag("init");
 		if(btemp==true) break main;
 		
-		this.setDirectoryPath(sDirectoryName);
-		this.setName(sFileName);
-		
+		if(StringZZZ.isEmpty(sDirectoryName)) {
+			String sFileNameAsFiletype = JarEasyUtilZZZ.toFilePath(sFileName);
+			
+			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
+	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
+	    	FileEasyZZZ.splitFilePathName(sFileNameAsFiletype, strDirectory, strFileName);
+	    	String sDirectory=strDirectory.get();
+			
+			//File objDirTemp = FileEasyZZZ.getDirectoryFromFilepath(sFileNameAsFiletype);
+			
+	    	String sDirectoryAsJartype = JarEasyUtilZZZ.toJarDirectoryPath(sDirectory);					
+			this.setDirectoryPath(sDirectoryAsJartype);
+			
+			stemp = strFileName.get();
+			this.setName(stemp);
+		}else {
+			this.setDirectoryPath(sDirectoryName);
+			this.setName(sFileName);
+		}
 		//Die konkreten Ausprägungen können erst in der accept Methode gefüllt werden, mit den konkreten Werten.
 		//Z.B. für Middle-Wert steht in der accept-Methode:
 		//		this.objFilterMiddle.setCriterion(this.getMiddle());

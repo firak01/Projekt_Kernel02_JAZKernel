@@ -257,19 +257,10 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			//SUCHE IN JAR FILE		
 			String archiveName = objFileJar.getAbsolutePath();		
 			
-			//A) VERZEICHNIS-FILTER
-			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
-			if(!StringZZZ.isEmpty(objPartFilter.getCriterion())) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (FA) XXXXXXXXXXXXXX.";
-			   	System.out.println(sLog);
-			   	
-				String sDirPathInJar = objPartFilter.getCriterion();
-				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
-				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
-				break main;
-			}
+			//Zuerst den genauen Namensfilter-Verwenden, sofern vorhanden, danach den allgemeineren Verzeichnisfilter
+			IFilenamePartFilterZipZZZ objPartFilter = null;
 			
-			//B) Kompletter Dateinamensfilter (mit Verzeichnis)
+			//A) Kompletter Dateinamensfilter (mit Verzeichnis)
 			objPartFilter = objFilterFileInJar.getNamePartFilter();
 			if(!StringZZZ.isEmpty(objPartFilter.getCriterion())) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (FB) XXXXXXXXXXXXXX.";
@@ -280,6 +271,18 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sFilePathTotalInJar, sApplicationKeyAsSubDirectoryTempIn);
 				break main;
 			}
+			
+			//B) VERZEICHNIS-FILTER
+			objPartFilter = objFilterFileInJar.getDirectoryPartFilter();
+			if(!StringZZZ.isEmpty(objPartFilter.getCriterion())) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (FA) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
+				String sDirPathInJar = objPartFilter.getCriterion();
+				JarInfo objJarInfo = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
+				objaReturn = JarEasyUtilZZZ.findFileInJar(objJarInfo, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
+				break main;
+			}						
 		}//End main		 	
 		return objaReturn;
 	}
@@ -389,7 +392,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 					
-					File objFileTempInTemp = ZipEasyZZZ.extractZipEntry(zf, zeTemp, sTargetDirPathRoot);
+					File objFileTempInTemp = ZipEasyZZZ.extractZipEntryToDirectory(zf, zeTemp, sTargetDirPathRoot);
 					
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JC) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
