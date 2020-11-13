@@ -20,13 +20,15 @@ import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
+import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionUserZZZ{
 	protected FilenamePartFilterPathZipZZZ objFilterPath=null; //Der Dateipfad
-	protected FilenamePartFilterNameZipZZZ objFilterName=null;; //Der ganze Name
+	protected FilenamePartFilterNameZipZZZ objFilterName=null; //Der ganze Name
+	protected FilenamePartFilterPathTotalZipZZZ objFilterPathTotal=null;//Der Dateipfad plus den ganzen Namen
 	
 	//Weitere Filter werden nicht über den Konstruktor gesetzt.
 	protected FilenamePartFilterPrefixZipZZZ objFilterPrefix=null;;
@@ -80,14 +82,14 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		if(btemp==true) break main;
 		
 		if(StringZZZ.isEmpty(sDirectoryName)) {
+			
+			//TODO GOON: Mache Methode JarEasyZZZ.splitFilePathName(...)
 			String sFileNameAsFiletype = JarEasyUtilZZZ.toFilePath(sFileName);
 			
 			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
 	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
 	    	FileEasyZZZ.splitFilePathName(sFileNameAsFiletype, strDirectory, strFileName);
 	    	String sDirectory=strDirectory.get();
-			
-			//File objDirTemp = FileEasyZZZ.getDirectoryFromFilepath(sFileNameAsFiletype);
 			
 	    	String sDirectoryAsJartype = JarEasyUtilZZZ.toJarDirectoryPath(sDirectory);					
 			this.setDirectoryPath(sDirectoryAsJartype);
@@ -164,6 +166,16 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 			this.objFilterName = new FilenamePartFilterNameZipZZZ();
 		}
 		return this.objFilterName;
+	}
+	
+	public void setPathTotalFilter(FilenamePartFilterPathTotalZipZZZ objFilterPathTotalZip) {
+		this.objFilterPathTotal = objFilterPathTotalZip;
+	}
+	public FilenamePartFilterPathTotalZipZZZ getPathTotalFilter() {
+		if(this.objFilterPathTotal==null) {
+			this.objFilterPathTotal = new FilenamePartFilterPathTotalZipZZZ();
+		}
+		return this.objFilterPathTotal;
 	}
 	
 	public void setPrefixPartFilter(FilenamePartFilterPrefixZipZZZ objPrefixFilterZip) {
@@ -256,5 +268,60 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		}
 		public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion) {
 			this.objExpansion = objFileExpansion;
+		}
+		
+		public IFilenamePartFilterZipZZZ computeFilePartFilterUsed(){
+			IFilenamePartFilterZipZZZ objReturn = null;		
+			main:{
+	
+				IFilenamePartFilterZipZZZ objPartFilterName = this.getNamePartFilter();
+				IFilenamePartFilterZipZZZ objPartFilterDirectory = this.getDirectoryPartFilter();
+				 
+				//A) Kompletter Dateinamensfilter (mit Verzeichnis)			 
+				if(!StringZZZ.isEmpty(objPartFilterName.getCriterion()) && StringZZZ.isEmpty(objPartFilterDirectory.getCriterion())) {
+					objReturn = objPartFilterName;
+					break main;
+				}
+				
+				//B) VERZEICHNIS-FILTER
+				if(StringZZZ.isEmpty(objPartFilterName.getCriterion()) && !StringZZZ.isEmpty(objPartFilterDirectory.getCriterion())) {
+					objReturn = objPartFilterDirectory;
+					break main;
+				}
+				
+				//C) Dateinamesfilter mit Verzeichnis rulez
+				if(!StringZZZ.isEmpty(objPartFilterName.getCriterion()) && !StringZZZ.isEmpty(objPartFilterDirectory.getCriterion())) {
+					objReturn = this.getFi					
+					break main;
+				}
+			}//end main:
+			return objReturn;
+		}
+		
+		public String computeDirectoryPathInJarUsed() {
+			String objReturn = null;		
+			main:{				
+				IFilenamePartFilterZipZZZ objPartFilterName = this.getNamePartFilter();
+				IFilenamePartFilterZipZZZ objPartFilterDirectory = this.getDirectoryPartFilter();
+				 
+				//A) Kompletter Dateinamensfilter (mit Verzeichnis)			 
+				if(!StringZZZ.isEmpty(objPartFilterName.getCriterion()) && StringZZZ.isEmpty(objPartFilterDirectory.getCriterion())) {
+					break main;
+				}
+				
+				//B) VERZEICHNIS-FILTER
+				if(StringZZZ.isEmpty(objPartFilterName.getCriterion()) && !StringZZZ.isEmpty(objPartFilterDirectory.getCriterion())) {
+					objReturn = objPartFilterDirectory.getCriterion();
+					break main;
+				}
+				
+				//C) Kompletter Dateinamensfilter (mit Verzeichnis)	rulez
+				if(!StringZZZ.isEmpty(objPartFilterName.getCriterion()) && !StringZZZ.isEmpty(objPartFilterDirectory.getCriterion())) {
+					IFilenamePartFilterZipZZZ objPartFilterPathTotal = this.getFilePathTotalFilter();
+					objReturn = objPartFilterDirectory.getCriterion();
+					break main;
+				}
+			}//end main:
+			return objReturn;
 		}
 }//END class

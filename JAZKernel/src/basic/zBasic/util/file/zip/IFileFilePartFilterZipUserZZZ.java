@@ -20,4 +20,8 @@ public interface IFileFilePartFilterZipUserZZZ {
 	public void setEndingPartFilter(FilenamePartFilterEndingZipZZZ objEndingFilterZip);
 	public FilenamePartFilterEndingZipZZZ getEndingPartFilter();
 	
+	
+	public IFilenamePartFilterZipZZZ computeFilePartFilterUsed();
+	public String computeDirectoryPathInJarUsed();
+	
 }
