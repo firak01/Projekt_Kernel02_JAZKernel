@@ -11,14 +11,14 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
-	private String sDirectoryPath;
-	
+	private String sDirectoryPath=null;
+		
 	public FilenamePartFilterPathZipZZZ() {
 		super();
 	}
-	public FilenamePartFilterPathZipZZZ(String sDirectoryPath){
+	public FilenamePartFilterPathZipZZZ(String sDirectoryPath, String sFileName){
 		super();
-		this.setDirectoryPath(sDirectoryPath);
+		this.setDirectoryPath(sDirectoryPath);		
 	}
 	
 	@Override
@@ -56,10 +56,12 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 		public void setDirectoryPath(String sDirectoryPath){
 			this.sDirectoryPath = sDirectoryPath;
 		}
+		
+		
 	
 	//### Aus Interface
 	@Override
-	public void setCriterion(String sCriterion) {
+	public void setCriterion(String sCriterion) {	
 		this.setDirectoryPath(sCriterion);		
 	}
 	@Override

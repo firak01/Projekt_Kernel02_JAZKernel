@@ -1,5 +1,7 @@
 package basic.zBasic.util.file.zip;
 
+import basic.zBasic.ExceptionZZZ;
+
 public interface IFileFilePartFilterZipUserZZZ {
 	public void setDirectoryPartFilter(FilenamePartFilterPathZipZZZ objDirectoryFilterZip);
 	public FilenamePartFilterPathZipZZZ getDirectoryPartFilter();
@@ -21,7 +23,7 @@ public interface IFileFilePartFilterZipUserZZZ {
 	public FilenamePartFilterEndingZipZZZ getEndingPartFilter();
 	
 	
-	public IFilenamePartFilterZipZZZ computeFilePartFilterUsed();
-	public String computeDirectoryPathInJarUsed();
+	public IFilenamePartFilterZipZZZ computeFilePartFilterUsed() throws ExceptionZZZ;
+	public String computeDirectoryPathInJarUsed() throws ExceptionZZZ;
 	
 }

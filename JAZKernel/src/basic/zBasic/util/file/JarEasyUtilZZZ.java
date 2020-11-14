@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -22,6 +24,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.JarInfo;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
@@ -41,6 +44,43 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  * 
  */
 public class JarEasyUtilZZZ extends ObjectZZZ{
+	public static String sDIRECTORY_SEPARATOR = "/";
+	
+	//https://stackoverflow.com/questions/51494579/regex-windows-path-validator
+	//Das wäre für Windows Dateipfade public static String sDIRECTORY_VALID_REGEX="^(?:[a-z]:)?[\\/\\\\]{0,2}(?:[.\\/\\\\ ](?![.\\/\\\\\\n])|[^<>:\"|?*.\\/\\\\ \\n])+$";
+		/* So the regex is as follows:
+		
+		    ^ - Start of the string.
+		    (?:[a-z]:)? - Drive letter and a colon, optional.
+		    [\/\\]{0,2} - Either a backslash or a slash, between 0 and 2 times.
+		    (?: - Start of the non-capturing group, needed due to the + quantifier after it.
+		        [.\/\\ ] - The first alternative.
+		        (?![.\/\\\n]) - Negative lookahead - "forbidden" chars.
+		    | - Or.
+		        [^<>:"|?*.\/\\ \n] - The second alternative.
+		    )+ - End of the non-capturing group, may occur multiple times.
+		    $ - End of the string.
+		
+		If you attempt to match each path separately, use only i option.
+		
+		But if you have multiple paths in separate rows, and match them globally in one go, add also g and m options.
+		
+		For a working example see https://regex101.com/r/4JY31I/1
+		 */
+	
+	//Also angepasst an eine JAR Datei
+	//* Ohne Laufwerk
+	//* Ohne SLASHes nach dem Laufwerk
+	//* Es gilt: Keine Slashe am Anfang ^(?![/])
+	//  Es gilt: Slash am Ende (?:[/]$)
+	//	([(?:\/{1}]$)
+	//  Das wäre mindestens 2 Slash am Ende (\/{2,}$)
+	//  Als Negativer Lookahead: (?![\/{2,}]$)
+	
+	
+	public static String sDIRECTORY_VALID_REGEX="^(?![/])([\\/{1}])(?![\\/{2,}])+$";
+	public static String sFILE_VALID_REGEX="^(?![/])|(?![\\/{1,}])+$";
+	
 	private JarEasyUtilZZZ(){
 		//Zum Verstecken des Konstruktors
 	}
@@ -848,5 +888,186 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		}//end main:
 		return objReturn;
 	}
+	
+	/* Es wird der Pfad aufgeteilt und zurückgegeben.
+	 * Da Java nur ein CALL_BY_VALUE machen kann, weden hier für die eingefüllten Werte Referenz-Objekte verwendet.
+	 */
+	public static void splitJarFilePathToDirectoryAndName(String sJarPath, ReferenceZZZ<String> strDirectory, ReferenceZZZ<String> strFileName) throws ExceptionZZZ{		
+		main:{
+			if(StringZZZ.isEmpty(sJarPath)){
+				ExceptionZZZ ez  = new ExceptionZZZ("sJarPath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sDirectory=null;
+			String sFileName=null;
+			if(JarEasyUtilZZZ.isDirectory(sJarPath)){
+				sDirectory = sJarPath;
+				sFileName = "";
+			}else {
+				sDirectory = StringZZZ.leftback(sJarPath, JarEasyUtilZZZ.sDIRECTORY_SEPARATOR);
+				if(!StringZZZ.isEmpty(sDirectory)) {
+					sDirectory=sDirectory + JarEasyUtilZZZ.sDIRECTORY_SEPARATOR;
+					sFileName = StringZZZ.right(sJarPath, sDirectory);
+				}else {
+					sDirectory = "";
+					sFileName = sJarPath;
+				}			
+			}
+			
+			//#### Die Rückgabewerte
+			strDirectory.set(sDirectory);
+			strFileName.set(sFileName);		
+		}//END main:		
+	}
+	
+	public static boolean isDirectory(String sJarPath) {
+		boolean bReturn=false;
+		main:{
+			if(StringZZZ.isEmpty(sJarPath)) break main;
+			
+			if(sJarPath.endsWith(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) bReturn = true;			
+		}//end main:
+		return bReturn;		
+	}
+	
+	public static String computeDirectoryFromJarPath(String sJarPath) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
+	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
+	    	
+	    	if(JarEasyUtilZZZ.isJarPathValid(sJarPath)) {
+	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);		    	
+	    		sReturn = strDirectory.get();
+	    		break main;
+	    	}
+	    	
+	    	if(FileEasyZZZ.isPathValid(sJarPath)) {
+	    		FileEasyZZZ.splitFilePathName(sJarPath, strDirectory, strFileName);
+	    		sReturn = strDirectory.get();
+	    		break main;
+	    	}
+	    	
+		}
+		return sReturn;
+	}
+	public static String computeFilenameFromJarPath(String sJarPath) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
+	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
+	    	
+	    	if(JarEasyUtilZZZ.isJarPathValid(sJarPath)) {
+	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);	
+	    		sReturn = strFileName.get();
+	    		break main;
+	    	}
+	    	
+	    	if(FileEasyZZZ.isPathValid(sJarPath)) {
+	    		FileEasyZZZ.splitFilePathName(sJarPath, strDirectory, strFileName);
+	    		sReturn = strFileName.get();
+	    		break main;
+	    	}
+	    	
+		}
+		return sReturn;
+	}
+	
+	public static boolean isJarPathValid(String sJarPath) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sJarPath)) {
+				ExceptionZZZ ez  = new ExceptionZZZ("sJarPath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
+//			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) {
+//				bReturn = false;
+//				break main;
+//			}
+			
+			//Ansonsten eben nicht wie Dateipfade
+			boolean bErg = JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath);
+			if(bErg) {
+				bReturn = true;
+				break main;
+			}
+			
+			bErg = JarEasyUtilZZZ.isJarPathFileValid(sJarPath);
+			if(bErg) {
+				bReturn = true;
+				break main;
+			}
+			
+		}
+		return bReturn;
+	}
+	
+	public static boolean isJarPathDirectoryValid(String sJarPath) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sJarPath)) {
+				ExceptionZZZ ez  = new ExceptionZZZ("sJarPath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
+//			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) {
+//				bReturn = false;
+//				break main;
+//			}
+			
+			//Ansonsten eben nicht wie Dateipfade
+			Pattern p = Pattern.compile(JarEasyUtilZZZ.sDIRECTORY_VALID_REGEX); 
+			 Matcher m =p.matcher( sJarPath ); 
+			 boolean bMatched  =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
+			 if(bMatched) {
+				 bReturn = true;
+				 break main;
+			 }			 			 					 
+		}
+		return bReturn;
+	}
+	
+	public static boolean isJarPathFileValid(String sJarPath) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sJarPath)) {
+				ExceptionZZZ ez  = new ExceptionZZZ("sJarPath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
+//			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) {
+//				bReturn = false;
+//				break main;
+//			}
+			
+			//Ansonsten eben nicht wie Dateipfade			 
+			 Pattern p = Pattern.compile(JarEasyUtilZZZ.sFILE_VALID_REGEX); 
+			 Matcher m =p.matcher( sJarPath ); 
+			 boolean bMatched  =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
+			 if(bMatched) {
+				 bReturn = true;
+				 break main;
+			 }						 
+		}
+		return bReturn;
+	}
+	
+	public static String joinJarFilePathName(String sDirectoryPath, String sFilePath) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String sDirectoryPathNormed = JarEasyUtilZZZ.toFilePath(sDirectoryPath);
+			String sFilePathNormed = JarEasyUtilZZZ.toFilePath(sFilePath);
+			
+			sReturn = FileEasyZZZ.joinFilePathName(sDirectoryPathNormed, sFilePathNormed);
+			sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn);
+		}//end main:
+		return sReturn;		
+	}
 }
+
 

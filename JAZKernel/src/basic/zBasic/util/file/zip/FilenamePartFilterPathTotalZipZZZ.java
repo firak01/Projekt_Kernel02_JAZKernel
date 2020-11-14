@@ -8,6 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
@@ -21,31 +22,30 @@ public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFil
 	public FilenamePartFilterPathTotalZipZZZ(String sDirectoryPath){
 		super();
 		this.setDirectoryPath(sDirectoryPath);
+		this.setFileName(sFileName);
 	}
 	
 	@Override
 	public boolean accept(ZipEntry ze) {		 
 		    boolean bReturn=false;
 			main:{
-				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getDirectoryPath())) {
-					bReturn = true;
-					break main;
-				}				
-				String sName = ze.getName();
-				
-				//Pfad des Dateinamens berechnen			
-				String sDirectoryPath;
-//				try {				
-					//String zurückgeben, einfach den Parent des Dateipfads. //Wichtig: Der abschliessende Slash dient dazu die Verzeichnispfade zu "normieren".
-					sDirectoryPath = FileEasyZZZ.getParent(sName,"/")+"/";//Also: In der aktuell  betrachteten JAR - Datei sind die Pfade mit "SLASH" getrennt.
-					if(StringZZZ.startsWithIgnoreCase(sDirectoryPath, this.getDirectoryPath()))	{					
+		    	try {
+					if(ze==null) break main;								
+					if(StringZZZ.isEmpty(this.getDirectoryPath())) {
+						bReturn = true;
+						break main;
+					}	
+					String sPathTotal=this.getCriterion();
+					String sName = ze.getName();
+					
+					if(sPathTotal.equals(sName)) {//Genaue übereinstimmung zwischen Pfad und Dateiname. Also EINZIGARTIG!
 						bReturn = true;
 						break main;
 					}
-//				} catch (ExceptionZZZ e) {			
-//					e.printStackTrace();
-//				} 					
+				
+				} catch (ExceptionZZZ e) {			
+					e.printStackTrace();
+				} 					
 			}//END main:
 			return bReturn;
 	}
@@ -59,28 +59,33 @@ public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFil
 		this.sDirectoryPath = sDirectoryPath;
 	}
 	
-	public String getName(){
+	public String getFileName(){
 		return this.sFileName;
 	}
-	public void setName(String sName){
+	public void setFileName(String sName){
 		this.sFileName = sName;
 	}
 	
 	//### Aus Interface
 	@Override
-	public void setCriterion(String sCriterion) {
+	public void setCriterion(String sCriterion) throws ExceptionZZZ{
 		
-		TODOGOON SPLITTEN
-		this.setDirectoryPath(sDirectoryPath);
-		this.setName(sName);
+		String sFileName = JarEasyUtilZZZ.computeFilenameFromJarPath(sCriterion);
+		String sDirectory = JarEasyUtilZZZ.computeDirectoryFromJarPath(sCriterion);
+		
+		this.setDirectoryPath(sDirectory);
+		this.setFileName(sFileName);
 	}
+	
 	@Override
-	public String getCriterion() {
-		
-		TODO GOON ZUSAMMENFÜHREN
-		this.getDirectoryPath();
-		this.getName();
-		return objReturn;
+	public String getCriterion() throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String sDirectoryPath = this.getDirectoryPath();
+			String sFileName = this.getFileName();
+			sReturn = JarEasyUtilZZZ.joinJarFilePathName(sDirectoryPath, sFileName);
+		}//end main:
+		return sReturn;
 	}
 	
 
