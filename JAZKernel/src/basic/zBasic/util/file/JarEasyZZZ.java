@@ -28,11 +28,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.FileDirectoryFilterInJarZZZ;
 import basic.zBasic.util.file.jar.FileFileFilterInJarZZZ;
 import basic.zBasic.util.file.jar.JarInfo;
-import basic.zBasic.util.file.zip.FileDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
-import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEasyZZZ;
@@ -313,7 +312,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					//1. Aus der Jar Datei nur das Verzeichnis herausfiltern.						
 					String archiveName = objJarFile.getName();								
 					IFileDirectoryPartFilterZipUserZZZ objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(entry.getName());
-					IFileDirectoryFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
+					IFileDirectoryPartFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
 					JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );  //Merke: Das dauert laaange
 					
 					//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
@@ -478,7 +477,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				String archiveName = objJarFile.getName();				
 				sSourceDirectoryPath = JarEasyUtilZZZ.toJarFilePath(sSourceDirectoryPath);				
 				IFileDirectoryPartFilterZipUserZZZ objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(sSourceDirectoryPath);
-				IFileDirectoryFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
+				IFileDirectoryPartFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );
 				
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.

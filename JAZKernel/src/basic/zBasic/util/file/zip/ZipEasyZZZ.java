@@ -46,7 +46,7 @@ public class ZipEasyZZZ implements IConstantZZZ {
 	 * @author Fritz Lindhauer, 12.11.2020, 08:21:58
 	 */
 	public static File extractZipEntryToTemp(ZipFile zf, ZipEntry ze) throws ExceptionZZZ {
-		return ZipEasyZZZ.extractZipEntryToDirectory(zf, ze, null);		
+		return ZipEasyZZZ.extractZipEntryToDirectoryRoot(zf, ze, null);		
 	}
 	
 	/** Erstellt aus einem Zip Entry eine tatsächliche Datei in dem angegebenen Verzeichnis.
@@ -59,7 +59,7 @@ public class ZipEasyZZZ implements IConstantZZZ {
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 11.11.2020, 09:04:11
 	 */
-	public static File extractZipEntryToDirectory(ZipFile zf, ZipEntry ze, String sDirPathRootIn) throws ExceptionZZZ {
+	public static File extractZipEntryToDirectoryRoot(ZipFile zf, ZipEntry ze, String sDirPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START XXXXXXXXXXXXXX.";
@@ -75,9 +75,15 @@ public class ZipEasyZZZ implements IConstantZZZ {
 			
 			String sDirPathRoot;
 			if(StringZZZ.isEmpty(sDirPathRootIn)) {
-				sDirPathRoot = EnvironmentZZZ.getHostDirectoryTemp();
+				String sDirPathTemp = EnvironmentZZZ.getHostDirectoryTemp();
+				sDirPathRoot = FileEasyZZZ.joinFilePathName(sDirPathTemp, "ZZZ");
 			}else {
-				sDirPathRoot = sDirPathRootIn;
+				if(FileEasyZZZ.isPathRelative(sDirPathRootIn)) {
+					String sDirPathTemp = EnvironmentZZZ.getHostDirectoryTemp();
+					sDirPathRoot = FileEasyZZZ.joinFilePathName(sDirPathTemp, sDirPathRootIn);					
+				}else {
+					sDirPathRoot = sDirPathRootIn;
+				}
 			}
 			
 			String sKey = ze.getName();
@@ -91,6 +97,8 @@ public class ZipEasyZZZ implements IConstantZZZ {
 		}//end main:
 		return objReturn;
 	}
+	
+
 	
 	/**Diese Methodensignatur gibt es nicht: Files.copy(is,  os);
 	 * Daher ist der Gesamtstring des Pfads der Übergabeparameter in dieser private Methode.

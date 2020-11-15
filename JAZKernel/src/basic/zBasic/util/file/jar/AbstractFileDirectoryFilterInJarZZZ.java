@@ -9,10 +9,9 @@ import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.zip.FileDirectoryFilterZipZZZ;
-import basic.zBasic.util.file.zip.FileDirectoryWithContentFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryWithContentPartFilterZipZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
-import basic.zBasic.util.file.zip.FileDirectoryFilterInZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterNameZipZZZ;
@@ -20,16 +19,17 @@ import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryWithContentFilterZipZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryWithContentPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
-	protected IFileDirectoryFilterZipZZZ objPartFilterDirectory;	
-	protected IFileDirectoryWithContentFilterZipZZZ objPartFilterDirectoryWithContent;
-	protected String sDirectoryPath="";
+	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;	
+	protected IFileDirectoryWithContentPartFilterZipZZZ objPartFilterDirectoryWithContent;
+	protected String sDirectoryPath="";  //TODOGOON 2020114: DIESE PROPERTY SOLLTE NUR IN DEN PART FILTERN GESPEICHERT WERDEN!!!
+	//D.H: Beim Ändern oder auslesen der Property auf die PartFilter zurückgreifen!!!!
 		
 	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
 		this("","init");
@@ -74,8 +74,8 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 
 		this.setDirectoryPath(sDirectoryPath);
 		
-		objPartFilterDirectory = new FileDirectoryFilterZipZZZ(sDirectoryPath); //Das Verzeichnis
-		objPartFilterDirectoryWithContent = new FileDirectoryWithContentFilterZipZZZ(sDirectoryPath); //Der ganze Dateiname
+		objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ(sDirectoryPath); //Das Verzeichnis
+		objPartFilterDirectoryWithContent = new FileDirectoryWithContentPartFilterZipZZZ(sDirectoryPath); //Der ganze Dateiname
 		
 		}//end main:		
 	}
@@ -127,27 +127,27 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 		}
 		
 		@Override
-		public void setDirectoryPartFilter(IFileDirectoryFilterZipZZZ objDirectoryFilterZip) {
+		public void setDirectoryPartFilter(IFileDirectoryPartFilterZipZZZ objDirectoryFilterZip) {
 			this.objPartFilterDirectory = objDirectoryFilterZip;
 		}
 		@Override
-		public IFileDirectoryFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ {
+		public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ {
 			if(this.objPartFilterDirectory==null) {
-				this.objPartFilterDirectory = new FileDirectoryFilterZipZZZ(this.getDirectoryPath());
+				this.objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ(this.getDirectoryPath());
 			}
 			return this.objPartFilterDirectory;
 		}
 		
 		
 		@Override
-		public void setDirectoryPartFilterWithContent(IFileDirectoryWithContentFilterZipZZZ objDirectoryFilterZip) {
+		public void setDirectoryPartFilterWithContent(IFileDirectoryWithContentPartFilterZipZZZ objDirectoryFilterZip) {
 			this.objPartFilterDirectoryWithContent = objDirectoryFilterZip;
 		}
 
 		@Override
-		public IFileDirectoryWithContentFilterZipZZZ getDirectoryPartFilterWithConent() throws ExceptionZZZ {
+		public IFileDirectoryWithContentPartFilterZipZZZ getDirectoryPartFilterWithConent() throws ExceptionZZZ {
 			if(this.objPartFilterDirectoryWithContent==null) {
-				this.objPartFilterDirectoryWithContent = new FileDirectoryWithContentFilterZipZZZ(this.getDirectoryPath());
+				this.objPartFilterDirectoryWithContent = new FileDirectoryWithContentPartFilterZipZZZ(this.getDirectoryPath());
 			}
 			return this.objPartFilterDirectoryWithContent;
 		}

@@ -19,7 +19,7 @@ import basic.zBasic.util.file.zip.FilenamePartFilterPathTotalZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
@@ -272,7 +272,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 				IFilenamePartFilterZipZZZ objPartFilterName = this.getNamePartFilter();
 				IFilenamePartFilterZipZZZ objPartFilterDirectory = this.getDirectoryPartFilter();
 				 
-				//A) Kompletter Dateinamensfilter (mit Verzeichnis)			 
+				//A) Kompletter Dateinamensfilter (ggfs. mit Verzeichnis)			 
 				if(!StringZZZ.isEmpty(objPartFilterName.getCriterion()) && StringZZZ.isEmpty(objPartFilterDirectory.getCriterion())) {
 					objReturn = objPartFilterName;
 					break main;
@@ -293,7 +293,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 			return objReturn;
 		}
 		
-		public String computeDirectoryPathInJarUsed() throws ExceptionZZZ {
+		public String computeCriterionInJarUsed() throws ExceptionZZZ {
 			String objReturn = null;		
 			main:{				
 				IFilenamePartFilterZipZZZ objPartFilterName = this.getNamePartFilter();

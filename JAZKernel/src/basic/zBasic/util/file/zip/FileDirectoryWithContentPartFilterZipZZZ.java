@@ -8,13 +8,13 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 
-public class FileDirectoryFilterZipZZZ extends ObjectZZZ implements IFileDirectoryFilterZipZZZ{
+public class FileDirectoryWithContentPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryWithContentPartFilterZipZZZ{
 	private String sDirectoryPath;
 	
-	public FileDirectoryFilterZipZZZ() {
+	public FileDirectoryWithContentPartFilterZipZZZ() {
 		super();
 	}
-	public FileDirectoryFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
+	public FileDirectoryWithContentPartFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
 		super();		
 		this.setDirectoryPath(sDirectoryPath);
 	}
@@ -32,19 +32,32 @@ public class FileDirectoryFilterZipZZZ extends ObjectZZZ implements IFileDirecto
 	public boolean accept(ZipEntry ze) {
 		 boolean bReturn=false;
 			main:{
+			 try {
 				if(ze==null) break main;
-				if(!ze.isDirectory()) break main;
 				
-				if(StringZZZ.isEmpty(this.getDirectoryPath())) {
+				//!!! Hier werden Verzeichnisse ausgeblendet, nur Dateien geholt.
+				if(ze.isDirectory()) break main;
+				
+				if(StringZZZ.isEmpty(this.getCriterion())) {
 					bReturn = true;
 					break main;
 				}				
 				String sName = ze.getName();
 								
-				//Verzeichnisname vergleichen
-				if(sName.equals(this.sDirectoryPath)) bReturn = true;	
-			}//END main:
-			return bReturn;
+				//Verzeichnisname vergleichen, hinsichtlich Namensanfang.
+								
+				//Pfad des Dateinamens berechnen
+				//Merke: Die "/" dienen jetzt dazu den Verzeichnisnamen "zu normieren". So dass in "tester/" nicht "test/" gefunden wird.
+				sName = JarEasyUtilZZZ.toJarDirectoryPath(sName);
+				String sNameSearchedFor = JarEasyUtilZZZ.toJarDirectoryPath(this.getCriterion());			
+				if(StringZZZ.startsWithIgnoreCase(sName, sNameSearchedFor)){					
+					bReturn = true;
+				}	
+			} catch (ExceptionZZZ e) {			
+				e.printStackTrace();
+			} 	
+		}//END main:
+		return bReturn;
 	}
 
 	@Override

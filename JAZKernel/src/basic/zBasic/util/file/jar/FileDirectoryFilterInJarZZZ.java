@@ -1,7 +1,7 @@
 package basic.zBasic.util.file.jar;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryWithContentFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryWithContentPartFilterZipZZZ;
 
 public class FileDirectoryFilterInJarZZZ extends AbstractFileDirectoryFilterInJarZZZ{
 

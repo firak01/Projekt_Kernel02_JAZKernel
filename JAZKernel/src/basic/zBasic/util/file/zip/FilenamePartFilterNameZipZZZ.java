@@ -8,6 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
@@ -32,16 +33,18 @@ public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilename
 				}				
 				String sName = ze.getName();
 				
-				//Ende des Dateinamens berechnen			
+				//Ende des JarPfads als Dateinamens berechnen			
 				String sNameCur;
 //				try {									
-					if(sName.equals(this.getName())) {
+					if(StringZZZ.endsWithIgnoreCase(sName, JarEasyUtilZZZ.sDIRECTORY_SEPARATOR + this.getName())) {
 						bReturn = true;
 						break main;
 					}
 //				} catch (ExceptionZZZ e) {			
 //					e.printStackTrace();
 //				} 					
+					
+					
 			}//END main:
 			return bReturn;
 	}

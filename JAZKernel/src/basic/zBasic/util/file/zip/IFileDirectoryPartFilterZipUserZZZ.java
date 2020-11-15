@@ -5,9 +5,9 @@ import java.io.FilenameFilter;
 import basic.zBasic.ExceptionZZZ;
 
 public interface IFileDirectoryPartFilterZipUserZZZ extends ZipEntryFilter{
-	public void setDirectoryPartFilter(IFileDirectoryFilterZipZZZ objDirectoryFilterZip);
-	public IFileDirectoryFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ;
+	public void setDirectoryPartFilter(IFileDirectoryPartFilterZipZZZ objDirectoryFilterZip);
+	public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ;
 	
-	public void setDirectoryPartFilterWithContent(IFileDirectoryWithContentFilterZipZZZ objDirectoryFilterZip);
-	public IFileDirectoryWithContentFilterZipZZZ getDirectoryPartFilterWithConent() throws ExceptionZZZ;	
+	public void setDirectoryPartFilterWithContent(IFileDirectoryWithContentPartFilterZipZZZ objDirectoryFilterZip);
+	public IFileDirectoryWithContentPartFilterZipZZZ getDirectoryPartFilterWithConent() throws ExceptionZZZ;	
 }

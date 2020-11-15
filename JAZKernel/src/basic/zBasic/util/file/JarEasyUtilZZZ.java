@@ -29,8 +29,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.JarInfo;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryWithContentFilterZipZZZ;
-import basic.zBasic.util.file.zip.IFileDirectoryFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryWithContentPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEasyZZZ;
@@ -202,10 +202,10 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			String archiveName = objFileJar.getAbsolutePath();
 			JarInfo objJarInfo = null;
 			if(bWithFiles) {
-				IFileDirectoryWithContentFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilterWithConent();		
+				IFileDirectoryWithContentPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilterWithConent();		
 				objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
 			}else {
-				IFileDirectoryFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();			
+				IFileDirectoryPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();			
 				objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
 			}
 			
@@ -282,7 +282,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			
 			//Zuerst den genauen Namensfilter-Verwenden, sofern vorhanden, danach den allgemeineren Verzeichnisfilter
 			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.computeFilePartFilterUsed();
-			String sDirPathInJar = objFilterFileInJar.computeDirectoryPathInJarUsed();
+			String sDirPathInJar = objFilterFileInJar.computeCriterionInJarUsed();
 			objaReturn = JarEasyUtilZZZ.findFileInJar_(objFileJar, objPartFilter, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
 												
 		}//End main		 	
@@ -396,7 +396,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 					
-					File objFileTempInTemp = ZipEasyZZZ.extractZipEntryToDirectory(zf, zeTemp, sTargetDirPathRoot);
+					File objFileTempInTemp = ZipEasyZZZ.extractZipEntryToDirectoryRoot(zf, zeTemp, sTargetDirPathRoot);
 					
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JC) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
