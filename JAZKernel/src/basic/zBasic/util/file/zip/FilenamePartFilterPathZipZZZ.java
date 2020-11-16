@@ -6,8 +6,11 @@ import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyUtilZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
@@ -16,7 +19,7 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 	public FilenamePartFilterPathZipZZZ() {
 		super();
 	}
-	public FilenamePartFilterPathZipZZZ(String sDirectoryPath, String sFileName){
+	public FilenamePartFilterPathZipZZZ(String sDirectoryPath, String sFileName) throws ExceptionZZZ{
 		super();
 		this.setDirectoryPath(sDirectoryPath);		
 	}
@@ -53,7 +56,17 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 		public String getDirectoryPath(){
 			return this.sDirectoryPath;
 		}
-		public void setDirectoryPath(String sDirectoryPath){
+		public void setDirectoryPath(String sDirectoryPath) throws ExceptionZZZ{
+			main:{
+				if(StringZZZ.isEmpty(sDirectoryPath)) break main;
+		
+				sDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPath);				
+				boolean bCheck = JarEasyUtilZZZ.isJarPathDirectoryValid(sDirectoryPath);
+				if(!bCheck) {
+					ExceptionZZZ ez = new ExceptionZZZ("Provided Path is not a valid JarFileDirectory: " + sDirectoryPath + "'", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+			}//end main:
 			this.sDirectoryPath = sDirectoryPath;
 		}
 		
@@ -61,7 +74,7 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 	
 	//### Aus Interface
 	@Override
-	public void setCriterion(String sCriterion) {	
+	public void setCriterion(String sCriterion) throws ExceptionZZZ {	
 		this.setDirectoryPath(sCriterion);		
 	}
 	@Override

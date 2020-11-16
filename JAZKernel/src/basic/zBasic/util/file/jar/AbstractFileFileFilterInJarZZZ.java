@@ -107,35 +107,41 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 			if(ze==null) break main;				
 			
 			//Merke: Die Reihenfolge ist so gewählt, dass im Template Verzeichnis frühestmöglich ein "break main" erreicht wird.
+			try {
 			
-			//Falls das Verzeichnis nicht passt	
-			if(!StringZZZ.isEmpty(this.getDirectoryPath())){
-				this.objFilterPath.setCriterion(this.getDirectoryPath());
-				if(this.objFilterPath.accept(ze)==false) break main;
+			
+				//Falls das Verzeichnis nicht passt	
+				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
+					this.objFilterPath.setCriterion(this.getDirectoryPath());
+					if(this.objFilterPath.accept(ze)==false) break main;
+				}
+				
+				if(!StringZZZ.isEmpty(this.getName())){
+					this.objFilterName.setCriterion(this.getName());
+					if(this.objFilterName.accept(ze)==false) break main;
+				}
+				
+				//Falls der OvpnContext nicht passt
+				this.objFilterMiddle.setCriterion(this.getMiddle());
+				if(this.objFilterMiddle.accept(ze)==false) break main;
+		
+				//Template-Dateinamen fangen eben mit einem bestimmten String an.
+				this.objFilterPrefix.setCriterion(this.getPrefix());
+				if(this.objFilterPrefix.accept(ze)==false) break main;
+									
+				//Falls die Endung nicht passt
+				this.objFilterEnding.setCriterion(this.getEnding());
+				if(this.objFilterEnding.accept(ze)==false) break main;
+						
+				//Falls das Suffix nicht passt
+				this.objFilterSuffix.setCriterion(this.getSuffix());
+				if(this.objFilterSuffix.accept(ze)==false) break main;
+				
+				bReturn = true;
+			}catch(ExceptionZZZ ez) {
+				String sLog = "AbstractFileFilterInJarZZZ -> ExceptionZZZ: '" + ez.getMessageLast() +"'.";
+				System.out.println(sLog);
 			}
-			
-			if(!StringZZZ.isEmpty(this.getName())){
-				this.objFilterName.setCriterion(this.getName());
-				if(this.objFilterName.accept(ze)==false) break main;
-			}
-			
-			//Falls der OvpnContext nicht passt
-			this.objFilterMiddle.setCriterion(this.getMiddle());
-			if(this.objFilterMiddle.accept(ze)==false) break main;
-	
-			//Template-Dateinamen fangen eben mit einem bestimmten String an.
-			this.objFilterPrefix.setCriterion(this.getPrefix());
-			if(this.objFilterPrefix.accept(ze)==false) break main;
-								
-			//Falls die Endung nicht passt
-			this.objFilterEnding.setCriterion(this.getEnding());
-			if(this.objFilterEnding.accept(ze)==false) break main;
-					
-			//Falls das Suffix nicht passt
-			this.objFilterSuffix.setCriterion(this.getSuffix());
-			if(this.objFilterSuffix.accept(ze)==false) break main;
-												
-			bReturn = true;
 		}//END main:
 		return bReturn;		
 	}
@@ -213,7 +219,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 	}
 	
 	
-		protected void setDirectoryPath(String sDirectoryPath) {
+		protected void setDirectoryPath(String sDirectoryPath) throws ExceptionZZZ {
 			this.getDirectoryPartFilter().setDirectoryPath(sDirectoryPath);	
 			this.getPathTotalFilter().setDirectoryPath(sDirectoryPath);
 		}

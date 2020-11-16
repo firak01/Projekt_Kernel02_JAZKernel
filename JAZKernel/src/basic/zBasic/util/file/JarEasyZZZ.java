@@ -946,16 +946,7 @@ File[] objaReturn = null;
 				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			
-
-			if(StringZZZ.isEmpty(sDirectoryFilePathInJar)){
-				//ODER: ROOT DER JAR DATEI, WIE?
-				ExceptionZZZ ez = new ExceptionZZZ("No source filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}			
-			sDirectoryFilePathInJar = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryFilePathInJar);
-			
-			
+						
 			String sTargetDirectoryFilepath;
 			if(sTargetDirectoryFilepathIn==null)
 				sTargetDirectoryFilepath="";  //TEMP VERZEICHNIS???
@@ -985,7 +976,10 @@ File[] objaReturn = null;
 				}
 			
 			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				
+				//TODOGOON; //Ich will endlich über e.getMessage die exceptionZZZ Message bekommen!!!
+				
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 				throw ez;
 		    }	    
 		}//end main:

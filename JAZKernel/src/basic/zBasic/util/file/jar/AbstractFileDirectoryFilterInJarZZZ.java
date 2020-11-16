@@ -28,8 +28,6 @@ import basic.zUtil.io.IFileExpansionZZZ;
 public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
 	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;	
 	protected IFileDirectoryWithContentPartFilterZipZZZ objPartFilterDirectoryWithContent;
-	protected String sDirectoryPath="";  //TODOGOON 2020114: DIESE PROPERTY SOLLTE NUR IN DEN PART FILTERN GESPEICHERT WERDEN!!!
-	//D.H: Beim Ändern oder auslesen der Property auf die PartFilter zurückgreifen!!!!
 		
 	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
 		this("","init");
@@ -74,9 +72,6 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 
 		this.setDirectoryPath(sDirectoryPath);
 		
-		objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ(sDirectoryPath); //Das Verzeichnis
-		objPartFilterDirectoryWithContent = new FileDirectoryWithContentPartFilterZipZZZ(sDirectoryPath); //Der ganze Dateiname
-		
 		}//end main:		
 	}
 	
@@ -106,24 +101,20 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 				}
 				
 				
-			} catch (ExceptionZZZ e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (ExceptionZZZ ez) {
+				String sLog = "AbstractFileDirectoryFilterInJarZZZ -> ExceptionZZZ: '" + ez.getMessageLast() +"'.";
+				System.out.println(sLog);
 			}
 		}//END main:
 		return bReturn;		
 	}
 	
 	//##### GETTER / SETTER			
-		protected void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
-			String sDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPathIn);
-			this.sDirectoryPath = sDirectoryPath;
+		protected void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {			
+			this.getDirectoryPartFilter().setCriterion(sDirectoryPathIn);
 		}
-		protected String getDirectoryPath() throws ExceptionZZZ {
-			if(StringZZZ.isEmpty(this.sDirectoryPath)) {
-				this.setDirectoryPath("");
-			}
-			return this.sDirectoryPath;
+		protected String getDirectoryPath() throws ExceptionZZZ {			
+			return this.getDirectoryPartFilter().getCriterion();
 		}
 		
 		@Override
@@ -133,7 +124,7 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 		@Override
 		public IFileDirectoryPartFilterZipZZZ getDirectoryPartFilter() throws ExceptionZZZ {
 			if(this.objPartFilterDirectory==null) {
-				this.objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ(this.getDirectoryPath());
+				this.objPartFilterDirectory = new FileDirectoryPartFilterZipZZZ();
 			}
 			return this.objPartFilterDirectory;
 		}

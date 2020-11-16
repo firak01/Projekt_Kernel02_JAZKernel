@@ -615,6 +615,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			sReturn = JarEasyUtilZZZ.toJarFilePath(sFilePath);
 			
 			//UND: Abschliessend gibt es bei Verzeichnissen ein / ... aber NUR 1x
+			sReturn=StringZZZ.stripRight(sReturn, "/");
 			sReturn=sReturn+"/";
 		}
 		return sReturn;

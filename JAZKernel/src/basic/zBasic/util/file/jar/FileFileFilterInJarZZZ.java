@@ -13,12 +13,12 @@ import basic.zBasic.util.file.FilenamePartFilterSuffixZZZ;
 import basic.zBasic.util.file.jar.AbstractFileFileFilterInJarZZZ;
 
 public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{	
-	public static String sDIRECTORY_PATH="";
-	public static String sNAME=""; //Der ganze Dateiname
-	public static String sPREFIX="";
-	public static String sMIDDLE="";
-	public static String sSUFFIX="";
-	public static String sENDING="";
+	public static String sDIRECTORY_PATH_DEFAULT="";
+	public static String sNAME_DEFAULT=""; //Der ganze Dateiname
+	public static String sPREFIX_DEFAULT="";
+	public static String sMIDDLE_DEFAULT="";
+	public static String sSUFFIX_DEFAULT="";
+	public static String sENDING_DEFAULT="";
 	
 	public FileFileFilterInJarZZZ(String sDirectory, String sName, String[] saFlagControl) throws ExceptionZZZ {
 		super(sDirectory, sName, saFlagControl);	
@@ -43,9 +43,9 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	}
 	
 	//##### GETTER / SETTER	
-	public void setDirectoryPath(String sDirectoyPath) {
+	public void setDirectoryPath(String sDirectoyPath) throws ExceptionZZZ {
 		if(StringZZZ.isEmpty(sDirectoyPath)) {
-			super.setDirectoryPath(FileFileFilterInJarZZZ.sDIRECTORY_PATH);
+			super.setDirectoryPath(FileFileFilterInJarZZZ.sDIRECTORY_PATH_DEFAULT);
 		}else {
 			super.setDirectoryPath(sDirectoyPath);
 		}
@@ -53,7 +53,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	
 	public void setName(String sName) {
 		if(StringZZZ.isEmpty(sName)) {
-			super.setName(FileFileFilterInJarZZZ.sNAME);
+			super.setName(FileFileFilterInJarZZZ.sNAME_DEFAULT);
 		}else {
 			super.setName(sName);
 		}
@@ -61,7 +61,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	
 	public void setPrefix(String sPrefix) {
 		if(StringZZZ.isEmpty(sPrefix)) {
-			super.setPrefix(FileFileFilterInJarZZZ.sPREFIX);
+			super.setPrefix(FileFileFilterInJarZZZ.sPREFIX_DEFAULT);
 		}else {
 			super.setPrefix(sPrefix);
 		}
@@ -69,7 +69,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	
 	public void setMiddle(String sMiddle) {
 		if(StringZZZ.isEmpty(sMiddle)) {
-			super.setMiddle(FileFileFilterInJarZZZ.sMIDDLE);
+			super.setMiddle(FileFileFilterInJarZZZ.sMIDDLE_DEFAULT);
 		}else {
 			super.setMiddle(sMiddle);
 		}
@@ -77,7 +77,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	
 	public void setSuffix(String sSuffix) {
 		if(StringZZZ.isEmpty(sSuffix)) {
-			super.setSuffix(FileFileFilterInJarZZZ.sSUFFIX);
+			super.setSuffix(FileFileFilterInJarZZZ.sSUFFIX_DEFAULT);
 		}else {
 			super.setSuffix(sSuffix);
 		}
@@ -86,7 +86,7 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 				
 	public void setEnding(String sEnding) {
 		if(StringZZZ.isEmpty(sEnding)) {
-			super.setEnding(FileFileFilterInJarZZZ.sENDING);
+			super.setEnding(FileFileFilterInJarZZZ.sENDING_DEFAULT);
 		}else {
 			super.setEnding(sEnding);
 		}

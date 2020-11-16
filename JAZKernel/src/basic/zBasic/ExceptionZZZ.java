@@ -4,21 +4,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-/**
- * This class handles every exception in the Z-Kernel-Framework.
+/** This class handles every exception in the Z-Kernel-Framework.
  * TODO Mapping-Methode, in der aus einem ErrorCode der zugeh�rige Fehelrtext geholt wird. Dieser Fehlertext wird dann vor der �bergebenen Meldung gesetzt.
  * @author 0823
  */
 public class ExceptionZZZ extends Exception implements IConstantZZZ{
-	 
-	 
-	 
+
 	 //#################################################################
 	 //private Variablen
 	 String[] saMessage;
 	 String[] saFunction;
-	  int[] iaCode;
+	 int[] iaCode;
 	
+	 //MERKE: Jeden Konstruktor gibt es auch mit der Exception e - Variante am Ende.
+	 
  /*TODO: Ein Konstruktor, dem ein Array �bergeben werden kann.
   * Dann kann zus�tzlich zu dem Z-Kernel Error - Hinweis noch der exception.getMessage() Hinweis eines anderen Objekts hinzugef�gt werden
   * 
@@ -32,8 +31,45 @@ public class ExceptionZZZ extends Exception implements IConstantZZZ{
   //#################################################################
   //Constructor
  public ExceptionZZZ(){
- 	this("No message provided");
+	super();
+	
+ 	String sFunctionCurrent=null;
+	try {
+		sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+	
+	String sClassName = null;
+	try {
+		sClassName = ReflectCodeZZZ.getClassCallingName();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+ 	ExceptionNew_(sERROR_RUNTIME, iERROR_RUNTIME, null, sClassName, sFunctionCurrent, null);
  }
+ 
+ public ExceptionZZZ(Exception e){
+		super(e);
+		
+	 	String sFunctionCurrent=null;
+		try {
+			sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+		
+		String sClassName = null;
+		try {
+			sClassName = ReflectCodeZZZ.getClassCallingName();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+	 	ExceptionNew_(sERROR_RUNTIME, iERROR_RUNTIME, null, sClassName, sFunctionCurrent, null);
+	 }
+ //##################################################################################################
+ 
+ 
  /**
   * @param Errormessage
   * @param FlagControl
@@ -41,17 +77,101 @@ public class ExceptionZZZ extends Exception implements IConstantZZZ{
   * internally the errorcode 101 will be set.
   */
  public ExceptionZZZ(String sMessage){
- 	this(sMessage, iERROR_RUNTIME, "No function provided");
+	super(sMessage); 	
+ 	String sFunctionCurrent=null;
+	try {
+		sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+	
+	String sClassName = null;
+	try {
+		sClassName = ReflectCodeZZZ.getClassCallingName();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+ 	ExceptionNew_(sMessage, iERROR_RUNTIME, null, sClassName, sFunctionCurrent, null);
  }
+ 
+ 
+
+ 
+ /**
+  * @param Errormessage
+  * @param FlagControl
+  * 
+  * internally the errorcode 101 will be set.
+  */
+ public ExceptionZZZ(String sMessage, Exception e){
+	super(sMessage, e); 	
+ 	String sFunctionCurrent=null;
+	try {
+		sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+	
+	String sClassName = null;
+	try {
+		sClassName = ReflectCodeZZZ.getClassCallingName();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+ 	ExceptionNew_(sMessage, iERROR_RUNTIME, null, sClassName, sFunctionCurrent, e);
+ }
+ 
+ //#####################################################################################################
  /**
   * @param Errormessage
   * 
   * internally the errorcode 101 will be set.
   */
  public ExceptionZZZ(String sMessage, int iErrorCode){
- 		this(sMessage, iErrorCode, "No function provided");
+	 	super(sMessage);
+	 	String sFunctionCurrent=null;
+		try {
+			sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+		
+		String sClassName = null;
+		try {
+			sClassName = ReflectCodeZZZ.getClassCallingName();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+	 	ExceptionNew_(sMessage, iErrorCode, null, sClassName, sFunctionCurrent, null);
+ }
+ 
+ /**
+  * @param Errormessage
+  * 
+  * internally the errorcode 101 will be set.
+  */
+ public ExceptionZZZ(String sMessage, int iErrorCode, Exception e){
+	 	super(sMessage, e);
+	 	String sFunctionCurrent=null;
+		try {
+			sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+		
+		String sClassName = null;
+		try {
+			sClassName = ReflectCodeZZZ.getClassCallingName();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+	 	ExceptionNew_(sMessage, iErrorCode, null, sClassName, sFunctionCurrent, e);
  }
 
+ 
+ 
+ 
+ //##########################################################################################
   /**
   * @param Errormessage
   * @param Array of control flags
@@ -59,35 +179,70 @@ public class ExceptionZZZ extends Exception implements IConstantZZZ{
   * internally the errorcode 101 will be set.
   */
  public ExceptionZZZ(String sMessage, int iErrorCode, String sFunction){
-	 ExceptionNew_(sMessage, iErrorCode, null, null, null, sFunction);
+	 super(sMessage);
+	 String sClassName = null;
+		try {
+			sClassName = ReflectCodeZZZ.getClassCallingName();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+	 ExceptionNew_(sMessage, iErrorCode, null, sClassName, sFunction, null);
  }
-
-public ExceptionZZZ(String sInfo, int iCode, Object objCurrent,String sFunctionCurrent){
-	ExceptionNew_(sInfo, iCode, objCurrent, null, null, sFunctionCurrent);
-}
-
-public ExceptionZZZ(String sInfo, int iCode, String sClassName,String sFunctionCurrent){
-	this(sInfo, iCode, sClassName + "/" + sFunctionCurrent);
-}
-
-/**
- * @param sInfo
- * @param iCode
- * @param sClassName
- * @param e
- * 23.01.2020, 09:45:58, Fritz Lindhauer
- * Idealerweise eingesetzt in static Methoden, ohne Objekt, aber mit dem Namen der Klasse.
- * 
- */
-public ExceptionZZZ(String sInfo, int iCode, String sClassName, Exception e){
-	String sFunctionCurrent=null;
+ 
+ /**
+  * @param Errormessage
+  * @param Array of control flags
+  * 
+  * internally the errorcode 101 will be set.
+  */
+ public ExceptionZZZ(String sMessage, int iErrorCode, String sFunction, Exception e){
+	 super(sMessage, e);
+	 String sClassName = null;
+		try {
+			sClassName = ReflectCodeZZZ.getClassCallingName();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+	 ExceptionNew_(sMessage, iErrorCode, null, sClassName, sFunction, e);
+ }
+ 
+ //###########################################################################################
+ 
+ 
+public ExceptionZZZ(String sMessage, int iCode, Object objCurrent,String sFunctionCurrent){
+	super(sMessage);
+	String sClassName = null;
 	try {
-		sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+		sClassName = ReflectCodeZZZ.getClassCallingName();
 	} catch (ExceptionZZZ e1) {		
 		e1.printStackTrace();
 	}
-	ExceptionNew_(sInfo, iCode, null, sClassName, e, sFunctionCurrent);
+	ExceptionNew_(sMessage, iCode, objCurrent, sClassName, sFunctionCurrent, null);
 }
+
+public ExceptionZZZ(String sMessage, int iCode, Object objCurrent,String sFunctionCurrent,Exception e){
+	super(sMessage,e);
+	String sClassName = null;
+	try {
+		sClassName = ReflectCodeZZZ.getClassCallingName();
+	} catch (ExceptionZZZ e1) {		
+		e1.printStackTrace();
+	}
+	ExceptionNew_(sMessage, iCode, objCurrent, sClassName, sFunctionCurrent,e);
+}
+//#################################################################################################
+
+public ExceptionZZZ(String sMessage, int iCode, String sClassName,String sFunctionCurrent){
+	super(sMessage);
+	ExceptionNew_(sMessage, iCode, null, sClassName, sFunctionCurrent, null);
+}
+
+public ExceptionZZZ(String sMessage, int iCode, String sClassName,String sFunctionCurrent, Exception e){
+	super(sMessage, e);
+	ExceptionNew_(sMessage, iCode, null, sClassName, sFunctionCurrent, e);
+}
+
+//#################################################################################################
 
 
 /**
@@ -104,17 +259,20 @@ public ExceptionZZZ(String sInfo, int iCode, String sClassName, Exception e){
 			   //Exception e = new Exception();
 			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
  */
-public ExceptionZZZ(String sInfo, int iCode, Object objCurrent, Exception e){
+public ExceptionZZZ(String sMessage, int iCode, Object objCurrent, Exception e){
+	super(sMessage, e);
 	String sFunctionCurrent=null;
 	try {
 		sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
 	} catch (ExceptionZZZ e1) {		
 		e1.printStackTrace();
 	}
-	ExceptionNew_(sInfo, iCode, objCurrent, null, e, sFunctionCurrent);			
+	ExceptionNew_(sMessage, iCode, objCurrent, null, sFunctionCurrent, e);			
 }
+//#################################################################################################
 
-private void ExceptionNew_(String sInfoin, int iCode, Object object, String sClassname, Exception e, String sFunctionCurrentIn){
+
+private void ExceptionNew_(String sInfoin, int iCode, Object object, String sClassname, String sFunctionCurrentIn, Exception e){
 	
 	String sInfo = null;
 	if(sInfoin==null){
@@ -150,17 +308,17 @@ private void ExceptionNew_(String sInfoin, int iCode, Object object, String sCla
 	
 	
 	if (this.saMessage == null){
-		   this.saMessage = new String[1];
-		 	this.iaCode = new int[1];
-		 	this.saFunction = new String[1];
-			}
-		 	
-		 	//todo: Das Array erweitern !!!!
-		 	//Das geht nicht so einfach, vermutlich ein neues Array erzeugen + 1 Eintrag und anschliessend Werte reinkopieren
-		 	
-		 	this.iaCode[this.iaCode.length - 1] = iCode;
-		 	this.saMessage[this.saMessage.length - 1] = sInfo;
-		 	this.saFunction[this.saFunction.length - 1] = sFunctionCalling;
+	   this.saMessage = new String[1];
+	   this.iaCode = new int[1];
+	   this.saFunction = new String[1];
+	}
+ 	
+ 	//todo: Das Array erweitern !!!!
+ 	//Das geht nicht so einfach, vermutlich ein neues Array erzeugen + 1 Eintrag und anschliessend Werte reinkopieren
+ 	
+ 	this.iaCode[this.iaCode.length - 1] = iCode;
+ 	this.saMessage[this.saMessage.length - 1] = sInfo;
+ 	this.saFunction[this.saFunction.length - 1] = sFunctionCalling;
 }
   
 public static String computeStringFromStackTrace(Throwable t){
@@ -235,4 +393,6 @@ public static String computeHtmlFromStackTrace(Throwable t){
 		sFunction = this.saFunction[this.saFunction.length - 1];
 		return sFunction;
 	}
+	
+	
 }  // end class KernelExceptionZZZ

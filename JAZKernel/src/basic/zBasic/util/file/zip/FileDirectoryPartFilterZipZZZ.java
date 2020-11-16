@@ -4,9 +4,11 @@ import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
 
 public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
 	private String sDirectoryPath;
@@ -19,8 +21,17 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 		this.setDirectoryPath(sDirectoryPath);
 	}
 	
-	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
-		String sDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPathIn);
+	public void setDirectoryPath(String sDirectoryPath) throws ExceptionZZZ {
+		main:{
+			if(StringZZZ.isEmpty(sDirectoryPath)) break main;
+			
+			sDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPath);			
+			boolean bCheck = JarEasyUtilZZZ.isJarPathDirectoryValid(sDirectoryPath);
+			if(!bCheck) {
+				ExceptionZZZ ez = new ExceptionZZZ("Provided Path is not a valid JarFileDirectory: " + sDirectoryPath + "'", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}//end main:
 		this.sDirectoryPath = sDirectoryPath;
 	}
 	public String getDirectoryPath() {
@@ -33,6 +44,8 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 		 boolean bReturn=false;
 			main:{
 				if(ze==null) break main;
+				
+				//Wichtig: Filtert dadurch nur Verzeichnisse!!!
 				if(!ze.isDirectory()) break main;
 				
 				if(StringZZZ.isEmpty(this.getCriterion())) {
@@ -41,7 +54,7 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 				}				
 				String sName = ze.getName();
 								
-				//Verzeichnisname vergleichen
+				//Verzeichnisname vergleichen!!!
 				if(sName.equals(this.getCriterion())) bReturn = true;	
 			}//END main:
 			return bReturn;
