@@ -18,6 +18,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -1236,6 +1238,42 @@ public class StringZZZ implements IConstantZZZ{
 			}			
 		}
 		return bReturn;
+	}
+	
+	/**https://stackoverflow.com/questions/46116882/how-to-check-for-consecutive-double-character-in-a-java-string
+	 * @param str
+	 * @return
+	 * @author Fritz Lindhauer, 17.11.2020, 11:30:57
+	 */
+	public static boolean hasConsecutiveDuplicateCharacter(String str) {
+	    Pattern p = Pattern.compile("(.)\\1");
+	    Matcher m = p.matcher(str);
+	    return m.find();
+	}
+	
+	public static boolean hasConsecutiveDuplicateCharacter(String str, char cToFind) {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(str))break main;
+			
+			String sToFind = CharZZZ.toString(cToFind);
+			if(StringZZZ.isEmpty(sToFind)) break main;
+						
+			Pattern p = Pattern.compile("("+sToFind+")\\1");
+		    Matcher m = p.matcher(str);
+		    bReturn = m.find();
+		}//end main:
+		return bReturn;						    
+	}
+	
+	/**@param str
+	 * @return
+	 * @author Fritz Lindhauer, 17.11.2020, 11:30:57
+	 */
+	public static boolean endsWithConsecutiveDuplicateCharacter(String str) {
+	    Pattern p = Pattern.compile("(.)\\1$");
+	    Matcher m = p.matcher(str);
+	    return m.find();
 	}
 	
 	/** Packt ein Stringarray und einen String zusammen.

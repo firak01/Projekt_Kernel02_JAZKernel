@@ -1085,4 +1085,60 @@ public void testVecMidFirst(){
 //			fail("Method throws an exception." + ez.getMessageLast());
 //		}		
 	}
+	
+	public void testHasConsecutiveDuplicateCharacter() {
+		
+		String sString; char cMatch;
+		
+		
+		sString = "Lorem Ipsum";
+		boolean bTest = StringZZZ.hasConsecutiveDuplicateCharacter(sString);	
+		assertFalse(bTest);
+		
+		sString="---1";		
+		bTest = StringZZZ.hasConsecutiveDuplicateCharacter(sString);
+		assertTrue(bTest);
+		
+		sString = "-1";
+		bTest = StringZZZ.hasConsecutiveDuplicateCharacter(sString);
+		assertFalse(bTest);	
+		
+		
+		//###############################
+		sString = "template//";
+		cMatch='/';
+		bTest = StringZZZ.hasConsecutiveDuplicateCharacter(sString, cMatch);
+		assertTrue(bTest);
+		
+		sString = "template//TEST";
+		cMatch='/';
+		bTest = StringZZZ.hasConsecutiveDuplicateCharacter(sString, cMatch);
+		assertTrue(bTest);
+		
+		sString = "template/TEST/";
+		cMatch='/';
+		bTest = StringZZZ.hasConsecutiveDuplicateCharacter(sString, cMatch);
+		assertFalse(bTest);
+	}
+	
+
+	
+	public void testEndsWithConsecutiveDuplicateCharacter() {
+		
+		String sString = "Lorem Ipsum";
+		boolean bTest = StringZZZ.endsWithConsecutiveDuplicateCharacter(sString);	
+		assertFalse(bTest);
+		
+		sString="-1--";		
+		bTest = StringZZZ.endsWithConsecutiveDuplicateCharacter(sString);
+		assertTrue(bTest);
+		
+		sString = "-1---";
+		bTest = StringZZZ.endsWithConsecutiveDuplicateCharacter(sString);
+		assertTrue(bTest);
+		
+		sString = "-1---2-";
+		bTest = StringZZZ.endsWithConsecutiveDuplicateCharacter(sString);
+		assertFalse(bTest);
+	}
 }//End class

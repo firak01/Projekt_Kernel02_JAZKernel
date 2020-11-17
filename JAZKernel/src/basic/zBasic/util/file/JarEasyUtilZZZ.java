@@ -46,7 +46,10 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
 public class JarEasyUtilZZZ extends ObjectZZZ{
 	public static String sDIRECTORY_SEPARATOR = "/";
 	
+	//Ich lasse mal untenstehend da, aus Dokumentationsgründen.
 	//https://stackoverflow.com/questions/51494579/regex-windows-path-validator
+	//und zum Testen: https://regex101.com/r/4JY31I/1
+	//
 	//Das wäre für Windows Dateipfade public static String sDIRECTORY_VALID_REGEX="^(?:[a-z]:)?[\\/\\\\]{0,2}(?:[.\\/\\\\ ](?![.\\/\\\\\\n])|[^<>:\"|?*.\\/\\\\ \\n])+$";
 		/* So the regex is as follows:
 		
@@ -67,10 +70,9 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		
 		For a working example see https://regex101.com/r/4JY31I/1
 		 */
-	
 	//Also angepasst an eine JAR Datei
 	//* Ohne Laufwerk
-	//* Ohne SLASHes nach dem Laufwerk
+	//* Ohne Slashes nach dem Laufwerk
 	//* Es gilt: Keine Slashe am Anfang ^(?![/])
 	//  Es gilt: Slash am Ende (?:[/]$)
 	//	([(?:\/{1}]$)
@@ -78,8 +80,19 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 	//  Als Negativer Lookahead: (?![\/{2,}]$)
 	
 	
-	public static String sDIRECTORY_VALID_REGEX="^(?![/])([\\/{1}])(?![\\/{2,}])+$";
-	public static String sFILE_VALID_REGEX="^(?![/])|(?![\\/{1,}])+$";
+	//ABER: Ich habe es nicht geschaft, über die Prüfung von Anfangszeichen und Endzeichen hinaus
+	//      im gleichen Ausdruck auf doppelte und mehr "/" zu prüfen.
+	//      Dabei u.a. den negativen Lookahead ausprobiert, wie (?![\/{2,}]$)
+	
+	//TODOGOON: Es müsste auch noch angegeben werden, welche Zeichen gültig sind.
+	
+	
+	//Findet alle die nicht mit / beginnen und mit / enden .... 
+	public static String sDIRECTORY_VALID_REGEX="^(?![/]{1,}).*([/]$)";
+			
+	//Findet alle die nicht mit / beginnen und nicht mit / enden ....
+	//https://stackoverflow.com/questions/16398471/regex-for-string-not-ending-with-given-suffix
+	public static String sFILE_VALID_REGEX="^(?![/]{1,}).*(?<![/])$";
 	
 	private JarEasyUtilZZZ(){
 		//Zum Verstecken des Konstruktors
@@ -1014,13 +1027,15 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				throw ez;
 			}
 			
-			//Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
-//			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) {
-//				bReturn = false;
-//				break main;
-//			}
+			//Da es wohl zu kompliziert ist alles in einem Ausdruck zu erfassen:
+			//0. Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
+			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) break main;
+						
+			//1. prüfe auf doppelte / ab. Die sind auch nicht erlaubt.
+			boolean bErg = StringZZZ.hasConsecutiveDuplicateCharacter(sJarPath, '/');
+			if(bErg) break main;
 			
-			//Ansonsten eben nicht wie Dateipfade
+			//2. Nun doch noch den regulären Ausdruck verwenden
 			Pattern p = Pattern.compile(JarEasyUtilZZZ.sDIRECTORY_VALID_REGEX); 
 			 Matcher m =p.matcher( sJarPath ); 
 			 boolean bMatched  =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
@@ -1040,11 +1055,13 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				throw ez;
 			}
 			
-			//Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
-//			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) {
-//				bReturn = false;
-//				break main;
-//			}
+			//Da es wohl zu kompliziert ist alles in einem Ausdruck zu erfassen:
+			//0. Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
+			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) break main;
+			
+			//1. prüfe auf doppelte / ab. Die sind auch nicht erlaubt.
+			boolean bErg = StringZZZ.hasConsecutiveDuplicateCharacter(sJarPath, '/');
+			if(bErg) break main;
 			
 			//Ansonsten eben nicht wie Dateipfade			 
 			 Pattern p = Pattern.compile(JarEasyUtilZZZ.sFILE_VALID_REGEX); 

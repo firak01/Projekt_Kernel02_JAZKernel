@@ -74,6 +74,87 @@ public class JarEasyUtilZZZTest extends TestCase{
 		}
 	}//END tearDown
 	
+	
+	public void testIsJarPathDirectoryValid() {
+		try {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+
+		    String sJarPath; boolean bErg;
+		    
+		    //### 1. nicht mit / anfangen
+		    sJarPath="/template";
+		    bErg = JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath);
+			assertFalse("Sollte KEIN gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    
+		    
+			//### 2. nicht mit / anfangen, auch wenn es mit / endet
+		    sJarPath="/template/";
+		    bErg = JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath);
+		    assertFalse("Sollte KEIN gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    
+		    //auch nicht mit mehr als 1x / endend
+		    sJarPath="template//";
+		    bErg = JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath);
+		    assertFalse("Sollte KEIN gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    
+		    //GÜLTIG
+		    sJarPath="template/";
+		    bErg = JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath);
+			assertTrue("Sollte gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		   					  
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		} 		
+	}
+	
+	public void testIsJarPathFileValid() {
+		try {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+
+		    String sJarPath; boolean bErg;
+		    
+		    //### 1. nicht mit / anfangen
+		    sJarPath="/template.test";
+		    bErg = JarEasyUtilZZZ.isJarPathFileValid(sJarPath);
+			assertFalse("Sollte KEIN gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    
+		    
+			//### 2. nicht mit / anfangen, auch wenn es mit / endet
+		    sJarPath="/template.test/";
+		    bErg = JarEasyUtilZZZ.isJarPathFileValid(sJarPath);
+		    assertFalse("Sollte KEIN gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    
+		    //auch nicht mit mehr als 1x / endend
+		    sJarPath="template.test//";
+		    bErg = JarEasyUtilZZZ.isJarPathFileValid(sJarPath);
+		    assertFalse("Sollte KEIN gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    		    
+		    //auch nicht mit 1x / endend
+		    sJarPath="template.test/";
+		    bErg = JarEasyUtilZZZ.isJarPathFileValid(sJarPath);
+		    assertFalse("Sollte KEIN gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    
+		    
+		    //Gültig
+		    sJarPath="template.test";
+		    bErg = JarEasyUtilZZZ.isJarPathFileValid(sJarPath);
+			assertTrue("Sollte gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		    
+			
+		    //GÜLTIG mit Verzeichnis		    
+		    sJarPath="template/template.test";
+		    bErg = JarEasyUtilZZZ.isJarPathFileValid(sJarPath);
+			assertTrue("Sollte gültiger Verzeichnispfad in JarDatei sein: " + sJarPath, bErg);
+		   					  
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		} 		
+	}
+	
 	public void testGetCodeLocationUsed() {
 		try {
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
