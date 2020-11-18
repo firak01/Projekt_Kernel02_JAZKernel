@@ -21,18 +21,8 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 		this.setDirectoryPath(sDirectoryPath);
 	}
 	
-	public void setDirectoryPath(String sDirectoryPath) throws ExceptionZZZ {
-		main:{
-			if(StringZZZ.isEmpty(sDirectoryPath)) break main;
-			
-			String sDirectoryJarPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPath);			
-			boolean bCheck = JarEasyUtilZZZ.isJarPathDirectoryValid(sDirectoryJarPath);
-			if(!bCheck) {
-				ExceptionZZZ ez = new ExceptionZZZ("Provided Path is not a valid JarFileDirectory: " + sDirectoryPath + "'", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-		}//end main:
-		this.sDirectoryPath = sDirectoryPath;
+	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
+		this.sDirectoryPath = FileCommonsForFilterZipZZZ.computeDirectoryPath(sDirectoryPathIn);
 	}
 	public String getDirectoryPath() {
 		return this.sDirectoryPath;

@@ -332,8 +332,9 @@ public class JarEasyUtilZZZTest extends TestCase{
 		    assertNotNull(objFileAsJar);
 		    
 		    //#######################################################################
+		    //TESTFÄLLE FÜR: DATEIEN GEFUNDEN
 		    //VARIANTE 1: Pfad und Dateinamen im Dateinamen
-		    sTargetDirectoryPathRoot = "FIND_RESOURCE_FILE01";
+		    sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE01";
 		    sPath = null;
 		    sFilename = "bat/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		
@@ -351,7 +352,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			
 			//##########################################################
 			//VARIANTE 2: Pfad und Dateinamen getrennt übergeben
-			sTargetDirectoryPathRoot = "FIND_RESOURCE_FILE02";
+			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE02";
 		    sPath = "bat";
 		    sFilename = "KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    
@@ -369,7 +370,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			
 			//#########################################################
 			//VARIANTE 3: Nur Pfad angegeben
-			sTargetDirectoryPathRoot = "FIND_RESOURCE_FILE03";
+			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE03";
 		    sPath = "bat";
 		    sFilename = null;
 		    
@@ -393,7 +394,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			
 			//#########################################################
 			//VARIANTE 4: Nur Datei angegeben. Merke: Das könnte mehrere Objekte zurückgeben. Aber dafür müsste der Dateiname gleich sein.
-			sTargetDirectoryPathRoot = "FIND_RESOURCE_FILE04";
+			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE04";
 		    sPath = null;
 		    sFilename = "KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    
@@ -408,6 +409,12 @@ public class JarEasyUtilZZZTest extends TestCase{
 			System.out.println(sLog);	
 			assertTrue("Dies sollte auf der Platte existieren", objFile.exists());
 			assertTrue("Das sollte eine Datei sein: " + objFile.getAbsolutePath(), objFile.isFile());
+			
+			//#####################################################################################
+			//TESTFÄLLE FÜR NICHTS GEFUNDEN: 
+			
+			
+			
 			
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -431,7 +438,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 		    assertNotNull(objFileAsJar);
 		    
 			//A) Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
-		    String sTargetDirectoryPathRoot = "FIND_RESOURCE_DIRECTORY_EMPTY";
+		    String sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_DIRECTORY_EMPTY";
 		    String sPath = "bat";
 			IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
 			File[] objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, false);
@@ -444,7 +451,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			}
 			
 			//B) Das Verzeichnis mit allen darin enthaltenen Dateien erstellen
-			sTargetDirectoryPathRoot = "FIND_RESOURCE_DIRECTORY";
+			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_DIRECTORY";
 		    sPath = "bat";
 			objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
 			objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, true);
