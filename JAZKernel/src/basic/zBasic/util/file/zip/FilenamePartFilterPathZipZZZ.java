@@ -40,7 +40,7 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 //				try {				
 					//String zurückgeben, einfach den Parent des Dateipfads. //Wichtig: Der abschliessende Slash dient dazu die Verzeichnispfade zu "normieren".
 					sDirectoryPath = FileEasyZZZ.getParent(sName,"/")+"/";//Also: In der aktuell  betrachteten JAR - Datei sind die Pfade mit "SLASH" getrennt.
-					if(StringZZZ.startsWithIgnoreCase(sDirectoryPath, this.getDirectoryPath()))	{					
+					if(StringZZZ.startsWithIgnoreCase(sDirectoryPath, this.getCriterion()))	{					
 						bReturn = true;
 						break main;
 					}

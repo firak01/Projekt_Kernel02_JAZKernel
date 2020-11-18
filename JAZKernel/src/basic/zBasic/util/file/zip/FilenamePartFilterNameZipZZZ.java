@@ -36,7 +36,7 @@ public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilename
 				//Ende des JarPfads als Dateinamens berechnen			
 				String sNameCur;
 //				try {									
-					if(StringZZZ.endsWithIgnoreCase(sName, JarEasyUtilZZZ.sDIRECTORY_SEPARATOR + this.getName())) {
+					if(StringZZZ.endsWithIgnoreCase(sName, this.getCriterion())) {
 						bReturn = true;
 						break main;
 					}
@@ -65,7 +65,7 @@ public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilename
 	}
 	@Override
 	public String getCriterion() {
-		return this.getName();
+		return JarEasyUtilZZZ.sDIRECTORY_SEPARATOR + this.getName();
 	}
 	
 

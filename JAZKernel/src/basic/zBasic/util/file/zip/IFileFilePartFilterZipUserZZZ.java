@@ -25,5 +25,6 @@ public interface IFileFilePartFilterZipUserZZZ {
 	
 	public IFilenamePartFilterZipZZZ computeFilePartFilterUsed() throws ExceptionZZZ;
 	public String computeCriterionInJarUsed() throws ExceptionZZZ;
+	public String computeDirectoryPathInJarUsed() throws ExceptionZZZ;
 	
 }

@@ -37,10 +37,8 @@ public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFil
 						bReturn = true;
 						break main;
 					}	
-					String sPathTotal=this.getCriterion();
-					String sName = ze.getName();
-					
-					if(sPathTotal.equals(sName)) {//Genaue übereinstimmung zwischen Pfad und Dateiname. Also EINZIGARTIG!
+					String sName = ze.getName();					
+					if(sName.equals(this.getCriterion())) {//Genaue übereinstimmung zwischen Pfad und Dateiname. Also EINZIGARTIG!
 						bReturn = true;
 						break main;
 					}

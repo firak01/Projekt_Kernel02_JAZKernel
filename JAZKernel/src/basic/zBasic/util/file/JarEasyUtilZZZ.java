@@ -295,7 +295,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			
 			//Zuerst den genauen Namensfilter-Verwenden, sofern vorhanden, danach den allgemeineren Verzeichnisfilter
 			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.computeFilePartFilterUsed();
-			String sDirPathInJar = objFilterFileInJar.computeCriterionInJarUsed();
+			String sDirPathInJar = objFilterFileInJar.computeDirectoryPathInJarUsed();
 			objaReturn = JarEasyUtilZZZ.findFileInJar_(objFileJar, objPartFilter, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
 												
 		}//End main		 	
@@ -337,11 +337,12 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "IFilenamePartFilterZipZZZ Object missing.", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
 			}	
-			
-			if(StringZZZ.isEmpty(sDirPathInJarIn)) {
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "Directory Path in Jar Stringobject. ", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
+				
+//Merke: Wenn man nur nach dem Dateinamen sucht, dann ist der Pfad in der Jar Datei natürlich leer.
+//			if(StringZZZ.isEmpty(sDirPathInJarIn)) {
+//				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "Directory Path in Jar Stringobject. ", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+//				throw ez;
+//			}
 			
 			//SUCHE IN JAR FILE		
 			String archiveName = objFileJar.getAbsolutePath();			
@@ -361,9 +362,16 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirPathRoot='"+sTargetDirPathRoot+"'";
 		   	System.out.println(sLog);
 			
-			String sTargetDirPathFromJar = JarEasyUtilZZZ.toFilePath(sDirPathInJarIn);
-			String sTargetDirPath = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sTargetDirPathFromJar);
-						
+		  //MErke: Wenn ein reiner File-Filter verwendet wird, dann ist der DirPathInJar LEER, 
+		   	//hier ist also der Dateiname mit einem Slash davor!!!
+		   	String sTargetDirPath=null;
+		   	if(!StringZZZ.isEmpty(sDirPathInJarIn)) {
+		   		String sTargetDirPathFromJar = JarEasyUtilZZZ.toFilePath(sDirPathInJarIn);
+		   		sTargetDirPath = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sTargetDirPathFromJar);
+		   	}else {
+		   		sTargetDirPath = sTargetDirPathRoot;
+		   	}
+			
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirPath='"+sTargetDirPath+"'";
 		   	System.out.println(sLog);
 			
