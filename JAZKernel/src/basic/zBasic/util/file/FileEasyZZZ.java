@@ -773,7 +773,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
 		if(objFile==null){
-			ExceptionZZZ ez  = new ExceptionZZZ("File Object", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+			ExceptionZZZ ez  = new ExceptionZZZ("File Object", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
 		if(objFile.exists()==false){
@@ -794,6 +794,43 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	}
 	return bReturn;
 }
+
+	/**Ersetzte das angegebene Verzeichnis durch ein neu erstelltes.
+	 * @param objFileDirectory
+	 * @return
+	 * @author Fritz Lindhauer, 20.11.2020, 13:56:52
+	 * @throws ExceptionZZZ 
+	 */
+	public static boolean replaceDirectory(File objFileDirectory) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			String sLog;
+			if(objFileDirectory==null) {
+				ExceptionZZZ ez  = new ExceptionZZZ("File Object", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			
+			if(!objFileDirectory.exists()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: VERZEICHNIS EXOSTIERT NOCH NICHT '" + objFileDirectory.getAbsolutePath() + "'";
+			   	System.out.println(sLog);
+			   	bReturn = FileEasyZZZ.createDirectory(objFileDirectory);
+			   	break main;
+			}
+			
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": Keine Operation mit dem Verzeichnis möglich '" + objFileDirectory.getAbsolutePath() + "'";
+		   	System.out.println(sLog);
+		   	boolean bSuccess = FileEasyZZZ.removeDirectoryContent(objFileDirectory, true);	
+			if(!bSuccess) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (I) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem Verzeichnis möglich '" + objFileDirectory.getAbsolutePath() + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}	
+			bReturn = true;
+		}//end main:
+	return bReturn;
+	}
 	
 	
 	/** Löscht ein Verzeichnis.

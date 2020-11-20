@@ -348,51 +348,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			String archiveName = objFileJar.getAbsolutePath();			
 			JarInfo objJarInfoFiltered = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
 			
-			//RÜCKGABE ALS DATEIOBJEKT, DAS DANN SOGAR GESPEICHERT WIRD
-			String sTargetDirPathRoot;
-			if(StringZZZ.isEmpty(sTargetDirPathRootIn)){
-				sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), "FGL");				
-			}else {
-				if(FileEasyZZZ.isPathAbsolut(sTargetDirPathRootIn)) {
-					sTargetDirPathRoot = sTargetDirPathRootIn;
-				}else {
-					sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirPathRootIn);
-				}
-			}
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirPathRoot='"+sTargetDirPathRoot+"'";
-		   	System.out.println(sLog);
 			
-		  //MErke: Wenn ein reiner File-Filter verwendet wird, dann ist der DirPathInJar LEER, 
-		   	//hier ist also der Dateiname mit einem Slash davor!!!
-		   	String sTargetDirPath=null;
-		   	if(!StringZZZ.isEmpty(sDirPathInJarIn)) {
-		   		String sTargetDirPathFromJar = JarEasyUtilZZZ.toFilePath(sDirPathInJarIn);
-		   		sTargetDirPath = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sTargetDirPathFromJar);
-		   	}else {
-		   		sTargetDirPath = sTargetDirPathRoot;
-		   	}
-			
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirPath='"+sTargetDirPath+"'";
-		   	System.out.println(sLog);
-			
-			File objFileTemp = new File(sTargetDirPath);
-			boolean bSuccess = false;
-			if(!objFileTemp.exists()) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (HA) XXXXXXXXXXXXXX.";
-			   	System.out.println(sLog);
-				bSuccess = FileEasyZZZ.createDirectory(sTargetDirPath);
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (HB) XXXXXXXXXXXXXX.";
-			   	System.out.println(sLog);
-				bSuccess = FileEasyZZZ.removeDirectoryContent(objFileTemp, true);
-			}
-			if(!bSuccess) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (I) XXXXXXXXXXXXXX.";
-			   	System.out.println(sLog);
-			   	
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem temporären Verzeichnis möglich '" + sTargetDirPath + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
 			
 			//##############################################################
 //			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
@@ -408,9 +364,22 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			Set<String> setEntryName = ht.keySet();
 			Iterator<String> itEntryName = setEntryName.iterator();
 			ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-			try {					
+			try {
+				boolean bTargetDirPathRootCreated=false; File objFileTemp=null; String sTargetDirPathRoot=null;
 				ZipFile zf = objJarInfoFiltered.getZipFile();
 				while(itEntryName.hasNext()) {
+					
+					//Achtung: Wenn die gesuchte Ressource nicht in der Jar - Datei gefunden worden ist, dann darf auch nicht das Zielverzeichnis erstellt worden sein.
+					//         Darum erst jetzt die Verzeichnisse erstellen.
+					if(!bTargetDirPathRootCreated) {
+						ReferenceZZZ<String> strTargetDirPath = new ReferenceZZZ<String>(sTargetDirPathRootIn);
+						ReferenceZZZ<String> strPathInJar = new ReferenceZZZ<String>(sDirPathInJarIn);
+						ReferenceZZZ<String> strFilenameInJar = new ReferenceZZZ<String>();						
+						objFileTemp = JarEasyUtilZZZ.createTargetDirectoryRoot(strTargetDirPath, strPathInJar, strFilenameInJar);
+						
+						bTargetDirPathRootCreated=true;
+						sTargetDirPathRoot = strTargetDirPath.get();
+					}					
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
@@ -441,7 +410,114 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 	return objaReturn;
 	}
 	
+	public static File computeTargetDirectoryUsedAsTrunk(String sTargetDirPathRootIn, String sPathInJarIn, String sFilenameInJarIn) throws ExceptionZZZ {
+		ReferenceZZZ<String> strTargetDirPath = new ReferenceZZZ<String>(sTargetDirPathRootIn);
+		ReferenceZZZ<String> strPathInJar = new ReferenceZZZ<String>(sPathInJarIn);
+		ReferenceZZZ<String> strFilenameInJar = new ReferenceZZZ<String>(sFilenameInJarIn);
+		return JarEasyUtilZZZ.computeTargetDirectoryUsedAsTrunk(strTargetDirPath, strPathInJar, strFilenameInJar);
+	}
 	
+	public static File computeTargetDirectoryUsedAsTrunk(ReferenceZZZ<String> strTargetDirPathRoot, ReferenceZZZ<String> strPathInJar, ReferenceZZZ<String> strFilenameInJar) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			//RÜCKGABE DES VERZEICHNISSES ALS FILE-OBJEKT, DAS DANN ERZEUGT WERDEN KANN.
+			String sLog;		
+			
+			//##################
+			// A) Pfade und Dateiname in der JAR - Datei
+			String sDirPathInJar = strPathInJar.get();
+			String sFilenameInJar = strFilenameInJar.get();
+			
+			//Nun alles erneut ausrechnen und für die Rückgabe vorbereiten.
+			String sFilePathTotal;
+			if(StringZZZ.isEmpty(sDirPathInJar) && !StringZZZ.isEmpty(sFilenameInJar)) {
+				sDirPathInJar = JarEasyUtilZZZ.computeDirectoryFromJarPath(sFilenameInJar);
+				sFilenameInJar = JarEasyUtilZZZ.computeFilenameFromJarPath(sFilenameInJar);	
+			}else if(!StringZZZ.isEmpty(sDirPathInJar) && StringZZZ.isEmpty(sFilenameInJar)) {
+				sDirPathInJar = JarEasyUtilZZZ.toJarDirectoryPath(sDirPathInJar);//Sicherheithalber ggfs. noch ein / anhängen.
+				sDirPathInJar = JarEasyUtilZZZ.computeDirectoryFromJarPath(sDirPathInJar);
+				sFilenameInJar = JarEasyUtilZZZ.computeFilenameFromJarPath(sDirPathInJar);							
+			}
+			
+			//Nun alles für die Rückgabe vorbereiten.			
+			strPathInJar.set(sDirPathInJar);
+			strFilenameInJar.set(sFilenameInJar);
+
+			//##################
+			//Da ggfs. der Pfad im Dateinamen steht, hier erst einmal alles zu einem String zusammenfassen.
+			sFilePathTotal = JarEasyUtilZZZ.joinJarFilePathName(sDirPathInJar, sFilenameInJar);
+
+			// B) (Temporärer) Pfad auf der Platte als Zielverzeichnis für die extrahierten Dateien			
+			String sTargetDirPathRoot=strTargetDirPathRoot.get();
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": Übergebener Zieldateipfad. '" + sTargetDirPathRoot + "'";
+		   	System.out.println(sLog);
+			
+			if(StringZZZ.isEmpty(sTargetDirPathRoot) && StringZZZ.isEmpty(sDirPathInJar)){
+				//FALL 1: Kein Zielverzeichnis und Kein Pfad in der Jar Datei angegeben
+				sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), "ZZZ");				
+			}else if(StringZZZ.isEmpty(sTargetDirPathRoot) && !StringZZZ.isEmpty(sDirPathInJar)) {
+				//FALL 2: Kein Zielverzeichnis, aber Pfad in der Jar Datei angegeben
+				sDirPathInJar = JarEasyUtilZZZ.toFilePath(sDirPathInJar);
+				sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sDirPathInJar);				
+			}else {
+				//FALL 3: Zielverzeichnis angegeben
+				if(!FileEasyZZZ.isPathAbsolut(sTargetDirPathRoot)) {
+					//3A) Als relativer Pfad					
+					sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirPathRoot);
+					
+					if(!StringZZZ.isEmpty(sDirPathInJar)) {
+						sDirPathInJar = JarEasyUtilZZZ.toFilePath(sDirPathInJar);
+						sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sDirPathInJar);
+					}else {
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: Kein Pfadbestandteil für die Datei innerhalb der JarDatei übergeben. VERMUTLICH SUCHE IN ALLEN VERZEICHNISSEN.";
+					   	System.out.println(sLog);					
+					}
+				}else {
+					//3B) Als absoluter Pfad
+					sDirPathInJar = JarEasyUtilZZZ.toFilePath(sDirPathInJar);
+				   	sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sDirPathInJar);					
+				}
+			}
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirPathRoot='"+sTargetDirPathRoot+"'";
+		   	System.out.println(sLog);
+		   	
+		   	//Für die Rückgabe vorbereiten.
+		   	strTargetDirPathRoot.set(sTargetDirPathRoot);
+			objReturn = new File(sTargetDirPathRoot);			
+		}
+		return objReturn;
+	}
+	
+	public static File createTargetDirectoryRoot(String sTargetDirPathRootIn, String sPathInJarIn, String sFilenameInJarIn) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			ReferenceZZZ<String> strTargetDirPath = new ReferenceZZZ<String>(sTargetDirPathRootIn);
+			ReferenceZZZ<String> strPathInJar = new ReferenceZZZ<String>(sPathInJarIn);
+			ReferenceZZZ<String> strFilenameInJar = new ReferenceZZZ<String>(sFilenameInJarIn);
+			File fileDirTrunk = JarEasyUtilZZZ.computeTargetDirectoryUsedAsTrunk(strTargetDirPath, strPathInJar, strFilenameInJar);
+	
+			boolean bSuccess = FileEasyZZZ.replaceDirectory(fileDirTrunk);
+			if(bSuccess) {
+				objReturn = fileDirTrunk;
+				break main;
+			}
+		}//end main:
+		return objReturn;
+	}
+	
+	public static File createTargetDirectoryRoot(ReferenceZZZ<String> strTargetDirPath, ReferenceZZZ<String> strPathInJar, ReferenceZZZ<String> strFilenameInJar) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			File fileDirTrunk = JarEasyUtilZZZ.computeTargetDirectoryUsedAsTrunk(strTargetDirPath, strPathInJar, strFilenameInJar);
+		
+			boolean bSuccess = FileEasyZZZ.replaceDirectory(fileDirTrunk);
+			if(bSuccess) {
+				objReturn = fileDirTrunk;
+				break main;
+			}
+		}//end main:
+		return objReturn;
+	}
 
 	/** Prüft, ob die Datei / Ressource einer JAR-Datei liegt.
 	 *  Merke: In einer .jar Datei kann kein Zugriff über File-Objekte erfolgen.
@@ -959,14 +1035,14 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
 	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
 	    	
-	    	if(JarEasyUtilZZZ.isJarPathValid(sJarPath)) {
+	    	if(JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath)) {
 	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);		    	
 	    		sReturn = strDirectory.get();
 	    		break main;
 	    	}
 	    	
-	    	if(FileEasyZZZ.isPathValid(sJarPath)) {
-	    		FileEasyZZZ.splitFilePathName(sJarPath, strDirectory, strFileName);
+	    	if(JarEasyUtilZZZ.isJarPathFileValid(sJarPath)) {
+	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);
 	    		sReturn = strDirectory.get();
 	    		break main;
 	    	}
@@ -980,14 +1056,14 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
 	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
 	    	
-	    	if(JarEasyUtilZZZ.isJarPathValid(sJarPath)) {
+	    	if(JarEasyUtilZZZ.isJarPathFileValid(sJarPath)) {
 	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);	
 	    		sReturn = strFileName.get();
 	    		break main;
 	    	}
 	    	
-	    	if(FileEasyZZZ.isPathValid(sJarPath)) {
-	    		FileEasyZZZ.splitFilePathName(sJarPath, strDirectory, strFileName);
+	    	if(JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath)) {
+	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);
 	    		sReturn = strFileName.get();
 	    		break main;
 	    	}
@@ -1086,8 +1162,14 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 	public static String joinJarFilePathName(String sDirectoryPath, String sFilePath) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			String sDirectoryPathNormed = JarEasyUtilZZZ.toFilePath(sDirectoryPath);
-			String sFilePathNormed = JarEasyUtilZZZ.toFilePath(sFilePath);
+			String sDirectoryPathNormed = "";
+			if(!StringZZZ.isEmpty(sDirectoryPath)) {
+				sDirectoryPathNormed = JarEasyUtilZZZ.toFilePath(sDirectoryPath);
+			}
+			String sFilePathNormed = "";
+			if(!StringZZZ.isEmpty(sFilePath)){
+				sFilePathNormed = JarEasyUtilZZZ.toFilePath(sFilePath);
+			}
 			
 			sReturn = FileEasyZZZ.joinFilePathName(sDirectoryPathNormed, sFilePathNormed);
 			sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn);

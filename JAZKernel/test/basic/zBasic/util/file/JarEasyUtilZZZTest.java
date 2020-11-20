@@ -74,6 +74,58 @@ public class JarEasyUtilZZZTest extends TestCase{
 		}
 	}//END tearDown
 	
+	public void testComputeTargetDirectoryUsedAsTrunk() {
+		try {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		   
+			String sTargetDirectoryPathRoot; String sPathInJarIn; String sFilenameInJarIn;	    
+			File fileDirectory;
+			
+			//VARIANTE 1) Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
+		    sTargetDirectoryPathRoot = "NichtDaFGL\\FIND_RESOURCE_DIRECTORY_EMPTY";
+		    sPathInJarIn = null;
+		    sFilenameInJarIn = "bat/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "', sPathInJarIn= '" + sPathInJarIn + "', sFilenameInJarIn= '"+ sFilenameInJarIn +"'";
+			System.out.println(sLog);
+		    fileDirectory = JarEasyUtilZZZ.computeTargetDirectoryUsedAsTrunk(sTargetDirectoryPathRoot, sPathInJarIn, sFilenameInJarIn);
+		    assertNotNull(fileDirectory);
+		    assertFalse(fileDirectory.exists()); //Diese Verzeichnisse sollen NOCH nicht erstellt sein.
+		    
+		    //VARIANTE 2) Das Verzeichnis mit allen darin enthaltenen Dateien erstellen;
+			sTargetDirectoryPathRoot = "NichtDaFGL\\FIND_RESOURCE_FILE02";
+			sPathInJarIn = "bat";
+			sFilenameInJarIn = "KernelZZZTest_GUIStarter_JarEasyUtil.bat";
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "', sPathInJarIn= '" + sPathInJarIn + "', sFilenameInJarIn= '"+ sFilenameInJarIn +"'";
+			System.out.println(sLog);
+			fileDirectory = JarEasyUtilZZZ.computeTargetDirectoryUsedAsTrunk(sTargetDirectoryPathRoot, sPathInJarIn, sFilenameInJarIn);
+		    assertNotNull(fileDirectory);
+		    assertFalse(fileDirectory.exists()); //Diese Verzeichnisse sollen NOCH nicht erstellt sein.
+		    
+		    //VARIANTE 3) Nur Pfad angegeben
+			sTargetDirectoryPathRoot = "NichtDaFGL\\FIND_RESOURCE_FILE03";
+			sPathInJarIn = "bat";
+			sFilenameInJarIn = null;
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "', sPathInJarIn= '" + sPathInJarIn + "', sFilenameInJarIn= '"+ sFilenameInJarIn +"'";
+			System.out.println(sLog);
+			fileDirectory = JarEasyUtilZZZ.computeTargetDirectoryUsedAsTrunk(sTargetDirectoryPathRoot, sPathInJarIn, sFilenameInJarIn);
+		    assertNotNull(fileDirectory);
+		    assertFalse(fileDirectory.exists()); //Diese Verzeichnisse sollen NOCH nicht erstellt sein.
+		    
+		    //VARIANTE 4) 
+		    sTargetDirectoryPathRoot = "NichtDaFGL\\FIND_RESOURCE_FILE04";
+		    sPathInJarIn = null;
+		    sFilenameInJarIn = "KernelZZZTest_GUIStarter_JarEasyUtil.bat";
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+": sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "', sPathInJarIn= '" + sPathInJarIn + "', sFilenameInJarIn= '"+ sFilenameInJarIn +"'";
+			System.out.println(sLog);
+			fileDirectory = JarEasyUtilZZZ.computeTargetDirectoryUsedAsTrunk(sTargetDirectoryPathRoot, sPathInJarIn, sFilenameInJarIn);
+		    assertNotNull(fileDirectory);
+		    assertFalse(fileDirectory.exists()); //Diese Verzeichnisse sollen NOCH nicht erstellt sein.		    		    
+		    
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		} 	   
+	}
 	
 	public void testIsJarPathDirectoryValid() {
 		try {
@@ -412,6 +464,38 @@ public class JarEasyUtilZZZTest extends TestCase{
 			
 			//#####################################################################################
 			//TESTFÄLLE FÜR NICHTS GEFUNDEN: 
+			//VARIANTE 1a: Pfad und Dateinamen im Dateinamen, PFAD NICHT VORHANDEN
+		    sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE01";
+		    sPath = null;
+		    sFilename = "baetschi/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
+		    
+		    //Theoretisch sollte das Verzeichnis erstellbar sein;
+		    objFile = JarEasyUtilZZZ.createTargetDirectoryRoot(sTargetDirectoryPathRoot, sPath, sFilename);
+		    assertNotNull("Verzeichnis sollte erstellt worden sein. ", objFile);
+		    assertTrue("Dies sollte auf der Platte sogar existieren", objFile.exists());
+		    
+		    //Nun aber wieder zur Praxis.
+			//Dieser Filter hat Unterfilter, die er auswählt anhand der Eingabewerte
+			objFilterFileInJar = new FileFileFilterInJarZZZ(sPath, sFilename);
+			objaReturn = JarEasyUtilZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPathRoot);					
+			assertNull("Sollte nichts gefunden haben", objaReturn);
+			
+			
+			//VARIANTE 1b: Pfad und Dateinamen im Dateinamen, DATEI NICHT VORHANDEN
+		    sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE01";
+		    sPath = null;
+		    sFilename = "bat/NixdaKernelZZZTest_GUIStarter_JarEasyUtil.bat";
+		   
+		    //Theoretisch sollte das Verzeichnis erstellbar sein;
+		    objFile = JarEasyUtilZZZ.createTargetDirectoryRoot(sTargetDirectoryPathRoot, sPath, sFilename);
+		    assertNotNull("Verzeichnis sollte erstellt worden sein. ", objFile);
+		    assertTrue("Dies sollte auf der Platte sogar existieren", objFile.exists());
+		   
+		    
+			//Dieser Filter hat Unterfilter, die er auswählt anhand der Eingabewerte
+			objFilterFileInJar = new FileFileFilterInJarZZZ(sPath, sFilename);
+			objaReturn = JarEasyUtilZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPathRoot);					
+			assertNull("Sollte nichts gefunden haben", objaReturn);
 			
 			
 			
