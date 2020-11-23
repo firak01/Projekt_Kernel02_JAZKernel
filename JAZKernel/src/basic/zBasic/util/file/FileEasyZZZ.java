@@ -2423,6 +2423,16 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	}
 
 
+	/** Lösche das angegebene Verzeichnis, aber nur das Verzeichnis und nicht ggfs. vorhandenen Inhalt (Dateien und Unterverzeichnisse)
+	 * @param objFileIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 23.11.2020, 09:14:55
+	 */
+	public static boolean removeDirectory(File objFileIn) throws ExceptionZZZ{
+		return FileEasyZZZ.removeDirectory(objFileIn,false,false);
+	}
+	
 	/** Entferne das Verzeichnis. Wenn eine Datei übergeben wird, entferne das Elternverzeichnis. 
 		 * @param objFileIn
 		 * @param bEmptyDirectoryBefore

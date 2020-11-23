@@ -62,7 +62,7 @@ public class FileEasyZZZTest extends TestCase{
 			//Merke: Verzeichnisnamen mit Zeitstempel versehen, damit ist es immer wieder neu
 			//       Das ist wichtig, da beim Extrahieren in ein bestehndes Verzeichnis versucht würde dies zu löschen
 			//       aber das Löschen soll ja erst hier getestet werden!!!
-			sDirToExtractTo = "FGL_TEST_REMOVE_DIRECTORY";
+			sDirToExtractTo = "FGL\\FILEASYZZZTEST";
 			String sTimestamp = DateTimeZZZ.computeTimestampString();
 			sDirToExtractTo = sDirToExtractTo+sTimestamp;
 			
@@ -89,6 +89,12 @@ public class FileEasyZZZTest extends TestCase{
 			File objDir = new File(sTargetDirPathTotal);
 			File[] objaDirRemoved = objDir.listFiles();
 			assertFalse("Es sollte kein Verzeichnis/Datei nach dem entfernen übrig sein", objaDirRemoved.length>=1);
+			assertTrue("Das Verzeichnis '" + objDir.getAbsolutePath() + "' sollte erfolgreich geleert worden sein.", bErg);
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//LÖSCHEN DES LEEREN VERZEICHNISSES SELBST
+			bErg = FileEasyZZZ.removeDirectory(objDir);
+			assertTrue("Das Verzeichnis '" + objDir.getAbsolutePath() + "' sollte leer sein und gelöscht worden sein.", bErg);
 			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
