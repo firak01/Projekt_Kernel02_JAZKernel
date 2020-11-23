@@ -811,13 +811,13 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 			}
 			
 			if(!objFileDirectory.exists()) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: VERZEICHNIS EXOSTIERT NOCH NICHT '" + objFileDirectory.getAbsolutePath() + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: VERZEICHNIS EXISTIERT NOCH NICHT '" + objFileDirectory.getAbsolutePath() + "'";
 			   	System.out.println(sLog);
 			   	bReturn = FileEasyZZZ.createDirectory(objFileDirectory);
 			   	break main;
 			}
 			
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": Keine Operation mit dem Verzeichnis möglich '" + objFileDirectory.getAbsolutePath() + "'";
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: VERZEICHNIS EXISTIERT " + objFileDirectory.getAbsolutePath() + "'";
 		   	System.out.println(sLog);
 		   	boolean bSuccess = FileEasyZZZ.removeDirectoryContent(objFileDirectory, true);	
 			if(!bSuccess) {

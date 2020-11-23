@@ -73,7 +73,8 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen										
-			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHOUTFILES";;			
+			sDirToExtractTo = "FGL\\EXTRACT_DIRECTORY_WITHOUTFILES";
+			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo,false);
 			if(objaDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -87,7 +88,7 @@ public class JarEasyZZZTest extends TestCase{
 			//Ab) Erfolgsfall, mit Dateien erzeugen	
 		//TODOGOON; //HIER WIRD DAS UNTERVERZEICHNIS IRGENDWIE ALS DATEI ERZEUGT...
 			
-			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES";			
+			sDirToExtractTo = "FGL\\EXTRACT_DIRECTORY_WITHFILES";			
 			objDirCreated = JarEasyZZZ.extractDirectoryToTemp(objFileJarAsSource, sDirToExtract, sDirToExtractTo);
 			if(objDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -97,7 +98,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Ac) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES02";			
+			sDirToExtractTo = "FGL\\EXTRACT_DIRECTORY_WITHFILES02";			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, true);
 			if(objaDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -113,7 +114,7 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 			//Ba) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHOUTFILES";				
+			sDirToExtractTo = "FGL\\EXTRACT_DIRECTORY_WITHOUTFILES";				
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, false);
 			if(objDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -125,7 +126,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Bb) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES";					
+			sDirToExtractTo = "FGL\\EXTRACT_DIRECTORY_WITHFILES";					
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, true);
 			if(objDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -137,7 +138,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Bc) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL_EXTRACT_DIRECTORY_WITHFILES02";			
+			sDirToExtractTo = "FGL\\EXTRACT_DIRECTORY_WITHFILES02";			
 			objaDirCreated = JarEasyZZZ.extractDirectoryToTemps(objFileJarAsSource, sDirToExtract, sDirToExtractTo, true);
 			if(objDirCreated==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
@@ -216,8 +217,7 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_TRUNK_OF_DIRECTORY";
-			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+			sDirToExtractTo = "FGL\\TRUNK_OF_DIRECTORY";
 			
 			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
 			File[] objaCreated01 = JarEasyZZZ.peekResourceDirectory(objJar,sDirToExtract, sDirToExtractTo, false);
@@ -229,7 +229,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Ab) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL_TRUNK_OF_FILES";
+			sDirToExtractTo = "FGL\\TRUNK_OF_FILES";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
 			File[] objaCreated02 = JarEasyZZZ.peekResourceDirectory(objJar, sDirToExtract, sDirToExtractTo, true);
 			if(objaCreated02==null) {
@@ -273,7 +273,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Ab) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL_TRUNK2_OF_FILES";
+			sDirToExtractTo = "FGL\\TRUNK2_OF_FILES";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
 			ZipEntry[] objaCreated04 = JarEasyZZZ.extractFromJarAsTrunkZipEntries(objJar, sDirToExtract, sDirToExtractTo, true);
 			if(objaCreated04==null) {
@@ -285,7 +285,7 @@ public class JarEasyZZZTest extends TestCase{
 			
 			
 			//Ba) Verzeichnis mit Unterverzeichnissen
-			sDirToExtractTo = "FGL_TRUNK3_OF_DIRECTORY";
+			sDirToExtractTo = "FGL\\TRUNK3_OF_DIRECTORY";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
 			
 			
@@ -304,9 +304,8 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_TRUNKENTRY_OF_DIRECTORYDUMMY"; //D.h. dieses Verzeichnis darf nicht erstellt werden.
-			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
-					    
+			sDirToExtractTo = "FGL\\TRUNKENTRY_OF_DIRECTORYDUMMY"; //D.h. dieses Verzeichnis darf nicht erstellt werden.
+				    
 			//VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
@@ -347,8 +346,7 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_TRUNKENTRY_OF_DIRECTORY";
-			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+			sDirToExtractTo = "FGL\\TRUNKENTRY_OF_DIRECTORY";
 					    
 			//VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			boolean bErg = FileEasyZZZ.removeDirectoryContent(sDirToExtractTo);

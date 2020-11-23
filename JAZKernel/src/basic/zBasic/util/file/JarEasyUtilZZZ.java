@@ -385,10 +385,12 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				   	
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) Extrahierter Eintrag: '" + zeTemp.getName() + "'";
+				   	System.out.println(sLog);
 					
 					File objFileTempInTemp = ZipEasyZZZ.extractZipEntryToDirectoryRoot(zf, zeTemp, sTargetDirPathRoot);
 					
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JC) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JC) Extrahierter Eintrag als Datei: '" + objFileTempInTemp.getAbsolutePath() + "'";
 				   	System.out.println(sLog);
 					objaFileTempInTemp.add(objFileTempInTemp);
 				}					

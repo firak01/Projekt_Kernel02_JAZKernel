@@ -597,7 +597,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				}
 								
 			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 				throw ez;
 		    }	    
 			
@@ -898,7 +898,7 @@ File[] objaReturn = null;
 				objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar,sTargetDirectoryFilepathIn, true);
 			
 			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 				throw ez;
 		    }	    
 		}//end main:
@@ -927,7 +927,7 @@ File[] objaReturn = null;
 				objaReturn = JarEasyZZZ.extractDirectoryToTemps_(objFileAsJar, sDirectoryFilePathInJar,sTargetDirectoryFilepathIn, bWithFiles);
 			
 			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 				throw ez;
 		    }	    
 		}//end main:
@@ -976,9 +976,6 @@ File[] objaReturn = null;
 				}
 			
 			}catch (Exception e){
-				
-				//TODOGOON; //Ich will endlich über e.getMessage die exceptionZZZ Message bekommen!!!
-				
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 				throw ez;
 		    }	    
@@ -1022,7 +1019,7 @@ File[] objaReturn = null;
 				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
 				
 			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 				throw ez;
 		    }	    
 			}//end main:

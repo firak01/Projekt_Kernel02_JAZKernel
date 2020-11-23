@@ -85,22 +85,22 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			//Falls das Verzeichnis nicht passt	
 			try {
 				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
-					this.objPartFilterDirectory.setCriterion(this.getDirectoryPath());
-					if(this.objPartFilterDirectory.accept(ze)==true) {
-						bReturn = true;
-						break main;
+					if(this.objPartFilterDirectory!=null) {
+						this.objPartFilterDirectory.setCriterion(this.getDirectoryPath());
+						if(this.objPartFilterDirectory.accept(ze)==true) {
+							bReturn = true;
+							break main;
+						}
 					}
 						
-					
-					this.objPartFilterDirectoryWithContent.setCriterion(this.getDirectoryPath());
-					if(this.objPartFilterDirectoryWithContent.accept(ze)==true) {
-						bReturn = true;
-						break main;
+					if(this.objPartFilterDirectoryWithContent!=null) {
+						this.objPartFilterDirectoryWithContent.setCriterion(this.getDirectoryPath());
+						if(this.objPartFilterDirectoryWithContent.accept(ze)==true) {
+							bReturn = true;
+							break main;
+						}
 					}
-					
-				}
-				
-				
+				}								
 			} catch (ExceptionZZZ ez) {
 				String sLog = "AbstractFileDirectoryFilterInJarZZZ -> ExceptionZZZ: '" + ez.getMessageLast() +"'.";
 				System.out.println(sLog);

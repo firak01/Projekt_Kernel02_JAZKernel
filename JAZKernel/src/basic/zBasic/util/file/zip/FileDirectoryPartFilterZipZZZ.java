@@ -45,7 +45,9 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 				String sName = ze.getName();
 								
 				//Verzeichnisname vergleichen!!!
-				if(sName.equals(this.getCriterion())) bReturn = true;	
+				if(sName.equals(this.getCriterion())) { //TODOGOON: Aber was ist mit Unterverzeichnissen. Das wäre doch ein reiner NUR das Vezeichnis - Filter...
+					bReturn = true;	
+				}
 			}//END main:
 			return bReturn;
 	}
