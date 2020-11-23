@@ -468,8 +468,8 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 					sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirPathRoot);
 					
 					if(!StringZZZ.isEmpty(sDirPathInJar)) {
-						sDirPathInJar = JarEasyUtilZZZ.toFilePath(sDirPathInJar);
-						sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sDirPathInJar);
+						//sDirPathInJar = JarEasyUtilZZZ.toFilePath(sDirPathInJar);
+						//sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(sTargetDirPathRoot, sDirPathInJar);
 					}else {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: Kein Pfadbestandteil für die Datei innerhalb der JarDatei übergeben. VERMUTLICH SUCHE IN ALLEN VERZEICHNISSEN.";
 					   	System.out.println(sLog);					

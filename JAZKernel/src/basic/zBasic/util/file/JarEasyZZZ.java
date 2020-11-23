@@ -23,6 +23,7 @@ import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.jar.FileDirectoryFilterInJarZZZ;
@@ -538,8 +539,8 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			return objaReturn;
 	}
 	
-	public static File extractFromJarAsTrunk(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn,ReferenceZZZ<HashMap<ZipEntry,File>>hashmapTrunk) throws ExceptionZZZ {	
-		File objReturn = null; //Das soll das Target - Directory sein
+	public static boolean extractFromJarAsTrunk(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn,ReferenceZZZ<HashMap<ZipEntry,File>>hashmapTrunk) throws ExceptionZZZ {	
+		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sSourceDirectoryPath)){
 				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -556,15 +557,22 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			}else {
 				sTargetDirectoryPath = sTargetDirectoryPathIn;
 			}
-			objReturn = new File(sTargetDirectoryPath);//Aber: Das sollte damit nicht automatisch erstellt sein.
 			
 			//Merke: Weil es "trunk" ist, wird das Verzeichnis HIER nicht erstellt, sondern erst beim Speichern des Trunk-Inhalts.
 			//Merke: Hier gibt es zudem eine "Call by Reference" Problematik, darum über ein Zwischenobjekt arbeiten und dort hinein die Objekte ablegen.
 			HashMap<ZipEntry,File> hmTrunk = hashmapTrunk.get();
 			hmTrunk = JarEasyZZZ.extractFromJarAsTrunk(objJarFile, sSourceDirectoryPath, sTargetDirectoryPath);	//DAS DAUERT LANGE					
 			hashmapTrunk.set(hmTrunk);
+			
+			/* Merke: Man kann das ZipEntry-Objekt nicht so konstruieren, dass man es für die HashMap als key verwenden kann.
+			sSourceDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sSourceDirectoryPath);
+			ZipEntry ze = new ZipEntry(sSourceDirectoryPath);
+			File objReturn = hashmapTrunk.get().get(ze); //Aber: Das sollte damit nicht automatisch erstellt sein.
+			System.out.println("T"); */
+
+			bReturn = true;
 		}//end main:
-		return objReturn;
+		return bReturn;
 	}
 	
 	public static HashMap<ZipEntry,File>extractFromJarAsTrunk(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ{
@@ -1118,9 +1126,10 @@ File[] objaReturn = null;
 			
 			String sTargetDirectoryPath;
 			if(StringZZZ.isEmpty(sTargetDirectoryPathIn)){
-				sTargetDirectoryPath= ".";
+				sTargetDirectoryPath= EnvironmentZZZ.getHostDirectoryTemp();
 			}else {
-				sTargetDirectoryPath = sTargetDirectoryPathIn;
+				sTargetDirectoryPath= EnvironmentZZZ.getHostDirectoryTemp();
+				sTargetDirectoryPath = FileEasyZZZ.joinFilePathName(sTargetDirectoryPath, sTargetDirectoryPathIn);
 			}
 			
 			String sEntryName = ze.getName();

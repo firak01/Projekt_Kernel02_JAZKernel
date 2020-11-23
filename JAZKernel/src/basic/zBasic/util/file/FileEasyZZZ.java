@@ -13,6 +13,9 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
@@ -85,7 +88,7 @@ private FileEasyZZZ(){
 }
 
 /** Überprüft, ob unter dem angegebenen pfadnamen "fileName" eine Datei existiert.
- * 
+ *  Merke: Das hat einen anderen Algorithums, als die gleiche Methode mit File-Objekt als Parameter
  * @param fileName
  * @return
  * @throws ExceptionZZZ 
@@ -101,6 +104,77 @@ public static boolean exists (String sFileName) throws ExceptionZZZ {
 		//Prüfen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad ber�cksichtig.
 		File f = FileEasyZZZ.getFile(sFileName);
 		if(f!=null) bReturn = f.exists();
+	}//end main:
+	return bReturn;
+} 
+
+/** Überprüft, ob das angegebene Fileobjekt existiert.
+ *  Merke1: objDir.exists(); //!!! Pfade, die auf ein Verzeichnis weisen existieren immer
+ *  Merke2: Das hat einen anderen Algorithums, als die gleiche Methode mit String Parameter
+ *  				//Das geht für Verzeichnisse sicher nur mit Using java.nio.file.Files, seit Java 7
+
+ * @param fileName
+ * @return
+ * @throws ExceptionZZZ 
+ */
+public static boolean exists(File objFile) throws ExceptionZZZ {
+	boolean bReturn = false;
+	main:{
+		if(objFile==null){
+			ExceptionZZZ ez  = new ExceptionZZZ("FileObject", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//Java 7 Trick, der bei Verzeichnissen funktioniert.
+		//Merke: Mit relativen Pfaden wird auch NIO immer ein true zurückgeben.
+		
+		String sPath = objFile.getAbsolutePath();
+		//String sPath = objFile.getPath();
+		Path path = Paths.get(sPath);
+		if (Files.exists(path)) {
+			bReturn = true;
+			break main;
+		}else {
+			bReturn = false;
+			break main;
+		}
+		
+		/* Was ist davon zu halten?
+		 * 
+		 * public class Test
+{
+
+  public static void main(String[] args)
+  {
+
+    File file = new File("C:\\Temp");
+    System.out.println("File Folder Exist" + isFileDirectoryExists(file));
+    System.out.println("Directory Exists" + isDirectoryExists("C:\\Temp"));
+
+  }
+
+  public static boolean isFileDirectoryExists(File file)
+
+  {
+    if (file.exists())
+    {
+      return true;
+    }
+    return false;
+  }
+
+  public static boolean isDirectoryExists(String directoryPath)
+
+  {
+    if (!Paths.get(directoryPath).toFile().isDirectory())
+    {
+      return false;
+    }
+    return true;
+  }
+  
+		 */
+		
 	}//end main:
 	return bReturn;
 } 
@@ -587,13 +661,13 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				objReturn = FileEasyZZZ.getDirectory(sDirectory);
 			}	
 			if(objReturn!=null){
-				if(objReturn.exists()) break main;
+				if(FileEasyZZZ.exists(objReturn)) break main;
 			}
 			
 			//+++ 2. Versuch im Eclipse Workpace zu suchen.
 			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);	
 			if(objReturn!=null){
-				if(objReturn.exists()) break main;
+				if(FileEasyZZZ.exists(objReturn)) break main;
 			}
 			
 			if(!bSearchInJar) break main;
@@ -604,7 +678,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//TODOGOON 20200805;
 			objReturn = JarEasyInCurrentJarZZZ.searchResource(sDirectory, "ZZZ");
 			if(objReturn!=null){
-				if(objReturn.exists()) break main;
+				if(FileEasyZZZ.exists(objReturn)) break main;
 			}
 												
 			//+++ Wenn noch nichts existiert NULL 
