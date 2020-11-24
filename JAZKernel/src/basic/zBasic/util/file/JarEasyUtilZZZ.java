@@ -296,16 +296,17 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 			//Zuerst den genauen Namensfilter-Verwenden, sofern vorhanden, danach den allgemeineren Verzeichnisfilter
 			IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.computeFilePartFilterUsed();
 			String sDirPathInJar = objFilterFileInJar.computeDirectoryPathInJarUsed();
-			objaReturn = JarEasyUtilZZZ.findFileInJar_(objFileJar, objPartFilter, sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);
+			String sFileNameInJar = objFilterFileInJar.computeFileNameInJarUsed();
+			objaReturn = JarEasyUtilZZZ.findFileInJar_(objFileJar, objPartFilter, sDirPathInJar, sFileNameInJar, sApplicationKeyAsSubDirectoryTempIn);
 												
 		}//End main		 	
 		return objaReturn;
 	}
 	
-	public static File[] findFileInJar(File objFileJar, ZipEntryFilter objFilterInJar, String sDirPathInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
+	public static File[] findFileInJar(File objFileJar, ZipEntryFilter objFilterInJar, String sDirPathInJar, String sFileNameInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
 		File[] objaReturn = null;
 		main:{
-			objaReturn = JarEasyUtilZZZ.findFileInJar_(objFileJar,objFilterInJar ,sDirPathInJar, sApplicationKeyAsSubDirectoryTempIn);			
+			objaReturn = JarEasyUtilZZZ.findFileInJar_(objFileJar,objFilterInJar ,sDirPathInJar, sFileNameInJar, sApplicationKeyAsSubDirectoryTempIn);			
 		}//End main		 	
 		return objaReturn;
 	}
@@ -314,7 +315,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		return JarEasyUtilZZZ.findFileInJar(objJarInfoFiltered, sDirPathInJar, sTargetDirPathRootIn);
 	}
 	
-	private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilter, String sDirPathInJarIn, String sTargetDirPathRootIn) throws ExceptionZZZ{
+	private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilter, String sDirPathInJarIn, String sFileNameInJar, String sTargetDirPathRootIn) throws ExceptionZZZ{
 		File[] objaReturn = null;
 		main:{
 			String sLog;
@@ -374,7 +375,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 					if(!bTargetDirPathRootCreated) {
 						ReferenceZZZ<String> strTargetDirPath = new ReferenceZZZ<String>(sTargetDirPathRootIn);
 						ReferenceZZZ<String> strPathInJar = new ReferenceZZZ<String>(sDirPathInJarIn);
-						ReferenceZZZ<String> strFilenameInJar = new ReferenceZZZ<String>();						
+						ReferenceZZZ<String> strFilenameInJar = new ReferenceZZZ<String>(sFileNameInJar);						
 						objFileTemp = JarEasyUtilZZZ.createTargetDirectoryRoot(strTargetDirPath, strPathInJar, strFilenameInJar);
 						
 						bTargetDirPathRootCreated=true;
@@ -1061,14 +1062,26 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 	    	if(JarEasyUtilZZZ.isJarPathFileValid(sJarPath)) {
 	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);	
 	    		sReturn = strFileName.get();
-	    		break main;
+	    		if(!StringZZZ.isEmpty(sReturn)) break main;
+	    		
+	    		
+	    		
 	    	}
 	    	
 	    	if(JarEasyUtilZZZ.isJarPathDirectoryValid(sJarPath)) {
 	    		JarEasyUtilZZZ.splitJarFilePathToDirectoryAndName(sJarPath, strDirectory, strFileName);
 	    		sReturn = strFileName.get();
-	    		break main;
+	    		if(!StringZZZ.isEmpty(sReturn)) break main;	    		
 	    	}
+	    	
+	    	
+	    	//Wenn jetzt noch nicht gefunden wurde, dann als Dateinamen den rechten Teil vom Separator nehmen.
+	    	//Das ist z.B. der Fall wenn nach einem reinen Dateinamen gesucht wird. Also gar kein Pfad angegeben wurde.
+	    	if(StringZZZ.startsWithIgnoreCase(sJarPath, JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) {
+	    		sReturn = StringZZZ.right(sJarPath, JarEasyUtilZZZ.sDIRECTORY_SEPARATOR);
+	    	}	    	
+    		break main;
+	    	
 	    	
 		}
 		return sReturn;

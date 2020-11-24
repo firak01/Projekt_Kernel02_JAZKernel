@@ -59,45 +59,52 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		AbstractFileFilterInJarNew_(sDirectoryName, sFileName, saFlagControlIn);
 	} 
 	private void AbstractFileFilterInJarNew_(String sDirectoryName, String sFileName, String[] saFlagControlIn) throws ExceptionZZZ {
-		String stemp; boolean btemp;
+		String stemp; boolean btemp; String sLog;
 		main:{
-		//setzen der übergebenen Flags	
-		if(saFlagControlIn != null){
-			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-				stemp = saFlagControlIn[iCount];
-				btemp = setFlag(stemp, true);
-				if(btemp==false){ 								   
-					   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-					   //doesn�t work. Only works when > JDK 1.4
-					   //Exception e = new Exception();
-					   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
-					   throw ez;		 
+			//setzen der übergebenen Flags	
+			if(saFlagControlIn != null){
+				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+					stemp = saFlagControlIn[iCount];
+					btemp = setFlag(stemp, true);
+					if(btemp==false){ 								   
+						   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+						   //doesn�t work. Only works when > JDK 1.4
+						   //Exception e = new Exception();
+						   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
+						   throw ez;		 
+					}
 				}
 			}
-			}
-
-		//+++ Falls das Debug-Flag gesetzt ist, muss nun eine Session �ber das Factory-Objekt erzeugt werden. 
-		// Damit kann auf andere Datenbanken zugegriffen werden (z.B. im Eclipse Debugger)
-		// Besser jedoch ist es beim Debuggen mit einem anderen Tool eine Notes-ID zu verwenden, die ein leeres Passwort hat.
-		btemp = this.getFlag("init");
-		if(btemp==true) break main;
-		
-		if(StringZZZ.isEmpty(sDirectoryName)) {
+	
+			//+++ Falls das Debug-Flag gesetzt ist, muss nun eine Session �ber das Factory-Objekt erzeugt werden. 
+			// Damit kann auf andere Datenbanken zugegriffen werden (z.B. im Eclipse Debugger)
+			// Besser jedoch ist es beim Debuggen mit einem anderen Tool eine Notes-ID zu verwenden, die ein leeres Passwort hat.
+			btemp = this.getFlag("init");
+			if(btemp==true) break main;
 			
-			String stempDirectory = JarEasyUtilZZZ.computeDirectoryFromJarPath(sFileName);
-			String stempName = JarEasyUtilZZZ.computeFilenameFromJarPath(sFileName);
+			if(StringZZZ.isEmpty(sDirectoryName)) {	
+				sLog = ReflectCodeZZZ.getPositionCurrent()+" Rechne das verwendete Verzeichnis ggfs. aus dem Dateinamen aus.";
+				System.out.println(sLog);
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+" Variable: sFileName='"+sFileName+"'";
+				System.out.println(sLog);
+				
+				String stempDirectory = JarEasyUtilZZZ.computeDirectoryFromJarPath(sFileName);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+" Variable: stempDirectory='"+stempDirectory+"'";
+				System.out.println(sLog);
+				this.setDirectoryPath(stempDirectory);
+				
+				String stempName = JarEasyUtilZZZ.computeFilenameFromJarPath(sFileName);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+" Variable: stempName='"+stempName+"'";
+				System.out.println(sLog);
+				this.setName(stempName);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+" Übergebenes Verzeichnis und Dateiname vorhanden.";
+				System.out.println(sLog);
 
-			this.setDirectoryPath(stempDirectory);
-			this.setName(stempName);
-		}else {
-			this.setDirectoryPath(sDirectoryName);
-			this.setName(sFileName);
-		}
-		//Die konkreten Ausprägungen können erst in der accept Methode gefüllt werden, mit den konkreten Werten.
-		//Z.B. für Middle-Wert steht in der accept-Methode:
-		//		this.objFilterMiddle.setCriterion(this.getMiddle());
-		//      if(this.objFilterMiddle.accept(ze)==false) break main;
-		
+				this.setDirectoryPath(sDirectoryName);
+				this.setName(sFileName);
+			}		
 		}//end main:		
 	}
 	
@@ -359,6 +366,39 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 				if((!StringZZZ.isEmpty(sName)&& !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
 					FilenamePartFilterPathTotalZipZZZ objPartFilterPathTotal = this.getPathTotalFilter();
 					objReturn = objPartFilterPathTotal.getDirectoryPath();
+					break main;
+				}
+			}//end main:
+			return objReturn;
+		}
+		
+		public String computeFileNameInJarUsed() throws ExceptionZZZ {
+			String objReturn = null;		
+			main:{					
+				IFilenamePartFilterZipZZZ objPartFilterName = this.getNamePartFilter();
+				IFilenamePartFilterZipZZZ objPartFilterDirectory = this.getDirectoryPartFilter();
+				 
+				String sDirectoryPath = objPartFilterDirectory.getCriterion();
+				String sName = objPartFilterName.getCriterion();
+				
+				//A) Reiner Dateinamensfilter (ohne Verzeichnis)			 
+				if ((!StringZZZ.isEmpty(sName) && !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR))  && StringZZZ.isEmpty(sDirectoryPath)) {
+					objReturn = sName;
+					objReturn = JarEasyUtilZZZ.computeFilenameFromJarPath(objReturn);
+					break main;
+				}
+				
+				//B) VERZEICHNIS-FILTER
+				if((StringZZZ.isEmpty(sName) ||  sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+					objReturn = sDirectoryPath;
+					objReturn = JarEasyUtilZZZ.computeFilenameFromJarPath(objReturn);
+					break main;
+				}
+				
+				//C) Kompletter Dateinamensfilter (mit Verzeichnis)	rulez
+				if((!StringZZZ.isEmpty(sName)&& !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+					FilenamePartFilterPathTotalZipZZZ objPartFilterPathTotal = this.getPathTotalFilter();
+					objReturn = objPartFilterPathTotal.getFileName();
 					break main;
 				}
 			}//end main:
