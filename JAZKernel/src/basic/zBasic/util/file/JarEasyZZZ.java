@@ -44,9 +44,14 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	/**
 	*  This method is responsible for extracting resource files from within the .jar to an temporarily existing file.
 	*  NOT a file peristed in the temp - Directory !!!
-	*  @param filePath The filepath is th	e directory within the .jar from which to extract the file.
+	*  
+	* Extrahiert die Datei als echte TEMP Datei. Verzeichnisse werden dabei nicht angegelgt, sondern kommen in den Dateinamen
+	* Z.B. template_template_server_starter.txt35232264199775134.tmp ist dann die Datei template_server_starter.txt im template Verzeichnis.
+	*  @param filePath The filepath is the directory within the .jar from which to extract the file.
 	*  @return A file object to the extracted file
-	*  **/
+	* @throws ExceptionZZZ
+	* @author Fritz Lindhauer, 25.11.2020, 08:38:17
+	**/
 	public static File extractFileFromJarAsTemp(JarFile objJarFile, String sFilePath) throws ExceptionZZZ {
 			File objReturn=null;
 			main:{
@@ -94,9 +99,14 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	/**
 	*  This method is responsible for extracting resource files from within the .jar to an temporarily existing file.
 	*  NOT a file peristed in the temp - Directory !!!
+	*  
+	* Extrahiert die Datei als echte TEMP Datei. Verzeichnisse werden dabei nicht angegelgt, sondern kommen in den Dateinamen
+	* Z.B. template_template_server_starter.txt35232264199775134.tmp ist dann die Datei template_server_starter.txt im template Verzeichnis.
 	*  @param filePath The filepath is the directory within the .jar from which to extract the file.
 	*  @return A file object to the extracted file
-	*  **/
+	* @throws ExceptionZZZ
+	* @author Fritz Lindhauer, 25.11.2020, 08:38:17
+	**/
 	public static File extractFileFromJarAsTemp(JarFile objJarFile, JarEntry entry) throws ExceptionZZZ {
 			File objReturn=null;
 			main:{

@@ -95,7 +95,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    
 			File objFileCreated;
 			String sPath = "debug/zBasic";
-			String sTargetDirectoryPathRoot = "PEEK_RESOURCE_DIRECTORY_DUMMY";
+			String sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_DIRECTORY_DUMMY";
 			
 			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
@@ -131,7 +131,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    
 			File objFileCreated;
 			String sPath = "template/readmeFGL.txt";
-			String sTargetDirectoryPathRoot = "PEEK_RESOURCE_FILE_DUMMY";
+			String sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_FILE_DUMMY";
 			
 			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
@@ -167,7 +167,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    
 			File objFileCreated;
 			String sPath = "template";
-			String sTargetDirectoryPathRoot = "PEEK_RESOURCE_FILES_DUMMY";
+			String sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_FILES_DUMMY";
 			
 			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
@@ -202,7 +202,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 	
 	public void testExtractFileAsTemp(){
 		try{
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+			String sLog;
+			
+			sLog= ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
 		    
 			File objFileCreated;			
@@ -212,6 +214,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				if(!objFileCreated.exists()) {
 					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT.";
+			    System.out.println(sLog);
 			}
 			
 		}catch(ExceptionZZZ ez){
@@ -227,7 +232,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			File objFile;	
 			String sPath; String sTargetDirectoryPathRoot;
 			if(!JarEasyUtilZZZ.isInJarStatic())	{
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Dieser Test wird nur innerhalb einer JAR-Datei durchgeführt.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT.";
 			    System.out.println(sLog);
 			}else {											
 				//FALL AA: NUR VERZEICHNIS ERSTELLEN, keine Dateien darin	
@@ -235,7 +240,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			    System.out.println(sLog);
 			    
 				sPath = "bat";
-				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP_EMPTY";
+				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP_EMPTY";
 				File objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot, false);				
 				assertNotNull(objDirectoryCreated);
 				if(!objDirectoryCreated.exists()) {
@@ -254,7 +259,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL AB ##########.";
 			    System.out.println(sLog);
 				sPath = "debug/zBasic";
-				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
+				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
 				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot,true);				
 				assertNotNull(objDirectoryCreated);
 				if(!objDirectoryCreated.exists()) {
@@ -280,7 +285,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL BA ##########.";
 			    System.out.println(sLog);
 				sPath = "template/template_server_TCP_443.ovpn";
-				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_TO_TEMP";
+				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_FILE_TO_TEMP";
 				objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
 				assertNotNull(objFile);
 				if(!objFile.exists()) {
@@ -296,7 +301,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL BB ##########.";
 			    System.out.println(sLog);
 				sPath = "custom/zKernel";
-				sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_TO_TEMP02";
+				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP02";
 				objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
 				assertNotNull(objFile);
 				if(!objFile.exists()) {

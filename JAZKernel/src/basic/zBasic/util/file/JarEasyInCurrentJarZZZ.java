@@ -66,6 +66,13 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		return bReturn;
 	}
 	
+	/**Extrahiert die Datei als echte TEMP Datei. Verzeichnisse werden dabei nicht angegelgt, sondern kommen in den Dateinamen
+	 * Z.B. template_template_server_starter.txt35232264199775134.tmp ist dann die Datei template_server_starter.txt im template Verzeichnis.
+	 * @param sPath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 25.11.2020, 08:38:17
+	 */
 	public static File extractFileAsTemp(String sPath) throws ExceptionZZZ {
 			File objReturn = null;
 			main:{
