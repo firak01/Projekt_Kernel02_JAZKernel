@@ -866,7 +866,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DUMMY";
 		System.out.println(sLog);
 		
-		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestConstantsZZZ.sJAR_DIRECTORYPATH_DUMMY,JarEasyTestConstantsZZZ.sJAR_FILENAME_DUMMY);
+		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_DUMMY,JarEasyTestCommonsZZZ.sJAR_FILENAME_DUMMY);
 	}
 	
 	public static File getJarFileDefaultAsFile() throws ExceptionZZZ{
@@ -890,12 +890,12 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM WORKSPACE AND FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestConstantsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 				if(objReturn!=null) break main;
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestConstantsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestConstantsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 			}else {				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DD) UNEXPECTED CASE.";
 				System.out.println(sLog);
@@ -914,7 +914,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
 		System.out.println(sLog);
 		
-		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestConstantsZZZ.sJAR_DIRECTORYPATH_TEST,JarEasyTestConstantsZZZ.sJAR_FILENAME_TEST);
+		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_TEST,JarEasyTestCommonsZZZ.sJAR_FILENAME_TEST);
 	}
 	
 	private static File getJarFileByConstants_(String sFileDirectory, String sFileName) throws ExceptionZZZ {

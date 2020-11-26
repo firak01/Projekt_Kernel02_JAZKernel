@@ -42,7 +42,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				objFileJarAsSource = JarEasyUtilZZZ.getCodeLocationJar();
 			}else {				
 				File fileDir = JarEasyUtilZZZ.getCodeLocationUsed();								
-				String sJarFile = JarEasyTestConstantsZZZ.sJAR_FILENAME_KERNEL;				
+				String sJarFile = JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL;				
 				String sJarFilePath = FileEasyZZZ.joinFilePathName(fileDir, sJarFile);
 				objFileJarAsSource = new File(sJarFilePath);
 				if(objFileJarAsSource.isFile()) {  // Run with JAR file		
@@ -202,7 +202,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 	
 	public void testExtractFileAsTemp(){
 		try{
-			String sLog;
+			String sLog;boolean btemp;
 			
 			sLog= ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
@@ -214,6 +214,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				if(!objFileCreated.exists()) {
 					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
+				
 			}else {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT.";
 			    System.out.println(sLog);
@@ -226,11 +227,11 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 	
 	public void testSearchResource() {
 		try{
+		    
+			File objFile; boolean btemp;
+			String sPath; String sTargetDirectoryPathRoot;
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
-		    
-			File objFile;	
-			String sPath; String sTargetDirectoryPathRoot;
 			if(!JarEasyUtilZZZ.isInJarStatic())	{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT.";
 			    System.out.println(sLog);
@@ -246,6 +247,10 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				if(!objDirectoryCreated.exists()) {
 					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}else {
+					//Das soll aber ein Verzeichnis sein!!!
+					assertTrue("Es sollte das erstellte Verzeichnis zurückgegeben werden.", objDirectoryCreated.isDirectory());
+					
+					
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objDirectoryCreated.getAbsolutePath() + "'";
 				    System.out.println(sLog);
 				}
@@ -260,22 +265,33 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			    System.out.println(sLog);
 				sPath = "debug/zBasic";
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
-				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot,true);				
+				objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot,true);									
 				assertNotNull(objDirectoryCreated);
-				if(!objDirectoryCreated.exists()) {
+				if(!FileEasyZZZ.exists(objDirectoryCreated)) {
 					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' sollte erstellt worden sein.");
 				}else {
+					//Das soll aber ein Verzeichnis sein!!!
+					assertTrue("Es sollte das erstellte Verzeichnis zurückgegeben werden.", objDirectoryCreated.isDirectory());
+					
+					btemp = JarEasyTestCommonsZZZ.ensureDirectoryStructureInTempExistsForDirectory(objDirectoryCreated, sTargetDirectoryPathRoot, sPath);
+					assertTrue("Die Verzeichnisstruktur ist nicht korrekt: sTargetDirectoryPathRoot='"+sTargetDirectoryPathRoot+"'| sPath='"+sPath+"'", btemp);
+					
+					
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": Directory * '" + objDirectoryCreated.getAbsolutePath() + "'";
 				    System.out.println(sLog);	
 				    
 				    File[] objaFileInDir = FileEasyZZZ.listFilesOnly(objDirectoryCreated);
 					if(FileArrayEasyZZZ.isEmpty(objaFileInDir)){
 						fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' sollten erstellt worden sein.");
-					}else {
+					}else {												
 						for(File objFileInDir : objaFileInDir) {
 							sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objFileInDir.getAbsolutePath() + "'";
 							System.out.println(sLog);			
 						}
+						
+						btemp = JarEasyTestCommonsZZZ.ensureDirectoryStructureInTempExistsForFiles(objaFileInDir, sTargetDirectoryPathRoot, sPath);
+						assertTrue("Die Verzeichnisstruktur ist nicht korrekt: sTargetDirectoryPathRoot='"+sTargetDirectoryPathRoot+"'| sPath='"+sPath+"'", btemp);
+						
 					}
 				}
 				
@@ -303,10 +319,15 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sPath = "custom/zKernel";
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP02";
 				objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
+				TODOGOON; //SO SOLL ABER NUR 1 ERSTELLTES VERZEICHNIS ZURÜCKKOMMEN!!!
 				assertNotNull(objFile);
 				if(!objFile.exists()) {
 					fail("Datei '" + objFile.getAbsolutePath() + "' sollte erstellt worden sein.");
 				}else {
+					//Das soll aber ein Verzeichnis sein!!!
+					assertTrue("Es sollte das erstellte Verzeichnis zurückgegeben werden.", objFile.isDirectory());
+					
+					
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objFile.getAbsolutePath() + "'";
 				    System.out.println(sLog);					
 				}			

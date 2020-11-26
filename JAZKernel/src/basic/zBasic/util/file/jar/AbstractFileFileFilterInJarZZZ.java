@@ -99,7 +99,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 				System.out.println(sLog);
 				this.setName(stempName);
 			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+" Übergebenes Verzeichnis und Dateiname vorhanden.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+" Verzeichnis und Dateiname uebergeben.  Variable: sDirectoryName='"+sDirectoryName+"' | sFileName='"+ sFileName+ "'";
 				System.out.println(sLog);
 
 				this.setDirectoryPath(sDirectoryName);

@@ -65,7 +65,8 @@ public class JarEasyZZZTest extends TestCase{
 	
 		
 	public void testExtractDirectoryToTemp(){
-		try{			
+		try{	
+			boolean btemp;
 			File objDirCreated; File[] objaDirCreated;
 			String sDirToExtractTo;
 			String sDirTemp; String sDirParentTemp;	String sDirParent;
@@ -82,17 +83,8 @@ public class JarEasyZZZTest extends TestCase{
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
 			}
 			
-			sDirTemp = EnvironmentZZZ.getHostDirectoryTemp();									
-			sDirParentTemp =  FileEasyZZZ.joinFilePathName(sDirTemp, sDirToExtractTo);
-			sDirParent = FileEasyZZZ.joinFilePathName(sDirParentTemp, sDirToExtract);
-			for(File objFileTemp : objaDirCreated ) {
-				if(!objFileTemp.exists()) {
-					fail("Verzeichnis '" + objFileTemp.getAbsolutePath() + "' wurde nicht erstellt.");
-				}else {
-					//Verzeichnispfad vergleichen!!!
-					assertTrue("Es wird als Verzeichnisstruktur erwartet: '" + sDirParent + "' aber der Pfad ist: '" + objFileTemp.getAbsolutePath() + "'", sDirParent.equals(objFileTemp.getAbsolutePath()));
-				}
-			}
+			btemp = JarEasyTestCommonsZZZ.ensureDirectoryStructureInTempExistsForDirectories(objaDirCreated, sDirToExtractTo, sDirToExtract);
+			assertTrue("Die Verzeichnisstruktur ist nicht korrekt: sDirToExtractTo='"+sDirToExtractTo+"'|sDirToExtract='"+sDirToExtract+"'", btemp);
 			
 			//Ab) Erfolgsfall, mit Dateien erzeugen							
 			sDirToExtractTo = "FGL\\EXTRACT_DIRECTORY_WITHFILES";			
@@ -349,7 +341,7 @@ public class JarEasyZZZTest extends TestCase{
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
 			sDirToExtractTo = "FGL\\TRUNKENTRY_OF_DIRECTORYDUMMY"; //D.h. dieses Verzeichnis darf nicht erstellt werden.
-			boolean bErg = ensureDirectoryTempDoesNotExist(sDirToExtractTo);			
+			boolean bErg = JarEasyTestCommonsZZZ.ensureDirectoryTempDoesNotExist(sDirToExtractTo);			
 			if(!bErg) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' konnte zu Testbeginn nicht geloescht werden.");
 			}
@@ -397,7 +389,7 @@ public class JarEasyZZZTest extends TestCase{
 			sDirToExtractTo = "FGL\\TRUNKENTRY_OF_DIRECTORY";
 					    
 			//VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
-			boolean bErg = ensureDirectoryTempDoesNotExist(sDirToExtractTo);
+			boolean bErg = JarEasyTestCommonsZZZ.ensureDirectoryTempDoesNotExist(sDirToExtractTo);
 			if(!bErg) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' konnte zu Testbeginn nicht geloescht werden.");
 			}
@@ -440,17 +432,6 @@ public class JarEasyZZZTest extends TestCase{
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
-	}
-	
-	private boolean ensureDirectoryTempDoesNotExist(String sDirToExtractTo) throws ExceptionZZZ {
-		boolean bReturn = false;
-		
-		//VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
-		String sDirToExtractToTotal = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
-		boolean bErg = FileEasyZZZ.removeDirectoryContent(sDirToExtractToTotal, true);
-		bReturn = FileEasyZZZ.removeDirectory(sDirToExtractToTotal);
-		
-		return bReturn;
 	}
 	
 	

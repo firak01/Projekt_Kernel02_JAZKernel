@@ -129,9 +129,8 @@ public static boolean exists(File objFile) throws ExceptionZZZ {
 		//Merke: Mit relativen Pfaden wird auch NIO immer ein true zurückgeben.
 		
 		String sPath = objFile.getAbsolutePath();
-		//String sPath = objFile.getPath();
 		Path path = Paths.get(sPath);
-		if (Files.exists(path)) {
+		if (Files.exists(path)) {		
 			bReturn = true;
 			break main;
 		}else {
