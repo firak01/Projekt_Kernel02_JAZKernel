@@ -102,13 +102,13 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			
-			if(JarEasyUtilZZZ.isInJarStatic())	{
+			if(!JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
+			    System.out.println(sLog);
+			}else{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
-			    System.out.println(sLog);
-			}
+			}//end if 
 			
 			File objFileDir = JarEasyInCurrentJarZZZ.peekDirectory(sPath, sDirToExtractTo);
 		    assertNotNull(objFileDir);
@@ -138,13 +138,13 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			
-			if(JarEasyUtilZZZ.isInJarStatic())	{
+			if(!JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
+			    System.out.println(sLog);
+			}else{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
-			    System.out.println(sLog);
-			}
+			}//end if 
 			
 			File objFile = JarEasyInCurrentJarZZZ.peekFile(sPath, sDirToExtractTo);
 		    assertNotNull(objFile);
@@ -174,13 +174,14 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			
-			if(JarEasyUtilZZZ.isInJarStatic())	{
+			if(!JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
+			    System.out.println(sLog);
+			}else{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
-			    System.out.println(sLog);
-			}
+			}//end if 
+				
 			
 			File[] objaFile = JarEasyInCurrentJarZZZ.peekFilesOfDirectory(sPath, sDirToExtractTo);
 		    assertNotNull(objaFile);
@@ -207,18 +208,36 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			sLog= ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
 		    
-			File objFileCreated;			
-			if(JarEasyUtilZZZ.isInJarStatic())	{
-				objFileCreated = JarEasyInCurrentJarZZZ.extractFileAsTemp("template/template_server_starter.txt");
+			File objFileCreated;
+			String sPath = "template/template_server_starter.txt";
+			//DAS WIRD DIREKT IM TEMP VERZEICHNIS ALS TEMP DATEI ERSTELLT ..... String sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_DIRECTORY_DUMMY";
+			
+			if(!JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
+			    System.out.println(sLog);
+			    
+			    //Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
+			    objFileCreated = JarEasyInCurrentJarZZZ.extractFileAsTemp(sPath, JarEasyUtilZZZ.iJAR_OVPN);
 				assertNotNull(objFileCreated);
 				if(!objFileCreated.exists()) {
 					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
 				}
-				
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT.";
+			    
+			}else{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
 			    System.out.println(sLog);
-			}
+			    
+			    objFileCreated = JarEasyInCurrentJarZZZ.extractFileAsTemp(sPath);
+				assertNotNull(objFileCreated);
+				if(!objFileCreated.exists()) {
+					fail("Datei '" + objFileCreated.getAbsolutePath() + "' wurde nicht erstellt.");
+				}			    
+			}//end if 
+			
+			
+			
+				
+			
 			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -232,10 +251,15 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			String sPath; String sTargetDirectoryPathRoot;
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
-			if(!JarEasyUtilZZZ.isInJarStatic())	{
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT.";
+		    if(!JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
 			    System.out.println(sLog);
-			}else {											
+			}else{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}//end if 
+			  
+										
 				//FALL AA: NUR VERZEICHNIS ERSTELLEN, keine Dateien darin	
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL AA ##########.";
 			    System.out.println(sLog);
@@ -319,7 +343,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sPath = "custom/zKernel";
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP02";
 				objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
-				TODOGOON; //SO SOLL ABER NUR 1 ERSTELLTES VERZEICHNIS ZURÜCKKOMMEN!!!
+				//TODOGOON 20201127; //SO SOLL ABER NUR 1 ERSTELLTES VERZEICHNIS ZURÜCKKOMMEN!!!
 				assertNotNull(objFile);
 				if(!objFile.exists()) {
 					fail("Datei '" + objFile.getAbsolutePath() + "' sollte erstellt worden sein.");
@@ -331,7 +355,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objFile.getAbsolutePath() + "'";
 				    System.out.println(sLog);					
 				}			
-			}
+		
 			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());

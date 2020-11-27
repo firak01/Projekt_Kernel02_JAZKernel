@@ -7,7 +7,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import junit.framework.TestCase;
 
-public class JarEasyTestCommonsZZZ extends TestCase implements ITestJarEasyConstantsZZZ{
+public class JarEasyTestCommonsZZZ extends TestCase implements IJarEasyConstantsZZZ{
 
 	public  static boolean ensureDirectoryTempDoesNotExist(String sDirToExtractTo) throws ExceptionZZZ {
 		boolean bReturn = false;

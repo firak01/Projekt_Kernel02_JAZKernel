@@ -43,7 +43,7 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  * @author Fritz Lindhauer, 19.10.2020, 08:10:14
  * 
  */
-public class JarEasyUtilZZZ extends ObjectZZZ{
+public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 	public static String sDIRECTORY_SEPARATOR = "/";
 	
 	//Ich lasse mal untenstehend da, aus Dokumentationsgründen.
@@ -805,8 +805,34 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		return objReturn;
 	}
 	
-	
 	public static File getJarFileCurrentAsFile() throws ExceptionZZZ {
+		File objReturn = null;
+		main:{			
+			String sLog = null;
+			final File objCodeLocation = JarEasyUtilZZZ.getCodeLocationJar(); //new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+			if(objCodeLocation!=null) {
+				if(objCodeLocation.isFile()) {  // Run with JAR file
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) JAR FILE FOUND.";
+				    System.out.println(sLog);
+				    
+					objReturn = objCodeLocation;
+					break main;
+				}else if(objCodeLocation.isDirectory()) {  // Run with Eclipse or so.					
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) JAR FILE NOT FOUND, RUNNING IN DIRECTORY: '" + objCodeLocation.getAbsolutePath() +"'";
+					System.out.println(sLog);
+					break main;
+				}
+			}else {
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) CODE LOCATION IS NULL. JAR FILE NOT FOUND.";
+				System.out.println(sLog);
+				break main;
+			}
+		}//end main:
+		return objReturn;
+	}
+	
+	public static File getJarFileUsedAsFile(int iConstantZZZ) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			String sLog = null;
@@ -866,7 +892,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DUMMY";
 		System.out.println(sLog);
 		
-		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_DUMMY,JarEasyTestCommonsZZZ.sJAR_FILENAME_DUMMY);
+		return JarEasyUtilZZZ.getJarFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_DUMMY,JarEasyTestCommonsZZZ.sJAR_FILENAME_DUMMY);
 	}
 	
 	public static File getJarFileDefaultAsFile() throws ExceptionZZZ{
@@ -890,12 +916,12 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM WORKSPACE AND FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFile_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 				if(objReturn!=null) break main;
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 			}else {				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DD) UNEXPECTED CASE.";
 				System.out.println(sLog);
@@ -904,6 +930,43 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		}//end main:
 		return objReturn;
 	}
+	
+	public static File getJarFileDefaultAsFile(String sKey) throws ExceptionZZZ{
+		File objReturn = null;
+		main:{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) SEARCHING FOR DEFAULT JAR-FILE.";
+			System.out.println(sLog);
+			
+			File objFileExcecutionDirectory = JarEasyUtilZZZ.getCodeLocationUsed();
+			if(objFileExcecutionDirectory==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) NO EXECUTION DIRECTORY FOUND.";
+			    System.out.println(sLog);
+				break main;
+			}else if(objFileExcecutionDirectory.isFile()) { 
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) NO EXECUTION DIRECTORY FOUND IS NOT A DIRECTORY, RETURNING NULL";
+				    System.out.println(sLog);
+				    break main; //Aufgeben....
+			}else if(objFileExcecutionDirectory.isDirectory()) {  // Run with Eclipse or so.
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) EXECUTION DIRECTORY FOUND, RUNNING IN DIRECTORY: '" + objFileExcecutionDirectory.getAbsolutePath() +"'";
+				System.out.println(sLog);
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM WORKSPACE AND FROM CONSTANTS DEFAULT";
+				System.out.println(sLog);
+				objReturn = JarEasyUtilZZZ.getJarFile_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+				if(objReturn!=null) break main;
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DEFAULT";
+				System.out.println(sLog);
+				objReturn = JarEasyUtilZZZ.getJarFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+			}else {				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DD) UNEXPECTED CASE.";
+				System.out.println(sLog);
+				break main;
+			}
+		}//end main:
+		return objReturn;
+	}
+	
 	
 	/**Für Tests, z.B. ob eine Resource in der gleichen Jar-Datei liegt.
 	 * @return
@@ -914,10 +977,41 @@ public class JarEasyUtilZZZ extends ObjectZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
 		System.out.println(sLog);
 		
-		return JarEasyUtilZZZ.getJarFileByConstants_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_TEST,JarEasyTestCommonsZZZ.sJAR_FILENAME_TEST);
+		return JarEasyUtilZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_TEST,JarEasyUtilZZZ.sJAR_FILENAME_TEST);
 	}
 	
-	private static File getJarFileByConstants_(String sFileDirectory, String sFileName) throws ExceptionZZZ {
+	public static File getJarFileKernelAsFile() throws ExceptionZZZ{
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
+		System.out.println(sLog);
+		
+		return JarEasyUtilZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+	}
+	
+	private static File getJarFileByConstantKey_(int iConstantKey) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			switch(iConstantKey){
+			case JarEasyUtilZZZ.iJAR_DUMMY:
+				break;
+			case JarEasyUtilZZZ.iJAR_TEST:
+				objReturn = JarEasyUtilZZZ.getJarFileTestAsFile();
+				break;
+			case JarEasyUtilZZZ.iJAR_KERNEL:
+				objReturn = JarEasyUtilZZZ.getJarFileKernelAsFile();
+				break;
+			case JarEasyUtilZZZ.iJAR_OVPN:
+				objReturn = JarEasyUtilZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_OVPN, JarEasyUtilZZZ.sJAR_FILENAME_OVPN);
+				break;
+			default:
+				ExceptionZZZ ez = new ExceptionZZZ("Constant for this key not defined: " + iConstantKey, iERROR_PARAMETER_VALUE, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}
+		return objReturn;
+	}
+	
+	
+	private static File getJarFile_(String sFileDirectory, String sFileName) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{				
 					//1. Suche: Im Eclipse Workspace. Das wäre ggfs. für Ressource angesagt.

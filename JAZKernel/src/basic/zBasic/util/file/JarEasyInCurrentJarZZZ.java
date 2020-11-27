@@ -83,6 +83,9 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				
 				String sLog = null;			    
 				try {			
+					TODOGOON 20201127; //Dieser Code in eine private Methode. Mit zusätzlichem Parameter JarFile.
+					//                   Wenn JarFile NULL => getJarFileCurrent()
+					//                   ansonten Verwende das übergebene JarFile
 					JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
 					if(jar==null) {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
