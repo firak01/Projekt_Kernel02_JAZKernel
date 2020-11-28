@@ -117,7 +117,7 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 					    if(bEntryIsDirectory) {
 					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE, BUT AS REAL TEMP DIRECTORY.";
 					    	System.out.println(sLog);
-					    	objReturn = JarEasyInCurrentJarZZZ.searchResource(sPath, "");
+					    	objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, "");
 					    }else {
 					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
 						    System.out.println(sLog);						    	
@@ -128,7 +128,7 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 							sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource NICHT gefunden '" + sPath + "' (NULL CASE)";
 						    System.out.println(sLog);
 						}else {
-						    if(objReturn.exists()){
+						    if(FileEasyZZZ.exists(objReturn)){
 								sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) Ressource gefunden '" + sPath + "'";
 							    System.out.println(sLog);							
 							}else {

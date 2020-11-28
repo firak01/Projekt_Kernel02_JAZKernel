@@ -154,7 +154,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
 	 */
-	public static File searchResource(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File searchResourceDirectory(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
@@ -166,13 +166,40 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 			    System.out.println(sLog);
 			
-				objReturn = JarEasyZZZ.searchResource(jar, sPath, sTargetDirectoryPathRootIn);
+				objReturn = JarEasyZZZ.searchResourceDirectory(jar, sPath, sTargetDirectoryPathRootIn);
 				
 			}
 		}//end main:
 		return objReturn;
 		}
 	
+	/** Man sucht hiermit die Datei, diese wird in ein  existieren.
+	 * @param sPath
+	 * @param sTargetDirectoryPathRootIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
+	 */
+	public static File searchResourceFile(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			String sLog = null;			    		
+			JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+			if(jar==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
+			    System.out.println(sLog);
+			
+				objReturn = JarEasyZZZ.searchResourceFile(jar, sPath, sTargetDirectoryPathRootIn);
+				
+			}
+		}//end main:
+		return objReturn;
+		}
+	
+
 	/** Man könnte auch erst die Datei als File-Dummy suchen und dann extrahieren.
 	 *  Aber das dauert jedesmal zu lange, also wird das hier in einem Rutsch gemacht über "Trunk"-Objekte
 	 *  und das anschliessende speichern davon.
@@ -182,7 +209,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
 	 */
-	public static File searchResource(String sPath, String sTargetDirectoryPathRootIn, boolean bWithFiles) throws ExceptionZZZ {
+	public static File searchResourceDirectory(String sPath, String sTargetDirectoryPathRootIn, boolean bWithFiles) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
@@ -258,7 +285,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			return objaReturn;
 		}
 	
-	
+
 	
 	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
 	 *   Merke: Static Klassen müssen diese Methode selbst implementieren. Das ist dann das Beispiel.

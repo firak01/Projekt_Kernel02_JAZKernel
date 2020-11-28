@@ -164,7 +164,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				 objFile = JarEasyInCurrentJarZZZ.peekFile(sPath, sDirToExtractTo);
 			}
 		    assertNotNull(objFile);
-		    if(objFile.exists()) {
+		    if(FileEasyZZZ.exists(objFile)) {
 				fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
 			}else {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Datei als Dummy * '" + objFile.getAbsolutePath() + "'";
@@ -209,7 +209,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			}
 		    assertNotNull(objaFile);
 		    for(File objFile : objaFile) {
-			    if(objFile.exists()) {
+			    if(FileEasyZZZ.exists(objFile)) {
 					fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
 				}else {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": FileDummy * '" + objFile.getAbsolutePath() + "'";
@@ -278,7 +278,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
 		    if(!JarEasyUtilZZZ.isInJarStatic())	{
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL und nicht innerhalb einer ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
 			    System.out.println(sLog);
 			}else{
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
@@ -297,9 +297,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					 JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 					 assertNotNull("JarFile nicht gefunden", objJarFile);
 					    
-					 objDirectoryCreated = JarEasyZZZ.searchResource(objJarFile, sPath, sTargetDirectoryPathRoot, false);
+					 objDirectoryCreated = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot, false);
 				 }else {
-					 objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot, false);
+					 objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, sTargetDirectoryPathRoot, false);
 				 }
 				assertNotNull(objDirectoryCreated);
 				if(!objDirectoryCreated.exists()) {
@@ -319,6 +319,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				}
 				
 				//Fall AB: Anders als beim Peek wird beim Suchen das Verzeichnis erstellt, MIT Inhalt.
+				TODOGOON;// 20201129 Das estellte Verzeichnis hat eine Verdoppelung des übergebenen Vezeichnisnamens. WARUM? 
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL AB ##########.";
 			    System.out.println(sLog);
 				sPath = "debug/zBasic";
@@ -328,9 +329,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
-					objDirectoryCreated = JarEasyZZZ.searchResource(objJarFile, sPath, sTargetDirectoryPathRoot, true);
+					objDirectoryCreated = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot, true);
 				}else {
-					objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot,true);	
+					objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, sTargetDirectoryPathRoot,true);	
 				}
 				assertNotNull(objDirectoryCreated);
 				if(!FileEasyZZZ.exists(objDirectoryCreated)) {
@@ -373,9 +374,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
-					objFile = JarEasyZZZ.searchResource(objJarFile, sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyZZZ.searchResourceFile(objJarFile, sPath, sTargetDirectoryPathRoot);
 				}else {
-					objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyInCurrentJarZZZ.searchResourceFile(sPath, sTargetDirectoryPathRoot);
 				}
 				assertNotNull(objFile);
 				if(!objFile.exists()) {
@@ -397,9 +398,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
-					objFile = JarEasyZZZ.searchResource(objJarFile, sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot);
 				}else {
-					objFile = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, sTargetDirectoryPathRoot);
 					//TODOGOON 20201127; //SO SOLL ABER NUR 1 ERSTELLTES VERZEICHNIS ZURÜCKKOMMEN!!!
 				}
 				assertNotNull(objFile);

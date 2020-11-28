@@ -1109,11 +1109,14 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			String sPathInJar = null;
 			if(bAsDirectory) {
 				sPathInJar = toJarDirectoryPath(sPath);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for Directory '" + sPathInJar + "'";				
+				System.out.println(sLog);
 			}else{
 				sPathInJar = toJarFilePath(sPath); 
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for File '" + sPathInJar + "'";				
+				System.out.println(sLog);
 			}
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for '" + sPathInJar + "'";				
-			System.out.println(sLog);
+			
 				
 			objReturn = jar.getJarEntry(sPathInJar);
 				  

@@ -37,7 +37,12 @@ public class ResourceEasyZZZTest extends TestCase{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": SETUP ###############################################.";
 		    System.out.println(sLog);
 		    
-			objFileJarAsSource = JarEasyUtilZZZ.getJarFileUsedAsFile();
+		    if(!JarEasyUtilZZZ.isInJarStatic())	{				
+				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
+		    	objFileJarAsSource = JarEasyUtilZZZ.getJarFileUsedAsFile(JarEasyUtilZZZ.iJAR_OVPN);					
+			}else {
+				objFileJarAsSource = JarEasyUtilZZZ.getJarFileUsedAsFile();
+			}
 						
 			sTargetDirPath=EnvironmentZZZ.getHostDirectoryTemp();
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": USE TEMP DIRECTORY '" + sTargetDirPath + "'";
@@ -232,19 +237,41 @@ public class ResourceEasyZZZTest extends TestCase{
 			//Fall AA: Nur Verzeichnis suchen, in temp erstellen
 			sPath = "debug/zBasic";
 			sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_DUMMY";
-			objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);				
+			if(!JarEasyUtilZZZ.isInJarStatic())	{				
+				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
+				JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+				assertNotNull("JarFile nicht gefunden", objJarFile);
+					    
+				objFileDummy = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot);				
+			}else {
+				
+				objFileDummy = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, sTargetDirectoryPathRoot);		
+			}
+			
 			assertNotNull(objFileDummy);
-			if(!objFileDummy.exists()) {
+			if(!FileEasyZZZ.exists(objFileDummy)) {
 				fail("Verzeichnis '" + objFileDummy.getAbsolutePath() + "' sollte erstellt worden sein.");
 			}
+				
+			
+			
+			
 			
 				
 			//Fall AB: Nur Datei suchen, in temp  erstellen.								
 			sPath = "template/template_server_TCP_443.ovpn";
 			sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_DUMMY";
-			objFileDummy = JarEasyInCurrentJarZZZ.searchResource(sPath, sTargetDirectoryPathRoot);
+			if(!JarEasyUtilZZZ.isInJarStatic())	{				
+				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
+				JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+				assertNotNull("JarFile nicht gefunden", objJarFile);
+					    
+				objFileDummy = JarEasyZZZ.searchResourceFile(objJarFile, sPath, sTargetDirectoryPathRoot);				
+			}else {
+				objFileDummy = JarEasyInCurrentJarZZZ.searchResourceFile(sPath, sTargetDirectoryPathRoot);
+			}
 			assertNotNull(objFileDummy);
-			if(!objFileDummy.exists()) {
+			if(!FileEasyZZZ.exists(objFileDummy)) {
 				fail("Datei '" + objFileDummy.getAbsolutePath() + "' sollte erstellt worden sein.");
 			}												
 			
