@@ -832,29 +832,18 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		return objReturn;
 	}
 	
-	public static File getJarFileUsedAsFile(int iConstantZZZ) throws ExceptionZZZ {
+	public static JarFile getJarFileUsed(int iConstantKeyZZZ) throws ExceptionZZZ {
+		JarFile objReturn = null;
+		main:{
+			objReturn = JarEasyUtilZZZ.getJarFileByConstantKey_(iConstantKeyZZZ);		
+		}//end main:
+		return objReturn;
+	}
+	
+	public static File getJarFileUsedAsFile(int iConstantKeyZZZ) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
-			String sLog = null;
-			final File objCodeLocation = JarEasyUtilZZZ.getCodeLocationJar(); //new File(JarEasyZZZ.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-			if(objCodeLocation!=null) {
-				if(objCodeLocation.isFile()) {  // Run with JAR file
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DA) JAR FILE FOUND.";
-				    System.out.println(sLog);
-				    
-					objReturn = objCodeLocation;
-					break main;
-				}else if(objCodeLocation.isDirectory()) {  // Run with Eclipse or so.					
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) JAR FILE NOT FOUND, RUNNING IN DIRECTORY: '" + objCodeLocation.getAbsolutePath() +"'";
-					System.out.println(sLog);
-					break main;
-				}
-			}else {
-				
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) CODE LOCATION IS NULL. JAR FILE NOT FOUND.";
-				System.out.println(sLog);
-				break main;
-			}
+			objReturn = JarEasyUtilZZZ.getJarFileByConstantKeyAsFile_(iConstantKeyZZZ);
 		}//end main:
 		return objReturn;
 	}
@@ -892,7 +881,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DUMMY";
 		System.out.println(sLog);
 		
-		return JarEasyUtilZZZ.getJarFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_DUMMY,JarEasyTestCommonsZZZ.sJAR_FILENAME_DUMMY);
+		return JarEasyUtilZZZ.getJarFileAsFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_DUMMY,JarEasyTestCommonsZZZ.sJAR_FILENAME_DUMMY);
 	}
 	
 	public static File getJarFileDefaultAsFile() throws ExceptionZZZ{
@@ -916,12 +905,12 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM WORKSPACE AND FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFile_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFileAsFile_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 				if(objReturn!=null) break main;
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFileAsFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 			}else {				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DD) UNEXPECTED CASE.";
 				System.out.println(sLog);
@@ -952,12 +941,12 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM WORKSPACE AND FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFile_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFileAsFile_(objFileExcecutionDirectory.getAbsolutePath(),JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 				if(objReturn!=null) break main;
 				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS DEFAULT";
 				System.out.println(sLog);
-				objReturn = JarEasyUtilZZZ.getJarFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+				objReturn = JarEasyUtilZZZ.getJarFileAsFile_(JarEasyTestCommonsZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 			}else {				
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DD) UNEXPECTED CASE.";
 				System.out.println(sLog);
@@ -977,6 +966,13 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
 		System.out.println(sLog);
 		
+		return JarEasyUtilZZZ.getJarFileAsFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_TEST,JarEasyUtilZZZ.sJAR_FILENAME_TEST);
+	}
+	
+	public static JarFile getJarFileTest() throws ExceptionZZZ{
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
+		System.out.println(sLog);
+		
 		return JarEasyUtilZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_TEST,JarEasyUtilZZZ.sJAR_FILENAME_TEST);
 	}
 	
@@ -984,13 +980,43 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
 		System.out.println(sLog);
 		
+		return JarEasyUtilZZZ.getJarFileAsFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
+	}
+	
+	public static JarFile getJarFileKernel() throws ExceptionZZZ{
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
+		System.out.println(sLog);
+		
 		return JarEasyUtilZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_KERNEL,JarEasyTestCommonsZZZ.sJAR_FILENAME_KERNEL);
 	}
 	
-	private static File getJarFileByConstantKey_(int iConstantKey) throws ExceptionZZZ {
+	private static JarFile getJarFileByConstantKey_(int iConstantKeyZZZ) throws ExceptionZZZ {
+		JarFile objReturn = null;
+		main:{
+			switch(iConstantKeyZZZ){
+			case JarEasyUtilZZZ.iJAR_DUMMY:
+				break;
+			case JarEasyUtilZZZ.iJAR_TEST:
+				objReturn = JarEasyUtilZZZ.getJarFileTest();
+				break;
+			case JarEasyUtilZZZ.iJAR_KERNEL:
+				objReturn = JarEasyUtilZZZ.getJarFileKernel();
+				break;
+			case JarEasyUtilZZZ.iJAR_OVPN:
+				objReturn = JarEasyUtilZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_OVPN, JarEasyUtilZZZ.sJAR_FILENAME_OVPN);
+				break;
+			default:
+				ExceptionZZZ ez = new ExceptionZZZ("Constant for this key not defined: " + iConstantKeyZZZ, iERROR_PARAMETER_VALUE, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}
+		return objReturn;
+	}
+	
+	private static File getJarFileByConstantKeyAsFile_(int iConstantKeyZZZ) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
-			switch(iConstantKey){
+			switch(iConstantKeyZZZ){
 			case JarEasyUtilZZZ.iJAR_DUMMY:
 				break;
 			case JarEasyUtilZZZ.iJAR_TEST:
@@ -1000,10 +1026,10 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				objReturn = JarEasyUtilZZZ.getJarFileKernelAsFile();
 				break;
 			case JarEasyUtilZZZ.iJAR_OVPN:
-				objReturn = JarEasyUtilZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_OVPN, JarEasyUtilZZZ.sJAR_FILENAME_OVPN);
+				objReturn = JarEasyUtilZZZ.getJarFileAsFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_OVPN, JarEasyUtilZZZ.sJAR_FILENAME_OVPN);
 				break;
 			default:
-				ExceptionZZZ ez = new ExceptionZZZ("Constant for this key not defined: " + iConstantKey, iERROR_PARAMETER_VALUE, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Constant for this key not defined: " + iConstantKeyZZZ, iERROR_PARAMETER_VALUE, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 		}
@@ -1011,7 +1037,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 	}
 	
 	
-	private static File getJarFile_(String sFileDirectory, String sFileName) throws ExceptionZZZ {
+	private static File getJarFileAsFile_(String sFileDirectory, String sFileName) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{				
 					//1. Suche: Im Eclipse Workspace. Das wäre ggfs. für Ressource angesagt.
@@ -1038,6 +1064,17 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 					System.out.println(sLog);			
 		}//end main:
 		return objReturn;		
+	}
+	
+	private static JarFile getJarFile_(String sFileDirectory, String sFileName) throws ExceptionZZZ {
+		JarFile objReturn = null;
+		main:{		
+			File objFile = JarEasyUtilZZZ.getJarFileAsFile_(sFileDirectory, sFileName);
+			if(objFile!=null) {
+				objReturn = JarEasyUtilZZZ.toJarFile(objFile);
+			}			
+		}//end main:
+		return objReturn;	
 	}
 
 	public static JarEntry getEntryAsFile(JarFile jar, String sPath) throws ExceptionZZZ {
@@ -1284,6 +1321,49 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn);
 		}//end main:
 		return sReturn;		
+	}
+
+	public static File extractFileAsTemp(JarFile jar, String sPath) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			if(jar==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sPath)){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sLog = null;			    
+			try {						
+				   JarEntry entry = getEntryAsFile(jar, sPath); 
+				   if(entry==null){
+					   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPath +"'";
+					   System.out.println(sLog);			    	
+					}else{					    	
+					   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND: '" + sPath +"'";
+					   System.out.println(sLog);
+					    	
+					   //Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
+					   if(entry.isDirectory()) { //Dateien nicht extrahieren!!!
+						   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE";
+						   System.out.println(sLog);
+					   }else {				
+						   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
+						   System.out.println(sLog);
+					    		
+						    	
+					   		objReturn = JarEasyZZZ.extractFileFromJarAsTemp(jar, entry);
+					    }
+					}						    		
+				   jar.close();
+				} catch (IOException e1) {
+					ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}				
+		}//end main:
+		return objReturn;
 	}
 }
 
