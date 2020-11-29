@@ -318,15 +318,14 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					fail("Dateien innerhalb des Verzeichnisses '" + objDirectoryCreated.getAbsolutePath() + "' sollten nicht erstellt worden sein.");
 				}
 				
-				//Fall AB: Anders als beim Peek wird beim Suchen das Verzeichnis erstellt, MIT Inhalt.
-				TODOGOON;// 20201129 Das estellte Verzeichnis hat eine Verdoppelung des übergebenen Vezeichnisnamens. WARUM? 
+				//Fall AB: Anders als beim Peek wird beim Suchen das Verzeichnis erstellt, MIT Inhalt.				 
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": START ### FALL AB ##########.";
 			    System.out.println(sLog);
 				sPath = "debug/zBasic";
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
 				 if(!JarEasyUtilZZZ.isInJarStatic())	{
 					//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
 					objDirectoryCreated = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot, true);
@@ -353,12 +352,11 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					}else {												
 						for(File objFileInDir : objaFileInDir) {
 							sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objFileInDir.getAbsolutePath() + "'";
-							System.out.println(sLog);			
-						}
-						
-						btemp = JarEasyTestCommonsZZZ.ensureDirectoryStructureInTempExistsForFiles(objaFileInDir, sTargetDirectoryPathRoot, sPath);
-						assertTrue("Die Verzeichnisstruktur ist nicht korrekt: sTargetDirectoryPathRoot='"+sTargetDirectoryPathRoot+"'| sPath='"+sPath+"'", btemp);
-						
+							System.out.println(sLog);
+							
+							btemp = JarEasyTestCommonsZZZ.ensureDirectoryStructureInTempExistsForFiles(objaFileInDir, sTargetDirectoryPathRoot, sPath);
+							assertTrue("Die Verzeichnisstruktur ist nicht korrekt: sTargetDirectoryPathRoot='"+sTargetDirectoryPathRoot+"'| sPath='"+sPath+"'", btemp);
+						}																
 					}
 				}
 				
@@ -379,12 +377,14 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					objFile = JarEasyInCurrentJarZZZ.searchResourceFile(sPath, sTargetDirectoryPathRoot);
 				}
 				assertNotNull(objFile);
-				if(!objFile.exists()) {
-					fail("Datei '" + objFile.getAbsolutePath() + "' sollte erstellt worden sein.");
+				if(!FileEasyZZZ.exists(objFile)) {
+					fail("File-Objekt '" + objFile.getAbsolutePath() + "' sollte erstellt worden sein.");
 				}else {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": File * '" + objFile.getAbsolutePath() + "'";
 				    System.out.println(sLog);					
-				}			
+				}		
+				
+				assertTrue("Es wurde als Ergbnis eine echte Datei erwartet: '"+objFile.getAbsolutePath()+"'",objFile.isFile());
 				
 				//Fall BB: Anders als beim Peek wird beim Suchen die Datei im Verzeichnis erstellt.
 				//         Merke: Das ist schwieriger, da hier zuerst erkannt werden muss, dass es sich um eine Datei und nicht um ein Verzeichnis handelt!
@@ -404,7 +404,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					//TODOGOON 20201127; //SO SOLL ABER NUR 1 ERSTELLTES VERZEICHNIS ZURÜCKKOMMEN!!!
 				}
 				assertNotNull(objFile);
-				if(!objFile.exists()) {
+				if(!FileEasyZZZ.exists(objFile)) {
 					fail("Datei '" + objFile.getAbsolutePath() + "' sollte erstellt worden sein.");
 				}else {
 					//Das soll aber ein Verzeichnis sein!!!

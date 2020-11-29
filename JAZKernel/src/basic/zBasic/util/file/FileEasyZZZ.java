@@ -1597,24 +1597,6 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		String sFilePath; 	String sFileName; 
 		
 		//An empty string is allowed
-		if(sFileNameIn==null){
-			//here is the code throwing an ExceptionZZZ
-			stemp = " 'FileName'";
-			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING,  ReflectCodeZZZ.getMethodCurrentName(), "");
-			   //doesn�t work. Only works when > JDK 1.4
-			   //Exception e = new Exception();
-			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
-			   throw ez;	
-		}else{
-			//Falls sFileNameIn ein Teil von sFilePathIn ist, oder in einem anderen Verzeichnis
-			if(FileEasyZZZ.isPathAbsolut(sFileNameIn)){	
-				sFileName = FileEasyZZZ.getNameFromFilepath(sFileNameIn);							   	
-			 }else {
-			 	sFileName = StringZZZ.stripFileSeparatorsLeft(sFileNameIn);
-			 }
-			
-		}		
-		//An empty string is allowed
 		if(sFilePathIn==null){
 			//here is the code throwing an ExceptionZZZ
 			stemp = "''FilePath'";
@@ -1626,7 +1608,37 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}else{
 			sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
 		}
-					
+		
+		//An empty string is allowed		
+		if(sFileNameIn==null){
+			//here is the code throwing an ExceptionZZZ
+			stemp = " 'FileName'";
+			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING,  ReflectCodeZZZ.getMethodCurrentName(), "");
+			   //doesn�t work. Only works when > JDK 1.4
+			   //Exception e = new Exception();
+			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
+			   throw ez;	
+		}else{
+			//Falls sFileNameIn ein Teil von sFilePathIn ist, oder in einem anderen Verzeichnis
+			if(FileEasyZZZ.isPathAbsolut(sFileNameIn)){	
+				//1. TEST: Name hat Bestandteil des Filepfads enthalten
+				if(!StringZZZ.isEmpty(sFilePath)) {
+					if(sFileNameIn.startsWith(sFilePath)) {
+						sFileName = StringZZZ.right(sFileNameIn, sFilePath, true);
+					}else{
+						sFileName = FileEasyZZZ.getNameFromFilepath(sFileNameIn);
+					}
+				}else {
+					sFileName = FileEasyZZZ.getNameFromFilepath(sFileNameIn);
+				}											   	
+			 }else {
+				 sFileName = sFileNameIn;
+			 }
+			
+			 sFileName = StringZZZ.stripFileSeparatorsLeft(sFileName);			 	
+		}		
+		
+							
 			StringTokenizer objToken;
 			char[] caSep = new char[1];  //String has no constructor for a single char, but for an array
 			caSep[0] = File.separatorChar;
@@ -2130,7 +2142,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}else{
 //				sLog = ReflectCodeZZZ.getPositionCurrent()+": (X1) Searching for file by classloader.getResource '" + sPath +"'";
 //			    System.out.println(sLog);
-			}}
+			}
+			}
 				
 			//2a. Versuch (z.B. für innerhalb einer .jar Datei.
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Searching for file by classloader.getResource '" + sPath +"'";
