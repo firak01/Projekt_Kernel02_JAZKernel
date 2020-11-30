@@ -120,11 +120,13 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				 objFileDir = JarEasyInCurrentJarZZZ.peekDirectory(sPath, sDirToExtractTo);
 			}
 		    assertNotNull(objFileDir);
-		    if(objFileDir.exists()) {
+		    if(FileEasyZZZ.exists(objFileDir)) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
 			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryDummy * '" + objFileDir.getAbsolutePath() + "'";
+			    sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt als Dummy * '" + objFileDir.getAbsolutePath() + "'";
 			    System.out.println(sLog);
+			    boolean bErg = FileEasyZZZ.isDirectory(objFileDir);
+				assertTrue("File-Objekt sollte ein Verzeichnis (keine Datei) sein: '"+ objFileDir.getAbsolutePath()+"'", bErg);
 			}
 			
 		}catch(ExceptionZZZ ez){
@@ -138,11 +140,15 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    System.out.println(sLog);
 		    
 			File objFileCreated;File objFile;
-			String sPath = "template/readmeFGL.txt";
-			String sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_FILE_DUMMY";
+			String sDirToExtractTo;	String sPath; String sTargetDirectoryPathRoot;
+			
+			//########################################################
+			//A) PEEK AUF DATEI 
+			sPath = "template/readmeFGL.txt";
+			sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_FILE_DUMMY";
 			
 			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
-			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
 			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			
@@ -165,10 +171,53 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			}
 		    assertNotNull(objFile);
 		    if(FileEasyZZZ.exists(objFile)) {
-				fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+				fail("File-Objekt '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
 			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Datei als Dummy * '" + objFile.getAbsolutePath() + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt als Dummy * '" + objFile.getAbsolutePath() + "'";
 			    System.out.println(sLog);
+				//Merke: objFile.isFile() oder FileEasyZZZ.isFile(objFile) kann nicht funktionieren, da die Datei nicht existiert. 
+			    //assertTrue("File-Objekt sollte eine Datei (kein Verzeichnis) sein: '"+ objFile.getAbsolutePath()+"'", objFile.isFile());
+			    //boolean bErg = FileEasyZZZ.isFileExisting(objFile);
+			    //assertTrue("File-Objekt sollte eine Datei (kein Verzeichnis) sein: '"+ objFile.getAbsolutePath()+"'", bErg);
+			}
+		    
+		    
+		    
+		  //########################################################
+			//B) PEEK AUF VERZEICHNIS 
+			sPath = "template";
+			sTargetDirectoryPathRoot = "FGL\\PEEK_RESOURCE_DIRECTORY_DUMMY";
+			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			if(!JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": DER TEST WIRD NORMAL NUR IN EINER ECHTEN JAR DATEI DURCHGEFÜHRT. ZUM DEBUGGEN NACHSGESTELLT.";
+			    System.out.println(sLog);
+			}else{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}//end if 
+			
+			 if(!JarEasyUtilZZZ.isInJarStatic())	{
+				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
+				 JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
+				 assertNotNull("JarFile nicht gefunden", objJarFile);
+				    
+				 objFile = JarEasyZZZ.peekFile(objJarFile, sPath, sDirToExtractTo);
+			 }else {
+				 objFile = JarEasyInCurrentJarZZZ.peekFile(sPath, sDirToExtractTo);
+			}
+		    assertNotNull(objFile);
+		    if(FileEasyZZZ.exists(objFile)) {
+				fail("File-Objekt '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt als Dummy * '" + objFile.getAbsolutePath() + "'";
+			    System.out.println(sLog);
+			    boolean bErg = FileEasyZZZ.isDirectory(objFile);
+				assertTrue("File-Objekt sollte ein Verzeichnis (keine Datei) sein: '"+ objFile.getAbsolutePath()+"'", bErg);
 			}
 		    		    		    			
 		}catch(ExceptionZZZ ez){
@@ -210,10 +259,16 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		    assertNotNull(objaFile);
 		    for(File objFile : objaFile) {
 			    if(FileEasyZZZ.exists(objFile)) {
-					fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+					fail("File-Objekt '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
 				}else {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": FileDummy * '" + objFile.getAbsolutePath() + "'";
 				    System.out.println(sLog);
+				    
+				    //Merke: Da die Datei nicht existiert, geht nie: objFile.isFile().
+				    //Theoretisch wären es also Verzeichnisse, was FileEasyZZZ.isDirectory(objFile) auch ergeben würde.
+				    //Also etwas umständlich auf NICHT EXISIERENDES VERZEICHNIS abprüfen.
+				    boolean bErg = !FileEasyZZZ.isDirectoryExisting(objFile);
+				    assertTrue("File-Objekt sollte eine Datei (kein existierendes Verzeichnis) sein: '"+ objFile.getAbsolutePath()+"'", bErg);
 				}
 		    }
 		    		    		    			
@@ -336,8 +391,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				if(!FileEasyZZZ.exists(objDirectoryCreated)) {
 					fail("Verzeichnis '" + objDirectoryCreated.getAbsolutePath() + "' sollte erstellt worden sein.");
 				}else {
-					//Das soll aber ein Verzeichnis sein!!!
-					assertTrue("Es sollte das erstellte Verzeichnis zurückgegeben werden.", objDirectoryCreated.isDirectory());
+					//Das soll aber ein Verzeichnis sein!!! 
+					boolean bErg = objDirectoryCreated.isDirectory();
+					assertTrue("Es sollte NUR das erstellte Verzeichnis zurückgegeben werden: '" + objDirectoryCreated.getAbsolutePath() + "'", bErg);
 					
 					btemp = JarEasyTestCommonsZZZ.ensureDirectoryStructureInTempExistsForDirectory(objDirectoryCreated, sTargetDirectoryPathRoot, sPath);
 					assertTrue("Die Verzeichnisstruktur ist nicht korrekt: sTargetDirectoryPathRoot='"+sTargetDirectoryPathRoot+"'| sPath='"+sPath+"'", btemp);

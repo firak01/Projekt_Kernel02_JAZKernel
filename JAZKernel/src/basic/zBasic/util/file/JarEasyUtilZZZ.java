@@ -380,7 +380,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 						
 						bTargetDirPathRootCreated=true;						
 					}					
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) XXXXX NEUER EINTRAG XXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					String sKey = itEntryName.next();
@@ -396,7 +396,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				}					
 				if(zf!=null) zf.close();
 				
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JD) XXXXXXXXXXXXXX.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JD) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.";
 			   	System.out.println(sLog);
 			   	
 				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);

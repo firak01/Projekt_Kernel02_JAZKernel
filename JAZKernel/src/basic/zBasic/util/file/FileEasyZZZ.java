@@ -102,7 +102,7 @@ public static boolean exists (String sFileName) throws ExceptionZZZ {
 		}
 		
 		//Prüfen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad ber�cksichtig.
-		File f = FileEasyZZZ.getFile(sFileName);
+		File f = FileEasyZZZ.searchFile(sFileName);
 		if(f!=null) bReturn = f.exists();
 	}//end main:
 	return bReturn;
@@ -178,13 +178,65 @@ public static boolean exists(File objFile) throws ExceptionZZZ {
 	return bReturn;
 } 
 
+/**Gibt ein File Objekt Datei zurück. Es wird nicht gesucht und auch nicht auf die Existenz geprüft.
+ * @param sFilePath
+ * @return
+ * @throws ExceptionZZZ
+ */
+public static File getFile(String sDirectory, String sFileName)throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+   		String stemp = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
+   		objReturn = new File(stemp);
+	}//end main:
+	return objReturn;
+}
+
+
+/**Gibt ein File Objekt Datei zurück. Es wird nicht gesucht und auch nicht auf die Existenz geprüft.
+ * @param sFilePath
+ * @return
+ * @throws ExceptionZZZ
+ */
+public static File getFile(String sFilePathTotal) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
+    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
+    	FileEasyZZZ.splitFilePathName(sFilePathTotal, strDirectory, strFileName);
+    	String sDirectory=strDirectory.get();
+   		String sFileName=strFileName.get();
+   		
+   		objReturn = FileEasyZZZ.getFile(sDirectory, sFileName);
+	}//end main:
+	return objReturn;
+}
+
+/**Gibt ein File Objekt Verzeichnis zurück. Es wird nicht gesucht und auch nicht auf die Existenz geprüft.
+ * @param sFilePath
+ * @return
+ * @throws ExceptionZZZ
+ */
+public static File getDirectory(String sFilePathTotal) throws ExceptionZZZ {
+	File objReturn = null;
+	main:{
+		ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
+    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
+    	FileEasyZZZ.splitFilePathName(sFilePathTotal, strDirectory, strFileName);
+    	String sDirectory=strDirectory.get();
+   		objReturn = new File(sDirectory);	
+	}//end main:
+	return objReturn;
+}
+
+
 /**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
  *  Darum wird hier per classloader die Ressource geholt.
  * @param sFilePath
  * @return
  * @throws ExceptionZZZ
  */
-public static File getDirectoryFromFilepath(String sFilePath) throws ExceptionZZZ{
+public static File searchDirectoryFromFilepath(String sFilePath) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		if(sFilePath==null){ //Merke: Anders als bei einer Datei, darf der Directory-Name leer sein.
@@ -198,7 +250,7 @@ public static File getDirectoryFromFilepath(String sFilePath) throws ExceptionZZ
     	FileEasyZZZ.splitFilePathName(sFilePath, strDirectory, strFileName);
     	String sDirectory=strDirectory.get();
 		
-    	objReturn = FileEasyZZZ.getDirectory(sDirectory);
+    	objReturn = FileEasyZZZ.searchDirectory(sDirectory);
     	
 	}//end main:
 	return objReturn;
@@ -210,7 +262,7 @@ public static File getDirectoryFromFilepath(String sFilePath) throws ExceptionZZ
  * @return
  * @throws ExceptionZZZ
  */
-public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
+public static File searchDirectory(String sDirectoryPath) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		if(sDirectoryPath==null){ //Merke: Anders als bei einer Datei, darf der Directory-Name leer sein.
@@ -225,7 +277,7 @@ public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
 			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectoryPath);						
 	    }else{
 		   	//Absolute Pfadangabe
-	    	objReturn = FileEasyZZZ.getFileObject(sDirectoryPath);	
+	    	objReturn = FileEasyZZZ.searchFileObject(sDirectoryPath);	
 		}	
 	}//end main:
 	return objReturn;
@@ -237,7 +289,7 @@ public static File getDirectory(String sDirectoryPath) throws ExceptionZZZ{
  * @return
  * @throws ExceptionZZZ
  */
-public static File getFile(String sFilePath) throws ExceptionZZZ{
+public static File searchFile(String sFilePath) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		if(StringZZZ.isEmpty(sFilePath)){
@@ -256,7 +308,7 @@ public static File getFile(String sFilePath) throws ExceptionZZZ{
 	    	//sFilePath = StringZZZ.stripRightFileSeparators(sFilePath);	//TODO GOON 20190212: Das müssten eigentlich ...MidFileSeperators(...) sein
 	    	//objReturn = new File(sFilePath);
 	    	
-	    	objReturn = FileEasyZZZ.getFileObject(sFilePath);
+	    	objReturn = FileEasyZZZ.searchFileObject(sFilePath);
 	    	
 		}	
 	}//end main:
@@ -269,7 +321,7 @@ public static File getFile(String sFilePath) throws ExceptionZZZ{
  * @return
  * @throws ExceptionZZZ
  */
-public static File getFile(String sDirectoryIn, String sFileName)throws ExceptionZZZ{
+public static File searchFile(String sDirectoryIn, String sFileName)throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		if(StringZZZ.isEmpty(sFileName)){
@@ -284,7 +336,7 @@ public static File getFile(String sDirectoryIn, String sFileName)throws Exceptio
 		}
 		
 		//+++++++++
-		objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+		objReturn = FileEasyZZZ.searchFile(sDirectory+File.separator+sFileName);
 
 	}//END main:
 	return objReturn;	
@@ -319,24 +371,8 @@ public static File searchFile(String sFilePath, boolean bTempFileAlternative) th
 	return objReturn;
 }
 
-/**Gibt eine gesuchte Datei zurück. Ggfs. auch einen temporär erzeugte Datei, falls die andere nicht gefunden wird.
- * @param sFilePath
- * @return
- * @throws ExceptionZZZ
- */
-public static File searchFile(String sFilePath) throws ExceptionZZZ{
-	return FileEasyZZZ.searchFile(sFilePath, true);
-}
 
-/** Gibt eine gesuchte Datei zurück. Ggfs. auch einen temporär erzeugte Datei, falls die andere nicht gefunden wird. 
- * @param sDirectoryIn
- * @param sFileName
- * @return
- * @throws ExceptionZZZ
- */
-public static File searchFile(String sDirectoryIn, String sFileName)throws ExceptionZZZ{
-	return FileEasyZZZ.searchFile(sDirectoryIn, sFileName, true);
-}
+
 
 /** Gibt eine gesuchte Datei zurück. Ggfs. auch einen temporär erzeugte Datei, falls die andere nicht gefunden wird. 
  * @param sDirectoryIn
@@ -370,7 +406,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 				//Versuch im Input-Pfad suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, Aber NICHT gepackt in ein .jar File.
 				String sDirectoryNormed = objDirectoryNormed.getAbsolutePath();
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (1) Normed Path for file is: '" + sDirectoryNormed+File.separator+sFileName + "'");
-				objReturn = FileEasyZZZ.getFile(sDirectoryNormed+File.separator+sFileName);
+				objReturn = FileEasyZZZ.searchFile(sDirectoryNormed+File.separator+sFileName);
 				String sLog = null;
 				if(objReturn==null){
 					 sLog = ReflectCodeZZZ.getPositionCurrent()+": (1) File does not exist (=null). '" + sDirectoryNormed+File.separator+sFileName + "'";	
@@ -394,7 +430,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 				sDirectory = objDirectory.getPath();
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (2) Directory-Root exist for '.'='"+sDirectory+"'";
 			    System.out.println(sLog);
-				objReturn = FileEasyZZZ.getFile(sDirectory+File.separator+sFileName);
+				objReturn = FileEasyZZZ.searchFile(sDirectory+File.separator+sFileName);
 				if(objReturn!=null){
 					if(objReturn.exists()) break main;
 				}
@@ -417,7 +453,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 		}
 		sLog = ReflectCodeZZZ.getPositionCurrent()+": (3) Searching for file '" + sFilePathTotal +"'";
 	    System.out.println(sLog);
-		objReturn = FileEasyZZZ.getFileObject(sFilePathTotal);
+		objReturn = FileEasyZZZ.searchFileObject(sFilePathTotal);
 		if(objReturn!=null){
 			if(objReturn.exists()) break main;
 		}
@@ -573,14 +609,7 @@ public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strD
 	return objReturn;	
 }
 
-public static File searchDirectory(String sDirectoryIn) throws ExceptionZZZ {
-	File objReturn = null;
-	main:{
-		objReturn = FileEasyZZZ.searchDirectory(sDirectoryIn, false);//DER NORMALFALL IST ES ALSO NACH DER NORMALEN SUCHE AUCH IN EINER JAR DATEI ZU SUCHEN
-		if(objReturn!=null)break main;				
-	}//end main:
-	return objReturn;
-}
+
 /** Eine NULL oder ".." Angabe bedeutet "Projekt-Ordner-Ebene".
  *  Ein Leerstring, Empty oder "." bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
  *  
@@ -637,7 +666,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		//+++ Spezialfälle (Empty, ".")
 		if(bUseClasspathSource){
 			sDirectory = FileEasyZZZ.getFileRootPath();
-			objReturn = FileEasyZZZ.getDirectory(sDirectory);			
+			objReturn = FileEasyZZZ.searchDirectory(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
@@ -647,17 +676,17 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
 			if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
 				sDirectory = FileEasyZZZ.getFileRootPath();
-				objReturn = FileEasyZZZ.getDirectory(sDirectory);
+				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
 			}else if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": TESTORDNER VERWENDET");
 				sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
-				objReturn = FileEasyZZZ.getDirectory(sDirectory);
+				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
 			}else if(FileEasyZZZ.isPathRelative(sDirectory)){
 				sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
-				objReturn = FileEasyZZZ.getDirectory(sDirectory);
+				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
 			}else{
 				//Absolute Pfadangabe....
-				objReturn = FileEasyZZZ.getDirectory(sDirectory);
+				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
 			}	
 			if(objReturn!=null){
 				if(FileEasyZZZ.exists(objReturn)) break main;
@@ -1573,7 +1602,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			String sFilePath=objFileForDirectory.getAbsolutePath();
 			String sDirectory;
 			if(objFileForDirectory.isFile()) {
-				File objFileDirectory = FileEasyZZZ.getDirectoryFromFilepath(sFilePath);
+				File objFileDirectory = FileEasyZZZ.searchDirectoryFromFilepath(sFilePath);
 				sDirectory = objFileDirectory.getAbsolutePath();
 			}else {
 				sDirectory = sFilePath;
@@ -1746,18 +1775,88 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	}//end function
 	
 	
-	public static String PathNameTotalCompute(String sDirectoryName, String sFileName){
-		String sReturn = new String("");
-		
+	public static String PathNameTotalCompute(String sDirectoryName, String sFileName) throws ExceptionZZZ{
+		String sReturn;		
 		main:{
-			sReturn = sDirectoryName + File.separator + sFileName;	
+			sReturn = FileEasyZZZ.joinFilePathName(sDirectoryName, sFileName);
 		}
-		
-		end:{
-			return sReturn;	
-		}
+		return sReturn;	
 	} // end function
 	
+	
+	/** Da die Arbeit mit dem normalen fileobjekt.isDirectory() nicht immer klappt. 
+	 *  Wir hier intern !fileobjekt.isFile() verwendet.
+	 * @param file2proof
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 30.11.2020, 09:11:01
+	 */
+	public static boolean isDirectory(File file2proof) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(file2proof==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No file object provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		
+		bReturn = !file2proof.isFile();
+		}//end main:
+		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Return=" + bReturn) ;
+		return bReturn;	
+	}
+	
+	/** Da die Arbeit mit dem normalen fileobjekt.isDirectory() nicht immer klappt. 
+	 *  Wir hier intern !fileobjekt.isFile() verwendet.
+	 * @param file2proof
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 30.11.2020, 09:11:01
+	 */
+	public static boolean isDirectoryExisting(File file2proof) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(file2proof==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No file object provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		
+		bReturn = FileEasyZZZ.isDirectory(file2proof);
+		if(bReturn) {
+			bReturn = FileEasyZZZ.exists(file2proof);
+		}
+		
+		}//end main:
+		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Return=" + bReturn) ;
+		return bReturn;	
+	}
+	
+	/** Da die Arbeit mit dem normalen fileobjekt.isFile() nicht immer klappt (z.B. wenn die Datei nicht auf der Platte liegt) 
+	 *  Wir hier intern auch !FileEasyZZZ.isDirectory() verwendet. 
+	 *  Da also dies nur klappt, bei Dateien, die auch tatsächlich existieren => entsprechenden Methodennamen gewählt.
+	 * @param file2proof
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 30.11.2020, 09:11:01
+	 */
+	public static boolean isFileExisting(File file2proof) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(file2proof==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No file object provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		
+			boolean bExists = FileEasyZZZ.exists(file2proof);
+			if(bExists) {
+				bReturn = file2proof.isFile();
+				if(bReturn) break main;
+			}else {
+				bReturn = !FileEasyZZZ.isDirectory(file2proof);
+			}						
+		}//end main;
+		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Return=" + bReturn) ;
+		return bReturn;	
+	}
 	
 	/** Checks if a file-object is the root-directory.
 	* @param file2proof
@@ -1774,7 +1873,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				throw ez;
 			}
 			//nein, das ist �berfl�ssig   if(file2proof.exists()==false) break main;
-			if(file2proof.isDirectory()==false) break main;
+			if(FileEasyZZZ.isDirectory(file2proof)==false) break main;
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Ist Verzeichnis: '" + file2proof.getAbsolutePath() + "'");
 			
 			File fileParent = file2proof.getParentFile();
@@ -1973,7 +2072,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 *  
 	 * @return
 	 */
-	public static File getFileObject(String sFile) throws ExceptionZZZ{
+	public static File searchFileObject(String sFile) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
 			//Problem: WAS MIT NULL!!!! Da hier nicht im Workspace gesucht wird, Fehler.
@@ -1982,7 +2081,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				throw ez;
 			}
 					
-			objReturn = getFileObject_(sFile);
+			objReturn = searchFileObject_(sFile);
 		}//end main:
 		return objReturn;			
 		
@@ -2006,7 +2105,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			    System.out.println(sLog);
 				sFile=".";
 			}
-			objReturn = getFileObject_(sFile);
+			objReturn = searchFileObject_(sFile);
 								
 			//Lösungsidee 2:
 			//20190215: Arbeite mit TEMP-Ordner
@@ -2063,7 +2162,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return objReturn;			
 	}
 	
-	private static File getFileObject_(String sPath) throws ExceptionZZZ{
+	private static File searchFileObject_(String sPath) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
 			ClassLoader classLoader = FileEasyZZZ.class.getClassLoader();

@@ -182,7 +182,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	public static File peekFile(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{			
-			File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, false, false, false);
+			File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, false, true, false);
 			if(objaReturn!=null) {
 				objReturn = objaReturn[0];
 			}			
@@ -344,7 +344,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 							
 						//Nun aus dem ZipEntry ein File Objekt machen 
-						File objFileTemp = JarEasyZZZ.createFileDummy(entry, sTargetDirectoryPathIn);
+						File objFileTemp = JarEasyZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
 						objaFileTempInTemp.add(objFileTemp);							
 					}	
 					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
@@ -368,7 +368,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					
 						if(zeTemp.isDirectory()) {
 							//Nun aus dem ZipEntry ein File Objekt machen 							
-							File objFileTemp = JarEasyZZZ.createFileDummy(entry, sTargetDirectoryPathIn);
+							File objFileTemp = JarEasyZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
 							objaFileTempInTemp.add(objFileTemp);
 						}
 					}
@@ -1312,7 +1312,7 @@ File[] objaReturn = null;
 					File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, bWithFiles, true);
 					if(objaReturn==null) break main;
 					
-					if(objaReturn[0].isFile()) {
+					if(!FileEasyZZZ.isDirectory(objaReturn[0])) {
 						//Merke: In dem zurückgegebenen Array sind normalerweise nur die Dateien enthalten. Für das Verzeichnis auf das ParentFile des 0ten Elements zugreifen.
 						objReturn = objaReturn[0].getParentFile();
 					}else {
@@ -1443,18 +1443,13 @@ File[] objaReturn = null;
 					   		String sEntryPath = entry.getName();
 					   		sEntryPath = JarEasyUtilZZZ.toFilePath(sEntryPath);
 					   		String sTargetDirPathFromEntry = FileEasyZZZ.joinFilePathName(sTargetDirPath, sEntryPath);
-					   		
-					   		TODOGOON; //20201129: Das müsste FileEasyZZZ.getDirectoryFormFilePath(..) sein.
-					   		//          Die aktuelle Methode müsste lauten FileEasyZZZ.searchDirectoryFromFilePath(..)
-					   		ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
-					    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
-					    	FileEasyZZZ.splitFilePathName(sTargetDirPathFromEntry, strDirectory, strFileName);
-					    	String sDirectory=strDirectory.get();
-					   		File objReturnTrunksTargetDirPath = new File(sDirectory);					   		
+					   		File objReturnTrunksTargetDirPath = FileEasyZZZ.getDirectory(sTargetDirPathFromEntry);				   		
 					   		if(bSave) {					   			
 					   			FileEasyZZZ.createDirectoryForDirectory(objReturnTrunksTargetDirPath);
+					   			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK OBJECT PERSISTED AS: '" + objReturnTrunksTargetDirPath.getAbsolutePath() +"' (bSave=true CASE)";
+						    	System.out.println(sLog);
 					   		}else {
-					   			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK OBJECT NOT PERSISTED AS: '" + objReturnTrunksTargetDirPath.getAbsolutePath() +"' (NULL CASE)";
+					   			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (DIRECTORY) TRUNK OBJECT NOT PERSISTED AS: '" + objReturnTrunksTargetDirPath.getAbsolutePath() +"' (bSave=false CASE)";
 						    	System.out.println(sLog);
 					   		}
 					   		objaReturn = FileArrayEasyZZZ.add(objaReturn, objReturnTrunksTargetDirPath);
