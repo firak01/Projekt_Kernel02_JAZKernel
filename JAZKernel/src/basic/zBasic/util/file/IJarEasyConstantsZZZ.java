@@ -21,4 +21,13 @@ public interface IJarEasyConstantsZZZ {
 	public static final int iJAR_OVPN = 100;
 	public static final String sJAR_DIRECTORYPATH_OVPN = "C:\\\\1fgl\\\\client\\\\OVPN";
 	public static final String sJAR_FILENAME_OVPN = "OpenVPNZZZ.jar";
+
+	String sDIRECTORY_SEPARATOR = "/";
+
+	//Findet alle die nicht mit / beginnen und mit / enden .... 
+	String sDIRECTORY_VALID_REGEX="^(?![/]{1,}).*([/]$)";
+
+	//Findet alle die nicht mit / beginnen und nicht mit / enden ....
+	//https://stackoverflow.com/questions/16398471/regex-for-string-not-ending-with-given-suffix
+	String sFILE_VALID_REGEX="^(?![/]{1,}).*(?<![/])$";
 }

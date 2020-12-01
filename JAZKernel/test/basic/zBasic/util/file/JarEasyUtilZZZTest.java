@@ -42,7 +42,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": ############################################### SETUP .";
 			System.out.println(sLog);
 
-			objJarAsSource = JarEasyUtilZZZ.getJarFileUsed();
+			objJarAsSource = JarKernelZZZ.getJarFileUsed();
 				
 			//MERKE ALS VORBEREITUNG: Verzeichnisse löschen. Das Vor dem Test machen, im Test selbst. Aber nicht im Setup, dann das würde das vor jedem Test ausgeführt.			 
 
@@ -288,7 +288,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			if(JarEasyUtilZZZ.isInJarStatic()) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
 			    System.out.println(sLog);
-			    objFile = JarEasyUtilZZZ.getJarFileCurrentAsFile();
+			    objFile = JarKernelZZZ.getJarFileCurrentAsFile();
 			    
 			    assertNotNull(objFile);
 			    assertTrue(objFile.isFile());
@@ -313,7 +313,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": NOT ISinJarStatic.";
 		    System.out.println(sLog);		    
 		}
-		File objFile = JarEasyUtilZZZ.getJarFileUsedAsFile();
+		File objFile = JarKernelZZZ.getJarFileUsedAsFile();
 		assertNotNull(objFile);
 		assertTrue(objFile.exists());
 		assertTrue(objFile.isFile());
@@ -341,7 +341,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 		    	assertTrue(bErg);
 		    	
 		    	//+++ Gegenprobe mit einem Dummy - Jar - Objekt
-		    	File objFileJarAsDummy = JarEasyUtilZZZ.getJarFileDummyAsFile();
+		    	File objFileJarAsDummy = JarKernelZZZ.getJarFileDummyAsFile();
 		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": B) objFileJarAsDummy.getAbsolutePath() = '" + objFileJarAsDummy.getAbsolutePath() + "'";
 				System.out.println(sLog);
 				
@@ -380,7 +380,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			    System.out.println(sLog);								
 			}	
 		    
-		    JarFile objFileAsJar = JarEasyUtilZZZ.getJarFileUsed();		    
+		    JarFile objFileAsJar = JarKernelZZZ.getJarFileUsed();		    
 		    assertNotNull(objFileAsJar);
 		    
 		    //#######################################################################
@@ -545,7 +545,7 @@ public class JarEasyUtilZZZTest extends TestCase{
 			    System.out.println(sLog);								
 			}	
 		    
-		    JarFile objFileAsJar = JarEasyUtilZZZ.getJarFileUsed();		    
+		    JarFile objFileAsJar = JarKernelZZZ.getJarFileUsed();		    
 		    assertNotNull(objFileAsJar);
 		    
 			//A) Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter

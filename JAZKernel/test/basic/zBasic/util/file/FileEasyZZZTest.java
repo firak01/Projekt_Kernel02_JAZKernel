@@ -45,7 +45,7 @@ public class FileEasyZZZTest extends TestCase{
 		try{
 			
 			//1. Hole ein Jar-File für die Struktur der Verzeichnisse in diesem Test
-			objFileJarAsSource = JarEasyUtilZZZ.getJarFileTestAsFile();
+			objFileJarAsSource = JarKernelZZZ.getJarFileTestAsFile();
 			
 			
 			sTargetDirPath=EnvironmentZZZ.getHostDirectoryTemp();

@@ -8,7 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.file.JarEasyUtilZZZ;
+import basic.zBasic.util.file.IJarEasyConstantsZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
@@ -66,7 +66,7 @@ public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilename
 	}
 	@Override
 	public String getCriterion() {
-		return JarEasyUtilZZZ.sDIRECTORY_SEPARATOR + this.getName();
+		return IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR + this.getName();
 	}
 	
 

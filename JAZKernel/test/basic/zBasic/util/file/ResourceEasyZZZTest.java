@@ -39,9 +39,9 @@ public class ResourceEasyZZZTest extends TestCase{
 		    
 		    if(!JarEasyUtilZZZ.isInJarStatic())	{				
 				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-		    	objFileJarAsSource = JarEasyUtilZZZ.getJarFileUsedAsFile(JarEasyUtilZZZ.iJAR_OVPN);					
+		    	objFileJarAsSource = JarKernelZZZ.getJarFileUsedAsFile(JarEasyUtilZZZ.iJAR_OVPN);					
 			}else {
-				objFileJarAsSource = JarEasyUtilZZZ.getJarFileUsedAsFile();
+				objFileJarAsSource = JarKernelZZZ.getJarFileUsedAsFile();
 			}
 						
 			sTargetDirPath=EnvironmentZZZ.getHostDirectoryTemp();
@@ -239,7 +239,7 @@ public class ResourceEasyZZZTest extends TestCase{
 			sTargetDirectoryPathRoot = "SEARCH_RESOURCE_DIRECTORY_DUMMY";
 			if(!JarEasyUtilZZZ.isInJarStatic())	{				
 				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-				JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+				JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 				assertNotNull("JarFile nicht gefunden", objJarFile);
 					    
 				objFileDummy = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot);				
@@ -263,7 +263,7 @@ public class ResourceEasyZZZTest extends TestCase{
 			sTargetDirectoryPathRoot = "SEARCH_RESOURCE_FILE_DUMMY";
 			if(!JarEasyUtilZZZ.isInJarStatic())	{				
 				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-				JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+				JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 				assertNotNull("JarFile nicht gefunden", objJarFile);
 					    
 				objFileDummy = JarEasyZZZ.searchResourceFile(objJarFile, sPath, sTargetDirectoryPathRoot);				

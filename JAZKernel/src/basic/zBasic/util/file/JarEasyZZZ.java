@@ -136,7 +136,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47	
 	 */
-	public static File[] peekResourceFile(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+	public static File[] peekResourceFiles(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
 		File[] objaReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sSourceFilePath)){
@@ -201,7 +201,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 		return objReturn;
 	}
 	
-	public static File[] peekFilesOfDirectory(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File[] peekFiles(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File[] objaReturn = null;
 		main:{	
 			objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, true, false);
@@ -278,7 +278,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File[] peekResourceDirectory(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
+	public static File[] peekResourceDirectories(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
 		File[] objaReturn=null;
 		main:{			
 				//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
@@ -293,7 +293,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					throw ez;
 				}
 				
-				objaReturn = JarEasyZZZ.peekResourceDirectory(objJarFile, entry, sTargetDirectoryPathIn, bWithFiles);
+				objaReturn = JarEasyZZZ.peekResourceDirectories(objJarFile, entry, sTargetDirectoryPathIn, bWithFiles);
 		}//end main:
 		return objaReturn;
 	}
@@ -306,7 +306,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File[] peekResourceDirectory(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
+	public static File[] peekResourceDirectories(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
 		File[] objaReturn=null;
 		main:{
 			try{
@@ -1398,7 +1398,7 @@ File[] objaReturn = null;
 					   		sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 						   	System.out.println(sLog);
 						   	
-					   		objaReturn = peekResourceDirectory(jar, entry,sTargetDirPath, bWithFiles);	
+					   		objaReturn = peekResourceDirectories(jar, entry,sTargetDirPath, bWithFiles);	
 					   		
 					   		sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB2) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 						   	System.out.println(sLog);

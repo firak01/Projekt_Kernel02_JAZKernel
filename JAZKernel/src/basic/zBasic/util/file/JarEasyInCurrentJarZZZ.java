@@ -75,7 +75,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			File objReturn = null;
 			main:{				
 				String sLog = null;			    		
-				JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+				JarFile jar = JarKernelZZZ.getJarFileCurrent();
 				if(jar==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 				    System.out.println(sLog);
@@ -93,7 +93,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
-			JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
 			if(jar==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 			    System.out.println(sLog);
@@ -111,7 +111,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
-			JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
 			if(jar==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 			    System.out.println(sLog);
@@ -125,11 +125,11 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		return objReturn;
 	}
 	
-	public static File[] peekFilesOfDirectory(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File[] peekFiles(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File[] objaReturn = null;
 		main:{
 			String sLog = null;			    		
-			JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
 			if(jar==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 			    System.out.println(sLog);
@@ -137,7 +137,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 			    System.out.println(sLog);
 			
-			    objaReturn = JarEasyZZZ.peekFilesOfDirectory(jar, sPath, sTargetDirectoryPathRootIn);
+			    objaReturn = JarEasyZZZ.peekFiles(jar, sPath, sTargetDirectoryPathRootIn);
 			}
 		}//end main:
 		return objaReturn;
@@ -158,7 +158,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
-			JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
 			if(jar==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 			    System.out.println(sLog);
@@ -184,7 +184,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
-			JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
 			if(jar==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 			    System.out.println(sLog);
@@ -213,7 +213,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
-			JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
 			if(jar==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 			    System.out.println(sLog);
@@ -241,7 +241,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			File[] objaReturn = null;
 			main:{
 				String sLog = null;			    		
-				JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+				JarFile jar = JarKernelZZZ.getJarFileCurrent();
 				if(jar==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 				    System.out.println(sLog);
@@ -268,7 +268,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			File[] objaReturn = null;
 			main:{
 				String sLog = null;			    		
-				JarFile jar = JarEasyUtilZZZ.getJarFileCurrent();
+				JarFile jar = JarKernelZZZ.getJarFileCurrent();
 				if(jar==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
 				    System.out.println(sLog);

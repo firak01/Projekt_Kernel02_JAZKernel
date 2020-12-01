@@ -11,6 +11,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IJarEasyConstantsZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterEndingZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterMiddleZipZZZ;
@@ -289,19 +290,19 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 				String sName = objPartFilterName.getCriterion();
 				
 				//A) Kompletter Dateinamensfilter (ggfs. mit Verzeichnis)			 
-				if((!StringZZZ.isEmpty(sName) && !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && StringZZZ.isEmpty(sDirectoryPath)){
+				if((!StringZZZ.isEmpty(sName) && !sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) && StringZZZ.isEmpty(sDirectoryPath)){
 					objReturn = objPartFilterName;
 					break main;
 				}
 				
 				//B) REINER VERZEICHNIS-FILTER
-				if((StringZZZ.isEmpty(sName) ||  sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+				if((StringZZZ.isEmpty(sName) ||  sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
 					objReturn = objPartFilterDirectory;
 					break main;
 				}
 				
 				//C) Dateinamesfilter mit Verzeichnis rulez
-				if((!StringZZZ.isEmpty(sName)&& !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+				if((!StringZZZ.isEmpty(sName)&& !sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
 					objReturn = this.getPathTotalFilter();		
 					break main;
 				}
@@ -349,21 +350,21 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 				String sName = objPartFilterName.getCriterion();
 				
 				//A) Reiner Dateinamensfilter (ohne Verzeichnis)			 
-				if ((!StringZZZ.isEmpty(sName) && !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR))  && StringZZZ.isEmpty(sDirectoryPath)) {
+				if ((!StringZZZ.isEmpty(sName) && !sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR))  && StringZZZ.isEmpty(sDirectoryPath)) {
 					objReturn = sName;
 					objReturn = JarEasyUtilZZZ.computeDirectoryFromJarPath(objReturn);
 					break main;
 				}
 				
 				//B) VERZEICHNIS-FILTER
-				if((StringZZZ.isEmpty(sName) ||  sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+				if((StringZZZ.isEmpty(sName) ||  sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
 					objReturn = sDirectoryPath;
 					objReturn = JarEasyUtilZZZ.computeDirectoryFromJarPath(objReturn);
 					break main;
 				}
 				
 				//C) Kompletter Dateinamensfilter (mit Verzeichnis)	rulez
-				if((!StringZZZ.isEmpty(sName)&& !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+				if((!StringZZZ.isEmpty(sName)&& !sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
 					FilenamePartFilterPathTotalZipZZZ objPartFilterPathTotal = this.getPathTotalFilter();
 					objReturn = objPartFilterPathTotal.getDirectoryPath();
 					break main;
@@ -382,21 +383,21 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 				String sName = objPartFilterName.getCriterion();
 				
 				//A) Reiner Dateinamensfilter (ohne Verzeichnis)			 
-				if ((!StringZZZ.isEmpty(sName) && !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR))  && StringZZZ.isEmpty(sDirectoryPath)) {
+				if ((!StringZZZ.isEmpty(sName) && !sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR))  && StringZZZ.isEmpty(sDirectoryPath)) {
 					objReturn = sName;
 					objReturn = JarEasyUtilZZZ.computeFilenameFromJarPath(objReturn);
 					break main;
 				}
 				
 				//B) VERZEICHNIS-FILTER
-				if((StringZZZ.isEmpty(sName) ||  sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+				if((StringZZZ.isEmpty(sName) ||  sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
 					objReturn = sDirectoryPath;
 					objReturn = JarEasyUtilZZZ.computeFilenameFromJarPath(objReturn);
 					break main;
 				}
 				
 				//C) Kompletter Dateinamensfilter (mit Verzeichnis)	rulez
-				if((!StringZZZ.isEmpty(sName)&& !sName.equals(JarEasyUtilZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
+				if((!StringZZZ.isEmpty(sName)&& !sName.equals(IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) && !StringZZZ.isEmpty(sDirectoryPath)) {
 					FilenamePartFilterPathTotalZipZZZ objPartFilterPathTotal = this.getPathTotalFilter();
 					objReturn = objPartFilterPathTotal.getFileName();
 					break main;

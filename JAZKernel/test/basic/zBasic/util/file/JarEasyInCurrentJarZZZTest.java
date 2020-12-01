@@ -112,7 +112,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			
 			 if(!JarEasyUtilZZZ.isInJarStatic())	{
 				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-				 JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+				 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 				 assertNotNull("JarFile nicht gefunden", objJarFile);
 				    
 				 objFileDir = JarEasyZZZ.peekDirectory(objJarFile, sPath, sDirToExtractTo);
@@ -162,7 +162,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			
 			 if(!JarEasyUtilZZZ.isInJarStatic())	{
 				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-				 JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
+				 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 				 assertNotNull("JarFile nicht gefunden", objJarFile);
 				    
 				 objFile = JarEasyZZZ.peekFile(objJarFile, sPath, sDirToExtractTo);
@@ -203,7 +203,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			
 			 if(!JarEasyUtilZZZ.isInJarStatic())	{
 				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-				 JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
+				 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 				 assertNotNull("JarFile nicht gefunden", objJarFile);
 				    
 				 objFile = JarEasyZZZ.peekFile(objJarFile, sPath, sDirToExtractTo);
@@ -225,7 +225,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 		}
 	}
 	
-	public void testPeekFilesOfDirectoryInJar(){
+	public void testPeekFilesInJar(){
 		try{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
@@ -249,12 +249,12 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				
 			 if(!JarEasyUtilZZZ.isInJarStatic())	{
 				//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-				 JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
+				 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 				 assertNotNull("JarFile nicht gefunden", objJarFile);
 				    
-				 objaFile = JarEasyZZZ.peekFilesOfDirectory(objJarFile, sPath, sDirToExtractTo);
+				 objaFile = JarEasyZZZ.peekFiles(objJarFile, sPath, sDirToExtractTo);
 			}else {
-				 objaFile = JarEasyInCurrentJarZZZ.peekFilesOfDirectory(sPath, sDirToExtractTo);
+				 objaFile = JarEasyInCurrentJarZZZ.peekFiles(sPath, sDirToExtractTo);
 			}
 		    assertNotNull(objaFile);
 		    for(File objFile : objaFile) {
@@ -295,7 +295,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 			    System.out.println(sLog);
 			    
 			    //Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-			    JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+			    JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 			    assertNotNull("JarFile nicht gefunden", objJarFile);
 			    
 			    objFileCreated = JarEasyZZZ.extractFileFromJarAsTemp(objJarFile, sPath);			
@@ -349,7 +349,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP_EMPTY";				
 				 if(!JarEasyUtilZZZ.isInJarStatic())	{
 					//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-					 JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
+					 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 					 assertNotNull("JarFile nicht gefunden", objJarFile);
 					    
 					 objDirectoryCreated = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot, false);
@@ -380,7 +380,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP";
 				 if(!JarEasyUtilZZZ.isInJarStatic())	{
 					//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
+					JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
 					objDirectoryCreated = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot, true);
@@ -425,7 +425,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_FILE_TO_TEMP";
 				 if(!JarEasyUtilZZZ.isInJarStatic())	{
 					//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+					JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
 					objFile = JarEasyZZZ.searchResourceFile(objJarFile, sPath, sTargetDirectoryPathRoot);
@@ -451,7 +451,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				sTargetDirectoryPathRoot = "FGL\\SEARCH_RESOURCE_DIRECTORY_TO_TEMP02";
 				 if(!JarEasyUtilZZZ.isInJarStatic())	{
 					//Suche nach der Datei in der OPVN-Jar Datei, die als Konstante definiert wurde.
-					JarFile objJarFile = JarEasyUtilZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
+					JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
 					objFile = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot);
