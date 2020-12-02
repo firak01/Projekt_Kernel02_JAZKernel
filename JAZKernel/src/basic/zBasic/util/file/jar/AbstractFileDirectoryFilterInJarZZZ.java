@@ -32,6 +32,10 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
 		this("","init");
 	}		
+	public AbstractFileDirectoryFilterInJarZZZ(String sDirectoryPath) throws ExceptionZZZ {
+		super();
+		AbstractDirectoryFilterInJarNew_(sDirectoryPath, null);
+	}
 	public AbstractFileDirectoryFilterInJarZZZ(String sDirectoryPath, String sFlagControlIn) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
@@ -41,11 +45,7 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 	public AbstractFileDirectoryFilterInJarZZZ(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
 		super();
 		AbstractDirectoryFilterInJarNew_(sDirectoryPath, saFlagControlIn);
-	} 
-	public AbstractFileDirectoryFilterInJarZZZ(String sDirectoryPath) throws ExceptionZZZ {
-		super();
-		AbstractDirectoryFilterInJarNew_(sDirectoryPath, null);
-	} 
+	} 	
 	private void AbstractDirectoryFilterInJarNew_(String sDirectoryPath, String[] saFlagControlIn) throws ExceptionZZZ {
 		String stemp; boolean btemp;
 		main:{

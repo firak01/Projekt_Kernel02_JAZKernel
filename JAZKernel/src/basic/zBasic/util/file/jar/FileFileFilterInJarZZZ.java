@@ -20,6 +20,10 @@ public class FileFileFilterInJarZZZ extends AbstractFileFileFilterInJarZZZ{
 	public static String sSUFFIX_DEFAULT="";
 	public static String sENDING_DEFAULT="";
 	
+	public FileFileFilterInJarZZZ(String sName) throws ExceptionZZZ{
+		super(sName);
+		FileFilterInJarNew_();
+	}
 	public FileFileFilterInJarZZZ(String sDirectory, String sName, String[] saFlagControl) throws ExceptionZZZ {
 		super(sDirectory, sName, saFlagControl);	
 		FileFilterInJarNew_();

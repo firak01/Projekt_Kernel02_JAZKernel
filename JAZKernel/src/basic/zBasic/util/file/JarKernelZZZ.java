@@ -92,15 +92,16 @@ public class JarKernelZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		main:{
 			switch(iConstantKeyZZZ){
 			case JarEasyUtilZZZ.iJAR_DUMMY:
+				objReturn = JarKernelZZZ.getJarFile_(JarKernelZZZ.sJAR_DIRECTORYPATH_DUMMY, JarKernelZZZ.sJAR_FILENAME_DUMMY);
 				break;
 			case JarEasyUtilZZZ.iJAR_TEST:
-				objReturn = getJarFileTest();
+				objReturn = JarKernelZZZ.getJarFile_(JarKernelZZZ.sJAR_DIRECTORYPATH_TEST, JarKernelZZZ.sJAR_FILENAME_TEST);
 				break;
 			case JarEasyUtilZZZ.iJAR_KERNEL:
-				objReturn = getJarFileKernel();
+				objReturn = JarKernelZZZ.getJarFile_(JarKernelZZZ.sJAR_DIRECTORYPATH_KERNEL, JarKernelZZZ.sJAR_FILENAME_KERNEL);
 				break;
 			case JarEasyUtilZZZ.iJAR_OVPN:
-				objReturn = JarKernelZZZ.getJarFile_(JarEasyUtilZZZ.sJAR_DIRECTORYPATH_OVPN, JarEasyUtilZZZ.sJAR_FILENAME_OVPN);
+				objReturn = JarKernelZZZ.getJarFile_(JarKernelZZZ.sJAR_DIRECTORYPATH_OVPN, JarKernelZZZ.sJAR_FILENAME_OVPN);
 				break;
 			default:
 				ExceptionZZZ ez = new ExceptionZZZ("Constant for this key not defined: " + iConstantKeyZZZ, iERROR_PARAMETER_VALUE, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());

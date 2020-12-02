@@ -107,6 +107,24 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		return objReturn;
 	}
 	
+	public static File[] peekFiles(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		File[] objaReturn = null;
+		main:{
+			String sLog = null;			    		
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
+			if(jar==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
+			    System.out.println(sLog);
+						  
+				objaReturn = JarEasyZZZ.peekFiles(jar, sPath, sTargetDirectoryPathRootIn);				
+			}
+		}//end main:
+		return objaReturn;
+	}
+		
 	public static File peekDirectory(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
@@ -125,23 +143,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		return objReturn;
 	}
 	
-	public static File[] peekFiles(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
-		File[] objaReturn = null;
-		main:{
-			String sLog = null;			    		
-			JarFile jar = JarKernelZZZ.getJarFileCurrent();
-			if(jar==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
-			    System.out.println(sLog);
-			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
-			    System.out.println(sLog);
-			
-			    objaReturn = JarEasyZZZ.peekFiles(jar, sPath, sTargetDirectoryPathRootIn);
-			}
-		}//end main:
-		return objaReturn;
-	}
+	
 	
 	
 	

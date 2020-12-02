@@ -201,10 +201,10 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 		return objReturn;
 	}
 	
-	public static File[] peekFiles(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File[] peekFiles(JarFile jar, String sFilename, String sTargetDirectoryPathRoot) throws ExceptionZZZ {
 		File[] objaReturn = null;
-		main:{	
-			objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, true, false);
+		main:{				
+			objaReturn = JarEasyZZZ.peekResources_(jar, sFilename, sTargetDirectoryPathRoot);
 		}//end main:
 		return objaReturn;
 	}
@@ -1489,6 +1489,41 @@ File[] objaReturn = null;
 					ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}			
+			}// end main:
+			return objaReturn;
+		}
+		
+		/** Private Methode, um Redundanz zu vermeiden
+		 * @param jar
+		 * @param sPath
+		 * @param sTargetDirectoryPathRootIn
+		 * @param bAsDirectory
+		 * @param bWithFiles       Merke: Wird ignoriert, wenn bAsDirectory=false!, dann wird nur die Datei zurückgegeben.
+		 * @param bSave
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 29.11.2020, 09:30:09
+		 */
+		private static File[] peekResources_(JarFile jar, String sFilename, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+			File[] objaReturn = null;
+			main:{
+				String sLog = null;
+				try {			
+				String sTargetDirectoryPathRoot=null;
+				if(StringZZZ.isEmpty(sTargetDirectoryPathRootIn)) {
+					sTargetDirectoryPathRoot =  "ZZZ";
+				}else {
+					sTargetDirectoryPathRoot = sTargetDirectoryPathRootIn;				
+				}
+				
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sFilename);
+				objaReturn = JarEasyUtilZZZ.findFileInJar(jar, objFilterFileInJar, sTargetDirectoryPathRoot);
+				
+				jar.close();
+			} catch (IOException e1) {
+				ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
 			}// end main:
 			return objaReturn;
 		}

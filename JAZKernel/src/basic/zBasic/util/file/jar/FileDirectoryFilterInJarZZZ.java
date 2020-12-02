@@ -10,6 +10,6 @@ import basic.zBasic.util.file.zip.IFileDirectoryWithContentPartFilterZipZZZ;
 public class FileDirectoryFilterInJarZZZ extends AbstractFileDirectoryFilterInJarZZZ{
 
 	public FileDirectoryFilterInJarZZZ(String sDirectoryPath) throws ExceptionZZZ {
-		super(sDirectoryPath, "");
+		super(sDirectoryPath);
 	}
 }

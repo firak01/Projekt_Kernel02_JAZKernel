@@ -240,6 +240,32 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		return objReturn;
 	}
 	
+	/** Finde nur die angegebene Datei in der Jar Datei. Es wird ein Dummy-Objekt zurückgegeben, das NICHT auf der Platte ist.
+	 * @param objFileAsJar
+	 * @param sPath
+	 * @param sDirExtractTo
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 29.10.2020, 13:01:39
+	 */
+	public static File[] peekFilesInJar(File objFileAsJar, String sFilename, String sDirExtractTo)throws ExceptionZZZ {
+		File[] objaReturn = null;
+		main:{
+			if(objFileAsJar==null)break main;			
+			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
+				objaReturn = JarEasyInCurrentJarZZZ.peekFiles(sFilename, sDirExtractTo);
+			}else {
+				JarFile objFileJar = JarKernelZZZ.getJarFileUsed();
+				objaReturn = JarEasyZZZ.peekResourceFiles(objFileJar, null, sDirExtractTo);
+			}
+			
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	
+	
 	/** Finde nur das Verzeichnis in der JAr Datei. Es werden die Dateien als Dummy-Objekt zurückgegeben, die NICHT auf der Platte sind.
 	 * @param objFileAsJar
 	 * @param sPath

@@ -24,6 +24,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextParserZZZ;
+import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
 public class JarEasyZZZTest extends TestCase{
@@ -433,6 +434,46 @@ public class JarEasyZZZTest extends TestCase{
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
 	}
+	
+	public void testPeekFiles() {
+		try{
+			
+			File[] objaReturn; File objFile; IFileFilePartFilterZipUserZZZ objFilterFileInJar;
+			String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
+			
+			//#############
+			
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+		    if(JarEasyUtilZZZ.isInJarStatic()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
+			    System.out.println(sLog);								
+			}	
+		    		    		   		    		
+		    //#######################################################################
+		    //TESTFÄLLE FÜR: DATEIEN GEFUNDEN
+		    //VARIANTE 1: Pfad und Dateinamen im Dateinamen
+		    sTargetDirectoryPathRoot = "FGL\\PEEK_FILES01";
+		    sFilename = "test01.txt";  //Dies Datei soll über alle Verzeichnisse der JAR-DAtei gesuht werden
+						
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sFilename='" + sFilename + "'";
+			System.out.println(sLog);
+			
+			JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarKernelZZZ.iJAR_TEST);	    
+		    assertNotNull("Die Jar-Dummy Datei sollte gefunden worden sein.", objJarFile);
+		    	  
+			objaReturn = JarEasyZZZ.peekFiles(objJarFile, sFilename, sTargetDirectoryPathRoot);
+			assertNotNull(objaReturn);
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
+	
 	
 	
 	

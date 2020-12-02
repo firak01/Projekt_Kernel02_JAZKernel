@@ -177,6 +177,45 @@ public class ResourceEasyZZZTest extends TestCase{
 		}
 	}
 	
+	public void testPeekFilesInJar(){
+		try{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+			File objFileCreated;
+			String sPath = "readmeFGL.txt";
+			String sTargetDirectoryPathRoot = "PEEK_RESOURCE_FILES_DUMMY";
+			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			if(JarEasyUtilZZZ.isInJarStatic())	{
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Innerhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Ausserhalb einer JAR-Datei durchgeführt.";
+			    System.out.println(sLog);
+			}
+			
+			File[] objaFile = ResourceEasyZZZ.peekFilesInJar(objFileJarAsSource, sPath, sDirToExtractTo);
+		    assertNotNull(objaFile);
+		    assertTrue("Es wurde 1 Datei erwartetet",objaFile.length==1);
+		    for(File objFile : objaFile) {
+			    if(objFile.exists()) {
+					fail("Datei '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Datei als Dummy * '" + objFile.getAbsolutePath() + "'";
+				    System.out.println(sLog);
+				}
+		    }
+		    		    		    		
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
+	
 	public void testPeekFilesOfDirectoryInJar(){
 		try{
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";

@@ -45,6 +45,10 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 	public AbstractFileFileFilterInJarZZZ() throws ExceptionZZZ {
 		this("","");
 	}		
+	public AbstractFileFileFilterInJarZZZ(String sFileName) throws ExceptionZZZ {
+		super();
+		AbstractFileFilterInJarNew_(null, sFileName, null);
+	}
 	public AbstractFileFileFilterInJarZZZ(String sDirectoryName, String sFileName) throws ExceptionZZZ {
 		super();
 		AbstractFileFilterInJarNew_(sDirectoryName, sFileName, null);
