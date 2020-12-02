@@ -459,7 +459,13 @@ public class JarEasyZZZTest extends TestCase{
 		    //VARIANTE 1: Pfad und Dateinamen im Dateinamen
 		    sTargetDirectoryPathRoot = "FGL\\PEEK_FILES01";
 		    sFilename = "test01.txt";  //Dies Datei soll über alle Verzeichnisse der JAR-DAtei gesuht werden
-						
+					
+		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sFilename='" + sFilename + "'";
 			System.out.println(sLog);
 			
@@ -468,7 +474,19 @@ public class JarEasyZZZTest extends TestCase{
 		    	  
 			objaReturn = JarEasyZZZ.peekFiles(objJarFile, sFilename, sTargetDirectoryPathRoot);
 			assertNotNull(objaReturn);
+			assertTrue(objaReturn.length==3);
 			
+			for(File objFileTemp : objaReturn) {
+			 if(FileEasyZZZ.exists(objFileTemp)) {
+					fail("File-Objekt '" + sFilename + "' sollte  nicht erstellt sein.");
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt als Dummy * '" + objFileTemp.getAbsolutePath() + "'";
+				    System.out.println(sLog);
+				    boolean bErg = !FileEasyZZZ.isDirectory(objFileTemp);
+					assertTrue("File-Objekt sollte kein Verzeichnis (sondern eine Datei) sein: '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+				}
+			}
+			 
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
