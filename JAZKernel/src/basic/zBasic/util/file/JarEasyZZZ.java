@@ -33,6 +33,7 @@ import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryWithContentPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileFilePartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFilenamePartFilterZipZZZ;
 import basic.zBasic.util.file.zip.ZipEasyZZZ;
@@ -256,7 +257,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					
 					if(!zeTemp.isDirectory()) {
 						//Nun aus dem ZipEntry ein File Objekt machen 						
-						File objFileTemp = JarEasyZZZ.createFileDummy(entry, sTargetDirectoryPathIn);
+						File objFileTemp = JarEasyUtilZZZ.createFileDummy(entry, sTargetDirectoryPathIn);
 						objaFileTempInTemp.add(objFileTemp);
 					}
 				}
@@ -344,7 +345,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 							
 						//Nun aus dem ZipEntry ein File Objekt machen 
-						File objFileTemp = JarEasyZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
+						File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
 						objaFileTempInTemp.add(objFileTemp);							
 					}	
 					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
@@ -368,7 +369,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					
 						if(zeTemp.isDirectory()) {
 							//Nun aus dem ZipEntry ein File Objekt machen 							
-							File objFileTemp = JarEasyZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
+							File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
 							objaFileTempInTemp.add(objFileTemp);
 						}
 					}
@@ -408,7 +409,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				   	break main;
 				}						
 								
-				objReturn = JarEasyZZZ.createFileDummy(entry, sTargetDirectoryPathIn);
+				objReturn = JarEasyUtilZZZ.createFileDummy(entry, sTargetDirectoryPathIn);
 								
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -638,7 +639,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 						String sKey = itEntryName.next();
 						ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 												
-						File objFileTemp = JarEasyZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
+						File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
 						
 						//Das Ergebnis in die Trunk - HashMap packen
 						hmReturn.put(zeTemp, objFileTemp);
@@ -714,7 +715,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File extractDirectoryToTemp(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
+	public static File extractEntryToTemp(File objFileAsJar, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
 		File objReturn=null;
 		main:{			
 			if(jarEntryOfDirectory==null){
@@ -747,7 +748,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File extractDirectoryToTemp(JarFile objJarAsFile, JarEntry jarEntryOfDirectory, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
+	public static File extractEntryToTemp(JarFile objJarAsFile, JarEntry jarEntry, String sTargetDirectoryFilepathIn) throws ExceptionZZZ {
 		File objReturn=null;
 		main:{			
 			if(objJarAsFile==null){
@@ -755,25 +756,77 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				throw ez;
 			}
 						
-			if(jarEntryOfDirectory==null){
+			if(jarEntry==null){
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "No JarEntry provided", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
 			}
-			if(!jarEntryOfDirectory.isDirectory()) {
+			if(!jarEntry.isDirectory()) {
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Provided JarEntry is not a directory", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
 			}
 						
-			File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);
-			
-			String sDirectoryFilePathInJar = jarEntryOfDirectory.getName();
+			File objFileAsJar = JarEasyUtilZZZ.toFile(objJarAsFile);			
+			String sDirectoryFilePathInJar = jarEntry.getName();
 			String sLog = ReflectCodeZZZ.getPositionCurrent()+": DirectoryFilePathInJar='" + sDirectoryFilePathInJar + "'";
 		    System.out.println(sLog);	
+					   
+		    if(jarEntry.isDirectory()) {
+		    	objReturn = JarEasyZZZ.extractDirectoryToTemp_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, true);
+		    }else {
+		    	objReturn = JarEasyZZZ.extractFileToTemp_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn);
+		    }
 			
-			objReturn = JarEasyZZZ.extractDirectoryToTemp_(objFileAsJar, sDirectoryFilePathInJar, sTargetDirectoryFilepathIn, true);
-
 		}//end main:
 		return objReturn;
+	}
+	
+	private static File[] extractDirectoryToTemps_(File objFileAsJar, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File[] objaReturn = null;
+		
+		main:{
+			if(objFileAsJar==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(!FileEasyZZZ.isJar(objFileAsJar)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+						
+			String sTargetDirectoryFilepath;
+			if(sTargetDirectoryFilepathIn==null)
+				sTargetDirectoryFilepath="";  //TEMP VERZEICHNIS???
+			else {
+				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
+				sTargetDirectoryFilepath=StringZZZ.stripFileSeparators(sTargetDirectoryFilepathIn);									
+			}
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) sTargetDirectoryFilepath='" + sTargetDirectoryFilepath +"'.";
+		   	System.out.println(sLog);
+			
+			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
+			try {			
+			    if(bWithFiles) {
+			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) With Files Case.";
+				   	System.out.println(sLog);
+				   	
+					//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
+					IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sDirectoryFilePathInJar, null);
+					objaReturn = JarEasyZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryFilepath);					
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Without Files Case.";
+				   	System.out.println(sLog);
+				   	
+					//Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
+					IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sDirectoryFilePathInJar);										
+					objaReturn = JarEasyZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryFilepath, false);
+				}
+			
+			}catch (Exception e){
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
+				throw ez;
+		    }	    
+		}//end main:
+		return objaReturn;
 	}
 	
 	private static File extractDirectoryToTemp_(File objFileAsJar, String sDirectoryFilePathInJarIn, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
@@ -787,6 +840,52 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			objReturn = objaReturn[0].getParentFile();	
 		}//end main:
 		return objReturn;
+	}
+	
+	private static File extractFileToTemp_(File objFileAsJar, String sFilePathInJarIn, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+		File objReturn=null;
+		main:{							
+			File[] objaReturn = JarEasyZZZ.extractFilesToTemp_(objFileAsJar, sFilePathInJarIn, sTargetDirectoryPathIn);
+			if(objaReturn==null) break main;
+			
+			objReturn = objaReturn[0];
+		}//end main:
+		return objReturn;
+	}
+		
+	private static File[] extractFilesToTemp_(File objFileAsJar, String sFilePathInJarIn, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{
+			if(objFileAsJar==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(!FileEasyZZZ.isJar(objFileAsJar)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+						
+			String sTargetDirectoryPath;
+			if(sTargetDirectoryPathIn==null)
+				sTargetDirectoryPath="";  //TEMP VERZEICHNIS???
+			else {
+				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
+				sTargetDirectoryPath=StringZZZ.stripFileSeparators(sTargetDirectoryPathIn);									
+			}
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) sTargetDirectoryFilepath='" + sTargetDirectoryPath +"'.";
+		   	System.out.println(sLog);
+			
+			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
+			try {			
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sFilePathInJarIn);
+				objaReturn = JarEasyZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPath);
+			
+			}catch (Exception e){
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
+				throw ez;
+		    }	    
+		}//end main:
+		return objaReturn;
 	}
 	
 	/**
@@ -982,54 +1081,7 @@ File[] objaReturn = null;
 		return objaReturn;
 	}
 	
-	private static File[] extractDirectoryToTemps_(File objFileAsJar, String sDirectoryFilePathInJar, String sTargetDirectoryFilepathIn, boolean bWithFiles) throws ExceptionZZZ {
-		File[] objaReturn = null;
-		
-		main:{
-			if(objFileAsJar==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No File as JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(!FileEasyZZZ.isJar(objFileAsJar)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-						
-			String sTargetDirectoryFilepath;
-			if(sTargetDirectoryFilepathIn==null)
-				sTargetDirectoryFilepath="";  //TEMP VERZEICHNIS???
-			else {
-				//Links und rechts ggfs. übergebenen Trennzeichen entfernen. So normiert kann man gut weiterarbeiten.				
-				sTargetDirectoryFilepath=StringZZZ.stripFileSeparators(sTargetDirectoryFilepathIn);									
-			}
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) sTargetDirectoryFilepath='" + sTargetDirectoryFilepath +"'.";
-		   	System.out.println(sLog);
-			
-			//+++ Verwende nun die Resourcen - Behandlung, damit das Verzeichnis auch tatsächlich erstellt wird ++++++++++++
-			try {			
-			    if(bWithFiles) {
-			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) With Files Case.";
-				   	System.out.println(sLog);
-				   	
-					//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
-					IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sDirectoryFilePathInJar, null);
-					objaReturn = JarEasyUtilZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryFilepath);					
-				}else {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) Without Files Case.";
-				   	System.out.println(sLog);
-				   	
-					//Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
-					IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sDirectoryFilePathInJar);										
-					objaReturn = JarEasyUtilZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryFilepath, false);
-				}
-			
-			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
-				throw ez;
-		    }	    
-		}//end main:
-		return objaReturn;
-	}
+	
 	
 	
 	public static File[] extractFilesFromJarAsTrunkFileDummies(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
@@ -1061,7 +1113,7 @@ File[] objaReturn = null;
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 					
-					File objFileTemp = JarEasyZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
+					File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
 					objaFileTempInTemp.add(objFileTemp);
 				}
 				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
@@ -1146,54 +1198,11 @@ File[] objaReturn = null;
 		File objReturn=null;
 		main:{								
 			//Nun aus dem ZipEntry ein File Objekt machen (geht nur in einem anderen Verzeichnis, als Kopie)																
-			File objFile = JarEasyZZZ.createFileDummy(ze, sTargetDirectoryPathIn);
+			File objFile = JarEasyUtilZZZ.createFileDummy(ze, sTargetDirectoryPathIn);
 			objReturn = ZipEasyZZZ.extractZipEntryTo(jf, ze, objFile);						
 		}//end main:
 		return objReturn;
 	}
-	
-	public static File createFileDummy(ZipEntry ze, String sTargetDirectoryPathIn) throws ExceptionZZZ {
-		File objReturn = null;
-		main:{
-			String sLog;
-			if(ze==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (Error 01) XXXXXXXXXXXXXX.";
-			   	System.out.println(sLog);
-			   	
-				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "ZipEntry Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-				throw ez;
-			}
-			
-			String sTargetDirectoryPath;
-			if(StringZZZ.isEmpty(sTargetDirectoryPathIn)){
-				sTargetDirectoryPath= EnvironmentZZZ.getHostDirectoryTemp();
-			}else {
-				sTargetDirectoryPath= EnvironmentZZZ.getHostDirectoryTemp();
-				sTargetDirectoryPath = FileEasyZZZ.joinFilePathName(sTargetDirectoryPath, sTargetDirectoryPathIn);
-			}
-			
-			String sEntryName = ze.getName();
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": sEntryName='" + sEntryName + "'.";
-		    System.out.println(sLog);
-			
-		    String sFilePath = JarEasyUtilZZZ.toFilePath(sEntryName);
-		    sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePath='" + sFilePath + "'.";
-		    System.out.println(sLog);
-		    
-		    String sFilePathTotal = FileEasyZZZ.joinFilePathName(sTargetDirectoryPath, sFilePath);
-		    sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePathTotal='" + sFilePathTotal + "'.";
-		    System.out.println(sLog);
-		    
-			//Nun aus dem ZipEntry ein File Objekt machen 
-			//https://www.rgagnon.com/javadetails/java-0429.html
-			objReturn = new File(sFilePathTotal);
-			
-		}
-		return objReturn;
-	}
-	
-	
-	
 	
 	/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
 	 *   Merke: Static Klassen müssen diese Methode selbst implementieren. Das ist dann das Beispiel.
@@ -1226,6 +1235,373 @@ File[] objaReturn = null;
 			}
 			return bReturn;
 		}
+
+		public static File extractFileAsTemp(JarFile jar, String sPath) throws ExceptionZZZ {
+			File objReturn = null;
+			main:{
+				if(jar==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				if(StringZZZ.isEmpty(sPath)){
+					ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
+				String sLog = null;			    
+				try {						
+					   JarEntry entry = JarEasyUtilZZZ.getEntryAsFile(jar, sPath); 
+					   if(entry==null){
+						   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPath +"'";
+						   System.out.println(sLog);			    	
+						}else{					    	
+						   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND: '" + sPath +"'";
+						   System.out.println(sLog);
+						    	
+						   //Merke: Der Zugriff auf Verzeichnis oder Datei muss anders erfolgen.
+						   if(entry.isDirectory()) { //Dateien nicht extrahieren!!!
+							   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE";
+							   System.out.println(sLog);
+						   }else {				
+							   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
+							   System.out.println(sLog);
+						    		
+							    	
+						   		objReturn = extractFileFromJarAsTemp(jar, entry);
+						    }
+						}						    		
+					   jar.close();
+					} catch (IOException e1) {
+						ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}				
+			}//end main:
+			return objReturn;
+		}
+
+
+		public static File[] findFile(File objDirectory, IFilenameFilterExpansionUserZZZ objFilter) throws ExceptionZZZ{
+				File[] objaReturn = null;
+				main:{
+					
+					check:{				
+						String sDirPath = null;
+						if(objDirectory==null) {
+							ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "The Directory '" + objDirectory.getPath() + "', does not exist.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+							throw ez;
+						}
+						boolean bIsJar = FileEasyZZZ.isJar(objDirectory);
+						if(bIsJar) {
+							ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The Directory '" + objDirectory.getPath() + "', is a jar File. To extract from a jar File use another method.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+							throw ez;
+						}
+						
+						if(objDirectory.exists()==false){
+								ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The Directory '" + objDirectory.getPath() + "', does not exist.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+								throw ez;
+						}else if(objDirectory.isDirectory()==false){
+								ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The file '" + objDirectory.getPath() + "', was expected to be a file, not e.g. a directory.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+								throw ez;					
+						}
+										
+						if(objFilter==null) {
+							ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "FileFilter missing.  '", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+							throw ez;				
+						}
+						
+					}//End check
+					
+					//##############################################################
+		//			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden		
+					objaReturn = objDirectory.listFiles(objFilter);		
+				}//End main		 	
+				return objaReturn;
+			}
+
+
+		public static File[] findDirectoryInJar(JarFile objJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ{
+			File[] objaReturn = null;
+			main:{		
+				if(objJar==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile-Object missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}				
+				File objFileJar = JarEasyUtilZZZ.toFile(objJar);				
+				objaReturn = JarEasyZZZ.findDirectoryInJar(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);					
+			}//End main		 	
+			return objaReturn;
+		}
+
+
+		public static File[] findDirectoryInJar(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ{
+			File[] objaReturn = null;
+			main:{	
+				
+				//Wenn im Ergebnis Dateien sein sollen, dann einen anderen FileFilter verwenden			
+				HashMap<ZipEntry,File> hmTrunk = JarEasyZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);
+				
+				JarFile jf = JarEasyUtilZZZ.toJarFile(objFileJar);
+				objaReturn = saveTrunkAsFiles(jf, hmTrunk);
+							
+			}//End main		 	
+			return objaReturn;
+		}
+
+
+		public static HashMap<ZipEntry,File> findDirectoryInJarAsTrunk(File objFileJar, IFileDirectoryPartFilterZipUserZZZ objDirectoryFilterInJar, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ{
+				HashMap<ZipEntry,File>hmReturn = new HashMap<ZipEntry,File>();
+				main:{
+					try {
+					check:{								
+						String sDirPath = null;
+						if(objFileJar==null) {
+							ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+							throw ez;
+						}
+						boolean bIsJar = FileEasyZZZ.isJar(objFileJar);
+						if(!bIsJar) {
+							ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The File '" + objFileJar.getPath() + "', is not a jar File. To extract from a directory use another method.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+							throw ez;
+						}
+		
+						if(objFileJar.exists()==false){
+							ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The JarFile '" + objFileJar.getPath() + "', does not exist.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+							throw ez;
+						}
+																		
+						if(objDirectoryFilterInJar==null) {
+							ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "FileDirectoryFilterForJar missing.  '", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+							throw ez;
+						}														
+					}//End check
+				
+					String sApplicationKeyAsSubDirectoryTemp;
+					if(StringZZZ.isEmpty(sTargetDirectoryPathIn)) {
+						sApplicationKeyAsSubDirectoryTemp = "FGL";
+					}else {
+						sApplicationKeyAsSubDirectoryTemp = sTargetDirectoryPathIn;
+					}
+					
+					//####################
+					String sPathDirTemp;
+					if(FileEasyZZZ.isPathRelative(sApplicationKeyAsSubDirectoryTemp)){
+						String sDirTemp = EnvironmentZZZ.getHostDirectoryTemp();									
+						sPathDirTemp = FileEasyZZZ.joinFilePathName(sDirTemp, sApplicationKeyAsSubDirectoryTemp);					
+					}else {
+						sPathDirTemp = sApplicationKeyAsSubDirectoryTemp;
+					}
+						
+					//Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
+					sPathDirTemp = JarEasyUtilZZZ.toFilePath(sPathDirTemp);
+					
+					//##############################################################
+		//			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
+					//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html			
+					String archiveName = objFileJar.getAbsolutePath();
+					JarInfo objJarInfo = null;
+					if(bWithFiles) {
+						IFileDirectoryWithContentPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilterWithConent();		
+						objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
+					}else {
+						IFileDirectoryPartFilterZipZZZ objPartFilter = objDirectoryFilterInJar.getDirectoryPartFilter();			
+						objJarInfo = new JarInfo( archiveName,  objPartFilter );//Mit dem Filter wird nur das Verzeichnis herausgefiltert.
+					}
+					
+					//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
+					Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();																		
+					Set<String> setEntryName = ht.keySet();
+					Iterator<String> itEntryName = setEntryName.iterator();	
+					if(bWithFiles) { //Fall: Mit Dateien
+						while(itEntryName.hasNext()) {
+							String sKey = itEntryName.next();
+							ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+							String sNameTemp = JarEasyUtilZZZ.toFilePath(zeTemp.getName());
+							
+							//Nun aus dem ZipEntry ein File Objekt machen 
+							//https://www.rgagnon.com/javadetails/java-0429.html	
+							File objFileTemp = objFileTemp = new File(sPathDirTemp, sNameTemp);
+												
+							//Das Ergebnis in die Trunk - HashMap packen
+							hmReturn.put(zeTemp, objFileTemp);
+						}
+					}else { //Fall: Ohne Dateien
+						while(itEntryName.hasNext()) {
+							String sKey = itEntryName.next();
+							ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+							if(zeTemp.isDirectory()) {
+								String sNameTemp = JarEasyUtilZZZ.toFilePath(zeTemp.getName());
+						
+								//Nun aus dem ZipEntry ein File Objekt machen 
+								//https://www.rgagnon.com/javadetails/java-0429.html				
+								File objFileTemp = new File(sPathDirTemp, sNameTemp);
+						
+								//Das Ergebnis in die Trunk - HashMap packen
+								hmReturn.put(zeTemp, objFileTemp);
+							}
+						}
+					}
+								
+			}catch (Exception e){
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+		    }	    			
+			}//End main		 	
+			return hmReturn;
+			}
+
+
+		public static File[] findFileInJar(JarFile objJar, IFileFilePartFilterZipUserZZZ objFilterFileInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
+			File[] objaReturn = null;
+			main:{		
+				if(objJar==null) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile-Object missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}				
+				File objFileJar = JarEasyUtilZZZ.toFile(objJar);				
+				objaReturn = JarEasyZZZ.findFileInJar(objFileJar, objFilterFileInJar, sApplicationKeyAsSubDirectoryTempIn);					
+			}//End main		 	
+			return objaReturn;
+		}
+
+
+		public static File[] findFileInJar(File objFileJar, IFileFilePartFilterZipUserZZZ objFilterFileInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
+			File[] objaReturn = null;
+			main:{
+				String sLog;
+				check:{																		
+					if(objFilterFileInJar==null) {
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (Exception 01).";
+						System.out.println(sLog);
+						
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "FileFileFilterForJar missing.  '", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+					}														
+				}//End check
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": START XXXXXXXXXXXXXX.";
+				System.out.println(sLog);									
+				
+				//Zuerst den genauen Namensfilter-Verwenden, sofern vorhanden, danach den allgemeineren Verzeichnisfilter
+				IFilenamePartFilterZipZZZ objPartFilter = objFilterFileInJar.computeFilePartFilterUsed();
+				String sDirPathInJar = objFilterFileInJar.computeDirectoryPathInJarUsed();
+				String sFileNameInJar = objFilterFileInJar.computeFileNameInJarUsed();
+				objaReturn = JarEasyZZZ.findFileInJar_(objFileJar, objPartFilter, sDirPathInJar, sFileNameInJar, sApplicationKeyAsSubDirectoryTempIn);
+													
+			}//End main		 	
+			return objaReturn;
+		}
+
+
+		public static File[] findFileInJar(File objFileJar, ZipEntryFilter objFilterInJar, String sDirPathInJar, String sFileNameInJar, String sApplicationKeyAsSubDirectoryTempIn) throws ExceptionZZZ{
+			File[] objaReturn = null;
+			main:{
+				objaReturn = JarEasyZZZ.findFileInJar_(objFileJar,objFilterInJar ,sDirPathInJar, sFileNameInJar, sApplicationKeyAsSubDirectoryTempIn);			
+			}//End main		 	
+			return objaReturn;
+		}
+
+
+		public static File[] findFileInJar(JarInfo objJarInfoFiltered, String sDirPathInJar, String sTargetDirPathRootIn) throws ExceptionZZZ{
+			return JarEasyZZZ.findFileInJar(objJarInfoFiltered, sDirPathInJar, sTargetDirPathRootIn);
+		}
+
+
+		private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilter, String sDirPathInJarIn, String sFileNameInJar, String sTargetDirPathRootIn) throws ExceptionZZZ{
+				File[] objaReturn = null;
+				main:{
+					String sLog;
+					if(objFileJar==null) {
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+					}
+					boolean bIsJar = FileEasyZZZ.isJar(objFileJar);
+					if(!bIsJar) {
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The File '" + objFileJar.getPath() + "', is not a jar File. To extract from a directory use another method.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+					}
+		
+					if(objFileJar.exists()==false){
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The JarFile '" + objFileJar.getPath() + "', does not exist.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+					}
+																	
+					if(objPartFilter==null) {
+						ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "IFilenamePartFilterZipZZZ Object missing.", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+						throw ez;
+					}	
+						
+		//Merke: Wenn man nur nach dem Dateinamen sucht, dann ist der Pfad in der Jar Datei natürlich leer.
+		//			if(StringZZZ.isEmpty(sDirPathInJarIn)) {
+		//				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "Directory Path in Jar Stringobject. ", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+		//				throw ez;
+		//			}
+					
+					//SUCHE IN JAR FILE		
+					String archiveName = objFileJar.getAbsolutePath();			
+					JarInfo objJarInfoFiltered = new JarInfo( archiveName, objPartFilter ); //MERKE: DAS DAUERT LAAAANGE
+					
+					
+					
+					//##############################################################
+		//			Alle Dateien auflisten, dazu aber den übergebenen FileFilter verwenden
+					//https://www.javaworld.com/article/2077586/java-tip-83--use-filters-to-access-resources-in-java-archives.html
+						
+					//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
+					Hashtable<String,ZipEntry> ht = objJarInfoFiltered.zipEntryTable();
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JA) XXXXXXXXXXXXXX.";
+				   	System.out.println(sLog);
+					
+					//Wie nun vom ht nach objaReturn, also dem fertigen File-Objekt ???
+					//Es geht nur als temporäres Objekt, das man in ein temp-Verzeichnis ablegt.								
+					Set<String> setEntryName = ht.keySet();
+					Iterator<String> itEntryName = setEntryName.iterator();
+					ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
+					try {
+						boolean bTargetDirPathRootCreated=false; File objFileTemp=null; String sTargetDirPathRoot=null;
+						ZipFile zf = objJarInfoFiltered.getZipFile();
+						while(itEntryName.hasNext()) {
+							
+							//Achtung: Wenn die gesuchte Ressource nicht in der Jar - Datei gefunden worden ist, dann darf auch nicht das Zielverzeichnis erstellt worden sein.
+							//         Darum erst jetzt (nur 1x ausgeführt!!!) ggfs. alte Verzeichnisse löschen und die Verzeichnisse wieder neu erstellen.
+							if(!bTargetDirPathRootCreated) {
+								ReferenceZZZ<String> strTargetDirPath = new ReferenceZZZ<String>(sTargetDirPathRootIn);
+								ReferenceZZZ<String> strPathInJar = new ReferenceZZZ<String>(sDirPathInJarIn);
+								ReferenceZZZ<String> strFilenameInJar = new ReferenceZZZ<String>(sFileNameInJar);						
+								objFileTemp = JarEasyUtilZZZ.createTargetDirectoryRoot(strTargetDirPath, strPathInJar, strFilenameInJar);
+								
+								bTargetDirPathRootCreated=true;						
+							}					
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) XXXXX NEUER EINTRAG XXXXXXXXX.";
+						   	System.out.println(sLog);
+						   	
+							String sKey = itEntryName.next();
+							ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) Extrahierter Eintrag: '" + zeTemp.getName() + "'";
+						   	System.out.println(sLog);
+							
+							File objFileTempInTemp = ZipEasyZZZ.extractZipEntryToDirectoryRoot(zf, zeTemp, sTargetDirPathRootIn);
+							
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": (JC) Extrahierter Eintrag als Datei: '" + objFileTempInTemp.getAbsolutePath() + "'";
+						   	System.out.println(sLog);
+							objaFileTempInTemp.add(objFileTempInTemp);
+						}					
+						if(zf!=null) zf.close();
+						
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (JD) XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.";
+					   	System.out.println(sLog);
+					   	
+						objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+					} catch (IOException e) {
+						
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (J ERROR) XXXXXXXXXXXXXX.";
+					   	System.out.println(sLog);
+					   	
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}//End main		 	
+			return objaReturn;
+			}
+
 
 		/** Man könnte auch erst die Datei als File-Dummy suchen und dann extrahieren.
 		 *  Aber das dauert jedesmal zu lange, also wird das hier in einem Rutsch gemacht über "Trunk"-Objekte
@@ -1420,7 +1796,7 @@ File[] objaReturn = null;
 			    			sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) DIRECTORY EMPTY - FILE OBJECTS NOT CREATED '" + sTargetDirPath + "' (NULL CASE)";
 					    	System.out.println(sLog);
 					    	
-					    	File objReturnTrunk = createFileDummy(entry, sTargetDirPath);
+					    	File objReturnTrunk = JarEasyUtilZZZ.createFileDummy(entry, sTargetDirPath);
 					    	FileEasyZZZ.createDirectory(objReturnTrunk);
 					    	File objReturn = objReturnTrunk;
 					    	if(FileEasyZZZ.exists(objReturn)) {
@@ -1454,7 +1830,7 @@ File[] objaReturn = null;
 					   		}
 					   		objaReturn = FileArrayEasyZZZ.add(objaReturn, objReturnTrunksTargetDirPath);
 					   	}else {
-						   	File objReturnTrunk = createFileDummy(entry,sTargetDirPath);
+						   	File objReturnTrunk = JarEasyUtilZZZ.createFileDummy(entry,sTargetDirPath);
 					    	if(objReturnTrunk!=null) {
 					    		sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) (FILE) TRUNK OBJECT FROM JARENTRY CREATED: '" + entry.getName() +"'->'"+objReturnTrunk.getAbsolutePath()+"'";
 						    	System.out.println(sLog);
@@ -1517,7 +1893,7 @@ File[] objaReturn = null;
 				}
 				
 				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sFilename);
-				objaReturn = JarEasyUtilZZZ.findFileInJar(jar, objFilterFileInJar, sTargetDirectoryPathRoot);
+				objaReturn = JarEasyZZZ.findFileInJar(jar, objFilterFileInJar, sTargetDirectoryPathRoot);
 				
 				jar.close();
 			} catch (IOException e1) {

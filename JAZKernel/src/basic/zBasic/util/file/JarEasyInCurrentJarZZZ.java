@@ -83,7 +83,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 				    System.out.println(sLog);
 				
-				   objReturn = JarEasyUtilZZZ.extractFileAsTemp(jar, sPath);
+				   objReturn = JarEasyZZZ.extractFileAsTemp(jar, sPath);
 				}				
 			}//end main:
 			return objReturn;
