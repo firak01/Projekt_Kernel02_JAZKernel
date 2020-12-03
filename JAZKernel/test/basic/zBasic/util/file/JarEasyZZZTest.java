@@ -298,7 +298,7 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_TRUNK2_OF_DIRECTORY";
+			sDirToExtractTo = "FGL_TRUNK_OF_DIRECTORY02";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
 			
 			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
@@ -311,7 +311,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//Ab) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL\\TRUNK2_OF_FILES";
+			sDirToExtractTo = "FGL\\TRUNK_OF_FILES02";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
 			ZipEntry[] objaCreated04 = JarEasyZZZ.extractFromJarAsTrunkZipEntries(objJar, sDirToExtract, sDirToExtractTo, true);
 			if(objaCreated04==null) {
@@ -323,7 +323,7 @@ public class JarEasyZZZTest extends TestCase{
 			
 			
 			//Ba) Verzeichnis mit Unterverzeichnissen
-			sDirToExtractTo = "FGL\\TRUNK3_OF_DIRECTORY";
+			sDirToExtractTo = "FGL\\TRUNK_OF_DIRECTORY03";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
 			
 			
@@ -395,7 +395,7 @@ public class JarEasyZZZTest extends TestCase{
 		    assertNotNull(objFileAsJar);
 		    
 			//A) Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
-		    String sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_DIRECTORY_EMPTY";
+		    String sTargetDirectoryPathRoot = "FGL\\FIND_DIRECTORY_EMPTY";
 		    String sPath = "bat";
 			IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
 			File[] objaReturn = JarEasyZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, false);
@@ -408,7 +408,7 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			//B) Das Verzeichnis mit allen darin enthaltenen Dateien erstellen
-			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_DIRECTORY";
+			sTargetDirectoryPathRoot = "FGL\\FIND_DIRECTORY";
 		    sPath = "bat";
 			objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
 			objaReturn = JarEasyZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, true);
@@ -455,7 +455,7 @@ public class JarEasyZZZTest extends TestCase{
 		    //#######################################################################
 		    //TESTFÄLLE FÜR: DATEIEN GEFUNDEN
 		    //VARIANTE 1: Pfad und Dateinamen im Dateinamen
-		    sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE01";
+		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE01";
 		    sPath = null;
 		    sFilename = "bat/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
@@ -477,7 +477,7 @@ public class JarEasyZZZTest extends TestCase{
 			
 			//##########################################################
 			//VARIANTE 2: Pfad und Dateinamen getrennt übergeben
-			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE02";
+			sTargetDirectoryPathRoot = "FGL\\FIND_FILE02";
 		    sPath = "bat";
 		    sFilename = "KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
@@ -499,7 +499,7 @@ public class JarEasyZZZTest extends TestCase{
 			
 			//#########################################################
 			//VARIANTE 3: Nur Pfad angegeben
-			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE03";
+			sTargetDirectoryPathRoot = "FGL\\FIND_FILE03";
 		    sPath = "bat";
 		    sFilename = null;
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
@@ -527,7 +527,7 @@ public class JarEasyZZZTest extends TestCase{
 			
 			//#########################################################
 			//VARIANTE 4: Nur Datei angegeben. Merke: Das könnte mehrere Objekte zurückgeben. Aber dafür müsste der Dateiname gleich sein.
-			sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE04";
+			sTargetDirectoryPathRoot = "FGL\\FIND_FILE04";
 		    sPath = null;
 		    sFilename = "KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
@@ -550,7 +550,7 @@ public class JarEasyZZZTest extends TestCase{
 			//#####################################################################################
 			//TESTFÄLLE FÜR NICHTS GEFUNDEN: 
 			//VARIANTE 1a: Pfad und Dateinamen im Dateinamen, PFAD NICHT VORHANDEN
-		    sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE01";
+		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE05_NOT_FOUND";
 		    sPath = null;
 		    sFilename = "baetschi/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
@@ -573,7 +573,7 @@ public class JarEasyZZZTest extends TestCase{
 			
 			
 			//VARIANTE 1b: Pfad und Dateinamen im Dateinamen, DATEI NICHT VORHANDEN
-		    sTargetDirectoryPathRoot = "FGL\\FIND_RESOURCE_FILE01";
+		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE06_NOT_FOUND";
 		    sPath = null;
 		    sFilename = "bat/NixdaKernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
