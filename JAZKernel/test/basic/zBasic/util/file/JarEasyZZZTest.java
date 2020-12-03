@@ -435,6 +435,7 @@ public class JarEasyZZZTest extends TestCase{
 		try{
 			File[] objaReturn; File objFile; IFileFilePartFilterZipUserZZZ objFilterFileInJar;
 			String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
+			String sDirToExtractTo;
 			
 			//#############
 			
@@ -460,6 +461,11 @@ public class JarEasyZZZTest extends TestCase{
 		    sFilename = "bat/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
 			System.out.println(sLog);
+			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 		    
 			//Dieser Filter hat Unterfilter, die er auswählt anhand der Eingabewerte
 			sLog = ReflectCodeZZZ.getPositionCurrent()+" Führe aus: findFileInJar";
@@ -483,6 +489,11 @@ public class JarEasyZZZTest extends TestCase{
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
 			System.out.println(sLog);
 		    			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
 			//Dieser Filter hat Unterfilter, die er auswählt anhand der Eingabewerte
 			sLog = ReflectCodeZZZ.getPositionCurrent()+" Führe aus: findFileInJar";
 			System.out.println(sLog);
@@ -505,6 +516,11 @@ public class JarEasyZZZTest extends TestCase{
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
 			System.out.println(sLog);		    
 		    
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
 			//Dieser Filter hat Unterfilter, die er auswählt anhand der Eingabewerte
 			sLog = ReflectCodeZZZ.getPositionCurrent()+" Führe aus: findFileInJar";
 			System.out.println(sLog);
@@ -532,7 +548,12 @@ public class JarEasyZZZTest extends TestCase{
 		    sFilename = "KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
 			System.out.println(sLog);
-		    			
+		    	
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
 			//Dieser Filter hat Unterfilter, die er auswählt anhand der Eingabewerte
 			sLog = ReflectCodeZZZ.getPositionCurrent()+" Führe aus: findFileInJar";
 			System.out.println(sLog);
@@ -550,12 +571,17 @@ public class JarEasyZZZTest extends TestCase{
 			//#####################################################################################
 			//TESTFÄLLE FÜR NICHTS GEFUNDEN: 
 			//VARIANTE 1a: Pfad und Dateinamen im Dateinamen, PFAD NICHT VORHANDEN
-		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE05_NOT_FOUND";
+		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE05_NOT_FOUND_EMPTY";
 		    sPath = null;
 		    sFilename = "baetschi/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
 			System.out.println(sLog);
-		    			
+		    
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
 		    //Theoretisch sollte das Verzeichnis erstellbar sein;
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": Erstelle Verzeichnis als Test.";
 			System.out.println(sLog);
@@ -571,14 +597,20 @@ public class JarEasyZZZTest extends TestCase{
 			objaReturn = JarEasyZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPathRoot);					
 			assertNull("Sollte nichts gefunden haben", objaReturn);
 			
-			
+			//###################################################################
+			//++++++++++++++++++++++++++++++++++++++++++++
 			//VARIANTE 1b: Pfad und Dateinamen im Dateinamen, DATEI NICHT VORHANDEN
-		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE06_NOT_FOUND";
+		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE06_NOT_FOUND_EMPTY";
 		    sPath = null;
 		    sFilename = "bat/NixdaKernelZZZTest_GUIStarter_JarEasyUtil.bat";
 		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
 			System.out.println(sLog);
-		    
+		    			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
 		    //Theoretisch sollte das Verzeichnis erstellbar sein;
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": Erstelle Verzeichnis als Test.";
 			System.out.println(sLog);		    
@@ -593,7 +625,35 @@ public class JarEasyZZZTest extends TestCase{
 			objaReturn = JarEasyZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPathRoot);					
 			assertNull("Sollte nichts gefunden haben", objaReturn);
 			
+			//+++++++++++++++++++++++++++++++
+			//VARIANTE 1b: Pfad und Dateinamen im Dateinamen, DATEI NICHT VORHANDEN
+		    sTargetDirectoryPathRoot = "FGL\\FIND_FILE06_NOT_FOUND_NOT_CREATED";
+		    sPath = null;
+		    sFilename = "batnixda/KernelZZZTest_GUIStarter_JarEasyUtil.bat";
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'| sFilename='" + sFilename + "'";
+			System.out.println(sLog);
 			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+					    
+		    //Theoretisch sollte das Verzeichnis erstellbar sein;
+//			sLog = ReflectCodeZZZ.getPositionCurrent()+": Erstelle Verzeichnis als Test.";
+//			System.out.println(sLog);		    
+//		    objFile = JarEasyUtilZZZ.createTargetDirectoryRoot(sTargetDirectoryPathRoot, sPath, sFilename);
+//		    assertNotNull("Verzeichnis sollte erstellt worden sein. ", objFile);
+//		    assertTrue("Dies sollte auf der Platte sogar existieren", objFile.exists());
+		   	 
+			//Dieser Filter hat Unterfilter, die er auswählt anhand der Eingabewerte
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+" Führe aus: findFileInJar";
+			System.out.println(sLog);
+			objFilterFileInJar = new FileFileFilterInJarZZZ(sPath, sFilename);
+			objaReturn = JarEasyZZZ.findFileInJar(objFileAsJar, objFilterFileInJar, sTargetDirectoryPathRoot);					
+			assertNull("Sollte nichts gefunden haben", objaReturn);
+			
+			boolean bErg = FileEasyZZZ.isPathSubExistingOfDirectoryTemp(sTargetDirectoryPathRoot);
+			assertFalse(bErg);
 			
 			
 	}catch(ExceptionZZZ ez){

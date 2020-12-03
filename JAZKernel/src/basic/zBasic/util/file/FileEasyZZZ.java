@@ -731,29 +731,47 @@ public static boolean searchExists(String sFilePath) throws ExceptionZZZ{
 }
 
 
-/** Pr�ft, ob der Pfad relativ ist: Das ist der Fall, wenn 
- * 
- *     A file name is relative to the current directory if it does not begin with one of the following:
-
-        A UNC name of any format, which always start with two backslash characters ("\\"). For more information, see the next section.
-        A disk designator with a backslash, for example "C:\" or "d:\".
-        A single backslash, for example, "\directory" or "\file.txt". This is also referred to as an absolute path.
-
-
-* @param sPath
-* @return
-* 
-* lindhaueradmin; 04.11.2012 05:04:10
- */
-public static boolean isPathRelative(String sFilePathName)throws ExceptionZZZ{
+public static boolean isPathSubExistingOfDirectory(File objFileDirectory, String sFilePath) throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
-		if(sFilePathName==null){ //Merke: Darf ein Leerstring sein.
-			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+		if(objFileDirectory==null) {
+			ExceptionZZZ ez  = new ExceptionZZZ("File Object for Directory", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
+		if(StringZZZ.isEmpty(sFilePath)){
+			ExceptionZZZ ez  = new ExceptionZZZ("FilePath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		if(sFilePath.equals(FileEasyZZZ.sDIRECTORY_CURRENT)) break main; //Das aktuelle Verzeichnis ist kein Unterverzeichnis
+		if(sFilePath.equals(FileEasyZZZ.sDIRECTORY_PARENT)) break main; //Das Elternverzeichnis ist kein Unterverzeichnis
 		
-		bReturn = !FileEasyZZZ.isPathAbsolut(sFilePathName);
+		String sDirPathTotal;
+		if(FileEasyZZZ.isPathAbsolut(sFilePath)) {
+			sDirPathTotal = objFileDirectory.getAbsolutePath();		
+			
+			String sInterchange = StringZZZ.right(sDirPathTotal, sFilePath, true);
+			if(!StringZZZ.isEmpty(sInterchange)) break main; //Wenn also der Pfad ein abweichender Pfad ist, dann ist es kein Unterverzeichnis.
+			//Damit ist es egal, ob das Verzeichnis existiert....
+		}else{
+			//Die Pfade erst noch miteinander vernüpfen
+			String sDirPath = objFileDirectory.getAbsolutePath();
+			sDirPathTotal = FileEasyZZZ.joinFilePathName(sDirPath, sFilePath);
+		}
+		
+		File file2proof = new File(sDirPathTotal);
+		bReturn = FileEasyZZZ.isDirectoryExisting(file2proof);
+		
+	}//end main:
+	return bReturn;
+}
+
+public static boolean isPathSubExistingOfDirectoryTemp(String sFilePath) throws ExceptionZZZ{
+	boolean bReturn = false;
+	main:{		
+		String sDirectoryTemp = EnvironmentZZZ.getHostDirectoryTemp();
+		File objFileDirTemp = new File(sDirectoryTemp);
+		
+		bReturn = FileEasyZZZ.isPathSubExistingOfDirectory(objFileDirTemp, sFilePath);
 		
 	}//end main:
 	return bReturn;
@@ -778,6 +796,34 @@ public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
 			 bReturn = true;
 			 break main;
 		 }		                        
+	}//end main:
+	return bReturn;
+}
+
+/** Pr�ft, ob der Pfad relativ ist: Das ist der Fall, wenn 
+ * 
+ *     A file name is relative to the current directory if it does not begin with one of the following:
+
+        A UNC name of any format, which always start with two backslash characters ("\\"). For more information, see the next section.
+        A disk designator with a backslash, for example "C:\" or "d:\".
+        A single backslash, for example, "\directory" or "\file.txt". This is also referred to as an absolute path.
+
+
+* @param sPath
+* @return
+* 
+* lindhaueradmin; 04.11.2012 05:04:10
+ */
+public static boolean isPathRelative(String sFilePathName)throws ExceptionZZZ{
+	boolean bReturn = false;
+	main:{
+		if(sFilePathName==null){ //Merke: Darf ein Leerstring sein.
+			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		bReturn = !FileEasyZZZ.isPathAbsolut(sFilePathName);
+		
 	}//end main:
 	return bReturn;
 }
@@ -1825,6 +1871,34 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			bReturn = FileEasyZZZ.exists(file2proof);
 		}
 		
+		}//end main:
+		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Return=" + bReturn) ;
+		return bReturn;	
+	}
+	
+	/** Da die Arbeit mit dem normalen fileobjekt.isDirectory() nicht immer klappt. 
+	 *  Wir hier intern !fileobjekt.isFile() verwendet.
+	 * @param file2proof
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 30.11.2020, 09:11:01
+	 */
+	public static boolean isDirectoryExistingInTemp(String sDirectorySubInTemp) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			String stemp;
+			if(sDirectorySubInTemp==null){				
+				stemp = " 'FilePathInTemp' ";
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");				   		 
+			   throw ez;	
+			}
+						
+			if(FileEasyZZZ.isPathSubExistingOfDirectoryTemp(sDirectorySubInTemp)){
+				String sFilePathTemp = EnvironmentZZZ.getHostDirectoryTemp();
+				String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFilePathTemp, sDirectorySubInTemp);
+				File file2proof = new File(sFilePathTotal);
+				bReturn = FileEasyZZZ.isDirectoryExisting(file2proof);				
+			}						
 		}//end main:
 		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Return=" + bReturn) ;
 		return bReturn;	
