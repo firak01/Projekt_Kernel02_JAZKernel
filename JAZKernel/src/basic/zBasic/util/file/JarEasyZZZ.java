@@ -130,71 +130,11 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 			return objReturn;
 		}
 	
-	
-	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47	
-	 */
-	public static File[] peekResourceFiles(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
-		File[] objaReturn=null;
-		main:{
-			if(StringZZZ.isEmpty(sSourceFilePath)){
-				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			if(objJarFile==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-						
-			JarEntry entry = JarEasyUtilZZZ.getEntryAsFile(objJarFile, sSourceFilePath);
-			if(entry==null){
-			  	String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR (File) PATH: '" + sSourceFilePath +"'";
-			   	System.out.println(sLog);			    				   				   			   	
-			}else{					    	
-			   	String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND FOR (File) PATH: '" + sSourceFilePath +"'";
-			   	System.out.println(sLog);
-					
-			   	objaReturn = JarEasyZZZ.peekResourceFile(objJarFile, entry,sTargetDirectoryPathIn);
-			}
-		}//end main:
-		return objaReturn;
-	}
-	
-		
-//	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
-//	 * Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
-//	 * @param filePath
-//	 * @return
-//	 * @throws ExceptionZZZ
-//	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-//	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-//	 */
-//	public static File[] extractDirectoryFromJarAsFileDummies(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
-//		File[] objaReturn=null;
-//		main:{
-//			objaReturn = JarEasyZZZ.peekResourceDirectory(objJarFile, sSourceDirectoryPath, sTargetDirectoryPathRootIn, true);
-//		}//end main:
-//		return objaReturn;
-//	}
-	
-	public static File peekFile(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+			
+	public static File peekDirectoryFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{			
-			File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, false, true, false);
-			if(objaReturn!=null) {
-				objReturn = objaReturn[0];
-			}			
-		}//end main:
-		return objReturn;
-	}
-	
-	public static File peekDirectory(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
-		File objReturn = null;
-		main:{			
-				File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, false, false);
+				File[] objaReturn = JarEasyZZZ.peekDirectories(jar, sPath, sTargetDirectoryPathRootIn, true);
 				if(objaReturn!=null) {
 					objReturn = objaReturn[0];
 				}			
@@ -202,12 +142,15 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 		return objReturn;
 	}
 	
-	public static File[] peekFiles(JarFile jar, String sFilename, String sTargetDirectoryPathRoot) throws ExceptionZZZ {
-		File[] objaReturn = null;
-		main:{				
-			objaReturn = JarEasyZZZ.peekResources_(jar, sFilename, sTargetDirectoryPathRoot);
+	public static File peekDirectoryFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn, boolean bWithFiles) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{			
+				File[] objaReturn = JarEasyZZZ.peekDirectories(jar, sPath, sTargetDirectoryPathRootIn, bWithFiles);
+				if(objaReturn!=null) {
+					objReturn = objaReturn[0];
+				}			
 		}//end main:
-		return objaReturn;
+		return objReturn;
 	}
 	
 	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
@@ -218,68 +161,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File[] peekResourceFile(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathIn) throws ExceptionZZZ {
-		File[] objaReturn=null;
-		main:{
-			try{
-				//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
-				if(objJarFile==null){
-					ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				if(entry==null){
-					ExceptionZZZ ez = new ExceptionZZZ("No JarEntry-Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				String sFilePath = entry.getName();
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+": (E) Extracting Entry '" + sFilePath + "'";
-				System.out.println(sLog);
-								
-												
-				//1. Aus der Jar Datei nur die Datei herausfiltern.						
-				String archiveName = objJarFile.getName();								
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, entry.getName());
-				IFilenamePartFilterZipZZZ objFilterFilePathPart = objFilterFileInJar.getNamePartFilter();
-				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );  //Merke: Das dauert laaange
-				
-				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
-				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();			
-				Set<String> setEntryName = ht.keySet();
-				Iterator<String> itEntryName = setEntryName.iterator();
-				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
-
-				//Nur Dateien-Fall
-				while(itEntryName.hasNext()) {
-					String sKey = itEntryName.next();
-					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
-					
-					if(!zeTemp.isDirectory()) {
-						//Nun aus dem ZipEntry ein File Objekt machen 						
-						File objFileTemp = JarEasyUtilZZZ.createFileDummy(entry, sTargetDirectoryPathIn);
-						objaFileTempInTemp.add(objFileTemp);
-					}
-				}
-										
-				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);					
-			}catch (Exception e){
-		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-		}//end main:
-		return objaReturn;
-	}
-	
-	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
-	 *  Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
-	 * @param filePath
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
-	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
-	 */
-	public static File[] peekResourceDirectories(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
+	public static File[] peekDirectories(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
 		File[] objaReturn=null;
 		main:{			
 				//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
@@ -294,7 +176,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					throw ez;
 				}
 				
-				objaReturn = JarEasyZZZ.peekResourceDirectories(objJarFile, entry, sTargetDirectoryPathIn, bWithFiles);
+				objaReturn = JarEasyZZZ.peekDirectories_(objJarFile, entry, sTargetDirectoryPathIn, bWithFiles);
 		}//end main:
 		return objaReturn;
 	}
@@ -307,7 +189,23 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
 	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
 	 */
-	public static File[] peekResourceDirectories(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
+	public static File[] peekDirectories(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{
+			objaReturn = JarEasyZZZ.peekDirectories_(objJarFile, entry, sTargetDirectoryPathIn, bWithFiles);
+		}//end main:
+		return objaReturn;
+	}
+	
+	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
+	 *  Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	private static File[] peekDirectories_(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
 		File[] objaReturn=null;
 		main:{
 			try{
@@ -383,6 +281,143 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 		}//end main:
 		return objaReturn;
 	}
+	
+	
+	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
+	 *  Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] peekFiles(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{
+			//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
+			if(objJarFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(entry==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarEntry-Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			objaReturn = JarEasyZZZ.peekFiles_(objJarFile, entry, sTargetDirectoryPathRootIn);
+		}//end main:
+		return objaReturn;
+	}
+	
+	public static File peekFileFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{			
+				File[] objaReturn = JarEasyZZZ.peekFiles(jar, sPath, sTargetDirectoryPathRootIn);
+				if(objaReturn!=null) {
+					objReturn = objaReturn[0];
+				}			
+		}//end main:
+		return objReturn;
+	}
+	
+	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47	
+	 */
+	public static File[] peekFiles(JarFile objJarFile, String sSourceFilePath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{
+			if(StringZZZ.isEmpty(sSourceFilePath)){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(objJarFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+						
+			JarEntry entry = JarEasyUtilZZZ.getEntryAsFile(objJarFile, sSourceFilePath);
+			if(entry==null){
+			  	String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR (File) PATH: '" + sSourceFilePath +"'";
+			   	System.out.println(sLog);			    				   				   			   	
+			}else{					    	
+			   	String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE FOUND FOR (File) PATH: '" + sSourceFilePath +"'";
+			   	System.out.println(sLog);
+					
+			   	objaReturn = JarEasyZZZ.peekFiles_(objJarFile, entry,sTargetDirectoryPathIn);
+			}
+		}//end main:
+		return objaReturn;
+	}
+	
+	/** Private Methode, um Redundanz zu vermeiden
+	 * @param jar
+	 * @param sPath
+	 * @param sTargetDirectoryPathRootIn
+	 * @param bAsDirectory
+	 * @param bWithFiles       Merke: Wird ignoriert, wenn bAsDirectory=false!, dann wird nur die Datei zurückgegeben.
+	 * @param bSave
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 29.11.2020, 09:30:09
+	 */
+	private static File[] peekFiles_(JarFile objJarFile, JarEntry entry, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{
+			try{
+				//Merke objJarFile wird noch nicht verwendet, aber für das Directory holen schon....
+				if(objJarFile==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No JarFile provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
+				if(entry==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No JarEntry-Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
+				String sFilePath = entry.getName();
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+": (E) Extracting Entry '" + sFilePath + "'";
+				System.out.println(sLog);
+								
+												
+				//1. Aus der Jar Datei nur die Datei herausfiltern.						
+				String archiveName = objJarFile.getName();								
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, entry.getName());
+				IFilenamePartFilterZipZZZ objFilterFilePathPart = objFilterFileInJar.getNamePartFilter();
+				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );  //Merke: Das dauert laaange
+				
+				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
+				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();			
+				Set<String> setEntryName = ht.keySet();
+				Iterator<String> itEntryName = setEntryName.iterator();
+				ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
+
+				//Nur Dateien-Fall
+				while(itEntryName.hasNext()) {
+					String sKey = itEntryName.next();
+					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+					
+					if(!zeTemp.isDirectory()) {
+						//Nun aus dem ZipEntry ein File Objekt machen 						
+						File objFileTemp = JarEasyUtilZZZ.createFileDummy(entry, sTargetDirectoryPathRootIn);
+						objaFileTempInTemp.add(objFileTemp);
+					}
+				}
+										
+				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);					
+			}catch (Exception e){
+		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}//end main:
+		return objaReturn;
+	}
+	
+	
 	
 	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
 	 *  Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
@@ -1774,7 +1809,7 @@ File[] objaReturn = null;
 					   		sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 						   	System.out.println(sLog);
 						   	
-					   		objaReturn = peekResourceDirectories(jar, entry,sTargetDirPath, bWithFiles);	
+					   		objaReturn = peekDirectories(jar, entry,sTargetDirPath, bWithFiles);	
 					   		
 					   		sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB2) ENTRY IS DIRECTORY: '" + entry.getName() +"'";
 						   	System.out.println(sLog);
@@ -1869,40 +1904,7 @@ File[] objaReturn = null;
 			return objaReturn;
 		}
 		
-		/** Private Methode, um Redundanz zu vermeiden
-		 * @param jar
-		 * @param sPath
-		 * @param sTargetDirectoryPathRootIn
-		 * @param bAsDirectory
-		 * @param bWithFiles       Merke: Wird ignoriert, wenn bAsDirectory=false!, dann wird nur die Datei zurückgegeben.
-		 * @param bSave
-		 * @return
-		 * @throws ExceptionZZZ
-		 * @author Fritz Lindhauer, 29.11.2020, 09:30:09
-		 */
-		private static File[] peekResources_(JarFile jar, String sFilename, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
-			File[] objaReturn = null;
-			main:{
-				String sLog = null;
-				try {			
-				String sTargetDirectoryPathRoot=null;
-				if(StringZZZ.isEmpty(sTargetDirectoryPathRootIn)) {
-					sTargetDirectoryPathRoot =  "ZZZ";
-				}else {
-					sTargetDirectoryPathRoot = sTargetDirectoryPathRootIn;				
-				}
-				
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sFilename);
-				objaReturn = JarEasyZZZ.findFileInJar(jar, objFilterFileInJar, sTargetDirectoryPathRoot);
-				
-				jar.close();
-			} catch (IOException e1) {
-				ExceptionZZZ ez  = new ExceptionZZZ("Arbeiten mit temporärer Datei, weil sFile = null. IOException: " + e1.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}			
-			}// end main:
-			return objaReturn;
-		}
+	
 }
 
 

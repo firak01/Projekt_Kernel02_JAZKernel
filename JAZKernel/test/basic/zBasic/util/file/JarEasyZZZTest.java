@@ -258,7 +258,7 @@ public class JarEasyZZZTest extends TestCase{
 			sDirToExtractTo = "FGL\\TRUNK_OF_DIRECTORY";
 			
 			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
-			File[] objaCreated01 = JarEasyZZZ.peekResourceDirectories(objJar,sDirToExtract, sDirToExtractTo, false);
+			File[] objaCreated01 = JarEasyZZZ.peekDirectories(objJar,sDirToExtract, sDirToExtractTo, false);
 			if(objaCreated01==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht gefunden (NULL-WERT).");
 			}
@@ -269,7 +269,7 @@ public class JarEasyZZZTest extends TestCase{
 			//Ab) Erfolgsfall, mit Dateien erzeugen						
 			sDirToExtractTo = "FGL\\TRUNK_OF_FILES";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
-			File[] objaCreated02 = JarEasyZZZ.peekResourceDirectories(objJar, sDirToExtract, sDirToExtractTo, true);
+			File[] objaCreated02 = JarEasyZZZ.peekDirectories(objJar, sDirToExtract, sDirToExtractTo, true);
 			if(objaCreated02==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht gefunden (NULL-WERT).");
 			}

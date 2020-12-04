@@ -115,9 +115,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 				 assertNotNull("JarFile nicht gefunden", objJarFile);
 				    
-				 objFileDir = JarEasyZZZ.peekDirectory(objJarFile, sPath, sDirToExtractTo);
+				 objFileDir = JarEasyZZZ.peekDirectoryFirst(objJarFile, sPath, sDirToExtractTo);
 			 }else {
-				 objFileDir = JarEasyInCurrentJarZZZ.peekDirectory(sPath, sDirToExtractTo);
+				 objFileDir = JarEasyInCurrentJarZZZ.peekDirectoryFirst(sPath, sDirToExtractTo);
 			}
 		    assertNotNull(objFileDir);
 		    if(FileEasyZZZ.exists(objFileDir)) {
@@ -165,9 +165,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 				 assertNotNull("JarFile nicht gefunden", objJarFile);
 				    
-				 objFile = JarEasyZZZ.peekFile(objJarFile, sPath, sDirToExtractTo);
+				 objFile = JarEasyZZZ.peekFileFirst(objJarFile, sPath, sDirToExtractTo);
 			 }else {
-				 objFile = JarEasyInCurrentJarZZZ.peekFile(sPath, sDirToExtractTo);
+				 objFile = JarEasyInCurrentJarZZZ.peekFileFirst(sPath, sDirToExtractTo);
 			}
 		    assertNotNull(objFile);
 		    if(FileEasyZZZ.exists(objFile)) {
@@ -206,9 +206,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 				 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 				 assertNotNull("JarFile nicht gefunden", objJarFile);
 				    
-				 objFile = JarEasyZZZ.peekFile(objJarFile, sPath, sDirToExtractTo);
+				 objFile = JarEasyZZZ.peekFileFirst(objJarFile, sPath, sDirToExtractTo);
 			 }else {
-				 objFile = JarEasyInCurrentJarZZZ.peekFile(sPath, sDirToExtractTo);
+				 objFile = JarEasyInCurrentJarZZZ.peekFileFirst(sPath, sDirToExtractTo);
 			}
 		    assertNotNull(objFile);
 		    if(FileEasyZZZ.exists(objFile)) {
