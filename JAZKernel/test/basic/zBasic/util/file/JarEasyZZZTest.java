@@ -766,8 +766,8 @@ public class JarEasyZZZTest extends TestCase{
 				}else {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt als Dummy * '" + objFileTemp.getAbsolutePath() + "'";
 				    System.out.println(sLog);
-				    boolean bErg = !FileEasyZZZ.isDirectory(objFileTemp);
-					assertTrue("File-Objekt sollte kein Verzeichnis (sondern eine Datei) sein: '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+				    boolean bErg = FileEasyZZZ.isDirectoryExisting(objFileTemp);
+					assertFalse("File-Objekt sollte kein Verzeichnis (sondern eine Datei) sein: '"+ objFileTemp.getAbsolutePath()+"'", bErg);
 				}
 			}
 			 
