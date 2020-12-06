@@ -9,6 +9,7 @@ import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.zip.FileDirectoryEmptyPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryWithContentPartFilterZipZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
@@ -18,6 +19,7 @@ import basic.zBasic.util.file.zip.FilenamePartFilterNameZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPathZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterPrefixZipZZZ;
 import basic.zBasic.util.file.zip.FilenamePartFilterSuffixZipZZZ;
+import basic.zBasic.util.file.zip.IFileDirectoryEmptyPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipUserZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryWithContentPartFilterZipZZZ;
 import basic.zBasic.util.file.zip.IFileDirectoryPartFilterZipZZZ;
@@ -26,6 +28,7 @@ import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
+	protected IFileDirectoryEmptyPartFilterZipZZZ objPartFilterDirectoryEmpty;
 	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;	
 	protected IFileDirectoryWithContentPartFilterZipZZZ objPartFilterDirectoryWithContent;
 		
@@ -84,23 +87,35 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			
 			//Falls das Verzeichnis nicht passt	
 			try {
-				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
-					if(this.objPartFilterDirectory!=null) {
-						this.objPartFilterDirectory.setCriterion(this.getDirectoryPath());
-						if(this.objPartFilterDirectory.accept(ze)==true) {
-							bReturn = true;
-							break main;
-						}
+				if(!StringZZZ.isEmpty(this.getDirectoryPath())){					
+					if(ze.getName().startsWith("bat")) {
+						System.out.println("STOP: "+ze.getName());
+						System.out.println("------");
 					}
-						
-					if(this.objPartFilterDirectoryWithContent!=null) {
-						this.objPartFilterDirectoryWithContent.setCriterion(this.getDirectoryPath());
-						if(this.objPartFilterDirectoryWithContent.accept(ze)==true) {
-							bReturn = true;
-							break main;
-						}
+					if(ze.isDirectory()) {
+						System.out.println("STOP REINES VERZEICHNIS "+ze.getName());
+						System.out.println("------");
 					}
-				}								
+					
+					this.getDirectoryPartFilterEmpty().setCriterion(this.getDirectoryPath());					
+					if(this.objPartFilterDirectoryEmpty.accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+					
+					this.getDirectoryPartFilterWithConent().setCriterion(this.getDirectoryPath());
+					if(this.objPartFilterDirectoryWithContent.accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+																
+					this.getDirectoryPartFilter().setCriterion(this.getDirectoryPath());				
+					if(this.objPartFilterDirectory.accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+																			
+				}//End if 	!StringZZZ.isEmpty(this.getDirectoryPath())						
 			} catch (ExceptionZZZ ez) {
 				String sLog = "AbstractFileDirectoryFilterInJarZZZ -> ExceptionZZZ: '" + ez.getMessageLast() +"'.";
 				System.out.println(sLog);
@@ -141,6 +156,19 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 				this.objPartFilterDirectoryWithContent = new FileDirectoryWithContentPartFilterZipZZZ(this.getDirectoryPath());
 			}
 			return this.objPartFilterDirectoryWithContent;
+		}
+		
+		@Override
+		public void setDirectoryPartFilterEmpty(IFileDirectoryEmptyPartFilterZipZZZ objDirectoryFilterZip) {
+			this.objPartFilterDirectoryEmpty = objDirectoryFilterZip;
+		}
+
+		@Override
+		public IFileDirectoryEmptyPartFilterZipZZZ getDirectoryPartFilterEmpty() throws ExceptionZZZ {
+			if(this.objPartFilterDirectoryEmpty==null) {
+				this.objPartFilterDirectoryEmpty = new FileDirectoryEmptyPartFilterZipZZZ(this.getDirectoryPath());
+			}
+			return this.objPartFilterDirectoryEmpty;
 		}
 		
 }//END class

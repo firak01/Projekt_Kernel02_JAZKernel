@@ -721,6 +721,52 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		}
 		return objReturn;
 	}
+	
+	public static File createDirectoryDummy(ZipEntry ze, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			String sLog;
+			if(ze==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (Error 01) XXXXXXXXXXXXXX.";
+			   	System.out.println(sLog);
+			   	
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "ZipEntry Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			
+			String sTargetDirectoryPath;
+			if(StringZZZ.isEmpty(sTargetDirectoryPathIn)){
+				sTargetDirectoryPath= EnvironmentZZZ.getHostDirectoryTemp();
+			}else {
+				sTargetDirectoryPath= EnvironmentZZZ.getHostDirectoryTemp();
+				sTargetDirectoryPath = FileEasyZZZ.joinFilePathName(sTargetDirectoryPath, sTargetDirectoryPathIn);
+			}
+			
+			String sEntryName;
+			if(ze.isDirectory()) {
+				sEntryName = ze.getName();
+			}else{
+				sEntryName = ze.getName();
+				sEntryName = JarEasyUtilZZZ.computeDirectoryFromJarPath(sEntryName);
+			}
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": sEntryName='" + sEntryName + "'.";
+		    System.out.println(sLog);
+			
+		    String sFilePath = toFilePath(sEntryName);
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePath='" + sFilePath + "'.";
+		    System.out.println(sLog);
+		    
+		    String sFilePathTotal = FileEasyZZZ.joinFilePathName(sTargetDirectoryPath, sFilePath);
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePathTotal='" + sFilePathTotal + "'.";
+		    System.out.println(sLog);
+		    
+			//Nun aus dem ZipEntry ein File Objekt machen 
+			//https://www.rgagnon.com/javadetails/java-0429.html
+			objReturn = new File(sFilePathTotal);
+			
+		}
+		return objReturn;
+	}
 }
 
 

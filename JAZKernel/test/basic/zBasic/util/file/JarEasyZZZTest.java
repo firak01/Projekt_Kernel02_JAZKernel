@@ -742,7 +742,7 @@ public class JarEasyZZZTest extends TestCase{
 		    //TESTFÄLLE FÜR: DATEIEN GEFUNDEN
 		    //VARIANTE 1: Pfad und Dateinamen im Dateinamen
 		    sTargetDirectoryPathRoot = "FGL\\PEEK_FILES01";
-		    sFilename = "test01.txt";  //Dies Datei soll über alle Verzeichnisse der JAR-DAtei gesuht werden
+		    sFilename = "test4file01.txt";  //Dies Datei soll über alle Verzeichnisse der JAR-DAtei gesucht werden
 					
 		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
 			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
@@ -776,7 +776,62 @@ public class JarEasyZZZTest extends TestCase{
 		}
 	}
 	
-	
+	public void testPeekDirectory() {
+		try{
+			
+			File[] objaReturn; File objFile; IFileFilePartFilterZipUserZZZ objFilterFileInJar;
+			String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
+			
+			//#############
+			
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+		    System.out.println(sLog);
+		    
+		    if(JarEasyUtilZZZ.isInJarStatic()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird in einem Jar ausgeführt: IsInJarStatic";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Wird nicht in einem Jar ausgeführt: !IsInJarStatic";
+			    System.out.println(sLog);								
+			}	
+		    		    		   		    		
+		    //#######################################################################
+		    //TESTFÄLLE FÜR: VERZEICHNIS GEFUNDEN
+		    //VARIANTE 1: Pfad und Unterverzeichnis im Dateinamen
+		    sTargetDirectoryPathRoot = "FGL\\PEEK_DIRECTORY01";
+		    sFilename = "subDirectory01/sub01";  //Dieses Verzeichnis soll über alle Verzeichnisse der JAR-DAtei gesucht werden
+					
+		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sFilename='" + sFilename + "'";
+			System.out.println(sLog);
+			
+			JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarKernelZZZ.iJAR_TEST);	    
+		    assertNotNull("Die Jar-Dummy Datei sollte gefunden worden sein.", objJarFile);
+		    	  
+			objaReturn = JarEasyZZZ.peekDirectories(objJarFile, sFilename, sTargetDirectoryPathRoot, false);
+			assertNotNull(objaReturn);
+			assertTrue(objaReturn.length==2);//Das Verzeichnis, wie in sFilename PLUS 1 darin enthaltenes Unterverzeichnis.
+			
+			for(File objFileTemp : objaReturn) {
+				 if(FileEasyZZZ.exists(objFileTemp)) {
+					fail("File-Objekt '" + sFilename + "' sollte  nicht erstellt sein.");
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt als Dummy * '" + objFileTemp.getAbsolutePath() + "'";
+				    System.out.println(sLog);
+				    boolean bErg = FileEasyZZZ.isDirectoryExisting(objFileTemp);
+					assertFalse("File-Objekt sollte kein Verzeichnis (sondern eine Datei) sein: '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+				}
+			}
+			 
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
 	
 	
 }//END Class

@@ -273,10 +273,10 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 							objaFileTempInTemp.add(objFileTemp);
 						}
 					}											
-				}else { //Nur Verzeichnis-Fall
+				}else { //Nur Verzeichnis-Fall PEEK
 					objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(sSourceFilePath);
 																		
-					//1. Aus der Jar Datei nur das Verzeichnis herausfiltern.					
+					//1. Aus der Jar Datei nur das Verzeichnis herausfiltern, geht nicht. Also nur 					
 					JarInfo objJarInfo = new JarInfo( archiveName, objFilterDirectoryInJar );  //Merke: Das dauert laaange
 					
 					//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
@@ -290,13 +290,15 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					
 						if(zeTemp.isDirectory()) {
 							//Nun aus dem ZipEntry ein File Objekt machen 							
-							File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);
+							File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);							
+						}else {							
+							File objFileTemp = JarEasyUtilZZZ.createDirectoryDummy(zeTemp, sTargetDirectoryPathIn);
 							objaFileTempInTemp.add(objFileTemp);
-						}
-					}					
+						}					
+					}
+					objaFileTempInTemp = (ArrayList<File>) ArrayListZZZ.unique(objaFileTempInTemp);
+					objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
 				}
-				objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
-
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -1497,6 +1499,20 @@ File[] objaReturn = null;
 						
 								//Das Ergebnis in die Trunk - HashMap packen
 								hmReturn.put(zeTemp, objFileTemp);
+							}else {
+								TODOGOON; //20201206: Aus den Dateien das Verzeichnis holen
+//								if(zeTemp.isDirectory()) {
+//									//Nun aus dem ZipEntry ein File Objekt machen 							
+//									File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);							
+//								}else {							
+//									File objFileTemp = JarEasyUtilZZZ.createDirectoryDummy(zeTemp, sTargetDirectoryPathIn);
+//									objaFileTempInTemp.add(objFileTemp);
+//								}	
+//								objaFileTempInTemp = (ArrayList<File>) ArrayListZZZ.unique(objaFileTempInTemp);
+//								objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
+								
+								//Nun in einer Schleife die Verzeichnisse hinzufügen. Problem, was als zeTemp nehmen?
+//								hmReturn.put(zeTemp,  obFileTemp);
 							}
 						}
 					}

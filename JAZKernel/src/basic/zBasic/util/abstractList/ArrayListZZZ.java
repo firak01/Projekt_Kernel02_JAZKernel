@@ -270,7 +270,7 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 		return aReturn;	
 	}
 	
-	public static ArrayList unique(ArrayList lista){
+	public static ArrayList<?> unique(ArrayList<?> lista){
 		ArrayList listaReturn = null;
 		main:{
 			check:{

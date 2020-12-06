@@ -10,13 +10,13 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 
-public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
+public class FileDirectoryEmptyPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryEmptyPartFilterZipZZZ{
 	private String sDirectoryPath;
 	
-	public FileDirectoryPartFilterZipZZZ() {
+	public FileDirectoryEmptyPartFilterZipZZZ() {
 		super();
 	}
-	public FileDirectoryPartFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
+	public FileDirectoryEmptyPartFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
 		super();		
 		this.setDirectoryPath(sDirectoryPath);
 	}
@@ -35,8 +35,9 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 			main:{
 				if(ze==null) break main;
 				
-				//!!! Hier werden Verzeichnisse ausgeblendet, nur Dateien geholt.
-				if(ze.isDirectory()) break main;
+				//Wichtig: Filtert dadurch nur Verzeichnisse!!!
+				//ABER: In einer JAR DATEI GIBT ES DIESEN FALL NUR FÜR LEERE VERZEICHNISS 
+				if(!ze.isDirectory()) break main;
 				
 				if(StringZZZ.isEmpty(this.getCriterion())) {
 					bReturn = true;
@@ -44,7 +45,7 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 				}				
 				String sName = ze.getName();
 								
-				//Dateipfad mit dem Pfad vergleichen!!!				
+				//Verzeichnisname mit dem Pfad vergleichen, d.h. damit bekommt man auch Unterverzeichnisse!!!
 				if(StringZZZ.contains(sName, this.getCriterion(), true)){ 
 					bReturn = true;	
 				}

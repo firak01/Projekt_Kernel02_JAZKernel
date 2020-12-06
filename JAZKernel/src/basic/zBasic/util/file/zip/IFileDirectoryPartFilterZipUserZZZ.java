@@ -10,4 +10,7 @@ public interface IFileDirectoryPartFilterZipUserZZZ extends ZipEntryFilter{
 	
 	public void setDirectoryPartFilterWithContent(IFileDirectoryWithContentPartFilterZipZZZ objDirectoryFilterZip);
 	public IFileDirectoryWithContentPartFilterZipZZZ getDirectoryPartFilterWithConent() throws ExceptionZZZ;	
+	
+	public void setDirectoryPartFilterEmpty(IFileDirectoryEmptyPartFilterZipZZZ objDirectoryFilterZip);
+	public IFileDirectoryEmptyPartFilterZipZZZ getDirectoryPartFilterEmpty() throws ExceptionZZZ;
 }

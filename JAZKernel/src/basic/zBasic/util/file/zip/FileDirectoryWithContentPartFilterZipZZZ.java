@@ -44,7 +44,7 @@ public class FileDirectoryWithContentPartFilterZipZZZ extends ObjectZZZ implemen
 				}				
 				String sName = ze.getName();
 								
-				//Verzeichnisname vergleichen, hinsichtlich Namensanfang.
+				//Verzeichnisname vergleichen, hinsichtlich Namensanfang. Also nur die Dateien in exakt diesem Verzeichnis, bzw. in Unterverzeichnissen davon. 
 								
 				//Pfad des Dateinamens berechnen
 				//Merke: Die "/" dienen jetzt dazu den Verzeichnisnamen "zu normieren". So dass in "tester/" nicht "test/" gefunden wird.
