@@ -87,8 +87,10 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			
 			//Falls das Verzeichnis nicht passt	
 			try {
-				if(!StringZZZ.isEmpty(this.getDirectoryPath())){					
-					if(ze.getName().startsWith("bat")) {
+				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
+					String sName = ze.getName();
+					//if(StringZZZ.contains(sName,"subDirectory01")) {
+					if(StringZZZ.contains(sName,"bat")) {
 						System.out.println("STOP: "+ze.getName());
 						System.out.println("------");
 					}

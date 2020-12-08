@@ -380,7 +380,12 @@ public class JarEasyZZZTest extends TestCase{
 	
 	public void testFindDirectoryInJar() {
 		try{
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
+			File[] objaReturn; IFileFilePartFilterZipUserZZZ objFilterFileInJar;
+			String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog; String sDirToExtractTo;
+			
+			//#############			
+			
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": START ###############################################.";
 		    System.out.println(sLog);
 		    
 		    if(JarEasyUtilZZZ.isInJarStatic()) {
@@ -391,27 +396,52 @@ public class JarEasyZZZTest extends TestCase{
 			    System.out.println(sLog);								
 			}	
 		    
-		    JarFile objFileAsJar = JarKernelZZZ.getJarFileUsed();		    
-		    assertNotNull(objFileAsJar);
-		    
+		    JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarKernelZZZ.iJAR_TEST);	    
+		    assertNotNull("Die Jar-Dummy Datei sollte gefunden worden sein.", objJarFile);
+		   		  
+		    //###################################################################################
 			//A) Nur das Verzeichnis erstellen... also den reinen Verzeichnis Filter
-		    String sTargetDirectoryPathRoot = "FGL\\FIND_DIRECTORY_EMPTY";
-		    String sPath = "bat";
+		    sTargetDirectoryPathRoot = "FGL\\FIND_DIRECTORY_EMPTY";
+		    sPath = "JarEasyZZZ_searchForDirectories";
+		    
+		    
+		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'";
+			System.out.println(sLog);
+		    
+		    
 			IFileDirectoryPartFilterZipUserZZZ objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
-			File[] objaReturn = JarEasyZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, false);
+			objaReturn = JarEasyZZZ.findDirectoryInJar(objJarFile, objFilterDirInJar, sTargetDirectoryPathRoot, false);
 			assertNotNull(objaReturn);
 			for(File objDir : objaReturn) {
 				assertNotNull(objDir);	
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": Directory * '" + objDir.getAbsolutePath() + "'";
 				System.out.println(sLog);									
-				assertTrue("Das sollte ein Verzeichnis sein: " + objDir.getAbsolutePath(), objDir.isDirectory());
+				assertTrue("Das sollte ein existierendendes Verzeichnis sein: " + objDir.getAbsolutePath(), FileEasyZZZ.isDirectoryExisting(objDir));
 			}
 			
+			//#####################################################################################################
 			//B) Das Verzeichnis mit allen darin enthaltenen Dateien erstellen
 			sTargetDirectoryPathRoot = "FGL\\FIND_DIRECTORY";
-		    sPath = "bat";
+		    sPath = "JarEasyZZZ_searchForDirectories";
+		    
+		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'";
+			System.out.println(sLog);
+		    
+		    
 			objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
-			objaReturn = JarEasyZZZ.findDirectoryInJar(objFileAsJar, objFilterDirInJar, sTargetDirectoryPathRoot, true);
+			objaReturn = JarEasyZZZ.findDirectoryInJar(objJarFile, objFilterDirInJar, sTargetDirectoryPathRoot, true);
 			assertNotNull(objaReturn);
 			assertTrue("Es sollten mehrere Dateien enthalten sein in dem Verzeichnis '" + sPath + "'", objaReturn.length>=2);
 			for(File objFile : objaReturn) {
@@ -425,6 +455,45 @@ public class JarEasyZZZTest extends TestCase{
 					System.out.println(sLog);
 				}				
 			}
+			
+			//##################################################################################
+			//##########################################
+			//C) FALL: Das Verzeichnis ist NICHT VORHANDEN
+			sTargetDirectoryPathRoot = "FGL\\FIND_DIRECTORY_NOT_EXISTING";
+		    sPath = "nichtDaVerzeichnis";
+		    
+		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'";
+			System.out.println(sLog);
+		    
+		    
+			objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
+			objaReturn = JarEasyZZZ.findDirectoryInJar(objJarFile, objFilterDirInJar, sTargetDirectoryPathRoot, false);
+			assertNull(objaReturn);	
+			
+			//##########################################
+			//D) FALL: Das Verzeichnis ist NICHT VORHANDEN, Suche nach Dateien
+			sTargetDirectoryPathRoot = "FGL\\FIND_DIRECTORY_NOT_EXISTING_FILESEARCH";
+		    sPath = "nichtDaVerzeichnis";
+		    
+		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sPath='" + sPath + "'";
+			System.out.println(sLog);
+		    
+		    
+			objFilterDirInJar = new FileDirectoryFilterInJarZZZ(sPath);										
+			objaReturn = JarEasyZZZ.findDirectoryInJar(objJarFile, objFilterDirInJar, sTargetDirectoryPathRoot, true);
+			assertNull(objaReturn);
 			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());

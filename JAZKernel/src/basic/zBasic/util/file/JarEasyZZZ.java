@@ -1188,7 +1188,60 @@ File[] objaReturn = null;
 			return objaReturn;
 	}
 	
+	public static boolean saveTrunkAsDirectory(JarFile jf, HashMap<ZipEntry,File> hmTrunk) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(hmTrunk==null) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "HashMap with Trunk ZipEntry, File - Objects", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			
+			Set<ZipEntry> setEntry = hmTrunk.keySet();
+			Iterator<ZipEntry> itEntry = setEntry.iterator();				
+			while(itEntry.hasNext()) {
+				ZipEntry zeTemp = itEntry.next();
+				File fileTemp = (File)hmTrunk.get(zeTemp);
+				
+				boolean bErg = FileEasyZZZ.makeDirectoryForDirectory(fileTemp);
+				if(!bErg) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Unable to save File - Object '" + fileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
 
+				}
+			}
+			bReturn = true;		
+		}//end main:
+		return bReturn;
+	}
+	
+	public static File[] saveTrunkAsDirectories(JarFile jf, HashMap<ZipEntry,File> hmTrunk) throws ExceptionZZZ {
+		File[] objaReturn = null;
+		main:{			
+			if(hmTrunk==null) {
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "HashMap with Trunk ZipEntry, File - Objects", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+
+			Set<ZipEntry> setEntry = hmTrunk.keySet();
+			Iterator<ZipEntry> itEntry = setEntry.iterator();
+			
+			ArrayList<File>objaFileTempInTemp = new ArrayList<File>();
+			while(itEntry.hasNext()) {
+				ZipEntry zeTemp = itEntry.next();
+				File fileTemp = (File)hmTrunk.get(zeTemp);
+				
+				boolean bErg = FileEasyZZZ.makeDirectoryForDirectory(fileTemp);
+				if(!bErg) {
+					ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Unable to save File - Object '" + fileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
+					throw ez;
+				}else {
+					objaFileTempInTemp.add(fileTemp);
+				}
+			}
+			objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);	
+		}//end main:
+		return objaReturn;
+	}
 	
 	public static boolean saveTrunkAsFile(JarFile jf, HashMap<ZipEntry,File> hmTrunk) throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -1388,7 +1441,7 @@ File[] objaReturn = null;
 					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + "JarFile-Object missing" , iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
 					throw ez;
 				}				
-				File objFileJar = JarEasyUtilZZZ.toFile(objJar);				
+				File objFileJar = JarEasyUtilZZZ.toFile(objJar);
 				objaReturn = JarEasyZZZ.findDirectoryInJar(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);					
 			}//End main		 	
 			return objaReturn;
@@ -1403,7 +1456,11 @@ File[] objaReturn = null;
 				HashMap<ZipEntry,File> hmTrunk = JarEasyZZZ.findDirectoryInJarAsTrunk(objFileJar, objDirectoryFilterInJar, sTargetDirectoryPathIn, bWithFiles);
 				
 				JarFile jf = JarEasyUtilZZZ.toJarFile(objFileJar);
-				objaReturn = saveTrunkAsFiles(jf, hmTrunk);
+				if(bWithFiles) {
+					objaReturn = saveTrunkAsFiles(jf, hmTrunk);					
+				}else {
+					objaReturn = saveTrunkAsDirectories(jf, hmTrunk);
+				}
 							
 			}//End main		 	
 			return objaReturn;
@@ -1500,19 +1557,15 @@ File[] objaReturn = null;
 								//Das Ergebnis in die Trunk - HashMap packen
 								hmReturn.put(zeTemp, objFileTemp);
 							}else {
-								TODOGOON; //20201206: Aus den Dateien das Verzeichnis holen
-//								if(zeTemp.isDirectory()) {
-//									//Nun aus dem ZipEntry ein File Objekt machen 							
-//									File objFileTemp = JarEasyUtilZZZ.createFileDummy(zeTemp, sTargetDirectoryPathIn);							
-//								}else {							
-//									File objFileTemp = JarEasyUtilZZZ.createDirectoryDummy(zeTemp, sTargetDirectoryPathIn);
-//									objaFileTempInTemp.add(objFileTemp);
-//								}	
-//								objaFileTempInTemp = (ArrayList<File>) ArrayListZZZ.unique(objaFileTempInTemp);
-//								objaReturn = ArrayListZZZ.toFileArray(objaFileTempInTemp);
-								
-								//Nun in einer Schleife die Verzeichnisse hinzufügen. Problem, was als zeTemp nehmen?
-//								hmReturn.put(zeTemp,  obFileTemp);
+								//Aus den Dateien das Verzeichnis holen
+								String sNameTemp = JarEasyUtilZZZ.toFilePath(zeTemp.getName());
+								String sNameDir = FileEasyZZZ.getParent(sNameTemp);;
+										
+								String sPathDirTotal = FileEasyZZZ.joinFilePathName(sPathDirTemp, sNameDir);
+								File objFileTemp = new File(sPathDirTotal);
+
+								//Nun in einer Schleife die Verzeichnisse hinzufügen. Problem, was als zeTemp nehmen? Es wird x-mal das gleich File-Objekt hinzugefügt.
+								hmReturn.put(zeTemp,  objFileTemp);
 							}
 						}
 					}
