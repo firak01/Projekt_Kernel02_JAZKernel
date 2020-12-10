@@ -247,34 +247,66 @@ public class JarEasyZZZTest extends TestCase{
 	
 	public void testExtractFromJarAsTrunk() {
 		try{
+			File[] objaReturn; File objFile; IFileFilePartFilterZipUserZZZ objFilterFileInJar;
+			String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
+			String sDirToExtractTo;
+			
 			JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileJarAsSource);
 			String sDirToExtract="template";
-			String sDirToExtractTo; 
-			
+					
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
-			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL\\TRUNK_OF_DIRECTORY";
+			//Aa) Erfolgsfall, ohne Dateien zu erzeugen		
+			sTargetDirectoryPathRoot = "FGL\\EXTRACT_AS_TRUNK01";
+						
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sDirToExtractTo='" + sDirToExtractTo + "'";
+			System.out.println(sLog);
+			
+			
 			
 			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
 			File[] objaCreated01 = JarEasyZZZ.peekDirectories(objJar,sDirToExtract, sDirToExtractTo, false);
 			if(objaCreated01==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht gefunden (NULL-WERT).");
 			}
-			if(objaCreated01[0].exists()) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' sollte  nicht erstellt sein.");
+			assertTrue("Es wurde nur das Verzeichnis erwartet zu '"+sDirToExtract+"' (also keine Unterverzeichnisse, keine Dateien)",objaCreated01.length==1);
+			for(File objFileTemp : objaCreated01) {
+				 if(FileEasyZZZ.exists(objFileTemp)) {
+						fail("File-Objekt '" + objFileTemp.getAbsolutePath() + "' sollte  nicht erstellt sein.");
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt als Dummy * '" + objFileTemp.getAbsolutePath() + "'";
+				    System.out.println(sLog);
+				    boolean bErg = FileEasyZZZ.isFileExisting(objFileTemp);
+					assertFalse("File-Objekt sollte ein Verzeichnis sein (keine Datei): '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+				}
 			}
+					
 			
 			//Ab) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL\\TRUNK_OF_FILES";
+			sDirToExtractTo = "FGL\\EXTRACT_AS_TRUNK_OF_FILES";
 			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
 			File[] objaCreated02 = JarEasyZZZ.peekDirectories(objJar, sDirToExtract, sDirToExtractTo, true);
 			if(objaCreated02==null) {
 				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht gefunden (NULL-WERT).");
 			}
-			if(objaCreated02[0].exists()) {
-				fail("Datei sollte nicht erstellt sein '" + objaCreated02[0] + "' und das Verzeichnis '" + sDirToExtractTo + "' sollte auch nicht erstellt sein.");
+			assertTrue("Es wurde nur die Dateien erwartet zu '"+sDirToExtract+"' ",objaCreated02.length==3);
+			for(File objFileTemp : objaCreated02) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": File-Objekt Dummy? * '" + objFileTemp.getAbsolutePath() + "'";
+			    System.out.println(sLog);
+			    
+				boolean bErg = FileEasyZZZ.isDirectoryExisting(objFileTemp);
+				assertFalse("File-Objekt sollte eine nicht existierende Datei sein (kein Verzeichnis!): '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+				
+				bErg = FileEasyZZZ.isFileExisting(objFileTemp);
+				assertFalse("File-Objekt sollte eine nicht existierende Datei sein (kein Verzeichnis): '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+								
 			}
 			
 			//####################################################################
@@ -298,33 +330,77 @@ public class JarEasyZZZTest extends TestCase{
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//A) Fall: Dateien exitieren noch nicht. D.h. alles neu anlegen.
 			//Aa) Erfolgsfall, ohne Dateien zu erzeugen					
-			sDirToExtractTo = "FGL_TRUNK_OF_DIRECTORY02";
-			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+			sTargetDirectoryPathRoot = "FGL\\EXCTRACT_AS_TRUNK_OF_DIRECTORY";
 			
-			//Aa) VERZEICHNIS extrahieren. DAS ERZEUGT NUR EIN FILE OBJEKT.
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sDirToExtractTo='" + sDirToExtractTo + "'";
+			System.out.println(sLog);
+						
 			ZipEntry[] objaCreated03 = JarEasyZZZ.extractFromJarAsTrunkZipEntries(objJar,sDirToExtract, sDirToExtractTo, false);
-			if(objaCreated03==null) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
+			assertNotNull("EntryArray-Objekt für Ziel '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).",objaCreated03);
+			
+			for(ZipEntry objZipEntryTemp : objaCreated03) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ZipEntry-Objekt Dummy? * '" + objZipEntryTemp.getName() + "'";
+			    System.out.println(sLog);
+			    
+			    if(!objZipEntryTemp.isDirectory()) {
+					fail("ZipEntry '" + objZipEntryTemp.getName() + "' sollte KEIN Verzeichnis sein.");
+				}
+			    
+			  //TODO: Irgendwie noch automatisiert prüfen, dass das Verzeichnis nicht erstellt worden ist.
+//				boolean bErg = FileEasyZZZ.isDirectoryExisting(objFileTemp);
+//				assertFalse("File-Objekt sollte eine nicht existierende Datei sein (kein Verzeichnis!): '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+//				
+//				bErg = FileEasyZZZ.isFileExisting(objFileTemp);
+//				assertFalse("File-Objekt sollte eine nicht existierende Datei sein (kein Verzeichnis): '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+//								
+																	
 			}
-			if(!objaCreated03[0].isDirectory()) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' sollte zwar nicht auf Platte existieren aber als TRUNK zurückgeliefert worden sein.");
-			}
+						
 			
 			//Ab) Erfolgsfall, mit Dateien erzeugen						
-			sDirToExtractTo = "FGL\\TRUNK_OF_FILES02";
-			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);			
+			sTargetDirectoryPathRoot = "FGL\\EXTRACT_AS_TRUNK_OF_FILES02";
+			
+			//VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
+			FileEasyZZZ.removeDirectory(sDirToExtractTo);
+			
+			//TEST
+		    sLog = ReflectCodeZZZ.getPositionCurrent()+"  VARIABLEN: sTargetDirectoryPathRoot= '" + sTargetDirectoryPathRoot + "'| sDirToExtractTo='" + sDirToExtractTo + "'";
+			System.out.println(sLog);
+						
 			ZipEntry[] objaCreated04 = JarEasyZZZ.extractFromJarAsTrunkZipEntries(objJar, sDirToExtract, sDirToExtractTo, true);
-			if(objaCreated04==null) {
-				fail("Verzeichnis '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).");
+			assertNotNull("EntryArray-Objekt für Ziel '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).",objaCreated04);
+						
+			for(ZipEntry objZipEntryTemp : objaCreated04) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ZipEntry-Objekt Dummy? * '" + objZipEntryTemp.getName() + "'";
+			    System.out.println(sLog);
+			    
+			    if(objZipEntryTemp.isDirectory()) {
+					fail("ZipEntry '" + objZipEntryTemp.getName() + "' sollte eine Datei sein.");
+				}
+			    
+			  //TODO: Irgendwie noch automatisiert prüfen, dass das Verzeichnis nicht erstellt worden ist.
+//				boolean bErg = FileEasyZZZ.isDirectoryExisting(objFileTemp);
+//				assertFalse("File-Objekt sollte eine nicht existierende Datei sein (kein Verzeichnis!): '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+//				
+//				bErg = FileEasyZZZ.isFileExisting(objFileTemp);
+//				assertFalse("File-Objekt sollte eine nicht existierende Datei sein (kein Verzeichnis): '"+ objFileTemp.getAbsolutePath()+"'", bErg);
+//								
+																	
 			}
-			if(objaCreated04[0].isDirectory()) {
-				fail("Kein Verzeichnis '" + sDirToExtractTo + "' sollte als TRUNK zurückgeliefert worden sein, nur Dateien.");
-			}
+			
 			
 			
 			//Ba) Verzeichnis mit Unterverzeichnissen
-			sDirToExtractTo = "FGL\\TRUNK_OF_DIRECTORY03";
-			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
+//			sDirToExtractTo = "FGL\\EXTRACT_AS_TRUNK_OF_DIRECTORY02";
+//			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
 			
 			
 		}catch(ExceptionZZZ ez){
@@ -792,7 +868,7 @@ public class JarEasyZZZTest extends TestCase{
 		try{
 			
 			File[] objaReturn; File objFile; IFileFilePartFilterZipUserZZZ objFilterFileInJar;
-			String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
+			String sDirToExtractTo; String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
 			
 			//#############
 			
@@ -814,7 +890,7 @@ public class JarEasyZZZTest extends TestCase{
 		    sFilename = "test4file01.txt";  //Dies Datei soll über alle Verzeichnisse der JAR-DAtei gesucht werden
 					
 		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
-			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
 			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			
@@ -849,7 +925,7 @@ public class JarEasyZZZTest extends TestCase{
 		try{
 			
 			File[] objaReturn; File objFile; IFileFilePartFilterZipUserZZZ objFilterFileInJar;
-			String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
+			String sDirToExtractTo; String sTargetDirectoryPathRoot; String sPath; String sFilename; String sLog;
 			
 			//#############
 			
@@ -871,7 +947,7 @@ public class JarEasyZZZTest extends TestCase{
 		    sFilename = "subDirectory01/sub01";  //Dieses Verzeichnis soll über alle Verzeichnisse der JAR-DAtei gesucht werden
 					
 		    //VORBEREITUNG: Verzeichnisse (inkl Unterverzeichnisse) löschen. Das Vor dem Test machen. Aber nicht im Setup, dann das wird vor jedem Test ausgeführt.
-			String sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
+			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sTargetDirectoryPathRoot);			
 			FileEasyZZZ.removeDirectoryContent(sDirToExtractTo, true, true);
 			FileEasyZZZ.removeDirectory(sDirToExtractTo);
 			

@@ -121,7 +121,16 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 			//Merke: Die Reihenfolge ist so gewählt, dass im Template Verzeichnis frühestmöglich ein "break main" erreicht wird.
 			try {
 			
-			
+				String sName = ze.getName();
+				if(ze.isDirectory()) {
+					System.out.println("STOP: REINES VERZEICHNIS "+ze.getName());
+					
+					if(StringZZZ.contains(sName,"template")) {
+						System.out.println("STOP: BREAKPOINT");
+						System.out.println("------");
+					}
+				}
+				
 				//Falls das Verzeichnis nicht passt	
 				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
 					this.objFilterPath.setCriterion(this.getDirectoryPath());

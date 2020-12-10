@@ -28,9 +28,9 @@ import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
 public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
-	protected IFileDirectoryEmptyPartFilterZipZZZ objPartFilterDirectoryEmpty;
-	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;	
-	protected IFileDirectoryWithContentPartFilterZipZZZ objPartFilterDirectoryWithContent;
+	protected IFileDirectoryEmptyPartFilterZipZZZ objPartFilterDirectoryEmpty; //Nur Verzeichnisse
+	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;	//Nur Dateien, ohne konkreten Verzeichnispfad, also nur nach Dateiname/relativen Pfad.
+	protected IFileDirectoryWithContentPartFilterZipZZZ objPartFilterDirectoryWithContent; //Nur Dateien, Verzeichnispfad am Anfang
 		
 	public AbstractFileDirectoryFilterInJarZZZ() throws ExceptionZZZ {
 		this("","init");
@@ -89,15 +89,16 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 			try {
 				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
 					String sName = ze.getName();
-					//if(StringZZZ.contains(sName,"subDirectory01")) {
-					if(StringZZZ.contains(sName,"bat")) {
-						System.out.println("STOP: "+ze.getName());
-						System.out.println("------");
-					}
 					if(ze.isDirectory()) {
-						System.out.println("STOP REINES VERZEICHNIS "+ze.getName());
-						System.out.println("------");
+						System.out.println("STOP: REINES VERZEICHNIS "+ze.getName());
+						
+						if(StringZZZ.contains(sName,"template")) {
+							System.out.println("STOP: BREAKPOINT");
+							System.out.println("------");
+						}
 					}
+					
+					
 					
 					this.getDirectoryPartFilterEmpty().setCriterion(this.getDirectoryPath());					
 					if(this.objPartFilterDirectoryEmpty.accept(ze)==true) {
