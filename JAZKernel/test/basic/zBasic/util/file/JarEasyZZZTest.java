@@ -393,7 +393,7 @@ public class JarEasyZZZTest extends TestCase{
 						
 			ZipEntry[] objaCreated04 = JarEasyZZZ.extractFromJarAsTrunkZipEntries(objJar, sDirToExtract, sDirToExtractTo, false);
 			assertNotNull("EntryArray-Objekt für Ziel '" + sDirToExtractTo + "' wurde nicht erstellt (NULL-WERT).",objaCreated04);
-			assertTrue("Es wurde nur die Dateien erwartet zu '"+sDirToExtract+"' ",objaCreated04.length==3);			
+			assertTrue("Es wurde nur die Verzeichnisse erwartet zu '"+sDirToExtract+"' ",objaCreated04.length==1);//Die Dateien werden herausgefiltert, es sind nur Verzeichnisse.			
 			for(ZipEntry objZipEntryTemp : objaCreated04) {				
 			    if(objZipEntryTemp.isDirectory()) {
 			    	sLog = ReflectCodeZZZ.getPositionCurrent()+": Verzeichnis * " + objZipEntryTemp.getName() + "' als ZipEntry gefunden.";
@@ -415,12 +415,16 @@ public class JarEasyZZZTest extends TestCase{
 			}
 			
 			
-			
-			//Ba) Verzeichnis mit Unterverzeichnissen
+			TODOGOON 20201211: WAS TUN; WENN ES NUR EIN UNTERVERZEICHNIS OHNE DATEIEN DRIN GIBT. WIRD DAS AUCH ERFASST?
+			//Ba) Verzeichnis mit LEEREM Unterverzeichnis
 //			sDirToExtractTo = "FGL\\EXTRACT_AS_TRUNK_OF_DIRECTORY02";
 //			sDirToExtractTo = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(),sDirToExtractTo);
 			
 			
+			//Bb) Verzeichnis mit Unter - Unterverzeichnis
+					
+			//Bc) Verzeichnis mit Dateien im Unterverzeichnis, leeren Unter - Unterverzeichnis
+					
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}

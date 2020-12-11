@@ -114,8 +114,10 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				ArrayList<ZipEntry>objaZipEntry = new ArrayList<ZipEntry>();
 				while(itEntryName.hasNext()) {
 					String sKey = itEntryName.next();
-					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);					
-					objaZipEntry.add(zeTemp);						
+					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
+					if(zeTemp.isDirectory()) {
+						objaZipEntry.add(zeTemp);
+					}
 				}								
 				
 				objaReturn = ArrayListZZZ.toZipEntryArray(objaZipEntry); 
