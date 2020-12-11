@@ -28,25 +28,30 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 	public boolean accept(ZipEntry ze) {		 
 		    boolean bReturn=false;
 			main:{
-				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getDirectoryPath())) {
-					bReturn = true;
-					break main;
-				}				
-				String sName = ze.getName();
+				if(ze==null) break main;	
 				
-				//Pfad des Dateinamens berechnen			
-				String sDirectoryPath;
-//				try {				
-					//String zurückgeben, einfach den Parent des Dateipfads. //Wichtig: Der abschliessende Slash dient dazu die Verzeichnispfade zu "normieren".
-					sDirectoryPath = FileEasyZZZ.getParent(sName,"/")+"/";//Also: In der aktuell  betrachteten JAR - Datei sind die Pfade mit "SLASH" getrennt.
-					if(StringZZZ.startsWithIgnoreCase(sDirectoryPath, this.getCriterion()))	{					
+				String sName = ze.getName();				
+				String sCriterion = this.getCriterion();
+				if(StringZZZ.isEmpty(this.getDirectoryPath())) {
+					if(StringZZZ.startsWithIgnoreCase(sName, sCriterion))	{					
 						bReturn = true;
 						break main;
 					}
-//				} catch (ExceptionZZZ e) {			
-//					e.printStackTrace();
-//				} 					
+				}else {			
+				
+					//Pfad des Dateinamens berechnen			
+					String sDirectoryPath;
+	//				try {				
+						//String zurückgeben, einfach den Parent des Dateipfads. //Wichtig: Der abschliessende Slash dient dazu die Verzeichnispfade zu "normieren".
+						sDirectoryPath = FileEasyZZZ.getParent(sName,"/")+"/";//Also: In der aktuell  betrachteten JAR - Datei sind die Pfade mit "SLASH" getrennt.
+						if(StringZZZ.startsWithIgnoreCase(sDirectoryPath, sCriterion))	{					
+							bReturn = true;
+							break main;
+						}
+	//				} catch (ExceptionZZZ e) {			
+	//					e.printStackTrace();
+	//				} 
+				}
 			}//END main:
 			return bReturn;
 	}

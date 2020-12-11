@@ -242,7 +242,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 	
 		protected void setDirectoryPath(String sDirectoryPath) throws ExceptionZZZ {
 			this.getDirectoryPartFilter().setDirectoryPath(sDirectoryPath);	
-			this.getPathTotalFilter().setDirectoryPath(sDirectoryPath);
+			this.getPathTotalFilter().setDirectoryPath(sDirectoryPath);			
 		}
 		protected String getDirectoryPath() {
 			return this.getDirectoryPartFilter().getDirectoryPath();
@@ -251,6 +251,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		protected void setName(String sName) {
 			this.getNamePartFilter().setName(sName);
 			this.getPathTotalFilter().setFileName(sName);
+			
 		}
 		protected String getName() {
 			return this.getNamePartFilter().getName();

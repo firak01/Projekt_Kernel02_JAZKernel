@@ -35,8 +35,8 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 			main:{
 				if(ze==null) break main;
 				
-				//!!! Hier werden Verzeichnisse ausgeblendet, nur Dateien geholt.
-				if(ze.isDirectory()) break main;
+				//!!! Hier werden nicht nur Verzeichnisse ausgeblendet, auch Dateien werden abgeholt!!!
+				//if(ze.isDirectory()) break main;
 				
 				if(StringZZZ.isEmpty(this.getCriterion())) {
 					bReturn = true;
@@ -44,8 +44,9 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 				}				
 				String sName = ze.getName();
 								
-				//Dateipfad mit dem Pfad vergleichen!!!				
-				if(StringZZZ.contains(sName, this.getCriterion(), true)){ 
+				//Dateipfad mit dem Pfad vergleichen!!!	
+				String sCriterion = this.getCriterion();
+				if(StringZZZ.contains(sName, sCriterion, true)){ 
 					bReturn = true;	
 				}
 			}//END main:

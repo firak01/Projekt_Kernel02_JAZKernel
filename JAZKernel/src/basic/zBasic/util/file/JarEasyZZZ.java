@@ -79,9 +79,7 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 		return objaReturn;
 	}
 	
-	/** Merke: Wenn ein Verzeichnis aus der JAR Datei zu extrahieren ist, dann wird lediglich die JAR Datei zurückgegeben.
-	 *         Verwende für die Behandlung eines ganzen Verzeichnisses (oder auch nur des Verzeichnisses) 
-	 *         die Methode, die ein Verzeichnis im TEMP-Ordner des HOST Rechners erstellt. 
+	/** Merke: In der Jar Datei gibt es keine reinen Verzeichniseinträge, wenn Dateien darin enthalten sind.
 	 * @param filePath
 	 * @return
 	 * @throws ExceptionZZZ
@@ -118,13 +116,10 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);					
 					objaZipEntry.add(zeTemp);						
-				}
+				}								
 				
-				TODOGOON; //20201210 Hier müssen auch leere Verzeichnisse über einen anderen Filter geholt werden.
+				objaReturn = ArrayListZZZ.toZipEntryArray(objaZipEntry); 
 				
-				
-				
-				objaReturn = ArrayListZZZ.toZipEntryArray(objaZipEntry);
 			}catch (Exception e){
 		    	ExceptionZZZ ez  = new ExceptionZZZ("An error happened: " + e.getMessage(), iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -539,6 +534,7 @@ File[] objaReturn = null;
 				String archiveName = objJarFile.getName();
 				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceDirectoryPath);
 				FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
+				objFilterFilePathPart.setCriterion(sSourceDirectoryPath);
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );
 				
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
@@ -814,7 +810,7 @@ File[] objaReturn = null;
 			if(bExtractFiles) {
 				objaReturn = JarEasyZZZ.extractFilesFromJarAsTrunkZipEntries(objJarFile, sSourceFilePath);				
 			}else {				
-				TODOGOON; //20201210 In der Jar Datei gibt es keine reinen Verzeichniseinträge, wenn Dateien darin enthalten sind.
+				//Merke: In der Jar Datei gibt es keine reinen Verzeichniseinträge, wenn Dateien darin enthalten sind.
 				//Man kann nur leere Verzeichnisse explizit zusätzlich holen, um so diese auch zu finden.
 				objaReturn = JarEasyZZZ.extractDirectoriesFromJarAsTrunkEntries(objJarFile, sSourceFilePath);
 			}
@@ -1454,9 +1450,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 					//1. Aus der Jar Datei nur das Verzeichnis herausfiltern.						
 												
 					objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceFilePath);
-					IFilenamePartFilterZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
-					objFilterFilePathPart.setCriterion(entry.getName());
-											
+					IFilenamePartFilterZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();										
 					JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );  //Merke: Das dauert laaange
 					
 					//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
