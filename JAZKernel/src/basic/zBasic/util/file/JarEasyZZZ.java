@@ -1060,7 +1060,8 @@ public static HashMap<ZipEntry,File> findDirectoryInJarAsTrunk(File objFileJar, 
 					throw ez;
 				}
 				boolean bIsJar = FileEasyZZZ.isJar(objFileJar);
-				if(!bIsJar) {
+				boolean bIsZip = FileEasyZZZ.isZip(objFileJar);
+				if(!bIsJar && !bIsZip) {
 					ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "The File '" + objFileJar.getPath() + "', is not a jar File. To extract from a directory use another method.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 					throw ez;
 				}
