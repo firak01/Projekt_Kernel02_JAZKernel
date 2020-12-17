@@ -93,7 +93,17 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 						System.out.println("STOP: REINES VERZEICHNIS "+ze.getName());
 						
 						if(StringZZZ.contains(sName,"template")) {
-							System.out.println("STOP: BREAKPOINT");
+							System.out.println("STOP: BREAKPOINT01");
+							System.out.println("------");
+						}
+						
+						if(StringZZZ.contains(sName,"subDirectory01")) {
+							System.out.println("STOP: BREAKPOINT02");
+							System.out.println("------");
+						}
+						
+						if(StringZZZ.contains(sName,"subDirectory04withoutFiles")) {
+							System.out.println("STOP: BREAKPOINT03");
 							System.out.println("------");
 						}
 					}
@@ -101,19 +111,19 @@ public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ impl
 					
 					
 					this.getDirectoryPartFilterEmpty().setCriterion(this.getDirectoryPath());					
-					if(this.objPartFilterDirectoryEmpty.accept(ze)==true) {
+					if(this.getDirectoryPartFilterEmpty().accept(ze)==true) {
 						bReturn = true;
 						break main;
 					}
 					
 					this.getDirectoryPartFilterWithConent().setCriterion(this.getDirectoryPath());
-					if(this.objPartFilterDirectoryWithContent.accept(ze)==true) {
+					if(this.getDirectoryPartFilterWithConent().accept(ze)==true) {
 						bReturn = true;
 						break main;
 					}
 																
 					this.getDirectoryPartFilter().setCriterion(this.getDirectoryPath());				
-					if(this.objPartFilterDirectory.accept(ze)==true) {
+					if(this.getDirectoryPartFilter().accept(ze)==true) {
 						bReturn = true;
 						break main;
 					}

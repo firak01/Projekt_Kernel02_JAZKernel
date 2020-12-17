@@ -29,6 +29,7 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 		    boolean bReturn=false;
 			main:{
 				if(ze==null) break main;	
+				if(ze.isDirectory()) break main;
 				
 				String sName = ze.getName();				
 				String sCriterion = this.getCriterion();

@@ -36,7 +36,7 @@ public class FileDirectoryEmptyPartFilterZipZZZ extends ObjectZZZ implements IFi
 				if(ze==null) break main;
 				
 				//Wichtig: Filtert dadurch nur Verzeichnisse!!!
-				//ABER: In einer JAR DATEI GIBT ES DIESEN FALL NUR FÜR LEERE VERZEICHNISS 
+				//ABER: In einer JAR DATEI GIBT ES DIESEN FALL NUR FÜR LEERE VERZEICHNISS ODER WENN DIE JAR DATEI EXPLIZIT MIT VERZEICHNISSEN ERSTELLT WURDE.
 				if(!ze.isDirectory()) break main;
 				
 				if(StringZZZ.isEmpty(this.getCriterion())) {

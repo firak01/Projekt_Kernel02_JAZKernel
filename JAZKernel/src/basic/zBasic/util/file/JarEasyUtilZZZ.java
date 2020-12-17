@@ -388,8 +388,8 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		JarFile objReturn = null;
 		main:{
 			if(objFileAsJar==null)break main;
-			if(!FileEasyZZZ.isJar(objFileAsJar)){
-				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			if(!(FileEasyZZZ.isJar(objFileAsJar)||FileEasyZZZ.isZip(objFileAsJar))){
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile or Zip File.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 					

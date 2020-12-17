@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -18,6 +19,46 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
 public class ZipEasyZZZ implements IConstantZZZ {	
+	/** Merke: Vewendet man lediglich das ArrayList.contains(ZipEntry....) dann ist man nicht erfolgreich,
+	 *         wenn es darum geht lediglich nach dem Namen zu prüfen.
+	 *         Vermutlich wird die Gleichheit der ZipEntry - Objekte auch noch hinsichtlich Größe, etc. durchgeführt.
+	 *         
+	 * @param listaZipEntry
+	 * @param ze
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.12.2020, 14:26:43
+	 */
+	public static boolean containsByName(ArrayList<ZipEntry> listaZipEntry, ZipEntry ze) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			String sLog;
+			if(listaZipEntry==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (Error 01) ArrayList-Object is null.";
+			   	System.out.println(sLog);
+			   	
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + ": " + sLog, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			if(ze==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (Error 01) ZipEntry-Object is null.";
+			   	System.out.println(sLog);
+			   	
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + ": " + sLog, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}
+			
+			
+			String sName = ze.getName();
+			for(ZipEntry zeTemp : listaZipEntry) {
+				if(zeTemp.getName().equals(sName)) {
+					bReturn = true;
+					break main;
+				}
+			}								
+		}//end main:
+		return bReturn; 
+	}
 	public static File extractZipEntryTo(ZipFile zf, ZipEntry ze, File fileTargetIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{

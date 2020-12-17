@@ -2,7 +2,7 @@ package basic.zBasic.util.file.zip;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface IFileFilePartFilterZipUserZZZ {
+public interface IFileFilePartFilterZipUserZZZ extends ZipEntryFilter{
 	public void setDirectoryPartFilter(FilenamePartFilterPathZipZZZ objDirectoryFilterZip);
 	public FilenamePartFilterPathZipZZZ getDirectoryPartFilter();
 	

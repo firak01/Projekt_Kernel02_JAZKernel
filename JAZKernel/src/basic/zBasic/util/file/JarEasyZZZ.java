@@ -80,6 +80,10 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 	}
 	
 	/** Merke: In der Jar Datei gibt es keine reinen Verzeichniseinträge, wenn Dateien darin enthalten sind.
+	 *         Dieser wird "künstlich" erzeugt.
+	 *         Es gibt auch nicht für jedes Verzeichnis einen Eintrag,
+	 *         sondern nur für die "letzten" Verzeichnisse des Pfades und für die "künstlich" erzeugten Verzeichnisse
+	 *         ohne Dateien.
 	 * @param filePath
 	 * @return
 	 * @throws ExceptionZZZ
@@ -104,8 +108,8 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 				String archiveName = objJarFile.getName();				
 				sSourceDirectoryPath = JarEasyUtilZZZ.toJarFilePath(sSourceDirectoryPath);				
 				IFileDirectoryPartFilterZipUserZZZ objFilterDirectoryInJar = new FileDirectoryFilterInJarZZZ(sSourceDirectoryPath);
-				IFileDirectoryPartFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
-				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );
+				//IFileDirectoryPartFilterZipZZZ objFilterFilePathPart = objFilterDirectoryInJar.getDirectoryPartFilter();
+				JarInfo objJarInfo = new JarInfo( archiveName, objFilterDirectoryInJar );
 				
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();			
@@ -116,7 +120,19 @@ public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 					String sKey = itEntryName.next();
 					ZipEntry zeTemp = (ZipEntry) ht.get(sKey);
 					if(zeTemp.isDirectory()) {
-						objaZipEntry.add(zeTemp);
+						boolean bErg = ZipEasyZZZ.containsByName(objaZipEntry, zeTemp);
+						if(!bErg){//!!!Aber nur 1x erstellen, sonst bekommt man redundante Einträge, insbesondere wenn die JAR-Datei "mit Verzeichnissen" erstellt wurde.
+							objaZipEntry.add(zeTemp);
+						}
+					}else {
+						//Erstelle ein neues, dummy-Objekt für einen ZipEntry, das es so nicht im File-Objekt gibt.
+						String zeName = zeTemp.getName();
+						String zeNameParent = JarEasyUtilZZZ.computeDirectoryFromJarPath(zeName);
+						ZipEntry zeNew = new ZipEntry(zeNameParent);
+						boolean bErg = ZipEasyZZZ.containsByName(objaZipEntry, zeNew);
+						if(!bErg){//!!!Aber nur 1x erstellen, sonst bekommt man redundante Einträge
+							objaZipEntry.add(zeNew);
+						}
 					}
 				}								
 				
@@ -534,10 +550,10 @@ File[] objaReturn = null;
 				//1. Aus der Jar Datei alle Dateien in dem Verzeichnis herausfiltern.						
 				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 				String archiveName = objJarFile.getName();
-				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(null, sSourceDirectoryPath);
-				FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
-				objFilterFilePathPart.setCriterion(sSourceDirectoryPath);
-				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFilePathPart );
+				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sSourceDirectoryPath,null);
+				//FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
+				//objFilterFilePathPart.setCriterion(sSourceDirectoryPath);
+				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFileInJar );
 				
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
 				Hashtable<String,ZipEntry> ht = objJarInfo.zipEntryTable();			
@@ -814,6 +830,9 @@ File[] objaReturn = null;
 			}else {				
 				//Merke: In der Jar Datei gibt es keine reinen Verzeichniseinträge, wenn Dateien darin enthalten sind.
 				//Man kann nur leere Verzeichnisse explizit zusätzlich holen, um so diese auch zu finden.
+				
+				//ABER: Wenn überhaupt keine Verzeichnisse darin enthalten sind, dann hilft alles nichts.
+				//Darum: Bei der Jar-Erzeugung "add directories" auswählen.
 				objaReturn = JarEasyZZZ.extractDirectoriesFromJarAsTrunkEntries(objJarFile, sSourceFilePath);
 			}
 			    

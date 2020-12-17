@@ -126,39 +126,79 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 					System.out.println("STOP: REINES VERZEICHNIS "+ze.getName());
 					
 					if(StringZZZ.contains(sName,"template")) {
-						System.out.println("STOP: BREAKPOINT");
+						System.out.println("STOP: BREAKPOINT01");
 						System.out.println("------");
 					}
+					
+					if(StringZZZ.contains(sName,"subDirectory01")) {
+						System.out.println("STOP: BREAKPOINT02");
+						System.out.println("------");
+					}
+					
+					if(StringZZZ.contains(sName,"subDirectory03")) {
+						System.out.println("STOP: BREAKPOINT03");
+						System.out.println("------");
+					}
+					
+					if(StringZZZ.contains(sName,"subDirectory04withoutFiles")) {
+						System.out.println("STOP: BREAKPOINT04");
+						System.out.println("------");
+					}
+					
 				}
 				
 				//Falls das Verzeichnis nicht passt	
 				if(!StringZZZ.isEmpty(this.getDirectoryPath())){
-					this.objFilterPath.setCriterion(this.getDirectoryPath());
-					if(this.objFilterPath.accept(ze)==false) break main;
+					this.getDirectoryPartFilter().setCriterion(this.getDirectoryPath());
+					if(this.getDirectoryPartFilter().accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
 				}
 				
 				if(!StringZZZ.isEmpty(this.getName())){
-					this.objFilterName.setCriterion(this.getName());
-					if(this.objFilterName.accept(ze)==false) break main;
+					this.getNamePartFilter().setCriterion(this.getName());
+					if(this.getNamePartFilter().accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
 				}
 				
 				//Falls der OvpnContext nicht passt
-				this.objFilterMiddle.setCriterion(this.getMiddle());
-				if(this.objFilterMiddle.accept(ze)==false) break main;
+				if(!StringZZZ.isEmpty(this.getMiddle())) {
+					this.getMiddlePartFilter().setCriterion(this.getMiddle());
+					if(this.getMiddlePartFilter().accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+				}
 		
 				//Template-Dateinamen fangen eben mit einem bestimmten String an.
-				this.objFilterPrefix.setCriterion(this.getPrefix());
-				if(this.objFilterPrefix.accept(ze)==false) break main;
+				if(!StringZZZ.isEmpty(this.getPrefix())) {
+					this.getPrefixPartFilter().setCriterion(this.getPrefix());
+					if(this.getPrefixPartFilter().accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+				}
 									
 				//Falls die Endung nicht passt
-				this.objFilterEnding.setCriterion(this.getEnding());
-				if(this.objFilterEnding.accept(ze)==false) break main;
+				if(!StringZZZ.isEmpty(this.getEnding())) {
+					this.getEndingPartFilter().setCriterion(this.getEnding());
+					if(this.getEndingPartFilter().accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+				}
 						
 				//Falls das Suffix nicht passt
-				this.objFilterSuffix.setCriterion(this.getSuffix());
-				if(this.objFilterSuffix.accept(ze)==false) break main;
-				
-				bReturn = true;
+				if(!StringZZZ.isEmpty(this.getSuffix())) {
+					this.getSuffixPartFilter().setCriterion(this.getSuffix());
+					if(this.getSuffixPartFilter().accept(ze)==true) {
+						bReturn = true;
+						break main;
+					}
+				}				
 			}catch(ExceptionZZZ ez) {
 				String sLog = "AbstractFileFilterInJarZZZ -> ExceptionZZZ: '" + ez.getMessageLast() +"'.";
 				System.out.println(sLog);

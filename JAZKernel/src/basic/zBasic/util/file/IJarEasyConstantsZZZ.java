@@ -9,7 +9,12 @@ public interface IJarEasyConstantsZZZ {
 	
 	public static final int iJAR_TEST = 20;
 	public static final String sJAR_DIRECTORYPATH_TEST = "c:\\\\1fgl\\\\client\\\\JAZKernel";
-	public static final String sJAR_FILENAME_TEST = "JAZDummyJar.jar";
+	public static final String sJAR_FILENAME_TEST = "JAZDummyJar.jar"; //Jar-File mit spezieller Struktur der Verzeichnisse und Dateien, für die Tests.
+	
+	public static final int iJAR_TESTZIP = 21;
+	public static final String sJAR_DIRECTORYPATH_TESTZIP = "c:\\\\1fgl\\\\client\\\\JAZKernel";
+	public static final String sJAR_FILENAME_TESTZIP = "JAZDummyJar.zip"; //In einem Jar File gibt es keine Verzeichnisse ohne Dateien, in einem Zip-File schon.
+	
 	
 	public static final int iJAR_KERNEL = 30;
 	public static final String sJAR_DIRECTORYPATH_KERNEL = "c:\\\\1fgl\\\\client\\\\JAZKernel";

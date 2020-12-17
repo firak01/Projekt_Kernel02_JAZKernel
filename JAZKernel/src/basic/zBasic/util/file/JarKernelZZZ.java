@@ -64,12 +64,33 @@ public class JarKernelZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 03.11.2020, 10:34:34
 	 */
+	public static File getJarFileTestZipAsFile() throws ExceptionZZZ{
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
+		System.out.println(sLog);
+		
+		return JarKernelZZZ.getJarFileUsedAsFile(JarEasyUtilZZZ.iJAR_TESTZIP);
+	}
+	
+	
+	public static JarFile getJarFileTestZip() throws ExceptionZZZ{
+		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
+		System.out.println(sLog);
+		
+		return JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_TESTZIP);
+	}
+
+	/**Für Tests, z.B. ob eine Resource in der gleichen Jar-Datei liegt.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 03.11.2020, 10:34:34
+	 */
 	public static File getJarFileTestAsFile() throws ExceptionZZZ{
 		String sLog = ReflectCodeZZZ.getPositionCurrent()+": (DC) USING JAR FILE FROM CONSTANTS TEST";
 		System.out.println(sLog);
 		
 		return JarKernelZZZ.getJarFileUsedAsFile(JarEasyUtilZZZ.iJAR_TEST);
 	}
+	
 
 	public static JarFile getJarFileUsed(int iConstantKeyZZZ) throws ExceptionZZZ {
 		JarFile objReturn = null;
@@ -96,6 +117,9 @@ public class JarKernelZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				break;
 			case JarEasyUtilZZZ.iJAR_TEST:
 				objReturn = JarKernelZZZ.getJarFile_(JarKernelZZZ.sJAR_DIRECTORYPATH_TEST, JarKernelZZZ.sJAR_FILENAME_TEST);
+				break;
+			case JarEasyUtilZZZ.iJAR_TESTZIP:
+				objReturn = JarKernelZZZ.getJarFile_(JarKernelZZZ.sJAR_DIRECTORYPATH_TESTZIP, JarKernelZZZ.sJAR_FILENAME_TESTZIP);
 				break;
 			case JarEasyUtilZZZ.iJAR_KERNEL:
 				objReturn = JarKernelZZZ.getJarFile_(JarKernelZZZ.sJAR_DIRECTORYPATH_KERNEL, JarKernelZZZ.sJAR_FILENAME_KERNEL);

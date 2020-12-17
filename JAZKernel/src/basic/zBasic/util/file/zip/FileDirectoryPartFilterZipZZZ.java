@@ -35,15 +35,30 @@ public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDir
 			main:{
 				if(ze==null) break main;
 				
-				//!!! Hier werden nicht nur Verzeichnisse ausgeblendet, auch Dateien werden abgeholt!!!
-				//if(ze.isDirectory()) break main;
+				//!!! Hier werden NUR Dateien abgeholt!!!
+				if(ze.isDirectory()) break main;
 				
 				if(StringZZZ.isEmpty(this.getCriterion())) {
 					bReturn = true;
 					break main;
-				}				
+				}			
+												
 				String sName = ze.getName();
-								
+				//#############################################
+//					if(ze.isDirectory()) {
+//						System.out.println("STOP: REINES VERZEICHNIS "+ze.getName());
+//						
+//						if(StringZZZ.contains(sName,"template")) {
+//							System.out.println("STOP: BREAKPOINT01");
+//							System.out.println("------");
+//						}
+//						
+//						if(StringZZZ.contains(sName,"subDirectory01")) {
+//							System.out.println("STOP: BREAKPOINT02");
+//							System.out.println("------");
+//						}
+//					}					
+				//#############################################
 				//Dateipfad mit dem Pfad vergleichen!!!	
 				String sCriterion = this.getCriterion();
 				if(StringZZZ.contains(sName, sCriterion, true)){ 
