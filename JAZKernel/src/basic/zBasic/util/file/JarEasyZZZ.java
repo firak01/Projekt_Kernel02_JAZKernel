@@ -551,8 +551,6 @@ File[] objaReturn = null;
 				//Dieser Filter hat als einziges Kriterium den Verzeichnisnamen...
 				String archiveName = objJarFile.getName();
 				IFileFilePartFilterZipUserZZZ objFilterFileInJar = new FileFileFilterInJarZZZ(sSourceDirectoryPath,null);
-				//FilenamePartFilterPathZipZZZ objFilterFilePathPart = objFilterFileInJar.getDirectoryPartFilter();
-				//objFilterFilePathPart.setCriterion(sSourceDirectoryPath);
 				JarInfo objJarInfo = new JarInfo( archiveName, objFilterFileInJar );
 				
 				//Hashtable in der Form ht(zipEntryName)=zipEntryObjekt.
