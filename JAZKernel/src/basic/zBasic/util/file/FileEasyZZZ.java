@@ -232,6 +232,10 @@ public static File getDirectory(String sFilePathTotal) throws ExceptionZZZ {
 
 /**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
  *  Darum wird hier per classloader die Ressource geholt.
+ *  
+ *  Merke:Eine NULL oder ".." Angabe bedeutet "Projekt-Ordner-Ebene".
+ *  Ein Leerstring, Empty oder "." bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
+ *
  * @param sFilePath
  * @return
  * @throws ExceptionZZZ
@@ -256,32 +260,6 @@ public static File searchDirectoryFromFilepath(String sFilePath) throws Exceptio
 	return objReturn;
 }
 
-/**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
- *  Darum wird hier per classloader die Ressource geholt.
- * @param sFilePath
- * @return
- * @throws ExceptionZZZ
- */
-public static File searchDirectory(String sDirectoryPath) throws ExceptionZZZ{
-	File objReturn = null;
-	main:{
-		if(sDirectoryPath==null){ //Merke: Anders als bei einer Datei, darf der Directory-Name leer sein.
-			ExceptionZZZ ez  = new ExceptionZZZ("DirectoryPath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-			throw ez;
-		}
-		
-		//+++++++++
-		if(FileEasyZZZ.isPathRelative(sDirectoryPath)){
-			//Mit relativen Pfaden
-			//Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird			
-			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectoryPath);						
-	    }else{
-		   	//Absolute Pfadangabe
-	    	objReturn = FileEasyZZZ.searchFileObject(sDirectoryPath);	
-		}	
-	}//end main:
-	return objReturn;
-}
 
 /**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
  *  Darum wird hier per classloader die Ressource geholt.
@@ -610,6 +588,27 @@ public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strD
 }
 
 
+/**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
+ *  Darum wird hier per classloader die Ressource geholt.
+ *  
+ *  Merke:Eine NULL oder ".." Angabe bedeutet "Projekt-Ordner-Ebene".
+ *  Ein Leerstring, Empty oder "." bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
+ *  
+ *  Merke: Wenn das Verzeichnis in einer .jar Datei liegt, kann man nur die JAR - Datei selbst zurückgeben.
+ * @param sDirectoryIn
+ * @author lindhaueradmin, 13.02.2019, 07:14:31
+ * @param sFilePath
+ * @return
+ * @throws ExceptionZZZ
+ */
+public static File searchDirectory(String sDirectoryPathIn) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		objReturn = FileEasyZZZ.searchDirectory(sDirectoryPathIn, false);
+	}//end main:
+	return objReturn;
+}
+
 /** Eine NULL oder ".." Angabe bedeutet "Projekt-Ordner-Ebene".
  *  Ein Leerstring, Empty oder "." bedeutet "Root vom Classpath" (also: "src-Ordner-Ebene" bei Eclipse - Anwendung). 
  *  
@@ -647,8 +646,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		
 		//+++ Spezialfall (Null)
 		if(bUseProjectBase){		
-			sDirectory=sDirectoryIn;						
-			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);
+			objReturn = FileEasyZZZ.getDirectoryOfExecution();
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
@@ -686,7 +684,8 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
 			}else{
 				//Absolute Pfadangabe....
-				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
+				//ACHTUNG ENDLOSSCHLEIFE... objReturn = FileEasyZZZ.searchDirectory(sDirectory);
+				objReturn = searchFileObject_(sDirectory);
 			}	
 			if(objReturn!=null){
 				if(FileEasyZZZ.exists(objReturn)) break main;
@@ -2250,11 +2249,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);
 					objReturn = new File(sWorkspaceURL);	
 					if(objReturn.exists()) {
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Datei gefunden '" + sPath + "'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt gefunden '" + sPath + "'";
 					    System.out.println(sLog);
 						break main;
 					}else{
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Datei nicht gefunden '" + sPath + "'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt nicht gefunden '" + sPath + "'";
 					    System.out.println(sLog);
 					}
 				}else{
@@ -2560,18 +2559,27 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	public static File getDirectoryOfExecution() {
 		File objReturn = null;
 		main:{
+			String sPathTotal = FileEasyZZZ.getDirectoryOfExecutionAsString();			
+			objReturn = new File(sPathTotal);
+		}
+		return objReturn;		
+	}
+	public static String getDirectoryOfExecutionAsString() {
+		String sReturn = null;
+		main:{
 			//Das aktuelle Verzeichnis herausfinden, z.B. wenn der Code in einem Eclipse Projekt augeführt wird.
 			//Trick: .....
 			File fileTemp = new File(FileEasyZZZ.sDIRECTORY_CURRENT);
 			
 			//Allerdings hat der Pfad ggfs. ein \. am Ende. Dies entfernen
 			String sPathTotal = fileTemp.getAbsolutePath();
-			sPathTotal = StringZZZ.stripRight(sPathTotal, FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CURRENT);
-			
-			objReturn = new File(sPathTotal);
+			sReturn = StringZZZ.stripRight(sPathTotal, FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CURRENT);
 		}
-		return objReturn;		
+		return sReturn;	
+		
 	}
+	
+	
 	
 	public static void copyFile(File src, File dest, int bufSize,  boolean force) throws ExceptionZZZ {
 		main:{

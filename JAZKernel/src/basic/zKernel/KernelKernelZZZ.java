@@ -773,7 +773,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//NEIN, Weitermachen if(StringZZZ.isEmpty(sFilePathUsed)) break main;
 			File objDirTemp = FileEasyZZZ.searchDirectory(sFilePathUsed);
 			if(objDirTemp==null){
-				String sLog = "Dirctory with name '" + sFilePathUsed + "' not found.";
+				String sLog = "Directory with name '" + sFilePathUsed + "' not found.";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 				ExceptionZZZ ez  = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_VALUE, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
