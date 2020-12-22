@@ -243,13 +243,13 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				break main;			
 			}
 			if(!FileEasyZZZ.isJar(objFileAsJar)){
-				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile: '" + objFileAsJar.getAbsolutePath() + "'", iERROR_PARAMETER_VALUE, ResourceEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Provided File is no JarFile: '" + objFileAsJar.getAbsolutePath() + "'", iERROR_PARAMETER_VALUE, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
 			 File objFileJarCodeLocation = JarEasyUtilZZZ.getCodeLocationJar();
 			 if(objFileJarCodeLocation==null) {
-				ExceptionZZZ ez = new ExceptionZZZ("Unable to get CodeLocation for running jar", iERROR_RUNTIME, ResourceEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Unable to get CodeLocation for running jar", iERROR_RUNTIME, JarEasyUtilZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			 }
 			 
