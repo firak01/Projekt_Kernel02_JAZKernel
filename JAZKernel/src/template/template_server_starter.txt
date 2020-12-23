@@ -1,2 +1,0 @@
-REM Template für das Starter Batch - File
-%exeovpn% --pause-exit --log c:\fglkernel\kernellog\ovpn.log --config %templateovpn% > c:\fglkernel\kernellog\ovpnStarter.log 2>&1

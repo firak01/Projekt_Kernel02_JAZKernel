@@ -1351,7 +1351,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 	public static File peekDirectoryFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{			
-				File[] objaReturn = JarEasyZZZ.peekDirectories(jar, sPath, sTargetDirectoryPathRootIn, true);
+				File[] objaReturn = JarEasyZZZ.peekDirectories_(jar, null, sPath, sTargetDirectoryPathRootIn, true);
 				if(objaReturn!=null) {
 					objReturn = objaReturn[0];
 				}			
@@ -1362,12 +1362,29 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 	public static File peekDirectoryFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn, boolean bWithFiles) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{			
-				File[] objaReturn = JarEasyZZZ.peekDirectories(jar, sPath, sTargetDirectoryPathRootIn, bWithFiles);
+				File[] objaReturn = JarEasyZZZ.peekDirectories_(jar, null, sPath, sTargetDirectoryPathRootIn, bWithFiles);
 				if(objaReturn!=null) {
 					objReturn = objaReturn[0];
 				}			
 		}//end main:
 		return objReturn;
+	}
+	
+	
+	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
+	 *  Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] peekDirectories(JarFile objJarFile, String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{							
+				objaReturn = JarEasyZZZ.peekDirectories_(objJarFile, null, sSourceDirectoryPath, sTargetDirectoryPathIn,true);
+		}//end main:
+		return objaReturn;
 	}
 	
 	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
@@ -1548,7 +1565,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 	public static File peekFileFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{			
-				File[] objaReturn = JarEasyZZZ.peekFiles(jar, sPath, sTargetDirectoryPathRootIn);
+				File[] objaReturn = JarEasyZZZ.peekFiles_(jar, null, sPath, sTargetDirectoryPathRootIn);
 				if(objaReturn!=null) {
 					objReturn = objaReturn[0];
 				}			
@@ -1863,13 +1880,51 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 		 * @throws ExceptionZZZ
 		 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
 		 */
-		public static File searchResourceFile(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		public static File searchResourceFileFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 			File objReturn = null;
 			main:{				
 					File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, false, true, true);
 					if(objaReturn==null) break main;
 					
 					objReturn = objaReturn[0];
+			}//end main:
+			return objReturn;
+			}
+		
+		/** Man sucht hiermit die Datei, diese wird in einem Temporären Verzeichnis auch extrahiert existieren.
+		 * @param sPath
+		 * @param sTargetDirectoryPathRootIn
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
+		 */
+		public static File[] searchResourceFiles(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+			File[] objaReturn = null;
+			main:{				
+					objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, false, true, true);					
+			}//end main:
+			return objaReturn;
+			}
+		
+		/** Man sucht hiermit das Verzeichnis, dieses wird auch extrahiert(ggfs. mit Dateien) existieren.
+		 * @param sPath
+		 * @param sTargetDirectoryPathRootIn
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
+		 */
+		public static File searchResourceDirectoryFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn, boolean bWithFiles) throws ExceptionZZZ {
+			File objReturn = null;
+			main:{				
+					File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, bWithFiles, true);
+					if(objaReturn==null) break main;
+					
+					if(!FileEasyZZZ.isDirectory(objaReturn[0])) {
+						//Merke: In dem zurückgegebenen Array sind normalerweise nur die Dateien enthalten. Für das Verzeichnis auf das ParentFile des 0ten Elements zugreifen.
+						objReturn = objaReturn[0].getParentFile();
+					}else {
+						objReturn = objaReturn[0];
+					}
 			}//end main:
 			return objReturn;
 			}
@@ -1881,10 +1936,25 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 		 * @throws ExceptionZZZ
 		 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
 		 */
-		public static File searchResourceDirectory(JarFile jar, String sPath, String sTargetDirectoryPathRootIn, boolean bWithFiles) throws ExceptionZZZ {
+		public static File[] searchResourceDirectories(JarFile jar, String sPath, String sTargetDirectoryPathRootIn, boolean bWithFiles) throws ExceptionZZZ {
+			File[] objaReturn = null;
+			main:{				
+				objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, bWithFiles, true);					
+			}//end main:
+			return objaReturn;
+			}
+		
+		/** Man sucht hiermit das Verzeichnis und die darin enthaltenen Dateien dieses wird auch (GGfs. OHNE DATEIEN) extrahiert existieren.
+		 * @param sPath
+		 * @param sTargetDirectoryPathRootIn
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
+		 */
+		public static File searchResourceDirectoryFirst(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 			File objReturn = null;
 			main:{				
-					File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, bWithFiles, true);
+					File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, true, true);
 					if(objaReturn==null) break main;
 					
 					if(!FileEasyZZZ.isDirectory(objaReturn[0])) {
@@ -1904,16 +1974,13 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 		 * @throws ExceptionZZZ
 		 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
 		 */
-		public static File searchResourceDirectory(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
-			File objReturn = null;
+		public static File[] searchResourceDirectories(JarFile jar, String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+			File[] objaReturn = null;
 			main:{				
-					File[] objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, true, true);
-					if(objaReturn==null) break main;
-					
-					objReturn = objaReturn[0];
+					objaReturn = JarEasyZZZ.searchResources_(jar, sPath, sTargetDirectoryPathRootIn, true, true, true);					
 			}//end main:
-			return objReturn;
-			}
+		return objaReturn;
+		}
 
 		
 

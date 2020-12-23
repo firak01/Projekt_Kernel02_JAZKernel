@@ -352,7 +352,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					 JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 					 assertNotNull("JarFile nicht gefunden", objJarFile);
 					    
-					 objDirectoryCreated = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot, false);
+					 objDirectoryCreated = JarEasyZZZ.searchResourceDirectoryFirst(objJarFile, sPath, sTargetDirectoryPathRoot, false);
 				 }else {
 					 objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, sTargetDirectoryPathRoot, false);
 				 }
@@ -383,7 +383,7 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_KERNEL);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
-					objDirectoryCreated = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot, true);
+					objDirectoryCreated = JarEasyZZZ.searchResourceDirectoryFirst(objJarFile, sPath, sTargetDirectoryPathRoot, true);
 				}else {
 					objDirectoryCreated = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, sTargetDirectoryPathRoot,true);	
 				}
@@ -428,9 +428,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
-					objFile = JarEasyZZZ.searchResourceFile(objJarFile, sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyZZZ.searchResourceFileFirst(objJarFile, sPath, sTargetDirectoryPathRoot);
 				}else {
-					objFile = JarEasyInCurrentJarZZZ.searchResourceFile(sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyInCurrentJarZZZ.searchResourceFileFirst(sPath, sTargetDirectoryPathRoot);
 				}
 				assertNotNull(objFile);
 				if(!FileEasyZZZ.exists(objFile)) {
@@ -454,9 +454,9 @@ public class JarEasyInCurrentJarZZZTest extends TestCase{
 					JarFile objJarFile = JarKernelZZZ.getJarFileUsed(JarEasyUtilZZZ.iJAR_OVPN);
 					assertNotNull("JarFile nicht gefunden", objJarFile);
 						    
-					objFile = JarEasyZZZ.searchResourceDirectory(objJarFile, sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyZZZ.searchResourceDirectoryFirst(objJarFile, sPath, sTargetDirectoryPathRoot);
 				}else {
-					objFile = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, sTargetDirectoryPathRoot);
+					objFile = JarEasyInCurrentJarZZZ.searchResourceDirectoryFirst(sPath, sTargetDirectoryPathRoot);
 					//TODOGOON 20201127; //SO SOLL ABER NUR 1 ERSTELLTES VERZEICHNIS ZURÜCKKOMMEN!!!
 				}
 				assertNotNull(objFile);

@@ -15,6 +15,16 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
+/**Klasse bietet Zugriff auf Ressource-Dateien.
+ * Dabei ist es egal ob die Datei im Filesystem oder in einer JAR-Datei liegt.
+ * 
+ * Es wird immer zuerst auf dem Filesystem nachgesehen,
+ * danach erst in der JAR-Datei. Grund: So kann man Dateien der JAR-Datei mit Dateien des Filesystems überschreiben. 
+ *  
+ * 
+ * @author Fritz Lindhauer, 23.12.2020, 09:35:08
+ * 
+ */
 public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjectZZZ{
 	private ResourceEasyZZZ(){
 		//Zum Verstecken des Konstruktors
@@ -117,7 +127,7 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 					    if(bEntryIsDirectory) {
 					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS DIRECTORY, WILL NOT BE EXTRACTED AS TEMP-FILE, BUT AS REAL TEMP DIRECTORY.";
 					    	System.out.println(sLog);
-					    	objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sPath, "");
+					    	objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectoryFirst(sPath, "");
 					    }else {
 					    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (BA) ENTRY IS FILE, WILL BE EXTRACTED AS TEMP-FILE";
 						    System.out.println(sLog);						    	
@@ -202,12 +212,9 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 			if(objFileAsJar==null)break main;			
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
 				objReturn = JarEasyInCurrentJarZZZ.peekDirectoryFirst(sPath, sDirExtractTo);
-			}else {
-				JarFile objFileJar = JarKernelZZZ.getJarFileUsed();
-				File[] objaReturn = JarEasyZZZ.peekDirectories(objFileJar, sPath, sDirExtractTo, false);
-				if(objaReturn==null) break main;
-				
-				objReturn = objaReturn[0];
+			}else {				
+				JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);
+				objReturn = JarEasyZZZ.peekDirectoryFirst(objJar, sPath, sDirExtractTo, false);				
 			}
 			
 		}//end main:
@@ -229,11 +236,8 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
 				objReturn = JarEasyInCurrentJarZZZ.peekFileFirst(sPath, sDirExtractTo);
 			}else {
-				JarFile objFileJar = JarKernelZZZ.getJarFileUsed();
-				File[] objaReturn = JarEasyZZZ.peekFiles(objFileJar, sPath, sDirExtractTo);
-				if(objaReturn==null) break main;
-				
-				objReturn = objaReturn[0];
+				JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);
+				objReturn = JarEasyZZZ.peekFileFirst(objJar, sPath, sDirExtractTo);
 			}
 			
 		}//end main:
@@ -255,8 +259,8 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
 				objaReturn = JarEasyInCurrentJarZZZ.peekFiles(sFilename, sDirExtractTo);
 			}else {
-				JarFile objFileJar = JarKernelZZZ.getJarFileUsed();
-				objaReturn = JarEasyZZZ.peekFiles(objFileJar, sFilename, sDirExtractTo);
+				JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);
+				objaReturn = JarEasyZZZ.peekFiles(objJar, sFilename, sDirExtractTo);
 			}
 			
 		}//end main:
@@ -279,10 +283,10 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		main:{
 			if(objFileAsJar==null)break main;			
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
-				objaReturn = JarEasyInCurrentJarZZZ.peekFiles(sPath, sDirExtractTo);
+				objaReturn = JarEasyInCurrentJarZZZ.peekDirectories(sPath, sDirExtractTo);
 			}else {
-				JarFile objFileJar = JarKernelZZZ.getJarFileUsed();
-				objaReturn = JarEasyZZZ.peekDirectories(objFileJar, sPath, sDirExtractTo, true);		
+				JarFile objJar = JarEasyUtilZZZ.toJarFile(objFileAsJar);
+				objaReturn = JarEasyZZZ.peekDirectories(objJar, sPath, sDirExtractTo);						
 			}
 		}//end main:
 		return objaReturn;

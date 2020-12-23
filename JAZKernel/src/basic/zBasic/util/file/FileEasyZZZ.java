@@ -702,7 +702,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//##################################################
 			//Suche nach dem Verzeichnis in der gleichen JAR DAtei:
 			//Merke: Verzeichnisse können nur zurückgegeben  werden, wenn Sie als Kopie irgendwo erstellt werden. 
-			objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sDirectory, "ZZZ");
+			objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectoryFirst(sDirectory, "ZZZ");
 			if(objReturn!=null){
 				if(FileEasyZZZ.exists(objReturn)) break main;
 			}

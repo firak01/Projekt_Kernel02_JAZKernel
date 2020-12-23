@@ -89,6 +89,54 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			return objReturn;
 		}
 	
+	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
+	 *  Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] peekDirectories(String sSourceDirectoryPath, String sTargetDirectoryPathIn) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{
+			String sLog = null;		
+		
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
+			if(jar==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
+			    System.out.println(sLog);
+			}else {
+				objaReturn = JarEasyZZZ.peekDirectories(jar, sSourceDirectoryPath, sTargetDirectoryPathIn);
+			}
+		}//end main:
+		return objaReturn;
+	}
+	
+	/** Merke: Die zurückgegebenen Dateien sind LEER. Darum eignet sich diese Methode lediglich dazu die Existenz von Verzeichnissen/Dateien in der JAR Datei zu prüfen.
+	 *  Merke: if(fileAsTrunk.isFile()) arbeitet nicht zuverlässig, wenn es die Datei noch nicht auf Platte gibt.
+	 * @param filePath
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 13.06.2020, 13:08:47
+	 * Siehe https://stackoverflow.com/questions/5830581/getting-a-directory-inside-a-jar
+	 */
+	public static File[] peekDirectories(String sSourceDirectoryPath, String sTargetDirectoryPathIn, boolean bWithFiles) throws ExceptionZZZ {
+		File[] objaReturn=null;
+		main:{
+			String sLog = null;		
+		
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
+			if(jar==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
+			    System.out.println(sLog);
+			}else {
+				objaReturn = JarEasyZZZ.peekDirectories(jar, sSourceDirectoryPath, sTargetDirectoryPathIn, bWithFiles);
+			}
+		}//end main:
+		return objaReturn;
+	}
+	
 	public static File peekFileFirst(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
@@ -156,7 +204,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
 	 */
-	public static File searchResourceDirectory(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File searchResourceDirectoryFirst(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
@@ -168,7 +216,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 			    System.out.println(sLog);
 			
-				objReturn = JarEasyZZZ.searchResourceDirectory(jar, sPath, sTargetDirectoryPathRootIn);
+				objReturn = JarEasyZZZ.searchResourceDirectoryFirst(jar, sPath, sTargetDirectoryPathRootIn);
 				
 			}
 		}//end main:
@@ -182,7 +230,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
 	 */
-	public static File searchResourceFile(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+	public static File searchResourceFileFirst(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			String sLog = null;			    		
@@ -194,11 +242,37 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 			    System.out.println(sLog);
 			
-				objReturn = JarEasyZZZ.searchResourceFile(jar, sPath, sTargetDirectoryPathRootIn);
+				objReturn = JarEasyZZZ.searchResourceFileFirst(jar, sPath, sTargetDirectoryPathRootIn);
 				
 			}
 		}//end main:
 		return objReturn;
+		}
+	
+	/** Man sucht hiermit die Datei, diese wird in ein  existieren.
+	 * @param sPath
+	 * @param sTargetDirectoryPathRootIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.10.2020, 09:26:43
+	 */
+	public static File[] searchResourceFiles(String sPath, String sTargetDirectoryPathRootIn) throws ExceptionZZZ {
+		File[] objaReturn = null;
+		main:{
+			String sLog = null;			    		
+			JarFile jar = JarKernelZZZ.getJarFileCurrent();
+			if(jar==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE NOT FOUND.";
+			    System.out.println(sLog);
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
+			    System.out.println(sLog);
+			
+				objaReturn = JarEasyZZZ.searchResourceFiles(jar, sPath, sTargetDirectoryPathRootIn);
+				
+			}
+		}//end main:
+		return objaReturn;
 		}
 	
 
@@ -223,7 +297,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) JAR FILE FOUND.";
 			    System.out.println(sLog);
 			
-				objReturn = JarEasyZZZ.searchResourceDirectory(jar, sPath, sTargetDirectoryPathRootIn, bWithFiles);
+				objReturn = JarEasyZZZ.searchResourceDirectoryFirst(jar, sPath, sTargetDirectoryPathRootIn, bWithFiles);
 			}
 		}//end main:
 		return objReturn;
