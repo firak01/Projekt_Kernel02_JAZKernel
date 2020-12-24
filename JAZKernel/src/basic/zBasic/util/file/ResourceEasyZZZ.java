@@ -292,6 +292,54 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		return objaReturn;
 	}
 	
+	/** Finde das Verzeichnis. Zuerst auf einer Festplatte nachsehen, danach ggfs. in der JAR Datei, wenn der Code in einer JAR Datei ausgeführt wird.
+	 *  Es wird ein File-Objekt zurückgegeben, das auf der Platte gespeichert ist, bzw. ein das Temp-Verzeichnis auf die Platte gespeichert wird.
+	 * @param objFileAsJar
+	 * @param sPath
+	 * @param sDirExtractTo
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 29.10.2020, 13:01:39
+	 */
+	public static File searchDirectory(String sDirToSearch)throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			objReturn = FileEasyZZZ.searchDirectory(sDirToSearch);
+			if(objReturn!=null) {
+				if(FileEasyZZZ.isDirectoryExisting(objReturn)) break main;
+			}
+			
+			if(ResourceEasyZZZ.isInJarStatic()) {
+				objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sDirToSearch, null, false);
+			}
+		}//end main:
+		return objReturn;
+	}
+	
+	/** Finde das Verzeichnis. Zuerst auf einer Festplatte nachsehen, danach ggfs. in der JAR Datei, wenn der Code in einer JAR Datei ausgeführt wird.
+	 *  Es wird ein File-Objekt zurückgegeben, das auf der Platte gespeichert ist, bzw. ein das Temp-Verzeichnis auf die Platte gespeichert wird.
+	 *  
+	 * @param sDirToSearch
+	 * @param bWithFiles       Beim Erstellen des Verzeichnisses aus einer Jar-Datei werden sofort auch die darin enthaltenden Dateien extrahiert und erstellt.. 
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 24.12.2020, 11:03:04
+	 */
+	public static File searchDirectory(String sDirToSearch, boolean bWithFiles)throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			objReturn = FileEasyZZZ.searchDirectory(sDirToSearch);
+			if(objReturn!=null) {
+				if(FileEasyZZZ.isDirectoryExisting(objReturn)) break main;
+			}
+			
+			if(ResourceEasyZZZ.isInJarStatic()) {
+				objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sDirToSearch, null, bWithFiles);
+			}
+		}//end main:
+		return objReturn;
+	}
+	
 	/** Finde das Verzeichnis in der JAr Datei. Es wird ein File-Objekt zurückgegeben, das auf der Platte gespeichert ist.
 	 * @param objFileAsJar
 	 * @param sPath
@@ -303,9 +351,6 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 	public static File searchDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
-			//TODOGOON // mache auch in den JAREasy-Klassen die Konvention: 
-			//peek => nix erzeugen
-			//search => im Temp erzeugen
 			if(objFileAsJar==null)break main;			
 			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
 			//	objReturn = JarEasyInCurrentJarZZZ.searchResourceToDummy(sPath, sDirExtractTo);

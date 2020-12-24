@@ -674,18 +674,19 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
 			if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
 				sDirectory = FileEasyZZZ.getFileRootPath();
-				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
+				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar);
 			}else if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": TESTORDNER VERWENDET");
 				sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
-				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
+				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar);
 			}else if(FileEasyZZZ.isPathRelative(sDirectory)){
-				sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
-				objReturn = FileEasyZZZ.searchDirectory(sDirectory);
+				//Relative Pfadangabe....
+				//ACHTUNG ENDLOSSCHLEIFE WENN MAN HIER NICHT IN DEN ABSOLUTEN PFAD UMSCHWENKT... 
+				sDirectory = FileEasyZZZ.getFileRootPathAbsolute() + File.separator + sDirectory;	
+				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar); //Diesmal aber als absoluten Pfad...
 			}else{
-				//Absolute Pfadangabe....
-				//ACHTUNG ENDLOSSCHLEIFE... objReturn = FileEasyZZZ.searchDirectory(sDirectory);
-				objReturn = searchFileObject_(sDirectory);
+				//Absolute Pfadangabe....			
+				objReturn = searchFileObject_(sDirectory, bSearchInJar);
 			}	
 			if(objReturn!=null){
 				if(FileEasyZZZ.exists(objReturn)) break main;
@@ -2154,7 +2155,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				throw ez;
 			}
 					
-			objReturn = searchFileObject_(sFile);
+			objReturn = searchFileObject_(sFile, true);
 		}//end main:
 		return objReturn;			
 		
@@ -2178,7 +2179,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			    System.out.println(sLog);
 				sFile=".";
 			}
-			objReturn = searchFileObject_(sFile);
+			objReturn = searchFileObject_(sFile, true);
 								
 			//Lösungsidee 2:
 			//20190215: Arbeite mit TEMP-Ordner
@@ -2235,7 +2236,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return objReturn;			
 	}
 	
-	private static File searchFileObject_(String sPath) throws ExceptionZZZ{
+	private static File searchFileObject_(String sPath, boolean bSearchInJar) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
 			ClassLoader classLoader = FileEasyZZZ.class.getClassLoader();
@@ -2248,7 +2249,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					String sWorkspaceURL = workspaceURL.getPath();					
 					sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);
 					objReturn = new File(sWorkspaceURL);	
-					if(objReturn.exists()) {
+					if(FileEasyZZZ.exists(objReturn)) {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt gefunden '" + sPath + "'";
 					    System.out.println(sLog);
 						break main;
@@ -2264,6 +2265,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+			
+			if(!bSearchInJar) break main;
 			
 			//Wenn in einer jar Datei ausgeführt wird, das lokale Verzeichnis der jar holen.
 			//Ziel ist es, dass eine lokale Datei immer die Datei im .jar übersteuert.			
@@ -2459,6 +2462,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	
 	
 	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Root-Pfad zurück.
+	 *  Ist allerdings nur ein relativer Pfad.
 	 * @return
 	 */
 	public static String getFileRootPath(){
@@ -2469,6 +2473,22 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}else{
 				sReturn = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
 			}
+		}//end main:
+		return sReturn;
+	}
+	
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Root-Pfad zurück.
+	 *  Ist der absolute Pfad.
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	public static String getFileRootPathAbsolute() throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			String sDirParent = FileEasyZZZ.getDirectoryOfExecutionAsString();
+			String sDirRoot = FileEasyZZZ.getFileRootPath();
+			
+			sReturn = FileEasyZZZ.joinFilePathName(sDirParent, sDirRoot);	
 		}//end main:
 		return sReturn;
 	}
@@ -2498,6 +2518,39 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}else{
 				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){				               				
 					sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;
+				}else{
+					sReturn = sFilePathRaw;
+				}
+			}
+		}//end main
+		return sReturn;
+	}
+	
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück.
+	 * @param sFilePathRaw
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	public static String getFileUsedPathAbsolute(String sFilePathRaw) throws ExceptionZZZ{
+		String sReturn=null;
+		main:{
+			//if(sFilePathRaw==null) break main;
+			if(sFilePathRaw==null){
+				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				sReturn = objReturn.getAbsolutePath();
+			}else if(sFilePathRaw.equals(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){
+				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				sReturn = objReturn.getAbsolutePath();
+			}else if(sFilePathRaw.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
+				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
+				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
+			}else{
+				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){				               				
+					sReturn = FileEasyZZZ.getFileRootPathAbsolute() +  File.separator + sFilePathRaw;
 				}else{
 					sReturn = sFilePathRaw;
 				}

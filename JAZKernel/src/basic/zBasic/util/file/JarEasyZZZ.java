@@ -40,6 +40,17 @@ import basic.zBasic.util.file.zip.ZipEasyZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
+/**
+ * Merke; In den JAREasy-Klassen gibt es die Konvention: 
+		  peek => nix erzeugen
+		  search => im Temp erzeugen 
+		  find   => im Temp erzeugen, Im Gegensatz zu den Search-Methoden wird hier immer ein 
+		  extract   => TODO GOON: Sollte wohl die Dateien in einem anderen Verzeichnis erstellen, als dem Temp Verzeichnis.
+		                          Ausser es heisst extract to Temp....
+ * 
+ * @author Fritz Lindhauer, 24.12.2020, 09:51:33
+ * 
+ */
 public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
 
 	
