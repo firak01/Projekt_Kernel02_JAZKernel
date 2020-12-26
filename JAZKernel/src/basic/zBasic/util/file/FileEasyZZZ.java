@@ -604,6 +604,8 @@ public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strD
 public static File searchDirectory(String sDirectoryPathIn) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
+		String sLog = "Directory to search for: '" + sDirectoryPathIn + "'";
+		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 		objReturn = FileEasyZZZ.searchDirectory(sDirectoryPathIn, false);
 	}//end main:
 	return objReturn;
@@ -663,7 +665,11 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		
 		//+++ Spezialfälle (Empty, ".")
 		if(bUseClasspathSource){
-			sDirectory = FileEasyZZZ.getFileRootPath();
+			//Relative Pfadangabe....
+			//ACHTUNG ENDLOSSCHLEIFE WENN MAN HIER NICHT IN DEN ABSOLUTEN PFAD UMSCHWENKT...
+			String sDirectoryRoot = FileEasyZZZ.getFileRootPathAbsolute();
+			sDirectory = FileEasyZZZ.joinFilePathName(sDirectoryRoot, sDirectory);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": (1) GEBAUTER ABSOLUTER PFAD '" + sDirectory + "'");
 			objReturn = FileEasyZZZ.searchDirectory(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
@@ -681,8 +687,10 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar);
 			}else if(FileEasyZZZ.isPathRelative(sDirectory)){
 				//Relative Pfadangabe....
-				//ACHTUNG ENDLOSSCHLEIFE WENN MAN HIER NICHT IN DEN ABSOLUTEN PFAD UMSCHWENKT... 
-				sDirectory = FileEasyZZZ.getFileRootPathAbsolute() + File.separator + sDirectory;	
+				//ACHTUNG ENDLOSSCHLEIFE WENN MAN HIER NICHT IN DEN ABSOLUTEN PFAD UMSCHWENKT...				
+				String sDirectoryRoot = FileEasyZZZ.getFileRootPathAbsolute();
+				sDirectory = FileEasyZZZ.joinFilePathName(sDirectoryRoot, sDirectory);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": (2) GEBAUTER ABSOLUTER PFAD '" + sDirectory + "'");
 				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar); //Diesmal aber als absoluten Pfad...
 			}else{
 				//Absolute Pfadangabe....			
@@ -692,12 +700,14 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				if(FileEasyZZZ.exists(objReturn)) break main;
 			}
 			
-			//+++ 2. Versuch im Eclipse Workpace zu suchen.
+			//+++ 2. Versuch im Eclipse Workspace zu suchen.
 			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);	
 			if(objReturn!=null){
 				if(FileEasyZZZ.exists(objReturn)) break main;
 			}
 			
+			String sLog = "Directory not found: '" + sDirectory + "'";
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 			if(!bSearchInJar) break main;
 			
 			//##################################################
@@ -1683,16 +1693,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}else{
 			sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
 		}
-		
-		//An empty string is allowed		
-		if(sFileNameIn==null){
-			//here is the code throwing an ExceptionZZZ
-			stemp = " 'FileName'";
-			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING,  ReflectCodeZZZ.getMethodCurrentName(), "");
-			   //doesn�t work. Only works when > JDK 1.4
-			   //Exception e = new Exception();
-			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
-			   throw ez;	
+					
+		if(StringZZZ.isEmpty(sFileNameIn)){
+			//An empty string or NULL is allowed for Filename
+			sReturn = sFilePath;
+			break main;
 		}else{
 			//Falls sFileNameIn ein Teil von sFilePathIn ist, oder in einem anderen Verzeichnis
 			if(FileEasyZZZ.isPathAbsolut(sFileNameIn)){	
