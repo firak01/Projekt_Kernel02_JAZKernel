@@ -2820,6 +2820,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 						   	System.out.println(sLog);
 						   	
 							bReturn = objFileDirectory.delete();//Lösche das aktuelle Verzeichnis, es sollte nun leer sein.
+						}else {
+							//Dann ist es halt ohne Löschen des Verzeichnisses erfolgreich zuende
+							bReturn = true;
 						}
 					}else {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAAB) XXXXXXXXXXXXXX.";
