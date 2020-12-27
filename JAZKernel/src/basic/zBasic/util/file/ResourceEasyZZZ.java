@@ -304,13 +304,17 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 	public static File searchDirectory(String sDirToSearch)throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
+			String sLog = "(1) Directory to search for: '" + sDirToSearch + "'";
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 			objReturn = FileEasyZZZ.searchDirectory(sDirToSearch);
 			if(objReturn!=null) {
 				if(FileEasyZZZ.isDirectoryExisting(objReturn)) break main;
 			}
 			
 			if(ResourceEasyZZZ.isInJarStatic()) {
-				objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sDirToSearch, null, false);
+				sLog = "(2) Directory to search for: '" + sDirToSearch + "'";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+				objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sDirToSearch, null, true);
 			}
 		}//end main:
 		return objReturn;

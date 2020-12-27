@@ -2331,14 +2331,16 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			objReturn = ResourceEasyZZZ.doClassloaderGetResource(sPath);
 			if(objReturn!=null){			
 				if(objReturn.exists()) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Datei gefunden '" + sPath + "'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1a) Datei gefunden '" + sPath + "'";
 				    System.out.println(sLog);
 					break main;
 				}else {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1) Datei NICHT gefunden '" + sPath + "'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1b) Datei NICHT gefunden '" + sPath + "'";
 				    System.out.println(sLog);					
 				}
-			}else{			
+			}else{	
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B1c) Datei NICHT gefunden Objekt null für '" + sPath + "'";
+			    System.out.println(sLog);
 			}
 			
 			
@@ -2348,15 +2350,15 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			objReturn = ResourceEasyZZZ.doClassGetResource(sPath);
 			if(objReturn!=null){						    
 				if(objReturn.exists()) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2) Datei gefunden '" + sPath + "'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2a) Datei gefunden '" + sPath + "'";
 				    System.out.println(sLog);
 					break main;
 				}else {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2) Datei NICHT gefunden '" + sPath + "'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2b) Datei NICHT gefunden '" + sPath + "'";
 				    System.out.println(sLog);					
 				}
 			}else{
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2) Objekt null für '" + sPath + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": (B2c) Datei NICHT gefunden. Objekt null für '" + sPath + "'";
 			    System.out.println(sLog);			
 			}
 			
