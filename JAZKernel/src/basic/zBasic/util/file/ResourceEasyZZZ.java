@@ -344,7 +344,8 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		return objReturn;
 	}
 	
-	/** Finde das Verzeichnis in der JAr Datei. Es wird ein File-Objekt zurückgegeben, das auf der Platte gespeichert ist.
+	/** Finde das Verzeichnis. Zuerst auf einer Festplatte nachsehen, danach ggfs. in der JAR Datei, wenn der Code in einer JAR Datei ausgeführt wird.
+	 *  Es wird ein File-Objekt zurückgegeben, das auf der Platte gespeichert ist, bzw. ein das Temp-Verzeichnis auf die Platte gespeichert wird.
 	 * @param objFileAsJar
 	 * @param sPath
 	 * @param sDirExtractTo
@@ -352,20 +353,21 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 29.10.2020, 13:01:39
 	 */
-	public static File searchDirectoryInJar(File objFileAsJar, String sPath, String sDirExtractTo)throws ExceptionZZZ {
+	public static File searchFile(String sFileToSearch)throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
-			if(objFileAsJar==null)break main;			
-			if(ResourceEasyZZZ.isInSameJarStatic(objFileAsJar)) {				
-			//	objReturn = JarEasyInCurrentJarZZZ.searchResourceToDummy(sPath, sDirExtractTo);
-			}else {
-				JarFile objFileJar = JarKernelZZZ.getJarFileUsed();
-			//	File[] objaReturn = JarEasyZZZ.searchResourceToDummies(objFileJar, sPath, sDirExtractTo, false);
-			//	if(objaReturn==null) break main;
-				
-			//	objReturn = objaReturn[0];
+			String sLog = "(1) File to search for: '" + sFileToSearch + "'";
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+			objReturn = FileEasyZZZ.searchFile(sFileToSearch);
+			if(objReturn!=null) {
+				if(FileEasyZZZ.isFileExisting(objReturn)) break main;
 			}
 			
+			if(ResourceEasyZZZ.isInJarStatic()) {
+				sLog = "(2) File to search for: '" + sFileToSearch + "'";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+				objReturn = JarEasyInCurrentJarZZZ.searchResourceFileFirst(sFileToSearch,null);
+			}
 		}//end main:
 		return objReturn;
 	}
