@@ -789,7 +789,7 @@ File[] objaReturn = null;
 					throw ez;
 				}
 				
-				JarEntry entry = JarEasyUtilZZZ.getEntryAsFile(objJarFile, sSourcePath);
+				JarEntry entry = JarEasyUtilZZZ.getEntryForFile(objJarFile, sSourcePath);
 				if(entry==null){
 				  	String sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR PATH: '" + sSourcePath +"'";
 				   	System.out.println(sLog);	
@@ -864,7 +864,7 @@ File[] objaReturn = null;
 			
 			String sLog = null;			    
 			try {						
-				   JarEntry entry = JarEasyUtilZZZ.getEntryAsFile(jar, sPath); 
+				   JarEntry entry = JarEasyUtilZZZ.getEntryForFile(jar, sPath); 
 				   if(entry==null){
 					   sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPath +"'";
 					   System.out.println(sLog);			    	
@@ -1459,14 +1459,14 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 					}						
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) SEARCHING ENTRY AS DIRECTORY PATH: '" + sSourceFilePathIn +"'";
 				   	System.out.println(sLog);
-					entry = JarEasyUtilZZZ.getEntryAsDirectory(objJarFile, sSourceFilePathIn);					
+					entry = JarEasyUtilZZZ.getEntryForDirectory(objJarFile, sSourceFilePathIn);					
 					if(entry==null){
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR (Directory) PATH: '" + sSourceFilePathIn +"'";
 					   	System.out.println(sLog);
 					
 					   	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) SEARCHING ENTRY AS FILE PATH: '" + sSourceFilePathIn +"'";
 					   	System.out.println(sLog);
-						entry = JarEasyUtilZZZ.getEntryAsFile(objJarFile, sSourceFilePathIn);
+						entry = JarEasyUtilZZZ.getEntryForFile(objJarFile, sSourceFilePathIn);
 					}					
 					
 					
@@ -1629,7 +1629,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 						ExceptionZZZ ez = new ExceptionZZZ("No filepath provided and no JarEntry-Object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}						
-					entry = JarEasyUtilZZZ.getEntryAsFile(objJarFile, sSourceFilePath);
+					entry = JarEasyUtilZZZ.getEntryForFile(objJarFile, sSourceFilePath);
 				}else{
 					entry = entryIn;
 				}
@@ -1638,7 +1638,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND FOR (File) PATH: '" + sSourceFilePath +"'";
 				   	System.out.println(sLog);
 				   	
-					entry = JarEasyUtilZZZ.getEntryAsDirectory(objJarFile, sSourceFilePath);
+					entry = JarEasyUtilZZZ.getEntryForDirectory(objJarFile, sSourceFilePath);
 				}
 				
 				if(entry==null) {						
@@ -2006,7 +2006,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 		 * @throws ExceptionZZZ
 		 * @author Fritz Lindhauer, 29.11.2020, 09:30:09
 		 */
-		private static File[] searchResources_(JarFile jar, String sPath, String sTargetDirectoryPathRootIn, boolean bAsDirectory, boolean bWithFiles, boolean bSave) throws ExceptionZZZ {
+		private static File[] searchResources_(JarFile jar, String sPath, String sTargetDirectoryPathRootIn, boolean bForDirectory, boolean bWithFiles, boolean bSave) throws ExceptionZZZ {
 			File[] objaReturn = null;
 			main:{
 				String sLog = null;
@@ -2019,10 +2019,11 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 				}
 		
 				JarEntry entry = null;
-				if(bAsDirectory) {
-					entry = JarEasyUtilZZZ.getEntryAsDirectory(jar, sPath);
+				if(bForDirectory) {
+					entry = JarEasyUtilZZZ.getEntryForDirectory(jar, sPath);
 				} else {
-					entry = JarEasyUtilZZZ.getEntryAsFile(jar, sPath);
+					//Achtung....bAsDirectory das macht ein wirklich temporäres Objekt
+					entry = JarEasyUtilZZZ.getEntryForFile(jar, sPath);
 				}
 				if(entry==null){
 				  	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT(!) FOUND FOR PATH: '" + sPath +"'";

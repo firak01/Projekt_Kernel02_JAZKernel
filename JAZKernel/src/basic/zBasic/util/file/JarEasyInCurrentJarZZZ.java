@@ -44,7 +44,7 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 			}
 			
 			String sLog=null;
-			JarEntry entry = JarEasyUtilZZZ.getEntryAsDirectory(jar,sPath);
+			JarEntry entry = JarEasyUtilZZZ.getEntryForDirectory(jar,sPath);
 		    if(entry==null){
 		    	sLog = ReflectCodeZZZ.getPositionCurrent()+": (D) ENTRY IN JAR FILE NOT FOUND: '" + sPath +"'";
 		    	System.out.println(sLog);			    	

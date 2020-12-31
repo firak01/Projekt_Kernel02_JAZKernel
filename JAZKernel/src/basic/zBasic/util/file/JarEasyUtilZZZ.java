@@ -419,21 +419,22 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				throw ez;
 			}
 			
-			//Innerhalb der JAR-Datei wird immer mit / gearbeitet.
-			sReturn = StringZZZ.replace(sFilePath, FileEasyZZZ.sDIRECTORY_SEPARATOR, "/");
-		
+			//UND: Ggfs. vorhandene Separatoren links entfernen, z.B. ".\\"
+			sReturn = StringZZZ.stripFileSeparatorsLeft(sFilePath);
+			
 			//UND: Abschliessend gibt es NUR bei Verzeichnissen ein / ... aber NUR 1x
-			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);
-						
-			//UND: Links gibt es keinen /
-			sReturn=StringZZZ.stripLeft(sReturn, "/");
+			sReturn = StringZZZ.stripFileSeparatorsRight(sReturn);
+			
+			//Innerhalb der JAR-Datei wird immer mit / gearbeitet.
+			sReturn = StringZZZ.replace(sReturn, FileEasyZZZ.sDIRECTORY_SEPARATOR, "/");
+		
 			
 			
 		}
 		return sReturn;
 	}
 
-	public static JarEntry getEntryAsFile(JarFile jar, String sPath) throws ExceptionZZZ {
+	public static JarEntry getEntryForFile(JarFile jar, String sPath) throws ExceptionZZZ {
 		JarEntry objReturn = null;
 		main:{
 			objReturn = JarEasyUtilZZZ.getEntry_(jar, sPath, false);
@@ -441,7 +442,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		return objReturn;
 	}
 	
-	public static JarEntry getEntryAsDirectory(JarFile jar, String sPath) throws ExceptionZZZ {
+	public static JarEntry getEntryForDirectory(JarFile jar, String sPath) throws ExceptionZZZ {
 		JarEntry objReturn = null;
 		main:{
 			objReturn = JarEasyUtilZZZ.getEntry_(jar, sPath, true);
@@ -449,7 +450,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		return objReturn;
 	}
 	
-	private static JarEntry getEntry_(JarFile jar, String sPath, boolean bAsDirectory) throws ExceptionZZZ {
+	private static JarEntry getEntry_(JarFile jar, String sPath, boolean bToDirectory) throws ExceptionZZZ {
 		JarEntry objReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sPath)){
@@ -463,7 +464,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				
 			String sLog = null;			
 			String sPathInJar = null;
-			if(bAsDirectory) {
+			if(bToDirectory) {
 				sPathInJar = toJarDirectoryPath(sPath);
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": (DB) Searching for Directory '" + sPathInJar + "'";				
 				System.out.println(sLog);
