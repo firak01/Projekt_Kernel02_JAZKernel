@@ -24,10 +24,9 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 
-/** TODO: 20181020: Diese Klasse wird durch KernelSingletonZZZ ersetzt.
- *        Dadurch ist sie "deprecated".
- *        
+/**
  * @author 0823
+ * @deprecated 20181020: Der direkte Einsatz dieser Klasse wird durch KernelSingletonZZZ ersetzt.
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
@@ -44,6 +43,7 @@ public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelCont
 	 * Diese Werte stammen aus ConfigZZZ im custom.zKernel - Verzeichnis.
 * lindhauer; 14.08.2007 06:40:31
  * @throws ExceptionZZZ
+ * @depracated Der direkte Einsatz des Konstruktors dieser Klasse wird durch KernelSingletonZZZ.getInstance() ersetzt.
  */
 public KernelZZZ() throws ExceptionZZZ{
 	super();

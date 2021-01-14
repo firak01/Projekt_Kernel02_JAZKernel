@@ -117,6 +117,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 		KernelFileIniNew_(objFile,null, null, null,null,hmFlag);
 	}
 	
+	// DESTRUCTOR
+	protected void finalize(){
+		if(this.objFileIni!=null) this.objFileIni = null;
+		if(this.objFile!=null) this.objFile = null;
+	}
 	
 	/** ++++++++++++++++++++++++++++++++++++++++++
 	
@@ -129,7 +134,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	 */
 	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControlIn, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
 	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
+	 String stemp; boolean btemp; String sLog;
 	 main:{
 		 	
 	 	try{
@@ -184,15 +189,25 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 					if(sDirectory.equals("")){
 						objFile = new File(sFileIn);
 					}else{
-						objFile = new File(sDirectory + File.separator + sFileIn);
-						if(!objFile.exists()){
-							objFile = new File(sFileIn);
-						}
+						String sFilePath = FileEasyZZZ.joinFilePathName(sDirectory, sFileIn);
+						objFile = new File(sFilePath);
 					}				
 				}
 				
+				if(objFile==null){
+					sLog = "Configuration File does not exist (=null, für Directory='" + sDirectoryIn +"', File='" + sFileIn +"')'.";
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}else if(!FileEasyZZZ.exists(objFile)){
+					sLog = "Configuration File does not exist '" + objFile.getAbsolutePath() + "'.";
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+								
 				//create the ini-file-object from file-object
-				this.objFile = objFile;
+				this.setFileObject(objFile);
 	
 				IniFile objFileIni = new IniFile(objFile.getPath(), false); //the target is not to save the file, everytime an entry is made, performance !!!
 				this.objFileIni = objFileIni;		
@@ -923,22 +938,33 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	
 	
 	//### Getter / Setter
-	/** 
-	 @date: 26.10.2004
-	 @return FileObject
-	 */
 	public File getFileObject() {
 		return objFile;
 	}
 
-	/** 
-	 @date: 26.10.2004
+	/** Merke: Private, damit die Erstellung über den Konstruktor nicht umgangen wird.
 	 @param file
 	 */
-	public void setFileObject(File file) {
+	private void setFileObject(File file) {
 		objFile = file;
 	}
 	
+
+	/** 
+	 @date: 26.10.2004
+	 @return FileObject
+	 */
+	public IniFile getFileIniObject() {
+		return objFileIni;
+	}
+
+	/** Merke: Private, damit die Erstellung über den Konstruktor nicht umgangen wird.
+	 @param file
+	 */
+	private void setFileIniObject(File file) {
+		objFile = file;
+	}
+
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
 		this.hmVariable = hmVariable;
 	}

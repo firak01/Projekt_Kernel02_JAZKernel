@@ -75,15 +75,15 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 		USEFORMULA, USEFORMULA_MATH;
 	}
 	
-	private IniFile objIniConfig=null;
+	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
     //Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
 	//                        Sie hängt aussschliesslich am Kernel...IniFileZZZ-Objekt. 
 	//                        Eventuelle Variablen-"Zustände" werden dann beim Holen der Parameter als Argument übergeben, sind aber NICHT im Kernel-Objekt gespeichert.
 	
 	private String sSystemNumber="";
-	private File objFileKernelConfig=null;
-	private FileIniZZZ objFileIniKernelConfig = null;
+	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...   private File objFileKernelConfig=null;
+	protected FileIniZZZ objFileIniKernelConfig = null;
 		
 	private String sFileConfig="";
 	private String sApplicationKey="";
@@ -92,7 +92,7 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	private String sDirectoryConfig="";
 
 	private LogZZZ objLog = null;
-	private IKernelConfigZZZ objConfig = null;        //die Werte für den Applikationskey, Systemnummer, etc.
+	protected IKernelConfigZZZ objConfig = null;        //die Werte für den Applikationskey, Systemnummer, etc.
 	private IKernelContextZZZ objContext = null;   //die Werte des aufrufenden PRogramms (bzw. sein Klassenname, etc.)
 	
 	private IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
@@ -237,9 +237,7 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	}
 	
 	// DESTRUCTOR
-	protected void finalize(){
-		if(this.objIniConfig!=null) this.objIniConfig = null;
-		if(this.objFileKernelConfig!=null) this.objFileKernelConfig = null;
+	protected void finalize(){		
 	}
 	
 	
@@ -295,8 +293,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sFileConfig = null;
 			check:{
 				//Falls schon mal geholt, nicht neu holen
-				if(this.objFileKernelConfig!=null){
-					objReturn = this.objFileKernelConfig;
+				if(this.objFileIniKernelConfig!=null){
+					objReturn = this.objFileIniKernelConfig.getFileObject();
 					break main;
 				}
 				
@@ -351,8 +349,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 
 			
 			
-		}//end main:
-		this.objFileKernelConfig = objReturn; 
+		}//end main:		
 		return objReturn;
 	}
 	
@@ -445,22 +442,21 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	}
 	
 	public IniFile getFileConfigKernelAsIni() throws ExceptionZZZ{
-		if(this.objIniConfig==null){
-			
+		IniFile objReturn = null;
+		if(this.getFileConfigIni()==null){			
 			File objFile = this.getFileConfigKernel();
-			IniFile objIni;
 			try {
-				objIni = new IniFile(objFile.getPath());
+				objReturn = new IniFile(objFile.getPath());
 			} catch (IOException e) {
 				String sLog = "Configuration File. Not able to create ini-FileObject.";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName() );
 				throw ez;
-			}
-						
-			this.objIniConfig = objIni; 
+			} 
+		}else {
+			objReturn = this.getFileConfigIni().getFileIniObject();
 		}
-		return this.objIniConfig;	
+		return objReturn;	
 	}
 	
 	public IniFile getFileConfigKernelAsIni(String sAlias) throws ExceptionZZZ{
@@ -484,7 +480,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//1. Hole den Dateinamen			
 			String sFileNameUsed = this.searchFileConfigIniNameByAlias(objIni, sAlias);			
 			if(StringZZZ.isEmpty(sFileNameUsed)){			
-				ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("KernelKonfiguration ('"+objIni.getFileName()+"'): FileName not configured, is null or Empty for Modul-Alias '" + sAlias + "'", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -497,7 +493,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			
 			//3. Mache das neue Ini-Objekt
-			String sPathTotalToUse = sFilePathUsed + File.separator + sFileNameUsed;
+			String sPathTotalToUse = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
 			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 			objReturn = new IniFile(sPathTotalToUse);
@@ -513,12 +509,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}//end main:
 		return objReturn;
 	}
-	
-	public void setFileIniConfigKernel(IniFile objIni){
-		//TODO: Müsste dann nicht FileIniZZZ für diesen Kernel mit diesem ggfs. neuen File neu gemacht werden.
-		this.objIniConfig = objIni;
-	}
-	
+		
 	public String getApplicationKey() throws ExceptionZZZ{		
 		String sApplicationKey = this.sApplicationKey;
 		if(StringZZZ.isEmpty(sApplicationKey)){
@@ -635,9 +626,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					} //20190705: UND ... WAS WIRD NUN MIT DER GEFUNDENEN INI-DATEI gemacht? Neu: Setze die Datei.
-					this.setFileIniConfigKernel(objIni);
-					
-					
+														
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++
 					//FEHLERMARKER
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -666,16 +655,12 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 
 					}else{
 						//Übernimm die gesetzten FlagZ...
-						HashMap<String,Boolean>hmFlagZ = this.objFileIniKernelConfig.getHashMapFlagZ();
+						HashMap<String,Boolean>hmFlagZ = this.getFileConfigIni().getHashMapFlagZ();
 						
 						//Übernimm die gesetzten Variablen...
-						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.objFileIniKernelConfig.getHashMapVariable();
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigIni().getHashMapVariable();
 						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlagZ);
 						objReturn.setHashMapVariable(hmVariable);	
-						
-						//Übernimm das ggfs. veränderte ini-File Objekt
-						File objFile = this.objFileIniKernelConfig.getFileObject();
-						objReturn.setFileObject(objFile);
 					}
 					
 									
@@ -3587,7 +3572,6 @@ MeinTestParameter=blablaErgebnis
 			}//end check:
 			
 			//first, get the Kernel-Configuration-INI-File
-			//TODO write ini-file-class for zzz-kernel
 			IniFile objIni = this.getFileConfigKernelAsIni();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
 			
@@ -3680,7 +3664,6 @@ MeinTestParameter=blablaErgebnis
 	private boolean KernelNew_(IKernelConfigZZZ objConfig, IKernelContextZZZ objContext, String sApplicationKeyIn,String sSystemNumberIn, String sDirectoryConfigIn, String sFileConfigIn, LogZZZ objLogIn, String[] saFlagControlIn) throws ExceptionZZZ{
 		boolean bReturn = false;		
 		main:{			
-			try{
 				String stemp=null; boolean btemp=false; String sLog = null;
 				this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": Initializing KernelObject");
 				
@@ -3697,12 +3680,13 @@ MeinTestParameter=blablaErgebnis
 					//Übernimm die gesetzten FlagZ...
 					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlagZ();
 					saFlag = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
-				}												
-				String[]sa = StringArrayZZZ.append(saFlag, saFlagControlIn, "SKIPNULL");
+				}																		
+				String[]sa = StringArrayZZZ.append(saFlag, saFlagControlIn, "SKIPNULL");						
 				String[]saFlagUsed = StringArrayZZZ.unique(sa);
 												 
-				//setzen der übergebenen Flags
-				  for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
+				if(saFlagUsed!=null) {
+					//setzen der übergebenen Flags
+					for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
 					  stemp = saFlagUsed[iCount];
 					  if(!StringZZZ.isEmpty(stemp)){
 						  btemp = setFlag(stemp, true);
@@ -3713,11 +3697,12 @@ MeinTestParameter=blablaErgebnis
 							  throw ez;		 
 						  }
 					  }
-				  }
-				if(this.getFlag("INIT")==true){
-					bReturn = true;
-					break main; 
-				}		
+					}
+					if(this.getFlag("INIT")==true){
+						bReturn = true;
+						break main; 
+					}	
+				}//end if saFlagUsed!=null
 				 
 				//+++++++++++++++++++++++++++++++
 				//ggfs Context Object setzen
@@ -3886,41 +3871,28 @@ MeinTestParameter=blablaErgebnis
 						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
 				}
 				
+				//#############################################################
 				//read the ini-content: 
-				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen, 			
-				File objFile = this.getFileConfigKernel();
-				//Wenn die Datei nicht existiert:
-				//Bei der Suche nach dem IniFile wird eine Datei im Temp-Ordner vermutet, z.B. C:\DOKUME~1\MYUSER~1\LOKALE~1\Temp\temp1401956673150772371ZZZ
-				//TODO 20190128: Vielleicht diese "vermutete" Konfigurationsdatei im Temp-Ordner mit den Kernel-Konigurationen füllen, die übergeben wurden. So als Dummy.
-				if(objFile==null){
-					sLog = "Configuration File does not exist (=null, für Directory='" + sDirectoryConfig +"', File='" + sFileConfig +"')'.";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}else if(!objFile.exists()){
-					sLog = "Configuration File does not exist '" + objFile.getAbsolutePath() + "'.";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
+				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen
+				String[] saFlagFileIniZZZ = {"USEFORMULA", "USEFORMULA_MATH"};
+				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
+				this.setFileConfigIni(objFileIniZZZ);
 				
-				IniFile objIni = new IniFile(objFile.getPath());
-				if(this.getFlag ("DEBUG")) this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + "Konfigurationsdatei gefunden: '" + objFile.getPath() +"'");
-								
-//				TODO replace the direct use of the IniFile - Klass by a Z-Kernel-Class
-				this.setFileIniConfigKernel(objIni);
-				
-				
-				//Wirf eine Exception wenn weder der Application noch der SystemKey in der Konfigurationsdatei existieren				
-				boolean bProofConfigMain = this.proofSectionIsConfigured("OVPN");
+				//Wirf eine Exception wenn weder der Application noch der SystemKey in der Konfigurationsdatei existieren
+				String sKeyToProof = this.getApplicationKey();
+				boolean bProofConfigMain = this.proofSectionIsConfigured(sKeyToProof);
 				if(!bProofConfigMain) {
-					sLog = "In the configuration file '" + objFile.getPath() + "' does the the section for the ApplicationKey '" + this.getApplicationKey() + "' and the section for the SystemKey '" + this.getSystemKey() + "' not exist or the section is empty.";
+					String sFilePath = FileEasyZZZ.joinFilePathName(this.getFileConfigKernelDirectory(), this.getFileConfigKernelName());
+					sLog = "In the configuration file '" + sFilePath + "' does the the section for the ApplicationKey '" + this.getApplicationKey() + "' and the section for the SystemKey '" + this.getSystemKey() + "' not exist or the section is empty.";
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 						
+				//##################################################################################
 				//create the log using the configured path/file
+				IniFile objIni = this.getFileConfigKernelAsIni();
+				
 				LogZZZ objLog = null;
 				if(objLogIn==null){
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + "Erstelle neues Log Object");
@@ -3953,7 +3925,8 @@ MeinTestParameter=blablaErgebnis
 					
 					//4. Fehlermeldung, wenn kein Log definiert
 					if(StringZZZ.isEmpty(sDirectoryLog) && StringZZZ.isEmpty(sFileLog)){
-						sLog = "In the configuration file '" + objFile.getPath() + "' is no log configured (Properties 'KernelLogPath', 'KernelLogFile'   ";
+						String sFilePath = FileEasyZZZ.joinFilePathName(this.getFileConfigKernelDirectory(), this.getFileConfigKernelName());
+						sLog = "In the configuration file '" + sFilePath + "' is no log configured (Properties 'KernelLogPath', 'KernelLogFile'   ";
 						System.out.println(sLog);
 						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
@@ -3966,18 +3939,16 @@ MeinTestParameter=blablaErgebnis
 					objLog = objLogIn;
 				}
 				this.setLogObject(objLog);
-			}catch(IOException e){
-				System.out.println(e.getMessage());
-				bReturn = false;
-				break main;
-			}
 		}//end main
 		return bReturn;
 	}
 
 	
-	//##### Interfaces
-	public IKernelConfigZZZ  getConfigObject() throws ExceptionZZZ{
+	//##### Interfaces	
+	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ{
+		if(this.objConfig==null){
+			this.objConfig = new ConfigZZZ(null);			
+		}
 		return this.objConfig;
 	}
 	public void setConfigObject(IKernelConfigZZZ objConfig){

@@ -50,6 +50,14 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 		return objKernelSingleton;	
 	}
 	
+	public static KernelSingletonZZZ getInstance(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
+		if(objKernelSingleton==null){
+			//Verwende hier das Suffix der Klasse als Applicationkey, also ZZZ
+			objKernelSingleton = new KernelSingletonZZZ(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, saFlagControl);
+		}
+		return objKernelSingleton;	
+	}
+	
 	//Die Konstruktoren nun verbergen, wg. Singleton
 		private KernelSingletonZZZ() throws ExceptionZZZ{
 			super();
@@ -84,13 +92,14 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 		
 		
 		//#### Interfaces
-		public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ{
-			IKernelConfigZZZ objConfig = super.getConfigObject();
-			if(objConfig==null){
-				objConfig = new ConfigZZZ(null);			
-			}
-			return objConfig;
-		}
+//		public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ{
+//			//IKernelConfigZZZ objConfig = super.getConfigObject();
+//			IKernelConfigZZZ objConfig = this.getConfigObject();
+//			if(objConfig==null){
+//				objConfig = new ConfigZZZ(null);			
+//			}
+//			return objConfig;
+//		}
 
 		//Aus IRessourceHandlingObject	
 		//### Ressourcen werden anders geholt, wenn die Klasse in einer JAR-Datei gepackt ist. Also:
