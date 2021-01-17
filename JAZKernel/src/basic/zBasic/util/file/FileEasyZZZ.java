@@ -41,6 +41,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zKernel.KernelKernelZZZ;
 import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
 import basic.zKernel.file.ini.KernelExpressionIni_NullZZZ;
@@ -54,6 +55,7 @@ public class FileEasyZZZ extends ObjectZZZ{
 	public static String sDIRECTORY_PARENT = "..";
 	public static String sDIRECTORY_SEPARATOR = File.separator; //z.B. Backslash in Windows
 	public static String sDIRECTORY_SEPARATOR_WINDOWS ="\\";
+	public static String sDIRECTORY_SEPARATOR_UNIX ="/";
 	
 	//https://stackoverflow.com/questions/51494579/regex-windows-path-validator
 	public static String sDIRECTORY_VALID_WINDOWS_REGEX="^(?:[a-z]:)?[\\/\\\\]{0,2}(?:[.\\/\\\\ ](?![.\\/\\\\\\n])|[^<>:\"|?*.\\/\\\\ \\n])+$";
@@ -568,14 +570,35 @@ public static File searchMakeDirectory(String sDirectoryPath) throws ExceptionZZ
 public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strDirectory, ReferenceZZZ<String> strFileName) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
+		objReturn = splitFilePathName_(sFilePath, strDirectory, strFileName, '\\');
+	}//END main:
+	return objReturn;	
+}
+
+public static File splitFilePathName(String sFilePath, ReferenceZZZ<String> strDirectory, ReferenceZZZ<String> strFileName, char cDirectorySeparator) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		objReturn = splitFilePathName_(sFilePath, strDirectory, strFileName, cDirectorySeparator);
+	}//END main:
+	return objReturn;	
+}
+
+/*Rückgabewert ist das 'File-Objekt' vom Eingabe FilePath.
+ * Darüber hinaus wird der Pfad aufgeteilt und zurückgegeben.
+ * Da Java nur ein CALL_BY_VALUE machen kann, weden hier für die eingefüllten Werte Referenz-Objekte verwendet.
+ */
+private static File splitFilePathName_(String sFilePath, ReferenceZZZ<String> strDirectory, ReferenceZZZ<String> strFileName, char cDirectorySeparator) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
 	if(StringZZZ.isEmpty(sFilePath)){
 		ExceptionZZZ ez  = new ExceptionZZZ("sFilePath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 		throw ez;
 	}
-
+	String sSeparator = CharZZZ.toString(cDirectorySeparator);
+	
 	objReturn = new File(sFilePath);
 	String sDirectory = "";
-	if(sFilePath.contains(File.separator)){
+	if(sFilePath.contains(sSeparator)){
 		//Aufteilen auf Datei und Verzeichnis, nur wenn es einen Seperator im Pfad gibt, sonst ist es lediglich der Dateiname.
 		sDirectory = objReturn.getParent();
 		if(sDirectory==null){ //ROOT		
@@ -1379,17 +1402,21 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ
 	 */
 	public static String getNameFromFilepath(String sFilePath) throws ExceptionZZZ{
+		return getNameFromFilepath_(sFilePath, File.separatorChar);
+	}
+	
+	
+	private static String getNameFromFilepath_(String sFilePath, char cDirectorySeparator) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(sFilePath==null){ //Merke: Anders als bei einer Datei, darf der Directory-Name leer sein.
 				ExceptionZZZ ez  = new ExceptionZZZ("sFilePath", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			
-			
+						
 			ReferenceZZZ<String> strDirectory=new ReferenceZZZ<String>("");
 	    	ReferenceZZZ<String> strFileName=new ReferenceZZZ<String>("");
-	    	FileEasyZZZ.splitFilePathName(sFilePath, strDirectory, strFileName);
+	    	FileEasyZZZ.splitFilePathName(sFilePath, strDirectory, strFileName, cDirectorySeparator);
 	    	sReturn=strFileName.get();	    	
 		}//end main:
 		return sReturn;
@@ -1682,10 +1709,19 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ 
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar);
+	}
+	
+	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator);
+	}
+	
+	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 		String stemp;
 		String sFilePath; 	String sFileName; 
+		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 		
 		//An empty string is allowed
 		if(sFilePathIn==null){
@@ -1698,10 +1734,17 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			   throw ez;	
 		}else{
 			sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
+			if(FileEasyZZZ.isPathRelative(sFilePath)) {
+				String sRoot = FileEasyZZZ.getFileRootPath();
+				if(!sFilePath.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)&& !sFilePath.startsWith(sRoot)) {					
+					//sFilePath = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CURRENT + sDirectorySeparator + sRoot, sFilePath, cDirectorySeparator);
+					sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
+				}
+			}
 		}
 					
 		if(StringZZZ.isEmpty(sFileNameIn)){
-			//An empty string or NULL is allowed for Filename
+			//An empty string or NULL is allowed for Filename			
 			sReturn = sFilePath;
 			break main;
 		}else{
@@ -1727,7 +1770,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							
 			StringTokenizer objToken;
 			char[] caSep = new char[1];  //String has no constructor for a single char, but for an array
-			caSep[0] = File.separatorChar;
+			caSep[0] = cDirectorySeparator;
 			
 			String sDelim = new String(caSep);
 			
@@ -1740,23 +1783,17 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				int iNrOfTokenTotal = objToken.countTokens(); //Merke: Dies wird durch den Aufruf von .nextToken() immer ver�ndert/weniger. Darum vorher in einer Variablen sichern.
 				for( int icount = 1;icount <= iNrOfTokenTotal; icount++){
 					stemp = objToken.nextToken();									
-					if(!stemp.equals("") && !stemp.equals(FileEasyZZZ.sDIRECTORY_SEPARATOR)){
+					if(!stemp.equals("") && !stemp.equals(sDirectorySeparator)){
 							if(!sFilePathTemp.equals("")){
-								sFilePathTemp = sFilePathTemp + FileEasyZZZ.sDIRECTORY_SEPARATOR + stemp;
+								sFilePathTemp = sFilePathTemp + sDirectorySeparator + stemp;
 							}else{
 								sFilePathTemp = stemp;
 							}
 						}
 					} //END for
-				sFilePath = sFilePathTemp;
+				sFilePath = sFilePathTemp;												
 				}
-			
-			if(!sFileName.equals("")){
-				objToken = new StringTokenizer(sFileName, sDelim);
-				// Eleminate empty strings 
-				
-			}
-			
+					
 			//+++  Join the strings
 			//A)			
 			if(sFilePath.equals("")){
@@ -1767,13 +1804,15 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				sReturn = sFilePath;	
 				}else{
 				//C)					
-				sReturn = sFilePath + FileEasyZZZ.sDIRECTORY_SEPARATOR + sFileName;
+				sReturn = sFilePath + sDirectorySeparator + sFileName;
 				}
 			}
 			
 		}//end main
 		return sReturn;
 	}
+	
+	
 	
 	
 
@@ -2044,10 +2083,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					bReturn = zip.getEntry("META-INF/MANIFEST.MF") != null;
 					zip.close();
 				} catch (ZipException e) {
-					ExceptionZZZ ez = new ExceptionZZZ("ZIPExpeption for '" + objFile.getAbsolutePath() + "' : " + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ("ZIPExpeption for '" + objFile.getAbsolutePath() + "' : " + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 					throw ez;
 				} catch (IOException e) {
-					ExceptionZZZ ez = new ExceptionZZZ("IOExpeption for '" + objFile.getAbsolutePath() + "' : "  + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ("IOExpeption for '" + objFile.getAbsolutePath() + "' : "  + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 					throw ez;
 				}				 								
 			}//end main
@@ -2088,7 +2127,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			      in.close();
 			      bReturn = (test == 0x504b0304);
 		      } catch (IOException e) {
-					ExceptionZZZ ez = new ExceptionZZZ("IOExpeption for '" + objFile.getAbsolutePath() + "' : "  + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ("IOExpeption for '" + objFile.getAbsolutePath() + "' : "  + e.getMessage(), iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 					throw ez;
 				}
 			  }//end main;
@@ -2548,7 +2587,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		    }
 	    
 		}catch(IOException ioe){
-			ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+			ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "", ioe);
 			throw ez;
 		}
 		}//End main
@@ -2561,7 +2600,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				objReturn = File.createTempFile("temp", "ZZZ");
 				objReturn.deleteOnExit();
 			} catch (IOException ioe) {
-				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "", ioe);
 				throw ez;
 			}					
 			
@@ -2586,7 +2625,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				
 				objReturn = File.createTempFile(sFilePathNormedForTempFile, null);
 			} catch (IOException ioe) {
-				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+				ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "",ioe);
 				throw ez;
 			}
 			

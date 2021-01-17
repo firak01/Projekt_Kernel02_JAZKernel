@@ -396,7 +396,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			try {
 				objReturn = new JarFile(objFileAsJar);
 			} catch (IOException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("IOException happend: " + e.getMessage(),ExceptionZZZ.iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IOException happend: " + e.getMessage(),ExceptionZZZ.iERROR_RUNTIME, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName(),e);
 				throw ez;
 			}
 		}//end main:

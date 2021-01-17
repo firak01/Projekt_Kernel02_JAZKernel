@@ -102,10 +102,10 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 						fosResource.close();
 				
 				} catch (FileNotFoundException fnfe) {
-					ExceptionZZZ ez = new ExceptionZZZ("FileNotFoundException: '" + fnfe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+					ExceptionZZZ ez = new ExceptionZZZ("FileNotFoundException: '" + fnfe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "",fnfe);
 					throw ez;
 				} catch (IOException ioe) {
-					ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+					ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "",ioe);
 					throw ez;
 				}
 				}else{
@@ -150,7 +150,7 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 					  //JarFile wieder schliessen.
 					  jar.close();
 				    } catch (IOException ioe) {
-						ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "");
+						ExceptionZZZ ez = new ExceptionZZZ("IOException: '" + ioe.getMessage() + "'", iERROR_RUNTIME,  ReflectCodeZZZ.getMethodCurrentName(), "",ioe);
 						throw ez;
 					}
 				}

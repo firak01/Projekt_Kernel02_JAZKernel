@@ -49,4 +49,21 @@ public class EnvironmentZZZ implements IConstantZZZ{
 //		}
 		return sReturn;		
 	}
+	
+	
+	/**The bug you reference (bug 4787391) has been fixed in Java 8. 
+	 * Even if you are using an older version of Java, the System.getProperty("user.home") approach is probably still the best. The user.home approach seems to work in a very large number of cases. A 100% bulletproof solution on Windows is hard, because Windows has a shifting concept of what the home directory means.
+
+If user.home isn't good enough for you I would suggest choosing a definition of home directory for windows and using it, getting the appropriate environment variable with System.getenv(String).
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 14.01.2021, 18:23:26
+	 */
+	public static String getUserHome() throws ExceptionZZZ{
+		String sReturn = null;
+		//try {
+			sReturn = System.getProperty("user.home");			
+		//}
+		return sReturn;
+	}
 }
