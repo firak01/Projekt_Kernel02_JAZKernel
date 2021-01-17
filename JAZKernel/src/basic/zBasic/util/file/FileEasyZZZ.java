@@ -1709,33 +1709,42 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ 
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false);
 	}
 	
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false);
 	}
 	
-	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
+	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, boolean bRemote) throws ExceptionZZZ{
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, bRemote);
+	}
+	
+	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote) throws ExceptionZZZ{
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, bRemote);
+	}
+	
+	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 		String stemp;
-		String sFilePath; 	String sFileName; 
+		String sFilePath; 	String sFileName; String sRoot="";
 		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 		
 		//An empty string is allowed
 		if(sFilePathIn==null){
 			//here is the code throwing an ExceptionZZZ
 			stemp = "''FilePath'";
-			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-			   //doesn�t work. Only works when > JDK 1.4
-			   //Exception e = new Exception();
-			   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");			  
-			   throw ez;	
+			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");			  
+			throw ez;	
 		}else{
 			sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
 			if(FileEasyZZZ.isPathRelative(sFilePath)) {
-				String sRoot = FileEasyZZZ.getFileRootPath();
+				if(!bRemote) { //Nur bei lokalen Dateien, ggfs. den Root-Pfad ermitteln. Wichtig, falls der Code z.B. in Eclipse ausgeführt wird, kommt src als Verzeichnis vorangestellt.
+					sRoot = FileEasyZZZ.getFileRootPath();
+				}else { //Sicherstellen, dass bei dem Remotefile der Slash voransteht. Zumindest ist das bei T-Online FTP Server so gewünscht.
+					sRoot = CharZZZ.toString(cDirectorySeparator);
+				}
 				if(!sFilePath.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)&& !sFilePath.startsWith(sRoot)) {					
 					//sFilePath = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CURRENT + sDirectorySeparator + sRoot, sFilePath, cDirectorySeparator);
 					sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
@@ -1768,11 +1777,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}		
 		
 							
-			StringTokenizer objToken;
-			char[] caSep = new char[1];  //String has no constructor for a single char, but for an array
-			caSep[0] = cDirectorySeparator;
-			
-			String sDelim = new String(caSep);
+			StringTokenizer objToken;			
+			String sDelim = sDirectorySeparator;
 			
 			//+++ Get the strings in the expected value for joining them
 			if(!sFilePath.equals("")){
@@ -1783,9 +1789,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				int iNrOfTokenTotal = objToken.countTokens(); //Merke: Dies wird durch den Aufruf von .nextToken() immer ver�ndert/weniger. Darum vorher in einer Variablen sichern.
 				for( int icount = 1;icount <= iNrOfTokenTotal; icount++){
 					stemp = objToken.nextToken();									
-					if(!stemp.equals("") && !stemp.equals(sDirectorySeparator)){
+					if(!stemp.equals("") && !stemp.equals(sDelim)){
 							if(!sFilePathTemp.equals("")){
-								sFilePathTemp = sFilePathTemp + sDirectorySeparator + stemp;
+								sFilePathTemp = sFilePathTemp + sDelim + stemp;
 							}else{
 								sFilePathTemp = stemp;
 							}
@@ -1794,17 +1800,29 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				sFilePath = sFilePathTemp;												
 				}
 					
-			//+++  Join the strings
-			//A)			
+			//+++  Join the strings		
 			if(sFilePath.equals("")){
-				sReturn = sFileName;
+				//A)	
+				if(!FileEasyZZZ.isPathAbsolut(sFileName) && bRemote){
+					sReturn = sRoot + sFileName;
+				}else {
+					sReturn = sFileName;
+				}
 			}else{
-				//B)
 				if(sFileName.equals("")){
-				sReturn = sFilePath;	
+					//B)
+					if(!FileEasyZZZ.isPathAbsolut(sFilePath) && bRemote){
+						sReturn = sRoot + sFilePath;
+					}else {
+						sReturn = sFilePath;
+					}	
 				}else{
-				//C)					
-				sReturn = sFilePath + sDirectorySeparator + sFileName;
+					//C)		
+					if(!FileEasyZZZ.isPathAbsolut(sFilePath) && bRemote){
+						sReturn = sRoot + sFilePath + sDirectorySeparator + sFileName;
+					}else {
+						sReturn = sFilePath + sDirectorySeparator + sFileName;
+					}					
 				}
 			}
 			
