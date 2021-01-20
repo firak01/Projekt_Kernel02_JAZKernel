@@ -523,7 +523,7 @@ public class JarEasyZZZTest extends TestCase{
 			
 			
 			//######################################################################################
-			//TODOGOON 20201211: WAS TUN; WENN ES NUR EIN UNTERVERZEICHNIS OHNE DATEIEN DRIN GIBT. WIRD DAS AUCH ERFASST?
+			//WAS TUN, WENN ES NUR EIN UNTERVERZEICHNIS OHNE DATEIEN DRIN GIBT. WIRD DAS AUCH ERFASST?
 			//Ba) SUCHE NACH DATEIEN IN Verzeichnis mit LEEREM Unterverzeichnis
 			sTargetDirectoryPathRoot = "FGL\\EXTRACT_AS_TRUNK_OF_DIRECTORIES_SUB04a";
 			sDirToExtract = "JarEasyZZZ_searchForDirectories/subDirectory04withoutFiles";
@@ -544,7 +544,7 @@ public class JarEasyZZZTest extends TestCase{
 			assertNull("EntryArray-Objekt für Ziel '" + sDirToExtractTo + "' sollte nicht erstellt sein (NULL-WERT). Es gibt keine Dateien in den Verzeichnissen. ",objaCreated05);
 						
 			
-			//TODOGOON 20201211: WAS TUN; WENN ES NUR EIN UNTERVERZEICHNIS OHNE DATEIEN DRIN GIBT. WIRD DAS AUCH ERFASST?
+			//WAS TUN; WENN ES NUR EIN UNTERVERZEICHNIS OHNE DATEIEN DRIN GIBT. WIRD DAS AUCH ERFASST?
 			//Ba) SUCHE NACH VERZEICHNIS in Verzeichnis mit LEEREM Unterverzeichnis
 			sTargetDirectoryPathRoot = "FGL\\EXTRACT_AS_TRUNK_OF_DIRECTORIES_SUB04b";
 			sDirToExtract = "JarEasyZZZ_searchForDirectories/subDirectory04withoutFiles";

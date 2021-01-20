@@ -358,7 +358,7 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 		main:{
 			String sLog = "(1) File to search for: '" + sFileToSearch + "'";
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-			objReturn = FileEasyZZZ.searchFile(sFileToSearch,false);//TODOGOON: Dieses False soll bewirken NICHT in einer Jar-DAtei zu suchen
+			objReturn = FileEasyZZZ.searchFile(sFileToSearch,false);//Merke: Dieses False soll bewirken NICHT in einer Jar-DAtei zu suchen
 			if(objReturn!=null) {
 				if(FileEasyZZZ.isFileExisting(objReturn)) break main;
 			}
