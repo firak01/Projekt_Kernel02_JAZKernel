@@ -14,7 +14,7 @@ import basic.zBasic.ExceptionZZZ;
  * lindhaueradmin, 06.07.2013
  */
 public interface IKernelModuleUserZZZ{ //FGL 20180402: Manche Klassen sollen zwar Ihren Modulnamen, etc. angeben können, brauchen aber nicht das Kernel Objekt... darum nicht mehr: extends IKernelUserZZZ {
-	public abstract String getModuleName();    //Z.B. der Name des �bergeordneten JFrames. Ist der Package und Klassenname
+	public abstract String getModuleName() throws ExceptionZZZ;    //Z.B. der Name des �bergeordneten JFrames. Ist der Package und Klassenname
 	public abstract String getProgramName() throws ExceptionZZZ;   //Z.B. ein Button, Ist der Package und Klassenname		
 	public abstract String getProgramAlias() throws ExceptionZZZ;  //Der Alias wird auf Modulebenen definiert. Package und Klassenname = Alias. Speicher den Alias in einer Variablen. 
 }
