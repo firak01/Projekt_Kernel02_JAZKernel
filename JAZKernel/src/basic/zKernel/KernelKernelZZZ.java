@@ -75,25 +75,25 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 		USEFORMULA, USEFORMULA_MATH;
 	}
 	
-	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private IniFile objIniConfig=null;
 	private FileFilterModuleZZZ objFileFilterModule=null;
-    //Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
+	
+	//Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
 	//                        Sie hängt aussschliesslich am Kernel...IniFileZZZ-Objekt. 
 	//                        Eventuelle Variablen-"Zustände" werden dann beim Holen der Parameter als Argument übergeben, sind aber NICHT im Kernel-Objekt gespeichert.
+			
+	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private IniFile objIniConfig=null;
+	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private File objFileKernelConfig=null;
+	protected FileIniZZZ objFileIniKernelConfig = null; 
 	
-	private String sSystemNumber="";
-	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...   private File objFileKernelConfig=null;
-	protected FileIniZZZ objFileIniKernelConfig = null;
-		
 	private String sFileConfig="";
-	private String sApplicationKey="";
-	
-
 	private String sDirectoryConfig="";
+	
+	private String sSystemNumber="";	
+	private String sApplicationKey="";
 
 	private LogZZZ objLog = null;
-	protected IKernelConfigZZZ objConfig = null;        //die Werte für den Applikationskey, Systemnummer, etc.
-	private IKernelContextZZZ objContext = null;   //die Werte des aufrufenden PRogramms (bzw. sein Klassenname, etc.)
+	protected IKernelConfigZZZ objConfig = null;   //die Werte für den Applikationskey, Systemnummer, etc.
+	private IKernelContextZZZ objContext = null;   //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.)
 	
 	private IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
 	
