@@ -47,10 +47,8 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	//flags 
 	//private boolean bFlagUse_FILE_Expansion; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
 	public enum FLAGZ{
-		USE_FILE_EXPANSION; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
+		USE_FILE_EXPANSION; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
 	}
-	
-	
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); 
 	
 //	### Constructor ##########################
