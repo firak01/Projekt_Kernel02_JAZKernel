@@ -275,22 +275,8 @@ public static File searchFile(String sFilePath) throws ExceptionZZZ{
 		if(StringZZZ.isEmpty(sFilePath)){
 			ExceptionZZZ ez  = new ExceptionZZZ("FileName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
-		}
-		
-		//TODO GOON 20181014: InputStream inputStream = YourClass.class.getResourceAsStream(“file.txt”);
-		//+++++++++
-		if(FileEasyZZZ.isPathRelative(sFilePath)){
-			//Mit relativen Pfaden
-			//Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird							
-			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sFilePath);											
-	    }else{
-		   	//Absolute Pfadangabe
-	    	//sFilePath = StringZZZ.stripRightFileSeparators(sFilePath);	//TODO GOON 20190212: Das müssten eigentlich ...MidFileSeperators(...) sein
-	    	//objReturn = new File(sFilePath);
-	    	
-	    	objReturn = FileEasyZZZ.searchFileObject(sFilePath);
-	    	
-		}	
+		}		
+	    objReturn = FileEasyZZZ.searchFileObject(sFilePath);
 	}//end main:
 	return objReturn;
 }
@@ -301,7 +287,7 @@ public static File searchFile(String sFilePath) throws ExceptionZZZ{
  * @return
  * @throws ExceptionZZZ
  */
-public static File searchFile(String sDirectoryIn, String sFileNameIn)throws ExceptionZZZ{
+public static File searchFile(String sDirectory, String sFileNameIn)throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
 		String sFileName;
@@ -311,17 +297,8 @@ public static File searchFile(String sDirectoryIn, String sFileNameIn)throws Exc
 		}else {
 			sFileName = sFileNameIn;
 		}
-	
-		
-		//Verzeichnis analysieren	
-	    String sDirectory = FileEasyZZZ.sDIRECTORY_CURRENT;
-		if(!StringZZZ.isEmpty(sDirectoryIn)){
-			sDirectory=sDirectoryIn;	    
-		}
-		
-		String sFilePath = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
-	
-		//+++++++++
+			
+		String sFilePath = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);	
 		objReturn = FileEasyZZZ.searchFile(sFilePath);
 
 	}//END main:
@@ -656,6 +633,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		boolean bUseProjectBase=false;
 		boolean bUseProjectBaseForTest=false;
 		boolean bUseClasspathSource=false;
+		//Merke: Änderungen auch hier berücksichtigen: searchFileObjectByClassloader_(String sPathIn) throws ExceptionZZZ{
 		if(sDirectoryIn==null){			
 			bUseProjectBase=true;		
 		}else if(sDirectoryIn.equals(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){		
@@ -664,10 +642,10 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			bUseClasspathSource=true;
 		}else if(sDirectoryIn.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty())){			
 			bUseClasspathSource=true;		
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){			
-			bUseClasspathSource=true;			
 		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_PARENT)){
-			bUseProjectBase=true;			
+			bUseProjectBase=true;
+		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+			bUseClasspathSource=true;						
 		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 			bUseProjectBaseForTest=true;			
 		}else{
@@ -723,7 +701,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar); //Diesmal aber als absoluten Pfad...
 			}else{
 				//Absolute Pfadangabe....			
-				objReturn = searchFileObjectByClassloader_(sDirectory);
+				objReturn = searchFileObjectByClassloader_(sDirectory, false);
 			}	
 			if(objReturn!=null){
 				if(FileEasyZZZ.exists(objReturn)) break main;
@@ -1731,9 +1709,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		String sFilePath; 	String sFileName; String sRoot="";
 		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 		
-		//An empty string is allowed
+		//An empty string is allowed, but not a NULL Value
 		if(sFilePathIn==null){
-			//here is the code throwing an ExceptionZZZ
 			stemp = "''FilePath'";
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");			  
 			throw ez;	
@@ -1745,8 +1722,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}else { //Sicherstellen, dass bei dem Remotefile der Slash voransteht. Zumindest ist das bei T-Online FTP Server so gewünscht.
 					sRoot = CharZZZ.toString(cDirectorySeparator);
 				}
-				if(!sFilePath.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)&& !sFilePath.startsWith(sRoot)) {					
-					//sFilePath = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CURRENT + sDirectorySeparator + sRoot, sFilePath, cDirectorySeparator);
+				if(!sFilePath.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)&& !sFilePath.startsWith(sRoot)) {										
 					sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
 				}
 			}
@@ -2223,7 +2199,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				throw ez;
 			}
 					
-			objReturn = searchFileObjectByClassloader_(sFile);
+			objReturn = searchFileObjectByClassloader_(sFile, false);
 		}//end main:
 		return objReturn;			
 		
@@ -2247,7 +2223,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			    System.out.println(sLog);
 				sFile=".";
 			}
-			objReturn = searchFileObjectByClassloader_(sFile);
+			objReturn = searchFileObjectByClassloader_(sFile, true);
 								
 			//Lösungsidee 2:
 			//20190215: Arbeite mit TEMP-Ordner
@@ -2304,11 +2280,60 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return objReturn;			
 	}
 	
-	private static File searchFileObjectByClassloader_(String sPath) throws ExceptionZZZ{
+	private static File searchFileObjectByClassloader_(String sPathIn, boolean bUseProjectBase) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
 			ClassLoader classLoader = FileEasyZZZ.class.getClassLoader();
 			URL workspaceURL = null; String sLog=null;
+			
+			if(sPathIn==null){							
+			  	 ExceptionZZZ ez = new ExceptionZZZ("Path", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;								
+			}
+			
+			//Versuch den eingegebenen Pfad zu normieren. Die Pfade werden dabei behandelt wie in FileEasyZZZ.searchDirectory(String sDirectoryIn, boolean bSearchInJar)		
+			String sPath; boolean bUseClasspathSource=false; boolean bUseProjectBaseForTest=false;
+			if(FileEasyZZZ.isPathRelative(sPathIn)) {
+				if(!bUseProjectBase) {
+					if(sPathIn.startsWith(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){			
+						bUseProjectBase=true;
+						sPath = StringZZZ.stripLeft(sPathIn, KernelExpressionIni_NullZZZ.getExpressionTagEmpty());
+					}else if(sPathIn.startsWith(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty())){		
+						bUseClasspathSource=true;
+						sPath = StringZZZ.stripLeft(sPathIn, KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty());
+					}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_PARENT)){
+						bUseProjectBase=true;
+						sPath = sPathIn;
+					}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+						bUseClasspathSource=true;
+						sPath = sPathIn;				
+					}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+						bUseProjectBaseForTest=true;
+						sPath = sPathIn;
+					}else{
+						//+++ Der Normalfall
+						bUseClasspathSource=true;
+						sPath = sPathIn;
+					}
+					
+					//Nun ggfs. noch vorhandene Pfadzeichen am Anfang/Ende entfernen.
+					sPath = StringZZZ.stripFileSeparators(sPath);
+					
+					if(bUseClasspathSource) {
+						String sPathRoot = FileEasyZZZ.getFileRootPath();
+						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					}
+					
+					if(bUseProjectBaseForTest) {
+						String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					}
+				}else {
+					sPath = sPathIn;
+				}
+			}else{
+				sPath = sPathIn;
+			}
 			
 			//1. Versuch ohne Classloader
 			try {		

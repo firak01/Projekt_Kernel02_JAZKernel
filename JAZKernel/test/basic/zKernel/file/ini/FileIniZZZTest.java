@@ -149,7 +149,7 @@ public class FileIniZZZTest extends TestCase {
 	public void testFlagPassHandling(){
 		//A) Teste an dier Stelle die Funktionalitäten aus ObjectZZZ
 		
-//		try{
+		try{
 				
 		//TestKonfiguration prüfen.
 		//1. Hole alle FlagZ des Objekts
@@ -178,9 +178,9 @@ public class FileIniZZZTest extends TestCase {
 		//B) TESTE DIE FUNKTIONALITÄT DER FLAG - ÜBERGABE.
 		
 		
-//	}catch(ExceptionZZZ ez){
-//		fail("An exception happend testing: " + ez.getDetailAllLast());
-//	}
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
 		
 	}
 	

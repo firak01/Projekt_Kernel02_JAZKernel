@@ -404,9 +404,6 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					}			
 				}				
 			}			
-//		}else if(sDirectoryConfig.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-//			sDirectoryConfig =  FileEasyZZZ.getFileRootPath();
-//			bDirectoryFound = true;
 		}else{
 			/* Merke: Das sind die hierin verarbeiteten Suchpfade
 			 * if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals(""))==> FileEasyZZZ.getFileRootPath();
@@ -842,7 +839,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						//Auch wenn der Dateipfad nicht gepflegt ist weiterarbeiten. Es wird dann ein Standard genommen. if(!objEntryFilePath.hasAnyValue()) break main;
 						String sFilePath = objEntryFilePath.getValue();
 						
-						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen*/					
+						/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pruefen*/					
 						//FGL 20181008: Relative Fileangaben verarbeitet und Suche auf dem Classpath (z.B. wg. verpackt in .war / .jar Datei, z.B. WebService - Fall.
 						objReturn = FileEasyZZZ.searchFile(sFilePath, sFileName); 
 						

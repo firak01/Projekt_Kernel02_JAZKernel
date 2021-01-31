@@ -16,7 +16,7 @@ import basic.zBasic.IFlagZZZ;
  *
  * lindhaueradmin, 06.07.2013
  */
-public interface IKernelModuleUserZZZ extends IFlagZZZ { //FGL 20180402: Manche Klassen sollen zwar Ihren Modulnamen, etc. angeben können, brauchen aber nicht das Kernel Objekt... darum nicht mehr: extends IKernelUserZZZ {
+public interface IKernelModuleZZZ extends IFlagZZZ { //FGL 20180402: Manche Klassen sollen zwar Ihren Modulnamen, etc. angeben können, brauchen aber nicht das Kernel Objekt... darum nicht mehr: extends IKernelUserZZZ {
 	public enum FLAGZ{
 		ISKERNELPROGRAM, ISKERNELMODULE; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
 	}	

@@ -11,8 +11,16 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelModuleUserZZZ {
+public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelModuleZZZ {
 	protected String sProgramName=null;
+	
+	/**Z.B. Wg. Refelection immer den Standardkonstruktor zur Verfügung stellen.
+	 * 
+	 * 31.01.2021, 12:15:10, Fritz Lindhauer
+	 */
+	public AbstractKernelProgramZZZ() {
+		super();
+	}
 	
 	public AbstractKernelProgramZZZ(IKernelZZZ objKernel) {
 		super(objKernel);
@@ -20,7 +28,9 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	
 	public String getProgramName(){
 		if(StringZZZ.isEmpty(this.sProgramName)) {
-			this.sProgramName = this.getClass().getName();
+			if(this.getFlag(IKernelModuleZZZ.FLAGZ.ISKERNELPROGRAM.name())) {
+				this.sProgramName = this.getClass().getName();
+			}
 		}
 		return this.sProgramName;
 	}

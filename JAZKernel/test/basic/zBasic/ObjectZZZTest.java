@@ -47,7 +47,7 @@ public class ObjectZZZTest extends TestCase{
 	}
 	
 	public void testGetFlagZ(){
-//		try{
+		try{
 		//Init - Object
 		String[] saFlag = {"init"};
 		ObjectZZZ objObjectInit = new ObjectZZZ(saFlag);
@@ -77,9 +77,9 @@ public class ObjectZZZTest extends TestCase{
 		String[]saTest02d = objObjectInit.getFlagZ(false);
 		assertNotNull(saTest02d);		
 		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT KEIN FLAG MEHR für 'false' erwartet.",saTest02d.length==0);
-//	}catch(ExceptionZZZ ez){
-//		fail("An exception happend testing: " + ez.getDetailAllLast());
-//	}
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
 		
 	}
 	

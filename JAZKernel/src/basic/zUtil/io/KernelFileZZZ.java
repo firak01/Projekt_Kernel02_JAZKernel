@@ -402,8 +402,9 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	//Aus IFlagZZZ, siehe ObjectZZZ
 	/**Gibt alle möglichen FlagZ Werte als Array zurück. 
 	 * @return
+	 * @throws ExceptionZZZ 
 	 */
-	public String[] getFlagZ(){
+	public String[] getFlagZ() throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{				
 				Class objClass4Enum = this.getClassFlagZ();	//Aufgrund des Interfaces IFlagZZZ wird vorausgesetzt, dass diese Methode vorhanden ist.
@@ -442,8 +443,9 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 
 	/**Gibt alle "true" gesetzten FlagZ - Werte als Array zurück. 
 	 * @return
+	 * @throws ExceptionZZZ 
 	 */
-	public String[] getFlagZ(boolean bValueToSearchFor){
+	public String[] getFlagZ(boolean bValueToSearchFor) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			
@@ -527,7 +529,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	
 	//Aus IObjectZZZ, siehe FileZZZ
 		@Override
-		public boolean proofFlagZExists(String sFlagName) {
+		public boolean proofFlagZExists(String sFlagName) throws ExceptionZZZ {
 			boolean bReturn = false;
 			main:{
 				bReturn = ObjectZZZ.proofFlagZExists(this.getClass(), sFlagName);

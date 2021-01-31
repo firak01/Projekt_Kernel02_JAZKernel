@@ -71,8 +71,9 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 		
 		/**Gibt alle möglichen FlagZ Werte als Array zurück. 
 		 * @return
+		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ(){
+		public String[] getFlagZ() throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{				
 					Class objClass4Enum = this.getClassFlagZ();	//Aufgrund des Interfaces IFlagZZZ wird vorausgesetzt, dass diese Methode vorhanden ist.
@@ -111,8 +112,9 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	
 		/**Gibt alle "true" gesetzten FlagZ - Werte als Array zurück. 
 		 * @return
+		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ(boolean bValueToSearchFor){
+		public String[] getFlagZ(boolean bValueToSearchFor) throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{
 				
@@ -273,8 +275,9 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	 * @param sFlagName
 	 * @return
 	 * lindhaueradmin, 23.07.2013
+	 * @throws ExceptionZZZ 
 	 */
-	public boolean proofFlagZExists(String sFlagName){
+	public boolean proofFlagZExists(String sFlagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName))break main;
@@ -301,6 +304,17 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 				}//end for
 			}//end for
 				
+				/* Zugriff auf die Interfaces einer Klasse. Diese müssen auch auf die Flag geprüft werden.
+				  static void printInterfaceNames(Object o) {
+      Class c = o.getClass();
+      Class[] theInterfaces = c.getInterfaces();
+      for (int i = 0; i < theInterfaces.length; i++) {
+         String interfaceName = theInterfaces[i].getName();
+         System.out.println(interfaceName);
+      }
+   }
+				 */
+				
 			//20170307: Durch das Verschieben von FLAGZ mit den Werten DEBUG und INIT in das IObjectZZZ Interface, muss man explizit auch dort nachsehen.
 		   //                Merke: Das Verschieben ist deshlab notwenig, weil nicht alle Klassen direkt von ObjectZZZ erben können, sondern das Interface implementieren müsssen.
 		
@@ -324,7 +338,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 		return bReturn;
 	}
 
-public static boolean proofFlagZExists(IFlagZZZ objcp, String sFlagName) {
+public static boolean proofFlagZExists(IFlagZZZ objcp, String sFlagName) throws ExceptionZZZ {
 	boolean bReturn = false;
 	main:{
 		if(StringZZZ.isEmpty(sFlagName))break main;
@@ -359,7 +373,7 @@ public static boolean proofFlagZExists(IFlagZZZ objcp, String sFlagName) {
 	return bReturn;
 }
 
-public static boolean proofFlagZExists(Class objcp, String sFlagName) {
+public static boolean proofFlagZExists(Class objcp, String sFlagName) throws ExceptionZZZ {
 	boolean bReturn = false;
 	main:{
 		if(StringZZZ.isEmpty(sFlagName))break main;
@@ -383,6 +397,25 @@ public static boolean proofFlagZExists(Class objcp, String sFlagName) {
 				}				
 			}		
 		}
+		
+		//TODOGOON; //20210130: In den Interfaces sind die ENUM-FLAGZ also auf diese Interfaces zugreifen. 
+		/* Zugriff auf die Interfaces einer Klasse. Diese müssen auch auf die Flag geprüft werden.
+		  static void printInterfaceNames(Object o) {
+Class c = o.getClass();
+Class[] theInterfaces = c.getInterfaces();
+for (int i = 0; i < theInterfaces.length; i++) {
+String interfaceName = theInterfaces[i].getName();
+System.out.println(interfaceName);
+}
+}
+		 */
+		Class[] objaInterfaces = objcp.getInterfaces();
+		for (int i = 0; i < objaInterfaces.length; i++) {
+			String interfaceName = objaInterfaces[i].getName();
+			System.out.println(interfaceName);
+		}
+		
+		
 		
 		//20170307: Durch das Verschieben von FLAGZ mit den Werten DEBUG und INIT in das IObjectZZZ Interface, muss man explizit auch dort nachsehen.
 		   //                Merke: Das Verschieben ist deshlab notwenig, weil nicht alle Klassen direkt von ObjectZZZ erben können, sondern das Interface implementieren müsssen.				
@@ -410,7 +443,7 @@ public static boolean proofFlagZExists(Class objcp, String sFlagName) {
  * - Public Default Konstruktor, damit die Klasse instanziiert werden kann.
  * - Innere Klassen müssen auch public deklariert werden.
  */
-public static boolean proofFlagZExists(String sClassName, String sFlagName){
+public static boolean proofFlagZExists(String sClassName, String sFlagName) throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
 		if(StringZZZ.isEmpty(sFlagName))break main;

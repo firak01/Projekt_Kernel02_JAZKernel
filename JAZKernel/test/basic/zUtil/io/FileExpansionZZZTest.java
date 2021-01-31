@@ -61,7 +61,7 @@ public class FileExpansionZZZTest extends TestCase {
 	}//END setup
 	
 	public void testFlagZ(){
-//		try{
+		try{
 		boolean  bExists = objExpansionTest.proofFlagZExists("NIXDA");
 		assertFalse("Object should NOT have FlagZ 'NIXDA'",bExists);
 		
@@ -84,9 +84,9 @@ public class FileExpansionZZZTest extends TestCase {
 			assertTrue(objExpansionTest.getFlag(KernelFileExpansionZZZ.FLAGZ.FILE_CURRENT_FOUND.name())==false);
 			
 			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		
 	}
 		

@@ -119,7 +119,7 @@ public class TxtReaderZZZTest  extends TestCase{
 	
 	
 	public void testFlagZ(){
-		//try{
+		try{
 		boolean bSetted = false;
 			try{
 				bSetted = objReaderEmpty.setFlagZ("NIXDA", true);
@@ -144,9 +144,9 @@ public class TxtReaderZZZTest  extends TestCase{
 			btemp = objReaderUnsorted.getFlagZ("IsFileSorted");
 			assertFalse("Object should NOT have FlagZ '" + TxtReaderZZZ.FLAGZ.IsFileSorted + "' set to true", btemp);
 			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 		
 	}
 	

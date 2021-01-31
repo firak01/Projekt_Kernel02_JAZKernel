@@ -19,8 +19,8 @@ import basic.zBasic.util.file.txt.TxtReaderZZZ;
 public class DebugReflectClassZZZ {
 
 	/** Hier werden spezielle Methoden der ReflectClassZZZ getestet.
-	 *   Insbesondere fällt auf, das es unterschiede gibt beim Aufruf, je nachdem wie man den Aufruf hinsichtlich der Rechte versucht.
-	 *   Die Ansprüche an die Einträge in der  java.policy Datei scheinen unterschiedlich zu sein.
+	 *   Insbesondere fï¿½llt auf, das es unterschiede gibt beim Aufruf, je nachdem wie man den Aufruf hinsichtlich der Rechte versucht.
+	 *   Die Ansprï¿½che an die Eintrï¿½ge in der  java.policy Datei scheinen unterschiedlich zu sein.
 	 *   Damit der SecurityManager und die vewendeten Access-Rechte angewandt werden, folgendes als VM Aufrufparamter verwenden.
 	 *   
 	 *   -Djava.security.manager -Djava.security.policy=jazkernel_empty.policy -Djava.security.debug=access
@@ -37,7 +37,7 @@ public class DebugReflectClassZZZ {
 		if(securityManager==null){
 			System.out.println("Keine SecurityManager gefunden, erwarte keinerlei Probleme.");
 		}else{
-			System.out.println("Security Manager: " + securityManager.toString() + " ==> Löse die Probleme.");
+			System.out.println("Security Manager: " + securityManager.toString() + " ==> Lï¿½se die Probleme.");
 			bHasSecurityManager = true;
 		}
 				
@@ -54,19 +54,19 @@ public class DebugReflectClassZZZ {
 		Class objClassCurrent = objField.getClass();
 		Field[] fieldaz = null;
 		
-		System.out.println("### DEBUG: SelectFields - ÜBER PRIVILEGEDACTION KLASSE (Mit Helper Klasse), per Reflection aus einer Klasse a) gleiche Dateiquelle ####");
+		System.out.println("### DEBUG: SelectFields - ï¿½BER PRIVILEGEDACTION KLASSE (Mit Helper Klasse), per Reflection aus einer Klasse a) gleiche Dateiquelle ####");
 		if(bHasSecurityManager){
 			ReflectClassZZZ rf = new ReflectClassZZZ();
 			fieldaz = rf.selectFieldsPrivileged(objClassCurrent, 0, Modifier.FINAL);
 		}else{	
-			fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (über alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
+			fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (ï¿½ber alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
 		}
 		System.out.println("Gefundene Felder: ");
 		for(Field field : fieldaz){
 			System.out.println(field.getName());
 		}
 		
-		System.out.println("### DEBUG: SelectFields - ÜBER PRIVILEGEDACTION KLASSE, per Reflection aus einer Klasse a) gleiche Dateiquelle ####");
+		System.out.println("### DEBUG: SelectFields - UEBER PRIVILEGEDACTION KLASSE, per Reflection aus einer Klasse a) gleiche Dateiquelle ####");
 		if(bHasSecurityManager){
 			MyPrivilegedAction pr = new MyPrivilegedAction(objClassCurrent);
 			AccessController.doPrivileged(pr);
@@ -74,7 +74,7 @@ public class DebugReflectClassZZZ {
 			fieldaz = new Field[listaField.size()];
 			fieldaz = listaField.toArray(fieldaz);
 		}else{	
-			fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (über alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
+			fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (ï¿½ber alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
 		}
 		System.out.println("Gefundene Felder: ");
 		for(Field field : fieldaz){
@@ -86,9 +86,9 @@ public class DebugReflectClassZZZ {
 		
 		if(bHasSecurityManager){
 			ReflectClassZZZ objReflect = new ReflectClassZZZ();
-			fieldaz = objReflect.selectFieldsPrivileged(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (über alle Vererbungen hinweg), mit ausnahme der Finalen Felder.		
+			fieldaz = objReflect.selectFieldsPrivileged(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (ï¿½ber alle Vererbungen hinweg), mit ausnahme der Finalen Felder.		
 		}else{	
-			fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (über alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
+			fieldaz = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (ï¿½ber alle Vererbungen hinweg), mit ausnahme der Finalen Felder.
 		}
 		System.out.println("Gefundene Felder: ");
 		for(Field field : fieldaz){
@@ -100,7 +100,7 @@ public class DebugReflectClassZZZ {
 		// .jar File erstellt mit einer Dummy - Klasse... siehe JAZDummy Projekt.
 		ReflectionDummyZZZ objDummy = new ReflectionDummyZZZ("TestAlias");
 		Class objClassExternal = objDummy.getClass(); 
-		Field[] fieldaz2 = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (über alle Vererbungen hinweg), mit Ausnahme der Finalen Felder.
+		Field[] fieldaz2 = ReflectClassZZZ.selectFields(objClassCurrent, 0, Modifier.FINAL);  //Es sollen alle Felder betrachtet werden (ï¿½ber alle Vererbungen hinweg), mit Ausnahme der Finalen Felder.
 		
 		System.out.println("Gefundene Felder: ");
 		for(Field field : fieldaz2){
@@ -134,7 +134,7 @@ public class DebugReflectClassZZZ {
 					out.format("%s# Enum aus Klasse %s%n", ReflectCodeZZZ.getMethodCurrentName(), obj.getClass().getName());
 					Field[] fields = obj.getClass().getDeclaredFields();
 					for(Field field : fields){
-						if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
+						if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurï¿½ckgegeben.
 							out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());							
 						}
 					}//end for				

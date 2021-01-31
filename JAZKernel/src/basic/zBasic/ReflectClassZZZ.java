@@ -156,7 +156,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 	    			throw ez;
 	    		}
 	    		if(clsInterface == null){
-	    			ExceptionZZZ ez = new ExceptionZZZ("Class Interafce", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			ExceptionZZZ ez = new ExceptionZZZ("Class Interface", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 	    			throw ez;
 	    		}
 	    		
@@ -241,7 +241,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 			return superTypes;
 		}
 		
-		/* ArrayList mit den Klassen-Objekten der Elternklassen zur�ckgeben. 
+		/* ArrayList mit den Klassen-Objekten der Elternklassen zurueckgeben. 
 	     * ! intern Rekursiver Aufruf !
 	     */
 		public static void scanSuperClasses(Class objClass, ArrayList<Class<?>> superTypes){
@@ -258,7 +258,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
 		 * 
 		 */
-		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass, String sFilterClassname){
+		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass, String sFilterClassname) throws ExceptionZZZ{
 			ArrayList<Class<?>> embeddedTypes = new ArrayList<Class<?>>();
 						
 			ReflectClassZZZ.scanEmbeddedClasses(objClass, embeddedTypes);
@@ -277,9 +277,9 @@ public class ReflectClassZZZ implements IConstantZZZ{
 		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
 		 * 
 		 */
-		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass){
+		public static ArrayList<Class<?>> getEmbeddedClasses(Class objClass) throws ExceptionZZZ{
 			ArrayList<Class<?>> embeddedTypes = new ArrayList<Class<?>>();
-						
+					
 			ReflectClassZZZ.scanEmbeddedClasses(objClass, embeddedTypes);
 			
 			return embeddedTypes;
@@ -288,12 +288,52 @@ public class ReflectClassZZZ implements IConstantZZZ{
 		/* ArrayList mit den eingebetteten Klassen zurückgeben. Wird vom mir verwendet für die FLAGZ - Enum Definition
 		 * 
 		 */
-		public static void scanEmbeddedClasses(Class objClass, ArrayList<Class<?>> embeddedTypes){
+		public static void scanEmbeddedClasses(Class objClass, ArrayList<Class<?>> embeddedTypes) throws ExceptionZZZ{
+			if(objClass==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Class Current", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+    			throw ez;
+			}
 			Class[] objaClass = objClass.getClasses();
+			
 			for(Class objClassTemp : objaClass){
 			
 				//System.out.println("Classname in array: " + objClass.getName());
 				embeddedTypes.add(objClassTemp);
-			}	
+			}				
+		}
+		
+		/** Merke: Da das Interface wohl nicht direct, sondern über eine abstracte Klasse eingebunden wird, ist das Array leer.
+		 * @param objClass
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 31.01.2021, 12:34:50
+		 */
+		public static ArrayList<Class<?>> getInterfaces(Class objClass) throws ExceptionZZZ {
+			ArrayList<Class<?>> listaReturn = new ArrayList<Class<?>>();			
+			main:{
+				if(objClass==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("Class Current", iERROR_PARAMETER_MISSING, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+	    			throw ez;
+				}
+			
+				Class[] objaClassDirect = objClass.getInterfaces();
+				for(Class objClassDirect : objaClassDirect) {
+					listaReturn.add(objClassDirect);
+				}
+				
+				//Nun auf der Suche nach weiteren Interfaces.
+				ArrayList<Class<?>> superTypes = new ArrayList<Class<?>>();	
+				ReflectClassZZZ.scanSuperClasses(objClass, superTypes);
+				for(Class objClassSuper : superTypes) {
+					System.out.println("Elternklasse: " + objClassSuper.getName());
+					if(objClassSuper!=null) {
+						Class[] objaInterfaceSuper = objClassSuper.getInterfaces();
+						for(Class objInterfaceSuper : objaInterfaceSuper) {
+							listaReturn.add(objInterfaceSuper);
+						}
+					}
+				}													
+			}//end main:
+			return listaReturn;
 		}
 }
