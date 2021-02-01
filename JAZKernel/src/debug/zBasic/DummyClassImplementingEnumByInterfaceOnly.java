@@ -4,15 +4,13 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.module.AbstractKernelProgramZZZ;
 
-public class DummyClassImplementingEnumByInterface extends AbstractKernelProgramZZZ{
-	public enum FLAGZ{
-		CLASSZZZ_DUMMYENUM01, CLASSZZZ_DUMMYENUM02; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
-	}
-	public DummyClassImplementingEnumByInterface() {
+public class DummyClassImplementingEnumByInterfaceOnly extends AbstractKernelProgramZZZ{
+
+	public DummyClassImplementingEnumByInterfaceOnly() {
 		super();
 	}
 	
-	public DummyClassImplementingEnumByInterface(IKernelZZZ objKernel) {
+	public DummyClassImplementingEnumByInterfaceOnly(IKernelZZZ objKernel) {
 		super(objKernel);
 	}
 

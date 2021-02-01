@@ -17,6 +17,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zKernel.IKernelConfigZZZ;
+import basic.zKernel.flag.IFlagZZZ;
 
 public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 	private static final long serialVersionUID = 1L;
@@ -255,7 +256,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagZZZ{
 				break main;
 			}
 			
-
+TODOGOON; //20210201: Hier die Hilfsklass FlagZHelper verwenden
 			bFunction = this.proofFlagZExists(sFlagName);												
 			if(bFunction == true){
 				

@@ -206,6 +206,23 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 	}//end main	
 }
 
+	public static <E extends Enum> E[] toEnumArray(ArrayList<E> listae){
+		E[] enumaReturn = null;
+		main:{
+			if(listae==null) break main;
+			if(listae.size()==0) break main;
+			
+			enumaReturn = (E[]) listae.toArray(new Enum[listae.size()]);
+//			saReturn = lista.toArray(new String[lista.size()]);
+//			int iIndex = -1;
+//			for(Object obj : lista){
+//				iIndex++;
+//				saReturn[iIndex] = obj.toString();
+//			}
+		}//end main:
+		return enumaReturn;	
+	}
+
 	public static String[]toStringArray(ArrayList<?> lista){
 		String[] saReturn = null;
 		main:{

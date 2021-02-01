@@ -325,7 +325,7 @@ public class ReflectClassZZZ implements IConstantZZZ{
 				ArrayList<Class<?>> superTypes = new ArrayList<Class<?>>();	
 				ReflectClassZZZ.scanSuperClasses(objClass, superTypes);
 				for(Class objClassSuper : superTypes) {
-					System.out.println("Elternklasse: " + objClassSuper.getName());
+					//System.out.println("Elternklasse: " + objClassSuper.getName());
 					if(objClassSuper!=null) {
 						Class[] objaInterfaceSuper = objClassSuper.getInterfaces();
 						for(Class objInterfaceSuper : objaInterfaceSuper) {

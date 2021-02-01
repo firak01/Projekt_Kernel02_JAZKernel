@@ -1,7 +1,7 @@
 package basic.zUtil.io;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IFlagZZZ;
+import basic.zKernel.flag.IFlagZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public interface IFileExpansionZZZ extends IFileExpansionProxyZZZ,IFlagZZZ {

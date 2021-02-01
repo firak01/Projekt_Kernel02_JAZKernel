@@ -16,7 +16,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.data.DataFieldZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
 
-public class DebugReflectClassZZZ {
+public class DebugReflectClass01ZZZ {
 
 	/** Hier werden spezielle Methoden der ReflectClassZZZ getestet.
 	 *   Insbesondere f�llt auf, das es unterschiede gibt beim Aufruf, je nachdem wie man den Aufruf hinsichtlich der Rechte versucht.
@@ -42,7 +42,7 @@ public class DebugReflectClassZZZ {
 		}
 				
 		System.out.println("### DEBUG: EmbededClasses - Aus Classes[] Array ####");
-		DebugReflectClassZZZ objDebug = new DebugReflectClassZZZ();
+		DebugReflectClass01ZZZ objDebug = new DebugReflectClass01ZZZ();
 		objDebug.getEmbeddedClasses("FLAGZ");
 		
 	

@@ -1,5 +1,7 @@
-package basic.zBasic;
+package basic.zKernel.flag;
 import java.util.HashMap;
+
+import basic.zBasic.ExceptionZZZ;
 
 public interface IFlagZZZ {
 	public final String sERROR_FLAG_UNAVAILABLE = "this flag is not available: ";

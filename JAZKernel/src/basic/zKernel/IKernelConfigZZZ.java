@@ -1,7 +1,7 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IFlagZZZ;
+import basic.zKernel.flag.IFlagZZZ;
 
 /** Interface, welches von KernelConfigZZZ etc. eingebunden wird, um die Default Werte festzulegen.
  * @author lindhauer

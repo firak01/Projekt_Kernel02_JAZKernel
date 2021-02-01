@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
+import basic.zKernel.flag.IFlagZZZ;
 
 public class DebugObjectZZZ {
 
@@ -23,7 +23,7 @@ public class DebugObjectZZZ {
 		
 		DebugObjectZZZ objDebug = new DebugObjectZZZ();
 		
-		//Debugge die getFlag / setFlag / proofFlagExists Funktionalität
+		//Debugge die getFlag / setFlag / proofFlagExists Funktionalitï¿½t
 		System.out.println("### DEBUG: SubClasses - Scan Rekursiv ####");
 		objDebug.getSubClasses();
 		
@@ -93,7 +93,7 @@ public void getEmbeddedClasses(){
 				out.format("%s# Enum aus Klasse %s%n", ReflectCodeZZZ.getMethodCurrentName(), obj.getClass().getName());
 				Field[] fields = obj.getClass().getDeclaredFields();
 				for(Field field : fields){
-					if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurückgegeben.
+					if(!field.isSynthetic()){ //Sonst wird ENUM$VALUES auch zurï¿½ckgegeben.
 						out.format("%s# Field...%s%n", ReflectCodeZZZ.getMethodCurrentName(), field.getName());							
 					}
 				}//end for				

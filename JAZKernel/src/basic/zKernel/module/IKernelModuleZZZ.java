@@ -6,7 +6,7 @@ package basic.zKernel.module;
 import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IFlagZZZ;
+import basic.zKernel.flag.IFlagZZZ;
 
 
 /**Erweitere den Kernel um Methoden, mit denen aus der .ini - Datei der Kernelkonfiguration Parameter ausgelesen werden k�nnen.
