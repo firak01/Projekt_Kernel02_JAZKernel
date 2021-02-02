@@ -1709,11 +1709,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		String sFilePath; 	String sFileName; String sRoot="";
 		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 		
-		//An empty string is allowed, but not a NULL Value
+		//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
 		if(sFilePathIn==null){
-			stemp = "''FilePath'";
-			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");			  
-			throw ez;	
+//			stemp = "''FilePath'";
+//			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");			  
+//			throw ez;	
+			sFilePath = FileEasyZZZ.getDirectoryOfExecutionAsString();
 		}else{
 			sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
 			if(FileEasyZZZ.isPathRelative(sFilePath)) {

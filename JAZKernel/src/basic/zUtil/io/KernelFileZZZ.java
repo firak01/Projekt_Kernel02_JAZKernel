@@ -20,6 +20,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.flag.FlagZHelperZZZ;
 import basic.zKernel.flag.IFlagZZZ;
 import basic.zKernel.flag.IFlagZZZ.FLAGZ;
 import custom.zKernel.LogZZZ;
@@ -526,30 +527,15 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		}//end main:
 		return saReturn;
 	}
-	
-	//Aus IObjectZZZ, siehe FileZZZ
-		@Override
-		public boolean proofFlagZExists(String sFlagName) throws ExceptionZZZ {
-			boolean bReturn = false;
-			main:{
-				bReturn = ObjectZZZ.proofFlagZExists(this.getClass(), sFlagName);
-			
-				//Schon die oberste IObjectZZZ nutzende Klasse, darum ist der Aufruf einer Elternklasse mit der Methode nicht möglich. 
-				//boolean bReturn = super.proofFlagZExists(sFlagName);
-			
-				if(!bReturn){			
-					Class<FLAGZ> enumClass = FLAGZ.class;				
-					for(Object obj : FLAGZ.class.getEnumConstants()){
-						//System.out.println(obj + "; "+obj.getClass().getName());
-						if(sFlagName.equalsIgnoreCase(obj.toString())) {
-							bReturn = true;
-							break main;
-						}
-					}				
-				}
-			}//end main:
-			return bReturn;
-		}
+		
+	@Override
+	public boolean proofFlagZExists(String sFlagName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			bReturn = FlagZHelperZZZ.proofFlagZExists(this.getClass(), sFlagName);							
+		}//end main:
+		return bReturn;
+	}
 	
 	
 	
