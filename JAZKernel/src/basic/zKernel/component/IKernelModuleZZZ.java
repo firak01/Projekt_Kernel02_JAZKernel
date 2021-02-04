@@ -1,11 +1,12 @@
 /**
  * lindhaueradmin, 06.07.2013
  */
-package basic.zKernel.module;
+package basic.zKernel.component;
 
 import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.flag.IFlagZZZ;
 
 
@@ -18,10 +19,7 @@ import basic.zKernel.flag.IFlagZZZ;
  */
 public interface IKernelModuleZZZ extends IFlagZZZ { //FGL 20180402: Manche Klassen sollen zwar Ihren Modulnamen, etc. angeben können, brauchen aber nicht das Kernel Objekt... darum nicht mehr: extends IKernelUserZZZ {
 	public enum FLAGZ{
-		ISKERNELPROGRAM, ISKERNELMODULE; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
+		ISKERNELMODULE; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
 	}	
-	
 	public abstract String getModuleName() throws ExceptionZZZ;    //Z.B. der Name des �bergeordneten JFrames. Ist der Package und Klassenname
-	public abstract String getProgramName() throws ExceptionZZZ;   //Z.B. ein Button, Ist der Package und Klassenname		
-	public abstract String getProgramAlias() throws ExceptionZZZ;  //Der Alias wird auf Modulebenen definiert. Package und Klassenname = Alias. Speicher den Alias in einer Variablen.
 }

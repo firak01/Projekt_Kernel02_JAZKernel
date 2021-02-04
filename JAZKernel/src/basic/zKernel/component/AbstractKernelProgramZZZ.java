@@ -1,4 +1,4 @@
-package basic.zKernel.module;
+package basic.zKernel.component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,7 +11,8 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelModuleZZZ {
+public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelProgramZZZ, IKernelModuleUserZZZ {
+	protected IKernelModuleZZZ objModule=null; //Das Modul, z.B. die Dialogbox, in der das Program gestartet wird.
 	protected String sProgramName=null;
 	
 	/**Z.B. Wg. Refelection immer den Standardkonstruktor zur Verfügung stellen.
@@ -23,12 +24,12 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	}
 	
 	public AbstractKernelProgramZZZ(IKernelZZZ objKernel) {
-		super(objKernel);
+		super(objKernel); //TODO GOON: Hier automatisch das FLAG IKERNELPROGRAM Setzen!!!
 	}
 	
 	public String getProgramName(){
 		if(StringZZZ.isEmpty(this.sProgramName)) {
-			if(this.getFlag(IKernelModuleZZZ.FLAGZ.ISKERNELPROGRAM.name())) {
+			if(this.getFlag(IKernelProgramZZZ.FLAGZ.ISKERNELPROGRAM.name())) {
 				this.sProgramName = this.getClass().getName();
 			}
 		}
@@ -95,5 +96,29 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (x) Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");			
 		}
 		return sReturn;
+	}
+	
+	public String getModuleName() throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			IKernelModuleZZZ objModule = this.getModule();
+			if(objModule!=null) {
+				sReturn = objModule.getModuleName();
+				if(StringZZZ.isEmpty(sReturn)) {
+					sReturn = this.getKernelObject().getSystemKey();
+				}
+			}else {
+				sReturn = this.getKernelObject().getSystemKey();
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	//### Aus IKernelModuleUserZZZ
+	public IKernelModuleZZZ getModule() {
+		return this.objModule;
+	}
+	public void setModule(IKernelModuleZZZ objModule) {
+		this.objModule = objModule;
 	}
 }

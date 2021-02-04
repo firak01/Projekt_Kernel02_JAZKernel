@@ -2,7 +2,7 @@ package debug.zBasic;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.module.AbstractKernelProgramZZZ;
+import basic.zKernel.component.AbstractKernelProgramZZZ;
 
 public class DummyClassImplementingEnumByInterface extends AbstractKernelProgramZZZ{
 	public enum FLAGZ{
