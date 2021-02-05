@@ -1694,14 +1694,40 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false);
 	}
 	
+	/**
+	 * @param sFilePathIn
+	 * @param sFileNameIn
+	 * @param bRemote,               wenn true, dann wird der lokale Root bei relativen Pfaden nicht vorangestellt. Ist quasi für Pfade auf anderen Servern.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.02.2021, 08:45:42
+	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, boolean bRemote) throws ExceptionZZZ{
 		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, bRemote);
 	}
 	
+	/**
+	 * @param sFilePathIn
+	 * @param sFileNameIn
+	 * @param cDirectorySeparator
+	 * @param bRemote,               wenn true, dann wird der lokale Root bei relativen Pfaden nicht vorangestellt. Ist quasi für Pfade auf anderen Servern.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.02.2021, 08:47:01
+	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote) throws ExceptionZZZ{
 		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, bRemote);
 	}
 	
+	/**
+	 * @param sFilePathIn
+	 * @param sFileNameIn
+	 * @param cDirectorySeparator
+	 * @param bRemote,               wenn true, dann wird der lokale Root bei relativen Pfaden nicht vorangestellt. Ist quasi für Pfade auf anderen Servern.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.02.2021, 08:47:13
+	 */
 	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
@@ -1709,22 +1735,26 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		String sFilePath; 	String sFileName; String sRoot="";
 		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 		
-		//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
-		if(sFilePathIn==null){
-//			stemp = "''FilePath'";
-//			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");			  
-//			throw ez;	
-			sFilePath = FileEasyZZZ.getDirectoryOfExecutionAsString();
-		}else{
-			sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
-			if(FileEasyZZZ.isPathRelative(sFilePath)) {
-				if(!bRemote) { //Nur bei lokalen Dateien, ggfs. den Root-Pfad ermitteln. Wichtig, falls der Code z.B. in Eclipse ausgeführt wird, kommt src als Verzeichnis vorangestellt.
-					sRoot = FileEasyZZZ.getFileRootPath();
-				}else { //Sicherstellen, dass bei dem Remotefile der Slash voransteht. Zumindest ist das bei T-Online FTP Server so gewünscht.
-					sRoot = CharZZZ.toString(cDirectorySeparator);
-				}
-				if(!sFilePath.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)&& !sFilePath.startsWith(sRoot)) {										
-					sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
+		//!!! WENN bRemote, dann den Pfad nicht verändern!!!
+		if(bRemote) {
+			//Sicherstellen, dass bei dem Remotefile der Slash voransteht. Zumindest ist das bei T-Online FTP Server so gewünscht.
+			sRoot = CharZZZ.toString(cDirectorySeparator);
+			sFilePath = sFilePathIn;					
+		}else {
+			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
+			if(sFilePathIn==null){
+	//			stemp = "''FilePath'";
+	//			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");			  
+	//			throw ez;	
+				sRoot = "";
+				sFilePath = FileEasyZZZ.getDirectoryOfExecutionAsString();
+			}else{
+				sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
+				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {				
+					sRoot = FileEasyZZZ.getFileRootPath();																	
+					sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);				
+				}else if(FileEasyZZZ.isPathRelative(sFilePath)) {
+					sRoot = FileEasyZZZ.getFileRootPath();					
 				}
 			}
 		}
@@ -1780,22 +1810,22 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			//+++  Join the strings		
 			if(sFilePath.equals("")){
 				//A)	
-				if(!FileEasyZZZ.isPathAbsolut(sFileName) && bRemote){
-					sReturn = sRoot + sFileName;
+				if(!FileEasyZZZ.isPathAbsolut(sFileName)){
+					sReturn = sRoot  + sDirectorySeparator +  sFileName;
 				}else {
 					sReturn = sFileName;
 				}
 			}else{
 				if(sFileName.equals("")){
 					//B)
-					if(!FileEasyZZZ.isPathAbsolut(sFilePath) && bRemote){
-						sReturn = sRoot + sFilePath;
+					if(!FileEasyZZZ.isPathAbsolut(sFilePath)){
+						sReturn = sRoot + sDirectorySeparator +  sFilePath;
 					}else {
 						sReturn = sFilePath;
 					}	
 				}else{
 					//C)		
-					if(!FileEasyZZZ.isPathAbsolut(sFilePath) && bRemote){
+					if(!FileEasyZZZ.isPathAbsolut(sFilePath)){
 						sReturn = sRoot + sFilePath + sDirectorySeparator + sFileName;
 					}else {
 						sReturn = sFilePath + sDirectorySeparator + sFileName;
