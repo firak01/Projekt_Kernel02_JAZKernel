@@ -13,6 +13,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelProgramZZZ, IKernelModuleUserZZZ {
 	protected IKernelModuleZZZ objModule=null; //Das Modul, z.B. die Dialogbox, in der das Program gestartet wird.
+	protected String sModuleName=null;
+	
 	protected String sProgramName=null;
 	
 	/**Z.B. Wg. Refelection immer den Standardkonstruktor zur Verfügung stellen.
@@ -24,7 +26,10 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	}
 	
 	public AbstractKernelProgramZZZ(IKernelZZZ objKernel) {
-		super(objKernel); //TODO GOON: Hier automatisch das FLAG IKERNELPROGRAM Setzen!!!
+		super(objKernel); 
+		
+		//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!
+		this.setFlag(IKernelProgramZZZ.FLAGZ.ISKERNELPROGRAM.name(), true);		
 	}
 	
 	public String getProgramName(){
@@ -98,7 +103,7 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		return sReturn;
 	}
 	
-	public String getModuleName() throws ExceptionZZZ {
+	public String readModuleName() throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			IKernelModuleZZZ objModule = this.getModule();
@@ -112,6 +117,16 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 			}
 		}//end main:
 		return sReturn;
+	}
+	
+	public String getModuleName() throws ExceptionZZZ{
+		if(StringZZZ.isEmpty(this.sModuleName)) {
+			this.sModuleName = this.readModuleName();
+		}
+		return this.sModuleName;
+	}
+	public void setModuleName(String sModuleName){
+		this.sModuleName=sModuleName;
 	}
 	
 	//### Aus IKernelModuleUserZZZ

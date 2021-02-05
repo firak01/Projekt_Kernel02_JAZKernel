@@ -3497,15 +3497,15 @@ MeinTestParameter=blablaErgebnis
 	 *   
 	 *   This method does not check if a file really exists there.
 	 *   
-	 * @param sAlias
+	 * @param sModule
 	 * @return 
 	 * @throws ExceptionZZZ 
 	 */
-	public boolean proofModuleFileIsConfigured(String sAlias) throws ExceptionZZZ{
+	public boolean proofModuleFileIsConfigured(String sModule) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			check:{
-				if(StringZZZ.isEmpty(sAlias)){
+				if(StringZZZ.isEmpty(sModule)){
 					String stemp = "Missing parameter: 'Alias'";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING,  this,  ReflectCodeZZZ.getMethodCurrentName());
@@ -3523,7 +3523,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//1. Versuch: Systemebene
 			String sKeyUsed = this.getSystemKey();			
-			String sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile" +sAlias );
+			String sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile" +sModule );
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
@@ -3531,10 +3531,15 @@ MeinTestParameter=blablaErgebnis
 			}else{
 				//this.setValueRaw(null);
 			}
+			if(!StringZZZ.isEmpty(sFileNameUsed)) {
+				bReturn = true;
+				break main;
+			}
 			
 			//2. Versuch: Applikationsebene
 			if(StringZZZ.isEmptyNull(sFileNameUsed)){
-				sFileName =objIni.getValue(sAlias, "KernelConfigFile"+sAlias );
+				sKeyUsed = this.getApplicationKey();
+				sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile"+sModule );
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
@@ -3543,9 +3548,10 @@ MeinTestParameter=blablaErgebnis
 					//this.setValueRaw(null);
 				}
 			}
-
-			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
-			bReturn = true;			
+			if(!StringZZZ.isEmpty(sFileNameUsed)) {
+				bReturn = true;	
+				break main;
+			}						
 		}//end main:
 		return bReturn;
 	}
@@ -3554,15 +3560,15 @@ MeinTestParameter=blablaErgebnis
 	 *  AND checks if the configured file really exists.
 	 * 
 	* Lindhauer; 21.04.2006 09:39:09
-	 * @param sAlias
+	 * @param sModule
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
-	public boolean proofModuleFileExists(String sAlias) throws ExceptionZZZ{
+	public boolean proofModuleFileExists(String sModule) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			check:{
-				if(StringZZZ.isEmpty(sAlias)){
+				if(StringZZZ.isEmpty(sModule)){
 					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}								
@@ -3574,7 +3580,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//1. Versuch: Auf Systemebene
 			String sKeyUsed = this.getSystemKey();
-			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias ); 	
+			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 	
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
@@ -3582,11 +3588,11 @@ MeinTestParameter=blablaErgebnis
 			}else{
 				//this.setValueRaw(null);
 			}
-			if(StringZZZ.isEmpty(sFileNameUsed)) {
-				
-				//2. Versuch auf Applikationsebene
+			
+			//2. Versuch auf Applikationsebene
+			if(StringZZZ.isEmpty(sFileNameUsed)) {								
 				sKeyUsed = this.getApplicationKey();
-				sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sAlias ); 
+				sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
@@ -3594,11 +3600,12 @@ MeinTestParameter=blablaErgebnis
 				}else{
 					//this.setValueRaw(null);
 				}
-				if(StringZZZ.isEmpty(sFileNameUsed)) break main;
-				if(sFileNameUsed.equals(""))break main;								
 			}
+			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+			if(sFileNameUsed.equals(""))break main;								
 			
-			String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sAlias );
+			//###############
+			String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sModule );
 			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
@@ -3606,13 +3613,13 @@ MeinTestParameter=blablaErgebnis
 			}else{
 				//this.setValueRaw(null);
 			}						
-			if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
+			//if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
 			
 			//Proof the existance of the file
 			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
 			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
 			File objFile = new File(sFileTotal);
-			bReturn = objFile.exists();
+			bReturn = FileEasyZZZ.exists(objFile);
 			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists = " + bReturn);
 		}//end main:
 		return bReturn;
