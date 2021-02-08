@@ -2449,10 +2449,12 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(sString.length()<=FileEasyZZZ.sDIRECTORY_CURRENT.length())break main;
-
+			
 			sReturn = StringZZZ.stripFileSeparatorsLeft(sString);
 			sReturn = StringZZZ.stripFileSeparatorsRight(sReturn);
+			if(sReturn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)) {
+				sReturn = "";
+			}
 		}//end main:
 		return sReturn;
 	}
