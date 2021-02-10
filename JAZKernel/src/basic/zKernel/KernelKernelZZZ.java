@@ -2233,7 +2233,7 @@ MeinTestParameter=blablaErgebnis
 	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		boolean bReturn = false;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
-		String sDebug; IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
+		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
 		main:{	
 			//TODO 20190815: CACHE VERWENDUNG AUCH BEIM SETZEN EINBAUEN
 			//
@@ -2279,10 +2279,9 @@ MeinTestParameter=blablaErgebnis
 		   
 		    //2. Den Abschnitt holen
 			String sMainSectionUsed = this.KernelChooseMainSectionUsedForConfigFile_(sMainSection, sProgramOrSection);
-			String sSectionUsed = null;	
+			sSectionUsed = null;	
 			
 			//3. Setzen des Wertes
-			String sValue=new String("");
 			boolean bFlagDelete = false;
 			if(sValueIn==null){
 				bFlagDelete=true;
@@ -2529,13 +2528,36 @@ MeinTestParameter=blablaErgebnis
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
+		
 		}//END main:
-		sDebug = hmDebug.debugString(":"," | ");
 		if(bReturn) {
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug); 
+			//!!! DEN CACHE AKTUALISIEREN
+//			SICHERHEITSHALBER NUR DEN CACHE AUF DER OBERSTEN EBENE SETZEN, Alternativ ALLE Ebenen des Suchstrings.
+//			IKernelConfigSectionEntryZZZ objFromCache = (IKernelConfigSectionEntryZZZ) this.getCacheObject().getCacheEntry(sSectionUsed, sProperty);
+//			if(objFromCache!=null){					
+//					hmDebug.put("1) To CacheZZZ: " + sSectionUsed, sProperty);
+//					objReturn = objFromCache;			
+//			}else{
+//				hmDebug.put("1) Not in CacheZZZ, put it: " + sSectionUsed, sProperty);
+//			}
+			
+			IKernelConfigSectionEntryZZZ objFromCache = (IKernelConfigSectionEntryZZZ) this.getCacheObject().getCacheEntry(sProgramOrSection, sProperty);
+			if(objFromCache!=null){					
+					hmDebug.put("FOUND... Update CacheZZZ: " + sProgramOrSection, sProperty);
+					objFromCache.setValue(sValue);
+					objReturn = objFromCache;	
+					
+			}else{
+				//Ich habe hier keine IKernelConfiSectionEntryZZZ, das gültig ist, also Formel berechnet, etc.
+				hmDebug.put("FOUND... But not in CacheZZZ: Will not jet put an entry for " + sProgramOrSection, sProperty);				
+			}
+			
+			sDebug = hmDebug.debugString(":"," | ");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
 		}else{
+			sDebug = hmDebug.debugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
-		}			
+		}		
 		return bReturn;
 	}
 	
