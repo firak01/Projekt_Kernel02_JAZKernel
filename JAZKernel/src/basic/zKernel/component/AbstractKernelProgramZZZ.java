@@ -16,7 +16,7 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	protected String sModuleName=null;	
 	protected String sProgramName=null;
 	
-	/**Z.B. Wg. Refelection immer den Standardkonstruktor zur Verfügung stellen.
+	/**Z.B. Wg. Reflection immer den Standardkonstruktor zur Verfügung stellen.
 	 * 
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 */
