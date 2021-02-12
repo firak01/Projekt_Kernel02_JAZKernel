@@ -13,8 +13,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelProgramZZZ, IKernelModuleUserZZZ {
 	protected IKernelModuleZZZ objModule=null; //Das Modul, z.B. die Dialogbox, in der das Program gestartet wird.
-	protected String sModuleName=null;
-	
+	protected String sModuleName=null;	
 	protected String sProgramName=null;
 	
 	/**Z.B. Wg. Refelection immer den Standardkonstruktor zur Verfügung stellen.
@@ -101,6 +100,12 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (x) Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");			
 		}
 		return sReturn;
+	}
+	
+	@Override
+	public String getProgramAlias() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public String readModuleName() throws ExceptionZZZ {
