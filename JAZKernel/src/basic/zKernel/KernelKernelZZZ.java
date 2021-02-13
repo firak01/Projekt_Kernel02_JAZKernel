@@ -2039,6 +2039,8 @@ MeinTestParameter=blablaErgebnis
 			//###############################################################################################################
 			//Falls der Parameter immer noch nicht gefunden wurde, hier eine Exception auswerfen.
 	        //Ansonsten droht die Gefahr einer Endlosschleife.
+			//Beim Werfen der Exception unbeding die Eingabeparameter angeben: sMainSection, sProgramOrSection
+			
 				String sModuleUsed="";
 				boolean bModuleConfig = this.proofModuleFileIsConfigured(sMainSection);
 				if(bModuleConfig==false){
@@ -2052,19 +2054,19 @@ MeinTestParameter=blablaErgebnis
 						sModuleUsed = this.getApplicationKey();
 						bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
 						if(bModuleConfig==false){
-							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
+							String stemp = "Wrong parameter (3): Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.";
 							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 						} //end if Versuch 3
 					}else{
-						String stemp = "Wrong parameter (2): Module '" + sModuleUsed + "' is not configured in the ini File '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'.";
+						String stemp = "Wrong parameter (2): Module '" + sModuleUsed + "' is not configured in the ini File '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.";
 						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}//end if Versuch 2
 				}else{
-					String stemp = "Wrong parameter (1): Module '" + sMainSection + "' is not configured in the ini File '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'.";
+					String stemp = "Wrong parameter (1): Module '" + sMainSection + "' is not configured in the ini File '" + objFileIniConfig.getFileObject().getAbsolutePath()  + "' for sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
@@ -2072,8 +2074,8 @@ MeinTestParameter=blablaErgebnis
 				
 				//B1. Prüfen, ob das Modul existiert
 				boolean bModuleExists = this.proofModuleFileExists(sMainSection);
-				if(bModuleExists==false){
-					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
+				if(bModuleExists==false){					
+					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file '" + objFileIniConfig.getFileObject().getAbsolutePath()  + "' for sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
@@ -2087,7 +2089,8 @@ MeinTestParameter=blablaErgebnis
 				}//END main:
 				
 				sDebug = hmDebug.debugString(":"," | ");
-				if(objReturn.hasAnyValue()) {										
+				if(objReturn.hasAnyValue()) {
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
 					
 					//################
@@ -2110,6 +2113,7 @@ MeinTestParameter=blablaErgebnis
 					this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objReturn);
 					
 				}else{
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEIN WERT GEFUNDEN fuer sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
 				}				
 				return objReturn;
