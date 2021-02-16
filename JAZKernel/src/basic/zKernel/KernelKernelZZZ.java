@@ -2075,7 +2075,7 @@ MeinTestParameter=blablaErgebnis
 				//B1. Prüfen, ob das Modul existiert
 				boolean bModuleExists = this.proofModuleFileExists(sMainSection);
 				if(bModuleExists==false){					
-					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file '" + objFileIniConfig.getFileObject().getAbsolutePath()  + "' for sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.";
+					String stemp = "Wrong parameter (0): Finaly the module '" + sModuleUsed + "' does not exist or program / property could not be found anywhere in the file '" + objFileIniConfig.getFileObject().getAbsolutePath()  + "' for sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
