@@ -48,6 +48,7 @@ import java.io.*;
 import java.util.*;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ExtendedVectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.UtfEasyZZZ;
@@ -184,7 +185,7 @@ public class IniFile extends Object
 		 ini.close();		 
 		 */
     	  
-    	  //MErke: Die ini Datei muss UTF-8 ohnee BOM sein. Ansonsten sind in der ersten Zeile immer 2 zusätzliche Bytes, wenn man iniReader.readLine() ausführt.     	  
+    	  //Merke: Die ini Datei muss UTF-8 ohne BOM sein. Ansonsten sind in der ersten Zeile immer 2 zusätzliche Bytes, wenn man iniReader.readLine() ausführt.     	  
     	 FileInputStream inStream = new FileInputStream(fileName);    	      	 
     	 String line = "";
          //read all the lines in
@@ -197,6 +198,7 @@ public class IniFile extends Object
        	  }
             //Das liest garantiert nicht utf-8 ein line = dis.readLine();
        	  	line = IniFile.readLine(inStream); //Ziel ist es UTF-8 einzulesen
+       	  	//System.out.println("sLine='" + line + "'");
             if (line == null)
                break;
             else

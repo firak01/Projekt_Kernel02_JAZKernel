@@ -497,10 +497,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
 			
-			} catch (IOException e) {
-				String sLog = "Configuration File. Not able to create ini-FileObject.";
+			} catch (IOException ioe) {
+				String sLog = "IOException: Configuration File. Not able to create ini-FileObject.";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName() );
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName(), ioe );
 				throw ez;
 			}
 		}//end main:
@@ -3295,26 +3295,26 @@ MeinTestParameter=blablaErgebnis
 			String sSubject = sSubjectIn.toLowerCase();
 			String stemp = StringZZZ.left(sSubject, "kernelconfigfile");
 			
-			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zur�ckgeben.
+			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurueckgeben.
 			if(!StringZZZ.isEmpty(stemp)) break main;
 			
 			sReturn = StringZZZ.right(sSubject, "kernelconfigfile");
 			if(!StringZZZ.isEmpty(sReturn)){
-				//Da der Returnwert nun allerdings nur kleingeschrieben w�re vom Original ausgehen
-				sReturn = sSubjectIn.substring(16);  //16 ist die L�nge von 'kernelConfigfile'
+				//Da der Returnwert nun allerdings nur kleingeschrieben waere vom Original ausgehen
+				sReturn = sSubjectIn.substring(16);  //16 ist die Laenge von 'kernelConfigfile'
 				break main;
 			}
 			
 			
 			//b) kernelconfigpath
 			stemp = StringZZZ.left(sSubject, "kernelconfigpath");
-			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zur�ckgeben.
+			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurueckgeben.
 			if(!StringZZZ.isEmpty(stemp)) break main;
 			
 			sReturn = StringZZZ.right(sSubject, "kernelconfigpath");
 			if(!StringZZZ.isEmpty(sReturn)) {
-//				Da der Returnwert nun allerdings nur kleingeschrieben w�re vom Original ausgehen
-				sReturn = sSubjectIn.substring(16);  //16 ist die L�nge von 'kernelConfigpath'
+//				Da der Returnwert nun allerdings nur kleingeschrieben waere vom Original ausgehen
+				sReturn = sSubjectIn.substring(16);  //16 ist die Laenge von 'kernelConfigpath'
 				break main;
 			}
 		}
@@ -3590,6 +3590,17 @@ MeinTestParameter=blablaErgebnis
 			String[] saVar = objFileIni.getVariables(sSystemKey);
 			for(int icount = 0; icount <= saVar.length-1; icount ++){
 				String sModule = KernelKernelZZZ.computeModuleAliasBySubject(saVar[icount]);
+				if(!StringZZZ.isEmpty(sModule)){
+					if(!listaModuleString.contains(sModule)){
+						listaModuleString.add(sModule);
+					}
+				}
+			}
+			
+			String sApplicationKey = this.getApplicationKey();
+			String[] saVarApplication = objFileIni.getVariables(sApplicationKey);
+			for(int icount = 0; icount <= saVarApplication.length-1; icount ++){
+				String sModule = KernelKernelZZZ.computeModuleAliasBySubject(saVarApplication[icount]);
 				if(!StringZZZ.isEmpty(sModule)){
 					if(!listaModuleString.contains(sModule)){
 						listaModuleString.add(sModule);
