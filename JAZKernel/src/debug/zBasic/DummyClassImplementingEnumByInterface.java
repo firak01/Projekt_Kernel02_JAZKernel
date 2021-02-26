@@ -28,4 +28,10 @@ public class DummyClassImplementingEnumByInterface extends AbstractKernelProgram
 		return null;
 	}
 
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

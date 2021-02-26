@@ -141,4 +141,7 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	public void setModule(IKernelModuleZZZ objModule) {
 		this.objModule = objModule;
 	}
+	
+	//### Methoden
+	public abstract void reset();
 }
