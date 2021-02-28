@@ -257,6 +257,27 @@ public void testFileConfigByAlias(){
 	}
 }
 
+public void testFileConfigModuleExternByAlias(){
+	try{
+		//Konfiguration & Methode testen
+		File objFile = objKernelFGL.getFileConfigByAlias("TestModuleExtern");
+		assertNotNull("The module for the alias 'TestModuleExtern' is not configured in the kernel-configuration-file.", objFile);
+		
+		//Testen, ob die Modulkonfiguration auch vorhanden ist
+		assertTrue("The configuration file for the alias 'TestModuleExtern' does not exist.", objFile.exists());
+				
+		//Diese Konfiguration sollte es nicht geben
+		assertNull("The module for the alias 'NotExistingModuleTest' seems to be configured in the kernel-configuration-file, or this tested method is buggy.", objKernelFGL.getFileConfigByAlias("NotExistingModuleTest"));
+		
+		//#### Auslesen von Werten aus dieser Datei
+		String sValueModuleExtern = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProg", "testGlobalProperty").getValue();
+		
+		
+	}catch(ExceptionZZZ ez){
+		fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
+	}
+}
+
 public void testModuleFileIsConfigured(){
 	try{
 		assertEquals(true, objKernelFGL.proofModuleFileIsConfigured("TestModule"));

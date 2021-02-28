@@ -1763,7 +1763,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
 				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {
 					sRoot = FileEasyZZZ.getFileRootPath();									
-					if(!(sFilePath + sDirectorySeparator).startsWith(sRoot + sDirectorySeparator)) {													
+					if(!(sFilePath + sDirectorySeparator).startsWith(sRoot + sDirectorySeparator) && !(sFilePath + sDirectorySeparator).startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {													
 						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
 						sRoot = "";
 					}else {
@@ -1832,20 +1832,31 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}else{
 				if(sFileName.equals("")){
 					//B)
-					if(!FileEasyZZZ.isPathAbsolut(sFilePath)){
-						sReturn = sRoot + sDirectorySeparator +  sFilePath;
+					if(FileEasyZZZ.isPathAbsolut(sFilePath)){
+						sReturn = sFilePath;						
 					}else {
-						sReturn = sFilePath;
+						if((FileEasyZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {
+							sReturn = sFilePath + sDirectorySeparator + sFileName; //Für die TESTfälle: Dateien, die im test-Ordner liegen.
+						}else {
+							sReturn = sRoot + sDirectorySeparator +  sFilePath;
+						}
 					}	
 				}else{
 					//C)		
-					if(!FileEasyZZZ.isPathAbsolut(sFilePath)){
-						sReturn = sRoot + sFilePath + sDirectorySeparator + sFileName;
+					if(FileEasyZZZ.isPathAbsolut(sFilePath)){
+						sReturn = sFilePath + sDirectorySeparator + sFileName;						
 					}else {
-						sReturn = sFilePath + sDirectorySeparator + sFileName;
+						if((FileEasyZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {							
+							sReturn = sFilePath + sDirectorySeparator + sFileName; //Für die TESTfälle: Dateien, die im test-Ordner liegen.
+						}else {							
+							sReturn = sRoot + sDirectorySeparator +  sFilePath + sDirectorySeparator + sFileName;
+						}
 					}					
 				}
 			}
+			
+			//Vor dem Schluss noch einmal normieren
+			sReturn = StringZZZ.stripFileSeparators(sReturn);
 			
 		}//end main
 		return sReturn;
@@ -2374,14 +2385,22 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				//Nun ggfs. noch vorhandene Pfadzeichen am Anfang/Ende entfernen.
 				sPath = StringZZZ.stripFileSeparators(sPath);
 				
-				if(bUseClasspathSource) {
+				if(bUseClasspathSource) {										
 					String sPathRoot = FileEasyZZZ.getFileRootPath();
-					sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+						sPath = sPathIn;
+					}else {
+						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					}
 				}
 				
-				if(bUseProjectBaseForTest) {
+				if(bUseProjectBaseForTest) {					
 					String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
-					sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+						sPath = sPathIn;
+					}else {
+						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					}
 				}
 			}
 			

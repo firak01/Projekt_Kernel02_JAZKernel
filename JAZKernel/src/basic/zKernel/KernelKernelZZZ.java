@@ -636,6 +636,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					}
 														
 					//2. Hole den Dateipfad	
+					TODOGOON; //2021028: Hier wird in den Testfällen NICHT im Test-Ordner gesucht.... das muss.
 					String sFilePath = this.searchFileConfigIniPathByAlias(objIni, sAlias);
 					if(StringZZZ.isEmpty(sFilePath)){											
 						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null or Empty. PLUS: BaseDirectory not found.", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
