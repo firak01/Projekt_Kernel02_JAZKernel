@@ -456,41 +456,87 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;	
 	}
 	
-	public IniFile getFileConfigKernelAsIni(String sAlias) throws ExceptionZZZ{
+	public IniFile getFileConfigKernelAsIni(String sModule) throws ExceptionZZZ{
 		IniFile objReturn = null;
 		main:{
 			check:{
-				if(sAlias == null){							
-					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				if(sModule == null){							
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
-				if(sAlias.equals("")){							
-					ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				if(sModule.equals("")){							
+					ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}						
 			}//end check:
 			try{
+				
 			//Hole zuerst das "Basis-File"
 			IniFile objIni = this.getFileConfigKernelAsIni(); 
 			
+			//1. Versuch: Auf Systemebene
+			String sKeyUsed = this.getSystemKey();
+			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 	
+			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				//this.setValueRaw(sFileName);
+			}else{
+				//this.setValueRaw(null);
+			}
 			
+			//2. Versuch auf Applikationsebene
+			if(StringZZZ.isEmpty(sFileNameUsed)) {								
+				sKeyUsed = this.getApplicationKey();
+				sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 
+				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+					//this.setValueRaw(sFileName);
+				}else{
+					//this.setValueRaw(null);
+				}
+			}
+			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+			if(sFileNameUsed.equals(""))break main;								
+			
+			//###############
+			String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sModule );
+			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
+			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
+				//this.setValueRaw(sFilePath);
+			}else{
+				//this.setValueRaw(null);
+			}						
+			//if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
+			
+			//Proof the existance of the file
+			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
+			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
+			File objFile = new File(sFileTotal);
+			
+			//#############################
+			//#######################################
 			//1. Hole den Dateinamen			
-			String sFileNameUsed = this.searchFileConfigIniNameByAlias(objIni, sAlias);			
-			if(StringZZZ.isEmpty(sFileNameUsed)){			
-				ExceptionZZZ ez = new ExceptionZZZ("KernelKonfiguration ('"+objIni.getFileName()+"'): FileName not configured, is null or Empty for Modul-Alias '" + sAlias + "'", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			//2. Hole den Dateipfad						
-			String sFilePathUsed = this.searchFileConfigIniPathByAlias(objIni, sAlias);
-			//Mache ruhig eine Überprüfung. Bei einem Leerstring wird nämlich normalerweise das Root zurückgegeben.
-			if(StringZZZ.isEmpty(sFilePathUsed)){											
-				ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null or Empty. PLUS: BaseDirectory not found.", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
+//			String sFileNameUsed = this.searchFileConfigIniNameByAlias(objIni, sAlias);			
+//			if(StringZZZ.isEmpty(sFileNameUsed)){			
+//				ExceptionZZZ ez = new ExceptionZZZ("KernelKonfiguration ('"+objIni.getFileName()+"'): FileName not configured, is null or Empty for Modul-Alias '" + sAlias + "'", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+//			}
+//			
+//			//2. Hole den Dateipfad						
+//			String sFilePathUsed = this.searchFileConfigIniPathByAlias(objIni, sAlias);
+//			//Mache ruhig eine Überprüfung. Bei einem Leerstring wird nämlich normalerweise das Root zurückgegeben.
+//			if(StringZZZ.isEmpty(sFilePathUsed)){											
+//				ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null or Empty. PLUS: BaseDirectory not found.", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+//			}
 			
 			//3. Mache das neue Ini-Objekt
-			String sPathTotalToUse = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
+//			String sPathTotalToUse = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
+
+			String sPathTotalToUse = objFile.getAbsolutePath();
 			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 			objReturn = new IniFile(sPathTotalToUse);
@@ -624,32 +670,35 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						throw ez;
 					} //20190705: UND ... WAS WIRD NUN MIT DER GEFUNDENEN INI-DATEI gemacht? Neu: Setze die Datei.
 														
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++
-					//FEHLERMARKER
-					//++++++++++++++++++++++++++++++++++++++++++++++++++++
+//					//++++++++++++++++++++++++++++++++++++++++++++++++++++
+//					//FEHLERMARKER
+//					//++++++++++++++++++++++++++++++++++++++++++++++++++++
+//					
+//					//1. Hole den Dateinamen										
+//					String sFileName = this.searchFileConfigIniNameByAlias(objIni, sAlias);
+//					if(StringZZZ.isEmpty(sFileName)){											
+//						ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;
+//					}
+//														
+//					//2. Hole den Dateipfad	
+//					//TODOGOON; //2021028: Hier wird in den Testfällen NICHT im Test-Ordner gesucht.... das muss.
+//					String sFilePath = this.searchFileConfigIniPathByAlias(objIni, sAlias);
+//					if(StringZZZ.isEmpty(sFilePath)){											
+//						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null or Empty. PLUS: BaseDirectory not found.", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;
+//					}
 					
-					//1. Hole den Dateinamen										
-					String sFileName = this.searchFileConfigIniNameByAlias(objIni, sAlias);
-					if(StringZZZ.isEmpty(sFileName)){											
-						ExceptionZZZ ez = new ExceptionZZZ("FileName not configured, is null or Empty", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
-														
-					//2. Hole den Dateipfad	
-					TODOGOON; //2021028: Hier wird in den Testfällen NICHT im Test-Ordner gesucht.... das muss.
-					String sFilePath = this.searchFileConfigIniPathByAlias(objIni, sAlias);
-					if(StringZZZ.isEmpty(sFilePath)){											
-						ExceptionZZZ ez = new ExceptionZZZ("FilePath not configured, is null or Empty. PLUS: BaseDirectory not found.", this.iERROR_CONFIGURATION_MISSING,this,  ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
-														
+					String sFilePathTotal = objIni.getFileName();
+					File objFileModule = new File(sFilePathTotal);			
+					
 					//++++++++++++++++++++++++++++++++++++++++++++++++++++	
 					//3. Neues FileIniZZZ Objekt erstellen, ggfs.
 					if(this.objFileIniKernelConfig==null){												
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
 						FileIniZZZ exDummy = new FileIniZZZ();					
 						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);						
-						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,saFlagZpassed);
+						objReturn = new FileIniZZZ(this,  objFileModule,saFlagZpassed);
 
 					}else{
 						//Übernimm die gesetzten FlagZ...
@@ -657,7 +706,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						
 						//Übernimm die gesetzten Variablen...
 						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigIni().getHashMapVariable();
-						objReturn = new FileIniZZZ(this,  sFilePath,sFileName,hmFlagZ);
+						objReturn = new FileIniZZZ(this,  objFileModule,hmFlagZ);
 						objReturn.setHashMapVariable(hmVariable);	
 					}
 					
@@ -3701,48 +3750,8 @@ MeinTestParameter=blablaErgebnis
 			IniFile objIni = this.getFileConfigKernelAsIni();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
 			
-			//1. Versuch: Auf Systemebene
-			String sKeyUsed = this.getSystemKey();
-			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 	
-			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-				//this.setValueRaw(sFileName);
-			}else{
-				//this.setValueRaw(null);
-			}
-			
-			//2. Versuch auf Applikationsebene
-			if(StringZZZ.isEmpty(sFileNameUsed)) {								
-				sKeyUsed = this.getApplicationKey();
-				sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 
-				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
-				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-					//this.setValueRaw(sFileName);
-				}else{
-					//this.setValueRaw(null);
-				}
-			}
-			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
-			if(sFileNameUsed.equals(""))break main;								
-			
-			//###############
-			String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sModule );
-			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
-			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
-				//this.setValueRaw(sFilePath);
-			}else{
-				//this.setValueRaw(null);
-			}						
-			//if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
-			
-			//Proof the existance of the file
-			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
-			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
-			File objFile = new File(sFileTotal);
-			bReturn = FileEasyZZZ.exists(objFile);
+			IniFile objFile = this.getFileConfigKernelAsIni(sModule);
+			bReturn = FileEasyZZZ.exists(objFile.getFileName());
 			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists = " + bReturn);
 		}//end main:
 		return bReturn;
