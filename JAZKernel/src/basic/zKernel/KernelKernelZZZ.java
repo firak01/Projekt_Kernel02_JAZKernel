@@ -3751,8 +3751,12 @@ MeinTestParameter=blablaErgebnis
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
 			
 			IniFile objFile = this.getFileConfigKernelAsIni(sModule);
-			bReturn = FileEasyZZZ.exists(objFile.getFileName());
-			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists = " + bReturn);
+			if(objFile!=null) {
+				bReturn = FileEasyZZZ.exists(objFile.getFileName());
+				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists = " + bReturn);
+			}else {
+				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists (null case) = " + bReturn);
+			}
 		}//end main:
 		return bReturn;
 	}

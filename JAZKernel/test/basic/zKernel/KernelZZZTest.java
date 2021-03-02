@@ -271,7 +271,7 @@ public void testFileConfigModuleExternByAlias(){
 		
 		//#### Auslesen von Werten aus dieser Datei
 		String sValueModuleExtern = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProg", "testGlobalProperty").getValue();
-		
+		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","testWert global",sValueModuleExtern);
 		
 	}catch(ExceptionZZZ ez){
 		fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
