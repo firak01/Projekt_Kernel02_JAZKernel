@@ -514,7 +514,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//Proof the existance of the file
 			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
 			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
-			File objFile = new File(sFileTotal);
+			File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
 			
 			//#############################
 			//#######################################
@@ -539,9 +539,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sPathTotalToUse = objFile.getAbsolutePath();
 			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-			objReturn = new IniFile(sPathTotalToUse);
+			if(FileEasyZZZ.exists(sPathTotalToUse)) {
+				objReturn = new IniFile(sPathTotalToUse);
+				//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
+				
+			}else {
+				sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				objReturn = null;
+			}
 			
-			//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
 			
 			} catch (IOException ioe) {
 				String sLog = "IOException: Configuration File. Not able to create ini-FileObject.";
@@ -3434,13 +3441,14 @@ MeinTestParameter=blablaErgebnis
 				
 				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, hmFlag);
 					
-				String[] saProperty = null; String sSearch = null; int iIndex;
+				String[] saProperty = null; String sSearch = null; int iIndex; String sSystemKey = null;
 				File objFileTemp=null; File[] objaFileTemp=null; String sDir=null; ArrayList listaConfigured=null; ArrayList listaExisting = null; ArrayList listaFile = null;  
 					switch(iCase){
 					case 1:
 						//+++ Von den konfigurierten Modulen nur diejenige, die auch existieren.
 						//Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. 
-						saProperty = objFileIni.getPropertyAll(this.getSystemKey());
+						sSystemKey = this.getSystemKey();
+						saProperty = objFileIni.getPropertyAll(sSystemKey);
 						if (saProperty==null) break main;
 						
 						sSearch = new String("kernelconfigfile");
@@ -3473,7 +3481,8 @@ MeinTestParameter=blablaErgebnis
 																	
 						//+++ 1. Die konfigurierten Module holen
 						//Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. 
-						saProperty = objFileIni.getPropertyAll(this.getSystemKey()); 
+						sSystemKey = this.getSystemKey();
+						saProperty = objFileIni.getPropertyAll(sSystemKey);
 						
 						sSearch = new String("kernelconfigfile");
 						iIndex = sSearch.length();	
@@ -3527,8 +3536,9 @@ MeinTestParameter=blablaErgebnis
 						break;
 					case 3:
 						//+++ Von den konfigurierten Modulen diejenigen, deren Konfigurationsdatei fehlt
-//						Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. 
-						saProperty = objFileIni.getPropertyAll(this.getSystemKey());
+//						Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen.
+						sSystemKey = this.getSystemKey();
+						saProperty = objFileIni.getPropertyAll(sSystemKey);
 						if (saProperty==null) break main;
 						
 						sSearch = new String("kernelconfigfile");
@@ -3569,8 +3579,9 @@ MeinTestParameter=blablaErgebnis
 						if(objaFileTemp==null) break main;
 						if(objaFileTemp.length==0)break main;
 						
-						// Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. ! DIE PROPERTIES, nicht die Values !!! 
-						saProperty = objFileIni.getPropertyAll(this.getSystemKey());
+						// Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. ! DIE PROPERTIES, nicht die Values !!!
+						sSystemKey = this.getSystemKey();
+						saProperty = objFileIni.getPropertyAll(sSystemKey);						
 							
 						/* falsch, das funktioniert nur mit den Values
 						listaConfigured = new ArrayList();

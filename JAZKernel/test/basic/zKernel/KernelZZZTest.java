@@ -241,6 +241,34 @@ public void testProofModuleIsConfigured(){
 /** void, Testet die Methode und auch, ob es das Test-Modul-Konfigurations-File auch gibt.
 * Lindhauer; 20.04.2006 09:05:11
  */
+public void testFileConfigAllByDir(){
+	try{
+		//Konfiguration & Methode testen
+		//1. Hole das aktuelle Verzeichnis
+		TODOGOON; // 20210303 Hier sollte jetzt etwas gefunden werden
+		objKernelFGL.getFileConfigAllByDir(sDirIn);
+		
+		//2. Test mit einem Verzeichnis, das es nicht gibt.
+		
+		
+		
+		//#######################
+		File objFile = objKernelFGL.getFileConfigByAlias("TestModule");
+		assertNotNull("The module for the alias 'TestModule' is not configured in the kernel-configuration-file.", objFile);
+		
+		//Testen, ob die Modulkonfiguration auch vorhanden ist
+		assertTrue("The configuration file for the alias 'TestModule' does not exist.", objFile.exists());
+				
+		//Diese Konfiguration sollte es nicht geben
+		assertNull("The module for the alias 'NotExistingModuleTest' seems to be configured in the kernel-configuration-file, or this tested method is buggy.", objKernelFGL.getFileConfigByAlias("NotExistingModuleTest"));
+	}catch(ExceptionZZZ ez){
+		fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
+	}
+}
+
+/** void, Testet die Methode und auch, ob es das Test-Modul-Konfigurations-File auch gibt.
+* Lindhauer; 20.04.2006 09:05:11
+ */
 public void testFileConfigByAlias(){
 	try{
 		//Konfiguration & Methode testen
