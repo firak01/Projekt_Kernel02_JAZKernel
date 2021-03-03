@@ -3,13 +3,14 @@ package basic.zKernel;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import basic.zBasic.util.file.FilenamePartFilterEndingZZZ;
 import basic.zBasic.util.file.FilenamePartFilterSuffixZZZ;
 
 public class KernelFileFilterModuleZZZ implements FilenameFilter {
-	FilenamePartFilterSuffixZZZ objFilterSuffix;
+	FilenamePartFilterEndingZZZ objFilterEnding;
 	
 	public KernelFileFilterModuleZZZ(){
-		objFilterSuffix = new FilenamePartFilterSuffixZZZ("ini");
+		objFilterEnding = new FilenamePartFilterEndingZZZ("ini");
 	}
 	public boolean accept(File objFileDir, String sName) {
 		boolean bReturn=false;
@@ -19,7 +20,7 @@ public class KernelFileFilterModuleZZZ implements FilenameFilter {
 			}
 	 		
 		//Falls die Endung nicht passt
-		if(this.objFilterSuffix.accept(objFileDir, sName)==false) break main;
+		if(this.objFilterEnding.accept(objFileDir, sName)==false) break main;
 		if(! sName.toLowerCase().startsWith("zkernelconfig")) break main;
 		bReturn = true;
 		}//END main:

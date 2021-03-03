@@ -245,22 +245,25 @@ public void testFileConfigAllByDir(){
 	try{
 		//Konfiguration & Methode testen
 		//1. Hole das aktuelle Verzeichnis
-		TODOGOON; // 20210303 Hier sollte jetzt etwas gefunden werden
-		objKernelFGL.getFileConfigAllByDir(sDirIn);
+		File objFileDir = objKernelFGL.getFileConfigKernel().getParentFile();
+		String sDir = objFileDir.getAbsolutePath();
+				
+		//Hier sollte jetzt etwas gefunden werden
+		File[]objaFileConfig = objKernelFGL.getFileConfigAllByDir(sDir);
+		assertNotNull("There should be at least one ini-file.", objaFileConfig);
+		assertTrue("There should be at least two files. ArraySize: " + objaFileConfig.length, objaFileConfig.length>1);
 		
 		//2. Test mit einem Verzeichnis, das es nicht gibt.
-		
-		
-		
-		//#######################
-		File objFile = objKernelFGL.getFileConfigByAlias("TestModule");
-		assertNotNull("The module for the alias 'TestModule' is not configured in the kernel-configuration-file.", objFile);
-		
-		//Testen, ob die Modulkonfiguration auch vorhanden ist
-		assertTrue("The configuration file for the alias 'TestModule' does not exist.", objFile.exists());
+		String sDirNixda = "c:\\temp\\nixda";
+		File[] objaFileConfigNixda=null;
+		try {
+			objaFileConfigNixda = objKernelFGL.getFileConfigAllByDir(sDirNixda);
+			fail("An Exception should have happened looking in a not existing directory '" + sDirNixda + "'");
+		}catch(ExceptionZZZ ez){			
+		}
+		assertNull("This directory was expected to not exist. Ergo there shouldn´t be any ini-file.", objaFileConfigNixda);
 				
-		//Diese Konfiguration sollte es nicht geben
-		assertNull("The module for the alias 'NotExistingModuleTest' seems to be configured in the kernel-configuration-file, or this tested method is buggy.", objKernelFGL.getFileConfigByAlias("NotExistingModuleTest"));
+		
 	}catch(ExceptionZZZ ez){
 		fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
 	}
@@ -424,10 +427,15 @@ public void testParameterByProgramAlias(){
 		//D1) Teste das Setzen von Parameterwerten, bei gleichem Modulnamen / Aliasnamen
 		String sToSet3 = new String("testwert progname equals module");
 		String sClassname = this.getClass().getName(); 
+		TODOGOO; //20210303: Fehler wird geworfen, weil die Klasse nicht als Modul definiert ist.
 		objKernelFGL.setParameterByProgramAlias(sClassname, "testProgramProperty4", sToSet3);
 		
 		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty4'", sToSet3, stemp5);
+		
+		//TODOGOON 20210303 Definiere ein Modul als externe ini Datei und schreibe darin hinein
+		//........
+		
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	
@@ -554,7 +562,7 @@ public void testGetModuleAliasAll(){
 	}
     	
 	try{
-		//+++ Von den in dem Kernel-Verzeichnis existierenden Moduldateien, diejenigen, deren Konfiguration noch nicht erfolgt ist.
+		//+++ Von den in dem Kernel-Verzeichnis existierenden Moduldateien, diejenigen, deren Konfiguration in dieser "Hauptkernelkonfiguration" (noch) nicht erfolgt ist.
 		ArrayList listaAlias2 = objKernelTest.getModuleFileAliasAll(true, false);
 		assertNotNull("There is no alias configured and no module does exist (arraylist null case)", listaAlias2);
 		assertFalse("There is no file found wich is not configured (use a dummy configuration file at least. Starting the filename with 'ZKernelConfig ....' (arraylist empty case)", listaAlias2.isEmpty()==true);
