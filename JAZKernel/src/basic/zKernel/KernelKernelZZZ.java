@@ -2647,8 +2647,18 @@ MeinTestParameter=blablaErgebnis
 			}//END check:
 		
 			//FGL TODO GOON 20180909: Müsste nicht eigentlich der ApplicationKey als ModulAlias verwendet werden?		
-			//sReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sModuleAndProgramAndSection, sProperty); 
-			objReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection, sProperty, bUseCache);
+			//sReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sModuleAndProgramAndSection, sProperty);
+			
+			//Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
+			IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
+			if(objAlias.hasAnyValue()) {
+				String sAlias = objAlias.getProperty();
+				objReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sAlias,sProperty, bUseCache);
+			}else {
+				objReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection, sProperty, bUseCache);
+			}
+			
+			//objReturn = this.getParameterByProgramAlias(this.getSystemKey(), sModuleAndProgramAndSection, sProperty, bUseCache);
 		}//END main:
 		return objReturn;
 	}
@@ -2928,10 +2938,10 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 16.01.2007 11:08:36
 	 */
-	public synchronized void setParameterByProgramAlias(String sModuleAndSectionAndProgram, String sProperty, String sValue) throws ExceptionZZZ{
+	public synchronized void setParameterByProgramAlias(String sModuleAndProgramAndSection, String sProperty, String sValue) throws ExceptionZZZ{
 		main:{
 				check:{
-					if(StringZZZ.isEmpty(sModuleAndSectionAndProgram)){
+					if(StringZZZ.isEmpty(sModuleAndProgramAndSection)){
 						ExceptionZZZ ez = new ExceptionZZZ("Module/Section/Program",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}
@@ -2939,7 +2949,30 @@ MeinTestParameter=blablaErgebnis
 					//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
 				}//end check:
 	
-	            this.KernelSetParameterByProgramAlias_(null, null, sModuleAndSectionAndProgram, sProperty, sValue, true);
+				//Modul = Programname
+	            //this.KernelSetParameterByProgramAlias_(null, sModuleAndSectionAndProgram, sModuleAndSectionAndProgram, sProperty, sValue, true);
+	            
+	          //Idee: 20180909: Müsste nicht eigentlich der ApplicationKey als ModulAlias verwendet werden?
+			//this.KernelSetParameterByProgramAlias_(null, this.getApplicationKey(), sModuleAndSectionAndProgram, sProperty, sValue, true);
+			//this.KernelSetParameterByProgramAlias_(null, this.getSystemKey(), sModuleAndSectionAndProgram, sProperty, sValue, true);
+			
+			//202100305: Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
+			IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
+			if(objAlias.hasAnyValue()) {
+				String sAlias = objAlias.getValue();
+				try {
+					this.KernelSetParameterByProgramAlias_(null, this.getSystemKey(), sAlias, sProperty,sValue, true);
+				}catch(ExceptionZZZ ez) {
+					this.KernelSetParameterByProgramAlias_(null, this.getApplicationKey(), sAlias, sProperty,sValue, true);
+				}
+			}else {
+				try {
+					this.KernelSetParameterByProgramAlias_(null, this.getSystemKey(), sModuleAndProgramAndSection, sProperty, sValue, true);
+				}catch(ExceptionZZZ ez) {
+					this.KernelSetParameterByProgramAlias_(null, this.getApplicationKey(), sModuleAndProgramAndSection, sProperty, sValue, true);
+				}
+			}
+						
 		}
 	}
 	
@@ -4093,6 +4126,41 @@ MeinTestParameter=blablaErgebnis
 		}//end main
 		return bReturn;
 	}
+	
+	/**Merke: Hier wird davon ausgegangen, das Modul - und Programmname identisch sind !!!
+	 * FGL 20180909: Müsste nicht eigentlich der Kernel-ApplicationKey als ModulAlias verwendet werden??? Statt Gleichheit???
+	* @param sModuleAndProgramAndSection
+	* @param sProperty
+	* @return
+	* @throws ExceptionZZZ
+	* 
+	* lindhaueradmin; 12.01.2007 09:10:41
+	 */
+	public IKernelConfigSectionEntryZZZ getSectionAliasFor(String sModuleAndProgramAndSection) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{
+			check:{
+				if(StringZZZ.isEmpty(sModuleAndProgramAndSection)){
+					ExceptionZZZ ez = new ExceptionZZZ("Missing 'String Module/Program/Section'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}			
+			}//END check:
+
+			
+			FileIniZZZ objFileIniConfig = this.getFileConfigIni();
+			String sSectionMain = null;
+			
+			sSectionMain = this.getSystemKey();
+			objReturn = objFileIniConfig.getPropertyValue(sSectionMain, sModuleAndProgramAndSection);
+			if(objReturn.hasAnyValue()) break main;
+			
+			sSectionMain = this.getApplicationKey();
+			objReturn = objFileIniConfig.getPropertyValue(sSectionMain, sModuleAndProgramAndSection);
+			if(objReturn.hasAnyValue()) break main;
+			
+		}//END main:
+		return objReturn;
+	}
 
 	
 	//##### Interfaces	
@@ -4291,10 +4359,30 @@ MeinTestParameter=blablaErgebnis
 					throw ez;
 				}			
 			}//END check:
-		
-			//FGL TODO GOON 20180909: Müsste nicht eigentlich der ApplicationKey als ModulAlias verwendet werden?		
-			//sReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sModuleAndProgramAndSection, sProperty); 
-			objReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection, sProperty);
+
+			//Modul = Programname
+			//objReturn = this.getParameterByProgramAlias(sModuleAndProgramAndSection, sModuleAndProgramAndSection, sProperty);
+			
+			//Idee: 20180909: Müsste nicht eigentlich der ApplicationKey als ModulAlias verwendet werden?
+			//objReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection, sProperty);
+			
+			//20210305 Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
+			IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
+			if(objAlias.hasAnyValue()) {
+				String sAlias = objAlias.getValue();
+				try {
+					objReturn = this.getParameterByProgramAlias(this.getSystemKey(), sAlias,sProperty, true);
+				}catch(ExceptionZZZ ez) {
+					objReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sAlias,sProperty, true);
+				}
+			}else {
+				try {
+					objReturn = this.getParameterByProgramAlias(this.getSystemKey(), sModuleAndProgramAndSection, sProperty, true);
+				}catch(ExceptionZZZ ez) {
+					objReturn = this.getParameterByProgramAlias(this.getApplicationKey(), sModuleAndProgramAndSection,sProperty, true);
+				}
+			}
+			
 		}//END main:
 		return objReturn;
 	}

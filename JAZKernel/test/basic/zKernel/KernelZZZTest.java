@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
@@ -423,15 +425,21 @@ public void testParameterByProgramAlias(){
 	}		
 	
 	try{	
+		String sClassname = this.getClass().getName(); 
+		String stempx = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
+		assertFalse("Expected as a value in the property 'testProgramProperty4'", StringZZZ.isEmpty(stempx));
+		
+		
 //		D) Neu 20061021 Section des Aliasnamen mit Systemnumber, wenn  ein Paramenter in der Section des "nur" Aliasnamens nicht gefunden wird
 		//D1) Teste das Setzen von Parameterwerten, bei gleichem Modulnamen / Aliasnamen
-		String sToSet3 = new String("testwert progname equals module");
-		String sClassname = this.getClass().getName(); 
-		TODOGOO; //20210303: Fehler wird geworfen, weil die Klasse nicht als Modul definiert ist.
+		String sToSet3 = new String("testwert progname equals module" + DateTimeZZZ.computeTimestampUniqueString());		
+		//TODOGOO; //20210303: Fehler wird geworfen, weil die Klasse nicht als Modul definiert ist.
 		objKernelFGL.setParameterByProgramAlias(sClassname, "testProgramProperty4", sToSet3);
 		
 		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty4'", sToSet3, stemp5);
+		
+		assertFalse("Expected a changed Value", stempx.equals(stemp5));
 		
 		//TODOGOON 20210303 Definiere ein Modul als externe ini Datei und schreibe darin hinein
 		//........
@@ -514,7 +522,7 @@ public void testGetParameterFromClass(){
 	
 	try{
 		//C) "Verkürzte Parameter"
-		//Wenn der Modulname und der Programname gleich sind, dann soll es m�glich sein ganz einfach nur den Programnamen und die gesuchte Property zu �bergeben
+		//Wenn der Modulname und der Programname gleich sind, dann soll es moeglich sein ganz einfach nur den Programnamen und die gesuchte Property zu uebergeben
 		String stemp6 = objKernelFGL.getParameterByProgramAlias(sClassname, "TestParameter1Abbreviated").getValue(); 
 		assertEquals("TestValue1Abbreviated", stemp6);
 	}catch(ExceptionZZZ ez){
@@ -584,4 +592,26 @@ public void testGetModuleAliasAll(){
 	}
 	
 	}
+
+	public void  testGetSectionAliasFor() {
+		try {
+			String sClassname = this.getClass().getName();
+			IKernelConfigSectionEntryZZZ objEntryAlias = null;
+			
+			//Negativfall							
+			objEntryAlias = objKernelTest.getSectionAliasFor(sClassname);
+			assertFalse(objEntryAlias.hasAnyValue());
+		
+			//Jetzt den Positivfall
+			objEntryAlias = objKernelFGL.getSectionAliasFor(sClassname);
+			assertTrue(objEntryAlias.hasAnyValue());
+						
+			String sAlias = objEntryAlias.getValue();
+			assertTrue(sAlias.equals("TestProg"));						
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
+	
+	
 }//END Class
