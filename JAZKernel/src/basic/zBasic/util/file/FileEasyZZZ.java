@@ -1855,9 +1855,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}
 			}
 			
-			//Vor dem Schluss noch einmal normieren
-			sReturn = StringZZZ.stripFileSeparators(sReturn);
-			
+			//Vor dem Schluss noch einmal normieren, ausser es ist ggfs. eine Pfadangabe auf einem Remote-System. Diese nicht unnötig verändern.
+			if(!bRemote) {
+				sReturn = StringZZZ.stripFileSeparators(sReturn);
+			}
 		}//end main
 		return sReturn;
 	}
