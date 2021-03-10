@@ -2,7 +2,7 @@ package basic.zBasic.util.math;
 
 import java.util.Random;
 
-public class RandomZZZ {
+public abstract class RandomZZZ {
 	private static final Random generator = new Random(System.currentTimeMillis());
 	private RandomZZZ(){
 		//Zum "Verstecken" des Konstruktors		
