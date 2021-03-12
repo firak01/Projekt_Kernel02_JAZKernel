@@ -3,7 +3,7 @@ package basic.zKernel.component;
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.flag.IFlagZZZ;
 
-public interface IKernelProgramZZZ  extends IFlagZZZ, IKernelModuleUserZZZ { 
+public interface IKernelProgramZZZ  extends IFlagZZZ{ 
 	public enum FLAGZ{
 		ISKERNELPROGRAM; 
 	}
