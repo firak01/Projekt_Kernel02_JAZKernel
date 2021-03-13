@@ -141,7 +141,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	 		//Die ggf. vorhandenen Flags setzen.
 			if(hmFlag!=null){
 				for(String sKey:hmFlag.keySet()){
-					this.setFlagZ(sKey, hmFlag.get(sKey));
+					stemp = sKey;
+					btemp = this.setFlagZ(sKey, hmFlag.get(sKey));
+					if(btemp==false){
+						ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+						throw ez;		 
+					}
 				}
 			}
 	 		
