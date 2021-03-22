@@ -7,6 +7,9 @@ import java.util.Vector;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -779,7 +782,7 @@ output:
 		StringBuilder sb = new StringBuilder("[");
 		for(int i = 0; i <= val; i++) {
 			if(i==0) {
-				sb.append(" \"");
+				sb.append("\"");
 			}
 			
 			String a=saValue[i].replaceAll("[^A-Za-z0-9]"," ");
@@ -792,24 +795,25 @@ output:
 		    	sb.append("\"");
 		    }
 		}
-		sb.append(" ]").toString();
-		
-//		StringBuilder sb=new StringBuilder();
-//		sb.append("[ \"");
-//		for(int x=0;x<val;x++) { 	
-//			String a=saValue[x].replaceAll("[^A-Za-z0-9]"," ");
-//			sb.append("+"); 			
-//			sb.append(a); 			
-//			if(x < val-1) { 	
-//				sb.append("+\",\""); 
-//			} 			
-//		} 			
-//		sb.append("+\" ]"); 	
-//		System.out.println(sb.toString());
-//		//out.write(sb.toString());
-		
-		
+		sb.append("]").toString();
+				
 		sReturn = sb.toString();		
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String toJson(String[] saValue) throws ExceptionZZZ{
+		String sReturn=null;
+		main:{
+			if(saValue==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			Gson gson=new GsonBuilder().create();
+		    String jsonArray=gson.toJson(saValue);
+			
+		    sReturn = jsonArray;
 		}//end main:
 		return sReturn;
 	}
