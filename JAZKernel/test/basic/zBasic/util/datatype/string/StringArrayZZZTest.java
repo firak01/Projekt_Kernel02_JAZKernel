@@ -129,4 +129,18 @@ public class StringArrayZZZTest extends TestCase implements IConstantZZZ {
 		}
 	}
 	
+	public void testToJsonByStringBuilder(){
+		try{
+			//1. Die statische Methode testen.
+			String[] saValue ={"B wert", "D wert", "F wert"};
+			
+			String sErg = StringArrayZZZ.toJsonByStringBuilder(saValue);
+			assertNotNull(sErg);
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 }

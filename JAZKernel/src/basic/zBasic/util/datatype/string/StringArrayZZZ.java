@@ -758,6 +758,62 @@ output:
 		return iReturn;
 	}
 	
+	
+	/**Einfache Variante, als Alternative zu Bibliotheken wie Gson oder Jackson
+	 * aus: https://stackoverflow.com/questions/35250698/how-do-i-convert-string-array-into-json-array/35250809
+	 * 
+	 * @return
+	 * @author Fritz Lindhauer, 22.03.2021, 09:05:06
+	 * @throws ExceptionZZZ 
+	 */
+	public static String toJsonByStringBuilder(String[] saValue) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(saValue==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+		int val = saValue.length-1;
+		
+		StringBuilder sb = new StringBuilder("[");
+		for(int i = 0; i <= val; i++) {
+			if(i==0) {
+				sb.append(" \"");
+			}
+			
+			String a=saValue[i].replaceAll("[^A-Za-z0-9]"," ");
+		    sb.append(a);
+		    if(i < val) {
+		        sb.append("\",\"");
+		    }
+		    
+		    if(i==val) {
+		    	sb.append("\"");
+		    }
+		}
+		sb.append(" ]").toString();
+		
+//		StringBuilder sb=new StringBuilder();
+//		sb.append("[ \"");
+//		for(int x=0;x<val;x++) { 	
+//			String a=saValue[x].replaceAll("[^A-Za-z0-9]"," ");
+//			sb.append("+"); 			
+//			sb.append(a); 			
+//			if(x < val-1) { 	
+//				sb.append("+\",\""); 
+//			} 			
+//		} 			
+//		sb.append("+\" ]"); 	
+//		System.out.println(sb.toString());
+//		//out.write(sb.toString());
+		
+		
+		sReturn = sb.toString();		
+		}//end main:
+		return sReturn;
+	}
+	
 	public static String[] unique(String[] saString1) throws ExceptionZZZ{
 		String[] objReturn = null;
 		main:{

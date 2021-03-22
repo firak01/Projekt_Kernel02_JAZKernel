@@ -179,7 +179,7 @@ public class GetOptZZZ extends ObjectZZZ{
 				
 				this.getOptionMap().put(sOption, sParam);
 				
-				//Zum n�chsten Argument
+				//Zum naechsten Argument
 				a = objOption.getopt(saArg);
 				sOption = StringZZZ.char2String(a).trim();
 			}
@@ -241,7 +241,7 @@ public class GetOptZZZ extends ObjectZZZ{
 //			Null oder Leerstring sind valid
 			if(StringZZZ.isEmpty(sArgument)) break main;
 				
-			//Falls das Pattern leer ist, sArgument ist aber gef�llt, dann FEHLER:
+			//Falls das Pattern leer ist, sArgument ist aber gefuellt, dann FEHLER:
 			String sPattern = this.getPattern();
 			if(StringZZZ.isEmpty(sPattern)){
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
@@ -251,8 +251,8 @@ public class GetOptZZZ extends ObjectZZZ{
 			//TODO: DAS PATTERN SELBST VALIDIEREN
 			
 			
-			//#### Die Pr�fung des Argument strings
-//			1a Alle nach dem Leerzeichen zerlegen. Parameter pr�fen.
+			//#### Die Pruefung des Argument strings
+//			1a Alle nach dem Leerzeichen zerlegen. Parameter pruefen.
 			String[] saParamAll = StringZZZ.explode(sArgument, " ");
 			if(saParamAll==null|saParamAll.length==0) break main;
 			
@@ -277,7 +277,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			//TODO: DAS PATTERN SELBST VALIDIEREN
 			
 			
-			//##### Die pr�fung
+			//##### Die Pruefung
 			sReturn = this.proofArgument_(sPattern, saParamAll);
 			
 		}//End main
@@ -292,7 +292,7 @@ public class GetOptZZZ extends ObjectZZZ{
 				throw ez;
 			}
 			
-			//#### Die Pr�fung des Argumentarrays
+			//#### Die Pruefung des Argumentarrays
 			if(saParamAll==null|saParamAll.length==0) break main;
 					
 //			Die Liste der vorherigen Steuerzeichen
