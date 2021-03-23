@@ -25,6 +25,10 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -1455,6 +1459,25 @@ public class StringZZZ implements IConstantZZZ{
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
+			return objReturn;
+		}
+		
+		public static JsonElement toJson(String s) {
+			JsonElement objReturn = null;
+			main:{
+				System.out.println("String to Json Array Stmt");
+				JsonParser parser = new JsonParser();
+				objReturn = parser.parse(s);				
+			}//end main;
+			return objReturn;
+		}
+		
+		public static JsonArray toJsonArray(String s) {
+			JsonArray objReturn = null;
+			main:{
+				JsonElement objJson = StringZZZ.toJson(s);				
+				objReturn = objJson.getAsJsonArray();											
+			}//end main
 			return objReturn;
 		}
 		
