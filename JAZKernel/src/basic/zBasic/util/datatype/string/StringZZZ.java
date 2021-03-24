@@ -34,6 +34,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
+import basic.zBasic.util.datatype.json.JsonArrayZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
@@ -1461,22 +1462,11 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			return objReturn;
 		}
-		
-		public static JsonElement toJson(String s) {
-			JsonElement objReturn = null;
+						
+		public static JsonArrayZZZ toJsonArray(String s) throws ExceptionZZZ {
+			JsonArrayZZZ objReturn = null;
 			main:{
-				System.out.println("String to Json Array Stmt");
-				JsonParser parser = new JsonParser();
-				objReturn = parser.parse(s);				
-			}//end main;
-			return objReturn;
-		}
-		
-		public static JsonArray toJsonArray(String s) {
-			JsonArray objReturn = null;
-			main:{
-				JsonElement objJson = StringZZZ.toJson(s);				
-				objReturn = objJson.getAsJsonArray();											
+				objReturn = new JsonArrayZZZ(s);											
 			}//end main
 			return objReturn;
 		}

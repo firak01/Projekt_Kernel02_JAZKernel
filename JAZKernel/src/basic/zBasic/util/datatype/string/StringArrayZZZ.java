@@ -15,6 +15,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
 /**
@@ -804,16 +805,8 @@ output:
 	
 	public static String toJson(String[] saValue) throws ExceptionZZZ{
 		String sReturn=null;
-		main:{
-			if(saValue==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			
-			Gson gson=new GsonBuilder().create();
-		    String jsonArray=gson.toJson(saValue);
-			
-		    sReturn = jsonArray;
+		main:{							
+		    sReturn = JsonEasyZZZ.toJson(saValue);
 		}//end main:
 		return sReturn;
 	}

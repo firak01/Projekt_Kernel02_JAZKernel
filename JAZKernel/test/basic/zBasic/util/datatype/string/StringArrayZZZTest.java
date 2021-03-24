@@ -6,11 +6,14 @@ package basic.zBasic.util.datatype.string;
 
 import junit.framework.TestCase;
 
+import java.util.Iterator;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.util.datatype.json.JsonArrayZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 
 /**
@@ -158,25 +161,18 @@ public class StringArrayZZZTest extends TestCase implements IConstantZZZ {
 			assertNotNull(sErg);
 			
 			String sValue = "[[\"110917       \", 3.0099999999999998, -0.72999999999999998, 2.8500000000000001, 2.96, 685.0, 38603.0], [\"110917    \", 2.71, 0.20999999999999999, 2.8199999999999998, 2.8999999999999999, 2987.0, 33762.0]]";
-			JsonArray objaJson = StringZZZ.toJsonArray(sValue);
+			JsonArrayZZZ objaJson = StringZZZ.toJsonArray(sValue);
 			JsonElement objJsonElement = objaJson.get(0);
 			stemp = objJsonElement.toString();
 			System.out.println(stemp);
-			
-			JsonArray objArrayInner = StringZZZ.toJsonArray(stemp);
-			
-			int iCounter = 0;
-			JsonElement objJsonElementInner = objArrayInner.get(iCounter);
-			while(objJsonElementInner!=null) {
-				stemp = objJsonElementInner.getAsString();
-				System.out.println(stemp);
-				
-				iCounter++;
-				objJsonElementInner = objArrayInner.get(iCounter);
+									
+			JsonArrayZZZ objArrayInner = StringZZZ.toJsonArray(stemp);			
+			Iterator<?> it = objArrayInner.iterator();			
+			while(it.hasNext()) {			
+				JsonElement element = (JsonElement) it.next();
+				stemp = element.getAsString();
+				System.out.println(stemp);								
 			}
-			
-			
-			
 		}catch(ExceptionZZZ ez){
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
