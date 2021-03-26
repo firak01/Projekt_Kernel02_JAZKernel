@@ -15,35 +15,38 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class FlagZZZ implements IFlagZZZ{
 	//private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
 	//???? !!! NUR PUBLIC PROPERTIES KÖNNEN ÜBETRAGEN WERDEN PER JSON !!!
-	public HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
+	public HashMap<String, Boolean>HmFlag; // = new HashMap<String, Boolean>(); //Neu 20130721
 
 	public FlagZZZ() {		
 	}
 	
 	//??? Nur Variablen, die auch in einem Konstruktor übergeben werden können per JSON übertragen werden.
 	public FlagZZZ(HashMap<String, Boolean>hmFlag) {
-		this.hmFlag = hmFlag;
+		this.HmFlag = hmFlag;
 	}
 	
 	//??? nur wenn der Getter und Setter so heisst wie die interne Variable ist eine Übetragung per JSON möglich
 	public HashMap<String, Boolean> getHmFlag(){
-		return hmFlag;
+		return HmFlag;
 	}
 	public void setHmFlag(HashMap<String, Boolean>hmFlag) {
-		this.hmFlag = hmFlag;
+		this.HmFlag = hmFlag;
 	}
 	
 	
 	
 	
 	@Override
-	public HashMap<String, Boolean> getHashMap() {		
-		return hmFlag;
+	public HashMap<String, Boolean> getHashMap() {	
+		if(this.HmFlag==null) {
+			this.HmFlag=new HashMap<String,Boolean>();
+		}
+		return HmFlag;
 	}
 	
 	@Override
 	public void setHashMap(HashMap<String,Boolean>hmFlag) {
-		this.hmFlag=hmFlag;
+		this.HmFlag=hmFlag;
 	}
 
 	@Override

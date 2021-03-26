@@ -150,11 +150,16 @@ public class JsonEasyZZZTest extends TestCase implements IConstantZZZ {
 			elements.put("123", true);
 			
 			Gson gson2 = new Gson();
-			Type gsonType = new TypeToken<HashMap>(){}.getType();
+			Type gsonType = new TypeToken<HashMap<String,Boolean>>(){}.getType();
 			String gsonString = gson2.toJson(elements,gsonType);
 			System.out.println(gsonString);
 			
 			
+			//JsonObject obj2 = gson2.fromJson(gsonString, JsonObject.class);	
+			JsonObject obj2 = gson2.fromJson(gsonString, gsonType);
+			JsonObject objFromJson2 = obj2.getAsJsonObject("FlagZZZ");
+			System.out.println(objFromJson2.toString()); //Ausgabe: {"hmFlag":{}}
+				
 			/*
 			 {"profile": 
     {"name":"Josh",
