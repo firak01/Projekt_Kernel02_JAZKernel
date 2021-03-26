@@ -16,7 +16,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zKernel.flag.IFlagZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public EnumSetMappedUtilZZZ(){		

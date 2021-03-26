@@ -1,10 +1,10 @@
 package basic.zUtil.io;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public interface IFileExpansionZZZ extends IFileExpansionProxyZZZ,IFlagZZZ {
+public interface IFileExpansionZZZ extends IFileExpansionProxyZZZ,IFlagUserZZZ {
 	
 	public FileZZZ getFileBase();
 	public void setFileBase(FileZZZ objFile);

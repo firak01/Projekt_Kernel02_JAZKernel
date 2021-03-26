@@ -18,7 +18,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.config.IEnumSetKernelConfigDefaultEntryZZZ;
-import basic.zKernel.flag.IFlagZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 public class EnumSetUtilZZZ extends ObjectZZZ{
 	protected EnumSet<?> enumSetCurrent=null;

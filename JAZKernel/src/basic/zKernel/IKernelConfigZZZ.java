@@ -1,13 +1,13 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 /** Interface, welches von KernelConfigZZZ etc. eingebunden wird, um die Default Werte festzulegen.
  * @author lindhauer
  *
  */
-public interface IKernelConfigZZZ extends IFlagZZZ,IKernelConfigConstantZZZ{
+public interface IKernelConfigZZZ extends IFlagUserZZZ,IKernelConfigConstantZZZ{
 	/**Falls Kein entsprechender Parameter in der Kommandozeile übergeben worden ist, so wird der hier definierte Wert verwendet für den Initialisierung des Kernels
 	* @return
 	* 

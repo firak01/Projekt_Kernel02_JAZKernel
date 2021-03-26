@@ -10,7 +10,7 @@ import java.util.List;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
-import basic.zKernel.flag.IFlagZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 public class DebugObjectZZZ {
 
@@ -111,7 +111,7 @@ public void getEmbeddedClasses(){
 
 	
 	
-	public void scanEmbeddedClasses(IFlagZZZ objSubClass, ArrayList<Class<?>> subTypes){
+	public void scanEmbeddedClasses(IFlagUserZZZ objSubClass, ArrayList<Class<?>> subTypes){
 		Class[] objaClass = objSubClass.getClass().getClasses();
 		for(Class objClass : objaClass){
 		

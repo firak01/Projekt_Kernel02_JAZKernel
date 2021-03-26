@@ -21,8 +21,8 @@ import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
-import basic.zKernel.flag.IFlagZZZ;
-import basic.zKernel.flag.IFlagZZZ.FLAGZ;
+import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagUserZZZ.FLAGZ;
 import custom.zKernel.LogZZZ;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
@@ -38,7 +38,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZZZ{ //IFunctionZZZ {
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagUserZZZ{ //IFunctionZZZ {
 	private IFileExpansionZZZ objExpansion=null;
 	private ExceptionZZZ objException=null;
 	
@@ -486,7 +486,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
-	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZZZ objUsingFlagZ) throws ExceptionZZZ{
+	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			
@@ -510,7 +510,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
-	public String[] getFlagZ_passable(IFlagZZZ objUsingFlagZ) throws ExceptionZZZ{
+	public String[] getFlagZ_passable(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			

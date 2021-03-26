@@ -1,5 +1,8 @@
 package basic.zBasic.util.datatype.json;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -109,4 +112,69 @@ public class JsonEasyZZZ extends ObjectZZZ{
 		return objReturn;
 	}
 
+/** Verwendet Bibliothek: org.json
+	/**aus: https://stackoverflow.com/questions/21720759/convert-a-json-string-to-a-hashmap
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 * @author Fritz Lindhauer, 26.03.2021, 10:05:11
+
+	public static Map<String, Object> jsonToMap(JSONObject json) throws JSONException {
+	    Map<String, Object> retMap = new HashMap<String, Object>();
+
+	    if(json != JSONObject.NULL) {
+	        retMap = toMap(json);
+	    }
+	    return retMap;
+	}
+
+	/**aus: https://stackoverflow.com/questions/21720759/convert-a-json-string-to-a-hashmap
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 * @author Fritz Lindhauer, 26.03.2021, 10:05:11
+	 
+	public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+	    Map<String, Object> map = new HashMap<String, Object>();
+
+	    Iterator<String> keysItr = object.keys();
+	    while(keysItr.hasNext()) {
+	        String key = keysItr.next();
+	        Object value = object.get(key);
+
+	        if(value instanceof JSONArray) {
+	            value = toList((JSONArray) value);
+	        }
+
+	        else if(value instanceof JSONObject) {
+	            value = toMap((JSONObject) value);
+	        }
+	        map.put(key, value);
+	    }
+	    return map;
+	}
+
+	/**aus: https://stackoverflow.com/questions/21720759/convert-a-json-string-to-a-hashmap
+	 * @param json
+	 * @return
+	 * @throws JSONException
+	 * @author Fritz Lindhauer, 26.03.2021, 10:05:11
+	 
+	public static List<Object> toList(JSONArray array) throws JSONException {
+	    List<Object> list = new ArrayList<Object>();
+	    for(int i = 0; i < array.length(); i++) {
+	        Object value = array.get(i);
+	        if(value instanceof JSONArray) {
+	            value = toList((JSONArray) value);
+	        }
+
+	        else if(value instanceof JSONObject) {
+	            value = toMap((JSONObject) value);
+	        }
+	        list.add(value);
+	    }
+	    return list;
+	}
+	*/
+	
 }
