@@ -8,6 +8,11 @@ import basic.zKernel.flag.IFlagUserZZZ;
  *
  */
 public interface IKernelConfigZZZ extends IFlagUserZZZ,IKernelConfigConstantZZZ{
+	//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+	//          Das ist gescheitert, da zuviel zu ändern ist, u.a in der intern verwendeten GetOpt-Klasse.
+	final static String sPATTERN_DEFAULT="k:s:f:d:z:";	
+	final static String sFLAGZ_DEFAULT="{}"; //leerer JSON ähnlicher String für zu setztende Flags, z.B. gefüllt {"DEBUGUI":true}
+	
 	/**Falls Kein entsprechender Parameter in der Kommandozeile übergeben worden ist, so wird der hier definierte Wert verwendet für den Initialisierung des Kernels
 	* @return
 	* 
@@ -22,6 +27,10 @@ public interface IKernelConfigZZZ extends IFlagUserZZZ,IKernelConfigConstantZZZ{
 	public String readConfigFileName();
 	public String getConfigFileNameDefault();
 	
+	
+	//20210331: Flagz, default String, als leerer JSON-Wert
+	public String getConfigFlagzJsonDefault();
+		
 	/** Die Argumente, die für diese Konfiguration erlaubt sind. Siehe dazu GetOptZZZ()
 	* @return (z.B. "a:b:cde:", mit dem Doppelpunkt als Anzeichen dafür, das ein Parameter diesem Steuerungsargument folgt.)
 	* 

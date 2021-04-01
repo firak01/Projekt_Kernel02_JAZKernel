@@ -47,7 +47,7 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 		}
 	}
 	
-	/** Dieser Konstruktor kann f�r Objkete verwendet werden, die auf bestimmte Bereiche der Modulkonfiguration zur�ckgreifen m�ssen UND bei denen diese Bereiche nicht dem eigenen Klassennamen entsprechen.
+	/** Dieser Konstruktor kann fuer Objkete verwendet werden, die auf bestimmte Bereiche der Modulkonfiguration zurueckgreifen m�ssen UND bei denen diese Bereiche nicht dem eigenen Klassennamen entsprechen.
 	* lindhaueradmin; 12.04.2007 15:46:51
 	 * @param objKernel
 	 * @param objKernelSection

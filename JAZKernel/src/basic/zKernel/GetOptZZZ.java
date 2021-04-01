@@ -9,21 +9,24 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.start.GetOpt;
 
 /**Ein Wrapper um GetOpt. 
+ * 
+ * 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+			//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
  * 
  * @author lindhauer
  *
  */
 public class GetOptZZZ extends ObjectZZZ{
 	private String sPattern; 
-	private HashMap hmOpt = new HashMap();
+	private HashMap hmOpt = new HashMap();//Die Hashmap der von aussen gesetzten Steuerungsoptionen. Merke: Dann gibt es noch die HashMap der FlagZ in ObjectZZZ
 	private Iterator itOpt = null;
 	private boolean bFlagIsLoaded = false;
-	
-	
+		
 	public GetOptZZZ(){
 	}
 	
@@ -57,7 +60,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			if(! this.sPattern.equals(sPattern)){ //NUr falls ein anderer neuer Wert
 				if(this.isPatternStringValid(sPattern)){
 					this.sPattern = sPattern;	
-					this.clearOptions(); //Bisherige HAshmap l�schen und Iteartor wieder zur�cksetzen
+					this.clearOptions(); //Bisherige HAshmap loeschen und Iterator wieder zuruecksetzen
 				}else{
 					String sResult = this.proofPatternString(sPattern);
 					ExceptionZZZ ez = new ExceptionZZZ("Not a valid pattern string." + sResult, iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -77,27 +80,43 @@ public class GetOptZZZ extends ObjectZZZ{
 		}
 	}
 
-	/**Die Interne HashMap zur�cksetzen
+	/**Die Interne HashMap zuruecksetzen
 	* lindhauer; 28.06.2007 06:59:29
 	 */
 	public void clearOptions(){		
 		this.getOptionMap().clear(); //Die Hashmap zur�cksetzen
 		this.setOptionIterator(null);
 		this.bFlagIsLoaded = false;	
-	}
-	public HashMap getOptionMap(){
-		return this.hmOpt;
-	}
+	}	
 	
+	/**Hier sollen alle Steueranweisungen enthalten sein, also auch die ohne Argumente
+	 * Problem: Seit der Einfuehrung von Steueranweisungen mit mehr als 1 Zeichen (z.B. flagz ) 
+	 *          funktioniert das so nicht mehr. 
+	 * Lösungsidee: Steueranweisungen ohne Argumente müssen am Schluss sein, d.h. ohne abschliessenden Doppelpunkt.
+	 * 
+	 * @param sPattern
+	 * @return
+	 * @author Fritz Lindhauer, 31.03.2021, 09:09:29
+	 */
 	public static ArrayList Pattern2ListControlAll(String sPattern){
 		ArrayList listaReturn = new ArrayList();
 		main:{
-			if(StringZZZ.isEmpty(sPattern)) break main;
 			
+			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+			//          Das ist gescheitert, da zuviel zu ändern ist.
+			//Die Idee der Steuerzeichen ohne Argumente an den Schluss zu setzen ist noch nicht umgesetzt
+			//Daher erst genau den gleichen Code wie für Steuerzeichen mit Argument verwenden
+//			listaReturn = GetOptZZZ.Pattern2ListControlValue(sPattern);
+			
+			
+//Alter Code, eine Version, in der nur 1 Zeichen lange Steuerzeichen gedacht waren.
+			if(StringZZZ.isEmpty(sPattern)) break main;			
 			  for(int icount=0; icount<=sPattern.length()-1; icount++){
 	            	String stemp = sPattern.substring(icount, icount + 1);
 	            	if(!stemp.equals(":")){
-	            		listaReturn.add(stemp);
+	            		if(!listaReturn.contains(stemp)) {
+	            			listaReturn.add(stemp);
+	            		}
 	            	}
 	            }
 		}
@@ -110,11 +129,31 @@ public class GetOptZZZ extends ObjectZZZ{
 			if(StringZZZ.isEmpty(sPattern)) break main;
 			
 //			1b Pattern String auf Doppelpunkte untersuchen. 
-			//Merke: Irgendwelche Indexbetrachtungen k�nnen nicht funktionieren. Die Reihenfolge der Argumente ist n�mlich beliebig. 
+			//Merke: Irgendwelche Indexbetrachtungen koennen nicht funktionieren. Die Reihenfolge der Argumente ist naemlich beliebig. 
 			//Es muss vielmehr das Steuerungszeichen davor ermittelt werden. Damit kann dann das Argumentenarray untersucht werden: Folgt dem Steuerungszeichen immer ein anderer Wert
 			String[] saDelim = {":"};
 			Integer[] intaIndex = StringZZZ.allIndexOf(sPattern, saDelim);
 			
+			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+			//          Das ist gescheitert, da zuviel zu ändern ist.
+//			//Nun muessen die Zeichen jeweils Zeichen vor dem Indexwert geholt werden, bis zum vorherigen Indexwert 
+//			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN
+//			 int iIndexLeft = 0;
+//			  if(intaIndex!=null){            	
+//	            	for(int icount=0; icount <= intaIndex.length-1; icount++){            		
+//	            		Integer inttemp = intaIndex[icount];
+//	            		if(inttemp.intValue()>=0){
+//	            			int itemp = inttemp.intValue(); 
+//	            			String stemp = sPattern.substring(iIndexLeft, itemp); 
+//	            			if(!StringZZZ.isEmpty(stemp)){
+//	            				listaReturn.add(stemp);
+//	            			}
+//	            			iIndexLeft = itemp+1;//+1 wg des Doppelpunkts als Platzhalter
+//	            		}
+//	            	}
+//	           }
+			
+//Alter Code, eine Version, in der nur 1 Zeichen lange Steuerzeichen gedacht waren.
 			//Nun muss das Zeichen jeweils 1 Zeichen vor dem Indexwert geholt werden, 
 			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN	
 			  if(intaIndex!=null){            	
@@ -171,6 +210,10 @@ public class GetOptZZZ extends ObjectZZZ{
 				throw ez;
 			}
 			
+			
+			 
+			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+			//          Das ist gescheitert, da zuviel in der GetOpt.getopt(saArg) Methode zu ändern ist.			
 			GetOpt objOption = new GetOpt(sPattern);
 			char a = objOption.getopt(saArg);
 			String sOption = StringZZZ.char2String(a).trim();			
@@ -237,7 +280,7 @@ public class GetOptZZZ extends ObjectZZZ{
 	public String proofArgument(String sArgument) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
-			//#### Parameter f�r die Funktion pr�fen
+			//#### Parameter fuer die Funktion pruefen
 //			Null oder Leerstring sind valid
 			if(StringZZZ.isEmpty(sArgument)) break main;
 				
@@ -247,10 +290,7 @@ public class GetOptZZZ extends ObjectZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			
-			//TODO: DAS PATTERN SELBST VALIDIEREN
-			
-			
+						
 			//#### Die Pruefung des Argument strings
 //			1a Alle nach dem Leerzeichen zerlegen. Parameter pruefen.
 			String[] saParamAll = StringZZZ.explode(sArgument, " ");
@@ -267,16 +307,13 @@ public class GetOptZZZ extends ObjectZZZ{
 		main:{
 			if(saParamAll==null|saParamAll.length==0) break main;
 			
-//			Falls das Pattern leer ist, sArgument ist aber gef�llt, dann FEHLER:
+//			Falls das Pattern leer ist, sArgument ist aber gefuellt, dann FEHLER:
 			String sPattern = this.getPattern();
 			if(StringZZZ.isEmpty(sPattern)){
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			
-			//TODO: DAS PATTERN SELBST VALIDIEREN
-			
-			
+						
 			//##### Die Pruefung
 			sReturn = this.proofArgument_(sPattern, saParamAll);
 			
@@ -319,11 +356,16 @@ public class GetOptZZZ extends ObjectZZZ{
 							sReturn = "Error 10: Argument string contains empty control parameter. No character after '-'";
 							break main;
 						}
+						
+						//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+						//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
+						//          Sonst müsste folgende überprüfung herausgenommen werden.
 						if(sControlPrevious.length()>=2){
 							sReturn = "Error 20: Argument string contains control parameter longer than 1 character: " + sControlPrevious;
 							break main;
 						}
-						if(!listaControl.contains(sControlPrevious)){
+						
+						if(!listaControl.contains(sControlPrevious)){						
 							//Fehler ein Steuerelement, dass nicht im PatternString defineirt ist
 							sReturn = "Error 25: Control character not defined in pattern: '" + sControlPrevious + "'";
 							break main;
@@ -331,7 +373,7 @@ public class GetOptZZZ extends ObjectZZZ{
 						
 						
 						if(listaControlValue.contains(sControlPrevious)){
-							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird ben�tigt
+							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird benoetigt
 //							Hier braucht man ggf. das vorherige Steuerzeiche noch
 						}else{
 							bNeedArgument = false; //Das ist Kein Steuerzeichen mit Doppelpunkt
@@ -367,7 +409,7 @@ public class GetOptZZZ extends ObjectZZZ{
 					}
 				}else{
 					if(bNeedArgument==true){
-//						Leeres Argument f�r ein Steuerzeichen
+//						Leeres Argument fuer ein Steuerzeichen
 						bNeedArgument = false;
 						sControlPrevious = "";
 					}else{
@@ -431,7 +473,7 @@ public class GetOptZZZ extends ObjectZZZ{
 			//Argument-Pattern
 			String sPattern = this.getPattern();
 			
-			//Falls das Pattern leer ist, sArgument ist aber gef�llt, dann FEHLER:
+			//Falls das Pattern leer ist, sArgument ist aber gefuellt, dann FEHLER:
 			if(StringZZZ.isEmpty(sPattern)){
 				ExceptionZZZ ez = new ExceptionZZZ("Unexpected arguments. No Argument-Pattern available", iERROR_PROPERTY_EMPTY, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -450,10 +492,10 @@ public class GetOptZZZ extends ObjectZZZ{
 	}
 	
 	
-	/** TODO Muss noch entwickelt werden. Pr�ft. ob der Pattern String valide ist.
+	/** Prueft. ob der Pattern String valide ist.
 	 * Z.B: zwei Doppelpunkte hintereinander sind nicht valide
-	 * - �berhaupt sind doppelte zeichen im pattern string nicht valide
-	 * - Bindestriche sind im pattern string ebenfalls nicht erlaubt (sonst m�sste im Argument string ja "-- hallo" stehen d�rfen.
+	 * - ueberhaupt sind doppelte zeichen im pattern string nicht valide
+	 * - Bindestriche sind im pattern string ebenfalls nicht erlaubt (sonst muesste im Argument string ja "-- hallo" stehen duerfen.
 	 * 
 	* @param sPattern
 	* @return
@@ -475,19 +517,24 @@ public class GetOptZZZ extends ObjectZZZ{
 		return bReturn;
 	}
 	
-	/** Pr�ft den Pattern String auf folgendes:
+	/** Prueft den Pattern String auf folgendes:
 	 *1. Kein wert darf doppelt vorkommen, mit Ausnahme des Doppelpunkts
  	* 2. Nach einem Doppelpunkt darf kein zweiter Doppelpunkt sofort folgen
 	* 3. Der Pattern String darf nicht mit einem Doppelpunkt beginnen.	
+	* 
+	* 20210331: Beispiel für einen gültigen gesamt String: 
+	*           -s 02 -d <z:Null/> -z {"DEBUGUI":true}
+	* 
 	* @param sPattern
-	* @return  Ein String, der eine Fehlermeldung enth�lt. 
+	* @return  Ein String, der eine Fehlermeldung enthaelt. 
 	* 
 	* lindhauer; 11.07.2007 06:55:02
 	 */
 	public String proofPatternString(String sPattern){
 		String sReturn = new String("");
-		main:{
-			//#### Parameter f�r die Funktion pr�fen
+		main:{			
+			try {
+			//#### Parameter fuer die Funktion pruefen
 //			Null oder Leerstring sind valid
 			if(StringZZZ.isEmpty(sPattern))	break main;
 			
@@ -499,7 +546,21 @@ public class GetOptZZZ extends ObjectZZZ{
 				break main;
 			}
 			
-			//+++ 2. Kein Wert darf doppelt vorkommen, mit Ausnahme des Doppelpunkts
+			//+++ 2. In dem Pattern String darf kein Wert doppelt vorkommen, mit Ausnahme des Doppelpunkts
+			String[] saPattern = StringZZZ.explode(sPattern, ":");
+			int iLength = saPattern.length;
+
+			String[] saPatternUnique = StringArrayZZZ.unique(saPattern);
+			int iLengthUnique = saPatternUnique.length;
+			
+			if(iLength!=iLengthUnique) {
+				sReturn = "Error 1: There are duplicate Entries (seperated by ':') in the pattern string . Pattern '" + sPattern +"'";
+				break main;
+			}
+			
+			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+			//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
+			//Das stammt aus der Version, in der die Steuereungszeichen nur 1 Zeichen lang sein durften			
 			String sRest = sPattern;
 			while(sRest.length()>=1){
 				sCharacter = sRest.substring(0,1);
@@ -538,7 +599,10 @@ public class GetOptZZZ extends ObjectZZZ{
 			  
 			
 		
-			
+			}catch(ExceptionZZZ ez) {
+				sReturn = "Error ExceptionZZZ: '" + ez.getMessageLast() + "'";
+				break main;
+			}
 		}//end main
 		return sReturn;
 	}
@@ -556,7 +620,7 @@ public class GetOptZZZ extends ObjectZZZ{
 		main:{
 			if(StringZZZ.isEmpty(sResult)) break main;
 			
-			String sReturn = StringZZZ.left(sResult, 5, ":");  //5 ist die Zeichenl�nge von "Error"
+			String sReturn = StringZZZ.left(sResult, 5, ":");  //5 ist die Zeichenlaenge von "Error"
 			if(StringZZZ.isEmpty(sReturn)){
 				ExceptionZZZ ez = new ExceptionZZZ("No error code found in the string:'"+ sResult+"'", iERROR_RUNTIME, GetOptZZZ.class.getName());
 				throw ez;
@@ -573,8 +637,14 @@ public class GetOptZZZ extends ObjectZZZ{
 		}
 		return iReturn;
 	}
-	
-	
+						
+	//############
+	// Getter / Setter
+	//############
+	public HashMap getOptionMap(){
+		return this.hmOpt;
+	}
+		
 	public void setOptionIterator(Iterator it){
 		this.itOpt = it;
 	}
@@ -582,13 +652,21 @@ public class GetOptZZZ extends ObjectZZZ{
 		return this.itOpt;
 	}
 	
-	
-	
-	//############
-	// Getter / Setter
-	//############
-	
+	@Override
+	public ExceptionZZZ getExceptionObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public void setExceptionObject(ExceptionZZZ objException) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//###########
+	// FLAGS für diese Klassen
+	//###########
 	/**
 	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
@@ -628,17 +706,4 @@ public class GetOptZZZ extends ObjectZZZ{
 		}//end main:
 		return bFunction;
 	}
-
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }//END CLASS

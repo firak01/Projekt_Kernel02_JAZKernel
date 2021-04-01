@@ -20,7 +20,7 @@ public class ConfigFGL extends KernelConfigZZZ{
 	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";
 	private static String sKEY_APPLICATION_DEFAULT = "FGL";
 	private static String sNUMBER_SYSTEM_DEFAULT= "01";
-	private static String sPATTERN_DEFAULT="k:s:f:d:";
+
 	
 	public ConfigFGL() throws ExceptionZZZ{
 		super();
@@ -40,11 +40,7 @@ public class ConfigFGL extends KernelConfigZZZ{
 	@Override
 	public String getConfigFileNameDefault() {		
 		return ConfigFGL.sFILE_CONFIG_DEFAULT;
-	}
-	@Override
-	public String getPatternStringDefault() {
-		return ConfigFGL.sPATTERN_DEFAULT;
-	}
+	}	
 	@Override
 	public String getSystemNumberDefault() {
 		return ConfigFGL.sNUMBER_SYSTEM_DEFAULT;

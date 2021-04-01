@@ -20,7 +20,6 @@ public class ConfigZZZ extends KernelConfigZZZ{
 	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";
 	private static String sKEY_APPLICATION_DEFAULT = "FGL";
 	private static String sNUMBER_SYSTEM_DEFAULT= "01";
-	private static String sPATTERN_DEFAULT="k:s:f:d:";
 	
 	public ConfigZZZ() throws ExceptionZZZ{
 		super();

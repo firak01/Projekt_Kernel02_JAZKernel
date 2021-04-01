@@ -4,6 +4,9 @@ package basic.zBasic.util.start;
  * @author Ian F. Darwin, ian@darwinsys.com
  * based on the standard UNIX getopt(3) program.
  * @version $Id$
+ * 
+ * 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+			//          Das ist gescheitert, da zuviel zu ändern ist.
  */
 public class GetOpt {
 	/** The set of characters to look for */

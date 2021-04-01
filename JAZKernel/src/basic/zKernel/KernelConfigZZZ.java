@@ -1,9 +1,12 @@
 package basic.zKernel;
 
+import custom.zKernel.ConfigFGL;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 import static java.lang.System.out;
+
+import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
@@ -21,8 +24,11 @@ import basic.zKernel.config.KernelConfigEntryUtilZZZ;
  * -s = SystemKey
  * -d = directory
  * -f = file (.ini)
- * 
+ * -z = flagz, JSON String mit dem beliebige Flags von aussen gesetzt werden. Sie werden in einer extra HashMap-verwaltet.
  * Mit diesen Informationen kann dann das eigentliche Kernel-Objekt erstellt werden
+ * 
+ * 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
+			//          Das ist gescheitert, da zuviel zu ändern ist.
  * 
  * @author lindhauer
  * 
@@ -34,7 +40,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	}
 	
 	private GetOptZZZ objOpt = null;
-	 
+	private HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //20210331: Eine HashMap mit den von aussen übergebenen FlagZ - Werten, diese werden aber immer nur weitergegeben, dann wird versucht sie zu setzen UND KEIN FEHLER GEWORFEN.
+		 
 	public KernelConfigZZZ() throws ExceptionZZZ{
 		ConfigNew_(null, null);
 	}
@@ -92,6 +99,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 				saArg[5] = this.getConfigFileNameDefault();
 				saArg[6] = "-d";
 				saArg[7] = this.getConfigDirectoryNameDefault();
+				saArg[8] = "-z";
+				saArg[9] = this.getConfigFlagzJsonDefault();
 			}else {
 				saArg = saArgIn;
 			}
@@ -101,6 +110,10 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			
 			//Das Objekt, das für die Interpretation der Argumente sorgt.Falls Argument werte vorhanden sind "Werden sie automatisch sofort geladen".
 			this.objOpt = new GetOptZZZ(sPattern, saArg);
+			
+			//20210331: Nun die HashMap für die weiterzureichenden FlagZ Werte füllen
+			String sJson = this.objOpt.readValue("z");			
+			TODOGOON; //20210331: so etwas wie: this.hmFlagPassed = KernelConfigZZZ.computeHashMapFlagFromJSON(sJson)
 			
 			bReturn = true;
 		}
@@ -212,6 +225,21 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		return sReturn;
 	}
 	
+	public String readFlagzJson(){
+		String sReturn = null;
+		main:{
+			GetOptZZZ objOpt = this.getOptObject();
+			if(objOpt==null) break main;
+			if(objOpt.getFlag("isLoaded")==false) break main;
+			
+			sReturn = objOpt.readValue("z"); //20210331: Eigentlich sollte das ein längerer String werden flagz, aber die Umstellung auf Steuerungsangaben mit mehr als 1 Zeichen länge wäre zu aufwändig.
+			if(sReturn==null){
+				sReturn = this.getConfigFlagzJsonDefault();
+			}
+		}		
+		return sReturn;
+	}
+	
 	
 	/** Heuristische Lösung. 
 	 *  Funktioniert so im Vergleich "Webservice" vs. "Swing Standalone in Eclipse"
@@ -255,6 +283,15 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		return bReturn;
 	}
 
+	//### Interface ###########
+	public String getConfigFlagzJsonDefault() {
+		return IKernelConfigZZZ.sFLAGZ_DEFAULT;
+	}
+	
+	public String getPatternStringDefault() {
+		return IKernelConfigZZZ.sPATTERN_DEFAULT;
+	}
+	
 	//##########
 	// Getter / Setter
 	//##########
@@ -262,4 +299,10 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		return this.objOpt;
 	}
 	
+	public HashMap<String, Boolean>getHashMapFlagZpassed(){
+		return this.hmFlagPassed;
+	} 
+	public void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed) {
+		this.hmFlagPassed = hmFlagPassed;
+	}		
 }
