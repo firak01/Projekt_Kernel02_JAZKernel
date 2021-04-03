@@ -24,7 +24,7 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		super();
 	}
 	
-	public AbstractKernelProgramZZZ(IKernelZZZ objKernel) {
+	public AbstractKernelProgramZZZ(IKernelZZZ objKernel) throws ExceptionZZZ {
 		super(objKernel); 
 		
 		//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!

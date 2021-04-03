@@ -12,7 +12,7 @@ public class DummyClassImplementingEnumByInterface extends AbstractKernelProgram
 		super();
 	}
 	
-	public DummyClassImplementingEnumByInterface(IKernelZZZ objKernel) {
+	public DummyClassImplementingEnumByInterface(IKernelZZZ objKernel) throws ExceptionZZZ {
 		super(objKernel);
 	}
 

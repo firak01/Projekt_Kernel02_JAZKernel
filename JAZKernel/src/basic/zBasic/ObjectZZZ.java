@@ -31,6 +31,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 //		DEBUG, INIT; //Verschoben nach IFlagZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
 //	}
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
+	private HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
 	
 	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	
@@ -60,6 +61,20 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 			}
 		}
 	}
+	public ObjectZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+		//Die ggf. vorhandenen Flags setzen.
+		if(hmFlag!=null){
+			for(String sKey:hmFlag.keySet()){
+				String stemp = sKey;
+				boolean btemp = this.setFlagZ(sKey, hmFlag.get(sKey));
+				if(btemp==false){
+					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					throw ez;		 
+				}
+			}
+		}
+	}
+	
 		
 	
 	//### FlagMethods ##########################		
@@ -67,10 +82,20 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 		return FLAGZ.class;
 	}
 
-		public HashMap<String, Boolean>getHashMapFlagZ(){
-			return this.hmFlag;
-		} 
+	@Override
+	public HashMap<String, Boolean>getHashMapFlagZ(){
+		return this.hmFlag;
+	}
 		
+	@Override
+	public HashMap<String, Boolean> getHashMapFlagZpassed() {
+		return this.hmFlagPassed;
+	}
+	@Override
+	public void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed) {
+		this.hmFlagPassed = hmFlagPassed;
+	}
+	
 		/**Gibt alle möglichen FlagZ Werte als Array zurück. 
 		 * @return
 		 * @throws ExceptionZZZ 
@@ -324,5 +349,5 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 			System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
 			return false;
 		}
-	}
+	}	
 }

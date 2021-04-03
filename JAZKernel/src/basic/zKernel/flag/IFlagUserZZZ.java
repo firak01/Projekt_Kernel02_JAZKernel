@@ -22,6 +22,9 @@ public interface IFlagUserZZZ{
 	public abstract Class getClassFlagZ();
 	public String[] getFlagZ(boolean bFlagValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZ() throws ExceptionZZZ;
+	
+	public abstract HashMap<String, Boolean>getHashMapFlagZpassed();
+	public abstract void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed);
 	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ;
-	public String[] getFlagZ_passable(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ;
+	public String[] getFlagZ_passable(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ;//Hole alle auf true gesetzten Flags....
 }

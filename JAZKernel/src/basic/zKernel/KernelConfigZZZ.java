@@ -7,6 +7,13 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import static java.lang.System.out;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
@@ -14,6 +21,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
@@ -33,57 +41,41 @@ import basic.zKernel.config.KernelConfigEntryUtilZZZ;
  * @author lindhauer
  * 
  */
-public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
+public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
 	}
 	
-	private GetOptZZZ objOpt = null;
-	private HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //20210331: Eine HashMap mit den von aussen übergebenen FlagZ - Werten, diese werden aber immer nur weitergegeben, dann wird versucht sie zu setzen UND KEIN FEHLER GEWORFEN.
-		 
+	private GetOptZZZ objOpt = null;	 
 	public KernelConfigZZZ() throws ExceptionZZZ{
-		ConfigNew_(null, null);
+		super("init");//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		ConfigNew_(null);
 	}
 	public KernelConfigZZZ(String[] saArg) throws ExceptionZZZ{
-	 	ConfigNew_(saArg, null);
+		super(saArg);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		ConfigNew_(null);
 	}	
 	public KernelConfigZZZ(String[] saArg, String[]saFlagControl) throws ExceptionZZZ{
-	 	ConfigNew_(saArg, saFlagControl);	 	
+		super(saFlagControl); //20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt 	
+		ConfigNew_(saArg);
 	}
+	
 	public KernelConfigZZZ(String[] saArg, String sFlagControl) throws ExceptionZZZ{
-		String[] saFlagControl = new String[1];
-		saFlagControl[0]=sFlagControl;
-	 	ConfigNew_(saArg, saFlagControl);	 	
+		super(sFlagControl); //20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		ConfigNew_(saArg);
 	}
 	
 	
-	private boolean ConfigNew_(String[] saArgIn, String[] saFlagControlIn) throws ExceptionZZZ{
+	private boolean ConfigNew_(String[] saArgIn) throws ExceptionZZZ{
 		boolean bReturn = false;
-		main:{	
-			String stemp=null; boolean btemp=false; String sLog = null;
+		main:{				
 			System.out.println("Initializing ConfigObject");
-			
-			//setzen der übergebenen Flags	
-			 if(saFlagControlIn != null){
-				  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-					  stemp = saFlagControlIn[iCount];
-					  if(!StringZZZ.isEmpty(stemp)){
-						  btemp = setFlag(stemp, true);
-						  if(btemp==false){
-							  sLog = "the flag '" + stemp + "' is not available.";
-							  System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-							  throw ez;		 
-						  }
-					  }
-				  }
-					if(this.getFlag("INIT")==true){
-						bReturn = true;
-						break main; 
-					}		
-			  }
-			
+			if(this.getFlag("INIT")==true){
+				bReturn = true;
+				break main; 
+			}	
+						
 			String[] saArg = null;
 			if(saArgIn==null || saArgIn.length==0){
 				//Das Argument-Array darf auch leer sein.
@@ -112,8 +104,9 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 			this.objOpt = new GetOptZZZ(sPattern, saArg);
 			
 			//20210331: Nun die HashMap für die weiterzureichenden FlagZ Werte füllen
-			String sJson = this.objOpt.readValue("z");			
-			TODOGOON; //20210331: so etwas wie: this.hmFlagPassed = KernelConfigZZZ.computeHashMapFlagFromJSON(sJson)
+			String sJson = this.objOpt.readValue("z");
+			HashMap<String, Boolean> hmFlagZpassed = KernelConfigZZZ.computeHashMapFlagFromJSON(sJson);
+			this.setHashMapFlagZpassed(hmFlagZpassed);
 			
 			bReturn = true;
 		}
@@ -147,6 +140,26 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 		}
 		}//end main
 		return sReturn;
+	}
+	
+	/**
+	 * @param sJSON, Beispiel für ein Array, das in eine HashMap gepackt werden soll:
+	 *               {'k1':'apple','k2':'orange'}"
+	 *               Das funktioniert hier aber mit dem 2 Wert als Boolean.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 02.04.2021, 08:48:35
+	 */
+	public static HashMap<String, Boolean> computeHashMapFlagFromJSON(String sJSON) throws ExceptionZZZ {
+		HashMap<String, Boolean> hmReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sJSON)) break main;
+			if(!JsonEasyZZZ.isJsonValid(sJSON)) break main;
+						
+			TypeToken<HashMap<String, Boolean>> typeToken = new TypeToken<HashMap<String, Boolean>>(){};
+			hmReturn = (HashMap<String, Boolean>) JsonEasyZZZ.toHashMap(typeToken, sJSON);												
+		}//end main
+		return hmReturn;
 	}
 	
 	public String readPatternString(){
@@ -297,12 +310,5 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IObjectZZZ, I
 	//##########
 	public GetOptZZZ getOptObject(){
 		return this.objOpt;
-	}
-	
-	public HashMap<String, Boolean>getHashMapFlagZpassed(){
-		return this.hmFlagPassed;
-	} 
-	public void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed) {
-		this.hmFlagPassed = hmFlagPassed;
 	}		
 }

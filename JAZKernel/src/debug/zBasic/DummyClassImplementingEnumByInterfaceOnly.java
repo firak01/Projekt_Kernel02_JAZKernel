@@ -10,7 +10,7 @@ public class DummyClassImplementingEnumByInterfaceOnly extends AbstractKernelPro
 		super();
 	}
 	
-	public DummyClassImplementingEnumByInterfaceOnly(IKernelZZZ objKernel) {
+	public DummyClassImplementingEnumByInterfaceOnly(IKernelZZZ objKernel) throws ExceptionZZZ {
 		super(objKernel);
 	}
 

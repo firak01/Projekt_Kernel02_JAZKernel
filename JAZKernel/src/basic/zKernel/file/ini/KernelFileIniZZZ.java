@@ -72,49 +72,48 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	private boolean bSkipCache=false;
 
 	public KernelFileIniZZZ() throws ExceptionZZZ{
-		super();
-		String[] saFlag = {"init"};
-		KernelFileIniNew_(null, null, null, null, saFlag, null);
+		super("init");//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(null, null, null, null);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl,null);
+		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(null, sDirectory, sFilename, null);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(null, sDirectory, sFilename, null, null, hmFlag);
+		super(objKernel, hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(null, sDirectory, sFilename, null);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,String[] saFlagControl) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(objFile,null, null, null,saFlagControl,null);
+		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(objFile,null, null, null);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(objFile,null, null, null,null,hmFlag);
+		super(objKernel,hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(objFile,null, null, null);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl,null);
+		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(null, sDirectory, sFilename, null);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename,  HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(null, sDirectory, sFilename, null, null, hmFlag);
+		super(objKernel, hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(null, sDirectory, sFilename, hmVariable);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(objFile, null, null,null,saFlagControl,null);
+		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(objFile, null, null, hmVariable);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelFileIniNew_(objFile,null, null, null,null,hmFlag);
+		super(objKernel,hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(objFile,null, null, hmVariable);
 	}
 	
 	// DESTRUCTOR
@@ -132,41 +131,16 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControlIn, HashMap<String,Boolean>hmFlag) throws ExceptionZZZ {
+	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; String sLog;
 	 main:{
 		 	
 	 	try{
-	 		//Die ggf. vorhandenen Flags setzen.
-			if(hmFlag!=null){
-				for(String sKey:hmFlag.keySet()){
-					stemp = sKey;
-					btemp = this.setFlagZ(sKey, hmFlag.get(sKey));
-					if(btemp==false){
-						ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-						throw ez;		 
-					}
-				}
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
 			}
-	 		
-	 		
-			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-				}
-				if(this.getFlag("init")==true){
-					bReturn = true;
-					break main;
-				}
-
 
 			if (this.getFlag("filenew")==false){		
 				if(objFileIn==null & (sDirectoryIn==null | sFileIn == null)){

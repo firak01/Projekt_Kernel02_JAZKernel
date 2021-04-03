@@ -50,7 +50,8 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	public enum FLAGZ{
 		USE_FILE_EXPANSION; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
 	}
-	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); 
+	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>();
+	private HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); 
 	
 //	### Constructor ##########################
 	public KernelFileZZZ() throws ExceptionZZZ{
@@ -244,9 +245,20 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		return FLAGZ.class;
 	}
 	
+	@Override
 	public HashMap<String, Boolean>getHashMapFlagZ(){
 		return this.hmFlag;
 	} 
+	
+	@Override
+	public HashMap<String, Boolean> getHashMapFlagZpassed() {
+		return this.hmFlagPassed;
+	}
+	
+	@Override
+	public void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed) {
+		this.hmFlagPassed = hmFlagPassed;
+	}
 	
 	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
 	 * 	 Weteire Voraussetzungen:
@@ -913,5 +925,5 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String 
 			sReturn = objFileExpansion.searchExpansionFreeLowest();
 		}
 		return sReturn;
-	}
+	}	
 }//end class

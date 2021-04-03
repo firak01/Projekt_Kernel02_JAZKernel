@@ -1,5 +1,6 @@
 package basic.zBasic.util.datatype.json;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
@@ -19,7 +21,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class JsonEasyZZZ extends ObjectZZZ{
 	
 	/**Ein Json-Parser wird verwendet. 
-	 * Wenn er einen Fehler wirft, ist es kein valides Json
+	 * Intern arbeitet er so: Wenn er einen Fehler wirft, ist es kein valides Json. Dieser Fehler wird abgefangen.
+	 *                        Nur ein Leerstring/Nullstring wirft einen ExceptionZZZ Fehler.
 	 * @return
 	 * @author Fritz Lindhauer, 24.03.2021, 09:37:42
 	 * @throws ExceptionZZZ 
@@ -110,6 +113,44 @@ public class JsonEasyZZZ extends ObjectZZZ{
 			objReturn = objJson.getAsJsonArray();									
 		}
 		return objReturn;
+	}
+	
+	/** Liefert generisch aus dem JSON String eine HashMap zurück.
+	 *  
+	 * Beispiel für TypeToken Erstellung: 
+	 * TypeToken<HashMap<String, Boolean>> typeToken = new TypeToken<HashMap<String, Boolean>>(){};
+	 * 
+	 * Der Rückgabewert muss dann entsprechend gecasted werden:
+	 * HashMap<String, Boolean> hm = (HashMap<String, Boolean>) JsonEasyZZZ.toHashMap(typeToken, sJSON);
+	 * @param type
+	 * @param sJson
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 03.04.2021, 09:52:34
+	 */
+	public static HashMap<?,?> toHashMap(TypeToken typeToken, String sJson) throws ExceptionZZZ {
+		HashMap<?,?> hmReturn = null; 
+		main:{
+			if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(!JsonEasyZZZ.isJsonValid(sJson)) {
+				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(typeToken==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No TypeToken available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			hmReturn = new HashMap();
+						
+			Gson gson=new GsonBuilder().create();
+			Type type = typeToken.getType();
+			hmReturn = gson.fromJson(sJson, type);		
+		}//end main:
+		return hmReturn;
 	}
 
 /** Verwendet Bibliothek: org.json

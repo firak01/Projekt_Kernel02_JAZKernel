@@ -91,9 +91,9 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	private String sSystemNumber="";	
 	private String sApplicationKey="";
 
-	private LogZZZ objLog = null;
+	protected LogZZZ objLog = null;
 	protected IKernelConfigZZZ objConfig = null;   //die Werte für den Applikationskey, Systemnummer, etc.
-	private IKernelContextZZZ objContext = null;   //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.)
+	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.)
 	
 	private IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
 	
@@ -105,18 +105,19 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
  * @throws ExceptionZZZ
  */
 public KernelKernelZZZ() throws ExceptionZZZ{
+	super("init");//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+	
 	//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
 	IKernelConfigZZZ objConfig = this.getConfigObject();
-	
-	String[] saFlagControl = new String[1];
-	saFlagControl[0] = "init";
-	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
+	KernelNew_(objConfig, null, null, null, null, null, null);
 }
 
 public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
+	super(saFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+	
 	//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.   ConfigZZZ objConfig = new ConfigZZZ();
 	IKernelConfigZZZ objConfig = this.getConfigObject();
-	KernelNew_(objConfig, null, null, null, null, null, null,saFlagControl);
+	KernelNew_(objConfig, null, null, null, null, null, null);
 }
 	/**Merke: Damit einzelne Projekte ihr eigenes ConfigZZZ - Objekt verwenden k�nnen, wird in diesem Konstruktor ein Interface eingebaut.
 	* lindhauer; 14.08.2007 07:19:55
@@ -125,12 +126,12 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ
 	 */
 	public KernelKernelZZZ(IKernelConfigZZZ objConfig, String sFlagControl) throws ExceptionZZZ{
-		String[] saFlagControl = new String[1];
-		saFlagControl[0] = sFlagControl;
-		KernelNew_(objConfig, null, null, null, null, null, null, saFlagControl);
+		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(objConfig, null, null, null, null, null, null);
 	}
 	public KernelKernelZZZ(IKernelConfigZZZ objConfig, String[] saFlagControl) throws ExceptionZZZ{
-		KernelNew_(objConfig, null, null, null, null, null, null, saFlagControl);
+		super(saFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(objConfig, null, null, null, null, null, null);
 	}
 	
 	/**
@@ -152,19 +153,18 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 @throws ExceptionZZZ
 	 */
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
-		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, saFlagControl);
+		super(saFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null);
 	}
 	
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String sFlagControl) throws ExceptionZZZ{
-		String[] saFlagControl = new String[1];
-		saFlagControl[0] = sFlagControl;
-		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, saFlagControl);
+		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null);
 	}
 	
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, IKernelContextZZZ objContext, String sFlagControl) throws ExceptionZZZ{
-		String[] saFlagControl = new String[1];
-		saFlagControl[0] = sFlagControl;
-		KernelNew_(null, objContext, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName,null, saFlagControl);
+		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(null, objContext, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName,null);
 	}
 	
 	/** Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
@@ -179,12 +179,11 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ
 	 */
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFlagControl) throws ExceptionZZZ{
+		super(sFlagControl); //20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		
 		//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
 		IKernelConfigZZZ objConfig = this.getConfigObject();
-		
-		String[] saFlagControl = new String[1];
-		saFlagControl[0] = sFlagControl;
-		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saFlagControl);
+		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null);
 	}
 	
 	/**  Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
@@ -199,10 +198,11 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ
 	 */
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String[] saFlagControl) throws ExceptionZZZ{
+		super(saFlagControl); //20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		
 		//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
-		IKernelConfigZZZ objConfig = this.getConfigObject();
-				
-		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saFlagControl);
+		IKernelConfigZZZ objConfig = this.getConfigObject();				
+		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null);
 	}
 	
 	
@@ -215,6 +215,7 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, IKernelZZZ objKernelOld, String[] saFlagControl) throws ExceptionZZZ{
+		super(saFlagControl); //20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
 		main:{
 			check:{
 				if(objKernelOld==null){
@@ -232,7 +233,7 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		LogZZZ objLog = objKernelOld.getLogObject();
 		IKernelConfigZZZ objConfig = objKernelOld.getConfigObject();
 		
-		KernelNew_(objConfig, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog, saFlagControl);
+		KernelNew_(objConfig, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog);
 		}//END main
 	}
 	
@@ -3845,7 +3846,7 @@ MeinTestParameter=blablaErgebnis
 		this.objLog = objLog;
 	}
 	
-	private boolean KernelNew_(IKernelConfigZZZ objConfig, IKernelContextZZZ objContext, String sApplicationKeyIn,String sSystemNumberIn, String sDirectoryConfigIn, String sFileConfigIn, LogZZZ objLogIn, String[] saFlagControlIn) throws ExceptionZZZ{
+	private boolean KernelNew_(IKernelConfigZZZ objConfig, IKernelContextZZZ objContext, String sApplicationKeyIn,String sSystemNumberIn, String sDirectoryConfigIn, String sFileConfigIn, LogZZZ objLogIn) throws ExceptionZZZ{
 		boolean bReturn = false;		
 		main:{			
 				String stemp=null; boolean btemp=false; String sLog = null;
@@ -3858,36 +3859,60 @@ MeinTestParameter=blablaErgebnis
 				//Zusätzlich zu übergebenen Flags müssen auch die Flags vom Config-Objekt übernommen werden, wenn sie vorhanden sind als Flags im KernelObjekt.
 				//siehe als schon realisiertes Beispiel: Die Erstellung eines FileIniZZZ Objekts in: KernelKernelZZZ.getFileConfigIniByAlias(String sAlias) throws ExceptionZZZ{
 							
-				//Es geht dabei darum die Flags aus dem Configuration-Objekt zu überhnehmen, also z.B. "useFormula" zu übernehmen.												
-				String[] saFlag = null;				
+				//Es geht dabei darum die direkt gesetzten Flags aus dem Configuration-Objekt zu übernehmen, also z.B. "useFormula" zu übernehmen.												
+				String[] saFlagUsed = null;				
 				if(objConfig!=null) {
-					//Übernimm die gesetzten FlagZ...
+					//Übernimm die direkt gesetzten FlagZ...
 					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlagZ();
-					saFlag = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
-				}																		
-				String[]sa = StringArrayZZZ.append(saFlag, saFlagControlIn, "SKIPNULL");						
-				String[]saFlagUsed = StringArrayZZZ.unique(sa);
-												 
+					saFlagUsed = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
+				}																																		 
 				if(saFlagUsed!=null) {
-					//setzen der übergebenen Flags
+					//setzen der ggfs. aus dem Config Objekt zu übernehmende, gültige Flags
 					for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
 					  stemp = saFlagUsed[iCount];
 					  if(!StringZZZ.isEmpty(stemp)){
 						  btemp = setFlag(stemp, true);
 						  if(btemp==false){
 							  sLog = "the flag '" + stemp + "' is not available.";
-							  this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							  this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 							  throw ez;		 
 						  }
 					  }
 					}
-					if(this.getFlag("INIT")==true){
-						bReturn = true;
-						break main; 
-					}	
 				}//end if saFlagUsed!=null
-				 
+				
+				if(this.getFlag("INIT")==true){
+					bReturn = true;
+					break main; 
+				} 
+				
+				//++++++++++++++++++++++++++++++
+				//Nun geht es darum ggfs. die Flags zu übernehmen, die in iregendeiner Klasse gesetzt werden sollen.
+				//D.h. ggfs. stehen sie in dieser Klasse garnicht zur Verfügung
+				//Falls sie aber übergeben wurden, dann als Kommandozeilen-Argument. D.h. diese Flag - Angaben sollen alles übersteuern. Darum auch nach den "normalen" Flags verarbeiten.		
+				objConfig = this.getConfigObject();
+				if(objConfig!=null) {
+					//Übernimm die direkt als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
+					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();		
+					Set<String> setFlag = hmFlagZpassed.keySet();
+					Iterator<String> itFlag = setFlag.iterator();
+					while(itFlag.hasNext()) {
+						String sKey = itFlag.next();
+						 if(!StringZZZ.isEmpty(sKey)){
+							 Boolean booValue = hmFlagZpassed.get(sKey);
+							 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
+							 if(btemp==false){						 
+								 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+								 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+//								  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
+//								  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+//								  throw ez;		 
+							  }
+						 }
+					}
+				}																																																					
+				
 				//+++++++++++++++++++++++++++++++
 				//ggfs Context Object setzen
 				this.setContextUsed(objContext);
