@@ -523,7 +523,7 @@ public class GetOptZZZ extends ObjectZZZ{
 	* 3. Der Pattern String darf nicht mit einem Doppelpunkt beginnen.	
 	* 
 	* 20210331: Beispiel für einen gültigen gesamt String: 
-	*           -s 02 -d <z:Null/> -z {"DEBUGUI":true}
+	*           -s 02 -d <z:Null/> -z {"DEBUGUI_PANELLABEL_ON":true}
 	* 
 	* @param sPattern
 	* @return  Ein String, der eine Fehlermeldung enthaelt. 

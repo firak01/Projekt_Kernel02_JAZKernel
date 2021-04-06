@@ -67,7 +67,7 @@ public class DebugReflectClass03ZZZ extends ObjectZZZ{
 		System.out.println("### DEBUG: EmbededClasses der Klasse selber: Enum als Objekt ####");	
 		String sEnumNameToCheck = "CLASSZZZ_DUMMYENUM01";
 		boolean bErg = hasEnumFlagZValue(objDebug.getClass(),sEnumNameToCheck);
-		System.out.println("Enum mit dem Namen '" + sEnumNameToCheck + "' vorhanden: " + bErg);
+		System.out.println("Enum mit dem Namen '" + sEnumNameToCheck + "' direkt vorhanden: " + bErg);
 		
 		//++++
 		System.out.println("");

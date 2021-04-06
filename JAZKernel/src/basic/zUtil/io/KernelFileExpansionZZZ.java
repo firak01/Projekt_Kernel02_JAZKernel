@@ -26,7 +26,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 		FILE_EXPANSION_APPEND,FILE_CURRENT_FOUND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
 	}
 	
-	public KernelFileExpansionZZZ() {
+	public KernelFileExpansionZZZ() throws ExceptionZZZ {
 		super("init");
 	}
 	public KernelFileExpansionZZZ(char cExpansionFilling, int iExpansionLength) {		

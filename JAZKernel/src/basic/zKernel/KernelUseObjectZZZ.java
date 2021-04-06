@@ -28,10 +28,10 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
 	public KernelUseObjectZZZ(){		
-		//FGL 20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
+		//20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
 	}
 	
-	public KernelUseObjectZZZ(String sFlag) {
+	public KernelUseObjectZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
 	
@@ -72,46 +72,49 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	
 	private boolean KernelUseObjectNew_(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
-		main:{
+		main:{						
+			boolean btemp; String sLog;	
+								
+			//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+			
 			if(this.getFlag("INIT")==true){
 				bReturn = true;
 				break main; 
-			}				
+			}	
 			this.objKernel = objKernel;
 			this.objLog = objKernel.getLogObject();
+			
 			this.setContextUsed(objKernelContext);
-			
+						
 			//++++++++++++++++++++++++++++++
-			boolean btemp; String sLog;
-			
-			//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-			
 			//HIER geht es darum ggfs. die Flags zu übernehmen, die irgendwo gesetzt werden sollen und aus dem Kommandozeilenargument -z stammen.
 			//D.h. ggfs. stehen sie in dieser Klasse garnicht zur Verfügung
-			//Kommandozeilen-Argument soll alles übersteuern. Darum auch FALSE setzbar. Darum auch nach den "normalen" Flags verarbeiten.		
-			IKernelConfigZZZ objConfig = this.getKernelObject().getConfigObject();
-			if(objConfig!=null) {
-				//Übernimm die als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
-				Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();		
-				Set<String> setFlag = hmFlagZpassed.keySet();
-				Iterator<String> itFlag = setFlag.iterator();
-				while(itFlag.hasNext()) {
-					String sKey = itFlag.next();
-					 if(!StringZZZ.isEmpty(sKey)){
-						 Boolean booValue = hmFlagZpassed.get(sKey);
-						 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
-						 if(btemp==false){						 
-							 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
-							 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
-//							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-//							  throw ez;		 
-						  }
-					 }
-				}
-			}																										
-			
-			//+++++++++++++++++++++++++++++++			
+			//Kommandozeilen-Argument soll alles übersteuern. Darum auch FALSE setzbar. Darum auch nach den "normalen" Flags verarbeiten.
+			if(this.getKernelObject()!=null) {
+				IKernelConfigZZZ objConfig = this.getKernelObject().getConfigObject();
+				if(objConfig!=null) {
+					//Übernimm die als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
+					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();		
+					Set<String> setFlag = hmFlagZpassed.keySet();
+					Iterator<String> itFlag = setFlag.iterator();
+					while(itFlag.hasNext()) {
+						String sKey = itFlag.next();
+						 if(!StringZZZ.isEmpty(sKey)){
+							 Boolean booValue = hmFlagZpassed.get(sKey);
+							 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
+							 if(btemp==false){						 
+								 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+								 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+	//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
+	//							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+	//							  throw ez;		 
+							  }
+						 }
+					}
+				}	
+			}			
+			//+++++++++++++++++++++++++++++++						
+			bReturn = true;
 		}//end main;
 		return bReturn;
 	}

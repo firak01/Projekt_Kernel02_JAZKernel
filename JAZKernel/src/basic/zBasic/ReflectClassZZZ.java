@@ -241,17 +241,38 @@ public class ReflectClassZZZ implements IConstantZZZ{
 			return superTypes;
 		}
 		
+		public static void scanInterfacesSuper(Class<?>objClass, ArrayList<Class<?>> listaInterfaceSuper) {
+			
+			Class<?>[]objaInterfaceSuper = objClass.getInterfaces();
+			if(objaInterfaceSuper!=null){
+				for(Class<?>objInterfaceSuper:objaInterfaceSuper) {
+					//System.out.println("SuperClassname: " + objClassSuper.getName());
+					if(!listaInterfaceSuper.contains(objInterfaceSuper)) {
+						listaInterfaceSuper.add(objInterfaceSuper);
+					}
+					
+					//Rekursion:
+					//Jetzt hat dieses Interface ggfs. auch weitere Interface, aber die werden als Klassen geholt.
+					
+					//beachte: https://stackoverflow.com/questions/24020413/get-parent-interface-of-interface-in-java
+					//         Auch wenn da steht interface extends I...
+					//         ist das keine Elternklasse, sondern wiederum Interface des Interace halt.
+					ReflectClassZZZ.scanInterfacesSuper(objInterfaceSuper, listaInterfaceSuper);					
+				}
+			}
+		}
+		
 		/* ArrayList mit den Klassen-Objekten der Elternklassen zurueckgeben. 
 	     * ! intern Rekursiver Aufruf !
 	     */
-		public static void scanSuperClasses(Class objClass, ArrayList<Class<?>> superTypes){
+		public static void scanSuperClasses(Class<?>objClass, ArrayList<Class<?>> listaClassSuper){
 			
-			Class objSuperClass = objClass.getSuperclass();
-			if(objSuperClass!=null){
-				//System.out.println("SuperClassname: " + objSuperClass.getName());
-				superTypes.add(objSuperClass);
+			Class<?>objClassSuper = objClass.getSuperclass();
+			if(objClassSuper!=null){
+				//System.out.println("SuperClassname: " + objClassSuper.getName());
+				listaClassSuper.add(objClassSuper);
 				
-				ReflectClassZZZ.scanSuperClasses(objSuperClass, superTypes);
+				ReflectClassZZZ.scanSuperClasses(objClassSuper, listaClassSuper);
 			}
 		}
 		

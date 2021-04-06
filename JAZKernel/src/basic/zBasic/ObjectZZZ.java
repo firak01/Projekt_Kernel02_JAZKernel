@@ -47,7 +47,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 		//rufe im Default Konstuktor der Kindklasse auf:
 		//super("init");		
 	}
-	public ObjectZZZ(String sFlag) {
+	public ObjectZZZ(String sFlag) throws ExceptionZZZ {
 		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);
 	}
 	public ObjectZZZ(String[] saFlag) {
