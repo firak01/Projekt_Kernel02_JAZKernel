@@ -168,6 +168,45 @@ public class StringArrayZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
+	public static String asHtml(String[] saValue) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(StringArrayZZZ.isEmptyNull(saValue)) break main;
+			
+			sReturn = new String();
+
+			int iIndex=-1;
+			for(String sValue : saValue) {				
+				if(sValue!=null) {
+					iIndex=iIndex+1;
+					if(iIndex==0) {
+						if(!StringZZZ.startsWithIgnoreCase(sValue, "<html>")){
+							if(!StringZZZ.startsWithIgnoreCase(sValue, "<body>")) {
+								sReturn = "<body>" + sReturn;
+							}
+							sReturn = "<html>" + sReturn;
+						}
+					}
+																		
+					if(iIndex>=1) {
+						sReturn=sReturn+"<br>";
+					}
+					sValue = StringZZZ.toHtml(sValue);
+					sReturn = sReturn + sValue;
+				}
+			}
+								
+			if(!StringZZZ.endsWithIgnoreCase(sReturn, "</html>")){
+				if(!StringZZZ.endsWithIgnoreCase(sReturn, "</body>")) {
+					sReturn = sReturn + "</body>";
+				}
+				sReturn = sReturn + "</html>";
+			}
+			
+		}//end main:
+		return sReturn;	
+	}
+	
 	
 	public boolean contains(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
