@@ -2180,19 +2180,26 @@ public class StringZZZ implements IConstantZZZ{
 		main:{
 			
 			if(StringZZZ.isEmpty(sValue)){
-				sReturn = "<html></html>";
+				sReturn = "<html><body></body></html>";
 				break main;
 			}
 			
 			sReturn = StringZZZ.toHtml(sValue);
 			
+
 			if(!StringZZZ.startsWithIgnoreCase(sValue, "<html>")){
-				sReturn = "<html>" + sReturn;
-			}
-			if(!StringZZZ.endsWithIgnoreCase(sValue, "</html>")){
-				sReturn = sReturn + "</html>";
+				if(!StringZZZ.startsWithIgnoreCase(sValue, "<body>")) {
+					sReturn = "<body>" + sReturn;					
+				}
+				sReturn = "<html>" + sReturn;				
 			}
 			
+			if(!StringZZZ.endsWithIgnoreCase(sValue, "</html>")){
+				if(!StringZZZ.endsWithIgnoreCase(sValue, "</body>")) {
+					sReturn = sReturn + "</body>";
+				}
+				sReturn = sReturn + "</html>";
+			}			
 		}//end main:
 		return sReturn;
 	}
