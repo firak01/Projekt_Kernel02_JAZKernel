@@ -82,7 +82,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 //				ExceptionZZZ ez = new ExceptionZZZ("Argument - Array", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 				
-				saArg = new String[8];
+				saArg = new String[10];
 				saArg[0] = "-k";
 				saArg[1] = this.getApplicationKeyDefault();
 				saArg[2] = "-s";
