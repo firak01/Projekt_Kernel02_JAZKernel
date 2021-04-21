@@ -476,8 +476,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			IniFile objIni = this.getFileConfigKernelAsIni(); 
 			
 			//1. Versuch: Auf Systemebene
-			String sKeyUsed = this.getSystemKey();
-			String sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 	
+			String sPropertyUsed = "KernelConfigFile" +sModule;
+			String sSectionUsed = this.getSystemKey();
+			String sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 	
 			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
@@ -488,8 +489,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			//2. Versuch auf Applikationsebene
 			if(StringZZZ.isEmpty(sFileNameUsed)) {								
-				sKeyUsed = this.getApplicationKey();
-				sFileName =objIni.getValue(sKeyUsed,"KernelConfigFile" +sModule ); 
+				sSectionUsed = this.getApplicationKey();
+				sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 
 				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
@@ -502,7 +503,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			if(sFileNameUsed.equals(""))break main;								
 			
 			//###############
-			String sFilePath = objIni.getValue(sKeyUsed,"KernelConfigPath" +sModule );
+			sPropertyUsed = "KernelConfigPath" +sModule;
+			String sFilePath = objIni.getValue(sSectionUsed,sPropertyUsed);
 			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
@@ -706,7 +708,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
 						FileIniZZZ exDummy = new FileIniZZZ();					
 						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);						
-						objReturn = new FileIniZZZ(this,  objFileModule,saFlagZpassed);
+						objReturn = new FileIniZZZ(this, objFileModule, saFlagZpassed);
 
 					}else{
 						//Übernimm die gesetzten FlagZ...
@@ -714,7 +716,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						
 						//Übernimm die gesetzten Variablen...
 						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigIni().getHashMapVariable();
-						objReturn = new FileIniZZZ(this,  objFileModule,hmFlagZ);
+						objReturn = new FileIniZZZ(this,  objFileModule, hmFlagZ);
 						objReturn.setHashMapVariable(hmVariable);	
 					}
 					
@@ -726,11 +728,31 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						throw ez;		
 					}
 					*/
-					this.setFileConfigIni(objReturn);
+					//20210421: Nein, damit würde die Hauptkernelkonfiguratin ggfs. durch eine Modulkonfiguration überschrieben
+					//          this.setFileConfigIni(objReturn);
 					
 					
 				}//end main:
 		return objReturn;
+	}
+	
+	public String searchAliasForModule(String sModule) throws ExceptionZZZ {
+		String sReturn=null;
+		main:{
+			if(sModule == "") {
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(sModule.equals("")) {
+				ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			IKernelConfigSectionEntryZZZ entry = KernelSearchAliasForModule_(sModule);
+			if(entry==null) break main;
+			
+			sReturn = entry.getValue();
+		}//end main:
+		return sReturn;
 	}
 		
 	public String searchFileConfigIniNameByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ {
@@ -911,8 +933,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			if(!StringZZZ.isEmpty(sMainSection)){
 				if(sMainSection.equals(sProgramOrSection)){
 					sReturn = this.getApplicationKey();					
-				}else{
-					sReturn = sMainSection;
+				}else{					
+					String sModuleAlias = this.searchAliasForModule(sMainSection);
+	    			if(StringZZZ.isEmpty(sModuleAlias)) {
+	    				sReturn = sMainSection;
+	    			}else {
+	    				sReturn = sModuleAlias;
+	    			}					
 				}
 				break main;				
 			}
@@ -920,6 +947,97 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sReturn = this.getApplicationKey();			
 		}
 		return sReturn;
+	}
+	
+	/**Wird der Wert darin gefunden, dann hat man den gültigen Alias gefunden.
+	   Mit diese gültigen ModulAlias kann dann später die korrekte Ini-Datei für die Modulkonfiguration geholt werden.	   
+	 * @param sModule, z.B. der Klassenname eines Panels oder einer Dialogbox, halt einer Komponenten die IModuleZZZ implementiert.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 21.04.2021, 10:10:26
+	 */
+	private IKernelConfigSectionEntryZZZ KernelSearchAliasForModule_(String sModule) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn=null;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		
+		String sSectionCacheUsed = this.getSystemKey(); 
+		String sPropertyCacheUsed = sModule;
+		main:{
+			//############################
+			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST			
+			ICachableObjectZZZ objFromCache = (ICachableObjectZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
+			if(objFromCache!=null){					
+					hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+					objReturn = (IKernelConfigSectionEntryZZZ) objFromCache;
+					break main;				
+			}else{
+				hmDebug.put("Not in CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+			}
+			
+			//0. Alle Module holen
+			ArrayList<String>listasModuleAlias = this.getModuleAll();
+			String sSystemNumber=this.getSystemNumber();
+			String sSectionUsed=null;			
+			for(String sModuleAlias : listasModuleAlias) {
+				
+				//1. Konfigurationsfile für das Modul holen			
+				if(!StringZZZ.isEmpty(sModuleAlias)){
+		    		try{		    			
+			    		//String stemp = "Suche FileIniZZZ fuer Modul '" + sMainSection + ".";
+			    		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+		    			FileIniZZZ objFileIni = this.getFileConfigIniByAlias(sModuleAlias);
+		    			if(objFileIni!=null) {
+		    				if(FileEasyZZZ.exists(objFileIni.getFileObject())) {
+		    			
+		    			//Suche nun in der Datei nach dem Propertywert sModule
+		    			//1. In sModuleAlias+sSystemNumber
+		    			if(!sModuleAlias.equals(this.getApplicationKey())) {//damit die spätere Suche nicht doppelt gemacht wird.
+		    				sSectionUsed=sModuleAlias+"!"+sSystemNumber;		    			
+		    				hmDebug.put("ModulNumber", sSectionUsed);
+		    				objReturn = objFileIni.getPropertyValue(sSectionUsed, sModule);
+		    				if(objReturn.hasAnyValue())break main;
+		    					    			
+		    				//2. In sModuleAlias
+		    				sSectionUsed=sModuleAlias;
+		    				hmDebug.put("Modul", sSectionUsed);
+		    				objReturn = objFileIni.getPropertyValue(sSectionUsed, sModule);
+		    				if(objReturn.hasAnyValue())break main;
+		    			}
+		    			
+		    			//3. In sApplicationKey+sSystemNumber
+		    			sSectionUsed = this.getSystemKey();
+		    			hmDebug.put("System", sSectionUsed);
+		    			objReturn = objFileIni.getPropertyValue(sSectionUsed, sModule);
+		    			if(objReturn.hasAnyValue())break main;
+		    			
+		    			//4. In sApplicationKey
+		    			sSectionUsed = this.getApplicationKey();
+		    			hmDebug.put("Application", sSectionUsed);		    			
+		    			if(objReturn.hasAnyValue())break main;
+		    			
+		    				}//.exists
+		    			}//objFileIni!=null
+			    	}catch(ExceptionZZZ ez2){
+			    		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über die Section '" + sSectionUsed + "' schlägt fehl. ...");
+			    	}		    		
+				}
+			}
+
+		    if(objReturn==null){    			
+		    	String stemp = "ENDE DIESER SUCHE NACH MODULALIAS OHNE ERFOLG +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}		   	
+		}//end main:
+		if(objReturn!=null){
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH MODULALIAS +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+    		
+    		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
+			this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objReturn);
+		}
+		return objReturn;								
 	}
 	
 	private FileIniZZZ KernelSearchConfigFileByProgramAlias_(String sMainSection, String sProgramOrSection) throws ExceptionZZZ{
@@ -940,6 +1058,25 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				hmDebug.put("Not in CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
 			}
 			
+			//1. Konfigurationsfile für das Modul holen						
+			if(!StringZZZ.isEmpty(sMainSection)){
+	    		try{
+	    			hmDebug.put("Modul", sMainSection);
+		    		//String stemp = "Suche FileIniZZZ fuer Modul '" + sMainSection + ".";
+		    		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+	    			String sModuleAlias = this.searchAliasForModule(sMainSection);
+	    			if(StringZZZ.isEmpty(sModuleAlias)) {
+	    				objReturn = this.getFileConfigIniByAlias(sMainSection);
+	    			}else {
+	    				objReturn = this.getFileConfigIniByAlias(sModuleAlias);
+	    			}
+		    	}catch(ExceptionZZZ ez2){
+		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über die MainSection '" + sMainSection + "' schlägt fehl. ...");
+		    	}
+	    		if(objReturn!=null)break main;
+			}
+			
+			
 			//1. Konfigurationsfile für das Program oder die Section holen	
 			if(!StringZZZ.isEmpty(sProgramOrSection)){
 	    		try{
@@ -953,18 +1090,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	    		if(objReturn!=null)break main;
 			}
 			
-    		//2. Konfigurationsfile für die Mainsection holen
-			if(!StringZZZ.isEmpty(sMainSection)){
-	    		try{
-	    			hmDebug.put("Modul", sMainSection);
-		    		//String stemp = "Suche FileIniZZZ fuer Modul '" + sMainSection + ".";
-		    		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-		    		objReturn = this.getFileConfigIniByAlias(sMainSection);		    		
-		    	}catch(ExceptionZZZ ez2){
-		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über die MainSection '" + sMainSection + "' schlägt fehl. ...");
-		    	}
-	    		if(objReturn!=null)break main;
-			}
+    		
 			
 			//3. Konfigurationsfile des Systems holen
 		    String sSystemkey = this.getSystemKey();
@@ -1924,6 +2050,7 @@ MeinTestParameter=blablaErgebnis
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug;
+		String sMainSectionUsed = null;
 		
 		//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
 		//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
@@ -1994,7 +2121,7 @@ MeinTestParameter=blablaErgebnis
 		    }
 		   
 		    //2. Den Abschnitt holen
-			String sMainSectionUsed = this.KernelChooseMainSectionUsedForConfigFile_(sMainSection, sProgramOrSection);
+			sMainSectionUsed = this.KernelChooseMainSectionUsedForConfigFile_(sMainSection, sProgramOrSection);
 			String sSectionUsed = null;	
 			
 			//#######################################################################
@@ -2153,7 +2280,7 @@ MeinTestParameter=blablaErgebnis
 				
 				sDebug = hmDebug.debugString(":"," | ");
 				if(objReturn.hasAnyValue()) {
-					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
+					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sMainSection='" + sMainSection + "/sMainSectionUsed='"+sMainSectionUsed+"' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
 					
 					//################
