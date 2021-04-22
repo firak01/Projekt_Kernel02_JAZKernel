@@ -35,6 +35,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.json.JsonArrayZZZ;
+import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
@@ -1141,6 +1142,10 @@ public class StringZZZ implements IConstantZZZ{
 	 */
 	public static boolean isBlank(String sString){
 		return StringUtils.isBlank(sString);
+	}
+	
+	public static boolean isJson(String sString) throws ExceptionZZZ {
+		return JsonEasyZZZ.isJsonValid(sString);
 	}
 	
 	public static boolean isWhitespace(String sString){

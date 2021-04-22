@@ -1054,6 +1054,23 @@ public void testVecMidFirst(){
 			assertTrue(sMatch.equals(sErg));																				
 		}catch(ExceptionZZZ ez){
 			fail("Method throws an exception." + ez.getMessageLast());
+		}					
+	}
+	
+	public void testIsJson() {
+		try{
+			boolean bTest;
+			
+			String sString = "Lorem Ipsum";
+			bTest = StringZZZ.isJson(sString);	
+			assertFalse(bTest);						
+			
+			String sValue = "[[\"110917       \", 3.0099999999999998, -0.72999999999999998, 2.8500000000000001, 2.96, 685.0, 38603.0], [\"110917    \", 2.71, 0.20999999999999999, 2.8199999999999998, 2.8999999999999999, 2987.0, 33762.0]]";
+			bTest = StringZZZ.isJson(sValue);	
+			assertTrue(bTest);
+			
+		}catch(ExceptionZZZ ez){
+			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 	}
 	
