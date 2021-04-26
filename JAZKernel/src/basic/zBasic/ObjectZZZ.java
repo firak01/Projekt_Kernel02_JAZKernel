@@ -77,11 +77,92 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 	
 		
 	
-	//### FlagMethods ##########################		
-	public Class getClassFlagZ(){
-		return FLAGZ.class;
+	//### FlagMethods ##########################
+	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
+	 * 	 Weteire Voraussetzungen:
+	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
+	 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
+	 */
+	public boolean getFlagZ(String sFlagName) {
+		boolean bFunction = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName)) break main;
+										
+			HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
+			Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
+			}
+							
+		}	// end main:
+		
+		return bFunction;	
 	}
-
+	@Override
+	public boolean getFlag(String sFlagName) {
+		//Version Vor Java 1.6
+//		boolean bFunction = false;
+//	main:{
+//		if(StringZZZ.isEmpty(sFlagName)) break main;
+//		
+//		// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
+//		// bFunction = super.getFlag(sFlagName);
+//		// if(bFunction == true) break main;
+//		
+//		// Die Flags dieser Klasse setzen
+//		String stemp = sFlagName.toLowerCase();
+//		if(stemp.equals("debug")){
+//			bFunction = this.bFlagDebug;
+//			break main;
+//		}else if(stemp.equals("init")){
+//			bFunction = this.bFlagInit;
+//			break main;
+//		}else{
+//			bFunction = false;
+//		}		
+//	}	// end main:
+//	
+//	return bFunction;	
+		return this.getFlagZ(sFlagName);
+	}
+	@Override
+	public boolean setFlag(String sFlagName, boolean bFlagValue) {
+		//Version Vor Java 1.6
+//		boolean bFunction = true;
+//		main:{
+//			if(StringZZZ.isEmpty(sFlagName)) break main;
+//			
+//			// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
+//			// bFunction = super.setFlag(sFlagName, bFlagValue);
+//			// if(bFunction == true) break main;
+//			
+//			// Die Flags dieser Klasse setzen
+//			String stemp = sFlagName.toLowerCase();
+//			if(stemp.equals("debug")){
+//				this.bFlagDebug = bFlagValue;
+//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag �berhaupt gibt !!!
+//				break main;
+//			}else if(stemp.equals("init")){
+//				this.bFlagInit = bFlagValue;
+//				bFunction = true;
+//				break main;
+//			}else{
+//				bFunction = false;
+//			}	
+//			
+//		}	// end main:
+//		
+//		return bFunction;	
+		try {
+			return this.setFlagZ(sFlagName, bFlagValue);
+		} catch (ExceptionZZZ e) {
+			System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
+			return false;
+		}
+	}
+	
 	@Override
 	public HashMap<String, Boolean>getHashMapFlagZ(){
 		return this.hmFlag;
@@ -241,6 +322,8 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 		}//end main:
 		return bReturn;
 	}
+	//##################################################
+	
 	
 	/* (non-Javadoc)
 	 * @see zzzKernel.basic.KernelAssetObjectZZZ#getExceptionObject()
@@ -264,90 +347,5 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 		String sReturn = "";
 		sReturn = ReflectionToStringBuilder.toString(this);
 		return sReturn;
-	}
-	
-	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
-	 * 	 Weteire Voraussetzungen:
-	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
-	 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
-	 */
-	public boolean getFlagZ(String sFlagName) {
-		boolean bFunction = false;
-		main:{
-			if(StringZZZ.isEmpty(sFlagName)) break main;
-										
-			HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
-			Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
-			if(objBoolean==null){
-				bFunction = false;
-			}else{
-				bFunction = objBoolean.booleanValue();
-			}
-							
-		}	// end main:
-		
-		return bFunction;	
-	}
-	@Override
-	public boolean getFlag(String sFlagName) {
-		//Version Vor Java 1.6
-//		boolean bFunction = false;
-//	main:{
-//		if(StringZZZ.isEmpty(sFlagName)) break main;
-//		
-//		// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
-//		// bFunction = super.getFlag(sFlagName);
-//		// if(bFunction == true) break main;
-//		
-//		// Die Flags dieser Klasse setzen
-//		String stemp = sFlagName.toLowerCase();
-//		if(stemp.equals("debug")){
-//			bFunction = this.bFlagDebug;
-//			break main;
-//		}else if(stemp.equals("init")){
-//			bFunction = this.bFlagInit;
-//			break main;
-//		}else{
-//			bFunction = false;
-//		}		
-//	}	// end main:
-//	
-//	return bFunction;	
-		return this.getFlagZ(sFlagName);
-	}
-	@Override
-	public boolean setFlag(String sFlagName, boolean bFlagValue) {
-		//Version Vor Java 1.6
-//		boolean bFunction = true;
-//		main:{
-//			if(StringZZZ.isEmpty(sFlagName)) break main;
-//			
-//			// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
-//			// bFunction = super.setFlag(sFlagName, bFlagValue);
-//			// if(bFunction == true) break main;
-//			
-//			// Die Flags dieser Klasse setzen
-//			String stemp = sFlagName.toLowerCase();
-//			if(stemp.equals("debug")){
-//				this.bFlagDebug = bFlagValue;
-//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag �berhaupt gibt !!!
-//				break main;
-//			}else if(stemp.equals("init")){
-//				this.bFlagInit = bFlagValue;
-//				bFunction = true;
-//				break main;
-//			}else{
-//				bFunction = false;
-//			}	
-//			
-//		}	// end main:
-//		
-//		return bFunction;	
-		try {
-			return this.setFlagZ(sFlagName, bFlagValue);
-		} catch (ExceptionZZZ e) {
-			System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
-			return false;
-		}
 	}	
 }

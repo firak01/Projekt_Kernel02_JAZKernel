@@ -537,8 +537,6 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 //			}
 			
 			//3. Mache das neue Ini-Objekt
-//			String sPathTotalToUse = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
-
 			String sPathTotalToUse = objFile.getAbsolutePath();
 			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
 			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
