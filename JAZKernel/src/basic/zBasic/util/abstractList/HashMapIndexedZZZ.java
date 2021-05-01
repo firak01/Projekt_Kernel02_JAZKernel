@@ -358,11 +358,26 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		}
 		iMax=iMax+1;
 		Integer intMaxNew = new Integer(iMax);
-		vecIndex.add(intMaxNew);//einfach anhängen.
-							
+		vecIndex.add(intMaxNew);//einfach anhängen.		
 		this.getHashMap().put(intMaxNew, objValue);		
 	}
 
+	public int size() {
+		int iReturn = 0;
+		main:{
+			if(this.getHashMap()!=null) {
+				iReturn = this.getHashMap().size();
+			}
+		}//end main;
+		return iReturn;
+	}
+
+	
+	
+	
+	//### Interfaces ++++++++++++
+	
+	
 //	@Override
 //	public Iterator<T> iterator() {
 //		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
@@ -432,5 +447,8 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
         };
         return it;
     }
+	
+	
+	
 
 }//END Class
