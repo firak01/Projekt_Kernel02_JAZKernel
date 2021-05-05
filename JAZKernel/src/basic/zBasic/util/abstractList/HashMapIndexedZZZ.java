@@ -244,6 +244,17 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		return objReturn;
 	}
 	
+	public Object getValue(int iKey) throws ExceptionZZZ{
+		Object objReturn = null;
+		main:{
+			if(iKey<0)break main;
+			
+			Integer intKey = new Integer(iKey);
+			objReturn = this.getValue(intKey);
+		}
+		return objReturn;
+	}
+	
 	/** void, Setze das Objekt, von dem aus mit getNext() weitergegangen werden kann auf eine andere Indexposition des Vektors.
 	* Lindhauer; 27.04.2006 11:18:51
 	 * @param objCur
