@@ -20,10 +20,7 @@ import basic.zBasic.ReflectCodeZZZ;
 public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{	
 	private HashMap<Integer,Object> hmIndexed=null;
 	private VectorExtendedZZZ<Integer> vecIndex=null;	
-	private int iIndex=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
-	
-	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
-	
+	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
 	
 	public HashMapIndexedZZZ() throws ExceptionZZZ{
 		HashMapIndexedNew_(null);
@@ -287,12 +284,12 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 				}				
 			}//END Check:
 	
-			this.iIndex = iIndex;
+			this.iIndexCurrent4Vector = iIndex;
 		}//END main:
 	}
 	
 	public int getIndexCurrent() {
-		return this.iIndex;
+		return this.iIndexCurrent4Vector;
 	}
 	
 	/** HashMap, die Im Kontruktor übergebene HashMap, unver�ndert.
