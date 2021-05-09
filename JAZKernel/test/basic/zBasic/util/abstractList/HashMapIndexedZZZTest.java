@@ -89,8 +89,7 @@ public class HashMapIndexedZZZTest extends TestCase{
 //				fail("Method throws an exception." + ez.getMessageLast());
 //			} 
 		}    
-	    
-	
+	    	    	    	
 //	public void testRemoveByIndex(){
 //		try{
 //			hmTest.clear();
