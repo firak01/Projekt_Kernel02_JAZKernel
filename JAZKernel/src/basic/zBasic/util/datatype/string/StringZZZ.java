@@ -1863,6 +1863,14 @@ public class StringZZZ implements IConstantZZZ{
 	}
 
 	public static String abbreviateDynamic(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+		return abbreviateDynamic_(sSource, iMaxCharactersAllowed, true);
+	}
+	
+	public static String abbreviateDynamicFromRight(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+		return abbreviateDynamic_(sSource, iMaxCharactersAllowed, false);
+	}
+	
+	private static String abbreviateDynamic_(String sSource, int iMaxCharactersAllowed, boolean bFromLeft) throws ExceptionZZZ{
 		String sReturn = "";
 		main:{
 			if(StringZZZ.isEmptyNull(sSource)) break main;			
@@ -1874,7 +1882,7 @@ public class StringZZZ implements IConstantZZZ{
 				ExceptionZZZ ez = new ExceptionZZZ("MaxCharactersAllowed to small. Must be >= 2.", iERROR_PARAMETER_VALUE, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
-			
+						
 			String myDynamicAbbreviator=null;
 			if(sSource.length()- iMaxCharactersAllowed == 1){
 				myDynamicAbbreviator = new String(".");				
@@ -1882,37 +1890,60 @@ public class StringZZZ implements IConstantZZZ{
 			if(sSource.length()- iMaxCharactersAllowed == 2){
 				myDynamicAbbreviator = new String("..");				
 			}
-						
-			if(myDynamicAbbreviator!=null){
-				int iLeft = iMaxCharactersAllowed - myDynamicAbbreviator.length();
-				sReturn = StringZZZ.left(sSource, iLeft);						
-				sReturn = sReturn + myDynamicAbbreviator;
+			
+			if(bFromLeft) {
+				if(myDynamicAbbreviator!=null){
+					int iLeft = iMaxCharactersAllowed - myDynamicAbbreviator.length();
+					sReturn = StringZZZ.left(sSource, iLeft);						
+					sReturn = sReturn + myDynamicAbbreviator;
+					break main;
+				}
+								
+				sReturn = StringUtils.abbreviate(sSource, iMaxCharactersAllowed);
 				break main;
+			}else {				
+				if(myDynamicAbbreviator!=null){
+					int iRight = iMaxCharactersAllowed - myDynamicAbbreviator.length();
+					sReturn = StringZZZ.right(sSource, iRight);						
+					sReturn = myDynamicAbbreviator + sReturn;
+					break main;
+				}
+				
+				sReturn = StringZZZ.right(sSource, iMaxCharactersAllowed-3);
+				sReturn = "..." + sReturn;
 			}
-			
-			
-			/* Merke, aus der Doku.
-    If str is less than maxWidth characters long, return it.
-    Else abbreviate it to (substring(str, 0, max-3) + "...").
-    If maxWidth is less than 4, throw an IllegalArgumentException.
-    In no case will it return a String of length greater than maxWidth.
+		
+		
+		/* Merke, aus der Doku.
+If str is less than maxWidth characters long, return it.
+Else abbreviate it to (substring(str, 0, max-3) + "...").
+If maxWidth is less than 4, throw an IllegalArgumentException.
+In no case will it return a String of length greater than maxWidth.
 
- StringUtils.abbreviate(null, *)      = null
- StringUtils.abbreviate("", 4)        = ""
- StringUtils.abbreviate("abcdefg", 6) = "abc..."
- StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
- StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
- StringUtils.abbreviate("abcdefg", 4) = "a..."
- StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
- 
-			 */
-			sReturn = StringUtils.abbreviate(sSource, iMaxCharactersAllowed);
-			
-		}//end main:
-		return sReturn;
+StringUtils.abbreviate(null, *)      = null
+StringUtils.abbreviate("", 4)        = ""
+StringUtils.abbreviate("abcdefg", 6) = "abc..."
+StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
+StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
+StringUtils.abbreviate("abcdefg", 4) = "a..."
+StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
+
+		 */
+		
+		
+	}//end main:
+	return sReturn;
 	}
 	
 	public static String abbreviateStrict(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+		return abbreviateStrict_(sSource, iMaxCharactersAllowed,true);
+	}
+	
+	public static String abbreviateStrictFromRight(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+		return abbreviateStrict_(sSource, iMaxCharactersAllowed,false);
+	}
+	
+	private static String abbreviateStrict_(String sSource, int iMaxCharactersAllowed, boolean bFromLeft) throws ExceptionZZZ{
 		String sReturn = "";
 		main:{
 			if(StringZZZ.isEmptyNull(sSource)) break main;			
@@ -1932,35 +1963,46 @@ public class StringZZZ implements IConstantZZZ{
 			if(iMaxCharactersAllowed==3 && sSource.length()>=3){
 				myDynamicAbbreviator = new String("..");				
 			}
-						
-			if(myDynamicAbbreviator!=null){
-				sReturn = StringZZZ.left(sSource, 1);
-				sReturn = sReturn + myDynamicAbbreviator;
+			
+			if(bFromLeft) {
+				if(myDynamicAbbreviator!=null){
+					sReturn = StringZZZ.left(sSource, 1);
+					sReturn = sReturn + myDynamicAbbreviator;
+					break main;
+				}				
+				sReturn = StringUtils.abbreviate(sSource, iMaxCharactersAllowed);
 				break main;
+			}else {
+				if(myDynamicAbbreviator!=null){
+					sReturn = StringZZZ.right(sSource, 1);
+					sReturn = myDynamicAbbreviator + sReturn;
+					break main;
+				}
+				sReturn = StringZZZ.right(sSource, iMaxCharactersAllowed-3);
+				sReturn = "..." + sReturn;
 			}
-			
-			
-			/* Merke, aus der Doku.
-    If str is less than maxWidth characters long, return it.
-    Else abbreviate it to (substring(str, 0, max-3) + "...").
-    If maxWidth is less than 4, throw an IllegalArgumentException.
-    In no case will it return a String of length greater than maxWidth.
+		
+		
+		/* Merke, aus der Doku.
+If str is less than maxWidth characters long, return it.
+Else abbreviate it to (substring(str, 0, max-3) + "...").
+If maxWidth is less than 4, throw an IllegalArgumentException.
+In no case will it return a String of length greater than maxWidth.
 
- StringUtils.abbreviate(null, *)      = null
- StringUtils.abbreviate("", 4)        = ""
- StringUtils.abbreviate("abcdefg", 6) = "abc..."
- StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
- StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
- StringUtils.abbreviate("abcdefg", 4) = "a..."
- StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
- 
-			 */
-			sReturn = StringUtils.abbreviate(sSource, iMaxCharactersAllowed);
-			
-		}//end main:
-		return sReturn;
+StringUtils.abbreviate(null, *)      = null
+StringUtils.abbreviate("", 4)        = ""
+StringUtils.abbreviate("abcdefg", 6) = "abc..."
+StringUtils.abbreviate("abcdefg", 7) = "abcdefg"
+StringUtils.abbreviate("abcdefg", 8) = "abcdefg"
+StringUtils.abbreviate("abcdefg", 4) = "a..."
+StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
+
+		 */
+		
+		
+	}//end main:
+	return sReturn;
 	}
-
 
 	/** Gibt ein Array aller Index-Startpostionen zurück. Das Array ist NICHT sortiert !!!
 	* @param sSource, der durchsuchte String.
