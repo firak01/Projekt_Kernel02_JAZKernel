@@ -777,26 +777,32 @@ public void testVecMidFirst(){
 			assertEquals("abc...", sErg);
 			
 			
+			//++++++++++++++++++
+			sTest = "use.openvpn.serverui.component.IPExternalUpload.DlgIPExternalOVPN";
+			sErg = StringZZZ.abbreviateDynamic(sTest, 20); //Auch hier wieder Besonderheit, da besonders langer String
+			System.out.println(sErg);
+			assertEquals("use.openvpn.serve...", sErg);
+			
 		}catch(ExceptionZZZ ez){
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
 	
-	public void testAbbreviateDynamicFromRight(){
+	public void testAbbreviateDynamicLeft(){
 		try{
 			String sTest = "";
-			String sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 2);
+			String sErg = StringZZZ.abbreviateDynamicLeft(sTest, 2);
 			assertEquals("", sErg); 
 			
 			//+++++++++++++++++
 			sTest = "A";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 1);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 1);
 			assertEquals("A", sErg);
 			
 			//++++++++++++++++++
 			try{
 				sTest = "AA";
-				sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 1);
+				sErg = StringZZZ.abbreviateDynamicLeft(sTest, 1);
 				fail("Method should have thrown an exception");
 			 
 			}catch(ExceptionZZZ ez){
@@ -806,52 +812,70 @@ public void testVecMidFirst(){
 			//+++++++++++++++++++
 			
 			sTest = "AAA";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 2);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 2);
 			System.out.println(sErg);
 			assertEquals(".A", sErg);
 			
 			//+++++++++++++++++++
 			
 			sTest = "AAA";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 3);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 3);
 			System.out.println(sErg);
 			assertEquals("AAA", sErg);
 			
 			//+++++++++++++++++++
 			sTest = "AAAA";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 3);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 3);
 			System.out.println(sErg);
 			assertEquals(".AA", sErg);
 			
 			//++++++++++++++++++++
 			sTest = "AAAAA";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 3);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 3);
 			System.out.println(sErg);
 			assertEquals("..A", sErg);
 			
 			//+++++++++++++++++++++
 			sTest = "AAAAA";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 4);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 4);
 			System.out.println(sErg);
 			assertEquals(".AAA", sErg);
 			
 			//+++++++++++++++++++++
 			sTest = "abcdefg";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 4);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 4);
 			System.out.println(sErg);
 			assertEquals("...g", sErg); /// DAS IST EINE BESONDERHEIT, da besonders langer String
 			
 			//+++++++++++++++++++
 			sTest = "abcdefg";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 5);
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 5);
 			System.out.println(sErg);
 			assertEquals("..efg", sErg);  //Das ist wieder anders als bei der abbreviateStrict !!!
 			
 			//++++++++++++++++++
 			sTest = "abcdefghijklmenop";
-			sErg = StringZZZ.abbreviateDynamicFromRight(sTest, 6); //Auch hier wieder Besonderheit, da besonders langer String
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 6); //Auch hier wieder Besonderheit, da besonders langer String
 			System.out.println(sErg);
 			assertEquals("...nop", sErg);
+			
+			//++++++++++++++++++
+			sTest = "use.openvpn.serverui.component.IPExternalUpload.DlgIPExternalOVPN";
+			sErg = StringZZZ.abbreviateDynamicLeft(sTest, 22); //Auch hier wieder Besonderheit, da besonders langer String
+			System.out.println(sErg);
+			assertTrue(sErg.length()==22);
+			assertEquals("...d.DlgIPExternalOVPN", sErg);
+			
+			sTest = sErg;
+			sErg = StringZZZ.abbreviateDynamic(sTest, 21); //Auch hier wieder Besonderheit, da besonders langer String
+			System.out.println(sErg);
+			assertTrue(sErg.length()==21);
+			assertEquals("...d.DlgIPExternalOV.", sErg);
+			
+			sErg = StringZZZ.abbreviateDynamic(sTest, 20); //Auch hier wieder Besonderheit, da besonders langer String
+			System.out.println(sErg);
+			assertTrue(sErg.length()==20);
+			assertEquals("...d.DlgIPExternal..", sErg);
 			
 			
 		}catch(ExceptionZZZ ez){

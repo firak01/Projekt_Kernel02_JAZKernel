@@ -1866,11 +1866,11 @@ public class StringZZZ implements IConstantZZZ{
 		return abbreviateDynamic_(sSource, iMaxCharactersAllowed, true);
 	}
 	
-	public static String abbreviateDynamicFromRight(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
+	public static String abbreviateDynamicLeft(String sSource, int iMaxCharactersAllowed) throws ExceptionZZZ{
 		return abbreviateDynamic_(sSource, iMaxCharactersAllowed, false);
 	}
 	
-	private static String abbreviateDynamic_(String sSource, int iMaxCharactersAllowed, boolean bFromLeft) throws ExceptionZZZ{
+	private static String abbreviateDynamic_(String sSource, int iMaxCharactersAllowed, boolean bRight) throws ExceptionZZZ{
 		String sReturn = "";
 		main:{
 			if(StringZZZ.isEmptyNull(sSource)) break main;			
@@ -1891,7 +1891,7 @@ public class StringZZZ implements IConstantZZZ{
 				myDynamicAbbreviator = new String("..");				
 			}
 			
-			if(bFromLeft) {
+			if(bRight) {
 				if(myDynamicAbbreviator!=null){
 					int iLeft = iMaxCharactersAllowed - myDynamicAbbreviator.length();
 					sReturn = StringZZZ.left(sSource, iLeft);						
