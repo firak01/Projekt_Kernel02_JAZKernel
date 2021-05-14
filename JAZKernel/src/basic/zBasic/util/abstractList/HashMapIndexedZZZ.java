@@ -365,9 +365,12 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 			}
 		}
 		iMax=iMax+1;
+		
 		Integer intMaxNew = new Integer(iMax);
-		vecIndex.add(intMaxNew);//einfach anhängen.		
-		this.getHashMap().put(intMaxNew, objValue);		
+		vecIndex.add(intMaxNew);//einfach anhängen.
+		
+		HashMap<Integer,Object>hmIndexed = this.getHashMap();
+		hmIndexed.put(intMaxNew, objValue);		
 	}
 
 	public int size() {
