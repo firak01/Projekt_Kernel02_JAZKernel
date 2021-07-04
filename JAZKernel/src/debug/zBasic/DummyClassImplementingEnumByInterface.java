@@ -21,6 +21,8 @@ public class DummyClassImplementingEnumByInterface extends AbstractKernelProgram
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 	@Override
 	public String getProgramAlias() throws ExceptionZZZ {

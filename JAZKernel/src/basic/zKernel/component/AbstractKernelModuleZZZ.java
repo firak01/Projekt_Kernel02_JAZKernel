@@ -91,6 +91,10 @@ public abstract class AbstractKernelModuleZZZ  extends KernelUseObjectZZZ implem
 		this.sModuleName=sModuleName;
 	}
 	
+	public void resetModuleUsed() {
+		this.sModuleName = null;
+	}
+	
 	//### Methoden
 	public abstract void reset();
 }

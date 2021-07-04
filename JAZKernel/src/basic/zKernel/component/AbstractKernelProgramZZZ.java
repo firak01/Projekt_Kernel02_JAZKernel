@@ -43,6 +43,12 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		this.sProgramName = sProgramName;
 	}	
 	
+	public void resetProgramUsed() {
+		this.sProgramName = null;
+		//this.sProgramAlias = null;
+	}
+	
+	
 	
 	/**Merke: Man kann den konkreten Program Alias nicht ermitteln, wenn man nicht weiss, in welchen Wert er gesetzt werden soll.
 	 *        Darum kann hier nur eine ArrayListe zurückgegeben werden.
@@ -134,6 +140,11 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		this.sModuleName=sModuleName;
 	}
 	
+	public void resetModuleUsed() {
+		this.objModule = null;
+		this.sModuleName = null;
+	}
+	
 	//### Aus IKernelModuleUserZZZ
 	public IKernelModuleZZZ getModule() {
 		return this.objModule;
@@ -141,7 +152,7 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	public void setModule(IKernelModuleZZZ objModule) {
 		this.objModule = objModule;
 	}
-	
+			
 	//### Methoden
 	public abstract void reset();
 }
