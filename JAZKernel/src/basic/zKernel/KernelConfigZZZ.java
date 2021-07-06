@@ -145,7 +145,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	/**
 	 * @param sJSON, Beispiel für ein Array, das in eine HashMap gepackt werden soll:
 	 *               {'k1':'apple','k2':'orange'}"
-	 *               Das funktioniert hier aber mit dem 2 Wert als Boolean.
+	 *               Das funktioniert hier aber mit dem 2ten Wert als Boolean, was im intern verwendeten TypeToken fest angegeben wird.
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 02.04.2021, 08:48:35
