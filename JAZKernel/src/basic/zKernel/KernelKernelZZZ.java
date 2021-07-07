@@ -52,6 +52,7 @@ import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
+import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
@@ -1806,7 +1807,7 @@ MeinTestParameter=blablaErgebnis
 					
 			//first, get the Ini-file-object
 			HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-			hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+			hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 
 			FileIniZZZ objIni = new FileIniZZZ(this, objFileConfig, hmFlag);
 
@@ -2904,7 +2905,7 @@ MeinTestParameter=blablaErgebnis
 	
 						//1. Erstellen des FileIni-Objects
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-						hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+						hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 					
 						FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
 						this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, bFlagSaveImmidiate);
@@ -2939,7 +2940,7 @@ MeinTestParameter=blablaErgebnis
 		
 							//1. Erstellen des FileIni-Objects
 							HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-							hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+							hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 						
 							FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
 							this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, true);
@@ -3596,7 +3597,7 @@ MeinTestParameter=blablaErgebnis
 				File objFile = this.getFileConfigKernel();
 				
 				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-				hmFlag.put(FileIniZZZ.FLAGZ.USEFORMULA.name(), true);
+				hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 				
 				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, hmFlag);
 					

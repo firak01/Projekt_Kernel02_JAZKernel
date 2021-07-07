@@ -106,12 +106,16 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("Formula3=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathVariable FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
 			
 			
-			
-			
+			//20210707 Tests für die Arbeit mit JSON Strings
+			//Merke:			
+			//Gib den JSON-Hashmap-Wert so an: {"DEBUGUI_PANELLABEL_ON":true} Merke: Intern hier eine HashMap String, Boolean Das ist aber nur sinnvoll bei der FLAG übergabe, da weiss man, dass der Wert Boolean ist.
+			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
+			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
+			objStreamFile.println("[Section for testJsonHashmap]");
+			objStreamFile.println("Map1=<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}<JSON:MAP></JSON>");
+									
 			objFile = new File(sFilePathTotal);
-			
-		
-			
+							
 			//Kernel + Log - Object dem TestFixture hinzuf�gen. Siehe test.zzzKernel.KernelZZZTest
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);	
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
@@ -275,6 +279,19 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		}
 	}
 	
+	public void testJson() {
+		try {
+			//Anwenden der ersten Formel
+			objFileIniTest.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
+			assertNotNull(sExpression);
+		
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+
+
 	/** Erweitertes Flag Handling. 
 	 *   Das Ziel ist es gesetzte Flags an andere Objekte "Weiterzureichen"
 	 * 
@@ -318,8 +335,13 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		//B02) Teste welche von den gemeinsamen FlagZ hier True gesetzt sind.
 		//objFileInit.getFlagZ_passable(true, sTargetClassnameForThePass);
 		String[] saTestB02 = objFileIniInit.getFlagZ_passable(true, objSolverInit);
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT ZWEI FLAGS WENIGER für 'true' erwartet.",saTestB02.length==saTestB01.length-2);
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT ZWEI FLAGS für 'true' erwartet.",saTestB02.length==2);
 		
+		//B03) Teste welche von den gemeinsamen FlagZ hier True gesetzt sind.
+		//objFileInit.getFlagZ_passable(true, sTargetClassnameForThePass);
+		String[] saTestB03 = objFileIniInit.getFlagZ_passable(false, objSolverInit);
+		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT für 'false' der Rest an Flags erwartet.",saTestB03.length==saTestB01.length-saTestB02.length);
+				
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}

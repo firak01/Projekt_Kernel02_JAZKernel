@@ -56,7 +56,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 	 * 
 	 */
 	public enum FLAGZ{
-		FILEUNSAVED, FILENEW, FILECHANGED, USEFORMULA, USEFORMULA_MATH;
+		FILEUNSAVED, FILENEW, FILECHANGED;
 	}
 		
 	private IniFile objFileIni;
@@ -299,43 +299,55 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			objReturn.setSection(sSection);
 			objReturn.setProperty(sProperty);
 			objReturn.setRaw(sReturnRaw);
-			objReturn.setValue(sReturnRaw);
+			objReturn.setValue(sReturnRaw);					
 			
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
 			boolean bUseFormula = this.getFlag("useFormula");
-			KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
-			String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
-			HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+			if(bUseFormula) {
 			
-			//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-			ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
-			ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
-			ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
-			boolean bAnyExpression = false;
-			int iAnyExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ)this, sReturnRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
-			if(iAnyExpression>=1){
-				bAnyExpression=true;
+				KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
+				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+				
+				//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+				ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
+				ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
+				ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
+				boolean bAnyExpression = false;
+				int iAnyExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ)this, sReturnRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
+				if(iAnyExpression>=1){
+					bAnyExpression=true;
+				}
+				
+				//++++ usw. das Ergebnis als String in objReturn packen.
+				String sReturnValue=null;
+				
+				String sReturnFormula = objsReturnValueExpressionSolved.get();			
+				if(iAnyExpression==1 | iAnyExpression==3) {
+					objReturn.isFormula(true);
+					sReturnValue=sReturnFormula;
+				}
+				
+				String sReturnExpression = objsReturnValueConverted.get();			
+				if(iAnyExpression==2 | iAnyExpression==3) {
+					objReturn.isExpression(true);
+					sReturnValue = sReturnExpression;
+				}	
+				
+				if(!bAnyExpression){
+					sReturnValue = objsReturnValue.get();
+				}
+				objReturn.setValue(sReturnValue);
 			}
 			
-			//++++ usw. das Ergebnis als String in objReturn packen.
-			String sReturnValue=null;
 			
-			String sReturnFormula = objsReturnValueExpressionSolved.get();			
-			if(iAnyExpression==1 | iAnyExpression==3) {
-				objReturn.isFormula(true);
-				sReturnValue=sReturnFormula;
+			boolean bUseJson = this.getFlag("useJson");
+			if(bUseJson) {
+				KernelExpressionIniSolverZZZ exDummy02 = new KernelExpressionIniSolverZZZ();
+				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy02);
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+				
 			}
-			
-			String sReturnExpression = objsReturnValueConverted.get();			
-			if(iAnyExpression==2 | iAnyExpression==3) {
-				objReturn.isExpression(true);
-				sReturnValue = sReturnExpression;
-			}	
-			
-			if(!bAnyExpression){
-				sReturnValue = objsReturnValue.get();
-			}
-			objReturn.setValue(sReturnValue);			
 		}//end main:
 		return objReturn;
 	}//end function

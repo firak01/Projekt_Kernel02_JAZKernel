@@ -16,16 +16,12 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 
-/**Diese Klasse verarbeitet ggf. Ausdr�cke/Formeln in Ini-Dateien.
+/**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
  *  Es kann dann in einem dieser Formeln z.B. auf den Property-Wert einer anderen Sektion zugegriffen werden. So entstehen 'dynamische' ini-Dateien.
  * @author lindhaueradmin
  *
  */
-public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ{
-	public enum FLAGZ{
-		USEFORMULA,USEFORMULA_MATH
-	}
-	
+public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ implements IKernelExpressionIniSolverZZZ{	
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	

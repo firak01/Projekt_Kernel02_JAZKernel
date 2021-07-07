@@ -1,6 +1,9 @@
 package basic.zKernel;
 
-public interface IKernelExpressionIniConverterUserZZZ {
+import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelExpressionJsonSolverZZZ;
+
+public interface IKernelExpressionIniConverterUserZZZ extends IKernelExpressionIniSolverZZZ, IKernelExpressionJsonSolverZZZ{
 	
 	//20190718: Merke: Durch KernelConfigEntryZZZ Klasse ist das nicht mehr notwendig.
 //	public boolean isValueConverted();
