@@ -1,5 +1,7 @@
 package basic.zKernel.config;
 
+import java.util.HashMap;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -103,6 +105,72 @@ public class KernelConfigEntryUtilZZZ {
 					objsReturnValueConverted.set(sValueConverted);					
 					bReturn = true;
 				}	
+			}else{
+				//Fall: Keine Formel soll interpretiert werden.
+				//unverändert
+			}		
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
+	 *  0 = nix
+	 *  1 = Json
+	 *  2 = JsonArray
+	 *  3 = JsonMap
+	 *  usw. denkbar fortsetzbar
+	 *  
+	 *  
+	 * @param objFileIni
+	 * @param sRaw
+	 * @param bUseJson	 
+	 * @param saFlagZpassed
+	 * @param objsReturnJson
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 11.07.2021
+	 */
+	public static int getValueJson(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
+		int iReturn = 0;
+		main:{
+			String sRawJsonSolved=null;
+			boolean bJsonSolved = KernelConfigEntryUtilZZZ.getValueJsonSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objhmReturnValueJsonSolved);							
+			if(bJsonSolved) {
+				sRawJsonSolved = objhmReturnValueJsonSolved.get();
+
+			}else {
+				
+			}
+
+			
+		}//end main:
+		return iReturn;
+	}
+	
+	
+	public static boolean getValueJsonMapSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(bUseJson){
+				HashMap<String,String> hmValueSolved=null;
+				boolean bAnyJson = false;
+				
+				HashMap<String,String> hmtemp = null;
+				if(KernelJsonMapIniSolverZZZ.isJsonMap(sRaw)){
+														
+					KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed);
+					hmtemp = ex.compute(sRaw);
+					if(hmtemp.isEmpty()) {				
+					}else{
+						bAnyJson = true;
+					}
+				}
+
+				if(bAnyJson){
+					obhmReturnValueJsonSolved.setHashMap(hmtemp);	
+					bReturn = true;
+				}												
 			}else{
 				//Fall: Keine Formel soll interpretiert werden.
 				//unverändert

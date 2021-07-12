@@ -343,10 +343,18 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			
 			boolean bUseJson = this.getFlag("useJson");
 			if(bUseJson) {
-				KernelExpressionIniSolverZZZ exDummy02 = new KernelExpressionIniSolverZZZ();
-				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy02);
-				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+				KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
+				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy03);					
 				
+				//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+				ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
+				ReferenceZZZ<String>objsReturnValueJson=new ReferenceZZZ<String>();
+				ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
+				boolean bAnyJson = false;
+				int iAnyJson = KernelConfigEntryUtilZZZ.getValueJson((FileIniZZZ)this, sReturnRaw, bUseJson, saFlagZpassed, objsReturnValueJson);			
+				if(iAnyJson>=1){
+					bAnyJson=true;
+				}
 			}
 		}//end main:
 		return objReturn;

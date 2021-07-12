@@ -1,6 +1,6 @@
 package basic.zKernel.file.ini;
 
-public interface IKernelExpressionJsonSolverZZZ {
+public interface IKerneJsonIniSolverZZZ {
 	public enum FLAGZ{
 		USEJSON
 	}	

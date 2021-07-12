@@ -20,6 +20,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bNullValue = false;
 	private boolean bExpression = false;
 	private boolean bFormula = false;
+	private boolean bJson = false;
 	
 	private boolean bSkipCache = false;
 	
@@ -155,6 +156,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void isFormula(boolean bFormula) {
 		this.bFormula = bFormula;
+	}
+	
+	@Override
+	public boolean isJson(){
+		return this.bJson;
+	}
+	
+	@Override
+	public void isJson(boolean bJson){
+		this.bJson = bJson;
 	}
 	
 	@Override

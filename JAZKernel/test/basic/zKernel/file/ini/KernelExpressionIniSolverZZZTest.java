@@ -11,6 +11,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
 import custom.zKernel.LogZZZ;
@@ -285,7 +286,17 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
 			assertNotNull(sExpression);
-		
+			
+			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
+			boolean bIsJson = objEntry.isJson();
+			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
+			
+			objFileIniTest.setFlag("usejson", true);
+			objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
+			bIsJson = objEntry.isJson();
+			assertTrue(bIsJson);//Erst wenn das Flag auf true gesetzt ist, wird es überhaupt behandelt und ggfs. als JSON erkannt.
+			
+			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
