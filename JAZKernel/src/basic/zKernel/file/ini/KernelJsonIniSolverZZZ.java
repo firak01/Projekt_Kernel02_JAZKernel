@@ -24,6 +24,8 @@ import basic.zKernel.KernelZZZ;
  */
 public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerneJsonIniSolverZZZ{	
 	private FileIniZZZ objFileIni=null;
+	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
+	
 	
 	public KernelJsonIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
@@ -118,25 +120,24 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		return this.objFileIni;
 	}
 			
-	public HashMap<String,String> compute(String sLineWithJson) throws ExceptionZZZ{
+	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
 		main:{
-			if(StringZZZ.isEmpty(sLineWithJson)) break main;
-						
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(this.getFlag("useJson")==false) break main; 			
 			if(this.getFlag("useJsonMap")==true){				
 		
 				//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.
-				KernelJsonMapSolverZZZ objJsonMapSolver = new KernelJsonMapSolverZZZ(); 
+				KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(); 
 													
-				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-				while(objJsonMapSolver.isJson(sReturn)){
+				//2. Ist in dem String JSON:MAP
+				while(objJsonMapSolver.isExpression(sLineWithExpression)){
 					
 					//Der Returnwert soll eine HashMap<String,String> sein !!
-					sReturn=sValueMath;			
+					hmReturn=objJsonMapSolver.computeHashMap(sLineWithExpression);			
 				}													
-			}else{													
-				
-			}
+			}else{																	
+			}						
 		}//end main:
 		return hmReturn;
 	}

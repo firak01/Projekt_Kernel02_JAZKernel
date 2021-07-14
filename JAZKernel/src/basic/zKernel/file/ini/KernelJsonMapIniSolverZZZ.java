@@ -1,0 +1,210 @@
+package basic.zKernel.file.ini;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Vector;
+
+import custom.zKernel.file.ini.FileIniZZZ;
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.KernelZZZ;
+
+/**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
+ *  Es kann dann in einem dieser Formeln z.B. auf den Property-Wert einer anderen Sektion zugegriffen werden. So entstehen 'dynamische' ini-Dateien.
+ * @author lindhaueradmin
+ *
+ */
+public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKerneJsonIniSolverZZZ{
+	private FileIniZZZ objFileIni=null;
+	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
+		
+	public KernelJsonMapIniSolverZZZ() throws ExceptionZZZ{
+		String[] saFlag = {"init"};
+		KernelJsonMapIniSolverNew_(null,saFlag);
+	}
+	
+	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelJsonMapIniSolverNew_(objKernel, saFlag);
+	}
+		
+	private boolean KernelJsonMapIniSolverNew_(IKernelZZZ objKernel, String[] saFlagControlIn) throws ExceptionZZZ {
+	 boolean bReturn = false;
+	 String stemp; boolean btemp; 
+	 main:{
+		 	
+	 	//try{	 		
+	 			//setzen der übergebenen Flags	
+				if(saFlagControlIn != null){
+					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+						stemp = saFlagControlIn[iCount];
+						btemp = setFlag(stemp, true);
+						if(btemp==false){
+							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+							throw ez;		 
+						}
+					}
+					if(this.getFlag("init")==true){
+						bReturn = true;
+						break main;
+					}
+				}
+							
+	 	}//end main:
+		return bReturn;
+	 }//end function KernelJsonMapIniSolverNew_
+	
+	
+	
+	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			String sExpression = (String) vecReturn.get(1);									
+			if(!StringZZZ.isEmpty(sExpression)){
+				
+				//ZUERST: Löse ggfs. übergebene Variablen auf.
+//				KernelExpressionIni_VariableZZZ objVariable = new KernelExpressionIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+//				while(KernelExpressionIni_VariableZZZ.isExpression(sExpression)){
+//					sExpression = objVariable.compute(sExpression);			
+//				} //end while
+					
+								
+				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+//				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+//				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
+//						sExpression = objIniPath.compute(sExpression);			
+//				} //end while
+//										
+//				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+//				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//				vecReturn.add(1, sExpression);
+//			
+			} //end if sExpression = ""					
+		}//end main:
+		return vecReturn;
+	}
+	
+	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	* @param sLineWithExpression
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:20:34
+	 * @throws ExceptionZZZ 
+	 */
+	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();		
+		main:{
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelJsonMapIniSolverZZZ.getExpressionTagStarting(), KernelJsonMapIniSolverZZZ.getExpressionTagClosing(), false,false);
+		}
+		return vecReturn;
+	}
+	
+	
+	public static boolean isExpression(String sLine){
+		boolean bReturn = false;
+		main:{
+			boolean btemp = StringZZZ.contains(sLine, KernelJsonMapIniSolverZZZ.getExpressionTagStarting(),false);
+			if(btemp==false) break main;
+		
+			btemp = StringZZZ.contains(sLine, KernelJsonMapIniSolverZZZ.getExpressionTagClosing(),false);
+			if(btemp==false) break main;
+			
+			bReturn = true;
+		}//end main
+		return bReturn;
+	}
+	
+	
+	//###### Getter / Setter
+	public static String getExpressionTagName(){
+		return "JSON:MAP";
+	}
+	public static String getExpressionTagStarting(){
+		return "<" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + ">";
+	}
+	public static String getExpressionTagClosing(){
+		return "</" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + ">"; 
+	}
+	public static String getExpressionTagEmpty(){
+		return "<" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + "/>";
+	}
+	
+	
+	public void setFileIni(FileIniZZZ objFileIni){
+		this.objFileIni = objFileIni;
+	}
+	public FileIniZZZ getFileIni(){
+		return this.objFileIni;
+	}
+	
+	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		this.hmVariable = hmVariable;
+	}
+	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+		return this.hmVariable;
+	}
+	
+	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		if(this.hmVariable==null){
+			this.hmVariable = hmVariable;
+		}else{
+			if(hmVariable==null){
+				//nix....
+			}else{
+				//füge Werte hinzu.
+				Set<String> sSet =  this.hmVariable.keySet();
+				for(String sKey : sSet){
+					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
+				}
+			}
+		}
+	}
+	
+	public String getVariable(String sKey){
+		return (String) this.getHashMapVariable().get(sKey);
+	}
+	
+	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
+		HashMap hmReturn = new HashMap<String,String>();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			String sReturn = "";
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			
+			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
+			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
+			if(this.getFlag("useFormula_math")==true){				
+				sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
+			
+				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+				KernelExpressionMathSolverZZZ objMathSolver = new KernelExpressionMathSolverZZZ(); 
+													
+				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				while(objMathSolver.isExpression(sReturn)){
+					String sValueMath = objMathSolver.compute(sReturn);
+					sReturn=sValueMath;				
+				}													
+			}else{													
+				sReturn = VectorZZZ.implode(vecAll);
+			}
+			
+			//ANSCHLIESSEND die HashMap erstellen
+			//TODOGOON; //20210714
+			
+		}//end main:
+		return hmReturn;
+	}
+}//End class

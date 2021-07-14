@@ -5,6 +5,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
@@ -134,10 +135,10 @@ public class KernelConfigEntryUtilZZZ {
 	public static int getValueJson(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
-			String sRawJsonSolved=null;
+			HashMap<String,String> hmRawJsonSolved=null;
 			boolean bJsonSolved = KernelConfigEntryUtilZZZ.getValueJsonSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objhmReturnValueJsonSolved);							
 			if(bJsonSolved) {
-				sRawJsonSolved = objhmReturnValueJsonSolved.get();
+				hmRawJsonSolved = objhmReturnValueJsonSolved.get();
 
 			}else {
 				
