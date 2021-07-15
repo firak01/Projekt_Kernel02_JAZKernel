@@ -10,6 +10,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelConfigEntryUtilZZZ {
@@ -136,7 +137,7 @@ public class KernelConfigEntryUtilZZZ {
 		int iReturn = 0;
 		main:{
 			HashMap<String,String> hmRawJsonSolved=null;
-			boolean bJsonSolved = KernelConfigEntryUtilZZZ.getValueJsonSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objhmReturnValueJsonSolved);							
+			boolean bJsonSolved = KernelConfigEntryUtilZZZ.getValueJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objhmReturnValueJsonSolved);							
 			if(bJsonSolved) {
 				hmRawJsonSolved = objhmReturnValueJsonSolved.get();
 
@@ -158,10 +159,10 @@ public class KernelConfigEntryUtilZZZ {
 				boolean bAnyJson = false;
 				
 				HashMap<String,String> hmtemp = null;
-				if(KernelJsonMapIniSolverZZZ.isJsonMap(sRaw)){
+				if(KernelJsonMapIniSolverZZZ.isExpression(sRaw)){
 														
 					KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed);
-					hmtemp = ex.compute(sRaw);
+					hmtemp = ex.computeHashMap(sRaw);
 					if(hmtemp.isEmpty()) {				
 					}else{
 						bAnyJson = true;
@@ -169,7 +170,7 @@ public class KernelConfigEntryUtilZZZ {
 				}
 
 				if(bAnyJson){
-					obhmReturnValueJsonSolved.setHashMap(hmtemp);	
+					objhmReturnValueJsonSolved.set(hmtemp);	
 					bReturn = true;
 				}												
 			}else{

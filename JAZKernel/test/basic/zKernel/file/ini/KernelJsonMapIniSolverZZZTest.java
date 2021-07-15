@@ -70,13 +70,12 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
 		
 			//Anwenden der ersten Formel
+			//TODO GOON: compute soll also einen String zurückgeben, das wird dann die HashMap.toString sein.
+			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.			
 			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
 			sValue = objExpressionSolver.compute(sExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sExpression.equals(sValue));
-			
-			//TODO GOON: compute soll also einen String zurückgeben, das wird dann die HashMap.toString sein.
-			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.
-			
+						
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

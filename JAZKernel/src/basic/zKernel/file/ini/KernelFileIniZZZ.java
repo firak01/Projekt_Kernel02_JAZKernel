@@ -17,6 +17,7 @@ import java.util.Set;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -347,11 +348,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy03);					
 				
 				//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-				ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
-				ReferenceZZZ<String>objsReturnValueJson=new ReferenceZZZ<String>();
-				ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
+				ReferenceHashMapZZZ<String,String>objhmReturnValue=new ReferenceHashMapZZZ<String,String>();			
 				boolean bAnyJson = false;
-				int iAnyJson = KernelConfigEntryUtilZZZ.getValueJson((FileIniZZZ)this, sReturnRaw, bUseJson, saFlagZpassed, objsReturnValueJson);			
+				int iAnyJson = KernelConfigEntryUtilZZZ.getValueJson((FileIniZZZ)this, sReturnRaw, bUseJson, saFlagZpassed, objhmReturnValue);			
 				if(iAnyJson>=1){
 					bAnyJson=true;
 				}

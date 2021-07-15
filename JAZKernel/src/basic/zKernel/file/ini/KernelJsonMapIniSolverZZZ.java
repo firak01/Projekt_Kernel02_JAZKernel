@@ -10,6 +10,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelExpressionIniZZZ;
@@ -28,15 +29,30 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		
 	public KernelJsonMapIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
-		KernelJsonMapIniSolverNew_(null,saFlag);
+		KernelJsonMapIniSolverNew_(null, saFlag);
+	}
+	
+	public KernelJsonMapIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(null, saFlag);
+		KernelJsonMapIniSolverNew_(null, saFlag);
+	}
+	
+	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(null, saFlag);
+		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonMapIniSolverNew_(objKernel, saFlag);
+		KernelJsonMapIniSolverNew_(null, saFlag);
+	}
+	
+	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel, saFlag);
+		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
 	}
 		
-	private boolean KernelJsonMapIniSolverNew_(IKernelZZZ objKernel, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelJsonMapIniSolverNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
@@ -57,6 +73,8 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 						break main;
 					}
 				}
+				
+				this.setFileIni(objFileIni);
 							
 	 	}//end main:
 		return bReturn;
@@ -173,6 +191,17 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	
 	public String getVariable(String sKey){
 		return (String) this.getHashMapVariable().get(sKey);
+	}
+	
+	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
+			if(hmReturn!=null) {
+				sReturn = HashMapExtendedZZZ.debugString(hmReturn);
+			}
+		}
+		return sReturn;
 	}
 	
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{

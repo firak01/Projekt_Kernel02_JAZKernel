@@ -83,7 +83,7 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		return bReturn;
 	 }//end function KernelJsonIniSolverNew_
 					
-	public static boolean isJson(String sLine){
+	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
 			boolean btemp = StringZZZ.contains(sLine, KernelJsonIniSolverZZZ.getExpressionTagStarting(),false);
@@ -118,6 +118,13 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 	}
 	public FileIniZZZ getFileIni(){
 		return this.objFileIni;
+	}
+	
+	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		this.hmVariable = hmVariable;
+	}
+	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+		return this.hmVariable;
 	}
 			
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
