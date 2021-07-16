@@ -44,6 +44,7 @@ import basic.zKernel.LogZZZTest;
 import basic.zKernel.config.EnumSetKernelConfigDefaultEntryUtilZZZTest;
 import basic.zKernel.file.ini.FileIniZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZTest;
+import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZTest;
 import basic.zUtil.io.FileExpansionZZZTest;
 import basic.zUtil.io.FileZZZTest;
  
@@ -97,7 +98,9 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(TxtReaderZZZTest.class);
 		objReturn.addTestSuite(TxtWriterZZZTest.class);
 		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht
-			
+		objReturn.addTestSuite(KernelJsonMapIniSolverZZZTest.class);	
+		
+		
 		//Test für Filter auf jar/zip Dateien
 		objReturn.addTestSuite(JarInfoClassLoaderTest.class);
 		objReturn.addTestSuite(JarInfoFeaturesTest.class);

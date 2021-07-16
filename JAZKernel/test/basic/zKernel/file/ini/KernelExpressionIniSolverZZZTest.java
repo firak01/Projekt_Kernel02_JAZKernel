@@ -113,7 +113,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
 			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
 			objStreamFile.println("[Section for testJsonHashmap]");
-			objStreamFile.println("Map1=<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}<JSON:MAP></JSON>");
+			objStreamFile.println("Map1=<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>");
 									
 			objFile = new File(sFilePathTotal);
 							

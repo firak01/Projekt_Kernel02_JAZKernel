@@ -92,22 +92,22 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 			if(!StringZZZ.isEmpty(sExpression)){
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
-//				KernelExpressionIni_VariableZZZ objVariable = new KernelExpressionIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
-//				while(KernelExpressionIni_VariableZZZ.isExpression(sExpression)){
-//					sExpression = objVariable.compute(sExpression);			
-//				} //end while
+				KernelExpressionIni_VariableZZZ objVariable = new KernelExpressionIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				while(KernelExpressionIni_VariableZZZ.isExpression(sExpression)){
+					sExpression = objVariable.compute(sExpression);			
+				} //end while
 					
 								
 				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-//				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
-//				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
-//						sExpression = objIniPath.compute(sExpression);			
-//				} //end while
-//										
-//				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-//				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//				vecReturn.add(1, sExpression);
-//			
+				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
+						sExpression = objIniPath.compute(sExpression);			
+				} //end while
+									
+				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+				vecReturn.add(1, sExpression);
+			
 			} //end if sExpression = ""					
 		}//end main:
 		return vecReturn;
@@ -195,7 +195,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
-		main:{
+		main:{			
 			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
 			if(hmReturn!=null) {
 				sReturn = HashMapExtendedZZZ.debugString(hmReturn);
@@ -231,7 +231,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 			}
 			
 			//ANSCHLIESSEND die HashMap erstellen
-			//TODOGOON; //20210714
+			TODOGOON; //20210714
 			
 		}//end main:
 		return hmReturn;

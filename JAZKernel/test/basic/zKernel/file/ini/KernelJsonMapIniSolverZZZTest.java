@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -18,7 +20,7 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
-	private final static String sEXPRESSION01_DEFAULT = "<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}<JSON:MAP></JSON>";
+	private final static String sEXPRESSION01_DEFAULT = "<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>";
 	
 	
 	private KernelZZZ objKernel;
@@ -32,6 +34,8 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	protected void setUp(){
 		try {			
 						
+			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
+			
 			//#### Ein init TestObjekt
 			String[] saFlagInit = {"init"};
 			objExpressionSolverInit = new KernelJsonMapIniSolverZZZ(objKernel, saFlagInit);
@@ -49,10 +53,13 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	}//END setup
 	
 	public void testFlagHandling(){
-		//try{
-				
+		//try{							
 		assertTrue(objExpressionSolverInit.getFlag("init")==true);
 		assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
+		
+		boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+		assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+		
 
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
@@ -64,17 +71,26 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 	 */
 	public void testCompute(){
 		try {					
-			objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			String sExpression = sEXPRESSION01_DEFAULT;
-			String sValue = objExpressionSolver.compute(sExpression);
-			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sExpression, sValue);
+			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			String sLineWithExpression = sEXPRESSION01_DEFAULT;
+			
+			//### Teilberechnungen durchführen
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			
+			
+			//### Nun die Gesamtberechnung durchführen
+			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
 			//Anwenden der ersten Formel
 			//TODO GOON: compute soll also einen String zurückgeben, das wird dann die HashMap.toString sein.
 			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.			
 			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
-			sValue = objExpressionSolver.compute(sExpression);			
-			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sExpression.equals(sValue));
+			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 						
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
