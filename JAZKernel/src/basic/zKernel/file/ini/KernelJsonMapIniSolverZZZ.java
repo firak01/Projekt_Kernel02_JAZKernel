@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
+import com.google.gson.reflect.TypeToken;
+
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelExpressionIniZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -193,9 +196,21 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		return (String) this.getHashMapVariable().get(sKey);
 	}
 	
+	/**Eine HashMap wird zum String umgewandelt. 
+	 * Das ist momentan die DEBUG-Variante, z.B. für die Ausgabe auf der Konsole.
+	 * @param sLineWithExpression
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 17.07.2021, 09:06:10
+	 */
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{			
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+				
+			sReturn = sLineWithExpression;
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
+			
 			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
 			if(hmReturn!=null) {
 				sReturn = HashMapExtendedZZZ.debugString(hmReturn);
@@ -208,31 +223,37 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		HashMap hmReturn = new HashMap<String,String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
 			
 			String sReturn = "";
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-			if(this.getFlag("useFormula_math")==true){				
-				sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
 			
+			//Beschränke das ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
+			sReturn = vecAll.get(1);
+			if(this.getFlag("useFormula_math")==true){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
 				KernelExpressionMathSolverZZZ objMathSolver = new KernelExpressionMathSolverZZZ(); 
 													
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?
 				while(objMathSolver.isExpression(sReturn)){
 					String sValueMath = objMathSolver.compute(sReturn);
 					sReturn=sValueMath;				
-				}													
-			}else{													
-				sReturn = VectorZZZ.implode(vecAll);
+				}	
+				//sReturn = VectorZZZ.implode(vecAll);
 			}
 			
-			//ANSCHLIESSEND die HashMap erstellen
-			TODOGOON; //20210714
+			//ANSCHnLIESSEND die HashMap erstellen
+			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
 			
+			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
+			hmReturn = JsonEasyZZZ.toHashMap(typeToken, sReturn);
+			
+			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
 		}//end main:
 		return hmReturn;
 	}

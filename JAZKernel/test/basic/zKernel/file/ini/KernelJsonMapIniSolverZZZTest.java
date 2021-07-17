@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -11,6 +12,7 @@ import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -91,7 +93,39 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
 			sValue = objExpressionSolver.compute(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
-						
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testComputeHashMap(){
+		try {					
+			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			String sLineWithExpression = sEXPRESSION01_DEFAULT;
+			
+			//### Teilberechnungen durchführen
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			
+			
+			//### Nun die Gesamtberechnung durchführen
+			HashMap<String,String>hm1 = objExpressionSolver.computeHashMap(sLineWithExpression);
+			assertTrue("Ohne Auflösung soll es keine HashMap geben",hm1.size()==0);
+				
+			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
+			HashMap<String,String>hm2 = objExpressionSolver.computeHashMap(sLineWithExpression);
+			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm2.size()==2);
+
+			String sValue = HashMapExtendedZZZ.debugString(hm2);	
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
