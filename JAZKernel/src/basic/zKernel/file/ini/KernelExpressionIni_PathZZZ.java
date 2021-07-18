@@ -120,12 +120,16 @@ public class KernelExpressionIni_PathZZZ  extends KernelUseObjectZZZ implements 
 						
 						if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
 						if(!StringZZZ.isEmpty(sRest)){							
-							vecReturn.add(2, sRest); //Fallls vorhanden einen Restwert eintragen.
+							vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
 						}else{
 							vecReturn.add(2,"");
 						}		
 				}//end if sValue!=null
 									
+			}else{
+				vecReturn = vecSection;
+				vecReturn.remove(1);
+				vecReturn.add(1, sLineWithExpression);			
 			}//end if isempty(sSection)
 			
 		}//end main:

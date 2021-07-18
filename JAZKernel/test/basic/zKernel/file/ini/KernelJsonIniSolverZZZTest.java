@@ -16,6 +16,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
 import custom.zKernel.LogZZZ;
@@ -23,10 +24,10 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelJsonIniSolverZZZTest extends TestCase {	
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnitTest.ini");
+	private final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelJsonIniSolverZZZTest.ini");
 	
 	private File objFile;
-	private KernelZZZ objKernel;
+	private IKernelZZZ objKernel;
 	private FileIniZZZ objFileIni=null;
 	
 	/// +++ Die eigentlichen Test-Objekte	
@@ -115,27 +116,31 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
 			objStreamFile.println("[Section for testJsonHashmap]");
 			objStreamFile.println("Map1=<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>");
-									
+				
+			objStreamFile.println("[Section for testJsonArraylist]");
+			objStreamFile.println("Array1=<JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON>");
+			
 			objFile = new File(sFilePathTotal);		
 			
 			
 			//#################
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
+			objFileIni = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			
 			//#### Ein init TestObjekt
 			String[] saFlagInit = {"init"};
-			objExpressionSolverInit = new KernelJsonIniSolverZZZ(objKernel, saFlagInit);
+			objExpressionSolverInit = new KernelJsonIniSolverZZZ(objKernel, objFileIni, saFlagInit);
 			
 			String[] saFlag = {""};
-			objExpressionSolver = new KernelJsonIniSolverZZZ(objKernel, saFlag);
+			objExpressionSolver = new KernelJsonIniSolverZZZ(objKernel, objFileIni, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
-//		catch (FileNotFoundException e) {			
-//			e.printStackTrace();
-//		} catch (IOException e) {			
-//			e.printStackTrace();
-//		}		
+		catch (FileNotFoundException e) {			
+			e.printStackTrace();
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}		
 	}//END setup
 	
 	public void testFlagHandling(){

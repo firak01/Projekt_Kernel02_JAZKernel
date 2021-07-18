@@ -19,7 +19,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelExpressionIniSolverZZZTest extends TestCase {
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnitTest.ini");
+	private final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelExpressionIniSolverZZZTest.ini");
 	
 	
 	private File objFile;
