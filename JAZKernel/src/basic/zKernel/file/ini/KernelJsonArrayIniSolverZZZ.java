@@ -105,9 +105,17 @@ public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements I
 					
 								
 				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+				//Problem hier: [ ] ist auch der JSON Array-Ausdruck
+				String sExpressionOld = sExpression;
 				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.compute(sExpression);			
+						sExpression = objIniPath.compute(sExpression);	
+						if(StringZZZ.isEmpty(sExpression)) {
+							sExpression = sExpressionOld;
+							break;
+						}else{
+							sExpressionOld = sExpression;							
+						}
 				} //end while
 									
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen

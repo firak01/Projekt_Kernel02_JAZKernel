@@ -127,9 +127,10 @@ public class KernelExpressionIni_PathZZZ  extends KernelUseObjectZZZ implements 
 				}//end if sValue!=null
 									
 			}else{
-				vecReturn = vecSection;
-				vecReturn.remove(1);
-				vecReturn.add(1, sLineWithExpression);			
+				//NEIN: Hier nichts machen, erst in der aufrufenden Schleife.
+//				vecReturn = vecSection;
+//				vecReturn.remove(1);
+//				vecReturn.add(1, sLineWithExpression);			
 			}//end if isempty(sSection)
 			
 		}//end main:
