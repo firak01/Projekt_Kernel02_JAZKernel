@@ -2,6 +2,7 @@ package basic.zKernel.file.ini;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
@@ -131,8 +132,8 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag("useJson")==false) break main; 			
-			if(this.getFlag("useJsonMap")==true){				
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
 		
 				//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.
 				KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(); 
@@ -147,5 +148,27 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 			}						
 		}//end main:
 		return hmReturn;
+	}
+	
+	public ArrayList<String> computeArrayList(String sLineWithExpression) throws ExceptionZZZ{
+		ArrayList<String>alsReturn=new ArrayList<String>();				
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())==true){				
+		
+				//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.
+				KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(); 
+													
+				//2. Ist in dem String JSON:MAP
+				while(objJsonArraySolver.isExpression(sLineWithExpression)){
+					
+					//Der Returnwert soll eine HashMap<String,String> sein !!
+					alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);			
+				}													
+			}else{																	
+			}						
+		}//end main:
+		return alsReturn;
 	}
 }//End class

@@ -2,15 +2,18 @@ package basic.zKernel.file.ini;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
@@ -26,36 +29,36 @@ import basic.zKernel.KernelZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKerneJsonIniSolverZZZ{
+public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements IKerneJsonIniSolverZZZ{
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 		
-	public KernelJsonMapIniSolverZZZ() throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
-		KernelJsonMapIniSolverNew_(null, saFlag);
+		KernelJsonArrayIniSolverNew_(null, saFlag);
 	}
 	
-	public KernelJsonMapIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(null, saFlag);
-		KernelJsonMapIniSolverNew_(null, saFlag);
+		KernelJsonArrayIniSolverNew_(null, saFlag);
 	}
 	
-	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(null, saFlag);
-		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
+		KernelJsonArrayIniSolverNew_(objFileIni, saFlag);
 	}
 	
-	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonMapIniSolverNew_(null, saFlag);
+		KernelJsonArrayIniSolverNew_(null, saFlag);
 	}
 	
-	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
+		KernelJsonArrayIniSolverNew_(objFileIni, saFlag);
 	}
 		
-	private boolean KernelJsonMapIniSolverNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelJsonArrayIniSolverNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
@@ -126,7 +129,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelJsonMapIniSolverZZZ.getExpressionTagStarting(), KernelJsonMapIniSolverZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelJsonArrayIniSolverZZZ.getExpressionTagStarting(), KernelJsonArrayIniSolverZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -135,10 +138,10 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelJsonMapIniSolverZZZ.getExpressionTagStarting(),false);
+			boolean btemp = StringZZZ.contains(sLine, KernelJsonArrayIniSolverZZZ.getExpressionTagStarting(),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelJsonMapIniSolverZZZ.getExpressionTagClosing(),false);
+			btemp = StringZZZ.contains(sLine, KernelJsonArrayIniSolverZZZ.getExpressionTagClosing(),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -149,16 +152,16 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	
 	//###### Getter / Setter
 	public static String getExpressionTagName(){
-		return "JSON:MAP";
+		return "JSON:ARRAY";
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + ">";
+		return "<" + KernelJsonArrayIniSolverZZZ.getExpressionTagName() + ">";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + ">"; 
+		return "</" + KernelJsonArrayIniSolverZZZ.getExpressionTagName() + ">"; 
 	}
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + "/>";
+		return "<" + KernelJsonArrayIniSolverZZZ.getExpressionTagName() + "/>";
 	}
 	
 	
@@ -196,7 +199,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		return (String) this.getHashMapVariable().get(sKey);
 	}
 	
-	/**Eine HashMap wird zum String umgewandelt. 
+	/**Eine ArrayList wird zum String umgewandelt. 
 	 * Das ist momentan die DEBUG-Variante, z.B. für die Ausgabe auf der Konsole.
 	 * @param sLineWithExpression
 	 * @return
@@ -210,22 +213,22 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 				
 			sReturn = sLineWithExpression;
 			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
-			
-			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
-			if(hmReturn!=null) {
-				sReturn = HashMapExtendedZZZ.debugString(hmReturn);
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())== false) break main;
+						
+			ArrayList<String> alsReturn = this.computeArrayList(sLineWithExpression);
+			if(alsReturn!=null) {
+				sReturn = ArrayListExtendedZZZ.debugString(alsReturn);
 			}
 		}
 		return sReturn;
 	}
 	
-	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
-		HashMap hmReturn = new HashMap<String,String>();
+	public ArrayList<String> computeArrayList(String sLineWithExpression) throws ExceptionZZZ{
+		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())== false) break main;
 			
 			String sReturn = "";
 			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
@@ -252,11 +255,20 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 			//ANSCHnLIESSEND die HashMap erstellen
 			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
 			
-			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
-			hmReturn = JsonEasyZZZ.toHashMap(typeToken, sReturn);
+			
+			//JsonArray ja = JsonEasyZZZ.toJsonArray(sReturn);
+			alsReturn = JsonEasyZZZ.toArrayListString(sReturn);
+			
+			//Verwendete Lösung für die HashMap
+//			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
+//			hmReturn = JsonEasyZZZ.toHashMap(typeToken, sReturn);
+			
+			//Alternativer, generische Lösung
+//			TypeToken<ArrayList<String>> typeToken = new TypeToken<ArrayList<String>>(){};
+//			alsReturn = JsonEasyZZZ.toArrayList(typeToken, sReturn);
 			
 			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
 		}//end main:
-		return hmReturn;
+		return alsReturn;
 	}
 }//End class

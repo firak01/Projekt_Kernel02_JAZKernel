@@ -22,7 +22,7 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
-	private final static String sEXPRESSION01_DEFAULT = "<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>";
+	private final static String sEXPRESSION_JSONMAP01_DEFAULT = "<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>";
 	
 	
 	private KernelZZZ objKernel;
@@ -62,6 +62,9 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 		boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 		assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 		
+		bFlagAvailable = objExpressionSolver.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
+		assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+		
 
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
@@ -76,7 +79,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			String sLineWithExpression = sEXPRESSION01_DEFAULT;
+			String sLineWithExpression = sEXPRESSION_JSONMAP01_DEFAULT;
 			
 			//### Teilberechnungen durchführen
 			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
@@ -91,6 +94,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//TODO GOON: compute soll also einen String zurückgeben, das wird dann die HashMap.toString sein.
 			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.			
 			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
+			objExpressionSolver.setFlag("usejson_map", true); //Damit der Wert sofort ausgerechnet wird
 			sValue = objExpressionSolver.compute(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
@@ -108,7 +112,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			String sLineWithExpression = sEXPRESSION01_DEFAULT;
+			String sLineWithExpression = sEXPRESSION_JSONMAP01_DEFAULT;
 			
 			//### Teilberechnungen durchführen
 			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
@@ -137,7 +141,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			boolean bValue = objExpressionSolver.isExpression(sExpression);
 			assertFalse(bValue);
 			
-			sExpression = sEXPRESSION01_DEFAULT;
+			sExpression = sEXPRESSION_JSONMAP01_DEFAULT;
 			bValue = objExpressionSolver.isExpression(sExpression);
 			assertTrue(bValue);
 			

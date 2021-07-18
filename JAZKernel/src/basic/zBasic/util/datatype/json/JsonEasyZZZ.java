@@ -1,7 +1,9 @@
 package basic.zBasic.util.datatype.json;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -151,6 +153,52 @@ public class JsonEasyZZZ extends ObjectZZZ{
 			hmReturn = gson.fromJson(sJson, type);		
 		}//end main:
 		return hmReturn;
+	}
+	
+	//Benötigt JavaEE 1.7
+//	public static ArrayList<String> toArrayList(javax.json.JsonArray jsonObject){
+//		ArrayList<String> alsReturn = new ArrayList<String>();     
+//		main:{
+//			if(jsonObject==null)break main;
+// 
+//		   for (int i=0;i<jsonObject.length();i++){ 
+//		    listdata.add(jArray.getString(i));
+//		   } 
+//
+//		}//end main:
+//		return alsReturn;
+//	}
+	
+	public static ArrayList<String> toArrayListString(String sJson){
+		ArrayList<String> alsReturn = new ArrayList<String>();     
+		main:{			
+			if(StringZZZ.isEmpty(sJson))break main;
+			
+		    Gson gson = new Gson();
+		    Type type = new TypeToken<List<String>>(){}.getType();
+		    List<String> ls = gson.fromJson(sJson, type);
+		    for (String s : ls){
+		        //Log.i("Contact Details", contact.id + "-" + contact.name + "-" + contact.email);
+		    	alsReturn.add(s);
+		    }
+		}//end main:
+		return alsReturn;
+	}
+
+	public static <T> ArrayList<T> toArrayList(TypeToken typeToken, String sJson){
+		ArrayList<T> alsReturn = new ArrayList<T>();     
+		main:{			
+			if(StringZZZ.isEmpty(sJson))break main;
+			
+		    Gson gson = new Gson();
+		    Type type = typeToken.getType();
+		    List<?> ls = gson.fromJson(sJson, type);
+		    for (Object obj : ls){
+		        //Log.i("Contact Details", contact.id + "-" + contact.name + "-" + contact.email);
+		    	alsReturn.add((T) obj);
+		    }
+		}
+		return alsReturn;
 	}
 
 /** Verwendet Bibliothek: org.json

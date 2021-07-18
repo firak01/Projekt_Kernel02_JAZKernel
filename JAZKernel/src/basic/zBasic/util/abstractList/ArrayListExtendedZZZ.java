@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import basic.javareflection.mopex.Mopex;
 import basic.zBasic.ExceptionZZZ;
@@ -27,7 +28,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZZZ, IObjectZZZ{
+public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZZZ, IObjectZZZ, IArrayListExtendedZZZ{
 	/**
 	 * 
 	 */
@@ -349,6 +350,46 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 			iReturn = HashMapExtendedIndexedZZZ.removeDupsFromByIndex(this, hmIndexed, sFlagRemainIn);
 		}//end main
 		return iReturn;
+	}
+	
+	public String debugString(){
+		String sReturn = new String("");
+		main:{		
+			String sEntryDelimiter = ArrayListExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			
+			sReturn = ArrayListExtendedZZZ.debugString(this, sEntryDelimiter);
+		}//end main
+		return sReturn;
+	}
+	
+	public static String debugString(ArrayList<?>lista) {
+		return ArrayListExtendedZZZ.debugString(lista, null);
+	}
+	
+	public static String debugString(ArrayList<?>lista, String sEntryDelimiterIn) {
+		String sReturn = new String("");
+		main:{
+			if(lista==null)break main;
+			if(lista.size()==0) break main;
+			
+			String sEntryDelimiter;			
+			if(sEntryDelimiterIn==null){
+				sEntryDelimiter = ArrayListExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			}else {
+				sEntryDelimiter = sEntryDelimiterIn;
+			}
+						
+			Iterator it = lista.iterator();
+			while(it.hasNext()){
+				if(!StringZZZ.isEmpty(sReturn)){
+					sReturn = sReturn + sEntryDelimiter;
+				}
+				
+				Object obj = it.next();
+				sReturn = sReturn + obj.toString();				
+			}//end while it.hasnext()
+		}//end main
+	return sReturn;
 	}
 	
 	
