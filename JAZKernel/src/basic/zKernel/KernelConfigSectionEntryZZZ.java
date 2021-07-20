@@ -21,6 +21,8 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bExpression = false;
 	private boolean bFormula = false;
 	private boolean bJson = false;
+	private boolean bJsonArray = false;
+	private boolean bJsonMap = false;
 	
 	private boolean bSkipCache = false;
 	
@@ -166,6 +168,26 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void isJson(boolean bJson){
 		this.bJson = bJson;
+	}
+	
+	@Override
+	public boolean isJsonArray(){
+		return this.bJsonArray;
+	}
+	
+	@Override
+	public void isJsonArray(boolean bJsonArray){
+		this.bJsonArray = bJsonArray;
+	}
+	
+	@Override
+	public boolean isJsonMap(){
+		return this.bJsonMap;
+	}
+	
+	@Override
+	public void isJsonMap(boolean bJsonMap){
+		this.bJsonMap = bJsonMap;
 	}
 	
 	@Override

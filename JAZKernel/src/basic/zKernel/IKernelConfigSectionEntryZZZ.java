@@ -42,6 +42,12 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	
 	public boolean isJson();
 	abstract void isJson(boolean bIsJson);
+	
+	public boolean isJsonMap();
+	abstract void isJsonMap(boolean bIsJsonMap);
+	
+	public boolean isJsonArray();
+	abstract void isJsonArray(boolean bIsJsonArray);
 		
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);

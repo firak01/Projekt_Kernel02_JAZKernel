@@ -42,20 +42,20 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	 */
 	public KernelUseObjectZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
-		KernelUseObjectNew_(objKernel, null);		
+		KernelUseObjectNew_(objKernel, null, null);		
 	}
 	public KernelUseObjectZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null);
+		KernelUseObjectNew_(objKernel, null, null);
 	}
 	public KernelUseObjectZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
-		KernelUseObjectNew_(objKernel, null);
+		KernelUseObjectNew_(objKernel, null, null);
 	}
 	
 	public KernelUseObjectZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null);				
+		KernelUseObjectNew_(objKernel, null, null);				
 	}
 	
 	
@@ -67,10 +67,15 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	 */
 	public KernelUseObjectZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, objKernelContext);						
+		KernelUseObjectNew_(objKernel, null, objKernelContext);						
 	}
 	
-	private boolean KernelUseObjectNew_(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
+	public KernelUseObjectZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+		super(saFlag);
+		KernelUseObjectNew_(null, objKernelUsing, null);
+	}
+	
+	private boolean KernelUseObjectNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{						
 			boolean btemp; String sLog;	
@@ -81,8 +86,25 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 				bReturn = true;
 				break main; 
 			}	
-			this.objKernel = objKernel;
-			this.objLog = objKernel.getLogObject();
+			
+			IKernelZZZ objKernelUsed = null;
+			if(objKernel==null) {
+				if(objKernelUsing==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("KernelObject and KernelUsingObject missing",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;					
+				}
+				
+				objKernelUsed = objKernelUsing.getKernelObject();
+				if(objKernelUsed==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("KernelObject missing",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+			}else {
+				objKernelUsed = objKernel;
+			}
+			
+			this.objKernel = objKernelUsed;
+			this.objLog = objKernelUsed.getLogObject();
 			
 			this.setContextUsed(objKernelContext);
 						

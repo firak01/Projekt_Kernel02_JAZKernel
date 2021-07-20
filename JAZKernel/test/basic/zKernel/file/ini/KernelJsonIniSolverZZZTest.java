@@ -28,7 +28,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 	
 	private File objFile;
 	private IKernelZZZ objKernel;
-	private FileIniZZZ objFileIni=null;
+	private FileIniZZZ objFileIniTest=null;
 	
 	/// +++ Die eigentlichen Test-Objekte	
 	private KernelJsonIniSolverZZZ objExpressionSolver;
@@ -115,24 +115,24 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
 			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
 			objStreamFile.println("[Section for testJsonHashmap]");
-			objStreamFile.println("Map1=<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>");
+			objStreamFile.println("Map1="+ KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
 				
 			objStreamFile.println("[Section for testJsonArraylist]");
-			objStreamFile.println("Array1=<JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON>");
+			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
 			
 			objFile = new File(sFilePathTotal);		
 			
 			
 			//#################
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
-			objFileIni = new FileIniZZZ(objKernel,  objFile, (String[]) null);
+			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			
 			//#### Ein init TestObjekt
 			String[] saFlagInit = {"init"};
-			objExpressionSolverInit = new KernelJsonIniSolverZZZ(objKernel, objFileIni, saFlagInit);
+			objExpressionSolverInit = new KernelJsonIniSolverZZZ(objKernel, objFileIniTest, saFlagInit);
 			
 			String[] saFlag = {""};
-			objExpressionSolver = new KernelJsonIniSolverZZZ(objKernel, objFileIni, saFlag);
+			objExpressionSolver = new KernelJsonIniSolverZZZ(objKernel, objFileIniTest, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
@@ -151,6 +151,11 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 		boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 		assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 		
+		bFlagAvailable = objExpressionSolver.setFlag("usejson_array", false); //Ansonsten wird der Wert sofort ausgerechnet
+		assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", bFlagAvailable);
+		
+		bFlagAvailable = objExpressionSolver.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
+		assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());
@@ -161,68 +166,40 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testCompute(){
-	//	try {					
+		try {					
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
+			//Anwenden der ersten Formel, ohne Berechnung			
+			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
+			assertEquals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT,sExpression);
 			
-			//TODOGOON: DIESE BERECHNUNG PASSIERT ANHAND DER ERSTELLEN DATEI
-//			String sLineWithExpression = sEXPRESSION01_DEFAULT;
-//			
-//			//### Teilberechnungen durchführen
-//			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
-//			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
-//			
-//			
-//			//### Nun die Gesamtberechnung durchführen
-//			String sValue = objExpressionSolver.compute(sLineWithExpression);
-//			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
-//		
-//			//Anwenden der ersten Formel
-//			//TODO GOON: compute soll also einen String zurückgeben, das wird dann die HashMap.toString sein.
-//			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.			
-//			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
-//			sValue = objExpressionSolver.compute(sLineWithExpression);			
-//			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
-//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+			//Berechne die erste Formel
+			objExpressionSolver.setFlag("usejson", true);
+			objExpressionSolver.setFlag("usejson_map", true);
+			String sValue = objExpressionSolver.compute(sExpression);//compute gibt nur einen DebugString zurück
+			assertNotNull(sValue);
+			assertFalse(sValue.equals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
 			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
-	}
-	
-	/** void, Test: Reading an entry in a section of the ini-file
-	* Lindhauer; 22.04.2006 12:54:32
-	 */
-	public void testComputeHashMap(){
-		//try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			//TODOGOON: DIE BERECHUNG ERFOLGT ANHAND DER KONKRETEN ERSTELLENT DATEI
-//			String sLineWithExpression = sEXPRESSION01_DEFAULT;
-//			
-//			//### Teilberechnungen durchführen
-//			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
-//			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
-//			
-//			
-//			//### Nun die Gesamtberechnung durchführen
-//			HashMap<String,String>hm1 = objExpressionSolver.computeHashMap(sLineWithExpression);
-//			assertTrue("Ohne Auflösung soll es keine HashMap geben",hm1.size()==0);
-//				
-//			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
-//			HashMap<String,String>hm2 = objExpressionSolver.computeHashMap(sLineWithExpression);
-//			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm2.size()==2);
-//
-//			String sValue = HashMapExtendedZZZ.debugString(hm2);	
-//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+			TODOGOON; //20210720
+			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
+			assertNotNull(objEntry);
+			assertTrue(objEntry.isJson());
+			assertTrue(objEntry.isJsonMap());
 			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+			//TODOGOON 20210720, in JSONMap
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
+		
 	public void testJson() {
 //		try {			
 			String sExpression = "<Z>bin kein JSON</Z>";

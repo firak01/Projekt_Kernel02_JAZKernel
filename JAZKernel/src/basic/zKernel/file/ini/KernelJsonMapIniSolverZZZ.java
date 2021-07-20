@@ -36,12 +36,12 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	}
 	
 	public KernelJsonMapIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(null, saFlag);
+		super((IKernelZZZ)null, saFlag);
 		KernelJsonMapIniSolverNew_(null, saFlag);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(null, saFlag);
+		super(objFileIni, saFlag);
 		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
 	}
 	

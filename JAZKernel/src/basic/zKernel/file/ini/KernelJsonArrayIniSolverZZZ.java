@@ -39,12 +39,12 @@ public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements I
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(null, saFlag);
+		super((IKernelZZZ)null, saFlag);
 		KernelJsonArrayIniSolverNew_(null, saFlag);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(null, saFlag);
+		super(objFileIni, saFlag);
 		KernelJsonArrayIniSolverNew_(objFileIni, saFlag);
 	}
 	

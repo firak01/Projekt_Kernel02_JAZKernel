@@ -24,7 +24,7 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelJsonArrayIniSolverZZZTest extends TestCase {	
-	private final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON>";
+	protected final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON>";
 	
 	
 	private KernelZZZ objKernel;

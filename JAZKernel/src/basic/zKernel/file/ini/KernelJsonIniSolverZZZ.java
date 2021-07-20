@@ -10,7 +10,9 @@ import java.util.Vector;
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelExpressionIniZZZ;
@@ -127,6 +129,30 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
 		return this.hmVariable;
 	}
+	
+	public String compute(String sLineWithExpression) throws ExceptionZZZ {
+		String sReturn = new String("");
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main;
+			
+			//1. Versuch als Array
+			ArrayList<String> als = this.computeArrayList(sLineWithExpression);
+			if(!als.isEmpty()) {
+				sReturn = ArrayListExtendedZZZ.debugString(als);
+				break main;
+			}
+			
+			//2. Versuch als HashMap
+			HashMap<String,String>hm = this.computeHashMap(sLineWithExpression);
+			if(!hm.isEmpty()) {
+				sReturn = HashMapExtendedZZZ.debugString(hm);
+				break main;
+			}
+										
+		}
+		return sReturn;
+	}
 			
 	public HashMap<String,String> computeHashMap(String sLineWithExpression) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
@@ -135,17 +161,16 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
 			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
 		
-				//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.
-				KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(); 
-													
-				//2. Ist in dem String JSON:MAP
-				while(objJsonMapSolver.isExpression(sLineWithExpression)){
-					
-					//Der Returnwert soll eine HashMap<String,String> sein !!
-					hmReturn=objJsonMapSolver.computeHashMap(sLineWithExpression);			
-				}													
-			}else{																	
-			}						
+				//WICHTIG: DIE FLAGS VERERBEN !!!
+				KernelJsonMapIniSolverZZZ init4FlagLookup = new KernelJsonMapIniSolverZZZ();
+				String[] saFlagZpassed = this.getFlagZ_passable(true, init4FlagLookup);
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+				FileIniZZZ objFileIni = this.getFileIni();
+				
+				//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.				
+				KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed); 
+				hmReturn=objJsonMapSolver.computeHashMap(sLineWithExpression);			
+			}				
 		}//end main:
 		return hmReturn;
 	}
@@ -157,17 +182,10 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
 			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())==true){				
 		
-				//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.
+				//Dann erzeuge neues KernelJsonArraySolverZZZ - Objekt.
 				KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(); 
-													
-				//2. Ist in dem String JSON:MAP
-				while(objJsonArraySolver.isExpression(sLineWithExpression)){
-					
-					//Der Returnwert soll eine HashMap<String,String> sein !!
-					alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);			
-				}													
-			}else{																	
-			}						
+				alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);															
+			}					
 		}//end main:
 		return alsReturn;
 	}
