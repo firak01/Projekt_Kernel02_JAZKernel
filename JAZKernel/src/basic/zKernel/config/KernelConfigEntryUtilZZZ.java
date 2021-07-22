@@ -1,15 +1,18 @@
 package basic.zKernel.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
 import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -133,21 +136,34 @@ public class KernelConfigEntryUtilZZZ {
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 11.07.2021
 	 */
-	public static int getValueJson(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
-		int iReturn = 0;
+	public static boolean getValueJsonArraySolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceArrayZZZ<String>objalsReturnValueJsonSolved) throws ExceptionZZZ{
+		boolean bReturn = false;
 		main:{
-			HashMap<String,String> hmRawJsonSolved=null;
-			boolean bJsonSolved = KernelConfigEntryUtilZZZ.getValueJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objhmReturnValueJsonSolved);							
-			if(bJsonSolved) {
-				hmRawJsonSolved = objhmReturnValueJsonSolved.get();
-
-			}else {
+			if(bUseJson){
+				ArrayList<String> alsRawJsonSolved=null;
+				boolean bAnyJson = false;
 				
-			}
+				ArrayList<String> alstemp = null;
+				if(KernelJsonArrayIniSolverZZZ.isExpression(sRaw)){
+														
+					KernelJsonArrayIniSolverZZZ ex = new KernelJsonArrayIniSolverZZZ(objFileIni, saFlagZpassed);
+					alstemp = ex.computeArrayList(sRaw);
+					if(alstemp.isEmpty()) {				
+					}else{
+						bAnyJson = true;
+					}
+				}
 
-			
+				if(bAnyJson){
+					objalsReturnValueJsonSolved.set(alstemp);	
+					bReturn = true;
+				}												
+			}else{
+				//Fall: Keine Formel soll interpretiert werden.
+				//unverändert
+			}		
 		}//end main:
-		return iReturn;
+		return bReturn;
 	}
 	
 	

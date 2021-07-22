@@ -165,7 +165,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
-	public void testCompute(){
+	public void testComputeHashMap(){
 		try {					
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -186,13 +186,54 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			bFlagAvailable = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			TODOGOON; //20210720
 			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
 			assertNotNull(objEntry);
 			assertTrue(objEntry.isJson());
 			assertTrue(objEntry.isJsonMap());
 			
-			//TODOGOON 20210720, in JSONMap
+			TODOGOON 20210720, Werte in der HashMap kontrollieren.
+			
+			
+			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testComputeArrayList(){
+		try {					
+			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			//Anwenden der ersten Formel, ohne Berechnung			
+			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1").getValue();
+			assertEquals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT,sExpression);
+			
+			//Berechne die erste Formel
+			objExpressionSolver.setFlag("usejson", true);
+			objExpressionSolver.setFlag("usejson_array", true);
+			String sValue = objExpressionSolver.compute(sExpression);//compute gibt nur einen DebugString zurück
+			assertNotNull(sValue);
+			assertFalse(sValue.equals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
+			
+			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objFileIniTest.setFlag("usejson_array", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testJsonArraylist", "Array1");
+			assertNotNull(objEntry);
+			assertTrue(objEntry.isJson());
+			assertTrue(objEntry.isJsonArray());
+			
+			TODOGOON 20210720, Werte in der ArrayList kontrollieren.
+			
+			
+			
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

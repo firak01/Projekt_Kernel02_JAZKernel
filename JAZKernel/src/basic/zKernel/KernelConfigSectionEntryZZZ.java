@@ -1,6 +1,7 @@
 package basic.zKernel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import basic.zBasic.util.abstractList.ArrayListZZZ;
@@ -15,6 +16,8 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private String sProperty = null;
 	private String sRaw = null;
 	private String sValue = new String("");
+	private HashMap<String,String> hmValue = new HashMap<String,String>();
+	private ArrayList<String> alValue = new ArrayList<String>();
 	private boolean bSectionExists = false;
 	private boolean bAnyValue = false;
 	private boolean bNullValue = false;
@@ -119,6 +122,29 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 				this.hasNullValue(false);
 			}
 		}
+	}
+	
+	
+	@Override
+	public HashMap<String, String> getValueHashMap() {		
+		return this.hmValue;
+	}
+
+	@Override
+	public void setValue(HashMap<String, String> hmValue) {
+		this.hmValue = hmValue;
+	}
+
+
+	@Override
+	public ArrayList<String> getValueArrayList() {
+		return this.alValue;
+	}
+
+
+	@Override
+	public void setValue(ArrayList<String> alValue) {
+		this.alValue = alValue;
 	}
 
 	@Override
@@ -235,8 +261,4 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException {
 	        return (IKernelConfigSectionEntryZZZ) super.clone();
 	    }
-	
-
-	
-	
 }

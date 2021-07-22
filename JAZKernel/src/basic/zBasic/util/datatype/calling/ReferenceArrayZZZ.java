@@ -54,6 +54,10 @@ public class ReferenceArrayZZZ<T> {
 			listaReferent.add((T) objTemp);
 		}
     }
+    
+    public void set(ArrayList<T> listaReferent) {
+    	this.listaReferent = listaReferent;
+    }
 
     public T[] get() {
        return (T[]) ArrayListZZZ.toArray(listaReferent);//!!! GEFÄHRLICH !!! FRAGLICH !!! listaReferent.toArray(T);

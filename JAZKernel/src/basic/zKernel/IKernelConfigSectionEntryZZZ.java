@@ -1,5 +1,8 @@
 package basic.zKernel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import basic.zKernel.cache.ICachableObjectZZZ;
 
 /** Ein Objekt dieser Klasse enthält die Werte aus einer konfigurierten ini-Datei.
@@ -27,6 +30,12 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	
 	public String getValue();
 	public void setValue(String sValue);
+	
+	public HashMap<String,String> getValueHashMap();
+	public void setValue(HashMap<String,String> hmValue);
+	
+	public ArrayList<String> getValueArrayList();
+	public void setValue(ArrayList<String> alValue);
 	
 	public boolean hasAnyValue();
 	//soll nur private eingesetzt werden. abstract void hasAnyValue(boolean bAnyValue);

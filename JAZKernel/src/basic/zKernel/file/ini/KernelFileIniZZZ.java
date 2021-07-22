@@ -16,7 +16,10 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -347,12 +350,34 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 				KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
 				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy03);					
 				
-				//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-				ReferenceHashMapZZZ<String,String>objhmReturnValue=new ReferenceHashMapZZZ<String,String>();			
-				boolean bAnyJson = false;
-				int iAnyJson = KernelConfigEntryUtilZZZ.getValueJson((FileIniZZZ)this, sReturnRaw, bUseJson, saFlagZpassed, objhmReturnValue);			
-				if(iAnyJson>=1){
-					bAnyJson=true;
+				boolean bUseJsonMap = this.getFlag("useJson_map");
+				if(bUseJsonMap) {				
+					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+					ReferenceHashMapZZZ<String,String>objhmReturnValue=new ReferenceHashMapZZZ<String,String>();				                   
+					boolean bAnyJsonMap = KernelConfigEntryUtilZZZ.getValueJsonMapSolved((FileIniZZZ) this, sReturnRaw, bUseJson, saFlagZpassed, objhmReturnValue);			
+					if(bAnyJsonMap) {
+						objReturn.isJsonMap(true);
+						objReturn.isJson(true);
+						objReturn.setValue(HashMapExtendedZZZ.debugString(objhmReturnValue.get()));
+						objReturn.setValue(objhmReturnValue.get());
+						break main;
+					}else {										
+					}
+				}
+				
+				boolean bUseJsonArray = this.getFlag("useJson_array");
+				if(bUseJsonArray) {
+					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+					ReferenceArrayZZZ<String>objalReturnValue=new ReferenceArrayZZZ<String>();
+					boolean bAnyJsonArray = KernelConfigEntryUtilZZZ.getValueJsonArraySolved((FileIniZZZ) this, sReturnRaw, bUseJson, saFlagZpassed, objalReturnValue);			
+					if(bAnyJsonArray) {
+						objReturn.isJsonArray(true);
+						objReturn.isJson(true);
+						objReturn.setValue(ArrayListExtendedZZZ.debugString(objalReturnValue.getArrayList()));
+						objReturn.setValue(objalReturnValue.getArrayList());
+						break main;
+					}else {										
+					}					
 				}
 			}
 		}//end main:
