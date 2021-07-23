@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -191,10 +192,10 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertTrue(objEntry.isJson());
 			assertTrue(objEntry.isJsonMap());
 			
-			TODOGOON 20210720, Werte in der HashMap kontrollieren.
-			
-			
-			
+			HashMap<String,String> hm = objEntry.getValueHashMap();
+			assertNotNull(hm);
+			String sValue01 = hm.get("UIText01");
+			assertTrue(sValue01.equals("TESTWERT2DO2JSON01"));												
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -230,7 +231,10 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertTrue(objEntry.isJson());
 			assertTrue(objEntry.isJsonArray());
 			
-			TODOGOON 20210720, Werte in der ArrayList kontrollieren.
+			ArrayList<String> als = objEntry.getValueArrayList();
+			assertNotNull(als);
+			String sValue01 = als.get(0);
+			assertTrue(sValue01.equals("TESTWERT2DO2JSON01"));
 			
 			
 			
