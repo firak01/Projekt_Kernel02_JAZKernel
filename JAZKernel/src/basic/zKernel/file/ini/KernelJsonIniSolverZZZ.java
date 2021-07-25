@@ -15,7 +15,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
@@ -25,7 +25,7 @@ import basic.zKernel.KernelZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerneJsonIniSolverZZZ{	
+public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKernelJsonIniSolverZZZ{	
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
@@ -134,7 +134,7 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		String sReturn = new String("");
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main;
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main;
 			
 			//1. Versuch als Array
 			ArrayList<String> als = this.computeArrayList(sLineWithExpression);
@@ -158,8 +158,8 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		HashMap<String,String>hmReturn=new HashMap<String,String>();				
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
 		
 				//WICHTIG: DIE FLAGS VERERBEN !!!
 				KernelJsonMapIniSolverZZZ init4FlagLookup = new KernelJsonMapIniSolverZZZ();
@@ -179,8 +179,8 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		ArrayList<String>alsReturn=new ArrayList<String>();				
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())==true){				
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())==false) break main; 			
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())==true){				
 		
 				//Dann erzeuge neues KernelJsonArraySolverZZZ - Objekt.
 				KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(); 

@@ -89,6 +89,19 @@ public class FileIniZZZTest extends TestCase {
 			
 			objStreamFile.println("[Section for ProofSectionExists]");
 			
+			
+			//20210707 Tests für die Arbeit mit JSON Strings
+			//Merke:			
+			//Gib den JSON-Hashmap-Wert so an: {"DEBUGUI_PANELLABEL_ON":true} Merke: Intern hier eine HashMap String, Boolean Das ist aber nur sinnvoll bei der FLAG übergabe, da weiss man, dass der Wert Boolean ist.
+			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
+			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
+			objStreamFile.println("[Section for testJsonHashmap]");
+			objStreamFile.println("Map1="+ KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
+				
+			objStreamFile.println("[Section for testJsonArraylist]");
+			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
+			
+			
 			objStreamFile.close();
 			
 			

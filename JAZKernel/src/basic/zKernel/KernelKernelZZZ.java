@@ -52,9 +52,9 @@ import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
-import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
-import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
-import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
@@ -480,7 +480,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sPropertyUsed = "KernelConfigFile" +sModule;
 			String sSectionUsed = this.getSystemKey();
 			String sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 	
-			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+			String sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				//this.setValueRaw(sFileName);
@@ -492,7 +492,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			if(StringZZZ.isEmpty(sFileNameUsed)) {								
 				sSectionUsed = this.getApplicationKey();
 				sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 
-				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+				sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 					//this.setValueRaw(sFileName);
@@ -506,7 +506,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//###############
 			sPropertyUsed = "KernelConfigPath" +sModule;
 			String sFilePath = objIni.getValue(sSectionUsed,sPropertyUsed);
-			String sFilePathUsed = KernelExpressionIniConverterZZZ.getAsString(sFilePath);
+			String sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
 				//this.setValueRaw(sFilePath);
@@ -1209,7 +1209,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1236,7 +1236,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						//this.setValueRaw(sReturnRaw);
@@ -1265,7 +1265,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						//this.setValueRaw(sReturnRaw);
@@ -1294,7 +1294,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1321,7 +1321,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1347,7 +1347,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1373,7 +1373,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1400,7 +1400,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1426,7 +1426,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value gefunden für Property '" + sPropertyUsed + "'=''" + sValueFound + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1448,7 +1448,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zu guter Letzt. Erstmals gefundener Value (section='" + objReturn.getSection() + "') anwenden für Property '" + objReturn.getProperty() + "'=''" + objReturn.getValue() + "'");
 				if(this.getFlag("useFormula")==true){
 					String sReturnRaw = sValueFound;
-					sValueFound = KernelExpressionIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
+					sValueFound = KernelZFormulaIniConverterZZZ.getAsString(sReturnRaw);  //Auch ohne Formelauswertung die gefundenen Werte zumindest übersetzen
 					if(!StringZZZ.equals(sValueFound,sReturnRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sReturnRaw + "' nach '" + sValueFound +"'");
 						objReturn.setRaw(sReturnRaw);
@@ -1807,7 +1807,7 @@ MeinTestParameter=blablaErgebnis
 					
 			//first, get the Ini-file-object
 			HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-			hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 
 			FileIniZZZ objIni = new FileIniZZZ(this, objFileConfig, hmFlag);
 
@@ -2905,7 +2905,7 @@ MeinTestParameter=blablaErgebnis
 	
 						//1. Erstellen des FileIni-Objects
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-						hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+						hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 					
 						FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
 						this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, bFlagSaveImmidiate);
@@ -2940,7 +2940,7 @@ MeinTestParameter=blablaErgebnis
 		
 							//1. Erstellen des FileIni-Objects
 							HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-							hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+							hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 						
 							FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
 							this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, true);
@@ -3597,7 +3597,7 @@ MeinTestParameter=blablaErgebnis
 				File objFile = this.getFileConfigKernel();
 				
 				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-				hmFlag.put(IKernelExpressionIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+				hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 				
 				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, hmFlag);
 					
@@ -3867,7 +3867,7 @@ MeinTestParameter=blablaErgebnis
 			//1. Versuch: Systemebene
 			String sKeyUsed = this.getSystemKey();			
 			String sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile" +sModule );
-			String sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+			String sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				//this.setValueRaw(sFileName);
@@ -3883,7 +3883,7 @@ MeinTestParameter=blablaErgebnis
 			if(StringZZZ.isEmptyNull(sFileNameUsed)){
 				sKeyUsed = this.getApplicationKey();
 				sFileName =objIni.getValue(sKeyUsed, "KernelConfigFile"+sModule );
-				sFileNameUsed = KernelExpressionIniConverterZZZ.getAsString(sFileName);
+				sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
 				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 					//this.setValueRaw(sFileName);

@@ -11,7 +11,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
@@ -21,41 +21,41 @@ import basic.zKernel.KernelZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ implements IKernelExpressionIniSolverZZZ{	
+public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IKernelZFormulaIniSolverZZZ{	
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
-	public KernelExpressionIniSolverZZZ() throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionIniSolverNew_(null, null,saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, null, null);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, null);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
@@ -112,15 +112,15 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ implements 
 			if(!StringZZZ.isEmpty(sExpression)){
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelExpressionIni_VariableZZZ objVariable = new KernelExpressionIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
-				while(KernelExpressionIni_VariableZZZ.isExpression(sExpression)){
+				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				while(KernelZFormulaIni_VariableZZZ.isExpression(sExpression)){
 					sExpression = objVariable.compute(sExpression);			
 				} //end while
 					
 								
 				//DANACHALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
-				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
+				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);			
 				} //end while
 						
@@ -150,7 +150,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ implements 
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionIniSolverZZZ.getExpressionTagStarting(), KernelExpressionIniSolverZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIniSolverZZZ.getExpressionTagStarting(), KernelZFormulaIniSolverZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -159,10 +159,10 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ implements 
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionIniSolverZZZ.getExpressionTagStarting(),false);
+			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIniSolverZZZ.getExpressionTagStarting(),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionIniSolverZZZ.getExpressionTagClosing(),false);
+			btemp = StringZZZ.contains(sLine, KernelZFormulaIniSolverZZZ.getExpressionTagClosing(),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -176,13 +176,13 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ implements 
 		return "Z";
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelExpressionIniSolverZZZ.getExpressionTagName() + ">";
+		return "<" + KernelZFormulaIniSolverZZZ.getExpressionTagName() + ">";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelExpressionIniSolverZZZ.getExpressionTagName() + ">"; 
+		return "</" + KernelZFormulaIniSolverZZZ.getExpressionTagName() + ">"; 
 	}
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelExpressionIniSolverZZZ.getExpressionTagName() + "/>";
+		return "<" + KernelZFormulaIniSolverZZZ.getExpressionTagName() + "/>";
 	}
 	
 	
@@ -234,7 +234,7 @@ public class KernelExpressionIniSolverZZZ extends KernelUseObjectZZZ implements 
 				sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
 			
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelExpressionMathSolverZZZ objMathSolver = new KernelExpressionMathSolverZZZ(); 
+				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
 													
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 				while(objMathSolver.isExpression(sReturn)){

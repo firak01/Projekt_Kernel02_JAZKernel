@@ -16,7 +16,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
@@ -26,7 +26,7 @@ import basic.zKernel.KernelZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKerneJsonIniSolverZZZ{
+public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKernelJsonIniSolverZZZ{
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 		
@@ -95,15 +95,15 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 			if(!StringZZZ.isEmpty(sExpression)){
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelExpressionIni_VariableZZZ objVariable = new KernelExpressionIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
-				while(KernelExpressionIni_VariableZZZ.isExpression(sExpression)){
+				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				while(KernelZFormulaIni_VariableZZZ.isExpression(sExpression)){
 					sExpression = objVariable.compute(sExpression);			
 				} //end while
 					
 								
 				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				KernelExpressionIni_PathZZZ objIniPath = new KernelExpressionIni_PathZZZ(this.getKernelObject(), this.getFileIni());
-				while(KernelExpressionIni_PathZZZ.isExpression(sExpression)){
+				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);			
 				} //end while
 									
@@ -209,8 +209,8 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				
 			sReturn = sLineWithExpression;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
 			
 			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
 			if(hmReturn!=null) {
@@ -224,8 +224,8 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		HashMap hmReturn = new HashMap<String,String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
 			
 			String sReturn = "";
 			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
@@ -238,7 +238,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 			sReturn = vecAll.get(1);
 			if(this.getFlag("useFormula_math")==true){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelExpressionMathSolverZZZ objMathSolver = new KernelExpressionMathSolverZZZ(); 
+				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
 													
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?

@@ -13,7 +13,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -28,8 +28,8 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	private KernelZZZ objKernel;
 	
 	/// +++ Die eigentlichen Test-Objekte	
-	private KernelExpressionIniSolverZZZ objExpressionSolver;
-	private KernelExpressionIniSolverZZZ objExpressionSolverInit;
+	private KernelZFormulaIniSolverZZZ objExpressionSolver;
+	private KernelZFormulaIniSolverZZZ objExpressionSolverInit;
 	
 	
 
@@ -122,8 +122,8 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			 			
 			//### Die TestObjecte
-			objExpressionSolverInit = new KernelExpressionIniSolverZZZ();
-			objExpressionSolver = new KernelExpressionIniSolverZZZ(objKernel, objFileIniTest, null);
+			objExpressionSolverInit = new KernelZFormulaIniSolverZZZ();
+			objExpressionSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);
 			
 			//TestKonfiguration prüfen
 //			assertTrue(objExpressionSolverInit.getFlag("init")==true);
@@ -280,8 +280,12 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		}
 	}
 	
-	public void testJson() {
+	public void testComputeJson() {
 		try {
+			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH.name(),true);
+			
 			//Anwenden der ersten Formel
 			objFileIniTest.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
@@ -291,7 +295,9 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			boolean bIsJson = objEntry.isJson();
 			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
 			
-			objFileIniTest.setFlag("usejson", true);
+			objFileIniTest.setFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name(), true);
+			objFileIniTest.setFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(), true);
+			objFileIniTest.setFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name(), true);
 			objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
 			bIsJson = objEntry.isJson();
 			assertTrue(bIsJson);//Erst wenn das Flag auf true gesetzt ist, wird es überhaupt behandelt und ggfs. als JSON erkannt.
@@ -337,7 +343,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		
 		
 		//B) TESTE DIE FUNKTIONALITÄT DER FLAG - ÜBERGABE.
-		KernelExpressionIniSolverZZZ objSolverInit = new KernelExpressionIniSolverZZZ();
+		KernelZFormulaIniSolverZZZ objSolverInit = new KernelZFormulaIniSolverZZZ();
 		
 		//B01) Teste mal welche FlagZ es gemeinsam gibt.
 		String[] saTestB01 = objFileIniInit.getFlagZ_passable(objSolverInit);

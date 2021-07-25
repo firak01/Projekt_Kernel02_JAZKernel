@@ -6,27 +6,23 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniZZZ{
-//	public enum FLAGZ{
-//		USEFORMULA_MATH
-//	}
-		
-	public KernelExpressionMath_ValueZZZ() throws ExceptionZZZ{
+public class KernelZFormulaMath_ValueZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+	public KernelZFormulaMath_ValueZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionMathValueNew_(saFlag);
 	}
 		
-	public KernelExpressionMath_ValueZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public KernelZFormulaMath_ValueZZZ(String[] saFlag) throws ExceptionZZZ{		
 		KernelExpressionMathValueNew_(saFlag);
 	}
 	
-	public KernelExpressionMath_ValueZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaMath_ValueZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionMathValueNew_(saFlag);
 	}
@@ -38,7 +34,7 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ implement
 	 main:{
 		 	
 	 	//try{	 		
-	 			//setzen der �bergebenen Flags	
+	 			//setzen der uebergebenen Flags	
 				if(saFlagControlIn != null){
 					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						stemp = saFlagControlIn[iCount];
@@ -82,7 +78,7 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ implement
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMath_ValueZZZ.getExpressionTagStarting(), KernelExpressionMath_ValueZZZ.getExpressionTagClosing(), false, false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaMath_ValueZZZ.getExpressionTagStarting(), KernelZFormulaMath_ValueZZZ.getExpressionTagClosing(), false, false);
 		}
 		return vecReturn;
 	}
@@ -91,10 +87,10 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ implement
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMath_ValueZZZ.getExpressionTagStarting(),false);
+			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaMath_ValueZZZ.getExpressionTagStarting(),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionMath_ValueZZZ.getExpressionTagClosing(),false);
+			btemp = StringZZZ.contains(sLine, KernelZFormulaMath_ValueZZZ.getExpressionTagClosing(),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -108,13 +104,13 @@ public class KernelExpressionMath_ValueZZZ  extends KernelUseObjectZZZ implement
 		return "Z:val";
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelExpressionMath_ValueZZZ.getExpressionTagName() + ">";
+		return "<" + KernelZFormulaMath_ValueZZZ.getExpressionTagName() + ">";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelExpressionMath_ValueZZZ.getExpressionTagName() + ">"; 
+		return "</" + KernelZFormulaMath_ValueZZZ.getExpressionTagName() + ">"; 
 	}	
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelExpressionMath_ValueZZZ.getExpressionTagName() + "/>";
+		return "<" + KernelZFormulaMath_ValueZZZ.getExpressionTagName() + "/>";
 	}
 
 	//### Aus Interface IKernelExpressionIniZZZ

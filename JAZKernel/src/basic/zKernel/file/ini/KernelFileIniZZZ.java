@@ -28,7 +28,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelKernelZZZ;
@@ -303,82 +303,45 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 			objReturn.setSection(sSection);
 			objReturn.setProperty(sProperty);
 			objReturn.setRaw(sReturnRaw);
-			objReturn.setValue(sReturnRaw);					
+			objReturn.setValue(sReturnRaw);												
 			
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
-			boolean bUseFormula = this.getFlag("useFormula");
-			if(bUseFormula) {
-			
+			boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
+			if(bUseExpression) {
+				
+				//20210725: Noch eine Ebene dazwischen engebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
 				KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
 				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
+				
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 				
-				//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-				ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
-				ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
-				ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
-				boolean bAnyExpression = false;
-				int iAnyExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ)this, sReturnRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
-				if(iAnyExpression>=1){
-					bAnyExpression=true;
-				}
-				
-				//++++ usw. das Ergebnis als String in objReturn packen.
-				String sReturnValue=null;
-				
-				String sReturnFormula = objsReturnValueExpressionSolved.get();			
-				if(iAnyExpression==1 | iAnyExpression==3) {
-					objReturn.isFormula(true);
-					sReturnValue=sReturnFormula;
-				}
-				
-				String sReturnExpression = objsReturnValueConverted.get();			
-				if(iAnyExpression==2 | iAnyExpression==3) {
-					objReturn.isExpression(true);
-					sReturnValue = sReturnExpression;
-				}	
-				
-				if(!bAnyExpression){
-					sReturnValue = objsReturnValue.get();
-				}
-				objReturn.setValue(sReturnValue);
-			}
+				KernelExpressionIniSolverZZZ objExpressionSolver = new KernelExpressionIniSolverZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
+				int iReturnValue = objExpressionSolver.compute(sReturnRaw,objReturn);
 			
-			
-			boolean bUseJson = this.getFlag("useJson");
-			if(bUseJson) {
-				KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
-				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy03);					
 				
-				boolean bUseJsonMap = this.getFlag("useJson_map");
-				if(bUseJsonMap) {				
-					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-					ReferenceHashMapZZZ<String,String>objhmReturnValue=new ReferenceHashMapZZZ<String,String>();				                   
-					boolean bAnyJsonMap = KernelConfigEntryUtilZZZ.getValueJsonMapSolved((FileIniZZZ) this, sReturnRaw, bUseJson, saFlagZpassed, objhmReturnValue);			
-					if(bAnyJsonMap) {
-						objReturn.isJsonMap(true);
-						objReturn.isJson(true);
-						objReturn.setValue(HashMapExtendedZZZ.debugString(objhmReturnValue.get()));
-						objReturn.setValue(objhmReturnValue.get());
-						break main;
-					}else {										
+				/*
+				 //++++ usw. das Ergebnis als String in objReturn packen.
+					String sReturnValue=null;
+					
+					String sReturnFormula = objsReturnValueExpressionSolved.get();			
+					if(iAnyExpression==1 | iAnyExpression==3) {
+						objReturn.isFormula(true);
+						sReturnValue=sReturnFormula;
 					}
-				}
+					
+					String sReturnExpression = objsReturnValueConverted.get();			
+					if(iAnyExpression==2 | iAnyExpression==3) {
+						objReturn.isExpression(true);
+						sReturnValue = sReturnExpression;
+					}	
+					
+					if(!bAnyExpression){
+						sReturnValue = objsReturnValue.get();
+					}
+					objReturn.setValue(sReturnValue);
+				 */
 				
-				boolean bUseJsonArray = this.getFlag("useJson_array");
-				if(bUseJsonArray) {
-					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-					ReferenceArrayZZZ<String>objalReturnValue=new ReferenceArrayZZZ<String>();
-					boolean bAnyJsonArray = KernelConfigEntryUtilZZZ.getValueJsonArraySolved((FileIniZZZ) this, sReturnRaw, bUseJson, saFlagZpassed, objalReturnValue);			
-					if(bAnyJsonArray) {
-						objReturn.isJsonArray(true);
-						objReturn.isJson(true);
-						objReturn.setValue(ArrayListExtendedZZZ.debugString(objalReturnValue.getArrayList()));
-						objReturn.setValue(objalReturnValue.getArrayList());
-						break main;
-					}else {										
-					}					
-				}
+				
 			}
 		}//end main:
 		return objReturn;
@@ -527,7 +490,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 						//Remark: An empty String may be allowed !!! 
 						
 						//Hole den passenden Converter
-						IKernelExpressionIniZZZ objExpression = KernelExpressionIniConverterZZZ.getAsObject(sValueIn);
+						IKernelZFormulaIniZZZ objExpression = KernelZFormulaIniConverterZZZ.getAsObject(sValueIn);
 						
 						//20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
 						if(objExpression!=null){

@@ -4,7 +4,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 
@@ -14,29 +14,26 @@ import basic.zKernel.KernelUseObjectZZZ;
  * @author Fritz Lindhauer
  *
  */
-public class KernelExpressionIniConverterZZZ extends KernelUseObjectZZZ{
+public class KernelZFormulaIniConverterZZZ extends KernelUseObjectZZZ{
 	private FileIniZZZ objFileIni=null;
-	public enum FLAGZ{
-		//USEFORMULA,USEFORMULA_MATH
-	}
 	
 	//###########################################
-	public KernelExpressionIniConverterZZZ() throws ExceptionZZZ{
+	public KernelZFormulaIniConverterZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionIniConverterNew_(null, saFlag);
 	}
 	
-	public KernelExpressionIniConverterZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public KernelZFormulaIniConverterZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniConverterNew_(objFileIni, null);
 	}
 	
-	public KernelExpressionIniConverterZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniConverterZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniConverterNew_(objFileIni, saFlag);
 	}
 	
-	public KernelExpressionIniConverterZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIniConverterZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniConverterNew_(objFileIni, saFlag);
 	}
@@ -82,18 +79,18 @@ public class KernelExpressionIniConverterZZZ extends KernelUseObjectZZZ{
 	}
 	
 	//############################################
-	public static IKernelExpressionIniZZZ getAsObject(String sToConvert)throws ExceptionZZZ{
-		IKernelExpressionIniZZZ objReturn = null;
+	public static IKernelZFormulaIniZZZ getAsObject(String sToConvert)throws ExceptionZZZ{
+		IKernelZFormulaIniZZZ objReturn = null;
 	main:{
 			
 		//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem String etwas anfangen können.			
-		IKernelExpressionIniZZZ objTemp = new KernelExpressionIni_EmptyZZZ();
+		IKernelZFormulaIniZZZ objTemp = new KernelZFormulaIni_EmptyZZZ();
 		if(objTemp.isStringForConvertRelevant(sToConvert)){
 			objReturn = objTemp;
 			break main;
 		}
 		
-		objTemp = new KernelExpressionIni_NullZZZ();
+		objTemp = new KernelZFormulaIni_NullZZZ();
 		if(objTemp.isStringForConvertRelevant(sToConvert)){
 			objReturn = objTemp;
 			break main;
@@ -103,7 +100,7 @@ public class KernelExpressionIniConverterZZZ extends KernelUseObjectZZZ{
 		return objReturn;
 	}
 	
-	public static String getAsString(IKernelExpressionIniZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
+	public static String getAsString(IKernelZFormulaIniZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(objExpression==null) break main;
@@ -116,15 +113,15 @@ public class KernelExpressionIniConverterZZZ extends KernelUseObjectZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
-			IKernelExpressionIniZZZ objExpression = new KernelExpressionIni_EmptyZZZ();
+			IKernelZFormulaIniZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();
 			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
-				sReturn = KernelExpressionIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
+				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
 				break main;
 			}
 			
-			objExpression = new KernelExpressionIni_NullZZZ();
+			objExpression = new KernelZFormulaIni_NullZZZ();
 			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
-				sReturn = KernelExpressionIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
+				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
 				break main;
 			}
 			

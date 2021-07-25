@@ -6,28 +6,25 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniZZZ{
-//	public enum FLAGZ{
-//		USEFORMULA_MATH
-//	}
+public class KernelZFormulaMath_OperatorZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	private String sOperator = null;
 		
-	public KernelExpressionMath_OperatorZZZ() throws ExceptionZZZ{
+	public KernelZFormulaMath_OperatorZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 		
-	public KernelExpressionMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public KernelZFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{		
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
-	public KernelExpressionMath_OperatorZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaMath_OperatorZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
@@ -131,10 +128,10 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ implem
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMath_OperatorZZZ.getExpressionTagStarting(),false);
+			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaMath_OperatorZZZ.getExpressionTagStarting(),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionMath_OperatorZZZ.getExpressionTagClosing(),false);
+			btemp = StringZZZ.contains(sLine, KernelZFormulaMath_OperatorZZZ.getExpressionTagClosing(),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -152,7 +149,7 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ implem
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMath_OperatorZZZ.getExpressionTagStarting(), KernelExpressionMath_OperatorZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaMath_OperatorZZZ.getExpressionTagStarting(), KernelZFormulaMath_OperatorZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -199,13 +196,13 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ implem
 		return "Z:op";
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelExpressionMath_OperatorZZZ.getExpressionTagName() + ">";
+		return "<" + KernelZFormulaMath_OperatorZZZ.getExpressionTagName() + ">";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelExpressionMath_OperatorZZZ.getExpressionTagName() + ">"; 
+		return "</" + KernelZFormulaMath_OperatorZZZ.getExpressionTagName() + ">"; 
 	}	
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelExpressionMath_OperatorZZZ.getExpressionTagName() + "/>";
+		return "<" + KernelZFormulaMath_OperatorZZZ.getExpressionTagName() + "/>";
 	}
 	
 	//++++ 
@@ -243,13 +240,13 @@ public class KernelExpressionMath_OperatorZZZ  extends KernelUseObjectZZZ implem
 				
 				
 				//links vom Operator
-				KernelExpressionMath_ValueZZZ objValue01 = new KernelExpressionMath_ValueZZZ();
+				KernelZFormulaMath_ValueZZZ objValue01 = new KernelZFormulaMath_ValueZZZ();
 				if(objValue01.isExpression(sLineWithExpression)){
 					sLineWithExpression = objValue01.compute(sLineWithExpression);						
 				}	
 				
 				//rechts vom Operator
-				KernelExpressionMath_ValueZZZ objValue02 = new KernelExpressionMath_ValueZZZ();
+				KernelZFormulaMath_ValueZZZ objValue02 = new KernelZFormulaMath_ValueZZZ();
 				if(objValue02.isExpression(sLineWithExpression)){
 					sLineWithExpression = objValue02.compute(sLineWithExpression);						
 				}	

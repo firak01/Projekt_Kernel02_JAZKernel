@@ -52,7 +52,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ExtendedVectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.UtfEasyZZZ;
-import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 
 
 /**
@@ -621,7 +621,7 @@ protected boolean addSection(String sSection){
 	         sReturn = (String)(valVector.elementAt(valueIndex));
 	         if(StringZZZ.isEmpty(sReturn)) {
 	        	//FGL 20191218: Wenn der Wert Konfiguriert wurde, aber ein Leerstring enthalten soll, dann kann man ihn nur mit diesem "Formelausdruck" erkennen.
-		    	sReturn = KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty();
+		    	sReturn = KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
 	         }	    	 
 	      }
 	   }//end main:

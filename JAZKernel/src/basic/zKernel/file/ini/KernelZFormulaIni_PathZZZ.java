@@ -6,53 +6,42 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-/** Warum diese Klasse existiert:
- *  Beispielsweise NULL-Wert in der Ini-Datei-Konfiguarition bedeutet "Eclipse Projekteordner".
- *  Man könnte den Eintrag auch weglassen, aber dann verliert man:
- *  a) Die Möglichkeit, dass ein "Unter"-System den Pfadeintrag der Hauptkonfigurationsdatei überschreiben kann.
- *  b) Den Performancegewinn, der dadurch erzielt wird, dass bei der Suche nach dem konfigurierten Parameter 
- *     auch ein NULL - Wert gefunden wird (halt der <z:Null/> Tag). Wenn etwas gefunden wird, dann wird auch diese Parametersuche beendet.   
- */
-public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniZZZ{
-//	public enum FLAGZ{
-//		USEFORMULA_MATH
-//	}
-	
+public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	private FileIniZZZ objFileIni=null;
 		
-	public KernelExpressionIni_NullZZZ() throws ExceptionZZZ{
+	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
-		KernelExpressionIniNullNew_(null, saFlag);
+		KernelExpressionIniPathNew_(null, saFlag);
 	}
 	
-	public KernelExpressionIni_NullZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
+	public KernelZFormulaIni_PathZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniNullNew_(objFileIni, null);
+		KernelExpressionIniPathNew_(objFileIni, null);
 	}
 	
-	public KernelExpressionIni_NullZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
+	public KernelZFormulaIni_PathZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniNullNew_(objFileIni, saFlag);
+		KernelExpressionIniPathNew_(objFileIni, saFlag);
 	}
 	
-	public KernelExpressionIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public KernelZFormulaIni_PathZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionIniNullNew_(objFileIni, null);
+		KernelExpressionIniPathNew_(objFileIni, null);
 	}
 	
-	public KernelExpressionIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIni_PathZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionIniNullNew_(objFileIni, saFlag);
+		KernelExpressionIniPathNew_(objFileIni, saFlag);
 	}
 	
 	
-	private boolean KernelExpressionIniNullNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionIniPathNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{		
@@ -75,7 +64,9 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
-			
+	
+	
+	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
 		main:{
@@ -92,7 +83,7 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
 
 					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-					String sMathValueTag = KernelExpressionMath_ValueZZZ.getExpressionTagClosing();
+					String sMathValueTag = KernelZFormulaMath_ValueZZZ.getExpressionTagClosing();
 					if(StringZZZ.contains(sProperty, sMathValueTag)){
 						sBefore = (String) vecSection.get(0);
 						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
@@ -110,7 +101,7 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
 					
 					//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
-					if(sValue!=null){
+					if(!StringZZZ.isEmpty(sValue)){
 						
 						//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 						if(!StringZZZ.isEmpty(sBefore)){
@@ -125,12 +116,17 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 						
 						if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
 						if(!StringZZZ.isEmpty(sRest)){							
-							vecReturn.add(2, sRest); //Fallls vorhanden einen Restwert eintragen.
+							vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
 						}else{
 							vecReturn.add(2,"");
 						}		
 				}//end if sValue!=null
 									
+			}else{
+				//NEIN: Hier nichts machen, erst in der aufrufenden Schleife.
+//				vecReturn = vecSection;
+//				vecReturn.remove(1);
+//				vecReturn.add(1, sLineWithExpression);			
 			}//end if isempty(sSection)
 			
 		}//end main:
@@ -147,7 +143,7 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionIni_NullZZZ.getExpressionTagStarting(), KernelExpressionIni_NullZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -156,10 +152,10 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionIni_NullZZZ.getExpressionTagStarting(), false);
+			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionIni_NullZZZ.getExpressionTagClosing(), false);
+			btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -169,18 +165,17 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 	
 	
 	//###### Getter / Setter
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
 	public static String getExpressionTagName(){
-		return "z:Null"; 
+		return "";  //Hier kein Tag
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelExpressionIni_NullZZZ.getExpressionTagName() + ">";
+		return "[";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelExpressionIni_NullZZZ.getExpressionTagName() + ">"; 
-	}	
+		return "]"; 
+	}
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelExpressionIni_NullZZZ.getExpressionTagName() + "/>";
+		return "[/]";
 	}
 	
 	public void setFileIni(FileIniZZZ objFileIni){
@@ -190,51 +185,45 @@ public class KernelExpressionIni_NullZZZ  extends KernelUseObjectZZZ implements 
 		return this.objFileIni;
 	}
 
-	
 	//### Aus Interface IKernelExpressionIniZZZ
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
-		if(sStringToProof==null) bReturn = true;
+		
+		//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
+//		if(StringZZZ.isEmpty(sToProof)){
+//			bReturn = true;
+//		}
 		return bReturn;
 	}
 	
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
-		main:{
-		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		if(KernelExpressionIni_NullZZZ.getExpressionTagEmpty().equalsIgnoreCase(sExpressionToProof)){
-			bReturn = true;
-			break main;
-		}
-	}//end main
-		return bReturn;
+	public boolean isStringForComputeRelevant(String sExpressionToProof)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
+		String sReturn = null;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			//Hier einfach NULL zurückgeben
-			return null;
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			
+			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+			sReturn = VectorZZZ.implode(vecAll);
 			
 		}//end main:
 		return sReturn;
 	}
-	
+
 	@Override
-	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithoutExpression;
-		main:{
-			if(!this.isStringForConvertRelevant(sLineWithoutExpression)) break main;
-			
-			//Hier einfach den Leeren-Tag zurückgeben
-			sReturn = KernelExpressionIni_NullZZZ.getExpressionTagEmpty();
-						
-		}//end main
-		return sReturn;
+	public String convert(String sLine) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	
 }//End class

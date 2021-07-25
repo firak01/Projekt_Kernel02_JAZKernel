@@ -2,7 +2,7 @@ package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface IKernelExpressionIniZZZ {
+public interface IKernelZFormulaIniZZZ {
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 	//getExpressionTagName()
 	//getExpressionTagStarting()

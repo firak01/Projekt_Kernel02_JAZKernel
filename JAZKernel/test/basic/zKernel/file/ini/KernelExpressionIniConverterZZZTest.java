@@ -14,7 +14,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelSingletonZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -32,8 +32,8 @@ public class KernelExpressionIniConverterZZZTest extends TestCase {
 	private IKernelZZZ objKernel;
 	
 	/// +++ Die eigentlichen Test-Objekte	
-	private KernelExpressionIniConverterZZZ objExpressionConverter;
-	private KernelExpressionIniConverterZZZ objExpressionConverterInit;
+	private KernelZFormulaIniConverterZZZ objExpressionConverter;
+	private KernelZFormulaIniConverterZZZ objExpressionConverterInit;
 	
 	
 
@@ -84,8 +84,8 @@ public class KernelExpressionIniConverterZZZTest extends TestCase {
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			 			
 			//### Die TestObjecte
-			objExpressionConverterInit = new KernelExpressionIniConverterZZZ();
-			objExpressionConverter = new KernelExpressionIniConverterZZZ(objKernel, objFileIniTest, null);
+			objExpressionConverterInit = new KernelZFormulaIniConverterZZZ();
+			objExpressionConverter = new KernelZFormulaIniConverterZZZ(objKernel, objFileIniTest, null);
 			
 			//TestKonfiguration prüfen
 //			assertTrue(objExpressionSolverInit.getFlag("init")==true);
@@ -120,10 +120,10 @@ public class KernelExpressionIniConverterZZZTest extends TestCase {
 	public void testConvert(){
 		try {
 			//Anwenden der ersten 
-			String sTestEmpty = KernelExpressionIniConverterZZZ.getAsString("<z:Empty/>");
+			String sTestEmpty = KernelZFormulaIniConverterZZZ.getAsString("<z:Empty/>");
 			assertTrue(sTestEmpty.equals(""));
 			
-			String sTestNotEmpty = KernelExpressionIniConverterZZZ.getAsString("BLABLA");
+			String sTestNotEmpty = KernelZFormulaIniConverterZZZ.getAsString("BLABLA");
 			assertTrue(sTestNotEmpty.equals("BLABLA"));
 			
 		} catch (ExceptionZZZ ez) {
@@ -165,7 +165,7 @@ public class KernelExpressionIniConverterZZZTest extends TestCase {
 		
 		
 		//B) TESTE DIE FUNKTIONALITÄT DER FLAG - ÜBERGABE.
-		KernelExpressionIniSolverZZZ objSolverInit = new KernelExpressionIniSolverZZZ();
+		KernelZFormulaIniSolverZZZ objSolverInit = new KernelZFormulaIniSolverZZZ();
 		
 		//B01) Teste mal welche FlagZ es gemeinsam gibt.
 		String[] saTestB01 = objFileIniInit.getFlagZ_passable(objSolverInit);

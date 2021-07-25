@@ -1,6 +1,6 @@
 package basic.zKernel.file.ini;
 
-public interface IKernelExpressionIniSolverZZZ {
+public interface IKernelZFormulaIniSolverZZZ {
 	public enum FLAGZ{
 		USEFORMULA,USEFORMULA_MATH
 	}	

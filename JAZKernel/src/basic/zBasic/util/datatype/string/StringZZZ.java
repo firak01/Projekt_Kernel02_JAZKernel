@@ -38,7 +38,7 @@ import basic.zBasic.util.datatype.json.JsonArrayZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
-import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
  
 /**
 

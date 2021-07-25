@@ -26,6 +26,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 
 /**Klasse wertet Kommandozeilenparamter aus, hinsichtlich der zu verwendenden Kernel-Konfiguration
  * -k = ApplicationKey
@@ -117,7 +118,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	public String expressionSolveConfigDirectoryNameDefault(String sDirectoryNameReadIn) {
 		String sReturn=null;
 		main:{		
-		boolean bUseFormula = this.getFlagZ("useFormula");
+		boolean bUseExpression = this.getFlagZ(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
+		boolean bUseFormula = this.getFlagZ(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
 		String sDirectoryNameRead = sDirectoryNameReadIn;//z.B. auch "<z:Null/>"
 		//20191031: Dieser Wert muss vom Programm verarbeitet/Übersetzt werden werden - wie ein ini-Datei Eintrag auch übersetzt würde.
 		//return "<z:Null/>";//Merke '.' oder Leerstring '' = src Verzeichnis
@@ -125,9 +127,10 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>();
 		ReferenceZZZ<String> objsReturnValue= new ReferenceZZZ<String>();
 		try {
-			//TODO: Wenn das klappt eine statische Methode anbieten, bei der alle null-Parameter weggelassen werden können.
-			int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ) null, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
-			sReturn = objsReturnValue.get();
+			if(bUseExpression && bUseFormula) {
+				int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ) null, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
+				sReturn = objsReturnValue.get();
+			}
 		}catch(ExceptionZZZ ez){
 			String sError = ez.getMessageLast();
 			try {

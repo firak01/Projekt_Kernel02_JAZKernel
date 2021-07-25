@@ -43,8 +43,8 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zKernel.KernelKernelZZZ;
-import basic.zKernel.file.ini.KernelExpressionIni_EmptyZZZ;
-import basic.zKernel.file.ini.KernelExpressionIni_NullZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 
 /**Einfache Dateioperationen
  * @author lindhaueradmin
@@ -638,11 +638,11 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		//Merke: Änderungen auch hier berücksichtigen: searchFileObjectByClassloader_(String sPathIn) throws ExceptionZZZ{
 		if(sDirectoryIn==null){			
 			bUseProjectBase=true;	
-		}else if(sDirectoryIn.equals(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){		
+		}else if(sDirectoryIn.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){		
 			bUseProjectBase=true;			
 		}else if(sDirectoryIn.equals("")){			
 			bUseClasspathSource=true;
-		}else if(sDirectoryIn.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty())){			
+		}else if(sDirectoryIn.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){			
 			bUseClasspathSource=true;		
 		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_PARENT)){
 			bUseProjectBase=true;
@@ -2353,12 +2353,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(bUseProjectBase) {
 				sPath = sPathIn;
 			}else {
-				if(sPathIn.startsWith(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){			
+				if(sPathIn.startsWith(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){			
 					bUseProjectBase=true;
-					sPath = StringZZZ.stripLeft(sPathIn, KernelExpressionIni_NullZZZ.getExpressionTagEmpty());
-				}else if(sPathIn.startsWith(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty())){		
+					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty());
+				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
 					bUseClasspathSource=true;
-					sPath = StringZZZ.stripLeft(sPathIn, KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty());
+					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
 				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_PARENT)){
 					bUseProjectBase=true;
 					sPath = sPathIn;
@@ -2527,10 +2527,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(sFilePathRaw==null){
 				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
-			}else if(sFilePathRaw.equals(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){
+			}else if(sFilePathRaw.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){
 				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
-			}else if(sFilePathRaw.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
+			}else if(sFilePathRaw.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
 				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
 				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
@@ -2560,10 +2560,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(sFilePathRaw==null){
 				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
-			}else if(sFilePathRaw.equals(KernelExpressionIni_NullZZZ.getExpressionTagEmpty())){
+			}else if(sFilePathRaw.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){
 				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
-			}else if(sFilePathRaw.equals(KernelExpressionIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
+			}else if(sFilePathRaw.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
 				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
 				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.

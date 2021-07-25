@@ -9,28 +9,25 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
-//	public enum FLAGZ{
-//		USEFORMULA_MATH
-//	}
+public class KernelZFormulaIni_VariableZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			
-	public KernelExpressionIni_VariableZZZ() throws ExceptionZZZ{
+	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionIniVariableNew_(null, saFlag);
 	}
 			
-	public KernelExpressionIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
+	public KernelZFormulaIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniVariableNew_(hmVariableValue, null);
 	}
 	
-	public KernelExpressionIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniVariableNew_(hmVariableValue, saFlag);
 	}
@@ -124,7 +121,7 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ impleme
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionIni_VariableZZZ.getExpressionTagStarting(), KernelExpressionIni_VariableZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_VariableZZZ.getExpressionTagStarting(), KernelZFormulaIni_VariableZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -133,10 +130,10 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ impleme
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionIni_VariableZZZ.getExpressionTagStarting(), false);
+			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_VariableZZZ.getExpressionTagStarting(), false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionIni_VariableZZZ.getExpressionTagClosing(), false);
+			btemp = StringZZZ.contains(sLine, KernelZFormulaIni_VariableZZZ.getExpressionTagClosing(), false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -151,13 +148,13 @@ public class KernelExpressionIni_VariableZZZ  extends KernelUseObjectZZZ impleme
 		return "z:Var"; 
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelExpressionIni_VariableZZZ.getExpressionTagName() + ">";
+		return "<" + KernelZFormulaIni_VariableZZZ.getExpressionTagName() + ">";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelExpressionIni_VariableZZZ.getExpressionTagName() + ">"; 
+		return "</" + KernelZFormulaIni_VariableZZZ.getExpressionTagName() + ">"; 
 	}	
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelExpressionIni_VariableZZZ.getExpressionTagName() + "/>";
+		return "<" + KernelZFormulaIni_VariableZZZ.getExpressionTagName() + "/>";
 	}
 	
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){

@@ -6,27 +6,23 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelExpressionIniZZZ;
+import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniZZZ{
-//	public enum FLAGZ{
-//		USEFORMULA_MATH
-//	}
-		
-	public KernelExpressionMathSolverZZZ() throws ExceptionZZZ{
+public class KernelZFormulaMathSolverZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+	public KernelZFormulaMathSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 		
-	public KernelExpressionMathSolverZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public KernelZFormulaMathSolverZZZ(String[] saFlag) throws ExceptionZZZ{		
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
-	public KernelExpressionMathSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public KernelZFormulaMathSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
@@ -71,13 +67,13 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ implement
 			if(!StringZZZ.isEmpty(sExpression)){
 					
 				//Nun den z:operator Tag suchen
-				KernelExpressionMath_OperatorZZZ objOperator = new KernelExpressionMath_OperatorZZZ();
+				KernelZFormulaMath_OperatorZZZ objOperator = new KernelZFormulaMath_OperatorZZZ();
 				if(objOperator.isExpression(sExpression)){
 					 sExpression = objOperator.compute(sExpression);					
 				}else{
 					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-					KernelExpressionMath_ValueZZZ objValue = new KernelExpressionMath_ValueZZZ();
+					KernelZFormulaMath_ValueZZZ objValue = new KernelZFormulaMath_ValueZZZ();
 					while(objValue.isExpression(sExpression)){
 						sExpression = objValue.compute(sExpression);
 //						String sDebug = (String) vecValue.get(1);
@@ -108,7 +104,7 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ implement
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelExpressionMathSolverZZZ.getExpressionTagStarting(), KernelExpressionMathSolverZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaMathSolverZZZ.getExpressionTagStarting(), KernelZFormulaMathSolverZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -117,10 +113,10 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ implement
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelExpressionMathSolverZZZ.getExpressionTagStarting(), false);
+			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaMathSolverZZZ.getExpressionTagStarting(), false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelExpressionMathSolverZZZ.getExpressionTagClosing(), false);
+			btemp = StringZZZ.contains(sLine, KernelZFormulaMathSolverZZZ.getExpressionTagClosing(), false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -134,13 +130,13 @@ public class KernelExpressionMathSolverZZZ  extends KernelUseObjectZZZ implement
 		return "Z:math";
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelExpressionMathSolverZZZ.getExpressionTagName() + ">";
+		return "<" + KernelZFormulaMathSolverZZZ.getExpressionTagName() + ">";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelExpressionMathSolverZZZ.getExpressionTagName() + ">"; 
+		return "</" + KernelZFormulaMathSolverZZZ.getExpressionTagName() + ">"; 
 	}	
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelExpressionMathSolverZZZ.getExpressionTagName() + "/>";
+		return "<" + KernelZFormulaMathSolverZZZ.getExpressionTagName() + "/>";
 	}
 
 	//### Aus Interface IKernelExpressionIniZZZ

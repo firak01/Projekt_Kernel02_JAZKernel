@@ -10,8 +10,8 @@ import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.file.ini.KernelExpressionIniConverterZZZ;
-import basic.zKernel.file.ini.KernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -70,10 +70,10 @@ public class KernelConfigEntryUtilZZZ {
 			if(bUseFormula){
 				String sValueExpressionSolved=null;
 				boolean bAnyFormula = false;
-				while(KernelExpressionIniSolverZZZ.isExpression(sRaw)){//Schrittweise die Formel auflösen.
+				while(KernelZFormulaIniSolverZZZ.isExpression(sRaw)){//Schrittweise die Formel auflösen.
 					bAnyFormula = true;
 										
-					KernelExpressionIniSolverZZZ ex = new KernelExpressionIniSolverZZZ(objFileIni, hmVariable, saFlagZpassed);
+					KernelZFormulaIniSolverZZZ ex = new KernelZFormulaIniSolverZZZ(objFileIni, hmVariable, saFlagZpassed);
 					String stemp = ex.compute(sRaw);
 					if(!StringZZZ.equals(stemp,sRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + stemp +"'");
@@ -101,7 +101,7 @@ public class KernelConfigEntryUtilZZZ {
 				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
 				//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
 				boolean bAnyExpression = false;				
-				String sValueConverted = KernelExpressionIniConverterZZZ.getAsString(sRaw);
+				String sValueConverted = KernelZFormulaIniConverterZZZ.getAsString(sRaw);
 				if(!StringZZZ.equals(sRaw,sValueConverted)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sRaw + "' nach '" + sValueConverted +"'");
 					bAnyExpression = true;						
