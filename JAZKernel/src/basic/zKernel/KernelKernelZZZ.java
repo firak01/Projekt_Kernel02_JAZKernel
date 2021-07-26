@@ -4211,7 +4211,7 @@ MeinTestParameter=blablaErgebnis
 				//#############################################################
 				//read the ini-content: 
 				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen
-				String[] saFlagFileIniZZZ = {"USEFORMULA", "USEFORMULA_MATH"};
+				String[] saFlagFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP"};
 				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
 				this.setFileConfigIni(objFileIniZZZ);
 				

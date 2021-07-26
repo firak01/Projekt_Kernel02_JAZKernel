@@ -156,7 +156,29 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					boolean bAnyExpression = false;
 					iReturn = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpression, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
 					if(iReturn>=1){
-						break main;
+						bAnyExpression = true;
+						objReturn.isExpression(true);
+						
+						//++++ usw. das Ergebnis als String in objReturn packen.
+						String sReturnValue=null;
+							
+						String sReturnFormula = objsReturnValueExpressionSolved.get();			
+						if(iReturn==1 | iReturn==3) {
+							objReturn.isFormula(true);
+							sReturnValue=sReturnFormula;
+						}
+						
+						String sReturnExpression = objsReturnValueConverted.get();			
+						if(iReturn==2 | iReturn==3) {
+							objReturn.isConverted(true);							
+							sReturnValue = sReturnExpression;
+						}	
+						
+						if(!bAnyExpression){
+							sReturnValue = objsReturnValue.get();
+						}
+						objReturn.setValue(sReturnValue);						 					
+					break main;
 					}
 				}
 				
@@ -173,6 +195,7 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 						if(bAnyJsonMap) {
 							objReturn.isJsonMap(true);
 							objReturn.isJson(true);
+							objReturn.isExpression(true);
 							objReturn.setValue(HashMapExtendedZZZ.debugString(objhmReturnValue.get()));
 							objReturn.setValue(objhmReturnValue.get());
 							iReturn = 5;
@@ -189,6 +212,7 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 						if(bAnyJsonArray) {
 							objReturn.isJsonArray(true);
 							objReturn.isJson(true);
+							objReturn.isExpression(true);
 							objReturn.setValue(ArrayListExtendedZZZ.debugString(objalReturnValue.getArrayList()));
 							objReturn.setValue(objalReturnValue.getArrayList());
 							iReturn = 6;

@@ -22,6 +22,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bAnyValue = false;
 	private boolean bNullValue = false;
 	private boolean bExpression = false;
+	private boolean bConverted = false;
 	private boolean bFormula = false;
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
@@ -184,6 +185,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void isFormula(boolean bFormula) {
 		this.bFormula = bFormula;
+	}
+	
+	@Override
+	public boolean isConverted() {
+		return this.bConverted;
+	}
+
+	@Override
+	public void isConverted(boolean bConverted) {
+		this.bConverted = bConverted;
 	}
 	
 	@Override

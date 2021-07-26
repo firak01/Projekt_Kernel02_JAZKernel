@@ -43,11 +43,14 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	boolean hasNullValue();
 	//soll nur private eingesetzt werden. abstract void hasNullValue(boolean bNullValue);
 	
-	public boolean isFormula();
-	abstract void isFormula(boolean bIsFormula);
-	
 	public boolean isExpression();
 	abstract void isExpression(boolean bIsExpression);	
+	
+	public boolean isFormula();
+	abstract void isFormula(boolean bIsFormula);
+		
+	public boolean isConverted();
+	abstract void isConverted(boolean bIsConverted);
 	
 	public boolean isJson();
 	abstract void isJson(boolean bIsJson);

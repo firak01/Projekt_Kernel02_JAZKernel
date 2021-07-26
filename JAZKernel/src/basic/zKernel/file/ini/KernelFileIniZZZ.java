@@ -316,32 +316,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 				
 				KernelExpressionIniSolverZZZ objExpressionSolver = new KernelExpressionIniSolverZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
-				int iReturnValue = objExpressionSolver.compute(sReturnRaw,objReturn);
-			
-				
-				/*
-				 //++++ usw. das Ergebnis als String in objReturn packen.
-					String sReturnValue=null;
-					
-					String sReturnFormula = objsReturnValueExpressionSolved.get();			
-					if(iAnyExpression==1 | iAnyExpression==3) {
-						objReturn.isFormula(true);
-						sReturnValue=sReturnFormula;
-					}
-					
-					String sReturnExpression = objsReturnValueConverted.get();			
-					if(iAnyExpression==2 | iAnyExpression==3) {
-						objReturn.isExpression(true);
-						sReturnValue = sReturnExpression;
-					}	
-					
-					if(!bAnyExpression){
-						sReturnValue = objsReturnValue.get();
-					}
-					objReturn.setValue(sReturnValue);
-				 */
-				
-				
+				int iReturnValue = objExpressionSolver.compute(sReturnRaw,objReturn);			
 			}
 		}//end main:
 		return objReturn;

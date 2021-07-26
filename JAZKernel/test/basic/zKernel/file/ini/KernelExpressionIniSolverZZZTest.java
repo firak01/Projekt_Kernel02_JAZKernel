@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
@@ -157,7 +158,9 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	 */
 	public void testCompute(){
 		try {
-			//Anwenden der ersten Formel
+			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			
+			//Anwenden der ersten Formel			
 			objFileIniTest.setFlag("useformula", false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			String sValue = objExpressionSolver.compute(sExpression);
@@ -282,6 +285,8 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	
 	public void testComputeJson() {
 		try {
+			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
 			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH.name(),true);
@@ -295,9 +300,9 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			boolean bIsJson = objEntry.isJson();
 			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
 			
-			objFileIniTest.setFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON.name(), true);
-			objFileIniTest.setFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(), true);
-			objFileIniTest.setFlag(IKerneJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name(), true);
+			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(), true);
+			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(), true);
+			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name(), true);
 			objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
 			bIsJson = objEntry.isJson();
 			assertTrue(bIsJson);//Erst wenn das Flag auf true gesetzt ist, wird es überhaupt behandelt und ggfs. als JSON erkannt.
