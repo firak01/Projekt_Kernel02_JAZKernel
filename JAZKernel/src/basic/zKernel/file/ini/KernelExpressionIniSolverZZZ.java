@@ -21,7 +21,7 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelJsonIniSolverZZZ,IKernelZFormulaIniSolverZZZ{
+public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniSolverZZZ{
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	

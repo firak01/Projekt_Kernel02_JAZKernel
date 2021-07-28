@@ -145,22 +145,24 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 	}//END setup
 	
 	public void testFlagHandling(){
-		//try{							
-		assertTrue(objExpressionSolverInit.getFlag("init")==true);
-		assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
-		
-		boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-		assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-		
-		bFlagAvailable = objExpressionSolver.setFlag("usejson_array", false); //Ansonsten wird der Wert sofort ausgerechnet
-		assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", bFlagAvailable);
-		
-		bFlagAvailable = objExpressionSolver.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
-		assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
-
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		try{							
+			assertTrue(objExpressionSolverInit.getFlag("init")==true);
+			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
+			
+			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			bFlagAvailable = objExpressionSolver.setFlag("usejson_array", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			bFlagAvailable = objExpressionSolver.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+	
+			String[] saFlag = objExpressionSolver.getFlagZ();
+			assertTrue(saFlag.length==5);		
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	/** void, Test: Reading an entry in a section of the ini-file

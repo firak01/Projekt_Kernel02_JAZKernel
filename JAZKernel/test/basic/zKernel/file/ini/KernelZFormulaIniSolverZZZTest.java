@@ -18,9 +18,9 @@ import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIniSolverZZZTest extends TestCase {
+public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelExpressionIniSolverZZZTest.ini");
+	private final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelZFormulaIniSolverZZZTest.ini");
 	
 	
 	private File objFile;
@@ -143,14 +143,17 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	}//END setup
 	
 	public void testFlagHandling(){
-		//try{
+		try{
 				
-		assertTrue(objExpressionSolverInit.getFlag("init")==true);
-		assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
-
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+			assertTrue(objExpressionSolverInit.getFlag("init")==true);
+			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
+	
+			
+			String[] saFlag = objExpressionSolver.getFlagZ();
+			assertTrue(saFlag.length==4);
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	/** void, Test: Reading an entry in a section of the ini-file
@@ -285,7 +288,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	
 	public void testComputeJson() {
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
 			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
 			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
