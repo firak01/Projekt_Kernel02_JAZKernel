@@ -18,6 +18,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
@@ -149,6 +150,9 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertTrue(objExpressionSolverInit.getFlag("init")==true);
 			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
 			
+			String[] saFlag = objExpressionSolver.getFlagZ();
+			assertTrue(saFlag.length==8);
+			
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
@@ -157,9 +161,38 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			bFlagAvailable = objExpressionSolver.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
 	
-			String[] saFlag = objExpressionSolver.getFlagZ();
-			assertTrue(saFlag.length==5);		
+	public void testCompute() {
+		try {					
+			boolean bFlagAvailable = objExpressionSolver.setFlag("useExpression", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useExpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			//+++ Anwenden der ersten Formel, ohne Berechnung
+			objExpressionSolver.setFlag("useExpression", false); //Ansonsten wird der Wert sofort ausgerechnet
+			String sLineWithExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
+			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.",sLineWithExpression);
+			
+			String sLineWithValue = objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
+			assertEquals("Testvalue1 to be found",sLineWithValue);
+			
+			//+++ Anwenden der ersten Formel, mit Berechnung
+			IKernelConfigSectionEntryZZZ objSectionEntry = new KernelConfigSectionEntryZZZ();
+			objExpressionSolver.setFlag("useExpression", true); 
+			objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			int iReturn = objExpressionSolver.compute(sLineWithExpression, objSectionEntry);
+			assertTrue(iReturn==1);
+			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", objSectionEntry.getValue());
+			
+			objFileIniTest.setFlag("useExpression", true);
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
+			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.",sExpression);
+		
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
@@ -169,7 +202,8 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testComputeHashMap(){
-		/* TODOGOON
+		TODOGOON; //20210728 Test für die Berechnung einer JSON-HASHMAP
+		/*
 		try {					
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -252,7 +286,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	}
 	
 		
-	public void testJson() {
+	public void testIsExpression() {
 		/* TODOGOON
 //		try {			
 			String sExpression = "<Z>bin kein JSON</Z>";

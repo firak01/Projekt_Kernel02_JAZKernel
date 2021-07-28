@@ -139,6 +139,8 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 			int iReturn = 0;
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+				boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
+				if(!bUseExpression) break main;
 				
 				boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
 				if(bUseFormula) {

@@ -243,7 +243,24 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		//1. von der Classe selbst implementiert
 		ArrayList<String> listasDirect = FlagZHelperZZZ.getFlagsZListDirectAvailable(cls);
 				
-		//2. von den Elternklassen der Klasse implementiert
+		//2. allen Interfaces der Klasse, auch den erbenden implementiert
+		ArrayList<String> listasInterface = new ArrayList<String>();
+		ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
+		ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
+		for(Class<?> objclsByInterface : listaClassInterface) {
+			Enum[] enumaByInterface = getEnumFlagZ(objclsByInterface);
+			if(enumaByInterface!=null) {			
+				for(Enum objEnum : enumaByInterface) {
+					String sEnum = objEnum.name();
+					if(!listasInterface.contains(sEnum)) {
+						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+						listasInterface.add(sEnum);
+					}
+				}			
+			}
+		}
+		
+		//3. von den Elternklassen der Klasse implementiert
 		ArrayList<String> listasParent = new ArrayList<String>();		
 		ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
 		for(Class objcls : listaobjClass) {
@@ -258,6 +275,8 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		
 		listasReturn.addAll(listasDirect);
 		listasReturn.addAll(listasParent);
+		listasReturn.addAll(listasInterface);
+		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);
 	}//end main:
 	return listasReturn;
 	}
