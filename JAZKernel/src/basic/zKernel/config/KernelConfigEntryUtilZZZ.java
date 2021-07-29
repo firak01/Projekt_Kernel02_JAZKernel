@@ -17,11 +17,18 @@ import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelConfigEntryUtilZZZ {
-	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
+	/** Die statischen Methoden dieser Klasse leisten mehr als nur die ...Solver... aufzurufen.
+	 *  Durch den Rückgabewert können dann die Details im letztendlich benötigten IKernelConfigSectionEntryZZZ object gesetzt werden.
+	 *  Also z.B. bJson, bJsonMap, etc...
+	 *  
+	 * Nur true / false zurückzugeben reicht daher nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
 	 *  0 = nix
 	 *  1 = Formel
 	 *  2 = Expression
 	 *  3 = Formel UND Expression
+	 *  
+	 *  5 = JsonMap
+	 *  6 = JsonArray
 	 *  usw. denkbar fortsetzbar
 	 *  
 	 *  
@@ -121,12 +128,21 @@ public class KernelConfigEntryUtilZZZ {
 	
 	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
 	 *  0 = nix
-	 *  1 = Json
-	 *  2 = JsonArray
-	 *  3 = JsonMap
+	 *  1 = JsonArray
+	 *  2 = JsonMap
 	 *  usw. denkbar fortsetzbar
 	 *  
-	 *  
+	 * 
+	 */
+	 public int getValueJsonSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceArrayZZZ<String>objalsReturnValueJsonSolved,ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
+		 int iReturn = 0;
+		 main:{
+			 
+		 }//end main:
+		 return iReturn;
+	 }
+	
+	 /*
 	 * @param objFileIni
 	 * @param sRaw
 	 * @param bUseJson	 

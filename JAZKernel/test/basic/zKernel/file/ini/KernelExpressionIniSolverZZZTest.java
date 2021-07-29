@@ -202,7 +202,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testComputeHashMap(){
-		TODOGOON; //20210728 Test für die Berechnung einer JSON-HASHMAP
+		//TODOGOON; //20210728 Test für die Berechnung einer JSON-HASHMAP
 		/*
 		try {					
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
@@ -244,7 +244,8 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
 	public void testComputeArrayList(){
-		/* TODOGOON
+		//TODOGOON; //20210728 
+		/*
 		try {	
 					
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet

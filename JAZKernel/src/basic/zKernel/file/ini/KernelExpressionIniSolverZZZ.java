@@ -147,6 +147,9 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 				
 					//Hier KernelZFormulIniSolverZZZ
 					//und KernelJsonInisolverZZZ verwenden
+					//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
+					//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
+					//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
 					KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ();
 					String[] saFlagZpassed = this.getFlagZ_passable(true, formulaDummy);
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
@@ -188,6 +191,9 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 				if(bUseJson) {
 					KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
 					String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy03);					
+
+					TODOGOON; //20210729 Hier nur 1 statische Methode aufrufen, die einen Integerwert zurückliefert, der dann die Befüllung von objReturn steuert.					
+					iReturn = getValueJsonSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceArrayZZZ<String>objalsReturnValueJsonSolved,ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
 					
 					boolean bUseJsonMap = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name());
 					if(bUseJsonMap) {				
