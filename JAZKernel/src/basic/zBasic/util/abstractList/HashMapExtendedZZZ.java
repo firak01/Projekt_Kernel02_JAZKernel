@@ -34,6 +34,37 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	public HashMapExtendedZZZ(){
 	}
 	
+	public static HashMapExtendedZZZ toHashMapExtended(HashMap hm){
+		HashMapExtendedZZZ hmReturn=null;
+		main:{
+			if(hm==null)break main;
+			
+			hmReturn=new HashMapExtendedZZZ();
+			hmReturn.putAll(hm);
+			
+//			Set setKey = hm.keySet();
+//			Iterator itKey = setKey.iterator();
+//			while(itKey.hasNext());{
+//				hmReturn.putAll(m);
+//			}
+			
+		}//end main:
+		return hmReturn;
+	}
+	
+	public static HashMapExtendedZZZ clone(HashMap hm) {
+		HashMapExtendedZZZ hmReturn=null;
+		main:{
+			if(hm==null)break main;
+			
+			hmReturn=new HashMapExtendedZZZ();
+			HashMap hmNew = (HashMap) hm.clone();
+			hmReturn.putAll(hmNew);
+			
+		}//end main:
+		return hmReturn;
+	}
+	
 	
 	/** Versuche für das angegebene Objekt den Schlüsselwert zurückzugeben.
 	 *   Da ein Objekt mit mehreren Schlüsseln abgelegt sein kann: "First"...

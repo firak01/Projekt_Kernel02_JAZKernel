@@ -249,7 +249,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 				//sReturn = VectorZZZ.implode(vecAll);
 			}
 			
-			//ANSCHnLIESSEND die HashMap erstellen
+			//ANSCHLIESSEND die HashMap erstellen
 			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
 			
 			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
