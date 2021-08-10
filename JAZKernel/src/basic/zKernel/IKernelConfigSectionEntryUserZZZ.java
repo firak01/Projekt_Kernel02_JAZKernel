@@ -26,6 +26,7 @@ public interface IKernelConfigSectionEntryUserZZZ extends IKernelConfigFileUserZ
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(FileIniZZZ objFileIni, String sParameterName) throws ExceptionZZZ;
 	public IKernelConfigSectionEntryZZZ getParameter(String sParameterName) throws ExceptionZZZ;
 	
+	public IKernelConfigSectionEntryZZZ[] getParameterArrayByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
 	public String[] getParameterArrayStringByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
 	
 	

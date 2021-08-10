@@ -245,7 +245,7 @@ public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements I
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
 			
-			//Beschränke das ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
+			//Beschränke das ausrechnen auf den JSON-Array Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
 			sReturn = vecAll.get(1);
 			if(this.getFlag("useFormula_math")==true){				
 				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
@@ -260,7 +260,7 @@ public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements I
 				//sReturn = VectorZZZ.implode(vecAll);
 			}
 			
-			//ANSCHnLIESSEND die HashMap erstellen
+			//ANSCHnLIESSEND die ArrayList erstellen
 			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
 			
 			

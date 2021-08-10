@@ -2792,7 +2792,7 @@ MeinTestParameter=blablaErgebnis
 	
 	
 	//############################################################################
-	public IKernelConfigSectionEntryZZZ[] getParameterByProgramAliasAsArray(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+	public IKernelConfigSectionEntryZZZ[] getParameterArrayByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ[] objaReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		String sDebug = "";
 		main:{
@@ -2817,13 +2817,13 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 				  
-			objaReturn = this.KernelGetParameterByProgramAliasAsArray_(null, sModule, sProgramOrSection, sProperty);
+			objaReturn = this.KernelGetParameterArrayByProgramAlias_(null, sModule, sProgramOrSection, sProperty);
 		}//END main:
 		return objaReturn;
 	}
 	
 	
-	private IKernelConfigSectionEntryZZZ[] KernelGetParameterByProgramAliasAsArray_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ[] KernelGetParameterArrayByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ[] objaReturn = null;
 		ArrayList<IKernelConfigSectionEntryZZZ>listaReturn= new ArrayList<IKernelConfigSectionEntryZZZ>();				
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
@@ -2843,12 +2843,23 @@ MeinTestParameter=blablaErgebnis
 		
 		sDebug = hmDebug.debugString(":"," | ");
 		if(objReturn.hasAnyValue()) {										
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ ArrayMethod calling StringMethod for search. Zerlege gefundenen Wert nun in Array" + sDebug);			
-			try {
-				objaReturn = KernelConfigSectionEntryZZZ.explode(objReturn, null);
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ ArrayMethod calling StringMethod for search. Zerlege gefundenen Wert nun in Array" + sDebug);
+			
+			//20210808: Nun gesondert JSON-Array verwenden, alternativ zu der Variante Mehrfachwerte mit einem | zu definieren.
+			if(objReturn.isJsonArray()) {				 
+				 try {
+					objaReturn = KernelConfigSectionEntryZZZ.explodeJsonArray(objReturn); //TODOGOON; //20210810: Alternativ müsste es überhaupt den Weg geben ein String-Array zurückzugeben.
+				} catch (CloneNotSupportedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				try {
+					objaReturn = KernelConfigSectionEntryZZZ.explode(objReturn, null);
+				} catch (CloneNotSupportedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 				
@@ -3135,6 +3146,7 @@ MeinTestParameter=blablaErgebnis
 		}
 		return saReturn;
 	}
+		
 	
 	/**Returns an array-object on a configured value. 
 	 * Because it is used very often, this comfortabel method is available.
@@ -3151,10 +3163,10 @@ MeinTestParameter=blablaErgebnis
 		String[] saReturn = null;
 		main:{
 			//String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue();
-			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterByProgramAliasAsArray(sModule, sSectionOrProgram, sProperty);
+			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterArrayByProgramAlias(sModule, sSectionOrProgram, sProperty);
 			if(objaEntry!=null){
 				
-				//Hole getValue aus jedem entry und packe es in eine ArrayList, die dann als StringArray zurückgegeben wird.
+				//Hole getValue aus jedem Entry und packe es in eine ArrayList, die dann als StringArray zurückgegeben wird.
 				ArrayList<String> listasEntry = new ArrayList<String>();
 				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];

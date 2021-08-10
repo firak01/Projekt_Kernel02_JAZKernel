@@ -28,6 +28,9 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bJsonArray = false;
 	private boolean bJsonMap = false;
 	
+	private boolean bExploded = false; //Falls es das Ergebnis einer Zerlegung eines Arrays ist
+	private int iIndex = 0;            //dito
+		
 	private boolean bSkipCache = false;
 	
 	//############################
@@ -53,8 +56,47 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 				objaReturn = new IKernelConfigSectionEntryZZZ[saValue.length];
 				for(int iCounter = 0; iCounter<=saValue.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone();
-					objEntrytemp.setValue(saValue[iCounter]);		//Merke: sRaw wird nicht zerlegt!!!	
+					objEntrytemp.setValue(saValue[iCounter]);		//Merke: sRaw wird nicht zerlegt!!!						
+					objEntrytemp.isExploded(true);
+					objEntrytemp.setIndex(iCounter);
 					objaReturn[iCounter] = objEntrytemp;
+				}			
+			}
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	public static IKernelConfigSectionEntryZZZ[] explodeJsonArray(IKernelConfigSectionEntryZZZ objEntry) throws CloneNotSupportedException {
+		IKernelConfigSectionEntryZZZ[] objaReturn = {};//Mit diesem Trick wird ein leeres Array initialisiert, statt null;
+		main:{
+			if(objEntry==null) break main;
+			if(!objEntry.hasAnyValue()) {
+//				objaReturn = new IKernelConfigSectionEntryZZZ[1];
+//				objaReturn[0] = objEntry;
+				break main;
+			}else {
+				if(!objEntry.isJsonArray()) {
+					break main;
+				}else {
+					ArrayList<String>als = objEntry.getValueArrayList();
+					if(als==null)break main;
+					if(als.isEmpty())break main;
+					
+					objaReturn = new IKernelConfigSectionEntryZZZ[als.size()];
+					int iCounter=-1;
+					
+					//for(int iCounter=0;iCounter<=als.size()-1;iCounter++) {
+					for(String stemp : als) {
+						IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone(); //damit werden alle Ursprungswerte übernommen.
+						objEntrytemp.setValue(stemp);		//Merke: sRaw wird nicht zerlegt!!!	
+						//objEntrytemp.isJson(false);       //Dementsprechend soll auch Ursprungstyp nicht geändert werden.
+						//objEntrytemp.isJsonArray(false);
+						iCounter++;
+						objaReturn[iCounter] = objEntrytemp;
+						objEntrytemp.isExploded(true);
+						objEntrytemp.setIndex(iCounter);
+					}
 				}			
 			}
 		}//end main:
@@ -272,4 +314,25 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException {
 	        return (IKernelConfigSectionEntryZZZ) super.clone();
 	    }
+
+
+	@Override
+	public boolean isExploded() {
+		return this.bExploded;
+	}
+
+	@Override
+	public void isExploded(boolean bIsExploded) {
+		this.bExploded = bIsExploded;
+	}
+
+	@Override
+	public int getIndex() {
+		return this.iIndex;
+	}
+
+	@Override
+	public void setIndex(int iIndex) {
+		this.iIndex = iIndex;
+	}
 }

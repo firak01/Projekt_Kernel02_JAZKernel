@@ -60,6 +60,13 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	
 	public boolean isJsonArray();
 	abstract void isJsonArray(boolean bIsJsonArray);
+	
+	//Falls eine Section eine Form des Arrays enthält und dieses in Einzelwerte zerlegt wurde (mit explode)
+	public boolean isExploded();
+	abstract void isExploded(boolean bIsExploded);
+	public int getIndex();
+	abstract void setIndex(int iIndex);
+	
 		
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);
