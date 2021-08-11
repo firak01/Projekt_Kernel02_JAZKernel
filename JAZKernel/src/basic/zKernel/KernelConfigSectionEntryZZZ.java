@@ -27,6 +27,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
 	private boolean bJsonMap = false;
+	private String sKey = null;
 	
 	private boolean bExploded = false; //Falls es das Ergebnis einer Zerlegung eines Arrays ist
 	private int iIndex = 0;            //dito
@@ -334,5 +335,15 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void setIndex(int iIndex) {
 		this.iIndex = iIndex;
+	}
+
+	@Override
+	public String getKey() {
+		return this.sKey;
+	}
+
+	@Override
+	public void setKey(String sKey) {
+		this.sKey = sKey;
 	}
 }

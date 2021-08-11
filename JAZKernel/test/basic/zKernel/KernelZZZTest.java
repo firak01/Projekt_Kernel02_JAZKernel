@@ -2,13 +2,16 @@ package basic.zKernel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 import custom.zUtil.io.FileZZZ;
 import junit.framework.TestCase;
 
@@ -611,6 +614,18 @@ public void testGetModuleAliasAll(){
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}
+	}
+	
+	public void testGetParameterHashMapStringByProgramAlias() {
+		try {
+	
+			HashMap<String,String> hm = objKernelFGL.getParameterHashMapStringByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
+			assertNotNull(hm);
+			assertFalse(hm.isEmpty());
+									
+	}catch(ExceptionZZZ ez){
+		fail("An exception happend testing: " + ez.getDetailAllLast());
+	}
 	}
 	
 	

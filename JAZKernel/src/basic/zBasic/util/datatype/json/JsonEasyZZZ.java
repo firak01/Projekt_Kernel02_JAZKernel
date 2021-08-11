@@ -38,6 +38,7 @@ public class JsonEasyZZZ extends ObjectZZZ{
 			}
 			
 			try {
+				
 				JsonParser parser = new JsonParser();
 				JsonElement objReturn = parser.parse(sJson);
 				bReturn = true;

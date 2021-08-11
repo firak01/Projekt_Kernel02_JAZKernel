@@ -20,8 +20,5 @@ public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCach
 	public String getSystemNumber() throws ExceptionZZZ;
 			
 	public boolean isOnServer() throws ExceptionZZZ;
-	public boolean isInJar() throws ExceptionZZZ;
-
-	
-			
+	public boolean isInJar() throws ExceptionZZZ;		
 }

@@ -3182,6 +3182,35 @@ MeinTestParameter=blablaErgebnis
 		return saReturn;
 	}
 	
+	public HashMap<String,String>getParameterHashMapStringByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		HashMap<String,String>hmReturn = null;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		String sDebug;
+			
+		main:{				
+			//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
+			//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
+			//Aber: Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
+				//  Darum findet hier nicht das Nachsehen im Cache statt. 
+						
+			//############################
+			hmDebug.put("+++ HashMapMethod calling StringMethod for search. Input: " + sModule + "," + sProgramOrSection ,sProperty);
+			
+			FileIniZZZ objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sModule, sProgramOrSection);		    	
+		   			
+			IKernelConfigSectionEntryZZZ objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true);
+			
+			sDebug = hmDebug.debugString(":"," | ");
+			if(objReturn.hasAnyValue()) {										
+				//Merke: Hier wird keine HashMap von Entry-Objekten zurückgegeben, sondern die HashMap selbst
+				//       Darum nicht: System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Zerlege gefundenen Wert nun in HahMap" + sDebug);
+				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Uebernehme gefundenen Wert " + sDebug);
+				hmReturn = objReturn.getValueHashMap();				
+			}
+		}
+		return hmReturn;
+	}
+	
 	
 	/** Return a file-object on a configured file name. 
 	 * Because it is used very often, this comfortabel method is available.

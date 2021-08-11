@@ -2,6 +2,7 @@ package basic.zKernel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
@@ -28,6 +29,7 @@ public interface IKernelConfigSectionEntryUserZZZ extends IKernelConfigFileUserZ
 	
 	public IKernelConfigSectionEntryZZZ[] getParameterArrayByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
 	public String[] getParameterArrayStringByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
+	public HashMap<String,String> getParameterHashMapStringByProgramAlias(String sModuleAlias, String sProgramAlias, String sParameterName) throws ExceptionZZZ;
 	
 	
 	public File getParameterFileByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ;

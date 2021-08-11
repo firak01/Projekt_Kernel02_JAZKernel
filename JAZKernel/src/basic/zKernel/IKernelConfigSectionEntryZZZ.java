@@ -30,7 +30,7 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	
 	public String getValue();
 	public void setValue(String sValue);
-	
+			
 	public HashMap<String,String> getValueHashMap();
 	public void setValue(HashMap<String,String> hmValue);
 	
@@ -66,6 +66,10 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	abstract void isExploded(boolean bIsExploded);
 	public int getIndex();
 	abstract void setIndex(int iIndex);
+	
+	//Falls eine Section eine Form der HashMap enthält und diese in Einzelwerte zerlegt wurde (mit explode)
+	public String getKey();
+	public void setKey(String sKey);
 	
 		
 	public boolean sectionExists();
