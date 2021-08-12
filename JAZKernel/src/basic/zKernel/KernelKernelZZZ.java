@@ -26,6 +26,7 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAsciiFactoryZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphabetZZZ;
@@ -2848,11 +2849,18 @@ MeinTestParameter=blablaErgebnis
 			//20210808: Nun gesondert JSON-Array verwenden, alternativ zu der Variante Mehrfachwerte mit einem | zu definieren.
 			if(objReturn.isJsonArray()) {				 
 				 try {
-					objaReturn = KernelConfigSectionEntryZZZ.explodeJsonArray(objReturn); //TODOGOON; //20210810: Alternativ müsste es überhaupt den Weg geben ein String-Array zurückzugeben.
+					objaReturn = KernelConfigSectionEntryZZZ.explodeJsonArray(objReturn);
 				} catch (CloneNotSupportedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}else if(objReturn.isJsonMap()) {
+				try {
+					objaReturn = KernelConfigSectionEntryZZZ.explodeJsonMap(objReturn);
+				} catch (CloneNotSupportedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
 			}else {
 				try {
 					objaReturn = KernelConfigSectionEntryZZZ.explode(objReturn, null);
@@ -3207,6 +3215,44 @@ MeinTestParameter=blablaErgebnis
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Uebernehme gefundenen Wert " + sDebug);
 				hmReturn = objReturn.getValueHashMap();				
 			}
+		}
+		return hmReturn;
+	}
+	
+	public HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapEntryByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		HashMapIndexedZZZ<Integer, IKernelConfigSectionEntryZZZ>hmReturn = null;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		String sDebug;
+			
+		main:{		
+			
+			hmDebug.put("+++ HashMapMethod calling SectionEntry-Method. Input: " + sModule + "," + sProgramOrSection ,sProperty);
+			
+			FileIniZZZ objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sModule, sProgramOrSection);		    	
+   			
+			//Erst einmal das Array holen. 
+			//Merke: Die Werte im Array sind geclont 
+			//und es soll bei einer HashMap entsprechende Flags und Werte (z.B. speziell für HashMap ein Aliaswert) gesetzt sein.
+			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterArrayByProgramAlias(sModule, sProgramOrSection, sProperty);
+			if(objaEntry!=null){
+				
+				//Packe jeden Entry in eine HashMap. Verwende dabei den Index des Entrywerts als Schlüssel für die Indizierte HashMap.
+				TODOGOON;//20210812 
+				ArrayList<String> listasEntry = new ArrayList<String>();
+				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
+					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
+					String sEntry = objEntry.getValue();					
+					listasEntry.add(sEntry);
+				}
+				saReturn = ArrayListZZZ.toStringArray(listasEntry);			
+			}else{
+				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
+				throw ez;
+			}
+			
+			
+			sDebug = hmDebug.debugString(":"," | ");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling SectionEntry-Method. Uebernehme gefundenen Wert " + sDebug);
 		}
 		return hmReturn;
 	}

@@ -373,6 +373,7 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		hmIndexed.put(intMaxNew, objValue);		
 	}
 
+	//++++ "Komfortmethoden", die eine normale HashMap auch hat anbieten.
 	public int size() {
 		int iReturn = 0;
 		main:{
@@ -381,6 +382,16 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 			}
 		}//end main;
 		return iReturn;
+	}
+	
+	public boolean isEmpty() {
+		boolean bReturn = true;
+		main:{
+			if(this.size()>=1) {
+				bReturn=true;
+			}
+		}//end main;
+		return bReturn;
 	}
 
 	

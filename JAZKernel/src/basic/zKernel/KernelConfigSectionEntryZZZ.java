@@ -48,7 +48,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 					sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR;
 				}else {
 					sDelimiter = sDelimiterIn;
-					}
+				}
 					
 				String sValue = objEntry.getValue();
 				String[] saValue = StringZZZ.explode(sValue, sDelimiter);
@@ -80,6 +80,45 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 				if(!objEntry.isJsonArray()) {
 					break main;
 				}else {
+					ArrayList<String>als = objEntry.getValueArrayList();
+					if(als==null)break main;
+					if(als.isEmpty())break main;
+					
+					objaReturn = new IKernelConfigSectionEntryZZZ[als.size()];
+					int iCounter=-1;
+					
+					//for(int iCounter=0;iCounter<=als.size()-1;iCounter++) {
+					for(String stemp : als) {
+						IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone(); //damit werden alle Ursprungswerte übernommen.
+						objEntrytemp.setValue(stemp);		//Merke: sRaw wird nicht zerlegt!!!	
+						//objEntrytemp.isJson(false);       //Dementsprechend soll auch Ursprungstyp nicht geändert werden.
+						//objEntrytemp.isJsonArray(false);
+						iCounter++;
+						objaReturn[iCounter] = objEntrytemp;
+						objEntrytemp.isExploded(true);
+						objEntrytemp.setIndex(iCounter);
+					}
+				}			
+			}
+		}//end main:
+		return objaReturn;
+	}
+	
+	public static IKernelConfigSectionEntryZZZ[] explodeJsonMap(IKernelConfigSectionEntryZZZ objEntry) throws CloneNotSupportedException {
+		IKernelConfigSectionEntryZZZ[] objaReturn = {};//Mit diesem Trick wird ein leeres Array initialisiert, statt null;
+		main:{
+			if(objEntry==null) break main;
+			if(!objEntry.hasAnyValue()) {
+//				objaReturn = new IKernelConfigSectionEntryZZZ[1];
+//				objaReturn[0] = objEntry;
+				break main;
+			}else {
+				if(!objEntry.isJsonMap()) {
+					break main;
+				}else {
+					
+					TODOGOON; //20210812 jetzt auch für die Map clonen 
+					//UND DABEI DEN ALIAS-WERT SETZEN
 					ArrayList<String>als = objEntry.getValueArrayList();
 					if(als==null)break main;
 					if(als.isEmpty())break main;

@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelZZZ;
@@ -623,9 +624,25 @@ public void testGetModuleAliasAll(){
 			assertNotNull(hm);
 			assertFalse(hm.isEmpty());
 									
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 	}
+	
+	public void testGetParameterHashMapEntryByProgramAlias() {
+		try {
+			
+			TODOGOON; //20210812
+			HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hm= objKernelFGL.getParameterHashMapEntryByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
+			assertNotNull(hm);
+			assertFalse(hm.isEmpty());
+			
+			//Wichtig: In den einzelnen EntryObjekten sollte jetzt immer ein anderer Alias sein....
+			//........
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 	}
 	
 	
