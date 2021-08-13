@@ -14,7 +14,10 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class HashMapZZZ<T,X> extends ObjectZZZ {
-
+	
+	private HashMapZZZ(){
+	}
+		
 	/**
 	 * Merke: Eine normale HashMap ist NIE sortierbar.
 	 * @param map
