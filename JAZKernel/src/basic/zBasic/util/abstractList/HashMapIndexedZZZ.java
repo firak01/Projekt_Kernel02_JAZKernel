@@ -388,7 +388,7 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		boolean bReturn = true;
 		main:{
 			if(this.size()>=1) {
-				bReturn=true;
+				bReturn=false;
 			}
 		}//end main;
 		return bReturn;

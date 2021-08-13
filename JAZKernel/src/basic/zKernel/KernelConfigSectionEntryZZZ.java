@@ -2,6 +2,8 @@ package basic.zKernel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import basic.zBasic.util.abstractList.ArrayListZZZ;
@@ -93,10 +95,13 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 						objEntrytemp.setValue(stemp);		//Merke: sRaw wird nicht zerlegt!!!	
 						//objEntrytemp.isJson(false);       //Dementsprechend soll auch Ursprungstyp nicht geändert werden.
 						//objEntrytemp.isJsonArray(false);
-						iCounter++;
-						objaReturn[iCounter] = objEntrytemp;
+						
 						objEntrytemp.isExploded(true);
+						
+						iCounter++;
 						objEntrytemp.setIndex(iCounter);
+						
+						objaReturn[iCounter] = objEntrytemp;
 					}
 				}			
 			}
@@ -117,25 +122,33 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 					break main;
 				}else {
 					
-					TODOGOON; //20210812 jetzt auch für die Map clonen 
-					//UND DABEI DEN ALIAS-WERT SETZEN
-					ArrayList<String>als = objEntry.getValueArrayList();
-					if(als==null)break main;
-					if(als.isEmpty())break main;
+					//20210812 jetzt auch für die Map clonen UND DABEI DEN ALIAS-WERT SETZEN
+					HashMap<String,String>hmss = objEntry.getValueHashMap();
+					if(hmss==null)break main;
+					if(hmss.isEmpty())break main;
 					
-					objaReturn = new IKernelConfigSectionEntryZZZ[als.size()];
+					objaReturn = new IKernelConfigSectionEntryZZZ[hmss.size()];
 					int iCounter=-1;
 					
-					//for(int iCounter=0;iCounter<=als.size()-1;iCounter++) {
-					for(String stemp : als) {
+					Set<String> setKey = hmss.keySet();
+					Iterator<String>itKey = setKey.iterator();
+					while(itKey.hasNext()) {
 						IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone(); //damit werden alle Ursprungswerte übernommen.
-						objEntrytemp.setValue(stemp);		//Merke: sRaw wird nicht zerlegt!!!	
+						
+						String sKey = itKey.next();
+						String sValue = hmss.get(sKey);
+						
+						objEntrytemp.setKey(sKey);        //Speziell für die HashMap						
+						objEntrytemp.setValue(sValue);		//Merke: sRaw wird nicht zerlegt!!!	
 						//objEntrytemp.isJson(false);       //Dementsprechend soll auch Ursprungstyp nicht geändert werden.
 						//objEntrytemp.isJsonArray(false);
-						iCounter++;
-						objaReturn[iCounter] = objEntrytemp;
+												
 						objEntrytemp.isExploded(true);
+						
+						iCounter++; 
 						objEntrytemp.setIndex(iCounter);
+						
+						objaReturn[iCounter] = objEntrytemp;
 					}
 				}			
 			}

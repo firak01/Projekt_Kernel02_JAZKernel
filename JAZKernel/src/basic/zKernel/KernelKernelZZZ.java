@@ -3228,8 +3228,6 @@ MeinTestParameter=blablaErgebnis
 			
 			hmDebug.put("+++ HashMapMethod calling SectionEntry-Method. Input: " + sModule + "," + sProgramOrSection ,sProperty);
 			
-			FileIniZZZ objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sModule, sProgramOrSection);		    	
-   			
 			//Erst einmal das Array holen. 
 			//Merke: Die Werte im Array sind geclont 
 			//und es soll bei einer HashMap entsprechende Flags und Werte (z.B. speziell für HashMap ein Aliaswert) gesetzt sein.
@@ -3237,20 +3235,18 @@ MeinTestParameter=blablaErgebnis
 			if(objaEntry!=null){
 				
 				//Packe jeden Entry in eine HashMap. Verwende dabei den Index des Entrywerts als Schlüssel für die Indizierte HashMap.
-				TODOGOON;//20210812 
-				ArrayList<String> listasEntry = new ArrayList<String>();
+				hmReturn = new HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>();
 				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
-					String sEntry = objEntry.getValue();					
-					listasEntry.add(sEntry);
-				}
-				saReturn = ArrayListZZZ.toStringArray(listasEntry);			
+					int iIndex = objEntry.getIndex();
+					Integer intIndex = new Integer(iIndex);
+					hmReturn.put(intIndex, objEntry);
+				}		
 			}else{
 				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
 				throw ez;
 			}
-			
-			
+		
 			sDebug = hmDebug.debugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling SectionEntry-Method. Uebernehme gefundenen Wert " + sDebug);
 		}

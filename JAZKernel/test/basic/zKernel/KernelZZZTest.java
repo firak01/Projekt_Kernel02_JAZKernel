@@ -631,8 +631,7 @@ public void testGetModuleAliasAll(){
 	
 	public void testGetParameterHashMapEntryByProgramAlias() {
 		try {
-			
-			TODOGOON; //20210812
+
 			HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hm= objKernelFGL.getParameterHashMapEntryByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
 			assertNotNull(hm);
 			assertFalse(hm.isEmpty());
