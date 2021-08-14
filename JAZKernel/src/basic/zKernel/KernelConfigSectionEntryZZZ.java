@@ -147,7 +147,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 						
 						iCounter++; 
 						objEntrytemp.setIndex(iCounter);
-						
+		
 						objaReturn[iCounter] = objEntrytemp;
 					}
 				}			
