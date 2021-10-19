@@ -35,6 +35,7 @@ import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
  * -f = file (.ini)
  * -z = flagz, JSON String mit dem beliebige Flags von aussen gesetzt werden. Sie werden in einer extra HashMap-verwaltet.
  * Mit diesen Informationen kann dann das eigentliche Kernel-Objekt erstellt werden
+ * Z.B.:  -z {"DEBUGUI_PANELLABEL_ON":true}
  * 
  * 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 			//          Das ist gescheitert, da zuviel zu ändern ist.
