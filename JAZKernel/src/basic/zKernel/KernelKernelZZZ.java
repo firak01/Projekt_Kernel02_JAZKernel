@@ -4128,6 +4128,8 @@ MeinTestParameter=blablaErgebnis
 				//ggfs Context Object setzen
 				this.setContextUsed(objContext);
 				  
+				TODOGOON; //20211024 Wenn kein Config-Objekt übergeben wurde, dann erzeuge eines neu
+				
 				//++++++++++++++++++++++++++++++++
 				String sDirectoryLog = null;
 				String sFileLog = null;
