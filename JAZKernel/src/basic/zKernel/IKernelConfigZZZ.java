@@ -42,4 +42,6 @@ public interface IKernelConfigZZZ extends IFlagUserZZZ,IKernelConfigConstantZZZ{
 	public boolean isOnServer();
 	public boolean isOptionObjectLoaded();
 	
+	public boolean isApplicationKeyDefault(String sApplicationKey);
+	
 }

@@ -22,6 +22,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
@@ -55,8 +56,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		ConfigNew_(null);
 	}
 	public KernelConfigZZZ(String[] saArg) throws ExceptionZZZ{
-		super(saArg);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		ConfigNew_(null);
+		super((String[])null);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		ConfigNew_(saArg);
 	}	
 	public KernelConfigZZZ(String[] saArg, String[]saFlagControl) throws ExceptionZZZ{
 		super(saFlagControl); //20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt 	
@@ -79,7 +80,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 			}	
 						
 			String[] saArg = null;
-			if(saArgIn==null || saArgIn.length==0){
+			if(saArgIn==null || StringArrayZZZ.isEmpty(saArgIn)){
 				//Das Argument-Array darf auch leer sein.
 //				ExceptionZZZ ez = new ExceptionZZZ("Argument - Array", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
@@ -299,6 +300,80 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		}
 		return bReturn;
 	}
+	
+	
+	public boolean isApplicationKeyDefault(String sValue) {
+		boolean bReturn = false;{
+			main:{
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getApplicationKeyDefault())) {
+					bReturn = true;
+				}
+			}
+		}
+		return bReturn;
+	}
+	
+	public boolean isSystemNumberDefault(String sValue) {
+		boolean bReturn = false;{
+			main:{
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getSystemNumberDefault())) {
+					bReturn = true;
+				}
+			}
+		}
+		return bReturn;
+	}
+	
+	public boolean isConfigDirectoryNameDefault(String sValue) {
+		boolean bReturn = false;{
+			main:{
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getConfigDirectoryNameDefault())) {
+					bReturn = true;
+				}
+			}
+		}
+		return bReturn;
+	}
+	
+	public boolean isConfigFileNameDefault(String sValue) {
+		boolean bReturn = false;{
+			main:{
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getConfigFileNameDefault())) {
+					bReturn = true;
+				}
+			}
+		}
+		return bReturn;
+	}
+	
+	public boolean isConfigFlagzJsonDefault(String sValue) {
+		boolean bReturn = false;{
+			main:{
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getConfigFlagzJsonDefault())) {
+					bReturn = true;
+				}
+			}
+		}
+		return bReturn;
+	}
+	
+	public boolean isPatternStringDefault(String sValue) {
+		boolean bReturn = false;{
+			main:{
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getPatternStringDefault())) {
+					bReturn = true;
+				}
+			}
+		}
+		return bReturn;
+	}
+	
 
 	//### Interface ###########
 	public String getConfigFlagzJsonDefault() {

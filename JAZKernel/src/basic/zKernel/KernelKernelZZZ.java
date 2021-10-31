@@ -111,7 +111,7 @@ public KernelKernelZZZ() throws ExceptionZZZ{
 	
 	//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
 	IKernelConfigZZZ objConfig = this.getConfigObject();
-	KernelNew_(objConfig, null, null, null, null, null, null);
+	KernelNew_(objConfig, null, null, null, null, null, null, (String[])null);
 }
 
 public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
@@ -119,8 +119,18 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	
 	//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.   ConfigZZZ objConfig = new ConfigZZZ();
 	IKernelConfigZZZ objConfig = this.getConfigObject();
-	KernelNew_(objConfig, null, null, null, null, null, null);
+	KernelNew_(objConfig, null, null, null, null, null, null, (String[]) null);
 }
+
+public KernelKernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
+	super(saFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+	
+	//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.   ConfigZZZ objConfig = new ConfigZZZ();
+	IKernelConfigZZZ objConfig = this.getConfigObject();	
+	KernelNew_(objConfig, null, null, null, null, null, null, saArg);
+}
+
+
 	/**Merke: Damit einzelne Projekte ihr eigenes ConfigZZZ - Objekt verwenden k�nnen, wird in diesem Konstruktor ein Interface eingebaut.
 	* lindhauer; 14.08.2007 07:19:55
 	 * @param objConfig
@@ -129,11 +139,12 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 */
 	public KernelKernelZZZ(IKernelConfigZZZ objConfig, String sFlagControl) throws ExceptionZZZ{
 		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
-		KernelNew_(objConfig, null, null, null, null, null, null);
+		KernelNew_(objConfig, null, null, null, null, null, null, (String[]) null);
 	}
+
 	public KernelKernelZZZ(IKernelConfigZZZ objConfig, String[] saFlagControl) throws ExceptionZZZ{
 		super(saFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
-		KernelNew_(objConfig, null, null, null, null, null, null);
+		KernelNew_(objConfig, null, null, null, null, null, null, (String[]) null);
 	}
 	
 	/**
@@ -156,18 +167,31 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 */
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
 		super(saFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
-		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null);
+		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, (String[]) null);
+	}
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saArg, String[] saFlagControl ) throws ExceptionZZZ{
+		super(saFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, saArg);
 	}
 	
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String sFlagControl) throws ExceptionZZZ{
 		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
-		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null);
+		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, (String[]) null);
+	}
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saArg, String sFlagControl) throws ExceptionZZZ{
+		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, null, saArg);
 	}
 	
 	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, IKernelContextZZZ objContext, String sFlagControl) throws ExceptionZZZ{
 		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
-		KernelNew_(null, objContext, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName,null);
+		KernelNew_(null, objContext, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName,null, (String[]) null);
 	}
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, IKernelContextZZZ objContext, String[] saArg, String sFlagControl) throws ExceptionZZZ{
+		super(sFlagControl);//20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		KernelNew_(null, objContext, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName,null, saArg);
+	}
+	
 	
 	/** Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
@@ -185,8 +209,14 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		
 		//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
 		IKernelConfigZZZ objConfig = this.getConfigObject();
-		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null);
+		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, (String[]) null);
 	}
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String[] saArg, String sFlagControl) throws ExceptionZZZ{
+		super(sFlagControl); //20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		IKernelConfigZZZ objConfig = this.getConfigObject();
+		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saArg);
+	}
+	
 	
 	/**  Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
@@ -204,7 +234,12 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		
 		//20181005: Die Default - Konfiguration nun auch in den verschiedenen Projekten konfigurierbar machen.  ConfigZZZ objConfig = new ConfigZZZ();
 		IKernelConfigZZZ objConfig = this.getConfigObject();				
-		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null);
+		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, (String[]) null);
+	}
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, String[]saArg, String[] saFlagControl) throws ExceptionZZZ{
+		super(saFlagControl); //20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		IKernelConfigZZZ objConfig = this.getConfigObject();				
+		KernelNew_(objConfig,null, sApplicationKey, sSystemNumber, null, null, null, saArg);
 	}
 	
 	
@@ -235,9 +270,32 @@ public KernelKernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 		LogZZZ objLog = objKernelOld.getLogObject();
 		IKernelConfigZZZ objConfig = objKernelOld.getConfigObject();
 		
-		KernelNew_(objConfig, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog);
+		KernelNew_(objConfig, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog, (String[]) null);
 		}//END main
 	}
+	public KernelKernelZZZ(String sApplicationKey, String sSystemNumber, IKernelZZZ objKernelOld, String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
+		super(saFlagControl); //20210402: Direkte Flag-Verarbeitug wird nun in ObjectZZZ gemacht
+		main:{
+			check:{
+				if(objKernelOld==null){
+					  ExceptionZZZ ez = new ExceptionZZZ("Missing kernel-object parameter.", iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+					  //doesn�t work. Only works when > JDK 1.4
+					  //Exception e = new Exception();
+					  //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");
+					  throw ez;		 
+				}
+			}//END check:
+	
+		File objFile = objKernelOld.getFileConfigKernel();
+		String sFileConfigPath = objFile.getParent();
+		String sFileConfigName = objFile.getName();
+		LogZZZ objLog = objKernelOld.getLogObject();
+		IKernelConfigZZZ objConfig = objKernelOld.getConfigObject();
+		
+		KernelNew_(objConfig, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog, saArg);
+		}//END main
+	}
+	
 	
 	// DESTRUCTOR
 	protected void finalize(){		
@@ -4055,14 +4113,11 @@ MeinTestParameter=blablaErgebnis
 		this.objLog = objLog;
 	}
 	
-	private boolean KernelNew_(IKernelConfigZZZ objConfig, IKernelContextZZZ objContext, String sApplicationKeyIn,String sSystemNumberIn, String sDirectoryConfigIn, String sFileConfigIn, LogZZZ objLogIn) throws ExceptionZZZ{
+	private boolean KernelNew_(IKernelConfigZZZ objConfig, IKernelContextZZZ objContext, String sApplicationKeyIn,String sSystemNumberIn, String sDirectoryConfigIn, String sFileConfigIn, LogZZZ objLogIn, String[]saArg) throws ExceptionZZZ{
 		boolean bReturn = false;		
 		main:{			
 				String stemp=null; boolean btemp=false; String sLog = null;
 				this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": Initializing KernelObject");
-				
-				//ggf. Config Object setzen
-				this.setConfigObject(objConfig);
 				
 				//20191204: Umstrukturierung:
 				//Zusätzlich zu übergebenen Flags müssen auch die Flags vom Config-Objekt übernommen werden, wenn sie vorhanden sind als Flags im KernelObjekt.
@@ -4097,11 +4152,19 @@ MeinTestParameter=blablaErgebnis
 				} 
 				
 				//++++++++++++++++++++++++++++++
-				//Nun geht es darum ggfs. die Flags zu übernehmen, die in iregendeiner Klasse gesetzt werden sollen.
+				//Nun geht es darum ggfs. die Flags zu übernehmen, die in irgeendeiner Klasse gesetzt werden sollen.
 				//D.h. ggfs. stehen sie in dieser Klasse garnicht zur Verfügung
-				//Falls sie aber übergeben wurden, dann als Kommandozeilen-Argument. D.h. diese Flag - Angaben sollen alles übersteuern. Darum auch nach den "normalen" Flags verarbeiten.		
-				objConfig = this.getConfigObject();
+				//Falls sie aber übergeben wurden, dann als Kommandozeilen-Argument. D.h. diese Flag - Angaben sollen alles übersteuern. Darum auch nach den "normalen" Flags verarbeiten.
+				//Merke: Auch wenn nichts übergeben wurde, ist das Kommandozeilen-Argument ein Array mit 1 Leerwert zu sein.
+				if(objConfig==null && !StringArrayZZZ.isEmptyTrimmed(saArg)) {
+					//20211024 Wenn kein Config-Objekt übergeben wurde, dann erzeuge eines neu, mit ggfs. übergebenen Argumenten der Commando-Startzeile
+					ConfigZZZ objConfigNew = new ConfigZZZ(saArg);
+					objConfig = objConfigNew;			
+				}
+								
 				if(objConfig!=null) {
+					this.setConfigObject(objConfig);
+					
 					//Übernimm die direkt als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
 					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();	
 					if(hmFlagZpassed!=null) {
@@ -4122,13 +4185,13 @@ MeinTestParameter=blablaErgebnis
 							 }
 						}
 					}
-				}																																																					
-				
+				}
+					
+								
 				//+++++++++++++++++++++++++++++++
 				//ggfs Context Object setzen
 				this.setContextUsed(objContext);
 				  
-				TODOGOON; //20211024 Wenn kein Config-Objekt übergeben wurde, dann erzeuge eines neu
 				
 				//++++++++++++++++++++++++++++++++
 				String sDirectoryLog = null;
@@ -4137,99 +4200,111 @@ MeinTestParameter=blablaErgebnis
 				String sSystemNumber = null;
 				String sFileConfig = null;
 				String sDirectoryConfig = null;
-				if(!StringZZZ.isEmpty(sApplicationKeyIn)){
-					sApplicationKey = sApplicationKeyIn;
-				}else if(this.getConfigObject()==null){
-					sLog = "ApplicationKey not passed, Config-Object not available";
+												
+				if(objConfig==null) {
+					btemp = StringZZZ.isEmpty(sApplicationKeyIn);
+					if(!btemp) {
+						sApplicationKey = sApplicationKeyIn;
+					}else {
+						sLog = "ApplicationKey not passed, Config-Object not available";
+						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;						
+					}
+				}else {
+					if(objConfig.isOptionObjectLoaded()==false){
+						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
+						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+						sLog = "Config-Object not loaded, using DEFAULTS.";
+						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+						sApplicationKey = this.getConfigObject().getApplicationKeyDefault();
+						if(StringZZZ.isEmpty(sApplicationKey)){
+							sLog = "ApplicationKey DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}
+					}else {
+						sApplicationKey = objConfig.readApplicationKey();
+					}					
+				}
+				if(StringZZZ.isEmpty(sApplicationKey)){
+					sLog = "ApplicationKey not passed and not receivable from Config-Object";
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
-				}else if(this.getConfigObject().isOptionObjectLoaded()==false){
-					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
-					//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
-					sLog = "Config-Object not loaded, using DEFAULTS.";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					sApplicationKey = this.getConfigObject().getApplicationKeyDefault();
-					if(StringZZZ.isEmpty(sApplicationKey)){
-						sLog = "ApplicationKey DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
-				}else{
-					sApplicationKey = this.getConfigObject().readApplicationKey();
-					if(StringZZZ.isEmpty(sApplicationKey)){
-						sLog = "ApplicationKey not receivable from Config-Object";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
 				}
 				this.setApplicationKey(sApplicationKey);
 				
-				btemp = StringZZZ.isEmpty(sSystemNumberIn);
-				if(!btemp){
-					sSystemNumber = sSystemNumberIn;
-				}else if(this.getConfigObject()==null){
-					sLog = "SystemNumber not passed, Config-Object not available";
+				//++++++++++++++++++++++++++++++++++++++++++++++++++
+				if(objConfig==null) {
+					btemp = StringZZZ.isEmpty(sSystemNumberIn);
+					if(!btemp) {
+						sSystemNumber = sSystemNumberIn;
+					}else {
+						sLog = "SystemNumber not passed, Config-Object not available";
+						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;						
+					}
+				}else {
+					if(objConfig.isOptionObjectLoaded()==false){
+						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
+						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+						sLog = "Config-Object not loaded, using DEFAULTS.";
+						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+						sSystemNumber = this.getConfigObject().getSystemNumberDefault();
+						if(StringZZZ.isEmpty(sSystemNumber)){
+							sLog = "sSystemNumber DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}
+					}else {
+						sSystemNumber = objConfig.readSystemNumber();
+					}					
+				}
+				if(StringZZZ.isEmpty(sSystemNumber)){
+					sLog = "SystemNumber not passed and not receivable from Config-Object";
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
-				}else if(this.getConfigObject().isOptionObjectLoaded()==false){
-					sLog = "SystemNumber unavailable, Config-Object not loaded, USING DEFAULTS";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					
-					//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
-					//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
-					sSystemNumber = this.getConfigObject().getSystemNumberDefault();
-					if(StringZZZ.isEmpty(sApplicationKey)){
-						sLog = "SystemNumber DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
-				}else{
-					sSystemNumber = this.getConfigObject().readSystemNumber();
-					if(StringZZZ.isEmpty(sSystemNumber)){
-						sLog = "SystemNumber not receivable from Config-Object";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
 				}
 				this.setSystemNumber(sSystemNumber);
 				
-				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++
 				//get the Application-Configuration-File
 				//A) Directory
 				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
-				if(!StringZZZ.isEmpty(sDirectoryConfigIn)){
-					sDirectoryConfig = sDirectoryConfigIn;	
-				}else if(this.getConfigObject()==null){
-					sLog = "Configuration Directory not passed, Config-Object not available";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);	
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}else if(this.getConfigObject()!=null){
-					if(this.getConfigObject().isOptionObjectLoaded()){
-						sDirectoryConfig = this.getConfigObject().readConfigDirectoryName();
-						sLog = "Directory from Configuration-Object passed: " + sDirectoryConfig;
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					}else{
-						sLog = "Directory for configuration unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						
+				if(objConfig==null) {
+					btemp = StringZZZ.isEmpty(sDirectoryConfigIn);
+					if(!btemp) {
+						sDirectoryConfig = sDirectoryConfigIn;
+					}else {
+						//Das Verzeichnis braucht nicht übergeben worden zu sein... ggfs. wird ROOT genommen.
+//						sLog = "DirectoryConfig not passed, Config-Object not available";
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;						
+					}
+				}else {
+					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+						sLog = "Config-Object not loaded, using DEFAULTS.";
+						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 						sDirectoryConfig = this.getConfigObject().getConfigDirectoryNameDefault();
-						
-						//20191204: NULL Werte sind als Verzeichnis erlaubt. <z:Null/> würde in der Konfiguration als NULL-Wert übersetzt.
-						if(sDirectoryConfig==null){							
-							sLog = "Directory is null in Configuration-Object passed for first load. Using Project - directory as default later.";
-							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);												
+						if(StringZZZ.isEmpty(sDirectoryConfig)){
+							sLog = "DirectoryConfig DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
+							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
 						}
-					}										
-				}else{
+					}else {
+						sDirectoryConfig = objConfig.readConfigDirectoryName();
+					}					
+				}
+				if(StringZZZ.isEmpty(sDirectoryConfig)){
 					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";
 					System.out.println(sLog);					
 					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
@@ -4246,39 +4321,34 @@ MeinTestParameter=blablaErgebnis
 				}
 				this.setFileConfigKernelDirectory(sDirectoryConfig);
 				
-				
-				
+				//########
 				//B) FileName
-				if(! StringZZZ.isEmpty(sFileConfigIn)){
-					sFileConfig = sFileConfigIn;
-				}else if(this.getConfigObject()==null){
-					sLog = "Configuration Filename not passed, Config-Object not available";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);	
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}else if(this.getConfigObject()!=null){
-					if(this.getConfigObject().isOptionObjectLoaded()){
-						sFileConfig=this.getConfigObject().readConfigFileName();
-						if(sFileConfig==null){
-							sLog = "Filename for configuration DEFAULT not receivable from Config-Object, although Config-Object was loaded.";
-							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-						}	
-					}else{
-						sLog = "ConfigurationFilename unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
+				if(objConfig==null) {
+					btemp = StringZZZ.isEmpty(sFileConfigIn);
+					if(!btemp) {
+						sFileConfig = sFileConfigIn;
+					}else {
+						sLog = "FileConfig not passed, Config-Object not available";
 						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					
+						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;						
+					}
+				}else {
+					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+						sLog = "Config-Object not loaded, using DEFAULTS.";
+						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 						sFileConfig = this.getConfigObject().getConfigFileNameDefault();
-						if(sFileConfig==null){
-							sLog = "Filename for configuration DEFAULT not receivable from Config-Object, Config-Object not loaded.";
+						if(StringZZZ.isEmpty(sFileConfig)){
+							sLog = "FileConfig DEFAULT not receivable from Config-Object, Config-Object  not loaded.";
 							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
-						}						
-					}
+						}
+					}else {
+						sFileConfig = objConfig.readConfigFileName();
+					}					
 				}
 				if(StringZZZ.isEmpty(sFileConfig)){
 					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";
@@ -4292,6 +4362,101 @@ MeinTestParameter=blablaErgebnis
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationfile: '" + sFileConfig + "'");
 						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
 				}
+								
+				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				//get the Application-Configuration-File
+//				//A) Directory
+//				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
+//				if(!StringZZZ.isEmpty(sDirectoryConfigIn)){
+//					sDirectoryConfig = sDirectoryConfigIn;	
+//				}else if(this.getConfigObject()==null){
+//					sLog = "Configuration Directory not passed, Config-Object not available";
+//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);	
+//					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}else if(this.getConfigObject()!=null){
+//					if(this.getConfigObject().isOptionObjectLoaded()){
+//						sDirectoryConfig = this.getConfigObject().readConfigDirectoryName();
+//						sLog = "Directory from Configuration-Object passed: " + sDirectoryConfig;
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//					}else{
+//						sLog = "Directory for configuration unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//						
+//						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
+//						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+//						sDirectoryConfig = this.getConfigObject().getConfigDirectoryNameDefault();
+//						
+//						//20191204: NULL Werte sind als Verzeichnis erlaubt. <z:Null/> würde in der Konfiguration als NULL-Wert übersetzt.
+//						if(sDirectoryConfig==null){							
+//							sLog = "Directory is null in Configuration-Object passed for first load. Using Project - directory as default later.";
+//							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);												
+//						}
+//					}										
+//				}else{
+//					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";
+//					System.out.println(sLog);					
+//					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
+//				}
+//				
+//				//Prüfe nun auf Vorhandensein und korregiere ggfs. auf das aktuelle Verzeichnis
+//				File objDirectoryProof = FileEasyZZZ.searchDirectory(sDirectoryConfig, true);
+//				if(objDirectoryProof==null){					
+//					sLog = "Directory does not exists (='"+sDirectoryConfig+"'). Using CURRENT - directory.";
+//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//					sDirectoryConfig = FileEasyZZZ.sDIRECTORY_CURRENT;//Falls das Verzeichnis nicht existiert, verwende das aktuelle Verzeichnis.
+//				}else{
+//					sDirectoryConfig=objDirectoryProof.getAbsolutePath();						
+//				}
+//				this.setFileConfigKernelDirectory(sDirectoryConfig);
+//				
+				
+				
+//				//B) FileName
+//				if(! StringZZZ.isEmpty(sFileConfigIn)){
+//					sFileConfig = sFileConfigIn;
+//				}else if(this.getConfigObject()==null){
+//					sLog = "Configuration Filename not passed, Config-Object not available";
+//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);	
+//					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}else if(this.getConfigObject()!=null){
+//					if(this.getConfigObject().isOptionObjectLoaded()){
+//						sFileConfig=this.getConfigObject().readConfigFileName();
+//						if(sFileConfig==null){
+//							sLog = "Filename for configuration DEFAULT not receivable from Config-Object, although Config-Object was loaded.";
+//							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//							throw ez;
+//						}	
+//					}else{
+//						sLog = "ConfigurationFilename unavailable, Config-Object not (yet) loaded, USING DEFAULTS";
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//					
+//						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
+//						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
+//						sFileConfig = this.getConfigObject().getConfigFileNameDefault();
+//						if(sFileConfig==null){
+//							sLog = "Filename for configuration DEFAULT not receivable from Config-Object, Config-Object not loaded.";
+//							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//							throw ez;
+//						}						
+//					}
+//				}
+//				if(StringZZZ.isEmpty(sFileConfig)){
+//					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";
+//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
+//				}
+//				this.setFileConfigKernelName(sFileConfig);
+//				if(this.getFlag("DEBUG")){
+//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - SystemNr: '" + sSystemNumber + "'");
+//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationfile: '" + sFileConfig + "'");
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
+//				}
 				
 				//#############################################################
 				//read the ini-content: 

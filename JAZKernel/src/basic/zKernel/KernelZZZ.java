@@ -53,6 +53,10 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	super(saFlagControl);
 }
 
+public KernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
+	super(saArg, saFlagControl);
+}
+
 	/**Merke: Damit einzelne Projekte ihr eigenes ConfigZZZ - Objekt verwenden k�nnen, wird in diesem Konstruktor ein Interface eingebaut.
 	* lindhauer; 14.08.2007 07:19:55
 	 * @param objConfig
@@ -70,13 +74,22 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saFlagControl ) throws ExceptionZZZ{
 		super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, saFlagControl);
 	}
+	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saArg, String[] saFlagControl ) throws ExceptionZZZ{
+		super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, saArg, saFlagControl);
+	}
 	
 	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String sFlagControl) throws ExceptionZZZ{
 		super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, sFlagControl);
+	}	
+	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, String[] saArg, String sFlagControl) throws ExceptionZZZ{
+		super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, saArg, sFlagControl);
 	}
 	
 	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, IKernelContextZZZ objContext, String sFlagControl) throws ExceptionZZZ{
 		super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objContext, sFlagControl);
+	}
+	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFileConfigPath, String sFileConfigName, IKernelContextZZZ objContext, String[] saArg, String sFlagControl) throws ExceptionZZZ{
+		super(sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objContext, saArg, sFlagControl);
 	}
 	
 	/** Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:
@@ -92,6 +105,9 @@ public KernelZZZ(String[] saFlagControl) throws ExceptionZZZ{
 	 */
 	public KernelZZZ(String sApplicationKey, String sSystemNumber, String sFlagControl) throws ExceptionZZZ{
 		super(sApplicationKey, sSystemNumber, sFlagControl);
+	}
+	public KernelZZZ(String sApplicationKey, String sSystemNumber, String[] saArg, String sFlagControl) throws ExceptionZZZ{
+		super(sApplicationKey, sSystemNumber, saArg, sFlagControl);
 	}
 	
 	/**  Verwende diesen Konstruktor, wenn die Defaultangaben f�r das Verzeichnis und f�r den ini-Dateinamen verwendet werden sollen:

@@ -650,7 +650,9 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			bUseClasspathSource=true;						
 		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 			bUseProjectBaseForTest=true;			
-		}else{
+		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
+			bUseClasspathSource=true;
+		}else {
 			if(FileEasyZZZ.isPathAbsolut(sDirectoryIn)) {
 				objReturn = searchFileObjectByClassloader_(sDirectoryIn, false);
 				break main;
