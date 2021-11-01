@@ -571,9 +571,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				//this.setValueRaw(sFilePath);
 			}else{
 				//this.setValueRaw(null);
-			}						
-			//if(StringZZZ.isEmpty(sFilePathUsed)) sFilePathUsed = "."; //Nun kann die Datei auch im gleichen Verzeichnis liegen
-			
+			}									
+			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
+			sFilePathUsed = objReturn2.getAbsolutePath();
+						
 			//Proof the existance of the file
 			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
 			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
@@ -4211,7 +4212,7 @@ MeinTestParameter=blablaErgebnis
 						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;						
 					}
-				}else {
+				}else if(objConfig!=null && StringZZZ.isEmpty(sApplicationKeyIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4226,7 +4227,9 @@ MeinTestParameter=blablaErgebnis
 						}
 					}else {
 						sApplicationKey = objConfig.readApplicationKey();
-					}					
+					}	
+				}else if(objConfig!=null && !StringZZZ.isEmpty(sApplicationKeyIn)){
+					sApplicationKey = sApplicationKeyIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
 				}
 				if(StringZZZ.isEmpty(sApplicationKey)){
 					sLog = "ApplicationKey not passed and not receivable from Config-Object";
@@ -4247,7 +4250,7 @@ MeinTestParameter=blablaErgebnis
 						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;						
 					}
-				}else {
+				}else if(objConfig!=null && StringZZZ.isEmpty(sSystemNumberIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4263,6 +4266,8 @@ MeinTestParameter=blablaErgebnis
 					}else {
 						sSystemNumber = objConfig.readSystemNumber();
 					}					
+				}else if(objConfig!=null && !StringZZZ.isEmpty(sSystemNumberIn)){
+					sSystemNumber = sSystemNumberIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
 				}
 				if(StringZZZ.isEmpty(sSystemNumber)){
 					sLog = "SystemNumber not passed and not receivable from Config-Object";
@@ -4287,7 +4292,7 @@ MeinTestParameter=blablaErgebnis
 //						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 //						throw ez;						
 					}
-				}else {
+				}else if(objConfig!=null && StringZZZ.isEmpty(sDirectoryConfigIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4303,10 +4308,12 @@ MeinTestParameter=blablaErgebnis
 					}else {
 						sDirectoryConfig = objConfig.readConfigDirectoryName();
 					}					
+				}else if(objConfig!=null && !StringZZZ.isEmpty(sDirectoryConfigIn)){
+					sDirectoryConfig = sDirectoryConfigIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
 				}
 				if(StringZZZ.isEmpty(sDirectoryConfig)){
-					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";
-					System.out.println(sLog);					
+					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";		
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 					sDirectoryConfig = FileEasyZZZ.getFileRootPath();
 				}
 				
@@ -4333,7 +4340,7 @@ MeinTestParameter=blablaErgebnis
 						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;						
 					}
-				}else {
+				}else if(objConfig!=null && StringZZZ.isEmpty(sFileConfigIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4349,6 +4356,8 @@ MeinTestParameter=blablaErgebnis
 					}else {
 						sFileConfig = objConfig.readConfigFileName();
 					}					
+				}else if(objConfig!=null && !StringZZZ.isEmpty(sFileConfigIn)){
+					sFileConfig = sFileConfigIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
 				}
 				if(StringZZZ.isEmpty(sFileConfig)){
 					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";
@@ -4360,7 +4369,7 @@ MeinTestParameter=blablaErgebnis
 				if(this.getFlag("DEBUG")){
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - SystemNr: '" + sSystemNumber + "'");
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationfile: '" + sFileConfig + "'");
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
 				}
 								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

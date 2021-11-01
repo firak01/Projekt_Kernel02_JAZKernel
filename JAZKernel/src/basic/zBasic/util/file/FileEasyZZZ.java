@@ -2277,10 +2277,10 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		    
 			//Problem: WAS MIT NULL!!!!
 			//Lösungsidee 3: Merke: "." holt doch tatsächlich den Ordner des Projekts!!!
-			if(sFile==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": NULL in '.' umgeändert.";
+			if(sFile==null) {//Merke: NULL führt in der searchFileObjectByClassloader_ Methode zu einer Exception.				
+				sFile=FileEasyZZZ.getFileRootPath();
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": NULL in '" + sFile +"' umgeändert.";
 			    System.out.println(sLog);
-				sFile=".";
 			}
 			objReturn = searchFileObjectByClassloader_(sFile, true);
 								
