@@ -3744,6 +3744,7 @@ MeinTestParameter=blablaErgebnis
 				FileIniZZZ objFileIni = new FileIniZZZ( this, objFile, hmFlag);
 					
 				String[] saProperty = null; String sSearch = null; int iIndex; String sSystemKey = null;
+				String[] saPropertyByApplication = null;String sApplicationKey = null;
 				File objFileTemp=null; File[] objaFileTemp=null; String sDir=null; ArrayList listaConfigured=null; ArrayList listaExisting = null; ArrayList listaFile = null;  
 					switch(iCase){
 					case 1:
@@ -3753,6 +3754,10 @@ MeinTestParameter=blablaErgebnis
 						saProperty = objFileIni.getPropertyAll(sSystemKey);
 						if (saProperty==null) break main;
 						
+						//...anreichern um die Werte aus dem ApplicationKey
+						sApplicationKey = this.getApplicationKey();
+						saPropertyByApplication = objFileIni.getPropertyAll(sApplicationKey);
+						
 						sSearch = new String("kernelconfigfile");
 						iIndex = sSearch.length();	
 						
@@ -3760,10 +3765,23 @@ MeinTestParameter=blablaErgebnis
 						listaConfigured = new ArrayList();
 						for(int icount=0; icount < saProperty.length; icount++){
 							String stemp = saProperty[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){						
-								listaConfigured.add(saProperty[icount].substring(iIndex));
+							if(stemp.startsWith(sSearch)){		
+								String sValueTemp = saProperty[icount].substring(iIndex);
+								listaConfigured.add(sValueTemp);
 							}
 						}
+						
+						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
+						for(int icount=0; icount < saPropertyByApplication.length; icount++){
+							String stemp = saPropertyByApplication[icount].toLowerCase();
+							if(stemp.startsWith(sSearch)){
+								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+								if(!listaConfigured.contains(sValueTemp)){
+									listaConfigured.add(sValueTemp);
+								}								
+							}
+						}
+						
 						
 						//Aus der liste nun diejenigen wieder entfernen, die nicht existieren
 						//!!! Von hinten nach vorne die liste durchsehen, ansonsten werden die Indizes durcheinandergeworfen: for(int icount=0; icount < listaConfigured.size(); icount++){
@@ -3774,7 +3792,7 @@ MeinTestParameter=blablaErgebnis
 							}
 						}
 						
-						//Alle ggf. doppelt vorkommenden Eintr�ge entfernen
+						//Alle ggf. doppelt vorkommenden Eintraege entfernen
 						listaReturn = ArrayListZZZ.unique(listaConfigured);
 						break;
 					case 2:
@@ -3786,6 +3804,11 @@ MeinTestParameter=blablaErgebnis
 						sSystemKey = this.getSystemKey();
 						saProperty = objFileIni.getPropertyAll(sSystemKey);
 						
+						//...anreichern um die Werte aus dem ApplicationKey
+						sApplicationKey = this.getApplicationKey();
+						saPropertyByApplication = objFileIni.getPropertyAll(sApplicationKey);
+						
+						
 						sSearch = new String("kernelconfigfile");
 						iIndex = sSearch.length();	
 						
@@ -3795,6 +3818,17 @@ MeinTestParameter=blablaErgebnis
 							String stemp = saProperty[icount].toLowerCase();
 							if(stemp.startsWith(sSearch)){						
 								listaConfigured.add(saProperty[icount].substring(iIndex));
+							}
+						}
+						
+						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
+						for(int icount=0; icount < saPropertyByApplication.length; icount++){
+							String stemp = saPropertyByApplication[icount].toLowerCase();
+							if(stemp.startsWith(sSearch)){
+								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+								if(!listaConfigured.contains(sValueTemp)){
+									listaConfigured.add(sValueTemp);
+								}								
 							}
 						}
 												
@@ -3843,6 +3877,11 @@ MeinTestParameter=blablaErgebnis
 						saProperty = objFileIni.getPropertyAll(sSystemKey);
 						if (saProperty==null) break main;
 						
+						//...anreichern um die Werte aus dem ApplicationKey
+						sApplicationKey = this.getApplicationKey();
+						saPropertyByApplication = objFileIni.getPropertyAll(sApplicationKey);
+						
+						
 						sSearch = new String("kernelconfigfile");
 						 iIndex = sSearch.length();	
 						
@@ -3852,6 +3891,17 @@ MeinTestParameter=blablaErgebnis
 							String stemp = saProperty[icount].toLowerCase();
 							if(stemp.startsWith(sSearch)){						
 								listaConfigured.add(saProperty[icount].substring(iIndex));
+							}
+						}
+						
+						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
+						for(int icount=0; icount < saPropertyByApplication.length; icount++){
+							String stemp = saPropertyByApplication[icount].toLowerCase();
+							if(stemp.startsWith(sSearch)){
+								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+								if(!listaConfigured.contains(sValueTemp)){
+									listaConfigured.add(sValueTemp);
+								}								
 							}
 						}
 						
@@ -3880,11 +3930,16 @@ MeinTestParameter=blablaErgebnis
 						objaFileTemp = this.getFileConfigAllByDir(sDir);
 						if(objaFileTemp==null) break main;
 						if(objaFileTemp.length==0)break main;
-						
+												
 						// Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. ! DIE PROPERTIES, nicht die Values !!!
 						sSystemKey = this.getSystemKey();
 						saProperty = objFileIni.getPropertyAll(sSystemKey);						
 							
+						//...anreichern um die Werte aus dem ApplicationKey
+						sApplicationKey = this.getApplicationKey();
+						saPropertyByApplication = objFileIni.getPropertyAll(sApplicationKey);
+						
+						
 						/* falsch, das funktioniert nur mit den Values
 						listaConfigured = new ArrayList();
 						if(saProperty!=null){
@@ -3910,6 +3965,16 @@ MeinTestParameter=blablaErgebnis
 							}
 						}
 						
+						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
+						for(int icount=0; icount < saPropertyByApplication.length; icount++){
+							String stemp = saPropertyByApplication[icount].toLowerCase();
+							if(stemp.startsWith(sSearch)){
+								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+								if(!listaConfigured.contains(sValueTemp)){
+									listaConfigured.add(sValueTemp);
+								}								
+							}
+						}
 						
 						
 						//###########
@@ -4159,34 +4224,32 @@ MeinTestParameter=blablaErgebnis
 				//Merke: Auch wenn nichts übergeben wurde, ist das Kommandozeilen-Argument ein Array mit 1 Leerwert zu sein.
 				if(objConfig==null && !StringArrayZZZ.isEmptyTrimmed(saArg)) {
 					//20211024 Wenn kein Config-Objekt übergeben wurde, dann erzeuge eines neu, mit ggfs. übergebenen Argumenten der Commando-Startzeile
-					ConfigZZZ objConfigNew = new ConfigZZZ(saArg);
-					objConfig = objConfigNew;			
-				}
-								
-				if(objConfig!=null) {
-					this.setConfigObject(objConfig);
+					ConfigZZZ objConfigNew = new ConfigZZZ(saArg);					
+					objConfig=objConfigNew;
+				}				
+				this.setConfigObject(objConfig);
 					
-					//Übernimm die direkt als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
-					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();	
-					if(hmFlagZpassed!=null) {
-						Set<String> setFlag = hmFlagZpassed.keySet();
-						Iterator<String> itFlag = setFlag.iterator();
-						while(itFlag.hasNext()) {
-							String sKey = itFlag.next();
-							 if(!StringZZZ.isEmpty(sKey)){
-								 Boolean booValue = hmFlagZpassed.get(sKey);
-								 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
-								 if(btemp==false){						 
-									 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
-									 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-	//								  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
-	//								  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-	//								  throw ez;		 
-								  }
-							 }
-						}
+				//Übernimm die direkt als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
+				Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();	
+				if(hmFlagZpassed!=null) {
+					Set<String> setFlag = hmFlagZpassed.keySet();
+					Iterator<String> itFlag = setFlag.iterator();
+					while(itFlag.hasNext()) {
+						String sKey = itFlag.next();
+						 if(!StringZZZ.isEmpty(sKey)){
+							 Boolean booValue = hmFlagZpassed.get(sKey);
+							 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
+							 if(btemp==false){						 
+								 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+								 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+//								  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
+//								  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+//								  throw ez;		 
+							  }
+						 }
 					}
 				}
+				
 					
 								
 				//+++++++++++++++++++++++++++++++
@@ -4202,17 +4265,19 @@ MeinTestParameter=blablaErgebnis
 				String sFileConfig = null;
 				String sDirectoryConfig = null;
 												
-				if(objConfig==null) {
-					btemp = StringZZZ.isEmpty(sApplicationKeyIn);
-					if(!btemp) {
-						sApplicationKey = sApplicationKeyIn;
-					}else {
-						sLog = "ApplicationKey not passed, Config-Object not available";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;						
-					}
-				}else if(objConfig!=null && StringZZZ.isEmpty(sApplicationKeyIn)){
+//				if(objConfig==null) {
+//					btemp = StringZZZ.isEmpty(sApplicationKeyIn);
+//					if(!btemp) {
+//						sApplicationKey = sApplicationKeyIn;
+//					}else {
+//						sLog = "ApplicationKey not passed, Config-Object not available";
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;						
+//					}
+//				}else 
+//				if(objConfig!=null && StringZZZ.isEmpty(sApplicationKeyIn)){
+				if(StringZZZ.isEmpty(sApplicationKeyIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4228,8 +4293,14 @@ MeinTestParameter=blablaErgebnis
 					}else {
 						sApplicationKey = objConfig.readApplicationKey();
 					}	
-				}else if(objConfig!=null && !StringZZZ.isEmpty(sApplicationKeyIn)){
-					sApplicationKey = sApplicationKeyIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+				//}else if(objConfig!=null && !StringZZZ.isEmpty(sApplicationKeyIn)){
+				}else if(!StringZZZ.isEmpty(sApplicationKeyIn)){
+					String sApplicationKeyConfig = objConfig.readApplicationKey();
+					if(objConfig.isApplicationKeyDefault(sApplicationKeyConfig)) {
+						sApplicationKey = sApplicationKeyIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+					}else {
+						sApplicationKey = sApplicationKeyConfig;
+					}
 				}
 				if(StringZZZ.isEmpty(sApplicationKey)){
 					sLog = "ApplicationKey not passed and not receivable from Config-Object";
@@ -4240,17 +4311,18 @@ MeinTestParameter=blablaErgebnis
 				this.setApplicationKey(sApplicationKey);
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++
-				if(objConfig==null) {
-					btemp = StringZZZ.isEmpty(sSystemNumberIn);
-					if(!btemp) {
-						sSystemNumber = sSystemNumberIn;
-					}else {
-						sLog = "SystemNumber not passed, Config-Object not available";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;						
-					}
-				}else if(objConfig!=null && StringZZZ.isEmpty(sSystemNumberIn)){
+//				if(objConfig==null) {
+//					btemp = StringZZZ.isEmpty(sSystemNumberIn);
+//					if(!btemp) {
+//						sSystemNumber = sSystemNumberIn;
+//					}else {
+//						sLog = "SystemNumber not passed, Config-Object not available";
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;						
+//					}
+//				}else if(objConfig!=null && StringZZZ.isEmpty(sSystemNumberIn)){
+				if(StringZZZ.isEmpty(sSystemNumberIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4266,8 +4338,14 @@ MeinTestParameter=blablaErgebnis
 					}else {
 						sSystemNumber = objConfig.readSystemNumber();
 					}					
-				}else if(objConfig!=null && !StringZZZ.isEmpty(sSystemNumberIn)){
-					sSystemNumber = sSystemNumberIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+				//}else if(objConfig!=null && !StringZZZ.isEmpty(sSystemNumberIn)){
+				}else if(!StringZZZ.isEmpty(sSystemNumberIn)){
+					String sSystemNumberConfig = objConfig.readSystemNumber();
+					if(objConfig.isSystemNumberDefault(sSystemNumberConfig)) {
+						sSystemNumber = sSystemNumberIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+					}else {
+						sSystemNumber = sSystemNumberConfig;
+					}					
 				}
 				if(StringZZZ.isEmpty(sSystemNumber)){
 					sLog = "SystemNumber not passed and not receivable from Config-Object";
@@ -4281,18 +4359,19 @@ MeinTestParameter=blablaErgebnis
 				//get the Application-Configuration-File
 				//A) Directory
 				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
-				if(objConfig==null) {
-					btemp = StringZZZ.isEmpty(sDirectoryConfigIn);
-					if(!btemp) {
-						sDirectoryConfig = sDirectoryConfigIn;
-					}else {
-						//Das Verzeichnis braucht nicht übergeben worden zu sein... ggfs. wird ROOT genommen.
-//						sLog = "DirectoryConfig not passed, Config-Object not available";
-//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-//						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//						throw ez;						
-					}
-				}else if(objConfig!=null && StringZZZ.isEmpty(sDirectoryConfigIn)){
+//				if(objConfig==null) {
+//					btemp = StringZZZ.isEmpty(sDirectoryConfigIn);
+//					if(!btemp) {
+//						sDirectoryConfig = sDirectoryConfigIn;
+//					}else {
+//						//Das Verzeichnis braucht nicht übergeben worden zu sein... ggfs. wird ROOT genommen.
+////						sLog = "DirectoryConfig not passed, Config-Object not available";
+////						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+////						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+////						throw ez;						
+//					}
+//				}else if(objConfig!=null && StringZZZ.isEmpty(sDirectoryConfigIn)){
+				if(StringZZZ.isEmpty(sDirectoryConfigIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4308,8 +4387,14 @@ MeinTestParameter=blablaErgebnis
 					}else {
 						sDirectoryConfig = objConfig.readConfigDirectoryName();
 					}					
-				}else if(objConfig!=null && !StringZZZ.isEmpty(sDirectoryConfigIn)){
-					sDirectoryConfig = sDirectoryConfigIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+//				}else if(objConfig!=null && !StringZZZ.isEmpty(sDirectoryConfigIn)){
+				}if(!StringZZZ.isEmpty(sDirectoryConfigIn)){
+					String sDirectoryConfigConfig = objConfig.readConfigDirectoryName();
+					if(objConfig.isConfigDirectoryNameDefault(sDirectoryConfigConfig)) {
+						sDirectoryConfig = sDirectoryConfigIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+					}else {
+						sDirectoryConfig = sDirectoryConfigConfig;
+					}
 				}
 				if(StringZZZ.isEmpty(sDirectoryConfig)){
 					sLog = "Directory is empty and no Configuration-Object passed. Using ROOT - directory.";		
@@ -4330,17 +4415,18 @@ MeinTestParameter=blablaErgebnis
 				
 				//########
 				//B) FileName
-				if(objConfig==null) {
-					btemp = StringZZZ.isEmpty(sFileConfigIn);
-					if(!btemp) {
-						sFileConfig = sFileConfigIn;
-					}else {
-						sLog = "FileConfig not passed, Config-Object not available";
-						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;						
-					}
-				}else if(objConfig!=null && StringZZZ.isEmpty(sFileConfigIn)){
+//				if(objConfig==null) {
+//					btemp = StringZZZ.isEmpty(sFileConfigIn);
+//					if(!btemp) {
+//						sFileConfig = sFileConfigIn;
+//					}else {
+//						sLog = "FileConfig not passed, Config-Object not available";
+//						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;						
+//					}
+//				}else if(objConfig!=null && StringZZZ.isEmpty(sFileConfigIn)){
+				if(StringZZZ.isEmpty(sFileConfigIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
 						//      und nicht von irgendwelchen übergebenen Startparametern, sei es per Batch Kommandozeile oder per INI-Datei.
@@ -4356,8 +4442,14 @@ MeinTestParameter=blablaErgebnis
 					}else {
 						sFileConfig = objConfig.readConfigFileName();
 					}					
-				}else if(objConfig!=null && !StringZZZ.isEmpty(sFileConfigIn)){
-					sFileConfig = sFileConfigIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+				//}else if(objConfig!=null && !StringZZZ.isEmpty(sFileConfigIn)){
+				}else if(!StringZZZ.isEmpty(sFileConfigIn)){
+					String sFileConfigConfig = objConfig.readConfigFileName();
+					if(objConfig.isConfigFileNameDefault(sFileConfigConfig)) {
+						sFileConfig = sFileConfigIn;//20211101: Das ist der Fall, wenn der Kernel für einen anderen Application-Key neu erstellt wird.
+					}else {
+						sFileConfigConfig = sFileConfigConfig;
+					}
 				}
 				if(StringZZZ.isEmpty(sFileConfig)){
 					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";

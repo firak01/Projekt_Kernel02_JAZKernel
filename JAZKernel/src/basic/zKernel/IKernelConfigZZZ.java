@@ -43,5 +43,10 @@ public interface IKernelConfigZZZ extends IFlagUserZZZ,IKernelConfigConstantZZZ{
 	public boolean isOptionObjectLoaded();
 	
 	public boolean isApplicationKeyDefault(String sApplicationKey);
+	public boolean isSystemNumberDefault(String sSystemNumber);
+	public boolean isPatternStringDefault(String sValue);
+	public boolean isConfigFlagzJsonDefault(String sValue);
+	public boolean isConfigFileNameDefault(String sValue);
+	public boolean isConfigDirectoryNameDefault(String sValue);
 	
 }

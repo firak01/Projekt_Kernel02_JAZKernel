@@ -301,7 +301,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return bReturn;
 	}
 	
-	
+	@Override
 	public boolean isApplicationKeyDefault(String sValue) {
 		boolean bReturn = false;{
 			main:{
@@ -314,6 +314,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return bReturn;
 	}
 	
+	@Override
 	public boolean isSystemNumberDefault(String sValue) {
 		boolean bReturn = false;{
 			main:{
@@ -326,6 +327,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return bReturn;
 	}
 	
+	@Override
 	public boolean isConfigDirectoryNameDefault(String sValue) {
 		boolean bReturn = false;{
 			main:{
@@ -338,6 +340,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return bReturn;
 	}
 	
+	@Override
 	public boolean isConfigFileNameDefault(String sValue) {
 		boolean bReturn = false;{
 			main:{
@@ -350,6 +353,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return bReturn;
 	}
 	
+	@Override
 	public boolean isConfigFlagzJsonDefault(String sValue) {
 		boolean bReturn = false;{
 			main:{
@@ -362,6 +366,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return bReturn;
 	}
 	
+	@Override
 	public boolean isPatternStringDefault(String sValue) {
 		boolean bReturn = false;{
 			main:{
