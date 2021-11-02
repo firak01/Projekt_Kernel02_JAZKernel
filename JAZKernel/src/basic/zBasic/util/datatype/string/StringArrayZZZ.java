@@ -67,7 +67,7 @@ public class StringArrayZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static String[] append(String[] saString1, String[] saString2, String[] saFlagin) throws ExceptionZZZ{
+	public static String[] append(String[] saString1, String[] saString2, String[] saFlagIn) throws ExceptionZZZ{
 		String[] objReturn = null;
 		main:{
 		if(saString1==null && saString2==null) break main;
@@ -81,39 +81,51 @@ public class StringArrayZZZ implements IConstantZZZ{
 			break main;			
 		}
 		
-		boolean bBehind=false; boolean bSkipNull=false; 
+		boolean bBehind=false; boolean bSkipNull=false; boolean bAddMissing=false;
 		
 		String sFlag = null;
-		if(saFlagin==null){
+		if(saFlagIn==null){
 			bBehind=true;
 		}else{
-			if(StringArrayZZZ.contains(saFlagin, "BEHIND")) {
-				bBehind=true;
-			}else if(StringArrayZZZ.contains(saFlagin, "BEFORE")) {
-				bBehind=false;
-			}
-			
-			if(StringArrayZZZ.contains(saFlagin, "SKIPNULL")) {
-				bSkipNull=true;
-			}else {
-				bSkipNull=false;
-			}
-			
-			String[] saFlagAllowed = {"BEHIND","BEFORE","SKIPNULL"};
-			if(!(StringArrayZZZ.containsOtherThan(saFlagin, saFlagAllowed))){
-				String sError = "Flags='"+StringArrayZZZ.implode(saFlagin,", ")+"' - but expected: '" + StringArrayZZZ.implode(saFlagAllowed,", ")+"'";
+			String[] saFlagAllowed = {"BEHIND","BEFORE","SKIPNULL","ADDMISSING"};
+			if(!(StringArrayZZZ.containsOtherThan(saFlagIn, saFlagAllowed))){
+				String sError = "Flags='"+StringArrayZZZ.implode(saFlagIn,", ")+"' - but expected: '" + StringArrayZZZ.implode(saFlagAllowed,", ")+"'";
 				ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
+			
+			if(StringArrayZZZ.contains(saFlagIn, "ADDMISSING")) {
+				bAddMissing=true;
+			}else {
+				bAddMissing=false;
+			}				
+			if(bAddMissing) {
+				String[] saFlagGoon = StringArrayZZZ.remove(saFlagIn,"ADDMISSING",true);
+				objReturn = StringArrayZZZ.appendMissing(saString1,saString2,saFlagGoon);
+				break main;
+			}
+			
+			//... und weiter geht´s ohne ADDMISSING
+			////Merke: Diese if-Abfragen sind aus Performance-Gründen ausserhalb der Schleife, bzw. appendMissing wird sogar in einer extra Methode erledigt.
+			if(StringArrayZZZ.contains(saFlagIn, "BEHIND")) {
+				bBehind=true;
+			}else if(StringArrayZZZ.contains(saFlagIn, "BEFORE")) {
+				bBehind=false;
+			}		
+			
+			if(StringArrayZZZ.contains(saFlagIn, "SKIPNULL")) {
+				bSkipNull=true;
+			}else {
+				bSkipNull=false;
+			}										
 		}
 				
-		
-		if(bBehind){//Merke: Diese if-Abfragen sind aus Performance-Gründen ausserhalb der Schleife
+		if(bBehind){
 			if(bSkipNull) {
 				ArrayList<String>listas = new ArrayList<String>();
 				int iSize = saString2.length;
 				for(int icount = 0; icount<=iSize-1;icount++){					
-					if(saString2[icount]!=null) {
+					if(saString2[icount]!=null) {												
 						listas.add(saString2[icount]);
 					}
 				}
@@ -164,6 +176,137 @@ public class StringArrayZZZ implements IConstantZZZ{
 				break main;
 			}
 		
+		}//End main:
+		return objReturn;
+	}
+	
+	public static String[] appendMissing(String[] saString1, String[] saString2, String[] saFlagIn) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+		if(saString1==null && saString2==null) break main;
+		if(saString1==null){
+			objReturn = new String[saString2.length];
+			System.arraycopy(saString2,0,objReturn, 0, saString2.length);
+			break main;
+		}else if(saString2 == null){
+			objReturn = new String[saString1.length];
+			System.arraycopy(saString1,0,objReturn, 0, saString1.length);
+			break main;			
+		}
+		
+		boolean bBehind=false; boolean bSkipNull=false; boolean bAddMissing=false;
+		
+		String sFlag = null;
+		if(saFlagIn==null){
+			bBehind=true;
+		}else{
+			String[] saFlagAllowed = {"BEHIND","BEFORE","SKIPNULL"};
+			if(!(StringArrayZZZ.containsOtherThan(saFlagIn, saFlagAllowed))){
+				String sError = "Flags='"+StringArrayZZZ.implode(saFlagIn,", ")+"' - but expected: '" + StringArrayZZZ.implode(saFlagAllowed,", ")+"'";
+				ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(StringArrayZZZ.contains(saFlagIn, "BEHIND")) {
+				bBehind=true;
+			}else if(StringArrayZZZ.contains(saFlagIn, "BEFORE")) {
+				bBehind=false;
+			}
+			
+			if(StringArrayZZZ.contains(saFlagIn, "SKIPNULL")) {
+				bSkipNull=true;
+			}else {
+				bSkipNull=false;
+			}											
+		}
+				
+		if(bBehind){//Merke: Diese if-Abfragen sind aus Performance-Gründen ausserhalb der Schleife, bzw. appendMissing wird sogar in einer extra Methode erledigt.
+			if(bSkipNull) {
+				ArrayList<String>listas = new ArrayList<String>();
+				int iSize = saString2.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString2[icount]!=null) {												
+						if(!listas.contains(saString2[icount])){
+							listas.add(saString2[icount]);
+						}
+					}
+				}
+				
+				iSize = saString1.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString1[icount]!=null) {
+						if(!listas.contains(saString1[icount])){
+							listas.add(saString1[icount]);
+						}
+					}
+				}
+				
+				objReturn = new String[listas.size()];
+				System.arraycopy(listas.toArray(objReturn),0,objReturn, 0, listas.size());				
+			}else {
+				ArrayList<String>listas = new ArrayList<String>();
+				int iSize = saString2.length;
+				for(int icount = 0; icount<=iSize-1;icount++){																					
+					if(!listas.contains(saString2[icount])){
+						listas.add(saString2[icount]);						
+					}
+				}
+				
+				iSize = saString1.length;
+				for(int icount = 0; icount<=iSize-1;icount++){										
+					if(!listas.contains(saString1[icount])){
+						listas.add(saString1[icount]);
+					}					
+				}
+				
+				objReturn = new String[listas.size()];
+				System.arraycopy(listas.toArray(objReturn),0,objReturn, 0, listas.size());							
+			}
+			break main;			
+		}else{
+			if(bSkipNull) {
+				ArrayList<String>listas = new ArrayList<String>();
+				int iSize = saString1.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString1[icount]!=null) {
+						if(!listas.contains(saString1[icount])){
+							listas.add(saString1[icount]);
+						}
+					}
+				}
+												
+				iSize = saString2.length;
+				for(int icount = 0; icount<=iSize-1;icount++){					
+					if(saString2[icount]!=null) {
+						if(!listas.contains(saString2[icount])){
+							listas.add(saString2[icount]);
+						}
+					}
+				}
+				
+				objReturn = new String[listas.size()];
+				System.arraycopy(listas.toArray(objReturn),0,objReturn, 0, listas.size());	
+			}else {
+				ArrayList<String>listas = new ArrayList<String>();
+				
+				int iSize = saString1.length;
+				for(int icount = 0; icount<=iSize-1;icount++){										
+					if(!listas.contains(saString1[icount])){
+						listas.add(saString1[icount]);
+					}					
+				}
+				
+				iSize = saString2.length;
+				for(int icount = 0; icount<=iSize-1;icount++){																					
+					if(!listas.contains(saString2[icount])){
+						listas.add(saString2[icount]);						
+					}
+				}
+												
+				objReturn = new String[listas.size()];
+				System.arraycopy(listas.toArray(objReturn),0,objReturn, 0, listas.size());
+			}
+		}
 		}//End main:
 		return objReturn;
 	}

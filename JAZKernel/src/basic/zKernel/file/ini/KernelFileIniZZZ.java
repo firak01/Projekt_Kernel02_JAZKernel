@@ -230,15 +230,39 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 		return bReturn;
 	}
 	
+	/** TODO String[], All properties of all sections of the .ini-file. The Array is contains only unique values.
+	* Lindhauer; 23.04.2006 10:16:44
+	 * @return String[]
+	 */
+	public String[] getPropertyAll(){
+		return this.objFileIni.getVariables();
+	}
+	
 	/** String[], All Properties of a section. The Array is contains only unique values.
 	* Lindhauer; 23.04.2006 09:57:53
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
 	public String[] getPropertyAll(String sSectionIn) throws ExceptionZZZ {
+		return this.getPropertyAll_(sSectionIn, true);
+	}
+	
+
+	/** String[], All Properties of a section. The Array is contains only unique values.
+	 * @param sSectionIn
+	 * @param bSearchApplicationKey: false=restrict this only to the Section, do not search for the applicationKey.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 02.11.2021, 09:09:48
+	 */
+	public String[] getPropertyAll(String sSectionIn, boolean bSearchApplicationKey) throws ExceptionZZZ {
+		return this.getPropertyAll_(sSectionIn, bSearchApplicationKey);
+	}
+	
+	private String[] getPropertyAll_(String sSectionIn, boolean bSearchApplicationKey) throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{
-			String sSection;
+			String sSection;String sApplication; String sSystemNumber;
 			check:{
 				if(this.objFileIni==null){				
 					ExceptionZZZ ez = new ExceptionZZZ( "missing property 'FileIniObject'", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -250,22 +274,50 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 				}else{
 					sSection = sSectionIn;
 				}			
+				
+				
 			}//end check:
 			
-			saReturn = this.objFileIni.getVariables(sSection);
-			
-			
+			if(bSearchApplicationKey) {
+				sApplication = StringZZZ.left(sSection, "!");
+				sSystemNumber = StringZZZ.right(sSection, "!");
+					
+				boolean bFoundSystemNumber=false;String[]saSystemNumber=null;
+				if(!StringZZZ.isEmpty(sSystemNumber)) {
+					bFoundSystemNumber=true;
+					saSystemNumber = this.objFileIni.getVariables(sSection);
+					
+				}
+				
+				boolean bFoundApplication=false;String[]saApplication=null;
+				if(!StringZZZ.isEmpty(sApplication)) {
+					bFoundApplication=true;
+					saApplication = this.objFileIni.getVariables(sApplication);
+					
+				}
+				
+				if(bFoundSystemNumber && !bFoundApplication) {
+					saReturn = saSystemNumber;
+					break main;	
+				}else if(!bFoundSystemNumber && bFoundApplication) {
+					saReturn = saApplication;
+					break main;	
+				}else if(!bFoundSystemNumber && !bFoundApplication) {
+					saReturn = this.objFileIni.getVariables(sSection);
+					break main;
+				}else {
+					String[] saFlag = {"SKIPNULL","ADDMISSING"};
+					saReturn = StringArrayZZZ.append(saSystemNumber, saApplication, saFlag);
+					break main;	
+				}
+			}else {
+				saReturn = this.objFileIni.getVariables(sSection);
+			}		
 		}//end main:
 		return saReturn;
 	}
 	
-	/** TODO String[], All properties of all sections of the .ini-file. The Array is contains only unique values.
-	* Lindhauer; 23.04.2006 10:16:44
-	 * @return String[]
-	 */
-	public String[] getPropertyAll(){
-		return null;
-	}
+	
 	
 	/**  String, the value of a property in a section	
 	 @author 0823 , date: 18.10.2004

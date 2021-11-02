@@ -3751,8 +3751,7 @@ MeinTestParameter=blablaErgebnis
 						//+++ Von den konfigurierten Modulen nur diejenige, die auch existieren.
 						//Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen. 
 						sSystemKey = this.getSystemKey();
-						saProperty = objFileIni.getPropertyAll(sSystemKey);
-						if (saProperty==null) break main;
+						saProperty = objFileIni.getPropertyAll(sSystemKey);//... intern werden so auch die Werte des ApplicationKeys geholt.
 						
 						//...anreichern um die Werte aus dem ApplicationKey
 						sApplicationKey = this.getApplicationKey();
@@ -3763,22 +3762,26 @@ MeinTestParameter=blablaErgebnis
 						
 						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
 						listaConfigured = new ArrayList();
-						for(int icount=0; icount < saProperty.length; icount++){
-							String stemp = saProperty[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){		
-								String sValueTemp = saProperty[icount].substring(iIndex);
-								listaConfigured.add(sValueTemp);
+						if(saProperty!=null) {
+							for(int icount=0; icount < saProperty.length; icount++){
+								String stemp = saProperty[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){		
+									String sValueTemp = saProperty[icount].substring(iIndex);
+									listaConfigured.add(sValueTemp);
+								}
 							}
 						}
 						
 						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
-						for(int icount=0; icount < saPropertyByApplication.length; icount++){
-							String stemp = saPropertyByApplication[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){
-								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
-								if(!listaConfigured.contains(sValueTemp)){
-									listaConfigured.add(sValueTemp);
-								}								
+						if(saPropertyByApplication!=null) {
+							for(int icount=0; icount < saPropertyByApplication.length; icount++){
+								String stemp = saPropertyByApplication[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){
+									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+									if(!listaConfigured.contains(sValueTemp)){
+										listaConfigured.add(sValueTemp);
+									}								
+								}
 							}
 						}
 						
@@ -3814,21 +3817,25 @@ MeinTestParameter=blablaErgebnis
 						
 						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
 						listaConfigured = new ArrayList();
-						for(int icount=0; icount < saProperty.length; icount++){
-							String stemp = saProperty[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){						
-								listaConfigured.add(saProperty[icount].substring(iIndex));
+						if(saProperty!=null) {
+							for(int icount=0; icount < saProperty.length; icount++){
+								String stemp = saProperty[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){						
+									listaConfigured.add(saProperty[icount].substring(iIndex));
+								}
 							}
 						}
 						
 						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
-						for(int icount=0; icount < saPropertyByApplication.length; icount++){
-							String stemp = saPropertyByApplication[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){
-								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
-								if(!listaConfigured.contains(sValueTemp)){
-									listaConfigured.add(sValueTemp);
-								}								
+						if(saPropertyByApplication!=null) {
+							for(int icount=0; icount < saPropertyByApplication.length; icount++){
+								String stemp = saPropertyByApplication[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){
+									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+									if(!listaConfigured.contains(sValueTemp)){
+										listaConfigured.add(sValueTemp);
+									}								
+								}
 							}
 						}
 												
@@ -3875,7 +3882,6 @@ MeinTestParameter=blablaErgebnis
 //						Aus der KernelKonfigurationsdatei alle Werte des aktuellen Systems holen.
 						sSystemKey = this.getSystemKey();
 						saProperty = objFileIni.getPropertyAll(sSystemKey);
-						if (saProperty==null) break main;
 						
 						//...anreichern um die Werte aus dem ApplicationKey
 						sApplicationKey = this.getApplicationKey();
@@ -3887,23 +3893,27 @@ MeinTestParameter=blablaErgebnis
 						
 						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
 						 listaConfigured = new ArrayList();
-						for(int icount=0; icount < saProperty.length; icount++){
-							String stemp = saProperty[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){						
-								listaConfigured.add(saProperty[icount].substring(iIndex));
+						 if(saProperty!=null) {
+							for(int icount=0; icount < saProperty.length; icount++){
+								String stemp = saProperty[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){						
+									listaConfigured.add(saProperty[icount].substring(iIndex));
+								}
 							}
-						}
+						 }
 						
 						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
-						for(int icount=0; icount < saPropertyByApplication.length; icount++){
-							String stemp = saPropertyByApplication[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){
-								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
-								if(!listaConfigured.contains(sValueTemp)){
-									listaConfigured.add(sValueTemp);
-								}								
+						 if(saPropertyByApplication!=null) {
+							for(int icount=0; icount < saPropertyByApplication.length; icount++){
+								String stemp = saPropertyByApplication[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){
+									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+									if(!listaConfigured.contains(sValueTemp)){
+										listaConfigured.add(sValueTemp);
+									}								
+								}
 							}
-						}
+						 }
 						
 						//Nun die Module trimmen
 						listaFile = ArrayListZZZ.unique(listaConfigured);
@@ -3958,21 +3968,25 @@ MeinTestParameter=blablaErgebnis
 						
 						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
 						listaConfigured = new ArrayList();
-						for(int icount=0; icount < saProperty.length; icount++){
-							String stemp = saProperty[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){						
-								listaConfigured.add(saProperty[icount].substring(iIndex));
+						if(saProperty!=null) {
+							for(int icount=0; icount < saProperty.length; icount++){
+								String stemp = saProperty[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){						
+									listaConfigured.add(saProperty[icount].substring(iIndex));
+								}
 							}
 						}
 						
 						//... anreichern um die Werte aus dem ApplicationKey, sofern nicht schon in der Liste vorhanden.
-						for(int icount=0; icount < saPropertyByApplication.length; icount++){
-							String stemp = saPropertyByApplication[icount].toLowerCase();
-							if(stemp.startsWith(sSearch)){
-								String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
-								if(!listaConfigured.contains(sValueTemp)){
-									listaConfigured.add(sValueTemp);
-								}								
+						if(saPropertyByApplication!=null) {
+							for(int icount=0; icount < saPropertyByApplication.length; icount++){
+								String stemp = saPropertyByApplication[icount].toLowerCase();
+								if(stemp.startsWith(sSearch)){
+									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
+									if(!listaConfigured.contains(sValueTemp)){
+										listaConfigured.add(sValueTemp);
+									}								
+								}
 							}
 						}
 						

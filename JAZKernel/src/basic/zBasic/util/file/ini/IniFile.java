@@ -572,6 +572,25 @@ protected boolean addSection(String sSection){
          return v;
       }
    }
+   
+   public String[] getVariables() {
+	   String[] saReturn=null;
+
+	   ArrayList<String>listasReturn = new ArrayList<String>();
+	   for(int index=0;subjects.size()<=index;index++) {
+		   ExtendedVectorZZZ vars = (ExtendedVectorZZZ)(variables.elementAt(index));		   
+		   String[] saTemp = (String[]) vars.toArray();
+		   
+		   for(String stemp : saTemp) {
+			   if(!listasReturn.contains(stemp)) {
+				   listasReturn.add(stemp);
+			   }
+		   }		   		   
+	   }
+	   
+	   saReturn = listasReturn.toArray(saReturn);
+	   return saReturn;
+   }
 
    /**
    * get an array containing all subjects
