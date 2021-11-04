@@ -97,6 +97,24 @@ public abstract class MathZZZ {
 		return iReturn;
 	}
 	
+	/** Wenn man 5/2 teilt kommt normalerweise immer 2.0 raus.
+	 *  diese Funktion setzt um: ttps://stackoverflow.com/questions/43300892/dividing-numbers
+		Man muss also in double casten, damit 5/2 nicht 2.0 ergibt !!!
+	 * @param i1
+	 * @param i2
+	 * @return
+	 * @author Fritz Lindhauer, 04.11.2021, 13:07:13
+	 */
+	public static double divide(int i1, int i2) {
+		double dReturn = 0;
+		main:{
+			double d1 = (double)i1;
+			double d2 = (double)i2;
+			
+			dReturn = d1/d2;
+		}
+		return dReturn;
+	}
 	/** True, wenn es sich um eine gerade Zahl handelt.
 	* @param iValue
 	* 
@@ -112,6 +130,15 @@ public abstract class MathZZZ {
 			}
 		}
 		return bReturn;
+	}
+	
+	/** Rundet eine double Wert auf, der z.B. bei MathZZZ.divide(...) entstanden sein könnte.
+	 * @param d
+	 * @return
+	 * @author Fritz Lindhauer, 04.11.2021, 13:06:04
+	 */
+	public static int roundUp(double d) {
+		return (int) (d + 0.5);
 	}
 	
 	/**"double wurzel = Math.sqrt(double zahl);" 
