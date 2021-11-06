@@ -1,5 +1,6 @@
 package basic.zBasic.util.abstractList;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -248,6 +249,22 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 			aReturn = lista.toArray(new Object[lista.size()]);
 			int iIndex = -1;
 			for(Object obj : lista){
+				iIndex++;
+				aReturn[iIndex] = obj;
+			}
+		}//end main:
+		return aReturn;	
+	}
+	
+	public static Component[]toComponentArray(ArrayList<Component> lista){
+		Component[] aReturn = null;
+		main:{
+			if(lista==null) break main;
+			if(lista.size()==0) break main;
+			
+			aReturn = lista.toArray(new Component[lista.size()]);
+			int iIndex = -1;
+			for(Component obj : lista){
 				iIndex++;
 				aReturn[iIndex] = obj;
 			}
