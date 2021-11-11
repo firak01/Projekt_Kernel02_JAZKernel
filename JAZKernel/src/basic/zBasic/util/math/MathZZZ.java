@@ -115,6 +115,20 @@ public abstract class MathZZZ {
 		}
 		return dReturn;
 	}
+	
+	public static boolean isDivisibleWithoutRemainder(int iValue, int iDivisor) {
+		boolean bReturn = false;
+		main:{
+			if(iDivisor==0)break main;
+			
+			int iRemainder = iValue%iDivisor;
+			if(iRemainder==0) {
+				bReturn = true;
+			}
+		}
+		return bReturn;
+	}
+	
 	/** True, wenn es sich um eine gerade Zahl handelt.
 	* @param iValue
 	* 
