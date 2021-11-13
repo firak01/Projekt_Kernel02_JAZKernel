@@ -21,6 +21,7 @@ import basic.zBasic.util.counter.CounterByCharacterAscii_AlphabetZZZTest;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZTest;
 import basic.zBasic.util.counter.CounterByCharacterAscii_NumericZZZTest;
+import basic.zBasic.util.datatype.binary.BinaryTokenizerZZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
@@ -85,8 +86,10 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(CounterByCharacterAsciiFactoryZZZTest.class);
 		objReturn.addTestSuite(CounterByCharacterAsciiSingletonZZZTest.class);
 		objReturn.addTestSuite(VectorZZZTest.class);
+		
 		objReturn.addTestSuite(DataStoreZZZTest.class);
 		objReturn.addTestSuite(DateTimeZZZTest.class);
+		objReturn.addTestSuite(BinaryTokenizerZZZTest.class);
 		objReturn.addTestSuite(IntegerZZZTest.class);
 		objReturn.addTestSuite(IntegerArrayZZZTest.class);
 		objReturn.addTestSuite(StringArrayZZZTest.class);
