@@ -45,7 +45,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
+public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileIniZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
@@ -55,13 +55,6 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelExpre
 //Flags, die alle Z-Objekte haben
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
-		
-	/**20130721: Eweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
-	 * 
-	 */
-	public enum FLAGZ{
-		FILEUNSAVED, FILENEW, FILECHANGED;
-	}
 		
 	private IniFile objFileIni;
 	private File objFile;

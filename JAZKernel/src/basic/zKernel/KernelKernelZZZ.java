@@ -53,6 +53,7 @@ import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
+import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
@@ -663,10 +664,28 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			if(!StringZZZ.isEmpty(sSystemNumber)){
-				sReturn = sSection + "!" + sSystemNumber;	
+				sReturn = sSection + IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER + sSystemNumber;	
 			}else{
 				sReturn = sSection;
 			}
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	/** Ein Systemkey hat die Form Section!SystemNumber
+	 *  also Z.B. JDX!01
+	 *  Diese Methode liefert den Wert vor dem Ausrufezeichen zurück.
+	 * @param sSystemKey
+	 * @return
+	 * @author Fritz Lindhauer, 28.11.2021, 09:25:38
+	 */
+	public static String computeSectionFromSystemKey(String sSystemKey) {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sSystemKey)) break main;
+			
+			sReturn = StringZZZ.left(sSystemKey, KernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER);
 		}//end main:
 		return sReturn;
 	}

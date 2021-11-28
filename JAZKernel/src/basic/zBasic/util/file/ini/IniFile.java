@@ -503,7 +503,16 @@ protected boolean addSection(String sSection){
       for (int i=0;i<lines.size();i++)
       {
          line = (String)lines.elementAt(i);
-         if (formattedSubject.equalsIgnoreCase(line))  return i;
+         //FGL: 20211128: Seitdem es moeglich ist Kommentare hinter das Subject zu schreiben ist das ueberholt if (formattedSubject.equalsIgnoreCase(line))  return i;         
+  	   if(line.startsWith(IniFile.sINI_SUBJECT_START)) {
+		   //FGL: 20191218: Versehentlich war ein Semikolon hinter dem Subject gelandet. Es wurde daraufhin nicht erkannt.
+		   //               Idee: Kommentare und Leerzeichen hinter dem Subject erlauben.
+		   String sLineNormed = StringZZZ.left(line+IniFile.sINI_COMMENT, IniFile.sINI_COMMENT);
+		   sLineNormed = sLineNormed.trim();
+		   
+		   if (formattedSubject.equals(sLineNormed)) return i;	        
+  	   }
+         
       }
       return -1;
    }
@@ -726,12 +735,13 @@ public String[] getValueAsArray(String subject, String variable, String sSeparat
       values.removeElementAt(subjectIndex);
       variables.removeElementAt(subjectIndex);
       subjects.removeElementAt(subjectIndex);
+      
       //delete from lines vector
       int start = findSubjectLine(subject);
       int end = endOfSubject(start);
       for (int i=start;i<end;i++)
       {
-         lines.removeElementAt(start);
+   		  lines.removeElementAt(i);
       }
       if (saveOnChange) saveFile();
    }
