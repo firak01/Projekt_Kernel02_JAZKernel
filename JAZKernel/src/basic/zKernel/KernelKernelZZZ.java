@@ -73,11 +73,6 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelExpressionIniConverterUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ {
-	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
-	public enum FLAGZ{
-		USEFORMULA, USEFORMULA_MATH;
-	}
-	
 	private FileFilterModuleZZZ objFileFilterModule=null;
 	
 	//Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
@@ -656,15 +651,19 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	public String getSystemKey() throws ExceptionZZZ{
 		String stemp = this.getApplicationKey();
 		String stemp2 = this.getSystemNumber();
-		return KernelKernelZZZ.computeSystemKeyForSection(stemp, stemp2);
+		return KernelKernelZZZ.computeSystemSectionNameForSection(stemp, stemp2);
 	}
 	
-	public static String computeSystemKeyForSection(String sSection, String sSystemNumber){
+	public static String computeSystemSectionNameForSection(String sSection, String sSystemNumber){
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			if(!StringZZZ.isEmpty(sSystemNumber)){
-				sReturn = sSection + IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER + sSystemNumber;	
+				if(!KernelKernelZZZ.isSystemSection(sSection)) {
+					sReturn = sSection + IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER + sSystemNumber;
+				}else {
+					sReturn = sSection;
+				}
 			}else{
 				sReturn = sSection;
 			}
@@ -672,20 +671,37 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return sReturn;
 	}
 	
+	/** Prüft, ob der SectionName ein Ausrufezeichen enthält
+	 * @param sSection
+	 * @return
+	 * @author Fritz Lindhauer, 30.11.2021, 10:27:07
+	 */
+	public static boolean isSystemSection(String sSection) {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sSection)) break main;
+			
+			if(sSection.contains(IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER)) {
+				bReturn = true;
+			}
+		}//end main:
+		return bReturn;
+	}
 	
-	/** Ein Systemkey hat die Form Section!SystemNumber
+	
+	/** Eine Systemsection hat die Form Section!SystemNumber
 	 *  also Z.B. JDX!01
 	 *  Diese Methode liefert den Wert vor dem Ausrufezeichen zurück.
 	 * @param sSystemKey
 	 * @return
 	 * @author Fritz Lindhauer, 28.11.2021, 09:25:38
 	 */
-	public static String computeSectionFromSystemKey(String sSystemKey) {
+	public static String computeSectionFromSystemSection(String sSystemSection) {
 		String sReturn = null;
 		main:{
-			if(StringZZZ.isEmpty(sSystemKey)) break main;
+			if(StringZZZ.isEmpty(sSystemSection)) break main;
 			
-			sReturn = StringZZZ.left(sSystemKey, KernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER);
+			sReturn = StringZZZ.left(sSystemSection+KernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER, KernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER);
 		}//end main:
 		return sReturn;
 	}
