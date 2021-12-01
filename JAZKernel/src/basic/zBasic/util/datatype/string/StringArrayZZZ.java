@@ -830,17 +830,30 @@ output:
 	public static String[] remove(String[] saString, String sStringToRemove, boolean bIgnoreCase) throws ExceptionZZZ{
 		String[] objReturn = null;
 		main:{
-		if(saString==null) break main;
-		if(StringZZZ.isEmpty(sStringToRemove)) break main;
-				
-		if(bIgnoreCase){
-			ArrayList<String>listas = StringArrayZZZ.toArrayList(saString);
-			ArrayListZZZ.remove(listas, sStringToRemove, true);
-			objReturn = ArrayListZZZ.toStringArray(listas);
-		}else{
-			objReturn = (String[]) ArrayUtils.removeElement(saString, sStringToRemove);
-		}
-		
+			if(saString==null) break main;
+			if(StringZZZ.isEmpty(sStringToRemove)) break main;
+					
+			if(bIgnoreCase){
+				ArrayList<String>listas = StringArrayZZZ.toArrayList(saString);
+				ArrayListZZZ.remove(listas, sStringToRemove, true);
+				objReturn = ArrayListZZZ.toStringArray(listas);
+			}else{
+				objReturn = (String[]) ArrayUtils.removeElement(saString, sStringToRemove);
+			}		
+		}//End main:
+		return objReturn;
+	}
+	
+	public static String[] remove(String[] saString, String[] saStringToRemove, boolean bIgnoreCase) throws ExceptionZZZ{
+		String[] objReturn = null;
+		main:{
+			if(saString==null) break main;
+			objReturn = saString;			
+			if(saStringToRemove==null) break main;
+			
+			for(String sStringToRemove : saStringToRemove) {
+				objReturn = StringArrayZZZ.remove(objReturn, sStringToRemove, bIgnoreCase);
+			}		
 		}//End main:
 		return objReturn;
 	}

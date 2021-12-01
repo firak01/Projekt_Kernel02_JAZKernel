@@ -286,9 +286,11 @@ public KernelKernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZ
 		String sFileConfigPath = objFile.getParent();
 		String sFileConfigName = objFile.getName();
 		LogZZZ objLog = objKernelOld.getLogObject();
-		IKernelConfigZZZ objConfig = objKernelOld.getConfigObject();
+		//MErke: Da saArg übergeben werden soll, nicht das ConfigObjekt des alten Kernels verwenden 
+		//       IKernelConfigZZZ objConfig = objKernelOld.getConfigObject();		
+		//KernelNew_(objConfig, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog, saArg);
 		
-		KernelNew_(objConfig, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog, saArg);
+		KernelNew_(null, null, sApplicationKey, sSystemNumber, sFileConfigPath, sFileConfigName, objLog, saArg);
 		}//END main
 	}
 	
@@ -4478,8 +4480,14 @@ MeinTestParameter=blablaErgebnis
 				
 				//#############################################################
 				//read the ini-content: 
-				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen
-				String[] saFlagFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP"};
+				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen								
+				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+				FileIniZZZ exDummy = new FileIniZZZ();
+				//String[] saFlagRelevantFileIniZZZ = exDummy.getFlagZ();//Aber darin sind ja auch DEBUG, INIT, etc.
+				String[] saFlagRelevantFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP"};
+				String[] saFlagZpassedFalse = this.getFlagZ_passable(false, true, exDummy);	
+				
+				String[] saFlagFileIniZZZ = StringArrayZZZ.remove(saFlagRelevantFileIniZZZ, saFlagZpassedFalse, true);				
 				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
 				this.setFileConfigIni(objFileIniZZZ);
 				

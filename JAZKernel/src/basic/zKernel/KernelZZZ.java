@@ -138,6 +138,18 @@ public KernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
 		super(sApplicationKey, sSystemNumber, objKernelOld, saFlagControl);
 	}
 	
+	/** Choose this construktor, if you want to create another Kernel-Object, using the same configuration and log-file, but another Application
+	 *  PLUS: Pass other FlagZ-Values to the new Kernel-Object.
+	* Lindhauer; 08.05.2006 08:21:25
+	 * @param sApplicationKey
+	 * @param objKernelNew
+	 * @param saFlagControl
+	 * @throws ExceptionZZZ 
+	 */
+	public KernelZZZ(String sApplicationKey, String sSystemNumber, IKernelZZZ objKernelOld, String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
+		super(sApplicationKey, sSystemNumber, objKernelOld, saArg, saFlagControl);
+	}
+	
 	//### Interface
 	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ{
 		IKernelConfigZZZ objConfig = super.getConfigObject();

@@ -525,14 +525,17 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					}
 				}//end check:
 			
+				
+				//Merke: 20211130: Beim Einlesen gab es das Problem, dass <z:Null> zum Leerstring wird " "!!!
+				       //          Das darf nicht sein, denn beim Zurückspeichern wird korrekterweise ein Leerstring " " zu <z:Empty>!!!
+				       //Lösung: USEEXPRESSION wird nun über den -z Paramter als false übergeben an das neu zu erstellende Kernel-Objekt.
+				       //        Damit wird dieser Wert in dem FileIniZZZ Objekt nicht gesetzt => Es findet keine Übersetzung statt. 
+				       //        Korrekterweise bleibt dann z.B. <z:Null> bestehen!!!
+				
+				
 				//20211130: Ziel muss es sein den Wert in die passende Section zu füllen, also dort wo schon etwas drin steht.
 				TODOGOON; //20211130 DAS IN EINE EIGENE METHODE PACKEN... objFileIniZZZ.useSystemSectionForProperty(sSection, sProperty);
-				TODOGOON; //20211130: Beim Einlesen noch das Problem, dass <z:Null> zum Leerstring wird " "!!!
-				          //          Das darf nicht sein, denn beim Zurückspeichern wird korrekterweise ein Leerstring " " zu <z:Empty>!!!
-				//Oder ist das nicht korrekt. Sollte nicht eher ein Leerstring bedeuten, dass der Eintrag gelöscht wird....
-				//Demnach müsste beim Einlesen auch <z:Empty> erhalten bleiben!!!
 				
-				          //          Korrekterweise bleibt dann <z:Null> bestehen!!!
 				//0. Erst einmal feststellen ob wir in der Haupt- bzw. Eltersection starten oder in der SystemSection.
 				boolean bUseSystemKey=false;
 				String sValueOld=null;
