@@ -534,16 +534,16 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				
 				
 				//20211130: Ziel muss es sein den Wert in die passende Section zu füllen, also dort wo schon etwas drin steht.
-				//20211130 DAS IN EINE EIGENE METHODE PACKEN... objFileIniZZZ.useSystemSectionForProperty(sSection, sProperty);
 				String sSectionUsed = this.getSectionUsedForProperty(sSection, sProperty);
 							
 				this.objFileIni.setValue(sSectionUsed, sProperty, sValue);
 				if(bFlagSaveImmidiate==true){
 					this.objFileIni.saveFile();
+					this.setFlag("FileUnsaved", false);
 				}else{
-					this.setFlag("FileUnsaved", true);
-				    this.setFlag("FileChanged", true);				 	
+					this.setFlag("FileUnsaved", true);				   				 
 				}
+				 this.setFlag("FileChanged", true);
 				
 				 //if this works, everything is fine
 				 bReturn = true;
