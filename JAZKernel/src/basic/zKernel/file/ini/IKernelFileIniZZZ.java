@@ -1,9 +1,9 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.IKernelUserZZZ;
 
-public interface IKernelFileIniZZZ {
-	
+public interface IKernelFileIniZZZ extends IKernelUserZZZ{		
 	//Verwendete Konstanten stammen aus IniFile
 	public static final String sINI_COMMENT = IniFile.sINI_COMMENT;
 	public static final String sINI_SUBJECT_START = IniFile.sINI_SUBJECT_START;
@@ -17,4 +17,9 @@ public interface IKernelFileIniZZZ {
 	public enum FLAGZ{
 		FILEUNSAVED, FILENEW, FILECHANGED;
 	}
+	
+	
+	public IniFile getFileIniObject();
+	//Setter als private, damit die Erstellung über den Konstruktor nicht umgangen werden kann:
+	//public void setFileIniObject(IniFile objIniFile);	
 }

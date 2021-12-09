@@ -203,6 +203,72 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	 }//end function
 	
 	
+	public static String getSectionUsedForPropertyBySystemKey(IKernelFileIniZZZ objKernelIniFile, String sSystemKeyAsSection, String sProperty) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(objKernelIniFile==null) break main;
+			
+			if(StringZZZ.isEmpty(sSystemKeyAsSection)) break main;
+			if(StringZZZ.isEmpty(sProperty)) break main;
+			
+			//0. Erst einmal feststellen ob wir in der Haupt- bzw. Eltersection starten oder in der SystemSection.
+			boolean bUseSystemKey=false;
+			String sValueOld=null;
+			String sSectionUsed = null;
+			boolean bSystemKey = KernelKernelZZZ.isSystemSection(sSystemKeyAsSection);
+			if(bSystemKey) {	
+				sSectionUsed = sSystemKeyAsSection;
+				
+				//A) Hole den Wert in der SystemKeySection
+				sValueOld = objKernelIniFile.getFileIniObject().getValue(sSectionUsed, sProperty);
+				if(StringZZZ.isEmpty(sValueOld)) {
+					
+					//Wurde in der PARENTSECTION der Wert überhaupt gesetzt?
+					sSectionUsed = KernelKernelZZZ.computeSectionFromSystemSection(sSystemKeyAsSection);
+					sValueOld = objKernelIniFile.getFileIniObject().getValue(sSectionUsed, sProperty);
+					if(StringZZZ.isEmpty(sValueOld)) {
+						bUseSystemKey=true; //also dort auch nicht gesetzt, dann nimm doch den Systemkey
+					}else {
+						bUseSystemKey=false;
+					}
+				}else {
+					
+					bUseSystemKey=true;												
+				}
+				
+			}else {
+				//B) Fange mit dem SystemKey an
+				String sSystemNumber = objKernelIniFile.getKernelObject().getSystemNumber();
+				sSectionUsed = KernelKernelZZZ.computeSystemSectionNameForSection(sSystemKeyAsSection, sSystemNumber);
+						
+				sValueOld = objKernelIniFile.getFileIniObject().getValue(sSectionUsed, sProperty);
+				if(StringZZZ.isEmpty(sValueOld)) {
+					bUseSystemKey=false;
+				}else {
+					
+					//Wurde dort der Wert gesetzt?
+					sSectionUsed = sSystemKeyAsSection;
+					sValueOld = objKernelIniFile.getFileIniObject().getValue(sSectionUsed, sProperty);
+					if(StringZZZ.isEmpty(sValueOld)) {
+						bUseSystemKey=true; //also dort auch nicht gesetzt, dann nimm doch den Systemkey
+					}else {
+						bUseSystemKey=false;
+					}
+				}
+			}
+			
+			//+++ Nun festlegen, welche konkrete Section für diesen Wert verwendet werden soll
+			sSectionUsed=null;
+			if(bUseSystemKey) {
+				String sSystemNumber = objKernelIniFile.getKernelObject().getSystemNumber();
+				sReturn = KernelKernelZZZ.computeSystemSectionNameForSection(sSystemKeyAsSection, sSystemNumber);					
+			}else {
+				sReturn = KernelKernelZZZ.computeSectionFromSystemSection(sSystemKeyAsSection);
+			}
+		}
+		return sReturn;
+	}
+	
 	/** Gibt true zur�ck, wenn in dem Section String (ab dem 2. Buchstaben) ein Ausrufezeichen steht und ggf. ein Folgebuchstabe.
 	 * Also der minimalste Section-Name ist z.b. "a!a"
 	* @param sSection
@@ -534,7 +600,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				
 				
 				//20211130: Ziel muss es sein den Wert in die passende Section zu füllen, also dort wo schon etwas drin steht.
-				String sSectionUsed = this.getSectionUsedForProperty(sSection, sProperty);
+				String sSectionUsed = this.getSectionUsedForPropertyBySystemKey(sSection, sProperty);
 							
 				this.objFileIni.setValue(sSectionUsed, sProperty, sValue);
 				if(bFlagSaveImmidiate==true){
@@ -646,66 +712,68 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.12.2021, 07:30:39
 	 */
-	public String getSectionUsedForProperty(String sSection, String sProperty) throws ExceptionZZZ {
+	public String getSectionUsedForPropertyBySystemKey(String sSystemKeyAsSection, String sProperty) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-            if(StringZZZ.isEmpty(sSection))break main;
-            if(StringZZZ.isEmpty(sProperty))break main;
+			sReturn = KernelFileIniZZZ.getSectionUsedForPropertyBySystemKey(this, sSystemKeyAsSection, sProperty);
 			
-			//0. Erst einmal feststellen ob wir in der Haupt- bzw. Eltersection starten oder in der SystemSection.
-			boolean bUseSystemKey=false;
-			String sValueOld=null;
-			String sSectionUsed = null;
-			boolean bSystemKey = KernelKernelZZZ.isSystemSection(sSection);
-			if(bSystemKey) {	
-				sSectionUsed = sSection;
-				
-				//A) Hole den Wert in der SystemKeySection
-				sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
-				if(StringZZZ.isEmpty(sValueOld)) {
-					
-					//Wurde in der PARENTSECTION der Wert überhaupt gesetzt?
-					sSectionUsed = KernelKernelZZZ.computeSectionFromSystemSection(sSection);
-					sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
-					if(StringZZZ.isEmpty(sValueOld)) {
-						bUseSystemKey=true; //also dort auch nicht gesetzt, dann nimm doch den Systemkey
-					}else {
-						bUseSystemKey=false;
-					}
-				}else {
-					
-					bUseSystemKey=true;												
-				}
-				
-			}else {
-				//B) Fange mit dem SystemKey an
-				String sSystemNumber = this.getKernelObject().getSystemNumber();
-				sSectionUsed = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
-						
-				sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
-				if(StringZZZ.isEmpty(sValueOld)) {
-					bUseSystemKey=false;
-				}else {
-					
-					//Wurde dort der Wert gesetzt?
-					sSectionUsed = sSection;
-					sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
-					if(StringZZZ.isEmpty(sValueOld)) {
-						bUseSystemKey=true; //also dort auch nicht gesetzt, dann nimm doch den Systemkey
-					}else {
-						bUseSystemKey=false;
-					}
-				}
-			}
+//            if(StringZZZ.isEmpty(sSection))break main;
+//            if(StringZZZ.isEmpty(sProperty))break main;
 			
-			//+++ Nun festlegen, welche konkrete Section für diesen Wert verwendet werden soll
-			sSectionUsed=null;
-			if(bUseSystemKey) {
-				String sSystemNumber = this.getKernelObject().getSystemNumber();
-				sReturn = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);					
-			}else {
-				sReturn = KernelKernelZZZ.computeSectionFromSystemSection(sSection);
-			}
+//			//0. Erst einmal feststellen ob wir in der Haupt- bzw. Eltersection starten oder in der SystemSection.
+//			boolean bUseSystemKey=false;
+//			String sValueOld=null;
+//			String sSectionUsed = null;
+//			boolean bSystemKey = KernelKernelZZZ.isSystemSection(sSection);
+//			if(bSystemKey) {	
+//				sSectionUsed = sSection;
+//				
+//				//A) Hole den Wert in der SystemKeySection
+//				sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
+//				if(StringZZZ.isEmpty(sValueOld)) {
+//					
+//					//Wurde in der PARENTSECTION der Wert überhaupt gesetzt?
+//					sSectionUsed = KernelKernelZZZ.computeSectionFromSystemSection(sSection);
+//					sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
+//					if(StringZZZ.isEmpty(sValueOld)) {
+//						bUseSystemKey=true; //also dort auch nicht gesetzt, dann nimm doch den Systemkey
+//					}else {
+//						bUseSystemKey=false;
+//					}
+//				}else {
+//					
+//					bUseSystemKey=true;												
+//				}
+//				
+//			}else {
+//				//B) Fange mit dem SystemKey an
+//				String sSystemNumber = this.getKernelObject().getSystemNumber();
+//				sSectionUsed = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
+//						
+//				sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
+//				if(StringZZZ.isEmpty(sValueOld)) {
+//					bUseSystemKey=false;
+//				}else {
+//					
+//					//Wurde dort der Wert gesetzt?
+//					sSectionUsed = sSection;
+//					sValueOld = this.objFileIni.getValue(sSectionUsed, sProperty);
+//					if(StringZZZ.isEmpty(sValueOld)) {
+//						bUseSystemKey=true; //also dort auch nicht gesetzt, dann nimm doch den Systemkey
+//					}else {
+//						bUseSystemKey=false;
+//					}
+//				}
+//			}
+//			
+//			//+++ Nun festlegen, welche konkrete Section für diesen Wert verwendet werden soll
+//			sSectionUsed=null;
+//			if(bUseSystemKey) {
+//				String sSystemNumber = this.getKernelObject().getSystemNumber();
+//				sReturn = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);					
+//			}else {
+//				sReturn = KernelKernelZZZ.computeSectionFromSystemSection(sSection);
+//			}
 		}//end main:
 		return sReturn;
 	}
@@ -1031,28 +1099,28 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	public File getFileObject() {
 		return objFile;
 	}
-
 	/** Merke: Private, damit die Erstellung über den Konstruktor nicht umgangen wird.
 	 @param file
 	 */
 	private void setFileObject(File file) {
 		objFile = file;
 	}
-	
+		
 
+	//######## AUS Interface IKernelFileZZZ
 	/** 
 	 @date: 26.10.2004
 	 @return FileObject
 	 */
+	@Override
 	public IniFile getFileIniObject() {
 		return objFileIni;
 	}
-
 	/** Merke: Private, damit die Erstellung über den Konstruktor nicht umgangen wird.
 	 @param file
 	 */
-	private void setFileIniObject(File file) {
-		objFile = file;
+	private void setFileIniObject(IniFile objIniFile) {
+		this.objFileIni = objIniFile;
 	}
 
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
@@ -1114,6 +1182,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 	
 	//### Interface
 	//aus IKernelExpressionIniConverterUserZZZ
