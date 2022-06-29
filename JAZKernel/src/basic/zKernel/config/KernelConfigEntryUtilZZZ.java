@@ -131,8 +131,8 @@ public class KernelConfigEntryUtilZZZ {
 	
 	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
 	 *  0 = nix
-	 *  1 = JsonArray
-	 *  2 = JsonMap
+	 *  5 = JsonArray
+	 *  6 = JsonMap
 	 *  usw. denkbar fortsetzbar
 	 *  
 	 * 
