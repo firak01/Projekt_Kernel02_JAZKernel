@@ -23,6 +23,13 @@ public interface IFlagUserZZZ{
 	public String[] getFlagZ(boolean bFlagValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZ() throws ExceptionZZZ;
 	
+	public abstract boolean proofFlagZLocalExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.		
+	public String[] getFlagZLocal(boolean bFlagValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
+	public String[] getFlagZLocal(boolean bFlagValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
+	public String[] getFlagZLocal() throws ExceptionZZZ;
+	public abstract HashMap<String, Boolean>getHashMapFlagZLocal();
+	public abstract void setHashMapFlagZLocal(HashMap<String, Boolean> hmFlagLocal);
+	
 	public abstract HashMap<String, Boolean>getHashMapFlagZpassed();
 	public abstract void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed);
 	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ;

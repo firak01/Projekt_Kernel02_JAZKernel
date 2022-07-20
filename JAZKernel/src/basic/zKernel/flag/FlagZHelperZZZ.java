@@ -14,6 +14,31 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zUtil.io.KernelFileZZZ.FLAGZ;
 
 public class FlagZHelperZZZ implements IConstantZZZ{
+	public static boolean proofFlagZLocalExists(Class cls, String sFlagName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(cls==null) {
+				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
+			}
+			
+			if(StringZZZ.isEmpty(sFlagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ( "FlagString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
+			}
+			
+			//NUR die Klasse selbst
+			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZLocal(cls);
+			if(saFlagAvailable!=null) {
+				if(StringArrayZZZ.contains(saFlagAvailable, sFlagName)) {
+					bReturn = true;	
+					break main;
+				}
+			}						
+		}//end main:
+		return bReturn;
+	}
+	
 	public static boolean proofFlagZExists(Class cls, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -148,6 +173,70 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 			*/
 		}//end main:
 		return bReturn;
+	}
+	
+	public static boolean proofFlagZDirectExists(Class cls, String sFlagName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(cls==null) {
+				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
+			}
+			
+			if(StringZZZ.isEmpty(sFlagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ( "FlagString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
+			}
+			
+			//NUR die Klasse selbst
+			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZDirectAvailable(cls);
+			if(saFlagAvailable!=null) {
+				if(StringArrayZZZ.contains(saFlagAvailable, sFlagName)) {
+					bReturn = true;	
+					break main;
+				}
+			}						
+		}//end main:
+		return bReturn;
+	}
+	
+	public static ArrayList<String> getFlagsZListLocalAvailable(Class cls)  throws ExceptionZZZ {
+		ArrayList<String> listasReturn = new ArrayList<String>();
+		main:{
+		if(cls==null) {
+			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			 throw ez;
+		}
+		
+		//1. von der Classe selbst implementiert
+		Enum[] enuma = getEnumFlagZLocal(cls);
+		if(enuma!=null) {			
+			for(Enum objEnum : enuma) {
+				String sEnum = objEnum.name();
+				if(!listasReturn.contains(sEnum)) {
+					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+					listasReturn.add(sEnum);
+				}
+			}			
+		}
+		
+		//2. von den Interfaces der Klasse DIREKT implementiert
+		Class[] objclsaByInterface = cls.getInterfaces();
+		for(Class objclsByInterface : objclsaByInterface) {
+			Enum[] enumaByInterface = getEnumFlagZLocal(objclsByInterface);
+			if(enumaByInterface!=null) {			
+				for(Enum objEnum : enumaByInterface) {
+					String sEnum = objEnum.name();
+					if(!listasReturn.contains(sEnum)) {
+						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+						listasReturn.add(sEnum);
+					}
+				}			
+			}
+		}
+		
+	}//end main:
+	return listasReturn;
 	}
 	
 	public static ArrayList<String> getFlagsZListDirectAvailable(Class cls)  throws ExceptionZZZ {
@@ -295,6 +384,20 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	return saReturn;
 	}
 	
+	public static String[] getFlagsZLocal(Class cls) throws ExceptionZZZ {
+		String[] saReturn = null;
+		main:{
+		if(cls==null) {
+			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			 throw ez;
+		}
+
+		ArrayList<String> listas = getFlagsZListLocalAvailable(cls);
+		saReturn = ArrayListZZZ.toStringArray(listas);
+	}//end main:
+	return saReturn;
+	}
+	
 	
 	public static String[] getFlagsZDirectAvailable(Class cls)  throws ExceptionZZZ {
 		String[] saReturn = null;
@@ -325,8 +428,48 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		}
 	
 	
-	
-	
+		//++++++++++++++++++++++++++++++
+		private static <E extends Enum> E[] getEnumFlagZLocal(Class<?> classToCheck) throws ExceptionZZZ {
+			E[] enumaReturn = null;
+			main:{
+				ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
+				String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "FLAGZLOCAL";
+				
+				ArrayList<E> listae = new ArrayList<E>();
+				for(Class objClass : listaClass) {
+					String sEnumClass = objClass.getName();				
+					if(sEnumClass.endsWith(sEnumFlagZName)) {
+						Object[] obja = objClass.getEnumConstants();
+						for(Object obj : obja) {
+							Enum e = (Enum) obj;
+							listae.add((E) e);
+						}
+					 }
+				}
+				enumaReturn = ArrayListZZZ.toEnumArray(listae);
+			}
+			return enumaReturn;
+		}
+		
+		private static <E extends Enum> E getEnumFlagZLocal(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
+			E enumReturn = null;
+			main:{
+				ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
+				String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "FLAGZLOCAL";
+				for(Class objClass : listaClass) {
+					String sEnumClass = objClass.getName();				
+					if(sEnumClass.endsWith(sEnumFlagZName)) {
+						Enum e = getEnumAsField(objClass, sEnumName);	
+						if(e!=null) {
+							enumReturn = (E) e;										
+							break main;
+						}
+					 }
+				}
+			}//end main:
+			return enumReturn;
+		}
+	//++++++++++++++++++++++++++++++
 	private static <E extends Enum> E[] getEnumFlagZ(Class<?> classToCheck) throws ExceptionZZZ {
 		E[] enumaReturn = null;
 		main:{
@@ -367,6 +510,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		}//end main:
 		return enumReturn;
 	}
+	//+++++++++++++++++++++++++++++++++++++++++++
 	
 	//private static <E extends Enum> E[] getEnumValues(Class<E> enumClass, String sFieldname) throws ExceptionZZZ {
 	private static <E extends Enum> E getEnumAsField(Class<E> enumClass, String sFieldname) throws ExceptionZZZ {
