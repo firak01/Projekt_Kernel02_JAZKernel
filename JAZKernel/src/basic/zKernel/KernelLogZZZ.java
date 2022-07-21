@@ -9,6 +9,7 @@ import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 import basic.zUtil.io.KernelFileExpansionZZZ;
@@ -83,7 +84,7 @@ public abstract class KernelLogZZZ extends ObjectZZZ implements IKernelLogZZZ, I
 				btemp = this.setFlag(stemp, true);
 				
 				if(btemp==false){ 								   
-					   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					   ExceptionZZZ ez = new ExceptionZZZ( IFlagUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 					   throw ez;		 
 				}
 			}

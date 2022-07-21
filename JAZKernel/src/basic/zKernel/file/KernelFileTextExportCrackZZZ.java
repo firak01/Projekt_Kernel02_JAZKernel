@@ -13,6 +13,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -67,7 +68,7 @@ public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
 									btemp = setFlag(stemp, true);
 									if(btemp==false){ 
 											stemp = "the flag '" + stemp + "' is not available.";
-										   ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+										   ExceptionZZZ ez = new ExceptionZZZ(stemp,IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 										   //doesn�t work. Only works when > JDK 1.4
 										   //Exception e = new Exception();
 										   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");

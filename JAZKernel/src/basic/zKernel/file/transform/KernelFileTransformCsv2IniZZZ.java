@@ -16,6 +16,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.csv.FileCsvZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -120,7 +121,7 @@ public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
 								stemp = saFlagControlIn[iCount];
 								btemp = setFlag(stemp, true);
 								if(btemp==false){ 								   
-									   ExceptionZZZ ez = new ExceptionZZZ( stemp, iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+									   ExceptionZZZ ez = new ExceptionZZZ( stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 									   throw ez;		 
 								}
 							}

@@ -72,7 +72,7 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 					stemp = saFlagControlIn[iCount];
 					btemp = setFlag(stemp, true);
 					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+						   ExceptionZZZ ez = new ExceptionZZZ( IFlagUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 						   //doesn�t work. Only works when > JDK 1.4
 						   //Exception e = new Exception();
 						   //ExceptionZZZ ez = new ExceptionZZZ(stemp,iCode,this, e, "");

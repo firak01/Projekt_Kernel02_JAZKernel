@@ -200,7 +200,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static ArrayList<String> getFlagsZListLocalAvailable(Class cls)  throws ExceptionZZZ {
+	public static ArrayList<String> getFlagsZLocalListAvailable(Class cls)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{
 		if(cls==null) {
@@ -209,31 +209,42 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		}
 		
 		//1. von der Classe selbst implementiert
-		Enum[] enuma = getEnumFlagZLocal(cls);
-		if(enuma!=null) {			
-			for(Enum objEnum : enuma) {
-				String sEnum = objEnum.name();
-				if(!listasReturn.contains(sEnum)) {
-					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-					listasReturn.add(sEnum);
-				}
-			}			
-		}
+		ArrayList<String> listasDirect = FlagZHelperZZZ.getFlagsZLocalListDirectAvailable(cls);
+				
+		//2. allen Interfaces der Klasse, auch den erbenden implementiert
+//		ArrayList<String> listasInterface = new ArrayList<String>();
+//		ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
+//		ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
+//		for(Class<?> objclsByInterface : listaClassInterface) {
+//			Enum[] enumaByInterface = getEnumFlagZLocal(objclsByInterface);
+//			if(enumaByInterface!=null) {			
+//				for(Enum objEnum : enumaByInterface) {
+//					String sEnum = objEnum.name();
+//					if(!listasInterface.contains(sEnum)) {
+//						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+//						listasInterface.add(sEnum);
+//					}
+//				}			
+//			}
+//		}
+//		
+//		//3. von den Elternklassen der Klasse implementiert
+//		ArrayList<String> listasParent = new ArrayList<String>();		
+//		ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
+//		for(Class objcls : listaobjClass) {
+//			//Von dem Interface direkt implementiert. Reicht aber nicht um alle zu erfassen.
+//			//ArrayList<String> listasTemp = FlagZHelperZZZ.getFlagsZListDirectAvailable(objcls);
+//			
+//			//Von der Vererbungshierarchie des Interface implementiert.
+//			ArrayList<String> listasTemp = FlagZHelperZZZ.getFlagsZLocalListInheritedAvailable(objcls);
+//			
+//			listasParent.addAll(listasTemp);
+//		}
 		
-		//2. von den Interfaces der Klasse DIREKT implementiert
-		Class[] objclsaByInterface = cls.getInterfaces();
-		for(Class objclsByInterface : objclsaByInterface) {
-			Enum[] enumaByInterface = getEnumFlagZLocal(objclsByInterface);
-			if(enumaByInterface!=null) {			
-				for(Enum objEnum : enumaByInterface) {
-					String sEnum = objEnum.name();
-					if(!listasReturn.contains(sEnum)) {
-						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-						listasReturn.add(sEnum);
-					}
-				}			
-			}
-		}
+		listasReturn.addAll(listasDirect);
+//		listasReturn.addAll(listasParent);
+//		listasReturn.addAll(listasInterface);
+		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);							
 		
 	}//end main:
 	return listasReturn;
@@ -278,6 +289,45 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	return listasReturn;
 	}
 	
+	public static ArrayList<String> getFlagsZLocalListDirectAvailable(Class cls)  throws ExceptionZZZ {
+		ArrayList<String> listasReturn = new ArrayList<String>();
+		main:{
+		if(cls==null) {
+			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			 throw ez;
+		}
+		
+		//1. von der Classe selbst implementiert
+		Enum[] enuma = getEnumFlagZLocal(cls);
+		if(enuma!=null) {			
+			for(Enum objEnum : enuma) {
+				String sEnum = objEnum.name();
+				if(!listasReturn.contains(sEnum)) {
+					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+					listasReturn.add(sEnum);
+				}
+			}			
+		}
+		
+		//2. von den Interfaces der Klasse DIREKT implementiert
+		Class[] objclsaByInterface = cls.getInterfaces();
+		for(Class objclsByInterface : objclsaByInterface) {
+			Enum[] enumaByInterface = getEnumFlagZLocal(objclsByInterface);
+			if(enumaByInterface!=null) {			
+				for(Enum objEnum : enumaByInterface) {
+					String sEnum = objEnum.name();
+					if(!listasReturn.contains(sEnum)) {
+						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+						listasReturn.add(sEnum);
+					}
+				}			
+			}
+		}
+		
+	}//end main:
+	return listasReturn;
+	}
+	
 	public static ArrayList<String> getFlagsZListInheritedAvailable(Class cls)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{
@@ -306,6 +356,49 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);
 		for(Class<?> objclsByInterface : listaInterfaceSuper) {
 			Enum[] enumaByInterface = getEnumFlagZ(objclsByInterface);
+			if(enumaByInterface!=null) {			
+				for(Enum objEnum : enumaByInterface) {
+					String sEnum = objEnum.name();
+					if(!listasReturn.contains(sEnum)) {
+						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+						listasReturn.add(sEnum);
+					}
+				}			
+			}
+		}
+		
+	}//end main:
+	return listasReturn;
+	}
+	
+	public static ArrayList<String> getFlagsZLocalListInheritedAvailable(Class cls)  throws ExceptionZZZ {
+		ArrayList<String> listasReturn = new ArrayList<String>();
+		main:{
+		if(cls==null) {
+			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			 throw ez;
+		}
+		
+		//1. von der Classe selbst implementiert
+		Enum[] enuma = getEnumFlagZLocal(cls);
+		if(enuma!=null) {			
+			for(Enum objEnum : enuma) {
+				String sEnum = objEnum.name();
+				if(!listasReturn.contains(sEnum)) {
+					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+					listasReturn.add(sEnum);
+				}
+			}			
+		}
+				
+		//20210404: Die von der Klasse als Interface direkt implementierten reichen nicht.
+		//          Es fehlen hier die Interfaces extends Interface, usw.
+		
+		//2. allen Interfaces der Klasse, auch den erbenden implementiert
+		ArrayList<Class<?>> listaInterfaceSuper=new ArrayList<Class<?>>();
+		ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);
+		for(Class<?> objclsByInterface : listaInterfaceSuper) {
+			Enum[] enumaByInterface = getEnumFlagZLocal(objclsByInterface);
 			if(enumaByInterface!=null) {			
 				for(Enum objEnum : enumaByInterface) {
 					String sEnum = objEnum.name();
@@ -392,7 +485,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 			 throw ez;
 		}
 
-		ArrayList<String> listas = getFlagsZListLocalAvailable(cls);
+		ArrayList<String> listas = getFlagsZLocalListAvailable(cls);
 		saReturn = ArrayListZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;

@@ -21,6 +21,7 @@ import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
+import basic.zKernel.flag.IFlagLocalUserZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import basic.zKernel.flag.IFlagUserZZZ.FLAGZ;
 import custom.zKernel.LogZZZ;
@@ -38,7 +39,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagUserZZZ{ //IFunctionZZZ {
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagUserZZZ, IFlagLocalUserZZZ{ //IFunctionZZZ {
 	private IFileExpansionZZZ objExpansion=null;
 	private ExceptionZZZ objException=null;
 	
@@ -129,7 +130,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 						btemp = this.setFlag(stemp, true);
 						
 						if(btemp==false){ 								   
-							   ExceptionZZZ ez = new ExceptionZZZ( sERROR_FLAG_UNAVAILABLE + stemp, iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+							   ExceptionZZZ ez = new ExceptionZZZ( IFlagUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 							   throw ez;		 
 						}
 					}

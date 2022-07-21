@@ -18,9 +18,10 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zKernel.IKernelConfigZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
+import basic.zKernel.flag.IFlagLocalUserZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
-public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
+public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ, IFlagLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -69,7 +70,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ{
 				String stemp = sKey;
 				boolean btemp = this.setFlagZ(sKey, hmFlag.get(sKey));
 				if(btemp==false){
-					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		 
 				}
 			}
