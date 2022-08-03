@@ -63,19 +63,23 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 	
 	
 	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable, String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
+	 boolean bReturn = false;	
 	 main:{
 		 	
 	 	//try{	 		
 	 			//setzen der übergebenen Flags	
 				if(saFlagControlIn != null){
+					 String stemp; boolean btemp; String sLog;
 					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 						stemp = saFlagControlIn[iCount];
 						btemp = setFlag(stemp, true);
 						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
+							 String sKey = stemp;
+							 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+							 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+							//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!							
+							// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
+							// throw ez;		 
 						}
 					}
 					if(this.getFlag("init")==true){
