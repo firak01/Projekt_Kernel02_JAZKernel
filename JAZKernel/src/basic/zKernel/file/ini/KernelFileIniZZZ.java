@@ -407,14 +407,40 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					sProperty = sPropertyIn;
 				}					
 			}//end check:
+									
+			//+++++++++++++++++++++++++++++++++++++++++++++++++
+			String sReturnRaw = null;
 			
-			System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
-			String sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
+			//1. Suche nach sSection PLUS Systemnumber
+			String sSystemNumber = this.getKernelObject().getSystemNumber();
+			String sSectionSearch  = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
+			boolean bSectionExists = this.proofSectionExists(sSectionSearch);						
+			if(bSectionExists) {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSectionSearch + "' und Property = '" + sProperty +"'");
+				sReturnRaw = this.objFileIni.getValue(sSectionSearch, sProperty);
+				if(sReturnRaw!=null) {
+					objReturn.setSection(sSectionSearch);
+					objReturn.setProperty(sProperty);
+					objReturn.setRaw(sReturnRaw);
+					objReturn.setValue(sReturnRaw);					
+				}
+			}
+			
+			if(sReturnRaw==null) {
+				//2. Hole die Section pur
+				sSectionSearch=sSection;
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSectionSearch + "' und Property = '" + sProperty +"'");
+				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);	
+				if(sReturnRaw!=null) {
+					objReturn.setSection(sSection);
+					objReturn.setProperty(sProperty);
+					objReturn.setRaw(sReturnRaw);
+					objReturn.setValue(sReturnRaw);	
+				}
+			}
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++
 			if(sReturnRaw==null) break main;
-			objReturn.setSection(sSection);
-			objReturn.setProperty(sProperty);
-			objReturn.setRaw(sReturnRaw);
-			objReturn.setValue(sReturnRaw);												
+			
 			
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
 			boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());

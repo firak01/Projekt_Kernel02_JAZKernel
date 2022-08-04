@@ -63,10 +63,10 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("TestentryDymmy=nothing");
 						
 			objStreamFile.println("[Section B!01]");
-			objStreamFile.println("Testentry2=Testvalue local to be found");
+			objStreamFile.println("Testentry2=Testvalue2 local to be found");
 			
 			objStreamFile.println("[Section B]");
-			objStreamFile.println("Testentry2=Testvalue global. This should not be found");
+			objStreamFile.println("Testentry2=Testvalue2 global. This should not be found!");
 			
 			objStreamFile.println("[Section for testCompute]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
@@ -169,11 +169,17 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	
 	public void testCompute() {
 		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("useExpression", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'useExpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			String sFlagUseExpression = IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name();
 			
+			boolean bFlagAvailable = objExpressionSolver.setFlag(sFlagUseExpression, false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag '"+sFlagUseExpression+"' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			
+			
+			//#########################################################
+			//#### SECTION A ########################################## 
 			//+++ Anwenden der ersten Formel, ohne Berechnung
-			objExpressionSolver.setFlag("useExpression", false); //Ansonsten wird der Wert sofort ausgerechnet
+			objExpressionSolver.setFlag(sFlagUseExpression, false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sLineWithExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.",sLineWithExpression);
 			
@@ -182,17 +188,52 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			//+++ Anwenden der ersten Formel, mit Berechnung
 			IKernelConfigSectionEntryZZZ objSectionEntry = new KernelConfigSectionEntryZZZ();
-			objExpressionSolver.setFlag("useExpression", true); 
+			objExpressionSolver.setFlag(sFlagUseExpression, true); 
 			objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			int iReturn = objExpressionSolver.compute(sLineWithExpression, objSectionEntry);
 			assertTrue(iReturn==1);
-			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", objSectionEntry.getValue());
+			String sValue = objSectionEntry.getValue();
+			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
 			
-			objFileIniTest.setFlag("useExpression", true);
+			objFileIniTest.setFlag(sFlagUseExpression, true);
 			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.",sExpression);
 		
+			
+			//#########################################################
+			//#### SECTION B ##########################################
+			//#### HIER GIBT ES EINEN WERT FUER DIE SYSTEMNUMBER    ###
+			
+//			objExpressionSolver.setFlag(sFlagUseExpression, false);
+//			boolean btemp = objExpressionSolver.getFlag(sFlagUseExpression);
+//			assertFalse(btemp);
+			
+			//+++ Anwenden der zweiten Formel, ohne Berechnung
+			objFileIniTest.setFlag(sFlagUseExpression, false);
+			String sLineWithExpression2 = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
+			assertEquals("Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.",sLineWithExpression2);
+			
+			String sLineWithValue2 = objFileIniTest.getPropertyValue("Section B", "Testentry2").getValue();
+			assertEquals("Testvalue2 local to be found",sLineWithValue2);
+			
+			//+++ Anwenden der zweiten Formel, mit Berechnung
+			IKernelConfigSectionEntryZZZ objSectionEntry2 = new KernelConfigSectionEntryZZZ();
+			objExpressionSolver.setFlag(sFlagUseExpression, true); 
+			objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			int iReturn2 = objExpressionSolver.compute(sLineWithExpression2, objSectionEntry2);
+			assertTrue(iReturn2==1);
+			String sValue2 = objSectionEntry2.getValue();
+			assertEquals("Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.", sValue2 );
+			
+			objFileIniTest.setFlag("useExpression", true);
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			String sExpression2 = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
+			assertEquals("Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.",sExpression2);
+		
+			
+			
+			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
