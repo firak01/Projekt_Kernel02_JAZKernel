@@ -411,6 +411,14 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			//+++++++++++++++++++++++++++++++++++++++++++++++++
 			String sReturnRaw = null;
 			
+			TODOGOON; //20220806 Suche nach ApplicationKey ! Systemnr _ sSection
+			TODOGOON; //20220806 Suche nach ApplicationKey _ sSection
+			
+			TODOGOON; //20220806 Verwende die Methode .getProgramAliasUsed() UND Erweitere diese um 
+			          //			ApplicationKey ! Systemnr _ sSection
+					  //            ApplicationKey _ sSection
+
+			
 			//1. Suche nach sSection PLUS Systemnumber
 			String sSystemNumber = this.getKernelObject().getSystemNumber();
 			String sSectionSearch  = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);

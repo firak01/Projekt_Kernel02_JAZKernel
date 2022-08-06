@@ -68,6 +68,12 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("[Section B]");
 			objStreamFile.println("Testentry2=Testvalue2 global. This should not be found!");
 			
+			objStreamFile.println("[FGL_Section C]");
+			objStreamFile.println("Testentry3=Testvalue3 global. This should not be found!");
+			
+			objStreamFile.println("[FGL!01_Section C]");
+			objStreamFile.println("Testentry3=Testvalue3 local to be found");
+						
 			objStreamFile.println("[Section for testCompute]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
 			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");

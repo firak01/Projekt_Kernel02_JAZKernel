@@ -2249,6 +2249,7 @@ MeinTestParameter=blablaErgebnis
 				while(itAlias.hasNext()){
 					String sSectionTemp = itAlias.next(); //der verwendete Programalias zur Suche nach der Section. Da auch Systemkeys darin sein sollten, anschliessend den DirectLookup machen und nicht den System-Lookup
 					
+					//TODO 20220806: Diese besonderen Varianten in getProgramAliasUsed aufnehmen.										
 					//Ggfs. wird der Systemkey explizit noch verwendet, gefolgt vom definierten Alias
 					sSectionUsed = this.getSystemKey() + "!" + sSectionTemp;					
 					sDebugKey = "(2b1)";
@@ -2265,9 +2266,11 @@ MeinTestParameter=blablaErgebnis
 					if(objReturn.hasAnyValue()) break main;	
 					
 					
+					
+					
 					//Nur den definierten Alias verwenden
 					sSectionUsed = sSectionTemp;					
-					sDebugKey = "(2b3)";
+					sDebugKey = "(2b)";
 					hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionUsed, sProperty);
 					objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, objFileIniConfig);
 					if(objReturn.hasAnyValue()) break main;						
@@ -3561,7 +3564,14 @@ MeinTestParameter=blablaErgebnis
 				}
 				
 				//####################################################################################################
-				//Programmaliasermittlung, verwende als Section den Systemkey (ApplicationKey + "!" + Systemnumber)						
+				TODOGOON; //20220806: Programmaliasermittlung, die Variante "ApplicationKey ! SystemNr _ sSectionUsed
+				
+				
+				
+				
+				
+				//####################################################################################################
+				//Programmaliasermittlung, verwende als Section den Systemkey (ApplicationKey + "!" + Systemnumber), also quasi die oberste Ebene					
 				sSectionUsed = this.getSystemKey();
 				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sProgramNameUsed + "'");				 				
 				bSectionExists = objFileIniConfig.proofSectionExists(sSectionUsed);
