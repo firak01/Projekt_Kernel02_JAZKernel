@@ -13,6 +13,7 @@ public interface IKernelConfigSectionEntryUserZZZ extends IKernelConfigFileUserZ
 	public ArrayList<String> getModuleAll() throws ExceptionZZZ;
 	
 	public ArrayList<String> getProgramAliasUsed(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ;
+	public ArrayList<String> getProgramAliasUsed_DirectLookup(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ;
 	
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIni, String sModuleAlias, String sProgramAlias, String sParameterName, boolean bUseCache ) throws ExceptionZZZ;
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIni, String sModuleAlias, String sProgramAlias, String sParameterName ) throws ExceptionZZZ;

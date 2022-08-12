@@ -197,8 +197,6 @@ public class FileIniZZZTest extends TestCase {
 		
 	}
 	
-	
-	
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
@@ -240,7 +238,7 @@ public class FileIniZZZTest extends TestCase {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
-	
+		
 	/** void, Test: Creating and changing entries of a section.
 	* Lindhauer; 22.04.2006 13:18:49
 	 */

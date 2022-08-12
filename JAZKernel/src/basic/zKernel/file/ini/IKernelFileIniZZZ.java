@@ -13,6 +13,7 @@ public interface IKernelFileIniZZZ extends IKernelUserZZZ{
 	
 	//Weitere Konstanten sind Kernelspezifisch
 	public static final String sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER = "!";
+	public static final String sINI_SUBJECT_SEPARATOR_PROGRAM = "_";
 		
 	public enum FLAGZ{
 		FILEUNSAVED, FILENEW, FILECHANGED;

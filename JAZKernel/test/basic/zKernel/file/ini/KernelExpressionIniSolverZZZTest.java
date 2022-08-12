@@ -77,6 +77,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("[Section for testCompute]");
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
 			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
+			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z>[Section C]Testentry3</Z>'. FGL rulez.");
 			
 			objStreamFile.println("[Section for testComputeMathArguments]");
 			objStreamFile.println("WertA=4");
@@ -237,7 +238,36 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			String sExpression2 = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
 			assertEquals("Der dynamische Wert2 ist 'Testvalue2 local to be found'. FGL rulez.",sExpression2);
 		
+			//#########################################################
+			//#### SECTION C ##########################################
+			//#### HIER GIBT ES EINEN WERT FUER DIE SYSTEMNUMBER, anders deklariert    ###
 			
+//			objExpressionSolver.setFlag(sFlagUseExpression, false);
+//			boolean btemp = objExpressionSolver.getFlag(sFlagUseExpression);
+//			assertFalse(btemp);
+			
+			//+++ Anwenden der zweiten Formel, ohne Berechnung
+			objFileIniTest.setFlag(sFlagUseExpression, false);
+			String sLineWithExpression3 = objFileIniTest.getPropertyValue("Section for testCompute", "Formula3").getValue();
+			assertEquals("Der dynamische Wert3 ist '<Z>[Section C]Testentry3</Z>'. FGL rulez.",sLineWithExpression3);
+			
+			String sLineWithValue3 = objFileIniTest.getPropertyValue("Section C", "Testentry3").getValue();
+			assertEquals("Testvalue3 local to be found",sLineWithValue3);
+			
+			//+++ Anwenden der zweiten Formel, mit Berechnung
+			IKernelConfigSectionEntryZZZ objSectionEntry3 = new KernelConfigSectionEntryZZZ();
+			objExpressionSolver.setFlag(sFlagUseExpression, true); 
+			objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			int iReturn3 = objExpressionSolver.compute(sLineWithExpression3, objSectionEntry3);
+			assertTrue(iReturn3==1);
+			String sValue3 = objSectionEntry3.getValue();
+			assertEquals("Der dynamische Wert3 ist 'Testvalue3 local to be found'. FGL rulez.", sValue3 );
+			
+			objFileIniTest.setFlag("useExpression", true);
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			String sExpression3 = objFileIniTest.getPropertyValue("Section for testCompute", "Formula3").getValue();
+			assertEquals("Der dynamische Wert3 ist 'Testvalue3 local to be found'. FGL rulez.",sExpression3);
+		
 			
 			
 		} catch (ExceptionZZZ ez) {

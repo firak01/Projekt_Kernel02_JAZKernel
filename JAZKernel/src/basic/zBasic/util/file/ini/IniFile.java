@@ -284,8 +284,7 @@ public class IniFile extends Object
          }
       }
    }
-
-
+   
    /** Adds and assignment (i.e. "variable=value") to a subject.
     * FGL 20060423 Now adding subjects, when the value is empty is the default case.
     * This is controlled by a flag.

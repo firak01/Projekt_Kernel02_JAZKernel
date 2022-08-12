@@ -104,7 +104,14 @@ public abstract class AbstractCounterByCharacterAsciiZZZ<T extends ICounterStrat
 			String sMethodOfInit=this.getCounterStrategyObject().getClassMethodCallingString();
 			
 			//Wenn das Erhöhen des Zählers in einer anderen Methode nicht erlaubt ist, gib dann in der anderen Methode den aktuellen Wert zurück.
-			if(!stest.equals(sMethodOfInit)) return this.current();
+			if(!stest.equals(sMethodOfInit)) {
+				int iValueCurrent = this.getValueCurrent();
+				if(iValueCurrent<0) {
+					return "0"; //sonst gibt es bei "Buchstabenzählern" Probleme im PostPorcessing
+				}else {
+					return this.current();
+				}
+			}
 		}
 		
 		//Wenn erlaubt hisichtlich der Methode, erhöhe den Zähler

@@ -17,6 +17,7 @@ import java.util.Set;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
@@ -408,48 +409,37 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				}					
 			}//end check:
 									
+			//############################
+			//### GRUNDSATZ:
+			//### ENDLOSSCHLEIFENGEFAHR, WENN NICHT AUF DIESER EBENE DIREKT MIT DEM INIFILE GEARBEITET WUERDE 
+			//### UND WIEDER KERNEL.getPropertyValue() aufgerufen wuerde.
+			//FileIniZZZ objFileIniConfig = this.getKernelObject().getFileConfigIni();
+			//############################
+			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++
-			String sReturnRaw = null;
-			
-			TODOGOON; //20220806 Suche nach ApplicationKey ! Systemnr _ sSection
-			TODOGOON; //20220806 Suche nach ApplicationKey _ sSection
-			
-			TODOGOON; //20220806 Verwende die Methode .getProgramAliasUsed() UND Erweitere diese um 
-			          //			ApplicationKey ! Systemnr _ sSection
-					  //            ApplicationKey _ sSection
-
-			
-			//1. Suche nach sSection PLUS Systemnumber
+			String sReturnRaw = null;			
+			String sApplicationKey  = this.getKernelObject().getApplicationKey();
 			String sSystemNumber = this.getKernelObject().getSystemNumber();
-			String sSectionSearch  = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
-			boolean bSectionExists = this.proofSectionExists(sSectionSearch);						
-			if(bSectionExists) {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSectionSearch + "' und Property = '" + sProperty +"'");
-				sReturnRaw = this.objFileIni.getValue(sSectionSearch, sProperty);
-				if(sReturnRaw!=null) {
-					objReturn.setSection(sSectionSearch);
-					objReturn.setProperty(sProperty);
-					objReturn.setRaw(sReturnRaw);
-					objReturn.setValue(sReturnRaw);					
+				
+			ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForSection(sSection, sApplicationKey, sSystemNumber);
+			for(String sSectionUsed:alsSection) {
+				boolean bSectionExists = this.proofSectionExists(sSectionUsed);
+				if(bSectionExists) {
+					objReturn.setSection(sSectionUsed);	
+					objReturn.sectionExists(true);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSectionUsed + "' und Property = '" + sProperty +"'");
+					sReturnRaw = this.objFileIni.getValue(sSectionUsed, sProperty);
+					if(sReturnRaw!=null) {						
+						objReturn.setProperty(sProperty);
+						objReturn.setRaw(sReturnRaw);
+						objReturn.setValue(sReturnRaw);	
+						break;
+					}
 				}
-			}
-			
-			if(sReturnRaw==null) {
-				//2. Hole die Section pur
-				sSectionSearch=sSection;
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSectionSearch + "' und Property = '" + sProperty +"'");
-				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);	
-				if(sReturnRaw!=null) {
-					objReturn.setSection(sSection);
-					objReturn.setProperty(sProperty);
-					objReturn.setRaw(sReturnRaw);
-					objReturn.setValue(sReturnRaw);	
-				}
-			}
-			//+++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+			}			
 			if(sReturnRaw==null) break main;
-			
-			
+						
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
 			boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
 			if(bUseExpression) {

@@ -315,7 +315,7 @@ public void testFileConfigModuleExternByAlias(){
 	}
 }
 
-public void testModuleFileIsConfigured(){
+public void testProofModuleFileIsConfigured(){
 	try{
 		assertEquals(true, objKernelFGL.proofModuleFileIsConfigured("TestModule"));
 	}catch(ExceptionZZZ ez){
@@ -323,7 +323,7 @@ public void testModuleFileIsConfigured(){
 	}
 }
 
-public void testModuleFileExists(){
+public void testProofModuleFileExists(){
 	try{
 		// Dieses Modul soll existieren
 		assertEquals(true, objKernelFGL.proofModuleFileExists("TestModule"));
@@ -346,7 +346,7 @@ public void testGetModuleAll(){
 	}
 }
 
-public void testParameter(){
+public void testGetParameter(){
 	try{
 		// Dieses Modul soll existieren
 		String stemp = objKernelTest.getParameter("TestGetParameter").getValue();
@@ -360,7 +360,7 @@ public void testParameter(){
  * Voraussetzung ist: Vorhandensein einer entsprechenden Modul-Konfigurations-.ini-Datei. Siehe testModuleExists()
 * Lindhauer; 20.04.2006 07:49:38
  */
-public void testParameterByModuleAlias(){
+public void testGetParameterByModuleAlias(){
 	try{
 		// In der Modulkonfiguration soll dieser Eintrag existieren
 		String stemp = objKernelFGL.getParameterByModuleAlias("TestModule", "testProgramName").getValue();
@@ -370,27 +370,19 @@ public void testParameterByModuleAlias(){
 	}
 }
 
-public void testParameterByProgramAlias(){
+public void testGetParameterByProgramAlias(){
 	try{
-		//A) Übergabe als directe Section testen
-		String stemp = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramProperty" ).getValue(); 
+		//A) Übergabe als direkte Section testen
+		String stemp = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01_TestProg","testProgramProperty" ).getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	
-		
-//	try{
-//		//B) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
-//		//!!! GROSS-/Keinschreibung ist relevant
-//		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty").getValue(); 
-//		assertEquals("Expected NO value of property 'testProgramProperty', because Program is not configured starting with lowercase letter 't' for the 'TestModule' of the Application 'FGL'", "" , stemp2);
-//		fail("An exception was expected ");
-//	}catch(ExceptionZZZ ez){
-//	}	
-	
+			
 	try{
-		//B) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
+		//B1) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
 		//!!! GROSS-/Keinschreibung ist NICHT relevant		
+		//Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [FGL!01] definiert ist.
 		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty").getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp2);
 	}catch(ExceptionZZZ ez){
@@ -398,7 +390,7 @@ public void testParameterByProgramAlias(){
 	}	
 	
 	try{
-		//B2) 20061021 dieser Wert ist dann global definiert
+		//B2) 20061021 dieser Wert ist dann global definiert		
 		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "TestProgramName", "testGlobalProperty").getValue(); 
 		assertEquals("testWert global", stemp2);
 	}catch(ExceptionZZZ ez){
@@ -409,7 +401,7 @@ public void testParameterByProgramAlias(){
 		//C) Einen Parameterwert setzen und anschliessend auslesen
 		//C1) Direkt als Section
 		String sToSet1 = new String("testwert section");
-		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01!TestProg", "testProgramProperty2", sToSet1);
+		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01_TestProg", "testProgramProperty2", sToSet1);
 		
 		String stemp3 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty2").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty2'", sToSet1, stemp3);
@@ -420,7 +412,7 @@ public void testParameterByProgramAlias(){
 	try{
 		//C2) Setzen als Programname testen (!!! SOFORTIGES SCHREIBEN. Merke: Verz�gertes Schreiben ist nicht m�glich)
 		String sToSet2 = new String("testwert progname");
-		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01!TestProg", "testProgramProperty3", sToSet2);
+		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01_TestProg", "testProgramProperty3", sToSet2);
 		
 		String stemp4 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty3").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
 		assertEquals("Expected as a value of the just setted property 'testProgramProperty3'", sToSet2, stemp4);
@@ -477,6 +469,42 @@ public void testParameterByProgramAlias(){
 				
 
 }
+
+/** void, Test: Reading an entry in a section of the ini-file
+* Lindhauer; 22.04.2006 12:54:32
+ */
+public void testGetParameterByProgramAlias2(){
+//	try {
+		//Erst testen, dass auch kein Leerwert kommt
+//		String sModule = this.getClass()
+//		
+//		IKernelConfigSectionEntryZZZ objEntry = objKernel.getParameterByProgramAlias(sModule, sProgram, "URL2Read");
+//		sReturn = objEntry.getValue();
+//		
+//		
+//		String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
+//		assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
+//		
+//		//nun den Wert testen, wie er im setup definiert wurde
+//		assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());
+//		
+//		//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
+//		assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry").getValue());
+//		
+//		//NEU 20070306: Hier über eine Formel die Property auslesen
+//		objFileIniTest.setFlag("useFormula", false);
+//		String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+//		assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
+//		
+//		objFileIniTest.setFlag("useFormula", true);
+//		sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+//		assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
+//		
+//	} catch (ExceptionZZZ ez) {
+//		fail("Method throws an exception." + ez.getMessageLast());
+//	}
+}
+
 
 public void testGetParameterFromClass(){
 	
