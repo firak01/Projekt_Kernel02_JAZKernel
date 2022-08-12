@@ -962,6 +962,52 @@ public class StringZZZ implements IConstantZZZ{
 		return vecReturn;
 	}
 	
+	/** Fülle vor den String Leerzeichen, bis zur angegebenen Anzahl Zeichen gesamt.
+	 * 
+	 * s. https://www.baeldung.com/java-pad-string
+	 *     https://stackoverflow.com/questions/388461/how-can-i-pad-a-string-in-java
+	 * Merke: Ein anderer Ansatz als die Repeat-Methoden dieser Klasse
+	 * @return
+	 * @author Fritz Lindhauer, 12.08.2022, 21:21:53
+	 */
+	public static String padLeft(String sInput, int length) {
+		 return String.format("%" + length + "s", sInput);	
+	}
+	
+	/** Fülle vor den String das übergebene Zeichen, bis zur angegebenen Anzahl Zeichen gesamt.
+	 * 
+	 * s. https://www.baeldung.com/java-pad-string
+	 *     https://stackoverflow.com/questions/388461/how-can-i-pad-a-string-in-java
+	 * Merke: Ein anderer Ansatz als die Repeat-Methoden dieser Klasse
+	 * @return
+	 * @author Fritz Lindhauer, 12.08.2022, 21:21:53
+	 */
+	public static String padLeft(String sInput, int length, char cFiller) {
+		return String.format("%1$" + length + "s", sInput).replace(' ', cFiller);
+	}
+	
+	/** Fülle hinter den String Leerzeichen, bis zur angegebenen Anzahl Zeichen gesamt. 
+	 * s. https://www.baeldung.com/java-pad-string
+	 *     https://stackoverflow.com/questions/388461/how-can-i-pad-a-string-in-java
+	 * Merke: Ein anderer Ansatz als die Repeat-Methoden dieser Klasse
+	 * @return
+	 * @author Fritz Lindhauer, 12.08.2022, 21:21:48
+	 */
+	public static String padRight(String sInput, int length) {
+		 return String.format("%-" + length + "s", sInput);  
+	}
+	
+	/** Fülle vor den String das übergebene Zeichen, bis zur angegebenen Anzahl Zeichen gesamt.
+	 * s. https://www.baeldung.com/java-pad-string
+	 *     https://stackoverflow.com/questions/388461/how-can-i-pad-a-string-in-java
+	 * Merke: Ein anderer Ansatz als die Repeat-Methoden dieser Klasse
+	 * @return
+	 * @author Fritz Lindhauer, 12.08.2022, 21:21:48
+	 */
+	public static String padRight(String sInput, int length, char cFiller) {
+		return String.format("%1$-" + length + "s", sInput).replace(' ', cFiller);
+	}
+	
 	/** String, concatenate the string the number of times.
 	 * e.g. .repeat("xyz", 2) will return "xyzxyz".
 	* 0823; 28.05.2006 10:53:01
@@ -1000,6 +1046,14 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	/** Wiederhole die Zeichen x mal.
+	 *  Merke: Die padLeft / padRight Methoden machen so etwas ähnliches mit Füllzeichen
+	 *         aber auf eine andere Weise.
+	 * @param c
+	 * @param icount
+	 * @return
+	 * @author Fritz Lindhauer, 12.08.2022, 21:18:41
+	 */
 	public static final String repeatChar (char c, int icount) {
 		String sReturn = "";
 		main:{

@@ -377,7 +377,25 @@ public class StringZZZTest extends TestCase{
 		
 	}
 	
+public void testPadLeft() {
+	String stemp = StringZZZ.padLeft("abc", 5);
+	assertEquals("  abc", stemp);
 	
+	
+	String stemp2 = StringZZZ.padLeft("abc",  5, '-');
+	assertEquals("--abc",stemp2);
+	
+}
+
+public void testPadRight() {
+	String stemp = StringZZZ.padRight("abc", 5);
+	assertEquals("abc  ", stemp);
+	
+	
+	String stemp2 = StringZZZ.padRight("abc",  5, '-');
+	assertEquals("abc--",stemp2);
+	
+}
 	
 
 public void testRepeat(){

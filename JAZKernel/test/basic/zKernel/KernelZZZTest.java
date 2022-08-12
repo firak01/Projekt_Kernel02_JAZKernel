@@ -374,7 +374,7 @@ public void testGetParameterByProgramAlias(){
 	try{
 		//A) Übergabe als direkte Section testen
 		String stemp = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01_TestProg","testProgramProperty" ).getValue(); 
-		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp);
+		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert local 4 program" , stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	
@@ -384,7 +384,7 @@ public void testGetParameterByProgramAlias(){
 		//!!! GROSS-/Keinschreibung ist NICHT relevant		
 		//Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [FGL!01] definiert ist.
 		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty").getValue(); 
-		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert" , stemp2);
+		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert local 4 program" , stemp2);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	

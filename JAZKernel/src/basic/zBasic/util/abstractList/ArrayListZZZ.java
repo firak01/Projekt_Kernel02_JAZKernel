@@ -304,17 +304,16 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 		return aReturn;	
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<?> unique(ArrayList<?> lista){
 		ArrayList listaReturn = null;
 		main:{
-			check:{
-				if(lista==null)break main;			
-			}//END check:
+			if(lista==null)break main;					
 		
-		listaReturn=new ArrayList();
-		for(int icount=0; icount < lista.size(); icount++ ){
-			if(! listaReturn.contains(lista.get(icount))) listaReturn.add(lista.get(icount));
-		}	
+			listaReturn=new ArrayList();
+			for(int icount=0; icount < lista.size(); icount++ ){
+				if(! listaReturn.contains(lista.get(icount))) listaReturn.add(lista.get(icount));
+			}	
 		}//End main:
 		return listaReturn;
 	}
