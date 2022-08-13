@@ -470,10 +470,10 @@ public void testGetParameterByProgramAlias(){
 
 }
 
-/** void, Test: Reading an entry in a section of the ini-file
-* Lindhauer; 22.04.2006 12:54:32
+/** void, Test: Replacing an entry in a section of the ini-file
+ * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
-public void testGetParameterByProgramAlias2(){
+public void testSetParameterByProgramAlias(){
 //	try {
 		//Erst testen, dass auch kein Leerwert kommt
 //		String sModule = this.getClass()

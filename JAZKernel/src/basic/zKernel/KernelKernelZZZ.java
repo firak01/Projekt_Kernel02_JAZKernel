@@ -2923,8 +2923,9 @@ MeinTestParameter=blablaErgebnis
 			}else{
 				sValue=sValueIn;
 			}			
-		
+			
 		//+++ AUSSERHALB DER SCHLEIFE: AlIASWERTE HOLEN
+		String sApplicationKey = this.getApplicationKey();
 		String sSystemNumber= this.getSystemNumber();
 		ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sMainSectionUsed, sProgramOrSection, sSystemNumber);
 							
@@ -2937,6 +2938,25 @@ MeinTestParameter=blablaErgebnis
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zweiter Durchlauf. Ersetze jetzt keinen bestehenden Wert, sondern erlaube neuen Eintrag an der ersten passenden Stelle.");
 				bSetNew=true;
 			}
+			
+			
+			//############################################################################################
+		    //### Vereinfache den Code, dadurch, dass ein definierte Liste an Schlüsseln abgearbeitet wird.		    
+		    //############################################################################################
+		    ArrayList<String> alsSectionProgram = KernelKernelZZZ.computeSystemSectionNamesForProgramAlias(objFileIniConfig, sProgramOrSection,sApplicationKey, sSystemNumber);
+		    int iCounter = -1;		    
+		    for(String sSectionProgramUsed : alsSectionProgram) {
+		    	sSectionUsed = sSectionProgramUsed;
+		    	iCounter++;
+		    	sDebugKey = "(" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
+		    	hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionProgramUsed, sProperty);
+		    	//objReturn = KernelGetParameterByProgramAlias_DirectLookup_(sSectionProgramUsed, sProperty, objFileIniConfig);
+				//if(objReturn.hasAnyValue()) break main;
+		    	bReturn = KernelSetParameterByProgramAlias_DirectLookup_(sSectionProgramUsed, sProperty, sValue, bSetNew, bFlagDelete, bFlagSaveImmidiate, objFileIniConfig);
+				if(bReturn)break main;
+		    }		    
+		    //#################################################	
+			
 			
 			
 			//### B. SUCHE WERTE ####################################################################		
@@ -3890,147 +3910,7 @@ MeinTestParameter=blablaErgebnis
 				}else{
 					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - Keine Section als Grundlage gefunden '" + sSection + "'.");
 				}
-			}
-			
-		
-			
-			
-			//++++++++++++
-//			//Suche nach einer überschreibenden Version mit Systemkey				
-//			sSectionUsed = sMainSection+"!"+sSystemNumber;
-//			
-//			
-//				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - Section als Grundlage gefunden '" + sSection + "'.");
-//				
-//			
-//			//++++++++++
-//			//Suche nach der Version ohne SectionKey
-//			sSectionUsed = sMainSection;
-//		    //System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (b.b) - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sProgramNameUsed + "'");			  
-//		    bSectionExists = objFileIniConfig.proofSectionExists(sSectionUsed);
-//			if(bSectionExists==true){
-//				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (b.b) - Section als Grundlage gefunden '" + sSection + "'.");
-//
-//				//Nun in der Section nach dem Wert für das Programm suchen.
-//				objEntry = objFileIniConfig.getPropertyValue(sSectionUsed, sPropertyUsed); 
-//				if(objEntry.hasAnyValue()){
-//					sProgramAliasUsed = objEntry.getValue();					
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (b.b) - in der Section als Grundlage '" + sSection + "' Wert für '" + sProgramNameUsed + "' gefunden = '" + sProgramAliasUsed +"'.");
-//					listasReturn.add(sProgramAliasUsed+ FileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER +sSystemNumber);//Den gefundenen Programalias zuerst um die SystemNumber erweitern.					
-//					listasReturn.add(sProgramAliasUsed);
-//					sDebugKey = "(b.b)";
-//					 hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sPropertyUsed);
-//				}else{
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (b.b) - in der Section als Grundlage '" + sSection + "' keinen Wert für '" + sProgramNameUsed + "' gefunden, der Alias sein könnte.");
-//				}
-//			}else{
-//				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (b.b) - Keine Section als Grundlage gefunden '" + sSection + "'.");
-//			}																	
-//					
-//				
-//			//####################################################################################################
-//			//TODOGOON; //20220806: Programmaliasermittlung, die Variante "ApplicationKey ! SystemNr _ sSectionUsed
-//			//Suche nach einer überschreibenden Version mit Systemkey
-//			String sApplicationKey = this.getApplicationKey();
-//			
-//			sSectionUsed = sApplicationKey + FileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER + sSystemNumber + "_"+ sMainSection;
-//			sPropertyUsed = sProgramNameUsed;
-//			//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sProgramNameUsed + "'");				
-//			bSectionExists = objFileIniConfig.proofSectionExists(sSectionUsed);
-//			if(bSectionExists==true){
-//				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - Section als Grundlage gefunden '" + sSection + "'.");
-//				//Nun in der Section nach dem Wert für das Programm suchen.
-//				objEntry = objFileIniConfig.getPropertyValue(sSectionUsed, sPropertyUsed); 
-//				if(objEntry.hasAnyValue()){
-//					sProgramAliasUsed = objEntry.getValue();
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - in der Section als Grundlage '" + sSection + "' Wert für '" + sProgramNameUsed + "' gefunden = '" + sProgramAliasUsed +"'.");
-//					listasReturn.add(sProgramAliasUsed+"!"+sSystemNumber);//Den gefundenen Programalias zuerst um die SystemNumber erweitern.					
-//					listasReturn.add(sProgramAliasUsed);
-//					sDebugKey = "(c.c)";
-//						hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sPropertyUsed);
-//					}else{
-//						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - in der Section als Grundlage '" + sSection + "' KEINEN Wert für '" + sProgramNameUsed + "' gefunden, der Alias sein könnte.");
-//					}
-//				}else{
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Keine Section als Grundlage gefunden '" + sSection + "'.");
-//				}
-//					
-//				//++++++++++
-//				//Suche nach einer globalen Version ohne SystemNumber
-//				sSectionUsed = sApplicationKey + "_"+ sMainSection;
-//				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sProgramNameUsed + "'");			  
-//				bSectionExists = objFileIniConfig.proofSectionExists(sSectionUsed);
-//				if(bSectionExists==true){
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Section als Grundlage gefunden '" + sSection + "'.");
-//
-//					//Nun in der Section nach dem Wert für das Programm suchen.
-//					objEntry = objFileIniConfig.getPropertyValue(sSectionUsed, sPropertyUsed); 
-//					if(objEntry.hasAnyValue()){
-//						sProgramAliasUsed = objEntry.getValue();					
-//						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - in der Section als Grundlage '" + sSection + "' Wert für '" + sProgramNameUsed + "' gefunden = '" + sProgramAliasUsed +"'.");
-//						listasReturn.add(sProgramAliasUsed+"!"+sSystemNumber);//Den gefundenen Programalias zuerst um die SystemNumber erweitern.					
-//						listasReturn.add(sProgramAliasUsed);
-//						sDebugKey = "(b.b)";
-//						 hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sPropertyUsed);
-//					}else{
-//						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - in der Section als Grundlage '" + sSection + "' keinen Wert für '" + sProgramNameUsed + "' gefunden, der Alias sein könnte.");
-//					}																	
-//				}else{
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Keine Section als Grundlage gefunden '" + sSection + "'.");
-//				}
-//				
-//				//####################################################################################################
-//				//Programmaliasermittlung, verwende als Section den Systemkey (ApplicationKey + "!" + Systemnumber), also quasi die oberste Ebene					
-//				sSectionUsed = this.getSystemKey();
-//				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sProgramNameUsed + "'");				 				
-//				bSectionExists = objFileIniConfig.proofSectionExists(sSectionUsed);
-//				if(bSectionExists==true){
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Section als Grundlage gefunden '" + sSection + "'.");
-//
-//					//Nun in der Section nach dem Wert für das Programm suchen.
-//					objEntry = objFileIniConfig.getPropertyValue(sSectionUsed, sPropertyUsed); 
-//					if(objEntry.hasAnyValue()){
-//						sProgramAliasUsed = objEntry.getValue();
-//						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Value gefunden für Property '" + sProgramNameUsed + "'='" + sProgramAliasUsed + "'");
-//						
-//						//Den gefundenen Programalias zuerst um die SystemNumber erweitern.
-//						listasReturn.add(sProgramAliasUsed+"!"+sSystemNumber);
-//						listasReturn.add(sProgramAliasUsed);	
-//						sDebugKey = "(c.c)";
-//						hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sPropertyUsed);
-//					}else{
-//						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - in der Section als Grundlage '" + sSection + "' keinen Wert für '" + sProgramNameUsed + "' gefunden, der Alias sein könnte.");
-//					}
-//				}else{
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (c.c) - Keine Section als Grundlage gefunden '" + sSection + "'.");
-//				}
-//					
-//				
-//				//###################################################################################################
-//				//Programaliasermittlung, verwende als Section den ApplicationKey selbst								
-//				sSectionUsed = this.getApplicationKey();
-//				//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Verwende als sSection '"+ sSection + "' für die Suche nach dem Programm als der Property '" + sProgramNameUsed + "'");					
-//				bSectionExists = objFileIniConfig.proofSectionExists(sSectionUsed);
-//				if(bSectionExists==true){
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Section als Grundlage gefunden '" + sSection + "'.");
-//				
-//					//Nun in der Section nach dem Wert für das Programm suchen.
-//					objEntry = objFileIniConfig.getPropertyValue(sSectionUsed, sPropertyUsed); 
-//					if(objEntry.hasAnyValue()){
-//						sProgramAliasUsed = objEntry.getValue();
-//						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Value gefunden für Property '" + sProgramNameUsed + "'='" + sProgramAliasUsed + "'");
-//						
-//						//Den gefundenen Programalias zuerst um die SystemNumber erweitern.
-//						listasReturn.add(sProgramAliasUsed+"!"+sSystemNumber);					
-//						listasReturn.add(sProgramAliasUsed);
-//						sDebugKey = "(d.d)";
-//						hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sPropertyUsed);
-//					}else{
-//						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - in der Section als Grundlage '" + sSection + "' keinen Wert für '" + sProgramNameUsed + "' gefunden, der Alias sein könnte.");
-//					}
-//				}else{
-//					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (d.d) - Keine Section als Grundlage gefunden '" + sSection + "'.");
-//				}					
+			}			
 		}//end main:
 		
 		
@@ -4684,27 +4564,25 @@ MeinTestParameter=blablaErgebnis
 				throw ez;				
 			}
 			
-			String sSystemKey = this.getSystemKey(); //Also z.b. "MyApplication!01"
-			String[] saVar = objFileIni.getVariables(sSystemKey);
-			for(int icount = 0; icount <= saVar.length-1; icount ++){
-				String sModule = KernelKernelZZZ.computeModuleAliasBySubject(saVar[icount]);
-				if(!StringZZZ.isEmpty(sModule)){
-					if(!listaModuleString.contains(sModule)){
-						listaModuleString.add(sModule);
-					}
-				}
-			}
-			
+			//########################################
+			//### Vereinfachung mit ArrayList
+			//########################################
 			String sApplicationKey = this.getApplicationKey();
-			String[] saVarApplication = objFileIni.getVariables(sApplicationKey);
-			for(int icount = 0; icount <= saVarApplication.length-1; icount ++){
-				String sModule = KernelKernelZZZ.computeModuleAliasBySubject(saVarApplication[icount]);
-				if(!StringZZZ.isEmpty(sModule)){
-					if(!listaModuleString.contains(sModule)){
-						listaModuleString.add(sModule);
+			String sSystemNumber = this.getSystemNumber();
+			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);			
+			for(String sSystemSection : listasSystemSection) {
+			
+				String[] saVar = objFileIni.getVariables(sSystemSection);
+				for(int icount = 0; icount <= saVar.length-1; icount ++){
+					String sModule = KernelKernelZZZ.computeModuleAliasBySubject(saVar[icount]);
+					if(!StringZZZ.isEmpty(sModule)){
+						if(!listaModuleString.contains(sModule)){
+							listaModuleString.add(sModule);
+						}
 					}
 				}
-			}
+			}			
+			//########################################
 		}
 		return listaModuleString;
 	}
