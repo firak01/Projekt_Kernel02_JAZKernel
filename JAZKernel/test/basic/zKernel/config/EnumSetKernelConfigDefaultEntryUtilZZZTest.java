@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
+import basic.zKernel.IKernelConfigConstantZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ;
 
 public class EnumSetKernelConfigDefaultEntryUtilZZZTest  extends TestCase{
@@ -127,13 +128,13 @@ public class EnumSetKernelConfigDefaultEntryUtilZZZTest  extends TestCase{
 				assertFalse("C) Prüfstring sollte in der Enumeration NICHT vorhanden sein.", btemp);
 				
 				//+++ ConfigProperty
-				intIndex = enumSetUtil.readEnumConstant_FirstIndexValueByProperty("KernelConfigFile");
+				intIndex = enumSetUtil.readEnumConstant_FirstIndexValueByProperty(IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
 				assertNotNull(intIndex);
 				assertEquals(1,intIndex.intValue());
 				
 				
 				//+++ ValueDefault By Property
-				String sProperty = enumSetUtil.readEnumConstant_DefaultValueByProperty("KernelConfigFile");
+				String sProperty = enumSetUtil.readEnumConstant_DefaultValueByProperty(IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
 				assertNotNull(intIndex);
 				assertEquals("ZKernelConfigKernel.ini",sProperty);
 				

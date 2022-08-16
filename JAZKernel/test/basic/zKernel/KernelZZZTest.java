@@ -470,6 +470,44 @@ public void testGetParameterByProgramAlias(){
 
 }
 
+public void testSearchAliasForModule() {
+	try {
+		//Erst testen, dass auch kein Leerwert kommt
+		String sModule = this.getClass().getName();//basic.zKernel.KernelZZZTest
+		String sReturnAlias = objKernelFGL.searchAliasForModule(sModule);
+		System.out.println("TEST: "+sReturnAlias);//TestProg
+		
+		
+//		
+//		IKernelConfigSectionEntryZZZ objEntry = objKernel.getParameterByProgramAlias(sModule, sProgram, "URL2Read");
+//		sReturn = objEntry.getValue();
+//		
+//		
+//		String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
+//		assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
+//		
+//		//nun den Wert testen, wie er im setup definiert wurde
+//		assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());
+//		
+//		//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
+//		assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry").getValue());
+//		
+//		//NEU 20070306: Hier über eine Formel die Property auslesen
+//		objFileIniTest.setFlag("useFormula", false);
+//		String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+//		assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
+//		
+//		objFileIniTest.setFlag("useFormula", true);
+//		sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+//		assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
+//		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+	
+}
+
+
 /** void, Test: Replacing an entry in a section of the ini-file
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
