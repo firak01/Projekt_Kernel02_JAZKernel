@@ -9,6 +9,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
@@ -475,32 +476,9 @@ public void testSearchAliasForModule() {
 		//Erst testen, dass auch kein Leerwert kommt
 		String sModule = this.getClass().getName();//basic.zKernel.KernelZZZTest
 		String sReturnAlias = objKernelFGL.searchAliasForModule(sModule);
-		System.out.println("TEST: "+sReturnAlias);//TestProg
+		//System.out.println("TEST: "+sReturnAlias);//TestProg
+		assertEquals("TestProg", sReturnAlias);
 		
-		
-//		
-//		IKernelConfigSectionEntryZZZ objEntry = objKernel.getParameterByProgramAlias(sModule, sProgram, "URL2Read");
-//		sReturn = objEntry.getValue();
-//		
-//		
-//		String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
-//		assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
-//		
-//		//nun den Wert testen, wie er im setup definiert wurde
-//		assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());
-//		
-//		//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
-//		assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry").getValue());
-//		
-//		//NEU 20070306: Hier über eine Formel die Property auslesen
-//		objFileIniTest.setFlag("useFormula", false);
-//		String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
-//		assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
-//		
-//		objFileIniTest.setFlag("useFormula", true);
-//		sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
-//		assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
-//		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
@@ -701,6 +679,25 @@ public void testGetModuleAliasAll(){
 			HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hm= objKernelFGL.getParameterHashMapEntryByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
 			assertNotNull(hm);
 			assertFalse(hm.isEmpty());
+			
+			//Wichtig: In den einzelnen EntryObjekten sollte jetzt immer ein anderer Alias sein....
+			//........
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
+	
+	public void testSearchModuleFileByProgramAlias() {
+		try {
+
+			String sModule="TestModuleExtern";
+			String sProgramOrSection="TestProg";
+			FileIniZZZ objFileIniModule = objKernelFGL.searchModuleFileByProgramAlias(sModule, sProgramOrSection);
+			assertNotNull(objFileIniModule);
+			
+			boolean bExists = FileEasyZZZ.exists(objFileIniModule.getFileObject());
+			assertTrue(bExists);
 			
 			//Wichtig: In den einzelnen EntryObjekten sollte jetzt immer ein anderer Alias sein....
 			//........

@@ -10,7 +10,7 @@ public interface IKernelConfigFileUserZZZ{
 	public File getFileConfigKernel() throws ExceptionZZZ;
 	public File getFileConfigByAlias(String sAlias) throws ExceptionZZZ;
 	public FileIniZZZ getFileConfigIni() throws ExceptionZZZ;
-	public FileIniZZZ getFileConfigIniByAlias(String sModule) throws ExceptionZZZ;
+	public FileIniZZZ getFileModuleIniByAlias(String sModule) throws ExceptionZZZ;
 	public ArrayList<String> getModuleFileAliasAll(boolean bOnlyConfigured, boolean bOnlyExisting) throws ExceptionZZZ;
 	
 	public boolean proofModuleFileIsConfigured(String sModule) throws ExceptionZZZ;

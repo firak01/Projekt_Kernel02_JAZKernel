@@ -957,7 +957,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		FileIniZZZ objReturn = this.objFileIniKernelConfig;
 		if(objReturn==null){
 			String sKey = this.getApplicationKey();
-			objReturn = this.getFileConfigIniByAlias(sKey);
+			objReturn = this.getFileModuleIniByAlias(sKey);
 			this.objFileIniKernelConfig = objReturn;
 		}
 		return objReturn;	
@@ -978,7 +978,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 @return FileIniZZZ, like getFileConfigByAlias.
 	 @throws ExceptionZZZ
 	 */
-	public FileIniZZZ getFileConfigIniByAlias(String sAlias) throws ExceptionZZZ{
+	public FileIniZZZ getFileModuleIniByAlias(String sAlias) throws ExceptionZZZ{
 		FileIniZZZ objReturn = null;		
 				main:{
 					check:{
@@ -1150,6 +1150,23 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}//end main:
 		
 		return sReturn;
+	}
+	
+	public FileIniZZZ searchModuleFileByProgramAlias(String sModule, String sProgramOrSection) throws ExceptionZZZ {
+		FileIniZZZ objReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sModule)){							
+				ExceptionZZZ ez = new ExceptionZZZ("'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sProgramOrSection)){							
+				ExceptionZZZ ez = new ExceptionZZZ("'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		
+			objReturn = this.searchModuleFileByProgramAlias_(sModule, sProgramOrSection);
+		}//end main:
+		return objReturn;
 	}
 	
 	/** File[], returns all files of a directory, which matches the Kernel File Filter
@@ -1425,11 +1442,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;								
 	}
 	
-	private FileIniZZZ KernelSearchConfigFileByProgramAlias_(String sMainSection, String sProgramOrSection) throws ExceptionZZZ{
+	private FileIniZZZ searchModuleFileByProgramAlias_(String sModule, String sProgramOrSection) throws ExceptionZZZ{
 		FileIniZZZ objReturn=null;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		
-		String sSectionCacheUsed = sMainSection;
+		String sSectionCacheUsed = sModule;
 		String sPropertyCacheUsed = sProgramOrSection;
 		
 		boolean bExistsSection=false;ICachableObjectZZZ objFromCache=null;
@@ -1444,16 +1461,20 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}else{
 				hmDebug.put("Not in CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
 			}
-									
-			//Nun alle Ausprägungen von sMailSection in eine ArrayList packen
+			
+
+			IniFile objFileIni = this.getFileConfigIni().getFileIniObject();
+			
+			
+			//Nun alle Ausprägungen der Systemkey in eine ArrayList packen
 			String sApplicationKey = this.getApplicationKey();
 			String sSystemNumber = this.getSystemNumber();
-			IniFile objFileIni = this.getFileConfigIni().getFileIniObject();
-			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForProgramAlias(objFileIni, sMainSection, sApplicationKey, sSystemNumber);			
+
+			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForProgramAlias(objFileIni, sModule, sApplicationKey, sSystemNumber);			
 			for(String sModuleSection : listasModuleSection) {
 				try{
 	    			hmDebug.put("Modul", sModuleSection);
-	    			objReturn = this.getFileConfigIniByAlias(sModuleSection);
+	    			objReturn = this.getFileModuleIniByAlias(sModuleSection);
 	    			if(objReturn!=null) {
 	    				
 	    				//Existiert diese Datei?
@@ -1484,10 +1505,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			    					}
 		    					}
 	    					}    			
-	    				}	    				
+	    				}else {
+	    					String sLog = ReflectCodeZZZ.getPositionCurrent() + ": Fuer Modul '" + sModuleSection + "' konfiguriertes FileObjekt existiert nicht.";
+	    					System.out.println(sLog);
+	    				}
 	    			}
 				}catch(ExceptionZZZ ez2){
-		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über die MainSection '" + sMainSection + "' schlägt fehl. ...");
+		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über die MainSection '" + sModule + "' schlägt fehl. ...");
 		    	}	
 			}//end for
 		}//end main:	
@@ -2584,7 +2608,7 @@ MeinTestParameter=blablaErgebnis
 			//1. Konfigurationsfile des Systems holen
 			FileIniZZZ objFileIniConfig = null;
 		    if(objFileIniConfigIn==null){
-		    	objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sMainSection, sProgramOrSection);		    	
+		    	objFileIniConfig = this.searchModuleFileByProgramAlias_(sMainSection, sProgramOrSection);		    	
 		    }else{
 		    	String stemp = "Verwende übergebenes FileIniZZZ.";
 	    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
@@ -2965,16 +2989,24 @@ MeinTestParameter=blablaErgebnis
 			//1. Konfigurationsfile des Systems holen
 			FileIniZZZ objFileIniConfig = null;
 		    if(objFileIniConfigIn==null){
-		    	objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sMainSection, sProgramOrSection);		    	
+		    	objFileIniConfig = this.searchModuleFileByProgramAlias_(sMainSection, sProgramOrSection);		    	
 		    }else{
 		    	String stemp = "Verwende übergebenes FileIniZZZ.";
 	    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 		    	objFileIniConfig = objFileIniConfigIn;
 		    }
 		   
+		    //2. Konfigurationsfile des Moduls holen
+		    
 		    //2. Den Abschnitt holen
 			String sMainSectionUsed = this.KernelChooseMainSectionUsedForConfigFile_(sMainSection, sProgramOrSection);
 			sSectionUsed = null;	
+		
+			TODOGOON20220817; //Nun den korrekten Alias geholt und nun... ?
+			//
+			//Lösung: Algorithmus - 1. searchModule(!)ConfigFile
+			//                      2. darin dann nach dem Program suchen unter dem Modulnamen
+			
 			
 			//3. Setzen des Wertes
 			boolean bFlagDelete = false;
@@ -3725,7 +3757,7 @@ MeinTestParameter=blablaErgebnis
 			//############################
 			hmDebug.put("+++ HashMapMethod calling StringMethod for search. Input: " + sModule + "," + sProgramOrSection ,sProperty);
 			
-			FileIniZZZ objFileIniConfig = this.KernelSearchConfigFileByProgramAlias_(sModule, sProgramOrSection);		    	
+			FileIniZZZ objFileIniConfig = this.searchModuleFileByProgramAlias(sModule, sProgramOrSection);		    	
 		   			
 			IKernelConfigSectionEntryZZZ objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true);
 			

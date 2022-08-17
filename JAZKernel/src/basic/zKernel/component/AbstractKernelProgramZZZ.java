@@ -81,7 +81,7 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 			ArrayList<String> listasProgramAlias = this.getProgramAliasList();
 			
 			String sModule = this.getModuleUsed();
-			FileIniZZZ objFileIniConfig = this.getKernelObject().getFileConfigIniByAlias(sModule);
+			FileIniZZZ objFileIniConfig = this.getKernelObject().getFileModuleIniByAlias(sModule);
 			
 			//+++ Als Program mit Alias:
 			Iterator<String> itAlias = listasProgramAlias.iterator();
