@@ -490,12 +490,33 @@ public void testSearchAliasForModule() {
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias(){
-//	try {
-		//Erst testen, dass auch kein Leerwert kommt
-//		String sModule = this.getClass()
-//		
-//		IKernelConfigSectionEntryZZZ objEntry = objKernel.getParameterByProgramAlias(sModule, sProgram, "URL2Read");
-//		sReturn = objEntry.getValue();
+	try {
+		String sModuleExtern = "TestModuleExtern";
+		String sModule = this.getClass().getName();
+		
+		String sProgram = "TestProgExtern";
+		String sProperty = "testProgramPropertyExtern4";
+		
+		//##########################################
+		//### EXTERNES MODUL
+		//##########################################
+		
+		//Erst testen, dass auch kein Leerwert kommt			
+		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());
+		String sReturnSaved = objEntry.getValue();
+		assertEquals("testwertextern progname equals module",sReturnSaved);
+		
+		String sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+		objKernelFGL.setParameterByProgramAlias(sModuleExtern, sProgram, sProperty, sValue, true);
+
+		//############################################
+		//### "NICHT EXTERNES" MODUL
+		//############################################
+		//Teste das "Parameter Holen" auch für dieses "nicht externe" Test Modul
+		
+		
+		
 //		
 //		
 //		String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
@@ -516,9 +537,9 @@ public void testSetParameterByProgramAlias(){
 //		sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
 //		assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
 //		
-//	} catch (ExceptionZZZ ez) {
-//		fail("Method throws an exception." + ez.getMessageLast());
-//	}
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
 }
 
 
