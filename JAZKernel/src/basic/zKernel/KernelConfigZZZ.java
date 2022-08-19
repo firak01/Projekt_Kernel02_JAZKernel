@@ -132,6 +132,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 			if(bUseExpression && bUseFormula) {
 				int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ) null, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
 				sReturn = objsReturnValue.get();
+			}else {
+				sReturn = sDirectoryNameRead;
 			}
 		}catch(ExceptionZZZ ez){
 			String sError = ez.getMessageLast();

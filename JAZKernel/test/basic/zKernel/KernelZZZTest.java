@@ -220,7 +220,7 @@ public void testConstructorConfigObject(){
 		assertTrue(objConfig.isOptionObjectLoaded());
 		IKernelZZZ objKerneltemp02  = new KernelZZZ(objConfig, (String[]) null);
 		try{					
-			//Der Default - Applikation - key (des Config-Objekts)  sollte hier stehen, weil es wurde kein anderer �bergeben.
+			//Der Default - Applikation - key (des Config-Objekts)  sollte hier stehen, weil es wurde kein anderer uebergeben.
 			assertEquals(objKerneltemp02.getApplicationKey(), objConfig.getApplicationKeyDefault());
 			assertFalse(objKerneltemp02.getApplicationKey().equals(""));
 		}catch(ExceptionZZZ ez){
