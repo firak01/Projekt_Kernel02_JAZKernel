@@ -891,7 +891,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			//#############################################################################################
 			//### Aufbau der Zielstrukturen
-			//#############################################################################################			
+			//#############################################################################################
+			TODOGOON20220825;//Baue hier zuallerest noch einen ggfs. vorhandenen Alias des Programs ein
+			TODOGOON20220825;//Mache von dieser Methode eine static Variante - ArrayListExtendedZZZ<String>listasAlias = this.getProgramAliasUsed(objFileIniConfig,sSectionUsed, sProgramOrSection, sSystemNumber);
+			
+			
+			
+			
 			if(!StringZZZ.isEmpty(sProgramUsed)) {
 				ArrayList<String> alsSystemKeyUsed = KernelKernelZZZ.computeSystemSectionNames(sModuleOrApplicationAliasUsed, sSystemNumberUsed);
 								
