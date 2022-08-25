@@ -308,8 +308,8 @@ public void testFileConfigModuleExternByAlias(){
 		assertNull("The module for the alias 'NotExistingModuleTest' seems to be configured in the kernel-configuration-file, or this tested method is buggy.", objKernelFGL.getFileConfigByAlias("NotExistingModuleTest"));
 		
 		//#### Auslesen von Werten aus dieser Datei
-		String sValueModuleExtern = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProg", "testGlobalProperty").getValue();
-		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","testWert global",sValueModuleExtern);
+		String sValueModuleExtern = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProgExtern", "testGlobalProperty").getValue();
+		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","testWert global extern",sValueModuleExtern);
 		
 	}catch(ExceptionZZZ ez){
 		fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
@@ -581,6 +581,14 @@ public void testGetParameterFromClass(){
 	}	
 	
 	try{		
+		TODOGOON20220825;//Der Wert existiert nur im Externen Modul. Ist das das Problem???
+		                 //Also Idee: Hier nach dem Test noch Tests einbauen, ie  explizit auf das externe Modul abprüfen. 
+						//String stemp5 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", sClassname, "TestParameterGlobal1FromClass").getValue(); 
+						//assertEquals("FürAlleSystemNumberGültig Extern", stemp5); //Merke: Damit Java per Default als UTF-8 encodiert ist. Auf Systemebene setzen: -Dfile.encoding=UTF-8
+		
+		
+		//ZUDEM TODOGOON20220825: In den Methoden (auch in den Static Methoden) immer folgende Reihenfolge sicherstellen. Dazu Parameterlisten umbauen:
+			//Applikation, Modul, Program, Property
 		//b3) Ein Parameterwert, der in der "speziellen" Section nicht gefunden werden kann, soll in der "allgemeinen" Section (d.h. der Section ohne die SystemNumber) gefunden werden
 		//TestParameterGlobal1FromClass=FürAlleSystemNumberGültig
 		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameterGlobal1FromClass").getValue(); 
