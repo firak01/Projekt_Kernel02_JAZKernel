@@ -1710,8 +1710,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
-			}
-		    if(!objReturn.hasAnyValue()){    			
+			}else if(!objReturn.hasAnyValue()){    			
 		    	String stemp = "ENDE DIESER SUCHE NACH MODULALIAS OHNE ERFOLG +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
@@ -1727,6 +1726,98 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}
 		return objReturn;								
 	}
+	
+	/**Wird der Wert darin gefunden, dann hat man den gültigen Alias gefunden.
+	   Mit diese gültigen ModulAlias kann dann später die korrekte Ini-Datei für die Modulkonfiguration geholt werden.
+	   Merke: Das Vorhandensein der Datei wird geprüft.	   
+	 * @param sModule, z.B. der Klassenname eines Panels oder einer Dialogbox, halt einer Komponenten die IModuleZZZ implementiert.
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 21.04.2021, 10:10:26
+	 */
+	private IKernelConfigSectionEntryZZZ KernelSearchAliasForProgram_(String sModule, String sProgram) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn=null;
+		
+		check:{
+			if(StringZZZ.isEmpty(sModule)) {
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+		}
+		
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		
+		String sSectionCacheUsed = sModule; //this.getSystemKey(); 
+		String sPropertyCacheUsed = sProgram;
+		main:{
+			//############################
+			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST			
+			ICachableObjectZZZ objFromCache = (ICachableObjectZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
+			if(objFromCache!=null){					
+					hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+					objReturn = (IKernelConfigSectionEntryZZZ) objFromCache;
+					break main;				
+			}else{
+				hmDebug.put("Not in CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+			}
+									
+			
+			//###############################################
+			//Hole die Konfigurationsdatei des Moduls
+			File objFileIni = this.getFileConfigByAlias(sModule);
+			FileIniZZZ objFileConfigIni = new FileIniZZZ(this, objFileIni);
+			
+			//###############################################
+			//0. Suche nach dem Program in den Systemkeys	
+			String sSystemNumber = this.getSystemNumber();
+			ArrayList<String> listasSystemKey = KernelKernelZZZ.computeSystemSectionNames(sModule, sSystemNumber);
+			for(String sSystemKey : listasSystemKey) {								
+				hmDebug.put("Im SystemKey: " + sSystemKey, sProgram);					
+							
+				//Zuerst den im SystemKey definierten Programnamen finden.
+				IKernelConfigSectionEntryZZZ objEntrySectionProgram = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileConfigIni, sSystemKey, sProgram);
+				if(objEntrySectionProgram.hasAnyValue()) {
+					String sProgramName = objEntrySectionProgram.getValue();
+					System.out.println("ProgramName: '"+ sProgramName + "' gefunden im Systemkey '" + sSystemKey + "'");										
+
+					//Prüfe nun, ob die Section auch existiert....
+					String sSytemNumber = this.getSystemNumber();
+					ArrayList<String>listasProgramSection = KernelKernelZZZ.computeSystemSectionNames(sModule, sSytemNumber);
+					for(String sProgramSection : listasProgramSection) {
+						boolean bExists = objFileConfigIni.proofSectionExists(sProgramSection);
+						
+						if(bExists) {																									
+							objReturn = objEntrySectionProgram;
+							break main;					
+						}else {
+							System.out.println("Program '" + sProgramName + "' exisiert nicht im SystemKey '" + sSystemKey + "'.");
+						}
+					}//end for
+				}
+			}//end for
+			
+			if(objReturn==null) {
+				String stemp = "ENDE DIESER SUCHE NACH PROGRAMALIAS OHNE ERFOLG (NULL) +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+//				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+			}else if (!objReturn.hasAnyValue()){    			
+		    	String stemp = "ENDE DIESER SUCHE NACH PROGRAMALIAS OHNE ERFOLG +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+//				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+			}		   	
+		}//end main:
+		if(objReturn!=null && objReturn.hasAnyValue() ){
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH PROGRAMALIAS +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+ 		
+			//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
+			this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objReturn);
+		}
+		return objReturn;								
+	}
+	
 	
 	private FileIniZZZ searchModuleFileByProgramAlias_(String sModule, String sProgramOrSection) throws ExceptionZZZ{
 		FileIniZZZ objReturn=null;
@@ -4235,6 +4326,59 @@ MeinTestParameter=blablaErgebnis
 		return iconReturn;
 	}
 	
+	public String searchAliasForProgram(String sProgramName) throws ExceptionZZZ{		
+		String sReturn = null;
+		main:{
+			if(sProgramName == "") {
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'ProgramName'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(sProgramName.equals("")) {
+				ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'ProgramName'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+				
+			String sModule = this.getApplicationKey();
+			IKernelConfigSectionEntryZZZ entry = KernelSearchAliasForProgram_(sModule, sProgramName);
+			if(entry==null) break main;
+			if(!entry.hasAnyValue())break main;
+				
+			sReturn = entry.getValue();			
+		}
+		return sReturn;
+	}
+	
+	public String searchAliasForProgram(String sModule, String sProgramName) throws ExceptionZZZ{		
+		String sReturn = null;
+		main:{
+			if(sModule == "") {
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(sModule.equals("")) {
+				ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+			
+			if(sProgramName == "") {
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'ProgramName'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(sProgramName.equals("")) {
+				ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'ProgramName'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}		
+						
+			IKernelConfigSectionEntryZZZ entry = KernelSearchAliasForProgram_(sModule, sProgramName);
+			if(entry==null) break main;
+			if(!entry.hasAnyValue())break main;
+				
+			sReturn = entry.getValue();			
+		}
+		return sReturn;
+	}
+	
+	
 	/**
 	 * @param objFileIniConfig
 	 * @param sMainSection
@@ -4310,6 +4454,15 @@ MeinTestParameter=blablaErgebnis
 		}
 		return listasReturn;
 	}
+	
+	public static IKernelConfigSectionEntryZZZ getProgramAliasFor(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{
+			
+		}
+		return objReturn;
+	}
+	
 	
 	/**
 	 * @param objFileIniConfig

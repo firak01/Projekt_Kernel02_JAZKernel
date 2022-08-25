@@ -84,6 +84,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		KernelFileIniNew_(null, sDirectory, sFilename, null);
 	}
 	
+	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile) throws ExceptionZZZ{
+		super(objKernel, (String) null);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		KernelFileIniNew_(objFile,null, null, null);
+	}
+	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		KernelFileIniNew_(objFile,null, null, null);

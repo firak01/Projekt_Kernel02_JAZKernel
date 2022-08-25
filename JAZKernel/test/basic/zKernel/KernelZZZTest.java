@@ -471,6 +471,24 @@ public void testGetParameterByProgramAlias(){
 
 }
 
+
+public void testGetProgramAlias() {
+	try {
+		//TestProgramName=TestProg
+		String sProgramAlias = objKernelFGL.searchAliasForProgram("TestProgramName");
+		assertEquals("TestProg", sProgramAlias);
+			
+		String sProgramAliasUnavailable = objKernelFGL.searchAliasForProgram("TestProgramNameUNAVAILABLE");
+		assertNull(sProgramAliasUnavailable);
+		
+		//Test mit Modul in externer Datei
+		String sProgramAliasExtern = objKernelFGL.searchAliasForProgram("TestModuleExtern", "TestProgramName");
+		assertEquals("TestProgExtern", sProgramAlias);				
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+}
+
 public void testSearchAliasForModule() {
 	try {
 		//Erst testen, dass auch kein Leerwert kommt

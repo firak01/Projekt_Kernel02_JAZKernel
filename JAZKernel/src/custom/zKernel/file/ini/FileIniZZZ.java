@@ -30,6 +30,10 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 	 @param objFile
 	 @param object2
 	 */
+	public FileIniZZZ(IKernelZZZ objKernel, File objFile) throws ExceptionZZZ {
+		super(objKernel, objFile);
+	}
+	
 	public FileIniZZZ(IKernelZZZ objKernel, File objFile, String[] saFlagControl) throws ExceptionZZZ {
 		super(objKernel, objFile, saFlagControl);
 	}
