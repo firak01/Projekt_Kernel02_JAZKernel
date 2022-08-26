@@ -49,65 +49,6 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	}
 	
 	
-	
-	/**Merke: Man kann den konkreten Program Alias nicht ermitteln, wenn man nicht weiss, in welchen Wert er gesetzt werden soll.
-	 *        Darum kann hier nur eine ArrayListe zurückgegeben werden.
-	 * @return
-	 * @throws ExceptionZZZ
-	 */
-	public ArrayList<String> getProgramAliasList() throws ExceptionZZZ{
-		ArrayList<String> listasReturn = new ArrayList<String>();
-		main:{			
-		IKernelZZZ objKernel = this.getKernelObject();
-		
-		FileIniZZZ objFileIniConfig = objKernel.getFileConfigIni();
-		String sMainSection = this.getModuleName();
-		String sProgramName = this.getProgramName();
-		String sSystemNumber = objKernel.getSystemNumber();
-		listasReturn = objKernel.getProgramAliasUsed(objFileIniConfig, sMainSection, sProgramName, sSystemNumber);
-
-		}//end main:
-		return listasReturn;
-	}
-	/**Gehe die ProgramAlias-Namen durch und prüfe, wo der Wert gesetzt ist . 
-	 * Das ist dann der verwendete Alias.
-	 * @param sPropertyName
-	 * @return
-	 * @throws ExceptionZZZ 
-	 */
-	public String getProgramAlias(String sProperty) throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			ArrayList<String> listasProgramAlias = this.getProgramAliasList();
-			
-			String sModule = this.getModuleUsed();
-			FileIniZZZ objFileIniConfig = this.getKernelObject().getFileModuleIniByAlias(sModule);
-			
-			//+++ Als Program mit Alias:
-			Iterator<String> itAlias = listasProgramAlias.iterator();
-			while(itAlias.hasNext()){				
-				String sProgramAliasUsed = itAlias.next();
-				String sSection = sProgramAliasUsed;
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (x) Verwende als sSection '"+ sSection + "' für die Suche nach der Property '" + sProperty + "'");
-				if(!StringZZZ.isEmpty(sSection)){
-					boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-					if(bSectionExists==true){
-						String sValue = objFileIniConfig.getPropertyValue(sSection, sProperty).getValue(); 
-						if(sValue != null){
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (x)Value gefunden für Property '" + sProperty + "'='" + sReturn + "'");
-							sReturn = sSection;
-							break main;
-						}else{
-							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (x) Kein Value gefunden in Section '" + sSection + "' für die Property: '" + sProperty + "'.");
-						}
-					}
-				}
-			}
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": (x) Keinen Value gefunden in einem möglichen Programalias. Suche direkter nach der Property.'" + sProperty +"'.");			
-		}
-		return sReturn;
-	}
-	
 	@Override
 	public String getProgramAlias() throws ExceptionZZZ {
 		// TODO Auto-generated method stub

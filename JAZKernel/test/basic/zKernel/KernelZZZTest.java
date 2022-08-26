@@ -236,6 +236,18 @@ public void testConstructorConfigObject(){
 
 }
 
+public void testComputeSystemSectionNamesForProgram() {
+	try{
+		ArrayList<String> listasProgramSection = objKernelFGL.computeSystemSectionNamesForProgram("TestProgramName");
+		assertNotNull(listasProgramSection);
+	}catch(ExceptionZZZ ez){
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+}
+
+
+
+
 public void testProofModuleIsConfigured(){
 	try{
 		boolean btemp = objKernelFGL.proofModuleFileIsConfigured("TestModule");
@@ -497,6 +509,29 @@ public void testSearchAliasForModule() {
 		//System.out.println("TEST: "+sReturnAlias);//TestProg
 		assertEquals("TestProg", sReturnAlias);
 		
+		//+++ Externes Modul
+		String sReturnAliasExtern = objKernelFGL.searchAliasForModule("TestModuleExtern");
+		//System.out.println("TEST: "+sReturnAlias);//TestProg
+		assertEquals("TestProg", sReturnAliasExtern);
+		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+	
+}
+
+public void testSearchAliasForProgram() {
+	try {
+		//Erst testen, dass auch kein Leerwert kommt
+		String sReturnAlias = objKernelFGL.searchAliasForProgram("TestProgramName");
+		//System.out.println("TEST: "+sReturnAlias);//TestProg
+		assertEquals("TestProg", sReturnAlias);
+		
+		//+++ Externes Modul
+		String sReturnAliasExtern = objKernelFGL.searchAliasForProgram("TestModuleExtern", "TestProgramName");
+		//System.out.println("TEST: "+sReturnAlias);//TestProg
+		assertEquals("TestProgExtern", sReturnAliasExtern);
+				
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
