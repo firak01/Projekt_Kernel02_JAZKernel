@@ -50,6 +50,7 @@ import java.util.*;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ExtendedVectorZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.UtfEasyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
@@ -815,7 +816,16 @@ public String[] getValueAsArray(String subject, String variable, String sSeparat
    protected void finalize() throws IOException
    {
       //saveFile();
-   }   
+   }
+
+public boolean hasSection(String sSection) throws ExceptionZZZ {
+	boolean bReturn = false;
+	main:{
+		StringArrayZZZ saZZZ = new StringArrayZZZ(this.getSubjects());
+		bReturn = saZZZ.contains(sSection);
+	}
+	return bReturn;
+}   
 }
 
 

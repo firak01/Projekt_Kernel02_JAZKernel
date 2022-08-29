@@ -21,4 +21,7 @@ public interface IKernelCacheZZZ {
 	
 	//Damit bestimmte Objekte herausgefiltert werden können
 	public ICacheFilterZZZ getFilterObject(String sRexex); //ICacheFilterZZZ objFilter); //Der eigentliche Filterprozess beginnt dann in dem Filterobjekt, z.B. per Regex
+	
+	//Lösche die intern verwendete HashMap. Gib die Anzahl der darin gelöschten Objekte zurück.
+	public int clear();
 }

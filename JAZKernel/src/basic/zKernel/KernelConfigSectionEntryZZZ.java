@@ -196,8 +196,10 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public String getValue() {
 		if(this.hasNullValue()){
+			return null;		
+		}else if (this.hasAnyValue()==false){
 			return null;
-		}else{
+		}else {
 			return this.sValue;
 		}
 	}

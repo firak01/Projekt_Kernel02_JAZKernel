@@ -150,4 +150,19 @@ Please note that it will not match “java” word in first example i.e. “Toda
 			}//Ende der inneren Methode "accept"
 		}; //Ende der anonymen inneren Klasse	
 	}//end method: filter(...)
+	
+	/** Löscht die intern verwendete HashMap.
+	 *  Gibt als int - Wert die Anzahl der Einträge, die vorher darin waren zurück.
+	 * @return
+	 * @author Fritz Lindhauer, 28.08.2022, 14:52:50
+	 */
+	public int clear() {
+		int iReturn = 0;
+		main:{
+			HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
+			iReturn = hmCache.size();
+			hmCache.clear();			
+		}//end main:
+		return iReturn;
+	}
 }
