@@ -14,7 +14,7 @@ import basic.zKernel.file.ini.KernelZFormulaIni_VariableZZZ;
 public class KernelCacheZZZ extends AbstractKernelCacheZZZ{
 	private HashMapMultiZZZ<String, String, ICachableObjectZZZ>hmCache=null;
 	
-	public KernelCacheZZZ(){
+	public KernelCacheZZZ() throws ExceptionZZZ{
 		super();
 	}
 	

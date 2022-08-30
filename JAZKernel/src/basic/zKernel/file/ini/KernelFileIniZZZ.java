@@ -1170,8 +1170,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	 * @param sVariable
 	 * @param sValue
 	 * @param bUncacheFormula
+	 * @throws ExceptionZZZ 
 	 */
-	public void setVariable(String sVariable, String sValue, boolean bUncacheFormula){
+	public void setVariable(String sVariable, String sValue, boolean bUncacheFormula) throws ExceptionZZZ{
 			this.getHashMapVariable().put(sVariable, sValue);		
 		
 			if(bUncacheFormula){
@@ -1182,7 +1183,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			}
 	}
 	
-	public void setVariable(String sVariable, String sValue){
+	public void setVariable(String sVariable, String sValue) throws ExceptionZZZ{
 		this.setVariable(sVariable, sValue, false);
 	}	
 	public String getVariable(String sVariable){

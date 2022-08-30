@@ -6024,7 +6024,7 @@ MeinTestParameter=blablaErgebnis
 	}	
 	
 
-	public IKernelCacheZZZ getCacheObject(){
+	public IKernelCacheZZZ getCacheObject() throws ExceptionZZZ{
 		if(this.objCache==null){
 			this.objCache = new KernelCacheZZZ();
 		}
