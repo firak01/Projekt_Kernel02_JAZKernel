@@ -916,7 +916,7 @@ public void testGetModuleAliasAll(){
 
 			String sModule="TestModuleExtern";
 			String sProgramOrSection="TestProg";
-			FileIniZZZ objFileIniModule = objKernelFGL.searchModuleFileByProgramAlias(sModule, sProgramOrSection);
+			FileIniZZZ objFileIniModule = objKernelFGL.searchModuleFileWithProgramAlias(sModule, sProgramOrSection);
 			assertNotNull(objFileIniModule);
 			
 			boolean bExists = FileEasyZZZ.exists(objFileIniModule.getFileObject());

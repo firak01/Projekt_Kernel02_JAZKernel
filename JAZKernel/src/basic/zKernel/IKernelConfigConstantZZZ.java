@@ -11,8 +11,6 @@ public interface IKernelConfigConstantZZZ {
 	public final static String sFILENAME_CONFIG_DEFAULT="ZKernelConfigKernel.ini";
 	
 	public final static String sMODULE_PREFIX="KernelConfig";
-//	public final static String sMODULE_DIRECTORY_PREFIX=sMODULE_PREFIX+"Path";
-//	public final static String sMODULE_FILENAME_PREFIX=sMODULE_PREFIX+"File";
 	public final static String sMODULE_DIRECTORY_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.PATH.name();
 	public final static String sMODULE_FILENAME_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.FILE.name();
 }
