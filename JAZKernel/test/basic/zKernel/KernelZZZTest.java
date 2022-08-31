@@ -473,6 +473,7 @@ public void testGetParameterByProgramAlias(){
 	
 	
 	//Vorhanden Fall. Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [TestModule!01] definiert ist.
+	TODOGOON20220831;//Reihenfolge des Sections! Der [TestProg] Eintrag muss hinter dem [FGL!01_TestProg] Eintrag
 	try{		
 		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty4").getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty4'. Configured in the 'TestModule' of the Application 'FGL'", "testwert4 local 4 program" , stemp2);
