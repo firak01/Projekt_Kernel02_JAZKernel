@@ -532,54 +532,105 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				
 			//Hole zuerst das "Basis-File"
 			IniFile objIni = this.getFileConfigKernelAsIni(); 
+			String sPropertyUsed = null;
+			String sFileNameUsed = null; String sFileName = null;
+			String sFilePathUsed = null; String sFilePath = null;
 			
-			//1. Versuch: Auf Systemebene
-			String sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;
-			String sSectionUsed = this.getSystemKey();
-			String sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 	
-			String sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
+			//########################################
+			//### Vereinfachung mit ArrayList
+			//########################################			
+			String sApplicationKey = this.getApplicationKey();
+			String sSystemNumber = this.getSystemNumber();
+			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
+			
+			//########################################
+			//A) DATEINAME	
+			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;			
+			for(String sSystemSection : listasSystemSection) {			
+				sFileName =objIni.getValue(sSystemSection, sPropertyUsed ); 					
+				if(!StringZZZ.isEmpty(sFileName)) break;
+			}	
+			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);				
 			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
 				//this.setValueRaw(sFileName);
 			}else{
 				//this.setValueRaw(null);
-			}
-			
-			//2. Versuch auf Applikationsebene
-			if(StringZZZ.isEmpty(sFileNameUsed)) {								
-				sSectionUsed = this.getApplicationKey();
-				sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 
-				sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
-				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-					//this.setValueRaw(sFileName);
-				}else{
-					//this.setValueRaw(null);
-				}
-			}
+			}			
 			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
-			if(sFileNameUsed.equals(""))break main;								
-			
-			//###############
+						
+			//##########################################
+			//B) VERZEICHNISNAME
 			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX +sModule;
-			String sFilePath = objIni.getValue(sSectionUsed,sPropertyUsed);
-			String sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
+			for(String sSystemSection : listasSystemSection) {				
+				sFilePath = objIni.getValue(sSystemSection,sPropertyUsed);				
+				if(!StringZZZ.isEmpty(sFilePath)) break;
+			}			
+			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
 			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
 				//this.setValueRaw(sFilePath);
 			}else{
 				//this.setValueRaw(null);
-			}									
+			}
+			//Merke: Ein leeres Verzeichnis ist kein Problem, dann Projektstandardverzeichnis nehmen. if(StringZZZ.isEmpty(sFilePathUsed)) break main;
 			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
 			sFilePathUsed = objReturn2.getAbsolutePath();
-						
-			//Proof the existance of the file
+			
+			
+//			###############################################
+//			//A) DATEINAME
+//			//1. Versuch: Auf Systemebene
+//			String sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;
+//			String sSectionUsed = this.getSystemKey();
+//			String sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 	
+//			String sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
+//			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+//				//this.setValueRaw(sFileName);
+//			}else{
+//				//this.setValueRaw(null);
+//			}
+//			
+//			//2. Versuch auf Applikationsebene
+//			if(StringZZZ.isEmpty(sFileNameUsed)) {								
+//				sSectionUsed = this.getApplicationKey();
+//				sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 
+//				sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
+//				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+//					//this.setValueRaw(sFileName);
+//				}else{
+//					//this.setValueRaw(null);
+//				}
+//			}
+//			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+//			if(sFileNameUsed.equals(""))break main;								
+//			
+//			//###############
+//			//B) VERZEICHNISNAME
+//			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX +sModule;
+//			String sFilePath = objIni.getValue(sSectionUsed,sPropertyUsed);
+//			String sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
+//			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
+//				//this.setValueRaw(sFilePath);
+//			}else{
+//				//this.setValueRaw(null);
+//			}									
+//			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
+//			sFilePathUsed = objReturn2.getAbsolutePath();
+//			
+			
+			
+			//#######################################
+			//### Proof the existance of the file
+			//#############################
 			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
 			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
 			File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
 			
-			//#############################
-			//#######################################
+
 			//Mache das neue Ini-Objekt
 			String sPathTotalToUse = objFile.getAbsolutePath();
 			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
@@ -957,7 +1008,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				if(!StringZZZ.isEmpty(sModuleAlias)) {
 					ArrayList<String> alsModuleAliasProgramAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sModuleAlias, sSystemNumberUsed);
 		            if(alsModuleAliasProgramAlias!=null) {
-		            	alsReturn = ArrayListZZZ.join(alsReturn, alsModuleAliasProgramAlias, false);
+		            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAliasProgramAlias);
 		            }
 				}else {
 					//die Suche nach dem Modulnamen ist nicht eine Alternative, sondern eine Ergänzung...				
@@ -966,14 +1017,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				//b) Modulname
 				ArrayList<String> alsModuleProgramAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sModuleUsed, sSystemNumberUsed);
 	            if(alsModuleProgramAlias!=null) {
-	            	alsReturn = ArrayListZZZ.join(alsReturn, alsModuleProgramAlias, false);
+	            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleProgramAlias);
 	            }
 	            
 	            
 	          //2. Danach auf Applikationsebene	            
 	          ArrayList<String> alsApplicationProgramAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sApplicationAliasIn, sSystemNumberUsed);
 	          if(alsApplicationProgramAlias!=null) {
-	        	  alsReturn = ArrayListZZZ.join(alsReturn, alsApplicationProgramAlias, false);
+	        	  alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgramAlias);
 	          }	          	            
 			}
 			
@@ -983,7 +1034,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			if(!StringZZZ.isEmpty(sModuleAlias)) {
 				ArrayList<String> alsModuleAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sModuleAlias, sSystemNumberUsed);
 	            if(alsModuleAlias!=null) {
-	            	alsReturn = ArrayListZZZ.join(alsReturn, alsModuleAlias, false);
+	            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
 	            }
 			}else {
 				//die Suche nach dem Modulnamen ist nicht eine Alternative, sondern eine Ergänzung...				
@@ -992,14 +1043,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//b) Modulname
 			ArrayList<String> alsModule = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sModuleUsed, sSystemNumberUsed);
             if(alsModule!=null) {
-            	alsReturn = ArrayListZZZ.join(alsReturn, alsModule, false);
+            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
             }
             
             //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             //B) Mit dem ProgramUsed
             ArrayList<String> alsApplicationProgram = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sApplicationAliasIn, sSystemNumberUsed);
             if(alsApplicationProgram!=null) {
-            	alsReturn = ArrayListZZZ.join(alsReturn, alsApplicationProgram, false);
+            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgram);
             }
             
             //3. Baue zum Schluss noch die SystemKeys des Moduls ein
@@ -1012,7 +1063,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 						
 		}//end main:
-		alsReturn = (ArrayList<String>) ArrayListZZZ.unique(alsReturn);
+		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 	}
 	
@@ -1310,20 +1361,22 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 @return FileIniZZZ, like getFileConfigByAlias.
 	 @throws ExceptionZZZ
 	 */
-	public FileIniZZZ getFileModuleIniByAlias(String sAlias) throws ExceptionZZZ{
+	public FileIniZZZ getFileModuleIniByAlias(String sModuleAlias) throws ExceptionZZZ{
 		FileIniZZZ objReturn = null;		
 				main:{
 					check:{
-						if(sAlias == null){							
+						if(sModuleAlias == null){							
 							ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 						}
-						if(sAlias.equals("")){							
+						if(sModuleAlias.equals("")){							
 							ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 							throw ez;
 						}						
 					}//end check:
 					
+					String sAlias = KernelKernelZZZ.extractModuleFromSection(sModuleAlias);
+		
 					//first, get the Kernel-Configuration-INI-File
 					//IniFile objIni = this.getFileConfigKernelAsIni(); //Hier fehlt der Alias...
 					//NEIN, das wäre wohl eine Endlosschleife: FileIniZZZ objKernelIni = this.getFileConfigIniByAlias(sAlias);
@@ -1877,9 +1930,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sSystemNumber = this.getSystemNumber();
 
 			//TODOGOON; //Aufruf der static Methode
-			//NEIN, erst einmal wäre das zuviel   objReturn = KernelKernelZZZ.searchModuleFileByModuleWithProgramSection(objFileConfigIni, sProgramOrSection, sModule, sApplicationKey, sSystemNumber, hmDebug);
+			//NEIN, erst einmal wäre das zuviel   objReturn = KernelKernelZZZ.searchModuleFileByModuleWithProgramSection(objFileConfigIni, sProgramOrSection, sModule, sApplicationKey, sSystemNumber, hmDebug);			
 			
-			//DANN WÄRE FOLGENDER CODE ÜBERFLÜSSIG !!!!!!
+			//Mit STATIC METHODE WÄRE DANN FOLGENDER CODE ÜBERFLÜSSIG !!!!!!
 			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sProgramOrSection, sModule, sApplicationKey, sSystemNumber);			
 			for(String sModuleSection : listasModuleSection) {
 				try{

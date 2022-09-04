@@ -406,7 +406,7 @@ public void testGetParameterByModuleAlias(){
 	try{
 		//Konfiguration im "Lokalen" Module
 		// In der Modulkonfiguration soll dieser Eintrag existieren
-		String stemp = objKernelFGL.getParameterByModuleAlias("TestModule", "testModuleProperty").getValue();
+		String stemp = objKernelFGL.getParameterByModuleAlias(sModuleName, "testModuleProperty").getValue();
 		assertEquals("Expected 'TestModuleValue' as a value of property 'testModuleProperty'. Configured in the Module 'TestModule' of the Application 'FGL'", "TestModuleValue" , stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -473,7 +473,7 @@ public void testGetParameterByProgramAlias(){
 	
 	
 	//Vorhanden Fall. Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [TestModule!01] definiert ist.
-	TODOGOON20220831;//Reihenfolge des Sections! Der [TestProg] Eintrag muss hinter dem [FGL!01_TestProg] Eintrag
+	//Reihenfolge des Sections! Der [TestProg] Eintrag muss hinter dem [FGL!01_TestProg] Eintrag
 	try{		
 		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty4").getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty4'. Configured in the 'TestModule' of the Application 'FGL'", "testwert4 local 4 program" , stemp2);
@@ -494,12 +494,11 @@ public void testGetParameterByProgramAlias(){
 	//### TESTS IM "EXTERNEN MODUL"
 	//### D.h. das Modul ist in einer anderen Datei definiert!!!
 	//######################################################################
-
-	if(1==1) {
-		System.out.println("break");		
-	}
+				
 	try{
+		TODOGOON20220904;
 		//A1) Übergabe als direkte Section testen. Modulname, ProgramName und Systemnummer werden daraus gezogen.
+		System.out.println("TESTSTOP");
 		String stemp = objKernelFGL.getParameterByProgramAlias("TestModuleExtern!01_TestProgExtern","testProgramProperty" ).getValue(); 
 		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert local 4 program" , stemp);
 	}catch(ExceptionZZZ ez){

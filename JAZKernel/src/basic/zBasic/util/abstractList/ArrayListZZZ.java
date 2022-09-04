@@ -106,7 +106,24 @@ public static ArrayList join(ArrayList lista1, ArrayList lista2, boolean bFlagUn
 		break main;
 		
 	}else{
-		//Wenn 'uniqued' werden soll, dann erst in eine tempor�re Liste joinen
+		//Wenn 'uniqued' werden soll, dann ist "keepFirst" die default-Strategie
+		listaReturn = ArrayListZZZ.joinKeepFirst(lista1,lista2);		
+		break main;
+	}//End if (bFlagUnique ....
+	
+	}//END main:
+	return listaReturn;
+}
+
+public static ArrayList joinKeepFirst(ArrayList lista1, ArrayList lista2){
+	ArrayList listaReturn = null;
+	main:{
+		check:{
+			if(lista1==null && lista2 ==null) break main;
+		}//END check:
+	
+	
+		//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
 		ArrayList listaTemp = new ArrayList();
 		if(lista1!=null){
 			for(int icount=0; icount < lista1.size(); icount++){
@@ -119,10 +136,33 @@ public static ArrayList join(ArrayList lista1, ArrayList lista2, boolean bFlagUn
 			}
 		}		
 		
-		listaReturn = ArrayListZZZ.unique(listaTemp);		
-		break main;
-	}//End if (bFlagUnique ....
+		listaReturn = ArrayListZZZ.uniqueKeepFirst(listaTemp);			
+	}//END main:
+	return listaReturn;
+}
+
+public static ArrayList joinKeepLast(ArrayList lista1, ArrayList lista2){
+	ArrayList listaReturn = null;
+	main:{
+		check:{
+			if(lista1==null && lista2 ==null) break main;
+		}//END check:
 	
+	
+		//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
+		ArrayList listaTemp = new ArrayList();
+		if(lista1!=null){
+			for(int icount=0; icount < lista1.size(); icount++){
+				listaTemp.add(lista1.get(icount));
+			}
+		}//lista1!=null
+		if(lista2!=null){
+			for(int icount=0; icount < lista2.size(); icount ++){
+				listaTemp.add(lista2.get(icount));
+			}
+		}		
+		
+		listaReturn = ArrayListZZZ.uniqueKeepLast(listaTemp);			
 	}//END main:
 	return listaReturn;
 }
@@ -308,6 +348,15 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 	public static ArrayList<?> unique(ArrayList<?> lista){
 		ArrayList listaReturn = null;
 		main:{
+			listaReturn = ArrayListZZZ.uniqueKeepFirst(lista);
+		}//End main:
+		return listaReturn;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked"})
+	public static ArrayList<?> uniqueKeepFirst(ArrayList<?> lista){
+		ArrayList listaReturn = null;
+		main:{
 			if(lista==null)break main;					
 		
 			listaReturn=new ArrayList();
@@ -317,7 +366,26 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 		}//End main:
 		return listaReturn;
 	}
-
 	
-
+	@SuppressWarnings({ "rawtypes", "unchecked"})
+	public static ArrayList<?> uniqueKeepLast(ArrayList<?> lista){
+		ArrayList listaReturn = null;
+		main:{
+			if(lista==null)break main;					
+		
+			//Strategie: KeepLast
+			//Erst einmal die Listenreihenfolge umdrehen
+			ArrayList<?> listaReversed = (ArrayList<?>) ArrayListZZZ.reverse(lista);
+			
+			ArrayList listaReturnReversed=new ArrayList();
+			for(int icount=0; icount < listaReversed.size(); icount++ ){
+				if(! listaReturnReversed.contains(listaReversed.get(icount))) listaReturnReversed.add(listaReversed.get(icount));
+			}	
+			
+			//Nach der Verarbeitung die Listenreihenfolge wieder zurückdrehen
+			listaReturn = (ArrayList) ArrayListZZZ.reverse(listaReturnReversed);
+			
+		}//End main:
+		return listaReturn;
+	}
 }//END class
