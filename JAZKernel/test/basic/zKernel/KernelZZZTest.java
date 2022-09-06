@@ -490,150 +490,154 @@ public void testGetParameterByProgramAlias(){
 	}	
 	
 	
-	//######################################################################
-	//### TESTS IM "EXTERNEN MODUL"
-	//### D.h. das Modul ist in einer anderen Datei definiert!!!
-	//######################################################################
-				
-	try{
-		TODOGOON20220904;
-		//A1) Übergabe als direkte Section testen. Modulname, ProgramName und Systemnummer werden daraus gezogen.
-		System.out.println("TESTSTOP");
-		String stemp = objKernelFGL.getParameterByProgramAlias("TestModuleExtern!01_TestProgExtern","testProgramProperty" ).getValue(); 
-		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert local 4 program" , stemp);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}	
-	try {
-		int iClearedObjects = objKernelFGL.getCacheObject().clear();
-		assertTrue(iClearedObjects>=1);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}
-		
-	try{
-		//A2) Übergabe als direkte Section testen
-		String stemp = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01_TestProg","testProgramProperty" ).getValue(); 
-		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert local 4 program" , stemp);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}	
-	
-	
-	
-	//B1) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
-	//!!! GROSS-/Keinschreibung ist NICHT relevant		
- 
-//Program nicht vorhanden Fall!!! D.h. in der TestModule-Datei gibt es das angegebene Program nicht
-	if(1==1) {
-		System.out.println("break");		
-	}
-	try{		
-		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramNameNICHTVORHANDEN", "testProgramProperty").getValue(); 
-		assertNull("No Value should have been found for the NICHTVORHANDEN program", stemp2);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}
 
-	//Nicht vorhanden Fall!!! D.h. in der TestModule-Datei gibt es kein "testProgramName" mit der Property
-	try{		
-		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramName", "testProgramPropertyNICHTVORHANDEN").getValue(); 
-		assertNull("No Value should have been found for the NICHTVORHANDEN program", stemp2);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}
-	
-	
-	//Vorhanden Fall. Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [TestModule!01] definiert ist.
-	try{		
-		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramName", "testProgramProperty4").getValue(); 
-		assertEquals("Expected as a value of property 'testProgramProperty4'. Configured in the 'TestModule' of the Application 'FGL'", "testwert4 local 4 program" , stemp2);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}	
-	
-	//Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [FGL!01] und der Wert aber nur GLOBAL definiert ist.	
-	try{		
-		String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramName", "testProgramPropertyGLOBAL").getValue(); 
-		assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert global 4 progname SOLL GEFUNDEN WERDEN" , stemp2);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}	
+public void testGetParameterByProgramAlias_ExternesModul() {
+	//######################################################################
+		//### TESTS IM "EXTERNEN MODUL"
+		//### D.h. das Modul ist in einer anderen Datei definiert!!!
+		//######################################################################
+					
+		try{
+			//A1) Übergabe als direkte Section testen. Modulname, ProgramName und Systemnummer werden daraus gezogen.
+			//    Der Programname wird dann sogar noch in einen Alias umgewandelt.
+			String stemp = objKernelFGL.getParameterByProgramAlias("TestModuleExtern!01_TestProgramName","testProgramPropertyExtern4" ).getValue(); 
+			assertEquals("Expected as a value of property 'testProgramPropertyExtern4'. Configured in the 'TestModuleExtern' of the Application 'FGL'", "testwertextern by progalias GLOBAL" , stemp);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}	
+		try {
+			int iClearedObjects = objKernelFGL.getCacheObject().clear();
+			assertTrue(iClearedObjects>=1);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+			
+		try{
+			//A2) Übergabe als direkte Section testen
+			String stemp = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProgExtern","testProgramPropertyExtern4" ).getValue(); 
+			assertEquals("Expected as a value of property 'testProgramPropertyExtern4'. Configured in the 'TestModuleExtern' of the Application 'FGL'", "testwertextern by progalias GLOBAL" , stemp);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}	
+		
+		
+		
+		//B1) Übergabe als Programname testen. 20061021 nun muss der Wert gefunden werden, auch wenn der Programalias ohne Systemnumber angegeben wird
+		//!!! GROSS-/Keinschreibung ist NICHT relevant		
+	 
+	//Program nicht vorhanden Fall!!! D.h. in der TestModule-Datei gibt es das angegebene Program nicht
+		if(1==1) {
+			System.out.println("break");		
+		}
+		try{		
+			String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramNameNICHTVORHANDEN", "testProgramProperty").getValue(); 
+			assertNull("No Value should have been found for the NICHTVORHANDEN program", stemp2);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 
-	
-	
-	
-	//####################################################################################################
-	try{
-		//C) Einen Parameterwert setzen und anschliessend auslesen
-		//C1) Direkt als Section
-		String sToSet1 = new String("testwert section");
-		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01_TestProg", "testProgramProperty2", sToSet1);
+		//Nicht vorhanden Fall!!! D.h. in der TestModule-Datei gibt es kein "testProgramName" mit der Property
+		try{		
+			String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramName", "testProgramPropertyNICHTVORHANDEN").getValue(); 
+			assertNull("No Value should have been found for the NICHTVORHANDEN program", stemp2);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 		
-		String stemp3 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty2").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
-		assertEquals("Expected as a value of the just setted property 'testProgramProperty2'", sToSet1, stemp3);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}	
+		TODOGOON20220906;
 		
-	try{
-		//C2) Setzen als Programname testen (!!! SOFORTIGES SCHREIBEN. Merke: Verz�gertes Schreiben ist nicht m�glich)
-		String sToSet2 = new String("testwert progname");
-		objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01_TestProg", "testProgramProperty3", sToSet2);
+		//Vorhanden Fall. Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [TestModule!01] definiert ist.
+		try{		
+			String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramName", "testProgramProperty4").getValue(); 
+			assertEquals("Expected as a value of property 'testProgramProperty4'. Configured in the 'TestModule' of the Application 'FGL'", "testwert4 local 4 program" , stemp2);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}	
 		
-		String stemp4 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty3").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
-		assertEquals("Expected as a value of the just setted property 'testProgramProperty3'", sToSet2, stemp4);
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}		
-	
-	try{	
-		String sClassname = this.getClass().getName(); 
-		String stempx = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
-		assertFalse("Expected as a value in the property 'testProgramProperty4'", StringZZZ.isEmpty(stempx));
+		//Hier ist also 'testProgramName' ein Parameter, für den ein Alias in [FGL!01] und der Wert aber nur GLOBAL definiert ist.	
+		try{		
+			String stemp2 = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "testProgramName", "testProgramPropertyGLOBAL").getValue(); 
+			assertEquals("Expected as a value of property 'testProgramProperty'. Configured in the 'TestModule' of the Application 'FGL'", "testwert global 4 progname SOLL GEFUNDEN WERDEN" , stemp2);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}	
+
 		
 		
-//		D) Neu 20061021 Section des Aliasnamen mit Systemnumber, wenn  ein Paramenter in der Section des "nur" Aliasnamens nicht gefunden wird
-		//D1) Teste das Setzen von Parameterwerten, bei gleichem Modulnamen / Aliasnamen
-		String sToSet3 = new String("testwert progname equals module" + DateTimeZZZ.computeTimestampUniqueString());		
-		//TODOGOO; //20210303: Fehler wird geworfen, weil die Klasse nicht als Modul definiert ist.
-		objKernelFGL.setParameterByProgramAlias(sClassname, "testProgramProperty4", sToSet3);
 		
-		String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
-		assertEquals("Expected as a value of the just setted property 'testProgramProperty4'", sToSet3, stemp5);
+		//####################################################################################################
+		try{
+			//C) Einen Parameterwert setzen und anschliessend auslesen
+			//C1) Direkt als Section
+			String sToSet1 = new String("testwert section");
+			objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01_TestProg", "testProgramProperty2", sToSet1);
+			
+			String stemp3 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty2").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
+			assertEquals("Expected as a value of the just setted property 'testProgramProperty2'", sToSet1, stemp3);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}	
+			
+		try{
+			//C2) Setzen als Programname testen (!!! SOFORTIGES SCHREIBEN. Merke: Verz�gertes Schreiben ist nicht m�glich)
+			String sToSet2 = new String("testwert progname");
+			objKernelFGL.setParameterByProgramAlias("TestModule", "FGL!01_TestProg", "testProgramProperty3", sToSet2);
+			
+			String stemp4 = objKernelFGL.getParameterByProgramAlias("TestModule", "testProgramName", "testProgramProperty3").getValue();  //Auslesen nun �ber den anderen Weg testen. Es soll ja das gleiche rauskommen.
+			assertEquals("Expected as a value of the just setted property 'testProgramProperty3'", sToSet2, stemp4);
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}		
 		
-		assertFalse("Expected a changed Value", stempx.equals(stemp5));
+		try{	
+			String sClassname = this.getClass().getName(); 
+			String stempx = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
+			assertFalse("Expected as a value in the property 'testProgramProperty4'", StringZZZ.isEmpty(stempx));
+			
+			
+//			D) Neu 20061021 Section des Aliasnamen mit Systemnumber, wenn  ein Paramenter in der Section des "nur" Aliasnamens nicht gefunden wird
+			//D1) Teste das Setzen von Parameterwerten, bei gleichem Modulnamen / Aliasnamen
+			String sToSet3 = new String("testwert progname equals module" + DateTimeZZZ.computeTimestampUniqueString());		
+			//TODOGOO; //20210303: Fehler wird geworfen, weil die Klasse nicht als Modul definiert ist.
+			objKernelFGL.setParameterByProgramAlias(sClassname, "testProgramProperty4", sToSet3);
+			
+			String stemp5 = objKernelFGL.getParameterByProgramAlias(sClassname, "testProgramProperty4").getValue(); 
+			assertEquals("Expected as a value of the just setted property 'testProgramProperty4'", sToSet3, stemp5);
+			
+			assertFalse("Expected a changed Value", stempx.equals(stemp5));
+			
+			//TODOGOON 20210303 Definiere ein Modul als externe ini Datei und schreibe darin hinein
+			//........
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}	
 		
-		//TODOGOON 20210303 Definiere ein Modul als externe ini Datei und schreibe darin hinein
-		//........
-		
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}	
-	
-//	try{
-////		E) Neu 20070116 Direktes Setzen eines Parameters auf Modulebene
-//		String sToSet4 = new String("testwert for module");
-//		String sClassname = this.getClass().getName(); 
-//		objKernelFGL.setParameterByModuleAlias(sClassname, "testProgramProperty5", sToSet4, true);
-//		
-//		String stemp6 = objKernelFGL.getParameterByModuleAlias(sClassname, "testProgramProperty5");
-//		assertEquals("Expected as a value of the just setted property 'testProgramProperty5'", sToSet4, stemp6);
-//	}catch(ExceptionZZZ ez){
-//		fail("An exception happend testing: " + ez.getDetailAllLast());
-//	}	
-//		
-//		//Zuletzt) Behandlung "Parameter ist nicht vorhanden": Dann soll eine ExceptionZZZ geworfen werden.
-//		//Zuletzt A) Übergabe als directe Section testen	
 //		try{
-//		String stempZuletzt = null;
-//		stempZuletzt = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramPropertyNIXDA" );
-//		assertNull("Expected an exception using not existing Property 'testProgramPropertyNIXDA'. Configured in the 'TestModule' of the Application 'FGL'", stempZuletzt);
-//		
+////			E) Neu 20070116 Direktes Setzen eines Parameters auf Modulebene
+//			String sToSet4 = new String("testwert for module");
+//			String sClassname = this.getClass().getName(); 
+//			objKernelFGL.setParameterByModuleAlias(sClassname, "testProgramProperty5", sToSet4, true);
+//			
+//			String stemp6 = objKernelFGL.getParameterByModuleAlias(sClassname, "testProgramProperty5");
+//			assertEquals("Expected as a value of the just setted property 'testProgramProperty5'", sToSet4, stemp6);
 //		}catch(ExceptionZZZ ez){
 //			fail("An exception happend testing: " + ez.getDetailAllLast());
-//		}			
-				
+//		}	
+//			
+//			//Zuletzt) Behandlung "Parameter ist nicht vorhanden": Dann soll eine ExceptionZZZ geworfen werden.
+//			//Zuletzt A) Übergabe als directe Section testen	
+//			try{
+//			String stempZuletzt = null;
+//			stempZuletzt = objKernelFGL.getParameterByProgramAlias("TestModule", "FGL!01!TestProg","testProgramPropertyNIXDA" );
+//			assertNull("Expected an exception using not existing Property 'testProgramPropertyNIXDA'. Configured in the 'TestModule' of the Application 'FGL'", stempZuletzt);
+//			
+//			}catch(ExceptionZZZ ez){
+//				fail("An exception happend testing: " + ez.getDetailAllLast());
+//			}			
+					
+
 
 }
 
