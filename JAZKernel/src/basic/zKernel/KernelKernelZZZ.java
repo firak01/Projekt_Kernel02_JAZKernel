@@ -541,13 +541,18 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//########################################			
 			String sApplicationKey = this.getApplicationKey();
 			String sSystemNumber = this.getSystemNumber();
+			
+			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(this.getFileConfigIni(), sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
+			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
+			
+			TODOGOON20220908;//Mache eine MEthode getFileConfigKernelDirectLookup_(sModuleSection); Dort den Inhalt der Suche nach einem sModule-String reinpacken.
 			
 			//########################################
 			//A) DATEINAME	
 			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;			
-			for(String sSystemSection : listasSystemSection) {			
-				sFileName =objIni.getValue(sSystemSection, sPropertyUsed ); 					
+			for(String sModuleSection : listasModuleSection) {			
+				sFileName =objIni.getValue(sModuleSection, sPropertyUsed ); 					
 				if(!StringZZZ.isEmpty(sFileName)) break;
 			}	
 			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);				
@@ -562,8 +567,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//##########################################
 			//B) VERZEICHNISNAME
 			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX +sModule;
-			for(String sSystemSection : listasSystemSection) {				
-				sFilePath = objIni.getValue(sSystemSection,sPropertyUsed);				
+			for(String sModuleSection : listasModuleSection) {				
+				sFilePath = objIni.getValue(sModuleSection,sPropertyUsed);				
 				if(!StringZZZ.isEmpty(sFilePath)) break;
 			}			
 			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
@@ -577,51 +582,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
 			sFilePathUsed = objReturn2.getAbsolutePath();
 			
-			
-//			###############################################
-//			//A) DATEINAME
-//			//1. Versuch: Auf Systemebene
-//			String sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;
-//			String sSectionUsed = this.getSystemKey();
-//			String sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 	
-//			String sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
-//			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-//				//this.setValueRaw(sFileName);
-//			}else{
-//				//this.setValueRaw(null);
-//			}
-//			
-//			//2. Versuch auf Applikationsebene
-//			if(StringZZZ.isEmpty(sFileNameUsed)) {								
-//				sSectionUsed = this.getApplicationKey();
-//				sFileName =objIni.getValue(sSectionUsed, sPropertyUsed ); 
-//				sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);
-//				if(!StringZZZ.equals(sFileName,sFileNameUsed)){
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-//					//this.setValueRaw(sFileName);
-//				}else{
-//					//this.setValueRaw(null);
-//				}
-//			}
-//			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
-//			if(sFileNameUsed.equals(""))break main;								
-//			
-//			//###############
-//			//B) VERZEICHNISNAME
-//			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX +sModule;
-//			String sFilePath = objIni.getValue(sSectionUsed,sPropertyUsed);
-//			String sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
-//			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
-//				//this.setValueRaw(sFilePath);
-//			}else{
-//				//this.setValueRaw(null);
-//			}									
-//			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
-//			sFilePathUsed = objReturn2.getAbsolutePath();
-//			
-			
+						
 			
 			//#######################################
 			//### Proof the existance of the file
@@ -1175,6 +1136,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				
 				sSection2use = sProgramUsed;
 				alsReturn.add(sSection2use);
+				
+				
+				//Baue folgendes: Modul!01 und Modul
+				ArrayList<String> alsModule = KernelKernelZZZ.computeSystemSectionNames(sModuleOrApplicationAliasUsed, sSystemNumberUsed);
+				for(String sModuleTemp : alsModule) {
+					alsReturn.add(sModuleTemp);
+				}
 			}
 		}//end main:
 		return alsReturn;
@@ -1770,13 +1738,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		String sSectionCacheUsed = sApplicationOrModule; 
 		String sPropertyCacheUsed = sModule; //this.getSystemKey();
 		
-		IKernelConfigSectionEntryZZZ objFound=null;
+		IKernelConfigSectionEntryZZZ objFound=null;boolean bExistsInCache=false;
 		main:{
 			//############################
 			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST			
 			ICachableObjectZZZ objFromCache = (ICachableObjectZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
 			if(objFromCache!=null){					
 					hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+					bExistsInCache=true;
 					objFound = (IKernelConfigSectionEntryZZZ) objFromCache;
 					break main;				
 			}else{
@@ -1868,7 +1837,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
-			this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
+			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
 			objReturn = objFound;
 		}
 		return objReturn;								
@@ -1897,13 +1866,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		String sSectionCacheUsed = sApplicationOrModule; 
 		String sPropertyCacheUsed = sProgram;
 		
-		IKernelConfigSectionEntryZZZ objFound=null;
+		IKernelConfigSectionEntryZZZ objFound=null;boolean bExistsInCache=false;
 		main:{
 			//############################
 			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST			
 			ICachableObjectZZZ objFromCache = (ICachableObjectZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
 			if(objFromCache!=null){					
 					hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+					bExistsInCache = true;
 					objFound = (IKernelConfigSectionEntryZZZ) objFromCache;
 					break main;				
 			}else{
@@ -1934,7 +1904,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
  		
 			//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
-			this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
+			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
 			objReturn = objFound;
 		}
 		return objReturn;								
@@ -1949,13 +1919,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		String sPropertyCacheUsed = sProgramOrSection;
 		
 		boolean bExistsSection=false;ICachableObjectZZZ objFromCache=null;
-		FileIniZZZ objFound = null;boolean bExists=false;
+		FileIniZZZ objFound = null;boolean bExistsInCache=false;
 		main:{
 			//############################
 			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST			
 			objFromCache = (ICachableObjectZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
 			if(objFromCache!=null){					
 					hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+					bExistsInCache = true;
 					objFound = (FileIniZZZ) objFromCache;
 					break main;				
 			}else{
@@ -2040,7 +2011,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
-		}else if(!bExistsSection && objFound != null) {
+		}else if((!bExistsInCache && !bExistsSection) && objFound != null) {
 			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Section existiert nicht im gefundenen Konfigurationsfile. +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
@@ -2049,7 +2020,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
-			this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
+			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
 			objReturn = objFound;
 			
 //Müsste beim Abändern in eine static Methode separat 			
@@ -2908,7 +2879,7 @@ MeinTestParameter=blablaErgebnis
 		String sSectionCacheUsed = sModuleAlias;								
 		String sPropertyCacheUsed = sProperty;
 		
-		IKernelConfigSectionEntryZZZ objFound=null;
+		IKernelConfigSectionEntryZZZ objFound=null;boolean bExistsInCache=false;
 		main:{
 			String sSectionUsed = null;
 										
@@ -2918,6 +2889,7 @@ MeinTestParameter=blablaErgebnis
 				IKernelConfigSectionEntryZZZ objFromCache = (IKernelConfigSectionEntryZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
 				if(objFromCache!=null){					
 						hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+						bExistsInCache=true;
 						objFound = objFromCache;
 						break main;				
 				}else{
@@ -3020,7 +2992,7 @@ MeinTestParameter=blablaErgebnis
 			//###################
 			
 			//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
-			this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
+			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
 			objReturn = objFound;
 		}else{
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEIN WERT GEFUNDEN fuer sModuleAlias='" + sModuleAlias + "' | " + "' | for the property: '" + sProperty + "'.");
@@ -3458,7 +3430,7 @@ MeinTestParameter=blablaErgebnis
 		String sSectionCacheUsed = sProgramOrSection;		
 		String sPropertyCacheUsed = sProperty;
 		
-		IKernelConfigSectionEntryZZZ objFound=null;
+		IKernelConfigSectionEntryZZZ objFound=null;boolean bExistsInCache=false;
 		main:{		
 			//############################
 			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST
@@ -3466,6 +3438,7 @@ MeinTestParameter=blablaErgebnis
 				IKernelConfigSectionEntryZZZ objFromCache = (IKernelConfigSectionEntryZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
 				if(objFromCache!=null){					
 						hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+						bExistsInCache=true;
 						objFound = objFromCache;
 						break main;				
 				}else{
@@ -3745,7 +3718,7 @@ MeinTestParameter=blablaErgebnis
 					//###################
 					
 					//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
-					this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
+					if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
 					objReturn = objFound;
 				}else{
 					System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEIN WERT GEFUNDEN fuer sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
@@ -4212,8 +4185,7 @@ MeinTestParameter=blablaErgebnis
 			if(objFromCache!=null){					
 					hmDebug.put("FOUND... Update CacheZZZ: " + sProgramOrSection, sProperty);
 					objFromCache.setValue(sValue);
-					objReturn = objFromCache;	
-					
+					objReturn = objFromCache;						
 			}else{
 				//Ich habe hier keine IKernelConfiSectionEntryZZZ, das gültig ist, also Formel berechnet, etc.
 				hmDebug.put("FOUND... But not in CacheZZZ: Will not jet put an entry for " + sProgramOrSection, sProperty);				
