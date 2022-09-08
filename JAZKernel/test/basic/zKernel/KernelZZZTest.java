@@ -320,7 +320,7 @@ public void testGetFileConfigByAlias(){
 		
 		//#### Auslesen von Werten aus dieser Datei
 		//+++ über module Alias
-		String sValueModuleExtern = objKernelFGL.getParameterByModuleAlias("TestModuleExtern", "testModuleProperty").getValue();
+		String sValueModuleExtern = objKernelFGL.getParameterByModuleAlias("TestModuleExtern", "testModulePropertyExtern").getValue();
 		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","TestModuleValueExtern",sValueModuleExtern);
 		
 		

@@ -57,6 +57,7 @@ import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
@@ -528,13 +529,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					throw ez;
 				}						
 			}//end check:
-			try{
-				
+			
 			//Hole zuerst das "Basis-File"
 			IniFile objIni = this.getFileConfigKernelAsIni(); 
-			String sPropertyUsed = null;
-			String sFileNameUsed = null; String sFileName = null;
-			String sFilePathUsed = null; String sFilePath = null;
 			
 			//########################################
 			//### Vereinfachung mit ArrayList
@@ -545,74 +542,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(this.getFileConfigIni(), sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
 			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
-			
-			TODOGOON20220908;//Mache eine MEthode getFileConfigKernelDirectLookup_(sModuleSection); Dort den Inhalt der Suche nach einem sModule-String reinpacken.
-			
-			//########################################
-			//A) DATEINAME	
-			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;			
-			for(String sModuleSection : listasModuleSection) {			
-				sFileName =objIni.getValue(sModuleSection, sPropertyUsed ); 					
-				if(!StringZZZ.isEmpty(sFileName)) break;
-			}	
-			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);				
-			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
-				//this.setValueRaw(sFileName);
-			}else{
-				//this.setValueRaw(null);
-			}			
-			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+			objReturn = this.KernelSearchFileConfigDirectLookup_(objIni, sModule, listasModuleSection);
 						
-			//##########################################
-			//B) VERZEICHNISNAME
-			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX +sModule;
-			for(String sModuleSection : listasModuleSection) {				
-				sFilePath = objIni.getValue(sModuleSection,sPropertyUsed);				
-				if(!StringZZZ.isEmpty(sFilePath)) break;
-			}			
-			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
-			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
-				//this.setValueRaw(sFilePath);
-			}else{
-				//this.setValueRaw(null);
-			}
-			//Merke: Ein leeres Verzeichnis ist kein Problem, dann Projektstandardverzeichnis nehmen. if(StringZZZ.isEmpty(sFilePathUsed)) break main;
-			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
-			sFilePathUsed = objReturn2.getAbsolutePath();
-			
-						
-			
-			//#######################################
-			//### Proof the existance of the file
-			//#############################
-			String sFileTotal = FileEasyZZZ.joinFilePathName(sFilePathUsed, sFileNameUsed);
-			if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
-			File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
-			
-
-			//Mache das neue Ini-Objekt
-			String sPathTotalToUse = objFile.getAbsolutePath();
-			String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
-			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-			if(FileEasyZZZ.exists(sPathTotalToUse)) {
-				objReturn = new IniFile(sPathTotalToUse);
-				//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
-				
-			}else {
-				sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-				objReturn = null;
-			}
-			
-			
-			} catch (IOException ioe) {
-				String sLog = "IOException: Configuration File. Not able to create ini-FileObject.";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName(), ioe );
-				throw ez;
-			}
 		}//end main:
 		return objReturn;
 	}
@@ -2050,11 +1981,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 //			}else{
 //				hmDebug.put("Not in CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
 //			}
-			
-			
-			FileIniZZZ objFileConfigIni = this.getFileConfigIni();
-			
-			
+						
 			//Nun alle Ausprägungen der Systemkey in eine ArrayList packen
 			String sApplicationKeyUsed = this.getApplicationKey();
 			String sSystemNumberUsed = this.getSystemNumber();
@@ -2765,7 +2692,7 @@ MeinTestParameter=blablaErgebnis
 				FileIniZZZ objFileIniConfig = new FileIniZZZ(this,  objFileConfig, saFlagZpassed);						
 				
 				String sModuleAlias = this.getApplicationKey();
-				objReturn = KernelGetParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter, true);						
+				objReturn = KernelSearchParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter, true);						
 						}//end main:
 		return objReturn;		
 	}//end function getParameterByProgramAlias(..)
@@ -2797,7 +2724,7 @@ MeinTestParameter=blablaErgebnis
 					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}								
-				objReturn = KernelGetParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter, true);
+				objReturn = KernelSearchParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter, true);
 
 			}//end main:
 			return objReturn;		
@@ -2830,7 +2757,7 @@ MeinTestParameter=blablaErgebnis
 				saFlagZpassed = StringArrayZZZ.remove(saFlagZpassed, "INIT", true);
 				FileIniZZZ objFileIniConfig = new FileIniZZZ(this,  objFileConfig, saFlagZpassed);						
 								
-				objReturn = KernelGetParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter, true);						
+				objReturn = KernelSearchParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter, true);						
 		}//end main:
 		return objReturn;		
 	}//end function getParameterByProgramAlias(..)
@@ -2861,14 +2788,14 @@ MeinTestParameter=blablaErgebnis
 						ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}								
-					objReturn = KernelGetParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter,true);
+					objReturn = KernelSearchParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter,true);
 
 				}//end main:
 			return objReturn;		
 		}//end function getParameterByModuleAlias(..)
 		
 	
-	private IKernelConfigSectionEntryZZZ KernelGetParameterByModuleFile_(FileIniZZZ objFileIniConfigIn, String sModuleAlias, String sProperty, boolean bUseCache) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ KernelSearchParameterByModuleFile_(FileIniZZZ objFileIniConfigIn, String sModuleAlias, String sProperty, boolean bUseCache) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 							
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
@@ -2957,7 +2884,7 @@ MeinTestParameter=blablaErgebnis
 			    	iCounter++;
 			    	sDebugKey = "(" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
 			    	hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionUsed, sProperty);
-			    	objFound = KernelGetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, objFileIniConfig);
+			    	objFound = KernelSearchParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, objFileIniConfig);
 					if(objFound.hasAnyValue()) break main;
 			    }
 			    
@@ -3109,7 +3036,7 @@ MeinTestParameter=blablaErgebnis
 					sProgramOrSection = sAliasProgramOrSection;
 				}							
 				
-				objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty, true);								
+				objReturn = this.KernelSearchParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty, true);								
 	}//end main:
 	return objReturn;		
 }//end function getParameterByProgramAlias(..)
@@ -3140,7 +3067,7 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 				  
-			objReturn = this.KernelGetParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty, bUseCache);
+			objReturn = this.KernelSearchParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty, bUseCache);
 		}//END main:
 		return objReturn;
 	}
@@ -3175,12 +3102,186 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 
-			objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true);
+			objReturn = this.KernelSearchParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true);
 		}//END main:
 		return objReturn;
 	}
 	
-	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_AliasSystemLookup_(String sDebugKey, HashMapMultiIndexedZZZ hmDebug, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
+	private IniFile KernelSearchFileConfigDirectLookup_(IniFile objFileIni, String sModule, ArrayList<String>listasModuleOrApplicationSection) throws ExceptionZZZ {
+		IniFile objReturn = null;
+		main:{
+			if(objFileIni==null){
+				String stemp = "'Inifile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(listasModuleOrApplicationSection==null) {
+				String stemp = "'ListAsModuleOrApplication Section'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			try {							
+				String sFilename=null;
+				for(String sModuleOrApplicationSectionSection:listasModuleOrApplicationSection) {
+					sFilename = this.KernelSearchFileConfigFilenameDirectLookup_(objFileIni, sModuleOrApplicationSectionSection, sModule);
+					if(!StringZZZ.isEmpty(sFilename)) break;
+				}								
+				if(StringZZZ.isEmpty(sFilename)) break main;//Leerer Dateiname ist ein Abbruchkriterium
+				
+				String sDirectoryname=null;
+				for(String sModuleSection:listasModuleOrApplicationSection) {
+					sDirectoryname = this.KernelSearchFileConfigFiledirectoryDirectLookup_(objFileIni, sModuleSection, sModule);
+					if(!StringZZZ.isEmpty(sDirectoryname)) break;				
+				}
+				//Merke: Bei leerem Verzeichnisnamen wird ein Projektverzeichnis genommen.
+				
+				//#######################################
+				//### Proof the existance of the file
+				//#############################
+				String sFileTotal = FileEasyZZZ.joinFilePathName(sDirectoryname, sFilename);
+				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
+				File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
+				
+				//Mache das neue Ini-Objekt
+				String sPathTotalToUse = objFile.getAbsolutePath();
+				String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				if(FileEasyZZZ.exists(sPathTotalToUse)) {
+					objReturn = new IniFile(sPathTotalToUse);
+					//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
+					
+				}else {
+					sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					objReturn = null;
+				}								
+			} catch (IOException ioe) {
+				String sLog = "IOException: Configuration File. Not able to create ini-FileObject.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName(), ioe );
+				throw ez;
+			}
+			
+		}//end main:
+		return objReturn;
+	}
+	
+	private String KernelSearchFileConfigFilenameDirectLookup_(IniFile objFileIni, String sModuleOrApplicationSection,String sModule) throws ExceptionZZZ{
+		String sReturn = null;	
+		main:{
+			if(objFileIni==null){
+				String stemp = "'Inifile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModuleOrApplicationSection)) {
+				String stemp ="ModuleOrApplicationSection String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModule)) {
+				String stemp ="ModuleSection String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sModuleOrApplicationSectionUsed=sModuleOrApplicationSection;
+			//sModuleOrApplicationSectionUsed = KernelKernelZZZ.extractModuleFromSection(sModuleOrApplicationSection);
+//			if(StringZZZ.isEmpty(sModuleOrApplicationSectionUsed)) {
+//				String stemp ="ModuleOrApplicationSection String - Module not available";
+//				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+//			}
+			
+			String sPropertyUsed = null;
+			String sFileNameUsed = null; String sFileName = null;
+			
+			//########################################
+			//A) DATEINAME	
+			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;								
+			sFileName =objFileIni.getValue(sModuleOrApplicationSectionUsed, sPropertyUsed ); 					
+			if(StringZZZ.isEmpty(sFileName)) break main;  //Merke: Ein leerer Dateiname ist Grund woanders zu suchen.
+				
+			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);				
+			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				//this.setValueRaw(sFileName);
+			}else{
+				//this.setValueRaw(null);
+			}			
+			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+			
+			sReturn = sFileNameUsed;
+		}//end main:
+		return sReturn;
+	}
+	
+	private String  KernelSearchFileConfigFiledirectoryDirectLookup_(IniFile objFileIni, String sModuleOrApplicationSection, String sModule) throws ExceptionZZZ{
+		String sReturn = null;	
+		main:{
+			if(objFileIni==null){
+				String stemp = "'Inifile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModuleOrApplicationSection)) {
+				String stemp ="ModuleOrApplicationSection String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModule)) {
+				String stemp ="Module String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sModuleOrApplicationSectionUsed=sModuleOrApplicationSection;
+			//sModuleOrApplicationSectionUsed = KernelKernelZZZ.extractModuleFromSection(sModuleOrApplicationSection);
+			if(StringZZZ.isEmpty(sModuleOrApplicationSectionUsed)) {
+				String stemp ="ModuleOrApplicationSection String - Module not available";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sPropertyUsed = null;
+			String sFilePathUsed = null; String sFilePath = null;
+			
+			//########################################
+			//##########################################
+			//B) VERZEICHNISNAME
+			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX +sModule;						
+			sFilePath = objFileIni.getValue(sModuleOrApplicationSectionUsed,sPropertyUsed);				
+			if(StringZZZ.isEmpty(sFilePath)) break main; //Merke: Ein Leer definiertes Verzeichnis ist ein Grund woanders zu suchen.
+						
+			//Ein als leer definiertes Verzeichnis bedeutet "nicht an anderer Konfigurationsstelle weitersuchen"
+			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
+			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
+						
+			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
+			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");
+				
+				
+				//this.setValueRaw(sFilePath);
+			}else{
+				//this.setValueRaw(null);
+			}
+			//Merke: Ein leeres Verzeichnis ist kein Problem, dann Projektstandardverzeichnis nehmen. if(StringZZZ.isEmpty(sFilePathUsed)) break main;
+			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
+			sFilePathUsed = objReturn2.getAbsolutePath();
+			
+			sReturn = sFilePathUsed;
+					
+		}//end main:
+		return sReturn;
+	}
+	
+	private IKernelConfigSectionEntryZZZ KernelSearchParameterByProgramAlias_AliasSystemLookup_(String sDebugKey, HashMapMultiIndexedZZZ hmDebug, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		
 		IKernelConfigSectionEntryZZZ objFound=null;
@@ -3207,7 +3308,7 @@ MeinTestParameter=blablaErgebnis
 					sPropertyUsed = sProperty; //nun erst die nach der übergebenen Property suchen. 
 					hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sPropertyUsed);	
 					
-					objFound = KernelGetParameterByProgramAlias_DirectLookup_(sSectionUsed, sPropertyUsed, objFileIniConfig);
+					objFound = KernelSearchParameterByProgramAlias_DirectLookup_(sSectionUsed, sPropertyUsed, objFileIniConfig);
 					if(objFound.hasAnyValue()) break main;
 				}
 				
@@ -3222,7 +3323,7 @@ MeinTestParameter=blablaErgebnis
 					sSectionUsed = objTemp.getValue();
 					sPropertyUsed = sProperty;
 					hmDebug.put(sDebugKey + "(" + sSearchCounter + ")." + sSectionUsed, sPropertyUsed);	
-					objFound = KernelGetParameterByProgramAlias_DirectLookup_(sSectionUsed, sPropertyUsed, objFileIniConfig);
+					objFound = KernelSearchParameterByProgramAlias_DirectLookup_(sSectionUsed, sPropertyUsed, objFileIniConfig);
 					if(objFound.hasAnyValue()) break main;				
 				}
 			}
@@ -3233,7 +3334,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 	
-	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_SystemLookup_(String sDebugKey, HashMapMultiIndexedZZZ hmDebug, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ KernelSearchParameterByProgramAlias_SystemLookup_(String sDebugKey, HashMapMultiIndexedZZZ hmDebug, String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		
 		IKernelConfigSectionEntryZZZ objFound=null;
@@ -3260,7 +3361,7 @@ MeinTestParameter=blablaErgebnis
 					hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionUsed, sProperty);
 					
 					//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": " + sDebugKeyUsed + "Suche in '"+ sSectionUsed + "' nach dem Wert '" + sProperty + "'");			
-					objFound = KernelGetParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, objFileIniConfig);
+					objFound = KernelSearchParameterByProgramAlias_DirectLookup_(sSectionUsed, sProperty, objFileIniConfig);
 					if(objFound.hasAnyValue()) break main;					
 				}
 				
@@ -3367,7 +3468,7 @@ MeinTestParameter=blablaErgebnis
 		return bReturn;
 	}
 	
-	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_DirectLookup_(String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ KernelSearchParameterByProgramAlias_DirectLookup_(String sSection, String sProperty, FileIniZZZ objFileIniConfig) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			if(objFileIniConfig==null){
@@ -3397,7 +3498,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 	
-	private IKernelConfigSectionEntryZZZ KernelGetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSectionIn, String sProgramOrSectionIn, String sProperty, boolean bUseCache) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ KernelSearchParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSectionIn, String sProgramOrSectionIn, String sProperty, boolean bUseCache) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug;
@@ -3517,7 +3618,7 @@ MeinTestParameter=blablaErgebnis
 		    	iCounter++;
 		    	sDebugKey = "(" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
 		    	if(hmDebug!=null) hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + "Module: |" + sSectionUsed + "'| Program: '" + sSectionProgramUsed + "'", sProperty);
-		    	objFound = KernelGetParameterByProgramAlias_DirectLookup_(sSectionProgramUsed, sProperty, objFileIniConfig);
+		    	objFound = KernelSearchParameterByProgramAlias_DirectLookup_(sSectionProgramUsed, sProperty, objFileIniConfig);
 				if(objFound.hasAnyValue()) break main;				
 		    }//end for
 		    
@@ -4263,13 +4364,13 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 				  
-			objaReturn = this.KernelGetParameterArrayByProgramAlias_(null, sModule, sProgramOrSection, sProperty);
+			objaReturn = this.KernelSearchParameterArrayByProgramAlias_(null, sModule, sProgramOrSection, sProperty);
 		}//END main:
 		return objaReturn;
 	}
 	
 	
-	private IKernelConfigSectionEntryZZZ[] KernelGetParameterArrayByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ[] KernelSearchParameterArrayByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ[] objaReturn = null;
 		ArrayList<IKernelConfigSectionEntryZZZ>listaReturn= new ArrayList<IKernelConfigSectionEntryZZZ>();				
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
@@ -4286,7 +4387,7 @@ MeinTestParameter=blablaErgebnis
 		hmDebug.put("+++ ArrayMethod calling StringMethod for search. Input: " + sMainSection + "," + sProgramOrSection ,sProperty);
 		
 		IKernelConfigSectionEntryZZZ objReturn = null;
-		objFound = this.KernelGetParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, true);
+		objFound = this.KernelSearchParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, true);
 		
 		sDebug = hmDebug.debugString(":"," | ");
 		if(objFound!=null && objFound.hasAnyValue()) {										
@@ -4652,7 +4753,7 @@ MeinTestParameter=blablaErgebnis
 			
 			FileIniZZZ objFileIniConfig = this.searchModuleFileWithProgramAlias(sModule, sProgramOrSection);		    	
 		   			
-			IKernelConfigSectionEntryZZZ objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true);
+			IKernelConfigSectionEntryZZZ objReturn = this.KernelSearchParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true);
 			
 			sDebug = hmDebug.debugString(":"," | ");
 			if(objReturn.hasAnyValue()) {										
@@ -6446,7 +6547,7 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 	
-			objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, bUseCache);
+			objReturn = this.KernelSearchParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, bUseCache);
 		}//END main:
 		return objReturn;
 	}
@@ -6501,7 +6602,7 @@ MeinTestParameter=blablaErgebnis
 						sProgramOrSection = sAliasProgramOrSection;
 					}							
 					
-					objReturn = this.KernelGetParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty, bUseCache);								
+					objReturn = this.KernelSearchParameterByProgramAlias_(objFileIniConfig, sProgramOrSection, sAliasProgramOrSection, sProperty, bUseCache);								
 		}//end main:
 		return objReturn;		
 	}//end function getParameterByProgramAlias(..)	
@@ -6531,7 +6632,7 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//END check:
 				  
-			objReturn = this.KernelGetParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty, true);
+			objReturn = this.KernelSearchParameterByProgramAlias_(null, sModule, sProgramOrSection, sProperty, true);
 		}//END main:
 		return objReturn;
 	}
@@ -6557,7 +6658,7 @@ MeinTestParameter=blablaErgebnis
 				}				
 			}//END check:
 			
-			objReturn = this.KernelGetParameterByProgramAlias_(null, null, sModuleAndProgramAndSection, sProperty, true);
+			objReturn = this.KernelSearchParameterByProgramAlias_(null, null, sModuleAndProgramAndSection, sProperty, true);
 		}//END main:
 		return objReturn;
 	}
