@@ -759,29 +759,24 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				throw ez;
 			}
 			
-			//1. Zuerst Aliasse
-			//analog ...ForProgram hier eine Liste mit einem Aliaswert vorneweg erstellen.
-			//nur das dieser Alias in zwei verschiedenen Dateien definiert worden sein kann
-			//1a) Suche in  der Moduldatei 
-			//getModuleFileByAlias(objFileIniConfig, sModule)
-			//TODOGOON2022000830;// Moduldatei holen
-			
-			
-			
-			
-			
-			//1b) Suche in der Hauptdatei                                
+			//1. Zuerst Aliasse			                              
 			String sModuleAlias = KernelKernelZZZ.searchAliasForModule(objFileIniConfig, sModule, sApplicationOrModule, sSystemNumber);
 			ArrayList<String> alsModuleAlias = KernelKernelZZZ.computeSystemSectionNames(sModuleAlias, sSystemNumber);
 			if(alsModuleAlias!=null) {
-            	alsReturn = ArrayListZZZ.join(alsReturn, alsModuleAlias, false);
+            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
             }
 			
 			//2. Dann Systemkeys mit dem Modulnamen
 			ArrayList<String> alsModule = KernelKernelZZZ.computeSystemSectionNames(sModule, sSystemNumber);
             if(alsModule!=null) {
-            	alsReturn = ArrayListZZZ.join(alsReturn, alsModule, false);
+            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
             }
+            
+        	//3. Applicationkeys
+			ArrayList<String> alsApplication = KernelKernelZZZ.computeSystemSectionNames(sApplicationOrModule, sSystemNumber);
+			if(alsApplication!=null) {
+				alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplication);
+			}
           
 		}//end main:
 		alsReturn = (ArrayList<String>) ArrayListZZZ.unique(alsReturn);

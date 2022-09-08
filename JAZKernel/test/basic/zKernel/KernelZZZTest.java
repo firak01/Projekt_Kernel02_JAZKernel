@@ -699,6 +699,7 @@ public void testGetParameterFromClass_ALS_SAMMLUNG_VERSCHIEDENER_METHODEN(){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
 	}	
 	
+	TODOGOON20220908;//Hier wird der GLOBAL Wert zurückgeliefert, das sollte so nicht sein...
 	try{
 		//b) Parameter aus dem Programm (das als Alias so aussieht wie der Klassenname) holen
 		String sAgentSection = objKernelFGL.getSystemKey() + "!" + sClassname;
