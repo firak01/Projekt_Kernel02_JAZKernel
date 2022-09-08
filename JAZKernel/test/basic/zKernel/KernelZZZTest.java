@@ -415,7 +415,7 @@ public void testGetParameterByModuleAlias(){
 	//+++++++++++++++++++++++++++++++++++++
 	try{
 		//a) Parameter per Methode holen
-		String stemp = objKernelFGL.getParameterByModuleAlias(sModuleNameExtern, "testModuleProperty").getValue();
+		String stemp = objKernelFGL.getParameterByModuleAlias(sModuleNameExtern, "testModulePropertyExtern").getValue();
 		assertEquals("TestModuleValueExtern", stemp);
 	}catch(ExceptionZZZ ez){
 		fail("An exception happend testing: " + ez.getDetailAllLast());
@@ -640,7 +640,7 @@ public void testSetParameterByProgramAlias(){
 		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);
 		assertTrue(objEntry.hasAnyValue());
 		String sReturnSaved = objEntry.getValue();
-		assertEquals("testwertextern progname equals module",sReturnSaved);
+		assertEquals("testwertextern by progalias GLOBAL",sReturnSaved);
 		
 		String sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
 		objKernelFGL.setParameterByProgramAlias(sModuleExtern, sProgram, sProperty, sValue, true);
