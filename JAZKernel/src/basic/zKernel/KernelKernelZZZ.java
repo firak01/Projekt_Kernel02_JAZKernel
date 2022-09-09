@@ -500,7 +500,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	
 	public IniFile getFileConfigKernelAsIni() throws ExceptionZZZ{
 		IniFile objReturn = null;
-		if(this.getFileConfigIni()==null){			
+		if(this.getFileConfigKernelIni()==null){			
 			File objFile = this.getFileConfigKernel();
 			try {
 				objReturn = new IniFile(objFile.getPath());
@@ -511,12 +511,12 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				throw ez;
 			} 
 		}else {
-			objReturn = this.getFileConfigIni().getFileIniObject();
+			objReturn = this.getFileConfigKernelIni().getFileIniObject();
 		}
 		return objReturn;	
 	}
 	
-	public IniFile getFileConfigKernelAsIni(String sModule) throws ExceptionZZZ{
+	public IniFile getFileConfigModuleAsIni(String sModule) throws ExceptionZZZ{
 		IniFile objReturn = null;
 		main:{
 			check:{
@@ -539,7 +539,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sApplicationKey = this.getApplicationKey();
 			String sSystemNumber = this.getSystemNumber();
 			
-			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(this.getFileConfigIni(), sModule, sApplicationKey, sSystemNumber);			
+			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(this.getFileConfigKernelIni(), sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
 			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
 			objReturn = this.KernelSearchFileConfigDirectLookup_(objIni, sModule, listasModuleSection);
@@ -726,7 +726,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	public ArrayList<String> computeSystemSectionNamesForModule(String sModule) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{
-			FileIniZZZ objFileIniconfig = this.getFileConfigIni();
+			FileIniZZZ objFileIniconfig = this.getFileConfigKernelIni();
 			String sApplicationOrModule = this.getApplicationKey();
 			String sSystemNr = this.getSystemNumber();
 			alsReturn = KernelKernelZZZ.computeSystemSectionNamesForModule(objFileIniconfig, sModule, sApplicationOrModule, sSystemNr);
@@ -787,7 +787,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	public ArrayList<String> computeSystemSectionNamesForProgram(String sProgram) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{
-			FileIniZZZ objFileIniconfig = this.getFileConfigIni();
+			FileIniZZZ objFileIniconfig = this.getFileConfigKernelIni();
 			String sApplicationKey = this.getApplicationKey();
 			String sSystemNr = this.getSystemNumber();
 			alsReturn = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileIniconfig, sProgram, sApplicationKey, sSystemNr);
@@ -1258,16 +1258,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.objFileFilterModule = (FileFilterModuleZZZ) objFileFilter;
 	}
 	
-	public FileIniZZZ getFileConfigIni() throws ExceptionZZZ{
+	public FileIniZZZ getFileConfigKernelIni() throws ExceptionZZZ{
 		FileIniZZZ objReturn = this.objFileIniKernelConfig;
 		if(objReturn==null){
 			String sKey = this.getApplicationKey();
-			objReturn = this.getFileModuleIniByAlias(sKey);
+			objReturn = this.getFileConfigModuleIni(sKey);
 			this.objFileIniKernelConfig = objReturn;
 		}
 		return objReturn;	
 	}
-	public void setFileConfigIni(FileIniZZZ objFileIniKernelConfig){
+	public void setFileConfigKernelIni(FileIniZZZ objFileIniKernelConfig){
 		this.objFileIniKernelConfig = objFileIniKernelConfig;
 	}
 	
@@ -1283,7 +1283,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 @return FileIniZZZ, like getFileConfigByAlias.
 	 @throws ExceptionZZZ
 	 */
-	public FileIniZZZ getFileModuleIniByAlias(String sModuleAlias) throws ExceptionZZZ{
+	public FileIniZZZ getFileConfigModuleIni(String sModuleAlias) throws ExceptionZZZ{
 		FileIniZZZ objReturn = null;		
 				main:{
 					check:{
@@ -1302,7 +1302,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					//first, get the Kernel-Configuration-INI-File
 					//IniFile objIni = this.getFileConfigKernelAsIni(); //Hier fehlt der Alias...
 					//NEIN, das wäre wohl eine Endlosschleife: FileIniZZZ objKernelIni = this.getFileConfigIniByAlias(sAlias);
-					IniFile objIni = this.getFileConfigKernelAsIni(sAlias);
+					IniFile objIni = this.getFileConfigModuleAsIni(sAlias);
 					if(objIni==null){
 						String sLog = "FileIni missing for Alias: " + sAlias;
 						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
@@ -1324,10 +1324,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 
 					}else{
 						//Übernimm die gesetzten FlagZ...
-						HashMap<String,Boolean>hmFlagZ = this.getFileConfigIni().getHashMapFlagZ();
+						HashMap<String,Boolean>hmFlagZ = this.getFileConfigKernelIni().getHashMapFlagZ();
 						
 						//Übernimm die gesetzten Variablen...
-						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigIni().getHashMapVariable();
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigKernelIni().getHashMapVariable();
 						objReturn = new FileIniZZZ(this,  objFileModule, hmFlagZ);
 						objReturn.setHashMapVariable(hmVariable);	
 					}
@@ -1360,7 +1360,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				throw ez;
 			}
 			
-			FileIniZZZ objFileConfigIni = this.getFileModuleIniByAlias(sModule);
+			FileIniZZZ objFileConfigIni = this.getFileConfigModuleIni(sModule);
 			String sApplicationOrModule = this.getApplicationKey();
 			IKernelConfigSectionEntryZZZ entry = KernelSearchAliasForModule_(objFileConfigIni, sModule, sApplicationOrModule);
 			if(entry==null) break main;
@@ -1443,7 +1443,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}						
 			}//end check:
 		
-			IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);					
+			IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAliasOLDDIRECT(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);					
 			if(!objEntryFileName.hasAnyValue()){											
 				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
 				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
@@ -1452,7 +1452,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				//ABER DER APPLICATIONKEY IST ERLAUBT
 				
 				String sApplicationKey = this.getApplicationKey();
-				objEntryFileName = this.searchPropertyByAlias(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX+sApplicationKey);
+				objEntryFileName = this.searchPropertyByAliasOLDDIRECT(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX+sApplicationKey);
 				if(!objEntryFileName.hasAnyValue()){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein Dateiname konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
 					break main;
@@ -1478,7 +1478,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}//end check:
 		
 			String sFilePathUsed = null;
-			IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX);
+			IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAliasOLDDIRECT(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX);
 			if(!objEntryFilePath.hasAnyValue()){
 				//20191029: Den Alias ggfs. normieren, d.h. erst als alias mit Systemkey !01 ... Dann also alias ohne System key, d.h. vor dem !.
 				//Das Problem ist sonst, dass die Property KernelConfigFileOVPN!01 heissen muss, für das System01.
@@ -1487,7 +1487,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				//ABER DER APPLICATIONKEY IST ERLAUBT
 								
 				String sApplicationKey = this.getApplicationKey();
-				objEntryFilePath = this.searchPropertyByAlias(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX+sApplicationKey);
+				objEntryFilePath = this.searchPropertyByAliasOLDDIRECT(objIni, sAlias,IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX+sApplicationKey);
 				if(!objEntryFilePath.hasAnyValue()){						
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Kein DateiPfad konfiguriert für den Alias  '" + sAlias + "' in Datei '" + objIni.getFileName() +"'");	
 					//break main; Auch mit leerem Dateipfad weitermachen....
@@ -1552,7 +1552,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
-	public File[] getFileConfigAllByDir(String sDirIn) throws ExceptionZZZ{
+	public File[] getFileConfigModuleAllByDir(String sDirIn) throws ExceptionZZZ{
 		File[] objaReturn=null;
 		main:{
 			String sDir;
@@ -1599,7 +1599,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		 @return File-Object, Existance is not proofed, null: if not configured.
 		 @throws ExceptionZZZ
 		 */
-	public File getFileConfigByAlias(String sAlias) throws ExceptionZZZ{
+	public File getFileConfigModuleOLDDIRECT(String sAlias) throws ExceptionZZZ{
 			File objReturn = null;
 			main:{
 						check:{
@@ -1608,14 +1608,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 								throw ez;
 							}						
 						}//end check:
-																	
+								
 						//1. Hole den Dateinamen
-						IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAlias(sAlias,IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
+						IKernelConfigSectionEntryZZZ objEntryFileName = this.searchPropertyByAliasOLDDIRECT(sAlias,IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
 						if(!objEntryFileName.hasAnyValue()) break main;
 						String sFileName = objEntryFileName.getValue();
 						
 						//2. Hole den Dateipfad
-						IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAlias(sAlias,IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX);
+						IKernelConfigSectionEntryZZZ objEntryFilePath = this.searchPropertyByAliasOLDDIRECT(sAlias,IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX);
 						//Auch wenn der Dateipfad nicht gepflegt ist weiterarbeiten. Es wird dann ein Standard genommen. if(!objEntryFilePath.hasAnyValue()) break main;
 						String sFilePath = objEntryFilePath.getValue();
 						
@@ -1626,6 +1626,17 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}//end main:
 			return objReturn;
 		}
+	
+	public File getFileConfigModule(String sModuleAlias) throws ExceptionZZZ{
+		File objReturn = null;
+		main:{
+			FileIniZZZ objFileConfigIni = this.getFileConfigModuleIni(sModuleAlias);
+			if(objFileConfigIni==null) break main;
+			
+			objReturn = objFileConfigIni.getFileObject();			
+		}//end main:
+		return objReturn;
+	}
 	
 	private String KernelChooseMainSectionUsedForConfigFile_(String sMainSection, String sProgramOrSection) throws ExceptionZZZ{
 		String sReturn = null;
@@ -1809,7 +1820,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			//###############################################
 			//Hole die Konfigurationsdatei des Moduls
-			File objFileIni = this.getFileConfigByAlias(sApplicationOrModule);
+			File objFileIni = this.getFileConfigModuleOLDDIRECT(sApplicationOrModule);
 			FileIniZZZ objFileConfigIni = new FileIniZZZ(this, objFileIni);
 			
 			objFound = KernelKernelZZZ.searchProgramAliasFor(objFileConfigIni, sProgram, sApplicationOrModule, sSystemNumber, hmDebug);		
@@ -1860,7 +1871,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			
 			
-			FileIniZZZ objFileConfigIni = this.getFileConfigIni();
+			FileIniZZZ objFileConfigIni = this.getFileConfigKernelIni();
 			
 			
 			//Nun alle Ausprägungen der Systemkey in eine ArrayList packen
@@ -1986,7 +1997,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				ArrayList<String>alsModuleKey = KernelKernelZZZ.computeSystemSectionNames(sModule,sSystemNumberUsed);
 				for(String sModuleKey : alsModuleKey) {
 					//Hole das Modulfile
-					objFound = this.getFileModuleIniByAlias(sModuleKey);
+					objFound = this.getFileConfigModuleIni(sModuleKey);
 					if(objFound!=null) {
 						//Existiert diese Datei?
 						if(bExistingOnly) {
@@ -2004,7 +2015,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					ArrayList<String>alsApplicationKey = KernelKernelZZZ.computeSystemSectionNames(sApplicationKeyUsed,sSystemNumberUsed);
 					for(String sApplicationKey : alsApplicationKey) {
 						//Hole das Applicationfile
-						objFound = this.getFileModuleIniByAlias(sApplicationKey);
+						objFound = this.getFileConfigModuleIni(sApplicationKey);
 						if(objFound!=null) {
 							//Existiert diese Datei?
 							if(bExistingOnly) {
@@ -2037,78 +2048,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;								
 	}
 	
-	public static FileIniZZZ searchModuleFileByModuleWithProgramSection(FileIniZZZ objFileConfigIni, String sProgramOrSection, String sModule, String sApplicationKey, String sSystemNumber, HashMapMultiIndexedZZZ hmDebug) throws ExceptionZZZ{
-		
-		//METHODE KANN GELÖSCHT WERDEN; FALLS NICHT REFERENZIERT !!!
-		FileIniZZZ objReturn=null;
-		
-		boolean bExistsSection=false;
-		FileIniZZZ objFound=null;
-		main:{
-	
-			//Nun alle Ausprägungen der Systemkey in eine ArrayList packen
-			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sProgramOrSection, sModule, sApplicationKey, sSystemNumber);			
-			for(String sModuleSection : listasModuleSection) {
-				try{
-	    			if(hmDebug!=null) hmDebug.put("Modul", sModuleSection);
-	    			objFound = this.getFileModuleIniByAlias(sModuleSection);
-	    			if(objFound!=null) {
-	    				
-	    				//Existiert diese Datei?
-	    				boolean bExists = FileEasyZZZ.exists(objFound.getFileObject());
-	    				if(bExists) {	    				
-	    					//Existiert eine der ProgramSections direkt in der Konfigurationsdatei?
-	    					ArrayList<String>listasProgramOrSection = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sProgramOrSection, sModule, sApplicationKey, sSystemNumber);
-	    					for(String sProgramOrSectionTemp : listasProgramOrSection) {
-	    						hmDebug.put("ProgramOrSection", sProgramOrSectionTemp);
-	    						bExistsSection = objFound.proofSectionExists(sProgramOrSectionTemp);
-	    						if(bExistsSection) break main;
-	    					}
-	    				   					    
-	    					//+++++++++++++++++++++++++++++++++++		    				
-		    				ArrayList<String>listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
-		    				for(String sSystemSectionTemp : listasSystemSection) {
-	    						
-		    					//ggfs. noch den Programnamen ausrechnen?
-		    					//IKernelConfigSectionEntryZZZ objEntryAlias = this.KernelGetParameter_DirectLookup_(objFound, sSystemSectionTemp, sProgramOrSection);
-		    					IKernelConfigSectionEntryZZZ objEntryAlias = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFound, sSystemSectionTemp, sProgramOrSection);
-		    					if(objEntryAlias.hasAnyValue()) {
-		    						String sAlias = objEntryAlias.getValue();		    					
-		    						hmDebug.put("ProgramOrSection by Alias (found in): ", sAlias + "(" + sSystemSectionTemp + ")");
-		    						    						
-			    					ArrayList<String>listasProgramOrSectionAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sAlias, sModule, sApplicationKey, sSystemNumber);
-			    					for(String sProgramOrSectionAliasTemp : listasProgramOrSectionAlias) {
-			    						bExistsSection = objFound.proofSectionExists(sProgramOrSectionAliasTemp);				    						
-			    						if(bExistsSection) break main;
-			    					}
-		    					}
-	    					}    			
-	    				}else {
-	    					String sLog = ReflectCodeZZZ.getPositionCurrent() + ": Fuer Modul '" + sModuleSection + "' konfiguriertes FileObjekt existiert nicht.";
-	    					System.out.println(sLog);
-	    				}
-	    			}
-				}catch(ExceptionZZZ ez2){
-		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über die MainSection '" + sModule + "' schlägt fehl. ...");
-		    	}	
-			}//end for
-		}//end main:	
-		if(!bExistsSection && objFound==null) {
-			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-//			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-//			throw ez;
-		}else {
-			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
-    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
-    		    		
-			objReturn = objFound;
-		}
-		return objReturn;								
-	}
-	
-	
-	private IKernelConfigSectionEntryZZZ searchPropertyByAlias(String sAlias, String sProperty) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ searchPropertyByAliasOLDDIRECT(String sAlias, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null;
 		main:{
 			check:{
@@ -2124,7 +2064,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			//first, get the Kernel-Configuration-INI-File
 			IniFile objIni = this.getFileConfigKernelAsIni();			
-			objReturn = this.searchPropertyByAlias(objIni, sAlias, sProperty);
+			objReturn = this.searchPropertyByAliasOLDDIRECT(objIni, sAlias, sProperty);
 		}//end main:
 		return objReturn;		
 	}
@@ -2146,7 +2086,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return bReturn;
 	}
 	
-	private IKernelConfigSectionEntryZZZ searchPropertyByAlias(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
+	private IKernelConfigSectionEntryZZZ searchPropertyByAliasOLDDIRECT(IniFile objIni, String sAlias, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug = ""; 
@@ -2484,7 +2424,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}//end check:
 
 		//+++ First get the Module-Ini-File
-		File objFileModule = this.getFileConfigByAlias(sModuleAlias);
+		//File objFileModule = this.getFileConfigModuleOLDDIRECT(sModuleAlias);
+		File objFileModule = this.getFileConfigModule(sModuleAlias);
 		if(objFileModule==null){
 			ExceptionZZZ ez = new ExceptionZZZ("Configuration file not configured for the module'" + sModuleAlias + "'",iERROR_CONFIGURATION_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;	
@@ -2855,7 +2796,7 @@ MeinTestParameter=blablaErgebnis
 				//1. Konfigurationsfile des Systems holen
 				FileIniZZZ objFileIniConfig = null;
 			    if(objFileIniConfigIn==null){
-			    	objFileIniConfig = this.getFileModuleIniByAlias(sModuleAlias);		    	
+			    	objFileIniConfig = this.getFileConfigModuleIni(sModuleAlias);		    	
 			    }else{
 			    	String stemp = "Verwende übergebenes FileIniZZZ: " + objFileIniConfigIn.getFileObject().getAbsolutePath();
 		    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
@@ -3350,7 +3291,7 @@ MeinTestParameter=blablaErgebnis
 				//Ansatz: Hole eine Liste der zur Verfügung stehenden Sections, die für dieses Program denkbar wären.
 				String sApplicationKey = this.getApplicationKey();
 				String sSystemNumber = this.getSystemNumber();
-				FileIniZZZ objFileConfigIni = this.getFileConfigIni();
+				FileIniZZZ objFileConfigIni = this.getFileConfigKernelIni();
 				ArrayList<String>listasSectionProgram = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sSection, sApplicationKey, sSystemNumber);
 				for(String sSectionUsed : listasSectionProgram) {
 					hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionUsed, sProperty);
@@ -4230,17 +4171,17 @@ MeinTestParameter=blablaErgebnis
 			//Falls der Parameter immer noch nicht gefunden wurde, hier eine Exception auswerfen.
 	        //Ansonsten droht die Gefahr einer Endlosschleife.
 				String sModuleUsed="";
-				boolean bModuleConfig = this.proofModuleFileIsConfigured(sMainSection);
+				boolean bModuleConfig = this.proofFileConfigModuleIsConfigured(sMainSection);
 				if(bModuleConfig==false){
 																		
 					//A2. Versuch: Prüfen, ob es als Systemkey konfiguriert ist
 					sModuleUsed = this.getSystemKey();
-					bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+					bModuleConfig = this.proofFileConfigModuleIsConfigured(sModuleUsed);
 					if(bModuleConfig==false){
 						
 						//A3. Versuch: Prüfen, ob es als Applikationskey konfiguriert ist
 						sModuleUsed = this.getApplicationKey();
-						bModuleConfig = this.proofModuleFileIsConfigured(sModuleUsed);
+						bModuleConfig = this.proofFileConfigModuleIsConfigured(sModuleUsed);
 						if(bModuleConfig==false){
 							String stemp = "Wrong parameter: Module '" + sModuleUsed + "' is not configured or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
@@ -4251,7 +4192,7 @@ MeinTestParameter=blablaErgebnis
 				}//end if Versuch 1
 				
 				//B1. Prüfen, ob das Modul existiert
-				boolean bModuleExists = this.proofModuleFileExists(sMainSection);
+				boolean bModuleExists = this.proofFileConfigModuleExists(sMainSection);
 				if(bModuleExists==false){
 					String stemp = "Wrong parameter: Module '" + sModuleUsed + "' does not exist or property could not be found anywhere in the file in the file '" + objFileIniConfig.getFileObject().getAbsolutePath() + "' for the property: '" + sProperty + "'.";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
@@ -5036,7 +4977,7 @@ MeinTestParameter=blablaErgebnis
 			//DEFINITION DES ALIAS DANN AUF OBERER EBENE: APPLICATIONKEY ! SYSTEMNUMBER
 			//                                  ODER NUR: APPLICATIONKEY
 			String sApplicationKey = this.getApplicationKey();
-			FileIniZZZ objFileConfigIni = this.getFileConfigIni();
+			FileIniZZZ objFileConfigIni = this.getFileConfigKernelIni();
 			ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sProgramNameUsed, sApplicationKey, sSystemNumber);
 			
 			sPropertyUsed = sProgramNameUsed;			
@@ -5612,7 +5553,7 @@ MeinTestParameter=blablaErgebnis
 			 * @return
 			 * @throws ExceptionZZZ 
 			 */
-	public ArrayList getModuleFileAliasAll(boolean bOnlyConfigured, boolean bOnlyExisting) throws ExceptionZZZ{
+	public ArrayList getFileConfigModuleAliasAll(boolean bOnlyConfigured, boolean bOnlyExisting) throws ExceptionZZZ{
 				ArrayList listaReturn = new ArrayList();
 				main:{
 					int iCase=0;
@@ -5683,7 +5624,7 @@ MeinTestParameter=blablaErgebnis
 						//Aus der liste nun diejenigen wieder entfernen, die nicht existieren
 						//!!! Von hinten nach vorne die liste durchsehen, ansonsten werden die Indizes durcheinandergeworfen: for(int icount=0; icount < listaConfigured.size(); icount++){
 						for(int icount=listaConfigured.size()-1; icount >= 0 ; icount--){		
-							boolean btemp = this.proofModuleFileExists((String) listaConfigured.get(icount));
+							boolean btemp = this.proofFileConfigModuleExists((String) listaConfigured.get(icount));
 							if(btemp == false){
 								listaConfigured.remove(icount);
 							}
@@ -5739,7 +5680,7 @@ MeinTestParameter=blablaErgebnis
 						if(sDir==null) sDir = "";     //Das ist nun m�glich     if(sDir.equals("")) break main;
 						
 						//Alle Moduldateien dieses Verzeichnisses holen
-						objaFileTemp = this.getFileConfigAllByDir(sDir);
+						objaFileTemp = this.getFileConfigModuleAllByDir(sDir);
 						if(objaFileTemp==null) break main;
 						if(objaFileTemp.length==0)break main;
 						
@@ -5815,7 +5756,7 @@ MeinTestParameter=blablaErgebnis
 						//Aus der liste nun diejenigen wieder entfernen, die  existieren, bzw: Diejenigen, die FEHLEN HINZUF�GEN
 						listaReturn = new ArrayList();
 						for(int icount=0; icount < listaFile.size(); icount++){
-							boolean btemp = this.proofModuleFileExists((String) listaFile.get(icount));
+							boolean btemp = this.proofFileConfigModuleExists((String) listaFile.get(icount));
 							if(btemp == false){
 								listaReturn.add(listaFile.get(icount));  //Ein einfaches Entfernen an dieser Stelle ändert die Size der Liste und die Indexpositionen
 							}
@@ -5831,7 +5772,7 @@ MeinTestParameter=blablaErgebnis
 						
 						
 						//Alle Moduldateien dieses Verzeichnisses holen
-						objaFileTemp = this.getFileConfigAllByDir(sDir);
+						objaFileTemp = this.getFileConfigModuleAllByDir(sDir);
 						if(objaFileTemp==null) break main;
 						if(objaFileTemp.length==0)break main;
 												
@@ -5957,7 +5898,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return 
 	 * @throws ExceptionZZZ 
 	 */
-	public boolean proofModuleFileIsConfigured(String sModule) throws ExceptionZZZ{
+	public boolean proofFileConfigModuleIsConfigured(String sModule) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			check:{
@@ -6020,7 +5961,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
-	public boolean proofModuleFileExists(String sModule) throws ExceptionZZZ{
+	public boolean proofFileConfigModuleExists(String sModule) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			check:{
@@ -6034,7 +5975,7 @@ MeinTestParameter=blablaErgebnis
 			IniFile objIni = this.getFileConfigKernelAsIni();
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Verwende als ini-Datei für die Prüfung '"+ objIni.getFileName() + "'.");
 			
-			IniFile objFile = this.getFileConfigKernelAsIni(sModule);
+			IniFile objFile = this.getFileConfigModuleAsIni(sModule);
 			if(objFile!=null) {
 				bReturn = FileEasyZZZ.exists(objFile.getFileName());
 				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists = " + bReturn);
@@ -6062,7 +6003,7 @@ MeinTestParameter=blablaErgebnis
 			}								
 					
 			//first, get the Kernel-Configuration-INI-File
-			FileIniZZZ objIni = this.getFileConfigIni();
+			FileIniZZZ objIni = this.getFileConfigKernelIni();
 			if(objIni==null) {
 				ExceptionZZZ ez = new ExceptionZZZ("Not configured KernelIniFile'",iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -6344,7 +6285,7 @@ MeinTestParameter=blablaErgebnis
 				
 				String[] saFlagFileIniZZZ = StringArrayZZZ.remove(saFlagRelevantFileIniZZZ, saFlagZpassedFalse, true);				
 				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
-				this.setFileConfigIni(objFileIniZZZ);
+				this.setFileConfigKernelIni(objFileIniZZZ);
 				
 				//Wirf eine Exception wenn weder der Application noch der SystemKey in der Konfigurationsdatei existieren
 				String sKeyToProof = this.getApplicationKey();
@@ -6431,7 +6372,7 @@ MeinTestParameter=blablaErgebnis
 			}//END check:
 
 			
-			FileIniZZZ objFileIniConfig = this.getFileConfigIni();
+			FileIniZZZ objFileIniConfig = this.getFileConfigKernelIni();
 			String sSectionMain = null;
 			
 			

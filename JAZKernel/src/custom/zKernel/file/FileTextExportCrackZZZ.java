@@ -49,7 +49,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 							objLog = objKernel.getLogObject();						
 							check:{
 								//Konfigurationsdatei holen
-								objFileConfigIniExport = objKernel.getFileModuleIniByAlias("Export");
+								objFileConfigIniExport = objKernel.getFileConfigModuleIni("Export");
 								//Darin wird die Existenz, etc. schon gepr�ft
 								//Dadurch dass sofort das IniZZZ-Object verwendet wird, braucht man es nur einmal einzulesen
 								
