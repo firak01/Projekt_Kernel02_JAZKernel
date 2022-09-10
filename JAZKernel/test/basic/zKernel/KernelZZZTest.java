@@ -716,7 +716,7 @@ public void testGetParameterFromClass_ALS_SAMMLUNG_VERSCHIEDENER_METHODEN(){
 //		fail("An exception happend testing: " + ez.getDetailAllLast());
 //	}	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		TODOGOON20220909;
+		TODOGOON20220909;//Neuer GITHUB TOKEN
 	try{
 		//b2) Nun soll der Klassenname ohne den Systemkey funktionieren
 		String stemp4 = objKernelFGL.getParameterByProgramAlias(sClassname, sClassname, "TestParameter2FromClass").getValue(); 
