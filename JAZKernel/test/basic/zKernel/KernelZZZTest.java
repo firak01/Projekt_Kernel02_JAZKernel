@@ -639,46 +639,60 @@ public void testGetProgramAliasFor() {
 	
 }
 
-
 /** void, Test: Replacing an entry in a section of the ini-file
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias(){
 	try {
-		String sModuleExtern = "TestModuleExtern";
+		//String sModuleExtern = "TestModuleExtern";
 		String sModule = this.getClass().getName();
 		
-		String sProgram = "TestProgExtern";
-		String sProperty = "testProgramPropertyExtern4";
+		//String sProgram = "TestProgExtern";
+		String sProgram = "TestProg";
+		
+		//String sProperty = "testProgramPropertyExtern4";
+		String sProperty = "testProgramProperty4";
 		
 		//##########################################
 		//### EXTERNES MODUL
 		//##########################################
 		
 		//Erst testen, dass auch kein Leerwert kommt			
-		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);
+		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntry.hasAnyValue());
 		String sReturnSaved = objEntry.getValue();
 		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
-		assertEquals("testwertextern by progalias GLOBAL",sReturnSaved);
+		assertEquals("testwert4 local 4 program",sReturnSaved);
 		
+		//Testvariante A: Jetzt wird der Wert aber aus dem Cache geholt
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
 		String sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
-		objKernelFGL.setParameterByProgramAlias(sModuleExtern, sProgram, sProperty, sValue, true);
-		objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);
+		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);				
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntry.hasAnyValue());		
 		sReturnSaved = objEntry.getValue();
+		//sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
 		assertEquals(sValue,sReturnSaved);		
 	
+		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP TEIL!!!
+		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
+		
+		objKernelFGL.getCacheObject().clear();
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());		
+		sReturnSaved = objEntry.getValue();
+		//sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals(sValue,sReturnSaved);	
 		
 		//############################################
 		//### "NICHT EXTERNES" MODUL
 		//############################################
 		//Teste das "Parameter Holen" auch für dieses "nicht externe" Test Modul
 		
-		
-		
-//		
-//		
+
 //		String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
 //		assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
 //		
@@ -697,6 +711,57 @@ public void testSetParameterByProgramAlias(){
 //		sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
 //		assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
 //		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+}
+
+
+/** void, Test: Replacing an entry in a section of the ini-file
+ * @author Fritz Lindhauer, 13.08.2022, 08:46:20
+ */
+public void testSetParameterByProgramAlias_ExternesModule(){
+	try {
+		String sModuleExtern = "TestModuleExtern";
+		String sModule = this.getClass().getName();
+		
+		String sProgram = "TestProgExtern";
+		String sProperty = "testProgramPropertyExtern4";
+		
+		//##########################################
+		//### EXTERNES MODUL
+		//##########################################
+		
+		//Erst testen, dass auch kein Leerwert kommt			
+		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());
+		String sReturnSaved = objEntry.getValue();
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals("testwertextern by progalias GLOBAL",sReturnSaved);
+		
+		//Testvariante A: Jetzt wird der Wert aber aus dem Cache geholt
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
+		String sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+		objKernelFGL.setParameterByProgramAlias(sModuleExtern, sProgram, sProperty, sValue, true);				
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());		
+		sReturnSaved = objEntry.getValue();
+		//sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals(sValue,sReturnSaved);		
+	
+		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP TEIL!!!
+		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+		objKernelFGL.setParameterByProgramAlias(sModuleExtern, sProgram, sProperty, sValue, true);
+		
+		objKernelFGL.getCacheObject().clear();
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());		
+		sReturnSaved = objEntry.getValue();
+		//sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals(sValue,sReturnSaved);	
+		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
