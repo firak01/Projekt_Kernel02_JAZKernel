@@ -6085,10 +6085,11 @@ MeinTestParameter=blablaErgebnis
 					sFileConfig = sFileConfigIn;
 				}
 				if(StringZZZ.isEmpty(sFileConfig)){
-					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+					sFileConfig = KernelKernelZZZ.sFILENAME_CONFIG_DEFAULT;					
+//					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";
+//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//					throw ez;
 				}
 				this.setFileConfigKernelName(sFileConfig);
 				if(this.getFlag("DEBUG")){
