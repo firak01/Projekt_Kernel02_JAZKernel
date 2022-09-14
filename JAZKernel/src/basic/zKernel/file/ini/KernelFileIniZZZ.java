@@ -421,28 +421,24 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			//FileIniZZZ objFileIniConfig = this.getKernelObject().getFileConfigIni();
 			//############################
 			
+			//!!! Falls es schon in der Section ein Ausrufezeichen gibt, so entfaellt der 1. Versuch. Es wird sofort nach der konkreten Section gesucht
+			String sReturnRaw = null;
 			//+++++++++++++++++++++++++++++++++++++++++++++++++
-			String sReturnRaw = null;			
-			String sApplicationKey  = this.getKernelObject().getApplicationKey();
-			String sSystemNumber = this.getKernelObject().getSystemNumber();
-				
-			ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForSection(sSection, sApplicationKey, sSystemNumber);
-			for(String sSectionUsed:alsSection) {
-				boolean bSectionExists = this.proofSectionExists(sSectionUsed);
-				if(bSectionExists) {
-					objReturn.setSection(sSectionUsed);	
-					objReturn.sectionExists(true);
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSectionUsed + "' und Property = '" + sProperty +"'");
-					sReturnRaw = this.objFileIni.getValue(sSectionUsed, sProperty);
-					if(sReturnRaw!=null) {						
-						objReturn.setProperty(sProperty);
-						objReturn.setRaw(sReturnRaw);
-						objReturn.setValue(sReturnRaw);	
-						break;
-					}
+			if(! KernelFileIniZZZ.isSectionWithSystemNrAny(sSection)){
+								
+				String sApplicationKey  = this.getKernelObject().getApplicationKey();
+				String sSystemNumber = this.getKernelObject().getSystemNumber();
+					
+				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForSection(sSection, sApplicationKey, sSystemNumber);
+				for(String sSectionUsed:alsSection) {
+					objReturn = this.getPropertyValueDirectLookup(sSectionUsed, sProperty);
+					if(objReturn.hasAnyValue()) break;								
 				}
+			}else {
+				objReturn = this.getPropertyValueDirectLookup(sSection, sProperty);
+			}
 				
-			}			
+			sReturnRaw = objReturn.getRaw();
 			if(sReturnRaw==null) break main;
 						
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
@@ -462,6 +458,29 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		}//end main:
 		return objReturn;
 	}//end function
+	
+	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		main:{
+			if(StringZZZ.isEmpty(sSection)) break main;
+			if(StringZZZ.isEmpty(sProperty)) break main;
+			
+			boolean bSectionExists = this.proofSectionExists(sSection);
+			if(bSectionExists) {
+				String sReturnRaw=null;
+				objReturn.setSection(sSection);	
+				objReturn.sectionExists(true);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
+				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
+				if(sReturnRaw!=null) {						
+					objReturn.setProperty(sProperty);
+					objReturn.setRaw(sReturnRaw);
+					objReturn.setValue(sReturnRaw);						
+				}
+			}			
+		}//end main:
+		return objReturn;
+	}
 	
 	/** Returns a Value by SystemNr. If this doesn´t exists the global value will be returned (value without a SystemNr).
 	* @param sSectionIn
@@ -494,25 +513,15 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					sProperty = sPropertyIn;
 				}
 				
-				//!!! Falls es schon in der Property ein Ausrufezeichen gibt, so entf�llt der 1. Versuch. Es wird sofort nach der konkreten Section gesucht
-				if(! KernelFileIniZZZ.isSectionWithSystemNrAny(sSection)){
-					if(StringZZZ.isEmpty(sSystemNrIn)){
-						sSystemNr = this.getKernelObject().getSystemNumber();
-					}else{
-						sSystemNr = sSystemNrIn;
-					}
-					
-					//1. Versuch: Suche die spezielle Nr.
-					String stemp = sSection + "!" + sSystemNr;
-					objReturn = this.getPropertyValue(stemp, sProperty);
-					
-					//2. Versuch: Suche die globale Nr, d.h. wie angegeben
-					if(!objReturn.hasAnyValue()){
-						objReturn = this.getPropertyValue(sSection, sProperty);
-					}
+				if(StringZZZ.isEmpty(sSystemNrIn)){
+					sSystemNr = this.getKernelObject().getSystemNumber();
 				}else{
-					objReturn = this.getPropertyValue(sSection, sProperty);
-				}// .isSectionWithSystemNrAny(...)				
+					sSystemNr = sSystemNrIn;
+				}
+				String sSectionUsed=KernelKernelZZZ.extractModuleFromSection(sSection);
+				sSectionUsed = KernelKernelZZZ.computeSystemSectionNameForSection(sSectionUsed, sSystemNr);
+				objReturn = this.getPropertyValue(sSectionUsed, sProperty);
+				
 		}//end main:
 		return objReturn;
 	}

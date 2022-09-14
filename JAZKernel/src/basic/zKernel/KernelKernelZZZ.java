@@ -718,7 +718,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			sSection2use = sApplicationKey + IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_PROGRAM + sProgram;			
 			alsReturn.add(sSection2use);									
 		}//end main:
-		alsReturn = (ArrayList<String>) ArrayListZZZ.unique(alsReturn);
+		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 		
 	}
@@ -779,7 +779,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
           
 		}//end main:
-		alsReturn = (ArrayList<String>) ArrayListZZZ.unique(alsReturn);
+		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 	}
 	
@@ -822,23 +822,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		}//end main:
 		return alsReturn;
 	}
-	
-//	public static ArrayList<String> computeSystemSectionNamesForProgram(FileIniZZZ objFileConfigIni, String sProgramOrAliasIn,String sApplicationKey, String sSystemNumber) throws ExceptionZZZ{
-//		ArrayList<String> alsReturn = new ArrayList<String>();		
-//		main:{			
-//			alsReturn = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramOrAliasIn, null, sApplicationKey, sSystemNumber);
-//		}//end main:		
-//		return alsReturn;
-//	}
-	
-//	public static ArrayList<String> computeSystemSectionNamesForProgram(FileIniZZZ objFileConfigIni, String sProgramOrAliasIn,String sModule, String sApplicationKey, String sSystemNumber) throws ExceptionZZZ{
-//		ArrayList<String> alsReturn = new ArrayList<String>();		
-//		main:{			
-//			alsReturn = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramOrAliasIn, sModule, sApplicationKey, sSystemNumber);
-//		}//end main:		
-//		return alsReturn;
-//	}
-	
+		
 	private static ArrayList<String> computeSystemSectionNamesForProgram_(FileIniZZZ objFileConfigIni, String sProgramIn,String sModuleIn, String sApplicationAliasIn, String sSystemNumberIn) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		
@@ -1081,6 +1065,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}
 			}
 		}//end main:
+		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
 		return alsReturn;
 	}
 	
