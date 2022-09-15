@@ -6085,11 +6085,36 @@ MeinTestParameter=blablaErgebnis
 					sFileConfig = sFileConfigIn;
 				}
 				if(StringZZZ.isEmpty(sFileConfig)){
-					sFileConfig = KernelKernelZZZ.sFILENAME_CONFIG_DEFAULT;					
-//					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object.";
-//					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-//					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//					throw ez;
+					sFileConfig = KernelKernelZZZ.sFILENAME_CONFIG_DEFAULT;
+					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object. Using default: '" + sFileConfig + "'";
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+//					
+					
+					//Prüfe nun ob ggfs. auch das Verzeichnis default sein muss
+					String sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfig, sFileConfig);					
+					boolean bExists = FileEasyZZZ.exists(sFilePath);
+					if(!bExists) {
+						String sDirectoryConfigDefault = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+						sLog = "Default Filename for configuration does not exist here: '" + sFilePath + "'. Looking in default direcotry '" + sDirectoryConfigDefault + "'" ;
+						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+						
+						
+						sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfigDefault, sFileConfig);						
+						bExists = FileEasyZZZ.exists(sFilePath);
+						
+						if(!bExists) {
+							sLog = "Default file in default directory not found: '" + sFilePath + "'";
+							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}else {
+							//sLog = "Changing directory to '" + sDirectoryConfigDefault + "'";
+							//this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+							//this.setFileConfigKernelDirectory(sDirectoryConfigDefault);
+							sLog = "Directory for other files still used '" + sDirectoryConfig + "'";
+							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);	
+						}
+					}
 				}
 				this.setFileConfigKernelName(sFileConfig);
 				if(this.getFlag("DEBUG")){
