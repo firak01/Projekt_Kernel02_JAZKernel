@@ -1895,48 +1895,31 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					bExistsSection = objFound.proofSectionExists(sProgramOrSectionTemp);
 					if(bExistsSection) break main;
 					
-	    			//objFound = this.getFileModuleIniByAlias(sModuleSection);
-	    			//if(objFound!=null) {
-	    				
-	    				//Existiert diese Datei?
-	    				//boolean bExists = FileEasyZZZ.exists(objFound.getFileObject());
-	    				//if(bExists) {	    				
-	    					//Existiert eine der ProgramSections direkt in der Konfigurationsdatei?
-	    					//ArrayList<String>listasProgramOrSection = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sProgramOrSection, sModule, sApplicationKeyUsed, sSystemNumberUsed);
-//	    					for(String sProgramOrSectionTemp : listasProgramOrSection) {
-//	    						hmDebug.put("ProgramOrSection", sProgramOrSectionTemp);
-//	    						bExistsSection = objFound.proofSectionExists(sProgramOrSectionTemp);
-//	    						if(bExistsSection) break main;
-//	    					}
 					}catch(ExceptionZZZ ez2){
-			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über die MainSection '" + sModule + "' schlägt fehl. ...");
+			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über ProgramOrSection '" + sProgramOrSectionTemp + "' schlägt fehl. ...");
 			    	}
 				}//end for
 	    				   					    
-	    		//+++++++++++++++++++++++++++++++++++		    				
-				ArrayList<String>listasSystemSection = this.computeSystemSectionNames();
-				for(String sSystemSectionTemp : listasSystemSection) {
-					
-					//ggfs. noch den Programnamen ausrechnen?
-					IKernelConfigSectionEntryZZZ objEntryAlias = this.KernelGetParameter_DirectLookup_(objFound, sSystemSectionTemp, sSystemSectionTemp);
-					if(objEntryAlias.hasAnyValue()) {
-						String sAlias = objEntryAlias.getValue();		    					
-						hmDebug.put("ProgramOrSection by Alias (found in): ", sAlias + "(" + sSystemSectionTemp + ")");
-						    						
-    					ArrayList<String>listasProgramOrSectionAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sAlias, sModule, sApplicationKeyUsed, sSystemNumberUsed);
-    					for(String sProgramOrSectionAliasTemp : listasProgramOrSectionAlias) {
-    						bExistsSection = objFound.proofSectionExists(sProgramOrSectionAliasTemp);				    						
-    						if(bExistsSection) break main;
-    					}
-					}
-	    					//}    			
-//	    				}else {
-//	    					String sLog = ReflectCodeZZZ.getPositionCurrent() + ": Fuer Modul '" + sModuleSection + "' konfiguriertes FileObjekt existiert nicht.";
-//	    					System.out.println(sLog);
-//	    				}
-//	    			}
-					
-			}//end for
+	    		//+++++++++++++++++++++++++++++++++++
+			//TODOGOON: Das sollte überflüssig sein, wenn obige Liste die ganzen "Sektionen" enthält
+//				ArrayList<String>listasSystemSection = this.computeSystemSectionNames();
+//				for(String sSystemSectionTemp : listasSystemSection) {
+//					
+//					//ggfs. noch den Programnamen ausrechnen?
+//					IKernelConfigSectionEntryZZZ objEntryAlias = this.KernelGetParameter_DirectLookup_(objFound, sSystemSectionTemp, sSystemSectionTemp);
+//					if(objEntryAlias.hasAnyValue()) {
+//						String sAlias = objEntryAlias.getValue();		    					
+//						hmDebug.put("ProgramOrSection by Alias (found in): ", sAlias + "(" + sSystemSectionTemp + ")");
+//						    						
+//    					ArrayList<String>listasProgramOrSectionAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sAlias, sModule, sApplicationKeyUsed, sSystemNumberUsed);
+//    					for(String sProgramOrSectionAliasTemp : listasProgramOrSectionAlias) {
+//    						bExistsSection = objFound.proofSectionExists(sProgramOrSectionAliasTemp);				    						
+//    						if(bExistsSection) break main;
+//    					}
+//					}	    										
+//			}//end for
+//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über 'ProgramOrSection' auch erfolglos.");
+				
 		}//end main:	
 		if(!bExistsSection && objFound==null) {
 			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
