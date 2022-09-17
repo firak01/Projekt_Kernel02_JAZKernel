@@ -877,8 +877,6 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				sProgramAlias = KernelKernelZZZ.searchAliasForProgram(objFileConfigIni, sProgramUsed, sApplicationAliasIn, sSystemNumberUsed);
 			}
 			
-			
-			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++						
             //A) Mit einem ggfs. gefundenen ProgramAlias
 			if(!StringZZZ.isEmpty(sProgramAlias)) {
@@ -906,7 +904,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	        	  alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgramAlias);
 	          }	          	            
 			}//end if !isempty(sProgramAlias)
-			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 						
 			//B) Mit dem ProgramUsed
 			//a) Modulealias			
