@@ -925,14 +925,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
             	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
             }
             
-            //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            //B) Mit dem ProgramUsed
+            //2. auf Applikationsebene mit dem Programnamen
             ArrayList<String> alsApplicationProgram = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sApplicationAliasIn, sSystemNumberUsed);
             if(alsApplicationProgram!=null) {
             	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgram);
             }
             
-          //4. Baue zum Schluss noch den Programnamen und den Alias direkt ein
+            //#############
+          //3. Baue zum Schluss noch den Programnamen und den Alias direkt ein
             if(!StringZZZ.isEmpty(sProgramAlias)) {
 	  			ArrayList<String> alsProgramAliasKeyUsed = KernelKernelZZZ.computeSystemSectionNames(sProgramAlias, sSystemNumberUsed);			
 	  			for(String sProgramAliasKeyUsedTemp : alsProgramAliasKeyUsed) {
@@ -1023,46 +1023,42 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//### Aufbau der Zielstrukturen
 			//#############################################################################################		   		   
 			ArrayList<String> alsSystemKeyUsed = KernelKernelZZZ.computeSystemSectionNames(sModuleOrApplicationAliasUsed, sSystemNumberUsed);				
-			
-			if(!StringZZZ.isEmpty(sProgramUsed)) {
-				IKernelConfigSectionEntryZZZ objEntry = KernelKernelZZZ.searchProgramAliasFor(objFileConfigIni, sProgramUsed, sModuleOrApplicationAliasUsed, sSystemNumberUsed, null);
-				if(objEntry.hasAnyValue()) {
-					sProgramAliasUsed = objEntry.getValue();							
-					
-					//Baue folgendes: FGL!01_TestProgAlias und FGL_TestProgAlias				
-					for(String sSystemKeyUsedTemp : alsSystemKeyUsed) {
-						sSection2use = sSystemKeyUsedTemp +IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_PROGRAM + sProgramAliasUsed;
-						alsReturn.add(sSection2use);
-					}
-					
-					//Baue folgendes: TestProgAlias!Systemnr und TestProgAlias
-					sSection2use = sProgramAliasUsed + IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER + sSystemNumberUsed;
-					alsReturn.add(sSection2use);
-					
-					sSection2use = sProgramAliasUsed;
-					alsReturn.add(sSection2use);
-				}
-		
-			    //+++++++++++++++++++++++++++++++++++++							
-				//Baue folgendes: FGL!01_TestProg und FGL_TestProg					
+
+			//Suche nach dem Alias
+			IKernelConfigSectionEntryZZZ objEntry = KernelKernelZZZ.searchProgramAliasFor(objFileConfigIni, sProgramUsed, sModuleOrApplicationAliasUsed, sSystemNumberUsed, null);
+			if(objEntry.hasAnyValue()) {
+				sProgramAliasUsed = objEntry.getValue();							
+				
+				//Baue folgendes: Modul!01_TestProgAlias und Modul_TestProgAlias				
 				for(String sSystemKeyUsedTemp : alsSystemKeyUsed) {
-					sSection2use = sSystemKeyUsedTemp +IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_PROGRAM + sProgramUsed;
+					sSection2use = sSystemKeyUsedTemp +IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_PROGRAM + sProgramAliasUsed;
 					alsReturn.add(sSection2use);
 				}
 				
-				//Baue folgendes: TestProg!Systemnr und TestProg
-				sSection2use = sProgramUsed + IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER + sSystemNumberUsed;
-				alsReturn.add(sSection2use);
-				
-				sSection2use = sProgramUsed;
-				alsReturn.add(sSection2use);
-				
-				
-				//Baue folgendes: Modul!01 und Modul
-				ArrayList<String> alsModule = KernelKernelZZZ.computeSystemSectionNames(sModuleOrApplicationAliasUsed, sSystemNumberUsed);
-				for(String sModuleTemp : alsModule) {
-					alsReturn.add(sModuleTemp);
+				//Baue folgendes: TestProgAlias!Systemnr und TestProgAlias
+				ArrayList<String> alsProgAliasUsed = KernelKernelZZZ.computeSystemSectionNames(sProgramAliasUsed, sSystemNumberUsed);
+				for(String sProgAliasUsedTemp : alsProgAliasUsed) {
+					alsReturn.add(sProgAliasUsedTemp);
 				}
+			}
+		
+		    //+++++++++++++++++++++++++++++++++++++							
+			//Baue folgendes: Modul!01_TestProg und Modul_TestProg					
+			for(String sSystemKeyUsedTemp : alsSystemKeyUsed) {
+				sSection2use = sSystemKeyUsedTemp +IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_PROGRAM + sProgramUsed;
+				alsReturn.add(sSection2use);
+			}
+							
+			//Baue folgendes: TestProg!01 und TestProg
+			ArrayList<String> alsProgKeyUsed = KernelKernelZZZ.computeSystemSectionNames(sProgramUsed, sSystemNumberUsed);				
+			for(String sProgKeyUsedTemp : alsProgKeyUsed) {				
+				alsReturn.add(sProgKeyUsedTemp);
+			}
+														
+			//Baue folgendes: Modul!01 und Modul
+			ArrayList<String> alsModule = KernelKernelZZZ.computeSystemSectionNames(sModuleOrApplicationAliasUsed, sSystemNumberUsed);
+			for(String sModuleTemp : alsModule) {
+				alsReturn.add(sModuleTemp);
 			}
 		}//end main:
 		alsReturn = (ArrayList<String>) ArrayListZZZ.uniqueKeepLast(alsReturn);
@@ -3532,12 +3528,7 @@ MeinTestParameter=blablaErgebnis
 		    String sApplicationKey = this.getApplicationKey();
 		    String sSystemNumber = this.getSystemNumber();
 		    String sMainSectionAsModuleUsed = sMainSection;
-		    String sProgramOrSectionUsed=null;
-		    if(StringZZZ.isEmpty(sProgramOrSection)){
-		    	sProgramOrSectionUsed = KernelKernelZZZ.extractProgramFromSection(sMainSection);		    	
-			}else{
-				sProgramOrSectionUsed = KernelKernelZZZ.extractProgramFromSection(sProgramOrSection);		    			
-			}
+		    String sProgramOrSectionUsed=sProgramOrSection;
 		    
 		    int iCounter = -1;
 		    
@@ -4792,22 +4783,30 @@ MeinTestParameter=blablaErgebnis
 				//Zuerst den im SystemKey definierten Programnamen finden.
 				IKernelConfigSectionEntryZZZ objEntrySectionProgram = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileIniConfig, sSystemKey, sProgram);
 				if(objEntrySectionProgram.hasAnyValue()) {
-					String sProgramName = objEntrySectionProgram.getValue();
-					System.out.println("ProgramName: '"+ sProgramName + "' gefunden im Systemkey '" + sSystemKey + "'");										
-
-					//Prüfe nun, ob die Section auch existiert....						
-					ArrayList<String>listasProgramSection = KernelKernelZZZ.computeSystemSectionNames(sProgramName, sSystemNumber);
-					for(String sProgramSection : listasProgramSection) {
-						boolean bExists = objFileIniConfig.proofSectionExists(sProgramSection);
-						
-						if(bExists) {
-							System.out.println("ProgramSection '" + sProgramName + "' exisiert im SystemKey '" + sSystemKey + "'.");
-							objReturn = objEntrySectionProgram;
-							break main;					
-						}else {
-							System.out.println("ProgramSection '" + sProgramName + "' exisiert nicht im SystemKey '" + sSystemKey + "'.");
-						}
-					}//end for
+					String sProgramAlias = objEntrySectionProgram.getValue();
+					System.out.println("ProgramName: '"+ sProgramAlias + "' gefunden im Systemkey '" + sSystemKey + "'");
+					
+					objReturn = objEntrySectionProgram;
+					break main;
+					
+					//Prüfe nun, ob die Section auch existiert....	
+					//Merke: Für die reine Ermittlung des Programaliasses ist die Überprüfung der Section so nicht ausreichend.
+					//      Es muessen alle "Varianten" der Sections ueberprüft werden, also mit Modulkey, etc.
+					//      DAS IST HIER NOCH NICHT MOEGLICH
+//					ArrayList<String>listasProgramSection = KernelKernelZZZ.computeSystemSectionNames(sProgramAlias, sSystemNumber);
+//					for(String sProgramSection : listasProgramSection) {
+//						boolean bExists = objFileIniConfig.proofSectionExists(sProgramSection);
+//						
+//						if(bExists) {
+//							System.out.println("ProgramSection '" + sProgramAlias + "' exisiert im SystemKey '" + sSystemKey + "'.");
+//							objReturn = objEntrySectionProgram;
+//							break main;					
+//						}else {
+//							System.out.println("ProgramSection '" + sProgramAlias + "' exisiert nicht im SystemKey '" + sSystemKey + "'.");
+//						}
+//					}//end for
+					
+					
 				}
 			}//end for										
 		}
