@@ -11,6 +11,9 @@ public interface IKernelConfigConstantZZZ {
 	public final static String sFILENAME_CONFIG_DEFAULT="ZKernelConfigKernel.ini";
 	
 	public final static String sMODULE_PREFIX="KernelConfig";
+	
+	//Scheinbar manchmal Probleme diese Konstanten "Auszurechnen". Verwende dann die Methode KernelKernelZZZ.getModuleDirectoryPrefix()
 	public final static String sMODULE_DIRECTORY_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.PATH.name();
+	//Scheinbar manchmal Probleme diese Konstanten "Auszurechnen". Verwende dann die Methode KernelKernelZZZ.getModuleFilenamePrefix()
 	public final static String sMODULE_FILENAME_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.FILE.name();
 }

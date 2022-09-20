@@ -60,11 +60,12 @@ public class KernelConfigDefaultEntryZZZ<IEnumSetConfigKernelConfigDefaultEntryZ
 		//Merke1: Die Defaultwerte in der Kernel-Konfiguration richten sich nach den in der INI-Konfiguration verwedendeten Werten.
 		//        z.B. KernelExpressionIni_NullZZZ liefert <z:Null> als Tag.
 		//Merke2: In den Testklassen wird aber als Pfad verwendet: test
-	    //@IFieldDescription(description = "DTXT01 TEXTVALUES") 
-	   	T01(1,"KernelConfigPath","<z:Null/>","The default path of the configuration"),
-	   	
+	    //@IFieldDescription(description = "DTXT01 TEXTVALUES")
+	   	//T01(1,"KernelConfigPath","<z:Null/>","The default path of the configuration"),
+		T01(1,KernelConfigDefaultEntryZZZ.sMODULE_DIRECTORY_PREFIX ,"<z:Null/>","The default path of the configuration"),
 		//@IFieldDescription(description = "DTXT02 TEXTVALUES") 
-		T02(2,"KernelConfigFile",KernelConfigDefaultEntryZZZ.sFILENAME_CONFIG_DEFAULT, "The default filename of the configuration");
+		//T02(2,"KernelConfigFile",KernelConfigDefaultEntryZZZ.sFILENAME_CONFIG_DEFAULT, "The default filename of the configuration");
+		T02(2,KernelConfigDefaultEntryZZZ.sMODULE_FILENAME_PREFIX,KernelConfigDefaultEntryZZZ.sFILENAME_CONFIG_DEFAULT, "The default filename of the configuration");
    	   	
 		private int iId;
 		private String sProperty;

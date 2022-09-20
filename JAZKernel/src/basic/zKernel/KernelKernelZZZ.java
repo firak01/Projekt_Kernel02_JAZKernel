@@ -53,6 +53,7 @@ import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
+import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
@@ -5135,28 +5136,34 @@ MeinTestParameter=blablaErgebnis
 			
 			//a) kernelconfigfile
 			String sSubject = sSubjectIn.toLowerCase();
-			String stemp = StringZZZ.left(sSubject, "kernelconfigfile");
-			
+			//String stemp = StringZZZ.left(sSubject, "kernelconfigfile");								
+			String stemp = StringZZZ.left(sSubject, KernelConfigDefaultEntryZZZ.sMODULE_FILENAME_PREFIX,false);
+						
 			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurueckgeben.
 			if(!StringZZZ.isEmpty(stemp)) break main;
 			
-			sReturn = StringZZZ.right(sSubject, "kernelconfigfile");
+
+			//sReturn = StringZZZ.right(sSubject, "kernelconfigfile");
+			sReturn = StringZZZ.right(sSubject, KernelConfigDefaultEntryZZZ.sMODULE_FILENAME_PREFIX,false);
 			if(!StringZZZ.isEmpty(sReturn)){
 				//Da der Returnwert nun allerdings nur kleingeschrieben waere vom Original ausgehen
-				sReturn = sSubjectIn.substring(16);  //16 ist die Laenge von 'kernelConfigfile'
+				sReturn = sSubjectIn.substring(KernelConfigDefaultEntryZZZ.sMODULE_FILENAME_PREFIX.length());  //16 ist die Laenge von 'kernelConfigfile'/ KernelConfigDefaultEntryZZZ.sMODULE_FILENAME_PREFIX
 				break main;
 			}
 			
 			
 			//b) kernelconfigpath
-			stemp = StringZZZ.left(sSubject, "kernelconfigpath");
+			//stemp = StringZZZ.left(sSubject, "kernelconfigpath");			
+			stemp = StringZZZ.left(sSubject, KernelConfigDefaultEntryZZZ.sMODULE_DIRECTORY_PREFIX, false);
+			
 			//Falls es links daneben etwas gibt: Kein Fehler, aber nix zurueckgeben.
 			if(!StringZZZ.isEmpty(stemp)) break main;
 			
-			sReturn = StringZZZ.right(sSubject, "kernelconfigpath");
+			//sReturn = StringZZZ.right(sSubject, "kernelconfigpath");
+			sReturn = StringZZZ.right(sSubject, KernelConfigDefaultEntryZZZ.sMODULE_DIRECTORY_PREFIX, false);
 			if(!StringZZZ.isEmpty(sReturn)) {
 //				Da der Returnwert nun allerdings nur kleingeschrieben waere vom Original ausgehen
-				sReturn = sSubjectIn.substring(16);  //16 ist die Laenge von 'kernelConfigpath'
+				sReturn = sSubjectIn.substring(KernelConfigDefaultEntryZZZ.sMODULE_DIRECTORY_PREFIX.length());  //16 ist die Laenge von 'kernelConfigpath'
 				break main;
 			}
 		}
@@ -5242,15 +5249,17 @@ MeinTestParameter=blablaErgebnis
 						sApplicationKey = this.getApplicationKey();
 						saPropertyByApplication = objFileIni.getPropertyAll(sApplicationKey);
 						
-						sSearch = new String("kernelconfigfile");
+						//sSearch = new String("kernelconfigfile");
+						sSearch = new String(IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
 						iIndex = sSearch.length();	
 						
 						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
 						listaConfigured = new ArrayList();
 						if(saProperty!=null) {
 							for(int icount=0; icount < saProperty.length; icount++){
-								String stemp = saProperty[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){		
+								String stemp = saProperty[icount].toLowerCase();								
+								//if(stemp.startsWith(sSearch)){		
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									String sValueTemp = saProperty[icount].substring(iIndex);
 									listaConfigured.add(sValueTemp);
 								}
@@ -5261,7 +5270,8 @@ MeinTestParameter=blablaErgebnis
 						if(saPropertyByApplication!=null) {
 							for(int icount=0; icount < saPropertyByApplication.length; icount++){
 								String stemp = saPropertyByApplication[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){
+								//if(stemp.startsWith(sSearch)){
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
 									if(!listaConfigured.contains(sValueTemp)){
 										listaConfigured.add(sValueTemp);
@@ -5297,15 +5307,17 @@ MeinTestParameter=blablaErgebnis
 						saPropertyByApplication = objFileIni.getPropertyAll(sApplicationKey);
 						
 						
-						sSearch = new String("kernelconfigfile");
+						//sSearch = new String("kernelconfigfile");
+						sSearch = new String(IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
 						iIndex = sSearch.length();	
 						
-						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
+						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..."/IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX anfangen. Der Modulname steht unmittelbar dahinter.
 						listaConfigured = new ArrayList();
 						if(saProperty!=null) {
 							for(int icount=0; icount < saProperty.length; icount++){
 								String stemp = saProperty[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){						
+								//if(stemp.startsWith(sSearch)){
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									listaConfigured.add(saProperty[icount].substring(iIndex));
 								}
 							}
@@ -5315,7 +5327,8 @@ MeinTestParameter=blablaErgebnis
 						if(saPropertyByApplication!=null) {
 							for(int icount=0; icount < saPropertyByApplication.length; icount++){
 								String stemp = saPropertyByApplication[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){
+								//if(stemp.startsWith(sSearch)){
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
 									if(!listaConfigured.contains(sValueTemp)){
 										listaConfigured.add(sValueTemp);
@@ -5373,15 +5386,17 @@ MeinTestParameter=blablaErgebnis
 						saPropertyByApplication = objFileIni.getPropertyAll(sApplicationKey);
 						
 						
-						sSearch = new String("kernelconfigfile");
+						//sSearch = new String("kernelconfigfile");
+						sSearch = new String(IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
 						 iIndex = sSearch.length();	
 						
-						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
+						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..."/IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX anfangen. Der Modulname steht unmittelbar dahinter.
 						 listaConfigured = new ArrayList();
 						 if(saProperty!=null) {
 							for(int icount=0; icount < saProperty.length; icount++){
 								String stemp = saProperty[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){						
+								//if(stemp.startsWith(sSearch)){
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									listaConfigured.add(saProperty[icount].substring(iIndex));
 								}
 							}
@@ -5391,7 +5406,8 @@ MeinTestParameter=blablaErgebnis
 						 if(saPropertyByApplication!=null) {
 							for(int icount=0; icount < saPropertyByApplication.length; icount++){
 								String stemp = saPropertyByApplication[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){
+								//if(stemp.startsWith(sSearch)){
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
 									if(!listaConfigured.contains(sValueTemp)){
 										listaConfigured.add(sValueTemp);
@@ -5448,15 +5464,17 @@ MeinTestParameter=blablaErgebnis
 						}
 						*/
 																	
-						sSearch = new String("kernelconfigfile");
+						//sSearch = new String("kernelconfigfile");
+						sSearch = new String(IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX);
 						iIndex = sSearch.length();	
 						
-						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..." anfangen. Der Modulname steht unmittelbar dahinter.
+						//Aus dem Array alle ausfiltern, die mit "KernelConfigFile..."/IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX anfangen. Der Modulname steht unmittelbar dahinter.
 						listaConfigured = new ArrayList();
 						if(saProperty!=null) {
 							for(int icount=0; icount < saProperty.length; icount++){
 								String stemp = saProperty[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){						
+								//if(stemp.startsWith(sSearch)){
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									listaConfigured.add(saProperty[icount].substring(iIndex));
 								}
 							}
@@ -5466,7 +5484,8 @@ MeinTestParameter=blablaErgebnis
 						if(saPropertyByApplication!=null) {
 							for(int icount=0; icount < saPropertyByApplication.length; icount++){
 								String stemp = saPropertyByApplication[icount].toLowerCase();
-								if(stemp.startsWith(sSearch)){
+								//if(stemp.startsWith(sSearch)){
+								if(StringZZZ.startsWithIgnoreCase(stemp,sSearch)){
 									String sValueTemp = saPropertyByApplication[icount].substring(iIndex);
 									if(!listaConfigured.contains(sValueTemp)){
 										listaConfigured.add(sValueTemp);
@@ -5496,7 +5515,14 @@ MeinTestParameter=blablaErgebnis
 				return listaReturn;
 			}
 	
-	
+	public static String getModuleDirectoryPrefix() {
+		String stemp = IKernelConfigConstantZZZ.MODULEPROPERTY.PATH.name();
+		return KernelConfigDefaultEntryZZZ.sMODULE_PREFIX+stemp;		
+	}
+	public static String getModuleFilenamePrefix() {
+		String stemp = IKernelConfigConstantZZZ.MODULEPROPERTY.FILE.name();
+		return KernelConfigDefaultEntryZZZ.sMODULE_PREFIX+stemp;	
+	}
 	
 	/**List aus der KernelKonfiguration alle Konfigurierten Modulenamen aus. Irgenwelche File - Eigenschaften (z.B. die Existenz) werden hier nicht berücksichtig
 	* @return
