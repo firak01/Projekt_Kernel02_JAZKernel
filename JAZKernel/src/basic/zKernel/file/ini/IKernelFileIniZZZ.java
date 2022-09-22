@@ -1,5 +1,8 @@
 package basic.zKernel.file.ini;
 
+import java.io.File;
+
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelUserZZZ;
 
@@ -19,8 +22,10 @@ public interface IKernelFileIniZZZ extends IKernelUserZZZ{
 		FILEUNSAVED, FILENEW, FILECHANGED;
 	}
 	
-	
+	public File getFileObject();		
 	public IniFile getFileIniObject();
 	//Setter als private, damit die Erstellung über den Konstruktor nicht umgangen werden kann:
-	//public void setFileIniObject(IniFile objIniFile);	
+	//public void setFileIniObject(IniFile objIniFile);
+	
+	public boolean proofSectionExists(String sSection) throws ExceptionZZZ;
 }

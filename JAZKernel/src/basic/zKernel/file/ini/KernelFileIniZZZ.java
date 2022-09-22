@@ -423,19 +423,35 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			
 			//!!! Falls es schon in der Section ein Ausrufezeichen gibt, so entfaellt der 1. Versuch. Es wird sofort nach der konkreten Section gesucht
 			String sReturnRaw = null;
+			String sApplicationKeyUsed= this.getKernelObject().getApplicationKey();
+			String sSystemNumberUsed=null;
 			//+++++++++++++++++++++++++++++++++++++++++++++++++
 			if(! KernelFileIniZZZ.isSectionWithSystemNrAny(sSection)){
-								
-				String sApplicationKey  = this.getKernelObject().getApplicationKey();
-				String sSystemNumber = this.getKernelObject().getSystemNumber();
-					
-				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForSection(sSection, sApplicationKey, sSystemNumber);
+				//Wenn in der Section keine Systemnr steckt, diese ermitteln.							
+				sSystemNumberUsed = this.getKernelObject().getSystemNumber();								
+			}else {
+				sSystemNumberUsed = KernelKernelZZZ.extractSytemNumberFromSection(sSection);
+				
+				//Zuerst direkt in der übergebenen Section nachsehen
+				objReturn = this.getPropertyValueDirectLookup(sSection, sProperty);			
+			}
+			
+//			if(!objReturn.hasAnyValue()) {
+//				//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen						
+//				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForSection(sSection, sApplicationKeyUsed, sSystemNumberUsed);
+//				for(String sSectionUsed:alsSection) {
+//					objReturn = this.getPropertyValueDirectLookup(sSectionUsed, sProperty);
+//					if(objReturn.hasAnyValue()) break;								
+//				}
+//			}
+			
+			if(!objReturn.hasAnyValue()) {
+				//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen UND das als Program behandeln.
+				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(this, sSection, sApplicationKeyUsed, sSystemNumberUsed);
 				for(String sSectionUsed:alsSection) {
 					objReturn = this.getPropertyValueDirectLookup(sSectionUsed, sProperty);
 					if(objReturn.hasAnyValue()) break;								
-				}
-			}else {
-				objReturn = this.getPropertyValueDirectLookup(sSection, sProperty);
+				}				
 			}
 				
 			sReturnRaw = objReturn.getRaw();

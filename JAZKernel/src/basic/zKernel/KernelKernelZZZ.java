@@ -736,7 +736,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	}
 	
 	
-	public static ArrayList<String> computeSystemSectionNamesForModule(FileIniZZZ objFileIniConfig, String sModule, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ{
+	public static ArrayList<String> computeSystemSectionNamesForModule(IKernelFileIniZZZ objFileIniConfig, String sModule, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();		
 		main:{
 			if(objFileIniConfig==null) {
@@ -750,7 +750,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 	
-	private static ArrayList<String> computeSystemSectionNamesForModule_(FileIniZZZ objFileIniConfig, String sModule, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ{
+	private static ArrayList<String> computeSystemSectionNamesForModule_(IKernelFileIniZZZ objFileIniConfig, String sModule, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		
 		main:{			
@@ -796,7 +796,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 	
-	public static ArrayList<String> computeSystemSectionNamesForProgram(FileIniZZZ objFileIniConfig, String sProgramOrAliasIn, String sApplicationKey, String sSystemNumber) throws ExceptionZZZ{
+	public static ArrayList<String> computeSystemSectionNamesForProgram(IKernelFileIniZZZ objFileIniConfig, String sProgramOrAliasIn, String sApplicationKey, String sSystemNumber) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();		
 		main:{
 			if(objFileIniConfig==null) {
@@ -810,7 +810,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 	
-	public static ArrayList<String> computeSystemSectionNamesForProgram(FileIniZZZ objFileIniConfig, String sProgramOrAliasIn,String sModule, String sApplicationKey, String sSystemNumber) throws ExceptionZZZ{
+	public static ArrayList<String> computeSystemSectionNamesForProgram(IKernelFileIniZZZ objFileIniConfig, String sProgramOrAliasIn,String sModule, String sApplicationKey, String sSystemNumber) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();		
 		main:{
 			if(objFileIniConfig==null) {
@@ -824,7 +824,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 		
-	private static ArrayList<String> computeSystemSectionNamesForProgram_(FileIniZZZ objFileConfigIni, String sProgramIn,String sModuleIn, String sApplicationAliasIn, String sSystemNumberIn) throws ExceptionZZZ{
+	private static ArrayList<String> computeSystemSectionNamesForProgram_(IKernelFileIniZZZ objFileConfigIni, String sProgramIn,String sModuleIn, String sApplicationAliasIn, String sSystemNumberIn) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		
 		main:{			
@@ -975,7 +975,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 	
-	private static ArrayList<String> computeSystemSectionNamesForProgram_(FileIniZZZ objFileConfigIni, String sProgramIn,String sModuleOrApplicationAliasIn, String sSystemNumberIn) throws ExceptionZZZ{
+	private static ArrayList<String> computeSystemSectionNamesForProgram_(IKernelFileIniZZZ objFileConfigIni, String sProgramIn,String sModuleOrApplicationAliasIn, String sSystemNumberIn) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		
 		main:{	
@@ -1361,7 +1361,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return sReturn;
 	}
 	
-	public static String searchAliasForModule(FileIniZZZ objFileConfigIni, String sModule, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ {
+	public static String searchAliasForModule(IKernelFileIniZZZ objFileConfigIni, String sModule, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(objFileConfigIni == null) {
@@ -1388,7 +1388,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return sReturn;
 	}
 	
-	public static String searchAliasForProgram(FileIniZZZ objFileConfigIni, String sProgram, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ {
+	public static String searchAliasForProgram(IKernelFileIniZZZ objFileConfigIni, String sProgram, String sApplicationOrModule, String sSystemNumber) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
 			if(objFileConfigIni == null) {
@@ -3322,7 +3322,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 	
-	private static IKernelConfigSectionEntryZZZ KernelGetParameter_DirectLookup_(FileIniZZZ objFileIniConfig, String sSection, String sProperty) throws ExceptionZZZ{
+	private static IKernelConfigSectionEntryZZZ KernelGetParameter_DirectLookup_(IKernelFileIniZZZ objFileIniConfig, String sSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			if(objFileIniConfig==null){
@@ -4657,7 +4657,7 @@ MeinTestParameter=blablaErgebnis
 		return listasReturn;
 	}
 	
-	public static IKernelConfigSectionEntryZZZ searchModuleAliasFor(FileIniZZZ objFileIniConfig, String sModule, String sApplicationOrModule, String sSystemNumber, HashMapMultiIndexedZZZ hmDebug) throws ExceptionZZZ{
+	public static IKernelConfigSectionEntryZZZ searchModuleAliasFor(IKernelFileIniZZZ objFileIniConfig, String sModule, String sApplicationOrModule, String sSystemNumber, HashMapMultiIndexedZZZ hmDebug) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{		
 			check:{
@@ -4746,7 +4746,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 	
-	public static IKernelConfigSectionEntryZZZ searchProgramAliasFor(FileIniZZZ objFileIniConfig, String sProgram, String sApplicationOrModule, String sSystemNumber, HashMapMultiIndexedZZZ hmDebug) throws ExceptionZZZ{
+	public static IKernelConfigSectionEntryZZZ searchProgramAliasFor(IKernelFileIniZZZ objFileIniConfig, String sProgram, String sApplicationOrModule, String sSystemNumber, HashMapMultiIndexedZZZ hmDebug) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{		
 			check:{

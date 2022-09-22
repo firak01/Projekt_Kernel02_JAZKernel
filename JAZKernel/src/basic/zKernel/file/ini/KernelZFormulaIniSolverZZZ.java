@@ -119,19 +119,12 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 				} //end while
 					
 								
-				//DANACHALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);			
 				} //end while
-						
-//				if(!StringZZZ.isEmpty(sBefore)){
-//					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//					vecReturn.add(0, sBefore);
-//				}else{
-//					vecReturn.add(0,vecSection.get(0));
-//				}
-				
+										
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 				vecReturn.add(1, sExpression);
