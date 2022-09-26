@@ -129,6 +129,12 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("[Section for testJsonArraylist]");
 			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
 			
+			
+			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
+			String sEncrypted = Rot13CryptZZZ.encrypt("abcde");
+			objStreamFile.println("[Section for testEncrypted]");
+			objStreamFile.println("WertA=<Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encyrpted>");
+			
 			objFile = new File(sFilePathTotal);		
 			
 			
@@ -330,6 +336,63 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
 	}
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testComputeEncrypted(){
+
+		try {					
+			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			//Anwenden der ersten Formel, ohne Berechnung			
+			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
+			assertEquals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT,sExpression);
+			
+			//Berechne die erste Formel, DIRECT
+			IKernelConfigSectionEntryZZZ objSectionEntry = new KernelConfigSectionEntryZZZ();
+			bFlagAvailable = objExpressionSolver.setFlag("useexpression", true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionSolver.setFlag("usejson", true);
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionSolver.setFlag("usejson_map", true);
+			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			int iReturn = objExpressionSolver.compute(sExpression, objSectionEntry);
+			assertTrue(iReturn==6);
+			
+			HashMap<String,String> hm = objSectionEntry.getValueHashMap();
+			assertNotNull(hm);
+			String sValue01 = hm.get("UIText01");
+			assertTrue(sValue01.equals("TESTWERT2DO2JSON01"));			
+			assertFalse(objSectionEntry.getValue().equals(""));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
+			
+			
+			//NUN INDIREKT IM INI-OBJEKT TESTEN
+			bFlagAvailable = objFileIniTest.setFlag("useexpression", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			IKernelConfigSectionEntryZZZ objFileEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
+			assertNotNull(objFileEntry);
+			assertTrue(objFileEntry.isJson());
+			assertTrue(objFileEntry.isJsonMap());
+			
+			HashMap<String,String> hmFile = objFileEntry.getValueHashMap();
+			assertNotNull(hmFile);
+			String sValueFile01 = hmFile.get("UIText01");
+			assertTrue(sValueFile01.equals("TESTWERT2DO2JSON01"));
+															
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		
+	}
+	
 	
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
