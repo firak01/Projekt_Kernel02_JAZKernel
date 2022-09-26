@@ -291,7 +291,7 @@ public void testFileConfigAllByDir(){
 /** void, Testet die Methode und auch, ob es das Test-Modul-Konfigurations-File auch gibt.
 * Lindhauer; 20.04.2006 09:05:11
  */
-public void testGetFileConfigByAlias(){
+public void testGetFileConfigModuleIniByAlias(){
 	try{
 		//Konfiguration & Methode testen
 		File objFile = objKernelFGL.getFileConfigModuleOLDDIRECT("TestModule");
@@ -317,6 +317,38 @@ public void testGetFileConfigByAlias(){
 				
 		//Diese Konfiguration sollte es nicht geben
 		assertNull("The module for the alias 'NotExistingModuleTest' seems to be configured in the kernel-configuration-file, or this tested method is buggy.", objKernelFGL.getFileConfigModuleOLDDIRECT("NotExistingModuleTest"));
+		
+		//#### Auslesen von Werten aus dieser Datei
+		//+++ über module Alias
+		String sValueModuleExtern = objKernelFGL.getParameterByModuleAlias("TestModuleExtern", "testModulePropertyExtern").getValue();
+		sValueModuleExtern = StringZZZ.left(sValueModuleExtern+"|","|");
+		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","TestModuleValueExtern",sValueModuleExtern);
+		
+		
+		//+++ über Program Alias
+		String sValueProgramExtern = objKernelFGL.getParameterByProgramAlias("TestModuleExtern", "TestProgExtern", "testGlobalProperty").getValue();
+		sValueProgramExtern = StringZZZ.left(sValueProgramExtern+"|","|");
+		assertEquals("The configuration of 'TestProg' in the module 'TestModuleExtern' returns an unexpected value.","testWert global extern",sValueProgramExtern);
+		
+	}catch(ExceptionZZZ ez){
+		fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
+	}
+	
+	
+	//#################################################
+	try{
+		//Konfiguration & Methode testen
+		FileIniZZZ objFileConfig = objKernelFGL.getFileConfigModuleIni("TestModuleExtern");
+		assertNotNull("The module for the alias 'TestModuleExtern' is not configured in the kernel-configuration-file.", objFileConfig);
+		
+		//Testen, ob die Modulkonfiguration auch vorhanden ist
+		File objFile = objFileConfig.getFileObject();
+		assertNotNull(objFile);		
+		assertTrue("The configuration file for the alias 'TestModuleExtern' does not exist.", objFile.exists());
+				
+		//Diese Konfiguration sollte es nicht geben
+		FileIniZZZ objFileConfigNotExisting = objKernelFGL.getFileConfigModuleIni("NotExistingModuleTest");
+		assertNull("The module for the alias 'NotExistingModuleTest' seems to be configured in the kernel-configuration-file, or this tested method is buggy.", objFileConfigNotExisting);
 		
 		//#### Auslesen von Werten aus dieser Datei
 		//+++ über module Alias
