@@ -1,7 +1,39 @@
 package basic.zBasic.util.crypt;
 
-public class Rot13ZZZ {
-	public static String crypt(String input) {
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+
+public class Rot13ZZZ extends AbstractROTZZZ{
+	public Rot13ZZZ() throws ExceptionZZZ {
+		super();		
+		Rot13New_();
+	}
+	
+	private boolean Rot13New_() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+		
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public String encrypt(String sInput) throws ExceptionZZZ {
+		return Rot13ZZZ.encryptIt(sInput);
+	}
+
+	@Override
+	public String decrypt(String sInput) throws ExceptionZZZ {
+		return Rot13ZZZ.decryptIt(sInput);
+	}
+	
+	public static String encryptIt(String input) {
+		return Rot13ZZZ.crypt(input);
+	}
+	public static String decryptIt(String input) {
+		return Rot13ZZZ.crypt(input);
+	}
+	private static String crypt(String input) {
 
         char[] values = input.toCharArray();
         for (int i = 0; i < values.length; i++) {
@@ -29,4 +61,6 @@ public class Rot13ZZZ {
         // Convert array to a new String.
         return new String(values);
     }
+
+	
 }

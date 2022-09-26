@@ -17,9 +17,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zKernel.IKernelConfigZZZ;
+import basic.zKernel.KernelLogZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
 import basic.zKernel.flag.IFlagLocalUserZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
+import custom.zKernel.LogZZZ;
 
 public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ, IFlagLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
@@ -510,6 +512,13 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ, IF
 	 */
 	public void setExceptionObject(ExceptionZZZ objException) {
 		this.objException = objException;
+	}
+	
+	
+	@Override
+	public void logLineDate(String sLog) {
+		String sTemp = KernelLogZZZ.computeLineDate(sLog);
+		System.out.println(sTemp);		
 	}
 	
 	

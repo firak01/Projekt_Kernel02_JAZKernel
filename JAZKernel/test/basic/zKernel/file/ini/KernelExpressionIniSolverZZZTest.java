@@ -14,6 +14,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.crypt.Rot13ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -131,7 +132,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			
 			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
-			String sEncrypted = Rot13CryptZZZ.encrypt("abcde");
+			String sEncrypted = Rot13ZZZ.encryptIt("abcde");
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA=<Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encyrpted>");
 			
@@ -347,7 +348,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
+			String sExpression = objFileIniTest.getPropertyValue("Section for testEncryption", "Map1").getValue();
 			assertEquals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT,sExpression);
 			
 			//Berechne die erste Formel, DIRECT

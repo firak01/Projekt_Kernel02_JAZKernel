@@ -14,5 +14,6 @@ public interface IObjectZZZ extends IConstantZZZ {  //Was nutzt einem schon das 
  	public abstract ExceptionZZZ getExceptionObject();
  	public abstract void setExceptionObject(ExceptionZZZ objException);
  	
+ 	public void logLineDate(String sLog); //Nutzt intern KernelLogZZZ-statische Methode;
  	public String toString(); //Nutzt intern eine Jakarta-Commons Klasse
 }

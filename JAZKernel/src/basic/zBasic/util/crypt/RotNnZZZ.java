@@ -3,6 +3,8 @@ package basic.zBasic.util.crypt;
 import java.util.HashMap;
 import java.util.Map;
 
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Definiere eine Liste von Zeichen.
@@ -13,48 +15,146 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * https://codereview.stackexchange.com/questions/7241/rot-n-algorithm-in-java
  * 
  */
-public class RotNnZZZ {
-	public static String encrypt(String input, int n) {
+public class RotNnZZZ extends AbstractROTZZZ{
+	public static String sCHARACTER_POOL_DEFAULT="abcdefghijklmnopqrstuvwxyz";
+	private String sCharacterUsedForRot = null;
+	
+	private RotNnZZZ() throws ExceptionZZZ {
+		super();
+		String[] saFlagControl = {"init"};
+		RotNnNew_(null,-1,saFlagControl);
+	}
+	public RotNnZZZ(int iCryptKey) throws ExceptionZZZ {
+		super();
+		RotNnNew_(null,iCryptKey,null);
+	}
+	public RotNnZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+		super();
+		String[]saFlagControl = new String[1];
+		saFlagControl[0]=sFlagControl;
+		RotNnNew_(null,iCryptKey,saFlagControl);
+	}
+	public RotNnZZZ(String sCharacterPool, int iCryptKey) throws ExceptionZZZ {
+		super();
+		RotNnNew_(sCharacterPool,iCryptKey,null);
+	}
+	public RotNnZZZ(String sCharacterPool, int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+		super();
+		String[]saFlagControl = new String[1];
+		saFlagControl[0]=sFlagControl;
+		RotNnNew_(sCharacterPool,iCryptKey,saFlagControl);
+	}
+	private boolean RotNnNew_(String sCharacterPool, int iCryptKey, String[] saFlagControlIn) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+		//try{	 		
+			//setzen der übergebenen Flags	
+		if(saFlagControlIn != null){
+			 String stemp; boolean btemp; String sLog;
+			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+				stemp = saFlagControlIn[iCount];
+				btemp = setFlag(stemp, true);
+				if(btemp==false){
+					 String sKey = stemp;
+					 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+					 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+					 
+					// Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!							
+					// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
+					// throw ez;		 
+				}
+			}
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+			
+			
+		}
+		this.setCryptKey(iCryptKey);
+		this.setCharacterPool(sCharacterPool);
+		
+	}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public String encrypt(String sInput) throws ExceptionZZZ {
+		int iCryptKey = this.getCryptKey();
+		String sCharacterPool=this.getCharacterPool();
+		boolean bUseUpperCase = this.getFlag("useUpperCase");
+		return RotNnZZZ.encrypt(sInput, sCharacterPool, bUseUpperCase, iCryptKey);
+	}
+	@Override
+	public String decrypt(String sInput) throws ExceptionZZZ {
+		int iCryptKey = this.getCryptKey();
+		String sCharacterPool=this.getCharacterPool();
+		boolean bUseUpperCase = this.getFlag("useUpperCase");
+		return RotNnZZZ.decrypt(sInput, sCharacterPool, bUseUpperCase, iCryptKey);
+	}
+	
+	public String getCharacterPool() {
+		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
+			return RotNnZZZ.sCHARACTER_POOL_DEFAULT;
+		}else {
+			return this.sCharacterUsedForRot;
+		}
+	}
+	
+	public void setCharacterPool(String sCharacterPool) {
+		this.sCharacterUsedForRot = sCharacterPool;
+	}
+	
+	
+	public static String encrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercase, int n) {
+		String sReturn = sInput;
+		main:{
+			if(StringZZZ.isEmpty(sInput)) break main;
+			
+			String sCharacterPool;
+			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
+				sCharacterPool=RotNnZZZ.sCHARACTER_POOL_DEFAULT;
+			}else {
+				sCharacterPool = sCharacterPoolIn;
+			}
+			
+			String abcABC;
+			if(bUseUppercase) {
+				abcABC = sCharacterPool + sCharacterPool.toUpperCase();
+			}else {
+				abcABC = sCharacterPool;
+			}
+			
+			int len = abcABC.length();
 
-	    String abc = " abcdefghijklmnopqrstuvwxyz?";
-	    String abcABC = abc + abc.toUpperCase();
-	    int len = abcABC.length();
-
-	    Map<Character, Character> map = new HashMap<Character, Character>();
-	    for (int i = 0; i < len; i++) {
-	        map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
-	    }
-
-	    StringBuilder sb = new StringBuilder();
-	    for(int i = 0; i < input.length(); i++) {
-	        Character ch = map.get(input.charAt(i));
-	        if (ch == null) {
-	            throw new IllegalArgumentException("Illegal character " + input.charAt(i));
-	        }
-	        sb.append(ch);
-	    }
-	    return sb.toString();
+		    Map<Character, Character> map = new HashMap<Character, Character>();
+		    for (int i = 0; i < len; i++) {
+		        map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
+		    }
+	
+		    StringBuilder sb = new StringBuilder();
+		    for(int i = 0; i < sInput.length(); i++) {
+		        Character ch = map.get(sInput.charAt(i));
+		        if (ch == null) {
+		            throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "'");
+		        }
+		        sb.append(ch);
+		    }
+		    sReturn =  sb.toString();
+		}//end main;
+		return sReturn;
     }
 	
-	public static String decrypt(String input, int n) {
-	    String list = " abcdefghijklmnopqrstuvwxyz?";
-	    String abc = StringZZZ.reverse(list); 
-	    String abcABC = abc + abc.toUpperCase();
-	    int len = abcABC.length();
+	public static String decrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercase, int n) {
 
-	    Map<Character, Character> map = new HashMap<Character, Character>();
-	    for (int i = 0; i < len; i++) {
-	        map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
-	    }
-
-	    StringBuilder sb = new StringBuilder();
-	    for(int i = 0; i < input.length(); i++) {
-	        Character ch = map.get(input.charAt(i));
-	        if (ch == null) {
-	            throw new IllegalArgumentException("Illegal character " + input.charAt(i));
-	        }
-	        sb.append(ch);
-	    }
-	    return sb.toString();
+		String sCharacterPool;
+		if(StringZZZ.isEmpty(sCharacterPoolIn)) {
+			sCharacterPool=RotNnZZZ.sCHARACTER_POOL_DEFAULT;
+		}else {
+			sCharacterPool = sCharacterPoolIn;
+		}
+		sCharacterPool = StringZZZ.reverse(sCharacterPool);
+		
+		return RotNnZZZ.encrypt(sInput, sCharacterPool, bUseUppercase, n);		
 	}
 }
