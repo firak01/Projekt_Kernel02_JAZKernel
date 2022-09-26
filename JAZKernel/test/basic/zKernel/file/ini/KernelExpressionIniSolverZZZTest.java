@@ -132,9 +132,11 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			
 			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
-			String sEncrypted = Rot13ZZZ.encryptIt("abcde");
+			String sValue = "abcde";
+			String sEncrypted = Rot13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
-			objStreamFile.println("WertA=<Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encyrpted>");
+			objStreamFile.println("WertA="+sValue);
+			objStreamFile.println("WertAencrypted=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			objFile = new File(sFilePathTotal);		
 			
@@ -344,11 +346,11 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	public void testComputeEncrypted(){
 
 		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testEncryption", "Map1").getValue();
+			String sExpression = objFileIniTest.getPropertyValue("Section for testEncryption", "WertA").getValue();
 			assertEquals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT,sExpression);
 			
 			//Berechne die erste Formel, DIRECT

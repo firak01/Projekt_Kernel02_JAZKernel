@@ -23,7 +23,7 @@ import basic.zKernel.flag.IFlagLocalUserZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.LogZZZ;
 
-public class ObjectZZZ <T> implements Serializable, IObjectZZZ, IFlagUserZZZ, IFlagLocalUserZZZ{
+public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUserZZZ, IFlagLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert

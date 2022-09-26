@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ILogZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
