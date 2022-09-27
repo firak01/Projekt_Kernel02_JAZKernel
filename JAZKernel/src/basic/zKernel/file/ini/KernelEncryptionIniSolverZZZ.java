@@ -1,11 +1,17 @@
 package basic.zKernel.file.ini;
 
+import java.util.EnumSet;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.ICryptZZZ;
+import basic.zBasic.util.crypt.KernelCryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -13,7 +19,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelEncryptionIniSolverZZZ, IKernelZFormulaIniZZZ{
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionMathSolverNew_(saFlag);
@@ -61,30 +67,58 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
+			String sValue=null;  String sCode=null;
 			
-			//Mehrere Ausdr�cke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
 					
-				//Nun den z:operator Tag suchen
-				KernelZFormulaMath_OperatorZZZ objOperator = new KernelZFormulaMath_OperatorZZZ();
-				if(objOperator.isExpression(sExpression)){
-					 sExpression = objOperator.compute(sExpression);					
-				}else{
-					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-					KernelZFormulaMath_ValueZZZ objValue = new KernelZFormulaMath_ValueZZZ();
-					while(objValue.isExpression(sExpression)){
-						sExpression = objValue.compute(sExpression);
+				//Nun den z:cipher Tag suchen				
+				if(KernelEncryption_CipherZZZ.isExpression(sExpression)){
+					KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
+					String sCipher = objCipher.compute(sExpression);	
+					 
+					 //TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
+					 EnumSet<?> objEnumSet = EnumSetFactoryZZZ.getInstance().getEnumSet(sExpression);					
+					 CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();					 
+					 CryptCipherAlgorithmMappedValueZZZ objEnums = new CryptCipherAlgorithmMappedValueZZZ();
+					 Class enumClass = objEnums.getEnumClassStatic();
+					 //+++++++++++++
+					 
+
+					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
+					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance();
+					 
+					 TODOGOON20220927;//Es müssen nun für weitere Konstruktoren auch weitere Parameter aus dem sExpression Wert ausgelesen werden.
+					 //iKeyNumber für die "Rotation" der Buchstaben
+					 //sCharacterPool für die "erlaubten" Buchstaben.
+					 //Nachdem diese Werte errechnet worden sind (und ggfs. nicht gefunden wurden) trotdem alle als Parameter übergeben.					 				
+					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher);
+					 //ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher, iKeyNumber, sCharacterPool);
+					 										
+					 if(KernelEncryption_CodeZZZ.isExpression(sExpression)){
+						KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+						sCode = objValue.compute(sExpression);
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
-					}					
+					}
+					
+					 if(!StringZZZ.isEmpty(sCode)) {
+						 objAlgorithm.decrypt(sCode);
+					 }
+					 
+				}else{
+					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
+					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.				
+					if(KernelEncryption_CodeZZZ.isExpression(sExpression)){
+						KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+						sCode = objValue.compute(sExpression);
+					}						
+					sValue = sCode;
 				}
-								
-				String sValue = sExpression;
-				
+									
 				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 				if(sValue!=null){
 					vecReturn.removeElementAt(1);
@@ -105,7 +139,7 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelEncryptionIniSolverZZZ.getExpressionTagStarting(), KernelEncryptionSolverZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelEncryptionIniSolverZZZ.getExpressionTagStarting(), KernelEncryptionIniSolverZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}

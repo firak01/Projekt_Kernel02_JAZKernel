@@ -19,7 +19,7 @@ public class RotNnZZZ extends AbstractROTZZZ{
 	public static String sCHARACTER_POOL_DEFAULT="abcdefghijklmnopqrstuvwxyz";
 	private String sCharacterUsedForRot = null;
 	
-	private RotNnZZZ() throws ExceptionZZZ {
+	RotNnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
 		super();
 		String[] saFlagControl = {"init"};
 		RotNnNew_(null,-1,saFlagControl);

@@ -1,6 +1,8 @@
 package basic.zKernel.file.ini;
 
-public interface IKernelEncryptionIniSolverZZZ {
+import basic.zKernel.IKernelZFormulaIniZZZ;
+
+public interface IKernelEncryptionIniSolverZZZ{
 	public enum FLAGZ{
 		USEENCRYPTION
 	}	

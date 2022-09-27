@@ -43,7 +43,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			objExpressionSolverInit = new KernelEncryptionIniSolverZZZ(objKernel, saFlagInit);
 			
 			String[] saFlag = {""};
-			objExpressionSolver = new KernelEncryptonIniSolverZZZ(objKernel, saFlag);
+			objExpressionSolver = new KernelEncryptionIniSolverZZZ(objKernel, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
@@ -61,6 +61,10 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		
 		boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
 		assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+		
+		bFlagAvailable = objExpressionSolver.setFlag("gibtEsNicht", false); //Ansonsten wird der Wert sofort ausgerechnet
+		assertFalse("Das Flag 'gibtEsNicht' sollte nicht zur Verfügung stehen.", bFlagAvailable);
+		
 		
 //		} catch (ExceptionZZZ ez) {
 //			fail("Method throws an exception." + ez.getMessageLast());

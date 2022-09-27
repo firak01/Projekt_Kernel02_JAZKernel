@@ -14,6 +14,8 @@ import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelEncryption_CipherZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+	private String sCipher = null; //Die Verschlüsselungsmethodik
+	
 	public KernelEncryption_CipherZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionMathValueNew_(saFlag);
@@ -53,6 +55,13 @@ public class KernelEncryption_CipherZZZ  extends KernelUseObjectZZZ implements I
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
+	
+	public String getCipher() {
+		return this.sCipher;
+	}
+	public void setCipher(String sCipher) {
+		this.sCipher = sCipher;
+	}
 	
 	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
@@ -141,8 +150,11 @@ public class KernelEncryption_CipherZZZ  extends KernelUseObjectZZZ implements I
 					
 					Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 					
+					sReturn = (String) vecAll.get(1);
+					this.setCipher(sReturn);
+					
 					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-					sReturn = VectorZZZ.implode(vecAll);
+					//sReturn = VectorZZZ.implode(vecAll);
 					
 				}//end main:
 				return sReturn;
