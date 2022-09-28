@@ -15,7 +15,8 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
+public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface:
+	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			
 	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{
@@ -120,7 +121,7 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//Ke
 	//###### Getter / Setter
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
 	public String getExpressionTagName(){
-		return "z:Var"; 
+		return KernelZFormulaIni_VariableZZZ.sTAG_NAME;
 	}
 		
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){

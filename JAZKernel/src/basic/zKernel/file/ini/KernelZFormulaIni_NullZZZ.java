@@ -21,6 +21,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *     auch ein NULL - Wert gefunden wird (halt der <z:Null/> Tag). Wenn etwas gefunden wird, dann wird auch diese Parametersuche beendet.   
  */
 public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
 		
 	public KernelZFormulaIni_NullZZZ() throws ExceptionZZZ{
@@ -89,7 +90,7 @@ public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IK
 			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
 
 					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-					String sMathValueTag = KernelZFormulaMath_ValueZZZ.getExpressionTagClosing();
+					String sMathValueTag = KernelZFormulaMath_ValueZZZ.computeExpressionTagClosing(KernelZFormulaMath_ValueZZZ.sTAG_NAME);
 					if(StringZZZ.contains(sProperty, sMathValueTag)){
 						sBefore = (String) vecSection.get(0);
 						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
@@ -168,7 +169,7 @@ public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IK
 	//###### Getter / Setter
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
 	public static String getExpressionTagName(){
-		return "z:Null"; 
+		return KernelZFormulaIni_NullZZZ.sTAG_NAME;
 	}
 	public static String getExpressionTagStarting(){
 		return "<" + KernelZFormulaIni_NullZZZ.getExpressionTagName() + ">";

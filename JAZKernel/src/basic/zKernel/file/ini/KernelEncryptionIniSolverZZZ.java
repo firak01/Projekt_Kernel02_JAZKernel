@@ -19,45 +19,47 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelEncryptionIniSolverZZZ, IKernelZFormulaIniZZZ{
+public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ implements IKernelEncryptionIniSolverZZZ{
+	public static String sTAG_NAME = "Z:encrypted";
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionMathSolverNew_(saFlag);
+		super();
 	}
 		
-	public KernelEncryptionIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public KernelEncryptionIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
 	public KernelEncryptionIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
+		super(objKernel,saFlag);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
 	
 	private boolean KernelExpressionMathSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
-	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der �bergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}			
-	 	}//end main:
-		return bReturn;
+//	 boolean bReturn = false;
+//	 String stemp; boolean btemp; 
+//	 main:{
+//		 	
+//	 	//try{	 		
+//	 			//setzen der �bergebenen Flags	
+//				if(saFlagControlIn != null){
+//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//						stemp = saFlagControlIn[iCount];
+//						btemp = setFlag(stemp, true);
+//						if(btemp==false){
+//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//							throw ez;		 
+//						}
+//					}
+//					if(this.getFlag("init")==true){
+//						bReturn = true;
+//						break main;
+//					}
+//				}			
+//	 	}//end main:
+//		return bReturn;
+		return true;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
@@ -130,78 +132,23 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 		return vecReturn;
 	}
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelEncryptionIniSolverZZZ.getExpressionTagStarting(), KernelEncryptionIniSolverZZZ.getExpressionTagClosing(), false,false);
-		}
-		return vecReturn;
-	}
-	
-	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelEncryptionIniSolverZZZ.getExpressionTagStarting(), false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, KernelEncryptionIniSolverZZZ.getExpressionTagClosing(), false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
-		return "Z:encrypted";
+	public String getExpressionTagName(){
+		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelEncryptionIniSolverZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelEncryptionIniSolverZZZ.getExpressionTagName() + ">"; 
-	}	
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelEncryptionIniSolverZZZ.getExpressionTagName() + "/>";
-	}
+	
 
 	//### Aus Interface IKernelExpressionIniZZZ
 	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
-		
-		//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
-//				if(StringZZZ.isEmpty(sToProof)){
-//					bReturn = true;
-//				}
-		return bReturn;
-	}
-	
-	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
+		main:{			
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
 			if(bUseEncryption) {
-				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-				
-				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-				sReturn = VectorZZZ.implode(vecAll);
+				sReturn = super.compute(sLineWithExpression);
 			}else {
 				sReturn = sLineWithExpression;
-			}
+			}									
 		}//end main:
 		return sReturn;
 	}
@@ -215,6 +162,12 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 	@Override
 	public boolean isStringForComputeRelevant(String sExpressionToProof)
 			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
 		// TODO Auto-generated method stub
 		return false;
 	}	

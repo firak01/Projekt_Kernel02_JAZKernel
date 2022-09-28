@@ -31,6 +31,7 @@ import basic.zKernel.flag.IFlagUserZZZ;
  *
  */
 public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements IKernelJsonIniSolverZZZ{
+	public static String sTAG_NAME = "JSON:ARRAY";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 		
@@ -161,7 +162,7 @@ public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements I
 	
 	//###### Getter / Setter
 	public static String getExpressionTagName(){
-		return "JSON:ARRAY";
+		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
 	}
 	public static String getExpressionTagStarting(){
 		return "<" + KernelJsonArrayIniSolverZZZ.getExpressionTagName() + ">";

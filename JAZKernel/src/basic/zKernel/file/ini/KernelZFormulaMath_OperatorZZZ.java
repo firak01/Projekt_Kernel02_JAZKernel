@@ -14,46 +14,49 @@ import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+	public static String sTAG_NAME = "Z:op";
 	private String sOperator = null;
 		
 	public KernelZFormulaMath_OperatorZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionMathSolverNew_(saFlag);
+		super();
 	}
 		
-	public KernelZFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public KernelZFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
 	public KernelZFormulaMath_OperatorZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
+		super(objKernel, saFlag);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
 	
 	private boolean KernelExpressionMathSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
-	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}			
-	 	}//end main:
-		return bReturn;
+//	 boolean bReturn = false;
+//	 String stemp; boolean btemp; 
+//	 main:{
+//		 	
+//	 	//try{	 		
+//	 			//setzen der übergebenen Flags	
+//				if(saFlagControlIn != null){
+//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//						stemp = saFlagControlIn[iCount];
+//						btemp = setFlag(stemp, true);
+//						if(btemp==false){
+//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//							throw ez;		 
+//						}
+//					}
+//					if(this.getFlag("init")==true){
+//						bReturn = true;
+//						break main;
+//					}
+//				}			
+//	 	}//end main:
+//		return bReturn;
+		
+		return true;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
@@ -126,35 +129,6 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //
 		return sReturn;
 	}
 	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaMath_OperatorZZZ.getExpressionTagStarting(),false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, KernelZFormulaMath_OperatorZZZ.getExpressionTagClosing(),false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaMath_OperatorZZZ.getExpressionTagStarting(), KernelZFormulaMath_OperatorZZZ.getExpressionTagClosing(), false,false);
-		}
-		return vecReturn;
-	}
-	
 		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 			Vector vecReturn = new Vector();
 			main:{
@@ -193,18 +167,10 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //
 	
 	
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
-		return "Z:op";
+	public String getExpressionTagName(){
+		return KernelZFormulaMath_OperatorZZZ.sTAG_NAME;
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelZFormulaMath_OperatorZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelZFormulaMath_OperatorZZZ.getExpressionTagName() + ">"; 
-	}	
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelZFormulaMath_OperatorZZZ.getExpressionTagName() + "/>";
-	}
+	
 	
 	//++++ 
 	public String getOperator(){
@@ -214,25 +180,7 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //
 		this.sOperator=sOperator;
 	}
 
-	//### Aus Interface IKernelExpressionIniZZZ
-		@Override
-		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-			boolean bReturn=false;
-			
-			//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
-//					if(StringZZZ.isEmpty(sToProof)){
-//						bReturn = true;
-//					}
-			return bReturn;
-		}
-		
-		@Override
-		public boolean isStringForComputeRelevant(String sExpressionToProof)
-				throws ExceptionZZZ {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
+	//### Aus Interface IKernelExpressionIniZZZ	
 		@Override
 		public String compute(String sLineWithExpression) throws ExceptionZZZ{
 			String sReturn = null;
@@ -256,7 +204,8 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //
 										
 				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 				sReturn = VectorZZZ.implode(vecAll);
-										
+				
+				this.setValue(sReturn);
 			}//end main:
 			return sReturn;
 		}
@@ -265,6 +214,19 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //
 		public String convert(String sLine) throws ExceptionZZZ {
 			// TODO Auto-generated method stub
 			return null;
+		}
+		
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof)
+				throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
 		}
 				
 }//End class

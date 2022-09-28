@@ -99,7 +99,7 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	}
 	
 	
-	public boolean isExpression(String sLine){
+	public boolean isExpression(String sLine) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			boolean btemp = StringZZZ.contains(sLine, this.getExpressionTagStarting(),false);
@@ -117,15 +117,40 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	//###### Getter / Setter
 	public abstract String getExpressionTagName();
 	
-	public String getExpressionTagStarting(){
-		return "<" + this.getExpressionTagName() + ">";
+	public String getExpressionTagStarting() throws ExceptionZZZ{
+		return AbstractKernelIniTagZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
 	}
-	public String getExpressionTagClosing(){
-		return "</" + this.getExpressionTagName() + ">"; 
+	public String getExpressionTagClosing() throws ExceptionZZZ{
+		return AbstractKernelIniTagZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
 	}	
-	public String getExpressionTagEmpty(){
-		return "<" + this.getExpressionTagName() + "/>";
+	public String getExpressionTagEmpty()throws ExceptionZZZ{
+		return AbstractKernelIniTagZZZ.computeExpressionTagEmpty(this.getExpressionTagName());		
 	}
+	
+	public static String computeExpressionTagStarting(String sTagName) throws ExceptionZZZ{
+		if(StringZZZ.isEmptyTrimmed(sTagName)) {
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			throw ez;
+		}
+		return "<" + sTagName + ">";
+	}
+	
+	public static String computeExpressionTagClosing(String sTagName)throws ExceptionZZZ{
+		if(StringZZZ.isEmptyTrimmed(sTagName)) {
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			throw ez;
+		}
+		return "</" + sTagName + ">"; 
+	}
+	
+	public static String computeExpressionTagEmpty(String sTagName)throws ExceptionZZZ{
+		if(StringZZZ.isEmptyTrimmed(sTagName)) {
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			throw ez;
+		}
+		return "<" + sTagName + "/>";
+	}
+	
 
 	//### Aus Interface IKernelExpressionIniZZZ
 	public abstract boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ;
@@ -135,7 +160,7 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 			
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-				String sReturn = null;
+				String sReturn = sLineWithExpression;
 				main:{
 					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 					

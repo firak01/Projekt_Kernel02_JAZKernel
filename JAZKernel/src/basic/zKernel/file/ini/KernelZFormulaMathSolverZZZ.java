@@ -15,11 +15,11 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	public KernelZFormulaMathSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionMathSolverNew_(saFlag);
+		super();
 	}
 		
-	public KernelZFormulaMathSolverZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public KernelZFormulaMathSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
 		KernelExpressionMathSolverNew_(saFlag);
 	}
 	
@@ -30,28 +30,29 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//Ker
 	
 	
 	private boolean KernelExpressionMathSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
-	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der �bergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}			
-	 	}//end main:
-		return bReturn;
+//	 boolean bReturn = false;
+//	 String stemp; boolean btemp; 
+//	 main:{
+//		 	
+//	 	//try{	 		
+//	 			//setzen der �bergebenen Flags	
+//				if(saFlagControlIn != null){
+//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//						stemp = saFlagControlIn[iCount];
+//						btemp = setFlag(stemp, true);
+//						if(btemp==false){
+//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//							throw ez;		 
+//						}
+//					}
+//					if(this.getFlag("init")==true){
+//						bReturn = true;
+//						break main;
+//					}
+//				}			
+//	 	}//end main:
+//		return bReturn;
+		return true;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
@@ -95,63 +96,13 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//Ker
 		return vecReturn;
 	}
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaMathSolverZZZ.getExpressionTagStarting(), KernelZFormulaMathSolverZZZ.getExpressionTagClosing(), false,false);
-		}
-		return vecReturn;
-	}
-	
-	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaMathSolverZZZ.getExpressionTagStarting(), false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, KernelZFormulaMathSolverZZZ.getExpressionTagClosing(), false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
+	public String getExpressionTagName(){
 		return "Z:math";
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelZFormulaMathSolverZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelZFormulaMathSolverZZZ.getExpressionTagName() + ">"; 
-	}	
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelZFormulaMathSolverZZZ.getExpressionTagName() + "/>";
-	}
-
-	//### Aus Interface IKernelExpressionIniZZZ
-	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
-		
-		//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
-//				if(StringZZZ.isEmpty(sToProof)){
-//					bReturn = true;
-//				}
-		return bReturn;
-	}
 	
+	//### Aus Interface IKernelExpressionIniZZZ
+		
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
@@ -179,8 +130,10 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//Ker
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
-	
-	
+
+	@Override
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }//End class

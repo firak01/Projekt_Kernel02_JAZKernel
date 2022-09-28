@@ -28,6 +28,7 @@ import basic.zKernel.flag.IFlagUserZZZ;
  *
  */
 public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKernelJsonIniSolverZZZ{
+	public static String sTAG_NAME = "JSON:MAP";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 		
@@ -150,7 +151,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	
 	//###### Getter / Setter
 	public static String getExpressionTagName(){
-		return "JSON:MAP";
+		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
 	}
 	public static String getExpressionTagStarting(){
 		return "<" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + ">";

@@ -14,6 +14,7 @@ import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelEncryption_CipherZZZ  extends AbstractKernelIniTagZZZ{
+	public static String sTAG_NAME = "Z:cipher";
 	
 	public KernelEncryption_CipherZZZ() throws ExceptionZZZ{
 		super();
@@ -66,7 +67,7 @@ public class KernelEncryption_CipherZZZ  extends AbstractKernelIniTagZZZ{
 		
 	//###### Getter / Setter
 	public String getExpressionTagName(){
-		return "Z:cipher";
+		return KernelEncryption_CipherZZZ.sTAG_NAME;
 	}
 
 	//### Aus Interface IKernelExpressionIniZZZ
