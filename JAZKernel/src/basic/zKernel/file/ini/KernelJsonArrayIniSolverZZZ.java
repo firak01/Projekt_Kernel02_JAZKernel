@@ -100,7 +100,7 @@ public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements I
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
 				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
-				while(KernelZFormulaIni_VariableZZZ.isExpression(sExpression)){
+				while(objVariable.isExpression(sExpression)){
 					sExpression = objVariable.compute(sExpression);			
 				} //end while
 					

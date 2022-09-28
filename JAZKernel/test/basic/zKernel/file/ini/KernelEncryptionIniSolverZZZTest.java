@@ -83,7 +83,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//### Teilberechnungen durchführen
 			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
-			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Map, in der 3ten Position ist der String nach der Map.
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			
 			
 			//### Nun die Gesamtberechnung durchführen

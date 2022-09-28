@@ -53,7 +53,7 @@ public class KernelCacheZZZ extends AbstractKernelCacheZZZ{
 	}
 
 	@Override
-	public int isCacheSkippedContainingVariable(boolean bValue, String sVariableName) {
+	public int isCacheSkippedContainingVariable(boolean bValue, String sVariableName) throws ExceptionZZZ {
 		int iReturn = 0; //Die Anzahl der gefundenen und veränderten Einträge
 		main:{
 			if(StringZZZ.isEmpty(sVariableName)) break main;
@@ -91,7 +91,8 @@ Start index: 36 End index: 40 java
 Please note that it will not match “java” word in first example i.e. “Today, java is object oriented language” because “\\B” does not match start and end of a word.
 			 */
 			
-			String sRegEx=KernelZFormulaIni_VariableZZZ.getExpressionTagStarting() + sVariableName + KernelZFormulaIni_VariableZZZ.getExpressionTagClosing(); //Den Namen einer Variablen finden, über diesen RegEx-Ausdruck
+			KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ();
+			String sRegEx=objVariable.getExpressionTagStarting() + sVariableName + objVariable.getExpressionTagClosing(); //Den Namen einer Variablen finden, über diesen RegEx-Ausdruck
 			sRegEx = "\\B"+sRegEx+"|"+sRegEx+"\\B";
 			ArrayList<ICachableObjectZZZ> listaCacheEntry = this.getCacheEntriesWithPropertiesByRegEx(sRegEx);
 			for(ICachableObjectZZZ objCacheEntry: listaCacheEntry){				

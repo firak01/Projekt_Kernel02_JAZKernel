@@ -75,8 +75,8 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 			if(!StringZZZ.isEmpty(sExpression)){
 					
 				//Nun den z:cipher Tag suchen				
-				if(KernelEncryption_CipherZZZ.isExpression(sExpression)){
-					KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
+				KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
+				if(objCipher.isExpression(sExpression)){					
 					String sCipher = objCipher.compute(sExpression);	
 					 
 					 //TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
@@ -90,15 +90,16 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
 					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance();
 					 
-					 TODOGOON20220927;//Es müssen nun für weitere Konstruktoren auch weitere Parameter aus dem sExpression Wert ausgelesen werden.
+					 //TODOGOON20220927;//Es müssen nun für weitere Konstruktoren auch weitere Parameter aus dem sExpression Wert ausgelesen werden.
 					 //iKeyNumber für die "Rotation" der Buchstaben
 					 //sCharacterPool für die "erlaubten" Buchstaben.
 					 //Nachdem diese Werte errechnet worden sind (und ggfs. nicht gefunden wurden) trotdem alle als Parameter übergeben.					 				
 					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher);
 					 //ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher, iKeyNumber, sCharacterPool);
-					 										
-					 if(KernelEncryption_CodeZZZ.isExpression(sExpression)){
-						KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+					 	
+					 KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+					 if(objValue.isExpression(sExpression)){
+						
 						sCode = objValue.compute(sExpression);
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
@@ -106,14 +107,14 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					}
 					
 					 if(!StringZZZ.isEmpty(sCode)) {
-						 objAlgorithm.decrypt(sCode);
+						 sValue = objAlgorithm.decrypt(sCode);
 					 }
 					 
 				}else{
 					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
-					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.				
-					if(KernelEncryption_CodeZZZ.isExpression(sExpression)){
-						KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
+					KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
+					if(objValue.isExpression(sExpression)){						
 						sCode = objValue.compute(sExpression);
 					}						
 					sValue = sCode;
@@ -192,11 +193,15 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
-			
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+			if(bUseEncryption) {
+				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+				
+				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+				sReturn = VectorZZZ.implode(vecAll);
+			}else {
+				sReturn = sLineWithExpression;
+			}
 		}//end main:
 		return sReturn;
 	}
@@ -212,9 +217,5 @@ public class KernelEncryptionIniSolverZZZ  extends KernelUseObjectZZZ implements
 			throws ExceptionZZZ {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	
-	
-	
-	
+	}	
 }//End class

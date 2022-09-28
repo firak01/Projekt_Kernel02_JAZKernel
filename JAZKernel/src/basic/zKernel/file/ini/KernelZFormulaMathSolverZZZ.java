@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMathSolverZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	public KernelZFormulaMathSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionMathSolverNew_(saFlag);

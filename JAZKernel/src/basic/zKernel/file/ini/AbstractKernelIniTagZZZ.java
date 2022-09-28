@@ -13,23 +13,30 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
-	public KernelZFormulaMath_ValueZZZ() throws ExceptionZZZ{
+public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+	private String sValue;
+	
+	public AbstractKernelIniTagZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
-		KernelExpressionMathValueNew_(saFlag);
+		AbstractKernelIniTagNew_(saFlag);
 	}
 		
-	public KernelZFormulaMath_ValueZZZ(String[] saFlag) throws ExceptionZZZ{		
-		KernelExpressionMathValueNew_(saFlag);
+	public AbstractKernelIniTagZZZ(String[] saFlag) throws ExceptionZZZ{		
+		AbstractKernelIniTagNew_(saFlag);
 	}
 	
-	public KernelZFormulaMath_ValueZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelIniTagZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionMathValueNew_(saFlag);
+		AbstractKernelIniTagNew_(null);
+	}
+	
+	public AbstractKernelIniTagZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+		super(objKernel);
+		AbstractKernelIniTagNew_(saFlag);
 	}
 	
 	
-	private boolean KernelExpressionMathValueNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean AbstractKernelIniTagNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{
@@ -54,6 +61,13 @@ public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagZZZ{ //Ker
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
+	public String getValue() {
+		return this.sValue;
+	}
+
+	public void setValue(String sValue) {
+		this.sValue = sValue;
+	}
 	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
@@ -79,19 +93,19 @@ public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagZZZ{ //Ker
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaMath_ValueZZZ.getExpressionTagStarting(), KernelZFormulaMath_ValueZZZ.getExpressionTagClosing(), false, false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
 		}
 		return vecReturn;
 	}
 	
 	
-	public static boolean isExpression(String sLine){
+	public boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaMath_ValueZZZ.getExpressionTagStarting(),false);
+			boolean btemp = StringZZZ.contains(sLine, this.getExpressionTagStarting(),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelZFormulaMath_ValueZZZ.getExpressionTagClosing(),false);
+			btemp = StringZZZ.contains(sLine, this.getExpressionTagClosing(),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -101,56 +115,39 @@ public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagZZZ{ //Ker
 	
 	
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
-		return "Z:val";
+	public abstract String getExpressionTagName();
+	
+	public String getExpressionTagStarting(){
+		return "<" + this.getExpressionTagName() + ">";
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelZFormulaMath_ValueZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelZFormulaMath_ValueZZZ.getExpressionTagName() + ">"; 
+	public String getExpressionTagClosing(){
+		return "</" + this.getExpressionTagName() + ">"; 
 	}	
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelZFormulaMath_ValueZZZ.getExpressionTagName() + "/>";
+	public String getExpressionTagEmpty(){
+		return "<" + this.getExpressionTagName() + "/>";
 	}
 
 	//### Aus Interface IKernelExpressionIniZZZ
-			@Override
-			public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-				boolean bReturn=false;
-				
-				//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
-//						if(StringZZZ.isEmpty(sToProof)){
-//							bReturn = true;
-//						}
-				return bReturn;
-			}
+	public abstract boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ;
+	public abstract String convert(String sLine) throws ExceptionZZZ;		
+	
+	public abstract boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;
 			
-			@Override
-			public boolean isStringForComputeRelevant(String sExpressionToProof)
-					throws ExceptionZZZ {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	@Override
+	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 				String sReturn = null;
 				main:{
 					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 					
 					Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 					
+					sReturn = (String) vecAll.get(1);
+					this.setValue(sReturn);
+					
 					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-					sReturn = VectorZZZ.implode(vecAll);
+					//sReturn = VectorZZZ.implode(vecAll);
 					
 				}//end main:
 				return sReturn;
-			}
-
-			@Override
-			public String convert(String sLine) throws ExceptionZZZ {
-				// TODO Auto-generated method stub
-				return null;
-			}						
+			}	
 }//End class

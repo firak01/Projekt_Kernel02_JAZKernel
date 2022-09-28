@@ -8,6 +8,7 @@ public interface IKernelZFormulaIniZZZ {
 	//getExpressionTagStarting()
 	//getExpressionTagClosing()
 	//getExpressionTagEmpty()
+	
 	public String compute(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..."
 	public String convert(String sLine) throws ExceptionZZZ; //Mache aus einem String "..." den passenden <z: ... Ausdruck.
 	boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ; //z.B. ein Leerstring wird für KernelExpressionIni_EmptyZZZ relevant sein, d.h. true zurück.

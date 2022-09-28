@@ -15,7 +15,7 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_VariableZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
+public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			
 	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{
@@ -59,6 +59,11 @@ public class KernelZFormulaIni_VariableZZZ  extends KernelUseObjectZZZ implement
 	 }//end function KernelExpressionMathSolverNew_
 		
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#computeExpressionAllVector(java.lang.String)
+	 * 
+	 * BESONERHEIT HIER: VARIABLENERSETZUNG!!!
+	 */
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
@@ -112,52 +117,12 @@ public class KernelZFormulaIni_VariableZZZ  extends KernelUseObjectZZZ implement
 		return vecReturn;
 	}
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_VariableZZZ.getExpressionTagStarting(), KernelZFormulaIni_VariableZZZ.getExpressionTagClosing(), false,false);
-		}
-		return vecReturn;
-	}
-	
-	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_VariableZZZ.getExpressionTagStarting(), false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, KernelZFormulaIni_VariableZZZ.getExpressionTagClosing(), false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
 	//###### Getter / Setter
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
-	public static String getExpressionTagName(){
+	public String getExpressionTagName(){
 		return "z:Var"; 
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelZFormulaIni_VariableZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelZFormulaIni_VariableZZZ.getExpressionTagName() + ">"; 
-	}	
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelZFormulaIni_VariableZZZ.getExpressionTagName() + "/>";
-	}
-	
+		
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
 		this.hmVariable = hmVariable;
 	}
@@ -195,24 +160,12 @@ public class KernelZFormulaIni_VariableZZZ  extends KernelUseObjectZZZ implement
 	}
 
 	//### Aus Interface IKernelExpressionIniZZZ
-		@Override
-		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-			boolean bReturn=false;
-			
-			//Hier noch was Relevantes für die KernelExpressionIniConverter-Klasse finden.
-//			if(StringZZZ.isEmpty(sToProof)){
-//				bReturn = true;
-//			}
-			return bReturn;
-		}
 		
-		@Override
-		public boolean isStringForComputeRelevant(String sExpressionToProof)
-				throws ExceptionZZZ {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
+		/* (non-Javadoc)
+		 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#compute(java.lang.String)
+		 * 
+		 * Besonderheit: Hier wird der Vector mit implode zusammengefasst.
+		 */
 		@Override
 		public String compute(String sLineWithExpression) throws ExceptionZZZ{
 			String sReturn = null;
@@ -221,6 +174,9 @@ public class KernelZFormulaIni_VariableZZZ  extends KernelUseObjectZZZ implement
 				
 				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 				
+//				sReturn = (String) vecAll.get(1);
+//				this.setValue(sReturn);
+				
 				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 				sReturn = VectorZZZ.implode(vecAll);
 				
@@ -228,10 +184,21 @@ public class KernelZFormulaIni_VariableZZZ  extends KernelUseObjectZZZ implement
 			return sReturn;
 		}
 
-		@Override
-		public String convert(String sLine) throws ExceptionZZZ {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	
+	@Override
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String convert(String sLine) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }//End class

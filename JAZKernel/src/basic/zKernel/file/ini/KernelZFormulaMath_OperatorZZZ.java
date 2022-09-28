@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMath_OperatorZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	private String sOperator = null;
 		
 	public KernelZFormulaMath_OperatorZZZ() throws ExceptionZZZ{
