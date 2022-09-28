@@ -22,16 +22,16 @@ public class KernelEncryption_CodeZZZ  extends AbstractKernelIniTagZZZ{
 		
 	public KernelEncryption_CodeZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionMathValueNew_(saFlag);
+		KernelEncryptionCodeNew_(saFlag);
 	}
 	
 	public KernelEncryption_CodeZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel,saFlag);
-		KernelExpressionMathValueNew_(saFlag);
+		KernelEncryptionCodeNew_(saFlag);
 	}
 	
 	
-	private boolean KernelExpressionMathValueNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelEncryptionCodeNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 //	 boolean bReturn = false;
 //	 String stemp; boolean btemp; 
 //	 main:{
