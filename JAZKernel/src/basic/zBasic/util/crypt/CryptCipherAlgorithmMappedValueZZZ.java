@@ -7,13 +7,14 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDriverMappedValueZZZ.JdbcDriverClassTypeZZZ;
 
 //#####################################################
 //20220927: Um die Enumeration herum eine Klasse bauen.
 //          Diese Struktur hat den Vorteil, das solche Werte auch in einer Datenbank per Hibernate persistiert werden können.
 //          Verwendet wird solch eine Struktur z.B. in der Defaulttext - Klasse des TileHexMapTHM Projekts
-public class CryptCipherAlgorithmMappedValueZZZ  implements Serializable{
+public class CryptCipherAlgorithmMappedValueZZZ  implements IEnumSetZZZ, Serializable{
 	private static final long serialVersionUID = 1340342888046470974L;
 	
 		//Entsprechend der internen Enumeration
@@ -56,9 +57,9 @@ public class CryptCipherAlgorithmMappedValueZZZ  implements Serializable{
 //Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 //ALIAS("Beschreibung, wird nicht genutzt....","Abkürzung, also das, was im URL String steht. Meist gefolgt von einem  Doppelpunkt, der hinzugerchnet wird, wenn die Abkürzung nicht leer ist.")
 public enum CryptCipherTypeZZZ implements IEnumSetMappedZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-	ROT13("rot13","simple encrytption methode for the characters a-z"),
-	ROT13Numeric("rot13numeric","simple encrytption methode for the characters a-z PLUS 0-9"),
-	ROTNN("rotnn","simple encrytption methode for the characters provided by a character list");
+	ROT13("ROT13","simple encrytption methode for the characters a-z, using a fix number to rotate."),
+	ROTnumeric("ROTnumeric","simple encrytption methode for the characters a-z PLUS 0-9, using a parameter for the number to rotate."),
+	ROTnn("ROTnn","simple encrytption methode for the characters provided by a character list, using a parameter for the number to rotate.");
 	
 private String fullName, abbr;
 
@@ -162,5 +163,35 @@ public String getDescription() {
 }
 //+++++++++++++++++++++++++
 }//End internal Class
+
+@Override
+public String name() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public String getName() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public int getIndex() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public int getPosition() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public EnumSet<?> getEnumSetUsed() {
+	// TODO Auto-generated method stub
+	return null;
+}
 	
 }//End Class

@@ -17,17 +17,17 @@ import basic.zBasic.ReflectCodeZZZ;
  * @param numeric include numeric values
  * @return a list with mutated strings
  */
-public class Rot13NumericZZZ extends AbstractROTZZZ{
-	Rot13NumericZZZ() throws ExceptionZZZ {//Konsturktor auf PAKETEBENE Sichtbar
+public class ROTnumericZZZ extends AbstractROTZZZ{
+	ROTnumericZZZ() throws ExceptionZZZ {//Konsturktor auf PAKETEBENE Sichtbar
 		super();
 		String[] saFlagControl = {"init"};
 		Rot13NumericNew_(-1,saFlagControl);
 	}
-	public Rot13NumericZZZ(int iCryptKey) throws ExceptionZZZ {
+	public ROTnumericZZZ(int iCryptKey) throws ExceptionZZZ {
 		this();
 		Rot13NumericNew_(iCryptKey,null);
 	}
-	public Rot13NumericZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+	public ROTnumericZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
 		this();
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
@@ -59,7 +59,7 @@ public class Rot13NumericZZZ extends AbstractROTZZZ{
 			}						
 		}
 		
-		this.setCryptKey(iCryptKey);
+		this.setCryptNumber(iCryptKey);
 		
 	}//end main:
 		return bReturn;
@@ -69,30 +69,30 @@ public class Rot13NumericZZZ extends AbstractROTZZZ{
 	
 	@Override
 	public String encrypt(String sInput) throws ExceptionZZZ {
-		int iCryptKey = this.getCryptKey();
+		int iCryptKey = this.getCryptNumber();
 		boolean bNumeric = this.getFlag("useNumeric");
-		return Rot13NumericZZZ.encrypt(sInput, iCryptKey, bNumeric);
+		return ROTnumericZZZ.encrypt(sInput, iCryptKey, bNumeric);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
-		int iCryptKey = this.getCryptKey();
+		int iCryptKey = this.getCryptNumber();
 		boolean bNumeric = this.getFlag("useNumeric");
-		return Rot13NumericZZZ.decrypt(sInput, iCryptKey, bNumeric);
+		return ROTnumericZZZ.decrypt(sInput, iCryptKey, bNumeric);
 	}
 	
 	
 	//###########################################
 	public static String encrypt(String input, int iCryptKey, boolean numeric) throws ExceptionZZZ{
-		return Rot13NumericZZZ.crypt(input, iCryptKey, numeric,false);
+		return ROTnumericZZZ.crypt(input, iCryptKey, numeric,false);
 	}
 	public static String decrypt(String input, int iCryptKey, boolean numeric) throws ExceptionZZZ{
-		return Rot13NumericZZZ.crypt(input, iCryptKey, numeric,true);
+		return ROTnumericZZZ.crypt(input, iCryptKey, numeric,true);
 	}
 	private static String crypt(String input, int iCryptKey, boolean numeric,boolean bReverse) throws ExceptionZZZ {
 	   String sReturn = new String();
 	   main:{
 		   if(iCryptKey<0 || iCryptKey >=26) {
-			   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 25", iERROR_PARAMETER_VALUE, Rot13NumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 25", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 			   throw ez;
 		   }
 		   

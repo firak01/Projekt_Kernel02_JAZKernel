@@ -1,4 +1,4 @@
-package basic.zBasic.util.abstractEnum;
+package basic.zBasic.util.crypt;
 
 
 import static java.lang.System.out;
@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractEnum.AbstractEnumSetFactoryZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDriverMappedValueZZZ;
@@ -15,19 +16,19 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 
-public class EnumSetFactoryZZZ extends AbstractEnumSetFactoryZZZ {
-	private static EnumSetFactoryZZZ objEnumFactory = null;  //muss static sein, wg. getInstance()!!!
+public class CryptEnumSetFactoryZZZ extends AbstractEnumSetFactoryZZZ {
+	private static CryptEnumSetFactoryZZZ objEnumFactory = null;  //muss static sein, wg. getInstance()!!!
 	
 	/**Konstruktor ist private, wg. Singleton
 	 * @throws ExceptionZZZ
 	 */
-	private EnumSetFactoryZZZ(){
+	private CryptEnumSetFactoryZZZ(){
 		super();
 	}
 	
-	public static EnumSetFactoryZZZ getInstance(){
+	public static CryptEnumSetFactoryZZZ getInstance(){
 		if(objEnumFactory==null){
-			objEnumFactory = new EnumSetFactoryZZZ();
+			objEnumFactory = new CryptEnumSetFactoryZZZ();
 		}
 		return objEnumFactory;		
 	}
@@ -58,24 +59,24 @@ public class EnumSetFactoryZZZ extends AbstractEnumSetFactoryZZZ {
 			}
 			
 			//Merke: Switch Anweisung mit String ist erst ab Java 1.7 möglich			
-			if (sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ$JdbcDatabaseTypeZZZ")){
+			if (sClassNameEnum.equals("ROT13")){
 			//if (sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDatabaseTypeZZZ")){
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 	        	out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
 	        	//objEnumSetReturn= JdbcDatabaseTypeZZZ.getEnumSet();     
-	        	objEnumSetReturn= JdbcDatabaseMappedValueZZZ.JdbcDatabaseTypeZZZ.getEnumSet();
-			}else if(sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDriverMappedValueZZZ$JdbcDriverClassTypeZZZ")){
+	        	objEnumSetReturn= CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();
+			}else if(sClassNameEnum.equals("ROTnumeric")){
 		 //}else if(sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ")){
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 				out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
 				//objEnumSetReturn= JdbcDriverClassTypeZZZ.getEnumSet();
-				objEnumSetReturn= JdbcDriverMappedValueZZZ.JdbcDriverClassTypeZZZ.getEnumSet();				
+				objEnumSetReturn= CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();			
 				
-		   }else if (sClassNameEnum.equals("basic.zKernel.config.KernelConfigDefaultEntryZZZ$EnumConfigDefaultEntryZZZ")) {//beachte: Innere Klasse, mit $ getrennt.
+		   }else if (sClassNameEnum.equals("ROTnn")) {//beachte: Innere Klasse, mit $ getrennt.
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 //		        	String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
 //					System.out.print(sInfo);	        	
-	        	objEnumSetReturn= KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ.getEnumSet();
+	        	objEnumSetReturn= CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();
 	        	
 	        	
 	        	

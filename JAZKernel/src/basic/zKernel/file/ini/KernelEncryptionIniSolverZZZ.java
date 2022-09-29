@@ -8,8 +8,10 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.KernelCryptAlgorithmFactoryZZZ;
+import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
@@ -75,30 +77,66 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
-					
+				
+				//++++++++++++++++++++++++++++++++++++++++++++
 				//Nun den z:cipher Tag suchen				
 				KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
 				if(objCipher.isExpression(sExpression)){					
 					String sCipher = objCipher.compute(sExpression);	
 					 
 					 //TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
-					 EnumSet<?> objEnumSet = EnumSetFactoryZZZ.getInstance().getEnumSet(sExpression);					
-					 CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();					 
+					 EnumSet<?> objEnumSet = CryptEnumSetFactoryZZZ.getInstance().getEnumSet(sCipher);
+					 //wie verwenden???? EnumSetUtilZZZ.readEnumConstant_IndexValue(, "ROT13");
+					 
+					 EnumSet<?> objEnumSet2 =CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();					 
 					 CryptCipherAlgorithmMappedValueZZZ objEnums = new CryptCipherAlgorithmMappedValueZZZ();
 					 Class enumClass = objEnums.getEnumClassStatic();
 					 //+++++++++++++
 					 
-
 					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
 					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance();
+					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher);
 					 
-					 TODOGOON20220928;//Es müssen nun für weitere Konstruktoren auch weitere Parameter aus dem sExpression Wert ausgelesen werden.
+					 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+					 //+++++ Weitere Parameter suchen und ggfs. dem Algorithmusobjekt hinzufügen.
+					 //das ist einfacher als den konstruktor direkt aufzurfen
+					 //ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher, iKeyNumber, sCharacterPool);
+						
+					 
+					 
+					//TODOGOON20220928;//Es müssen nun für weitere Konstruktoren auch weitere Parameter aus dem sExpression Wert ausgelesen werden.
 					 //iKeyNumber für die "Rotation" der Buchstaben
 					 //sCharacterPool für die "erlaubten" Buchstaben.
 					 //Nachdem diese Werte errechnet worden sind (und ggfs. nicht gefunden wurden) trotdem alle als Parameter übergeben.					 				
-					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher);
-					 //ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher, iKeyNumber, sCharacterPool);
-					 	
+
+					 KernelEncryption_KeyNumberZZZ objKeyNumber = new KernelEncryption_KeyNumberZZZ();
+					 if(objKeyNumber.isExpression(sExpression)){					
+						String sKeyNumber = objKeyNumber.compute(sExpression);
+						if(!StringZZZ.isEmptyTrimmed(sKeyNumber)) {
+							if(StringZZZ.isNumeric(sKeyNumber)) {
+								int iKeyNumber = StringZZZ.toInteger(sKeyNumber);
+								objAlgorithm.setCryptNumber(iKeyNumber);
+							}								
+						}													
+					 }
+					 					
+					 KernelEncryption_CharacterPoolZZZ objCharacterPool = new KernelEncryption_CharacterPoolZZZ();
+					 if(objCharacterPool.isExpression(sExpression)){					
+						 	String sCharacterPool = objCharacterPool.compute(sExpression);
+							if(!StringZZZ.isEmpty(sCharacterPool)) {//Merke: Leerzeichen wäre erlaubt								
+								objAlgorithm.setCharacterPool(sCharacterPool);
+							}																											
+						 }
+					 
+					 String sFlagControl="";
+					 Kernel_FlagControlZZZ objFlagControl = new Kernel_FlagControlZZZ();
+					 if(objFlagControl.isExpression(sExpression)){					
+						String sControl = objFlagControl.compute(sExpression);
+						if(!StringZZZ.isEmptyTrimmed(sControl)) {													
+							objAlgorithm.setFlag(sControl,true);
+						}													
+					 }
+					
 					 KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
 					 if(objValue.isExpression(sExpression)){
 						

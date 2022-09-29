@@ -23,7 +23,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelEncryptionIniSolverZZZTest extends TestCase {	
 	protected final static String sEXPRESSION_ENCRYPTION01_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>nopqr</Z:Code></Z:Encrypted></Z>";
-	
+	protected final static String sEXPRESSION_ENCRYPTION02_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>5</z:KeyNumber><Z:FlagControl>USENUMERIC</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
+	protected final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 	
 	private KernelZZZ objKernel;
 	
@@ -74,12 +75,14 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	/** void, Test: Reading an entry in a section of the ini-file
 	* Lindhauer; 22.04.2006 12:54:32
 	 */
-	public void testCompute(){
-		try {					
+	public void testCompute01(){
+		try {
+			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			
+			
 			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
 			
 			//### Teilberechnungen durchführen
 			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
@@ -90,13 +93,115 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			String sValue = objExpressionSolver.compute(sLineWithExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
-			//Anwenden der ersten Formel
-			//TODO GOON: compute soll also einen String zurückgeben, das wird dann die HashMap.toString sein.
-			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.			
+			//Anwenden der ersten Formel		
 			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
 			sValue = objExpressionSolver.compute(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testCompute02(){
+		try {
+			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT;
+			
+			
+			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+						
+			//### Teilberechnungen durchführen
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+						
+			//### Nun die Gesamtberechnung durchführen
+			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
+		
+			//Anwenden der zweiten Formel		
+			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
+			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testCompute03(){
+		try {
+			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT;
+			
+			
+			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+						
+			//### Teilberechnungen durchführen
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+						
+			//### Nun die Gesamtberechnung durchführen
+			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
+		
+			//Anwenden der zweiten Formel		
+			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
+			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testCompute04(){
+		try {
+			TODOGOON20220929; //Mache eine richtige Entschlüsselung mit AES UND Danach noch 05 mit MD5
+			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION04_DEFAULT;
+			
+			
+			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+						
+			//### Teilberechnungen durchführen
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+						
+			//### Nun die Gesamtberechnung durchführen
+			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
+		
+			//Anwenden der zweiten Formel		
+			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird			
+			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

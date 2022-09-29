@@ -15,30 +15,30 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * https://codereview.stackexchange.com/questions/7241/rot-n-algorithm-in-java
  * 
  */
-public class RotNnZZZ extends AbstractROTZZZ{
+public class ROTnnZZZ extends AbstractROTZZZ{
 	public static String sCHARACTER_POOL_DEFAULT="abcdefghijklmnopqrstuvwxyz";
 	private String sCharacterUsedForRot = null;
 	
-	RotNnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
+	ROTnnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
 		super();
 		String[] saFlagControl = {"init"};
 		RotNnNew_(null,-1,saFlagControl);
 	}
-	public RotNnZZZ(int iCryptKey) throws ExceptionZZZ {
+	public ROTnnZZZ(int iCryptKey) throws ExceptionZZZ {
 		super();
 		RotNnNew_(null,iCryptKey,null);
 	}
-	public RotNnZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+	public ROTnnZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
 		super();
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
 		RotNnNew_(null,iCryptKey,saFlagControl);
 	}
-	public RotNnZZZ(String sCharacterPool, int iCryptKey) throws ExceptionZZZ {
+	public ROTnnZZZ(String sCharacterPool, int iCryptKey) throws ExceptionZZZ {
 		super();
 		RotNnNew_(sCharacterPool,iCryptKey,null);
 	}
-	public RotNnZZZ(String sCharacterPool, int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+	public ROTnnZZZ(String sCharacterPool, int iCryptKey, String sFlagControl) throws ExceptionZZZ {
 		super();
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
@@ -71,7 +71,7 @@ public class RotNnZZZ extends AbstractROTZZZ{
 			
 			
 		}
-		this.setCryptKey(iCryptKey);
+		this.setCryptNumber(iCryptKey);
 		this.setCharacterPool(sCharacterPool);
 		
 	}//end main:
@@ -80,22 +80,22 @@ public class RotNnZZZ extends AbstractROTZZZ{
 	
 	@Override
 	public String encrypt(String sInput) throws ExceptionZZZ {
-		int iCryptKey = this.getCryptKey();
+		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
 		boolean bUseUpperCase = this.getFlag("useUpperCase");
-		return RotNnZZZ.encrypt(sInput, sCharacterPool, bUseUpperCase, iCryptKey);
+		return ROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
-		int iCryptKey = this.getCryptKey();
+		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
 		boolean bUseUpperCase = this.getFlag("useUpperCase");
-		return RotNnZZZ.decrypt(sInput, sCharacterPool, bUseUpperCase, iCryptKey);
+		return ROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase);
 	}
 	
 	public String getCharacterPool() {
 		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
-			return RotNnZZZ.sCHARACTER_POOL_DEFAULT;
+			return ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
 		}else {
 			return this.sCharacterUsedForRot;
 		}
@@ -106,14 +106,14 @@ public class RotNnZZZ extends AbstractROTZZZ{
 	}
 	
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercase, int n) {
+	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase) {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
 			
 			String sCharacterPool;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPool=RotNnZZZ.sCHARACTER_POOL_DEFAULT;
+				sCharacterPool=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
 			}else {
 				sCharacterPool = sCharacterPoolIn;
 			}
@@ -145,16 +145,16 @@ public class RotNnZZZ extends AbstractROTZZZ{
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercase, int n) {
+	public static String decrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase) {
 
 		String sCharacterPool;
 		if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-			sCharacterPool=RotNnZZZ.sCHARACTER_POOL_DEFAULT;
+			sCharacterPool=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
 		}else {
 			sCharacterPool = sCharacterPoolIn;
 		}
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
 		
-		return RotNnZZZ.encrypt(sInput, sCharacterPool, bUseUppercase, n);		
+		return ROTnnZZZ.encrypt(sInput, sCharacterPool, n, bUseUppercase);		
 	}
 }

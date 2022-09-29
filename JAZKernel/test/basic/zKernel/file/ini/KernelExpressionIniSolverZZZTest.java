@@ -14,6 +14,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.crypt.ICryptZZZ;
+import basic.zBasic.util.crypt.ROTnnZZZ;
+import basic.zBasic.util.crypt.ROTnumericZZZ;
 import basic.zBasic.util.crypt.Rot13ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -132,11 +135,22 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			
 			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
-			String sValue = "abcde";
+			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
+			String sFlagNumeric = ICryptZZZ.FLAGZ.USENUMERIC.name();
+			String sFlagUppercase = ICryptZZZ.FLAGZ.USEUPPERCASE.name();
 			String sEncrypted = Rot13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA="+sValue);
 			objStreamFile.println("WertAencrypted=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			
+			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true);
+			objStreamFile.println("WertB="+sValue);
+			objStreamFile.println("WertBencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			
+			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, iKeyNumber, true);
+			objStreamFile.println("WertC="+sValue);
+			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			
 			
 			objFile = new File(sFilePathTotal);		
 			

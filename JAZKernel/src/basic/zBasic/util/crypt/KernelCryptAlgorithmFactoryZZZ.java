@@ -42,10 +42,10 @@ private static KernelCryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  
 		
 		if(sCipher.equalsIgnoreCase("ROT13")){
 			objReturn = new Rot13ZZZ();
-		}else if(sCipher.equalsIgnoreCase("ROT13Numeric")){
-			objReturn = new Rot13NumericZZZ();
-		}else if(sCipher.equalsIgnoreCase("RotNn")) {
-			objReturn = new RotNnZZZ();
+		}else if(sCipher.equalsIgnoreCase("ROTnumeric")){
+			objReturn = new ROTnumericZZZ();
+		}else if(sCipher.equalsIgnoreCase("ROTnn")) {
+			objReturn = new ROTnnZZZ();
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled cipher type '" + sCipher + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 			throw ez;				
