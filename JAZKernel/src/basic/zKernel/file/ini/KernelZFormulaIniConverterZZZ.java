@@ -130,4 +130,34 @@ public class KernelZFormulaIniConverterZZZ extends KernelUseObjectZZZ{
 		}
 		return sReturn;
 	}
+	
+	public static String getAsExpression(String sLineWithExpression)throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
+			IKernelZFormulaIniZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();
+			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
+				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
+				break main;
+			}
+			
+			objExpression = new KernelZFormulaIni_NullZZZ();
+			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
+				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
+				break main;
+			}
+			
+			
+		}
+		return sReturn;
+	}
+	public static String getAsExpression(IKernelZFormulaIniZZZ objExpression, String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(objExpression==null) break main;
+			
+			sReturn = objExpression.computeAsExpression(sLineWithExpression);
+		}
+		return sReturn;
+	}
 }

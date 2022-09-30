@@ -60,6 +60,7 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	
 	public boolean isJsonArray();
 	abstract void isJsonArray(boolean bIsJsonArray);
+
 	
 	//Falls eine Section eine Form des Arrays enthält und dieses in Einzelwerte zerlegt wurde (mit explode)
 	public boolean isExploded();
@@ -70,8 +71,19 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Clonea
 	//Falls eine Section eine Form der HashMap enthält und diese in Einzelwerte zerlegt wurde (mit explode)
 	public String getKey();
 	public void setKey(String sKey);
+
 	
-		
+	//Falls ein Wert einen Verschlüsselungsalgorithmus enthielt und dieser zur Berechnung erfolgreich angewendet wurde
+	public boolean isDecrypted();
+	abstract void isDecrypted(boolean bIsDecrypted);
+	public String getRawDecrypted();
+	abstract void setRawDecrypted(String sRaw);
+	
+	public boolean isRawEncrypted();
+	abstract void isRawEncrpyted(boolean bIsRawEncrypted);
+	public String getRawEncrypted();
+	abstract void setRawEncrypted(String sRaw);
+	
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);
 	

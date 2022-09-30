@@ -9,6 +9,10 @@ import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.crypt.ICryptZZZ;
+import basic.zBasic.util.crypt.ROTnnZZZ;
+import basic.zBasic.util.crypt.ROTnumericZZZ;
+import basic.zBasic.util.crypt.Rot13ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -116,6 +120,27 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objStreamFile.println("[Section for testJsonHashmap]");
 			objStreamFile.println("Map1=<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>");
 									
+			
+			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
+			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
+			String sFlagNumeric = ICryptZZZ.FLAGZ.USENUMERIC.name();
+			String sFlagUppercase = ICryptZZZ.FLAGZ.USEUPPERCASE.name();
+			String sEncrypted = Rot13ZZZ.encryptIt(sValue);
+			objStreamFile.println("[Section for testEncrypted]");
+			objStreamFile.println("WertA="+sValue);
+			objStreamFile.println("WertAencrypted=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			
+			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true);
+			objStreamFile.println("WertB="+sValue);
+			objStreamFile.println("WertBencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			
+			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, iKeyNumber, true);
+			objStreamFile.println("WertC="+sValue);
+			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			
+			
+			
+			
 			objFile = new File(sFilePathTotal);
 							
 			//Kernel + Log - Object dem TestFixture hinzuf�gen. Siehe test.zzzKernel.KernelZZZTest
@@ -286,6 +311,46 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		}
 	}
 	
+	public void testComputeEncryption() {
+		try {
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			
+			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			//objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH.name(),true);
+			
+			//Anwenden der ersten Formel
+			objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
+			String sExpression = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAencrypted").getValue();
+			assertNotNull(sExpression);
+			
+			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAencrypted");
+			boolean bDecrypted = objEntry.isDecrypted();
+			assertFalse(bDecrypted);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
+			
+			boolean bIsRawEncrypted = objEntry.isRawEncrypted();
+			assertFalse(bIsRawEncrypted);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
+			
+			
+			objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), true);			
+			objEntry = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAencrypted");
+			assertNotNull(objEntry);
+			bDecrypted = objEntry.isDecrypted();
+			assertTrue(bDecrypted);//Erst wenn das Flag auf true gesetzt ist, wird es überhaupt behandelt und ggfs. als JSON erkannt.
+			
+			//Prüfe nun, ob der hinterlegte Wert gleich ist.
+			String sValueDecrypted = objEntry.getValue();
+			
+			IKernelConfigSectionEntryZZZ objEntryProof = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertA");
+			String sProof = objEntryProof.getValue();
+			assertEquals(sProof,sValueDecrypted);
+			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
 	public void testComputeJson() {
 		try {
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
@@ -295,7 +360,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH.name(),true);
 			
 			//Anwenden der ersten Formel
-			objFileIniTest.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
 			assertNotNull(sExpression);
 			

@@ -26,9 +26,17 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bExpression = false;
 	private boolean bConverted = false;
 	private boolean bFormula = false;
+	
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
 	private boolean bJsonMap = false;
+	
+	private boolean bRawEncrypted = false;
+	private String sRawEncrypted = null;
+	private boolean bDecrypted = false;
+	private String sRawDecrypted = null;
+	
+	
 	private String sKey = null;
 	
 	private boolean bExploded = false; //Falls es das Ergebnis einer Zerlegung eines Arrays ist
@@ -399,5 +407,52 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void setKey(String sKey) {
 		this.sKey = sKey;
+	}
+
+
+	@Override
+	public boolean isDecrypted() {
+		return this.bDecrypted;
+	}
+
+
+	@Override
+	public void isDecrypted(boolean bDecrypted) {
+		this.bDecrypted = bDecrypted;
+	}
+	
+
+	@Override
+	public String getRawDecrypted() {
+		return this.sRawDecrypted;
+	}
+
+
+	@Override
+	public void setRawDecrypted(String sRaw) {
+		this.sRawDecrypted = sRaw;
+	}
+
+
+	@Override
+	public boolean isRawEncrypted() {
+		return this.bRawEncrypted;
+	}
+
+
+	@Override
+	public void isRawEncrpyted(boolean bRawEncrypted) {
+		this.bRawEncrypted = bRawEncrypted;
+	}
+
+	@Override
+	public String getRawEncrypted() {
+		return this.sRawEncrypted;
+	}
+
+
+	@Override
+	public void setRawEncrypted(String sRaw) {
+		this.sRawEncrypted = sRaw;
 	}
 }

@@ -168,9 +168,22 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 					
 					sReturn = (String) vecAll.get(1);
 					this.setValue(sReturn);
+										
+				}//end main:
+				return sReturn;
+			}	
+	
+	@Override
+	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+				String sReturn = sLineWithExpression;
+				main:{
+					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+					
+					Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 					
 					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-					//sReturn = VectorZZZ.implode(vecAll);
+					sReturn = VectorZZZ.implode(vecAll);
+					this.setValue(sReturn);
 					
 				}//end main:
 				return sReturn;

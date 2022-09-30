@@ -142,10 +142,41 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 		
 		public int compute(String sLineWithExpression, IKernelConfigSectionEntryZZZ objReturn) throws ExceptionZZZ{
 			int iReturn = 0;
+			boolean bAnyEncryption = false;
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
 				if(!bUseExpression) break main;
+				
+				String sLineWithExpressionUsed = sLineWithExpression;
+				
+				boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+				if(bUseEncryption) {
+					KernelEncryptionIniSolverZZZ encryptionDummy = new KernelEncryptionIniSolverZZZ();
+					String[] saFlagZpassed = this.getFlagZ_passable(true, encryptionDummy);
+					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+					
+					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
+					boolean bForFurtherProcessing = true; 
+					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objsReturnValue);
+					if(bAnyEncryption) {
+						objReturn.isRawEncrpyted(true);	
+						objReturn.setRawEncrypted(sLineWithExpressionUsed);
+												
+						String sLineDecrypted = objsReturnValue.get();//Wert zur weiteren Verarbeitung weitergeben
+						if(sLineWithExpressionUsed.equalsIgnoreCase(sLineDecrypted)) {												
+							objReturn.isDecrypted(false);
+						}else {
+							objReturn.isDecrypted(true);
+							objReturn.setRawDecrypted(sLineDecrypted);
+							objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.
+							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
+						}
+						
+						
+					}
+				}
 				
 				boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
 				if(bUseFormula) {
@@ -164,7 +195,7 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
 					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
 					boolean bAnyExpression = false;
-					iReturn = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpression, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
+					iReturn = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
 					if(iReturn>=1){
 						bAnyExpression = true;
 						objReturn.isExpression(true);
@@ -188,10 +219,10 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 							sReturnValue = objsReturnValue.get();
 						}
 						objReturn.setValue(sReturnValue);						 					
-					break main;
+						break main;
 					}
 				}
-				
+												
 				boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name());
 				if(bUseJson) {
 					KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
@@ -203,7 +234,7 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();
 					
 					//TODOGOON; //20210729 Hier nur 1 statische Methode aufrufen, die einen Integerwert zurückliefert, der dann die Befüllung von objReturn steuert.					
-					iReturn = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpression, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);
+					iReturn = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);
 					
 					if(iReturn==5) {
 						objReturn.isJsonArray(true);
@@ -223,6 +254,10 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 														
 				}					
 			}//end main:
+			if(bAnyEncryption) {
+				//Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
+				iReturn = iReturn+10;
+			}
 			return iReturn;
 		}
 	

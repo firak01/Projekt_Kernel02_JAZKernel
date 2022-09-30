@@ -224,6 +224,19 @@ public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IK
 	}
 	
 	@Override
+	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			
+			//Hier einfach eine leere Expression zurückgeben
+			sReturn = "<Z/>";
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
 	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithoutExpression;
 		main:{

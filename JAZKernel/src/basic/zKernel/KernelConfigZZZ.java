@@ -46,9 +46,9 @@ import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
  */
 public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
-	public enum FLAGZ{
-		USEFORMULA, USEFORMULA_MATH;
-	}
+//	public enum FLAGZ{
+//		USEFORMULA, USEFORMULA_MATH;
+//	}
 	
 	private GetOptZZZ objOpt = null;	 
 	public KernelConfigZZZ() throws ExceptionZZZ{

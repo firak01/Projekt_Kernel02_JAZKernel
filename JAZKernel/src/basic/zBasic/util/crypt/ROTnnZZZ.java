@@ -5,6 +5,8 @@ import java.util.Map;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Definiere eine Liste von Zeichen.
@@ -125,11 +127,29 @@ public class ROTnnZZZ extends AbstractROTZZZ{
 				abcABC = sCharacterPool;
 			}
 			
+			
 			int len = abcABC.length();
+			
+			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharcterPool doppelt vorkommt.
+			//+++++++++++ CharacterPool normieren			
+			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
+			for (int i = 0; i < len; i++) {
+				try {
+					listasCharacterPool.addUnique(abcABC.charAt(i));
+				} catch (ExceptionZZZ e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }			
+			//+++++++++++
+			
+			
+			len = listasCharacterPool.size();
 
 		    Map<Character, Character> map = new HashMap<Character, Character>();
 		    for (int i = 0; i < len; i++) {
-		        map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
+		        //map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
+		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));
 		    }
 	
 		    StringBuilder sb = new StringBuilder();

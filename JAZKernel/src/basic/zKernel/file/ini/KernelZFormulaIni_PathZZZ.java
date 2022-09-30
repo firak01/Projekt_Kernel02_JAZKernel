@@ -214,6 +214,21 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 			
 			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 			
+			//nun nur den Wert an Index 1 zurückgeben
+			sReturn = (String) vecAll.get(1);
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			
 			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 			sReturn = VectorZZZ.implode(vecAll);
 			

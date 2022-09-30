@@ -126,6 +126,17 @@ public class KernelExpressionIniConverterZZZTest extends TestCase {
 			String sTestNotEmpty = KernelZFormulaIniConverterZZZ.getAsString("BLABLA");
 			assertTrue(sTestNotEmpty.equals("BLABLA"));
 			
+			//#######################################
+			String sTestEmptyExpression = KernelZFormulaIniConverterZZZ.getAsExpression("<z:Empty/>");
+			assertTrue(sTestEmptyExpression.equalsIgnoreCase("<Z/>"));
+			
+			String sTestNotEmptyString = KernelZFormulaIniConverterZZZ.getAsExpression("BLABLA");
+			assertTrue(sTestNotEmptyString.equalsIgnoreCase("BLABLA"));
+			
+			String sTestNotEmptyExpression = KernelZFormulaIniConverterZZZ.getAsExpression("<z>BLABLA</z>");
+			assertTrue(sTestNotEmptyExpression.equalsIgnoreCase("<z>BLABLA</z>"));
+			
+			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

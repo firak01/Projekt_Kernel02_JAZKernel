@@ -5982,7 +5982,7 @@ MeinTestParameter=blablaErgebnis
 				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
 				FileIniZZZ exDummy = new FileIniZZZ();
 				//String[] saFlagRelevantFileIniZZZ = exDummy.getFlagZ();//Aber darin sind ja auch DEBUG, INIT, etc.
-				String[] saFlagRelevantFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP"};
+				String[] saFlagRelevantFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP", "USEENCRYPTION"};
 				String[] saFlagZpassedFalse = this.getFlagZ_passable(false, true, exDummy);	
 				
 				String[] saFlagFileIniZZZ = StringArrayZZZ.remove(saFlagRelevantFileIniZZZ, saFlagZpassedFalse, true);				

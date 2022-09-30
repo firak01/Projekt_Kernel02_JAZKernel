@@ -469,7 +469,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				
 				KernelExpressionIniSolverZZZ objExpressionSolver = new KernelExpressionIniSolverZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
 				int iReturnValue = objExpressionSolver.compute(sReturnRaw,objReturn);	
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");								
 			}
 		}//end main:
 		return objReturn;

@@ -111,7 +111,7 @@ public class KernelJsonArrayIniSolverZZZ extends KernelUseObjectZZZ implements I
 				String sExpressionOld = sExpression;
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.compute(sExpression);	
+						sExpression = objIniPath.computeAsExpression(sExpression);	
 						if(StringZZZ.isEmpty(sExpression)) {
 							sExpression = sExpressionOld;
 							break;

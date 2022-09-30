@@ -14,7 +14,9 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
+import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -50,6 +52,7 @@ public class KernelConfigEntryUtilZZZ {
 	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved, ReferenceZZZ<String>objsReturnValueConverted, ReferenceZZZ<String>objsReturnValue) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
+
 			String sRawExpressionSolved = null;
 			boolean bExpressionSolved = KernelConfigEntryUtilZZZ.getValueExpressionSolved(objFileIni, sRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved);							
 			if(bExpressionSolved) {
@@ -77,28 +80,25 @@ public class KernelConfigEntryUtilZZZ {
 	public static boolean getValueExpressionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			if(bUseFormula){
-				String sValueExpressionSolved=null;
-				boolean bAnyFormula = false;
-				while(KernelZFormulaIniSolverZZZ.isExpression(sRaw)){//Schrittweise die Formel auflösen.
-					bAnyFormula = true;
-										
-					KernelZFormulaIniSolverZZZ ex = new KernelZFormulaIniSolverZZZ(objFileIni, hmVariable, saFlagZpassed);
-					String stemp = ex.compute(sRaw);
-					if(!StringZZZ.equals(stemp,sRaw)){
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + stemp +"'");
-					}					
-					sRaw=stemp;//Sonst Endlosschleife.
-				}
-				sValueExpressionSolved = sRaw;
-				if(bAnyFormula){
-					objsReturnValueExpressionSolved.set(sValueExpressionSolved);	
-					bReturn = true;
-				}												
-			}else{
-				//Fall: Keine Formel soll interpretiert werden.
-				//unverändert
-			}		
+			if(!bUseFormula) break main;
+			
+			String sValueExpressionSolved=null;
+			boolean bAnyFormula = false;
+			while(KernelZFormulaIniSolverZZZ.isExpression(sRaw)){//Schrittweise die Formel auflösen.
+				bAnyFormula = true;
+									
+				KernelZFormulaIniSolverZZZ ex = new KernelZFormulaIniSolverZZZ(objFileIni, hmVariable, saFlagZpassed);
+				String stemp = ex.compute(sRaw);
+				if(!StringZZZ.equals(stemp,sRaw)){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + stemp +"'");
+				}					
+				sRaw=stemp;//Sonst Endlosschleife.
+			}
+			sValueExpressionSolved = sRaw;
+			if(bAnyFormula){
+				objsReturnValueExpressionSolved.set(sValueExpressionSolved);	
+				bReturn = true;
+			}															
 		}//end main:
 		return bReturn;
 	}
@@ -106,27 +106,72 @@ public class KernelConfigEntryUtilZZZ {
 	public static boolean getValueConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueConverted) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			if(bUseFormula){
+			if(!bUseFormula) break main;
 							
-				//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
-				//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
-				boolean bAnyExpression = false;				
-				String sValueConverted = KernelZFormulaIniConverterZZZ.getAsString(sRaw);
-				if(!StringZZZ.equals(sRaw,sValueConverted)){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sRaw + "' nach '" + sValueConverted +"'");
-					bAnyExpression = true;						
-				}					
-				if(bAnyExpression){
-					objsReturnValueConverted.set(sValueConverted);					
-					bReturn = true;
-				}	
-			}else{
-				//Fall: Keine Formel soll interpretiert werden.
-				//unverändert
-			}		
+			//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
+			//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
+			boolean bAnyExpression = false;				
+			String sValueConverted = KernelZFormulaIniConverterZZZ.getAsString(sRaw);
+			if(!StringZZZ.equals(sRaw,sValueConverted)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sRaw + "' nach '" + sValueConverted +"'");
+				bAnyExpression = true;						
+			}					
+			if(bAnyExpression){
+				objsReturnValueConverted.set(sValueConverted);					
+				bReturn = true;
+			}				
 		}//end main:
 		return bReturn;
 	}
+	
+	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
+	 *  0 = nix
+
+		
+	 *  usw. denkbar fortsetzbar
+	 *  
+	 * 
+	 */
+	 public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueEncryptionSolved) throws ExceptionZZZ{
+		 boolean bReturn = false;
+		 main:{			 			 								
+	 		if(!bUseEncryption)break main;
+	 		
+	 		String sValueEncryptionSolved=null;
+			boolean bAnyFormula = false;
+			
+			KernelEncryptionIniSolverZZZ objDummy = new KernelEncryptionIniSolverZZZ();			
+			while(objDummy.isExpression(sRaw)){//Schrittweise die Formel auflösen.
+				bAnyFormula = true;
+									
+				IKernelZZZ objKernel = null;
+				if(objFileIni!=null) {
+					objKernel = objFileIni.getKernelObject();
+				}
+				KernelEncryptionIniSolverZZZ ex = new KernelEncryptionIniSolverZZZ(objKernel, saFlagZpassed);
+				if(!bForFurtherProcessing) {
+					String stemp = ex.compute(sRaw);
+					if(!StringZZZ.equals(stemp,sRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall a) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
+					}					
+					sRaw=stemp;//Sonst Endlosschleife.
+				}else {
+					String stemp = ex.computeAsExpression(sRaw);
+					if(!StringZZZ.equals(stemp,sRaw)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall b) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
+					}					
+					sRaw=stemp;//Sonst Endlosschleife.
+				}
+			}
+			sValueEncryptionSolved = sRaw;
+			if(bAnyFormula){
+				objsReturnValueEncryptionSolved.set(sValueEncryptionSolved);	
+				bReturn = true;
+			}				
+								 		 			
+		 }//end main:
+		 return bReturn;
+	 }
 	
 	
 	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:

@@ -190,6 +190,22 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 		}//end main:
 		return sReturn;
 	}
+	
+	@Override
+	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{			
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+			if(bUseEncryption) {
+				sReturn = super.computeAsExpression(sLineWithExpression);
+			}else {
+				sReturn = sLineWithExpression;
+			}									
+		}//end main:
+		return sReturn;
+	}
+	
+	
 
 	@Override
 	public String convert(String sLine) throws ExceptionZZZ {

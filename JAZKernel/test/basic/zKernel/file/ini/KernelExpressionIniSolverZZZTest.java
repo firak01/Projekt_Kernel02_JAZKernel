@@ -181,7 +181,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
 			
 			String[] saFlag = objExpressionSolver.getFlagZ();
-			assertTrue(saFlag.length==8);
+			assertTrue(saFlag.length==9);
 			
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -191,6 +191,9 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			bFlagAvailable = objExpressionSolver.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -360,51 +363,27 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	public void testComputeEncrypted(){
 
 		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			boolean bFlagAvailable = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testEncryption", "WertA").getValue();
-			assertEquals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT,sExpression);
+			String sExpression = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAencrypted").getValue();
+			assertEquals(KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT,sExpression);
 			
 			//Berechne die erste Formel, DIRECT
 			IKernelConfigSectionEntryZZZ objSectionEntry = new KernelConfigSectionEntryZZZ();
-			bFlagAvailable = objExpressionSolver.setFlag("useexpression", true);
+			bFlagAvailable = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionSolver.setFlag("usejson", true);
+			bFlagAvailable = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), true);
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionSolver.setFlag("usejson_map", true);
-			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
-			
+						
 			int iReturn = objExpressionSolver.compute(sExpression, objSectionEntry);
-			assertTrue(iReturn==6);
-			
-			HashMap<String,String> hm = objSectionEntry.getValueHashMap();
-			assertNotNull(hm);
-			String sValue01 = hm.get("UIText01");
-			assertTrue(sValue01.equals("TESTWERT2DO2JSON01"));			
-			assertFalse(objSectionEntry.getValue().equals(""));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
-			
-			
-			//NUN INDIREKT IM INI-OBJEKT TESTEN
-			bFlagAvailable = objFileIniTest.setFlag("useexpression", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
-			
-			IKernelConfigSectionEntryZZZ objFileEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
-			assertNotNull(objFileEntry);
-			assertTrue(objFileEntry.isJson());
-			assertTrue(objFileEntry.isJsonMap());
-			
-			HashMap<String,String> hmFile = objFileEntry.getValueHashMap();
-			assertNotNull(hmFile);
-			String sValueFile01 = hmFile.get("UIText01");
-			assertTrue(sValueFile01.equals("TESTWERT2DO2JSON01"));
-															
-			
+			assertTrue(iReturn==10); //10 für die Encryption
+									
+			bFlagAvailable = objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);				
+			iReturn = objExpressionSolver.compute(sExpression, objSectionEntry);
+			assertTrue(iReturn==11); //10 für die Encryption  PLUS 1 für die Formelauswertung als String
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		

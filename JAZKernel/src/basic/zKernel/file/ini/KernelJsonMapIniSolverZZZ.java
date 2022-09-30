@@ -106,7 +106,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.compute(sExpression);			
+						sExpression = objIniPath.computeAsExpression(sExpression);			
 				} //end while
 									
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
