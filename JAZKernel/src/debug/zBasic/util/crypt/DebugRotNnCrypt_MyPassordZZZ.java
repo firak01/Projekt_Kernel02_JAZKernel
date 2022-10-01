@@ -1,5 +1,7 @@
 package debug.zBasic.util.crypt;
 
+import java.util.Scanner;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
@@ -7,33 +9,52 @@ import basic.zBasic.util.crypt.ROTnumericZZZ;
 import basic.zBasic.util.crypt.Rot13ZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 
+/** Rotate the input string.
+ *   ... Then rotate the rotated string.
+ * @author Fritz Lindhauer, 01.10.2022, 11:12:27
+ * 
+ */
 public class DebugRotNnCrypt_MyPassordZZZ {
 
 	public static void main(String[] args) {
 		//Use this allowed characters
-		String sCharacterPool = " abcdefghijklmnopqrstuvwxyz1234567890!";
+		String sCharacterPoolDefault = " abcdefghijklmnopqrstuvwxyz1234567890!";
 		
-		// Rotate the input string.
-        // ... Then rotate the rotated string.
 		
-		TODOGOON20220930;//Consoleneingabe zur Verfügung stellen
-        String input = "xxxxxxx"; 
-        String rotNn = ROTnnZZZ.encrypt(input,sCharacterPool,5, true);
-        String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,5, true);
-
-        System.out.println(input);
-        System.out.println(rotNn);
-        System.out.println(roundTrip);
-        System.out.println("###################");
+		
+        String inputDefault = "abcef";
+        String input = null;
         
+        System.out.println("Verschlüsselung eines Kennworts mit ROTnn");
+        System.out.println("Geben Sie als Key eine Zahl n ein ( 0 <= n ): ");        
+        Scanner objScanner = new Scanner(System.in);
+        int iKey = objScanner.nextInt();
+        
+        TODOGOON20221001; KernelConsoleZZZ - Klasse, über die in einer Schleife immer wieder das gemacht wird, bis zum Abbruch.
+        //					KernelScannerZZZ - Klasse, über die dann auch ja/nein Eingaben gemacht werden können.
+        //                  und Eingabevalidierungen
+        //                  und Abbruchbedingungen....
+        //                  und Eingabe"hilfen"
+        
+        //TODOGOON20221001; StringZZZ Funktion, nur 1x Zeichen im String
+        
+        String sCharacterPool = sCharacterPoolDefault;
+        System.out.println("Merke: Das Kennwort darf nur folgende Zeichen beinhalten: '" + sCharacterPool + "'");
+        
+        
+        System.out.println("Geben Sie das zu verschlüsselnde Kennwort ein: ");
+        input = objScanner.next();
+                               
         try {        	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, 5, ICryptZZZ.FLAGZ.USEUPPERCASE.name());
-			rotNn = objCrypt.encrypt(input);
-			roundTrip = objCrypt.decrypt(rotNn);
+        	System.out.println("###################");
+        	
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKey, ICryptZZZ.FLAGZ.USEUPPERCASE.name());
+			String rotNn = objCrypt.encrypt(input);
+			String roundTrip = objCrypt.decrypt(rotNn);
 			
-			System.out.println(input);
-		    System.out.println(rotNn);
-	        System.out.println(roundTrip);
+			System.out.println("Eingabe:\t" + input);
+		    System.out.println("Versclüsselt:\t"+rotNn);
+	        System.out.println("Entschlüsselt:\t"+roundTrip);
 	        
 	        System.out.println("#####################");
 			
