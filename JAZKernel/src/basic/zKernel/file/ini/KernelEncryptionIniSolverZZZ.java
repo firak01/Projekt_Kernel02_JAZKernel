@@ -94,8 +94,8 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 					 //+++++++++++++
 					 
 					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
-					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance();
-					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmTypeByCipher(objKernel, sCipher);
+					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance(objKernel);					 
+					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmType(sCipher);
 					 
 					 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					 //+++++ Weitere Parameter suchen und ggfs. dem Algorithmusobjekt hinzufügen.

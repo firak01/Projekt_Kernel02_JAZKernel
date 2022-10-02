@@ -8,7 +8,13 @@ import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 
-public class KernelCryptAlgorithmFactoryZZZ extends KernelUseObjectZZZ{
+/** Idee: Die Kernel Version wird dann später ganze Konfigurationsdateien verschlüsseln, oder so....
+ *  
+ * 
+ * @author Fritz Lindhauer, 02.10.2022, 08:50:03
+ * 
+ */
+public class KernelCryptAlgorithmFactoryZZZ extends KernelUseObjectZZZ implements ICryptUserZZZ{
 
 private static KernelCryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss static sein, wg. getInstance()!!!
 	
@@ -23,37 +29,24 @@ private static KernelCryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  
 		super();
 	}
 	
-	public static KernelCryptAlgorithmFactoryZZZ getInstance(){
+	public static KernelCryptAlgorithmFactoryZZZ getInstance() throws ExceptionZZZ{
 		if(objCryptAlgorithmFactory==null){
 			objCryptAlgorithmFactory = new KernelCryptAlgorithmFactoryZZZ();
 		}
 		return objCryptAlgorithmFactory;		
 	}
-	
-	public static ICryptZZZ createAlgorithmTypeByCipher(IKernelZZZ objKernel, String sCipher) throws ExceptionZZZ{
-		ICryptZZZ objReturn = null;
-		main:{			
-			check:{
-					if(StringZZZ.isEmpty(sCipher)){
-						ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING+"Cipher", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
-						throw ez;					
-					}
-			}//end check
-		
-		if(sCipher.equalsIgnoreCase("ROT13")){
-			objReturn = new Rot13ZZZ();
-		}else if(sCipher.equalsIgnoreCase("ROTnumeric")){
-			objReturn = new ROTnumericZZZ();
-		}else if(sCipher.equalsIgnoreCase("ROTnn")) {
-			objReturn = new ROTnnZZZ();
-		}else{
-			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled cipher type '" + sCipher + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
-			throw ez;				
+	public static KernelCryptAlgorithmFactoryZZZ getInstance(IKernelZZZ objKernel) throws ExceptionZZZ{
+		if(objCryptAlgorithmFactory==null){
+			objCryptAlgorithmFactory = new KernelCryptAlgorithmFactoryZZZ(objKernel);
 		}
-		
-		}//end main
-		return objReturn;
+		return objCryptAlgorithmFactory;		
 	}
+	
+	@Override
+	public ICryptZZZ createAlgorithmType(String sCipher) throws ExceptionZZZ {	
+		return CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(sCipher);
+	}
+	
 	
 
 	

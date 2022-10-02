@@ -31,7 +31,7 @@ public class DebugRotNnCrypt_MyPassordZZZ {
         int iKey = objScanner.nextInt();
         
         TODOGOON20221001; KernelConsoleZZZ - Klasse, über die in einer Schleife immer wieder das gemacht wird, bis zum Abbruch.
-        //					KernelScannerZZZ - Klasse, über die dann auch ja/nein Eingaben gemacht werden können.
+        //					ScannerExtendedZZZ - Klasse, über die dann auch ja/nein Eingaben gemacht werden können.
         //                  und Eingabevalidierungen
         //                  und Abbruchbedingungen....
         //                  und Eingabe"hilfen"
