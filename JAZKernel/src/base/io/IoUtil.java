@@ -60,9 +60,22 @@ public class IoUtil {                      // zaehlt die Buchstaben
        else 
          System.out.print(".");
   }  
+  static public void printCharWithPosition(byte zeichen, String sSeparator) { 
+	     int z=(int)zeichen;
+	     if (z<0) z+=256;
+	     if (z==10) System.out.println();
+	     else
+	       if (((z>31)&&(z<127)) || ((z>160)&&(z<256) ))       
+	         System.out.print((char)(z) + ": "+z+sSeparator);
+	       else 
+	         System.out.print(".");
+	  }  
   static public void printChar(int zeichen) {  // Unicodezeichen
     printChar((byte)zeichen);
   }  
+  static public void printCharWithPosition(int zeichen, String sSeparator) {  // Unicodezeichen
+    printCharWithPosition((byte)zeichen, sSeparator);
+  } 
   static int[] Unicode(byte[] ByteFeld) {
     int[] dummy=new int[ByteFeld.length];
     for (int i=0; i<dummy.length; i++) 

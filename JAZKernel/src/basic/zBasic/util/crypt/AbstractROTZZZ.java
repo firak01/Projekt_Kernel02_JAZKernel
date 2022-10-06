@@ -14,6 +14,10 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements ICryptZZZ{
 		super();
 	}
 	
+	public AbstractROTZZZ(String sFlagControl) throws ExceptionZZZ {
+		super(sFlagControl);
+	}
+	
 	public void setCryptNumber(int iCryptKey) {
 		this.iCryptKey = iCryptKey;
 	}

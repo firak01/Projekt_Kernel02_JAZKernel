@@ -8,7 +8,8 @@ public class DebugRot13ZZZ {
 	public static void main(String[] args) {
 		// Rotate the input string.
         // ... Then rotate the rotated string.
-        String input = "Do you have any cat pictures?";
+        //String input = "Do you have any cat pictures?";
+		String input = "kleinbuchstaben";
         String rot13 = ROT13ZZZ.encryptIt(input);
         String roundTrip = ROT13ZZZ.decryptIt(rot13);
 

@@ -50,8 +50,11 @@ private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss
 			objReturn = new ROT13ZZZ();
 		}else if(sCipher.equalsIgnoreCase("ROTnumeric")){
 			objReturn = new ROTnumericZZZ();
+		}else if(sCipher.equalsIgnoreCase("ROTascii")) {
+			objReturn = new ROTasciiZZZ();
 		}else if(sCipher.equalsIgnoreCase("ROTnn")) {
 			objReturn = new ROTnnZZZ();
+		
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled cipher type '" + sCipher + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 			throw ez;				

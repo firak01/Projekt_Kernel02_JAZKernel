@@ -11,41 +11,37 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Definiere eine Liste von Zeichen.
  * Diese wird dann (auch als Großbuchstaben) durch das ROT (also Zeichenverschiebung) verschlüsselt.
- * 
- * Da dies nur etwas besser ist als nur den ASCII Raum gesammt zu verwenden,
- * erbt diese Klasse von ROTasciiZZZ.
- * Der grundsätzliche Mechanismus bleibt gleich.
- * 
  * @author Fritz Lindhauer, 25.09.2022, 08:10:43
  * 
  * Anregung von:  
  * https://codereview.stackexchange.com/questions/7241/rot-n-algorithm-in-java
  * 
  */
-public class ROTnnZZZ extends ROTasciiZZZ{
+public class ROTnnZZZ2 extends AbstractROTZZZ{
 	public static String sCHARACTER_POOL_DEFAULT="abcdefghijklmnopqrstuvwxyz";
+	private String sCharacterUsedForRot = null;
 	
-	ROTnnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
+	ROTnnZZZ2() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
 		super();
 		String[] saFlagControl = {"init"};
 		RotNnNew_(null,-1,saFlagControl);
 	}
-	public ROTnnZZZ(int iCryptKey) throws ExceptionZZZ {
-		super(null);
+	public ROTnnZZZ2(int iCryptKey) throws ExceptionZZZ {
+		super();
 		RotNnNew_(null,iCryptKey,null);
 	}
-	public ROTnnZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
-		super(null);
+	public ROTnnZZZ2(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+		super();
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
 		RotNnNew_(null,iCryptKey,saFlagControl);
 	}
-	public ROTnnZZZ(String sCharacterPool, int iCryptKey) throws ExceptionZZZ {
-		super(null);
+	public ROTnnZZZ2(String sCharacterPool, int iCryptKey) throws ExceptionZZZ {
+		super();
 		RotNnNew_(sCharacterPool,iCryptKey,null);
 	}
-	public ROTnnZZZ(String sCharacterPool, int iCryptKey, String sFlagControl) throws ExceptionZZZ {
-		super(sFlagControl);
+	public ROTnnZZZ2(String sCharacterPool, int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+		super();
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
 		RotNnNew_(sCharacterPool,iCryptKey,saFlagControl);
@@ -89,26 +85,28 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
 		boolean bUseUpperCase = this.getFlag("useUpperCase");
-		return ROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase);
+		return ROTnnZZZ2.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
 		boolean bUseUpperCase = this.getFlag("useUpperCase");
-		return ROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase);
+		return ROTnnZZZ2.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase);
 	}
 	
 	public String getCharacterPool() {
 		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
-			this.sCharacterUsedForRot =  ROTnnZZZ.getCharacterPoolDefault();
+			return ROTnnZZZ2.sCHARACTER_POOL_DEFAULT;
+		}else {
+			return this.sCharacterUsedForRot;
 		}
-		return this.sCharacterUsedForRot;		
 	}
 	
-	public static String getCharacterPoolDefault() {
-		return ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+	public void setCharacterPool(String sCharacterPool) {
+		this.sCharacterUsedForRot = sCharacterPool;
 	}
+	
 	
 	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase) {
 		String sReturn = sInput;
@@ -117,7 +115,7 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 			
 			String sCharacterPool;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPool=ROTnnZZZ.getCharacterPoolDefault();
+				sCharacterPool=ROTnnZZZ2.sCHARACTER_POOL_DEFAULT;
 			}else {
 				sCharacterPool = sCharacterPoolIn;
 			}
@@ -129,42 +127,40 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 				abcABC = sCharacterPool;
 			}
 			
-			sReturn = ROTasciiZZZ.encrypt(sInput, abcABC, n);
 			
-//			
-//			int len = abcABC.length();
-//			
-//			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharcterPool doppelt vorkommt.
-//			//+++++++++++ CharacterPool normieren			
-//			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
-//			for (int i = 0; i < len; i++) {
-//				try {
-//					listasCharacterPool.addUnique(abcABC.charAt(i));
-//				} catch (ExceptionZZZ e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//		    }			
-//			//+++++++++++
-//			
-//			
-//			len = listasCharacterPool.size();
-//
-//		    Map<Character, Character> map = new HashMap<Character, Character>();
-//		    for (int i = 0; i < len; i++) {
-//		        //map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
-//		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));
-//		    }
-//	
-//		    StringBuilder sb = new StringBuilder();
-//		    for(int i = 0; i < sInput.length(); i++) {
-//		        Character ch = map.get(sInput.charAt(i));
-//		        if (ch == null) {
-//		            throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "'");
-//		        }
-//		        sb.append(ch);
-//		    }
-//		    sReturn =  sb.toString();
+			int len = abcABC.length();
+			
+			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharcterPool doppelt vorkommt.
+			//+++++++++++ CharacterPool normieren			
+			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
+			for (int i = 0; i < len; i++) {
+				try {
+					listasCharacterPool.addUnique(abcABC.charAt(i));
+				} catch (ExceptionZZZ e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }			
+			//+++++++++++
+			
+			
+			len = listasCharacterPool.size();
+
+		    Map<Character, Character> map = new HashMap<Character, Character>();
+		    for (int i = 0; i < len; i++) {
+		        //map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
+		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));
+		    }
+	
+		    StringBuilder sb = new StringBuilder();
+		    for(int i = 0; i < sInput.length(); i++) {
+		        Character ch = map.get(sInput.charAt(i));
+		        if (ch == null) {
+		            throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "'");
+		        }
+		        sb.append(ch);
+		    }
+		    sReturn =  sb.toString();
 		}//end main;
 		return sReturn;
     }
@@ -173,12 +169,12 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 
 		String sCharacterPool;
 		if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-			sCharacterPool=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+			sCharacterPool=ROTnnZZZ2.sCHARACTER_POOL_DEFAULT;
 		}else {
 			sCharacterPool = sCharacterPoolIn;
 		}
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
 		
-		return ROTnnZZZ.encrypt(sInput, sCharacterPool, n, bUseUppercase);		
+		return ROTnnZZZ2.encrypt(sInput, sCharacterPool, n, bUseUppercase);		
 	}
 }

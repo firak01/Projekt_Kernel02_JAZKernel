@@ -5,20 +5,20 @@ import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 import basic.zBasic.util.crypt.ROT13ZZZ;
+import basic.zBasic.util.crypt.ROTasciiZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 
-public class DebugRotNnZZZ {
+public class DebugRotAsciiZZZ {
 
 	public static void main(String[] args) {
-		//Use this allowed characters
-		String sCharacterPool = " abcdefghijklmnopqrstuvwxyz?";
-		int iKeyLength=5;
+		//Use this allowed characters		
+		int iKeyLength=3;
 		
 		// Rotate the input string.
         // ... Then rotate the rotated string.
         String input = "Do you have any cat pictures?";
-        String rotNn = ROTnnZZZ.encrypt(input,sCharacterPool,iKeyLength, true);
-        String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,iKeyLength, true);
+        String rotNn = ROTasciiZZZ.encrypt(input,iKeyLength);
+        String roundTrip = ROTasciiZZZ.decrypt(rotNn,iKeyLength);
 
         System.out.println(input);
         System.out.println(rotNn);
@@ -26,7 +26,7 @@ public class DebugRotNnZZZ {
         System.out.println("###################");
         
         try {        	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, ICryptZZZ.FLAGZ.USEUPPERCASE.name());
+        	ROTasciiZZZ objCrypt = new ROTasciiZZZ(iKeyLength);
 			rotNn = objCrypt.encrypt(input);
 			roundTrip = objCrypt.decrypt(rotNn);
 			
