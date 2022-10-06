@@ -7,7 +7,7 @@ import basic.zBasic.util.crypt.ROTnumericZZZ;
 import basic.zBasic.util.crypt.Rot13ZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 
-public class DebugRotNnCryptZZZ {
+public class DebugRotNnZZZ {
 
 	public static void main(String[] args) {
 		//Use this allowed characters

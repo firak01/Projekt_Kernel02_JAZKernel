@@ -3,7 +3,7 @@ package debug.zBasic.util.crypt;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.Rot13ZZZ;
 
-public class DebugRot13CryptZZZ {
+public class DebugRot13ZZZ {
 
 	public static void main(String[] args) {
 		// Rotate the input string.

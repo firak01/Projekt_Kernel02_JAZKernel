@@ -14,7 +14,7 @@ import basic.zBasic.util.crypt.ROTnumericZZZ;
  * @author Fritz Lindhauer, 01.10.2022, 11:12:27
  * 
  */
-public class DebugRotNnCrypt_MyPassordZZZ {
+public class DebugRotNn_MyPassordZZZ {
 
 	public static void main(String[] args) {
 		//Use this allowed characters

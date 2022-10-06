@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 import basic.zBasic.util.crypt.Rot13ZZZ;
 
-public class DebugRot13NumericCryptZZZ {
+public class DebugRot13NumericZZZ {
 
 	public static void main(String[] args) {
 		// Rotate the input string.
