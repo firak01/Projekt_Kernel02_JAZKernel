@@ -47,7 +47,7 @@ private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss
 			}//end check
 		
 		if(sCipher.equalsIgnoreCase("ROT13")){
-			objReturn = new Rot13ZZZ();
+			objReturn = new ROT13ZZZ();
 		}else if(sCipher.equalsIgnoreCase("ROTnumeric")){
 			objReturn = new ROTnumericZZZ();
 		}else if(sCipher.equalsIgnoreCase("ROTnn")) {

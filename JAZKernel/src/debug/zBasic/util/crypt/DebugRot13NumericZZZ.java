@@ -6,7 +6,7 @@ import java.util.List;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
-import basic.zBasic.util.crypt.Rot13ZZZ;
+import basic.zBasic.util.crypt.ROT13ZZZ;
 
 public class DebugRot13NumericZZZ {
 

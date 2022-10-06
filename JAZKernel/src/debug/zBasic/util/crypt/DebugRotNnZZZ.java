@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
-import basic.zBasic.util.crypt.Rot13ZZZ;
+import basic.zBasic.util.crypt.ROT13ZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 
 public class DebugRotNnZZZ {

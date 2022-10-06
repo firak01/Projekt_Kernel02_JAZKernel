@@ -1,7 +1,7 @@
 package debug.zBasic.util.crypt;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.Rot13ZZZ;
+import basic.zBasic.util.crypt.ROT13ZZZ;
 
 public class DebugRot13ZZZ {
 
@@ -9,8 +9,8 @@ public class DebugRot13ZZZ {
 		// Rotate the input string.
         // ... Then rotate the rotated string.
         String input = "Do you have any cat pictures?";
-        String rot13 = Rot13ZZZ.encryptIt(input);
-        String roundTrip = Rot13ZZZ.decryptIt(rot13);
+        String rot13 = ROT13ZZZ.encryptIt(input);
+        String roundTrip = ROT13ZZZ.decryptIt(rot13);
 
         System.out.println(input);
         System.out.println(rot13);
@@ -19,7 +19,7 @@ public class DebugRot13ZZZ {
         System.out.println("#####################");
         
         try {
-			Rot13ZZZ objCrypt = new Rot13ZZZ();
+			ROT13ZZZ objCrypt = new ROT13ZZZ();
 			rot13 = objCrypt.encrypt(input);
 			roundTrip = objCrypt.decrypt(rot13);
 			

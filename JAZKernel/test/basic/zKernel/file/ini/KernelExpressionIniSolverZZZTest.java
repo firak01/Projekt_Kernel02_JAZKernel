@@ -17,7 +17,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
-import basic.zBasic.util.crypt.Rot13ZZZ;
+import basic.zBasic.util.crypt.ROT13ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -138,7 +138,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
 			String sFlagNumeric = ICryptZZZ.FLAGZ.USENUMERIC.name();
 			String sFlagUppercase = ICryptZZZ.FLAGZ.USEUPPERCASE.name();
-			String sEncrypted = Rot13ZZZ.encryptIt(sValue);
+			String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA="+sValue);
 			objStreamFile.println("WertAencrypted=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");

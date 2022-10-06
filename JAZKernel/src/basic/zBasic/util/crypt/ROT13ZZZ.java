@@ -3,8 +3,8 @@ package basic.zBasic.util.crypt;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class Rot13ZZZ extends AbstractROTZZZ{
-	public Rot13ZZZ() throws ExceptionZZZ {
+public class ROT13ZZZ extends AbstractROTZZZ{
+	public ROT13ZZZ() throws ExceptionZZZ {
 		super();		
 		Rot13New_();
 	}
@@ -19,19 +19,19 @@ public class Rot13ZZZ extends AbstractROTZZZ{
 	
 	@Override
 	public String encrypt(String sInput) throws ExceptionZZZ {
-		return Rot13ZZZ.encryptIt(sInput);
+		return ROT13ZZZ.encryptIt(sInput);
 	}
 
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
-		return Rot13ZZZ.decryptIt(sInput);
+		return ROT13ZZZ.decryptIt(sInput);
 	}
 	
 	public static String encryptIt(String input) {
-		return Rot13ZZZ.crypt(input);
+		return ROT13ZZZ.crypt(input);
 	}
 	public static String decryptIt(String input) {
-		return Rot13ZZZ.crypt(input);
+		return ROT13ZZZ.crypt(input);
 	}
 	private static String crypt(String input) {
 
