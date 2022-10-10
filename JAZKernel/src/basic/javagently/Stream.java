@@ -9,7 +9,7 @@ public class Stream {
 
   /** The Stream class     by J M Bishop and B Worrall May 2000
    *                      based on the Text class Aug 1996
-   *                      on suggestion from Jens Kaasb�ll
+   *                      on suggestion from Jens Kaasb�ll
    *
    * Provides simple input from the keyboard and files.
    * And formatted output to the screen and files.
@@ -39,8 +39,12 @@ public class Stream {
    */
 
 
-  private BufferedReader in;
-  private PrintWriter out;
+  //FGL 20221009: Mache die Variablen protected, damit sie von aus dieser Klasse erbenden Klassen sicher genutzt werden können
+  //                Z.B. SreamZZZ
+  //  private BufferedReader in;
+  //  private PrintWriter out;
+  protected BufferedReader in;
+  protected PrintWriter out;
   private StringTokenizer T;
   private String S;
 
@@ -228,6 +232,32 @@ public Stream(String filename, int how) throws FileNotFoundException, IOExceptio
 
 	public void flush() {
 		out.flush();
+	}
+	
+	/** Erweitert um Getter/Setter, damit man aus dieser Klasse erben kann
+	 *  s. StreamZZZ und nur gezielt Methoden überschreibt.
+	 *  
+	 * @param reader
+	 * @author Fritz Lindhauer, 09.10.2022, 09:17:20
+	 */
+	public void setBufferedReader(BufferedReader reader) {
+		this.in = reader;
+	}
+	public BufferedReader getBufferedReader() {
+		return this.in;
+	}
+	
+	/** Erweitert um Getter/Setter, damit man aus dieser Klasse erben kann
+	 *  s. StreamZZZ und nur gezielt Methoden überschreibt.
+	 *  
+	 * @param reader
+	 * @author Fritz Lindhauer, 09.10.2022, 09:17:20
+	 */
+	public void setPrintWriter(PrintWriter writer) {
+		this.out = writer;
+	}
+	public PrintWriter getPrintWriter() {
+		return this.out;
 	}
 
 

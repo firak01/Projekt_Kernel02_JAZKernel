@@ -64,11 +64,17 @@ public class IoUtil {                      // zaehlt die Buchstaben
 	     int z=(int)zeichen;
 	     if (z<0) z+=256;
 	     if (z==10) System.out.println();
-	     else
-	       if (((z>31)&&(z<127)) || ((z>160)&&(z<256) ))       
-	         System.out.print((char)(z) + ": "+z+sSeparator);
-	       else 
-	         System.out.print(".");
+	     else {
+	    	 //Nichtdruckbare Zeichen und besondere rechnerspeziefische Zeichen ausschliessen.
+//	       if (((z>31)&&(z<127)) || ((z>160)&&(z<256) )) {       
+//	         System.out.print((char)(z) + ":"+z+sSeparator);
+//	       }else {
+//	         System.out.print("." + ":"+z+sSeparator);
+//	       }
+	    	 
+	    	 //oder alles ausgeben
+	    	 System.out.print((char)(z) + ":"+z+sSeparator);
+	     } 
 	  }  
   static public void printChar(int zeichen) {  // Unicodezeichen
     printChar((byte)zeichen);
@@ -76,7 +82,7 @@ public class IoUtil {                      // zaehlt die Buchstaben
   static public void printCharWithPosition(int zeichen, String sSeparator) {  // Unicodezeichen
     printCharWithPosition((byte)zeichen, sSeparator);
   } 
-  static int[] Unicode(byte[] ByteFeld) {
+  public static int[] Unicode(byte[] ByteFeld) {
     int[] dummy=new int[ByteFeld.length];
     for (int i=0; i<dummy.length; i++) 
       if (ByteFeld[i]>=0)  dummy[i]=ByteFeld[i];
