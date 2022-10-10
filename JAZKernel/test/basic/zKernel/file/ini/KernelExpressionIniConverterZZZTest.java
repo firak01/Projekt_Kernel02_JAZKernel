@@ -100,7 +100,10 @@ public class KernelExpressionIniConverterZZZTest extends TestCase {
 			e.printStackTrace();
 		} catch (IOException e) {			
 			e.printStackTrace();
-		}		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
 	}//END setup
 	
 	public void testFlagHandling(){

@@ -14,7 +14,7 @@ import custom.zUtil.io.FileZZZ;
 
 public class IniFileTest extends TestCase{
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnitTest.ini");
+	private final static String strFILE_NAME_DEFAULT = new String("JUnitIniFileTest.ini");
 	
 	private File objFile;
 	
@@ -94,6 +94,9 @@ public class IniFileTest extends TestCase{
 		} catch (FileNotFoundException e) {		
 			e.printStackTrace();
 		} catch (IOException e) {		
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}//END setup

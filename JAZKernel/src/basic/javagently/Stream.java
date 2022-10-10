@@ -52,7 +52,11 @@ public class Stream {
 	READ = 0,
 	WRITE = 1;
 
-  public Stream(InputStream i) {
+  public Stream () {
+	  //FGL: Default Konstruktor, zum Besseren Vererben.
+  }
+  
+  public Stream(InputStream i) throws Exception{
 	in = open(i);
   }
 
@@ -66,22 +70,22 @@ public class Stream {
  * @throws FileNotFoundException
  * @throws IOException
  */
-public Stream(String filename, int how) throws FileNotFoundException, IOException {
+public Stream(String filename, int how) throws FileNotFoundException, IOException, Exception {
 	switch(how) {
 	  case READ: in = open(filename); break;
 	  case WRITE: out = create(filename); break;
 	}
   }
 
-  private BufferedReader open(InputStream in) {
+  protected BufferedReader open(InputStream in) throws Exception {
 	return new BufferedReader(new InputStreamReader(in));
   }
 
-  private BufferedReader open(String filename) throws FileNotFoundException {
+  protected BufferedReader open(String filename) throws FileNotFoundException,Exception {
 	return new BufferedReader(new FileReader(filename));
   }
 
-  private PrintWriter create(String filename) throws IOException {
+  protected PrintWriter create(String filename) throws IOException,Exception {
 	return new PrintWriter(new FileWriter(filename));
   }
 

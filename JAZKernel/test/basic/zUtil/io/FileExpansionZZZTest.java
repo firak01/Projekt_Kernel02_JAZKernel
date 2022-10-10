@@ -280,6 +280,12 @@ public class FileExpansionZZZTest extends TestCase {
 				
 				ExceptionZZZ ez = new ExceptionZZZ(e.getMessage());
 				throw ez;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				ExceptionZZZ ez = new ExceptionZZZ(e.getMessage());
+				throw ez;
 			}  		
 		}
 	}

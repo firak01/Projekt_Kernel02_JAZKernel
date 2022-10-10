@@ -42,7 +42,7 @@
   }
 
     public static void main (String args [])
-      			   throws IOException {
+      			   throws Exception {
 
       Stream in = new Stream(System.in);
       System.out.println("**** Testing quicksort ****");

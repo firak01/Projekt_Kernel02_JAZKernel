@@ -81,6 +81,9 @@ public class FileTextParserZZZTest extends TestCase{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}		
 	}//END setup
 	 

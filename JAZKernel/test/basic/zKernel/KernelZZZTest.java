@@ -20,7 +20,7 @@ import junit.framework.TestCase;
 public class KernelZZZTest extends TestCase {
 	/** wird in der TestSuite AllTest zusammengefasst.
 	 * Darum gibt es hier keine Main - Methode.
-	 * Die Main Methode von AllTest kann ausgef�hrt werden.
+	 * Die Main Methode von AllTest kann ausgefuehrt werden.
 	 */
 	
 	private KernelZZZ objKernelFGL;

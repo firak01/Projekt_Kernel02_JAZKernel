@@ -31,7 +31,14 @@ public class FileTextWriterZZZ extends ObjectZZZ{
 			this.objStream = new Stream(sFileName,1); //1 = Write
 			bReturn = true;
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
 		return bReturn;
 	}

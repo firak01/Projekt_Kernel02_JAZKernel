@@ -37,6 +37,7 @@ import basic.zBasic.util.file.jar.JarInfoTest;
 import basic.zBasic.util.file.jar.JarResourcesReadingTest;
 import basic.zBasic.util.file.txt.TxtReaderZZZTest;
 import basic.zBasic.util.file.txt.TxtWriterZZZTest;
+import basic.zBasic.util.stream.StreamZZZTest;
 import basic.zKernel.GetOptZZZTest;
 import basic.zKernel.KernelPropertyZZZTest;
 import basic.zKernel.KernelUseObjectZZZTest;
@@ -95,8 +96,10 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(StringArrayZZZTest.class);
 		objReturn.addTestSuite(StringZZZTest.class);
 		
+		//Stream - Tests
+		objReturn.addTestSuite(StreamZZZTest.class);
 		
-		//Dateiverarbeitung - Tests
+		//Dateiverarbeitung - Tests		
 		objReturn.addTestSuite(JarEasyZZZTest.class);
 		objReturn.addTestSuite(TxtReaderZZZTest.class);
 		objReturn.addTestSuite(TxtWriterZZZTest.class);

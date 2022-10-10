@@ -47,6 +47,9 @@ public class FileIniZZZTest extends TestCase {
 				sFileDirectoryUsed = "c:\\temp";
 				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
 				objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} 
 			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println(";This file will be newly created by the setUp()-method of this JUnit Test class, every time before a testMethod will be invoked.");
@@ -136,7 +139,10 @@ public class FileIniZZZTest extends TestCase {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
 	}//END setup
 	
 	

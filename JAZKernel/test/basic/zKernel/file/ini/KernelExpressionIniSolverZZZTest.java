@@ -167,10 +167,12 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objExpressionSolver = new KernelExpressionIniSolverZZZ(objKernel, objFileIniTest, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
-		} 
-		catch (FileNotFoundException e) {			
+		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
 		} catch (IOException e) {			
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}//END setup

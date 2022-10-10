@@ -15,7 +15,7 @@ public class Filer {
    * Illustrates the use of exceptions in for-try loops..
    */
 
- public static Stream open (String filename) throws IOException {
+ public static Stream open (String filename) throws Exception {
 
     Stream in = new Stream (System.in);
 
