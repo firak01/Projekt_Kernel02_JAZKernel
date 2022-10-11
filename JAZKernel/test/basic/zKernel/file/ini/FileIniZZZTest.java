@@ -11,6 +11,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.stream.IStreamZZZ;
+import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -40,13 +42,13 @@ public class FileIniZZZTest extends TestCase {
 			//Merke: Erst wenn es �bberhaupt einen Test gibt, wird diese DAtei erstellt
 			String sFileDirectoryUsed = strFILE_DIRECTORY_DEFAULT;
 			String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
-			Stream objStreamFile = null;
+			IStreamZZZ objStreamFile = null;
 			try{
-				objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file			
+				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
 			} catch (FileNotFoundException e) {
 				sFileDirectoryUsed = "c:\\temp";
 				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
-				objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
+				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

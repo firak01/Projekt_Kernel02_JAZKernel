@@ -55,7 +55,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
  * @author Fritz Lindhauer, 09.10.2022, 09:05:49
  * 
  */
-public class StreamZZZ extends Stream implements  IConstantZZZ, IObjectZZZ, Serializable{
+public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 	protected ExceptionZZZ objException = null;
 	
 	public enum CharsetUsedZZZ implements IEnumSetMappedZZZ, IEnumSetZZZ{ //Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
@@ -227,22 +227,28 @@ public class StreamZZZ extends Stream implements  IConstantZZZ, IObjectZZZ, Seri
 	}
 	
 
-    protected BufferedReader open(InputStream in) throws ExceptionZZZ {
+    public BufferedReader open(InputStream in) throws ExceptionZZZ {
     	//return new BufferedReader(new InputStreamReader(in));
     	
     	BufferedReader br = null;    	
-		try {
+    	main:{
 	    	String sCharsetName = this.getCharsetName();
-	    	    	
-	    	InputStreamReader fr = new InputStreamReader(in,sCharsetName);
-	    	br = new BufferedReader(fr);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			
-			ExceptionZZZ ez = new ExceptionZZZ(e.getMessage(), iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
-			this.setExceptionObject(ez);
-			throw ez; 
-		}
+	    	if(StringZZZ.isEmpty(sCharsetName)) {
+			try {
+				InputStreamReader fr = new InputStreamReader(in,sCharsetName);
+		    	br = new BufferedReader(fr);
+			} catch (IOException e) {
+				e.printStackTrace();
+				
+				ExceptionZZZ ez = new ExceptionZZZ(e.getMessage(), iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
+	  			this.setExceptionObject(ez);
+	  			throw ez; 
+			} 
+		  }else { 
+			  br = new BufferedReader(new InputStreamReader(in));
+		  }
+	    	
+	    }//end main:
         return br;
       }
 

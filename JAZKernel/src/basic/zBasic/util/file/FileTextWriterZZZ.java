@@ -6,11 +6,13 @@ import java.io.IOException;
 import basic.javagently.Stream;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.stream.IStreamZZZ;
+import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.KernelLogZZZ;
 
 public class FileTextWriterZZZ extends ObjectZZZ{
 	public static final String sFILE_NAME_DEFAULT= "NewTextfile_default.txt";
-	private Stream objStream = null;
+	private IStreamZZZ objStream = null;
 	private String sFileName = null;
 	
 	public FileTextWriterZZZ() {		
@@ -28,7 +30,7 @@ public class FileTextWriterZZZ extends ObjectZZZ{
 			}else{
 				sFileName = sFileNameIn;
 			}
-			this.objStream = new Stream(sFileName,1); //1 = Write
+			this.objStream = new StreamZZZ(sFileName,1); //1 = Write //ggfs. noch das Encoding übergeben in dieser ZZZ-Klasse
 			bReturn = true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

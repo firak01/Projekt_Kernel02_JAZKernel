@@ -12,6 +12,8 @@ import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextParserZZZ;
+import basic.zBasic.util.stream.IStreamZZZ;
+import basic.zBasic.util.stream.StreamZZZ;
 
 public class FileTextParserZZZTest extends TestCase{
 	private File objFileSource=null;
@@ -38,7 +40,7 @@ public class FileTextParserZZZTest extends TestCase{
 			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
 			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
 			}
-			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
+			IStreamZZZ objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
 			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
 			objStreamFile.println("erste zeile");      //Now the File is created
 			objStreamFile.println("zweite zeile");   

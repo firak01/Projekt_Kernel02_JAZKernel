@@ -10,6 +10,8 @@ import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
+import basic.zBasic.util.stream.IStreamZZZ;
+import basic.zBasic.util.stream.StreamZZZ;
 
 public class TxtReaderZZZTest  extends TestCase{
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
@@ -59,7 +61,7 @@ public class TxtReaderZZZTest  extends TestCase{
 			sLineFirstForTest = ";This is a temporarily test file for TxtWriterZZZTest.";
 			sLineSecondForTest = "#This text has sorted lines. Comment lines should be ignored.";
 			
-			Stream objStreamFile = new Stream(sFileSortedPathTotal, 1);  //This is not enough, to create the file			
+			IStreamZZZ objStreamFile = new StreamZZZ(sFileSortedPathTotal, 1);  //This is not enough, to create the file			
 			objStreamFile.println(sLineFirstForTest);      //Now the File is created. This is a comment line
 			objStreamFile.println(sLineSecondForTest);
 			objStreamFile.println("A Line");
@@ -71,7 +73,7 @@ public class TxtReaderZZZTest  extends TestCase{
 			objStreamFile.println("E Line");			
 			objStreamFile.close();
 			
-			objStreamFile = new Stream(sFileUnsortedPathTotal, 1);  //This is not enough, to create the file			
+			objStreamFile = new StreamZZZ(sFileUnsortedPathTotal, 1);  //This is not enough, to create the file			
 			objStreamFile.println(";This is a temporarily test file for TxtWriterZZZTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println("#This text has unsorted lines. Comment lines should be ignored and when sorted: placed to the beginning.");
 			objStreamFile.println("A Line original unsorted");			
@@ -84,7 +86,7 @@ public class TxtReaderZZZTest  extends TestCase{
 			objStreamFile.println("E Line original unsorted");		
 			objStreamFile.close();
 			
-			objStreamFile = new Stream(sFileEmptyPathTotal, 1);
+			objStreamFile = new StreamZZZ(sFileEmptyPathTotal, 1);
 			objStreamFile.close();
 			
 			

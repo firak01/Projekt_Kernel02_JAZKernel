@@ -5,10 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+import basic.javagently.IStream;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.*;
+import basic.zBasic.util.stream.IStreamZZZ;
+import basic.zBasic.util.stream.StreamZZZ;
 import custom.zUtil.io.FileZZZ;
 
 
@@ -44,7 +47,7 @@ public class IniFileTest extends TestCase{
 			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
 			}
 
-			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file			
+			IStreamZZZ objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
 			objStreamFile.println(";This is a temporarily test file for FileIniTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println("#This is another commentline");
 			objStreamFile.println("[Section A]");

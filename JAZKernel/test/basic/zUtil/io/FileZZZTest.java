@@ -8,6 +8,8 @@ import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
+import basic.zBasic.util.stream.IStreamZZZ;
+import basic.zBasic.util.stream.StreamZZZ;
 import junit.framework.TestCase;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
@@ -35,7 +37,7 @@ public class FileZZZTest extends TestCase {
 			}
 			String sFilePathTotal =  FileEasyZZZ.joinFilePathName(sFilePathUsed, strFILE_NAME_DEFAULT );
 			
-			Stream objStreamFile = new Stream(sFilePathTotal, 1);  //This is not enough, to create the file
+			IStreamZZZ objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
 			objStreamFile.println("This is a temporarily test file.");      //Now the File is created
 			objStreamFile.close();
 

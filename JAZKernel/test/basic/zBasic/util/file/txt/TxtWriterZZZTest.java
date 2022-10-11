@@ -11,6 +11,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zBasic.util.file.txt.TxtWriterZZZ;
+import basic.zBasic.util.stream.IStreamZZZ;
+import basic.zBasic.util.stream.StreamZZZ;
 
 public class TxtWriterZZZTest  extends TestCase{
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
@@ -54,7 +56,7 @@ public class TxtWriterZZZTest  extends TestCase{
 				sFileEmptyPathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_EMPTY_NAME_DEFAULT );
 			}
 			
-			Stream objStreamFile = new Stream(sFileSortedPathTotal, 1);  //This is not enough, to create the file			
+			IStreamZZZ objStreamFile = new StreamZZZ(sFileSortedPathTotal, 1);  //This is not enough, to create the file			
 			objStreamFile.println(";This is a temporarily test file for TxtWriterZZZTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println("#This text has sorted lines. Comment lines should be ignored.");
 			objStreamFile.println("A Line");
@@ -67,7 +69,7 @@ public class TxtWriterZZZTest  extends TestCase{
 			objStreamFile.println("F Line");
 			objStreamFile.close();
 			
-			objStreamFile = new Stream(sFileUnsortedPathTotal, 1);  //This is not enough, to create the file			
+			objStreamFile = new StreamZZZ(sFileUnsortedPathTotal, 1);  //This is not enough, to create the file			
 			objStreamFile.println(";This is a temporarily test file for TxtWriterZZZTest.");      //Now the File is created. This is a comment line
 			objStreamFile.println("#This text has unsorted lines. Comment lines should be ignored and when sorted: placed to the beginning.");
 			objStreamFile.println("A Line original unsorted");			
@@ -79,7 +81,7 @@ public class TxtWriterZZZTest  extends TestCase{
 			objStreamFile.println("E Line original unsorted");		
 			objStreamFile.close();
 			
-			objStreamFile = new Stream(sFileEmptyPathTotal, 1);
+			objStreamFile = new StreamZZZ(sFileEmptyPathTotal, 1);
 			objStreamFile.close();
 			
 			

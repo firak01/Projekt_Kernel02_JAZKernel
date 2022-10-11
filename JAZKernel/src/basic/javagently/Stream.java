@@ -5,7 +5,7 @@ import java.util.*;
 import java.text.*;
 
 
-public class Stream {
+public class Stream implements IStream{
 
   /** The Stream class     by J M Bishop and B Worrall May 2000
    *                      based on the Text class Aug 1996
