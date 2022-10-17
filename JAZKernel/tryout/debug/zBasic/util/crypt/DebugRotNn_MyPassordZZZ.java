@@ -53,7 +53,7 @@ public class DebugRotNn_MyPassordZZZ {
 			String roundTrip = objCrypt.decrypt(rotNn);
 			
 			System.out.println("Eingabe:\t" + input);
-		    System.out.println("Versclüsselt:\t"+rotNn);
+		    System.out.println("Verschlüsselt:\t"+rotNn);
 	        System.out.println("Entschlüsselt:\t"+roundTrip);
 	        
 	        System.out.println("#####################");
