@@ -179,7 +179,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	 */
 	public void testCompute04(){
 		try {
-			TODOGOON20220929; //Mache eine richtige Entschlüsselung mit AES UND Danach noch 05 mit MD5
+			TODOGOON20220929; //Mache eine richtige Entschlüsselung mit AES UND Danach noch testCompute05 mit MD5
 			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION04_DEFAULT;
 			
 			

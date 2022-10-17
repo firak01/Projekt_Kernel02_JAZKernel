@@ -12,12 +12,7 @@ public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> e
 	private static CounterByCharacterAsciiFactoryZZZ objCounterFactory = null;  //muss static sein, wg. getInstance()!!!
 	
 	/**Konstruktor ist private, wg. Singleton
-	 * @param objKernel
-	 * @throws ExceptionZZZ
 	 */
-	private CounterByCharacterAsciiFactoryZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
-		super();
-	}
 	private CounterByCharacterAsciiFactoryZZZ(){
 		super();
 	}
