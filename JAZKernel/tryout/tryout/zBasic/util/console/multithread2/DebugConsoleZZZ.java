@@ -1,9 +1,4 @@
-package debug.zBasic.util.console;
-
-import basic.zBasic.util.console.ConsoleZZZ;
-import basic.zBasic.util.console.DummyConsoleUserZZZ;
-import basic.zBasic.util.console.IConsoleUserZZZ;
-import basic.zBasic.util.console.IConsoleZZZ;
+package tryout.zBasic.util.console.multithread2;
 
 public class DebugConsoleZZZ {
 

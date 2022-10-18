@@ -1,4 +1,4 @@
-package basic.zBasic.util.console;
+package basic.zBasic.util.console.multithread;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import basic.zBasic.ObjectZZZ;
-import basic.zBasic.util.console.KeyPressThreadZZZ;
 
 /** Klasse zur Eingabe von Befehlen an der Konsole.
  *  Es wird dann in einer Schleife eine andere Klasse ausgeführt.
@@ -18,13 +17,12 @@ import basic.zBasic.util.console.KeyPressThreadZZZ;
  * @author Fritz Lindhauer, 16.10.2022, 08:01:04
  * 
  */
-public class ConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
-	private static ConsoleZZZ objConsole = null;  //muss static sein, wg. getInstance()!!!
+public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
+	protected static IConsoleZZZ objConsole = null;  //muss static sein, wg. getInstance()!!!
 	
-	KeyPressThreadZZZ objThreadKeyPress=null;
+	private IKeyPressThreadZZZ objThreadKeyPress=null;
 	private IConsoleUserZZZ objConsoleUser = null;
-	private KeyPressThreadZZZ objKeyPressThread = null;
-	private ConsoleThreadZZZ objThreadConsole = null;
+	private IConsoleThreadZZZ objThreadConsole = null;
 	
 	//Variablen zur Steuerung des internen Threads
 	private long lSleepTime=1000;
@@ -32,17 +30,13 @@ public class ConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
 	
 	/**Konstruktor ist private, wg. Singleton
 	 */
-	private ConsoleZZZ() {		
+	protected AbstractConsoleZZZ() {		
 		super();
 		ConsoleMain_();
 	}
+	//Merke: das geht static nicht abstract public abstract IConsoleZZZ getInstance();
 	
-	public static ConsoleZZZ getInstance(){
-		if(objConsole==null){
-			objConsole = new ConsoleZZZ();
-		}
-		return objConsole;		
-	}
+	
 	
 	private boolean ConsoleMain_() {
 		boolean bReturn = false;
@@ -57,12 +51,12 @@ public class ConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
 		boolean bReturn = false;
 		main:{			
 	        try {	        	
-	        	final KeyPressThreadZZZ objThreadKeyPress = this.getKeyPressThread();
-	            Thread t1 = new Thread(objThreadKeyPress);
+	        	final IKeyPressThreadZZZ objThreadKeyPress = this.getKeyPressThread();
+	            Thread t1 = new Thread((Runnable) objThreadKeyPress);
 	            t1.start();
 
-	            final ConsoleThreadZZZ objThreadConsole = this.getConsoleThread();	          
-		        Thread t2 = new Thread(objThreadConsole);
+	            final IConsoleThreadZZZ objThreadConsole = this.getConsoleThread();	          
+		        Thread t2 = new Thread((Runnable) objThreadConsole);
 		        t2.start();
 	         
 	        } catch (Exception e)        {
@@ -83,11 +77,21 @@ public class ConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
 		this.isStopped(true);
 	}
 	
-	public long getConsoleSleepTime() {
+	public long getSleepTime() {
 		return this.lSleepTime;
 	}
-	public void setConsoleSleepTime(long lSleepTime) {
+	public void setSleepTime(long lSleepTime) {
 		this.lSleepTime = lSleepTime;
+	}
+	
+	@Override
+	public IConsoleZZZ getConsole() {
+		return this.objConsole;
+	}
+	
+	@Override
+	public void setConsole(IConsoleZZZ objConsole) {
+		this.objConsole = objConsole;
 	}
 
 	@Override
@@ -101,27 +105,27 @@ public class ConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
 	}
 
 	@Override
-	public KeyPressThreadZZZ getKeyPressThread() {
-		if(this.objKeyPressThread==null) {
-			long lSleepTime = this.getConsoleSleepTime();
-			this.objKeyPressThread = new KeyPressThreadZZZ(lSleepTime);		
+	public IKeyPressThreadZZZ getKeyPressThread() {
+		if(this.objThreadKeyPress==null) {
+			long lSleepTime = this.getSleepTime();
+			this.objThreadKeyPress = new KeyPressThreadDefaultZZZ(lSleepTime);		
 		}
-		return this.objKeyPressThread;
+		return this.objThreadKeyPress;
 	}
 
-	private void setKeyPressThread(KeyPressThreadZZZ objKeyPressThread) {
-		this.objKeyPressThread = objKeyPressThread;
+	private void setKeyPressThread(IKeyPressThreadZZZ objKeyPressThread) {
+		this.objThreadKeyPress = objKeyPressThread;
 	}
 	
 	@Override
-	public ConsoleThreadZZZ getConsoleThread() {
+	public IConsoleThreadZZZ getConsoleThread() {
 		if(this.objThreadConsole==null) {
-			KeyPressThreadZZZ objKeyPressThread = this.getKeyPressThread();
+			IKeyPressThreadZZZ objKeyPressThread = this.getKeyPressThread();
 			if(objKeyPressThread!=null) {
 			
 				IConsoleUserZZZ objConsoleUser = this.getConsoleUserObject();
 				if(objConsoleUser!=null) {
-					long lSleepTime = this.getConsoleSleepTime();
+					long lSleepTime = this.getSleepTime();
 					this.objThreadConsole = new ConsoleThreadZZZ(lSleepTime, objKeyPressThread);
 			        this.objThreadConsole.setConsoleUserObject(this.getConsoleUserObject());
 				}

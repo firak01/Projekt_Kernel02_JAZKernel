@@ -1,4 +1,4 @@
-package basic.zBasic.util.console;
+package tryout.zBasic.util.console.multithread2;
 
 import basic.zBasic.ObjectZZZ;
 

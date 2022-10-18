@@ -1,4 +1,4 @@
-package tryout.zBasic.util.console;
+package tryout.zBasic.util.console.multithread;
 
 import java.util.Scanner;
 
