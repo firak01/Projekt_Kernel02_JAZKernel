@@ -6,7 +6,10 @@ import java.io.FileReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 /** Klasse zur Eingabe von Befehlen an der Konsole.
  *  Es wird dann in einer Schleife eine andere Klasse ausgeführt.
@@ -52,12 +55,22 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 		main:{			
 	        try {	        	
 	        	final IKeyPressThreadZZZ objThreadKeyPress = this.getKeyPressThread();
-	            Thread t1 = new Thread((Runnable) objThreadKeyPress);
-	            t1.start();
+	        	if(objThreadKeyPress!=null) {
+	        		Thread t1 = new Thread((Runnable) objThreadKeyPress);
+	        		t1.start();
+	        	}else {
+	        		ExceptionZZZ ez = new ExceptionZZZ("No KeyPressThread provided", iERROR_PROPERTY_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+	        	}
 
-	            final IConsoleThreadZZZ objThreadConsole = this.getConsoleThread();	          
-		        Thread t2 = new Thread((Runnable) objThreadConsole);
-		        t2.start();
+	            final IConsoleThreadZZZ objThreadConsole = this.getConsoleThread();	  
+	            if(objThreadConsole!=null) {
+			        Thread t2 = new Thread((Runnable) objThreadConsole);
+			        t2.start();
+	            }else {
+	        		ExceptionZZZ ez = new ExceptionZZZ("No ConsoleThread provided", iERROR_PROPERTY_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+	        	}
 	         
 	        } catch (Exception e)        {
 	            e.printStackTrace();
@@ -77,22 +90,18 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 		this.isStopped(true);
 	}
 	
+	@Override
 	public long getSleepTime() {
 		return this.lSleepTime;
 	}
-	public void setSleepTime(long lSleepTime) {
-		this.lSleepTime = lSleepTime;
-	}
 	
 	@Override
-	public IConsoleZZZ getConsole() {
-		return this.objConsole;
-	}
-	
-	@Override
-	public void setConsole(IConsoleZZZ objConsole) {
-		this.objConsole = objConsole;
-	}
+	 public void setSleepTime(long lSleepTime) {
+		 if(lSleepTime<0){
+			 lSleepTime=0;
+		 }
+		 this.lSleepTime = lSleepTime;
+	 }
 
 	@Override
 	public IConsoleUserZZZ getConsoleUserObject() {
@@ -108,12 +117,13 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	public IKeyPressThreadZZZ getKeyPressThread() {
 		if(this.objThreadKeyPress==null) {
 			long lSleepTime = this.getSleepTime();
-			this.objThreadKeyPress = new KeyPressThreadDefaultZZZ(lSleepTime);		
+			this.objThreadKeyPress = new KeyPressThreadDefaultZZZ(this, lSleepTime);		
 		}
 		return this.objThreadKeyPress;
 	}
 
-	private void setKeyPressThread(IKeyPressThreadZZZ objKeyPressThread) {
+	@Override
+	public void setKeyPressThread(IKeyPressThreadZZZ objKeyPressThread) {
 		this.objThreadKeyPress = objKeyPressThread;
 	}
 	
@@ -126,8 +136,7 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 				IConsoleUserZZZ objConsoleUser = this.getConsoleUserObject();
 				if(objConsoleUser!=null) {
 					long lSleepTime = this.getSleepTime();
-					this.objThreadConsole = new ConsoleThreadZZZ(lSleepTime, objKeyPressThread);
-			        this.objThreadConsole.setConsoleUserObject(this.getConsoleUserObject());
+					this.objThreadConsole = new ConsoleThreadZZZ(this);			       
 				}
 			}
 		}

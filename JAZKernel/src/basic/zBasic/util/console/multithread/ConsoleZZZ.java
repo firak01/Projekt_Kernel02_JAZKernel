@@ -33,5 +33,4 @@ public class ConsoleZZZ extends AbstractConsoleZZZ {
 			return objConsole;		
 		}
 	}
-		
 }

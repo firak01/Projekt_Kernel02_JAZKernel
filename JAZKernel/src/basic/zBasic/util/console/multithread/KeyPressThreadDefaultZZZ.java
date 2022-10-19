@@ -8,50 +8,45 @@ import java.util.Scanner;
 
 
         //Method that gets called when the object is instantiated
-        public KeyPressThreadDefaultZZZ(long lSleepTime) {
-        	super(lSleepTime);
+        public KeyPressThreadDefaultZZZ(IConsoleZZZ objConsole, long lSleepTime) {
+        	super(objConsole, lSleepTime);
         }
        
         public boolean start(){
         	boolean bReturn = false;
         	main:{
+    			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
+    			//       Darum muss man alle Eingaben in dem KeyPressThread erledigen
 	        	System.out.println("Eingaben: [ ] oder Q");
-	            while(true){
+	            while(!this.isStopped()){
 	            	long lSleepTime = this.getSleepTime();
+	            	long lSleepTimeConsole = this.getConsole().getSleepTime();
 		        	 try {
-		             	System.out.println("Warte auf Eingabe...");                 	
-						Thread.sleep(500);                 	
+		             	System.out.println("Kein warten auf Eingabe. Die ist während des laufenden Threads möglich ...");                 	
+						Thread.sleep(lSleepTime);                 	
 					} catch (InterruptedException e) {
 						System.out.println("KeyPressThread: 1. Wait Error");
 						e.printStackTrace();
 					}
 	
 	                String input = inputReader.next();
-	                System.out.println(input);
+	                System.out.println("Pressed " + input);
 	                if (input.equals("[")) {
-	                	lSleepTime+=100;
-	                	this.setSleepTime(lSleepTime);
-	                    System.out.println("Pressed [");
+	                	lSleepTimeConsole+=100;
+	                	this.getConsole().setSleepTime(lSleepTimeConsole);
 	                }
 	                if (input.equals("]")) {
-	                	lSleepTime-=100;
-	                	this.setSleepTime(lSleepTime);
-	                    System.out.println("Pressed ]");
+	                	lSleepTimeConsole-=100;
+	                	this.getConsole().setSleepTime(lSleepTimeConsole);
 	                }
 	                if (input.equalsIgnoreCase("Q")) {
 	                    this.requestStop();
-	                	break; // stop KeyPressThread
+	                	break; // stop KeyPressThread durch Setzen einer internen Variablen
 	                }
-	
-	                try {
-	                	System.out.println("Nach der Eingabe.");
-	                	Thread.sleep(500);
-	                	bReturn = true;
-					} catch (InterruptedException e) {
-						System.out.println("KeyPressThread: 2. Wait Error");
-						e.printStackTrace();
-					}
+	                
+	                System.out.println("Nach der Eingabe.");	               					
 	            }//end while
+	            bReturn = true;
 	    	}//end main:
 	    	return bReturn;
         }

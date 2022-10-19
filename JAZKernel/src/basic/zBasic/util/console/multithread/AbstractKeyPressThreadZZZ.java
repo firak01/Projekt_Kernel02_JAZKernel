@@ -12,9 +12,10 @@ import java.util.Scanner;
 	 * @author Fritz Lindhauer, 18.10.2022, 09:15:40
 	 * 
 	 */
-	public abstract class AbstractKeyPressThreadZZZ implements Runnable,IKeyPressThreadZZZ {
-		private long lSleepTime;
+	public abstract class AbstractKeyPressThreadZZZ implements Runnable,IConsoleUserZZZ,IKeyPressThreadZZZ {
+		private long lSleepTime=1000;//default
 		private boolean bStop = false;
+		IConsoleZZZ objConsole = null; //Darüber werden die Variablen und auch die Eingaben ausgetauscht
 		
 		@Override
 		 public long getSleepTime() {
@@ -29,11 +30,24 @@ import java.util.Scanner;
         protected Scanner inputReader = new Scanner(System.in);
 
         //Method that gets called when the object is instantiated
-        public AbstractKeyPressThreadZZZ(long lSleepTime) {
-        	setSleepTime(lSleepTime);
+        public AbstractKeyPressThreadZZZ(IConsoleZZZ objConsole) {
+        	this.setConsole(objConsole);
+        }
+        public AbstractKeyPressThreadZZZ(IConsoleZZZ objConsole, long lSleepTime) {
+        	this.setConsole(objConsole);
+        	this.setSleepTime(lSleepTime);
         }
        
-
+        @Override
+		public IConsoleZZZ getConsole() {
+			return this.objConsole;
+		}
+		@Override
+		public void setConsole(IConsoleZZZ objConsole) {
+			this.objConsole = objConsole;
+		}
+		
+		@Override
         public void run() 
         {
         	this.start();
@@ -53,8 +67,8 @@ import java.util.Scanner;
     	public void requestStop() {
     		this.isStopped(true);
     	}
-    	
+    	    	
     	@Override
-    	public abstract boolean start(); 
+    	public abstract boolean start();
     }
 

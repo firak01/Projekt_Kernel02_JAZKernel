@@ -1,6 +1,7 @@
 package basic.zBasic.util.crypt.thread;
 
 import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
+import basic.zBasic.util.console.multithread.IConsoleZZZ;
 
 
 	 
@@ -8,49 +9,97 @@ import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 
 
         //Method that gets called when the object is instantiated
-        public KeyPressThreadCryptZZZ(long lSleepTime) {
-        	super(lSleepTime);
+		public KeyPressThreadCryptZZZ(IConsoleZZZ objConsole) {
+        	super(objConsole);
+        }
+        public KeyPressThreadCryptZZZ(IConsoleZZZ objConsole, long lSleepTime) {
+        	super(objConsole, lSleepTime);
         }
        
         public boolean start(){
         	boolean bReturn = false;
         	main:{
-	        	System.out.println("Eingaben Crypt: + - oder Q");
-	            while(true){
+    			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
+    			//       Darum muss man alle Eingaben in diesem KeyPressThread erledigen
+	        	
+	            while(!this.isStopped()){
+	            	this.getConsole().isInputFinished(false);
+	            	System.out.println("Eingaben: + - zur Threadgeschwindigkeit | Q zum Abbruch");
+					System.out.println("Bitte wählen Sie den Algorithmus:");
+					System.out.println("1: Rot13");
+					System.out.println("2: RotNn");	
+	            	
 	            	long lSleepTime = this.getSleepTime();
-		        	 try {
-		             	System.out.println("Warte auf Eingabe Crypt...");                 	
-						Thread.sleep(500);                 	
-					} catch (InterruptedException e) {
-						System.out.println("KeyPressThread: 1. Wait Error");
-						e.printStackTrace();
-					}
-	
-	                String input = inputReader.next();
-	                System.out.println(input);
-	                if (input.equals("+")) {
-	                	lSleepTime+=100;
-	                	this.setSleepTime(lSleepTime);
-	                    System.out.println("Pressed Crypt [");
-	                }
-	                if (input.equals("-")) {
-	                	lSleepTime-=100;
-	                	this.setSleepTime(lSleepTime);
-	                    System.out.println("Pressed Crypt ]");
-	                }
-	                if (input.equalsIgnoreCase("Q")) {
-	                    this.requestStop();
-	                	break; // stop KeyPressThread
-	                }
-	
-	                try {
-	                	System.out.println("Nach der Eingabe.");
-	                	Thread.sleep(500);
-	                	bReturn = true;
-					} catch (InterruptedException e) {
-						System.out.println("KeyPressThread: 2. Wait Error");
-						e.printStackTrace();
-					}
+	            	while(!this.getConsole().isInputFinished()) {
+			        	 try {
+			             	System.out.println("Warte auf Eingabe Crypt...");                 	
+							Thread.sleep(lSleepTime);                 	
+						} catch (InterruptedException e) {
+							System.out.println("KeyPressThread: 1. Wait Error");
+							e.printStackTrace();
+						}
+		
+		                String sInput = inputReader.next();
+		                System.out.println("Pressed Crypt:" + sInput);
+		                if(sInput==null) break main;
+		                
+		                //In the JDK 7 release, you can use a String object in the expression of a switch statement:
+		                //Das keine lowercase Methode oder eine Fallunterscheidung in den CASE eingebaut werden kann, 
+		                //vorher lowercase
+		                String input = sInput.toLowerCase();
+		                switch(input) {
+		                case "+":
+		                	lSleepTime+=100;
+		                	this.setSleepTime(lSleepTime);
+		                	break;
+		                case "-":
+		                	lSleepTime-=100;
+		                	this.setSleepTime(lSleepTime);
+		                	break;
+		                case "q":
+		                    this.requestStop();
+		                	break; // stop KeyPressThread über die gesetzte STOP Variable
+		                case "1":
+		                	//ggfs. weitere Eingaben abfragen
+		                	System.out.println("Geben Sie den zu verschlüsselnden Text als String ein");
+		                	sInput = inputReader.next();
+		                	
+		                	this.getConsole().isInputFinished(true);
+		                	break;
+		                case "2":
+		                	//ggfs. weitere Eingaben
+		                	System.out.println("Geben Sie den Charakterpool als String ein.");		                	
+		                	sInput = inputReader.next();
+		                	
+		                	System.out.println("Geben Sie den zu verschlüsselnden Text als String ein");
+		                	sInput = inputReader.next();
+		                	
+		                	this.getConsole().isInputFinished(true);
+		                	break;
+		                default:
+		                	System.out.println("ungültige Eingabe");
+		                }
+		                try {
+		                	//System.out.println("Nach der Eingabe.");
+		                	Thread.sleep(lSleepTime);
+		                	bReturn = true;
+						} catch (InterruptedException e) {
+							System.out.println("KeyPressThread: 2. Wait Error");
+							e.printStackTrace();
+						}
+	            	}//end while
+	            	
+	            	if(this.getConsole().isInputFinished()==true) {
+		            	while(!this.getConsole().isConsoleUserThreadFinished()) {
+				        	 try {
+				             	System.out.println("Warte auf Ergebnis des Cryptlaufs...");                 	
+								Thread.sleep(lSleepTime);                 	
+							} catch (InterruptedException e) {
+								System.out.println("KeyPressThread: 2. Wait Error");
+								e.printStackTrace();
+							}
+		            	}//end while
+	            	}
 	            }//end while
 	    	}//end main:
 	    	return bReturn;
