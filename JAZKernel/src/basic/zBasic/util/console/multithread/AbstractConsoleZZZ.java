@@ -30,6 +30,9 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	//Variablen zur Steuerung des internen Threads
 	private long lSleepTime=1000;
 	private boolean bStop = false;
+	private boolean bInputFinished = false;
+	private boolean bConsoleUserThreadFinished = false;
+	
 	
 	/**Konstruktor ist private, wg. Singleton
 	 */
@@ -80,15 +83,32 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 		return bReturn;		
 	}
 	
+	@Override
+	public boolean isInputFinished() {
+		return this.bInputFinished;
+	}
+	
+	@Override
+	public void isInputFinished(boolean bInputFinished) {
+		this.bInputFinished = bInputFinished;
+	}
+	
+	@Override
 	public boolean isStopped() {
 		return this.bStop;
 	}
+	
+	@Override
 	public void isStopped(boolean bStop) {
 		this.bStop = bStop;
 	}
+	
+	@Override
 	public void requestStop() {
 		this.isStopped(true);
 	}
+	
+	
 	
 	@Override
 	public long getSleepTime() {
@@ -145,6 +165,16 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	
 	private void setConsoleThread(ConsoleThreadZZZ objThreadConsole) {
 		this.objThreadConsole = objThreadConsole;
+	}
+	
+	@Override
+	public boolean isConsoleUserThreadFinished() {
+		return this.bConsoleUserThreadFinished;
+	}
+
+	@Override
+	public void isConsoleUserThreadFinished(boolean bConsoleUserThreadFinished) {
+		this.bConsoleUserThreadFinished = bConsoleUserThreadFinished;
 	}
 	
 	

@@ -25,7 +25,7 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
 			//       Darum muss man alles in dem KeyPressThread erledigen
 			//Warten auf die fertige Eingabe.
-			if(!!this.getConsole().isInputFinished()) break main;
+			if(!this.getConsole().isInputFinished()) break main;
 		
 			this.iCounter++;
 			System.out.println("Zähler crypt: " + iCounter);

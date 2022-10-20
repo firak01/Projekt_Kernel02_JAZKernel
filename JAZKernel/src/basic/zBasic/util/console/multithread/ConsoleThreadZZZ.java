@@ -43,7 +43,7 @@ import basic.zBasic.ExceptionZZZ;
 				try {    
 		           while(!this.isStopped()) {
 		                long lSleepTime = this.getConsole().getSleepTime();
-		                System.out.println("ConsoleThread.sleep: " + lSleepTime);
+		                //System.out.println("ConsoleThread.sleep: " + lSleepTime);
 		                Thread.sleep(lSleepTime);
 		                
 		                IConsoleUserZZZ objUser = this.getConsole().getConsoleUserObject();
@@ -53,7 +53,8 @@ import basic.zBasic.ExceptionZZZ;
 			                	this.getConsole().getConsoleUserObject().requestStop();
 			                	this.requestStop();
 			                }else {
-			                	this.getConsole().getConsoleUserObject().start();                    
+			                	this.getConsole().getConsoleUserObject().start();  
+			                	this.getConsole().isConsoleUserThreadFinished(true);
 			                }
 		                }else {
 		                	this.requestStop();
