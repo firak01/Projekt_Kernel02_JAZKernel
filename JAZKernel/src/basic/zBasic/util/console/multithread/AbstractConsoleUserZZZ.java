@@ -3,12 +3,12 @@ package basic.zBasic.util.console.multithread;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConsoleUserZZZ {	
 	private IConsoleZZZ objConsole=null;
 	private int iCounter = 0;
-	private boolean bStop = false;
 	
 	public AbstractConsoleUserZZZ()  throws ExceptionZZZ {
 		super();
@@ -35,6 +35,8 @@ public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConso
 	@Override
 	public abstract boolean start() throws ExceptionZZZ;
 		
+	@Override 
+	public abstract boolean start(HashMapExtendedZZZ<String,Object> hmVariable) throws ExceptionZZZ;
 	
 	public int getcounter() {
 		return this.iCounter;
@@ -47,12 +49,12 @@ public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConso
 	
 	@Override
 	public boolean isStopped() {
-		return this.bStop;
+		return this.getConsole().isStopped();
 	}
 	
 	@Override
 	public void isStopped(boolean bStop) {
-		this.bStop = bStop;
+		this.getConsole().isStopped(bStop);
 	}
 	 
 	@Override

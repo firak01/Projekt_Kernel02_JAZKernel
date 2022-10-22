@@ -750,7 +750,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	     });
 	} 
 	
-	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch f�r jeden neuen Eintrag.
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
@@ -760,6 +760,25 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		main:{
 			
 			sReturn = HashMapExtendedZZZ.debugString(this);
+			
+		}//end main
+		return sReturn;
+	}
+	
+
+	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
+	 *  Merke: Beim Arbeiten mit der Scanner-Klasse um z.B. Eingaben entgegenzunehmen, sollte man 
+	 *         dies verwenden, sonst wird nach jedem Wort ein Zeilenumbruch (Sprich eine neue Eingabe gemacht).
+	 * @param sKeyDelimiterIn
+	 * @param sEntryDelimiterIn
+	 * @return
+	 * @author Fritz Lindhauer, 21.10.2022, 09:56:44
+	 */
+	public String debugString(String sKeyDelimiterIn, String sEntryDelimiterIn){
+		String sReturn = new String("");
+		main:{
+			
+			sReturn = HashMapExtendedZZZ.debugString(this, sKeyDelimiterIn, sEntryDelimiterIn);
 			
 		}//end main
 		return sReturn;

@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /** Klasse zur Eingabe von Befehlen an der Konsole.
@@ -29,9 +30,12 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	
 	//Variablen zur Steuerung des internen Threads
 	private long lSleepTime=1000;
-	private boolean bStop = false;
-	private boolean bInputFinished = false;
-	private boolean bConsoleUserThreadFinished = false;
+	private volatile boolean bStop = false;
+	private volatile boolean bInputFinished = false;
+	private volatile boolean bConsoleUserThreadFinished = false;
+	
+	//Zur dynmischen Verwaltung von Variablen, die in einem Thread für den anderen Thread gedacht sind
+	private volatile HashMapExtendedZZZ<String,Object> hmVariable = null;
 	
 	
 	/**Konstruktor ist private, wg. Singleton
@@ -177,6 +181,18 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 		this.bConsoleUserThreadFinished = bConsoleUserThreadFinished;
 	}
 	
+	@Override
+	public HashMapExtendedZZZ<String,Object> getVariableHashMap(){
+		if(this.hmVariable==null) {
+			this.hmVariable = new HashMapExtendedZZZ<String,Object>();
+		}
+		return this.hmVariable;
+	}
+	
+	@Override
+	public void setVariableHashMap(HashMapExtendedZZZ<String,Object> hmVariable) {
+		this.hmVariable = hmVariable;
+	}
 	
 	
 	

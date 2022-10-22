@@ -2,6 +2,7 @@ package debug.zBasic.util.crypt.thread;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
@@ -18,6 +19,16 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 	private int iCounter = 0;
 	
 	public boolean start() throws ExceptionZZZ {
+		HashMapExtendedZZZ<String, Object> hmVariable = this.getConsole().getVariableHashMap();
+		return this.start(hmVariable);
+	}
+	
+	public int getcounter() {
+		return this.iCounter;
+	}
+	
+	@Override
+	public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(this.isStopped()) break main;
@@ -30,11 +41,14 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			this.iCounter++;
 			System.out.println("Zähler crypt: " + iCounter);
 			
+			if(hmVariable!=null) {
+				String sDebug = hmVariable.debugString("|","<BR>");
+				System.out.println(sDebug);
+			}
+			System.out.println("#############");
+						
 			//TODOGOON: Nun die eingegebenen Variablen über eine HashMap aus der Console für die Steuereung der Verschlüsselung nutzen. 
 
-			
-			
-			
 			 try {				 
 				 Thread.sleep(900);
 			} catch (InterruptedException e) {
@@ -45,13 +59,4 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 		}//end main:
 		return bReturn;
 	}
-	
-	public int getcounter() {
-		return this.iCounter;
-	}
-
-	
-
-		
-
 }

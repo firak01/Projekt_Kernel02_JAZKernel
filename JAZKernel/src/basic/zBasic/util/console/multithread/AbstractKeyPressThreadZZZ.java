@@ -2,6 +2,9 @@ package basic.zBasic.util.console.multithread;
 
 import java.util.Scanner;
 
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+
 
 	 
 	/** Der KeypressThread bestimmt die Eingabemöglichkeiten
@@ -14,7 +17,6 @@ import java.util.Scanner;
 	 */
 	public abstract class AbstractKeyPressThreadZZZ implements Runnable,IConsoleUserZZZ,IKeyPressThreadZZZ {
 		private long lSleepTime=1000;//default
-		private boolean bStop = false;
 		IConsoleZZZ objConsole = null; //Darüber werden die Variablen und auch die Eingaben ausgetauscht
 		
 		@Override
@@ -26,6 +28,15 @@ import java.util.Scanner;
 		 public void setSleepTime(long lSleepTime) {
 			 this.lSleepTime = lSleepTime;
 		 }
+		 
+		 @Override
+			public boolean isInputFinished() {
+				return this.getConsole().isInputFinished();
+			}
+			@Override
+			public void isInputFinished(boolean bFinished) {
+				this.getConsole().isInputFinished(bFinished);
+			}
 		
         protected Scanner inputReader = new Scanner(System.in);
 
@@ -50,17 +61,22 @@ import java.util.Scanner;
 		@Override
         public void run() 
         {
-        	this.start();
+        	try {
+        		HashMapExtendedZZZ<String,Object> hmVariable = this.getConsole().getVariableHashMap();
+				this.start(hmVariable);
+			} catch (ExceptionZZZ e) {				
+				e.printStackTrace();
+			}
         }
         
         @Override
         public boolean isStopped() {
-    		return this.bStop;
+    		return this.getConsole().isStopped();
     	}
         
         @Override
     	public void isStopped(boolean bStop) {
-    		this.bStop = bStop;
+    		this.getConsole().isStopped(bStop);
     	}
         
         @Override
@@ -69,6 +85,6 @@ import java.util.Scanner;
     	}
     	    	
     	@Override
-    	public abstract boolean start();
+    	public abstract boolean start() throws ExceptionZZZ;
     }
 

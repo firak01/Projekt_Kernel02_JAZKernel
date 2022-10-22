@@ -3,10 +3,10 @@ package basic.zBasic.util.console.multithread;
 import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 
 	public class ConsoleThreadZZZ implements Runnable,IConsoleThreadZZZ, IConsoleUserZZZ {
 		private IConsoleZZZ objConsole = null;		
-		private boolean bStop = false;
 				
         Scanner inputReader = new Scanner(System.in);
 
@@ -18,7 +18,8 @@ import basic.zBasic.ExceptionZZZ;
 		public void run() 
         {
         	try {
-				this.start();
+        		HashMapExtendedZZZ<String,Object> hmVariable = this.getConsole().getVariableHashMap();
+				this.start(hmVariable);
 			} catch (ExceptionZZZ e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -26,10 +27,10 @@ import basic.zBasic.ExceptionZZZ;
         }
         
         public boolean isStopped() {
-    		return this.bStop;
+    		return this.getConsole().isStopped();
     	}
     	public void isStopped(boolean bStop) {
-    		this.bStop = bStop;
+    		this.getConsole().isStopped(bStop);
     	}
     	public void requestStop() {
     		this.isStopped(true);
@@ -38,9 +39,22 @@ import basic.zBasic.ExceptionZZZ;
 		 
 		@Override
 		public boolean start() throws ExceptionZZZ {
+			return this.start(null);
+		}
+		@Override
+		public IConsoleZZZ getConsole() {
+			return this.objConsole;
+		}
+		@Override
+		public void setConsole(IConsoleZZZ objConsole) {
+			this.objConsole = objConsole;
+		}
+
+		@Override
+		public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
 			boolean bReturn=false;
-			main:{				
-				try {    
+			main:{					
+				try {    				
 		           while(!this.isStopped()) {
 		                long lSleepTime = this.getConsole().getSleepTime();
 		                //System.out.println("ConsoleThread.sleep: " + lSleepTime);
@@ -52,29 +66,24 @@ import basic.zBasic.ExceptionZZZ;
 			                if(bStop) {
 			                	this.getConsole().getConsoleUserObject().requestStop();
 			                	this.requestStop();
-			                }else {
-			                	this.getConsole().getConsoleUserObject().start();  
+			                }else {	
+			                	if(hmVariable==null) {
+			                		this.getConsole().getConsoleUserObject().start();
+			                	}else {
+			                		this.getConsole().getConsoleUserObject().start(hmVariable);  			                		
+			                	}
 			                	this.getConsole().isConsoleUserThreadFinished(true);
 			                }
 		                }else {
 		                	this.requestStop();
 		                }
-	                }
-	               
-		           bReturn = true;
+	                }//end while	               
+		            bReturn = true;
 	            } catch (InterruptedException e) {
 	                e.printStackTrace();
 	            }
 			}//end main
 			return bReturn;
-		}
-		@Override
-		public IConsoleZZZ getConsole() {
-			return this.objConsole;
-		}
-		@Override
-		public void setConsole(IConsoleZZZ objConsole) {
-			this.objConsole = objConsole;
 		}				
     }
 

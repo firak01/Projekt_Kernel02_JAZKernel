@@ -1,5 +1,7 @@
 package basic.zBasic.util.crypt.thread;
 
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 
@@ -17,8 +19,25 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
         	super(objConsole, lSleepTime);
         }
        
-        public boolean start(){
-        	boolean bReturn = false;
+        public boolean start() throws ExceptionZZZ{
+        	return this.start(null);
+        }
+        
+        public boolean isCurrentInput() {
+        	return this.bCurrentInput;
+        }
+        public void isCurrentInput(boolean bCurrentInput) {
+        	this.bCurrentInput = bCurrentInput;
+        }
+        public boolean isCurrentMenue() {
+        	return this.bMakeMenue;
+        }
+        public void isCurrentMenue(boolean bMakeMenue) {
+        	this.bMakeMenue = bMakeMenue;
+        }
+		@Override
+		public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
+			boolean bReturn = false;
         	main:{
     			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
     			//       Darum muss man alle Eingaben in diesem KeyPressThread erledigen
@@ -43,7 +62,8 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 							e.printStackTrace();
 						}
 		
-		                String sInput = inputReader.next();
+		                //das holt wohl wort fuer wort von der Konsole: String sInput = inputReader.next();
+			        	String sInput = inputReader.nextLine();
 		                System.out.println("Pressed Crypt:" + sInput);
 		                if(sInput==null) break main;
 		                
@@ -64,23 +84,29 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 		                	break;
 		                case "q":
 		                    this.requestStop();
+		                    this.getConsole().isInputFinished(true);
 		                    this.isCurrentInput(true);
 		                	break; // stop KeyPressThread über die gesetzte STOP Variable
 		                case "1":
 		                	//ggfs. weitere Eingaben abfragen
 		                	System.out.println("Geben Sie den zu verschlüsselnden Text als String ein");
-		                	sInput = inputReader.next();
 		                	
+		                	 //das holt wohl wort fuer wort von der Konsole: sInput = inputReader.next();
+				        	sInput = inputReader.nextLine();
+		                	
+		                	if(hmVariable!=null) hmVariable.put("INPUT_TEXT_UNCRYPTED", sInput);
 		                	this.isCurrentInput(true);
 		                	this.getConsole().isInputFinished(true);
 		                	break;
 		                case "2":
 		                	//ggfs. weitere Eingaben
 		                	System.out.println("Geben Sie den Charakterpool als String ein.");		                	
-		                	sInput = inputReader.next();
+		                	sInput = inputReader.nextLine();
+		                	if(hmVariable!=null) hmVariable.put("INPUT_CHARACTERPOOL", sInput);
 		                	
 		                	System.out.println("Geben Sie den zu verschlüsselnden Text als String ein");
-		                	sInput = inputReader.next();
+		                	sInput = inputReader.nextLine();
+		                	if(hmVariable!=null) hmVariable.put("INPUT_TEXT_UNCRYPTED", sInput);
 		                	
 		                	this.isCurrentInput(true);
 		                	this.getConsole().isInputFinished(true);
@@ -113,19 +139,6 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 	            }//end while
 	    	}//end main:
 	    	return bReturn;
-        }
-        
-        public boolean isCurrentInput() {
-        	return this.bCurrentInput;
-        }
-        public void isCurrentInput(boolean bCurrentInput) {
-        	this.bCurrentInput = bCurrentInput;
-        }
-        public boolean isCurrentMenue() {
-        	return this.bMakeMenue;
-        }
-        public void isCurrentMenue(boolean bMakeMenue) {
-        	this.bMakeMenue = bMakeMenue;
-        }
+		}
     }
 
