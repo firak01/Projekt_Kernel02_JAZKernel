@@ -46,13 +46,13 @@ private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss
 					}
 			}//end check
 		
-		if(sCipher.equalsIgnoreCase("ROT13")){
+		if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation())){
 			objReturn = new ROT13ZZZ();
-		}else if(sCipher.equalsIgnoreCase("ROTnumeric")){
+		}else if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnumeric.getAbbreviation())){
 			objReturn = new ROTnumericZZZ();
-		}else if(sCipher.equalsIgnoreCase("ROTascii")) {
+		}else if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTascii.getAbbreviation())) {
 			objReturn = new ROTasciiZZZ();
-		}else if(sCipher.equalsIgnoreCase("ROTnn")) {
+		}else if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnn.getAbbreviation())) {
 			objReturn = new ROTnnZZZ();
 		
 		}else{

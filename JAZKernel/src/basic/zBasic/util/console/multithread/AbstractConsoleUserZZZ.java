@@ -7,7 +7,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConsoleUserZZZ {	
-	private IConsoleZZZ objConsole=null;
+	protected IConsoleZZZ objConsole=null;
 	private int iCounter = 0;
 	
 	public AbstractConsoleUserZZZ()  throws ExceptionZZZ {

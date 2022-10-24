@@ -53,7 +53,8 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 		@Override
 		public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
 			boolean bReturn=false;
-			main:{					
+			main:{		
+				boolean bResult = false;
 				try {    				
 		           while(!this.isStopped()) {
 		                long lSleepTime = this.getConsole().getSleepTime();
@@ -68,11 +69,13 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 			                	this.requestStop();
 			                }else {	
 			                	if(hmVariable==null) {
-			                		this.getConsole().getConsoleUserObject().start();
+			                		bResult = this.getConsole().getConsoleUserObject().start();
 			                	}else {
-			                		this.getConsole().getConsoleUserObject().start(hmVariable);  			                		
+			                	    bResult = this.getConsole().getConsoleUserObject().start(hmVariable);  			                		
 			                	}
-			                	this.getConsole().isConsoleUserThreadFinished(true);
+			                	if(bResult) {
+			                		this.getConsole().isConsoleUserThreadFinished(true);
+			                	}
 			                }
 		                }else {
 		                	this.requestStop();

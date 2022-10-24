@@ -2,6 +2,9 @@ package basic.zBasic.util.console.multithread;
 
 import java.util.Scanner;
 
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+
 
 	 
 	public class KeyPressThreadDefaultZZZ extends AbstractKeyPressThreadZZZ {
@@ -12,8 +15,17 @@ import java.util.Scanner;
         	super(objConsole, lSleepTime);
         }
        
-        public boolean start(){
+        public boolean start() throws ExceptionZZZ{
         	boolean bReturn = false;
+        	main:{
+    			bReturn = this.start(null);
+	    	}//end main:
+	    	return bReturn;
+        }
+
+		@Override
+		public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
+			boolean bReturn = false;
         	main:{
     			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
     			//       Darum muss man alle Eingaben in dem KeyPressThread erledigen
@@ -49,6 +61,8 @@ import java.util.Scanner;
 	            bReturn = true;
 	    	}//end main:
 	    	return bReturn;
-        }
+		}
+
+		
     }
 

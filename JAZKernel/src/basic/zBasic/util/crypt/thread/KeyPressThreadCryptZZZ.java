@@ -4,10 +4,11 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
+import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
 
 
 	 
-	public class KeyPressThreadCryptZZZ extends AbstractKeyPressThreadZZZ {
+	public class KeyPressThreadCryptZZZ extends AbstractKeyPressThreadZZZ implements IKeyPressThreadCryptConstantsZZZ{
 		boolean bCurrentInput=false;
 		boolean bMakeMenue=true;//true, damit die erste Anzeige generiert wird
 		
@@ -43,7 +44,7 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
     			//       Darum muss man alle Eingaben in diesem KeyPressThread erledigen
 	        	
 	            while(!this.isStopped()){
-	            	this.getConsole().isInputFinished(false);
+	            	this.isInputFinished(false);
 	            		            	
 	            	long lSleepTime = this.getSleepTime();
 	            	while(!this.getConsole().isInputFinished()) {
@@ -71,6 +72,7 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 		                //Das keine lowercase Methode oder eine Fallunterscheidung in den CASE eingebaut werden kann, 
 		                //vorher lowercase
 		                String input = sInput.toLowerCase();
+		                String sCipher=null;
 		                switch(input) {
 		                case "+":
 		                	lSleepTime+=100;
@@ -88,17 +90,31 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 		                    this.isCurrentInput(true);
 		                	break; // stop KeyPressThread über die gesetzte STOP Variable
 		                case "1":
+		                	
+		                	if(hmVariable!=null) {
+		                		sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation();
+		                		hmVariable.put(this.sINPUT_CIPHER, sCipher);
+		                	}
+		                	
+		                	
 		                	//ggfs. weitere Eingaben abfragen
 		                	System.out.println("Geben Sie den zu verschlüsselnden Text als String ein");
 		                	
 		                	 //das holt wohl wort fuer wort von der Konsole: sInput = inputReader.next();
 				        	sInput = inputReader.nextLine();
 		                	
-		                	if(hmVariable!=null) hmVariable.put("INPUT_TEXT_UNCRYPTED", sInput);
+		                	if(hmVariable!=null) hmVariable.put(this.sINPUT_TEXT_UNCRYPTED, sInput);
 		                	this.isCurrentInput(true);
-		                	this.getConsole().isInputFinished(true);
+		                	this.isInputFinished(true);		                	
 		                	break;
 		                case "2":
+		                	
+		                	if(hmVariable!=null) {
+		                		sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation();
+		                		hmVariable.put(this.sINPUT_CIPHER, sCipher);
+		                	}
+		                	
+		                	
 		                	//ggfs. weitere Eingaben
 		                	System.out.println("Geben Sie den Charakterpool als String ein.");		                	
 		                	sInput = inputReader.nextLine();
@@ -109,7 +125,7 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 		                	if(hmVariable!=null) hmVariable.put("INPUT_TEXT_UNCRYPTED", sInput);
 		                	
 		                	this.isCurrentInput(true);
-		                	this.getConsole().isInputFinished(true);
+		                	this.isInputFinished(true);	
 		                	break;
 		                default:
 		                	System.out.println("ungültige Eingabe");

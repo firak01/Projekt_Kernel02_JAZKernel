@@ -6,8 +6,6 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
-import basic.zBasic.util.crypt.Rot13ZZZ;
-import basic.zBasic.util.crypt.ROTnumericZZZ;
 
 /** Rotate the input string.
  *   ... Then rotate the rotated string.

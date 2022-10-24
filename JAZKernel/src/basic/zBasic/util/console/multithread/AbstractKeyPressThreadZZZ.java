@@ -17,7 +17,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 	 */
 	public abstract class AbstractKeyPressThreadZZZ implements Runnable,IConsoleUserZZZ,IKeyPressThreadZZZ {
 		private long lSleepTime=1000;//default
-		IConsoleZZZ objConsole = null; //Darüber werden die Variablen und auch die Eingaben ausgetauscht
+		protected IConsoleZZZ objConsole = null; //Darüber werden die Variablen und auch die Eingaben ausgetauscht
 		
 		@Override
 		 public long getSleepTime() {
@@ -86,5 +86,8 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
     	    	
     	@Override
     	public abstract boolean start() throws ExceptionZZZ;
+    	
+    	@Override
+		public abstract boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ;
     }
 

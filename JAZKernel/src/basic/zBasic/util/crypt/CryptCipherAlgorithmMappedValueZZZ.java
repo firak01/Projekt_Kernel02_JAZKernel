@@ -58,17 +58,18 @@ public class CryptCipherAlgorithmMappedValueZZZ  implements Serializable{
 //ALIAS("Beschreibung, wird nicht genutzt....","Abkürzung, also das, was im URL String steht. Meist gefolgt von einem  Doppelpunkt, der hinzugerchnet wird, wenn die Abkürzung nicht leer ist.")
 public enum CryptCipherTypeZZZ implements IEnumSetMappedZZZ, IEnumSetZZZ {//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 	ROT13("ROT13","simple encrytption methode for the characters a-z, using a fix number to rotate."),
+	ROTascii("ROTascii","simple encrytption methode for the ASCII characters."),
 	ROTnumeric("ROTnumeric","simple encrytption methode for the characters a-z PLUS 0-9, using a parameter for the number to rotate."),
 	ROTnn("ROTnn","simple encrytption methode for the characters provided by a character list, using a parameter for the number to rotate.");
 	
-private String fullName, abbr;
+private String descr, abbr;
 
 //#############################################
 //#### Konstruktoren
 //Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 //In der Util-Klasse habe ich aber einen Workaround gefunden.
-CryptCipherTypeZZZ(String fullName, String abbr) {
-    this.fullName = fullName;
+CryptCipherTypeZZZ(String abbr, String descr) {
+    this.descr = descr;
     this.abbr = abbr;
 }
 
@@ -77,12 +78,6 @@ CryptCipherTypeZZZ(String fullName, String abbr) {
 public String getAbbreviation() {
  return this.abbr;
 }
-
-public String getFullname(){
-	return this.fullName;
-}
-
-
 
 public EnumSet<?>getEnumSetUsed(){
 	return CryptCipherTypeZZZ.getEnumSet();
@@ -143,7 +138,7 @@ public String getName() {
 
 @Override
 public String toString() {
-    return this.fullName+"="+this.abbr+"#";
+    return this.abbr+"#"+this.descr;
 }
 
 @Override
@@ -159,7 +154,7 @@ public int getPosition() {
 
 @Override
 public String getDescription() {
-	return this.fullName;
+	return this.descr;
 }
 //+++++++++++++++++++++++++
 }//End internal Class	
