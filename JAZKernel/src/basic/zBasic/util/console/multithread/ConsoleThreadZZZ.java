@@ -75,6 +75,9 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 			                	}
 			                	if(bResult) {
 			                		this.getConsole().isConsoleUserThreadFinished(true);
+			                	}else {
+			                		this.getConsole().isInputFinished(false);
+			                		this.getConsole().isConsoleUserThreadFinished(true);
 			                	}
 			                }
 		                }else {
