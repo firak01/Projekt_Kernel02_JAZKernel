@@ -22,22 +22,19 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 	}
 
 	private int iCounter = 0;
-	
-	public boolean start() throws ExceptionZZZ {
-		HashMapExtendedZZZ<String, Object> hmVariable = this.getConsole().getVariableHashMap();
-		return this.start(hmVariable);
-	}
-	
+		
 	public int getcounter() {
 		return this.iCounter;
 	}
 	
 	@Override
-	public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
+	public boolean start() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(this.isStopped()) break main;
 
+			String sInput = null;
+			
 			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
 			//       Darum muss man alles in dem KeyPressThread erledigen
 			//Warten auf die fertige Eingabe.
@@ -46,6 +43,7 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			this.iCounter++;
 			System.out.println("Zähler crypt: " + iCounter);
 
+			HashMapExtendedZZZ<String,Object>hmVariable=this.getConsole().getVariableHashMap();
 			if(hmVariable!=null) {
 				String sDebug = hmVariable.debugString("|","<BR>");
 				System.out.println(sDebug);
@@ -63,10 +61,18 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			if(!StringZZZ.isEmpty(sCipher)) {
 				ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(sCipher);
 				
-				String sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);			
+				//+++ Zätzlich gesetzte Argumente
+				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
+				if(!StringZZZ.isEmpty(sInput)) {
+					objCrypt.setCharacterPool(sInput);
+				}
+				//+++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);			
 				String sOutput = objCrypt.encrypt(sInput);
 				hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_CRYPTED, sOutput);
-				
+												
 				System.out.println("Verschluesselter Wert:\n"+sOutput);
 				String sOutput2 = objCrypt.decrypt(sOutput);
 				hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_UNCRYPTED, sOutput2);

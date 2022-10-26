@@ -35,9 +35,6 @@ public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConso
 	@Override
 	public abstract boolean start() throws ExceptionZZZ;
 		
-	@Override 
-	public abstract boolean start(HashMapExtendedZZZ<String,Object> hmVariable) throws ExceptionZZZ;
-	
 	public int getcounter() {
 		return this.iCounter;
 	}

@@ -13,21 +13,14 @@ public class DummyConsoleUserZZZ extends AbstractConsoleUserZZZ {
 
 	private int iCounter = 0;
 
-	@Override
-	public boolean start() throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-			bReturn = this.start(null);
-		}//end main:
-		return bReturn;
-	}
+	
 	
 	public int getcounter() {
 		return this.iCounter;
 	}
 	
 	@Override
-	public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
+	public boolean start() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(this.isStopped()) break main;

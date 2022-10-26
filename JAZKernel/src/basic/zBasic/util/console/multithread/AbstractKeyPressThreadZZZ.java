@@ -61,9 +61,8 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 		@Override
         public void run() 
         {
-        	try {
-        		HashMapExtendedZZZ<String,Object> hmVariable = this.getConsole().getVariableHashMap();
-				this.start(hmVariable);
+        	try {        		
+				this.start();
 			} catch (ExceptionZZZ e) {				
 				e.printStackTrace();
 			}
@@ -85,9 +84,6 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
     	}
     	    	
     	@Override
-    	public abstract boolean start() throws ExceptionZZZ;
-    	
-    	@Override
-		public abstract boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ;
+    	public abstract boolean start() throws ExceptionZZZ;    	
     }
 

@@ -15,16 +15,8 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
         	super(objConsole, lSleepTime);
         }
        
-        public boolean start() throws ExceptionZZZ{
-        	boolean bReturn = false;
-        	main:{
-    			bReturn = this.start(null);
-	    	}//end main:
-	    	return bReturn;
-        }
-
-		@Override
-		public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
+ 		@Override
+		public boolean start() throws ExceptionZZZ {
 			boolean bReturn = false;
         	main:{
     			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.

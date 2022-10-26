@@ -17,9 +17,8 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
      
 		public void run() 
         {
-        	try {
-        		HashMapExtendedZZZ<String,Object> hmVariable = this.getConsole().getVariableHashMap();
-				this.start(hmVariable);
+        	try {        		
+				this.start();
 			} catch (ExceptionZZZ e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -36,11 +35,6 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
     		this.isStopped(true);
     	}
 		
-		 
-		@Override
-		public boolean start() throws ExceptionZZZ {
-			return this.start(null);
-		}
 		@Override
 		public IConsoleZZZ getConsole() {
 			return this.objConsole;
@@ -51,7 +45,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 		}
 
 		@Override
-		public boolean start(HashMapExtendedZZZ<String, Object> hmVariable) throws ExceptionZZZ {
+		public boolean start() throws ExceptionZZZ {
 			boolean bReturn=false;
 			main:{		
 				boolean bResult = false;
@@ -59,29 +53,27 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 		           while(!this.isStopped()) {
 		                long lSleepTime = this.getConsole().getSleepTime();
 		                //System.out.println("ConsoleThread.sleep: " + lSleepTime);
-		                Thread.sleep(lSleepTime);
-		                
-		                IConsoleUserZZZ objUser = this.getConsole().getConsoleUserObject();
-		                if(objUser!=null) {
-		                	boolean bStop = this.getConsole().isStopped(); 
-			                if(bStop) {
-			                	this.getConsole().getConsoleUserObject().requestStop();
-			                	this.requestStop();
-			                }else {	
-			                	if(hmVariable==null) {
-			                		bResult = this.getConsole().getConsoleUserObject().start();
-			                	}else {
-			                	    bResult = this.getConsole().getConsoleUserObject().start(hmVariable);  			                		
-			                	}
-			                	if(bResult) {
-			                		this.getConsole().isConsoleUserThreadFinished(true);
-			                	}else {
+		                Thread.sleep(lSleepTime);		                		                
+		                if(this.getConsole().isInputFinished()){
+			                IConsoleUserZZZ objUser = this.getConsole().getConsoleUserObject();
+			                if(objUser!=null) {
+			                	boolean bStop = this.getConsole().isStopped(); 
+				                if(bStop) {
+				                	this.getConsole().getConsoleUserObject().requestStop();
+				                	this.requestStop();
+				                }else {				                			                		
+			                		do {
+			                			HashMapExtendedZZZ<String,Object>hmVariable = this.getConsole().getVariableHashMap();
+			                			if(hmVariable!=null) {
+					                		bResult = this.getConsole().getConsoleUserObject().start();					                	
+					                	}				                			
+			                		}while(!bResult);
+			                		this.getConsole().isConsoleUserThreadFinished(true);			                		
 			                		this.getConsole().isInputFinished(false);
-			                		this.getConsole().isConsoleUserThreadFinished(true);
-			                	}
+				                	}			                				               
+			                }else {
+			                	this.requestStop();
 			                }
-		                }else {
-		                	this.requestStop();
 		                }
 	                }//end while	               
 		            bReturn = true;

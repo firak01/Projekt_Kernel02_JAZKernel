@@ -23,7 +23,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class ROTnnZZZ extends ROTasciiZZZ{
-	public static String sCHARACTER_POOL_DEFAULT="abcdefghijklmnopqrstuvwxyz";
+	public static String sCHARACTER_POOL_DEFAULT=" abcdefghijklmnopqrstuvwxyz";
 	
 	ROTnnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
 		super();
