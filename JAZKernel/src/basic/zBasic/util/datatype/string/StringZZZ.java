@@ -381,6 +381,50 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	/** Hier muss man nicht auf NULL achten, wenn man den String mit einem Character vergleicht.
+	 * @param sString
+	 * @param c
+	 * @return
+	 * @author Fritz Lindhauer, 27.10.2022, 12:19:10
+	 */
+	public static boolean equalsIgnoreCase(String sString, char cMatch){
+		boolean bReturn = true;
+		main:{
+			if(sString==null && cMatch == CharZZZ.getEmpty()){
+				bReturn = true;
+				break main;
+			}
+			if(sString!=null && cMatch == CharZZZ.getEmpty()){
+				bReturn = false;
+				break main;				
+			}
+			if(sString==null && cMatch != CharZZZ.getEmpty()){
+				bReturn = false;
+				break main;
+			}
+									
+			char[]ca=sString.toCharArray();
+			if(ca.length==0) {
+				bReturn = false;
+				break main;
+			}
+			
+			if(ca.length>=2) {
+				bReturn = false;
+				break main;
+			}
+		
+			char c = ca[0];
+			if(c!=CharZZZ.toUppercase(cMatch) && c!=CharZZZ.toLowercase(cMatch)) {
+				bReturn = false;
+				break main;
+			}		
+			
+			
+		}//end main:
+		return bReturn;
+	}
+	
 	/** Hier muss man nicht auf NULL achten, wenn man die Strings miteinander vergleicht.
 	 * @param sString
 	 * @param sMatch
@@ -2395,6 +2439,16 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			}
 		}
 		return iReturn;
+	}
+	
+	public static String trim(String sString) {
+		return StringZZZ.trim(sString," ");
+	}
+	
+	public static String trim(String sString, String sStringToBeTrimmed) {
+		String sReturn = StringZZZ.trimLeft(sString, sStringToBeTrimmed);
+		sReturn = StringZZZ.trimRight(sString, sStringToBeTrimmed);
+		return sReturn;
 	}
 	
 	public static String trimLeft(String sString, String sStringToBeTrimmed){

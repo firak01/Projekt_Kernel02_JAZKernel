@@ -6,9 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 
 	public class ConsoleThreadZZZ implements Runnable,IConsoleThreadZZZ, IConsoleUserZZZ {
-		private IConsoleZZZ objConsole = null;		
-				
-        Scanner inputReader = new Scanner(System.in);
+		volatile IConsoleZZZ objConsole = null;		
 
         //Method that gets called when the object is instantiated
         public ConsoleThreadZZZ(IConsoleZZZ objConsole) {

@@ -1,5 +1,7 @@
 package debug.zBasic.util.crypt.thread;
 
+import java.util.Scanner;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;

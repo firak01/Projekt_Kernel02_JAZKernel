@@ -33,6 +33,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 						e.printStackTrace();
 					}
 	
+		        	Scanner inputReader = this.getInputReader();
 	                String input = inputReader.next();
 	                System.out.println("Pressed " + input);
 	                if (input.equals("[")) {

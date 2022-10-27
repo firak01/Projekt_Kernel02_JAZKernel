@@ -1,9 +1,13 @@
 package basic.zBasic.util.crypt.thread;
 
+import java.util.Scanner;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
+import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
+import basic.zBasic.util.console.multithread.KeyPressUtilZZZ;
 import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -76,6 +80,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 							}
 			
 			                //das holt wohl wort fuer wort von der Konsole: String sInput = inputReader.next();
+				        	Scanner inputReader = this.getInputReader();
 				        	sInput = inputReader.nextLine();
 			                System.out.println("Pressed Crypt:" + sInput);
 			                if(sInput==null) break main;
@@ -164,31 +169,19 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		                	sInput = inputReader.nextLine();
 		                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED, sInput);
 		                	
-		                	bGoon = false;
-		                	do {
-			                	System.out.println("Wollen Sie mit den gleichen Angaben weiteren Text verschluesseln [y]/[N]?");
-			                	sInput = inputReader.nextLine();
-			                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, sInput);
-			                	if(StringZZZ.isEmpty(sInput)){
-			                		System.out.println("ungültige Eingabe");
-			                		bGoon = false;
-			                	}else if(sInput.equalsIgnoreCase("Y")) {				                		
-			                		bGoon = true;
-			                	}else if(sInput.equalsIgnoreCase("N")) {				                		
-				                	bGoon = true;
-			                	}else if(sInput.equalsIgnoreCase("Q")) {
-			                		System.out.println("Abbruch");
-			                		this.isCurrentInput(true);
-			                		this.isCurrentMenue(true);
-			                	}else {
-			                		System.out.println("ungültige Eingabe");			                		
-				                	bGoon=false;				                	
-			                	}
-		                	}while(!bGoon);
-		                	
-		                	this.isCurrentInput(true);
-		                	this.isInputFinished(true);
-				        	
+	                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie danach mit den gleichen Angaben weiteren Text verschluesseln?");
+	                		this.isCurrentInput(true);
+	                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, sInput);		    	                			                				                	
+	                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+		                		System.out.println("Abbruch dieses Laufs");
+		                		this.requestStop();
+	                		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	                			System.out.println("Zurück zum Menue");
+		                		this.isInputFinished(true);
+		                		this.isCurrentMenue(true);
+		                	}else {		               		                		
+		                		this.isInputFinished(true);
+		                	}
 				        	//#########################################################################
 			                try {
 			                	//System.out.println("Nach der Eingabe.");

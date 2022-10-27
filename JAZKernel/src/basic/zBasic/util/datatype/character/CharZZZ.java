@@ -72,5 +72,13 @@ public class CharZZZ {
 	public static String toString(char c){
 		return Character.toString(c);
 	}
+	
+	public static char toLowercase(char c) {
+		return Character.toLowerCase(c);
+	}
+	
+	public static char toUppercase(char c) {
+		return Character.toUpperCase(c);
+	}
 		
 }

@@ -1,5 +1,7 @@
 package basic.zBasic.util.console.multithread;
 
+import java.util.Scanner;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 

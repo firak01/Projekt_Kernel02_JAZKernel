@@ -1,4 +1,8 @@
 package basic.zBasic.util.console.multithread;
 
-public interface IConsoleThreadZZZ extends IConsoleUserZZZ, IThreadUserZZZ{
+import java.util.Scanner;
+
+public interface IConsoleThreadZZZ extends IConsoleUserZZZ, IThreadUserZZZ{	
+	//public Scanner getInputReader();
+	//public void setInputReader(Scanner objScanner);
 }

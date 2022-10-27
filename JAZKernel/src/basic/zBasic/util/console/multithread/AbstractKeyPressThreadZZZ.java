@@ -16,8 +16,11 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 	 * 
 	 */
 	public abstract class AbstractKeyPressThreadZZZ implements Runnable,IConsoleUserZZZ,IKeyPressThreadZZZ {
-		private long lSleepTime=1000;//default
+		protected Scanner inputReader = new Scanner(System.in);
 		protected IConsoleZZZ objConsole = null; //Darüber werden die Variablen und auch die Eingaben ausgetauscht
+		
+		private long lSleepTime=1000;//default
+		
 		
 		@Override
 		 public long getSleepTime() {
@@ -38,8 +41,6 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 				this.getConsole().isInputFinished(bFinished);
 			}
 		
-        protected Scanner inputReader = new Scanner(System.in);
-
         //Method that gets called when the object is instantiated
         public AbstractKeyPressThreadZZZ(IConsoleZZZ objConsole) {
         	this.setConsole(objConsole);
@@ -57,6 +58,17 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 		public void setConsole(IConsoleZZZ objConsole) {
 			this.objConsole = objConsole;
 		}
+		
+		@Override
+		public Scanner getInputReader() {
+			return this.inputReader;
+		}
+		
+		@Override
+		public void setInputReader(Scanner inputReader) {
+			this.inputReader = inputReader;
+		}
+		
 		
 		@Override
         public void run() 
