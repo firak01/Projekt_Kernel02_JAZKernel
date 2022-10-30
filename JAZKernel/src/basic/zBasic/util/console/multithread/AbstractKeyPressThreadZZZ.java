@@ -16,8 +16,8 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 	 * 
 	 */
 	public abstract class AbstractKeyPressThreadZZZ implements Runnable,IConsoleUserZZZ,IKeyPressThreadZZZ {
-		protected Scanner inputReader = new Scanner(System.in);
-		protected IConsoleZZZ objConsole = null; //Darüber werden die Variablen und auch die Eingaben ausgetauscht
+		private static Scanner inputReader = new Scanner(System.in);
+		protected volatile static IConsoleZZZ objConsole = null; //Darüber werden die Variablen und auch die Eingaben ausgetauscht
 		
 		private long lSleepTime=1000;//default
 		
@@ -33,12 +33,12 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 		 }
 		 
 		 @Override
-			public boolean isInputFinished() {
-				return this.getConsole().isInputFinished();
+			public boolean isKeyPressThreaFinished() {
+				return this.getConsole().isKeyPressThreadFinished();
 			}
 			@Override
-			public void isInputFinished(boolean bFinished) {
-				this.getConsole().isInputFinished(bFinished);
+			public void isKeyPressThreadFinished(boolean bFinished) {
+				this.getConsole().isKeyPressThreadFinished(bFinished);
 			}
 		
         //Method that gets called when the object is instantiated
@@ -51,11 +51,11 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
         }
        
         @Override
-		public IConsoleZZZ getConsole() {
+		public synchronized IConsoleZZZ getConsole() {
 			return this.objConsole;
 		}
 		@Override
-		public void setConsole(IConsoleZZZ objConsole) {
+		public synchronized void setConsole(IConsoleZZZ objConsole) {
 			this.objConsole = objConsole;
 		}
 		

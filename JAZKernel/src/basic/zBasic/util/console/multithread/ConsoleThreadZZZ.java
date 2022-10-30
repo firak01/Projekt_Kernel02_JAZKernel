@@ -4,9 +4,10 @@ import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import debug.zBasic.util.crypt.thread.DummyConsoleUserCryptZZZ;
 
 	public class ConsoleThreadZZZ implements Runnable,IConsoleThreadZZZ, IConsoleUserZZZ {
-		volatile IConsoleZZZ objConsole = null;		
+		private IConsoleZZZ objConsole = null;		
 
         //Method that gets called when the object is instantiated
         public ConsoleThreadZZZ(IConsoleZZZ objConsole) {
@@ -17,9 +18,9 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
         {
         	try {        		
 				this.start();
-			} catch (ExceptionZZZ e) {
-				// TODO Auto-generated catch block
+			} catch (ExceptionZZZ e) {				
 				e.printStackTrace();
+				this.requestStop();
 			}
         }
         
@@ -46,13 +47,12 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 		public boolean start() throws ExceptionZZZ {
 			boolean bReturn=false;
 			main:{		
-				boolean bResult = false;
 				try {    				
 		           while(!this.isStopped()) {
 		                long lSleepTime = this.getConsole().getSleepTime();
 		                //System.out.println("ConsoleThread.sleep: " + lSleepTime);
-		                Thread.sleep(lSleepTime);		                		                
-		                if(this.getConsole().isInputFinished()){
+		                Thread.sleep(lSleepTime);			                		               
+		                if(this.getConsole().isInputAllFinished()&& this.getConsole().isOutputAllFinished()){
 			                IConsoleUserZZZ objUser = this.getConsole().getConsoleUserObject();
 			                if(objUser!=null) {
 			                	boolean bStop = this.getConsole().isStopped(); 
@@ -60,15 +60,11 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 				                	this.getConsole().getConsoleUserObject().requestStop();
 				                	this.requestStop();
 				                }else {				                			                		
-			                		do {
-			                			HashMapExtendedZZZ<String,Object>hmVariable = this.getConsole().getVariableHashMap();
-			                			if(hmVariable!=null) {
-					                		bResult = this.getConsole().getConsoleUserObject().start();					                	
-					                	}				                			
-			                		}while(!bResult);
-			                		this.getConsole().isConsoleUserThreadFinished(true);			                		
-			                		this.getConsole().isInputFinished(false);
-				                	}			                				               
+			                		if(!this.getConsole().isConsoleUserThreadRunning()) { //den Thread nicht mehrmals starten
+					                		boolean bResult = this.getConsole().getConsoleUserObject().start();					                		
+					                		this.getConsole().isInputAllFinished(false); //Bereit für neue Eingabe...					                				                			
+			                		}//end if isConsoleUserThreadRunning()
+				                }			                				               
 			                }else {
 			                	this.requestStop();
 			                }

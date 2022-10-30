@@ -7,7 +7,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConsoleUserZZZ {	
-	protected IConsoleZZZ objConsole=null;
+	private IConsoleZZZ objConsole=null;
 	private int iCounter = 0;
 	
 	public AbstractConsoleUserZZZ()  throws ExceptionZZZ {
@@ -38,6 +38,14 @@ public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConso
 	public int getcounter() {
 		return this.iCounter;
 	}
+	
+	public synchronized boolean isOutputAllFinished() {
+		return this.getConsole().isOutputAllFinished();
+	}
+	public synchronized void isOutputAllFinished(boolean bOutputFinished) {
+		this.getConsole().isOutputAllFinished(bOutputFinished);
+	}
+	
 
 	@Override
 	public void requestStop() {
@@ -55,12 +63,12 @@ public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConso
 	}
 	 
 	@Override
-	public IConsoleZZZ getConsole() {
+	public synchronized IConsoleZZZ getConsole() {
 		return this.objConsole;
 	}
 	
 	@Override
-	public void setConsole(IConsoleZZZ objConsole) {
+	public synchronized void setConsole(IConsoleZZZ objConsole) {
 		this.objConsole = objConsole;
 	}
 }

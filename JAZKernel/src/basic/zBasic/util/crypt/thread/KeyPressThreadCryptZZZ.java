@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
 	 
 	public class KeyPressThreadCryptZZZ extends AbstractKeyPressThreadZZZ implements IKeyPressThreadCryptConstantsZZZ{
-		boolean bCurrentInput=false;
+		boolean bCurrentInputValid=false;
 		boolean bMakeMenue=true;//true, damit die erste Anzeige generiert wird
 		
         //Method that gets called when the object is instantiated
@@ -26,11 +26,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	super(objConsole, lSleepTime);
         }
                
-        public boolean isCurrentInput() {
-        	return this.bCurrentInput;
+        public boolean isCurrentInputValid() {
+        	return this.bCurrentInputValid;
         }
-        public void isCurrentInput(boolean bCurrentInput) {
-        	this.bCurrentInput = bCurrentInput;
+        public void isCurrentInputValid(boolean bCurrentInput) {
+        	this.bCurrentInputValid = bCurrentInput;
         }
         public boolean isCurrentMenue() {
         	return this.bMakeMenue;
@@ -38,20 +38,30 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         public void isCurrentMenue(boolean bMakeMenue) {
         	this.bMakeMenue = bMakeMenue;
         }
+        public synchronized boolean isInputAllFinished() {
+        	return this.getConsole().isInputAllFinished();
+        }
+        public synchronized void isInputAllFinished(boolean bInputAllFinished) {
+        	this.getConsole().isInputAllFinished(bInputAllFinished);
+        }
 		@Override
 		public boolean start() throws ExceptionZZZ {
-			boolean bReturn = false;
+			boolean bReturn = true;
         	main:{
     			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
-    			//       Darum muss man alle Eingaben in diesem KeyPressThread erledigen
-	        	
-				HashMapExtendedZZZ hmVariable = this.getConsole().getVariableHashMap();
+    			//       Darum muss man alle Eingaben in diesem KeyPressThread erledigen				
+				this.getConsole().isKeyPressThreadRunning(true);
+				
+				HashMapExtendedZZZ hmVariable = this.getConsole().getVariableHashMap();								
 	            while(!this.isStopped()){
+	            	
 	            	long lSleepTime = this.getSleepTime();
-	            	input:{
-	            		String sInput = null; boolean bSkipArguments=false;	boolean bGoon = false;String sCipher=null;
-		            	this.isInputFinished(false);		            		            			            	
-		            	while(!this.getConsole().isInputFinished()) {		            					        	
+	            	//synchronized(this) {
+	            	input:{	            		
+	            		String sInput = null; boolean bSkipArguments=false;	String sCipher=null;
+		            		            		            			            	
+		            	//while(!this.getConsole().isKeyPressThreadFinished()) {
+		            	if(!this.isInputAllFinished()) {
 			        	    if(hmVariable!=null) {
 			        	    	sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS);
 			        	        if(!StringZZZ.isEmpty(sInput)) {
@@ -63,151 +73,152 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 				        	   
 			        	    //########################################################
 			        	    //#### Eingabe der Argumente
-				        	if(!bSkipArguments) {
-				        	 try {
-				        		if(this.bMakeMenue) {
-					        		System.out.println("Eingaben: + - zur Console-Threadgeschwindigkeit | Q zum Abbruch");
-									System.out.println("Bitte wählen Sie den Algorithmus:");
-									System.out.println("1: Rot13");
-									System.out.println("2: RotNn");
-					             	System.out.println("Warte auf Eingabe Crypt...");                 	
-									Thread.sleep(lSleepTime);   
-									this.isCurrentInput(false);
-				        		}
-							} catch (InterruptedException e) {
-								System.out.println("KeyPressThread: 1. Wait Error");
-								e.printStackTrace();
-							}
+				        	if(!bSkipArguments) {				        		
+				        		do {
+				        			this.isCurrentInputValid(false);
+						        	 try {
+						        		if(this.isCurrentMenue()) {				        			
+							        		System.out.println("Eingaben: + - zur Console-Threadgeschwindigkeit | Q zum Abbruch");
+											System.out.println("Bitte wählen Sie den Algorithmus:");
+											System.out.println("1: Rot13");
+											System.out.println("2: RotNn");
+							             	System.out.println("Warte auf Eingabe Crypt...");                 	
+											Thread.sleep(lSleepTime);   									
+						        		}
+									} catch (InterruptedException e) {
+										System.out.println("KeyPressThread: 1. Wait Error");
+										e.printStackTrace();
+									}
 			
-			                //das holt wohl wort fuer wort von der Konsole: String sInput = inputReader.next();
-				        	Scanner inputReader = this.getInputReader();
-				        	sInput = inputReader.nextLine();
-			                System.out.println("Pressed Crypt:" + sInput);
-			                if(sInput==null) break main;
+					                //das holt wohl wort fuer wort von der Konsole: String sInput = inputReader.next();
+						        	Scanner inputReader = this.getInputReader();				      
+						        	sInput = inputReader.nextLine();
+					                System.out.println("Pressed Crypt:" + sInput);
+					                if(sInput==null) break main;
+					                
+					                //In the JDK 7 release, you can use a String object in the expression of a switch statement:
+					                //Das keine lowercase Methode oder eine Fallunterscheidung in den CASE eingebaut werden kann, 
+					                //vorher lowercase
+					                this.isCurrentMenue(true);
+					                String input = sInput.toLowerCase();			                
+					                switch(input) {
+					                case "+":
+					                	this.isCurrentInputValid(true);					                	
+					                	lSleepTime+=100;
+					                	this.getConsole().setSleepTime(lSleepTime);			                	
+					                	break;
+					                case "-":
+					                	this.isCurrentInputValid(true);
+					                	lSleepTime-=100;
+					                	this.getConsole().setSleepTime(lSleepTime);			                	
+					                	break;
+					                case "q":
+					                	System.out.println("Beenden");		                					                    
+					                    this.isCurrentInputValid(true);
+					                    this.isKeyPressThreadFinished(true);
+					                    this.requestStop(); //stop KeyPressThread über die gesetzte STOP Variable
+					                	break main; 
+					                case "1":
+					                	this.isCurrentInputValid(true);
+					                	if(hmVariable!=null) {
+					                		sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation();
+					                		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
+					                	}
+					                						                						                						                					                		               
+					                	break;
+					                case "2":
+					                	this.isCurrentInputValid(true);
+					                	if(hmVariable!=null) {
+					                		sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnn.getAbbreviation();
+					                		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
+					                	}	
+					                	
+					                	//######################################################################
+					                	//### Frage nach Characterpool
+					                	this.isCurrentInputValid(false);
+				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie den Standard-Characterpool verwenden?");
+				                		this.isCurrentInputValid(true);
+				                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, sInput);		    	                			                				                					                		
+				                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+				                			System.out.println("Abbruch. Zurück zum Menue");
+				                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, IKeyPressConstantZZZ.cKeyNo);//wieder so als würde das Menü nicht übersprungen.
+					                		this.isCurrentMenue(true);
+					                		this.isCurrentInputValid(false);
+				                		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+				                			System.out.println("Geben Sie den Charakterpool als String ein.");		                	
+						                	sInput = inputReader.nextLine();			                	
+						                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, sInput);
+					                	}else {
+					                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, ROTnnZZZ.sCHARACTER_POOL_DEFAULT);
+				
+					                	}		
+				                		//#####################################################################
+					                	break;
+					                default:
+					                	System.out.println("ungültige Eingabe");
+					                	this.isCurrentMenue(false);//Neue Eingabe OHNE erneut das Menue aufzubauen.
+					                	this.isCurrentInputValid(false);					                	
+					                	break;
+					                }		 
 			                
-			                //In the JDK 7 release, you can use a String object in the expression of a switch statement:
-			                //Das keine lowercase Methode oder eine Fallunterscheidung in den CASE eingebaut werden kann, 
-			                //vorher lowercase
-			                String input = sInput.toLowerCase();			                
-			                switch(input) {
-			                case "+":
-			                	lSleepTime+=100;
-			                	this.getConsole().setSleepTime(lSleepTime);
-			                	this.isCurrentInput(true);
-			                	break;
-			                case "-":
-			                	lSleepTime-=100;
-			                	this.getConsole().setSleepTime(lSleepTime);
-			                	this.isCurrentInput(true);
-			                	break;
-			                case "q":
-			                    this.requestStop();
-			                    this.getConsole().isInputFinished(true);
-			                    this.isCurrentInput(true);
-			                	break; // stop KeyPressThread über die gesetzte STOP Variable
-			                case "1":
-			                	
-			                	if(hmVariable!=null) {
-			                		sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation();
-			                		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
-			                	}
-			                	
-			                	
-			                	//ggfs. weitere Eingaben abfragen
-			                	System.out.println("Geben Sie den zu verschlüsselnden Text als String ein");
-			                	
-			                	 //das holt wohl wort fuer wort von der Konsole: sInput = inputReader.next();
-					        	sInput = inputReader.nextLine();
-			                	
-			                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED, sInput);
-			                	this.isCurrentInput(true);
-			                	this.isInputFinished(true);		                	
-			                	break;
-			                case "2":
-			                	
-			                	if(hmVariable!=null) {
-			                		sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnn.getAbbreviation();
-			                		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
-			                	}
-			                	
-			                	bGoon = false;
-			                	do {
-				                	System.out.println("Wollen Sie den Standard-Characterpool verwenden [Y] ('" + ROTnnZZZ.sCHARACTER_POOL_DEFAULT + "') oder einen eigenen eingeben [N], Abbrechen mit [Q]");		                	
-				                	sInput = inputReader.nextLine();
-				                	if(StringZZZ.isEmpty(sInput)){
-				                		System.out.println("ungültige Eingabe");
-				                		bGoon = false;
-				                	}else if(sInput.equalsIgnoreCase("Y")) {
-				                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, ROTnnZZZ.sCHARACTER_POOL_DEFAULT);
-				                		bGoon = true;
-				                	}else if(sInput.equalsIgnoreCase("N")) {
-				                		System.out.println("Geben Sie den Charakterpool als String ein.");		                	
-					                	sInput = inputReader.nextLine();			                	
-					                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, sInput);
-					                	bGoon = true;
-				                	}else if(sInput.equalsIgnoreCase("Q")) {
-				                		System.out.println("Abbruch");
-				                		this.isCurrentInput(true);
-				                		this.isCurrentMenue(true);
-				                	}else {
-				                		System.out.println("ungültige Eingabe");			                		
-					                	bGoon=false;				                	
-				                	}
-			                	}while(!bGoon);			                			                				                	
-			                	break;
-			                default:
-			                	System.out.println("ungültige Eingabe");
-			                	this.isCurrentInput(true);
-			                	this.isInputFinished(false);	
-			                }		 
+				        		}while(!this.isCurrentInputValid());	                
 				        	}//end if bSkipArguments
 				        	
 				        	//######################################################################
 				        	//### Eingabe des zu verschlüsselnden Textes
 				        	
 				        	System.out.println("Geben Sie den zu verschlüsselnden Text als String ein");
-		                	sInput = inputReader.nextLine();
+		                	sInput = this.getInputReader().nextLine();
 		                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED, sInput);
 		                	
-	                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie danach mit den gleichen Angaben weiteren Text verschluesseln?");
-	                		this.isCurrentInput(true);
+		                	//######################################################################
+		                	//### Frage nach Mehrfacheingabe
+		                	this.isCurrentInputValid(false);
+	                		sInput = KeyPressUtilZZZ.makeQuestionYesNoQuit(this.getInputReader(), "Wollen Sie danach zurück zum Menue oder mit den akuellen Menueangaben weiteren Text verschluesseln?");
+	                		this.isCurrentInputValid(true);
 	                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, sInput);		    	                			                				                	
-	                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+	                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyQuit)){
 		                		System.out.println("Abbruch dieses Laufs");
-		                		this.requestStop();
+		                		this.requestStop();		                	
 	                		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
-	                			System.out.println("Zurück zum Menue");
-		                		this.isInputFinished(true);
+	                			System.out.println("Zurück zum Menue");		                		
 		                		this.isCurrentMenue(true);
 		                	}else {		               		                		
-		                		this.isInputFinished(true);
+		                		this.isCurrentMenue(false);		                		
 		                	}
+	                		
+	                		
 				        	//#########################################################################
 			                try {
-			                	//System.out.println("Nach der Eingabe.");
-			                	Thread.sleep(lSleepTime);
-			                	bReturn = true;
+			                	System.out.println("Nach der Eingabe.");
+			                	Thread.sleep(lSleepTime);			                	
 							} catch (InterruptedException e) {
 								System.out.println("KeyPressThread: 2. Wait Error");
 								e.printStackTrace();
 							}
-	            		}//end input:
-	            	}//end while
+			                this.isInputAllFinished(true);
+	            		}//end if inputAllFinished
+	            	}//end input:
+	            	//}//End synchro
 	            	
-	            	if(this.getConsole().isInputFinished()==true) {
-		            	while(!this.getConsole().isConsoleUserThreadFinished()) {
-				        	 try {
-				             	System.out.println("Warte auf Ergebnis des Cryptlaufs...");                 	
-								Thread.sleep(lSleepTime);                 	
-							} catch (InterruptedException e) {
-								System.out.println("KeyPressThread: 2. Wait Error");
-								e.printStackTrace();
-							}
-		            	}//end while
-	            	}
-	            }//end while
+	            	while(!this.getConsole().isOutputAllFinished() && !this.getConsole().isConsoleUserThreadFinished() && !this.getConsole().isStopped()) {
+			        	 try {
+			             	System.out.println("Warte auf Ergebnis des Cryptlaufs...");                 	
+							Thread.sleep(lSleepTime);  		
+							//this.isInputAllFinished(false);//Bereit für neue Eingaben, hier und nicht nach der Schleife!!!
+						} catch (InterruptedException e) {
+							System.out.println("KeyPressThread: 2. Wait Error");
+							e.printStackTrace();
+						}
+	            	}//end while		            	
+	            		
+	            	
+	            }//end while isStopped
 	    	}//end main:
+			this.getConsole().isKeyPressThreadFinished(true);
 	    	return bReturn;
 		}
     }
 
+
+    

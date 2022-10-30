@@ -32,16 +32,34 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 	@Override
 	public boolean start() throws ExceptionZZZ {
 		boolean bReturn = false;
+		try {
 		main:{
+			this.getConsole().isConsoleUserThreadRunning(true);
+			//Merke: Diesen Teil nicht als Schleife ausführen... viel zu kompliziert... es gibt schon genug andere Threads
+			//while(!this.isStopped()) {
 			if(this.isStopped()) break main;
-
+			
 			String sInput = null;
 			
 			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
 			//       Darum muss man alles in dem KeyPressThread erledigen
-			//Warten auf die fertige Eingabe.
-			if(!this.getConsole().isInputFinished()) break main;
-		
+			//Warten auf die fertige Eingabe.			
+			//if(!this.getConsole().isKeyPressThreadFinished()) break main;
+			System.out.println("####### CryptThread START: WARTE AUF FERTIGE KONSOLENEINGABE ######");				
+			do {
+				 try {				 
+					 Thread.sleep(200);
+					 //System.out.println("CryptThread wartet auf fertige Konsoleneingabe");
+				} catch (InterruptedException e) {
+					System.out.println("KeyPressThread: Wait Error");
+					e.printStackTrace();
+				}				 
+			}while(!this.getConsole().isInputAllFinished());
+			System.out.println("####### CryptThread ENDE: WARTE AUF FERTIGE KONSOLENEINGABE ######");
+			
+			this.isOutputAllFinished(false);
+			
+			
 			this.iCounter++;
 			System.out.println("Zähler crypt: " + iCounter);
 
@@ -85,15 +103,21 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				System.out.println("noch kein Schluesselalgorithmus festgelegt.");
 				bReturn = false;
 			}
-			System.out.println("#############");
+			System.out.println("####### CryptThread START: DUMMYWARTEN ALS TEST ######");
 			 try {				 
-				 Thread.sleep(900);
+				 Thread.sleep(4500);
 			} catch (InterruptedException e) {
 				System.out.println("KeyPressThread: Wait Error");
 				e.printStackTrace();
 			}
-			
+			 System.out.println("####### CryptThread ENDE: DUMMYWARTEN ALS TEST ######");			 
+			 this.isOutputAllFinished(true);			
+			//}//end while !isStopped
 		}//end main:
+		}catch(ExceptionZZZ ez) {
+			ez.printStackTrace();
+		}
+		this.getConsole().isConsoleUserThreadFinished(true);
 		return bReturn;
 	}
 }

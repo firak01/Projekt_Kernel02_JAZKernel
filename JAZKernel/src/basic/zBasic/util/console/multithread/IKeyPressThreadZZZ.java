@@ -6,8 +6,8 @@ public interface IKeyPressThreadZZZ extends IThreadUserZZZ{
 	public long getSleepTime();
 	public void setSleepTime(long lSleepTime);
 	
-	public boolean isInputFinished();
-	public void isInputFinished(boolean bFinished);
+	public boolean isKeyPressThreaFinished();
+	public void isKeyPressThreadFinished(boolean bFinished);
 		
 	public Scanner getInputReader();
 	public void setInputReader(Scanner objScanner);

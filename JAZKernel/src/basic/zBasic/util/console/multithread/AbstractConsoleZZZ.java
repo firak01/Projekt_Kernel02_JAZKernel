@@ -22,7 +22,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
-	protected static IConsoleZZZ objConsole = null;  //muss static sein, wg. getInstance()!!!
+	protected volatile static IConsoleZZZ objConsole = null;  //muss static sein, wg. getInstance()!!!
 	
 	private IKeyPressThreadZZZ objThreadKeyPress=null;
 	private IConsoleUserZZZ objConsoleUser = null;
@@ -30,12 +30,17 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	
 	//Variablen zur Steuerung des internen Threads
 	private long lSleepTime=1000;
-	private volatile boolean bStop = false;
-	private volatile boolean bInputFinished = false;
-	private volatile boolean bConsoleUserThreadFinished = false;
+	private volatile static boolean bStop = false;
+	private volatile static boolean bInputFinished=false;
+	private volatile static boolean bInputThreadFinished = false;
+	private volatile static boolean bInputThreadRunning = false;
+	private volatile static boolean bOutputFinished=true;
+	private volatile static boolean bConsoleUserThreadFinished = false;
+	private volatile static boolean bConsoleUserThreadRunning = false;
 	
 	//Zur dynmischen Verwaltung von Variablen, die in einem Thread für den anderen Thread gedacht sind
-	private volatile HashMapExtendedZZZ<String,Object> hmVariable = null;
+	private volatile static HashMapExtendedZZZ<String,Object> hmVariable = null;
+	//To ensure that updates to variables propagate predictably to other threads, we should apply the volatile modifier to those variables:
 	
 	
 	/**Konstruktor ist private, wg. Singleton
@@ -88,13 +93,44 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	}
 	
 	@Override
-	public boolean isInputFinished() {
+	public synchronized boolean isInputAllFinished() {
 		return this.bInputFinished;
 	}
 	
 	@Override
-	public void isInputFinished(boolean bInputFinished) {
+	public synchronized void isInputAllFinished(boolean bInputFinished) {
 		this.bInputFinished = bInputFinished;
+	}
+	
+	@Override
+	public boolean isKeyPressThreadFinished() {
+		return this.bInputThreadFinished;
+	}
+	
+	@Override
+	public void isKeyPressThreadFinished(boolean bInputFinished) {
+		this.bInputThreadFinished = bInputFinished;
+		if(this.bInputThreadFinished) {
+			this.bInputThreadRunning=false;
+		}else {
+			this.bInputThreadRunning=true;
+		}
+	}
+	
+	
+	@Override
+	public boolean isKeyPressThreadRunning() {		
+		return this.bInputThreadRunning;
+	}
+	
+	@Override
+	public void isKeyPressThreadRunning(boolean bInputRunning) {
+		this.bInputThreadRunning = bInputRunning;
+		if(this.bInputThreadRunning) {
+			this.bInputThreadFinished=false;
+		}else {
+			this.bInputThreadFinished=true;
+		}
 	}
 	
 	@Override
@@ -127,6 +163,19 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 		 this.lSleepTime = lSleepTime;
 	 }
 
+	
+	@Override
+	public synchronized boolean isOutputAllFinished() {
+		return this.bOutputFinished;
+	}
+	
+	@Override
+	public synchronized void isOutputAllFinished(boolean bOutputFinished) {
+		this.bOutputFinished = bOutputFinished;
+	}
+	
+	
+	
 	@Override
 	public IConsoleUserZZZ getConsoleUserObject() {
 		return this.objConsoleUser;
@@ -172,6 +221,21 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	}
 	
 	@Override
+	public boolean isConsoleUserThreadRunning() {
+		return this.bConsoleUserThreadRunning;
+	}
+
+	@Override
+	public void isConsoleUserThreadRunning(boolean bConsoleUserThreadRunning) {
+		this.bConsoleUserThreadRunning = bConsoleUserThreadRunning;
+		if(this.bConsoleUserThreadRunning) {
+			this.bConsoleUserThreadFinished=false;
+		}else {
+			this.bConsoleUserThreadFinished=true;
+		}
+	}
+	
+	@Override
 	public boolean isConsoleUserThreadFinished() {
 		return this.bConsoleUserThreadFinished;
 	}
@@ -179,6 +243,11 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	@Override
 	public void isConsoleUserThreadFinished(boolean bConsoleUserThreadFinished) {
 		this.bConsoleUserThreadFinished = bConsoleUserThreadFinished;
+		if(this.bConsoleUserThreadFinished) {
+			this.bConsoleUserThreadRunning=false;
+		}else {
+			this.bConsoleUserThreadRunning=true;
+		}
 	}
 	
 	@Override
@@ -193,11 +262,4 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	public void setVariableHashMap(HashMapExtendedZZZ<String,Object> hmVariable) {
 		this.hmVariable = hmVariable;
 	}
-	
-	
-	
-
-	
-	
-	
 }
