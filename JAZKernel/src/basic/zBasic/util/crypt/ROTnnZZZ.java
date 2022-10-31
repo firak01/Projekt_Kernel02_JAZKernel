@@ -129,42 +129,7 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 				abcABC = sCharacterPool;
 			}
 			
-			sReturn = ROTasciiZZZ.encrypt(sInput, abcABC, n);
-			
-//			
-//			int len = abcABC.length();
-//			
-//			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharcterPool doppelt vorkommt.
-//			//+++++++++++ CharacterPool normieren			
-//			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
-//			for (int i = 0; i < len; i++) {
-//				try {
-//					listasCharacterPool.addUnique(abcABC.charAt(i));
-//				} catch (ExceptionZZZ e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//		    }			
-//			//+++++++++++
-//			
-//			
-//			len = listasCharacterPool.size();
-//
-//		    Map<Character, Character> map = new HashMap<Character, Character>();
-//		    for (int i = 0; i < len; i++) {
-//		        //map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
-//		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));
-//		    }
-//	
-//		    StringBuilder sb = new StringBuilder();
-//		    for(int i = 0; i < sInput.length(); i++) {
-//		        Character ch = map.get(sInput.charAt(i));
-//		        if (ch == null) {
-//		            throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "'");
-//		        }
-//		        sb.append(ch);
-//		    }
-//		    sReturn =  sb.toString();
+			sReturn = ROTasciiZZZ.encrypt(sInput, abcABC, n);		
 		}//end main;
 		return sReturn;
     }
