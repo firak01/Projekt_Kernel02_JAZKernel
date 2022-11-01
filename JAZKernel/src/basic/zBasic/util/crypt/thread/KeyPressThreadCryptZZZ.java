@@ -10,6 +10,7 @@ import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
 import basic.zBasic.util.console.multithread.KeyPressUtilZZZ;
 import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
+import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 
@@ -73,7 +74,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 				        	   
 			        	    //########################################################
 			        	    //#### Eingabe der Argumente
-				        	if(!bSkipArguments) {				        		
+				        	if(bSkipArguments) {
+				        		System.out.println("KeyPressThread: bSkipArguments=true");
+				        	}else {
 				        		do {
 				        			this.isCurrentInputValid(false);
 						        	 try {
@@ -137,8 +140,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                	//### Frage nach Characterpool
 					                	this.isCurrentInputValid(false);
 				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie den Standard-Characterpool verwenden?");
-				                		this.isCurrentInputValid(true);
-				                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, sInput);		    	                			                				                					                		
+				                		this.isCurrentInputValid(true);				                				    	                			                				                					                		
 				                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
 				                			System.out.println("Abbruch. Zurück zum Menue");
 				                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, IKeyPressConstantZZZ.cKeyNo);//wieder so als würde das Menü nicht übersprungen.
@@ -175,16 +177,23 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		                	//### Frage nach Mehrfacheingabe
 		                	this.isCurrentInputValid(false);
 	                		sInput = KeyPressUtilZZZ.makeQuestionYesNoQuit(this.getInputReader(), "Wollen Sie danach zurück zum Menue oder mit den akuellen Menueangaben weiteren Text verschluesseln?");
-	                		this.isCurrentInputValid(true);
-	                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, sInput);		    	                			                				                	
+	                		this.isCurrentInputValid(true);	                			                			    	                			                				                
 	                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyQuit)){
 		                		System.out.println("Abbruch dieses Laufs");
-		                		this.requestStop();		                	
-	                		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
-	                			System.out.println("Zurück zum Menue");		                		
-		                		this.isCurrentMenue(true);
+		                		this.requestStop();		   	                			
 		                	}else {		               		                		
-		                		this.isCurrentMenue(false);		                		
+		                		
+		                		
+		                		boolean bMenue = BooleanZZZ.stringToBoolean(sInput);
+		                		if(bMenue) { //Merke: Hier wird die Logik nun vertauscht Y=nicht skippen, da zurück zum Menü	                			
+		                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, "N");
+		                			System.out.println("Zurück zum Menue");		                		
+			                		this.isCurrentMenue(true);
+		                		}else {
+		                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, "Y");
+		                			this.isCurrentMenue(false);	
+		                		}
+		                		
 		                	}
 	                		
 	                		
