@@ -81,14 +81,20 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			if(!StringZZZ.isEmpty(sCipher)) {
 				ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(sCipher);
 				
-				//+++ Zätzlich gesetzte Argumente
+				//+++ Zusätzlich gesetzte Argumente
+				//a) CharacterPool
 				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
 				if(!StringZZZ.isEmpty(sInput)) {
 					objCrypt.setCharacterPool(sInput);
 				}
+				//+++++++++++++++++++++++++++++++++++++++++++++++++				
+				//b) alle Flags setzen
+				String[] saFlags = hmVariable.getKeysStartingWithString(KeyPressThreadCryptZZZ.sINPUT_FLAG);
+				for(String sFlagName : saFlags) {
+					objCrypt.setFlag(sFlagName, true);
+				}
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
-				
-				
+								
 				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);			
 				String sOutput = objCrypt.encrypt(sInput);
 				hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_CRYPTED, sOutput);

@@ -138,9 +138,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                	
 					                	//######################################################################
 					                	//### Frage nach Characterpool
-					                	this.isCurrentInputValid(false);
-				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie den Standard-Characterpool verwenden?");
-				                		this.isCurrentInputValid(true);				                				    	                			                				                					                		
+				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie den Standard-Characterpool '" + KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL + "' verwenden?");				                						                				    	                			                				                					                		
 				                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
 				                			System.out.println("Abbruch. Zurück zum Menue");
 				                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, IKeyPressConstantZZZ.cKeyNo);//wieder so als würde das Menü nicht übersprungen.
@@ -154,7 +152,36 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, ROTnnZZZ.sCHARACTER_POOL_DEFAULT);
 				
 					                	}		
+				                		
 				                		//#####################################################################
+				                		//### Frage nach Grossbuchstaben
+				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie Großbuchstaben verwenden?");				                						                				    	                			                				                					                		
+				                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+				                			System.out.println("Abbruch. Zurück zum Menue");
+				                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, IKeyPressConstantZZZ.cKeyNo);//wieder so als würde das Menü nicht übersprungen.
+					                		this.isCurrentMenue(true);
+					                		this.isCurrentInputValid(false);
+				                		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {				                					                	
+						                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
+					                	}else {
+					                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
+				
+					                	}
+				                		
+				                		//#####################################################################
+				                		//### Frage nach Kleinbuchstaben
+				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie Kleinbuchstaben verwenden?");				                						                				    	                			                				                					                		
+				                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+				                			System.out.println("Abbruch. Zurück zum Menue");
+				                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, IKeyPressConstantZZZ.cKeyNo);//wieder so als würde das Menü nicht übersprungen.
+					                		this.isCurrentMenue(true);
+					                		this.isCurrentInputValid(false);
+				                		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {				                					                	
+						                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));
+					                	}else {
+					                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));			
+					                	}
+				                					                		
 					                	break;
 					                default:
 					                	System.out.println("ungültige Eingabe");
