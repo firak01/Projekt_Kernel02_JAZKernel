@@ -5,7 +5,7 @@ import basic.zKernel.flag.IFlagUserZZZ;
 
 public interface ICryptZZZ extends IFlagUserZZZ{
 	public enum FLAGZ{
-		USENUMERIC,USEUPPERCASE
+		USENUMERIC,USEUPPERCASE,USELOWERCASE
 	}	
 	
 	public String encrypt(String sInput) throws ExceptionZZZ;

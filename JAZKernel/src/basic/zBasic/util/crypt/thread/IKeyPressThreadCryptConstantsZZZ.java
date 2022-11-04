@@ -10,7 +10,9 @@ public interface IKeyPressThreadCryptConstantsZZZ extends IKeyPressThreadConstan
 	
 	//Merke: Mit "INPUT_FLAG" werden Eingabewerte gekennzeichnet, die später dann als Flag den Objekten übergeben werden können.	
 	public static String sINPUT_FLAG_CHARACTER_UPPERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseUpperCase";
-	public static String sINPUT_FLAG_CHARACTER_LOWERCASE = "UseLowerCase";  
+	public static String sINPUT_FLAG_CHARACTER_LOWERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseLowerCase";
+	public static String sINPUT_FLAG_CHARACTER_NUMERIC = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseNumeric";
+	
 	
 	
 	public static String sOUTPUT_TEXT_CRYPTED = "OUTPUT_TEXT_CRYPTED";   

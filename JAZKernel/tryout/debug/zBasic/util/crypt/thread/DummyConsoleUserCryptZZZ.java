@@ -89,9 +89,12 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				}
 				//+++++++++++++++++++++++++++++++++++++++++++++++++				
 				//b) alle Flags setzen
-				String[] saFlags = hmVariable.getKeysStartingWithString(KeyPressThreadCryptZZZ.sINPUT_FLAG);
-				for(String sFlagName : saFlags) {
-					objCrypt.setFlag(sFlagName, true);
+				String[] saFlags = hmVariable.getKeysAsStringStartingWith(KeyPressThreadCryptZZZ.sINPUT_FLAG);
+				if(saFlags!=null) {
+					for(String stemp : saFlags) {
+						String sFlagName = StringZZZ.right(stemp,KeyPressThreadCryptZZZ.sINPUT_FLAG);						
+						objCrypt.setFlag(sFlagName, true);
+					}
 				}
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
 								

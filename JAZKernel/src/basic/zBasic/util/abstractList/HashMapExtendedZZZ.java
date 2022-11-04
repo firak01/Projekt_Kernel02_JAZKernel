@@ -19,6 +19,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
@@ -96,6 +97,49 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	    }
 	    return listasObject.toArray();
 	  }
+	
+	public static String[] getKeysAsStringStartingWith(Map<Object, ?> objHashMap, String sValueToFind) throws ExceptionZZZ {		
+		return HashMapExtendedZZZ.getKeysAsStringStartingWith(objHashMap, sValueToFind, true);
+	}
+	
+	public static String[] getKeysAsStringStartingWith(Map<Object, ?> objHashMap, String sValueToFind, boolean bIgnoreCase) throws ExceptionZZZ {		
+		String[] saReturn=null;
+		main:{
+			if(objHashMap== null){
+				ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				throw ez;	
+			  }
+			if(StringZZZ.isEmpty(sValueToFind)){
+				ExceptionZZZ ez = new ExceptionZZZ("String sValueTofind", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+				throw ez;	
+			}
+			
+			ArrayList<String>listasObject = new ArrayList<String>();
+			Set<Object> setObject = objHashMap.keySet();
+			Iterator<Object>itObject = setObject.iterator();
+			
+			if(bIgnoreCase) {
+				while(itObject.hasNext()) {
+					Object obj = itObject.next();
+					String stemp = obj.toString();
+					if(stemp.startsWith(sValueToFind)) {
+						listasObject.add(stemp);
+					}
+				}
+			}else {
+				while(itObject.hasNext()) {
+					Object obj = itObject.next();
+					String stemp = obj.toString();
+					if(StringZZZ.startsWithIgnoreCase(stemp,sValueToFind)) {
+						listasObject.add(stemp);
+					}
+				}
+			}
+			saReturn = ArrayListZZZ.toStringArray(listasObject);			
+		}//end main:
+		return saReturn;
+	}
+	
 	
 	/** Versuche für das angegebene Objekt die Schlüsselwert zurückzugeben.
 	 * @param hm
@@ -889,9 +933,15 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		return objReturn;
 	}
 	
+	public String[] getKeysAsStringStartingWith(String sValueToFind) throws ExceptionZZZ {
+		return this.getKeysAsStringStartingWith(sValueToFind, true);
+	}
+	public String[] getKeysAsStringStartingWith(String sValueToFind, boolean bIgnoreCase) throws ExceptionZZZ {
+		return HashMapExtendedZZZ.getKeysAsStringStartingWith(this, sValueToFind, bIgnoreCase);		
+	}
 	
-	/** Gib den Wert an der �bergebenen Indexposition zur�ck.
-	 * Merke: Man kann nicht nach der beim Bef�llen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
+	/** Gib den Wert an der uebergebenen Indexposition zur�ck.
+	 * Merke: Man kann nicht nach der beim Befuellen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
 	* @param iIndex; Der Index beginnt mit 0.
 	* 
 	* lindhauer; 05.09.2011 09:41:21

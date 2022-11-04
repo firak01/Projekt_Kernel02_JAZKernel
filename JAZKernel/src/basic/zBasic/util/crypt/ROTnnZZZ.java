@@ -88,15 +88,19 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
-		boolean bUseUpperCase = this.getFlag("useUpperCase");
-		return ROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase);
+		boolean bUseUpperCase = this.getFlag(ICryptZZZ.FLAGZ.USEUPPERCASE.name());
+		boolean bUseLowerCase = this.getFlag(ICryptZZZ.FLAGZ.USELOWERCASE.name());
+		boolean bUseNumeric = this.getFlag(ICryptZZZ.FLAGZ.USENUMERIC.name());
+		return ROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
-		boolean bUseUpperCase = this.getFlag("useUpperCase");
-		return ROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase);
+		boolean bUseUpperCase = this.getFlag(ICryptZZZ.FLAGZ.USEUPPERCASE.name());
+		boolean bUseLowerCase = this.getFlag(ICryptZZZ.FLAGZ.USELOWERCASE.name());
+		boolean bUseNumeric = this.getFlag(ICryptZZZ.FLAGZ.USENUMERIC.name());
+		return ROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric);
 	}
 	
 	public String getCharacterPool() {
@@ -110,23 +114,29 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 		return ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
 	}
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase) {
+	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
 			
-			String sCharacterPool;
+			String sCharacterPoolStarting;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPool=ROTnnZZZ.getCharacterPoolDefault();
+				sCharacterPoolStarting=ROTnnZZZ.getCharacterPoolDefault();
 			}else {
-				sCharacterPool = sCharacterPoolIn;
+				sCharacterPoolStarting = sCharacterPoolIn;
 			}
 			
-			String abcABC;
+			String abcABC=sCharacterPoolStarting;
 			if(bUseUppercase) {
-				abcABC = sCharacterPool + sCharacterPool.toUpperCase();
-			}else {
-				abcABC = sCharacterPool;
+				abcABC = abcABC + sCharacterPoolStarting.toUpperCase();
+			}
+			
+			if(bUseLowercase) {
+				abcABC = abcABC + sCharacterPoolStarting.toLowerCase();
+			}
+			
+			if(bUseNumeric) {
+				abcABC = abcABC + "0123456789";
 			}
 			
 			sReturn = ROTasciiZZZ.encrypt(sInput, abcABC, n);		
@@ -134,7 +144,7 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase) {
+	public static String decrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
 
 		String sCharacterPool;
 		if(StringZZZ.isEmpty(sCharacterPoolIn)) {
@@ -144,6 +154,6 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 		}
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
 		
-		return ROTnnZZZ.encrypt(sInput, sCharacterPool, n, bUseUppercase);		
+		return ROTnnZZZ.encrypt(sInput, sCharacterPool, n, bUseUppercase,bUseLowercase,bUseNumeric);		
 	}
 }

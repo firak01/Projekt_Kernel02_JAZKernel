@@ -181,6 +181,21 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                	}else {
 					                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));			
 					                	}
+				                		
+				                		TODOGOON20221104; //Fehler beim Verschlüsseln/Entschlüsseln
+				                		//#####################################################################
+				                		//### Frage nach Zahlen
+				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie numerische Werte (0-9) verwenden?");				                						                				    	                			                				                					                		
+				                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+				                			System.out.println("Abbruch. Zurück zum Menue");
+				                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, IKeyPressConstantZZZ.cKeyNo);//wieder so als würde das Menü nicht übersprungen.
+					                		this.isCurrentMenue(true);
+					                		this.isCurrentInputValid(false);
+				                		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {				                					                	
+						                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
+					                	}else {
+					                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));			
+					                	}
 				                					                		
 					                	break;
 					                default:

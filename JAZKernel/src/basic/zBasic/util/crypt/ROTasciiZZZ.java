@@ -141,20 +141,12 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 				sCharacterPool = sCharacterPoolIn;
 			}
 			
-			
-//			String abcABC;
-//			if(bUseUppercase) {
-//				abcABC = sCharacterPool + sCharacterPool.toUpperCase();
-//			}else {
-//				abcABC = sCharacterPool;
-//			}
-			
 			String abcABC = sCharacterPool;
 			
 			
 			int len = abcABC.length();
 			
-			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharcterPool doppelt vorkommt.
+			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
 			//+++++++++++ CharacterPool normieren			
 			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
 			for (int i = 0; i < len; i++) {
