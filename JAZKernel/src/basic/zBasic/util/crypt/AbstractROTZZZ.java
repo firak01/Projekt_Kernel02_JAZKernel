@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 
 public abstract class AbstractROTZZZ extends ObjectZZZ implements ICryptZZZ{
-	private int iCryptKey=-1; //Das ist der Wert, um den die ROT Verschiebung passiert
+	private int iCryptKey=-1;
 	private String sCharacterPool=null; //Das ist ein Wert, der für eine ROT Verschiebung gültige Zeichen enthält
 	
 	public abstract String encrypt(String sInput) throws ExceptionZZZ;

@@ -33,6 +33,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.json.JsonArrayZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
@@ -2145,6 +2146,38 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 			return null;
 		}
 	}
+	
+	/** Haenge an den String den anderen String an, aber nur die Zeichen, die in dem vorherigen String noch fehlen!
+	 * 
+	 * @param sString
+	 * @param sToAppend
+	 * @return
+	 * @author Fritz Lindhauer, 05.11.2022, 09:09:25
+	 */
+	public static String appendMissing(String sString, String sToAppend) {
+		String sReturn = "";
+		main:{
+			if(StringZZZ.isEmpty(sString)&&StringZZZ.isEmpty(sToAppend)) break main;
+			if(StringZZZ.isEmpty(sToAppend)) {
+				sReturn = sString;
+				break main;
+			}			
+			if(StringZZZ.isEmpty(sString)) {
+				sReturn = sToAppend;
+				break main;
+			}
+			
+			//entferne aus dem anzuhängenden String die Zeichen, die in dem Ausgangsstring vorhanden sind
+			char[] caString = sString.toCharArray();
+			String sToAppendReal = StringZZZ.stripCharacters(sToAppend, caString);
+			if(!StringZZZ.isEmpty(sToAppendReal)) {
+				sReturn = sString + sToAppendReal;
+			}else {
+				sReturn = sString;
+			}
+		}//end main:
+		return sReturn;
+	}
 
 
 
@@ -2544,6 +2577,28 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 					bGoon = true;
 				}
 			}
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String stripCharacters(String sString, char[]caToStrip) {
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(CharArrayZZZ.isEmpty(caToStrip)) break main;
+
+			char[]caString = sString.toCharArray();
+			char[]caReturn = new char[(caString.length)];
+			int iPositionLast=-1;
+			for(char c : caString) {
+					if(CharArrayZZZ.contains(caToStrip,c)) {
+							//nix machen
+					}else {
+						iPositionLast++;
+						caReturn[iPositionLast]=c;
+					}
+			}
+			sReturn = CharArrayZZZ.toString(caReturn,iPositionLast);
 		}//end main:
 		return sReturn;
 	}

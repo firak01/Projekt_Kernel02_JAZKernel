@@ -136,7 +136,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objStreamFile.println("WertB="+sValue);
 			objStreamFile.println("WertBencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
-			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, iKeyNumber, true);
+			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, iKeyNumber, true,false,false);
 			objStreamFile.println("WertC="+sValue);
 			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			

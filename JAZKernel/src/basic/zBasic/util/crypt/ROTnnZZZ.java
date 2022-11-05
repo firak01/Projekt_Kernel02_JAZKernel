@@ -114,11 +114,9 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 		return ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
 	}
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
-		String sReturn = sInput;
+	public static String computeCharacterPoolExtended(String sCharacterPoolIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
+		String sReturn="";
 		main:{
-			if(StringZZZ.isEmpty(sInput)) break main;
-			
 			String sCharacterPoolStarting;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
 				sCharacterPoolStarting=ROTnnZZZ.getCharacterPoolDefault();
@@ -126,34 +124,61 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 				sCharacterPoolStarting = sCharacterPoolIn;
 			}
 			
-			String abcABC=sCharacterPoolStarting;
+			sReturn=sCharacterPoolStarting;
+			
+			
+			//Wichtig: Das Leerzeichen bei der Erweiterung der Liste raus. Spätestens beim Dekodieren faellt einem die andere Position (beim Umdrehen des Strings) auf die Fuesse.
 			if(bUseUppercase) {
-				abcABC = abcABC + sCharacterPoolStarting.toUpperCase();
+				String stemp = sCharacterPoolStarting.trim().toUpperCase();
+				sReturn = StringZZZ.appendMissing(sCharacterPoolStarting, stemp);
 			}
 			
 			if(bUseLowercase) {
-				abcABC = abcABC + sCharacterPoolStarting.toLowerCase();
+				String stemp = sCharacterPoolStarting.trim().toLowerCase();
+				sReturn = StringZZZ.appendMissing(sReturn, stemp);
 			}
 			
 			if(bUseNumeric) {
-				abcABC = abcABC + "0123456789";
+				sReturn = StringZZZ.appendMissing(sReturn, "0123456789");
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
+		String sReturn = sInput;
+		main:{
+			if(StringZZZ.isEmpty(sInput)) break main;
+			
+			String sCharacterPoolStarting;
+			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
+				sCharacterPoolStarting=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+			}else {
+				sCharacterPoolStarting = sCharacterPoolIn;
 			}
 			
+			String abcABC = ROTnnZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
 			sReturn = ROTasciiZZZ.encrypt(sInput, abcABC, n);		
 		}//end main;
 		return sReturn;
     }
 	
 	public static String decrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
-
-		String sCharacterPool;
-		if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-			sCharacterPool=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
-		}else {
-			sCharacterPool = sCharacterPoolIn;
+		String sReturn = sInput;
+		main:{
+			if(StringZZZ.isEmpty(sInput)) break main;
+			
+			String sCharacterPoolStarting;
+			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
+				sCharacterPoolStarting=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+			}else {
+				sCharacterPoolStarting = sCharacterPoolIn;
+			}
+			
+			String abcABC = ROTnnZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
+			String sCharacterPool = StringZZZ.reverse(abcABC);	
+			sReturn = ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);
 		}
-		sCharacterPool = StringZZZ.reverse(sCharacterPool);
-		
-		return ROTnnZZZ.encrypt(sInput, sCharacterPool, n, bUseUppercase,bUseLowercase,bUseNumeric);		
+		return sReturn;						
 	}
 }

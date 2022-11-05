@@ -17,8 +17,8 @@ public class DebugRotNnZZZ {
 		// Rotate the input string.
         // ... Then rotate the rotated string.
         String input = "Do you have any cat pictures?";
-        String rotNn = ROTnnZZZ.encrypt(input,sCharacterPool,iKeyLength, true);
-        String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,iKeyLength, true);
+        String rotNn = ROTnnZZZ.encrypt(input,sCharacterPool,iKeyLength, true,false,false);
+        String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,iKeyLength, true,false,false);
 
         System.out.println(input);
         System.out.println(rotNn);

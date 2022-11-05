@@ -138,7 +138,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                	
 					                	//######################################################################
 					                	//### Frage nach Characterpool
-				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie den Standard-Characterpool '" + KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL + "' verwenden?");				                						                				    	                			                				                					                		
+				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie den Standard-Characterpool '" + ROTnnZZZ.sCHARACTER_POOL_DEFAULT + "' als Ausgangsstring verwenden?");				                						                				    	                			                				                					                		
 				                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
 				                			System.out.println("Abbruch. Zurück zum Menue");
 				                			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_SKIP_ARGUMENTS, IKeyPressConstantZZZ.cKeyNo);//wieder so als würde das Menü nicht übersprungen.
@@ -182,7 +182,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));			
 					                	}
 				                		
-				                		TODOGOON20221104; //Fehler beim Verschlüsseln/Entschlüsseln
+				                		//TODOGOON20221104; //Fehler beim Verschlüsseln/Entschlüsseln
 				                		//#####################################################################
 				                		//### Frage nach Zahlen
 				                		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(inputReader, "Wollen Sie numerische Werte (0-9) verwenden?");				                						                				    	                			                				                					                		
