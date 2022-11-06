@@ -75,13 +75,21 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				hmVariable.remove(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_UNCRYPTED);
 			}
 					
-			//TODOGOON: Nun die eingegebenen Variablen über eine HashMap aus der Console für die Steuereung der Verschlüsselung nutzen. 			
+			//Die eingegebenen Variablen über eine HashMap aus der Console für die Steuereung der Verschlüsselung nutzen. 			
 			//String sCipher = (String) hmVariable.get(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation());
 			String sCipher = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CIPHER);
 			if(!StringZZZ.isEmpty(sCipher)) {
 				ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(sCipher);
 				
 				//+++ Zusätzlich gesetzte Argumente
+				//0) NumericKey
+				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC);
+				if(!StringZZZ.isEmpty(sInput)) {
+					Integer intCryptKey = new Integer(sInput);
+					int iCryptKey = intCryptKey.intValue();
+					objCrypt.setCryptNumber(iCryptKey);
+				}
+				//+++++++++++++++++++++++++++++++++++++++++++++++++
 				//a) CharacterPool
 				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
 				if(!StringZZZ.isEmpty(sInput)) {

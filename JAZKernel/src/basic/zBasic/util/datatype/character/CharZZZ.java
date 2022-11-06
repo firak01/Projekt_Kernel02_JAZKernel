@@ -60,6 +60,22 @@ public class CharZZZ {
 		}
 	}
 	
+	/** Auch Leerzeichen zählt hier als empty
+	 * @param c
+	 * @return
+	 * @author Fritz Lindhauer, 06.11.2022, 10:27:28
+	 */
+	public static boolean isEmptyBlank(char c){
+		if(CharZZZ.isEmpty(c)){
+			return true;
+		}else if(c ==' ') {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
 	/**
 	 * Merke Char kann nie NULL sein.
 	 * @return

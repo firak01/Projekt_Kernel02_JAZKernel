@@ -4,6 +4,8 @@ import basic.zBasic.util.console.multithread.IKeyPressThreadConstantZZZ;
 
 public interface IKeyPressThreadCryptConstantsZZZ extends IKeyPressThreadConstantZZZ{
 	public static String sINPUT_CIPHER = "INPUT_CIPHER";
+	public static String sINPUT_KEY_NUMERIC = "INPUT_KEY_NUMERIC";
+	public static String sINPUT_KEY_STRING = "INPUT_KEY_STRING";
 	public static String sINPUT_TEXT_UNCRYPTED = "INPUT_TEXT_UNCRYPTED";
 	public static String sINPUT_CHARACTERPOOL = "INPUT_CHARACTERPOOL";
 	public static String sINPUT_SKIP_ARGUMENTS = "INPUT_SKIP_ARGUMENTS";
