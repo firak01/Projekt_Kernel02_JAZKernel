@@ -28,5 +28,7 @@ public interface IKeyPressThreadZZZ extends IThreadUserZZZ{
     public void isInputAllFinished(boolean bInputAllFinished) ;
     
     public void makeMenueMain() throws InterruptedException,ExceptionZZZ;//zu überschreiben...Das Hauptmenue ausgeben
-    public boolean processMenueMainInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ; //zu überschreiben, false=quit
+    public boolean processMenueMainArgumentInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ; //zu überschreiben, false=quit
+    public boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ; //zu überschreiben, false=quit, Also die Eingabe nach der Eingabe der Argumente
+    
 }

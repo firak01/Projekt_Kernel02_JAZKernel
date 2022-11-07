@@ -231,27 +231,15 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                System.out.println("Pressed Crypt:" + sInput);
 					                if(sInput==null) break main;
 					                
-					                boolean bGoon = this.processMenueMainInput(sInput,hmVariable);
+					                boolean bGoon = this.processMenueMainArgumentInput(sInput,hmVariable);
 					                if(!bGoon) break main;//Quit
 					                
 				        		}while(!this.isCurrentInputValid());	                
 				        	}//end if bSkipArguments
-				        	
-				        	//######################################################################
-				        	//### Eingabe des zu verschlüsselnden Textes
-				        	//Beispieltexte zum Rauskopieren, enthalten alles relevante...
-				        	//abcdefgHIJK1234abcdefg
-				        	//Das ist das 4711 Haus der Riesenmaus 0815
-				        	
-				        	TODOGOON20221107; //Fehler abfangen: Exception in thread "Thread-1" java.lang.IllegalArgumentException: Illegal character 'ß'
-				        	                  //Ausserdem muss das in KeyPassThreadCryptZZZ
+
 				        	if(!this.isCurrentInputFinished()) {
-					        	System.out.println("Geben Sie den zu verschluesselnden Text als String ein");
-			                	sInput = this.getInputReader().nextLine();
-			                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED, sInput);
-			                	if(StringZZZ.isEmpty(sInput)) {
-			                		this.cancelToMenue(hmVariable);
-			                	}
+				        		boolean bGoon = this.processMenuePostArgumentInput(hmVariable);
+				        		if(!bGoon) break main; //Quit
 				        	}
 				        	
 		                	//######################################################################
@@ -306,6 +294,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		public abstract void makeMenueMain() throws InterruptedException,ExceptionZZZ;
     	
     	@Override
-		public abstract boolean processMenueMainInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ;
+		public abstract boolean processMenueMainArgumentInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ;
+    	
+    	@Override
+    	public abstract boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ;
     }
 
