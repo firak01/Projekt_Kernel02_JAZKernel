@@ -9,6 +9,37 @@ public class CharZZZ {
 		//zum 'Verstecken" des Konstruktors
 	}
 	
+	/**
+	 * @param c
+	 * @return
+	 * @author Fritz Lindhauer, 09.06.2019, 09:42:58
+	 * siehe: 
+	 * https://stackoverflow.com/questions/8534178/how-to-represent-empty-char-in-java-character-class
+	 */
+	public static boolean isEmpty(char c){
+		if(c == CharZZZ.getEmpty()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/** Auch Leerzeichen zählt hier als empty
+	 * @param c
+	 * @return
+	 * @author Fritz Lindhauer, 06.11.2022, 10:27:28
+	 */
+	public static boolean isEmptyBlank(char c){
+		if(CharZZZ.isEmpty(c)){
+			return true;
+		}else if(c ==' ') {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
 	public static boolean isLowercase(char c){
 		boolean bReturn = false;
 		main:{
@@ -44,36 +75,16 @@ public class CharZZZ {
 		return bReturn;
 	}
 	
-	
-	/**
-	 * @param c
-	 * @return
-	 * @author Fritz Lindhauer, 09.06.2019, 09:42:58
-	 * siehe: 
-	 * https://stackoverflow.com/questions/8534178/how-to-represent-empty-char-in-java-character-class
-	 */
-	public static boolean isEmpty(char c){
-		if(c == CharZZZ.getEmpty()){
-			return true;
-		}else{
-			return false;
-		}
+	public static boolean isUppercase(char c){
+		boolean bReturn = false;
+		main:{
+			String stemp = Character.toString(c);			
+			bReturn = StringZZZ.isUpperized(stemp);
+		}//end main:
+		return bReturn;
 	}
 	
-	/** Auch Leerzeichen zählt hier als empty
-	 * @param c
-	 * @return
-	 * @author Fritz Lindhauer, 06.11.2022, 10:27:28
-	 */
-	public static boolean isEmptyBlank(char c){
-		if(CharZZZ.isEmpty(c)){
-			return true;
-		}else if(c ==' ') {
-			return true;
-		}else {
-			return false;
-		}
-	}
+	
 	
 	
 	/**

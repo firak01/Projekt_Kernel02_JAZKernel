@@ -67,91 +67,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             	break;
             case "2":
             	this.isCurrentInputValid(true);
-            	if(hmVariable!=null) {
-            		String sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnn.getAbbreviation();
-            		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
-            	}	
-            	
-            	//######################################################################
-            	//### Frage nach dem Numeric-Key (um den dann die Rotation stattfindet
-            	if(!this.isCurrentInputFinished()) {
-                	sInput = KeyPressUtilZZZ.makeInputNumericCancel(this.getInputReader(), "Bitte geben Sie den nummerischen Schluessel ein.");				                						                				    	                			                				                					                		
-            		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
-            			this.cancelToMenue(hmVariable);				                
-                	}else {
-                		this.isCurrentInputValid(true);	
-                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC, sInput);					
-                	}	
-            	}
-            	
-            	//######################################################################
-            	//### Frage nach Characterpool
-            	if(!this.isCurrentInputFinished()) {
-            		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Standard-Characterpool '" + ROTnnZZZ.sCHARACTER_POOL_DEFAULT + "' als Ausgangsstring verwenden?");				                						                				    	                			                				                					                		
-            		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
-            			this.cancelToMenue(hmVariable);
-            		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
-            			this.isCurrentInputValid(true);	
-            			System.out.println("Geben Sie den Charakterpool als String ein.");		                	
-	                	sInput = this.getInputReader().nextLine();
-	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, sInput);
-	                	if(StringZZZ.isEmpty(sInput)) {
-	                		this.isCurrentInputValid(false); //wieder zurück zum Menue
-	                		this.isCurrentMenue(true);
-	                		this.isCurrentInputFinished(true);	
-	                	}							                								                	
-                	}else {
-                		this.isCurrentInputValid(true);	
-                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, ROTnnZZZ.sCHARACTER_POOL_DEFAULT);			
-                	}	
-            	}
-        		
-        		//#####################################################################
-        		//### Frage nach Grossbuchstaben
-            	if(!this.isCurrentInputFinished()) {
-            		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Großbuchstaben verwenden?");				                						                				    	                			                				                					                		
-            		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
-            			this.cancelToMenue(hmVariable);
-            		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
-            			this.isCurrentInputValid(true);	
-	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
-                	}else {
-                		this.isCurrentInputValid(true);	
-                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
-
-                	}
-            	}
-        		
-        		//#####################################################################
-        		//### Frage nach Kleinbuchstaben
-            	if(!this.isCurrentInputFinished()) {
-            		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Kleinbuchstaben verwenden?");				                						                				    	                			                				                					                		
-            		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                			
-            			this.cancelToMenue(hmVariable);
-            		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
-            			this.isCurrentInputValid(true);	
-	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));
-                	}else {
-                		this.isCurrentInputValid(true);	
-                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));			
-                	}
-            	}
-        						                		
-        		//#####################################################################
-        		//### Frage nach Zahlen
-            	if(!this.isCurrentInputFinished()) {
-            		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit nummerischen Werte (0-9) verwenden?");				                						                				    	                			                				                					                		
-            		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
-            			this.cancelToMenue(hmVariable);
-            		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
-            			this.isCurrentInputValid(true);	
-	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
-                	}else {
-                		this.isCurrentInputValid(true);	
-                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));			
-                	}
-            	}
-        					                		
+            	this.processROTnn(hmVariable);        					                	
             	break;
             default:
             	System.out.println("ungueltige Eingabe");
@@ -185,6 +101,124 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 				
 			}//end main:
 			return bReturn;
+		}
+		
+		private void processROTnn(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
+			
+			String sInput;
+			if(hmVariable!=null) {
+        		String sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnn.getAbbreviation();
+        		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
+        	}	
+        	
+        	//######################################################################
+        	//### Frage nach dem Numeric-Key (um den dann die Rotation stattfindet
+        	if(!this.isCurrentInputFinished()) {
+            	sInput = KeyPressUtilZZZ.makeInputNumericCancel(this.getInputReader(), "Bitte geben Sie den nummerischen Schluessel ein.");				                						                				    	                			                				                					                		
+        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
+        			this.cancelToMenue(hmVariable);				                
+            	}else {
+            		this.isCurrentInputValid(true);	
+            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC, sInput);					
+            	}	
+        	}
+        	
+        	//######################################################################
+        	//### Frage nach Characterpool
+        	if(!this.isCurrentInputFinished()) {
+        		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Standard-Zeichenvorrat '" + ROTnnZZZ.sCHARACTER_POOL_DEFAULT + "' als Ausgangsstring verwenden?");				                						                				    	                			                				                					                		
+        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
+        			this.cancelToMenue(hmVariable);
+        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+        			this.isCurrentInputValid(true);	
+        			System.out.println("Geben Sie den Zeichenvorrat als String ein.");		                	
+                	sInput = this.getInputReader().nextLine();
+                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, sInput);
+                	if(StringZZZ.isEmpty(sInput)) {
+                		this.isCurrentInputValid(false); //wieder zurück zum Menue
+                		this.isCurrentMenue(true);
+                		this.isCurrentInputFinished(true);	
+                	}							                								                	
+            	}else {
+            		this.isCurrentInputValid(true);	
+            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, ROTnnZZZ.sCHARACTER_POOL_DEFAULT);			
+            	}	
+        	}
+        	String sCharacterPool = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
+    		
+    		//#####################################################################
+    		//### Frage nach Grossbuchstaben
+        	if(!this.isCurrentInputFinished()) {
+        		if(!StringZZZ.containsUppercaseOnly(sCharacterPool)) {
+	        		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Grossbuchstaben verwenden?");				                						                				    	                			                				                					                		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
+	            	}else {
+	            		this.isCurrentInputValid(true);	
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
+	
+	            	}
+        		}
+        	}
+    		
+    		//#####################################################################
+    		//### Frage nach Kleinbuchstaben
+        	if(!this.isCurrentInputFinished()) {
+        		if(!StringZZZ.containsLowercaseOnly(sCharacterPool)) {
+	        		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Kleinbuchstaben verwenden?");				                						                				    	                			                				                					                		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                			
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));
+	            	}else {
+	            		this.isCurrentInputValid(true);	
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));			
+	            	}
+	        	}
+        	}
+    						                		
+    		//#####################################################################
+    		//### Frage nach Zahlen        	
+        	if(!this.isCurrentInputFinished()) {
+        		if(!StringZZZ.containsNumericOnly(sCharacterPool)) {
+	        		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit nummerischen Werte (0-9) verwenden?");
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
+	            	}else {
+	            		this.isCurrentInputValid(true);	
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));			
+	            	}	        		
+        		}
+        	}
+        	
+        	//#####################################################################
+    		//### Frage nach Leerzeichen
+        	if(!this.isCurrentInputFinished()) {
+        		if(!StringZZZ.containsBlankAny(sCharacterPool)) {
+	        		sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit dem Leerzeichen ' ' verwenden?");				                						                				    	                			                				                					                		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	//nix weiter
+	            	}else {
+	            		this.isCurrentInputValid(true);
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, (" " + sCharacterPool));	            				
+	            	}
+        		}
+        	}
+        	
+        	
+        	
+    		
+        	
 		}
 }
 

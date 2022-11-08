@@ -354,6 +354,194 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	/** 
+	 * @param sString
+	 * @return true, wenn der String auch nur irgendeinen Kleinbuchstaben enthaelt
+	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
+	 */
+	public static boolean containsBlankAny(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(sString.equals("")) break main;
+			
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(ca[icount]==' '){
+					bReturn=true;
+					break main;
+				}
+			}			
+		}//end main:
+		return bReturn;
+	}
+	
+	/** 
+	 * @param sString
+	 * @return true, wenn der String nur Kleinbuchstaben und Leerzeichen enthaelt
+	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
+	 */
+	public static boolean containsBlankOnly(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(sString.equals("")) break main;
+			
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(!CharZZZ.isLowercase(ca[icount])){
+					if(ca[icount]!=' ') {
+						break main;
+					}
+				}
+			}
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	/** 
+	 * @param sString
+	 * @return true, wenn der String auch nur irgendeinen Kleinbuchstaben enthaelt
+	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
+	 */
+	public static boolean containsLowercaseAny(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(sString.equals("")) break main;
+			
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(CharZZZ.isLowercase(ca[icount])){
+					bReturn=true;
+					break main;
+				}
+			}			
+		}//end main:
+		return bReturn;
+	}
+	
+	/** 
+	 * @param sString
+	 * @return true, wenn der String nur Kleinbuchstaben und Leerzeichen enthaelt
+	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
+	 */
+	public static boolean containsLowercaseOnly(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(sString.equals("")) break main;
+			
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(!CharZZZ.isLowercase(ca[icount])){
+					if(ca[icount]!=' ') {
+						break main;
+					}
+				}
+			}
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	/**
+	 * @param sString
+	 * @return true, wenn der String auch nur irgendeine Zahle 0-9 enthaelt.
+	 * @author Fritz Lindhauer, 08.11.2022, 15:46:16
+	 */
+	public static boolean containsNumericAny(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(sString.equals("")) break main;
+								
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(CharZZZ.isNumeric(ca[icount])){						
+					bReturn = true;
+					break main;										
+				}
+			}
+			
+			
+		}//end main:
+		return bReturn;
+	}
+	
+	/**
+	 * @param sString
+	 * @return true, wenn der String nur Zahlen 0-9 und Leerzeichen enthaelt
+	 * @author Fritz Lindhauer, 08.11.2022, 15:46:16
+	 */
+	public static boolean containsNumericOnly(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(sString.equals("")) break main;
+								
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(!CharZZZ.isNumeric(ca[icount])){	
+					if(ca[icount]!=' ') {
+						break main;
+					}					
+				}
+			}
+			bReturn = true;
+			
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	
+	/**
+	 * @param sString
+	 * @return true, wenn der String auch nur irgendeinen Grossbuchstaben enthaelt.
+	 * @author Fritz Lindhauer, 08.11.2022, 15:46:44
+	 */
+	public static boolean containsUppercaseAny(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(CharZZZ.isUppercase(ca[icount])){					
+					bReturn = true;
+					break main;					
+				}
+			}					
+		}//end main:
+		return bReturn;
+	}
+	
+	/**
+	 * @param sString
+	 * @return true, wenn der String nur Grossbuchstaben und Leerzeichen enthaelt.
+	 * @author Fritz Lindhauer, 08.11.2022, 15:46:44
+	 */
+	public static boolean containsUppercaseOnly(String sString) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			
+			char[]ca = sString.toCharArray();
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				if(!CharZZZ.isUppercase(ca[icount])){					
+					if(ca[icount]!=' ') {
+						break main;
+					}
+				}
+			}
+			bReturn = true;
+			
+		}//end main:
+		return bReturn;
+	}
+	
 	/** Hier muss man nicht auf NULL achten, wenn man die Strings miteinander vergleicht.
 	 * @param sString
 	 * @param sMatch
@@ -1345,6 +1533,27 @@ public class StringZZZ implements IConstantZZZ{
 			if(sStringReversed.equals(sString)){
 				bReturn = true;
 			}			
+		}
+		return bReturn;
+	}
+	
+	/** true, wenn der erste Buchstabe ein Kleinbuchstabe ist.
+	* @param sString
+	* @return
+	* 
+	* lindhauer; 20.09.2011 14:15:12
+	 */
+	public static boolean isUpperized(String sString){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			
+			String ersterBuchstabe = sString.substring(0, 1);
+		    if (ersterBuchstabe.equals(ersterBuchstabe.toUpperCase())) {
+		    	bReturn = true;
+		    } else {
+		       bReturn = false;
+		    }
 		}
 		return bReturn;
 	}
