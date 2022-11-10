@@ -28,7 +28,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 			System.out.println("Eingaben: + - zur Console-Threadgeschwindigkeit | Q zum Abbruch");
 			System.out.println("Bitte wählen Sie den Algorithmus:");
 			System.out.println("1: Rot13");
-			System.out.println("2: Rotasciin");
+			System.out.println("2: Rotascii");
 			System.out.println("3: RotNumeric");
 			System.out.println("4: RotNn");
          	System.out.println("Warte auf Eingabe Crypt...");                 	
@@ -96,8 +96,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	        	//Das ist das 4711 Haus der Riesenmaus 0815
 	        	
         		
-        		//TODOGOON20221107; //Fehler abfangen: Exception in thread "Thread-1" java.lang.IllegalArgumentException: Illegal character 'ß'
-                  //Ausserdem muss das in KeyPassThreadCryptZZZ
+        		//Merke Fehler abfangen, wie z.B.: Exception in thread "Thread-1" java.lang.IllegalArgumentException: Illegal character 'ß'
+				//Das passiert beim Aufruf der Verschlüsselung selbst.
 	        	System.out.println("Geben Sie den zu verschluesselnden Text als String ein");
             	String sInput = this.getInputReader().nextLine();
             	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED, sInput);

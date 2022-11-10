@@ -95,27 +95,36 @@ public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				if(!StringZZZ.isEmpty(sInput)) {
 					objCrypt.setCharacterPool(sInput);
 				}
+				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++				
 				//b) alle Flags setzen
 				String[] saFlags = hmVariable.getKeysAsStringStartingWith(KeyPressThreadCryptZZZ.sINPUT_FLAG);
 				if(saFlags!=null) {
 					for(String stemp : saFlags) {
-						String sFlagName = StringZZZ.right(stemp,KeyPressThreadCryptZZZ.sINPUT_FLAG);						
-						objCrypt.setFlag(sFlagName, true);
+						String sFlagName = StringZZZ.right(stemp,KeyPressThreadCryptZZZ.sINPUT_FLAG);
+						Boolean bValue = (Boolean) hmVariable.get(stemp);
+						objCrypt.setFlag(sFlagName, bValue);
 					}
 				}
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
 								
-				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);			
-				String sOutput = objCrypt.encrypt(sInput);
-				hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_CRYPTED, sOutput);
-												
-				System.out.println("Verschluesselter Wert:\n"+sOutput);
-				String sOutput2 = objCrypt.decrypt(sOutput);
-				hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_UNCRYPTED, sOutput2);
-				System.out.println("Wieder entschluesselter Wert:\n"+sOutput2);
+				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);				
+				try {
+					String sOutput = objCrypt.encrypt(sInput);
+					hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_CRYPTED, sOutput);
+					
+					System.out.println("Verschluesselter Wert:\n"+sOutput);
+					String sOutput2 = objCrypt.decrypt(sOutput);
+					hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_UNCRYPTED, sOutput2);
+					System.out.println("Wieder entschluesselter Wert:\n"+sOutput2);
+					
+					bReturn = true;
+				}catch( IllegalArgumentException e) {
+					String sError=e.getMessage();
+					System.out.println("Fehler bei der Eingabe.\nText enthaelt fuer die Argumentkombination ungueltige Werte.\nFehler: "+sError +"\nbei Eingabe: "+sInput);
+					bReturn=false;
+				}
 				
-				bReturn = true;
 			}else {
 				System.out.println("noch kein Schluesselalgorithmus festgelegt.");
 				bReturn = false;

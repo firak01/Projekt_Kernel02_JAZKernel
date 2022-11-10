@@ -56,6 +56,24 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 	    	return bReturn;
 		}
 
+		@Override
+		public void makeMenueMain() throws InterruptedException, ExceptionZZZ {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean processMenueMainArgumentInput(String sInput, HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
 		
     }
 

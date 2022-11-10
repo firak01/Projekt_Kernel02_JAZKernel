@@ -122,14 +122,14 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 		this.sCharacterUsedForRot = sCharacterPool;
 	}
 	
-	public static String encrypt(String sInput, int n) {
+	public static String encrypt(String sInput, int n)  throws IllegalArgumentException {
 		String sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
 		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);
 	
 	}
 	
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, int n) {
+	public static String encrypt(String sInput, String sCharacterPoolIn, int n) throws IllegalArgumentException {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -182,7 +182,7 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, int n) {
+	public static String decrypt(String sInput, int n)  throws IllegalArgumentException{
 
 		String sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
@@ -190,7 +190,7 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);		
 	}
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, int n) {
+	public static String decrypt(String sInput, String sCharacterPoolIn, int n)  throws IllegalArgumentException{
 
 		String sCharacterPool=null;
 		if(StringZZZ.isEmpty(sCharacterPool)) {
