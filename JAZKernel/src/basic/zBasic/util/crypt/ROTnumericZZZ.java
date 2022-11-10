@@ -18,7 +18,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @return a list with mutated strings
  */
 public class ROTnumericZZZ extends AbstractROTZZZ{
-	ROTnumericZZZ() throws ExceptionZZZ {//Konsturktor auf PAKETEBENE Sichtbar
+	ROTnumericZZZ() throws ExceptionZZZ {//Konstruktor auf PAKETEBENE Sichtbar
 		super();
 		String[] saFlagControl = {"init"};
 		Rot13NumericNew_(-1,saFlagControl);
