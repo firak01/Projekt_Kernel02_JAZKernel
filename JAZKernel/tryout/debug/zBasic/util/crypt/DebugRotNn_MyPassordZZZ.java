@@ -28,14 +28,9 @@ public class DebugRotNn_MyPassordZZZ {
         Scanner objScanner = new Scanner(System.in);
         int iKey = objScanner.nextInt();
         
-        TODOGOON20221001; //KernelConsoleZZZ - Klasse, über die in einer Schleife immer wieder das gemacht wird, bis zum Abbruch.
-        //					ScannerExtendedZZZ - Klasse, über die dann auch ja/nein Eingaben gemacht werden können.
-        //                  und Eingabevalidierungen
-        //                  und Abbruchbedingungen....
-        //                  und Eingabe"hilfen"
-        
-        //TODOGOON20221001; StringZZZ Funktion, nur 1x Zeichen im String
-        
+        //Merke: Mit DebugCryptConsoelMainZZZ gibt es eine Klasse, die in einem separaten Thread immer wieder aufgerufen wird.
+        //       Zudem hat diese Klasse auch eine komfortable Menuesteuerung.
+        //       Dort koennen auch andere Algorithmen und CharacterPools verwendete werden. 
         String sCharacterPool = sCharacterPoolDefault;
         System.out.println("Merke: Das Kennwort darf nur folgende Zeichen beinhalten: '" + sCharacterPool + "'");
         

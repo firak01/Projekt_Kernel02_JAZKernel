@@ -14,12 +14,12 @@ import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class DummyConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
-	public DummyConsoleUserCryptZZZ() throws ExceptionZZZ {
+public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
+	public ConsoleUserCryptZZZ() throws ExceptionZZZ {
 		super();
 	}
 	
-	public DummyConsoleUserCryptZZZ(IConsoleZZZ objConsole) throws ExceptionZZZ {
+	public ConsoleUserCryptZZZ(IConsoleZZZ objConsole) throws ExceptionZZZ {
 		super(objConsole);
 	}
 

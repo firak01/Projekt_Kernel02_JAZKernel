@@ -6,7 +6,7 @@ import basic.zBasic.util.console.multithread.IConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 
-public class DebugCryptConsoleZZZ {
+public class DebugCryptConsoleMainZZZ {
 
 	public static void main(String[] args) {
 		try {
@@ -20,7 +20,7 @@ public class DebugCryptConsoleZZZ {
 			
 			//TODOGOON20221019://Die Eingaben aus dem KeyPressThread an das ConsoleUser-Objekt übergeben.
 			//Merke: Ziel ist, dass der ConsoleUser-Thread und der KeyPressThread "Daten" miteinander austauschen können. 
-			IConsoleUserZZZ objConsoleUser = new DummyConsoleUserCryptZZZ(objConsole);
+			IConsoleUserZZZ objConsoleUser = new ConsoleUserCryptZZZ(objConsole);
 			objConsole.setConsoleUserObject(objConsoleUser);
 			objConsole.start();
 		} catch (ExceptionZZZ e) {
