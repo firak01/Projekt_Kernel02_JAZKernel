@@ -1,4 +1,4 @@
-package tryout.zBasic.util.console.multithread;
+package tryout.zBasic.util.console.multithread.simple;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
  * @author Fritz Lindhauer, 16.10.2022, 07:34:48
  * 
  */
-public class ScannerConsoleMainZZZ {
+public class DebugScannerConsoleSimpleMainZZZ {
 	static long rand = 10000;
 	public static void main(String[] args) {
 		 ExecutorService executor = Executors.newFixedThreadPool(5);

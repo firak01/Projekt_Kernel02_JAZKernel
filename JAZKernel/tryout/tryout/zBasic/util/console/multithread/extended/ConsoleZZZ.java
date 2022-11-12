@@ -1,4 +1,4 @@
-package tryout.zBasic.util.console.multithread2;
+package tryout.zBasic.util.console.multithread.extended;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import basic.zBasic.ObjectZZZ;
-import tryout.zBasic.util.console.multithread2.KeyPressThreadZZZ;
 
 /** Klasse zur Eingabe von Befehlen an der Konsole.
  *  Es wird dann in einer Schleife eine andere Klasse ausgeführt.

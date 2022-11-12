@@ -90,7 +90,16 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 					 
 					 EnumSet<?> objEnumSet2 =CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();					 
 					 CryptCipherAlgorithmMappedValueZZZ objEnums = new CryptCipherAlgorithmMappedValueZZZ();
-					 Class enumClass = objEnums.getEnumClassStatic();
+					 Class enumClass = objEnums.getEnumClassStatic();					
+					 int itest = EnumSetUtilZZZ.readEnumConstant_IndexValue(enumClass, "ROT13");	
+					 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ itest="+itest);
+					 
+					 String stest = EnumSetUtilZZZ.readEnumConstant_StringValue(enumClass, "ROT13");
+					 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
+					 stest = EnumSetUtilZZZ.readEnumConstant_NameValue(enumClass, "ROT13");
+					 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
+					 
+					 
 					 //+++++++++++++
 					 
 					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen

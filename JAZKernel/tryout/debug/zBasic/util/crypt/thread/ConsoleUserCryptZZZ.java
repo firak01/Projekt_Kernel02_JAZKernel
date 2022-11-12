@@ -1,15 +1,10 @@
 package debug.zBasic.util.crypt.thread;
 
-import java.util.Scanner;
-
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
-import basic.zBasic.util.console.multithread.IConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.CryptAlgorithmFactoryZZZ;
-import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;

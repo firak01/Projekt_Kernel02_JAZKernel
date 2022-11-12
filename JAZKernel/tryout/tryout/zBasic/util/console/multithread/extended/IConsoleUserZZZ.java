@@ -1,4 +1,4 @@
-package tryout.zBasic.util.console.multithread2;
+package tryout.zBasic.util.console.multithread.extended;
 
 public interface IConsoleUserZZZ {
 	public boolean executeOnConsole() throws InterruptedException;
