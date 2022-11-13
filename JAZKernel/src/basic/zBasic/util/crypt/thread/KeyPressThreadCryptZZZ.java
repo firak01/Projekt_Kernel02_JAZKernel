@@ -8,7 +8,7 @@ import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
 import basic.zBasic.util.console.multithread.KeyPressUtilZZZ;
-import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -111,14 +111,14 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		
 		private void processROT13_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
-        		String sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation();
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation();
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         	}
 		}
 		
 		private void processROTascii_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
-        		String sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation();
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation();
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         		
         		//#############################################################
@@ -128,7 +128,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		
 		private void processROTnumeric_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
-        		String sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation();
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation();
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         		
         		//###############################################################
@@ -141,7 +141,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		private void processROTnn_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
 						
 			if(hmVariable!=null) {
-        		String sCipher = CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnn.getAbbreviation();
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation();
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         	}	
         	

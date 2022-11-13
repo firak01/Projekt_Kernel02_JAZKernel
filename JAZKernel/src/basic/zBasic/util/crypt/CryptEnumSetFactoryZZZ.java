@@ -64,19 +64,19 @@ public class CryptEnumSetFactoryZZZ extends AbstractEnumSetFactoryZZZ {
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 	        	out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
 	        	//objEnumSetReturn= JdbcDatabaseTypeZZZ.getEnumSet();     
-	        	objEnumSetReturn= CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();
+	        	objEnumSetReturn= CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.getEnumSet();
 			}else if(sClassNameEnum.equals("ROTnumeric")){
 		 //}else if(sClassNameEnum.equals("basic.zBasic.util.persistence.jdbc.JdbcDriverClassTypeZZZ")){
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 				out.format("%s# sClassNameEnum wurde hier gefunden: %s%n", ReflectCodeZZZ.getPositionCurrent(),sClassNameEnum);
 				//objEnumSetReturn= JdbcDriverClassTypeZZZ.getEnumSet();
-				objEnumSetReturn= CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();			
+				objEnumSetReturn= CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.getEnumSet();			
 				
 		   }else if (sClassNameEnum.equals("ROTnn")) {//beachte: Innere Klasse, mit $ getrennt.
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 //		        	String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
 //					System.out.print(sInfo);	        	
-	        	objEnumSetReturn= CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();
+	        	objEnumSetReturn= CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.getEnumSet();
 	        	
 	        	
 	        	

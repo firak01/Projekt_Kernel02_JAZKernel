@@ -1,4 +1,4 @@
-package tryout.zBasic.util.crypt.decrypt;
+package basic.zBasic.util.crypt.decrypt;
 
 import base.files.DateiUtil;
 import base.io.IoUtil;
@@ -26,16 +26,16 @@ class CaesarDecode {                      // zaehlt die Buchstaben
   String zKette;
   
   public static void main( String[] arg) {
-	     //if (arg.length== 0)  d = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\ROT13ZZZCrypted1.txt");//das soll dann wohl die Schlüssellaenge13 sein!!!	 
-		 //if (arg.length== 0)  d = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\CaesarCrypted1_schluesselaenge3.txt");
-		 //if (arg.length== 0)  d = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\CaesarCrypted2_schluessellaenge3.txt");
-		 //if (arg.length== 0)  d = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\CaesarCrypted3_schluessellaenge4.txt");
+	     //if (arg.length== 0)  d = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\ROT13ZZZCrypted1.txt");//das soll dann wohl die Schlüssellaenge13 sein!!!	 
+		 //if (arg.length== 0)  d = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\CaesarCrypted1_schluesselaenge3.txt");
+		 //if (arg.length== 0)  d = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\CaesarCrypted2_schluessellaenge3.txt");
+		 //if (arg.length== 0)  d = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\CaesarCrypted3_schluessellaenge4.txt");
 	  
 		//Merke: Folgendes funktioniert, auch wenn anders verschluesselt, aber halt auch eine ROTierende Verschluesselung:  
-	    //if (arg.length== 0)  d = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\ROTasciiZZZCrypted1_schluessellaenge3.txt");
+	    //if (arg.length== 0)  d = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\ROTasciiZZZCrypted1_schluessellaenge3.txt");
 
 	    //Merke: Das darf hier nicht funktionieren, da ganz anderer Mechanismus, aber bei sl=5 kommt  etwas erkennbares heraus 
-	    if (arg.length== 0)  d = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\ROTnnZZZCrypted1_schluessellaenge5.txt"); //Merke: Den nn Codierten String zu knacken ist schwerer, da man den CharacterPool so nicht kennt.
+	    if (arg.length== 0)  d = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\ROTnnZZZCrypted1_schluessellaenge5.txt"); //Merke: Den nn Codierten String zu knacken ist schwerer, da man den CharacterPool so nicht kennt.
 	    else                 d = new DateiUtil(arg[0]);
 	    new CaesarDecode();
 	  }

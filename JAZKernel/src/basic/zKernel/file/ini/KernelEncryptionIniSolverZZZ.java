@@ -7,7 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.KernelCryptAlgorithmFactoryZZZ;
@@ -88,8 +88,8 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 					 EnumSet<?> objEnumSet = CryptEnumSetFactoryZZZ.getInstance().getEnumSet(sCipher);
 					 //wie verwenden???? EnumSetUtilZZZ.readEnumConstant_IndexValue(, "ROT13");
 					 
-					 EnumSet<?> objEnumSet2 =CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.getEnumSet();					 
-					 CryptCipherAlgorithmMappedValueZZZ objEnums = new CryptCipherAlgorithmMappedValueZZZ();
+					 EnumSet<?> objEnumSet2 =CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.getEnumSet();					 
+					 CryptAlgorithmMappedValueZZZ objEnums = new CryptAlgorithmMappedValueZZZ();
 					 Class enumClass = objEnums.getEnumClassStatic();					
 					 int itest = EnumSetUtilZZZ.readEnumConstant_IndexValue(enumClass, "ROT13");	
 					 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ itest="+itest);

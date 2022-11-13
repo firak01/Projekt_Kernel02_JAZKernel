@@ -18,17 +18,37 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements ICryptZZZ{
 		super(sFlagControl);
 	}
 	
+	@Override
+	public int getSubtype() {
+		return CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal();
+	}
+		
+	@Override
 	public void setCryptNumber(int iCryptKey) {
 		this.iCryptKey = iCryptKey;
 	}
+	@Override
 	public int getCryptNumber() {
 		return this.iCryptKey;
 	}
 	
+	@Override
 	public String getCharacterPool() {
 		return this.sCharacterPool;
 	}
+	@Override
 	public void setCharacterPool(String sCharacterPool) {
 		this.sCharacterPool = sCharacterPool;
+	}	
+	
+	//####################################################
+	//Methoden eher für Vigenere Verfahren
+	@Override
+	public String getCryptKey() {
+		return null;
+	}
+	@Override
+	public void setCryptKey(String sCryptKey) {
+		//nix
 	}
 }

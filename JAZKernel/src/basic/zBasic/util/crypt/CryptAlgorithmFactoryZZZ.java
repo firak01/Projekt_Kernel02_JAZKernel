@@ -46,15 +46,16 @@ private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss
 					}
 			}//end check
 		
-		if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation())){
+		if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation())){
 			objReturn = new ROT13ZZZ();
-		}else if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnumeric.getAbbreviation())){
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric.getAbbreviation())){
 			objReturn = new ROTnumericZZZ();
-		}else if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTascii.getAbbreviation())) {
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii.getAbbreviation())) {
 			objReturn = new ROTasciiZZZ();
-		}else if(sCipher.equalsIgnoreCase(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROTnn.getAbbreviation())) {
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation())) {
 			objReturn = new ROTnnZZZ();
-		
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE.getAbbreviation())) {
+			objReturn = new VigenereZZZ();
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled cipher type '" + sCipher + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 			throw ez;				

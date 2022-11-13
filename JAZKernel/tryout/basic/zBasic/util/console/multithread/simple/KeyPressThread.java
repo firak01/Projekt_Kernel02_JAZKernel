@@ -1,4 +1,4 @@
-package use.zBasic.util.crypt;
+package basic.zBasic.util.console.multithread.simple;
 
 import java.util.Scanner;
 

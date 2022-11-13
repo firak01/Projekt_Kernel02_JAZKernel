@@ -1,4 +1,4 @@
-package use.zBasic.util.crypt;
+package use.zBasic.util.console;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CryptConsoleMainZZZ {
+public class ConsoleMain {
 	static long rand = 10000;
 	public static void main(String[] args) {
 		 ExecutorService executor = Executors.newFixedThreadPool(5);

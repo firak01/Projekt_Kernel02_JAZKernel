@@ -1,4 +1,4 @@
-package tryout.zBasic.util.console.multithread.extended;
+package basic.zBasic.util.console.multithread.extended;
 
 public interface IConsoleZZZ {
 	public IConsoleUserZZZ getConsoleUserObject();

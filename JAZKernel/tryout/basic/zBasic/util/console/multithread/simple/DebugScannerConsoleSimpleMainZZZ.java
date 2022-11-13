@@ -1,4 +1,4 @@
-package tryout.zBasic.util.console.multithread.simple;
+package basic.zBasic.util.console.multithread.simple;
 
 import java.io.BufferedReader;
 import java.io.File;

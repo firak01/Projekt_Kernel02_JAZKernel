@@ -24,7 +24,7 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
-import basic.zBasic.util.crypt.CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ;
+import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
@@ -96,7 +96,7 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 			Class<CharsetUsedZZZ> enumClass = CharsetUsedZZZ.class;
 			EnumSet<CharsetUsedZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 			
-			for(Object obj : CryptCipherTypeZZZ.class.getEnumConstants()){
+			for(Object obj : CipherTypeZZZ.class.getEnumConstants()){
 				//System.out.println(obj + "; "+obj.getClass().getName());
 				set.add((CharsetUsedZZZ) obj);
 			}

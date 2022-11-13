@@ -5,6 +5,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.CryptAlgorithmFactoryZZZ;
+import basic.zBasic.util.crypt.CryptAlgorithmMaintypeZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -75,20 +76,36 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			String sCipher = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CIPHER);
 			if(!StringZZZ.isEmpty(sCipher)) {
 				ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(sCipher);
-				
-				//+++ Zusätzlich gesetzte Argumente
-				//0) NumericKey
-				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC);
-				if(!StringZZZ.isEmpty(sInput)) {
-					Integer intCryptKey = new Integer(sInput);
-					int iCryptKey = intCryptKey.intValue();
-					objCrypt.setCryptNumber(iCryptKey);
-				}
-				//+++++++++++++++++++++++++++++++++++++++++++++++++
-				//a) CharacterPool
-				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
-				if(!StringZZZ.isEmpty(sInput)) {
-					objCrypt.setCharacterPool(sInput);
+								
+				//+++ Zusätzlich gesetzte Argumente				
+				if(objCrypt.getSubtype()==CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()) {
+					//A) Für ROT-Algorithmen
+					//0) NumericKey
+					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC);
+					if(!StringZZZ.isEmpty(sInput)) {
+						Integer intCryptKey = new Integer(sInput);
+						int iCryptKey = intCryptKey.intValue();
+						objCrypt.setCryptNumber(iCryptKey);
+					}
+					//+++++++++++++++++++++++++++++++++++++++++++++++++
+					//a) CharacterPool
+					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
+					if(!StringZZZ.isEmpty(sInput)) {
+						objCrypt.setCharacterPool(sInput);
+					}
+					//+++++++++++++++++++++++++++++++++++++++++++++++++
+				}else if(objCrypt.getSubtype()==CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal()) {
+					//B) Für Vigenere-Algorithmen
+					//0) StringKey
+					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_KEY_STRING);
+					if(!StringZZZ.isEmpty(sInput)) {
+						String sCryptKey = sInput;						
+						objCrypt.setCryptKey(sCryptKey);
+					}
+					//+++++++++++++++++++++++++++++++++++++++++++++++++
+				}else {
+					System.out.println("Der Algorithmus-Subtyp wird nicht behandelt.");
+					bReturn = false;
 				}
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++				

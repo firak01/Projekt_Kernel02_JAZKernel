@@ -1,4 +1,4 @@
-package tryout.zBasic.util.crypt.decrypt;
+package basic.zBasic.util.crypt.decrypt;
 
 import base.files.DateiUtil;
 import base.io.IoUtil;
