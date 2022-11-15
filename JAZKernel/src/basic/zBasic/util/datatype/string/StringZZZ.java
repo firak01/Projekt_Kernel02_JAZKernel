@@ -2527,6 +2527,14 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return key;
 	}
 	
+	/**
+	 * @param sValue
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 15.11.2022, 08:50:02
+	 * 
+	 * siehe auch UnicodeZZZ.toByteArray(string) und .from(byte[])
+	 */
 	public static String toUtf8(String sValue) throws ExceptionZZZ{
 		
 		String sReturn=null;
