@@ -1,5 +1,7 @@
 package basic.zBasic.util.datatype.character;
 
+import java.nio.charset.Charset;
+
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class CharZZZ {
@@ -96,8 +98,26 @@ public class CharZZZ {
 		return Character.MIN_VALUE;
 	}
 	
+	public static String toString(int iCharValue) {
+		char c = (char)iCharValue;
+		return CharZZZ.toString(c);
+	}
+	
+	public static String toLowercase(int iCharValue) {
+		char c = (char)iCharValue;
+		char cl = CharZZZ.toLowercase(c);
+		return CharZZZ.toString(cl);
+	}
+	
+	public static String toUppercase(int iCharValue) {
+		char c = (char)iCharValue;
+		char cu = CharZZZ.toUppercase(c);
+		return CharZZZ.toString(cu);
+	}
+	
+	
 	public static String toString(char c){
-		return Character.toString(c);
+		return Character.toString(c);    
 	}
 	
 	public static char toLowercase(char c) {

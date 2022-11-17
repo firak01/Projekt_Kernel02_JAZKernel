@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
+import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 
@@ -204,5 +205,63 @@ public class UnicodeZZZ {
 		}//end main:
 		return bReturn;
 	}
+	
+	/** Damit werden nichtdruckbare Zeichen ausgespart.
+	 *  Z.B. angewendet in meiner Überarbeitung des Codes zum Buch "Kryptografie mit Java", Vigenere Verschluesselung, S. 33ff
+	 *  
+	 * @param s
+	 * @return
+	 * @author Fritz Lindhauer, 17.11.2022, 08:45:23
+	 */
+	public static int[] fromUtf8ToAscii(String s) {
+		
+		//int[] sa = IoUtil.Unicode(s.getBytes()); //Original, Klasse aus dem Buch
+		int[] ia = UnicodeZZZ.fromByteToInt(s.getBytes()); 
+		return UnicodeZZZ.fromUtf8ToAscii(ia);  	
+	}
+	public static int[] fromUtf8ToAscii(int[] ia) {
+		    
+		    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+		    int[]iaPure = new int[ia.length];
+
+		    for(int i=0;i<ia.length;i++) {
+		    	iaPure[i]=ia[i]-65;
+		    }
+		    
+		 return iaPure;   		
+	}
+	public static int fromUtf8ToAscii(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) iz+=256;		
+		    if (iz==10) {
+		    	//System.out.println();
+		    }else {
+		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+		         //System.out.print((char)(z) + ":"+z+sSeparator);
+				 iReturn = iz + 65;
+		       }else {
+		         //System.out.print("." + ":"+z+sSeparator);
+		       }
+		    }
+		}//end main:
+	    return iReturn;		
+	}
+	
+	
+	 /** Angelehnt an "Kryptografie mit Java", IoUtil.Unicode(s.getBytes());
+	  * 
+	 * @param ByteFeld
+	 * @return
+	 * @author Fritz Lindhauer, 17.11.2022, 08:53:24
+	 */
+	public static int[] fromByteToInt(byte[] ByteFeld) {
+	    int[] dummy=new int[ByteFeld.length];
+	    for (int i=0; i<dummy.length; i++) 
+	      if (ByteFeld[i]>=0)  dummy[i]=ByteFeld[i];
+	      else                 dummy[i]=256+ByteFeld[i];
+	    return dummy;
+	  }
 	
 }

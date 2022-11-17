@@ -8,25 +8,20 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  *  Die Klasse stammt aus der Buch CD, aus dem Verzeichnis poly
  *  Die Verschlusselungsmethode gehoert zu den "polyalphabetischen Ansaetzen"
  *  
- * Erweitert und angepasst
+ * Erweitert und angepasst.
+ * Insbesondere Anpassung an 26 Zeichen, damit es zu den Zahlenwerten und den Verschluesselten Buchstabenwerten im Buchbeispiel auf der angegebenen Seite passt
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */
-class Vigenere { 		// Vigenereverschluesselung
+class Vigenere26 { 		// Vigenereverschluesselung
 
   public static void main( String[] arg) {
-    String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch
-	//String SchluesselWort="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
-	                                        //     ABER: DAS ERGEBNIS WEICHT AB!!!
+    String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.33
+
     DateiUtil Original;
     int c, i, laengeSW;   
-   
-    int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //fGL: Die Schlüsselwortbuchstaben
-    //FGL: Nun die Zeichen an die printversion im Buch anpassen
-    int[]spure = new int[s.length];
-    for(i=0;i<s.length;i++) {
-    	spure[i]=s[i]-65;
-    }
+
+    int[]spure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
     
     
     if (arg.length > 0) {
@@ -54,15 +49,8 @@ class Vigenere { 		// Vigenereverschluesselung
       }
     }
     
-    //FGL: Nun die Zeichen an die printversion im Buch anpassen
-//    int[]ppure = new int[p.length];
-//    for(i=0;i<p.length;i++) {
-//    	ppure[i]=p[i]-65;
-//    }
-    
-    int[]ppure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
-    
-    
+    int[]ppure = UnicodeZZZ.fromUtf8ToAscii(p);
+
     System.out.println("\n-- Verschluessele Text von: "+DateiUtil.dateiname+" --");
     for (i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");

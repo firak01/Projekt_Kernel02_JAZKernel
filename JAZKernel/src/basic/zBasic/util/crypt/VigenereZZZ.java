@@ -1,8 +1,15 @@
 package basic.zBasic.util.crypt;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+
 import base.files.DateiUtil;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 public class VigenereZZZ extends AbstractVigenereZZZ{
@@ -96,9 +103,53 @@ public class VigenereZZZ extends AbstractVigenereZZZ{
 		      
 		    }	
 		    
+		    char[] ca = new char[p.length];
+		    int iindex=-1;
+		    for(int itemp : p) {
+		    	iindex++;
+		    	char ctemp = (char)itemp;
+		    	ca[iindex]=ctemp;
+		    }
+		    
+		    try {
+			    CharBuffer cbuf = CharBuffer.wrap(ca);
+			    //CharBuffer charBuffer = CharBuffer.wrap("Hello World");
+			    
+			    //Charset charset1 = Charset.forName("ISO-8859-1");
+			    Charset charset1 = Charset.forName("UTF8");
+			    //ByteBuffer byteBuffer = Charset.forName("utf-8").encode(charBuffer);
+			    ByteBuffer byteBuffer = charset1.encode(cbuf);
+			    	        
+		        CharsetDecoder decoder = charset1.newDecoder();	        
+			    CharBuffer cbuf2 = decoder.decode(byteBuffer);
+			    String s2 = cbuf2.toString();
+			    System.out.println("\n");
+			    System.out.println(s2);
+			} catch (CharacterCodingException e) {
+			}
+		    
 		    String stemp;
 		    for(int itemp : p) {
-		    	stemp = IoUtil.intToString(itemp);
+		    	//das macht nur aus der Zahl einen String-Wert, nicht das Zeichen  stemp = IoUtil.intToString(itemp);
+		    	stemp = CharZZZ.toString(itemp);
+		    	
+		    	// Gets charset
+		        Charset charset1 = Charset.forName("UTF8");
+		        CharsetDecoder decoder = charset1.newDecoder();
+		        //CharsetEncoder encoder = charset1.newEncoder();
+
+				
+				  // Convert a string to ISO-LATIN-1 bytes in a ByteBuffer
+				  // The new ByteBuffer is ready to be read.
+				  //ByteBuffer bbuf = encoder.encode(CharBuffer.wrap("a string"));
+				  
+					
+				  // Convert ISO-LATIN-1 bytes in a ByteBuffer to a character ByteBuffer and then to a string.
+				  // The new ByteBuffer is ready to be read.
+//				  CharBuffer cbuf = decoder.decode(bbuf);
+//				  String s = cbuf.toString();
+				
+		        
 		    	sReturn += stemp;
 		    }
 		    
