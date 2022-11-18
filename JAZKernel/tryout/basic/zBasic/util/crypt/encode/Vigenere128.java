@@ -9,15 +9,17 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  *  Die Verschlusselungsmethode gehoert zu den "polyalphabetischen Ansaetzen"
  *  
  * Erweitert und angepasst
+ * Insbesondere Anpassung an 128 Zeichen, damit es zu den Zahlenwerten und den Verschluesselten Buchstabenwerten im Buchbeispiel auf der angegebenen Seite passt
+ * Merke: Der verwendete Moduluswert entspricht dem 128 im Klassennamen
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */
-class Vigenere { 		// Vigenereverschluesselung
+class Vigenere128 { 		// Vigenereverschluesselung
 
   public static void main( String[] arg) {
     //String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch
 	String SchluesselWort="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
-	                                        //     ABER: TODOGOON20221118 DAS ERGEBNIS WEICHT AB!!!
+	
     DateiUtil Original;
     int c, i, laengeSW;   
    

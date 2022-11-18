@@ -93,8 +93,8 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       //Die definierten Standard charsets stehen hier:
       //https://docs.oracle.com/javase/7/docs/api/java/nio/charset/Charset.html
       //Merke: ANSI ist also kein passender Typ.
-      //InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),"ISO-8859-1");
-      InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName("UTF8"));
+      InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),"ISO-8859-1");
+      //InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName("UTF8"));
       
       String sEncoding = fr.getEncoding();
       System.out.println("FileReader: Encoding="+sEncoding);

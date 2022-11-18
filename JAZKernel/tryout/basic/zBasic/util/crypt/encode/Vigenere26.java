@@ -4,19 +4,22 @@ import base.files.DateiUtil;
 import base.io.IoUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
-/** Aus "Kryptographie mit Java", Seite 33f
+/** Aus "Kryptographie mit Java", Seite 31ff
  *  Die Klasse stammt aus der Buch CD, aus dem Verzeichnis poly
  *  Die Verschlusselungsmethode gehoert zu den "polyalphabetischen Ansaetzen"
  *  
  * Erweitert und angepasst.
  * Insbesondere Anpassung an 26 Zeichen, damit es zu den Zahlenwerten und den Verschluesselten Buchstabenwerten im Buchbeispiel auf der angegebenen Seite passt
+ * Merke: Der verwendete Moduluswert entpricht der 26 im Klasennamen
+
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */
 class Vigenere26 { 		// Vigenereverschluesselung
 
   public static void main( String[] arg) {
-    String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.33
+    String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
+	//String SchluesselWort="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
 
     DateiUtil Original;
     int c, i, laengeSW;   
@@ -27,8 +30,15 @@ class Vigenere26 { 		// Vigenereverschluesselung
     if (arg.length > 0) {
     	Original = new DateiUtil(arg[0]);
     } else {
+    	//Buchoriginal, S. 31
     	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt");
+    	
+    	//Buchoriginal S. 33
     	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt");
+    	
+    	
+    	
+    	
     	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
     }
     

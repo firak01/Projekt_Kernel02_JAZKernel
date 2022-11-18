@@ -225,7 +225,8 @@ public class UnicodeZZZ {
 		    int[]iaPure = new int[ia.length];
 
 		    for(int i=0;i<ia.length;i++) {
-		    	iaPure[i]=ia[i]-65;
+		    	//iaPure[i]=ia[i]-65;
+		    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i]);
 		    }
 		    
 		 return iaPure;   		
@@ -240,7 +241,7 @@ public class UnicodeZZZ {
 		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
 			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
 		         //System.out.print((char)(z) + ":"+z+sSeparator);
-				 iReturn = iz + 65;
+				 iReturn = iz - 65;
 		       }else {
 		         //System.out.print("." + ":"+z+sSeparator);
 		       }
