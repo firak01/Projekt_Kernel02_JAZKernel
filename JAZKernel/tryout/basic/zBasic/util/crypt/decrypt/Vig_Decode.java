@@ -15,9 +15,9 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
     	//Chiffre = new Datei();
-    	Chiffre = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted0_Beispieltext2_schluesselwort_HALLO.txt");
-    	//Chiffre = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted1_LangerBeispieltext1_schluesselwort_HALLO.txt"); 
-    	//Chiffre = new DateiUtil("tryout\\tryout\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted3_LangerBeispieltext2_schluesselwort_SchluesselWort");
+    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted0_26_Beispieltext2_schluesselwort_HALLO.txt");
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted1_LangerBeispieltext1_schluesselwort_HALLO.txt"); 
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted3_LangerBeispieltext2_schluesselwort_SchluesselWort");
     }
     
     if (arg.length > 1) {

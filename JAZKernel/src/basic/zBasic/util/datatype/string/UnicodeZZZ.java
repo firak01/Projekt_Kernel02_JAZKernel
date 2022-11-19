@@ -1,5 +1,7 @@
 package basic.zBasic.util.datatype.string;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +13,9 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.EnumSet;
 
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
@@ -206,6 +211,107 @@ public class UnicodeZZZ {
 		return bReturn;
 	}
 	
+	public static boolean writeUtf8ToFile(byte[]ba, String sFilepath) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(ba==null) break main;
+			if(ba.length==0)break main;
+			
+			try {
+				 //Besser das Encoding mitgeben
+			      int[] ia = new int[ba.length];
+			      for (int i=0; i<ba.length; i++) ia[i] = (int)ba[i];
+			      
+			      			      
+			      File objFile = new File(sFilepath);
+			      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE_NEW));
+			      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE_NEW));
+			      for (int i=0;i<ba.length;i++) {
+			          objWriter.write(ia[i]);
+			      }			
+			      objWriter.close();
+				
+				bReturn = true;
+			} catch (FileNotFoundException e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			} catch (IOException e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			}
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean writeUtf8ToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(ia==null) break main;
+			if(ia.length==0)break main;
+			
+			try {	      
+		      File objFile = new File(sFilepath);
+		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE_NEW);
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE_NEW);		     
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE_NEW));
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE_NEW));
+		      for (int i=0;i<ia.length;i++) {
+		          objWriter.write(ia[i]);		        
+		      }			
+		      objWriter.close();
+				
+		      bReturn = true;
+			} catch (FileNotFoundException e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			} catch (IOException e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			}
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	
+	
+	//###########################################################################################
+	public static int[] fromAsciiToUtf8(int[] ia) {
+	    
+	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i]);
+	    }
+	    
+	 return iaPure;   		
+}
+	public static int fromAsciiToUtf8(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) iz+=256;		
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz + 65;
+			
+		}//end main:
+	    return iReturn;		
+	}
+	
+	
+	//###########################################################################################
+	
 	/** Damit werden nichtdruckbare Zeichen ausgespart.
 	 *  Z.B. angewendet in meiner Überarbeitung des Codes zum Buch "Kryptografie mit Java", Vigenere Verschluesselung, S. 33ff
 	 *  
@@ -225,7 +331,6 @@ public class UnicodeZZZ {
 		    int[]iaPure = new int[ia.length];
 
 		    for(int i=0;i<ia.length;i++) {
-		    	//iaPure[i]=ia[i]-65;
 		    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i]);
 		    }
 		    
@@ -249,6 +354,8 @@ public class UnicodeZZZ {
 		}//end main:
 	    return iReturn;		
 	}
+
+	
 	
 	
 	 /** Angelehnt an "Kryptografie mit Java", IoUtil.Unicode(s.getBytes());

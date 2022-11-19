@@ -1,7 +1,11 @@
 package basic.zBasic.util.crypt.encode;
 
+import java.io.File;
+import java.io.IOException;
+
 import base.files.DateiUtil;
 import base.io.IoUtil;
+import basic.zBasic.datatype.string.FileEncodingUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 31ff
@@ -89,6 +93,25 @@ class Vigenere26 { 		// Vigenereverschluesselung
                  "\n---- Dateilaenge: "+p.length+" Bytes ----\n ");
     DateiUtil Kodiert = new DateiUtil();
     Kodiert.schreib(ppure);
+    
+    //hole das Encoding, als TEST
+    String sFilePath = Kodiert.getFilePath();
+    File objFile = new File(sFilePath);
+    String sEncoding;
+	try {
+		sEncoding = FileEncodingUtil.getFileEncoding(objFile);
+		System.out.println("Encoding: " + sEncoding);
+		
+		File objFileAnsi = new File("c:\\temp\\ANSI.txt");
+		FileEncodingUtil.convertFileToANSI(objFile, objFileAnsi);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    
+    
+    
+    
     System.exit(0);
   }
 }

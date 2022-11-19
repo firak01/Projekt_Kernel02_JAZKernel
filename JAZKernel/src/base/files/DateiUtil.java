@@ -5,7 +5,12 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.lang.CharSet;
 
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.string.UnicodeZZZ;
+
 import java.awt.*;
+import java.nio.file.Files;
+import java.util.EnumSet;
 
 /**aus dem Buch "Kryptographie mit Java".
  * Klasse aus dem Anhang, heisst dort nur Datei.java
@@ -15,6 +20,8 @@ import java.awt.*;
  * 
  */
 public class DateiUtil {
+	private String sFilePath=null;
+	
   public class java {
 
 	}
@@ -93,11 +100,17 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       //Die definierten Standard charsets stehen hier:
       //https://docs.oracle.com/javase/7/docs/api/java/nio/charset/Charset.html
       //Merke: ANSI ist also kein passender Typ.
-      InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),"ISO-8859-1");
-      //InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName("UTF8"));
+      //InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),"ISO-8859-1");
+      InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName("UTF8"));
       
       String sEncoding = fr.getEncoding();
       System.out.println("FileReader: Encoding="+sEncoding);
+      
+      //Merke: 
+      //65533 = Unicode Character 'REPLACEMENT CHARACTER' (U+FFFD)
+      //i.e. Your character is not being interpreted correctly within the character encoding you are using, and so is being replaced by the fallback value.
+
+      
       for (int i = 0; i < dateigroesse; i++)
       inhalt[i] = fr.read();
       fr.close();
@@ -132,15 +145,37 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       fd = null;
     }
     try { 
-      FileOutputStream fos = new FileOutputStream(pfad + dateiname);
-      fos.write(b);
-      fos.close();
-    }
-    catch(IOException e) { 
-      System.out.println("Datei:"+e); 
-      return false;
-    }
+      //FGL: 20211119: Das schreibt aber die Daten wieder nur irgendwie.
+      //FileOutputStream fos = new FileOutputStream(pfad + dateiname);
+      //fos.write(b);
+      //fos.close();
+//      } catch(IOException e) { 
+//      System.out.println("Datei:"+e); 
+//      return false;
+//      }
+    	
+      //Besser das Encoding mitgeben
+      int[] ia = new int[b.length];
+      for (int i=0; i<b.length; i++) ia[i] = (int)b[i];
+      
+      //und nun von Ascii nach Unicode
+      int[] iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia);
+      
+      String sFilepath = pfad + dateiname;
+      this.setFilePath(sFilepath);
+      UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);            
+    } catch (ExceptionZZZ e) {
+	 System.out.println("Datei:"+e); 
+     return false;
+	}
     return true;
+  }
+  
+  public String getFilePath() {
+	  return this.sFilePath;
+  }
+  public void setFilePath(String sFilePath) {
+	  this.sFilePath= sFilePath;
   }
 }	
 

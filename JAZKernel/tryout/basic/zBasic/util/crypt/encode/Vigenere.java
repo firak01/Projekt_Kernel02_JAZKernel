@@ -9,10 +9,12 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  *  Die Verschlusselungsmethode gehoert zu den "polyalphabetischen Ansaetzen"
  *  
  * Erweitert und angepasst
+ * Insbesondere Anpassung an 128 Zeichen, damit es zu den Zahlenwerten und den Verschluesselten Buchstabenwerten im Buchbeispiel auf der angegebenen Seite passt
+ * Merke: Der verwendete Moduluswert entspricht dem 128 im Klassennamen
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */
-class Vigenere { 		// Vigenereverschluesselung
+class Vigenere256 { 		// Vigenereverschluesselung
 
   public static void main( String[] arg) {
     //String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch
@@ -59,8 +61,8 @@ class Vigenere { 		// Vigenereverschluesselung
     	int iIndexS = i%laengeSW;
     	int iSum = s[iIndexS]+p[i];
     	//int iSum = spure[iIndexS]+ppure[i];
-    	//int iFormula = (iSum)%256;
-    	int iFormula = (iSum)%128;
+    	int iFormula = (iSum)%256;
+    	//int iFormula = (iSum)%128;
     	//int iFormula = (iSum)%26;//An das Beispiel im Buch angepasst
       c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
       								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
