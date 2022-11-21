@@ -159,11 +159,17 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       for (int i=0; i<b.length; i++) ia[i] = (int)b[i];
       
       //und nun von Ascii nach Unicode
-      int[] iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia);
+      //!!! Bei Vigenere26 ja, 
+      //int[] iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia);
       
+      //bei Vigenere256 nein?
+      //int[] iaUtf8 = UnicodeZZZ.plus65(ia);
+      int[] iaUtf8 = ia;
+    		  
       String sFilepath = pfad + dateiname;
       this.setFilePath(sFilepath);
-      UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);            
+      UnicodeZZZ.writeAnsiToFile(iaUtf8, sFilepath);  //Mappingfehler, falls ungueltige Zeichen    
+      //UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);            
     } catch (ExceptionZZZ e) {
 	 System.out.println("Datei:"+e); 
      return false;

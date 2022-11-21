@@ -243,28 +243,73 @@ public class UnicodeZZZ {
 		return bReturn;
 	}
 	
+	public static boolean writeAnsiToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(ia==null) break main;
+			if(ia.length==0)break main;
+			
+			int iPosition=-1;
+			try {	      
+		      File objFile = new File(sFilepath);
+		      //gibt "unsupported Mapping" ggfs. als Fehler, wenn in dem String etwas anderes als ANSI steht		      
+		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE));		     
+		      for (int i=0;i<ia.length;i++) {
+		    	  iPosition=i;
+		    	  //if (i==9)break; //FGL: UnmappableCharacterException vermeiden beim Debug, austesten?
+		    	  if(ia[i]>127 || ia[i]<0) {
+		    		  
+		    	  }else {
+		         	objWriter.write(ia[i]);
+		    	  }
+		          
+		      }			
+		      objWriter.close();
+				
+		      bReturn = true;
+			} catch (FileNotFoundException e) {
+				System.out.println("FileNotFoundException: Character at position: '" + iPosition + "' - " + e.toString());
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			} catch (IOException e) {
+				System.out.println("IOException: Character at position: '" + iPosition + "' - " + e.toString());
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			}
+		}//end main:
+		return bReturn;
+	}
+	
 	public static boolean writeUtf8ToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(ia==null) break main;
 			if(ia.length==0)break main;
 			
+			int iPosition=-1;
 			try {	      
 		      File objFile = new File(sFilepath);
-		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE_NEW);
-		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE_NEW);		     
-		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE_NEW));
-		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE_NEW));
+		      //gibt "unsupported Mapping" ggfs. als Fehler.
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE));
+
+		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE));
 		      for (int i=0;i<ia.length;i++) {
+		    	  iPosition=i;
 		          objWriter.write(ia[i]);		        
 		      }			
 		      objWriter.close();
 				
 		      bReturn = true;
 			} catch (FileNotFoundException e) {
+				System.out.println("FileNotFoundException: Character at position: '" + iPosition + "' - " + e.toString());
 				ExceptionZZZ ez = new ExceptionZZZ(e);
 				throw ez;
 			} catch (IOException e) {
+				System.out.println("IOException: Character at position: '" + iPosition + "' - " + e.toString());
 				ExceptionZZZ ez = new ExceptionZZZ(e);
 				throw ez;
 			}
@@ -290,7 +335,10 @@ public class UnicodeZZZ {
 	public static int fromAsciiToUtf8(int iz) {
 		int iReturn=-1;
 		main:{
-			if (iz<0) iz+=256;		
+			if (iz<0) {
+				System.out.print("FGL FGLFGL");
+				iz+=256;		
+			}
 //		    if (iz==10) {
 //		    	//System.out.println();
 //		    }else {
@@ -304,6 +352,8 @@ public class UnicodeZZZ {
 //		    }
 			
 			iReturn = iz + 65;
+			
+			
 			
 		}//end main:
 	    return iReturn;		
@@ -372,4 +422,151 @@ public class UnicodeZZZ {
 	    return dummy;
 	  }
 	
+	
+	//#########################################################################
+	public static int[] minus128(int[] ia) {
+	    
+	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	iaPure[i] = UnicodeZZZ.minus128(ia[i]);
+	    }
+	    
+	 return iaPure;   		
+}
+	
+	public static int minus128(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) iz+=256;		
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz -128;
+			
+			
+			
+		}//end main:
+	    return iReturn;		
+	}
+	
+	
+public static int[] plus65(int[] ia) {
+	    
+	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	iaPure[i] = UnicodeZZZ.plus65(ia[i]);
+	    }
+	    
+	 return iaPure;   		
+}
+	
+	public static int plus65(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) iz+=256;		
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz + 128;
+			
+			
+			
+		}//end main:
+	    return iReturn;		
+	}
+	
+public static int[] plus128(int[] ia) {
+	    
+	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	iaPure[i] = UnicodeZZZ.plus128(ia[i]);
+	    }
+	    
+	 return iaPure;   		
+}
+	
+	public static int plus128(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) iz+=256;		
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz + 128;
+			
+			
+			
+		}//end main:
+	    return iReturn;		
+	}
+
+	
+public static int[] plus256(int[] ia) {
+	    
+	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	iaPure[i] = UnicodeZZZ.plus256(ia[i]);
+	    }
+	    
+	 return iaPure;   		
+}
+	
+	public static int plus256(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) iz+=256;		
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz + 256;
+			
+			
+			
+		}//end main:
+	    return iReturn;		
+	}
 }

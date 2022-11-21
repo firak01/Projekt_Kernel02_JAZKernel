@@ -35,15 +35,12 @@ class Vigenere26 { 		// Vigenereverschluesselung
     	Original = new DateiUtil(arg[0]);
     } else {
     	//Buchoriginal, S. 31
-    	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt");
+    	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt");
     	
     	//Buchoriginal S. 33
+    	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
     	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt");
-    	
-    	
-    	
-    	
-    	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
+    
     }
     
     if (arg.length > 1) {
@@ -93,25 +90,7 @@ class Vigenere26 { 		// Vigenereverschluesselung
                  "\n---- Dateilaenge: "+p.length+" Bytes ----\n ");
     DateiUtil Kodiert = new DateiUtil();
     Kodiert.schreib(ppure);
-    
-    //hole das Encoding, als TEST
-    String sFilePath = Kodiert.getFilePath();
-    File objFile = new File(sFilePath);
-    String sEncoding;
-	try {
-		sEncoding = FileEncodingUtil.getFileEncoding(objFile);
-		System.out.println("Encoding: " + sEncoding);
-		
-		File objFileAnsi = new File("c:\\temp\\ANSI.txt");
-		FileEncodingUtil.convertFileToANSI(objFile, objFileAnsi);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-    
-    
-    
-    
+
     System.exit(0);
   }
 }

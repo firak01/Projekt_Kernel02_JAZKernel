@@ -23,13 +23,16 @@ class Vigenere256 { 		// Vigenereverschluesselung
     DateiUtil Original;
     int c, i, laengeSW;   
    
-    int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben      
+    int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
+    int[] iasPure = s;
+    
+    
     if (arg.length > 0) {
     	Original = new DateiUtil(arg[0]);
     } else {
     	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt");
-    	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt");
-    	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
+    	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt");
+    	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
     }
     
     if (arg.length > 1) {
@@ -52,14 +55,13 @@ class Vigenere256 { 		// Vigenereverschluesselung
     //FGL: Nun die Zeichen an die printversion im Buch anpassen   
    // int[]ppure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
     
-    
     System.out.println("\n-- Verschluessele Text von: "+DateiUtil.dateiname+" --");
     for (i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");
       //Das steht in der Codedatei
     	//Merke: c = Chiffrebuchstabe
     	int iIndexS = i%laengeSW;
-    	int iSum = s[iIndexS]+p[i];
+    	int iSum = iasPure[iIndexS]+p[i];
     	//int iSum = spure[iIndexS]+ppure[i];
     	int iFormula = (iSum)%256;
     	//int iFormula = (iSum)%128;
@@ -67,6 +69,10 @@ class Vigenere256 { 		// Vigenereverschluesselung
       c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
       								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
                                     //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
+      //++++FGL: Fehlerkorrektur, damit es dem Beispiel im Buch Seite 33ff entspricht
+      c = c-128;
+      if(c<0) c=c+128;
+      //++++
       System.out.print("i="+c);
       p[i] = c;				// nur wegen abspeichern
       
@@ -76,8 +82,8 @@ class Vigenere256 { 		// Vigenereverschluesselung
       System.out.println("\n\n-- Verschluesselter Text von: "+DateiUtil.dateiname+" --");
       for (i = 0; i < p.length; i++) {
     	//IoUtil.printCharWithPosition((ppure[i]+65),"|");
-    	IoUtil.printCharWithPosition((p[i]),"|");
-        if (((i+1)%80)==0) System.out.println();	// neue Zeile
+    	IoUtil.printCharWithPosition((p[i]),i,"|");
+        //if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
     }
     System.out.println(

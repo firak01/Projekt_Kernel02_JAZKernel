@@ -1,3 +1,5 @@
+wichtig Text ohne Sonderzeichen
+
 Bei dieser Verschluesselungsmethode wird das originale Alphabet einfach
 horizontal verschoben Bei einem Schluessel von s 3  wird zB der Buchstabe
 A um drei Buchstaben nach rechts verschoben wird also zu einem

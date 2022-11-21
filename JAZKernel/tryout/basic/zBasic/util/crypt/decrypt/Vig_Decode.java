@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.decrypt;
 
 import base.files.DateiUtil;
 import base.io.IoUtil;
+import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
   public static void main( String[] arg) {
@@ -11,12 +12,21 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     int p, i, laengeSW;
     
     int[] s = IoUtil.Unicode(SchluesselWort.getBytes());
+    
+    //+++++++++++++++++++
+    int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(s);
+    
+    //+++++++++++++++++++
+    
     if (arg.length > 0) {
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
     	//Chiffre = new Datei();
-    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted0_26_Beispieltext2_schluesselwort_HALLO.txt");
-    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted1_LangerBeispieltext1_schluesselwort_HALLO.txt"); 
+    	//Klappt nicht, obwahl das Ergebnis der Datei zum Text im Buch passt   
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted0_26_Beispieltext2_schluesselwort_HALLO.txt");
+    	
+    	//Ergebnis der Datei passt zum Text im Buch 
+    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted1_256_LangerBeispieltext1_schluesselwort_SchluesselWort.txt"); 
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted3_LangerBeispieltext2_schluesselwort_SchluesselWort");
     }
     
@@ -35,26 +45,36 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     }
     
     
+    
+    
     System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("---- Chiffretext von: "+DateiUtil.dateiname+" ----");
       for (i=0; i < c.length; i++) {
-        IoUtil.printCharWithPosition(c[i],"|");
+        IoUtil.printCharWithPosition(c[i],i,"|");
         if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
       }
     }
     System.out.println("\nBeginne Entschluesselung ... ");
     for (i=0; i<c.length; i++) {
-      p = c[i]-s[i%laengeSW];			// c-s
-      if (p < 0) p+=256;
+      int iModLaengeSW = i%laengeSW;      
+      p = c[i]-iasPure[iModLaengeSW];			// c-s
+      if (p < 0) p+=256;      
       c[i] = (byte) p; 				// wegen Abspeichern von P
     }
+    
+    //++++++++++++++++++
+    //int[]iaPure = UnicodeZZZ.fromUtf8ToAscii(c);
+    //int[]iaPure = UnicodeZZZ.fromAsciiToUtf8(c);
+    int[]iaPure = c;
+    
+    //++++++++++++++++++
     System.out.print("\nOriginal-Datei ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("\n\n-- Originaltext von: "+DateiUtil.dateiname+" --");
-      for (i=0; i<c.length; i++) {
-        IoUtil.printCharWithPosition(c[i],"|");
-        if (((i+1)%80)==0) System.out.println();	// neue Zeile
+      for (i=0; i<iaPure.length; i++) {
+        IoUtil.printCharWithPosition(iaPure[i],i,"|");
+        //if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
       System.out.println("\n---- Dateilaenge: "+c.length+" Bytes ----\n ");
     }
