@@ -129,6 +129,11 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
     }
     return inhalt;
   }
+  
+  public boolean schreib(String datStr) {
+	    int iEncodingType = EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal();
+	    return this.schreib(datStr.getBytes(), iEncodingType);
+	  }
   public boolean schreib(int[] Unicode, int iEncodingType) {
     byte[] b = new byte[Unicode.length];
     for (int i=0; i<b.length; i++) b[i] = (byte)Unicode[i];

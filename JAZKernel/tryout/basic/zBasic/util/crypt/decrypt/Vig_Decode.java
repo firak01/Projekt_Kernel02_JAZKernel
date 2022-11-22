@@ -65,7 +65,8 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     for (i=0; i<c.length; i++) {
       int iModLaengeSW = i%laengeSW;      
       p = c[i]-iasPure[iModLaengeSW];			// c-s
-      if (p < 0) p+=256;      
+      //if (p < 0) p+=256;      
+      if (p < 0) p+=26; //Fuer Viginere26 Verschluesselung
       c[i] = (byte) p; 				// wegen Abspeichern von P
     }
     

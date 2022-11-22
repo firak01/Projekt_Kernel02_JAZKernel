@@ -74,7 +74,7 @@ public class IoUtil {                      // zaehlt die Buchstaben
 	    	 
 	    	 //oder alles ausgeben
 	    	 if(iPosition>=0) {
-	    		 System.out.println(iPosition + sSeparator + (char)(z) + ":"+z+sSeparator);
+	    		 System.out.print(iPosition + sSeparator + (char)(z) + ":"+z+sSeparator);
 	    	 }else {
 	    		 System.out.print((char)(z) + ":"+z+sSeparator);
 	    	 }
@@ -270,7 +270,7 @@ public class IoUtil {                      // zaehlt die Buchstaben
     DateiUtil D = new DateiUtil();
     String datStr="";
     for (int i=0; i<A.length; i++) datStr.concat(String.valueOf(A[i]).concat(" "));
-    D.schreib(datStr);
+    D.schreib(datStr,0);
   }
   static void schreibeIntsInDatei(int[][] A) {
     String datStr="";
