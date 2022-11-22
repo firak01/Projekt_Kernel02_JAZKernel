@@ -1,6 +1,7 @@
 package basic.zBasic.util.crypt.encode;
 
 import base.files.DateiUtil;
+import base.files.EncodingMaintypeZZZ;
 
 /** Caesarverschlüsselung ohne Rotation
  *  Buch "Kryptografie mit Java" Seite 22
@@ -40,7 +41,7 @@ public class Caesar {
 		}
 		
 		DateiUtil kodiert = new DateiUtil();
-		kodiert.schreib(geheim);				
+		kodiert.schreib(geheim, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());				
 		
 	}
 }
