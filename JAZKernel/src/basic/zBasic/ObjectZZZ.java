@@ -83,9 +83,9 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 	
 	//### FlagMethods ##########################
 	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
-	 * 	 Weteire Voraussetzungen:
+	 * 	 Weitere Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
-	 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
+	 * - Innere Klassen muessen auch public deklariert werden.(non-Javadoc)
 	 */
 	public boolean getFlagZ(String sFlagName) {
 		boolean bFunction = false;

@@ -5,21 +5,13 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.KernelCryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ implements IKernelEncryptionIniSolverZZZ{
 	public static String sTAG_NAME = "Z:encrypted";

@@ -327,6 +327,7 @@ public class UnicodeZZZ {
 	    int[]iaPure = new int[ia.length];
 
 	    for(int i=0;i<ia.length;i++) {
+	    	System.out.print(i);
 	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i]);
 	    }
 	    
@@ -336,8 +337,10 @@ public class UnicodeZZZ {
 		int iReturn=-1;
 		main:{
 			if (iz<0) {
-				System.out.print("FGL FGLFGL");
-				iz+=256;		
+				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
+				//iz+=256;		
+				//iz+=128;
+				iz+=26; //für Vigenere26!!!
 			}
 //		    if (iz==10) {
 //		    	//System.out.println();

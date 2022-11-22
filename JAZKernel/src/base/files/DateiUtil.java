@@ -20,6 +20,7 @@ import java.util.EnumSet;
  * 
  */
 public class DateiUtil {
+	
 	private String sFilePath=null;
 	
   public class java {
@@ -101,7 +102,10 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       //https://docs.oracle.com/javase/7/docs/api/java/nio/charset/Charset.html
       //Merke: ANSI ist also kein passender Typ.
       //InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),"ISO-8859-1");
-      InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName("UTF8"));
+      
+      //InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName("UTF8"));
+      String sCharset = EncodingMappedValueZZZ.EncodingTypeZZZ.UTF8.getAbbreviation();
+      InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName(sCharset));
       
       String sEncoding = fr.getEncoding();
       System.out.println("FileReader: Encoding="+sEncoding);
@@ -125,15 +129,15 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
     }
     return inhalt;
   }
-  public boolean schreib(int[] Unicode) {
+  public boolean schreib(int[] Unicode, int iEncodingType) {
     byte[] b = new byte[Unicode.length];
     for (int i=0; i<b.length; i++) b[i] = (byte)Unicode[i];
-    return this.schreib(b);
+    return this.schreib(b,iEncodingType);
   }
-  public boolean schreib(String datStr) {
-    return this.schreib(datStr.getBytes());
+  public boolean schreib(String datStr, int iEncodingType) {
+    return this.schreib(datStr.getBytes(), iEncodingType);
   }
-  public boolean schreib(byte[] b) {
+  public boolean schreib(byte[] b, int iEncodingType) {
     if(dateiname == null) {
       Frame f = new Frame();
       FileDialog fd = new FileDialog(f);
@@ -157,19 +161,41 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       //Besser das Encoding mitgeben
       int[] ia = new int[b.length];
       for (int i=0; i<b.length; i++) ia[i] = (int)b[i];
-      
-      //und nun von Ascii nach Unicode
-      //!!! Bei Vigenere26 ja, 
-      //int[] iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia);
-      
-      //bei Vigenere256 nein?
-      //int[] iaUtf8 = UnicodeZZZ.plus65(ia);
-      int[] iaUtf8 = ia;
-    		  
+        
       String sFilepath = pfad + dateiname;
       this.setFilePath(sFilepath);
-      UnicodeZZZ.writeAnsiToFile(iaUtf8, sFilepath);  //Mappingfehler, falls ungueltige Zeichen    
-      //UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);            
+     
+      /* Merke: Case Expressions must be constant expressions */
+      /*
+      switch (iEncodingType) {
+      case EncodingMappedValueZZZ.EncodingTypeZZZ.ASCII.ordinal():    	  
+		UnicodeZZZ.writeAnsiToFile(iaUtf8, sFilepath);  //Mappingfehler, falls ungueltige Zeichen
+      	break;
+	  case EncodingMappedValueZZZ.EncodingTypeZZZ.UTF8.ordinal():
+		UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);
+	    break;
+      default:
+    	  
+    	break;
+      }
+      */
+      
+      int[] iaUtf8;
+      if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {  
+    	  
+    	//und nun von Ascii nach Unicode. Zumindest bei Vigenere26 !!! 
+        iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia); 
+		UnicodeZZZ.writeAnsiToFile(iaUtf8, sFilepath);  //Mappingfehler, falls ungueltige Zeichen      	
+      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {
+    	//bei Vigenere256 nein?
+          //int[] iaUtf8 = UnicodeZZZ.plus65(ia);
+    	  
+        iaUtf8 = ia;    	  
+		UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);
+      }else {
+    	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
+      }
+      
     } catch (ExceptionZZZ e) {
 	 System.out.println("Datei:"+e); 
      return false;

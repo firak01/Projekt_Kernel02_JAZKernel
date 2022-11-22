@@ -1,6 +1,7 @@
-package basic.zBasic.util.crypt;
+package base.files;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
@@ -12,17 +13,23 @@ import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDriverMappedValueZZZ.JdbcDriverClassTypeZZZ;
 
 //#####################################################
-//20220927: Um die Enumeration herum eine Klasse bauen.
-//          Diese Struktur hat den Vorteil, das solche Werte auch in einer Datenbank per Hibernate persistiert werden können.
-//          Verwendet wird solch eine Struktur z.B. in der Defaulttext - Klasse des TileHexMapTHM Projekts
-public class CryptAlgorithmMappedValueZZZ  implements Serializable{
+/** Die verwendeten Charsets
+ * 
+ *  20221122: Um die Enumeration herum eine Klasse bauen.
+ *            Diese Struktur hat den Vorteil, das solche Werte auch in einer Datenbank per Hibernate persistiert werden können.
+ *            Verwendet wird solch eine Struktur z.B. in der Defaulttext - Klasse des TileHexMapTHM Projekts
+ * 
+ * @author Fritz Lindhauer, 22.11.2022, 08:23:50
+ * 
+ */
+public class EncodingMappedValueZZZ  implements Serializable{
 	private static final long serialVersionUID = 1340342888046470974L;
 	
 		//Entsprechend der internen Enumeration
 		//Merke: Die Enumeration dient der Festlegung der Defaultwerte. In den Feldern des Entities werden die gespeicherten Werte gehalten.
 		private String fullName, abbr;
 		
-		public CryptAlgorithmMappedValueZZZ(){		
+		public EncodingMappedValueZZZ(){		
 		}
 		
 		public String getFullname(){
@@ -47,7 +54,7 @@ public class CryptAlgorithmMappedValueZZZ  implements Serializable{
 			String sError = "ExceptionZZZ: " + ez.getMessageLast() + "+\n ThreadID:" + Thread.currentThread().getId() +"\n";			
 			System.out.println(sError);
 		}
-    	return CipherTypeZZZ.class;    	
+    	return EncodingTypeZZZ.class;    	
     }
 	
 //#######################################################
@@ -57,21 +64,12 @@ public class CryptAlgorithmMappedValueZZZ  implements Serializable{
 			
 //Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 //ALIAS("Beschreibung, wird nicht genutzt....","Abkürzung, also das, was im URL String steht. Meist gefolgt von einem  Doppelpunkt, der hinzugerchnet wird, wenn die Abkürzung nicht leer ist.")
-public enum CipherTypeZZZ implements IEnumSetMappedMaintypeZZZ, IEnumSetZZZ {//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-	//FGL: EnumSet in EnumSet zu verschachteln ist zu kompliziert
-//	ROT13("ROT13","simple encrytption method for the characters a-z, using a fix number to rotate.",CryptCipherAlgorithmSubtypeZZZ.CryptCipherSubtypeZZZ.ROT),
-//	ROTascii("ROTascii","simple encrytption method for the ASCII characters.",CryptCipherAlgorithmSubtypeZZZ.CryptCipherSubtypeZZZ.ROT),
-//	ROTnumeric("ROTnumeric","simple encrytption methodefor the characters a-z PLUS 0-9, using a parameter for the number to rotate.",CryptCipherAlgorithmSubtypeZZZ.CryptCipherSubtypeZZZ.ROT),
-//	ROTnn("ROTnn","simple encrytption method for the characters provided by a character list, using a parameter for the number to rotate.",CryptCipherAlgorithmSubtypeZZZ.CryptCipherSubtypeZZZ.ROT),
-//	VIGENERE("Vigenere","simple encryption method for the characters, using a keyword to rotate", CryptCipherAlgorithmSubtypeZZZ.CryptCipherSubtypeZZZ.VIGENERE);
-	
-	
-	ROT13("ROT13","simple encrytption method for the characters a-z, using a fix number to rotate.",CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()),
-	ROTascii("ROTascii","simple encrytption method for the ASCII characters.",CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()),
-	ROTnumeric("ROTnumeric","simple encrytption methodefor the characters a-z PLUS 0-9, using a parameter for the number to rotate.",CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()),
-	ROTnn("ROTnn","simple encrytption method for the characters provided by a character list, using a parameter for the number to rotate.",CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()),
-	VIGENERE("Vigenere","simple encryption method for the characters, using a keyword to rotate", CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal());
-	
+public enum EncodingTypeZZZ implements IEnumSetMappedMaintypeZZZ, IEnumSetZZZ {//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
+	//FGL: EnumSet in EnumSet zu verschachteln ist zu kompliziert, also einen zusätzlichen Type-Anwenden
+	//     Die sAbbr - Werte in untenstehender Enumertion sind z.B. für: ... Charset.forName("UTF8"));
+	UTF8("UTF8","UTF8 encoding",EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()),
+	ASCII("ISO-8859-1","simple ASCII encoding",EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()),
+	LATIN("cp1252","simple LATIN Codepage ASCII encoding",EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
 	
 private String sAbbr, sDescr;
 private int iMaintype;
@@ -83,7 +81,7 @@ private int iMaintype;
 //#### Konstruktoren
 //Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 //In der Util-Klasse habe ich aber einen Workaround gefunden.
-CipherTypeZZZ(String sAbbr, String sDescr,int iMaintype) {
+EncodingTypeZZZ(String sAbbr, String sDescr,int iMaintype) {
     this.sAbbr = sAbbr;
     this.sDescr = sDescr;
     this.iMaintype = iMaintype;
@@ -104,7 +102,7 @@ public String getAbbreviation() {
 }
 
 public EnumSet<?>getEnumSetUsed(){
-	return CipherTypeZZZ.getEnumSet();
+	return EncodingTypeZZZ.getEnumSet();
 }
 
 /* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
@@ -117,12 +115,12 @@ public static <E> EnumSet getEnumSet() {
 	//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
 	
 	//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
-	Class<CipherTypeZZZ> enumClass = CipherTypeZZZ.class;
-	EnumSet<CipherTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
+	Class<EncodingTypeZZZ> enumClass = EncodingTypeZZZ.class;
+	EnumSet<EncodingTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
-	for(Object obj : CipherTypeZZZ.class.getEnumConstants()){
+	for(Object obj : EncodingTypeZZZ.class.getEnumConstants()){
 		//System.out.println(obj + "; "+obj.getClass().getName());
-		set.add((CipherTypeZZZ) obj);
+		set.add((EncodingTypeZZZ) obj);
 	}
 	return set;
 	
@@ -144,8 +142,8 @@ private static <E extends Enum<E>>EnumSet<E> toEnumSet(Class<E> enumClass,long v
 
 //+++ Das könnte auch in einer Utility-Klasse sein.
 //the valueOfMethod <--- Translating from DB
-public static CipherTypeZZZ fromAbbreviation(String s) {
-for (CipherTypeZZZ state : values()) {
+public static EncodingTypeZZZ fromAbbreviation(String s) {
+for (EncodingTypeZZZ state : values()) {
    if (s.equals(state.getAbbreviation()))
        return state;
 }
@@ -188,3 +186,4 @@ public int getMaintype() {
 }
 }//End internal Class	
 }//End Class
+

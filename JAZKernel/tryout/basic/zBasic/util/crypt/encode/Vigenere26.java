@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import base.files.DateiUtil;
+import base.files.EncodingMaintypeZZZ;
+import base.files.EncodingMappedValueZZZ;
 import base.io.IoUtil;
 import basic.zBasic.datatype.string.FileEncodingUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
@@ -39,6 +41,10 @@ class Vigenere26 { 		// Vigenereverschluesselung
     	
     	//Buchoriginal S. 33
     	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
+    	
+    	
+    	
+    	
     	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt");
     
     }
@@ -89,7 +95,7 @@ class Vigenere26 { 		// Vigenereverschluesselung
     System.out.println(
                  "\n---- Dateilaenge: "+p.length+" Bytes ----\n ");
     DateiUtil Kodiert = new DateiUtil();
-    Kodiert.schreib(ppure);
+    Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
 
     System.exit(0);
   }

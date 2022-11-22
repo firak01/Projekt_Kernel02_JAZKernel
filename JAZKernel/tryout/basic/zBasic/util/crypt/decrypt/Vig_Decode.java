@@ -1,6 +1,7 @@
 package basic.zBasic.util.crypt.decrypt;
 
 import base.files.DateiUtil;
+import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
@@ -14,7 +15,8 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     int[] s = IoUtil.Unicode(SchluesselWort.getBytes());
     
     //+++++++++++++++++++
-    int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(s);
+    int[]iasPure = s;
+    //int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(s);
     
     //+++++++++++++++++++
     
@@ -22,11 +24,15 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
     	//Chiffre = new Datei();
-    	//Klappt nicht, obwahl das Ergebnis der Datei zum Text im Buch passt   
-    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted0_26_Beispieltext2_schluesselwort_HALLO.txt");
+    	//Klappt, das Ergebnis der Datei passt zum Text im Buch.  
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_HALLO.txt");    	  
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_SchluesselWort.txt");
     	
-    	//Ergebnis der Datei passt zum Text im Buch 
-    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted1_256_LangerBeispieltext1_schluesselwort_SchluesselWort.txt"); 
+    	
+    	//Klappt nicht: Ergebnis der Datei passt nicht zum Text im Buch    	
+    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_HALLO.txt");
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted1_256_LangerBeispieltext1_schluesselwort_SchluesselWort.txt"); 
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted3_LangerBeispieltext2_schluesselwort_SchluesselWort");
     }
     
@@ -65,8 +71,8 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     
     //++++++++++++++++++
     //int[]iaPure = UnicodeZZZ.fromUtf8ToAscii(c);
-    //int[]iaPure = UnicodeZZZ.fromAsciiToUtf8(c);
-    int[]iaPure = c;
+    int[]iaPure = UnicodeZZZ.fromAsciiToUtf8(c);
+    //int[]iaPure = c;
     
     //++++++++++++++++++
     System.out.print("\nOriginal-Datei ausgeben? (J/N): ");
@@ -79,7 +85,7 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
       System.out.println("\n---- Dateilaenge: "+c.length+" Bytes ----\n ");
     }
     DateiUtil Original = new DateiUtil();
-    Original.schreib(c);
+    Original.schreib(c, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
     System.exit(0);
   }
 }
