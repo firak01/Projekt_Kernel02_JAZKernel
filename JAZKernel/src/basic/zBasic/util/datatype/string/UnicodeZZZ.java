@@ -321,13 +321,23 @@ public class UnicodeZZZ {
 	
 	
 	//###########################################################################################
+	public static int[] fromAsciiToUtf8(byte[] bytes) {
+		int[]iaPure = new int[bytes.length];
+		
+		for(int i=0;i<bytes.length;i++) {
+			System.out.print("#"+i+". Stelle ");
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8((int)bytes[i]);
+		}
+		return iaPure;
+	}
+	
 	public static int[] fromAsciiToUtf8(int[] ia) {
 	    
 	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
 	    int[]iaPure = new int[ia.length];
 
 	    for(int i=0;i<ia.length;i++) {
-	    	System.out.print(i);
+	    	System.out.print("#"+i+". Stelle ");
 	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i]);
 	    }
 	    
@@ -394,14 +404,14 @@ public class UnicodeZZZ {
 		main:{
 			if (iz<0) iz+=256;		
 		    if (iz==10) {
-		    	//System.out.println();
+		    	System.out.println();
 		    }else {
 		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
 			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-		         //System.out.print((char)(z) + ":"+z+sSeparator);
+		         System.out.print((char)(iz) + ":"+iz+"|");
 				 iReturn = iz - 65;
 		       }else {
-		         //System.out.print("." + ":"+z+sSeparator);
+		         System.out.print("." + ":"+iz+"|");
 		       }
 		    }
 		}//end main:
@@ -572,4 +582,6 @@ public static int[] plus256(int[] ia) {
 		}//end main:
 	    return iReturn;		
 	}
+
+	
 }

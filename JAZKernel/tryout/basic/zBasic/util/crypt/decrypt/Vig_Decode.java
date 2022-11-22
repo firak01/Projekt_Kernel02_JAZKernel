@@ -12,11 +12,11 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     DateiUtil Chiffre;
     int p, i, laengeSW;
     
-    int[] s = IoUtil.Unicode(SchluesselWort.getBytes());
+    //int[] s = IoUtil.Unicode(SchluesselWort.getBytes());
     
     //+++++++++++++++++++
-    int[]iasPure = s;
-    //int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(s);
+    int[]iasPure = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
+    //int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(SchluesselWort.getBytes());
     
     //+++++++++++++++++++
     
@@ -43,7 +43,7 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     }
     laengeSW = SchluesselWort.length();
     
-    System.out.println("Datei einlesen ...");
+    System.out.println("\nDatei einlesen ...");
     int[] c = Chiffre.liesAsInt(); //FGL: Fehlerkorrektur... das ist ja nicht als Unicode in die Datei geschrieben worden...  Chiffre.liesUnicode();	// Datei einlesen
     for(i=0; i < c.length; i++) {
     	int i2 = c[i];
@@ -63,10 +63,12 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     }
     System.out.println("\nBeginne Entschluesselung ... ");
     for (i=0; i<c.length; i++) {
-      int iModLaengeSW = i%laengeSW;      
-      p = c[i]-iasPure[iModLaengeSW];			// c-s
+      int iModLaengeSW = i%laengeSW;
+      int iBezug = iasPure[iModLaengeSW];
+      p = c[i]-iBezug;			// c-s
       //if (p < 0) p+=256;      
-      if (p < 0) p+=26; //Fuer Viginere26 Verschluesselung
+      //if (p < 0) p+=26; //Fuer Viginere26 Verschluesselung
+      if (p < 0) p+=91; //Fuer Viginere26 Verschluesselung
       c[i] = (byte) p; 				// wegen Abspeichern von P
     }
     
