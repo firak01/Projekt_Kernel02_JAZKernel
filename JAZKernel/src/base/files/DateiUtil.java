@@ -142,14 +142,90 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 	  int iEncodingType = EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal();
 	    return this.schreib(unicode, iEncodingType);
   }
-  public boolean schreib(int[] Unicode, int iEncodingType) {
-    byte[] b = new byte[Unicode.length];
-    for (int i=0; i<b.length; i++) b[i] = (byte)Unicode[i];
-    return this.schreib(b,iEncodingType);
-  }
+  
   public boolean schreib(String datStr, int iEncodingType) {
     return this.schreib(datStr.getBytes(), iEncodingType);
   }
+  public boolean schreib(int[] ia, int iEncodingType) {
+	    if(dateiname == null) {
+	      Frame f = new Frame();
+	      FileDialog fd = new FileDialog(f);
+	      fd.setMode(FileDialog.SAVE);
+	      fd.show();
+	      dateiname = fd.getFile();
+	      pfad = fd.getDirectory();
+	      f = null;
+	      fd = null;
+	    }
+	    try { 
+	      //FGL: 20211119: Das schreibt aber die Daten wieder nur irgendwie.
+	      //FileOutputStream fos = new FileOutputStream(pfad + dateiname);
+	      //fos.write(b);
+	      //fos.close();
+//	      } catch(IOException e) { 
+//	      System.out.println("Datei:"+e); 
+//	      return false;
+//	      }
+	    	
+	      //Besser das Encoding mitgeben     
+	      this.setPfad(pfad);
+	      this.setDateiname(dateiname);
+	     
+	      /* Merke: Case Expressions must be constant expressions */
+	      /*
+	      switch (iEncodingType) {
+	      case EncodingMappedValueZZZ.EncodingTypeZZZ.ASCII.ordinal():    	  
+			UnicodeZZZ.writeAnsiToFile(iaUtf8, sFilepath);  //Mappingfehler, falls ungueltige Zeichen
+	      	break;
+		  case EncodingMappedValueZZZ.EncodingTypeZZZ.UTF8.ordinal():
+			UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);
+		    break;
+	      default:
+	    	  
+	    	break;
+	      }
+	      */
+	     
+	      /* schreibt in der Codierung ANSI
+	      FileOutputStream fos = new FileOutputStream(pfad + dateiname);
+			for(int i=0;i<ia.length;i++) {
+				char c = (char)ia[i];
+		      fos.write(c);			      
+		      }
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+	      
+	      
+	      int[] iaUtf8;
+	      if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {  
+	    	  
+	    	//und nun von Ascii nach Unicode. Zumindest bei Vigenere26 !!! 
+	        //iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia); 
+	    	iaUtf8 = ia;
+			UnicodeZZZ.writeAnsiToFile(iaUtf8, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen      	
+	      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {
+	    	//bei Vigenere256 nein?
+	          //int[] iaUtf8 = UnicodeZZZ.plus65(ia);
+	    	  
+	        iaUtf8 = ia;    	  
+			UnicodeZZZ.writeUtf8ToFile(iaUtf8, this.computeFilePath());
+	      }else {
+	    	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
+	      }	     
+	    } catch (ExceptionZZZ e) {
+		 System.out.println("Datei:"+e); 
+	     return false;
+		}
+	    return true;
+	  }
+  
   public boolean schreib(byte[] b, int iEncodingType) {
     if(dateiname == null) {
       Frame f = new Frame();
@@ -171,9 +247,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 //      return false;
 //      }
     	
-      //Besser das Encoding mitgeben
-      int[] ia = new int[b.length];
-      for (int i=0; i<b.length; i++) ia[i] = (int)b[i];
+      //Besser das Encoding mitgeben     
       this.setPfad(pfad);
       this.setDateiname(dateiname);
      
@@ -192,11 +266,15 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       }
       */
       
+      int[] ia = new int[b.length];
+      for (int i=0; i<b.length; i++) ia[i] = (int)b[i];
+      
       int[] iaUtf8;
       if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {  
     	  
     	//und nun von Ascii nach Unicode. Zumindest bei Vigenere26 !!! 
-        iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia); 
+        //iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia); 
+    	iaUtf8 = ia;
 		UnicodeZZZ.writeAnsiToFile(iaUtf8, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen      	
       }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {
     	//bei Vigenere256 nein?

@@ -7,11 +7,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
+class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
   public static void main( String[] arg) {
     String SchluesselWort;
     DateiUtil Chiffre;
-    int p, i, laengeSW;
+    int p, laengeSW;
     
     //+++++++++++++++++++
     
@@ -19,13 +19,18 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
     	//Chiffre = new Datei();
+    	
+    	//Im Test
+    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_HALLO.txt");
+    	
     	//Klappt, das Ergebnis der Datei passt zum Text im Buch.  
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_HALLO.txt");
+    	
+    	
+    	//Klappt nicht: Ergebnis der Datei passt nicht zum Text im Buch. Der Algorithmus weicht halt leicht ab mir dem Bezugszeichen und dem Modulus=Anzahl der Zeichen in der Zeichnmenge
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_HALLO.txt");    	  
-    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_SchluesselWort.txt");
-    	
-    	
-    	//Klappt nicht: Ergebnis der Datei passt nicht zum Text im Buch    	
-    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_128_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_SchluesselWort.txt");    	    	//
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_HALLO.txt");
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
@@ -51,7 +56,7 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     
     System.out.println("\nDatei einlesen ...");
     int[] c = Chiffre.liesAsInt(); //FGL: Fehlerkorrektur... das ist ja nicht als Unicode in die Datei geschrieben worden...  Chiffre.liesUnicode();	// Datei einlesen
-    for(i=0; i < c.length; i++) {
+    for(int i=0; i < c.length; i++) {
     	int i2 = c[i];
     	IoUtil.printChar(i2);
     }
@@ -59,33 +64,41 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
-      for (i=0; i < c.length; i++) {
+      for (int i=0; i < c.length; i++) {
         IoUtil.printCharWithPosition(c[i],i,"|");
         if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
       }
     }
     System.out.println("\nBeginne Entschluesselung ... ");
-    for (i=0; i<c.length; i++) {
+    for (int i=0; i<c.length; i++) {
       int iModLaengeSW = i%laengeSW;
       int iBezug = iasPure[iModLaengeSW];
       p = c[i]-iBezug;			// c-s
       if (p < 0) {    	  
     	  //p+=256;
-    	  p+=26; //Fuer Viginere26 Verschluesselung  
+    	  //p+=26; //Fuer Viginere26 Verschluesselung  
+    	  p+=96; //Fuer Viginere128 Verschluesselung, s.Buch Seite 36, Tabelle 4.6, Spalte 2 !!! Ist der Modulus aus Vigenere128.java
       }   
       c[i]=p;
     }
     
     //++++++++++++++++++
+    
     //int[]iaPure = UnicodeZZZ.fromUtf8ToAscii(c);
-    int[]iaPure = UnicodeZZZ.fromAsciiToUtf8(c);//funktioniert bei Viginere26 Verschluesselung
+    //int[]iaPure = UnicodeZZZ.fromAsciiToUtf8(c);//funktioniert bei Viginere26 Verschluesselung
     //int[]iaPure = c;
+    
+    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
+    int[] iaPure = new int[c.length];
+    for(int i=0;i<c.length;i++) {
+    	iaPure[i]=c[i]+32;
+    }
     
     //++++++++++++++++++
     System.out.print("\nOriginal-Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("\n\n-- Originaltext von: "+Chiffre.computeFilePath()+" --");
-      for (i=0; i<iaPure.length; i++) {
+      for (int i=0; i<iaPure.length; i++) {
         IoUtil.printCharWithPosition(iaPure[i],i,"|");
         //if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }

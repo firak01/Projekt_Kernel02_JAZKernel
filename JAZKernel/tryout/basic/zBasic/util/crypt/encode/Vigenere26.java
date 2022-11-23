@@ -24,14 +24,17 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
 class Vigenere26 { 		// Vigenereverschluesselung
 
   public static void main( String[] arg) {
-    //String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
-	String SchluesselWort="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
+    String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
+	//String SchluesselWort="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
 
+    System.out.println("Schluesselwort: " + SchluesselWort);	
+    
     DateiUtil Original;
     int c, i, laengeSW;   
 
-    int[]spure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
-    
+    //int[]iasPure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
+    int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
+    int[] iasPure = s;
     
     if (arg.length > 0) {
     	Original = new DateiUtil(arg[0]);
@@ -41,9 +44,6 @@ class Vigenere26 { 		// Vigenereverschluesselung
     	
     	//Buchoriginal S. 33
     	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
-    	
-    	
-    	
     	
     	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt");
     
@@ -57,7 +57,7 @@ class Vigenere26 { 		// Vigenereverschluesselung
     laengeSW = SchluesselWort.length();
     
     int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
-    System.out.print("Originaltext ausgeben? (J/N): ");
+    System.out.print("\nOriginaltext ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("---- Originaltext von: "+Original.computeFilePath()+" ----");
       for (i=0; i < p.length; i++) {
@@ -66,39 +66,49 @@ class Vigenere26 { 		// Vigenereverschluesselung
       }
     }
     
-    int[]ppure = UnicodeZZZ.fromUtf8ToAscii(p);
-
+    //int[]ppure = UnicodeZZZ.fromUtf8ToAscii(p);
+    //int[]ppure = p;
+    int[]ppure = new int[p.length];
+    
     System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
     for (i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");
       //Das steht in der Codedatei
     	//Merke: c = Chiffrebuchstabe
-    	int iIndexS = i%laengeSW;
-    	int iSum = spure[iIndexS]+ppure[i];
-    	//int iFormula = (iSum)%256;
+    	int iModLaengeSW = i%laengeSW;
+    	int iBezug = iasPure[iModLaengeSW];
+    	int iSum = p[i]+iBezug;
+    	   	
     	int iFormula = (iSum)%26;//An das Beispiel im Buch angepasst
-      c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
+    	//int iFormula = (iSum)%256;
+    	c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
       								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
                                     //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
-      System.out.print("i="+c);
+      System.out.print("i="+i+", c='"+c+"'");
       ppure[i] = c;				// nur wegen abspeichern
       
     }	
-    System.out.print("Verschluesselten Text ausgeben? (J/N): ");
+    
+    ppure = UnicodeZZZ.fromAsciiToUtf8(ppure);//funktioniert bei %26
+    //ppure = UnicodeZZZ.fromUtf8ToAscii(ppure);//funktioniert bei %26
+    
+    
+    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
       for (i = 0; i < ppure.length; i++) {
-    	IoUtil.printCharWithPosition((ppure[i]+65),"|");
+    	//IoUtil.printCharWithPosition((ppure[i]+65),"|");
+    	IoUtil.printCharWithPosition((ppure[i]),"|");
         if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
     }
-    System.out.println("\n---- Laenge: "+p.length+" Bytes ----");
+    System.out.println("\n---- Laenge: "+ppure.length+" Bytes ----");
     
-    System.out.print("\nVerschluesselten Text als Datei speichern? (J/N): ");
-    if (IoUtil.JaNein()) {
-    	TODOGOON BEIM SPEICHERN KOMMEN ANDERE ZEICHEN IN DIE DATEI
+    System.out.print("\nVerschluesselten Text als Datei speichern (ueber Dialog)? (J/N): ");
+    if (IoUtil.JaNein()) {    	
     	DateiUtil Kodiert = new DateiUtil();
-        Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+    	Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
     }
     
     System.exit(0);

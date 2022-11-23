@@ -227,7 +227,8 @@ public class UnicodeZZZ {
 			      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE_NEW));
 			      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE_NEW));
 			      for (int i=0;i<ba.length;i++) {
-			          objWriter.write(ia[i]);
+			    	  char c = (char)ia[i];
+			          objWriter.write(c);
 			      }			
 			      objWriter.close();
 				
@@ -253,16 +254,17 @@ public class UnicodeZZZ {
 			try {	      
 		      File objFile = new File(sFilepath);
 		      //gibt "unsupported Mapping" ggfs. als Fehler, wenn in dem String etwas anderes als ANSI steht		      
-		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
-		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
 		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE));		     
+		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
 		      for (int i=0;i<ia.length;i++) {
 		    	  iPosition=i;
 		    	  //if (i==9)break; //FGL: UnmappableCharacterException vermeiden beim Debug, austesten?
 		    	  if(ia[i]>127 || ia[i]<0) {
 		    		  
 		    	  }else {
-		         	objWriter.write(ia[i]);
+		    		char c = (char) ia[i];
+		         	objWriter.write(c);
 		    	  }
 		          
 		      }			
@@ -412,6 +414,7 @@ public class UnicodeZZZ {
 				 iReturn = iz - 65;
 		       }else {
 		         System.out.print("." + ":"+iz+"|");
+		         iReturn = iz - 65;
 		       }
 		    }
 		}//end main:

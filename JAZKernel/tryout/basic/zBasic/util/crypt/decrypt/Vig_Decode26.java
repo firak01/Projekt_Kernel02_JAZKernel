@@ -7,7 +7,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
+class Vig_Decode26 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
   public static void main( String[] arg) {
     String SchluesselWort;
     DateiUtil Chiffre;
@@ -19,13 +19,17 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
     	//Chiffre = new Datei();
+    	
+    	//Im Test
+    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_SchluesselWort.txt");
+    	
     	//Klappt, das Ergebnis der Datei passt zum Text im Buch.  
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_HALLO.txt");    	  
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_SchluesselWort.txt");
     	
     	
-    	//Klappt nicht: Ergebnis der Datei passt nicht zum Text im Buch    	
-    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_128_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
+    	//Klappt nicht: Ergebnis der Datei passt nicht zum Text im Buch. Der Algorithmus weicht halt leicht ab mir dem Bezugszeichen und dem Modulus=Anzahl der Zeichen in der Zeichnmenge   	
+    	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_HALLO.txt");
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
