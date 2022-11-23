@@ -31,7 +31,7 @@ public class Caesar {
 		original = new DateiUtil(sFilepath);
 		
 		byte[] geheim = original.liesAsByte();
-		System.out.println("---- Verschluesseln von: "+DateiUtil.dateiname+"----");
+		System.out.println("---- Verschluesseln von: "+original.computeFilePath()+"----");
 		for(int i = 0 ; i < geheim.length; i++) {
 			if((geheim[i] > 31) && (geheim[i] < 127)){
 				zeichen = geheim[i] - 32; // auf Space beziehen

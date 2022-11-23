@@ -3,20 +3,15 @@ package basic.zBasic.util.crypt.decrypt;
 import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 
 class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
   public static void main( String[] arg) {
-    String SchluesselWort="HALLO";
-	//String SchluesselWort="SchluesselWort";
+    String SchluesselWort;
     DateiUtil Chiffre;
     int p, i, laengeSW;
-    
-    //int[] s = IoUtil.Unicode(SchluesselWort.getBytes());
-    
-    //+++++++++++++++++++
-    int[]iasPure = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
-    //int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(SchluesselWort.getBytes());
     
     //+++++++++++++++++++
     
@@ -38,9 +33,18 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     
     if (arg.length > 1) {
     	SchluesselWort = (arg[1]);
-    }else{
+    }else{    	    
     	//System.exit(0);//FGL: Nicht beenden, Defaultwert nehmen...
+    	//Besser noch: Extrahiere das Schlüsselwort aus dem Dateinamen
+    	//String SchluesselWort="HALLO";
+    	//String SchluesselWort="SchluesselWort";
+    	SchluesselWort = Vig_Decode.computeKeyWordFromFile(Chiffre);
     }
+    System.out.println("Schluesselwort: '"+SchluesselWort+"'");
+    //int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
+    int[]iasPure = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
+    //int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(SchluesselWort.getBytes());
+    
     laengeSW = SchluesselWort.length();
     
     System.out.println("\nDatei einlesen ...");
@@ -55,7 +59,7 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     
     System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("---- Chiffretext von: "+DateiUtil.dateiname+" ----");
+      System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
       for (i=0; i < c.length; i++) {
         IoUtil.printCharWithPosition(c[i],i,"|");
         if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
@@ -66,10 +70,11 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
       int iModLaengeSW = i%laengeSW;
       int iBezug = iasPure[iModLaengeSW];
       p = c[i]-iBezug;			// c-s
-      //if (p < 0) p+=256;      
-      //if (p < 0) p+=26; //Fuer Viginere26 Verschluesselung
-      if (p < 0) p+=91; //Fuer Viginere26 Verschluesselung
-      c[i] = (byte) p; 				// wegen Abspeichern von P
+      if (p < 0) {    	  
+    	  //p+=256;
+    	  p+=26; //Fuer Viginere26 Verschluesselung  
+      }   
+      c[i]=p;
     }
     
     //++++++++++++++++++
@@ -78,17 +83,37 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     //int[]iaPure = c;
     
     //++++++++++++++++++
-    System.out.print("\nOriginal-Datei ausgeben? (J/N): ");
+    System.out.print("\nOriginal-Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("\n\n-- Originaltext von: "+DateiUtil.dateiname+" --");
+      System.out.println("\n\n-- Originaltext von: "+Chiffre.computeFilePath()+" --");
       for (i=0; i<iaPure.length; i++) {
         IoUtil.printCharWithPosition(iaPure[i],i,"|");
         //if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
-      System.out.println("\n---- Dateilaenge: "+c.length+" Bytes ----\n ");
+      System.out.println("\n---- Laenge: "+c.length+" Bytes ----");
     }
-    DateiUtil Original = new DateiUtil();
-    Original.schreib(c, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+    
+    System.out.print("\nOriginal-Datei speichern? (J/N): ");
+    if (IoUtil.JaNein()) {
+    	DateiUtil Original = new DateiUtil();
+        Original.schreib(c, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+    }   
     System.exit(0);
+  }
+  
+  public static String computeKeyWordFromFile(DateiUtil fileUtil) {
+	  String sReturn=null;
+	  main:{
+		  if(fileUtil==null)break main;
+		  String sFilepath = fileUtil.computeFilePath();
+		  if(StringZZZ.isEmpty(sFilepath)) break main;
+		  
+		  sReturn = StringZZZ.leftback(sFilepath, FileEasyZZZ.sFILE_ENDING_SEPARATOR);
+		  sReturn = StringZZZ.right(sReturn, FileEasyZZZ.sDIRECTORY_SEPARATOR);
+		  sReturn = StringZZZ.right(sReturn, "_");
+	  }//end main:
+	  return sReturn;
+	  
+	  
   }
 }

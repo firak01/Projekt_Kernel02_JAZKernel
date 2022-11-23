@@ -24,8 +24,8 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
 class Vigenere26 { 		// Vigenereverschluesselung
 
   public static void main( String[] arg) {
-    String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
-	//String SchluesselWort="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
+    //String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
+	String SchluesselWort="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
 
     DateiUtil Original;
     int c, i, laengeSW;   
@@ -59,7 +59,7 @@ class Vigenere26 { 		// Vigenereverschluesselung
     int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
     System.out.print("Originaltext ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("---- Originaltext von: "+DateiUtil.dateiname+" ----");
+      System.out.println("---- Originaltext von: "+Original.computeFilePath()+" ----");
       for (i=0; i < p.length; i++) {
         IoUtil.printChar(p[i]);	// druckbares Zeichen?
         if (((i+1)%80)==0) System.out.println();
@@ -68,7 +68,7 @@ class Vigenere26 { 		// Vigenereverschluesselung
     
     int[]ppure = UnicodeZZZ.fromUtf8ToAscii(p);
 
-    System.out.println("\n-- Verschluessele Text von: "+DateiUtil.dateiname+" --");
+    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
     for (i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");
       //Das steht in der Codedatei
@@ -86,17 +86,21 @@ class Vigenere26 { 		// Vigenereverschluesselung
     }	
     System.out.print("Verschluesselten Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("\n\n-- Verschluesselter Text von: "+DateiUtil.dateiname+" --");
+      System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
       for (i = 0; i < ppure.length; i++) {
     	IoUtil.printCharWithPosition((ppure[i]+65),"|");
         if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
     }
-    System.out.println(
-                 "\n---- Dateilaenge: "+p.length+" Bytes ----\n ");
-    DateiUtil Kodiert = new DateiUtil();
-    Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-
+    System.out.println("\n---- Laenge: "+p.length+" Bytes ----");
+    
+    System.out.print("\nVerschluesselten Text als Datei speichern? (J/N): ");
+    if (IoUtil.JaNein()) {
+    	TODOGOON BEIM SPEICHERN KOMMEN ANDERE ZEICHEN IN DIE DATEI
+    	DateiUtil Kodiert = new DateiUtil();
+        Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+    }
+    
     System.exit(0);
   }
 }

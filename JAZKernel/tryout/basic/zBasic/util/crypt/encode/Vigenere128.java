@@ -42,7 +42,7 @@ class Vigenere128 { 		// Vigenereverschluesselung
     int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
     System.out.print("Originaltext ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("---- Originaltext von: "+DateiUtil.dateiname+" ----");
+      System.out.println("---- Originaltext von: "+Original.computeFilePath()+" ----");
       for (i=0; i < p.length; i++) {
         IoUtil.printChar(p[i]);	// druckbares Zeichen?
         if (((i+1)%80)==0) System.out.println();
@@ -53,7 +53,7 @@ class Vigenere128 { 		// Vigenereverschluesselung
    // int[]ppure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
     
     
-    System.out.println("\n-- Verschluessele Text von: "+DateiUtil.dateiname+" --");
+    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
     for (i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");
       //Das steht in der Codedatei
@@ -73,7 +73,7 @@ class Vigenere128 { 		// Vigenereverschluesselung
     }	
     System.out.print("Verschluesselten Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("\n\n-- Verschluesselter Text von: "+DateiUtil.dateiname+" --");
+      System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
       for (i = 0; i < p.length; i++) {
     	//IoUtil.printCharWithPosition((ppure[i]+65),"|");
     	IoUtil.printCharWithPosition((p[i]),"|");

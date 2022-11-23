@@ -1,6 +1,7 @@
 package basic.zBasic.util.crypt.encode;
 
 import base.files.DateiUtil;
+import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
@@ -20,6 +21,8 @@ class Vigenere256 { 		// Vigenereverschluesselung
     //String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch
 	String SchluesselWort="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
 	                                        //     ABER: TODOGOON20221118 DAS ERGEBNIS WEICHT AB!!!
+	System.out.println("Schluesselwort: " + SchluesselWort);
+	
     DateiUtil Original;
     int c, i, laengeSW;   
    
@@ -45,9 +48,10 @@ class Vigenere256 { 		// Vigenereverschluesselung
     int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
     System.out.print("Originaltext ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("---- Originaltext von: "+DateiUtil.dateiname+" ----");
+      System.out.println("---- Originaltext von: "+Original.computeFilePath()+" ----");
       for (i=0; i < p.length; i++) {
         IoUtil.printChar(p[i]);	// druckbares Zeichen?
+    	//IoUtil.printCharWithPosition(p[i], i, "|");
         if (((i+1)%80)==0) System.out.println();
       }
     }
@@ -55,7 +59,7 @@ class Vigenere256 { 		// Vigenereverschluesselung
     //FGL: Nun die Zeichen an die printversion im Buch anpassen   
    // int[]ppure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
     
-    System.out.println("\n-- Verschluessele Text von: "+DateiUtil.dateiname+" --");
+    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
     for (i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");
       //Das steht in der Codedatei
@@ -73,23 +77,28 @@ class Vigenere256 { 		// Vigenereverschluesselung
       c = c-128;
       if(c<0) c=c+128;
       //++++
-      System.out.print("i="+c);
+      //System.out.print("i="+c);    
       p[i] = c;				// nur wegen abspeichern
-      
+      IoUtil.printCharWithPosition(p[i], i, "|");      
     }	
     System.out.print("Verschluesselten Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
-      System.out.println("\n\n-- Verschluesselter Text von: "+DateiUtil.dateiname+" --");
+      System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
       for (i = 0; i < p.length; i++) {
     	//IoUtil.printCharWithPosition((ppure[i]+65),"|");
     	IoUtil.printCharWithPosition((p[i]),i,"|");
         //if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
     }
-    System.out.println(
-                 "\n---- Dateilaenge: "+p.length+" Bytes ----\n ");
-    DateiUtil Kodiert = new DateiUtil();
-    Kodiert.schreib(p);
+    System.out.println("\n---- Laenge: "+p.length+" Bytes ----");
+    
+    int[]ppure = p;
+    System.out.print("\nVerschluesselten Text als Datei speichern? (J/N): ");
+    if (IoUtil.JaNein()) {
+    	DateiUtil Kodiert = new DateiUtil();
+        Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+    }
+    
     System.exit(0);
   }
 }

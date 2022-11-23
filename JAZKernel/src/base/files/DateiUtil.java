@@ -21,13 +21,13 @@ import java.util.EnumSet;
  */
 public class DateiUtil {
 	
-	private String sFilePath=null;
+	
 	
   public class java {
 
 	}
 private String pfad;
-  public static String dateiname;
+private String dateiname;
 
   public DateiUtil() { 
     dateiname = pfad = null;      	//  Konstruktor
@@ -35,6 +35,10 @@ private String pfad;
   public DateiUtil(String nDateiname) {	//  Konstruktor
     pfad = "";
     dateiname = nDateiname;
+  }
+  public DateiUtil(String sPath, String sFilename) {
+	  this.pfad = sPath;
+	  this.dateiname = sFilename;
   }
 //------------  Methoden ------------------
   public String liesString() {
@@ -84,7 +88,7 @@ public byte[] liesAsByte() {
       File file = new File(pfad+dateiname);
       int dateigroesse = (int)file.length();
       inhalt = new int[dateigroesse];
-      String sPath = pfad + dateiname;
+      
       
       /*FGL Fehlerkorrektur
        * https://stackoverflow.com/questions/696626/java-filereader-encoding-issue
@@ -105,7 +109,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       
       //InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName("UTF8"));
       String sCharset = EncodingMappedValueZZZ.EncodingTypeZZZ.UTF8.getAbbreviation();
-      InputStreamReader fr = new InputStreamReader(new FileInputStream(sPath),Charset.forName(sCharset));
+      InputStreamReader fr = new InputStreamReader(new FileInputStream(this.computeFilePath()),Charset.forName(sCharset));
       
       String sEncoding = fr.getEncoding();
       System.out.println("FileReader: Encoding="+sEncoding);
@@ -134,6 +138,10 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 	    int iEncodingType = EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal();
 	    return this.schreib(datStr.getBytes(), iEncodingType);
 	  }
+  public boolean schreib(int[] unicode) {
+	  int iEncodingType = EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal();
+	    return this.schreib(unicode, iEncodingType);
+  }
   public boolean schreib(int[] Unicode, int iEncodingType) {
     byte[] b = new byte[Unicode.length];
     for (int i=0; i<b.length; i++) b[i] = (byte)Unicode[i];
@@ -166,9 +174,8 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       //Besser das Encoding mitgeben
       int[] ia = new int[b.length];
       for (int i=0; i<b.length; i++) ia[i] = (int)b[i];
-        
-      String sFilepath = pfad + dateiname;
-      this.setFilePath(sFilepath);
+      this.setPfad(pfad);
+      this.setDateiname(dateiname);
      
       /* Merke: Case Expressions must be constant expressions */
       /*
@@ -190,13 +197,13 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
     	  
     	//und nun von Ascii nach Unicode. Zumindest bei Vigenere26 !!! 
         iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia); 
-		UnicodeZZZ.writeAnsiToFile(iaUtf8, sFilepath);  //Mappingfehler, falls ungueltige Zeichen      	
+		UnicodeZZZ.writeAnsiToFile(iaUtf8, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen      	
       }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {
     	//bei Vigenere256 nein?
           //int[] iaUtf8 = UnicodeZZZ.plus65(ia);
     	  
         iaUtf8 = ia;    	  
-		UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);
+		UnicodeZZZ.writeUtf8ToFile(iaUtf8, this.computeFilePath());
       }else {
     	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
       }
@@ -208,11 +215,15 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
     return true;
   }
   
-  public String getFilePath() {
-	  return this.sFilePath;
+  public String computeFilePath() {
+	  String sPath = pfad + dateiname;
+	  return sPath;
+  }  
+  public void setPfad(String sPath) {
+	  this.pfad = sPath;	  
   }
-  public void setFilePath(String sFilePath) {
-	  this.sFilePath= sFilePath;
+  public void setDateiname(String sFilename) {
+	  this.dateiname = sFilename;
   }
 }	
 
