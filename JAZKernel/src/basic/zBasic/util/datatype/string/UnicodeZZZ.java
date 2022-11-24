@@ -322,36 +322,22 @@ public class UnicodeZZZ {
 	
 	
 	
-	//###########################################################################################
-	public static int[] fromAsciiToUtf8(byte[] bytes) {
-		int[]iaPure = new int[bytes.length];
-		
-		for(int i=0;i<bytes.length;i++) {
-			System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8((int)bytes[i]);
-		}
-		return iaPure;
-	}
-	
-	public static int[] fromAsciiToUtf8(int[] ia) {
-	    
-	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+	//###########################################################################################	
+	public static int[] fromAsciiToUtf8For26(int[] ia) {
+	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
 	    int[]iaPure = new int[ia.length];
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i]);
-	    }
-	    
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For26(ia[i]);
+	    }	    
 	 return iaPure;   		
 }
-	public static int fromAsciiToUtf8(int iz) {
+	public static int fromAsciiToUtf8For26(int iz) {
 		int iReturn=-1;
 		main:{
 			if (iz<0) {
 				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
-				//iz+=256;		
-				//iz+=128;
 				iz+=26; //für Vigenere26!!!
 			}
 //		    if (iz==10) {
@@ -366,13 +352,47 @@ public class UnicodeZZZ {
 //		       }
 //		    }
 			
-			iReturn = iz + 65;
-			
-			
-			
+			iReturn = iz + 65;	//Hier beginnt A
 		}//end main:
 	    return iReturn;		
 	}
+	
+	//##########################################################
+public static int[] fromAsciiToUtf8For96(int[] ia) {	    
+	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	System.out.print("#"+i+". Stelle ");
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For96(ia[i]);
+	    }	    
+	 return iaPure;   		
+}
+	public static int fromAsciiToUtf8For96(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) {
+				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
+				iz+=96; //für Vigenere96!!!  ?????
+			}
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz + 32;	//Merke 32 ist der ASCII Code für "blank"
+		}//end main:
+	    return iReturn;		
+	}
+	
+	
 	
 	
 	//###########################################################################################
@@ -437,154 +457,4 @@ public class UnicodeZZZ {
 	      else                 dummy[i]=256+ByteFeld[i];
 	    return dummy;
 	  }
-	
-	
-	//#########################################################################
-	public static int[] minus128(int[] ia) {
-	    
-	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
-	    int[]iaPure = new int[ia.length];
-
-	    for(int i=0;i<ia.length;i++) {
-	    	iaPure[i] = UnicodeZZZ.minus128(ia[i]);
-	    }
-	    
-	 return iaPure;   		
-}
-	
-	public static int minus128(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) iz+=256;		
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz -128;
-			
-			
-			
-		}//end main:
-	    return iReturn;		
-	}
-	
-	
-public static int[] plus65(int[] ia) {
-	    
-	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
-	    int[]iaPure = new int[ia.length];
-
-	    for(int i=0;i<ia.length;i++) {
-	    	iaPure[i] = UnicodeZZZ.plus65(ia[i]);
-	    }
-	    
-	 return iaPure;   		
-}
-	
-	public static int plus65(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) iz+=256;		
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz + 128;
-			
-			
-			
-		}//end main:
-	    return iReturn;		
-	}
-	
-public static int[] plus128(int[] ia) {
-	    
-	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
-	    int[]iaPure = new int[ia.length];
-
-	    for(int i=0;i<ia.length;i++) {
-	    	iaPure[i] = UnicodeZZZ.plus128(ia[i]);
-	    }
-	    
-	 return iaPure;   		
-}
-	
-	public static int plus128(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) iz+=256;		
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz + 128;
-			
-			
-			
-		}//end main:
-	    return iReturn;		
-	}
-
-	
-public static int[] plus256(int[] ia) {
-	    
-	    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
-	    int[]iaPure = new int[ia.length];
-
-	    for(int i=0;i<ia.length;i++) {
-	    	iaPure[i] = UnicodeZZZ.plus256(ia[i]);
-	    }
-	    
-	 return iaPure;   		
-}
-	
-	public static int plus256(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) iz+=256;		
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz + 256;
-			
-			
-			
-		}//end main:
-	    return iReturn;		
-	}
-
-	
 }

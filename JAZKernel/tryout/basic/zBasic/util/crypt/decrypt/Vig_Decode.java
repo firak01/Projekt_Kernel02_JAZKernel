@@ -78,7 +78,7 @@ class Vig_Decode { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     
     //++++++++++++++++++
     //int[]iaPure = UnicodeZZZ.fromUtf8ToAscii(c);
-    int[]iaPure = UnicodeZZZ.fromAsciiToUtf8(c);//funktioniert bei Viginere26 Verschluesselung
+    int[]iaPure = UnicodeZZZ.fromAsciiToUtf8For26(c);//funktioniert bei Viginere26 Verschluesselung
     //int[]iaPure = c;
     
     //++++++++++++++++++

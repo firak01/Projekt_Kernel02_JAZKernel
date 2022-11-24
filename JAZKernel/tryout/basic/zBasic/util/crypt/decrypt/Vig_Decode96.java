@@ -18,8 +18,6 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     if (arg.length > 0) {
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
-    	//Chiffre = new Datei();
-    	
     	//Im Test
     	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_HALLO.txt");
     	
@@ -49,9 +47,7 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     }
     System.out.println("Schluesselwort: '"+SchluesselWort+"'");
     int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
-    //int[]iasPure = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
-    //int[]iasPure = UnicodeZZZ.fromAsciiToUtf8(SchluesselWort.getBytes());
-    
+   
     laengeSW = SchluesselWort.length();
     
     System.out.println("\nDatei einlesen ...");
@@ -70,29 +66,25 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
       }
     }
     System.out.println("\nBeginne Entschluesselung ... ");
+    int[]iaPure = new int[c.length];
     for (int i=0; i<c.length; i++) {
       int iModLaengeSW = i%laengeSW;
       int iBezug = iasPure[iModLaengeSW];
       p = c[i]-iBezug;			// c-s
-      if (p < 0) {    	  
-    	  //p+=256;
-    	  //p+=26; //Fuer Viginere26 Verschluesselung  
-    	  p+=96; //Fuer Viginere128 Verschluesselung, s.Buch Seite 36, Tabelle 4.6, Spalte 2 !!! Ist der Modulus aus Vigenere128.java
+      if (p < 0) {    	   
+    	  p+=96; //Fuer Viginere96 Verschluesselung, s.Buch Seite 36, Tabelle 4.6, Spalte 2 !!! Ist der Modulus aus Vigenere96.java
       }   
-      c[i]=p;
+      iaPure[i]=p;
     }
     
     //++++++++++++++++++
     
-    //int[]iaPure = UnicodeZZZ.fromUtf8ToAscii(c);
-    //int[]iaPure = UnicodeZZZ.fromAsciiToUtf8(c);//funktioniert bei Viginere26 Verschluesselung
-    //int[]iaPure = c;
-    
     //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
-    int[] iaPure = new int[c.length];
-    for(int i=0;i<c.length;i++) {
-    	iaPure[i]=c[i]+32;
-    }
+    iaPure = UnicodeZZZ.fromAsciiToUtf8For96(iaPure);//funktioniert bei Viginere26 Verschluesselung
+//    int[] iaPure = new int[c.length];
+//    for(int i=0;i<c.length;i++) {
+//    	iaPure[i]=c[i]+32;
+//    }
     
     //++++++++++++++++++
     System.out.print("\nOriginal-Text ausgeben? (J/N): ");
@@ -100,15 +92,16 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
       System.out.println("\n\n-- Originaltext von: "+Chiffre.computeFilePath()+" --");
       for (int i=0; i<iaPure.length; i++) {
         IoUtil.printCharWithPosition(iaPure[i],i,"|");
-        //if (((i+1)%80)==0) System.out.println();	// neue Zeile
+        if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
       System.out.println("\n---- Laenge: "+c.length+" Bytes ----");
     }
     
-    System.out.print("\nOriginal-Datei speichern? (J/N): ");
+    System.out.print("\nOriginal-Datei speichern (ueber Dialog)? (J/N): ");
     if (IoUtil.JaNein()) {
     	DateiUtil Original = new DateiUtil();
-        Original.schreib(c, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+        //Original.schreib(c, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+    	Original.schreib(iaPure, EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
     }   
     System.exit(0);
   }

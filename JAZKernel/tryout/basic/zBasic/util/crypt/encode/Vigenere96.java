@@ -26,13 +26,15 @@ class Vigenere96 { 		// Vigenereverschluesselung
     DateiUtil Original;
     int c,laengeSW;   
    
-    int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
-    
+    //int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
+    int[] ia = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
+    int[] iaTest = UnicodeZZZ.toIntArray(SchluesselWort);
+        
     //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
-    for(int i=0; i < s.length; i++) {
-    	s[i]=s[i]-32;
+    for(int i=0; i < ia.length; i++) {
+    	ia[i]=ia[i]-32;
     }
-    int[] iasPure = s;
+    int[] iasPure = ia;
     
     
     if (arg.length > 0) {
@@ -73,24 +75,17 @@ class Vigenere96 { 		// Vigenereverschluesselung
     int[]ppure = new int[p.length];
     for (int i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");
-      //Das steht in der Codedatei
+        //Das steht in der Codedatei
     	//Merke: c = Chiffrebuchstabe
     	int iIndexS = i%laengeSW;
     	int iSum = iasPure[iIndexS]+p[i];
-    	int iFormula = (iSum)%96;  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128
-    	//int iFormula = (iSum)%128;
-    	//int iFormula = (iSum)%26;//An das Beispiel im Buch angepasst
-      c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
+    	int iFormula = (iSum)%96;  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
+    	c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
       								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
                                     //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
-      //++++FGL: Fehlerkorrektur, damit es dem Beispiel im Buch Seite 33ff entspricht
-      //c = c-128;
-      //if(c<0) c=c+128;
-      //++++
       
-      //Gemaess Seite 35 noch 32 wieder draufaddieren
+      //Gemaes Seite 35 noch 32 wieder draufaddieren, das ist das Leerzeichen "blank".
       c = c +32;
-
       ppure[i] = c;				// nur wegen abspeichern  
       System.out.print("i="+i+", c='"+c+"'"); 
     }	

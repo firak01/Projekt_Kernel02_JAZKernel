@@ -30,21 +30,29 @@ class Vigenere26 { 		// Vigenereverschluesselung
     System.out.println("Schluesselwort: " + SchluesselWort);	
     
     DateiUtil Original;
-    int c, i, laengeSW;   
+    int c, laengeSW;   
 
     //int[]iasPure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
-    int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
-    int[] iasPure = s;
+    //int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
+    int[] ia = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
+    int[] iaTest = UnicodeZZZ.toIntArray(SchluesselWort);
+    int[] iasPure = ia;
+    
+    
+    
     
     if (arg.length > 0) {
     	Original = new DateiUtil(arg[0]);
     } else {
+    	
+    	//Klappt
     	//Buchoriginal, S. 31
-    	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt");
+    	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt");
     	
+    	
+    	//Klappt nicht
     	//Buchoriginal S. 33
-    	Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");
-    	
+    	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt");    	
     	//Original = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt");
     
     }
@@ -60,44 +68,41 @@ class Vigenere26 { 		// Vigenereverschluesselung
     System.out.print("\nOriginaltext ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("---- Originaltext von: "+Original.computeFilePath()+" ----");
-      for (i=0; i < p.length; i++) {
+      for (int i=0; i < p.length; i++) {
         IoUtil.printChar(p[i]);	// druckbares Zeichen?
         if (((i+1)%80)==0) System.out.println();
       }
     }
-    
-    //int[]ppure = UnicodeZZZ.fromUtf8ToAscii(p);
-    //int[]ppure = p;
-    int[]ppure = new int[p.length];
-    
+          
     System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
-    for (i = 0; i < p.length; i++) {
+    int[]ppure = new int[p.length];
+    for (int i = 0; i < p.length; i++) {
     	if(i>=1) System.out.print("|");
-      //Das steht in der Codedatei
+        //Das steht in der Codedatei
     	//Merke: c = Chiffrebuchstabe
     	int iModLaengeSW = i%laengeSW;
     	int iBezug = iasPure[iModLaengeSW];
     	int iSum = p[i]+iBezug;
     	   	
     	int iFormula = (iSum)%26;//An das Beispiel im Buch angepasst
-    	//int iFormula = (iSum)%256;
     	c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
       								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
                                     //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
+    	
+        //Gemaess Seite 35, analog zu Vigenere96 noch 65 wieder draufaddieren
+        //c = c +65;
+    	    	
       System.out.print("i="+i+", c='"+c+"'");
       ppure[i] = c;				// nur wegen abspeichern
       
     }	
     
-    ppure = UnicodeZZZ.fromAsciiToUtf8(ppure);//funktioniert bei %26
-    //ppure = UnicodeZZZ.fromUtf8ToAscii(ppure);//funktioniert bei %26
-    
+    ppure = UnicodeZZZ.fromAsciiToUtf8For26(ppure);//funktioniert bei %26
     
     System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
-      for (i = 0; i < ppure.length; i++) {
-    	//IoUtil.printCharWithPosition((ppure[i]+65),"|");
+      for (int i = 0; i < ppure.length; i++) {
     	IoUtil.printCharWithPosition((ppure[i]),"|");
         if (((i+1)%80)==0) System.out.println();	// neue Zeile
       }
