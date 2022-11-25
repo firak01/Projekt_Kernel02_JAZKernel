@@ -22,21 +22,18 @@ class Vigenere96 { 		// Vigenereverschluesselung
 	//String SchluesselWort="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
 	                                        
 	System.out.println("Schluesselwort: " + SchluesselWort);
+	int[] iaSchluesselwort = UnicodeZZZ.toIntArray(SchluesselWort);
+
+	 //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
+//    for(int i=0; i < iaSchluesselwort.length; i++) {
+//    	iaSchluesselwort[i]=iaSchluesselwort[i]-32;
+//    }
+	iaSchluesselwort = UnicodeZZZ.fromAsciiToUtf8For96(iaSchluesselwort);
 	
+    
+    
     DateiUtil Original;
-    int c,laengeSW;   
-   
-    //int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
-    int[] ia = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
-    int[] iaTest = UnicodeZZZ.toIntArray(SchluesselWort);
-        
-    //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
-    for(int i=0; i < ia.length; i++) {
-    	ia[i]=ia[i]-32;
-    }
-    int[] iasPure = ia;
-    
-    
+    int c,laengeSW;                  
     if (arg.length > 0) {
     	Original = new DateiUtil(arg[0]);
     } else {
@@ -62,14 +59,12 @@ class Vigenere96 { 		// Vigenereverschluesselung
         if (((i+1)%80)==0) System.out.println();
       }
     }
-    
-    //FGL: Nun die Zeichen an die printversion im Buch anpassen   
-   // int[]ppure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
-    
+       
     //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
-    for(int i=0; i < p.length; i++) {
-    	p[i]=p[i]-32;
-    }
+//    for(int i=0; i < p.length; i++) {
+//    	p[i]=p[i]-32;
+//    }
+    p = UnicodeZZZ.fromUtf8ToAsciiFor96(p);
     
     System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
     int[]ppure = new int[p.length];
@@ -78,17 +73,20 @@ class Vigenere96 { 		// Vigenereverschluesselung
         //Das steht in der Codedatei
     	//Merke: c = Chiffrebuchstabe
     	int iIndexS = i%laengeSW;
-    	int iSum = iasPure[iIndexS]+p[i];
+    	int iSum = iaSchluesselwort[iIndexS]+p[i];
     	int iFormula = (iSum)%96;  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
     	c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
       								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
                                     //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
       
       //Gemaes Seite 35 noch 32 wieder draufaddieren, das ist das Leerzeichen "blank".
-      c = c +32;
+      //c = c +32;
       ppure[i] = c;				// nur wegen abspeichern  
       System.out.print("i="+i+", c='"+c+"'"); 
-    }	
+    }
+    ppure = UnicodeZZZ.fromAsciiToUtf8For96(ppure);
+    
+    
     System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
       System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");

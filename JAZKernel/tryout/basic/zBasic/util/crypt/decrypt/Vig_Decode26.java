@@ -45,7 +45,8 @@ class Vig_Decode26 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	SchluesselWort = Vig_Decode.computeKeyWordFromFile(Chiffre);
     }
     System.out.println("Schluesselwort: '"+SchluesselWort+"'");
-    int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
+    //int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
+    int[] iasPure = UnicodeZZZ.toIntArray(SchluesselWort);
     
     laengeSW = SchluesselWort.length();
     
@@ -76,6 +77,8 @@ class Vig_Decode26 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
       iaPure[i]=p;
     }
     
+    //Analog zum buch, nur mit +65
+    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
     iaPure = UnicodeZZZ.fromAsciiToUtf8For26(iaPure);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet
     
     //++++++++++++++++++

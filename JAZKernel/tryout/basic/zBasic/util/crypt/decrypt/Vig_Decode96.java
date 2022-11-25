@@ -46,7 +46,8 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	SchluesselWort = Vig_Decode.computeKeyWordFromFile(Chiffre);
     }
     System.out.println("Schluesselwort: '"+SchluesselWort+"'");
-    int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
+    //int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
+    int[] iasPure = UnicodeZZZ.toIntArray(SchluesselWort);
    
     laengeSW = SchluesselWort.length();
     

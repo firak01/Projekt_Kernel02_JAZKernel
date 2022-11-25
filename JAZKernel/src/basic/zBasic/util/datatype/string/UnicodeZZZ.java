@@ -124,15 +124,9 @@ public class UnicodeZZZ {
 		return bytea;
 	}
 	
-	public static int[] toIntArray(String s) {
+	public static int[] toIntArray(String s) {				
 		byte[]bytea = UnicodeZZZ.toByteArray(s);
-		int[]iaReturn = new int[bytea.length];
-		
-		int iIndex=-1;
-		for(byte bt : bytea) {
-			iIndex++;
-			iaReturn[iIndex] = bt;
-		}
+		int[]iaReturn = UnicodeZZZ.fromByteToInt(bytea);
 		return iaReturn;
 	}
 	
@@ -357,6 +351,43 @@ public class UnicodeZZZ {
 	    return iReturn;		
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++
+	public static int[] fromUtf8ToAsciiFor26(int[] ia) {
+	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	System.out.print("#"+i+". Stelle ");
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor26(ia[i]);
+	    }	    
+	 return iaPure;   		
+}
+	public static int fromUtf8ToAsciiFor26(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) {
+				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
+				iz+=26; //für Vigenere26!!!
+			}
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz - 65;	//Hier beginnt A
+		}//end main:
+	    return iReturn;		
+	}
+	
+	
+	
 	//##########################################################
 public static int[] fromAsciiToUtf8For96(int[] ia) {	    
 	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
@@ -388,6 +419,41 @@ public static int[] fromAsciiToUtf8For96(int[] ia) {
 //		    }
 			
 			iReturn = iz + 32;	//Merke 32 ist der ASCII Code für "blank"
+		}//end main:
+	    return iReturn;		
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++
+	public static int[] fromUtf8ToAsciiFor96(int[] ia) {	    
+	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	System.out.print("#"+i+". Stelle ");
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor96(ia[i]);
+	    }	    
+	 return iaPure;   		
+}
+	public static int fromUtf8ToAsciiFor96(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) {
+				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
+				iz+=96; //für Vigenere96!!!  ?????
+			}
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz - 32;	//Merke 32 ist der ASCII Code für "blank"
 		}//end main:
 	    return iReturn;		
 	}

@@ -27,20 +27,19 @@ class Vigenere26 { 		// Vigenereverschluesselung
     String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
 	//String SchluesselWort="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
 
-    System.out.println("Schluesselwort: " + SchluesselWort);	
+    System.out.println("Schluesselwort: " + SchluesselWort);	    
+    int[] iaSchluesselwort = UnicodeZZZ.toIntArray(SchluesselWort);
+
+    //Analog zu Vigenere96.java, nur mit 65
+    //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
+//    for(int i=0; i < iaSchluesselwort.length; i++) {
+//    	iaSchluesselwort[i]=iaSchluesselwort[i]-65;
+//    }
+     iaSchluesselwort=UnicodeZZZ.fromUtf8ToAscii(iaSchluesselwort);
+    
     
     DateiUtil Original;
-    int c, laengeSW;   
-
-    //int[]iasPure = UnicodeZZZ.fromUtf8ToAscii(SchluesselWort);
-    //int[] s = IoUtil.Unicode(SchluesselWort.getBytes()); //Die Schlüsselwortbuchstaben
-    int[] ia = UnicodeZZZ.fromByteToInt(SchluesselWort.getBytes());
-    int[] iaTest = UnicodeZZZ.toIntArray(SchluesselWort);
-    int[] iasPure = ia;
-    
-    
-    
-    
+    int c, laengeSW;
     if (arg.length > 0) {
     	Original = new DateiUtil(arg[0]);
     } else {
@@ -73,6 +72,13 @@ class Vigenere26 { 		// Vigenereverschluesselung
         if (((i+1)%80)==0) System.out.println();
       }
     }
+    
+  //Analog zu Vigenere96.java, nur mit 65
+  //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
+	//    for(int i=0; i < p.length; i++) {
+	//    	p[i]=p[i]-65;
+	//    }
+    p = UnicodeZZZ.fromUtf8ToAsciiFor26(p);
           
     System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
     int[]ppure = new int[p.length];
@@ -81,7 +87,7 @@ class Vigenere26 { 		// Vigenereverschluesselung
         //Das steht in der Codedatei
     	//Merke: c = Chiffrebuchstabe
     	int iModLaengeSW = i%laengeSW;
-    	int iBezug = iasPure[iModLaengeSW];
+    	int iBezug = iaSchluesselwort[iModLaengeSW];
     	int iSum = p[i]+iBezug;
     	   	
     	int iFormula = (iSum)%26;//An das Beispiel im Buch angepasst
@@ -91,13 +97,10 @@ class Vigenere26 { 		// Vigenereverschluesselung
     	
         //Gemaess Seite 35, analog zu Vigenere96 noch 65 wieder draufaddieren
         //c = c +65;
-    	    	
-      System.out.print("i="+i+", c='"+c+"'");
-      ppure[i] = c;				// nur wegen abspeichern
-      
-    }	
-    
-    ppure = UnicodeZZZ.fromAsciiToUtf8For26(ppure);//funktioniert bei %26
+      ppure[i] = c;				// nur wegen abspeichern  	
+      System.out.print("i="+i+", c='"+c+"'");      
+    }	    
+    ppure = UnicodeZZZ.fromAsciiToUtf8For26(ppure);
     
     System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
     if (IoUtil.JaNein()) {
