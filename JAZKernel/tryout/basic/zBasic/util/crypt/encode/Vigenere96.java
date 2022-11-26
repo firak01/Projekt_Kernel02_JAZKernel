@@ -18,8 +18,8 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
 class Vigenere96 { 		// Vigenereverschluesselung
 
   public static void main( String[] arg) {
-    String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch
-	//String SchluesselWort="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
+    //String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch
+	String SchluesselWort="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
 	                                        
 	System.out.println("Schluesselwort: " + SchluesselWort);
 	int[] iaSchluesselwort = UnicodeZZZ.toIntArray(SchluesselWort);
@@ -28,7 +28,7 @@ class Vigenere96 { 		// Vigenereverschluesselung
 //    for(int i=0; i < iaSchluesselwort.length; i++) {
 //    	iaSchluesselwort[i]=iaSchluesselwort[i]-32;
 //    }
-	iaSchluesselwort = UnicodeZZZ.fromAsciiToUtf8For96(iaSchluesselwort);
+	iaSchluesselwort = UnicodeZZZ.fromUtf8ToAsciiFor96(iaSchluesselwort);
 	
     
     

@@ -19,7 +19,7 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	Chiffre = new DateiUtil(arg[0]); 
     } else {
     	//Im Test
-    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_HALLO.txt");
+    	Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");
     	
     	//Klappt, das Ergebnis der Datei passt zum Text im Buch.  
     	//Chiffre = new DateiUtil("tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_SchluesselWort.txt");

@@ -7,6 +7,7 @@ public abstract class AbstractVigenereZZZ {
 	private String sSchluesselwort=null;
 	
 	private DateiUtil datei=null;
+	private int[] iaCrypted=null;
 	
 	public AbstractVigenereZZZ() {		
 	}
@@ -39,6 +40,11 @@ public abstract class AbstractVigenereZZZ {
 	public DateiUtil getDateiOriginal() {
 		return this.datei;
 	}
-	
+	public int[] getCryptedValuesAsInt() {
+		return this.iaCrypted;
+	}
+	public void setCryptedValues(int[] iaCrypted) {
+		this.iaCrypted = iaCrypted;
+	}
 	
 }
