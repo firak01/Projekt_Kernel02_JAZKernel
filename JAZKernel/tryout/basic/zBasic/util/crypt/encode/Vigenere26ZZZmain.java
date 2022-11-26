@@ -3,6 +3,7 @@ package basic.zBasic.util.crypt.encode;
 import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
@@ -18,6 +19,7 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
 public class Vigenere26ZZZmain {
 
 	public static void main(String[] args) {
+		try {
 		 String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
 		 //String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
 		 
@@ -50,28 +52,32 @@ public class Vigenere26ZZZmain {
 		    }
 		    
 		    Vigenere26ZZZ objVigenere = new Vigenere26ZZZ(sFilePath, SchluesselWort);
-		    boolean btemp = objVigenere.crypt();
+		    boolean btemp = objVigenere.encrypt();
 		    if(btemp) {		    		    
 		    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
 			    if (IoUtil.JaNein()) {
-			      DateiUtil Original = objVigenere.getDateiOriginal();
+			      DateiUtil Original = objVigenere.getFileOriginal();
 			      System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
-			      int[]ppure = objVigenere.getCryptedValuesAsInt();
+			      int[]ppure = objVigenere.getEncryptedValuesAsInt();
 			      for (int i = 0; i < ppure.length; i++) {
 			    	IoUtil.printCharWithPosition((ppure[i]),"|");
 			        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 			      }
 			    }
-			    System.out.println("\n---- Laenge: "+objVigenere.getCryptedValuesAsInt().length+" Bytes ----");
+			    System.out.println("\n---- Laenge: "+objVigenere.getEncryptedValuesAsInt().length+" Bytes ----");
 			    
 			    System.out.print("\nVerschluesselten Text als Datei speichern (ueber Dialog)? (J/N): ");
 			    if (IoUtil.JaNein()) {    	
 			    	DateiUtil Kodiert = new DateiUtil();
 			        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-			    	Kodiert.schreib(objVigenere.getCryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
+			    	Kodiert.schreib(objVigenere.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
 			    }
-		    }		    
-		    System.exit(0);
+		    }		   
+		} catch (ExceptionZZZ e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 
 }

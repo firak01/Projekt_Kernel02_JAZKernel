@@ -7,6 +7,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.files.EncodingMappedValueZZZ;
 import base.io.IoUtil;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.datatype.string.FileEncodingUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
@@ -21,7 +22,7 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */
-class Vigenere26ZZZ extends AbstractVigenereZZZ{ 	
+public class Vigenere26ZZZ extends AbstractVigenereZZZ{ 	
 
   public Vigenere26ZZZ() {	  
 	  super();
@@ -30,10 +31,10 @@ class Vigenere26ZZZ extends AbstractVigenereZZZ{
 	  super(sFilePath, sSchluesselWort);
   }
 	
-  public boolean crypt() {
+  public boolean encrypt() throws ExceptionZZZ {
 	  boolean bReturn = false;
 	  main:{
-	    String SchluesselWort=this.getSchluesselWort();
+	    String SchluesselWort=this.getKeyWord();
 	    
 	    System.out.println("Schluesselwort: " + SchluesselWort);
 	    int laengeSW = SchluesselWort.length();    
@@ -49,7 +50,7 @@ class Vigenere26ZZZ extends AbstractVigenereZZZ{
 	    
 	    String sFilePath = this.getFilePath();
 	    DateiUtil Original = new DateiUtil(sFilePath);
-	    this.setDateiOriginal(Original);
+	    this.setFileOriginal(Original);
 	    
 	    int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
 	    System.out.print("\nOriginaltext ausgeben? (J/N): ");
@@ -88,9 +89,17 @@ class Vigenere26ZZZ extends AbstractVigenereZZZ{
         //Gemaess Seite 35, analog zu Vigenere96 noch 65 wieder draufaddieren
         //c = c +65;
 	    ppure = UnicodeZZZ.fromAsciiToUtf8For26(ppure);
-	    this.setCryptedValues(ppure);
+	    this.setEncryptedValues(ppure);
 	    bReturn = true;
 	}//end main:
 	return bReturn;    
+  }
+  
+  public boolean decrypt() throws ExceptionZZZ{
+	  boolean bReturn = false;
+	  main:{
+		  
+	  }//end main:
+	  return bReturn;
   }
 }
