@@ -86,48 +86,54 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
   public boolean decrypt() throws ExceptionZZZ{
 	  boolean bReturn = false;
 	  main:{
-		  String SchluesselWort=this.getKeyWord();
-		    
+		  System.out.println("\nBeginne Entschluesselung ... ");
+		  String SchluesselWort=this.getKeyWord();		   
 		  System.out.println("Schluesselwort: '"+SchluesselWort+"'");
 		    //int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
-		    int[] iasPure = UnicodeZZZ.toIntArray(SchluesselWort);
-		    
+		    int[] iasPure = UnicodeZZZ.toIntArray(SchluesselWort);		    
 		    int laengeSW = SchluesselWort.length();
 		    
 		    System.out.println("\nDatei einlesen ...");
+		    DateiUtil Chiffre = this.getFileEncrypted();
+		    System.out.println("Datei: '" + Chiffre.computeFilePath() + "'" );;
 		    int[] c = Chiffre.liesAsInt(); //FGL: Fehlerkorrektur... das ist ja nicht als Unicode in die Datei geschrieben worden...  Chiffre.liesUnicode();	// Datei einlesen
-		    for(i=0; i < c.length; i++) {
+		    for(int i=0; i < c.length; i++) {
 		    	int i2 = c[i];
 		    	IoUtil.printChar(i2);
 		    }
 		    
-		    System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
-		    if (IoUtil.JaNein()) {
-		      System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
-		      for (i=0; i < c.length; i++) {
-		        IoUtil.printCharWithPosition(c[i],i,"|");
-		        if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
-		      }
-		    }
+//		    System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
+//		    if (IoUtil.JaNein()) {
+//		      System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
+//		      for (int i=0; i < c.length; i++) {
+//		        IoUtil.printCharWithPosition(c[i],i,"|");
+//		        if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
+//		      }
+//		    }
 		    System.out.println("\nBeginne Entschluesselung ... ");
 		    int[]iaPure = new int[c.length];
-		    for (i=0; i<c.length; i++) {
+		    for (int i=0; i<c.length; i++) {
 		      int iModLaengeSW = i%laengeSW;
 		      int iBezug = iasPure[iModLaengeSW];
-		      p = c[i]-iBezug;			// c-s
-		      if (p < 0) {    	  
-		    	  p+=26; //Fuer Viginere26 Verschluesselung  
+		      int p = c[i]-iBezug;			// c-s
+		      if (p < 0) { 
+		    	  TODOGOON20221130; //ABWEICHUNG BEI DER ENTSCHLUESSELUNG!!!
+		    	  //TODOGOON20221130://Die decrypt Methode soweit wie möglich in die Abstracte Klasse verschieben.
+		    	  //TODOGOON20221130://Diesen Wert 96 bzw. 26 (fue Vigenere 26) 
+		    		               //in der Abstrakten Klasse speichern und aus einer Konstanten der erbenden Klasse speichern 
+		    	  p+=96; //Fuer Viginere96 Verschluesselung  
 		      }   
 		      iaPure[i]=p;
 		    }
 		    
-		    //Analog zum buch, nur mit +65
+		    //Analog zum buch, nur mit +32
 		    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
-		    iaPure = UnicodeZZZ.fromAsciiToUtf8For26(iaPure);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet
+		    iaPure = UnicodeZZZ.fromAsciiToUtf8For96(iaPure);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet
 		    
+		    this.setDecryptedValues(iaPure);		    
 		    //++++++++++++++++++
 		  
-		  
+		  bReturn = true;
 	  }//end main:
 	  return bReturn;
   }

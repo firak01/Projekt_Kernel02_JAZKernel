@@ -9,8 +9,10 @@ public abstract class AbstractVigenereZZZ {
 	private String sFilePath=null;
 	private String sKeyWord=null;
 	
-	private DateiUtil dateiOriginal=null;
+	private DateiUtil dateiOriginal=null; boolean bDateiOriginalIsEncrypted=false;
 	private DateiUtil dateiEncrypted=null;
+	private DateiUtil dateiDecrypted=null;
+	private int[] iaOriginal=null; 
 	private int[] iaEncrypted=null;
 	private int[] iaDecrypted=null;
 	
@@ -36,6 +38,27 @@ public abstract class AbstractVigenereZZZ {
 	public String getKeyWord() {
 		return this.sKeyWord;
 	}
+	public int[] getOriginalValuesAsInt() {
+		if(this.iaOriginal==null) {
+			DateiUtil Original = this.getFileOriginal();
+			if(Original!=null) {
+				int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
+				this.setOriginalValues(p);
+			}
+		}
+		return this.iaOriginal;
+	}
+	public void setOriginalValues(int[] iaOriginal) {
+		this.iaOriginal = iaOriginal;
+	}
+	
+	public boolean isFileOriginalEncrypted() {
+		return this.bDateiOriginalIsEncrypted;
+	}
+	public void isFileOriginalEncrypted(boolean bFileOriginalIsEncrypted) {
+		bDateiOriginalIsEncrypted = bFileOriginalIsEncrypted;
+	}
+	
 	
 //###########################
 //### Verschluesselungsmethoden
@@ -46,6 +69,11 @@ public abstract class AbstractVigenereZZZ {
 		this.dateiOriginal = datei;
 	}
 	public DateiUtil getFileOriginal() {
+		if(this.dateiOriginal==null) {
+			String sFilePath = this.getFilePath();
+			DateiUtil Original = new DateiUtil(sFilePath);
+		    this.setFileOriginal(Original);
+		}
 		return this.dateiOriginal;
 	}				
 	public int[] getEncryptedValuesAsInt() {
@@ -65,10 +93,21 @@ public abstract class AbstractVigenereZZZ {
 	}
 	public DateiUtil getFileEncrypted() {
 		if(this.dateiEncrypted==null) {
-			this.dateiEncrypted = this.dateiOriginal;
+			if(this.isFileOriginalEncrypted()) {
+				this.dateiEncrypted = this.getFileOriginal();
+			}else {
+				this.isFileOriginalEncrypted(true);
+				this.dateiEncrypted = this.getFileOriginal();
+			}
 		}
 		return this.dateiEncrypted;
-	}				
+	}	
+	public void setFileDecrypted(DateiUtil datei) {
+		this.dateiDecrypted = datei;
+	}
+	public DateiUtil getFileDecrypted() {		
+		return this.dateiDecrypted;
+	}
 	public int[] getDecryptedValuesAsInt() {
 		return this.iaDecrypted;
 	}

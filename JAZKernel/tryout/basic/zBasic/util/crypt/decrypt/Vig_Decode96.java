@@ -58,14 +58,14 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	IoUtil.printChar(i2);
     }
     
-    System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
-    if (IoUtil.JaNein()) {
-      System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
-      for (int i=0; i < c.length; i++) {
-        IoUtil.printCharWithPosition(c[i],i,"|");
-        if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
-      }
-    }
+//    System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
+//    if (IoUtil.JaNein()) {
+//      System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
+//      for (int i=0; i < c.length; i++) {
+//        IoUtil.printCharWithPosition(c[i],i,"|");
+//        if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
+//      }
+//    }
     System.out.println("\nBeginne Entschluesselung ... ");
     int[]iaPure = new int[c.length];
     for (int i=0; i<c.length; i++) {
