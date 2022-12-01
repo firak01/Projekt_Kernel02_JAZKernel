@@ -4,6 +4,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
@@ -19,21 +20,25 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
 public class Vigenere96ZZZmain { 		// Vigenereverschluesselung
 
   public static void main( String[] args) {
-	  
+	  main:{
 try {
-    //String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch
-	String SchluesselWortDefault="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
-	 
-    String sFilePathDefault;
-	
-	 //im Test:
-    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";	 
-    sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt";    	
+	//Buchbeispiel Seite 34
+	String SchluesselWortDefault="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD	
+	String sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt"; 
+   
+	//im Test, ggfs abweichend vom Buch
+	//A) Schluesselwort
+	//SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch
+	SchluesselWortDefault="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
+			 
+	//B) Datei;
+	sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";   	
+    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt";    	
     //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext2_zur_Vigenere_Verschluesselung.txt";
  
-    
-	 //Klappt
-    //Buchoriginal, S. 31
+            
+	//Klappt
+    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Langer_Beispieltext1_ohne_Sonderzeichen.txt";
     //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";
    		    	
     //Klappt nicht
@@ -44,7 +49,17 @@ try {
 	    if (args.length > 0) {
 	    	sFilePath = args[0];
 	    } else {
-	    	sFilePath = sFilePathDefault;		    	
+	    	System.out.print("\nZu verschluesselnde Datei auswaehlen (per Dialog)? (J/N): ");
+	    	if (IoUtil.JaNein()) {	
+		    	DateiUtil Original = new DateiUtil();
+		    	Original.select();
+		    	sFilePath = Original.computeFilePath();
+		    	if(StringZZZ.isEmpty(sFilePath)) {
+		    		break main;
+		    	}	
+		    }else {
+		    	sFilePath = sFilePathDefault;
+		    }			    	
 	    }
 	    
 	    String SchluesselWort;
@@ -81,6 +96,7 @@ try {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+  }//end main:
     System.exit(0);
   }
 }

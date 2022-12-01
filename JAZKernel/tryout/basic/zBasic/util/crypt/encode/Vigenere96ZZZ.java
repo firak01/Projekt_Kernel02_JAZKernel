@@ -52,12 +52,18 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 		        if (((i+1)%80)==0) System.out.println();
 		      }
 		    }
-		       
-		    //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
+				
+		//Nun gemaess Buch auf Seite 35, d.h. "blank/Leerzeichen" beziehen.
+		//Merke: "B" ist im Buchbeispiel der erste Buchstabe mit einem ASCII Code von 66
+        //       Also kommt für den ersten Buchstaben 66-32=34 heraus.
+		p = UnicodeZZZ.fromUtf8ToAsciiFor96(p);
+			
+		//Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
 		//    for(int i=0; i < p.length; i++) {
 		//    	p[i]=p[i]-32;
 		//    }
-	    p = UnicodeZZZ.fromUtf8ToAsciiFor96(p);
+		    
+		
 	    
 	    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
 	    int[]ppure = new int[p.length];
@@ -117,7 +123,7 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 		      int iBezug = iasPure[iModLaengeSW];
 		      int p = c[i]-iBezug;			// c-s
 		      if (p < 0) { 
-		    	  TODOGOON20221130; //ABWEICHUNG BEI DER ENTSCHLUESSELUNG!!!
+		    	  //TODOGOON20221130; //ABWEICHUNG BEI DER ENTSCHLUESSELUNG!!!
 		    	  //TODOGOON20221130://Die decrypt Methode soweit wie möglich in die Abstracte Klasse verschieben.
 		    	  //TODOGOON20221130://Diesen Wert 96 bzw. 26 (fue Vigenere 26) 
 		    		               //in der Abstrakten Klasse speichern und aus einer Konstanten der erbenden Klasse speichern 

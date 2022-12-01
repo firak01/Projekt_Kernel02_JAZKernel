@@ -12,6 +12,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 
 class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
   public static void main( String[] args) {
+	  main:{
 	  try {	  
 		  //TODOGOON; //Mache Utility-Methoden im Consolen - Output
 		  //          //- Erstelle eine Box mit Anzahl Breite Zeichen insgesamt, Rahmenzeichen,
@@ -24,20 +25,22 @@ class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 		System.out.println("### - mit bekanntem Schluesselwort,          ###");
 		System.out.println("###   aus dem Dateinamen geholt              ###");
 		System.out.println("################################################");
-		
-	    String sFilePathDefault;
-	    sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_HALLO.txt";    
+			       
+	    //Buchbeispiel, Seite 34ff
+		String sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_SchluesselWort.txt";
+	    
+	    //statt Buchbeispiel andere Tests:	    
+	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_Beispieltext2_schluesselwort_HALLO.txt";
+	    sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_Beispieltext2_schluesselwort_SchluesselWort.txt";
     	
-    	//Klappt, das Ergebnis der Datei passt zum Text im Buch.  
-	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_HALLO.txt";    	  
-	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_Beispieltext2_schluesselwort_SchluesselWort.txt";
-    	
-    	
-    	//Klappt nicht: Ergebnis der Datei passt nicht zum Text im Buch. Der Algorithmus weicht halt leicht ab mir dem Bezugszeichen und dem Modulus=Anzahl der Zeichen in der Zeichnmenge   	
+    	//Klappt, das Ergebnis der Datei passt zum Text im Buch.
+	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_HALLO.txt";
 	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_SchluesselWort.txt";
-	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_SchluesselWort.txt";
-	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_HALLO.txt";
-	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_26_LangerBeispieltext1_schluesselwort_SchluesselWort.txt";
+	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_Beispieltext2_schluesselwort_HALLO.txt";
+	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_Beispieltext2_schluesselwort_SchluesselWort.txt";
+    	
+    	
+    	//Klappt nicht: Ergebnis der Datei passt nicht zum Text im Buch. Der Algorithmus weicht halt leicht ab mir dem Bezugszeichen und dem Modulus=Anzahl der Zeichen in der Zeichnmenge   		    
 	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted1_256_LangerBeispieltext1_schluesselwort_SchluesselWort.txt"; 
 	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted3_LangerBeispieltext2_schluesselwort_SchluesselWort";
     
@@ -45,7 +48,17 @@ class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 	    if (args.length > 0) {
 	    	sFilePath = args[0];
 	    } else {
-	    	sFilePath = sFilePathDefault;		    	
+	    	System.out.print("\nVerschluesselte Datei auswaehlen (per Dialog)? (J/N): ");
+		    if (IoUtil.JaNein()) {	
+		    	DateiUtil Chiffre = new DateiUtil();
+		    	Chiffre.select();
+		    	sFilePath = Chiffre.computeFilePath();
+		    	if(StringZZZ.isEmpty(sFilePath)) {
+		    		break main;
+		    	}	
+		    }else {
+		    	sFilePath = sFilePathDefault;
+		    }	    	
 	    }
 	    
     String SchluesselWort;    
@@ -112,6 +125,7 @@ class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+  	}//end main:
     System.exit(0);
   }   
 }

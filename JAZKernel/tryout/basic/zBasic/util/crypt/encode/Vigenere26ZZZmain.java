@@ -4,6 +4,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
@@ -19,17 +20,22 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
 public class Vigenere26ZZZmain {
 
 	public static void main(String[] args) {
+		main:{
 		try {
+		 //Buchbeispiel Seite 31
 		 String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
-		 //String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.33
+		 String sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";
 		 
-		 String sFilePathDefault;
+		//im Test, ggfs abweichend vom Buch
+		//A) Schluesselwort
+		//SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch
+		//SchluesselWortDefault="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
+					 
 		
-		 //im Test:
-		 sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";
+		//B) Datei;
+		//sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";
 		 
 		 //Klappt
-	     //Buchoriginal, S. 31
 	     //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";
 	    		    	
 	     //Klappt nicht
@@ -41,7 +47,17 @@ public class Vigenere26ZZZmain {
 		    if (args.length > 0) {
 		    	sFilePath = args[0];
 		    } else {
-		    	sFilePath = sFilePathDefault;		    	
+		    	System.out.print("\nZu verschluesselnde Datei auswaehlen (per Dialog)? (J/N): ");
+			    if (IoUtil.JaNein()) {	
+			    	DateiUtil Original = new DateiUtil();
+			    	Original.select();
+			    	sFilePath = Original.computeFilePath();
+			    	if(StringZZZ.isEmpty(sFilePath)) {
+			    		break main;
+			    	}	
+			    }else {
+			    	sFilePath = sFilePathDefault;
+			    }		    	
 		    }
 		    
 		    String SchluesselWort;
@@ -77,6 +93,7 @@ public class Vigenere26ZZZmain {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		}//end main
 		System.exit(0);
 	}
 

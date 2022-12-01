@@ -303,5 +303,16 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
   public void setDateiname(String sFilename) {
 	  this.dateiname = sFilename;
   }
+  
+  public void select() {  
+	  Frame f = new Frame();
+	  FileDialog fd = new FileDialog(f);
+	  fd.setMode(FileDialog.LOAD);
+	  fd.show();
+	  dateiname = fd.getFile();
+	  pfad = fd.getDirectory();
+	  f = null;
+	  fd = null;
+  } 
 }	
 
