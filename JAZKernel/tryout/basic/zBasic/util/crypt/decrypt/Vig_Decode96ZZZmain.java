@@ -98,7 +98,7 @@ class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 	    }
     
     //Starten der Entschluesselung
-    boolean btemp = objVigenere.decrypt();
+    boolean btemp = objVigenere.decryptUI();
     
     if(btemp) {		    		    
 	    System.out.print("\nEntschluesselten Text ausgeben? (J/N): ");

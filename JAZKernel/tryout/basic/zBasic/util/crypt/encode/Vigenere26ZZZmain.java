@@ -68,7 +68,7 @@ public class Vigenere26ZZZmain {
 		    }
 		    
 		    Vigenere26ZZZ objVigenere = new Vigenere26ZZZ(sFilePath, SchluesselWort);
-		    boolean btemp = objVigenere.encrypt();
+		    boolean btemp = objVigenere.encryptUI();
 		    if(btemp) {		    		    
 		    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
 			    if (IoUtil.JaNein()) {

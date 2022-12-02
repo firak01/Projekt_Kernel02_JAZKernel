@@ -70,7 +70,7 @@ try {
 	    }
 	    
 	    Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(sFilePath, SchluesselWort);
-	    boolean btemp = objVigenere.encrypt();
+	    boolean btemp = objVigenere.encryptUI();
 		
 	    if(btemp) {		    		    
 	    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");

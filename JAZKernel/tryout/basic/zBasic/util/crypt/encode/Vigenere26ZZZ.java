@@ -23,7 +23,8 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * 
  */
 public class Vigenere26ZZZ extends AbstractVigenereZZZ{ 	
-
+  private static int iOffsetForAsciiRange=26;
+  
   public Vigenere26ZZZ() {	  
 	  super();
   }
@@ -31,21 +32,16 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
 	  super(sFilePath, sSchluesselWort);
   }
 	
-  public boolean encrypt() throws ExceptionZZZ {
+  public boolean encryptUI() throws ExceptionZZZ {
 	  boolean bReturn = false;
 	  main:{
 	    String SchluesselWort=this.getKeyWord();
 	    
 	    System.out.println("Schluesselwort: " + SchluesselWort);
-	    int laengeSW = SchluesselWort.length();    
-	    int[] iaSchluesselwort = UnicodeZZZ.toIntArray(SchluesselWort);
-	
-	    //Analog zu Vigenere96.java, nur mit 65
-	    //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
-	//    for(int i=0; i < iaSchluesselwort.length; i++) {
-	//    	iaSchluesselwort[i]=iaSchluesselwort[i]-65;
-	//    }
-	     iaSchluesselwort=UnicodeZZZ.fromUtf8ToAsciiFor26(iaSchluesselwort);
+//	    int laengeSW = SchluesselWort.length();    
+//	    int[] iaSchluesselwort = UnicodeZZZ.toIntArray(SchluesselWort);
+//	
+//	     iaSchluesselwort=this.fromUTF8ToAsciiForOffset(iaSchluesselwort);
 	     DateiUtil Original = this.getFileOriginal();
 	     int[]p = this.getOriginalValuesAsInt();	    
 	    
@@ -57,41 +53,39 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
 	        if (((i+1)%80)==0) System.out.println();
 	      }
 	    }
-	    
-	  //Analog zu Vigenere96.java, nur mit 65
-	  //Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
-		//    for(int i=0; i < p.length; i++) {
-		//    	p[i]=p[i]-65;
-		//    }
-	    p = UnicodeZZZ.fromUtf8ToAsciiFor26(p);
-	          
+	    	  	         
 	    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");
+//	    p = this.fromUTF8ToAsciiForOffset(p);
+//	    
+//	    int[]ppure = new int[p.length];
+//	    for (int i = 0; i < p.length; i++) {
+//	    	if(i>=1) System.out.print("|");
+//	        //Das steht in der Codedatei
+//	    	//Merke: c = Chiffrebuchstabe
+//	    	int iModLaengeSW = i%laengeSW;
+//	    	int iBezug = iaSchluesselwort[iModLaengeSW];
+//	    	int iSum = p[i]+iBezug;
+//	    	   	
+//	    	int iFormula = (iSum)%this.getOffsetForAsciiRange();//An das Beispiel im Buch angepasst
+//	    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
+//	      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
+//	                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.	    	
+//	      ppure[i] = c;				// nur wegen abspeichern  	
+//	      System.out.print("i="+i+", c='"+c+"'");      
+//	    }
+//        //Gemaess Seite 35, analog zu Vigenere96 noch 65 wieder draufaddieren
+//        //c = c +65;
+//	    ppure = UnicodeZZZ.fromAsciiToUtf8For26(ppure);
+	    
 	    int[]ppure = new int[p.length];
-	    for (int i = 0; i < p.length; i++) {
-	    	if(i>=1) System.out.print("|");
-	        //Das steht in der Codedatei
-	    	//Merke: c = Chiffrebuchstabe
-	    	int iModLaengeSW = i%laengeSW;
-	    	int iBezug = iaSchluesselwort[iModLaengeSW];
-	    	int iSum = p[i]+iBezug;
-	    	   	
-	    	int iFormula = (iSum)%26;//An das Beispiel im Buch angepasst
-	    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
-	      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
-	                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.	    	
-	      ppure[i] = c;				// nur wegen abspeichern  	
-	      System.out.print("i="+i+", c='"+c+"'");      
-	    }
-        //Gemaess Seite 35, analog zu Vigenere96 noch 65 wieder draufaddieren
-        //c = c +65;
-	    ppure = UnicodeZZZ.fromAsciiToUtf8For26(ppure);
+		ppure = this.encrypt(p);
 	    this.setEncryptedValues(ppure);
 	    bReturn = true;
 	}//end main:
 	return bReturn;    
   }
   
-  public boolean decrypt() throws ExceptionZZZ{
+  public boolean decryptUI() throws ExceptionZZZ{
 	  boolean bReturn = false;
 	  main:{
 		  System.out.println("\nBeginne Entschluesselung ... ");
@@ -127,19 +121,38 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
 		      int iBezug = iasPure[iModLaengeSW];
 		      int p = c[i]-iBezug;			// c-s
 		      if (p < 0) {    	  
-		    	  p+=26; //Fuer Viginere26 Verschluesselung  
+		    	  p+=this.getOffsetForAsciiRange(); //Fuer Viginere26 Verschluesselung  
 		      }   
 		      iaPure[i]=p;
 		    }
-		    
-		    //Analog zum buch, nur mit +65
-		    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
-		    iaPure = UnicodeZZZ.fromAsciiToUtf8For26(iaPure);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet
-		    
+		    iaPure = this.fromAsciiToUtf8ForOffset(iaPure);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet		    
+
 		    this.setDecryptedValues(iaPure);
 		    
 		    bReturn = true;
 	  }//end main:
 	  return bReturn;
   }
+  
+  @Override
+	public int getOffsetForAsciiRange() {
+		return Vigenere26ZZZ.iOffsetForAsciiRange;
+	}
+  
+	@Override
+	public int[] fromUTF8ToAsciiForOffset(int[] p) {
+		 //Analog zu Vigenere96.java, nur mit 65
+		 //ImBuch, auf Seite 34 steht entsprechend ... "wird auf space (Nr. 32) bezogen, 
+		 //    for(int i=0; i < p.length; i++) {
+		 //    	p[i]=p[i]-65;
+		 //    }
+		 return UnicodeZZZ.fromUtf8ToAsciiFor26(p);
+	}
+	
+	@Override
+	public int[] fromAsciiToUtf8ForOffset(int[] p) {
+		//Analog zum buch, nur mit +65
+	    //Im Buch auf Seite 36 wird dann ensprechend 32 draufgerechnet ("blank")
+	    return UnicodeZZZ.fromAsciiToUtf8For26(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
+	}
 }

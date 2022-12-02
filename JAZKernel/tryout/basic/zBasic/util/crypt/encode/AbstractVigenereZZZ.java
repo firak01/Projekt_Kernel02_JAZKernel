@@ -3,6 +3,7 @@ package basic.zBasic.util.crypt.encode;
 import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
 public abstract class AbstractVigenereZZZ {
@@ -37,7 +38,7 @@ public abstract class AbstractVigenereZZZ {
 	}
 	public String getKeyWord() {
 		return this.sKeyWord;
-	}
+	}	
 	public int[] getOriginalValuesAsInt() {
 		if(this.iaOriginal==null) {
 			DateiUtil Original = this.getFileOriginal();
@@ -59,11 +60,68 @@ public abstract class AbstractVigenereZZZ {
 		bDateiOriginalIsEncrypted = bFileOriginalIsEncrypted;
 	}
 	
+	//######################
+	public abstract int getOffsetForAsciiRange();
+	public abstract int[]fromUTF8ToAsciiForOffset(int[] p);
+	public abstract int[]fromAsciiToUtf8ForOffset(int[] p);
+
+	//###########################
+	//### Verschluesselungsmethoden
+	//###########################	
+	public abstract boolean encryptUI() throws ExceptionZZZ;
 	
-//###########################
-//### Verschluesselungsmethoden
-//###########################
-	public abstract boolean encrypt() throws ExceptionZZZ;
+	/** Der reine Entschluesselungsalgorithmus, ohne Eingaben per Console, etc.
+	 * @param p
+	 * @return
+	 * @author Fritz Lindhauer, 02.12.2022, 08:31:12
+	 */
+	public int[] encrypt(int[]p) {
+		int[]iaReturn=null;
+		main:{
+			if(p==null)break main;
+			iaReturn=new int[p.length];
+			
+			String sKeyWord = this.getKeyWord();
+			if(StringZZZ.isEmpty(sKeyWord)) {
+				iaReturn=p;
+				break main;
+			}
+			
+			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
+			
+			//Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
+			//    for(int i=0; i < iaSchluesselwort.length; i++) {
+			//    	iaSchluesselwort[i]=iaSchluesselwort[i]-32;
+			//    }
+			iaSchluesselwort = this.fromUTF8ToAsciiForOffset(iaSchluesselwort);
+				
+			int laengeSW = sKeyWord.length();
+			
+			//Nun gemaess Buch auf Seite 35, d.h. "blank/Leerzeichen" beziehen.
+			//Merke: "B" ist im Buchbeispiel der erste Buchstabe mit einem ASCII Code von 66
+	        //       Also kommt für den ersten Buchstaben 66-32=34 heraus.
+			p = this.fromUTF8ToAsciiForOffset(p);
+			
+		    int[]ppure = new int[p.length];
+		    for (int i = 0; i < p.length; i++) {
+		    	if(i>=1) System.out.print("|");
+		        //Das steht in der Codedatei
+		    	//Merke: c = Chiffrebuchstabe
+		    	int iIndexS = i%laengeSW;
+		    	int iSum = iaSchluesselwort[iIndexS]+p[i];
+		    	int iFormula = (iSum)% this.getOffsetForAsciiRange();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
+		    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
+		      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
+		                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.            
+		      ppure[i] = c;				// nur wegen abspeichern  
+		      System.out.print("i="+i+", c='"+c+"'"); 
+		    }
+		    //Gemaess Seite 35 noch 32 wieder draufaddieren, das ist das Leerzeichen "blank".
+		    //c = c +32;
+		    iaReturn = this.fromAsciiToUtf8ForOffset(ppure);
+		}//end main:
+		return iaReturn;
+	}
 	
 	public void setFileOriginal(DateiUtil datei) {
 		this.dateiOriginal = datei;
@@ -83,11 +141,25 @@ public abstract class AbstractVigenereZZZ {
 		this.iaEncrypted = iaCrypted;
 	}
 	
-//##########################
-//### Entschluesselungsmethoden
-//##########################	
-	public abstract boolean decrypt() throws ExceptionZZZ;
-
+	//##########################
+	//### Entschluesselungsmethoden
+	//##########################	
+	public abstract boolean decryptUI() throws ExceptionZZZ;
+    
+	/** Der reine Verschluesselungsalgorithmus, ohne Eingaben per Console, etc.
+	 * @param p
+	 * @return
+	 * @author Fritz Lindhauer, 02.12.2022, 08:31:12
+	 */
+	public int[] decrypt(int[]p) {
+		int[]iaReturn=new int[p.length];
+		main:{
+		
+		}//end main:
+		return iaReturn;
+	}
+	
+	
 	public void setFileEncrypted(DateiUtil datei) {
 		this.dateiEncrypted = datei;
 	}

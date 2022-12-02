@@ -322,9 +322,10 @@ public class UnicodeZZZ {
 	    int[]iaPure = new int[ia.length];
 
 	    for(int i=0;i<ia.length;i++) {
-	    	System.out.print("#"+i+". Stelle ");
+	    	System.out.print("#"+i+". Stelle ");	    	
 	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For26(ia[i]);
-	    }	    
+	    }	
+	    System.out.print("\n");
 	 return iaPure;   		
 }
 	public static int fromAsciiToUtf8For26(int iz) {
