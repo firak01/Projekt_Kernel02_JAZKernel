@@ -2,8 +2,9 @@ package basic.zBasic.util.crypt;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.crypt.encode.IVigenereZZZ;
 
-public abstract class AbstractVigenereZZZ extends ObjectZZZ implements ICryptZZZ{
+public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenereZZZ{
 	private String sCryptKey=null;
 	
 	public abstract String encrypt(String sInput) throws ExceptionZZZ;
@@ -33,21 +34,11 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements ICryptZZZ
 		return this.sCryptKey;
 	}
 	
-	
+	//##################################################################################
 	//Aus Interface ICryptZZZ, aber nur wichtig für ROT-Verfahren
-	@Override
-	public int getCryptNumber() {
-		return 0;
-	}
-
 	@Override
 	public void setCryptNumber(int iCryptKey) {
 		// nix		
-	}
-
-	@Override
-	public String getCharacterPool() {		
-		return null;
 	}
 
 	@Override

@@ -2,11 +2,13 @@ package basic.zBasic.util.crypt.encode;
 
 import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.crypt.CryptAlgorithmMaintypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-public abstract class AbstractVigenereZZZ {
+public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenereZZZ{
 	private String sFilePath=null;
 	private String sKeyWord=null;
 	
@@ -22,7 +24,7 @@ public abstract class AbstractVigenereZZZ {
 	
 	public AbstractVigenereZZZ(String sFilePath, String sSchluesselWort) {
 		this.setFilePath(sFilePath);
-		this.setKeyWord(sSchluesselWort);
+		this.setCryptKey(sSchluesselWort);
 	}
 		
 	//+++++++ Getter / Setter
@@ -33,12 +35,6 @@ public abstract class AbstractVigenereZZZ {
 		return this.sFilePath;
 	}
 	
-	public void setKeyWord(String sKeyWord) {
-		this.sKeyWord= sKeyWord;
-	}
-	public String getKeyWord() {
-		return this.sKeyWord;
-	}	
 	public int[] getOriginalValuesAsInt() {
 		if(this.iaOriginal==null) {
 			DateiUtil Original = this.getFileOriginal();
@@ -68,6 +64,13 @@ public abstract class AbstractVigenereZZZ {
 	//###########################
 	//### Verschluesselungsmethoden
 	//###########################	
+	/** Starte die Verschluesselung, weitere Eingaben sind moeglich:
+	 *  - per Konsole 
+	 *  - per Dialog, z.B. Auswahl von Dateien 
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 03.12.2022, 05:43:47
+	 */
 	public abstract boolean encryptUI() throws ExceptionZZZ;
 	
 	/** Der reine Entschluesselungsalgorithmus, ohne Eingaben per Console, etc.
@@ -81,7 +84,7 @@ public abstract class AbstractVigenereZZZ {
 			if(p==null)break main;
 			iaReturn=new int[p.length];
 			
-			String sKeyWord = this.getKeyWord();
+			String sKeyWord = this.getCryptKey();
 			if(StringZZZ.isEmpty(sKeyWord)) {
 				iaReturn=p;
 				break main;
@@ -116,6 +119,7 @@ public abstract class AbstractVigenereZZZ {
 		      ppure[i] = c;				// nur wegen abspeichern  
 		      System.out.print("i="+i+", c='"+c+"'"); 
 		    }
+		    System.out.print("\n");
 		    //Gemaess Seite 35 noch 32 wieder draufaddieren, das ist das Leerzeichen "blank".
 		    //c = c +32;
 		    iaReturn = this.fromAsciiToUtf8ForOffset(ppure);
@@ -126,6 +130,8 @@ public abstract class AbstractVigenereZZZ {
 	public void setFileOriginal(DateiUtil datei) {
 		this.dateiOriginal = datei;
 	}
+	
+	@Override
 	public DateiUtil getFileOriginal() {
 		if(this.dateiOriginal==null) {
 			String sFilePath = this.getFilePath();
@@ -133,7 +139,9 @@ public abstract class AbstractVigenereZZZ {
 		    this.setFileOriginal(Original);
 		}
 		return this.dateiOriginal;
-	}				
+	}
+	
+	@Override
 	public int[] getEncryptedValuesAsInt() {
 		return this.iaEncrypted;
 	}
@@ -210,4 +218,43 @@ public abstract class AbstractVigenereZZZ {
 		  }//end main:
 		  return sReturn;
 	  }
+	
+	//####################################################
+		
+	//####################################################	
+	//### Methoden aus ICryptZZZ
+	//####################################################
+	@Override
+	public void setCryptKey(String sKeyWord) {
+		this.sKeyWord= sKeyWord;
+	}
+	
+	@Override
+	public String getCryptKey() {
+		return this.sKeyWord;
+	}
+	
+	@Override
+	public int getSubtype() {
+		return CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal();
+	}
+	
+	@Override
+	public abstract String encrypt(String sInput) throws ExceptionZZZ;
+	@Override
+	public abstract String decrypt(String sInput) throws ExceptionZZZ ;
+	
+	
+	
+	//+++ nur wichtig für ROT-Verfahren
+	@Override
+	public void setCryptNumber(int iCryptKey) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setCharacterPool(String sCharacterPool) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -88,18 +88,18 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
-		boolean bUseUpperCase = this.getFlag(ICryptZZZ.FLAGZ.USEUPPERCASE.name());
-		boolean bUseLowerCase = this.getFlag(ICryptZZZ.FLAGZ.USELOWERCASE.name());
-		boolean bUseNumeric = this.getFlag(ICryptZZZ.FLAGZ.USENUMERIC.name());
+		boolean bUseUpperCase = this.getFlag(IROTZZZ.FLAGZ.USEUPPERCASE.name());
+		boolean bUseLowerCase = this.getFlag(IROTZZZ.FLAGZ.USELOWERCASE.name());
+		boolean bUseNumeric = this.getFlag(IROTZZZ.FLAGZ.USENUMERIC.name());
 		return ROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
-		boolean bUseUpperCase = this.getFlag(ICryptZZZ.FLAGZ.USEUPPERCASE.name());
-		boolean bUseLowerCase = this.getFlag(ICryptZZZ.FLAGZ.USELOWERCASE.name());
-		boolean bUseNumeric = this.getFlag(ICryptZZZ.FLAGZ.USENUMERIC.name());
+		boolean bUseUpperCase = this.getFlag(IROTZZZ.FLAGZ.USEUPPERCASE.name());
+		boolean bUseLowerCase = this.getFlag(IROTZZZ.FLAGZ.USELOWERCASE.name());
+		boolean bUseNumeric = this.getFlag(IROTZZZ.FLAGZ.USENUMERIC.name());
 		return ROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric);
 	}
 	

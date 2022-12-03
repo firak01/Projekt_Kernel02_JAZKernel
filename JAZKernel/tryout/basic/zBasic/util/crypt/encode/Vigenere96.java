@@ -10,8 +10,8 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  *  Die Verschlusselungsmethode gehoert zu den "polyalphabetischen Ansaetzen"
  *  
  * Erweitert und angepasst
- * Insbesondere Anpassung an 128 Zeichen, damit es zu den Zahlenwerten und den Verschluesselten Buchstabenwerten im Buchbeispiel auf der angegebenen Seite passt
- * Merke: Der verwendete Moduluswert entspricht dem 128 im Klassennamen
+ * Insbesondere Anpassung an 96 Zeichen, damit es zu den Zahlenwerten und den Verschluesselten Buchstabenwerten im Buchbeispiel auf der angegebenen Seite passt
+ * Merke: Der verwendete Moduluswert entspricht dem 96 im Klassennamen
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */

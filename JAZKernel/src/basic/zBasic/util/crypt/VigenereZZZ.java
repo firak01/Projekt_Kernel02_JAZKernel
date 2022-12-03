@@ -169,6 +169,36 @@ public class VigenereZZZ extends AbstractVigenereZZZ{
 		}//end main:
 		return sReturn;
 	}
+
+	@Override
+	public int[] decrypt(int[] p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int[] getEncryptedValuesAsInt() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DateiUtil getFileOriginal() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean encryptUI() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean decryptUI() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 }

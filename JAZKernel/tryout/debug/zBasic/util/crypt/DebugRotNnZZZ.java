@@ -2,6 +2,7 @@ package debug.zBasic.util.crypt;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
+import basic.zBasic.util.crypt.IROTZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 import basic.zBasic.util.crypt.ROT13ZZZ;
@@ -26,7 +27,7 @@ public class DebugRotNnZZZ {
         System.out.println("###################");
         
         try {        	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, ICryptZZZ.FLAGZ.USEUPPERCASE.name());
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, IROTZZZ.FLAGZ.USEUPPERCASE.name());
 			rotNn = objCrypt.encrypt(input);
 			roundTrip = objCrypt.decrypt(rotNn);
 			

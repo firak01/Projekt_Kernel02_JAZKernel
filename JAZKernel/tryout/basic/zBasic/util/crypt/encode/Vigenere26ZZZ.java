@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.encode;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
@@ -10,6 +11,7 @@ import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.datatype.string.FileEncodingUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 31ff
  *  Die Klasse stammt aus der Buch CD, aus dem Verzeichnis poly
@@ -35,7 +37,7 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
   public boolean encryptUI() throws ExceptionZZZ {
 	  boolean bReturn = false;
 	  main:{
-	    String SchluesselWort=this.getKeyWord();
+	    String SchluesselWort=this.getCryptKey();
 	    
 	    System.out.println("Schluesselwort: " + SchluesselWort);
 //	    int laengeSW = SchluesselWort.length();    
@@ -89,7 +91,7 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
 	  boolean bReturn = false;
 	  main:{
 		  System.out.println("\nBeginne Entschluesselung ... ");
-		  String SchluesselWort = this.getKeyWord();
+		  String SchluesselWort = this.getCryptKey();
 		  System.out.println("Schluesselwort: '"+SchluesselWort+"'");
 		    //int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
 		    int[] iasPure = UnicodeZZZ.toIntArray(SchluesselWort);		    
@@ -154,5 +156,15 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
 		//Analog zum buch, nur mit +65
 	    //Im Buch auf Seite 36 wird dann ensprechend 32 draufgerechnet ("blank")
 	    return UnicodeZZZ.fromAsciiToUtf8For26(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
+	}
+	@Override
+	public String encrypt(String sInput) throws ExceptionZZZ {
+		TODOGOON20221003;//siehe VigenereZZZ 
+		return null;
+	}
+	@Override
+	public String decrypt(String sInput) throws ExceptionZZZ {
+		TODOGOON20221003;//siehe VigenereZZZ 
+		return null;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
+import basic.zBasic.util.crypt.IROTZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 
@@ -41,7 +42,7 @@ public class DebugRotNn_MyPassordZZZ {
         try {        	
         	System.out.println("###################");
         	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKey, ICryptZZZ.FLAGZ.USEUPPERCASE.name());
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKey, IROTZZZ.FLAGZ.USEUPPERCASE.name());
 			String rotNn = objCrypt.encrypt(input);
 			String roundTrip = objCrypt.decrypt(rotNn);
 			

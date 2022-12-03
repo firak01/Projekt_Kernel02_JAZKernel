@@ -6,6 +6,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
+import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
+import basic.zBasic.util.crypt.encode.Vigenere26ZZZ;
+import basic.zBasic.util.crypt.encode.Vigenere96ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 
@@ -54,8 +57,12 @@ private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss
 			objReturn = new ROTasciiZZZ();
 		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation())) {
 			objReturn = new ROTnnZZZ();
-		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE.getAbbreviation())) {
-			objReturn = new VigenereZZZ();
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE26.getAbbreviation())) {
+			objReturn = new Vigenere26ZZZ();
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE96.getAbbreviation())) {
+			objReturn = new Vigenere96ZZZ();
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE256.getAbbreviation())) {
+			objReturn = new Vigenere256ZZZ();
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled cipher type '" + sCipher + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 			throw ez;				

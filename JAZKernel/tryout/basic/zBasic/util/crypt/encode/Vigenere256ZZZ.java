@@ -16,12 +16,12 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */
-public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
+public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
 	private static int iOffsetForAsciiRange=96;
-	public Vigenere96ZZZ() {	  
+	public Vigenere256ZZZ() {	  
 		  super();
 	  }
-	  public Vigenere96ZZZ(String sFilePath, String sSchluesselWort) {
+	  public Vigenere256ZZZ(String sFilePath, String sSchluesselWort) {
 		  super(sFilePath, sSchluesselWort);
 	  }
 		
@@ -147,7 +147,7 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
   }
 	@Override
 	public int getOffsetForAsciiRange() {
-		return Vigenere96ZZZ.iOffsetForAsciiRange;
+		return Vigenere256ZZZ.iOffsetForAsciiRange;
 	}
 	
 	@Override

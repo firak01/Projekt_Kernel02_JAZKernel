@@ -70,7 +70,10 @@ public enum CipherTypeZZZ implements IEnumSetMappedMaintypeZZZ, IEnumSetZZZ {//F
 	ROTascii("ROTascii","simple encrytption method for the ASCII characters.",CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()),
 	ROTnumeric("ROTnumeric","simple encrytption methodefor the characters a-z PLUS 0-9, using a parameter for the number to rotate.",CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()),
 	ROTnn("ROTnn","simple encrytption method for the characters provided by a character list, using a parameter for the number to rotate.",CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()),
-	VIGENERE("Vigenere","simple encryption method for the characters, using a keyword to rotate", CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal());
+	VIGENERE26("Vigenere256","simple encryption method for the characters, using a keyword to rotate (96 Characters)", CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal()),
+	VIGENERE96("Vigenere256","simple encryption method for the characters, using a keyword to rotate (96 Characters)", CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal()),
+	VIGENERE256("Vigenere256","simple encryption method for the characters, using a keyword to rotate (256 Characters)", CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal());
+	
 	
 	
 private String sAbbr, sDescr;
