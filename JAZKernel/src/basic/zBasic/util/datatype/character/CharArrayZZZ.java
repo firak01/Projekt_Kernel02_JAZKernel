@@ -24,6 +24,19 @@ public class CharArrayZZZ {
 		return bReturn;
 	}
 	
+	public static char[] from(int[]ia) {
+		char[]caReturn=null;
+		main:{
+			if(ia==null)break main;
+			caReturn = new char[ia.length];
+			for(int i=0;i<ia.length;i++) {
+				char c = (char) ia[i];
+				caReturn[i] = c;
+			}
+		}
+		return caReturn;
+	}
+	
 	public static boolean isEmpty(char[]ca) {
 		boolean bReturn = true;
 		main:{
@@ -39,10 +52,31 @@ public class CharArrayZZZ {
 	}
 	
 	
+	public static String toString(int[]ia) {
+		String sReturn = null;
+		main:{
+			if(ia==null) break main;
+			
+			char[]ca = CharArrayZZZ.from(ia);
+			sReturn = CharArrayZZZ.toString(ca);
+		}
+		return sReturn;
+	}
+	
+	public static String toString(char[]ca) {
+		String sReturn = null;
+		main:{
+			if(CharArrayZZZ.isEmpty(ca)) break main;
+			
+			sReturn = CharArrayZZZ.toString(ca, ca.length);
+		}
+		return sReturn;		
+	}
+	
 	
 	/**
 	 * @param ca
-	 * @param iPositionLastIn -1 = nimm alle Zeichen, dito wenn > Anzahl Zeichen.
+	 * @param iPositionLastIn wenn > Anzahl Zeichen, < Anzahl Zeichen, >bbruch.
 	 * @return
 	 * @author Fritz Lindhauer, 05.11.2022, 11:01:48
 	 */
@@ -53,7 +87,7 @@ public class CharArrayZZZ {
 			
 			int iPositionLast;
 			if(iPositionLastIn>ca.length) {
-				iPositionLast=ca.length;
+				break main;
 			}else if(iPositionLastIn<0){
 				break main;
 			}else {
@@ -61,7 +95,7 @@ public class CharArrayZZZ {
 			}
 			
 			sReturn = "";
-			for(int iIndex=0;iIndex <= iPositionLast; iIndex++) {
+			for(int iIndex=0;iIndex < iPositionLast; iIndex++) {
 				char c = ca[iIndex];
 				sReturn = sReturn + c; 
 			}			

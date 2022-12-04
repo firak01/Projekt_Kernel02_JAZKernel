@@ -1,9 +1,11 @@
 package basic.zBasic.util.crypt.encode;
 
 import base.files.DateiUtil;
+import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.crypt.CryptAlgorithmMaintypeZZZ;
+import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -21,7 +23,9 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	
 	public AbstractVigenereZZZ() {		
 	}
-	
+	public AbstractVigenereZZZ(String sSchluesselwort) {
+		this.setCryptKey(sSchluesselwort);
+	}
 	public AbstractVigenereZZZ(String sFilePath, String sSchluesselWort) {
 		this.setFilePath(sFilePath);
 		this.setCryptKey(sSchluesselWort);
@@ -57,8 +61,9 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	}
 	
 	//######################
+	public abstract int getOffsetForUtf8Range();
 	public abstract int getOffsetForAsciiRange();
-	public abstract int[]fromUTF8ToAsciiForOffset(int[] p);
+	public abstract int[]fromUtf8ToAsciiForOffset(int[] p);
 	public abstract int[]fromAsciiToUtf8ForOffset(int[] p);
 
 	//###########################
@@ -96,14 +101,14 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 			//    for(int i=0; i < iaSchluesselwort.length; i++) {
 			//    	iaSchluesselwort[i]=iaSchluesselwort[i]-32;
 			//    }
-			iaSchluesselwort = this.fromUTF8ToAsciiForOffset(iaSchluesselwort);
+			iaSchluesselwort = this.fromUtf8ToAsciiForOffset(iaSchluesselwort);
 				
 			int laengeSW = sKeyWord.length();
 			
 			//Nun gemaess Buch auf Seite 35, d.h. "blank/Leerzeichen" beziehen.
 			//Merke: "B" ist im Buchbeispiel der erste Buchstabe mit einem ASCII Code von 66
 	        //       Also kommt für den ersten Buchstaben 66-32=34 heraus.
-			p = this.fromUTF8ToAsciiForOffset(p);
+			p = this.fromUtf8ToAsciiForOffset(p);
 			
 		    int[]ppure = new int[p.length];
 		    for (int i = 0; i < p.length; i++) {
@@ -159,12 +164,42 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	 * @return
 	 * @author Fritz Lindhauer, 02.12.2022, 08:31:12
 	 */
-	public int[] decrypt(int[]p) {
-		int[]iaReturn=new int[p.length];
+	public int[] decrypt(int[]c) {
+		int[]iaReturn=null;
 		main:{
-		
+			if(c==null)break main;
+			iaReturn=new int[c.length];
+			
+			String sKeyWord = this.getCryptKey();
+			if(StringZZZ.isEmpty(sKeyWord)) {
+				iaReturn=c;
+				break main;
+			}
+				
+			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
+				
+				//Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
+				//    for(int i=0; i < iaSchluesselwort.length; i++) {
+				//    	iaSchluesselwort[i]=iaSchluesselwort[i]-32;
+				//    }
+				iaSchluesselwort = this.fromUtf8ToAsciiForOffset(iaSchluesselwort);
+					
+				int laengeSW = sKeyWord.length();
+				
+				System.out.println("\nBeginne Entschluesselung ... ");
+			    int[]iaPure = new int[c.length];
+			    for (int i=0; i<c.length; i++) {
+			      int iModLaengeSW = i%laengeSW;
+			      int iBezug = iaSchluesselwort[iModLaengeSW];
+			      int p = c[i]-iBezug;			// c-s
+			      if (p < this.getOffsetForUtf8Range()) {    	  
+			    	  p+=this.getOffsetForAsciiRange();//26 Fuer Viginere26 Verschluesselung
+			      }   
+			      iaPure[i]=p;
+			    }			  
+			    iaReturn = iaPure;
 		}//end main:
-		return iaReturn;
+		return iaReturn;   
 	}
 	
 	
@@ -240,13 +275,29 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	}
 	
 	@Override
-	public abstract String encrypt(String sInput) throws ExceptionZZZ;
+	public String encrypt(String sInput) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			int[] iaInput = UnicodeZZZ.toIntArray(sInput);
+			int[] iaEncrypted = this.encrypt(iaInput);
+		    sReturn = CharArrayZZZ.toString(iaEncrypted);
+		}//end main:
+		return sReturn;
+	}
 	@Override
-	public abstract String decrypt(String sInput) throws ExceptionZZZ ;
+	public String decrypt(String sInput) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			int[] iaInput = UnicodeZZZ.toIntArray(sInput);
+			int[] iaEncrypted = this.decrypt(iaInput);
+		    sReturn = CharArrayZZZ.toString(iaEncrypted);
+		}//end main:
+		return sReturn;
+	}
 	
 	
 	
-	//+++ nur wichtig für ROT-Verfahren
+	//+++ nur wichtig für ROT-Verfahren, werden wg. Interface uebernommen.
 	@Override
 	public void setCryptNumber(int iCryptKey) {
 		// TODO Auto-generated method stub

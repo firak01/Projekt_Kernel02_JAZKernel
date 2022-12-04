@@ -22,8 +22,22 @@ public class Vigenere26ZZZmain {
 	public static void main(String[] args) {
 		main:{
 		try {
+			boolean btemp; String stemp;
+			
+		//ohne UI
+		String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
+		Vigenere26ZZZ objVigenere = new Vigenere26ZZZ(SchluesselWortDefault);
+	    stemp = objVigenere.encrypt("KRYPTOGRAFIE");
+		System.out.println("encrypted: " + stemp);	
+		stemp = objVigenere.decrypt(stemp);
+		System.out.println("decrypted: " + stemp);
+		System.out.println("##################################################");
+		
+		
+		
+		 //mit UI	
 		 //Buchbeispiel Seite 31
-		 String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
+		 String SchluesselWortUIDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
 		 String sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\encode\\file\\Beispieltext2_ohne_Sonderzeichen.txt";
 		 
 		//im Test, ggfs abweichend vom Buch
@@ -64,29 +78,29 @@ public class Vigenere26ZZZmain {
 		    if (args.length > 1) {
 		    	SchluesselWort = (args[1]); 
 		    }else {
-		    	SchluesselWort = SchluesselWortDefault;
+		    	SchluesselWort = SchluesselWortUIDefault;
 		    }
 		    
-		    Vigenere26ZZZ objVigenere = new Vigenere26ZZZ(sFilePath, SchluesselWort);
-		    boolean btemp = objVigenere.encryptUI();
+		    Vigenere26ZZZ objVigenereUI = new Vigenere26ZZZ(sFilePath, SchluesselWort);
+		    btemp = objVigenereUI.encryptUI();
 		    if(btemp) {		    		    
 		    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
 			    if (IoUtil.JaNein()) {
-			      DateiUtil Original = objVigenere.getFileOriginal();
+			      DateiUtil Original = objVigenereUI.getFileOriginal();
 			      System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
-			      int[]ppure = objVigenere.getEncryptedValuesAsInt();
+			      int[]ppure = objVigenereUI.getEncryptedValuesAsInt();
 			      for (int i = 0; i < ppure.length; i++) {
 			    	IoUtil.printCharWithPosition((ppure[i]),"|");
 			        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 			      }
 			    }
-			    System.out.println("\n---- Laenge: "+objVigenere.getEncryptedValuesAsInt().length+" Bytes ----");
+			    System.out.println("\n---- Laenge: "+objVigenereUI.getEncryptedValuesAsInt().length+" Bytes ----");
 			    
 			    System.out.print("\nVerschluesselten Text als Datei speichern (ueber Dialog)? (J/N): ");
 			    if (IoUtil.JaNein()) {    	
 			    	DateiUtil Kodiert = new DateiUtil();
 			        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-			    	Kodiert.schreib(objVigenere.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
+			    	Kodiert.schreib(objVigenereUI.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
 			    }
 		    }		   
 		} catch (ExceptionZZZ e) {

@@ -17,7 +17,7 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * 
  */
 public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
-	private static int iOffsetForAsciiRange=96;
+	private static int iOffsetForAsciiRange=256;
 	public Vigenere256ZZZ() {	  
 		  super();
 	  }
@@ -151,7 +151,7 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 	}
 	
 	@Override
-	public int[] fromUTF8ToAsciiForOffset(int[] p) {
+	public int[] fromUtf8ToAsciiForOffset(int[] p) {
 		 //Analog zu Vigenere96.java, nur mit 65
 		 //ImBuch, auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
 		 //    for(int i=0; i < p.length; i++) {
@@ -165,16 +165,5 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 		//Analog zum buch, nur mit +32
 	    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
 	    return UnicodeZZZ.fromAsciiToUtf8For96(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
-	}
-	
-	@Override
-	public String encrypt(String sInput) throws ExceptionZZZ {
-		TODOGOON20221003;//siehe VigenereZZZ 
-		return null;
-	}
-	@Override
-	public String decrypt(String sInput) throws ExceptionZZZ {
-		TODOGOON20221003;//siehe VigenereZZZ 
-		return null;
 	}
 }

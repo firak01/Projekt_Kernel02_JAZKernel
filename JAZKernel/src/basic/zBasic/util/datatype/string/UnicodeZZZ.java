@@ -323,7 +323,7 @@ public class UnicodeZZZ {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");	    	
-	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For26(ia[i]);
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For26(ia[i]);	    	
 	    }	
 	    System.out.print("\n");
 	 return iaPure;   		
@@ -359,8 +359,9 @@ public class UnicodeZZZ {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor26(ia[i]);
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor26(ia[i]);	    	
 	    }	    
+	    System.out.println("\n");
 	 return iaPure;   		
 }
 	public static int fromUtf8ToAsciiFor26(int iz) {
@@ -396,8 +397,9 @@ public static int[] fromAsciiToUtf8For96(int[] ia) {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For96(ia[i]);
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For96(ia[i]);	    	
 	    }	    
+	    System.out.println("\n");
 	 return iaPure;   		
 }
 	public static int fromAsciiToUtf8For96(int iz) {
@@ -431,8 +433,9 @@ public static int[] fromAsciiToUtf8For96(int[] ia) {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor96(ia[i]);
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor96(ia[i]);	    	
 	    }	    
+	    System.out.println("\n");
 	 return iaPure;   		
 }
 	public static int fromUtf8ToAsciiFor96(int iz) {
