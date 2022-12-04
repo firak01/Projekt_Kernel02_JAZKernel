@@ -28,6 +28,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	}
 	public AbstractVigenereZZZ(String sSchluesselWort, String sFilePath) {		
 		this.setCryptKey(sSchluesselWort);
+		this.setFilePath(sFilePath);
 	}
 		
 	//+++++++ Getter / Setter
@@ -280,6 +281,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 			int[] iaInput = UnicodeZZZ.toIntArray(sInput);
 			int[] iaEncrypted = this.encrypt(iaInput);
 			this.setEncryptedValues(iaEncrypted);
+			
 		    sReturn = CharArrayZZZ.toString(iaEncrypted);
 		}//end main:
 		return sReturn;

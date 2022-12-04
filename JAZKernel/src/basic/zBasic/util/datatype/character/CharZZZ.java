@@ -99,8 +99,15 @@ public class CharZZZ {
 	}
 	
 	public static String toString(int iCharValue) {
-		char c = (char)iCharValue;
-		return CharZZZ.toString(c);
+		//char c = (char)iCharValue;
+		
+		//https://stackoverflow.com/questions/7401550/how-to-convert-int-to-unsigned-byte-and-back
+		//A byte is always signed in Java. You may get its unsigned value by binary-anding it with 0xFF, though:
+		byte b = (byte) iCharValue;
+		int itest = b & 0xFF;  
+		char ctest2 = (char) itest;
+		
+		return CharZZZ.toString(ctest2);
 	}
 	
 	public static String toLowercase(int iCharValue) {

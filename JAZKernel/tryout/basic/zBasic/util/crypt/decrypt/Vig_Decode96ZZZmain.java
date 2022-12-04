@@ -70,6 +70,11 @@ class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
     	//String SchluesselWort="HALLO";
     	//String SchluesselWort="SchluesselWort";
     	SchluesselWort = Vigenere96ZZZ.computeKeyWordFromEncryptedFile(sFilePath);
+    	if(SchluesselWort==null) {
+    		System.out.println("Kein Schluesselwort aus der Datei ermittelbar.");
+    		System.out.println("Abbruch.");
+    		break main;
+    	}
     }
     Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(SchluesselWort, sFilePath);
 	objVigenere.isFileOriginalEncrypted(true);

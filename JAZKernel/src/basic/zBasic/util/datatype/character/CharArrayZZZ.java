@@ -32,10 +32,13 @@ public class CharArrayZZZ {
 			for(int i=0;i<ia.length;i++) {
 				byte b = (byte) ia[i];
 				char c = (char) ia[i];
-				//char ctest = (char)b;
+				char ctest = (char)b;
 				
+				//https://stackoverflow.com/questions/7401550/how-to-convert-int-to-unsigned-byte-and-back
+				//A byte is always signed in Java. You may get its unsigned value by binary-anding it with 0xFF, though:
 				int itest = b & 0xFF;  
-				caReturn[i] = (char) itest;
+				char ctest2 = (char) itest;
+				caReturn[i] = ctest2;
 			}
 		}
 		return caReturn;

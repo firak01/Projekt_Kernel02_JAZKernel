@@ -21,8 +21,11 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 //	public static int iOffsetForAsciiRange=96;
 //	public static int iOffsetForUtf8Range=32;
 	
-	public static int iOffsetForAsciiRange=192;
-	public static int iOffsetForUtf8Range=64;
+	//public static int iOffsetForAsciiRange=192;
+	//public static int iOffsetForUtf8Range=64;//Damit wird das Leerzeichen nicht richtig konvertiert.
+	
+	public static int iOffsetForAsciiRange=256;
+	public static int iOffsetForUtf8Range=32;
 	
 	public Vigenere256ZZZ() {	  
 		  super();

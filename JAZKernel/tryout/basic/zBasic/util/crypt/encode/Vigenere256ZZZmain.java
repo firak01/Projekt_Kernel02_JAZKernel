@@ -38,12 +38,16 @@ public class Vigenere256ZZZmain { 		// Vigenereverschluesselung
 //		int[]iaTest = UnicodeZZZ.fromUtf8ToAscii(stemp);
 //		stemp = CharArrayZZZ.toString(iaTest);
 		
-		
+	
 		System.out.println("encrypted: " + stemp);
 		
 		int[]iaTest = objVigenere.getEncryptedValuesAsInt();
+		stemp = CharArrayZZZ.toString(iaTest);
+		System.out.println("encrypted: " + stemp);
+		
 		int[]iaErg = objVigenere.decrypt(iaTest);
-		//stemp = objVigenere.decrypt(stemp);
+		stemp = CharArrayZZZ.toString(iaErg);
+		//stemp = objVigenere.decrypt(stemp);//DAS KLAPPT BEI 256 ZEICHEN NICHT!!!
 		System.out.println("decrypted: " + stemp);
 		System.out.println("##################################################");
 		

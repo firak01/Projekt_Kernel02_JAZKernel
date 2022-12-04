@@ -7,7 +7,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
+class Vig_Decode256 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
   public static void main( String[] arg) {
     String SchluesselWort;
     DateiUtil Chiffre;
@@ -45,7 +45,6 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     	//String SchluesselWort="HALLO";
     	//String SchluesselWort="SchluesselWort";
     	SchluesselWort = Vig_Decode.computeKeyWordFromFile(Chiffre);
-    	
     }
     System.out.println("Schluesselwort: '"+SchluesselWort+"'");
     //int[] iasPure = IoUtil.Unicode(SchluesselWort.getBytes());
@@ -75,7 +74,7 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
       int iBezug = iasPure[iModLaengeSW];
       p = c[i]-iBezug;			// c-s
       if (p < 0) {    	   
-    	  p+=96; //Fuer Viginere96 Verschluesselung, s.Buch Seite 36, Tabelle 4.6, Spalte 2 !!! Ist der Modulus aus Vigenere96.java
+    	  p+=256; //Fuer Viginere96 Verschluesselung, s.Buch Seite 36, Tabelle 4.6, Spalte 2 !!! Ist der Modulus aus Vigenere96.java
       }   
       iaPure[i]=p;
     }
@@ -83,7 +82,7 @@ class Vig_Decode96 { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
     //++++++++++++++++++
     
     //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
-    iaPure = UnicodeZZZ.fromAsciiToUtf8For96(iaPure);//funktioniert bei Viginere26 Verschluesselung
+    iaPure = UnicodeZZZ.fromAsciiToUtf8For256(iaPure);//funktioniert bei Viginere26 Verschluesselung
 //    int[] iaPure = new int[c.length];
 //    for(int i=0;i<c.length;i++) {
 //    	iaPure[i]=c[i]+32;
