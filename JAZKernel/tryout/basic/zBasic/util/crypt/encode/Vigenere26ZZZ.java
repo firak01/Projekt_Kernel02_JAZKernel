@@ -25,8 +25,8 @@ import basic.zKernel.flag.IFlagUserZZZ;
  * 
  */
 public class Vigenere26ZZZ extends AbstractVigenereZZZ{ 	
-  private static int iOffsetForAsciiRange=26;
-  private static int iOffsetForUtf8Range=65;//Beginne mit "A"
+  public static int iOffsetForAsciiRange=26;
+  public static int iOffsetForUtf8Range=65;//Beginne mit "A"
   
   public Vigenere26ZZZ() {	  
 	  super();
@@ -34,8 +34,8 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
   public Vigenere26ZZZ(String sSchluesselWort) {
 	  super(sSchluesselWort);
   }
-  public Vigenere26ZZZ(String sFilePath, String sSchluesselWort) {
-	  super(sFilePath, sSchluesselWort);
+  public Vigenere26ZZZ(String sSchluesselWort, String sFilePath) {
+	  super(sSchluesselWort, sFilePath);
   }
 	
   public boolean encryptUI() throws ExceptionZZZ {

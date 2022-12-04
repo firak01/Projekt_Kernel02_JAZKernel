@@ -27,7 +27,7 @@ public class Vigenere26ZZZmain {
 		//ohne UI
 		String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31
 		Vigenere26ZZZ objVigenere = new Vigenere26ZZZ(SchluesselWortDefault);
-	    stemp = objVigenere.encrypt("KRYPTOGRAFIE");
+		stemp = objVigenere.encrypt("KRYPTOGRAFIE");
 		System.out.println("encrypted: " + stemp);	
 		stemp = objVigenere.decrypt(stemp);
 		System.out.println("decrypted: " + stemp);

@@ -25,9 +25,14 @@ try {
 	boolean btemp; String stemp;
 	
 	//ohne UI
-	String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.31
-	Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(SchluesselWortDefault);
-    stemp = objVigenere.encrypt("KRYPTOGRAFIE");
+//	String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31	
+//	Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(SchluesselWortDefault);
+//    stemp = objVigenere.encrypt("KRYPTOGRAFIE");    
+    
+    String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.31
+    Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(SchluesselWortDefault);
+    stemp = objVigenere.encrypt("Bei d");
+    
 	System.out.println("encrypted: " + stemp);	
 	stemp = objVigenere.decrypt(stemp);
 	System.out.println("decrypted: " + stemp);
@@ -82,7 +87,7 @@ try {
 	    	SchluesselWort = SchluesselWortUIDefault;
 	    }
 	    
-	    Vigenere96ZZZ objVigenereUI = new Vigenere96ZZZ(sFilePath, SchluesselWort);
+	    Vigenere96ZZZ objVigenereUI = new Vigenere96ZZZ(SchluesselWort, sFilePath);
 	    btemp = objVigenereUI.encryptUI();
 		
 	    if(btemp) {		    		    

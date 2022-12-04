@@ -26,8 +26,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	public AbstractVigenereZZZ(String sSchluesselwort) {
 		this.setCryptKey(sSchluesselwort);
 	}
-	public AbstractVigenereZZZ(String sFilePath, String sSchluesselWort) {
-		this.setFilePath(sFilePath);
+	public AbstractVigenereZZZ(String sSchluesselWort, String sFilePath) {		
 		this.setCryptKey(sSchluesselWort);
 	}
 		
@@ -280,6 +279,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 		main:{
 			int[] iaInput = UnicodeZZZ.toIntArray(sInput);
 			int[] iaEncrypted = this.encrypt(iaInput);
+			this.setEncryptedValues(iaEncrypted);
 		    sReturn = CharArrayZZZ.toString(iaEncrypted);
 		}//end main:
 		return sReturn;
@@ -289,8 +289,9 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 		String sReturn = null;
 		main:{
 			int[] iaInput = UnicodeZZZ.toIntArray(sInput);
-			int[] iaEncrypted = this.decrypt(iaInput);
-		    sReturn = CharArrayZZZ.toString(iaEncrypted);
+			int[] iaDecrypted = this.decrypt(iaInput);
+			this.setDecryptedValues(iaDecrypted);
+		    sReturn = CharArrayZZZ.toString(iaDecrypted);
 		}//end main:
 		return sReturn;
 	}

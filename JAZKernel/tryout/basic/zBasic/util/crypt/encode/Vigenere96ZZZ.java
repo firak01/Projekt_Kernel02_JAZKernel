@@ -17,16 +17,16 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * 
  */
 public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
-	private static int iOffsetForAsciiRange=96;
-	private static int iOffsetForUtf8Range=32;
+	public static int iOffsetForAsciiRange=96;
+	public static int iOffsetForUtf8Range=32;
 	public Vigenere96ZZZ() {	  
 		  super();
 	  }
 		public Vigenere96ZZZ(String sSchluesselWort) {
 		  super(sSchluesselWort);
 	  }
-	  public Vigenere96ZZZ(String sFilePath, String sSchluesselWort) {
-		  super(sFilePath, sSchluesselWort);
+	  public Vigenere96ZZZ(String sSchluesselWort, String sFilePath) {
+		  super(sSchluesselWort, sFilePath);
 	  }
 		
 	  public boolean encryptUI() throws ExceptionZZZ{

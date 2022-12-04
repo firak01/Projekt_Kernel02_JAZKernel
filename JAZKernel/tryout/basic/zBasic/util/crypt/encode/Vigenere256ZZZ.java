@@ -17,12 +17,21 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * 
  */
 public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
-	private static int iOffsetForAsciiRange=256;
+	//funktioniert mit den Offset Werten aus Vigenere96ZZZ	
+//	public static int iOffsetForAsciiRange=96;
+//	public static int iOffsetForUtf8Range=32;
+	
+	public static int iOffsetForAsciiRange=192;
+	public static int iOffsetForUtf8Range=64;
+	
 	public Vigenere256ZZZ() {	  
 		  super();
 	  }
-	  public Vigenere256ZZZ(String sFilePath, String sSchluesselWort) {
-		  super(sFilePath, sSchluesselWort);
+	public Vigenere256ZZZ(String sSchluesselWort) {
+		  super(sSchluesselWort);
+	  }
+	  public Vigenere256ZZZ(String sSchluesselWort, String sFilePath) {
+		  super(sSchluesselWort, sFilePath);
 	  }
 		
 	  public boolean encryptUI() throws ExceptionZZZ{
@@ -157,13 +166,17 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 		 //    for(int i=0; i < p.length; i++) {
 		 //    	p[i]=p[i]-65;
 		 //    }
-		 return UnicodeZZZ.fromUtf8ToAsciiFor96(p);
+		 return UnicodeZZZ.fromUtf8ToAsciiFor256(p);
 	}
 	
 	@Override
 	public int[] fromAsciiToUtf8ForOffset(int[] p) {
 		//Analog zum buch, nur mit +32
 	    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
-	    return UnicodeZZZ.fromAsciiToUtf8For96(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
+	    return UnicodeZZZ.fromAsciiToUtf8For256(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
+	}
+	@Override
+	public int getOffsetForUtf8Range() {
+		return Vigenere256ZZZ.iOffsetForUtf8Range;
 	}
 }

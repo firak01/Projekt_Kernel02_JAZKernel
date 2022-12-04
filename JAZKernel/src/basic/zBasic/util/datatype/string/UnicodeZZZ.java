@@ -19,6 +19,9 @@ import java.util.EnumSet;
 
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
+import basic.zBasic.util.crypt.encode.Vigenere26ZZZ;
+import basic.zBasic.util.crypt.encode.Vigenere96ZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 
 /**Internally in Java all strings are kept in Unicode. 
@@ -347,7 +350,7 @@ public class UnicodeZZZ {
 //		       }
 //		    }
 			
-			iReturn = iz + 65;	//Hier beginnt A
+			iReturn = iz + Vigenere26ZZZ.iOffsetForUtf8Range;//65;	//Hier beginnt A
 		}//end main:
 	    return iReturn;		
 	}
@@ -383,15 +386,13 @@ public class UnicodeZZZ {
 //		       }
 //		    }
 			
-			iReturn = iz - 65;	//Hier beginnt A
+			iReturn = iz - Vigenere26ZZZ.iOffsetForUtf8Range; //65;	//Hier beginnt A
 		}//end main:
 	    return iReturn;		
 	}
 	
-	
-	
 	//##########################################################
-public static int[] fromAsciiToUtf8For96(int[] ia) {	    
+	public static int[] fromAsciiToUtf8For96(int[] ia) {	    
 	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
 	    int[]iaPure = new int[ia.length];
 
@@ -421,7 +422,7 @@ public static int[] fromAsciiToUtf8For96(int[] ia) {
 //		       }
 //		    }
 			
-			iReturn = iz + 32;	//Merke 32 ist der ASCII Code für "blank"
+			iReturn = iz + Vigenere96ZZZ.iOffsetForUtf8Range;//32;	//Merke 32 ist der ASCII Code für "blank"
 		}//end main:
 	    return iReturn;		
 	}
@@ -457,13 +458,87 @@ public static int[] fromAsciiToUtf8For96(int[] ia) {
 //		       }
 //		    }
 			
-			iReturn = iz - 32;	//Merke 32 ist der ASCII Code für "blank"
+			iReturn = iz - Vigenere96ZZZ.iOffsetForUtf8Range;	//Merke 32 ist der ASCII Code für "blank"
 		}//end main:
 	    return iReturn;		
 	}
 	
 	
+	//##########################################################
+public static int[] fromAsciiToUtf8For256(int[] ia) {	    
+	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	System.out.print("#"+i+". Stelle ");
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For256(ia[i]);	    	
+	    }	    
+	    System.out.println("\n");
+	 return iaPure;   		
+}
+	public static int fromAsciiToUtf8For256(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) {
+				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
+				iz+=256; //für Vigenere96!!!  ?????
+			}
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			//iReturn = iz + 32;	//Merke 32 ist der ASCII Code für "blank"
+			iReturn = iz + Vigenere256ZZZ.iOffsetForUtf8Range;//65;      //Merke: 65 = A
+		}//end main:
+	    return iReturn;		
+	}
 	
+	//++++++++++++++++++++++++++++++++++++++
+	public static int[] fromUtf8ToAsciiFor256(int[] ia) {	    
+	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
+	    int[]iaPure = new int[ia.length];
+
+	    for(int i=0;i<ia.length;i++) {
+	    	System.out.print("#"+i+". Stelle ");
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor256(ia[i]);	    	
+	    }	    
+	    System.out.println("\n");
+	 return iaPure;   		
+}
+	public static int fromUtf8ToAsciiFor256(int iz) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) {
+				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
+				iz+=96; //für Vigenere96!!!  ?????
+			}
+//		    if (iz==10) {
+//		    	//System.out.println();
+//		    }else {
+//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+//		         //System.out.print((char)(z) + ":"+z+sSeparator);
+//				 iReturn = iz - 65;
+//		       }else {
+//		         //System.out.print("." + ":"+z+sSeparator);
+//		       }
+//		    }
+			
+			iReturn = iz - Vigenere256ZZZ.iOffsetForUtf8Range; //- 32;	//Merke 32 ist der ASCII Code für "blank"
+		}//end main:
+	    return iReturn;		
+	}
+	
+	//##########################################################
+
 	
 	//###########################################################################################
 	

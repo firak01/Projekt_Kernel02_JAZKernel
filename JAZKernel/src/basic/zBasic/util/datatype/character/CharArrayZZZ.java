@@ -30,8 +30,12 @@ public class CharArrayZZZ {
 			if(ia==null)break main;
 			caReturn = new char[ia.length];
 			for(int i=0;i<ia.length;i++) {
+				byte b = (byte) ia[i];
 				char c = (char) ia[i];
-				caReturn[i] = c;
+				//char ctest = (char)b;
+				
+				int itest = b & 0xFF;  
+				caReturn[i] = (char) itest;
 			}
 		}
 		return caReturn;

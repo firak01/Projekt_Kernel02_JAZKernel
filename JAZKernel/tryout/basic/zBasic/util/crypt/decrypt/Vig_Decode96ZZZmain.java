@@ -71,7 +71,7 @@ class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
     	//String SchluesselWort="SchluesselWort";
     	SchluesselWort = Vigenere96ZZZ.computeKeyWordFromEncryptedFile(sFilePath);
     }
-    Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(sFilePath, SchluesselWort);
+    Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(SchluesselWort, sFilePath);
 	objVigenere.isFileOriginalEncrypted(true);
 	    
 	    //Die Ausgabe der (hier schon chiffierten) Originaldatei
