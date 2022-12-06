@@ -326,34 +326,12 @@ public class UnicodeZZZ {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");	    	
-	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For26(ia[i]);	    	
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i],Vigenere26ZZZ.iOffsetForUtf8Range);	    	
 	    }	
 	    System.out.print("\n");
 	 return iaPure;   		
 }
-	public static int fromAsciiToUtf8For26(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) {
-				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
-				iz+=26; //für Vigenere26!!!
-			}
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz + Vigenere26ZZZ.iOffsetForUtf8Range;//65;	//Hier beginnt A
-		}//end main:
-	    return iReturn;		
-	}
+	
 	
 	//++++++++++++++++++++++++++++++++++++++++++++
 	public static int[] fromUtf8ToAsciiFor26(int[] ia) {
@@ -362,34 +340,12 @@ public class UnicodeZZZ {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor26(ia[i]);	    	
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i],Vigenere26ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
 	 return iaPure;   		
 }
-	public static int fromUtf8ToAsciiFor26(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) {
-				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
-				iz+=26; //für Vigenere26!!!
-			}
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz - Vigenere26ZZZ.iOffsetForUtf8Range; //65;	//Hier beginnt A
-		}//end main:
-	    return iReturn;		
-	}
+	
 	
 	//##########################################################
 	public static int[] fromAsciiToUtf8For96(int[] ia) {	    
@@ -398,35 +354,12 @@ public class UnicodeZZZ {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For96(ia[i]);	    	
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i],Vigenere96ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
 	 return iaPure;   		
 }
-	public static int fromAsciiToUtf8For96(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) {
-				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
-				iz+=96; //für Vigenere96!!!  ?????
-			}
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz + Vigenere96ZZZ.iOffsetForUtf8Range;//32;	//Merke 32 ist der ASCII Code für "blank"
-		}//end main:
-	    return iReturn;		
-	}
-	
+		
 	//++++++++++++++++++++++++++++++++++++++
 	public static int[] fromUtf8ToAsciiFor96(int[] ia) {	    
 	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
@@ -434,72 +367,25 @@ public class UnicodeZZZ {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor96(ia[i]);	    	
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i],Vigenere96ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
 	 return iaPure;   		
 }
-	public static int fromUtf8ToAsciiFor96(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) {
-				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
-				iz+=96; //für Vigenere96!!!  ?????
-			}
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz - Vigenere96ZZZ.iOffsetForUtf8Range;	//Merke 32 ist der ASCII Code für "blank"
-		}//end main:
-	    return iReturn;		
-	}
-	
 	
 	//##########################################################
-public static int[] fromAsciiToUtf8For256(int[] ia) {	    
+	public static int[] fromAsciiToUtf8For256(int[] ia) {	    
 	    //FGL: Nun die Zeichen vom ASCII Wert an UTF-8 Wert anpassen
 	    int[]iaPure = new int[ia.length];
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8For256(ia[i]);	    	
+	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i],Vigenere256ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
 	 return iaPure;   		
 }
-	public static int fromAsciiToUtf8For256(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) {
-				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
-				iz+=256; //für Vigenere96!!!  ?????
-			}
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			//iReturn = iz + 32;	//Merke 32 ist der ASCII Code für "blank"
-			iReturn = iz + Vigenere256ZZZ.iOffsetForUtf8Range;//65;      //Merke: 65 = A
-		}//end main:
-	    return iReturn;		
-	}
+
 	
 	//++++++++++++++++++++++++++++++++++++++
 	public static int[] fromUtf8ToAsciiFor256(int[] ia) {	    
@@ -508,40 +394,13 @@ public static int[] fromAsciiToUtf8For256(int[] ia) {
 
 	    for(int i=0;i<ia.length;i++) {
 	    	System.out.print("#"+i+". Stelle ");
-	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAsciiFor256(ia[i]);	    	
+	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i],Vigenere256ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
 	 return iaPure;   		
 }
-	public static int fromUtf8ToAsciiFor256(int iz) {
-		int iReturn=-1;
-		main:{
-			if (iz<0) {
-				System.out.print(":FGLFGL'"+iz+"'FGLFGL");
-				iz+=96; //für Vigenere96!!!  ?????
-			}
-//		    if (iz==10) {
-//		    	//System.out.println();
-//		    }else {
-//		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
-//			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-//		         //System.out.print((char)(z) + ":"+z+sSeparator);
-//				 iReturn = iz - 65;
-//		       }else {
-//		         //System.out.print("." + ":"+z+sSeparator);
-//		       }
-//		    }
-			
-			iReturn = iz - Vigenere256ZZZ.iOffsetForUtf8Range; //- 32;	//Merke 32 ist der ASCII Code für "blank"
-		}//end main:
-	    return iReturn;		
-	}
-	
-	//##########################################################
-
-	
+		
 	//###########################################################################################
-	
 	/** Damit werden nichtdruckbare Zeichen ausgespart.
 	 *  Z.B. angewendet in meiner Überarbeitung des Codes zum Buch "Kryptografie mit Java", Vigenere Verschluesselung, S. 33ff
 	 *  
@@ -549,37 +408,81 @@ public static int[] fromAsciiToUtf8For256(int[] ia) {
 	 * @return
 	 * @author Fritz Lindhauer, 17.11.2022, 08:45:23
 	 */
-	public static int[] fromUtf8ToAscii(String s) {
-		
-		//int[] sa = IoUtil.Unicode(s.getBytes()); //Original, Klasse aus dem Buch
+	public static int[] fromAsciiToUtf8(String s, int iOffset) {
 		int[] ia = UnicodeZZZ.fromByteToInt(s.getBytes()); 
-		return UnicodeZZZ.fromUtf8ToAscii(ia);  	
+		return UnicodeZZZ.fromAsciiToUtf8(ia, iOffset);  	
 	}
-	public static int[] fromUtf8ToAscii(int[] ia) {
+	public static int[] fromAsciiToUtf8(int[] ia, int iOffset) {
 		    
 		    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
 		    int[]iaPure = new int[ia.length];
 
 		    for(int i=0;i<ia.length;i++) {
-		    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i]);
+		    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i], iOffset);
 		    }
 		    
 		 return iaPure;   		
 	}
-	public static int fromUtf8ToAscii(int iz) {
+	public static int fromAsciiToUtf8(int iz, int iOffset) {
 		int iReturn=-1;
 		main:{
 			if (iz<0) iz+=256;		
 		    if (iz==10) {
-		    	System.out.println();
+		    	//System.out.println();
+		    	iReturn = iz - iOffset;
 		    }else {
 		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
 			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
-		         System.out.print((char)(iz) + ":"+iz+"|");
-				 iReturn = iz - 65;
+		         //System.out.print((char)(iz) + ":"+iz+"|");
+				 iReturn = iz + iOffset;
 		       }else {
-		         System.out.print("." + ":"+iz+"|");
-		         iReturn = iz - 65;
+		         //System.out.print("." + ":"+iz+"|");
+		         iReturn = iz + iOffset;
+		       }
+		    }
+		}//end main:
+	    return iReturn;		
+	}
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/** Damit werden nichtdruckbare Zeichen ausgespart.
+	 *  Z.B. angewendet in meiner Überarbeitung des Codes zum Buch "Kryptografie mit Java", Vigenere Verschluesselung, S. 33ff
+	 *  
+	 * @param s
+	 * @return
+	 * @author Fritz Lindhauer, 17.11.2022, 08:45:23
+	 */
+	public static int[] fromUtf8ToAscii(String s, int iOffset) {
+		int[] ia = UnicodeZZZ.fromByteToInt(s.getBytes()); 
+		return UnicodeZZZ.fromUtf8ToAscii(ia, iOffset);  	
+	}
+	public static int[] fromUtf8ToAscii(int[] ia, int iOffset) {
+		    
+		    //FGL: Nun die Zeichen vom UTF-8 Wert an ASCII anpassen
+		    int[]iaPure = new int[ia.length];
+
+		    for(int i=0;i<ia.length;i++) {
+		    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i], iOffset);
+		    }
+		    
+		 return iaPure;   		
+	}
+	public static int fromUtf8ToAscii(int iz, int iOffset) {
+		int iReturn=-1;
+		main:{
+			if (iz<0) iz+=256;		
+		    if (iz==10) {
+		    	//System.out.println();
+		    	iReturn = iz - iOffset;
+		    }else {
+		       //Nichtdruckbare Zeichen und besondere rechnerspezifische Zeichen ausschliessen.	    	
+			   if (((iz>31)&&(iz<127)) || ((iz>160)&&(iz<256) )) {       
+		         //System.out.print((char)(iz) + ":"+iz+"|");
+				 iReturn = iz - iOffset;
+		       }else {
+		         //System.out.print("." + ":"+iz+"|");
+		         iReturn = iz - iOffset;
 		       }
 		    }
 		}//end main:

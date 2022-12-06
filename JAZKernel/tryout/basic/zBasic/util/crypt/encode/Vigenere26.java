@@ -35,7 +35,7 @@ class Vigenere26 { 		// Vigenereverschluesselung
 //    for(int i=0; i < iaSchluesselwort.length; i++) {
 //    	iaSchluesselwort[i]=iaSchluesselwort[i]-65;
 //    }
-     iaSchluesselwort=UnicodeZZZ.fromUtf8ToAscii(iaSchluesselwort);
+     iaSchluesselwort=UnicodeZZZ.fromUtf8ToAscii(iaSchluesselwort,65);
     
     
     DateiUtil Original;

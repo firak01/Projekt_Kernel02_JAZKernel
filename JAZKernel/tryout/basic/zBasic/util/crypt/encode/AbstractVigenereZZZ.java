@@ -178,26 +178,24 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 				
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 				
-				//Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
-				//    for(int i=0; i < iaSchluesselwort.length; i++) {
-				//    	iaSchluesselwort[i]=iaSchluesselwort[i]-32;
-				//    }
-				iaSchluesselwort = this.fromUtf8ToAsciiForOffset(iaSchluesselwort);
-					
-				int laengeSW = sKeyWord.length();
+			//Auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
+			//    for(int i=0; i < iaSchluesselwort.length; i++) {
+			//    	iaSchluesselwort[i]=iaSchluesselwort[i]-32;
+			//    }
+			iaSchluesselwort = this.fromUtf8ToAsciiForOffset(iaSchluesselwort);					
+			int laengeSW = sKeyWord.length();
 				
-				System.out.println("\nBeginne Entschluesselung ... ");
-			    int[]iaPure = new int[c.length];
-			    for (int i=0; i<c.length; i++) {
-			      int iModLaengeSW = i%laengeSW;
-			      int iBezug = iaSchluesselwort[iModLaengeSW];
-			      int p = c[i]-iBezug;			// c-s
-			      if (p < this.getOffsetForUtf8Range()) {    	  
-			    	  p+=this.getOffsetForAsciiRange();//26 Fuer Viginere26 Verschluesselung
-			      }   
-			      iaPure[i]=p;
-			    }			  
-			    iaReturn = iaPure;
+		    int[]iaPure = new int[c.length];
+		    for (int i=0; i<c.length; i++) {
+		      int iModLaengeSW = i%laengeSW;
+		      int iBezug = iaSchluesselwort[iModLaengeSW];
+		      int p = c[i]-iBezug;			// c-s
+		      if (p < this.getOffsetForUtf8Range()) {    	  
+		    	  p+=this.getOffsetForAsciiRange();//26 Fuer Viginere26 Verschluesselung
+		      }   
+		      iaPure[i]=p;
+		    }			  
+		    iaReturn = iaPure;
 		}//end main:
 		return iaReturn;   
 	}

@@ -271,15 +271,9 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       
       int[] iaUtf8;
       if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {  
-    	  
-    	//und nun von Ascii nach Unicode. Zumindest bei Vigenere26 !!! 
-        //iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia); 
     	iaUtf8 = ia;
 		UnicodeZZZ.writeAnsiToFile(iaUtf8, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen      	
-      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {
-    	//bei Vigenere256 nein?
-          //int[] iaUtf8 = UnicodeZZZ.plus65(ia);
-    	  
+      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {    	
         iaUtf8 = ia;    	  
 		UnicodeZZZ.writeUtf8ToFile(iaUtf8, this.computeFilePath());
       }else {

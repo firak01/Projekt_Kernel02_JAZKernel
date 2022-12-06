@@ -70,7 +70,7 @@ class Vig_Decode26ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
     		break main;
     	}
     }
-    Vigenere26ZZZ objVigenere = new Vigenere26ZZZ(sFilePath, SchluesselWort);
+    Vigenere26ZZZ objVigenere = new Vigenere26ZZZ(SchluesselWort,sFilePath);
     objVigenere.isFileOriginalEncrypted(true);
     
     //Die Ausgabe der (hier schon chiffierten) Originaldatei

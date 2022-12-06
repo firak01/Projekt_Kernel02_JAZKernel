@@ -41,6 +41,7 @@ public class Vigenere256ZZZmain { 		// Vigenereverschluesselung
 	
 		System.out.println("encrypted: " + stemp);
 		
+		//PROBLEM: WENN MAN MIT DEM STRING WEITERARBEITET
 		int[]iaTest = objVigenere.getEncryptedValuesAsInt();
 		stemp = CharArrayZZZ.toString(iaTest);
 		System.out.println("encrypted: " + stemp);

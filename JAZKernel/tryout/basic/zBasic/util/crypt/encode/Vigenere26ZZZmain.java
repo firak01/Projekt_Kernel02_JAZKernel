@@ -81,7 +81,7 @@ public class Vigenere26ZZZmain {
 		    	SchluesselWort = SchluesselWortUIDefault;
 		    }
 		    
-		    Vigenere26ZZZ objVigenereUI = new Vigenere26ZZZ(sFilePath, SchluesselWort);
+		    Vigenere26ZZZ objVigenereUI = new Vigenere26ZZZ(SchluesselWort, sFilePath);
 		    btemp = objVigenereUI.encryptUI();
 		    if(btemp) {		    		    
 		    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
