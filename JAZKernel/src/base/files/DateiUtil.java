@@ -3,6 +3,7 @@ package base.files;
 import java.io.*;
 import java.nio.charset.Charset;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharSet;
 
 import basic.zBasic.ExceptionZZZ;
@@ -26,8 +27,9 @@ public class DateiUtil {
   public class java {
 
 	}
-private String pfad;
-private String dateiname;
+private String pfad=null;
+private String dateiname=null;
+private File objFile=null;
 
   public DateiUtil() { 
     dateiname = pfad = null;      	//  Konstruktor
@@ -87,6 +89,7 @@ public byte[] liesAsByte() {
     try { 
       File file = new File(pfad+dateiname);
       int dateigroesse = (int)file.length();
+      int dateigroesse2 = (int) FileUtils.sizeOf(file);
       inhalt = new int[dateigroesse];
       
       
@@ -146,7 +149,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
   public boolean schreib(String datStr, int iEncodingType) {
     return this.schreib(datStr.getBytes(), iEncodingType);
   }
-  public boolean schreib(int[] ia, int iEncodingType) {
+  public boolean schreib(int[] iaIn, int iEncodingType) {
 	    if(dateiname == null) {
 	      Frame f = new Frame();
 	      FileDialog fd = new FileDialog(f);
@@ -203,19 +206,13 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 		*/
 	      
 	      
-	      int[] iaUtf8;
-	      if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {  
-	    	  
-	    	//und nun von Ascii nach Unicode. Zumindest bei Vigenere26 !!! 
-	        //iaUtf8 = UnicodeZZZ.fromAsciiToUtf8(ia); 
-	    	iaUtf8 = ia;
-			UnicodeZZZ.writeAnsiToFile(iaUtf8, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen      	
-	      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {
-	    	//bei Vigenere256 nein?
-	          //int[] iaUtf8 = UnicodeZZZ.plus65(ia);
-	    	  
-	        iaUtf8 = ia;    	  
-			UnicodeZZZ.writeUtf8ToFile(iaUtf8, this.computeFilePath());
+	      int[] ia = iaIn;
+	      if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {   
+			File objFile = UnicodeZZZ.writeAnsiToFile(ia, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen
+			this.setFile(objFile);
+	      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) { 	  
+			File objFile = UnicodeZZZ.writeUtf8ToFile(ia, this.computeFilePath());
+			this.setFile(objFile);
 	      }else {
 	    	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
 	      }	     
@@ -266,16 +263,16 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       }
       */
       
-      int[] ia = new int[b.length];
-      for (int i=0; i<b.length; i++) ia[i] = (int)b[i];
+      int[] iaIn = new int[b.length];
+      for (int i=0; i<b.length; i++) iaIn[i] = (int)b[i];
       
-      int[] iaUtf8;
+      int[] ia = iaIn;
       if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {  
-    	iaUtf8 = ia;
-		UnicodeZZZ.writeAnsiToFile(iaUtf8, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen      	
-      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {    	
-        iaUtf8 = ia;    	  
-		UnicodeZZZ.writeUtf8ToFile(iaUtf8, this.computeFilePath());
+		File objFile = UnicodeZZZ.writeAnsiToFile(ia, this.computeFilePath());  //Mappingfehler, falls ungueltige Zeichen
+		this.setFile(objFile);
+      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) {    	    	 
+		File objFile = UnicodeZZZ.writeUtf8ToFile(ia, this.computeFilePath());
+		this.setFile(objFile);
       }else {
     	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
       }
@@ -296,6 +293,18 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
   }
   public void setDateiname(String sFilename) {
 	  this.dateiname = sFilename;
+  }
+  public File getFile() {
+	  return this.objFile;
+  }
+  /**Im Konstruktor nur Pfad und Dateiname.
+   * Die hier gesetzte Datei kommt aus der Verarbeitung
+   * und wird nur gespeichert, um mit getFile() geholt werden zu können.
+ * @param objFile
+ * @author Fritz Lindhauer, 07.12.2022, 09:09:58
+ */
+private void setFile(File objFile) {
+	  this.objFile=objFile;	  
   }
   
   public void select() {  

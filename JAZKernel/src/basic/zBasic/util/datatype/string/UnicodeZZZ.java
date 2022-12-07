@@ -241,19 +241,19 @@ public class UnicodeZZZ {
 		return bReturn;
 	}
 	
-	public static boolean writeAnsiToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
-		boolean bReturn = false;
+	public static File writeAnsiToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
+		File objReturn = null;
 		main:{
 			if(ia==null) break main;
 			if(ia.length==0)break main;
 			
 			int iPosition=-1;
 			try {	      
-		      File objFile = new File(sFilepath);
+		      objReturn = new File(sFilepath);
 		      //gibt "unsupported Mapping" ggfs. als Fehler, wenn in dem String etwas anderes als ANSI steht		      
 		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
 		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE));		     
-		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
+		      BufferedWriter objWriter = Files.newBufferedWriter(objReturn.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
 		      for (int i=0;i<ia.length;i++) {
 		    	  iPosition=i;
 		    	  //if (i==9)break; //FGL: UnmappableCharacterException vermeiden beim Debug, austesten?
@@ -266,8 +266,6 @@ public class UnicodeZZZ {
 		          
 		      }			
 		      objWriter.close();
-				
-		      bReturn = true;
 			} catch (FileNotFoundException e) {
 				System.out.println("FileNotFoundException: Character at position: '" + iPosition + "' - " + e.toString());
 				ExceptionZZZ ez = new ExceptionZZZ(e);
@@ -278,31 +276,29 @@ public class UnicodeZZZ {
 				throw ez;
 			}
 		}//end main:
-		return bReturn;
+		return objReturn;
 	}
 	
-	public static boolean writeUtf8ToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
-		boolean bReturn = false;
+	public static File writeUtf8ToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
+		File objReturn = null;
 		main:{
 			if(ia==null) break main;
 			if(ia.length==0)break main;
 			
 			int iPosition=-1;
 			try {	      
-		      File objFile = new File(sFilepath);
+		      objReturn = new File(sFilepath);
 		      //gibt "unsupported Mapping" ggfs. als Fehler.
 		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
 		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
 		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE));
 
-		      BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE));
+		      BufferedWriter objWriter = Files.newBufferedWriter(objReturn.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE));
 		      for (int i=0;i<ia.length;i++) {
 		    	  iPosition=i;
 		          objWriter.write(ia[i]);		        
 		      }			
 		      objWriter.close();
-				
-		      bReturn = true;
 			} catch (FileNotFoundException e) {
 				System.out.println("FileNotFoundException: Character at position: '" + iPosition + "' - " + e.toString());
 				ExceptionZZZ ez = new ExceptionZZZ(e);
@@ -313,7 +309,7 @@ public class UnicodeZZZ {
 				throw ez;
 			}
 		}//end main:
-		return bReturn;
+		return objReturn;
 	}
 	
 	

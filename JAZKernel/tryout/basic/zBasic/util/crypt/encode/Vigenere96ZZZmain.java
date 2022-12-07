@@ -1,5 +1,9 @@
 package basic.zBasic.util.crypt.encode;
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
+
 import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
@@ -106,10 +110,15 @@ try {
 		    System.out.print("\nVerschluesselten Text als Datei speichern (ueber Dialog)? (J/N): ");
 		    if (IoUtil.JaNein()) {    	
 		    	DateiUtil Kodiert = new DateiUtil();
-		        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-		    	
-		    	TODOGOON20221206;//Problem: Die Datei wird nun um ein Vielfaches groesser!!!		    	
+		    	//TODOGOON20221206;//Problem: Die Datei wird nun um ein Vielfaches groesser!!!
+		        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());		    			    			    	
 		    	Kodiert.schreib(objVigenereUI.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
+		    	
+		    	File objFile = Kodiert.getFile();
+		        int dateigroesse = (int)objFile.length();
+		        int dateigroesse2 = (int) FileUtils.sizeOf(objFile);
+		        System.out.println("\n---- Dateigroesse des Ergebnisses: " + dateigroesse + " Bytes ---- ");
+		        System.out.println("\n---- Dateigroesse2 des Ergebnisses: " + dateigroesse2 + " Bytes ---- ");
 		    }
 	    }		
 	} catch (ExceptionZZZ e) {
