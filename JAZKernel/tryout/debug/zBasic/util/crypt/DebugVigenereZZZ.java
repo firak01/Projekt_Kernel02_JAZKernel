@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zBasic.util.crypt.ROTnnZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
-import basic.zBasic.util.crypt.VigenereZZZ;
+import basic.zBasic.util.crypt.VigenereNnZZZ;
 import basic.zBasic.util.crypt.ROT13ZZZ;
 import basic.zBasic.util.crypt.ROTnumericZZZ;
 
@@ -25,7 +25,7 @@ public class DebugVigenereZZZ {
 		                                        //     ABER: DAS ERGEBNIS WEICHT AB!!!
 
         String sKeyString = SchluesselWort;
-        String sVigenere = VigenereZZZ.encrypt("KRYPTOGRAFIE", sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
+        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
         //String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,iKeyLength, true,false,false);
 
         System.out.println(sVigenere);

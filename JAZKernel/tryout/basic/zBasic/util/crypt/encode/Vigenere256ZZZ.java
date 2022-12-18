@@ -4,6 +4,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.AbstractVigenereZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
@@ -17,13 +18,7 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * 
  */
 public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
-	//funktioniert mit den Offset Werten aus Vigenere96ZZZ	
-//	public static int iOffsetForAsciiRange=96;
-//	public static int iOffsetForUtf8Range=32;
-	
-	//public static int iOffsetForAsciiRange=192;
-	//public static int iOffsetForUtf8Range=64;//Damit wird das Leerzeichen nicht richtig konvertiert.
-	
+	private static final long serialVersionUID = 1L;
 	public static int iOffsetForAsciiRange=256;
 	public static int iOffsetForUtf8Range=32;
 	

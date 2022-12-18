@@ -4,6 +4,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.AbstractVigenereZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f

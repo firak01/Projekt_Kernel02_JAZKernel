@@ -325,8 +325,8 @@ public class UnicodeZZZ {
 	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i],Vigenere26ZZZ.iOffsetForUtf8Range);	    	
 	    }	
 	    System.out.print("\n");
-	 return iaPure;   		
-}
+	    return iaPure;   		
+	}
 	
 	
 	//++++++++++++++++++++++++++++++++++++++++++++
@@ -339,8 +339,8 @@ public class UnicodeZZZ {
 	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i],Vigenere26ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
-	 return iaPure;   		
-}
+	    return iaPure;   		
+	}
 	
 	
 	//##########################################################
@@ -353,8 +353,8 @@ public class UnicodeZZZ {
 	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i],Vigenere96ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
-	 return iaPure;   		
-}
+		return iaPure;   		
+	}
 		
 	//++++++++++++++++++++++++++++++++++++++
 	public static int[] fromUtf8ToAsciiFor96(int[] ia) {	    
@@ -366,8 +366,8 @@ public class UnicodeZZZ {
 	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i],Vigenere96ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
-	 return iaPure;   		
-}
+	    return iaPure;   		
+	}
 	
 	//##########################################################
 	public static int[] fromAsciiToUtf8For256(int[] ia) {	    
@@ -379,8 +379,8 @@ public class UnicodeZZZ {
 	    	iaPure[i] = UnicodeZZZ.fromAsciiToUtf8(ia[i],Vigenere256ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
-	 return iaPure;   		
-}
+		return iaPure;   		
+	}
 
 	
 	//++++++++++++++++++++++++++++++++++++++
@@ -393,9 +393,21 @@ public class UnicodeZZZ {
 	    	iaPure[i] = UnicodeZZZ.fromUtf8ToAscii(ia[i],Vigenere256ZZZ.iOffsetForUtf8Range);	    	
 	    }	    
 	    System.out.println("\n");
-	 return iaPure;   		
-}
-		
+		return iaPure;   		
+	}
+	
+	//###########################################################################
+	public static int[] fromAsciiToUtf8ForNn(int[] ia) {	    
+		//FGL: Keine Anpassung notwendig, da ein Characterpool verwendet wird
+		return ia;   		
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++
+	public static int[] fromUtf8ToAsciiForNn(int[] ia) {	    
+		//FGL: Keine Anpassung notwendig, da ein Characterpool verwendet wird	   
+		return ia;   		
+	}
+			
 	//###########################################################################################
 	/** Damit werden nichtdruckbare Zeichen ausgespart.
 	 *  Z.B. angewendet in meiner Überarbeitung des Codes zum Buch "Kryptografie mit Java", Vigenere Verschluesselung, S. 33ff
