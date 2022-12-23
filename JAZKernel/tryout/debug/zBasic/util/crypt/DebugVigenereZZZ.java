@@ -25,7 +25,7 @@ public class DebugVigenereZZZ {
 		                                        //     ABER: DAS ERGEBNIS WEICHT AB!!!
 
         String sKeyString = SchluesselWort;
-        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
+        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "", sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
         //String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,iKeyLength, true,false,false);
 
         System.out.println(sVigenere);

@@ -14,6 +14,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
@@ -40,7 +41,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 		this.setCryptKey(sKeyString);
 	}
 
-	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
+	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -65,8 +66,9 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 	 * @return
 	 * @throws IllegalArgumentException
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
+	 * @throws ExceptionZZZ 
 	 */
-	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword) throws IllegalArgumentException {
+	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -82,32 +84,40 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 			
 			//IDEE DER NN-Behandlung:
 			//Jeden Buchstaben in einen Integer-Wert ueberfuehren, der seine Position in dem Character-Pool hat.
-			TODOGOON20221218;
+			//TODOGOON20221218;
 			
 			int len = abcABC.length();
 			
 			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
 			//+++++++++++ CharacterPool normieren			
-			ArrayListExtendedZZZ<Character> listasCharacterPool = new ArrayListExtendedZZZ<Character>();
-			for (int i = 0; i < len; i++) {
-				try {
-					listasCharacterPool.addUnique(abcABC.charAt(i));
-				} catch (ExceptionZZZ e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
+			for (int i = 0; i < len; i++) {		
+				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(abcABC.charAt(i));
+				listasCharacterPool.addUnique(objChar);				
 		    }			
 			//+++++++++++
 			
 			
 			len = listasCharacterPool.size();
 
+			//So würde ein um n Positionen verschobenes Zeichen gemappt.
+			/* 
 		    Map<Character, Character> map = new HashMap<Character, Character>();
-		    for (int i = 0; i < len; i++) {
+		    for (int i = 0; i < len; i++) {		    	
 		        //map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
-		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));
+		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));		    			    	
 		    }
-	
+		    */
+			
+			//Was ich aber brauche ist eine Alternative hierzu, bei dem jedes Zeichen mit dem ASCII / UTF - Wert ersetzt wird
+			//int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
+			
+			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
+			
+			
+			
+			//die Map nutzen zum Verschieben der Position
+			/*
 		    StringBuilder sb = new StringBuilder();
 		    for(int i = 0; i < sInput.length(); i++) {
 		    	char cEncoded = sInput.charAt(i);
@@ -118,12 +128,13 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 		        sb.append(ch);
 		    }
 		    sReturn =  sb.toString();
+		    */
 		}//end main;
 		return sReturn;
     }
 	
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, String sKeyword, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
+	public static String decrypt(String sInput, String sCharacterPoolIn, String sKeyword, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;

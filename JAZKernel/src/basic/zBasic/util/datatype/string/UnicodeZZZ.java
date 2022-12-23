@@ -19,9 +19,13 @@ import java.util.EnumSet;
 
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere26ZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere96ZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 
 /**Internally in Java all strings are kept in Unicode. 
@@ -46,7 +50,7 @@ to UTF-8 - since this seems to be the most commonly used Unicode encoding.
  * @author Fritz Lindhauer, 15.11.2022, 08:32:28
  * 
  */
-public class UnicodeZZZ {
+public class UnicodeZZZ implements IConstantZZZ{
 	/** 
 	 * You can also write unicode characters directly in strings in the code, by escaping the with "\\u". (only 1 backslash, the second backslash her is for escaping the unicode)
 	 * Here is an example:
@@ -130,6 +134,38 @@ public class UnicodeZZZ {
 	public static int[] toIntArray(String s) {				
 		byte[]bytea = UnicodeZZZ.toByteArray(s);
 		int[]iaReturn = UnicodeZZZ.fromByteToInt(bytea);
+		return iaReturn;
+	}
+	
+	/**Gib für jeden Buchstaben des Strings die Indexpositionen in der ArrayList zurück.
+	 * 
+	 * @param s
+	 * @param listasCharacterPool
+	 * @return
+	 * @author Fritz Lindhauer, 23.12.2022, 10:00:47
+	 * @throws ExceptionZZZ 
+	 */
+	public static int[] toIntArray(String s, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
+		int iaReturn[]=null;
+		main:{
+			if(StringZZZ.isEmpty(s)) break main;
+			if(listasCharacterPool==null)break main;
+			
+			iaReturn = new int[s.length()];
+			for (int i = 0; i < s.length(); i++) {
+				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(s.charAt(i));
+				int itemp = listasCharacterPool.getIndex(objChar);	
+				
+				if(itemp>=0) {
+					iaReturn[i]=itemp;
+				}else {
+					ExceptionZZZ ez = new ExceptionZZZ("Character of String '" + objChar.toString() + "' not in CharacterPool: '" + listasCharacterPool.debugString("|") + "'", iERROR_PARAMETER_VALUE,   UnicodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());								  
+					throw ez;
+				}
+				
+				
+		    }	
+		}//end main:
 		return iaReturn;
 	}
 	

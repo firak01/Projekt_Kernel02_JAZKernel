@@ -100,9 +100,25 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 			}
 			
 			if(this.contains(obj)) break main;
-			this.add((T) obj);
-			
+			this.add((T) obj);			
 		}//end main
+	}
+	
+	public int getIndex(Object obj) {
+		int iReturn = -1;
+		main:{
+			int iposMaxInt = this.size(); 		
+			for(int icountInt=0; icountInt < iposMaxInt; icountInt++){				
+				Object objTemp = this.get(icountInt); //Wer sagt denn, das ein Key immer String sein muss.....
+				if(objTemp!=null) {
+					if(objTemp.equals(obj)) {
+						iReturn = icountInt;
+						break main;
+					}
+				}
+			}
+		}//end main:
+		return iReturn;
 	}
 	
 	public HashMapExtendedIndexedZZZ getValueDupsIndexedByMethod(String sMethodName) throws ExceptionZZZ{
@@ -355,8 +371,21 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 	public String debugString(){
 		String sReturn = new String("");
 		main:{		
-			String sEntryDelimiter = ArrayListExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-			
+			String sEntryDelimiter = ArrayListExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;			
+			sReturn = ArrayListExtendedZZZ.debugString(this, sEntryDelimiter);
+		}//end main
+		return sReturn;
+	}
+	
+	public String debugString(String sDebugEntryDelimiterIn){
+		String sReturn = new String("");
+		main:{	
+			String sEntryDelimiter = null;
+			if(StringZZZ.isEmpty(sDebugEntryDelimiterIn)) {
+				sEntryDelimiter = ArrayListExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			}else {
+				sEntryDelimiter = sDebugEntryDelimiterIn;
+			}					
 			sReturn = ArrayListExtendedZZZ.debugString(this, sEntryDelimiter);
 		}//end main
 		return sReturn;
