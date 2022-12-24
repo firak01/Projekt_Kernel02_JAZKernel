@@ -7,6 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Definiere eine Liste von Zeichen.
@@ -22,9 +23,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * https://codereview.stackexchange.com/questions/7241/rot-n-algorithm-in-java
  * 
  */
-public class ROTnnZZZ extends ROTasciiZZZ{
-	public static String sCHARACTER_POOL_DEFAULT=" abcdefghijklmnopqrstuvwxyz";
-	
+public class ROTnnZZZ extends ROTasciiZZZ{	
 	ROTnnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
 		super();
 		String[] saFlagControl = {"init"};
@@ -111,39 +110,10 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 	}
 	
 	public static String getCharacterPoolDefault() {
-		return ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 	}
 	
-	public static String computeCharacterPoolExtended(String sCharacterPoolIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
-		String sReturn="";
-		main:{
-			String sCharacterPoolStarting;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=ROTnnZZZ.getCharacterPoolDefault();
-			}else {
-				sCharacterPoolStarting = sCharacterPoolIn;
-			}
-			
-			sReturn=sCharacterPoolStarting;
-			
-			
-			//Wichtig: Das Leerzeichen bei der Erweiterung der Liste raus. Spätestens beim Dekodieren faellt einem die andere Position (beim Umdrehen des Strings) auf die Fuesse.
-			if(bUseUppercase) {
-				String stemp = sCharacterPoolStarting.trim().toUpperCase();
-				sReturn = StringZZZ.appendMissing(sCharacterPoolStarting, stemp);
-			}
-			
-			if(bUseLowercase) {
-				String stemp = sCharacterPoolStarting.trim().toLowerCase();
-				sReturn = StringZZZ.appendMissing(sReturn, stemp);
-			}
-			
-			if(bUseNumeric) {
-				sReturn = StringZZZ.appendMissing(sReturn, "0123456789");
-			}
-		}//end main:
-		return sReturn;
-	}
+	
 	
 	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
 		String sReturn = sInput;
@@ -152,12 +122,12 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 			
 			String sCharacterPoolStarting;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 			}else {
 				sCharacterPoolStarting = sCharacterPoolIn;
 			}
 			
-			String abcABC = ROTnnZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
 			sReturn = ROTasciiZZZ.encrypt(sInput, abcABC, n);		
 		}//end main;
 		return sReturn;
@@ -170,12 +140,12 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 			
 			String sCharacterPoolStarting;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 			}else {
 				sCharacterPoolStarting = sCharacterPoolIn;
 			}
 			
-			String abcABC = ROTnnZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
 			String sCharacterPool = StringZZZ.reverse(abcABC);	
 			sReturn = ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);
 		}

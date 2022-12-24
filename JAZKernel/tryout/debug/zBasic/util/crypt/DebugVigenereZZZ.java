@@ -23,9 +23,12 @@ public class DebugVigenereZZZ {
 		String SchluesselWort="HALLO"; //FGL: passend zum Beispiel im Buch, S. 30;
 		//String SchluesselWort="SchluesselWort"; //FGL: passend zur Datei Vigenere.txt im poly - Verzeichnis der Begleit CD
 		                                        //     ABER: DAS ERGEBNIS WEICHT AB!!!
-
+		
+		boolean bUseUppercasePool = true;
+		boolean bUseLowercasePool = false;
+		boolean bUseNumericPool = false;
         String sKeyString = SchluesselWort;
-        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "", sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
+        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "",bUseUppercasePool,bUseLowercasePool, bUseNumericPool, sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
         //String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,iKeyLength, true,false,false);
 
         System.out.println(sVigenere);

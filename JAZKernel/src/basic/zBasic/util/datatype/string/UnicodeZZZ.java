@@ -152,19 +152,20 @@ public class UnicodeZZZ implements IConstantZZZ{
 			if(listasCharacterPool==null)break main;
 			
 			iaReturn = new int[s.length()];
+						
 			for (int i = 0; i < s.length(); i++) {
 				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(s.charAt(i));
-				int itemp = listasCharacterPool.getIndex(objChar);	
+				int iFound = listasCharacterPool.getIndex(objChar);	
 				
-				if(itemp>=0) {
-					iaReturn[i]=itemp;
+				if(iFound>=0) {
+					iaReturn[i]=iFound;
 				}else {
 					ExceptionZZZ ez = new ExceptionZZZ("Character of String '" + objChar.toString() + "' not in CharacterPool: '" + listasCharacterPool.debugString("|") + "'", iERROR_PARAMETER_VALUE,   UnicodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());								  
 					throw ez;
 				}
-				
-				
-		    }	
+		    }
+			
+			
 		}//end main:
 		return iaReturn;
 	}

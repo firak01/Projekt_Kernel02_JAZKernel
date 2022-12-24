@@ -19,8 +19,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 public class VigenereNnZZZ extends AbstractVigenereZZZ{
-	private static final long serialVersionUID = -2833560399688739434L;
-	public static String sCHARACTER_POOL_DEFAULT=" abcdefghijklmnopqrstuvwxyz";
+	private static final long serialVersionUID = -2833560399688739434L;	
 	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
 	public static int iOffsetForAsciiRange=0;//wird dann später aus der Laenge des CharacterPools errechnet.
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
@@ -48,12 +47,12 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 			
 			String sCharacterPoolStarting;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=VigenereNnZZZ.sCHARACTER_POOL_DEFAULT;
+				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 			}else {
 				sCharacterPoolStarting = sCharacterPoolIn;
 			}
 			
-			String abcABC = VigenereNnZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
 			sReturn = VigenereNnZZZ.encrypt(sInput, abcABC, sKeyword);		
 		}//end main;
 		return sReturn;
@@ -71,6 +70,24 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
+			sReturn = VigenereNnZZZ.encrypt(sInput, sCharacterPoolIn, false, false, false, sKeyword);
+		}//end main;
+		return sReturn;
+    }
+	
+	
+	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
+	 * @param sInput
+	 * @param sCharacterPoolIn
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
+	 * @throws ExceptionZZZ 
+	 */
+	public static String encrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		String sReturn = sInput;
+		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
 			
 			String sCharacterPool= null;
@@ -80,7 +97,9 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 				sCharacterPool = sCharacterPoolIn;
 			}
 			
-			String abcABC = sCharacterPool;
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);
+			
+			
 			
 			//IDEE DER NN-Behandlung:
 			//Jeden Buchstaben in einen Integer-Wert ueberfuehren, der seine Position in dem Character-Pool hat.
@@ -141,12 +160,12 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 			
 			String sCharacterPoolStarting;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 			}else {
 				sCharacterPoolStarting = sCharacterPoolIn;
 			}
 			
-			String abcABC = VigenereNnZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
 			String sCharacterPool = StringZZZ.reverse(abcABC);	
 			sReturn = VigenereNnZZZ.encrypt(sInput, sCharacterPool, sKeyword);
 		}
@@ -262,37 +281,8 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 	}
 	
 	public static String getCharacterPoolDefault() {
-		return ROTnnZZZ.sCHARACTER_POOL_DEFAULT;
+		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 	}
 	
-	public static String computeCharacterPoolExtended(String sCharacterPoolIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
-		String sReturn="";
-		main:{
-			String sCharacterPoolStarting;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=ROTnnZZZ.getCharacterPoolDefault();
-			}else {
-				sCharacterPoolStarting = sCharacterPoolIn;
-			}
-			
-			sReturn=sCharacterPoolStarting;
-			
-			
-			//Wichtig: Das Leerzeichen bei der Erweiterung der Liste raus. Spätestens beim Dekodieren faellt einem die andere Position (beim Umdrehen des Strings) auf die Fuesse.
-			if(bUseUppercase) {
-				String stemp = sCharacterPoolStarting.trim().toUpperCase();
-				sReturn = StringZZZ.appendMissing(sCharacterPoolStarting, stemp);
-			}
-			
-			if(bUseLowercase) {
-				String stemp = sCharacterPoolStarting.trim().toLowerCase();
-				sReturn = StringZZZ.appendMissing(sReturn, stemp);
-			}
-			
-			if(bUseNumeric) {
-				sReturn = StringZZZ.appendMissing(sReturn, "0123456789");
-			}
-		}//end main:
-		return sReturn;
-	}
+	
 }
