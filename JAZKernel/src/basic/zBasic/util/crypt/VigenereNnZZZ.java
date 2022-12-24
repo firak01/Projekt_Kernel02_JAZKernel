@@ -132,7 +132,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 			//int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 			
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
-			
+			System.out.println("Schluesselwort zu ia");
 			
 			
 			//die Map nutzen zum Verschieben der Position
