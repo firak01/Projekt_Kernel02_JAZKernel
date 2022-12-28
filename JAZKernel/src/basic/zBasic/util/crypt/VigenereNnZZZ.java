@@ -276,7 +276,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		      System.out.print("i="+i+", c='"+iSum+"'"); 
 		    }
 		    System.out.print("\n");
-			
+		    			
 			//die Arraylist nutzen zum bestimmen der Zeichen
 		    StringBuilder sb = new StringBuilder();
 		    for(int i = 0; i<ppure.length;i++) {
@@ -441,6 +441,8 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	public static String getCharacterPoolDefault() {
 		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 	}
-	
-	
+
+	public void setFlag(IVigenereNnZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 }

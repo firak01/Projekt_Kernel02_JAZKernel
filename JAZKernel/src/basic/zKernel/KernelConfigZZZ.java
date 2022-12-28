@@ -28,6 +28,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 /**Klasse wertet Kommandozeilenparamter aus, hinsichtlich der zu verwendenden Kernel-Konfiguration
  * -k = ApplicationKey
@@ -390,7 +391,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	public String getPatternStringDefault() {
 		return IKernelConfigZZZ.sPATTERN_DEFAULT;
 	}
-	
+		
 	//##########
 	// Getter / Setter
 	//##########

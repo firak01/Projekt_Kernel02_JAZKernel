@@ -8,6 +8,7 @@ import basic.zBasic.util.crypt.VigenereNnZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
  *  Die Klasse stammt aus der Buch CD, aus dem Verzeichnis poly
@@ -33,6 +34,9 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 				
 //		String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.31 bzw. 34
 		VigenereNnZZZ objVigenere = new VigenereNnZZZ(SchluesselWortDefault);
+		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE, true);
+		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE, true);
+		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC, true);
 		stemp = objVigenere.encrypt("Bei d");
 		
 		//TESTS
@@ -40,12 +44,12 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 //		stemp = CharArrayZZZ.toString(iaTest);
 		
 	
-		System.out.println("encrypted: " + stemp);
+		System.out.println("encrypted1: " + stemp);
 		
 		//PROBLEM: WENN MAN MIT DEM STRING WEITERARBEITET
 		int[]iaTest = objVigenere.getEncryptedValuesAsInt();
 		stemp = CharArrayZZZ.toString(iaTest);
-		System.out.println("encrypted: " + stemp);
+		System.out.println("encrypted2: " + stemp);
 		
 		int[]iaErg = objVigenere.decrypt(iaTest);
 		stemp = CharArrayZZZ.toString(iaErg);
