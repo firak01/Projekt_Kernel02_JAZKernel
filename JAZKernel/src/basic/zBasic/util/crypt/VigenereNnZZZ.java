@@ -12,13 +12,16 @@ import base.files.DateiUtil;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.crypt.encode.IVigenereNnZZZ;
+import basic.zBasic.util.crypt.encode.IVigenereZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
+import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
-public class VigenereNnZZZ extends AbstractVigenereZZZ{
+public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ{
 	private static final long serialVersionUID = -2833560399688739434L;	
 	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
 	public static int iOffsetForAsciiRange=0;//wird dann später aus der Laenge des CharacterPools errechnet.
@@ -70,7 +73,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
-			sReturn = VigenereNnZZZ.encrypt(sInput, sCharacterPoolIn, false, false, false, sKeyword);
+			sReturn = VigenereNnZZZ.encrypt(sInput, sCharacterPoolIn, true,true,true, sKeyword);
 		}//end main;
 		return sReturn;
     }
@@ -99,12 +102,8 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 			
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);
 			
-			
-			
 			//IDEE DER NN-Behandlung:
 			//Jeden Buchstaben in einen Integer-Wert ueberfuehren, der seine Position in dem Character-Pool hat.
-			//TODOGOON20221218;
-			
 			int len = abcABC.length();
 			
 			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
@@ -223,12 +222,9 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 			}
 			
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);
-			
-			
-			
+
 			//IDEE DER NN-Behandlung:
 			//Jeden Buchstaben in einen Integer-Wert ueberfuehren, der seine Position in dem Character-Pool hat.
-			//TODOGOON20221218;
 			
 			int len = abcABC.length();
 			
@@ -306,6 +302,33 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ{
 		}//end main;
 		return sReturn;
     }
+	
+	@Override
+	public String encrypt(String sInput) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String sKeyword = this.getCryptKey();
+			String sCharacterPool = this.getCharacterPool();
+			boolean bUseUppercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE.name());
+			boolean bUseLowercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE.name());
+			boolean bUseNumeric=this.getFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC.name());
+			sReturn = VigenereNnZZZ.decrypt(sInput,sCharacterPool,bUseUppercase,bUseLowercase,bUseNumeric,sKeyword);
+		}//end main:
+		return sReturn;
+	}
+	@Override
+	public String decrypt(String sInput) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String sKeyword = this.getCryptKey();
+			String sCharacterPool = this.getCharacterPool();
+			boolean bUseUppercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE.name());
+			boolean bUseLowercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE.name());
+			boolean bUseNumeric=this.getFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC.name());
+			sReturn = VigenereNnZZZ.encrypt(sInput,sCharacterPool,bUseUppercase,bUseLowercase,bUseNumeric,sKeyword);
+		}//end main:
+		return sReturn;
+	}
 
 	@Override
 	public boolean encryptUI() throws ExceptionZZZ {
