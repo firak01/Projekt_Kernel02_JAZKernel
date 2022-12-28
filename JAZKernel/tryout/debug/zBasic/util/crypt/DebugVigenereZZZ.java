@@ -29,9 +29,11 @@ public class DebugVigenereZZZ {
 		boolean bUseNumericPool = false;
         String sKeyString = SchluesselWort;
         String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "",bUseUppercasePool,bUseLowercasePool, bUseNumericPool, sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
-        //String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,iKeyLength, true,false,false);
-
         System.out.println(sVigenere);
+        
+        String roundTrip = VigenereNnZZZ.decrypt(sVigenere,"",bUseUppercasePool,bUseLowercasePool, bUseNumericPool,sKeyString);
+        System.out.println(roundTrip);
+        
         
 //        System.out.println(rotNn);
 //        System.out.println(roundTrip);

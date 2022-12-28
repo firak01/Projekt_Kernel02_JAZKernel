@@ -26,11 +26,11 @@ public class Vigenere256ZZZmain { 		// Vigenereverschluesselung
 			boolean btemp; String stemp;
 			
 		//ohne UI
-//		String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31	
+		String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31	
 //		Vigenere256ZZZ objVigenere = new Vigenere256ZZZ(SchluesselWortDefault);
 //		stemp = objVigenere.encrypt("KRYPTOGRAFIE");
 				
-		String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.31 bzw. 34
+//		String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.31 bzw. 34
 		Vigenere256ZZZ objVigenere = new Vigenere256ZZZ(SchluesselWortDefault);
 		stemp = objVigenere.encrypt("Bei d");
 		
