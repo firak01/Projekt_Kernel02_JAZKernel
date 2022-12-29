@@ -12,7 +12,21 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 public class ArrayListZZZ<T> extends ObjectZZZ {
-
+private ArrayListZZZ() { } //static methods only
+public static boolean isEmpty(ArrayList<?> objAL) {
+	boolean bReturn = false;
+	main:{
+		if(objAL==null) {
+			bReturn = true;
+			break main;
+		}
+		if(objAL.size()==0) {
+			bReturn = true;
+			break main;
+		}
+	}
+	return bReturn;
+}
 public static boolean isSameSize(ArrayList objAL1, ArrayList objAL2) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{

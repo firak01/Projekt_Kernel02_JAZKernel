@@ -11,7 +11,10 @@ import java.util.Map;
 import base.files.DateiUtil;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.encode.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.encode.IVigenereZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
@@ -115,44 +118,13 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		    }			
 			//+++++++++++
 			
-			
-			len = listasCharacterPool.size();
-
-			//So würde ein um n Positionen verschobenes Zeichen gemappt.
-			/* 
-		    Map<Character, Character> map = new HashMap<Character, Character>();
-		    for (int i = 0; i < len; i++) {		    	
-		        //map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
-		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));		    			    	
-		    }
-		    */
-			
-			//Was ich aber brauche ist eine Alternative hierzu, bei dem jedes Zeichen mit dem ASCII / UTF - Wert ersetzt wird
-			//int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
-			
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
 			System.out.println("Schluesselwort zu ia");
-			int laengeSW = iaSchluesselwort.length;
-			
 			
 			int[] iaText = UnicodeZZZ.toIntArray(sInput, listasCharacterPool);
 			System.out.println("Eingabetext zu ia");
 			
-			int[]ppure = new int[iaText.length];
-		    for (int i = 0; i < iaText.length; i++) {
-		    	if(i>=1) System.out.print("|");
-		        //Das steht in der Codedatei
-		    	//Merke: c = Chiffrebuchstabe
-		    	int iIndexS = i%laengeSW;
-		    	int iSum = iaSchluesselwort[iIndexS]+iaText[i];
-		    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
-		    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
-		      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
-		                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.            
-		      ppure[i] = c;				// nur wegen abspeichern  
-		      System.out.print("i="+i+", c='"+c+"'"); 
-		    }
-		    System.out.print("\n");
+			int[]ppure = VigenereNnZZZ.encrypt(iaText, listasCharacterPool, iaSchluesselwort);
 			
 			//die Arraylist nutzen zum bestimmen der Zeichen
 		    StringBuilder sb = new StringBuilder();
@@ -180,25 +152,100 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		return sReturn;
     }
 	
-	//Merke: Bei Vigenere reicht das einfache Umdrehen des Codes wie bei Caesar oder anderen Rotierenden Verschluesselungen nicht mehr aus.
-//	public static String decrypt(String sInput, String sCharacterPoolIn,boolean bUseUppercase,boolean bUseLowercase, boolean bUseNumeric, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-//		String sReturn = sInput;
-//		main:{
-//			if(StringZZZ.isEmpty(sInput)) break main;
-//			
-//			String sCharacterPoolStarting;
-//			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-//				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
-//			}else {
-//				sCharacterPoolStarting = sCharacterPoolIn;
-//			}
-//			
-//			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
-//			String sCharacterPool = StringZZZ.reverse(abcABC);	
-//			sReturn = VigenereNnZZZ.encrypt(sInput, sCharacterPool, sKeyword);
-//		}
-//		return sReturn;						
-//	}
+	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
+	 * @param sInput
+	 * @param sCharacterPoolIn
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
+	 * @throws ExceptionZZZ 
+	 */
+	public static int[] encrypt(String sInput, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		int[] iaReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sInput)) break main;
+			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+				String sLog = "Character pool not provided.";
+				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
+				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
+			System.out.println("Schluesselwort zu ia");
+			
+			int[] iaText = UnicodeZZZ.toIntArray(sInput, listasCharacterPool);
+			System.out.println("Eingabetext zu ia");
+			
+			iaReturn = VigenereNnZZZ.encrypt(iaText, listasCharacterPool, iaSchluesselwort);
+			
+			
+		}//end main;
+		return iaReturn;
+    }
+	
+	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
+	 * @param sInput
+	 * @param sCharacterPoolIn
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
+	 * @throws ExceptionZZZ 
+	 */
+	public static int[] encrypt(int[] iaText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
+		int[] iaReturn = null;
+		main:{			
+			if(ArrayUtilZZZ.isEmpty(iaText)) break main;
+			if(ArrayUtilZZZ.isEmpty(iaSchluesselwort)) {
+				iaReturn = iaText;
+				break main;
+			}
+			
+			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+				String sLog = "Character pool not provided.";
+				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
+				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+
+			//So würde ein um n Positionen verschobenes Zeichen gemappt.
+			/* 
+		    Map<Character, Character> map = new HashMap<Character, Character>();
+		    for (int i = 0; i < len; i++) {		    	
+		        //map.put(abcABC.charAt(i), abcABC.charAt((i + n + len) % len));
+		    	map.put((Character)listasCharacterPool.get(i), (Character)listasCharacterPool.get((i + n + len) % len));		    			    	
+		    }
+		    */
+			
+			//Was ich aber brauche ist eine Alternative hierzu, bei dem jedes Zeichen mit dem ASCII / UTF - Wert ersetzt wird
+			//int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
+			
+			int laengeSW = iaSchluesselwort.length;			
+			
+			int[]ppure = new int[iaText.length];
+		    for (int i = 0; i < iaText.length; i++) {
+		    	if(i>=1) System.out.print("|");
+		        //Das steht in der Codedatei
+		    	//Merke: c = Chiffrebuchstabe
+		    	int iIndexS = i%laengeSW;
+		    	int iSum = iaSchluesselwort[iIndexS]+iaText[i];
+		    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
+		    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
+		      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
+		                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.            
+		      ppure[i] = c;				// nur wegen abspeichern  
+		      System.out.print("i="+i+", c='"+c+"'"); 
+		    }
+		    System.out.print("\n");
+			
+		    iaReturn = ppure;
+		}//end main;
+		return iaReturn;
+    }
+	
 	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
 	 * @param sInput
@@ -210,6 +257,27 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	 * @throws ExceptionZZZ 
 	 */
 	public static String decrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		//Merke: Bei Vigenere reicht das einfache Umdrehen des Codes wie bei Caesar oder anderen Rotierenden Verschluesselungen nicht mehr aus.
+//		public static String decrypt(String sInput, String sCharacterPoolIn,boolean bUseUppercase,boolean bUseLowercase, boolean bUseNumeric, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+//			String sReturn = sInput;
+//			main:{
+//				if(StringZZZ.isEmpty(sInput)) break main;
+//				
+//				String sCharacterPoolStarting;
+//				if(StringZZZ.isEmpty(sCharacterPoolIn)) {
+//					sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
+//				}else {
+//					sCharacterPoolStarting = sCharacterPoolIn;
+//				}
+//				
+//				String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
+//				String sCharacterPool = StringZZZ.reverse(abcABC);	
+//				sReturn = VigenereNnZZZ.encrypt(sInput, sCharacterPool, sKeyword);
+//			}
+//			return sReturn;						
+//		}
+		
+		
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -308,11 +376,13 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		String sReturn = null;
 		main:{
 			String sKeyword = this.getCryptKey();
+			
+			TODOGOON20221229; //Den CharacterPool als ArrayList holen
 			String sCharacterPool = this.getCharacterPool();
 			boolean bUseUppercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE.name());
 			boolean bUseLowercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE.name());
 			boolean bUseNumeric=this.getFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC.name());
-			sReturn = VigenereNnZZZ.decrypt(sInput,sCharacterPool,bUseUppercase,bUseLowercase,bUseNumeric,sKeyword);
+			sReturn = VigenereNnZZZ.encrypt(sInput,sCharacterPool,bUseUppercase,bUseLowercase,bUseNumeric,sKeyword);
 		}//end main:
 		return sReturn;
 	}
@@ -325,7 +395,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			boolean bUseUppercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE.name());
 			boolean bUseLowercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE.name());
 			boolean bUseNumeric=this.getFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC.name());
-			sReturn = VigenereNnZZZ.encrypt(sInput,sCharacterPool,bUseUppercase,bUseLowercase,bUseNumeric,sKeyword);
+			sReturn = VigenereNnZZZ.decrypt(sInput,sCharacterPool,bUseUppercase,bUseLowercase,bUseNumeric,sKeyword);
 		}//end main:
 		return sReturn;
 	}
