@@ -3,6 +3,8 @@ package base.io;
 import java.math.*;
 
 import base.files.DateiUtil;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 import java.io.*;
 
@@ -80,15 +82,37 @@ public class IoUtil {                      // zaehlt die Buchstaben
 	    	 }
 	     } 
 	  }  
+  
   static public void printChar(int zeichen) {  // Unicodezeichen
     printChar((byte)zeichen);
   }  
   static public void printCharWithPosition(int zeichen, String sSeparator) {  // Unicodezeichen
 	    printCharWithPosition((byte)zeichen, -1, sSeparator);
-	  } 
+  } 
   static public void printCharWithPosition(int zeichen, int iPosition, String sSeparator) {  // Unicodezeichen
     printCharWithPosition((byte)zeichen, iPosition, sSeparator);
   } 
+  
+  //#########################
+  //### mit definiertem Zeichenpool
+  static public void printCharWithPosition(int zeichenInCharacterPool, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
+	    printCharWithPosition(zeichenInCharacterPool, -1, sSeparator,listasCharacterPool);
+  }
+  
+  static public void printCharWithPosition(int zeichenInCharacterPool, int iPosition, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) { 
+	     
+  	 CharacterExtendedZZZ objChar = listasCharacterPool.get(zeichenInCharacterPool);
+ 
+	 //oder alles ausgeben
+	 if(iPosition>=0) {
+		 System.out.print(iPosition + sSeparator + zeichenInCharacterPool + ":"+objChar.getChar()+sSeparator);
+	 }else {
+		 System.out.print(zeichenInCharacterPool + ":"+objChar.getChar()+sSeparator);
+	 }
+ } 
+  //############################################################
+  
+  
   public static int[] Unicode(byte[] ByteFeld) {
     int[] dummy=new int[ByteFeld.length];
     for (int i=0; i<dummy.length; i++) 

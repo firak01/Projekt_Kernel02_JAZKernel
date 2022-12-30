@@ -101,18 +101,22 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 	    }else {
 	    	SchluesselWort = SchluesselWortUIDefault;
 	    }
-	    
-	    IVigenereZZZ objVigenereUI = new VigenereNnZZZ(SchluesselWort,sFilePath);
-	    btemp = objVigenereUI.encryptUI();
+
+	    IVigenereNnZZZ objVigenereUI = new VigenereNnZZZ(SchluesselWort,sFilePath);	    	    
+		objVigenereUI.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE,true);
+		objVigenereUI.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE,true);		
+		objVigenereUI.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC,true);		
 		
+		btemp = objVigenereUI.encryptUI();
 	    if(btemp) {		    		    
 	    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");
 		    if (IoUtil.JaNein()) {
 		      DateiUtil Original = objVigenereUI.getFileOriginal();
 		      System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
 		      int[]ppure = objVigenereUI.getEncryptedValuesAsInt();
+		      ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPoolUI = objVigenereUI.getCharacterPoolList();
 		      for (int i = 0; i < ppure.length; i++) {
-		    	IoUtil.printCharWithPosition((ppure[i]),"|");
+		    	IoUtil.printCharWithPosition((ppure[i]),"|",listasCharacterPoolUI);
 		        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 		      }
 		    }

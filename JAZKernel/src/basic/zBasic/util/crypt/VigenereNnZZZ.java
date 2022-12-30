@@ -42,9 +42,10 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	}
 	
 	
-	public VigenereNnZZZ(String sKeyString, String sFlagControl) throws ExceptionZZZ {
-		super(sFlagControl);
+	public VigenereNnZZZ(String sKeyString, String sFilePath) throws ExceptionZZZ {
+		super();
 		this.setCryptKey(sKeyString);
+		this.setFilePath(sFilePath);
 	}
 
 	
@@ -212,6 +213,31 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(ppure, listasCharacterPool);
 		}//end main:
 		return sReturn;
+	}
+	
+	/** Der reine Entschluesselungsalgorithmus, ohne Eingaben per Console, etc.
+	 * @param p
+	 * @return
+	 * @author Fritz Lindhauer, 02.12.2022, 08:31:12
+	 */
+	public int[]encrypt(int[]iaText) throws ExceptionZZZ{		
+		int[]iaReturn=null;
+		main:{
+			if(ArrayUtilZZZ.isEmpty(iaText))break main;
+			
+			String sKeyWord = this.getCryptKey();
+			if(StringZZZ.isEmpty(sKeyWord)) {
+				iaReturn=iaText;
+				break main;
+			}
+			
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
+            int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord,listAsCharacterPool);
+			
+            iaReturn = VigenereNnZZZ.encrypt(iaText, listAsCharacterPool, iaSchluesselwort);
+			this.setEncryptedValues(iaReturn);
+		}//end main:
+		return iaReturn;
 	}
 	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
@@ -416,8 +442,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");    
 		    
 
-		int[]ppure = this.encrypt(p);
-	    this.setEncryptedValues(ppure);
+		this.encrypt(p);
 	    bReturn = true;
 	}//end main:
 	return bReturn;    
@@ -450,9 +475,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				  		    
 			    System.out.println("\nBeginne Entschluesselung ... ");
 
-			    int[]iaPure = this.decrypt(c);
-			    this.setDecryptedValues(iaPure);		    
-			   
+			    this.decrypt(c);
 			    bReturn = true;
 		  }//end main:
 		  return bReturn;
@@ -515,6 +538,14 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		return this.listasCharacterPool;
 	}
 	
+	@Override
+	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+		this.listasCharacterPool = listasCharacterPool;
+		
+		String sCharacterPool =this.listasCharacterPool.debugString("");
+		this.setCharacterPool(sCharacterPool);
+	}
+	
 	public static String getCharacterPoolDefault() {
 		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 	}
@@ -525,4 +556,6 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	public void setFlag(IVigenereNnZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
 		this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
+
+	
 }
