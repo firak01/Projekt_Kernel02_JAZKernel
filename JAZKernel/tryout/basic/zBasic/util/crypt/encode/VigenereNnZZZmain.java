@@ -48,9 +48,11 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		
 		//PROBLEM: WENN MAN MIT DEM STRING WEITERARBEITET
 		int[]iaTest = objVigenere.getEncryptedValuesAsInt();
-		stemp = CharArrayZZZ.toString(iaTest);
-		System.out.println("encrypted2: " + stemp);
+		//stemp = CharArrayZZZ.toString(iaTest);
+		//System.out.println("encrypted2: " + stemp);
 		
+		
+		TODOGOON20221230; //Das Entschluesseln klappt nicht!!!
 		int[]iaErg = objVigenere.decrypt(iaTest);
 		stemp = CharArrayZZZ.toString(iaErg);
 		//stemp = objVigenere.decrypt(stemp);//DAS KLAPPT BEI 256 ZEICHEN NICHT!!!

@@ -3,6 +3,7 @@ package basic.zBasic.util.datatype.character;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**
@@ -82,6 +83,26 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			}
 		}//end main:
 		return sReturn;
+	}
+	
+	public static ArrayListExtendedZZZ<CharacterExtendedZZZ> computeListFromCharacterPoolString(String sCharacterPool) throws ExceptionZZZ {
+		ArrayListExtendedZZZ<CharacterExtendedZZZ> listReturn = null;
+		main:{
+					
+			//IDEE DER NN-Behandlung:
+			//Jeden Buchstaben in einen Integer-Wert ueberfuehren, der seine Position in dem Character-Pool hat.			
+			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
+			//+++++++++++ CharacterPool normieren
+			int len = sCharacterPool.length();			
+			listReturn = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
+			for (int i = 0; i < len; i++) {		
+				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(sCharacterPool.charAt(i));
+				listReturn.addUnique(objChar);				
+		    }			
+			//+++++++++++
+			
+		} //End main:
+		return listReturn;		
 	}
 	
 	@Override

@@ -27,6 +27,7 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
 public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ{
 	private static final long serialVersionUID = -2833560399688739434L;	
 	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
+	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = null;
 	public static int iOffsetForAsciiRange=0;//wird dann später aus der Laenge des CharacterPools errechnet.
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
 	
@@ -46,23 +47,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		this.setCryptKey(sKeyString);
 	}
 
-	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) throws IllegalArgumentException, ExceptionZZZ {
-		String sReturn = sInput;
-		main:{
-			if(StringZZZ.isEmpty(sInput)) break main;
-			
-			String sCharacterPoolStarting;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
-			}else {
-				sCharacterPoolStarting = sCharacterPoolIn;
-			}
-			
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
-			sReturn = VigenereNnZZZ.encrypt(sInput, abcABC, sKeyword);		
-		}//end main;
-		return sReturn;
-    }
+	
 	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
 	 * @param sInput
@@ -103,27 +88,13 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				sCharacterPool = sCharacterPoolIn;
 			}
 			
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);
-			
-			//IDEE DER NN-Behandlung:
-			//Jeden Buchstaben in einen Integer-Wert ueberfuehren, der seine Position in dem Character-Pool hat.
-			int len = abcABC.length();
-			
-			//MERKE: Wg. der Zuordnung zu einer Map muss sichergestellt sein, dass kein Zeichen im CharacterPool doppelt vorkommt.
-			//+++++++++++ CharacterPool normieren			
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
-			for (int i = 0; i < len; i++) {		
-				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(abcABC.charAt(i));
-				listasCharacterPool.addUnique(objChar);				
-		    }			
-			//+++++++++++
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);			
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
-			System.out.println("Schluesselwort zu ia");
 			
 			int[] iaText = UnicodeZZZ.toIntArray(sInput, listasCharacterPool);
-			System.out.println("Eingabetext zu ia");
-			
+
 			int[]ppure = VigenereNnZZZ.encrypt(iaText, listasCharacterPool, iaSchluesselwort);
 			
 			//die Arraylist nutzen zum bestimmen der Zeichen
@@ -174,10 +145,8 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			
 			
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
-			System.out.println("Schluesselwort zu ia");
 			
 			int[] iaText = UnicodeZZZ.toIntArray(sInput, listasCharacterPool);
-			System.out.println("Eingabetext zu ia");
 			
 			iaReturn = VigenereNnZZZ.encrypt(iaText, listasCharacterPool, iaSchluesselwort);
 			
@@ -376,13 +345,19 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		String sReturn = null;
 		main:{
 			String sKeyword = this.getCryptKey();
+
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
+			int[] ppure = VigenereNnZZZ.encrypt(sInput,listasCharacterPool,sKeyword);
+			this.setEncryptedValues(ppure);
 			
-			TODOGOON20221229; //Den CharacterPool als ArrayList holen
-			String sCharacterPool = this.getCharacterPool();
-			boolean bUseUppercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE.name());
-			boolean bUseLowercase=this.getFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE.name());
-			boolean bUseNumeric=this.getFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC.name());
-			sReturn = VigenereNnZZZ.encrypt(sInput,sCharacterPool,bUseUppercase,bUseLowercase,bUseNumeric,sKeyword);
+			//die Arraylist nutzen zum bestimmen der Zeichen
+		    StringBuilder sb = new StringBuilder();
+		    for(int i = 0; i<ppure.length;i++) {
+		    	int iCharPos = ppure[i];
+		    	CharacterExtendedZZZ objChar = listasCharacterPool.get(iCharPos);
+		    	sb.append(objChar);
+		    }
+		    sReturn = sb.toString();
 		}//end main:
 		return sReturn;
 	}
@@ -508,10 +483,28 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		return this.sCharacterUsedForRot;		
 	}
 	
+	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
+		if(ArrayListZZZ.isEmpty(this.listasCharacterPool)) {
+			String sCharacterPool = this.getCharacterPool();
+			
+			boolean bUseUppercasePool = this.getFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE);
+			boolean bUseLowercasePool = this.getFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE);
+			boolean bUseNumericPool = this.getFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);
+					
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
+			this.listasCharacterPool = listasCharacterPool;
+		}
+		return this.listasCharacterPool;
+	}
+	
 	public static String getCharacterPoolDefault() {
 		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 	}
 
+	public boolean getFlag(IVigenereNnZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
 	public void setFlag(IVigenereNnZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
 		this.setFlag(objEnumFlag.name(), bFlagValue);
 	}

@@ -12,4 +12,8 @@ public interface IVigenereNnZZZ extends IVigenereZZZ{
 	public enum FLAGZ{
 		USENUMERIC,USEUPPERCASE,USELOWERCASE
 	}	
+	
+	//damit muss man nicht mehr tippen hinter dem enum .name()
+	public boolean getFlag(IVigenereNnZZZ.FLAGZ objEnumFlag);
+	public void setFlag(IVigenereNnZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
 }
