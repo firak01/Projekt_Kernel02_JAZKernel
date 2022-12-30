@@ -165,8 +165,9 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	 * @param p
 	 * @return
 	 * @author Fritz Lindhauer, 02.12.2022, 08:31:12
+	 * @throws ExceptionZZZ 
 	 */
-	public int[] decrypt(int[]c) {
+	public int[] decrypt(int[]c) throws ExceptionZZZ {
 		int[]iaReturn=null;
 		main:{
 			if(c==null)break main;

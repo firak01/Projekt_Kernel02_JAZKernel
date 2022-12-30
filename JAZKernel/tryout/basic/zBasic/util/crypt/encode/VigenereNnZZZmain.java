@@ -4,8 +4,10 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.crypt.VigenereNnZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
@@ -37,29 +39,20 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE, true);
 		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE, true);
 		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC, true);
-		stemp = objVigenere.encrypt("Bei d");
+		String sEncrypted = objVigenere.encrypt("Bei d");
+		System.out.println("encrypted: " + sEncrypted);
+						
+		//1. Variante, mit dem int-Array weiterarbeiten
+		int[]iaTest = objVigenere.getEncryptedValuesAsInt();		
+		int[]iaDecrypted = objVigenere.decrypt(iaTest);
+		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = objVigenere.getCharacterPoolList();
+		stemp = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaDecrypted, listasCharacterPool);
+		System.out.println("decrypted1: " + stemp);
 		
-		//TESTS
-//		int[]iaTest = UnicodeZZZ.fromUtf8ToAscii(stemp);
-//		stemp = CharArrayZZZ.toString(iaTest);
-		
-	
-		System.out.println("encrypted1: " + stemp);
-		
-		//PROBLEM: WENN MAN MIT DEM STRING WEITERARBEITET
-		int[]iaTest = objVigenere.getEncryptedValuesAsInt();
-		//stemp = CharArrayZZZ.toString(iaTest);
-		//System.out.println("encrypted2: " + stemp);
-		
-		
-		TODOGOON20221230; //Das Entschluesseln klappt nicht!!!
-		int[]iaErg = objVigenere.decrypt(iaTest);
-		stemp = CharArrayZZZ.toString(iaErg);
-		//stemp = objVigenere.decrypt(stemp);//DAS KLAPPT BEI 256 ZEICHEN NICHT!!!
-		System.out.println("decrypted: " + stemp);
+		//2. Variante, mit dem encrypted-String weiterarbeiten
+		String sDecrypted = objVigenere.decrypt(sEncrypted);
+		System.out.println("decrypted2: " + sDecrypted);
 		System.out.println("##################################################");
-		
-		
 		
 		 //mit UI	
 	//Buchbeispiel Seite 34

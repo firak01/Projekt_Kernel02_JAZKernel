@@ -3,7 +3,10 @@ package basic.zBasic.util.datatype.character;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.crypt.VigenereNnZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**
@@ -103,6 +106,29 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			
 		} //End main:
 		return listReturn;		
+	}
+	
+	public static String computeStringFromCharacterPoolPosition(int[] iaPosition, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(ArrayUtilZZZ.isEmpty(iaPosition))break main;
+			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+				String sLog = "Character pool not provided.";
+				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
+				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			
+			//die Arraylist nutzen zum bestimmen der Zeichen
+		    StringBuilder sb = new StringBuilder();
+		    for(int i = 0; i<iaPosition.length;i++) {
+		    	int iCharPos = iaPosition[i];
+		    	CharacterExtendedZZZ objChar = listasCharacterPool.get(iCharPos);
+		    	sb.append(objChar);
+		    }
+		    sReturn = sb.toString();
+		}//end main:
+		return sReturn;		
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ public interface IVigenereZZZ extends ICryptZZZ, ICryptUIZZZ{
 //	}	
 	
 	
-	public int[] decrypt(int[]p);
+	public int[] decrypt(int[]p) throws ExceptionZZZ;
 	public int[] getEncryptedValuesAsInt();
 	
 	//##########################################################
