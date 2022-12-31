@@ -42,13 +42,16 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	}
 	
 	public int[] getOriginalValuesAsInt() {
-		if(this.iaOriginal==null) {
+		if(this.getOriginalValues()==null) {
 			DateiUtil Original = this.getFileOriginal();
 			if(Original!=null) {
 				int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
 				this.setOriginalValues(p);
 			}
 		}
+		return this.iaOriginal;
+	}
+	public int[] getOriginalValues() {
 		return this.iaOriginal;
 	}
 	public void setOriginalValues(int[] iaOriginal) {

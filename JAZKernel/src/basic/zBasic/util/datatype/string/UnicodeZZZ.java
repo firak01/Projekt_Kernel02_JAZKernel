@@ -316,6 +316,39 @@ public class UnicodeZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
+	public static File writeAnsiToFile(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			if(ia==null) break main;
+			if(ia.length==0)break main;
+			
+			int iPosition=-1;
+			try {	      
+		      objReturn = new File(sFilepath);
+		      //gibt "unsupported Mapping" ggfs. als Fehler, wenn in dem String etwas anderes als ANSI steht		      
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE));		     
+		      BufferedWriter objWriter = Files.newBufferedWriter(objReturn.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
+		      for (int i=0;i<ia.length;i++) {
+		    	  iPosition=i;
+		    	  CharacterExtendedZZZ objChar = listasCharacterPool.get(ia[i]);
+		          objWriter.write(objChar.getChar());		    	  
+		      }			
+		      objWriter.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("FileNotFoundException: Character at position: '" + iPosition + "' - " + e.toString());
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			} catch (IOException e) {
+				System.out.println("IOException: Character at position: '" + iPosition + "' - " + e.toString());
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			}
+		}//end main:
+		return objReturn;
+	}
+	
+	
 	public static File writeUtf8ToFile(int[]ia, String sFilepath) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
@@ -334,6 +367,40 @@ public class UnicodeZZZ implements IConstantZZZ{
 		      for (int i=0;i<ia.length;i++) {
 		    	  iPosition=i;
 		          objWriter.write(ia[i]);		        
+		      }			
+		      objWriter.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("FileNotFoundException: Character at position: '" + iPosition + "' - " + e.toString());
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			} catch (IOException e) {
+				System.out.println("IOException: Character at position: '" + iPosition + "' - " + e.toString());
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			}
+		}//end main:
+		return objReturn;
+	}
+	
+	public static File writeUtf8ToFile(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+		File objReturn = null;
+		main:{
+			if(ia==null) break main;
+			if(ia.length==0)break main;
+			
+			int iPosition=-1;
+			try {	      
+		      objReturn = new File(sFilepath);
+		      //gibt "unsupported Mapping" ggfs. als Fehler.
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("cp1252"), StandardOpenOption.CREATE);
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("windows-1252"), StandardOpenOption.CREATE);		     
+		      //BufferedWriter objWriter = Files.newBufferedWriter(objFile.toPath(), Charset.forName("ISO-8859-1"));//, EnumSet.of(CREATE));
+
+		      BufferedWriter objWriter = Files.newBufferedWriter(objReturn.toPath(), Charset.forName("UTF-8"));//, EnumSet.of(CREATE));
+		      for (int i=0;i<ia.length;i++) {
+		    	  iPosition=i;
+		    	  CharacterExtendedZZZ objChar = listasCharacterPool.get(ia[i]);
+		          objWriter.write(objChar.getChar());		        
 		      }			
 		      objWriter.close();
 			} catch (FileNotFoundException e) {

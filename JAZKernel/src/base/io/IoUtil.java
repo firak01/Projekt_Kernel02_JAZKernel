@@ -95,6 +95,11 @@ public class IoUtil {                      // zaehlt die Buchstaben
   
   //#########################
   //### mit definiertem Zeichenpool
+  static public void printChar(int zeichenInCharacterPool,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
+	  CharacterExtendedZZZ objChar = listasCharacterPool.get(zeichenInCharacterPool);      
+	  System.out.print(objChar.getChar());
+  }
+  
   static public void printCharWithPosition(int zeichenInCharacterPool, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
 	    printCharWithPosition(zeichenInCharacterPool, -1, sSeparator,listasCharacterPool);
   }

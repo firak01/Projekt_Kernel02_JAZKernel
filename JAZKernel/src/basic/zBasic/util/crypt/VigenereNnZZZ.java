@@ -467,7 +467,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			    int[] c = Chiffre.liesAsInt(); //FGL: Fehlerkorrektur... das ist ja nicht als Unicode in die Datei geschrieben worden...  Chiffre.liesUnicode();	// Datei einlesen
 			    for(int i=0; i < c.length; i++) {
 			    	int i2 = c[i];
-			    	IoUtil.printChar(i2);
+			    	IoUtil.printChar(i2, this.getCharacterPoolList());
 			    }
 			    
 			    String SchluesselWort=this.getCryptKey();		   
@@ -486,7 +486,13 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	
 	@Override
 	public int getOffsetForAsciiRange() {
-		return Vigenere256ZZZ.iOffsetForAsciiRange;
+		try {
+			return this.getCharacterPoolList().size();//Vigenere256ZZZ.iOffsetForAsciiRange;
+		} catch (ExceptionZZZ e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		} 
 	}
 
 	@Override
@@ -536,6 +542,19 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			this.listasCharacterPool = listasCharacterPool;
 		}
 		return this.listasCharacterPool;
+	}
+	
+	public int[] getOriginalValuesAsInt(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+		if(this.getOriginalValues()==null) {
+			DateiUtil Original = this.getFileOriginal();
+			if(Original!=null) {
+				int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
+				
+				TODOGOON20221231; //Methode aus dem Buchstaben die Position in der CharacterPool-Liste zu ermitteln
+				this.setOriginalValues(p);
+			}
+		}
+		return this.getOriginalValues();
 	}
 	
 	@Override

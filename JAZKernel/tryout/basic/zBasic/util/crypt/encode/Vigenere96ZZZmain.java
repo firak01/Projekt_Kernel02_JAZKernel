@@ -74,7 +74,7 @@ try {
 	    	System.out.print("\nZu verschluesselnde Datei auswaehlen (per Dialog)? (J/N): ");
 	    	if (IoUtil.JaNein()) {	
 		    	DateiUtil Original = new DateiUtil();
-		    	Original.select();
+		    	Original.selectLoad();
 		    	sFilePath = Original.computeFilePath();
 		    	if(StringZZZ.isEmpty(sFilePath)) {
 		    		break main;

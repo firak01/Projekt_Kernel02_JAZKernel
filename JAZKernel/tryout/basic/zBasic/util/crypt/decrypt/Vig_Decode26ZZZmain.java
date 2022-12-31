@@ -45,7 +45,7 @@ class Vig_Decode26ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 	    	System.out.print("\nVerschluesselte Datei auswaehlen (per Dialog)? (J/N): ");
 		    if (IoUtil.JaNein()) {	
 		    	DateiUtil Chiffre = new DateiUtil();
-		    	Chiffre.select();
+		    	Chiffre.selectLoad();
 		    	sFilePath = Chiffre.computeFilePath();
 		    	if(StringZZZ.isEmpty(sFilePath)) {
 		    		break main;

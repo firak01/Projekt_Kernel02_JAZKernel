@@ -4,6 +4,8 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.VigenereNnZZZ;
+import basic.zBasic.util.crypt.encode.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere26ZZZ;
 import basic.zBasic.util.crypt.encode.Vigenere96ZZZ;
@@ -11,7 +13,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 
-class Vig_Decode256ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
+class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesselwort!
   public static void main( String[] args) {
 	  main:{
 	  try {	  
@@ -22,17 +24,17 @@ class Vig_Decode256ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluess
 		              //  Automatischem Zeilenumbruch wg. Länge und nach <BR>
 		              //  Auflistungszeichen <li>
 		System.out.println("################################################");
-		System.out.println("### DECHIFRIERUNG VIGENERE 256 Kodierter Text ###");
+		System.out.println("### DECHIFRIERUNG VIGENERE Nn Kodierter Text ###");
 		System.out.println("### - mit bekanntem Schluesselwort,          ###");
 		System.out.println("###   aus dem Dateinamen geholt              ###");
 		System.out.println("################################################");
 			       
 	    //Buchbeispiel, Seite 34ff
-		String sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_256_LangerBeispieltext1_schluesselwort_SchluesselWort.txt";
+		String sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_Nn_LangerBeispieltext1_schluesselwort_SchluesselWort.txt";
 	    
 	    //statt Buchbeispiel andere Tests:	    
 	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_Beispieltext2_schluesselwort_HALLO.txt";
-	    sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_256_Beispieltext2_schluesselwort_SchluesselWort.txt";
+	    sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_Nn_Beispieltext2_schluesselwort_SchluesselWort.txt";
     	
     	//Klappt, das Ergebnis der Datei passt zum Text im Buch.
 	    //sFilePathDefault = "tryout\\basic\\zBasic\\util\\crypt\\decrypt\\file\\VigenereCrypted_96_LangerBeispieltext1_schluesselwort_HALLO.txt";
@@ -70,14 +72,18 @@ class Vig_Decode256ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluess
     	//Besser noch: Extrahiere das Schlüsselwort aus dem Dateinamen
     	//String SchluesselWort="HALLO";
     	//String SchluesselWort="SchluesselWort";
-    	SchluesselWort = Vigenere256ZZZ.computeKeyWordFromEncryptedFile(sFilePath);
+    	SchluesselWort = VigenereNnZZZ.computeKeyWordFromEncryptedFile(sFilePath);
     	if(SchluesselWort==null) {
     		System.out.println("Kein Schluesselwort aus der Datei ermittelbar.");
     		System.out.println("Abbruch.");
     		break main;
     	}
     }
-    Vigenere256ZZZ objVigenere = new Vigenere256ZZZ(SchluesselWort, sFilePath);
+    VigenereNnZZZ objVigenere = new VigenereNnZZZ(SchluesselWort, sFilePath);
+    objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE, true);
+    objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE, true);
+    objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC, true);
+    
 	objVigenere.isFileOriginalEncrypted(true);
 	    
 	    //Die Ausgabe der (hier schon chiffierten) Originaldatei
@@ -85,9 +91,9 @@ class Vig_Decode256ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluess
 	    if (IoUtil.JaNein()) {
 	      DateiUtil Chiffre = objVigenere.getFileOriginal();
 	      System.out.println("\n-- Chiffriertentext von: "+Chiffre.computeFilePath()+" --");
-	      int[]iaPure = objVigenere.getOriginalValuesAsInt();
+	      int[]iaPure = objVigenere.getOriginalValuesAsInt(objVigenere.getCharacterPoolList());
 	      for (int i=0; i<iaPure.length; i++) {
-	        IoUtil.printCharWithPosition(iaPure[i],i,"|");
+	        IoUtil.printCharWithPosition(iaPure[i],i,"|",objVigenere.getCharacterPoolList());
 	        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 	      }
 	      System.out.println("\n---- Laenge: "+iaPure.length+" Bytes ----");
@@ -113,7 +119,7 @@ class Vig_Decode256ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluess
 		      System.out.println("\n\n-- Entschluesselter Text von: "+Chiffre.computeFilePath()+" --");
 		      int[]ppure = objVigenere.getDecryptedValuesAsInt();
 		      for (int i = 0; i < ppure.length; i++) {
-		    	IoUtil.printCharWithPosition((ppure[i]),"|");
+		    	IoUtil.printCharWithPosition((ppure[i]),"|",objVigenere.getCharacterPoolList());
 		        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 		      }
 		    }
@@ -123,7 +129,7 @@ class Vig_Decode256ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluess
 		    if (IoUtil.JaNein()) {    	
 		    	DateiUtil Entschluesselt = new DateiUtil();
 		        //Entschluesselt.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-		    	Entschluesselt.schreib(objVigenere.getDecryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
+		    	Entschluesselt.schreib(objVigenere.getDecryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(),objVigenere.getCharacterPoolList());
 		    	objVigenere.setFileDecrypted(Entschluesselt);
 		    }
 	    }	 

@@ -7,6 +7,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharSet;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 import java.awt.*;
@@ -75,17 +77,13 @@ public byte[] liesAsByte() {
 	  return liesUnicode();
   }
   public int[] liesUnicode() {
+	  int[] inhalt=null;
+	  main:{
     if (dateiname == null) {
-      Frame f = new Frame();
-      FileDialog fd = new FileDialog(f);
-      fd.setMode(FileDialog.LOAD);
-      fd.show();
-      dateiname = fd.getFile();
-      pfad = fd.getDirectory();
-      f = null;
-      fd = null;
+    	boolean btemp = this.selectLoad();
+    	if(!btemp)break main;
     }
-    int[] inhalt;
+    
     try { 
       File file = new File(pfad+dateiname);
       int dateigroesse = (int)file.length();
@@ -134,6 +132,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
       System.out.println("Datei:"+e); 
       return null;
     }
+  	}//end main:
     return inhalt;
   }
   
@@ -150,17 +149,14 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
     return this.schreib(datStr.getBytes(), iEncodingType);
   }
   public boolean schreib(int[] iaIn, int iEncodingType) {
-	    if(dateiname == null) {
-	      Frame f = new Frame();
-	      FileDialog fd = new FileDialog(f);
-	      fd.setMode(FileDialog.SAVE);
-	      fd.show();
-	      dateiname = fd.getFile();
-	      pfad = fd.getDirectory();
-	      f = null;
-	      fd = null;
-	    }
-	    try { 
+	  boolean bReturn = false;
+      main:{
+	     try {
+		    if(dateiname == null) {
+		    	boolean btemp = this.selectSave();
+		    	bReturn = btemp;
+		    }
+		    if(!bReturn)break main;
 	      //FGL: 20211119: Das schreibt aber die Daten wieder nur irgendwie.
 	      //FileOutputStream fos = new FileOutputStream(pfad + dateiname);
 	      //fos.write(b);
@@ -171,8 +167,6 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 //	      }
 	    	
 	      //Besser das Encoding mitgeben     
-	      this.setPfad(pfad);
-	      this.setDateiname(dateiname);
 	     
 	      /* Merke: Case Expressions must be constant expressions */
 	      /*
@@ -215,26 +209,85 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 			this.setFile(objFile);
 	      }else {
 	    	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
+	    	bReturn = false;
 	      }	     
 	    } catch (ExceptionZZZ e) {
 		 System.out.println("Datei:"+e); 
 	     return false;
 		}
-	    return true;
+	  	}//end main:
+	    return bReturn;
+	  }
+  
+  public boolean schreib(int[] iaIn, int iEncodingType, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) {
+	  	boolean bReturn = false;
+        main:{
+	     try {
+		    if(dateiname == null) {
+		    	boolean btemp = this.selectSave();
+		    	bReturn = btemp;
+		    }
+		    if(!bReturn)break main;
+		     
+		      /* Merke: Case Expressions must be constant expressions */
+		      /*
+		      switch (iEncodingType) {
+		      case EncodingMappedValueZZZ.EncodingTypeZZZ.ASCII.ordinal():    	  
+				UnicodeZZZ.writeAnsiToFile(iaUtf8, sFilepath);  //Mappingfehler, falls ungueltige Zeichen
+		      	break;
+			  case EncodingMappedValueZZZ.EncodingTypeZZZ.UTF8.ordinal():
+				UnicodeZZZ.writeUtf8ToFile(iaUtf8, sFilepath);
+			    break;
+		      default:
+		    	  
+		    	break;
+		      }
+		      */
+		     
+		      /* schreibt in der Codierung ANSI
+		      FileOutputStream fos = new FileOutputStream(pfad + dateiname);
+				for(int i=0;i<ia.length;i++) {
+					char c = (char)ia[i];
+			      fos.write(c);			      
+			      }
+				fos.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
+	      
+	      int[] ia = iaIn;
+	      if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {   
+			File objFile = UnicodeZZZ.writeAnsiToFile(ia, this.computeFilePath(),listasCharacterPool);  //Mappingfehler, falls ungueltige Zeichen
+			this.setFile(objFile);
+	      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) { 	  
+			File objFile = UnicodeZZZ.writeUtf8ToFile(ia, this.computeFilePath(),listasCharacterPool);
+			this.setFile(objFile);
+	      }else {
+	    	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
+	    	bReturn = false;
+	      }	     
+	    } catch (ExceptionZZZ e) {
+		 System.out.println("Datei:"+e); 
+	     return false;
+		}
+	  	}//end main:
+	    return bReturn;
 	  }
   
   public boolean schreib(byte[] b, int iEncodingType) {
-    if(dateiname == null) {
-      Frame f = new Frame();
-      FileDialog fd = new FileDialog(f);
-      fd.setMode(FileDialog.SAVE);
-      fd.show();
-      dateiname = fd.getFile();
-      pfad = fd.getDirectory();
-      f = null;
-      fd = null;
-    }
-    try { 
+	  boolean bReturn = false;
+      main:{
+	     try {
+		    if(dateiname == null) {
+		    	boolean btemp = this.selectSave();
+		    	bReturn = btemp;
+		    }
+		    if(!bReturn)break main;
       //FGL: 20211119: Das schreibt aber die Daten wieder nur irgendwie.
       //FileOutputStream fos = new FileOutputStream(pfad + dateiname);
       //fos.write(b);
@@ -275,13 +328,15 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 		this.setFile(objFile);
       }else {
     	System.out.println("not processed encoding main type: '" + iEncodingType + "'");
+    	bReturn = false;
       }
       
     } catch (ExceptionZZZ e) {
 	 System.out.println("Datei:"+e); 
      return false;
 	}
-    return true;
+	  }//end main:
+    return bReturn;
   }
   
   public String computeFilePath() {
@@ -306,16 +361,38 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 private void setFile(File objFile) {
 	  this.objFile=objFile;	  
   }
-  
-  public void select() {  
-	  Frame f = new Frame();
-	  FileDialog fd = new FileDialog(f);
-	  fd.setMode(FileDialog.LOAD);
-	  fd.show();
-	  dateiname = fd.getFile();
-	  pfad = fd.getDirectory();
-	  f = null;
-	  fd = null;
-  } 
+  private boolean select(int iWhatFor) {
+	  boolean bReturn = false;
+	  main:{
+	      Frame f = new Frame();
+	      FileDialog fd = new FileDialog(f);
+	      fd.setMode(iWhatFor);
+	      fd.show();
+	      dateiname = fd.getFile();
+	      pfad = fd.getDirectory();
+	      f = null;
+	      fd = null;
+    
+	      this.setPfad(pfad);
+	      this.setDateiname(dateiname);
+	      
+	      bReturn = true;
+	  }
+	  return bReturn;
+  }
+  public boolean selectLoad() {
+	  boolean bReturn = false;
+	  main:{
+		  bReturn = this.select(FileDialog.LOAD);	      
+	  }
+	  return bReturn;
+  }
+  public boolean selectSave() {
+	  boolean bReturn = false;
+	  main:{
+	     bReturn = this.select(FileDialog.SAVE);
+	  }
+	  return bReturn;
+  }
 }	
 

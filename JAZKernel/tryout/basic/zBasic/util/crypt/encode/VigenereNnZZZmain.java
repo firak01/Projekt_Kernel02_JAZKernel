@@ -85,7 +85,7 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 	    	System.out.print("\nZu verschluesselnde Datei auswaehlen (per Dialog)? (J/N): ");
 	    	if (IoUtil.JaNein()) {	
 		    	DateiUtil Original = new DateiUtil();
-		    	Original.select();
+		    	Original.selectLoad();
 		    	sFilePath = Original.computeFilePath();
 		    	if(StringZZZ.isEmpty(sFilePath)) {
 		    		break main;
@@ -126,7 +126,7 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		    if (IoUtil.JaNein()) {    	
 		    	DateiUtil Kodiert = new DateiUtil();
 		        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-		    	Kodiert.schreib(objVigenereUI.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
+		    	Kodiert.schreib(objVigenereUI.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(), objVigenereUI.getCharacterPoolList());
 		    }
 	    }		
 	} catch (ExceptionZZZ e) {
