@@ -102,7 +102,7 @@ public class CharArrayZZZ {
 			}
 			
 			sReturn = "";
-			for(int iIndex=0;iIndex < iPositionLast; iIndex++) {
+			for(int iIndex=0;iIndex <= iPositionLast; iIndex++) {
 				char c = ca[iIndex];
 				sReturn = sReturn + c; 
 			}			

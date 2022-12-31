@@ -91,9 +91,10 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 	    if (IoUtil.JaNein()) {
 	      DateiUtil Chiffre = objVigenere.getFileOriginal();
 	      System.out.println("\n-- Chiffriertentext von: "+Chiffre.computeFilePath()+" --");
-	      int[]iaPure = objVigenere.getOriginalValuesAsInt(objVigenere.getCharacterPoolList());
+	      //int[]iaPure = objVigenere.getOriginalValuesAsCharacterPoolPosition();
+	      int[]iaPure = objVigenere.getOriginalValues();
 	      for (int i=0; i<iaPure.length; i++) {
-	        IoUtil.printCharWithPosition(iaPure[i],i,"|",objVigenere.getCharacterPoolList());
+	        IoUtil.printCharWithPosition(iaPure[i],i,"|");
 	        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 	      }
 	      System.out.println("\n---- Laenge: "+iaPure.length+" Bytes ----");

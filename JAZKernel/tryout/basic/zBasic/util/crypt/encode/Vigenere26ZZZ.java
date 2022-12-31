@@ -46,7 +46,7 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
 	    System.out.println("Schluesselwort: " + SchluesselWort);
 
 	    DateiUtil Original = this.getFileOriginal();
-	    int[]p = this.getOriginalValuesAsInt();	    
+	    int[]p = this.readOriginalValuesAsInt();	    
 	    
 	    System.out.print("\nOriginaltext ausgeben? (J/N): ");
 	    if (IoUtil.JaNein()) {	      

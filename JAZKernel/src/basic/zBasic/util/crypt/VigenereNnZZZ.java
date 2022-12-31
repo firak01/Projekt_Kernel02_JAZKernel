@@ -350,15 +350,26 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				throw ez;
 			}
 
-			int laengeSW = iaSchluesselwort.length;			
 			
-			int[]ppure = new int[iaEncryptedText.length];
-		    for (int i = 0; i < iaEncryptedText.length; i++) {
+			//int[] iaTextPositionInPool = iaEncryptedText;
+			int[] iaTextPositionInPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaEncryptedText, listasCharacterPool);
+			
+			//int[] iaSchluesselwortPositionInPool = iaSchluesselwort;
+			int[] iaSchluesselwortPositionInPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaSchluesselwort, listasCharacterPool);
+			
+			
+			int laengeSW = iaSchluesselwortPositionInPool.length;			
+			
+			//!Nun den iaEncryptedText in ein Array der Postionen umwandeln
+			
+			
+			int[]ppure = new int[iaTextPositionInPool.length];												
+		    for (int i = 0; i < iaTextPositionInPool.length; i++) {
 		    	if(i>=1) System.out.print("|");
 		        //Das steht in der Codedatei
 		    	//Merke: c = Chiffrebuchstabe
 		    	int iIndexS = i%laengeSW;
-		    	int iSum = iaEncryptedText[i]-iaSchluesselwort[iIndexS];
+		    	int iSum = iaTextPositionInPool[iIndexS]-iaSchluesselwortPositionInPool[iIndexS];
 		    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128
 		    	if(iFormula<0) {
 		    		iFormula += listasCharacterPool.size();
@@ -372,6 +383,8 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		    }
 		    System.out.print("\n");
 			
+		    //TODOGOON20221231; //nun aus der Postion in der CharacterList wieder eine Char machen!!!
+		    
 		    iaReturn = ppure;
 		}//end main;
 		return iaReturn;
@@ -381,8 +394,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{			
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
-			int[] iaEncryptedText = UnicodeZZZ.toIntArray(sInput,listasCharacterPool);
+			int[] iaEncryptedText = UnicodeZZZ.toIntArray(sInput);
 			this.setEncryptedValues(iaEncryptedText);
 			
 			int[]iaDecryptedText = this.decrypt(iaEncryptedText);
@@ -404,14 +416,15 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			if(ArrayUtilZZZ.isEmpty(iaEncryptedText)) break main;
 			
 			String sKeyWord = this.getCryptKey();
+			int[] iaSchluesselwort=null;
 			if(StringZZZ.isEmpty(sKeyWord)) {
 				iaReturn=iaEncryptedText;
 				break main;
+			}else {
+				iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 			}
 			
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();				
-			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord,listCharacterPool);
-				
 			iaReturn = VigenereNnZZZ.decrypt(iaEncryptedText, listCharacterPool, iaSchluesselwort);
 			this.setDecryptedValues(iaReturn);
 		}//end main:
@@ -467,11 +480,11 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			    int[] c = Chiffre.liesAsInt(); //FGL: Fehlerkorrektur... das ist ja nicht als Unicode in die Datei geschrieben worden...  Chiffre.liesUnicode();	// Datei einlesen
 			    for(int i=0; i < c.length; i++) {
 			    	int i2 = c[i];
-			    	IoUtil.printChar(i2, this.getCharacterPoolList());
+			    	IoUtil.printChar(i2);
 			    }
 			    
 			    String SchluesselWort=this.getCryptKey();		   
-				System.out.println("Schluesselwort: '"+SchluesselWort+"'");
+				System.out.println("\nSchluesselwort: '"+SchluesselWort+"'");
 				  		    
 			    System.out.println("\nBeginne Entschluesselung ... ");
 
@@ -544,17 +557,51 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		return this.listasCharacterPool;
 	}
 	
-	public int[] getOriginalValuesAsInt(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
-		if(this.getOriginalValues()==null) {
-			DateiUtil Original = this.getFileOriginal();
-			if(Original!=null) {
-				int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
-				
-				TODOGOON20221231; //Methode aus dem Buchstaben die Position in der CharacterPool-Liste zu ermitteln
-				this.setOriginalValues(p);
+	public int[] readOriginalValuesAsCharacterPoolPosition() throws ExceptionZZZ {
+		int[]iaReturn = null;
+		main:{
+			int[]iaPure = null;	
+			if(this.getOriginalValues()==null) {
+				DateiUtil Original = this.getFileOriginal();
+						
+				if(Original!=null) {
+					iaPure = Original.liesUnicode();//FGL: Der Klartextbuchstabe
+					
+					//TODOGOON20221231; //Methode aus dem Buchstaben die Position in der CharacterPool-Liste zu ermitteln
+					this.setOriginalValues(iaPure);
+				}
+			}else {
+				iaPure = this.getOriginalValues();
 			}
-		}
-		return this.getOriginalValues();
+			
+			iaReturn = this.makeOriginalValuesAsCharacterPoolPosition(iaPure);
+		}//end main:
+		return iaReturn;
+	}
+	
+	public int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure) throws ExceptionZZZ {
+		int[] iaReturn = null;
+		main:{
+			
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
+			iaReturn = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaPure, listasCharacterPool);
+		}//end main:
+		return iaReturn;
+	}
+	
+	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
+		int[] iaReturn = null;
+		main:{
+			iaReturn = new int[iaPure.length];			
+			for(int i=0; i<iaPure.length;i++){
+				int iPure = iaPure[i];
+				char c = (char) iPure;
+				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(c);				
+				int iReturn = listasCharacterPool.getIndex(objChar);
+				iaReturn[i] = iReturn;				
+			}
+		}//end main:
+		return iaReturn;
 	}
 	
 	@Override
