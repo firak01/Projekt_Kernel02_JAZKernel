@@ -129,8 +129,8 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 		    System.out.println("\nEntschluesselten Text als Datei speichern (ueber Dialog)? (J/N): ");
 		    if (IoUtil.JaNein()) {    	
 		    	DateiUtil Entschluesselt = new DateiUtil();
-		        //Entschluesselt.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-		    	Entschluesselt.schreibUsingPoolPosition(objVigenere.getDecryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(),objVigenere.getCharacterPoolList());
+		        //Entschluesselt.schreib(objVigenere.getDecryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+		    	Entschluesselt.schreibUsingPoolPosition(objVigenere.getDecryptedCharacterPoolPosition(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(), objVigenere.getCharacterPoolList());
 		    	objVigenere.setFileDecrypted(Entschluesselt);
 		    }
 	    }	 

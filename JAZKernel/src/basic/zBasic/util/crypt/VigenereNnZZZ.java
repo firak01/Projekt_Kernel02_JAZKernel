@@ -182,20 +182,21 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			int laengeSW = iaSchluesselwortAsPositionInCharacterPool.length;			
 			
 			int[]ppure = new int[iaTextAsPositionInCharacterPool.length];
-		    for (int i = 0; i < iaTextAsPositionInCharacterPool.length; i++) {
-		    	if(i>=1) System.out.print("|");
+		    for (int i = 0; i < iaTextAsPositionInCharacterPool.length; i++) {		    	
 		        //Das steht in der Codedatei
 		    	//Merke: c = Chiffrebuchstabe
 		    	int iIndexS = i%laengeSW;
-		    	int iSum = iaSchluesselwortAsPositionInCharacterPool[iIndexS]+iaTextAsPositionInCharacterPool[i];
+		    	int iSum = iaTextAsPositionInCharacterPool[i]+iaSchluesselwortAsPositionInCharacterPool[iIndexS];
 		    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
 		    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
 		      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
 		                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.            
 		      ppure[i] = c;				// nur wegen abspeichern  
-		      System.out.print("i="+i+", c='"+c+"'"); 
+		      
+		      //if(i>=1) System.out.print("|");
+		      //System.out.print("i="+i+", c='"+c+"'"); 
 		    }
-		    System.out.print("\n");
+		    //System.out.print("\n");
 			
 		    iaReturn = ppure;		   
 		}//end main;
@@ -237,16 +238,10 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				iaReturn=iaText;
 				break main;
 			}
-			
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
-            //int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyWord,listAsCharacterPool);
+			          
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
 			
-            //int[]iaTextAsPositionInCharacterPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaText, listasCharacterPool);
-			//int[]iaSchluesselwortAsPositionInCharacterPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaSchluesselwort, listasCharacterPool);
-			
-            
-            
             iaReturn = VigenereNnZZZ.encryptAsPositionInPool(iaText, listAsCharacterPool, iaSchluesselwort);
             this.setEncryptedCharacterPoolPosition(iaReturn);
             
@@ -303,7 +298,6 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);					
 			
 			int[]ppure = VigenereNnZZZ.decrypt(sInput,listasCharacterPool,sKeyword);
-			//this.setDecryptedValues(ppure);
 			
 			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(ppure, listasCharacterPool);		    			
 		}//end main;
@@ -370,26 +364,19 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				throw ez;
 			}
 
-			
-			//int[] iaTextPositionInPool = iaEncryptedText;
+			//!Nun den iaEncryptedText in ein Array der Postionen umwandeln			
 			int[] iaTextPositionInPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaEncryptedText, listasCharacterPool);
-			
-			//int[] iaSchluesselwortPositionInPool = iaSchluesselwort;
 			int[] iaSchluesselwortPositionInPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaSchluesselwort, listasCharacterPool);
-			
-			
+
 			int laengeSW = iaSchluesselwortPositionInPool.length;			
 			
-			//!Nun den iaEncryptedText in ein Array der Postionen umwandeln
-			
-			
 			int[]ppure = new int[iaTextPositionInPool.length];												
-		    for (int i = 0; i < iaTextPositionInPool.length; i++) {
-		    	if(i>=1) System.out.print("|");
+		    for (int i = 0; i < iaTextPositionInPool.length; i++) {		    	
 		        //Das steht in der Codedatei
 		    	//Merke: c = Chiffrebuchstabe
 		    	int iIndexS = i%laengeSW;
-		    	int iSum = iaTextPositionInPool[iIndexS]-iaSchluesselwortPositionInPool[iIndexS];
+		    	//int iSum = iaTextPositionInPool[iIndexS]-iaSchluesselwortPositionInPool[iIndexS];
+		    	int iSum = iaTextPositionInPool[i]-iaSchluesselwortPositionInPool[iIndexS];
 		    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128
 		    	if(iFormula<0) {
 		    		iFormula += listasCharacterPool.size();
@@ -399,12 +386,11 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
 		    	
 		      ppure[i] = c;				// nur wegen abspeichern  
-		      System.out.print("i="+i+", c='"+c+"'"); 
+		      //if(i>=1) System.out.print("|");
+		      //System.out.print("i="+i+", c='"+c+"'"); 
 		    }
-		    System.out.print("\n");
+		    //System.out.print("\n");
 			
-		    //TODOGOON20221231; //nun aus der Postion in der CharacterList wieder eine Char machen!!!
-		    
 		    iaReturn = ppure;		    
 		}//end main;
 		return iaReturn;
@@ -592,9 +578,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				DateiUtil Original = this.getFileOriginal();
 						
 				if(Original!=null) {
-					iaPure = Original.liesUnicode();//FGL: Der Klartextbuchstabe
-					
-					//TODOGOON20221231; //Methode aus dem Buchstaben die Position in der CharacterPool-Liste zu ermitteln
+					iaPure = Original.liesUnicode();										
 					this.setOriginalValues(iaPure);
 				}
 			}else {
