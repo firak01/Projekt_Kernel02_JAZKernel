@@ -219,7 +219,7 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 	    return bReturn;
 	  }
   
-  public boolean schreib(int[] iaIn, int iEncodingType, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) {
+  public boolean schreibUsingPoolPosition(int[] iaIn, int iEncodingType, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) {
 	  	boolean bReturn = false;
         main:{
 	     try {
@@ -262,10 +262,10 @@ In earlier versions of java, you need to use new InputStreamReader(new FileInput
 	      
 	      int[] ia = iaIn;
 	      if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal()) {   
-			File objFile = UnicodeZZZ.writeAnsiToFile(ia, this.computeFilePath(),listasCharacterPool);  //Mappingfehler, falls ungueltige Zeichen
+			File objFile = UnicodeZZZ.writeAnsiToFileUsingPoolPosition(ia, this.computeFilePath(),listasCharacterPool);  //Mappingfehler, falls ungueltige Zeichen
 			this.setFile(objFile);
 	      }else if(iEncodingType == EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal()) { 	  
-			File objFile = UnicodeZZZ.writeUtf8ToFile(ia, this.computeFilePath(),listasCharacterPool);
+			File objFile = UnicodeZZZ.writeUtf8ToFileUsingPoolPosition(ia, this.computeFilePath(),listasCharacterPool);
 			this.setFile(objFile);
 	      }else {
 	    	System.out.println("not processed encoding main type: '" + iEncodingType + "'");

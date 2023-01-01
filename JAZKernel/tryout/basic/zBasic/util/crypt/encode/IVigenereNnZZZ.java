@@ -25,4 +25,10 @@ public interface IVigenereNnZZZ extends IVigenereZZZ{
 	
 	public String getCharacterPool();
 	public void setCharacterPool(String sCharacterPool);
+	
+	public int[] getEncryptedCharacterPoolPosition();
+	public void setEncryptedCharacterPoolPosition(int[]iaPoolPosition);
+
+	public int[] getDecryptedCharacterPoolPosition();
+	public void setDecryptedCharacterPoolPosition(int[]iaPoolPosition);
 }

@@ -95,16 +95,16 @@ public class IoUtil {                      // zaehlt die Buchstaben
   
   //#########################
   //### mit definiertem Zeichenpool
-  static public void printChar(int zeichenInCharacterPool,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
+  static public void printCharPoolPosition(int zeichenInCharacterPool,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
 	  CharacterExtendedZZZ objChar = listasCharacterPool.get(zeichenInCharacterPool);      
 	  System.out.print(objChar.getChar());
   }
   
-  static public void printCharWithPosition(int zeichenInCharacterPool, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
-	    printCharWithPosition(zeichenInCharacterPool, -1, sSeparator,listasCharacterPool);
+  static public void printCharPoolPositionWithPosition(int zeichenInCharacterPool, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {  // Unicodezeichen
+	    printCharPoolPositionWithPosition(zeichenInCharacterPool, -1, sSeparator,listasCharacterPool);
   }
   
-  static public void printCharWithPosition(int zeichenInCharacterPool, int iPosition, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) { 
+  static public void printCharPoolPositionWithPosition(int zeichenInCharacterPool, int iPosition, String sSeparator,ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) { 
 	     
   	 CharacterExtendedZZZ objChar = listasCharacterPool.get(zeichenInCharacterPool);
  

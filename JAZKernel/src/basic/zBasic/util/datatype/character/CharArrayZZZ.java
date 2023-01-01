@@ -75,7 +75,7 @@ public class CharArrayZZZ {
 		main:{
 			if(CharArrayZZZ.isEmpty(ca)) break main;
 			
-			sReturn = CharArrayZZZ.toString(ca, ca.length);
+			sReturn = CharArrayZZZ.toString(ca, ca.length-1);//die letzte Indexposition ist -1 von der Länge des Strings
 		}
 		return sReturn;		
 	}
@@ -93,7 +93,7 @@ public class CharArrayZZZ {
 			if(CharArrayZZZ.isEmpty(ca))break main;
 			
 			int iPositionLast;
-			if(iPositionLastIn>ca.length) {
+			if(iPositionLastIn>ca.length-1) {
 				break main;
 			}else if(iPositionLastIn<0){
 				break main;

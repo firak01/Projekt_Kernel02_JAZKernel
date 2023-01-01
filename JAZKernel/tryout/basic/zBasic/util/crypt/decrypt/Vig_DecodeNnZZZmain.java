@@ -120,7 +120,7 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 		      System.out.println("\n\n-- Entschluesselter Text von: "+Chiffre.computeFilePath()+" --");
 		      int[]ppure = objVigenere.getDecryptedValuesAsInt();
 		      for (int i = 0; i < ppure.length; i++) {
-		    	IoUtil.printCharWithPosition((ppure[i]),"|",objVigenere.getCharacterPoolList());
+		    	IoUtil.printCharWithPosition((ppure[i]),"|");
 		        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 		      }
 		    }
@@ -130,7 +130,7 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 		    if (IoUtil.JaNein()) {    	
 		    	DateiUtil Entschluesselt = new DateiUtil();
 		        //Entschluesselt.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-		    	Entschluesselt.schreib(objVigenere.getDecryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(),objVigenere.getCharacterPoolList());
+		    	Entschluesselt.schreibUsingPoolPosition(objVigenere.getDecryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(),objVigenere.getCharacterPoolList());
 		    	objVigenere.setFileDecrypted(Entschluesselt);
 		    }
 	    }	 

@@ -28,6 +28,10 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	private static final long serialVersionUID = -2833560399688739434L;	
 	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
 	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = null;
+	protected int[] iaEncryptedPositionInPool = null;
+	protected int[] iaDecryptedPositionInPool = null;
+	
+	
 	public static int iOffsetForAsciiRange=0;//wird dann später aus der Laenge des CharacterPools errechnet.
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
 	
@@ -92,13 +96,12 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);			
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			
-			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
+			int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyword, listasCharacterPool);
 			
-			int[] iaText = UnicodeZZZ.toIntArray(sInput, listasCharacterPool);
+			int[] iaText = UnicodeZZZ.toIntArrayCharacterPoolPosition(sInput, listasCharacterPool);
 
-			int[]ppure = VigenereNnZZZ.encrypt(iaText, listasCharacterPool, iaSchluesselwort);
-			
-			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(ppure, listasCharacterPool);
+			int[]iaPositionInPool = VigenereNnZZZ.encryptAsPositionInPool(iaText, listasCharacterPool, iaSchluesselwort);			
+			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPositionInPool, listasCharacterPool);
 		    
 			//die Map nutzen zum Verschieben der Position
 			/*
@@ -126,7 +129,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] encrypt(String sInput, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] encryptAsPositionInPool(String sInput, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -138,13 +141,12 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			}
 			
 			
-			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
+			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword);
 			
-			int[] iaText = UnicodeZZZ.toIntArray(sInput, listasCharacterPool);
+			int[] iaText = UnicodeZZZ.toIntArray(sInput);
 			
-			iaReturn = VigenereNnZZZ.encrypt(iaText, listasCharacterPool, iaSchluesselwort);
-			
-			
+			int[] iaPositionInPool = VigenereNnZZZ.encryptAsPositionInPool(iaText, listasCharacterPool, iaSchluesselwort);
+			iaReturn = iaPositionInPool;
 		}//end main;
 		return iaReturn;
     }
@@ -158,7 +160,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] encrypt(int[] iaText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] encryptAsPositionInPool(int[] iaText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			if(ArrayUtilZZZ.isEmpty(iaText)) break main;
@@ -174,15 +176,18 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				throw ez;
 			}
 
-			int laengeSW = iaSchluesselwort.length;			
+			int[]iaTextAsPositionInCharacterPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaText, listasCharacterPool);
+			int[]iaSchluesselwortAsPositionInCharacterPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaSchluesselwort, listasCharacterPool);
 			
-			int[]ppure = new int[iaText.length];
-		    for (int i = 0; i < iaText.length; i++) {
+			int laengeSW = iaSchluesselwortAsPositionInCharacterPool.length;			
+			
+			int[]ppure = new int[iaTextAsPositionInCharacterPool.length];
+		    for (int i = 0; i < iaTextAsPositionInCharacterPool.length; i++) {
 		    	if(i>=1) System.out.print("|");
 		        //Das steht in der Codedatei
 		    	//Merke: c = Chiffrebuchstabe
 		    	int iIndexS = i%laengeSW;
-		    	int iSum = iaSchluesselwort[iIndexS]+iaText[i];
+		    	int iSum = iaSchluesselwortAsPositionInCharacterPool[iIndexS]+iaTextAsPositionInCharacterPool[i];
 		    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
 		    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
 		      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
@@ -192,7 +197,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		    }
 		    System.out.print("\n");
 			
-		    iaReturn = ppure;
+		    iaReturn = ppure;		   
 		}//end main;
 		return iaReturn;
     }
@@ -207,10 +212,12 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			String sKeyword = this.getCryptKey();
 
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
-			int[] ppure = VigenereNnZZZ.encrypt(sInput,listasCharacterPool,sKeyword);
-			this.setEncryptedValues(ppure);
+			int[] iaPosition = VigenereNnZZZ.encryptAsPositionInPool(sInput,listasCharacterPool,sKeyword);
+			this.setEncryptedCharacterPoolPosition(iaPosition);
 			
-			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(ppure, listasCharacterPool);
+			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool);
+			int[] iaEncrypted = UnicodeZZZ.toIntArray(sReturn);			
+			this.setEncryptedValues(iaEncrypted);
 		}//end main:
 		return sReturn;
 	}
@@ -232,10 +239,14 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			}
 			
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
-            int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord,listAsCharacterPool);
+            int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyWord,listAsCharacterPool);
 			
-            iaReturn = VigenereNnZZZ.encrypt(iaText, listAsCharacterPool, iaSchluesselwort);
-			this.setEncryptedValues(iaReturn);
+            iaReturn = VigenereNnZZZ.encryptAsPositionInPool(iaText, listAsCharacterPool, iaSchluesselwort);
+            this.setEncryptedCharacterPoolPosition(iaReturn);
+            
+            String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaReturn, listasCharacterPool);
+            iaReturn = UnicodeZZZ.toIntArray(sReturn);
+			this.setEncryptedValues(iaReturn);		
 		}//end main:
 		return iaReturn;
 	}
@@ -313,14 +324,17 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 				throw ez;
 			}
 			
-			int[]iaEncryptedText = UnicodeZZZ.toIntArray(sInput, listasCharacterPool);
+			int[]iaEncryptedTextAsPositionInPool = UnicodeZZZ.toIntArrayCharacterPoolPosition(sInput, listasCharacterPool);
 			if(StringZZZ.isEmpty(sKeyword)) {
-				iaReturn = iaEncryptedText;
+				iaReturn = UnicodeZZZ.toIntArray(sInput);
 				break main;
 			}			
-			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyword, listasCharacterPool);
+			int[] iaSchluesselwortAsPositionInPool = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyword, listasCharacterPool);
 			
-		    iaReturn = VigenereNnZZZ.decrypt(iaEncryptedText, listasCharacterPool, iaSchluesselwort);
+			int[] iaPositionInPool = VigenereNnZZZ.decryptAsPositionInPool(iaEncryptedTextAsPositionInPool, listasCharacterPool, iaSchluesselwortAsPositionInPool);
+		    
+		    String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPositionInPool, listasCharacterPool);
+		    iaReturn = UnicodeZZZ.toIntArray(sReturn);
 		}//end main;
 		return iaReturn;
     }
@@ -334,7 +348,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] decrypt(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
+	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
 			if(ArrayUtilZZZ.isEmpty(iaEncryptedText)) break main;
@@ -385,7 +399,7 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			
 		    //TODOGOON20221231; //nun aus der Postion in der CharacterList wieder eine Char machen!!!
 		    
-		    iaReturn = ppure;
+		    iaReturn = ppure;		    
 		}//end main;
 		return iaReturn;
     }
@@ -397,9 +411,12 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			int[] iaEncryptedText = UnicodeZZZ.toIntArray(sInput);
 			this.setEncryptedValues(iaEncryptedText);
 			
-			int[]iaDecryptedText = this.decrypt(iaEncryptedText);
-						
-			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaDecryptedText, listasCharacterPool);
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
+			int[] iaEncryptedCharacterPoolPosition = UnicodeZZZ.toIntArrayCharacterPoolPosition(sInput, listasCharacterPool);
+			this.setEncryptedCharacterPoolPosition(iaEncryptedCharacterPoolPosition);
+			
+			int[]iaDecryptedText = this.decrypt(iaEncryptedText);					
+			sReturn = CharArrayZZZ.toString(iaDecryptedText);
 		}//end main:
 		return sReturn;
 	}
@@ -425,7 +442,11 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			}
 			
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();				
-			iaReturn = VigenereNnZZZ.decrypt(iaEncryptedText, listCharacterPool, iaSchluesselwort);
+			int[]iaPosition = VigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listCharacterPool, iaSchluesselwort);
+			this.setDecryptedCharacterPoolPosition(iaPosition);
+			
+			String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool);
+			iaReturn = UnicodeZZZ.toIntArray(sReturn);
 			this.setDecryptedValues(iaReturn);
 		}//end main:
 		return iaReturn;   
@@ -577,6 +598,23 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			iaReturn = this.makeOriginalValuesAsCharacterPoolPosition(iaPure);
 		}//end main:
 		return iaReturn;
+	}
+	
+	@Override
+	public int[] getEncryptedCharacterPoolPosition() {
+		return this.iaEncryptedPositionInPool;
+	}
+	@Override	
+	public void setEncryptedCharacterPoolPosition(int[]iaPosition) {
+		this.iaEncryptedPositionInPool = iaPosition;
+	}
+	@Override
+	public int[] getDecryptedCharacterPoolPosition() {
+		return this.iaDecryptedPositionInPool;
+	}
+	@Override
+	public void setDecryptedCharacterPoolPosition(int[]iaPosition) {
+		this.iaDecryptedPositionInPool = iaPosition;
 	}
 	
 	public int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure) throws ExceptionZZZ {

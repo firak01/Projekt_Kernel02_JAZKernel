@@ -45,13 +45,18 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		//1. Variante, mit dem int-Array weiterarbeiten
 		int[]iaTest = objVigenere.getEncryptedValuesAsInt();		
 		int[]iaDecrypted = objVigenere.decrypt(iaTest);
-		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = objVigenere.getCharacterPoolList();
-		stemp = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaDecrypted, listasCharacterPool);
+		stemp = CharArrayZZZ.toString(iaDecrypted);
 		System.out.println("decrypted1: " + stemp);
 		
-		//2. Variante, mit dem encrypted-String weiterarbeiten
+		//2. Variante, mit dem int-Array der Position weiterarbeiten
+		int[]iaDecryptedCharacterPositionInPool = objVigenere.getDecryptedCharacterPoolPosition();
+		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = objVigenere.getCharacterPoolList();
+		stemp = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaDecryptedCharacterPositionInPool, listasCharacterPool);
+		System.out.println("decrypted2: " + stemp);
+		
+		//3. Variante, mit dem encrypted-String weiterarbeiten
 		String sDecrypted = objVigenere.decrypt(sEncrypted);
-		System.out.println("decrypted2: " + sDecrypted);
+		System.out.println("decrypted3: " + sDecrypted);
 		System.out.println("##################################################");
 		
 		 //mit UI	
@@ -116,7 +121,7 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		      int[]ppure = objVigenereUI.getEncryptedValuesAsInt();
 		      ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPoolUI = objVigenereUI.getCharacterPoolList();
 		      for (int i = 0; i < ppure.length; i++) {
-		    	IoUtil.printCharWithPosition((ppure[i]),"|",listasCharacterPoolUI);
+		    	IoUtil.printCharWithPosition((ppure[i]),"|");
 		        if (((i+1)%80)==0) System.out.println();	// neue Zeile
 		      }
 		    }
@@ -126,7 +131,7 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		    if (IoUtil.JaNein()) {    	
 		    	DateiUtil Kodiert = new DateiUtil();
 		        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-		    	Kodiert.schreib(objVigenereUI.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(), objVigenereUI.getCharacterPoolList());
+		    	Kodiert.schreibUsingPoolPosition(objVigenereUI.getEncryptedCharacterPoolPosition(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(), objVigenereUI.getCharacterPoolList());
 		    }
 	    }		
 	} catch (ExceptionZZZ e) {

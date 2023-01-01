@@ -145,7 +145,7 @@ public class UnicodeZZZ implements IConstantZZZ{
 	 * @author Fritz Lindhauer, 23.12.2022, 10:00:47
 	 * @throws ExceptionZZZ 
 	 */
-	public static int[] toIntArray(String s, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
+	public static int[] toIntArrayCharacterPoolPosition(String s, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
 		int iaReturn[]=null;
 		main:{
 			if(StringZZZ.isEmpty(s)) break main;
@@ -316,7 +316,7 @@ public class UnicodeZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static File writeAnsiToFile(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+	public static File writeAnsiToFileUsingPoolPosition(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			if(ia==null) break main;
@@ -382,7 +382,7 @@ public class UnicodeZZZ implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static File writeUtf8ToFile(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
+	public static File writeUtf8ToFileUsingPoolPosition(int[]ia, String sFilepath, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
 			if(ia==null) break main;
