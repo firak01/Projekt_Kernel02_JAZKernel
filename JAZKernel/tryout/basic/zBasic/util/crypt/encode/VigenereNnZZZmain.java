@@ -31,33 +31,14 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 			
 		//ohne UI
 		String SchluesselWortDefault="HALLO"; //FGL: passend zum Beispiel im Buch, S.31	
-//		Vigenere256ZZZ objVigenere = new Vigenere256ZZZ(SchluesselWortDefault);
-//		stemp = objVigenere.encrypt("KRYPTOGRAFIE");
-				
-//		String SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.31 bzw. 34
-		VigenereNnZZZ objVigenere = new VigenereNnZZZ(SchluesselWortDefault);
-		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE, true);
-		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE, true);
-		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC, true);
-		String sEncrypted = objVigenere.encrypt("Bei d");
-		System.out.println("encrypted: " + sEncrypted);
-						
-		//1. Variante, mit dem int-Array weiterarbeiten
-		int[]iaTest = objVigenere.getEncryptedValuesAsInt();		
-		int[]iaDecrypted = objVigenere.decrypt(iaTest);
-		stemp = CharArrayZZZ.toString(iaDecrypted);
-		System.out.println("decrypted1: " + stemp);
+		String sText = "Bei d";
+		debug(sText,SchluesselWortDefault);
 		
-		//2. Variante, mit dem int-Array der Position weiterarbeiten
-		int[]iaDecryptedCharacterPositionInPool = objVigenere.getDecryptedCharacterPoolPosition();
-		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = objVigenere.getCharacterPoolList();
-		stemp = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaDecryptedCharacterPositionInPool, listasCharacterPool);
-		System.out.println("decrypted2: " + stemp);
 		
-		//3. Variante, mit dem encrypted-String weiterarbeiten
-		String sDecrypted = objVigenere.decrypt(sEncrypted);
-		System.out.println("decrypted3: " + sDecrypted);
-		System.out.println("##################################################");
+		SchluesselWortDefault="SchluesselWort"; //FGL: passend zum Beispiel im Buch, S.31 bzw. 34
+		sText = "KRYPTOGRAFIE";
+		debug(sText,SchluesselWortDefault);
+		
 		
 		 //mit UI	
 	//Buchbeispiel Seite 34
@@ -118,8 +99,7 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		    if (IoUtil.JaNein()) {
 		      DateiUtil Original = objVigenereUI.getFileOriginal();
 		      System.out.println("\n\n-- Verschluesselter Text von: "+Original.computeFilePath()+" --");
-		      int[]ppure = objVigenereUI.getEncryptedValuesAsInt();
-		      ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPoolUI = objVigenereUI.getCharacterPoolList();
+		      int[]ppure = objVigenereUI.getEncryptedValuesAsInt();		      
 		      for (int i = 0; i < ppure.length; i++) {
 		    	IoUtil.printCharWithPosition((ppure[i]),"|");
 		        if (((i+1)%80)==0) System.out.println();	// neue Zeile
@@ -130,9 +110,16 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 		    System.out.print("\nVerschluesselten Text als Datei speichern (ueber Dialog)? (J/N): ");
 		    if (IoUtil.JaNein()) {    	
 		    	DateiUtil Kodiert = new DateiUtil();
-		        //Kodiert.schreib(ppure, EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
-		    	Kodiert.schreibUsingPoolPosition(objVigenereUI.getEncryptedCharacterPoolPosition(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(), objVigenereUI.getCharacterPoolList());
+		        //Kodiert.schreib(objVigenereUI.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.ASCII.ordinal());
+		    	Kodiert.schreib(objVigenereUI.getEncryptedValuesAsInt(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal());
+		    	//Kodiert.schreibUsingPoolPosition(objVigenereUI.getEncryptedCharacterPoolPosition(), EncodingMaintypeZZZ.TypeZZZ.UTF8.ordinal(), objVigenereUI.getCharacterPoolList());
 		    }
+		    
+		    int[] iaDecrypted2 = objVigenereUI.decrypt(objVigenereUI.getEncryptedValuesAsInt());
+		    for (int i = 0; i < iaDecrypted2.length; i++) {
+		    	IoUtil.printCharWithPosition((iaDecrypted2[i]),"|");
+		        if (((i+1)%80)==0) System.out.println();	// neue Zeile
+		      }
 	    }		
 	} catch (ExceptionZZZ e) {
 		// TODO Auto-generated catch block
@@ -141,4 +128,39 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
   }//end main:
     System.exit(0);
   }
+  
+  public static boolean debug(String sText, String sSchluesselwort) throws ExceptionZZZ {
+	  boolean bReturn = false;
+	  main:{
+	  
+		//ohne UI
+		VigenereNnZZZ objVigenere = new VigenereNnZZZ(sSchluesselwort);
+		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE, true);
+		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE, true);
+		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC, true);
+		String sEncrypted = objVigenere.encrypt(sText);
+		System.out.println("encrypted: " + sEncrypted);
+						
+		//1. Variante, mit dem int-Array weiterarbeiten
+		int[]iaTest = objVigenere.getEncryptedValuesAsInt();		
+		int[]iaDecrypted = objVigenere.decrypt(iaTest);
+		String stemp = CharArrayZZZ.toString(iaDecrypted);
+		System.out.println("decrypted1: " + stemp);
+		
+		//2. Variante, mit dem int-Array der Position weiterarbeiten
+		int[]iaDecryptedCharacterPositionInPool = objVigenere.getDecryptedCharacterPoolPosition();
+		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = objVigenere.getCharacterPoolList();
+		stemp = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaDecryptedCharacterPositionInPool, listasCharacterPool);
+		System.out.println("decrypted2: " + stemp);
+		
+		//3. Variante, mit dem encrypted-String weiterarbeiten
+		String sDecrypted = objVigenere.decrypt(sEncrypted);
+		System.out.println("decrypted3: " + sDecrypted);
+		System.out.println("##################################################");
+		
+		bReturn = true;
+	  }//end main
+	  return bReturn;
+  }
+  
 }

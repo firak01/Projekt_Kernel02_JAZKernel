@@ -239,8 +239,14 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 			}
 			
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
-            int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyWord,listAsCharacterPool);
+            //int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyWord,listAsCharacterPool);
+			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 			
+            //int[]iaTextAsPositionInCharacterPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaText, listasCharacterPool);
+			//int[]iaSchluesselwortAsPositionInCharacterPool = VigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaSchluesselwort, listasCharacterPool);
+			
+            
+            
             iaReturn = VigenereNnZZZ.encryptAsPositionInPool(iaText, listAsCharacterPool, iaSchluesselwort);
             this.setEncryptedCharacterPoolPosition(iaReturn);
             
