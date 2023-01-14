@@ -1488,7 +1488,47 @@ public class StringZZZ implements IConstantZZZ{
 		}
 		return bReturn;
 	}
+
+	/** Checks if the CharSequence contains only Unicode letters.
+
+null will return false. An empty CharSequence (length()=0) will return false.
+
+ StringUtils.isAlpha(null)   = false
+ StringUtils.isAlpha("")     = false
+ StringUtils.isAlpha("  ")   = false
+ StringUtils.isAlpha("abc")  = true
+ StringUtils.isAlpha("ab2c") = false
+ StringUtils.isAlpha("ab-c") = false
+ 
+	 * 
+	 * 
+	 * @param sString
+	 * @return
+	 * @author Fritz Lindhauer, 14.01.2023, 08:45:10
+	 */
+	public static boolean isAlphabet(String sString){
+		return StringUtils.isAlpha(sString);
+	}
 	
+	/** Checks if the CharSequence contains only Unicode letters or digits.
+
+null will return false. An empty CharSequence (length()=0) will return false.
+
+ StringUtils.isAlphanumeric(null)   = false
+ StringUtils.isAlphanumeric("")     = false
+ StringUtils.isAlphanumeric("  ")   = false
+ StringUtils.isAlphanumeric("abc")  = true
+ StringUtils.isAlphanumeric("ab c") = false
+ StringUtils.isAlphanumeric("ab2c") = true
+ StringUtils.isAlphanumeric("ab-c") = false
+ 
+	 * @param sString
+	 * @return
+	 * @author Fritz Lindhauer, 14.01.2023, 08:47:53
+	 */
+	public static boolean isAlphanumeric(String sString){
+		return StringUtils.isAlphanumeric(sString);
+	}
 	
 	/**    Checks if the String contains only unicode digits.
 	 * 	Uses Jakarta commons.lang.

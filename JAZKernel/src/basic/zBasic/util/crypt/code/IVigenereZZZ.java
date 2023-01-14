@@ -1,9 +1,7 @@
-package basic.zBasic.util.crypt.encode;
+package basic.zBasic.util.crypt.code;
 
 import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.ICryptUIZZZ;
-import basic.zBasic.util.crypt.ICryptZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
 public interface IVigenereZZZ extends ICryptZZZ, ICryptUIZZZ{

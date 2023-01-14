@@ -1,4 +1,4 @@
-package basic.zBasic.util.crypt;
+package basic.zBasic.util.crypt.code;
 
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;

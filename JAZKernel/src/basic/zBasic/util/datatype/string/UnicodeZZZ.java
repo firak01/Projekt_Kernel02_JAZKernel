@@ -22,9 +22,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
-import basic.zBasic.util.crypt.encode.Vigenere26ZZZ;
-import basic.zBasic.util.crypt.encode.Vigenere96ZZZ;
+import basic.zBasic.util.crypt.code.Vigenere256ZZZ;
+import basic.zBasic.util.crypt.code.Vigenere26ZZZ;
+import basic.zBasic.util.crypt.code.Vigenere96ZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 

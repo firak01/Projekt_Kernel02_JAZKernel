@@ -1,12 +1,11 @@
 package debug.zBasic.util.crypt;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.ICryptZZZ;
-import basic.zBasic.util.crypt.IROTZZZ;
-import basic.zBasic.util.crypt.ROTnnZZZ;
-import basic.zBasic.util.crypt.ROTnumericZZZ;
-import basic.zBasic.util.crypt.ROT13ZZZ;
-import basic.zBasic.util.crypt.ROTnumericZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.crypt.code.IROTZZZ;
+import basic.zBasic.util.crypt.code.ROT13ZZZ;
+import basic.zBasic.util.crypt.code.ROTnnZZZ;
+import basic.zBasic.util.crypt.code.ROTnumericZZZ;
 
 public class DebugRotNnZZZ {
 

@@ -8,6 +8,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.Vigenere96ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 

@@ -1,10 +1,9 @@
-package basic.zBasic.util.crypt.encode;
+package basic.zBasic.util.crypt.code;
 
 import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.AbstractVigenereZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
@@ -17,16 +16,18 @@ import basic.zBasic.util.datatype.string.UnicodeZZZ;
  * @author Fritz Lindhauer, 08.10.2022, 08:29:08
  * 
  */
-public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
-	public static int iOffsetForAsciiRange=96;
+public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluesselung
+	private static final long serialVersionUID = 1L;
+	public static int iOffsetForAsciiRange=256;
 	public static int iOffsetForUtf8Range=32;
-	public Vigenere96ZZZ() {	  
+	
+	public Vigenere256ZZZ() {	  
 		  super();
 	  }
-		public Vigenere96ZZZ(String sSchluesselWort) {
+	public Vigenere256ZZZ(String sSchluesselWort) {
 		  super(sSchluesselWort);
 	  }
-	  public Vigenere96ZZZ(String sSchluesselWort, String sFilePath) {
+	  public Vigenere256ZZZ(String sSchluesselWort, String sFilePath) {
 		  super(sSchluesselWort, sFilePath);
 	  }
 		
@@ -36,7 +37,7 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 		    String SchluesselWort=this.getCryptKey();
 		    
 		    System.out.println("Schluesselwort: " + SchluesselWort);
-			
+
 		    String sFilePath = this.getFilePath();
 		    DateiUtil Original = new DateiUtil(sFilePath);
 		    this.setFileOriginal(Original);
@@ -49,10 +50,10 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 		        IoUtil.printChar(p[i]);	// druckbares Zeichen?
 		        if (((i+1)%80)==0) System.out.println();
 		      }
-		    }
-		
+		    }		
 		    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");    
-	
+		    
+
 		int[]ppure = this.encrypt(p);
 	    this.setEncryptedValues(ppure);
 	    bReturn = true;
@@ -62,7 +63,7 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 	  
   public boolean decryptUI() throws ExceptionZZZ{
 	  boolean bReturn = false;
-	  main:{		  		    
+	  main:{
 //		    System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
 //		    if (IoUtil.JaNein()) {
 //		      System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
@@ -71,7 +72,7 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 //		        if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
 //		      }
 //		    }
-		  
+		   
 		    System.out.println("\nDatei einlesen ...");
 		    DateiUtil Chiffre = this.getFileEncrypted();
 		    System.out.println("Datei: '" + Chiffre.computeFilePath() + "'" );;
@@ -81,41 +82,41 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 		    	IoUtil.printChar(i2);
 		    }
 		    
-			String SchluesselWort=this.getCryptKey();		   
-			System.out.println("Schluesselwort: '"+SchluesselWort+"'");	    
-
+		    String SchluesselWort=this.getCryptKey();		   
+			System.out.println("Schluesselwort: '"+SchluesselWort+"'");
+			  		    
 		    System.out.println("\nBeginne Entschluesselung ... ");
-            int[]iaPure = this.decrypt(c);
+
+		    int[]iaPure = this.decrypt(c);
 		    this.setDecryptedValues(iaPure);		    
-		    
-		  bReturn = true;
+		   
+		    bReturn = true;
 	  }//end main:
 	  return bReturn;
   }
 	@Override
 	public int getOffsetForAsciiRange() {
-		return Vigenere96ZZZ.iOffsetForAsciiRange;
-	}
-	
-	@Override
-	public int getOffsetForUtf8Range() {
-		return Vigenere96ZZZ.iOffsetForUtf8Range;
+		return Vigenere256ZZZ.iOffsetForAsciiRange;
 	}
 	
 	@Override
 	public int[] fromUtf8ToAsciiForOffset(int[] p) {
-		 //Analog zu Vigenere96.java, nur mit 65
+		 //Analog zu Vigenere96.java, nur mit 32
 		 //ImBuch, auf Seite 34 steht... "wird auf space (Nr. 32) bezogen, 
 		 //    for(int i=0; i < p.length; i++) {
 		 //    	p[i]=p[i]-65;
 		 //    }
-		 return UnicodeZZZ.fromUtf8ToAsciiFor96(p);
+		 return UnicodeZZZ.fromUtf8ToAsciiFor256(p);
 	}
 	
 	@Override
 	public int[] fromAsciiToUtf8ForOffset(int[] p) {
 		//Analog zum buch, nur mit +32
 	    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
-	    return UnicodeZZZ.fromAsciiToUtf8For96(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
+	    return UnicodeZZZ.fromAsciiToUtf8For256(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
+	}
+	@Override
+	public int getOffsetForUtf8Range() {
+		return Vigenere256ZZZ.iOffsetForUtf8Range;
 	}
 }

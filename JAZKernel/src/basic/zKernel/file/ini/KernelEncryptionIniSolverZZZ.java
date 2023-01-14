@@ -5,10 +5,10 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ;
-import basic.zBasic.util.crypt.CryptEnumSetFactoryZZZ;
-import basic.zBasic.util.crypt.ICryptZZZ;
-import basic.zBasic.util.crypt.KernelCryptAlgorithmFactoryZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.code.CryptEnumSetFactoryZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;

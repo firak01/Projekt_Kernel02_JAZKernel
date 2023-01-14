@@ -6,7 +6,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.crypt.VigenereNnZZZ;
+import basic.zBasic.util.crypt.code.VigenereNnZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**

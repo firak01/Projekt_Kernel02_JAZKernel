@@ -4,9 +4,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
-import basic.zBasic.util.crypt.CryptAlgorithmFactoryZZZ;
-import basic.zBasic.util.crypt.CryptAlgorithmMaintypeZZZ;
-import basic.zBasic.util.crypt.ICryptZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 

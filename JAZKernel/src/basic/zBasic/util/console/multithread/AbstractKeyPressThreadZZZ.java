@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
-import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ;
-import basic.zBasic.util.crypt.ROTnnZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;

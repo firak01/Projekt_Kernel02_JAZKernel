@@ -4,6 +4,8 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.IVigenereZZZ;
+import basic.zBasic.util.crypt.code.Vigenere256ZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;

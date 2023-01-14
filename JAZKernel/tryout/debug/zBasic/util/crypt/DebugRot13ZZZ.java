@@ -1,7 +1,7 @@
 package debug.zBasic.util.crypt;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.crypt.ROT13ZZZ;
+import basic.zBasic.util.crypt.code.ROT13ZZZ;
 
 public class DebugRot13ZZZ {
 

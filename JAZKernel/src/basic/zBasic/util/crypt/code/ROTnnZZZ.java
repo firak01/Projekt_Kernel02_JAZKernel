@@ -1,4 +1,4 @@
-package basic.zBasic.util.crypt;
+package basic.zBasic.util.crypt.code;
 
 import java.util.HashMap;
 import java.util.Map;

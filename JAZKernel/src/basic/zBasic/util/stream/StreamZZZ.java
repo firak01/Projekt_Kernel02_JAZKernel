@@ -24,7 +24,7 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
-import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 

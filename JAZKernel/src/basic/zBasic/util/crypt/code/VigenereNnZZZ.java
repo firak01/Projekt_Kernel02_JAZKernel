@@ -1,4 +1,4 @@
-package basic.zBasic.util.crypt;
+package basic.zBasic.util.crypt.code;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -15,9 +15,6 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.crypt.encode.IVigenereNnZZZ;
-import basic.zBasic.util.crypt.encode.IVigenereZZZ;
-import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;

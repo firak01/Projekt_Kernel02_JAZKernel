@@ -8,8 +8,8 @@ import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
 import basic.zBasic.util.console.multithread.KeyPressUtilZZZ;
-import basic.zBasic.util.crypt.CryptAlgorithmMappedValueZZZ;
-import basic.zBasic.util.crypt.ROTnnZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -32,6 +32,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 			System.out.println("2: Rotascii");
 			System.out.println("3: RotNumeric");
 			System.out.println("4: RotNn");
+			System.out.println("5: VigenereNn");
          	System.out.println("Warte auf Eingabe Crypt...");                 	
 			Thread.sleep(this.getSleepTime()); 
 		}
@@ -76,6 +77,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             	this.isCurrentInputValid(true);
             	this.processROTnn_(hmVariable);        					                	
             	break;
+            case "5":
+            	this.isCurrentInputValid(true);
+            	this.processVigenereNn_(hmVariable);
             default:
             	System.out.println("ungueltige Eingabe");
             	this.isCurrentMenue(false);//Neue Eingabe OHNE erneut das Menue aufzubauen.
@@ -227,6 +231,111 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	            	}
         		}
         	}	
+		}
+		
+		private void processVigenereNn_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
+			
+			if(hmVariable!=null) {
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation();
+        		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
+        	}	
+        	
+			
+			//######################################################################
+        	this.questionAlphabetKey_(hmVariable);
+        	
+        	//######################################################################
+        	//### Frage nach Characterpool
+        	if(!this.isCurrentInputFinished()) {
+        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Standard-Zeichenvorrat '" + CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT + "' als Ausgangsstring verwenden?");				                						                				    	                			                				                					                		
+        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
+        			this.cancelToMenue(hmVariable);
+        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+        			this.isCurrentInputValid(true);	
+        			System.out.println("Geben Sie den Zeichenvorrat als String ein.");		                	
+                	sInput = this.getInputReader().nextLine();
+                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, sInput);
+                	if(StringZZZ.isEmpty(sInput)) {
+                		this.isCurrentInputValid(false); //wieder zurück zum Menue
+                		this.isCurrentMenue(true);
+                		this.isCurrentInputFinished(true);	
+                	}							                								                	
+            	}else {
+            		this.isCurrentInputValid(true);	
+            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT);			
+            	}	
+        	}
+        	String sCharacterPool = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
+    		
+    		//#####################################################################
+    		//### Frage nach Grossbuchstaben
+        	if(!this.isCurrentInputFinished()) {
+        		if(!StringZZZ.containsUppercaseOnly(sCharacterPool)) {
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Grossbuchstaben verwenden?");				                						                				    	                			                				                					                		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
+	            	}else {
+	            		this.isCurrentInputValid(true);	
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_UPPERCASE, BooleanZZZ.stringToBoolean(sInput));
+	
+	            	}
+        		}
+        	}
+    		
+    		//#####################################################################
+    		//### Frage nach Kleinbuchstaben
+        	if(!this.isCurrentInputFinished()) {
+        		if(!StringZZZ.containsLowercaseOnly(sCharacterPool)) {
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Kleinbuchstaben verwenden?");				                						                				    	                			                				                					                		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                			
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));
+	            	}else {
+	            		this.isCurrentInputValid(true);	
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_LOWERCASE, BooleanZZZ.stringToBoolean(sInput));			
+	            	}
+	        	}
+        	}
+    			
+        	//#######################################################################
+    		this.questionUseNumeric_(hmVariable, sCharacterPool);
+        	
+        	//#####################################################################
+    		//### Frage nach Leerzeichen
+        	if(!this.isCurrentInputFinished()) {
+        		if(!StringZZZ.containsBlankAny(sCharacterPool)) {
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit dem Leerzeichen ' ' verwenden?");				                						                				    	                			                				                					                		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	//nix weiter
+	            	}else {
+	            		this.isCurrentInputValid(true);
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, (" " + sCharacterPool));	            				
+	            	}
+        		}
+        	}	
+		}
+		
+		
+		private void questionAlphabetKey_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+			//######################################################################
+        	//### Frage nach dem Alphabet-Key (um dessen Zahlenwert den dann die Rotation stattfindet
+        	if(!this.isCurrentInputFinished()) {
+            	String sInput = KeyPressUtilZZZ.makeInputAlphabetCancel(this.getInputReader(), "Bitte geben Sie das Schluesselwort bestehend aus Zeichen des Alphabets ein.");				                						                				    	                			                				                					                		
+        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
+        			this.cancelToMenue(hmVariable);				                
+            	}else {
+            		this.isCurrentInputValid(true);	
+            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC, sInput);					
+            	}	
+        	}
 		}
 		
 		private void questionNumericKey_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {

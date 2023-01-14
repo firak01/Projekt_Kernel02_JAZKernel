@@ -1,4 +1,4 @@
-package basic.zBasic.util.crypt;
+package basic.zBasic.util.crypt.code;
 
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
@@ -6,9 +6,6 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
-import basic.zBasic.util.crypt.encode.Vigenere256ZZZ;
-import basic.zBasic.util.crypt.encode.Vigenere26ZZZ;
-import basic.zBasic.util.crypt.encode.Vigenere96ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 
@@ -63,6 +60,8 @@ private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss
 			objReturn = new Vigenere96ZZZ();
 		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE256.getAbbreviation())) {
 			objReturn = new Vigenere256ZZZ();
+		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn.getAbbreviation())) {
+			objReturn = new VigenereNnZZZ();
 		}else{
 			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+"unhandled cipher type '" + sCipher + "'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 			throw ez;				

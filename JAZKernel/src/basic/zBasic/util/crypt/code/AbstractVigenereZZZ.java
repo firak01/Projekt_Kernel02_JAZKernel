@@ -1,10 +1,9 @@
-package basic.zBasic.util.crypt;
+package basic.zBasic.util.crypt.code;
 
 import base.files.DateiUtil;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
-import basic.zBasic.util.crypt.encode.IVigenereZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;

@@ -1,4 +1,4 @@
-package basic.zBasic.util.crypt.encode;
+package basic.zBasic.util.crypt.code;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,6 @@ import base.files.EncodingMappedValueZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.datatype.string.FileEncodingUtil;
-import basic.zBasic.util.crypt.AbstractVigenereZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
