@@ -303,6 +303,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	}
     			
         	//#######################################################################
+        	TODOGOON20230114; //Warum kommt im DebugModus alles korrekt, im AusfuehenModus aber ungueltig als Ergebnis?
     		this.questionUseNumeric_(hmVariable, sCharacterPool);
         	
         	//#####################################################################
