@@ -6,7 +6,9 @@ import basic.zBasic.util.console.multithread.AbstractConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -87,13 +89,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 						int iCryptKey = intCryptKey.intValue();
 						objCrypt.setCryptNumber(iCryptKey);
 					}
-					//+++++++++++++++++++++++++++++++++++++++++++++++++
-					//a) CharacterPool
-					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
-					if(!StringZZZ.isEmpty(sInput)) {
-						objCrypt.setCharacterPool(sInput);
-					}
-					//+++++++++++++++++++++++++++++++++++++++++++++++++
+
 				}else if(objCrypt.getSubtype()==CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal()) {
 					//B) Für Vigenere-Algorithmen
 					//0) StringKey
@@ -102,14 +98,14 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 						String sCryptKey = sInput;						
 						objCrypt.setCryptKey(sCryptKey);
 					}
-					//+++++++++++++++++++++++++++++++++++++++++++++++++
+										
 				}else {
 					System.out.println("Der Algorithmus-Subtyp wird nicht behandelt.");
 					bReturn = false;
 				}
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++				
-				//b) alle Flags setzen
+				//a) alle Flags setzen und ggfs. auswerten
 				String[] saFlags = hmVariable.getKeysAsStringStartingWith(KeyPressThreadCryptZZZ.sINPUT_FLAG);
 				if(saFlags!=null) {
 					for(String stemp : saFlags) {
@@ -118,6 +114,15 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 						objCrypt.setFlag(sFlagName, bValue);
 					}
 				}
+				
+				//b) CharacterPool setzen, wenn verwendet
+				if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USECHARACTERPOOL.name())) {
+					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
+					if(!StringZZZ.isEmpty(sInput)) {
+						objCrypt.setCharacterPool(sInput);
+					}
+				}
+				//+++++++++++++++++++++++++++++++++++++++++++++++++								
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
 								
 				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);				

@@ -5,6 +5,7 @@ import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.code.VigenereNnZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
@@ -90,9 +91,9 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 	    }
 
 	    IVigenereNnZZZ objVigenereUI = new VigenereNnZZZ(SchluesselWort,sFilePath);	    	    
-		objVigenereUI.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE,true);
-		objVigenereUI.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE,true);		
-		objVigenereUI.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC,true);		
+		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE,true);
+		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE,true);		
+		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC,true);		
 		
 		btemp = objVigenereUI.encryptUI();
 	    if(btemp) {		    		    
@@ -136,9 +137,9 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 	  
 		//ohne UI
 		VigenereNnZZZ objVigenere = new VigenereNnZZZ(sSchluesselwort);
-		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE, true);
-		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE, true);
-		objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC, true);
+		objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE, true);
+		objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE, true);
+		objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC, true);
 		String sEncrypted = objVigenere.encrypt(sText);
 		System.out.println("encrypted: " + sEncrypted);
 						

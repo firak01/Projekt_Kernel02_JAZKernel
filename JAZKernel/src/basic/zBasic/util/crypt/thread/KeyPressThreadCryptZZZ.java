@@ -3,6 +3,7 @@ package basic.zBasic.util.crypt.thread;
 import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.console.multithread.AbstractKeyPressThreadZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
@@ -80,7 +81,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             case "5":
             	this.isCurrentInputValid(true);
             	this.processVigenereNn_(hmVariable);
+            	break;
             default:
+            	System.out.println(ReflectCodeZZZ.getPositionCurrent() + " - default Zweig: sInput = '"+sInput+"'");
             	System.out.println("ungueltige Eingabe");
             	this.isCurrentMenue(false);//Neue Eingabe OHNE erneut das Menue aufzubauen.
             	this.isCurrentInputValid(false);					                	
@@ -173,7 +176,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             	}else {
             		this.isCurrentInputValid(true);	
             		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT);			
-            	}	
+            	}
+        		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
         	}
         	String sCharacterPool = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
     		
@@ -236,10 +240,12 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		private void processVigenereNn_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
 			
 			if(hmVariable!=null) {
-        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation();
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn.getAbbreviation();
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         	}	
         	
+			
+			TODOGOON20230115; //RotNN wie VigenereNN aufbauen, also zunächst wie in den Interfaces, mit dem Ziel ICharacterPoolUserZZZ einzubinden...
 			
 			//######################################################################
         	this.questionAlphabetKey_(hmVariable);
@@ -263,10 +269,12 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             	}else {
             		this.isCurrentInputValid(true);	
             		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT);			
-            	}	
+            	}
+        		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
         	}
         	String sCharacterPool = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
     		
+        	
     		//#####################################################################
     		//### Frage nach Grossbuchstaben
         	if(!this.isCurrentInputFinished()) {
@@ -303,9 +311,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	}
     			
         	//#######################################################################
-        	TODOGOON20230114; //Warum kommt im DebugModus alles korrekt, im AusfuehenModus aber ungueltig als Ergebnis?
+        	//TODOGOON20230114; //Warum kommt im DebugModus alles korrekt, im AusfuehenModus aber ungueltig als Ergebnis?
     		this.questionUseNumeric_(hmVariable, sCharacterPool);
-        	
+    		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Nach questionUseNumeric");
+    		
         	//#####################################################################
     		//### Frage nach Leerzeichen
         	if(!this.isCurrentInputFinished()) {
@@ -334,7 +343,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         			this.cancelToMenue(hmVariable);				                
             	}else {
             		this.isCurrentInputValid(true);	
-            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC, sInput);					
+            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_KEY_STRING, sInput);					
             	}	
         	}
 		}
@@ -364,7 +373,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         		}
         		        		
         		if(!bCharacterPoolContainsNumericOnly) {
-	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit nummerischen Werte (0-9) verwenden?");
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit nummerischen Werte (0-9) verwenden?");	        		
 	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
 	        			this.cancelToMenue(hmVariable);
 	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {

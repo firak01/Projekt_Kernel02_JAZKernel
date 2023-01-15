@@ -7,7 +7,7 @@ public interface IROTZZZ extends ICryptZZZ{
 	//Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen
 	
 	public enum FLAGZ{
-		USENUMERIC,USEUPPERCASE,USELOWERCASE
+		USENUMERIC,USEUPPERCASE,USELOWERCASE,USECHARACTERPOOL
 	}	
 	
 	//###########################################################

@@ -15,6 +15,8 @@ public interface IKeyPressThreadCryptConstantsZZZ extends IKeyPressThreadConstan
 	public static String sINPUT_FLAG_CHARACTER_LOWERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseLowerCase";
 	public static String sINPUT_FLAG_CHARACTER_NUMERIC = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseNumeric";
 	
+	public static String sINPUT_FLAG_USE_CHARACTERPOOL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseCharacterPool";
+	
 	
 	
 	public static String sOUTPUT_TEXT_CRYPTED = "OUTPUT_TEXT_CRYPTED";   

@@ -556,9 +556,9 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		if(ArrayListZZZ.isEmpty(this.listasCharacterPool)) {
 			String sCharacterPool = this.getCharacterPool();
 			
-			boolean bUseUppercasePool = this.getFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE);
-			boolean bUseLowercasePool = this.getFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE);
-			boolean bUseNumericPool = this.getFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC);
+			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
+			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
+			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);
 					
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
@@ -641,12 +641,10 @@ public class VigenereNnZZZ extends AbstractVigenereZZZ implements IVigenereNnZZZ
 		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 	}
 
-	public boolean getFlag(IVigenereNnZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
-	public void setFlag(IVigenereNnZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public void setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
 		this.setFlag(objEnumFlag.name(), bFlagValue);
-	}
-
-	
+	}	
 }

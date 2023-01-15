@@ -50,7 +50,8 @@ public class KeyPressUtilZZZ implements IKeyPressConstantZZZ, IConstantZZZ{
             	   bGoon = false;
             	}else if(StringZZZ.isAlphabet(sInput)){            		
             		bGoon = true;
-            	}else {            	
+            	}else {  
+            		System.out.println(ReflectCodeZZZ.getPositionCurrent() + " - else Zweig: sInput = '"+sInput+"'");
             		System.out.println("ungueltige Eingabe");			                		
                 	bGoon=false;				                	
             	}				
@@ -87,11 +88,13 @@ public class KeyPressUtilZZZ implements IKeyPressConstantZZZ, IConstantZZZ{
             		//System.out.println("Abbruch eingegeben");
             		bGoon = true;
                }else if(StringZZZ.isEmpty(sInput)) {
+            	   System.out.println(ReflectCodeZZZ.getPositionCurrent() + " - isEmpty Zweig: sInput = '"+sInput+"'");
             	   System.out.println("ungueltige Eingabe");
             	   bGoon = false;
             	}else if(StringZZZ.isNumeric(sInput)){            		
             		bGoon = true;
-            	}else {            	
+            	}else {  
+            		System.out.println(ReflectCodeZZZ.getPositionCurrent() + " - else Zweig: sInput = '"+sInput+"'");
             		System.out.println("ungueltige Eingabe");			                		
                 	bGoon=false;				                	
             	}				
@@ -172,7 +175,8 @@ public class KeyPressUtilZZZ implements IKeyPressConstantZZZ, IConstantZZZ{
 				
 				boolean bGoon=false; String sInput = null;
 				do {
-					sInput = inputReader.nextLine();	                
+					sInput = inputReader.nextLine();
+					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sInput = '"+sInput+"'");
 	                if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {				                		
                 		bGoon = true;
                 	}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyYes)) {				                		
@@ -181,6 +185,7 @@ public class KeyPressUtilZZZ implements IKeyPressConstantZZZ, IConstantZZZ{
                 		//System.out.println("Abbruch eingegeben");
                 		bGoon = true;
                 	}else {
+                		System.out.println(ReflectCodeZZZ.getPositionCurrent() + " - else Zweig: sInput = '"+sInput+"'");
                 		System.out.println("ungueltige Eingabe");			                		
 	                	bGoon=false;				                	
                 	}				
@@ -246,6 +251,7 @@ public class KeyPressUtilZZZ implements IKeyPressConstantZZZ, IConstantZZZ{
                 		//System.out.println("Abbruch eingegeben");
                 		bGoon = true;
                 	}else {
+                		System.out.println(ReflectCodeZZZ.getPositionCurrent() + " - else Zweig: sInput = '"+sInput+"'");
                 		System.out.println("ungueltige Eingabe");			                		
 	                	bGoon=false;				                	
                 	}				

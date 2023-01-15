@@ -4,6 +4,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.code.Vigenere256ZZZ;
 import basic.zBasic.util.crypt.code.Vigenere26ZZZ;
@@ -80,9 +81,9 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
     	}
     }
     VigenereNnZZZ objVigenere = new VigenereNnZZZ(SchluesselWort, sFilePath);
-    objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USELOWERCASE, true);
-    objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USEUPPERCASE, true);
-    objVigenere.setFlag(IVigenereNnZZZ.FLAGZ.USENUMERIC, true);
+    objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE, true);
+    objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE, true);
+    objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC, true);
     
 	objVigenere.isFileOriginalEncrypted(true);
 	    
