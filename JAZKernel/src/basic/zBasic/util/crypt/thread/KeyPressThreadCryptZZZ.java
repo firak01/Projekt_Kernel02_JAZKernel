@@ -244,9 +244,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         	}	
         	
-			
-			TODOGOON20230115; //RotNN wie VigenereNN aufbauen, also zunächst wie in den Interfaces, mit dem Ziel ICharacterPoolUserZZZ einzubinden...
-			
 			//######################################################################
         	this.questionAlphabetKey_(hmVariable);
         	

@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.IROTZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
@@ -126,8 +127,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
 			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
-			String sFlagNumeric = IROTZZZ.FLAGZ.USENUMERIC.name();
-			String sFlagUppercase = IROTZZZ.FLAGZ.USEUPPERCASE.name();
+			String sFlagNumeric = ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();
+			String sFlagUppercase = ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
 			String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA="+sValue);

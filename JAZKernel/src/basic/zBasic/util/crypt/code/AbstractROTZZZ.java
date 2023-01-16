@@ -4,8 +4,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 
 public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ{
+	private static final long serialVersionUID = 1L;
 	private int iCryptKey=-1;
-	private String sCharacterPool=null; //Das ist ein Wert, der für eine ROT Verschiebung gültige Zeichen enthält
 	
 	public abstract String encrypt(String sInput) throws ExceptionZZZ;
 	public abstract String decrypt(String sInput) throws ExceptionZZZ;
@@ -31,21 +31,14 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ{
 	public int getCryptNumber() {
 		return this.iCryptKey;
 	}
-	
-	@Override
-	public String getCharacterPool() {
-		return this.sCharacterPool;
-	}
+		
 	@Override
 	public void setCharacterPool(String sCharacterPool) {
-		this.sCharacterPool = sCharacterPool;
-	}	
-	
-	
-	//nur wichtig für Vigenere Verschluesselung
+		//nur wg. ICrypZZZ
+	}
+
 	@Override
 	public void setCryptKey(String sCryptKey) {
-		// TODO Auto-generated method stub
-		
+		//Nur wg. ICryptZZZ
 	}
 }

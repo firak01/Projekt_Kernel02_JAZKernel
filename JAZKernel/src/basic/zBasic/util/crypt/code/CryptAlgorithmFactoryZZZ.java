@@ -51,7 +51,7 @@ private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss
 		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric.getAbbreviation())){
 			objReturn = new ROTnumericZZZ();
 		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii.getAbbreviation())) {
-			objReturn = new ROTasciiZZZ();
+			objReturn = new ROTnnZZZ();
 		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation())) {
 			objReturn = new ROTnnZZZ();
 		}else if(sCipher.equalsIgnoreCase(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE26.getAbbreviation())) {

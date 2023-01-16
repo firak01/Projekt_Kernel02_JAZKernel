@@ -23,7 +23,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * https://codereview.stackexchange.com/questions/7241/rot-n-algorithm-in-java
  * 
  */
-public class ROTnnZZZ extends ROTasciiZZZ{	
+public class ROTnnZZZ extends AbstractROTnnZZZ{	
 	ROTnnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
 		super();
 		String[] saFlagControl = {"init"};
@@ -87,18 +87,18 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
-		boolean bUseUpperCase = this.getFlag(IROTZZZ.FLAGZ.USEUPPERCASE.name());
-		boolean bUseLowerCase = this.getFlag(IROTZZZ.FLAGZ.USELOWERCASE.name());
-		boolean bUseNumeric = this.getFlag(IROTZZZ.FLAGZ.USENUMERIC.name());
+		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name());
+		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE.name());
+		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name());
 		return ROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
-		boolean bUseUpperCase = this.getFlag(IROTZZZ.FLAGZ.USEUPPERCASE.name());
-		boolean bUseLowerCase = this.getFlag(IROTZZZ.FLAGZ.USELOWERCASE.name());
-		boolean bUseNumeric = this.getFlag(IROTZZZ.FLAGZ.USENUMERIC.name());
+		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name());
+		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE.name());
+		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name());
 		return ROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric);
 	}
 	
@@ -128,7 +128,7 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 			}
 			
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
-			sReturn = ROTasciiZZZ.encrypt(sInput, abcABC, n);		
+			sReturn = AbstractROTnnZZZ.encrypt(sInput, abcABC, n);		
 		}//end main;
 		return sReturn;
     }
@@ -147,8 +147,9 @@ public class ROTnnZZZ extends ROTasciiZZZ{
 			
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
 			String sCharacterPool = StringZZZ.reverse(abcABC);	
-			sReturn = ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);
+			sReturn = AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);
 		}
 		return sReturn;						
 	}
+	
 }

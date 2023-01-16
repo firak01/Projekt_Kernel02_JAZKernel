@@ -3,7 +3,7 @@ package debug.zBasic.util.crypt;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
-import basic.zBasic.util.crypt.code.ROTasciiZZZ;
+import basic.zBasic.util.crypt.code.AbstractROTnnZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.code.ROTnumericZZZ;
 
@@ -16,8 +16,8 @@ public class DebugRotAsciiZZZ {
 		// Rotate the input string.
         // ... Then rotate the rotated string.
         String input = "Do you have any cat pictures?";
-        String rotNn = ROTasciiZZZ.encrypt(input,iKeyLength);
-        String roundTrip = ROTasciiZZZ.decrypt(rotNn,iKeyLength);
+        String rotNn = AbstractROTnnZZZ.encrypt(input,iKeyLength);
+        String roundTrip = AbstractROTnnZZZ.decrypt(rotNn,iKeyLength);
 
         System.out.println(input);
         System.out.println(rotNn);
@@ -25,7 +25,7 @@ public class DebugRotAsciiZZZ {
         System.out.println("###################");
         
         try {        	
-        	ROTasciiZZZ objCrypt = new ROTasciiZZZ(iKeyLength);
+        	ROTnnZZZ objCrypt = new ROTnnZZZ(iKeyLength);
 			rotNn = objCrypt.encrypt(input);
 			roundTrip = objCrypt.decrypt(rotNn);
 			

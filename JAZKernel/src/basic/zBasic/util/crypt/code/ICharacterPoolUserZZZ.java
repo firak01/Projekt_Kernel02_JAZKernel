@@ -20,7 +20,7 @@ public interface ICharacterPoolUserZZZ {
 		public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool);
 		
 		public String getCharacterPool();
-		public void setCharacterPool(String sCharacterPool);
+		public void setCharacterPool(String sCharacterPool);						
 		
 		public int[] getEncryptedCharacterPoolPosition();
 		public void setEncryptedCharacterPoolPosition(int[]iaPoolPosition);

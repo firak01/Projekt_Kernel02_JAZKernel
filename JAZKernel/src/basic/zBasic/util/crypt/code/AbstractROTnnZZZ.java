@@ -7,6 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Als Liste von Zeichen wird der gesamte ASCII Raum verwendet.
@@ -21,27 +22,33 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * https://codereview.stackexchange.com/questions/7241/rot-n-algorithm-in-java
  * 
  */
-public class ROTasciiZZZ extends AbstractROTZZZ{	
+public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZZZ{
+	private static final long serialVersionUID = 1L;
+		
 	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
+	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = null;
+	protected int[] iaEncryptedPositionInPool = null;
+	protected int[] iaDecryptedPositionInPool = null;
 	
-	ROTasciiZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
+	
+	AbstractROTnnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
 		super();
 		String[] saFlagControl = {"init"};
 		RotAsciiNew_(-1,saFlagControl);
 	}
 	
-	ROTasciiZZZ(String sFlagControl)throws ExceptionZZZ{
+	AbstractROTnnZZZ(String sFlagControl)throws ExceptionZZZ{
 		super(sFlagControl);
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
 		RotAsciiNew_(-1,saFlagControl);
 	}
 	
-	public ROTasciiZZZ(int iCryptKey) throws ExceptionZZZ {
+	public AbstractROTnnZZZ(int iCryptKey) throws ExceptionZZZ {
 		super(null);
 		RotAsciiNew_(iCryptKey, null);
 	}
-	public ROTasciiZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
+	public AbstractROTnnZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
 		super(sFlagControl);
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
@@ -77,7 +84,7 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 		}
 		this.setCryptNumber(iCryptKey);
 		
-		String sCharacterPool = ROTasciiZZZ.getCharacterPoolStringAscii();
+		String sCharacterPool = AbstractROTnnZZZ.getCharacterPoolStringAscii();
 		this.setCharacterPool(sCharacterPool);
 		
 		
@@ -101,30 +108,57 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();		
-		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, iCryptKey);
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();		
-		return ROTasciiZZZ.decrypt(sInput, sCharacterPool, iCryptKey);
+		return AbstractROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey);
 	}
 	
+	@Override
+	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
+		if(ArrayListZZZ.isEmpty(this.listasCharacterPool)) {
+			String sCharacterPool = this.getCharacterPool();
+			
+			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
+			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
+			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool);
+					
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
+			this.listasCharacterPool = listasCharacterPool;
+		}
+		return this.listasCharacterPool;
+	}
+	
+
+	@Override
+	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+		this.listasCharacterPool = listasCharacterPool;
+		
+		String sCharacterPool =this.listasCharacterPool.debugString("");
+		this.setCharacterPool(sCharacterPool);
+	}
+	
+	@Override
 	public String getCharacterPool() {
 		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
-			return ROTasciiZZZ.getCharacterPoolStringAscii();
+			return AbstractROTnnZZZ.getCharacterPoolStringAscii();
 		}else {
 			return this.sCharacterUsedForRot;
 		}
 	}
 	
+	@Override
 	public void setCharacterPool(String sCharacterPool) {
 		this.sCharacterUsedForRot = sCharacterPool;
 	}
-	
+		
 	public static String encrypt(String sInput, int n)  throws IllegalArgumentException {
-		String sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
-		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);
+		String sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);
 	
 	}
 	
@@ -136,7 +170,7 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 			
 			String sCharacterPool= null;
 			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
+				sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
 			}else {
 				sCharacterPool = sCharacterPoolIn;
 			}
@@ -184,22 +218,56 @@ public class ROTasciiZZZ extends AbstractROTZZZ{
 	
 	public static String decrypt(String sInput, int n)  throws IllegalArgumentException{
 
-		String sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
+		String sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
 		
-		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);		
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);		
 	}
 	
 	public static String decrypt(String sInput, String sCharacterPoolIn, int n)  throws IllegalArgumentException{
 
 		String sCharacterPool=null;
 		if(StringZZZ.isEmpty(sCharacterPool)) {
-			sCharacterPool= ROTasciiZZZ.getCharacterPoolStringAscii();
+			sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
 		}else {
 			sCharacterPool=sCharacterPoolIn;
 		}
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
 		
-		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);		
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);		
 	}
+	
+	@Override
+	public int[] getEncryptedCharacterPoolPosition() {
+		return this.iaEncryptedPositionInPool;
+	}
+	@Override	
+	public void setEncryptedCharacterPoolPosition(int[]iaPosition) {
+		this.iaEncryptedPositionInPool = iaPosition;
+	}
+	@Override
+	public int[] getDecryptedCharacterPoolPosition() {
+		return this.iaDecryptedPositionInPool;
+	}
+	@Override
+	public void setDecryptedCharacterPoolPosition(int[]iaPosition) {
+		this.iaDecryptedPositionInPool = iaPosition;
+	}
+	
+	
+	@Override
+	public boolean getFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public void setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	
+	@Override
+	public void setCryptKey(String sCryptKey) {
+		//Nur wg. ICryptZZZ
+	}	
 }
