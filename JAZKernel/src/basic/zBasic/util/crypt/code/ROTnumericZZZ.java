@@ -18,22 +18,23 @@ import basic.zBasic.ReflectCodeZZZ;
  * @return a list with mutated strings
  */
 public class ROTnumericZZZ extends AbstractROTZZZ{
+	private static final long serialVersionUID = -7120488041281101978L;
 	ROTnumericZZZ() throws ExceptionZZZ {//Konstruktor auf PAKETEBENE Sichtbar
 		super();
 		String[] saFlagControl = {"init"};
-		Rot13NumericNew_(-1,saFlagControl);
+		RotNumericNew_(-1,saFlagControl);
 	}
 	public ROTnumericZZZ(int iCryptKey) throws ExceptionZZZ {
 		this();
-		Rot13NumericNew_(iCryptKey,null);
+		RotNumericNew_(iCryptKey,null);
 	}
 	public ROTnumericZZZ(int iCryptKey, String sFlagControl) throws ExceptionZZZ {
 		this();
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
-		Rot13NumericNew_(iCryptKey,saFlagControl);
+		RotNumericNew_(iCryptKey,saFlagControl);
 	}
-	private boolean Rot13NumericNew_(int iCryptKey, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean RotNumericNew_(int iCryptKey, String[] saFlagControlIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 		//try{	 		
@@ -82,13 +83,13 @@ public class ROTnumericZZZ extends AbstractROTZZZ{
 	
 	
 	//###########################################
-	public static String encrypt(String input, int iCryptKey, boolean numeric) throws ExceptionZZZ{
-		return ROTnumericZZZ.crypt(input, iCryptKey, numeric,false);
+	public static String encrypt(String input, int iCryptKey, boolean bNumeric) throws ExceptionZZZ{
+		return ROTnumericZZZ.crypt(input, iCryptKey, bNumeric,false);
 	}
-	public static String decrypt(String input, int iCryptKey, boolean numeric) throws ExceptionZZZ{
-		return ROTnumericZZZ.crypt(input, iCryptKey, numeric,true);
+	public static String decrypt(String input, int iCryptKey, boolean bNumeric) throws ExceptionZZZ{
+		return ROTnumericZZZ.crypt(input, iCryptKey, bNumeric,true);
 	}
-	private static String crypt(String input, int iCryptKey, boolean numeric,boolean bReverse) throws ExceptionZZZ {
+	private static String crypt(String input, int iCryptKey, boolean bNumeric,boolean bReverse) throws ExceptionZZZ {
 	   String sReturn = new String();
 	   main:{
 		   if(iCryptKey<0 || iCryptKey >=26) {
@@ -125,7 +126,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ{
 	                }
 	            }
 	            //Numeric values are between 48 to 57 
-	            if (numeric && ascii > 47 && ascii < 58) {
+	            if (bNumeric && ascii > 47 && ascii < 58) {
 	                rotated = (char) (rotated + iCryptKey);
 	                if (rotated > 47) {
 	                    rotated += -57 + 47;
@@ -163,7 +164,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ{
 		                }
 		            }
 		            //Numeric values are between 48 to 57 
-		            if (numeric && ascii > 47 && ascii < 58) {
+		            if (bNumeric && ascii > 47 && ascii < 58) {
 		                rotated = (char) (rotated - iCryptKey);
 		                if (rotated > 47) {
 		                    rotated += -57 + 47;

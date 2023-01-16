@@ -34,7 +34,7 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ{
 		
 	@Override
 	public void setCharacterPool(String sCharacterPool) {
-		//nur wg. ICrypZZZ
+		//Nur wg. ICrypZZZ
 	}
 
 	@Override

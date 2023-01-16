@@ -126,7 +126,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		
 		private void processROTascii_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
-        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation();
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii.getAbbreviation();
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         		
         		//#############################################################
@@ -136,7 +136,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		
 		private void processROTnumeric_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ{
 			if(hmVariable!=null) {
-        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation();
+        		String sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric.getAbbreviation();
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         		
         		//###############################################################
@@ -378,7 +378,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
 	            	}else {
 	            		this.isCurrentInputValid(true);	
-	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));			
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
 	            	}	        		
         		}
         	}
