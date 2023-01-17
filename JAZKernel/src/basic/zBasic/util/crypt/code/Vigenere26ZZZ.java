@@ -31,10 +31,13 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
   public Vigenere26ZZZ() {	  
 	  super();
   }
-  public Vigenere26ZZZ(String sSchluesselWort) {
+  public Vigenere26ZZZ(String[]saFlagControl) throws ExceptionZZZ {	  
+	  super(saFlagControl);
+  }
+  public Vigenere26ZZZ(String sSchluesselWort) throws ExceptionZZZ {
 	  super(sSchluesselWort);
   }
-  public Vigenere26ZZZ(String sSchluesselWort, String sFilePath) {
+  public Vigenere26ZZZ(String sSchluesselWort, String sFilePath) throws ExceptionZZZ {
 	  super(sSchluesselWort, sFilePath);
   }
 	

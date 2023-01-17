@@ -4,6 +4,7 @@ import base.files.DateiUtil;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
@@ -22,14 +23,53 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	private int[] iaEncrypted=null;
 	private int[] iaDecrypted=null;
 	
-	public AbstractVigenereZZZ() {		
+	public AbstractVigenereZZZ() {
+		super();
 	}
-	public AbstractVigenereZZZ(String sSchluesselwort) {
-		this.setCryptKey(sSchluesselwort);
+	public AbstractVigenereZZZ(String[]saFlagControl) throws ExceptionZZZ {
+		super();
+		AbstractVigenereNew_("","", saFlagControl);
+	}	
+	public AbstractVigenereZZZ(String sSchluesselWort) throws ExceptionZZZ {
+		super();
+		AbstractVigenereNew_(sSchluesselWort,"", null);
 	}
-	public AbstractVigenereZZZ(String sSchluesselWort, String sFilePath) {		
+	public AbstractVigenereZZZ(String sSchluesselWort, String sFilePath) throws ExceptionZZZ {	
+		super();
+		AbstractVigenereNew_(sSchluesselWort,sFilePath, null);		
+	}
+	
+	private boolean AbstractVigenereNew_(String sSchluesselWort, String sFilePath, String[] saFlagControlIn) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+		//try{	 		
+			//setzen der übergebenen Flags	
+		if(saFlagControlIn != null){
+			 String stemp; boolean btemp; String sLog;
+			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+				stemp = saFlagControlIn[iCount];
+				btemp = setFlag(stemp, true);
+				if(btemp==false){
+					 String sKey = stemp;
+					 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+					 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+					 
+					// Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!							
+					// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
+					// throw ez;		 
+				}
+			}
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}						
+		}
+		
 		this.setCryptKey(sSchluesselWort);
 		this.setFilePath(sFilePath);
+		bReturn = true;
+	}//end main:
+		return bReturn;
 	}
 		
 	//+++++++ Getter / Setter

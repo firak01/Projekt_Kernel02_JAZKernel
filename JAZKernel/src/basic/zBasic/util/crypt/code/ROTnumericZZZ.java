@@ -7,6 +7,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 /**
  * Returns a list with Strings which are rotated ROT-n. n = 26 - listIndex
@@ -17,11 +19,15 @@ import basic.zBasic.ReflectCodeZZZ;
  * @param numeric include numeric values
  * @return a list with mutated strings
  */
-public class ROTnumericZZZ extends AbstractROTZZZ{
+public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserConstantZZZ{
 	private static final long serialVersionUID = -7120488041281101978L;
 	ROTnumericZZZ() throws ExceptionZZZ {//Konstruktor auf PAKETEBENE Sichtbar
 		super();
 		String[] saFlagControl = {"init"};
+		RotNumericNew_(-1,saFlagControl);
+	}
+	ROTnumericZZZ(String[] saFlagControl) throws ExceptionZZZ{
+		super();
 		RotNumericNew_(-1,saFlagControl);
 	}
 	public ROTnumericZZZ(int iCryptKey) throws ExceptionZZZ {
@@ -223,5 +229,5 @@ public class ROTnumericZZZ extends AbstractROTZZZ{
 		        output.add(result);
 		    }
 		    return output;
-		}
+		}	
 }

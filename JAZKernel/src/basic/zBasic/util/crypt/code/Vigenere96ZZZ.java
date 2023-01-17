@@ -20,14 +20,17 @@ public class Vigenere96ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschluess
 	public static int iOffsetForAsciiRange=96;
 	public static int iOffsetForUtf8Range=32;
 	public Vigenere96ZZZ() {	  
-		  super();
-	  }
-		public Vigenere96ZZZ(String sSchluesselWort) {
-		  super(sSchluesselWort);
-	  }
-	  public Vigenere96ZZZ(String sSchluesselWort, String sFilePath) {
-		  super(sSchluesselWort, sFilePath);
-	  }
+		super();
+	}
+	public Vigenere96ZZZ(String[]saFlagControl) throws ExceptionZZZ {	  
+		super(saFlagControl);
+	}
+	public Vigenere96ZZZ(String sSchluesselWort) throws ExceptionZZZ {
+		super(sSchluesselWort);
+	}
+	public Vigenere96ZZZ(String sSchluesselWort, String sFilePath) throws ExceptionZZZ {
+		super(sSchluesselWort, sFilePath);
+	}
 		
 	  public boolean encryptUI() throws ExceptionZZZ{
 		  boolean bReturn = false;

@@ -12,21 +12,19 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	public VigenereNnZZZ() {
 		super();
 	}
+	public VigenereNnZZZ(String[]saFlagControl) throws ExceptionZZZ {	  
+		super(saFlagControl);
+	}
 	
 	public VigenereNnZZZ(String sKeyString) throws ExceptionZZZ {
-		super();
-		this.setCryptKey(sKeyString);
+		super(sKeyString);		
 	}
 	
 	
 	public VigenereNnZZZ(String sKeyString, String sFilePath) throws ExceptionZZZ {
-		super();
-		this.setCryptKey(sKeyString);
-		this.setFilePath(sFilePath);
+		super(sKeyString,sFilePath);		
 	}
 
-	
-	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
 	 * @param sInput
 	 * @param sCharacterPoolIn

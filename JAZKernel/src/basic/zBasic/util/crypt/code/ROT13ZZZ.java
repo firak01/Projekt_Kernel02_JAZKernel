@@ -6,14 +6,43 @@ import basic.zBasic.ReflectCodeZZZ;
 public class ROT13ZZZ extends AbstractROTZZZ{
 	public ROT13ZZZ() throws ExceptionZZZ {
 		super();		
-		Rot13New_();
+		Rot13New_(null);
 	}
 	
-	private boolean Rot13New_() throws ExceptionZZZ {
+	public ROT13ZZZ(String[] saFlagControl) throws ExceptionZZZ {
+		super();		
+		Rot13New_(saFlagControl);
+	}
+	
+	private boolean Rot13New_(String[] saFlagControlIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
+		//try{	 		
+			//setzen der übergebenen Flags	
+			if(saFlagControlIn != null){
+				 String stemp; boolean btemp; String sLog;
+				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+					stemp = saFlagControlIn[iCount];
+					btemp = setFlag(stemp, true);
+					if(btemp==false){
+						 String sKey = stemp;
+						 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+						 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+						 
+						// Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!							
+						// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
+						// throw ez;		 
+					}
+				}
+			}
 		
-		}//end main:
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+			
+			bReturn = true;
+		}//end main
 		return bReturn;
 	}
 	

@@ -4,6 +4,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
 public interface ICryptZZZ extends IFlagUserZZZ{	
+	//Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen	
+//	public enum FLAGZ{
+//		USENUMERIC,USEUPPERCASE,USELOWERCASE,USECHARACTERPOOL
+//	}
 	
 	public String encrypt(String sInput) throws ExceptionZZZ;
 	public String decrypt(String sInput) throws ExceptionZZZ;

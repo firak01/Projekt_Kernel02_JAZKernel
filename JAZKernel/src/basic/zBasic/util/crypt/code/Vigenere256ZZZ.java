@@ -24,10 +24,13 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 	public Vigenere256ZZZ() {	  
 		  super();
 	  }
-	public Vigenere256ZZZ(String sSchluesselWort) {
+	public Vigenere256ZZZ(String[]saFlagControl) throws ExceptionZZZ {	  
+		  super(saFlagControl);
+	  }
+	public Vigenere256ZZZ(String sSchluesselWort) throws ExceptionZZZ {
 		  super(sSchluesselWort);
 	  }
-	  public Vigenere256ZZZ(String sSchluesselWort, String sFilePath) {
+	  public Vigenere256ZZZ(String sSchluesselWort, String sFilePath) throws ExceptionZZZ {
 		  super(sSchluesselWort, sFilePath);
 	  }
 		

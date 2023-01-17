@@ -140,9 +140,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         		hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CIPHER, sCipher);
         		
         		//###############################################################
-        		this.questionNumericKey_(hmVariable);
+        		this.questionNumericKey_(hmVariable);        		
         		//###############################################################        		
-        		this.questionUseNumeric_(hmVariable, null);
+        		this.questionUseNumeric_(hmVariable, null);        		        		        		
         	}
 		}
 		

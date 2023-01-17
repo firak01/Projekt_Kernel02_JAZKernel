@@ -29,6 +29,11 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 		RotAsciiNew_(-1,saFlagControl);
 	}
 	
+	ROTasciiZZZ(String[] saFlagControl)throws ExceptionZZZ{
+		super();				
+		RotAsciiNew_(-1,saFlagControl);
+	}
+	
 	ROTasciiZZZ(String sFlagControl)throws ExceptionZZZ{
 		super(sFlagControl);
 		String[]saFlagControl = new String[1];

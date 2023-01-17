@@ -29,6 +29,10 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		String[] saFlagControl = {"init"};
 		RotNnNew_(null,-1,saFlagControl);
 	}
+	ROTnnZZZ(String[]saFlagControl) throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
+		super();		
+		RotNnNew_(null,-1,saFlagControl);
+	}
 	public ROTnnZZZ(int iCryptKey) throws ExceptionZZZ {
 		super(null);
 		RotNnNew_(null,iCryptKey,null);
@@ -78,7 +82,7 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		}
 		this.setCryptNumber(iCryptKey);
 		this.setCharacterPool(sCharacterPool);
-		
+		bReturn = true;
 	}//end main:
 		return bReturn;
 	}
