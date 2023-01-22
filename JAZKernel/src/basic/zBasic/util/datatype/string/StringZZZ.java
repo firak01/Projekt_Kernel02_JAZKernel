@@ -356,7 +356,7 @@ public class StringZZZ implements IConstantZZZ{
 	
 	/** 
 	 * @param sString
-	 * @return true, wenn der String auch nur irgendeinen Kleinbuchstaben enthaelt
+	 * @return true, wenn der String auch nur irgendein Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
 	 */
 	public static boolean containsBlankAny(String sString) {
@@ -378,7 +378,7 @@ public class StringZZZ implements IConstantZZZ{
 	
 	/** 
 	 * @param sString
-	 * @return true, wenn der String nur Kleinbuchstaben und Leerzeichen enthaelt
+	 * @return true, wenn der String nur Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
 	 */
 	public static boolean containsBlankOnly(String sString) {
@@ -388,12 +388,10 @@ public class StringZZZ implements IConstantZZZ{
 			if(sString.equals("")) break main;
 			
 			char[]ca = sString.toCharArray();
-			for(int icount = 0 ; icount < ca.length; icount++) {
-				if(!CharZZZ.isLowercase(ca[icount])){
-					if(ca[icount]!=' ') {
-						break main;
-					}
-				}
+			for(int icount = 0 ; icount < ca.length; icount++) {				
+				if(ca[icount]!=' ') {
+					break main;
+				}				
 			}
 			bReturn = true;
 		}//end main:
@@ -427,7 +425,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String nur Kleinbuchstaben und Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:45:41
 	 */
-	public static boolean containsLowercaseOnly(String sString) {
+	public static boolean containsLowercaseAndBlankOnly(String sString) {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -435,8 +433,8 @@ public class StringZZZ implements IConstantZZZ{
 			
 			char[]ca = sString.toCharArray();
 			for(int icount = 0 ; icount < ca.length; icount++) {
-				if(!CharZZZ.isLowercase(ca[icount])){
-					if(ca[icount]!=' ') {
+				if(ca[icount]!=' ') {
+					if(!CharZZZ.isLowercase(ca[icount])){					
 						break main;
 					}
 				}
@@ -475,7 +473,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String nur Zahlen 0-9 und Leerzeichen enthaelt
 	 * @author Fritz Lindhauer, 08.11.2022, 15:46:16
 	 */
-	public static boolean containsNumericOnly(String sString) {
+	public static boolean containsNumericAndBlankOnly(String sString) {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
@@ -483,8 +481,8 @@ public class StringZZZ implements IConstantZZZ{
 								
 			char[]ca = sString.toCharArray();
 			for(int icount = 0 ; icount < ca.length; icount++) {
-				if(!CharZZZ.isNumeric(ca[icount])){	
-					if(ca[icount]!=' ') {
+				if(ca[icount]!=' ') {
+					if(!CharZZZ.isNumeric(ca[icount])){						
 						break main;
 					}					
 				}
@@ -523,15 +521,15 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return true, wenn der String nur Grossbuchstaben und Leerzeichen enthaelt.
 	 * @author Fritz Lindhauer, 08.11.2022, 15:46:44
 	 */
-	public static boolean containsUppercaseOnly(String sString) {
+	public static boolean containsUppercaseAndBlankOnly(String sString) {
 		boolean bReturn = false;
 		main:{
 			if(sString==null)break main;
 			
 			char[]ca = sString.toCharArray();
 			for(int icount = 0 ; icount < ca.length; icount++) {
-				if(!CharZZZ.isUppercase(ca[icount])){					
-					if(ca[icount]!=' ') {
+				if(ca[icount]!=' ') {
+					if(!CharZZZ.isUppercase(ca[icount])){										
 						break main;
 					}
 				}
@@ -541,6 +539,57 @@ public class StringZZZ implements IConstantZZZ{
 		}//end main:
 		return bReturn;
 	}
+	
+	public static boolean containsOnly(String sString, String sMatch) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(StringZZZ.isEmpty(sMatch)) break main;
+			
+			char[]ca = sString.toCharArray();
+			char[]cmatch = sMatch.toCharArray();
+						
+			for(int icount = 0 ; icount < ca.length; icount++) {
+				for(int icountInner = 0; icount < cmatch.length; icountInner++) {
+					if(ca[icount]!=cmatch[icountInner]){												
+						break main;
+					}
+				}					
+			}			
+			bReturn = true;
+		}
+		return bReturn;
+	}
+	
+	public static boolean containsOnly(String sString, String sMatch, String sAllowed) {
+		boolean bReturn = false;
+		main:{
+			if(sString==null)break main;
+			if(StringZZZ.isEmpty(sMatch)) break main;
+			
+			char[]callowed = null;
+			if(!StringZZZ.isEmpty(sAllowed)) {
+				callowed = sAllowed.toCharArray();
+			}
+			
+			char[]ca = sString.toCharArray();
+			char[]cmatch = sMatch.toCharArray();
+			
+						
+			for(int icount = 0 ; icount < ca.length; icount++) {			
+				if(!CharArrayZZZ.contains(callowed,ca[icount])) {
+					for(int icountInner = 0; icount < cmatch.length; icountInner++) {
+						if(ca[icount]!=cmatch[icountInner]){												
+							break main;
+						}
+					}					
+				}	
+			}			
+			bReturn = true;
+		}
+		return bReturn;
+	}
+	
 	
 	/** Hier muss man nicht auf NULL achten, wenn man die Strings miteinander vergleicht.
 	 * @param sString

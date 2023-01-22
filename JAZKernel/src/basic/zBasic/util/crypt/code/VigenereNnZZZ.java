@@ -35,7 +35,7 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	 * @throws ExceptionZZZ 
 	 */
 	public static String encrypt(String sInput, String sCharacterPoolIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return VigenereNnZZZ.encrypt(sInput, sCharacterPoolIn, true,true,true, sKeyword);		
+		return VigenereNnZZZ.encrypt(sInput, sCharacterPoolIn, true,true,true,true, sKeyword);		
     }
 	
 	
@@ -48,8 +48,8 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static String encrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return AbstractVigenereNnZZZ.encrypt(sInput, sCharacterPoolIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, sKeyword);
+	public static String encrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		return AbstractVigenereNnZZZ.encrypt(sInput, sCharacterPoolIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sKeyword);
     }
 	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
@@ -87,8 +87,8 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static String decrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return AbstractVigenereNnZZZ.decrypt(sInput, sCharacterPoolIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, sKeyword);
+	public static String decrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		return AbstractVigenereNnZZZ.decrypt(sInput, sCharacterPoolIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sKeyword);
     }
 	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen

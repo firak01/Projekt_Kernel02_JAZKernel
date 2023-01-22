@@ -10,9 +10,11 @@ import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.console.multithread.IKeyPressConstantZZZ;
 import basic.zBasic.util.console.multithread.KeyPressUtilZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
+import basic.zBasic.util.datatype.character.ICharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 
@@ -184,7 +186,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
     		//#####################################################################
     		//### Frage nach Grossbuchstaben
         	if(!this.isCurrentInputFinished()) {
-        		if(!StringZZZ.containsUppercaseOnly(sCharacterPool)) {
+        		if(!StringZZZ.containsUppercaseAndBlankOnly(sCharacterPool)) {
 	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Grossbuchstaben verwenden?");				                						                				    	                			                				                					                		
 	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
 	        			this.cancelToMenue(hmVariable);
@@ -202,7 +204,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
     		//#####################################################################
     		//### Frage nach Kleinbuchstaben
         	if(!this.isCurrentInputFinished()) {
-        		if(!StringZZZ.containsLowercaseOnly(sCharacterPool)) {
+        		if(!StringZZZ.containsLowercaseAndBlankOnly(sCharacterPool)) {
 	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Kleinbuchstaben verwenden?");				                						                				    	                			                				                					                		
 	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                			
 	        			this.cancelToMenue(hmVariable);
@@ -219,6 +221,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	//#######################################################################
     		this.questionUseNumeric_(hmVariable, sCharacterPool);
         	
+    		//#######################################################################
+    		this.questionUseAdditional_(hmVariable, sCharacterPool);
+        	    		
         	//#####################################################################
     		//### Frage nach Leerzeichen
         	if(!this.isCurrentInputFinished()) {
@@ -275,7 +280,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
     		//#####################################################################
     		//### Frage nach Grossbuchstaben
         	if(!this.isCurrentInputFinished()) {
-        		if(!StringZZZ.containsUppercaseOnly(sCharacterPool)) {
+        		if(!StringZZZ.containsUppercaseAndBlankOnly(sCharacterPool)) {
 	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Grossbuchstaben verwenden?");				                						                				    	                			                				                					                		
 	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
 	        			this.cancelToMenue(hmVariable);
@@ -293,7 +298,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
     		//#####################################################################
     		//### Frage nach Kleinbuchstaben
         	if(!this.isCurrentInputFinished()) {
-        		if(!StringZZZ.containsLowercaseOnly(sCharacterPool)) {
+        		if(!StringZZZ.containsLowercaseAndBlankOnly(sCharacterPool)) {
 	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit Kleinbuchstaben verwenden?");				                						                				    	                			                				                					                		
 	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                			
 	        			this.cancelToMenue(hmVariable);
@@ -307,11 +312,12 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	        	}
         	}
     			
-        	//#######################################################################
-        	//TODOGOON20230114; //Warum kommt im DebugModus alles korrekt, im AusfuehenModus aber ungueltig als Ergebnis?
+        	//#######################################################################        	
     		this.questionUseNumeric_(hmVariable, sCharacterPool);
-    		//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Nach questionUseNumeric");
     		
+    		//#######################################################################
+    		this.questionUseAdditional_(hmVariable, sCharacterPool);
+        	    		
         	//#####################################################################
     		//### Frage nach Leerzeichen
         	if(!this.isCurrentInputFinished()) {
@@ -366,7 +372,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
         		boolean bCharacterPoolContainsNumericOnly=false;//nur nach Zahlen fragen, wenn der characterPool nicht eh aus Zahlen besteht.
         		if(StringZZZ.isEmpty(sCharacterPool)) {
-        			bCharacterPoolContainsNumericOnly=StringZZZ.containsNumericOnly(sCharacterPool);
+        			bCharacterPoolContainsNumericOnly=StringZZZ.containsNumericAndBlankOnly(sCharacterPool);
         		}
         		        		
         		if(!bCharacterPoolContainsNumericOnly) {
@@ -379,6 +385,32 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	            	}else {
 	            		this.isCurrentInputValid(true);	
 	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
+	            	}	        		
+        		}
+        	}
+		}
+		
+		private void questionUseAdditional_(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+			//#####################################################################
+    		//### Frage nach Zahlen        	
+        	if(!this.isCurrentInputFinished()) {
+
+        		boolean bCharacterPoolContainsAdditionalOnly=false;//nur nach Zahlen fragen, wenn der characterPool nicht eh aus Zahlen besteht.
+        		if(StringZZZ.isEmpty(sCharacterPool)) {
+        			bCharacterPoolContainsAdditionalOnly=StringZZZ.containsOnly(sCharacterPool, ICharacterExtendedZZZ.sCHARACTER_ADDITIONAL);
+        		}
+        		        		
+        		if(!bCharacterPoolContainsAdditionalOnly) {
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit den zusätzlichen Buchstaben '" + ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER + "' verwenden?");	        		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, BooleanZZZ.stringToBoolean(sInput));
+	            	}else {
+	            		this.isCurrentInputValid(true);	
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, BooleanZZZ.stringToBoolean(sInput));
 	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
 	            	}	        		
         		}
