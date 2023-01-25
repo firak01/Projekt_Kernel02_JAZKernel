@@ -1,5 +1,7 @@
 package basic.zBasic.util.crypt.code;
 
+import java.util.ArrayList;
+
 import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -7,6 +9,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
@@ -97,9 +100,11 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyword, listasCharacterPool);
 			
 			int[] iaText = UnicodeZZZ.toIntArrayCharacterPoolPosition(sInput, listasCharacterPool);
-
-			int[]iaPositionInPool = AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listasCharacterPool, iaSchluesselwort);			
-			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPositionInPool, listasCharacterPool);
+						
+			int[]iaPositionInPool = AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listasCharacterPool, iaSchluesselwort);
+			
+			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
+			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPositionInPool, listasCharacterPool,objCharMissingReplacement);
 		    
 			//die Map nutzen zum Verschieben der Position
 			/*
@@ -136,11 +141,12 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			          
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listAsCharacterPool = this.getCharacterPoolList();
-			
+						
             iaReturn = AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listAsCharacterPool, iaSchluesselwort);
             this.setEncryptedCharacterPoolPosition(iaReturn);
             
-            String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaReturn, listasCharacterPool);
+            CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
+            String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaReturn, listasCharacterPool,objCharMissingReplacement);
             iaReturn = UnicodeZZZ.toIntArray(sReturn);
 			this.setEncryptedValues(iaReturn);		
 		}//end main:
@@ -157,14 +163,17 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			int[] iaPosition = VigenereNnZZZ.encryptAsPositionInPool(sInput,listasCharacterPool,sKeyword);
 			this.setEncryptedCharacterPoolPosition(iaPosition);
 			
-			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool);
+			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
+			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool,objCharMissingReplacement);
 			int[] iaEncrypted = UnicodeZZZ.toIntArray(sReturn);			
 			this.setEncryptedValues(iaEncrypted);
 		}//end main:
 		return sReturn;
 	}
 	
+		
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
+	 * -1 wird als Position zurueckgegeben, wenn das Zeichen nicht im Pool ist.
 	 * @param sInput
 	 * @param sCharacterPoolIn
 	 * @param n
@@ -218,27 +227,31 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
-			}
-
+			}						
+			
 			int[]iaTextAsPositionInCharacterPool = AbstractVigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaText, listasCharacterPool);
 			int[]iaSchluesselwortAsPositionInCharacterPool = AbstractVigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaSchluesselwort, listasCharacterPool);
 			
 			int laengeSW = iaSchluesselwortAsPositionInCharacterPool.length;			
 			
 			int[]ppure = new int[iaTextAsPositionInCharacterPool.length];
-		    for (int i = 0; i < iaTextAsPositionInCharacterPool.length; i++) {		    	
-		        //Das steht in der Codedatei
-		    	//Merke: c = Chiffrebuchstabe
-		    	int iIndexS = i%laengeSW;
-		    	int iSum = iaTextAsPositionInCharacterPool[i]+iaSchluesselwortAsPositionInCharacterPool[iIndexS];
-		    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
-		    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
-		      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
-		                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.            
-		      ppure[i] = c;				// nur wegen abspeichern  
-		      
-		      //if(i>=1) System.out.print("|");
-		      //System.out.print("i="+i+", c='"+c+"'"); 
+		    for (int i = 0; i < iaTextAsPositionInCharacterPool.length; i++) {
+		    	if(iaTextAsPositionInCharacterPool[i]==-1) {
+		    		ppure[i] = -1;//mache also nichts, sondern ueberspringe das nicht vorhandene Zeichen einfach.
+		    	}else {
+			        //Das steht in der Codedatei
+			    	//Merke: c = Chiffrebuchstabe
+			    	int iIndexS = i%laengeSW;
+			    	int iSum = iaTextAsPositionInCharacterPool[i]+iaSchluesselwortAsPositionInCharacterPool[iIndexS];
+			    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128    	
+			    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
+			      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
+			                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.            
+			    	ppure[i] = c;				// nur wegen abspeichern  
+			      
+			    	//if(i>=1) System.out.print("|");
+			    	//System.out.print("i="+i+", c='"+c+"'");
+		    	}		    	
 		    }
 		    //System.out.print("\n");
 			
@@ -391,17 +404,80 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		return iaReturn;
     }
 	
+	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
+	 * @param sInput
+	 * @param sCharacterPoolIn
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
+	 * @throws ExceptionZZZ 
+	 */
+	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort, CharacterExtendedZZZ objCharMissingReplacement) throws IllegalArgumentException, ExceptionZZZ {
+		int[] iaReturn = null;
+		main:{			
+			if(ArrayUtilZZZ.isEmpty(iaEncryptedText)) break main;
+			if(ArrayUtilZZZ.isEmpty(iaSchluesselwort)) {
+				iaReturn = iaEncryptedText;
+				break main;
+			}
+			
+			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
+				String sLog = "Character pool not provided.";
+				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
+				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_MISSING, VigenereNnZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+
+			//!Nun den iaEncryptedText in ein Array der Postionen umwandeln		
+			//TODOGOON; //20230121: "Lisas Hund # ist toll" ..... soll verarbeitet werden können OHNE Sonderzeichen reinzunehmen und # dann erstetz werden!!!
+			int[] iaTextPositionInPool = AbstractVigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaEncryptedText, listasCharacterPool,objCharMissingReplacement);
+			int[] iaSchluesselwortPositionInPool = AbstractVigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaSchluesselwort, listasCharacterPool);
+
+			int laengeSW = iaSchluesselwortPositionInPool.length;			
+			
+			
+			int[]ppure = new int[iaTextPositionInPool.length];												
+		    for (int i = 0; i < iaTextPositionInPool.length; i++) {	
+		    	//Die auszulassenden Zeichen nicht decodieren
+		    	if(iaTextPositionInPool[i]==-1) {
+		    		ppure[i] = -1; //mache also keine Entschluesselung an der Stelle.
+		    	}else {
+		    		 //Das steht in der Codedatei
+			    	//Merke: c = Chiffrebuchstabe
+			    	int iIndexS = i%laengeSW;
+			    	//int iSum = iaTextPositionInPool[iIndexS]-iaSchluesselwortPositionInPool[iIndexS];
+			    	int iSum = iaTextPositionInPool[i]-iaSchluesselwortPositionInPool[iIndexS];
+			    	int iFormula = (iSum)% listasCharacterPool.size();  //auf Seite 35 wird der Modulus 96 verwendet. Merke 32+96=128
+			    	if(iFormula<0) {
+			    		iFormula += listasCharacterPool.size();
+			    	}
+			    	int c = iFormula; //FGL: 	Das ist der Mathematische Ansatz: 
+			      								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
+			                                    //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
+			    	
+			      ppure[i] = c;				// nur wegen abspeichern  
+			      //if(i>=1) System.out.print("|");
+			      //System.out.print("i="+i+", c='"+c+"'"); 
+		    	}
+		    	
+		       
+		    }
+		    //System.out.print("\n");
+			
+		    iaReturn = ppure;		    
+		}//end main;
+		return iaReturn;
+    }
+	
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{			
 			int[] iaEncryptedText = UnicodeZZZ.toIntArray(sInput);
+			//sollte uebereinstimmen !!! int[] iaEncryptedTextSavedTest = this.getEncryptedValuesAsInt();
 			this.setEncryptedValues(iaEncryptedText);
-			
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
-			int[] iaEncryptedCharacterPoolPosition = UnicodeZZZ.toIntArrayCharacterPoolPosition(sInput, listasCharacterPool);
-			this.setEncryptedCharacterPoolPosition(iaEncryptedCharacterPoolPosition);
-			
+						
 			int[]iaDecryptedText = this.decrypt(iaEncryptedText);					
 			sReturn = CharArrayZZZ.toString(iaDecryptedText);
 		}//end main:
@@ -428,11 +504,21 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 			}
 			
-			ArrayListExtendedZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();				
-			int[]iaPosition = VigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listCharacterPool, iaSchluesselwort);
-			this.setDecryptedCharacterPoolPosition(iaPosition);
+			/*
+			 ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
 			
-			String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool);
+			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
+			int[] iaEncryptedCharacterPoolPosition = UnicodeZZZ.toIntArrayCharacterPoolPosition(sInput, listasCharacterPool,objCharMissingReplacement);
+			this.setEncryptedCharacterPoolPosition(iaEncryptedCharacterPoolPosition);
+			
+			 */
+			
+			ArrayListExtendedZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();	
+			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
+			int[]iaPosition = VigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listCharacterPool, iaSchluesselwort,objCharMissingReplacement);
+			this.setDecryptedCharacterPoolPosition(iaPosition);
+						
+			String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool,objCharMissingReplacement);
 			iaReturn = UnicodeZZZ.toIntArray(sReturn);
 			this.setDecryptedValues(iaReturn);
 		}//end main:
@@ -577,20 +663,111 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		return iaReturn;
 	}
 	
-	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
+	/** String-Zeichen werden im Character Pool gesucht und es kommt dort der Indexwert zurück.
+	 * Dies hier ist die Methode fuer die Decodierung.
+	 * 
+	 *  -1 wird zurückgegeben, wenn das String-Zeichen nicht im CharacterPool enthalten ist.
+	 *  insbesondere dann wenn es das "missing Zeichen ist"
+	 *  
+	 *  Das Problem ist, das ggfs. durch die Unicode-Betrachtung mit Unicode.toIntArray(MissingCharacter)
+	 *  das Array größer geworden ist. Das muss man wieder um jeweils 1 reduzieren.
+	 * @param iaPure
+	 * @param listasCharacterPool
+	 * @param objCharMissingReplacementIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 25.01.2023, 13:45:09
+	 */
+	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacementIn) throws ExceptionZZZ {
 		int[] iaReturn = null;
-		main:{
-			iaReturn = new int[iaPure.length];			
+		main:{			
+			ArrayList<Integer>listaInt=new ArrayList<Integer>();//Temporäre Liste, damit ggf. besondere Zeichen angemarkert werden können.
+						
+			CharacterExtendedZZZ objCharMissingReplacement = null;
+			if(objCharMissingReplacementIn==null) {
+				objCharMissingReplacement=new CharacterExtendedZZZ((char)240);
+			}else {
+				objCharMissingReplacement=objCharMissingReplacementIn;
+			}
+			int[]iaUnicodeCharMissingReplacement = UnicodeZZZ.toIntArray(objCharMissingReplacement.toString());
+	
+		
+			boolean bCharReplacementFirstIntegerFound=false;
 			for(int i=0; i<iaPure.length;i++){
 				int iPure = iaPure[i];
+				
+				if(iPure==iaUnicodeCharMissingReplacement[0]) { //objCharMissingReplacement.getChar()) {
+					listaInt.add(new Integer(-1));
+					bCharReplacementFirstIntegerFound=true;
+				}else if(iPure==iaUnicodeCharMissingReplacement[1]&& bCharReplacementFirstIntegerFound) {
+					listaInt.add(new Integer(-1000));													
+					bCharReplacementFirstIntegerFound=false;
+				}else {
+					char c = (char) iPure;
+					CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(c);				
+					int iReturn = listasCharacterPool.getIndex(objChar);
+					listaInt.add(new Integer(iReturn));
+					
+					bCharReplacementFirstIntegerFound=false;
+				}								
+			}
+			
+			//Nun Array ggfs. wieder "zusammenfassen"
+			ArrayListZZZ.remove(listaInt, new Integer(-1000));
+			iaReturn = ArrayListZZZ.toArrayInt(listaInt);
+			
+		}//end main:
+		return iaReturn;				
+	}
+	
+	/** String-Zeichen werden im Character Pool gesucht und es kommt dort der Indexwert zurück.
+	 *  -1 wird zurückgegeben, wenn das String-Zeichen nicht im CharacterPool enthalten ist.
+	 * @param iaPure
+	 * @param listasCharacterPool
+	 * @param objCharMissingReplacementIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 25.01.2023, 13:45:09
+	 */
+	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
+		int[] iaReturn = null;
+		main:{			
+			iaReturn = new int[iaPure.length];
+						
+			for(int i=0; i<iaPure.length;i++){
+				int iPure = iaPure[i];
+				
 				char c = (char) iPure;
 				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(c);				
 				int iReturn = listasCharacterPool.getIndex(objChar);
-				iaReturn[i] = iReturn;				
+				iaReturn[i] = iReturn;
+
 			}
 		}//end main:
 		return iaReturn;
 	}
+	
+	
+//	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int iNotInPoolCharacter) throws ExceptionZZZ {
+//		int[] iaReturn = null;
+//		main:{			
+//			iaReturn = new int[iaPure.length];			
+//			for(int i=0; i<iaPure.length;i++){
+//				int iPure = iaPure[i];
+//				char c = (char) iPure;
+//				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(c);				
+//				int iReturn = listasCharacterPool.getIndex(objChar);
+//				if(iReturn==-1) {
+//					//Fuer Zeichen, die nicht im CharacterPool sind, wurde -1 zurueckgegeben.
+//					//Ohne besondere Betrachtung wuerde dann das letzte Zeichen des Pools genommen. Also z.B. 9 wenn "numeric" dazugenommen wurde.
+//					iReturn = iNotInPoolCharacter;					
+//				}
+//				iaReturn[i] = iReturn;				
+//			}
+//		}//end main:
+//		return iaReturn;
+//	}
+	
 	
 	@Override
 	public boolean getFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) {

@@ -65,19 +65,7 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 		return AbstractVigenereNnZZZ.encryptAsPositionInPool(sInput, listasCharacterPool, sKeyword);
     }
 	
-	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
-	 * @param sInput
-	 * @param sCharacterPoolIn
-	 * @param n
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
-	 * @throws ExceptionZZZ 
-	 */
-	public static int[] encryptAsPositionInPool(int[] iaText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
-		return AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listasCharacterPool, iaSchluesselwort);
-    }
-	
+		
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
 	 * @param sInput
 	 * @param sCharacterPoolIn
@@ -115,6 +103,20 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	 */
 	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
 		return AbstractVigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listasCharacterPool, iaSchluesselwort); 
+    }
+	
+	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen.
+	 * -1 steht fuer: Zeichen war nicht im CharacterPool enthalten.
+	 * @param sInput
+	 * @param sCharacterPoolIn
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
+	 * @throws ExceptionZZZ 
+	 */
+	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort, CharacterExtendedZZZ objCharMissingReplacement) throws IllegalArgumentException, ExceptionZZZ {
+		return AbstractVigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listasCharacterPool, iaSchluesselwort, objCharMissingReplacement); 
     }
 	
 	@Override

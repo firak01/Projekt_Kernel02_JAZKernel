@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -162,6 +163,44 @@ public class UnicodeZZZ implements IConstantZZZ{
 				}else {
 					ExceptionZZZ ez = new ExceptionZZZ("Character of String '" + objChar.toString() + "' not in CharacterPool: '" + listasCharacterPool.debugString("|") + "'", iERROR_PARAMETER_VALUE,   UnicodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());								  
 					throw ez;
+				}
+		    }
+			
+			
+		}//end main:
+		return iaReturn;
+	}
+	
+	/**Gib für jeden Buchstaben des Strings die Indexpositionen in der ArrayList zurück.
+	 * 
+	 * @param s
+	 * @param listasCharacterPool
+	 * @return
+	 * @author Fritz Lindhauer, 23.12.2022, 10:00:47
+	 * @throws ExceptionZZZ 
+	 */
+	public static int[] toIntArrayCharacterPoolPosition(String s, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacement) throws ExceptionZZZ {
+		int iaReturn[]=null;
+		main:{
+			if(StringZZZ.isEmpty(s)) break main;
+			if(listasCharacterPool==null)break main;
+			
+			iaReturn = new int[s.length()];
+						
+			for (int i = 0; i < s.length(); i++) {
+				CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(s.charAt(i));
+				int iFound = listasCharacterPool.getIndex(objChar);	
+				
+				if(iFound>=0) {
+					iaReturn[i]=iFound;
+				}else {
+					if(objCharMissingReplacement!=null) {
+						char c = objCharMissingReplacement.getChar();
+						iaReturn[i]=c;
+					}else {
+						ExceptionZZZ ez = new ExceptionZZZ("Character of String '" + objChar.toString() + "' not in CharacterPool: '" + listasCharacterPool.debugString("|") + "'", iERROR_PARAMETER_VALUE,   UnicodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());								  
+						throw ez;
+					}
 				}
 		    }
 			
@@ -617,4 +656,36 @@ public class UnicodeZZZ implements IConstantZZZ{
 	      else                 dummy[i]=256+ByteFeld[i];
 	    return dummy;
 	  }
+	
+	//-------------------------------------------
+//	byte[] toByteArray(int value) {
+//	     return  ByteBuffer.allocate(4).putInt(value).array();
+//	}
+//
+//	byte[] toByteArray(int value) {
+//	    return new byte[] { 
+//	        (byte)(value >> 24),
+//	        (byte)(value >> 16),
+//	        (byte)(value >> 8),
+//	        (byte)value };
+//	}
+//
+	public static int fromByteArrayToInt(byte[] bytes) {
+	     return ByteBuffer.wrap(bytes).getInt();
+	}
+	
+//	// packing an array of 4 bytes to an int, big endian, minimal parentheses
+//	// operator precedence: <<, &, | 
+//	// when operators of equal precedence (here bitwise OR) appear in the same expression, they are evaluated from left to right
+//	int fromByteArray(byte[] bytes) {
+//	     return bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
+//	}
+//
+//	// packing an array of 4 bytes to an int, big endian, clean code
+//	int fromByteArray(byte[] bytes) {
+//	     return ((bytes[0] & 0xFF) << 24) | 
+//	            ((bytes[1] & 0xFF) << 16) | 
+//	            ((bytes[2] & 0xFF) << 8 ) | 
+//	            ((bytes[3] & 0xFF) << 0 );
+//	}
 }

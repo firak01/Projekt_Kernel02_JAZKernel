@@ -402,7 +402,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         		}
         		        		
         		if(!bCharacterPoolContainsAdditionalOnly) {
-	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit den zusätzlichen Buchstaben '" + ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER + "' verwenden?");	        		
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit den zusätzlichen Buchstaben '" + ICharacterExtendedZZZ.sCHARACTER_ADDITIONAL + "' verwenden?");	        		
 	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
 	        			this.cancelToMenue(hmVariable);
 	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {

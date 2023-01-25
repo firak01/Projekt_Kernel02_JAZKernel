@@ -200,6 +200,23 @@ public static void remove(ArrayList<?> lista, String sToRemove, boolean bIgnoreC
   }//end main:
 }
 
+public static void remove(ArrayList<?> lista, Integer intToRemove){
+	main:{
+	if(lista==null) break main;
+	if(intToRemove==null) break main;
+	
+		
+	for(Object obj : lista){
+		if(obj.equals(intToRemove)){			
+			lista.remove(obj);	
+			break main;
+		}
+	}		
+  }//end main:
+}
+
+
+
 
 public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove){
 	main:{
@@ -308,6 +325,24 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 			}
 		}//end main:
 		return aReturn;	
+	}
+	
+	public static int[]toArrayInt(ArrayList<Integer> lista){
+		int[] iaReturn = null;
+		main:{
+			if(lista==null) break main;
+			if(lista.size()==0) break main;
+			
+			Integer[]intaReturn = lista.toArray(new Integer[lista.size()]);
+			
+			int iIndex = -1;			
+			iaReturn=new int[intaReturn.length];
+			for(Integer objInt : intaReturn){
+				iIndex++;
+				iaReturn[iIndex] = objInt;
+			}
+		}//end main:
+		return iaReturn;	
 	}
 	
 	public static Component[]toComponentArray(ArrayList<Component> lista){
