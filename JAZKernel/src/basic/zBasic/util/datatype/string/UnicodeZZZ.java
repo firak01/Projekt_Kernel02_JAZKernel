@@ -670,9 +670,9 @@ public class UnicodeZZZ implements IConstantZZZ{
 //	        (byte)value };
 //	}
 //
-	public static int fromByteArrayToInt(byte[] bytes) {
-	     return ByteBuffer.wrap(bytes).getInt();
-	}
+//	public static int fromByteArrayToInt(byte[] bytes) {
+//	     return ByteBuffer.wrap(bytes).getInt();
+//	}
 	
 //	// packing an array of 4 bytes to an int, big endian, minimal parentheses
 //	// operator precedence: <<, &, | 

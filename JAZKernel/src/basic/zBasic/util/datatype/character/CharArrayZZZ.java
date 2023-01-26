@@ -1,5 +1,9 @@
 package basic.zBasic.util.datatype.character;
 
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+
 public class CharArrayZZZ {
 	public static boolean contains(char[]ca, char cToFind) {
 		boolean bReturn = false;
@@ -24,6 +28,33 @@ public class CharArrayZZZ {
 		return bReturn;
 	}
 	
+	public static void convert(int[] array, char[] array1) {
+		main:{
+			if(ArrayUtilZZZ.isEmpty(array))break main;
+			//Merke: "call by reference" Problem: Wenn array1 neu dimensioniert wird, geht die Referenz verloren. D.h. in der aufrufenden Methode ist array1 leer.
+			//       Lösungsansatz ware eine neue Methode mit Übergabeparameter: ReferenceArrayZZZ<Integer>objReturn=new ReferenceArrayZZZ<Integer>(0);
+			
+			int length = array.length;					
+		    for (int i = 0; i < length; i++) {
+		        // this converts a integer into a character
+		        array1[i] = (char) array[i];
+		    }
+		}//end main:
+	}
+	
+	public static void convert(char[] array, int[] array1 ) {
+		main:{
+			if(ArrayUtilZZZ.isEmpty(array))break main;
+			
+			//Merke: "call by reference" Problem: Wenn array1 neu dimensioniert wird, geht die Referenz verloren. D.h. in der aufrufenden Methode ist array1 leer.
+			//       Lösungsansatz ware eine neue Methode mit Übergabeparameter: ReferenceArrayZZZ<Integer>objReturn=new ReferenceArrayZZZ<Integer>(0);
+			int length = array.length;												
+		    for (int a = 0; a < length; a++) {
+		        array1[a] = array[a];
+		    }
+		}//end main
+	}
+	
 	public static char[] from(int[]ia) {
 		char[]caReturn=null;
 		main:{
@@ -31,8 +62,8 @@ public class CharArrayZZZ {
 			caReturn = new char[ia.length];
 			for(int i=0;i<ia.length;i++) {
 				byte b = (byte) ia[i];
-				char c = (char) ia[i];
-				char ctest = (char)b;
+				//char c = (char) ia[i];
+				//char ctest = (char)b;
 				
 				//https://stackoverflow.com/questions/7401550/how-to-convert-int-to-unsigned-byte-and-back
 				//A byte is always signed in Java. You may get its unsigned value by binary-anding it with 0xFF, though:
@@ -56,6 +87,15 @@ public class CharArrayZZZ {
 			}
 		}//end main:
 		return bReturn;		
+	}
+	
+	public static int[] toIntArray(char[] ca) {
+		int[]iaReturn = null;
+		main:{
+			iaReturn = new int[ca.length];
+			CharArrayZZZ.convert(ca,iaReturn);			
+		}//end main:
+		return iaReturn;
 	}
 	
 	
@@ -83,7 +123,7 @@ public class CharArrayZZZ {
 	
 	/**
 	 * @param ca
-	 * @param iPositionLastIn wenn > Anzahl Zeichen, < Anzahl Zeichen, >bbruch.
+	 * @param iPositionLastIn wenn > Anzahl Zeichen, < Anzahl Zeichen, Abbruch.
 	 * @return
 	 * @author Fritz Lindhauer, 05.11.2022, 11:01:48
 	 */

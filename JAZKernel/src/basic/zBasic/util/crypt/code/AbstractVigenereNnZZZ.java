@@ -104,21 +104,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			int[]iaPositionInPool = AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listasCharacterPool, iaSchluesselwort);
 			
 			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
-			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPositionInPool, listasCharacterPool,objCharMissingReplacement);
-		    
-			//die Map nutzen zum Verschieben der Position
-			/*
-		    StringBuilder sb = new StringBuilder();
-		    for(int i = 0; i < sInput.length(); i++) {
-		    	char cEncoded = sInput.charAt(i);
-		        Character ch = map.get(cEncoded);
-		        if (ch == null) {
-		            throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "'");
-		        }
-		        sb.append(ch);
-		    }
-		    sReturn =  sb.toString();
-		    */
+			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPositionInPool, listasCharacterPool,objCharMissingReplacement);		    			
 		}//end main;
 		return sReturn;
     }
@@ -271,26 +257,6 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 */
 	public static String decrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		//Merke: Bei Vigenere reicht das einfache Umdrehen des Codes wie bei Caesar oder anderen Rotierenden Verschluesselungen nicht mehr aus.
-//		public static String decrypt(String sInput, String sCharacterPoolIn,boolean bUseUppercase,boolean bUseLowercase, boolean bUseNumeric, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-//			String sReturn = sInput;
-//			main:{
-//				if(StringZZZ.isEmpty(sInput)) break main;
-//				
-//				String sCharacterPoolStarting;
-//				if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-//					sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
-//				}else {
-//					sCharacterPoolStarting = sCharacterPoolIn;
-//				}
-//				
-//				String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric);
-//				String sCharacterPool = StringZZZ.reverse(abcABC);	
-//				sReturn = VigenereNnZZZ.encrypt(sInput, sCharacterPool, sKeyword);
-//			}
-//			return sReturn;						
-//		}
-		
-		
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -474,7 +440,11 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{			
-			int[] iaEncryptedText = UnicodeZZZ.toIntArray(sInput);
+			int[] iaEncryptedTextTEST = UnicodeZZZ.toIntArray(sInput);
+			
+			char[] caEntryptedText = sInput.toCharArray();
+			int[] iaEncryptedText = CharArrayZZZ.toIntArray(caEntryptedText);
+			
 			//sollte uebereinstimmen !!! int[] iaEncryptedTextSavedTest = this.getEncryptedValuesAsInt();
 			this.setEncryptedValues(iaEncryptedText);
 						
@@ -503,23 +473,16 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			}else {
 				iaSchluesselwort = UnicodeZZZ.toIntArray(sKeyWord);
 			}
-			
-			/*
-			 ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
-			
-			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
-			int[] iaEncryptedCharacterPoolPosition = UnicodeZZZ.toIntArrayCharacterPoolPosition(sInput, listasCharacterPool,objCharMissingReplacement);
-			this.setEncryptedCharacterPoolPosition(iaEncryptedCharacterPoolPosition);
-			
-			 */
-			
+								
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();	
 			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
 			int[]iaPosition = VigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listCharacterPool, iaSchluesselwort,objCharMissingReplacement);
 			this.setDecryptedCharacterPoolPosition(iaPosition);
 						
 			String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool,objCharMissingReplacement);
-			iaReturn = UnicodeZZZ.toIntArray(sReturn);
+			//iaReturn = UnicodeZZZ.toIntArray(sReturn);
+			char[]caReturn = sReturn.toCharArray();
+			iaReturn = CharArrayZZZ.toIntArray(caReturn);
 			this.setDecryptedValues(iaReturn);
 		}//end main:
 		return iaReturn;   

@@ -43,4 +43,19 @@ public class ArrayUtilZZZ<T>{
 		}
 		return bReturn;
 	}
+	public static boolean isEmpty(char[] ca) {
+		boolean bReturn = false;
+		main:{
+			if(ca == null) {
+				bReturn = true;
+				break main;
+			}
+			
+			if(ca.length==0) {
+				bReturn = true;
+				break main;
+			}
+		}
+		return bReturn;
+	}
 }
