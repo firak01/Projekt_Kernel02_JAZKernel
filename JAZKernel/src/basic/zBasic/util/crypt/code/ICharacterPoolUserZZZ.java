@@ -27,4 +27,8 @@ public interface ICharacterPoolUserZZZ extends ICharacterPoolUserConstantZZZ{
 
 		public int[] getDecryptedCharacterPoolPosition();
 		public void setDecryptedCharacterPoolPosition(int[]iaPoolPosition);
+	
+		public CharacterExtendedZZZ getCharacterMissingReplacment();
+		public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharactereExtended);
+	
 }

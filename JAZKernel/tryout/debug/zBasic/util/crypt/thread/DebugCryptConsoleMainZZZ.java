@@ -17,12 +17,13 @@ public class DebugCryptConsoleMainZZZ {
 			                    //rein übergeben müsste, der das Verhalten des ...UserCrypt... steuert.
 			KeyPressThreadCryptZZZ objKeyPressThread = new KeyPressThreadCryptZZZ(objConsole);
 			objConsole.setKeyPressThread(objKeyPressThread);
-			
-			//TODOGOON20221019://Die Eingaben aus dem KeyPressThread an das ConsoleUser-Objekt übergeben.
+						
 			//Merke: Ziel ist, dass der ConsoleUser-Thread und der KeyPressThread "Daten" miteinander austauschen können. 
 			IConsoleUserZZZ objConsoleUser = new ConsoleUserCryptZZZ(objConsole);
 			objConsole.setConsoleUserObject(objConsoleUser);
 			objConsole.start();
+			
+			//TODO 20230127: Weitere-Threads anbinden können, d.h. objConsole.setConsoleUserObejects(Array von IConsoleUser) 
 		} catch (ExceptionZZZ e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -29,7 +29,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         }
 		@Override
 		public void makeMenueMain() throws InterruptedException {
-			System.out.println("Eingaben: + - zur Console-Threadgeschwindigkeit | Q zum Abbruch");
+			System.out.println("Eingaben: + - zur Console-Threadgeschwindigkeit | Q zum Abbruch | A für die Ausgabe der ASCII-Tabelle");
 			System.out.println("Bitte wählen Sie den Algorithmus:");
 			System.out.println("1: Rot13");
 			System.out.println("2: Rotascii");
@@ -64,6 +64,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             	this.quit();
             	bReturn=false;
             	break main; 
+            case "a":
+            	TODOGOON20220127; //Mache eine einfache Print-Ausgabe der ASCII Tabelle
+            	break;
             case "1":
             	this.isCurrentInputValid(true);
             	this.processROT13_(hmVariable);            	            						                						                						                					                		              
