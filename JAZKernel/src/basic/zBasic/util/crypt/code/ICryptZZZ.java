@@ -1,6 +1,7 @@
 package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
 public interface ICryptZZZ extends IFlagUserZZZ{	
@@ -11,6 +12,12 @@ public interface ICryptZZZ extends IFlagUserZZZ{
 	
 	public String encrypt(String sInput) throws ExceptionZZZ;
 	public String decrypt(String sInput) throws ExceptionZZZ;
+	public int[] getDecryptedValuesAsInt();
+	public void setDecryptedValues(int[] iaCrypted);
+	public int[] getOriginalValuesAsInt();
+	public void setOriginalValues(int[] iaOriginal);
+	
+	
 	public int getSubtype(); //Hiermit wird festgelegt, welches Unterverfahren verwendet werden soll (also auch welche weiteren Parameter benötigt werden, z.B. KeyNumber oder KeyString)
 	
 	//#########################################################
@@ -25,13 +32,17 @@ public interface ICryptZZZ extends IFlagUserZZZ{
 	//Wichtig für alle ROT - Verschluesselungen
 	public void setCryptNumber(int iCryptKey); //Manche Algorithmen benoetigen eine Zahl, z.B. alle ROT (=rotierenden) Algorithmen.
 	
-	//Methoden um <Z:CharacterPool> Werte zu setzen
-	//Wichtig fuer ROTnn - Verschluesselung
-	public void setCharacterPool(String sCharacterPool);
-	
-	
 	//############################################################
-	//Methoden für Vigenere - Verfahren
+	//Methoden für Vigenere - Verfahren, müssten sonst in ICharacterPoolUserZZZ
+	public String getCryptKey();
 	public void setCryptKey(String sCryptKey); //Manche Algorithmen benoetigen einen String, z.B. alle Vigenere Verfahren.
 	
+	//Methoden um <Z:CharacterPool> Werte zu setzen
+	//Wichtig fuer ROTnn - Verschluesselung
+	public String getCharacterPool();
+	public void setCharacterPool(String sCharacterPool);	
+	
+	//Falls ein Zeichen nicht im CharacterPool enthalten ist.
+	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
 }

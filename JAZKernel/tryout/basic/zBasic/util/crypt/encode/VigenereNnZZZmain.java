@@ -6,7 +6,9 @@ import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.IVigenereNnUiZZZ;
 import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
+import basic.zBasic.util.crypt.code.VigenereNnUiZZZ;
 import basic.zBasic.util.crypt.code.VigenereNnZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
@@ -90,7 +92,7 @@ public class VigenereNnZZZmain { 		// Vigenereverschluesselung
 	    	SchluesselWort = SchluesselWortUIDefault;
 	    }
 
-	    IVigenereNnZZZ objVigenereUI = new VigenereNnZZZ(SchluesselWort,sFilePath);	    	    
+	    IVigenereNnUiZZZ objVigenereUI = new VigenereNnUiZZZ(SchluesselWort,sFilePath);	    	    
 		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE,true);
 		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE,true);		
 		objVigenereUI.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC,true);		

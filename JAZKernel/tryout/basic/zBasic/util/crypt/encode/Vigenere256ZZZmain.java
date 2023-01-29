@@ -4,7 +4,9 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.IVigenereUiZZZ;
 import basic.zBasic.util.crypt.code.IVigenereZZZ;
+import basic.zBasic.util.crypt.code.Vigenere256UiZZZ;
 import basic.zBasic.util.crypt.code.Vigenere256ZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -104,7 +106,7 @@ public class Vigenere256ZZZmain { 		// Vigenereverschluesselung
 	    	SchluesselWort = SchluesselWortUIDefault;
 	    }
 	    
-	    IVigenereZZZ objVigenereUI = new Vigenere256ZZZ(SchluesselWort,sFilePath);
+	    IVigenereUiZZZ objVigenereUI = new Vigenere256UiZZZ(SchluesselWort,sFilePath);
 	    btemp = objVigenereUI.encryptUI();
 		
 	    if(btemp) {		    		    

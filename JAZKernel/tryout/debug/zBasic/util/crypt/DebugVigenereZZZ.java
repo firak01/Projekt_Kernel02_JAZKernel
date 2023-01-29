@@ -6,6 +6,7 @@ import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.code.ROTnumericZZZ;
 import basic.zBasic.util.crypt.code.VigenereNnZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
 
 public class DebugVigenereZZZ {
 
@@ -28,7 +29,7 @@ public class DebugVigenereZZZ {
 		boolean bUseNumericPool = false;
 		boolean bUseAdditionalCharacter = false;
         String sKeyString = SchluesselWort;
-        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "",bUseUppercasePool,bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
+        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "", CharZZZ.getEmpty(), bUseUppercasePool,bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
         System.out.println(sVigenere);
         
         String roundTrip = VigenereNnZZZ.decrypt(sVigenere,"",bUseUppercasePool,bUseLowercasePool, bUseNumericPool,bUseAdditionalCharacter,sKeyString);

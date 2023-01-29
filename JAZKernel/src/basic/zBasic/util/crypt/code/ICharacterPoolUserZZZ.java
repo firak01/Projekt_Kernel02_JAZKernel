@@ -19,16 +19,19 @@ public interface ICharacterPoolUserZZZ extends ICharacterPoolUserConstantZZZ{
 		public ArrayListExtendedZZZ<CharacterExtendedZZZ>getCharacterPoolList() throws ExceptionZZZ;
 		public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool);
 		
-		public String getCharacterPool();
-		public void setCharacterPool(String sCharacterPool);						
-		
+		//stehen schon in ICryptZZZ
+		//public String getCharacterPool();
+		//public void setCharacterPool(String sCharacterPool);	
+		//public String getCryptKey();
+		//public void setCryptKey(String sCryptKey); //Manche Algorithmen benoetigen einen String, z.B. alle Vigenere Verfahren.
+
 		public int[] getEncryptedCharacterPoolPosition();
 		public void setEncryptedCharacterPoolPosition(int[]iaPoolPosition);
 
 		public int[] getDecryptedCharacterPoolPosition();
 		public void setDecryptedCharacterPoolPosition(int[]iaPoolPosition);
 	
-		public CharacterExtendedZZZ getCharacterMissingReplacment();
-		public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharactereExtended);
-	
+		//Verlagert nach ICryptZZZ, wie auch der CharacterPool
+		//public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
+		//public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
 }

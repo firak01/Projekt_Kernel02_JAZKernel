@@ -5,6 +5,7 @@ import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.Vigenere26ZZZ;
+import basic.zBasic.util.crypt.code.Vigenere96UiZZZ;
 import basic.zBasic.util.crypt.code.Vigenere96ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
@@ -76,7 +77,7 @@ class Vig_Decode96ZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
     		break main;
     	}
     }
-    Vigenere96ZZZ objVigenere = new Vigenere96ZZZ(SchluesselWort, sFilePath);
+    Vigenere96UiZZZ objVigenere = new Vigenere96UiZZZ(SchluesselWort, sFilePath);
 	objVigenere.isFileOriginalEncrypted(true);
 	    
 	    //Die Ausgabe der (hier schon chiffierten) Originaldatei

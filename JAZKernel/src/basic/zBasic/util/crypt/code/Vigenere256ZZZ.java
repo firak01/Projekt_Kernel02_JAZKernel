@@ -34,69 +34,7 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 		  super(sSchluesselWort, sFilePath);
 	  }
 		
-	  public boolean encryptUI() throws ExceptionZZZ{
-		  boolean bReturn = false;
-		  main:{
-		    String SchluesselWort=this.getCryptKey();
-		    
-		    System.out.println("Schluesselwort: " + SchluesselWort);
 
-		    String sFilePath = this.getFilePath();
-		    DateiUtil Original = new DateiUtil(sFilePath);
-		    this.setFileOriginal(Original);
-		   
-		    int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
-		    System.out.print("\nOriginaltext ausgeben? (J/N): ");
-		    if (IoUtil.JaNein()) {
-		      System.out.println("---- Originaltext von: "+Original.computeFilePath()+" ----");
-		      for (int i=0; i < p.length; i++) {
-		        IoUtil.printChar(p[i]);	// druckbares Zeichen?
-		        if (((i+1)%80)==0) System.out.println();
-		      }
-		    }		
-		    System.out.println("\n-- Verschluessele Text von: "+Original.computeFilePath()+" --");    
-		    
-
-		int[]ppure = this.encrypt(p);
-	    this.setEncryptedValues(ppure);
-	    bReturn = true;
-	}//end main:
-	return bReturn;    
-  }
-	  
-  public boolean decryptUI() throws ExceptionZZZ{
-	  boolean bReturn = false;
-	  main:{
-//		    System.out.print("\nChiffrierte Datei ausgeben? (J/N): ");
-//		    if (IoUtil.JaNein()) {
-//		      System.out.println("---- Chiffretext von: "+Chiffre.computeFilePath()+" ----");
-//		      for (int i=0; i < c.length; i++) {
-//		        IoUtil.printCharWithPosition(c[i],i,"|");
-//		        if (((i+1)%80)==0) System.out.println(); 	// neue Zeile
-//		      }
-//		    }
-		   
-		    System.out.println("\nDatei einlesen ...");
-		    DateiUtil Chiffre = this.getFileEncrypted();
-		    System.out.println("Datei: '" + Chiffre.computeFilePath() + "'" );;
-		    int[] c = Chiffre.liesAsInt(); //FGL: Fehlerkorrektur... das ist ja nicht als Unicode in die Datei geschrieben worden...  Chiffre.liesUnicode();	// Datei einlesen
-		    for(int i=0; i < c.length; i++) {
-		    	int i2 = c[i];
-		    	IoUtil.printChar(i2);
-		    }
-		    
-		    String SchluesselWort=this.getCryptKey();		   
-			System.out.println("Schluesselwort: '"+SchluesselWort+"'");
-			  		    
-		    System.out.println("\nBeginne Entschluesselung ... ");
-
-		    int[]iaPure = this.decrypt(c);
-		    this.setDecryptedValues(iaPure);		    
-		   
-		    bReturn = true;
-	  }//end main:
-	  return bReturn;
-  }
 	@Override
 	public int getOffsetForAsciiRange() {
 		return Vigenere256ZZZ.iOffsetForAsciiRange;
@@ -118,6 +56,7 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 	    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
 	    return UnicodeZZZ.fromAsciiToUtf8For256(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet	   
 	}
+	
 	@Override
 	public int getOffsetForUtf8Range() {
 		return Vigenere256ZZZ.iOffsetForUtf8Range;

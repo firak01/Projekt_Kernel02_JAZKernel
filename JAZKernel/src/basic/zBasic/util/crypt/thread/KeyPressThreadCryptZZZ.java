@@ -65,7 +65,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             	bReturn=false;
             	break main; 
             case "a":
-            	TODOGOON20220127; //Mache eine einfache Print-Ausgabe der ASCII Tabelle
+            	this.isCurrentInputValid(true);            	            	
+            	this.printTableASCII_(hmVariable);//Mache eine einfache Print-Ausgabe der ASCII Tabelle
             	break;
             case "1":
             	this.isCurrentInputValid(true);
@@ -98,6 +99,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		return bReturn;
 	}
 		
+		private void printTableASCII_(HashMapExtendedZZZ hmVariable) {
+			// TODO Auto-generated method stub
+			
+		}
 		public boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
 			boolean bReturn = true;
 			main:{

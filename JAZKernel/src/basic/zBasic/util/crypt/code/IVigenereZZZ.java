@@ -4,7 +4,7 @@ import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
-public interface IVigenereZZZ extends ICryptZZZ, ICryptUIZZZ{
+public interface IVigenereZZZ extends ICryptZZZ{
 	//Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen
 	//Merke: Diese Flags beziehen sich auf den Characterpool, d.h. nur wichtig in IVigenereNnZZZ
 //	public enum FLAGZ{
@@ -15,13 +15,13 @@ public interface IVigenereZZZ extends ICryptZZZ, ICryptUIZZZ{
 	public int[] decrypt(int[]p) throws ExceptionZZZ;
 	public int[] getEncryptedValuesAsInt();
 	
-	//##########################################################
-	//Methoden zum Dateihandling
-	public DateiUtil getFileOriginal();
-	
 	
 	//###########################################################
 	//Methoden für Vigenere - Verfahren
-	public String getCryptKey();
-	public void setCryptKey(String sCryptKey);
+	//Ausgelagert nach ICryptZZZ
+//	public String getCryptKey();
+//	public void setCryptKey(String sCryptKey);
+//	
+//	public String getCharacterPool();
+//	public void setCharacterPool(String sCharacterPool);
 }

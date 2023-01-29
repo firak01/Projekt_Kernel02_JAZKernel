@@ -19,7 +19,7 @@ public class CharZZZ {
 	 * https://stackoverflow.com/questions/8534178/how-to-represent-empty-char-in-java-character-class
 	 */
 	public static boolean isEmpty(char c){
-		if(c == CharZZZ.getEmpty()){
+		if(c == CharZZZ.getEmpty() || c == CharZZZ.getNull()){
 			return true;
 		}else{
 			return false;
@@ -86,16 +86,21 @@ public class CharZZZ {
 		return bReturn;
 	}
 	
+	/** Merke: char kann nie NULL sein.
+	 * @return
+	 * @author Fritz Lindhauer, 29.01.2023, 07:51:13
+	 */
+	public static char getNull() {
+		return '\0'; //entspricht vielleicht Character.MIN_VALUE;
+	}
 	
 	
-	
-	/**
-	 * Merke Char kann nie NULL sein.
+	/** Merke: char kann nie NULL sein.
 	 * @return
 	 * @author Fritz Lindhauer, 24.07.2019, 09:57:46
 	 */
 	public static char getEmpty(){
-		return Character.MIN_VALUE;
+		return Character.MIN_VALUE; //Das ist der Unicode Character
 	}
 	
 	public static String toString(int iCharValue) {

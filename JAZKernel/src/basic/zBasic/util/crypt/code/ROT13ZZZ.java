@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 public class ROT13ZZZ extends AbstractROTZZZ{
 	public ROT13ZZZ() throws ExceptionZZZ {
@@ -90,6 +91,4 @@ public class ROT13ZZZ extends AbstractROTZZZ{
         // Convert array to a new String.
         return new String(values);
     }
-
-	
 }

@@ -6,6 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -15,11 +16,8 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	private static final long serialVersionUID = 1L;
 	private String sFilePath=null;
 	private String sKeyWord=null;
-	
-	private DateiUtil dateiOriginal=null; boolean bDateiOriginalIsEncrypted=false;
-	private DateiUtil dateiEncrypted=null;
-	private DateiUtil dateiDecrypted=null;
-	private int[] iaOriginal=null; 
+
+	private int[] iaOriginal=null;
 	private int[] iaEncrypted=null;
 	private int[] iaDecrypted=null;
 	
@@ -79,34 +77,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	public String getFilePath() {
 		return this.sFilePath;
 	}
-	
-	public int[] readOriginalValuesAsInt() {
 		
-		DateiUtil Original = this.getFileOriginal();
-		if(Original!=null) {
-			int[] p = Original.liesUnicode();//FGL: Der Klartextbuchstabe
-			this.setOriginalValues(p);
-		}
-		
-		return this.iaOriginal;
-	}
-	public int[] getOriginalValues() {
-		if(this.iaOriginal==null) {
-			this.iaOriginal = this.readOriginalValuesAsInt();
-		}
-		return this.iaOriginal;
-	}
-	public void setOriginalValues(int[] iaOriginal) {
-		this.iaOriginal = iaOriginal;
-	}
-	
-	public boolean isFileOriginalEncrypted() {
-		return this.bDateiOriginalIsEncrypted;
-	}
-	public void isFileOriginalEncrypted(boolean bFileOriginalIsEncrypted) {
-		bDateiOriginalIsEncrypted = bFileOriginalIsEncrypted;
-	}
-	
 	//######################
 	public abstract int getOffsetForUtf8Range();
 	public abstract int getOffsetForAsciiRange();
@@ -115,16 +86,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 
 	//###########################
 	//### Verschluesselungsmethoden
-	//###########################	
-	/** Starte die Verschluesselung, weitere Eingaben sind moeglich:
-	 *  - per Konsole 
-	 *  - per Dialog, z.B. Auswahl von Dateien 
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 03.12.2022, 05:43:47
-	 */
-	public abstract boolean encryptUI() throws ExceptionZZZ;
-	
+	//###########################		
 	/** Der reine Entschluesselungsalgorithmus, ohne Eingaben per Console, etc.
 	 * @param p
 	 * @return
@@ -179,19 +141,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 		return iaReturn;
 	}
 	
-	public void setFileOriginal(DateiUtil datei) {
-		this.dateiOriginal = datei;
-	}
 	
-	@Override
-	public DateiUtil getFileOriginal() {
-		if(this.dateiOriginal==null) {
-			String sFilePath = this.getFilePath();
-			DateiUtil Original = new DateiUtil(sFilePath);
-		    this.setFileOriginal(Original);
-		}
-		return this.dateiOriginal;
-	}
 	
 	@Override
 	public int[] getEncryptedValuesAsInt() {
@@ -203,9 +153,7 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	
 	//##########################
 	//### Entschluesselungsmethoden
-	//##########################	
-	public abstract boolean decryptUI() throws ExceptionZZZ;
-    
+	//##########################	    
 	/** Der reine Verschluesselungsalgorithmus, ohne Eingaben per Console, etc.
 	 * @param p
 	 * @return
@@ -248,34 +196,6 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 		return iaReturn;   
 	}
 	
-	
-	public void setFileEncrypted(DateiUtil datei) {
-		this.dateiEncrypted = datei;
-	}
-	public DateiUtil getFileEncrypted() {
-		if(this.dateiEncrypted==null) {
-			if(this.isFileOriginalEncrypted()) {
-				this.dateiEncrypted = this.getFileOriginal();
-			}else {
-				this.isFileOriginalEncrypted(true);
-				this.dateiEncrypted = this.getFileOriginal();
-			}
-		}
-		return this.dateiEncrypted;
-	}	
-	public void setFileDecrypted(DateiUtil datei) {
-		this.dateiDecrypted = datei;
-	}
-	public DateiUtil getFileDecrypted() {		
-		return this.dateiDecrypted;
-	}
-	public int[] getDecryptedValuesAsInt() {
-		return this.iaDecrypted;
-	}
-	public void setDecryptedValues(int[] iaCrypted) {
-		this.iaDecrypted = iaCrypted;
-	}
-	
 	public static String computeKeyWordFromEncryptedFile(String sFilePath) {
 		String sReturn=null;
 		main:{
@@ -306,16 +226,6 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	//### Methoden aus ICryptZZZ
 	//####################################################
 	@Override
-	public void setCryptKey(String sKeyWord) {
-		this.sKeyWord= sKeyWord;
-	}
-	
-	@Override
-	public String getCryptKey() {
-		return this.sKeyWord;
-	}
-	
-	@Override
 	public int getSubtype() {
 		return CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal();
 	}
@@ -345,18 +255,66 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	}
 	
 	
-	//#################################################
-	//AUS dem Interface ICrypt
-	//wichtig für VigenereNnZZZ - Verfahren
 	@Override
-	public void setCharacterPool(String sCharacterPool) {
-		
+	public void setCryptKey(String sKeyWord) {
+		this.sKeyWord= sKeyWord;
 	}
 	
+	@Override
+	public String getCryptKey() {
+		return this.sKeyWord;
+	}
+		
+	@Override
+	public int[] getOriginalValuesAsInt() {
+		return this.iaOriginal;
+	}
+	
+	@Override
+	public void setOriginalValues(int[] iaOriginal) {
+		this.iaOriginal = iaOriginal;
+	}
+	
+	@Override
+	public int[] getDecryptedValuesAsInt() {
+		return this.iaDecrypted;
+	}
+	
+	@Override
+	public void setDecryptedValues(int[] iaDecrypted) {
+		this.iaDecrypted = iaDecrypted;
+	}
+	
+	//#################################################
+	//AUS dem Interface ICrypt	
 	//+++ nur wichtig für ROT-Verfahren
 	@Override
 	public void setCryptNumber(int iCryptKey) {
 		
+	}
+	
+	//### Methoden werden zwar z.B. nur fuer Vigenere Verschluesselung, bzw. fuer Verschluesselung mit CharacterPool gebraucht.
+	//    Um den Einsatz von ICrypt - Objekten zu standardiesieren, hier notwendig.
+	@Override
+	public String getCharacterPool() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCharacterPool(String sCharacterPool) {
+		// TODO Auto-generated method stub		
+	}
+	
+	@Override
+	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
+		// TODO Auto-generated method stub		
 	}
 	
 }

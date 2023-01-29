@@ -8,6 +8,8 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.IVigenereUiZZZ;
+import basic.zBasic.util.crypt.code.Vigenere96UiZZZ;
 import basic.zBasic.util.crypt.code.Vigenere96ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
@@ -92,7 +94,7 @@ try {
 	    	SchluesselWort = SchluesselWortUIDefault;
 	    }
 	    
-	    Vigenere96ZZZ objVigenereUI = new Vigenere96ZZZ(SchluesselWort, sFilePath);
+	    IVigenereUiZZZ objVigenereUI = new Vigenere96UiZZZ(SchluesselWort, sFilePath);
 	    btemp = objVigenereUI.encryptUI();
 		
 	    if(btemp) {		    		    

@@ -9,6 +9,7 @@ import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.code.Vigenere256ZZZ;
 import basic.zBasic.util.crypt.code.Vigenere26ZZZ;
 import basic.zBasic.util.crypt.code.Vigenere96ZZZ;
+import basic.zBasic.util.crypt.code.VigenereNnUiZZZ;
 import basic.zBasic.util.crypt.code.VigenereNnZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
@@ -80,7 +81,7 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
     		break main;
     	}
     }
-    VigenereNnZZZ objVigenere = new VigenereNnZZZ(SchluesselWort, sFilePath);
+    VigenereNnUiZZZ objVigenere = new VigenereNnUiZZZ(SchluesselWort, sFilePath);
     objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE, true);
     objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE, true);
     objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC, true);
@@ -93,7 +94,7 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
 	      DateiUtil Chiffre = objVigenere.getFileOriginal();
 	      System.out.println("\n-- Chiffriertentext von: "+Chiffre.computeFilePath()+" --");
 	      //int[]iaPure = objVigenere.getOriginalValuesAsCharacterPoolPosition();
-	      int[]iaPure = objVigenere.getOriginalValues();
+	      int[]iaPure = objVigenere.getOriginalValuesAsInt();
 	      for (int i=0; i<iaPure.length; i++) {
 	        IoUtil.printCharWithPosition(iaPure[i],i,"|");
 	        if (((i+1)%80)==0) System.out.println();	// neue Zeile

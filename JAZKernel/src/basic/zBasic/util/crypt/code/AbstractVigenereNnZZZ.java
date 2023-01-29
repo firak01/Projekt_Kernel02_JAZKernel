@@ -20,6 +20,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
 	
 	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
+	protected CharacterExtendedZZZ objCharacterMissingReplacement = null;
 	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = null;
 	protected int[] iaEncryptedPositionInPool = null;
 	protected int[] iaDecryptedPositionInPool = null;
@@ -82,7 +83,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */	
-	public static String encrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static String encrypt(String sInput, String sCharacterPoolIn, char cCharacterReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -103,7 +104,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 						
 			int[]iaPositionInPool = AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listasCharacterPool, iaSchluesselwort);
 			
-			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ('¶');
+			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ(cCharacterReplacement);
 			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPositionInPool, listasCharacterPool,objCharMissingReplacement);		    			
 		}//end main;
 		return sReturn;
@@ -131,7 +132,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
             iaReturn = AbstractVigenereNnZZZ.encryptAsPositionInPool(iaText, listAsCharacterPool, iaSchluesselwort);
             this.setEncryptedCharacterPoolPosition(iaReturn);
             
-            CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ('¶');
+            CharacterExtendedZZZ objCharMissingReplacement = this.getCharacterMissingReplacment();
             String sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaReturn, listasCharacterPool,objCharMissingReplacement);
             iaReturn = UnicodeZZZ.toIntArray(sReturn);
 			this.setEncryptedValues(iaReturn);		
@@ -149,7 +150,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			int[] iaPosition = VigenereNnZZZ.encryptAsPositionInPool(sInput,listasCharacterPool,sKeyword);
 			this.setEncryptedCharacterPoolPosition(iaPosition);
 			
-			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ('¶');
+			CharacterExtendedZZZ objCharMissingReplacement = this.getCharacterMissingReplacment();
 			sReturn = CharacterExtendedZZZ.computeStringFromCharacterPoolPosition(iaPosition, listasCharacterPool,objCharMissingReplacement);
 			int[] iaEncrypted = UnicodeZZZ.toIntArray(sReturn);			
 			this.setEncryptedValues(iaEncrypted);
@@ -475,7 +476,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			}
 								
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listCharacterPool = this.getCharacterPoolList();	
-			CharacterExtendedZZZ objCharMissingReplacement = new CharacterExtendedZZZ('¶');
+			CharacterExtendedZZZ objCharMissingReplacement = this.getCharacterMissingReplacment();
 			int[]iaPosition = VigenereNnZZZ.decryptAsPositionInPool(iaEncryptedText, listCharacterPool, iaSchluesselwort,objCharMissingReplacement);
 			this.setDecryptedCharacterPoolPosition(iaPosition);
 						
@@ -520,17 +521,16 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	    //Im Buch auf Seite 36 wird dann 32 draufgerechnet ("blank")
 	    return UnicodeZZZ.fromAsciiToUtf8ForNn(p);//funktioniert bei Viginere26 Verschluesselung, es wird 65 draufgerechnet
 	}
-
+	
 	@Override
-	public boolean encryptUI() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
+	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
+		if(this.objCharacterMissingReplacement==null) {
+			this.objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+		}
+		return this.objCharacterMissingReplacement;		
 	}
-
-	@Override
-	public boolean decryptUI() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
+		this.objCharacterMissingReplacement = objCharacterMissingReplacement;
 	}
 
 	@Override
@@ -594,28 +594,6 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		this.iaDecryptedPositionInPool = iaPosition;
 	}
 	
-	public int[] readOriginalValuesAsCharacterPoolPosition() throws ExceptionZZZ {
-		int[]iaReturn = null;
-		main:{
-			int[]iaPure = null;	
-			if(this.getOriginalValues()==null) {
-				DateiUtil Original = this.getFileOriginal();
-						
-				if(Original!=null) {
-					iaPure = Original.liesUnicode();										
-					this.setOriginalValues(iaPure);
-				}
-			}else {
-				iaPure = this.getOriginalValues();
-			}
-			
-			iaReturn = this.makeOriginalValuesAsCharacterPoolPosition(iaPure);
-		}//end main:
-		return iaReturn;
-	}
-	
-	
-	
 	public int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure) throws ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{
@@ -648,7 +626,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 						
 			CharacterExtendedZZZ objCharMissingReplacement = null;
 			if(objCharMissingReplacementIn==null) {
-				objCharMissingReplacement=new CharacterExtendedZZZ('¶');
+				objCharMissingReplacement=new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 			}else {
 				objCharMissingReplacement=objCharMissingReplacementIn;
 			}

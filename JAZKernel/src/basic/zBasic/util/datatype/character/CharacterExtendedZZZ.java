@@ -6,6 +6,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.VigenereNnZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -149,7 +150,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			
 			CharacterExtendedZZZ objCharMissingReplacement=null;
 			if(objCharMissingReplacementIn==null) {
-				objCharMissingReplacement = new CharacterExtendedZZZ((char)240);
+				objCharMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 			}else {
 				objCharMissingReplacement = objCharMissingReplacementIn;
 			}

@@ -4,6 +4,8 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.IVigenereUiZZZ;
+import basic.zBasic.util.crypt.code.Vigenere26UiZZZ;
 import basic.zBasic.util.crypt.code.Vigenere26ZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
@@ -82,7 +84,7 @@ public class Vigenere26ZZZmain {
 		    	SchluesselWort = SchluesselWortUIDefault;
 		    }
 		    
-		    Vigenere26ZZZ objVigenereUI = new Vigenere26ZZZ(SchluesselWort, sFilePath);
+		    IVigenereUiZZZ objVigenereUI = new Vigenere26UiZZZ(SchluesselWort, sFilePath);
 		    btemp = objVigenereUI.encryptUI();
 		    if(btemp) {		    		    
 		    System.out.print("\nVerschluesselten Text ausgeben? (J/N): ");

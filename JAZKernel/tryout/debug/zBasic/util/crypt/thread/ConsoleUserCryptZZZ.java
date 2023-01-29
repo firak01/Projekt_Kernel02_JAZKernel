@@ -10,6 +10,7 @@ import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
@@ -120,6 +121,10 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
 					if(!StringZZZ.isEmpty(sInput)) {
 						objCrypt.setCharacterPool(sInput);
+						
+						//... und dann auch das fehlende Zeichen setzen
+						CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ('¶');//Mal was anderes verwenden als den "DefaultBuchstaben" aus ICharacterPoolUserConstantZZZ
+						objCrypt.setCharacterMissingReplacement(objCharacterMissingReplacement);
 					}
 				}
 				//+++++++++++++++++++++++++++++++++++++++++++++++++								

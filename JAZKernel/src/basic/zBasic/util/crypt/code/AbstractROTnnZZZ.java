@@ -26,6 +26,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	private static final long serialVersionUID = 1L;
 		
 	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
+	protected CharacterExtendedZZZ objCharacterMissingReplacement = null;
 	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = null;
 	protected int[] iaEncryptedPositionInPool = null;
 	protected int[] iaDecryptedPositionInPool = null;
@@ -115,6 +116,17 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();		
 		return AbstractROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey);
+	}
+	
+	@Override
+	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
+		if(this.objCharacterMissingReplacement==null) {
+			this.objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+		}
+		return this.objCharacterMissingReplacement;		
+	}
+	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
+		this.objCharacterMissingReplacement = objCharacterMissingReplacement;
 	}
 	
 	@Override

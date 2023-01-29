@@ -6,4 +6,6 @@ public interface ICharacterPoolUserConstantZZZ {
 		public enum FLAGZ{
 			USENUMERIC,USEUPPERCASE,USELOWERCASE,USEADDITIONALCHARACTER,USECHARACTERPOOL
 		}	
+		
+		public static char cCHARACTER_MISSING_REPLACEMENT_DEFAULT = '¦'; // ein anderer schöner Charakter wäre '¶'
 }
