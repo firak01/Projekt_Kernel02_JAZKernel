@@ -109,13 +109,15 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();		
-		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey);
+		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, iCryptKey);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
-		String sCharacterPool=this.getCharacterPool();		
-		return AbstractROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey);
+		String sCharacterPool=this.getCharacterPool();
+		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
+		return AbstractROTnnZZZ.decrypt(sInput, sCharacterPool, objCharacterMissingReplacement, iCryptKey);
 	}
 	
 	@Override
@@ -169,14 +171,15 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		this.sCharacterUsedForRot = sCharacterPool;
 	}
 		
-	public static String encrypt(String sInput, int n)  throws IllegalArgumentException {
+	public static String encrypt(String sInput, int n)  throws IllegalArgumentException, ExceptionZZZ {
 		String sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
-		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);
+		CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);
 	
 	}
 	
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, int n) throws IllegalArgumentException {
+	public static String encrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n) throws IllegalArgumentException {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -220,7 +223,14 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		    	char cEncoded = sInput.charAt(i);
 		        Character ch = map.get(cEncoded);
 		        if (ch == null) {
-		            throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "'");
+		        	if(objCharacterMissingReplacement==null) {
+		        		throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "'");
+		        	}else {
+		        		ch = objCharacterMissingReplacement.getChar();	
+		        		if(ch == null) {
+		        			throw new IllegalArgumentException("Illegal character '" + sInput.charAt(i) + "' and no replacement character provided.");
+		        		}
+		        	}
 		        }
 		        sb.append(ch);
 		    }
@@ -229,15 +239,15 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, int n)  throws IllegalArgumentException{
+	public static String decrypt(String sInput, int n)  throws IllegalArgumentException, ExceptionZZZ{
 
 		String sCharacterPool= AbstractROTnnZZZ.getCharacterPoolStringAscii();
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
-		
-		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);		
+		CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);		
 	}
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, int n)  throws IllegalArgumentException{
+	public static String decrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n)  throws IllegalArgumentException{
 
 		String sCharacterPool=null;
 		if(StringZZZ.isEmpty(sCharacterPool)) {
@@ -247,7 +257,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		}
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
 		
-		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);		
+		return AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);		
 	}
 	
 	@Override

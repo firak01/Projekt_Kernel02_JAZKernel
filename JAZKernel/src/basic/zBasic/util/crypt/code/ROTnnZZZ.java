@@ -91,21 +91,23 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
+		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
 		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
 		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
 		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
-		return ROTnnZZZ.encrypt(sInput, sCharacterPool, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric, bUseAdditionalCharacter);
+		return ROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric, bUseAdditionalCharacter);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
 		String sCharacterPool=this.getCharacterPool();
+		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
 		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
 		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
 		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
-		return ROTnnZZZ.decrypt(sInput, sCharacterPool, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric,bUseAdditionalCharacter);
+		return ROTnnZZZ.decrypt(sInput, sCharacterPool, objCharacterMissingReplacement, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric,bUseAdditionalCharacter);
 	}
 	
 	public String getCharacterPool() {
@@ -121,7 +123,7 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 	
 	
 	
-	public static String encrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter) {
+	public static String encrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter) {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -135,12 +137,12 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 			
 			
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric, bUseAdditionalCharacter);
-			sReturn = AbstractROTnnZZZ.encrypt(sInput, abcABC, n);		
+			sReturn = AbstractROTnnZZZ.encrypt(sInput, abcABC, objCharacterMissingReplacement, n);		
 		}//end main;
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter) {
+	public static String decrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter) {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -154,7 +156,7 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 			
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric, bUseAdditionalCharacter);
 			String sCharacterPool = StringZZZ.reverse(abcABC);	
-			sReturn = AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, n);
+			sReturn = AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);
 		}
 		return sReturn;						
 	}

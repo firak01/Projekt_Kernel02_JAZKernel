@@ -20,6 +20,7 @@ import basic.zBasic.util.crypt.code.IROTZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.code.ROTnumericZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
@@ -151,7 +152,8 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			objStreamFile.println("WertB="+sValue);
 			objStreamFile.println("WertBencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
-			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, iKeyNumber, true,false,false,false);
+			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
+			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true,false,false,false);
 			objStreamFile.println("WertC="+sValue);
 			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
