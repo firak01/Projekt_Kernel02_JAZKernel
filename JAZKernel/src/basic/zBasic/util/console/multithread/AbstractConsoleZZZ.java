@@ -32,9 +32,9 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	private long lSleepTime=1000;
 	private volatile static boolean bStop = false;
 	private volatile static boolean bInputFinished=false;
+	private volatile static boolean bOutputFinished=false;
 	private volatile static boolean bInputThreadFinished = false;
-	private volatile static boolean bInputThreadRunning = false;
-	private volatile static boolean bOutputFinished=true;
+	private volatile static boolean bInputThreadRunning = false;	
 	private volatile static boolean bConsoleUserThreadFinished = false;
 	private volatile static boolean bConsoleUserThreadRunning = false;
 	
@@ -103,6 +103,17 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 	}
 	
 	@Override
+	public synchronized boolean isOutputAllFinished() {
+		return this.bOutputFinished;
+	}
+	
+	@Override
+	public synchronized void isOutputAllFinished(boolean bOutputFinished) {
+		this.bOutputFinished = bOutputFinished;
+	}
+	
+	
+	@Override
 	public boolean isKeyPressThreadFinished() {
 		return this.bInputThreadFinished;
 	}
@@ -163,19 +174,6 @@ public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZ
 		 this.lSleepTime = lSleepTime;
 	 }
 
-	
-	@Override
-	public synchronized boolean isOutputAllFinished() {
-		return this.bOutputFinished;
-	}
-	
-	@Override
-	public synchronized void isOutputAllFinished(boolean bOutputFinished) {
-		this.bOutputFinished = bOutputFinished;
-	}
-	
-	
-	
 	@Override
 	public IConsoleUserZZZ getConsoleUserObject() {
 		return this.objConsoleUser;

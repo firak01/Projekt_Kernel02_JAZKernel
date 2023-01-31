@@ -13,8 +13,8 @@ public class DebugCryptConsoleMainZZZ {
 			IConsoleZZZ objConsole = ConsoleZZZ.getInstance();
 			
 			//Merke: Ziel ist es, das was in DebugRot13ZZZ (oder ähnlichen) gemacht wird in einer Endlosschleife durchzuführen.
-			//TODOGOON20221018; //Eigentlich ist der ConsoleUSer und die Eingabe so eng miteinander verknüpft, dass man hier den KeyPassCryptThreadZZZ
-			                    //rein übergeben müsste, der das Verhalten des ...UserCrypt... steuert.
+			//Der ConsoleUser und die Eingabe so eng miteinander verknüpft, dass man hier den KeyPressCryptThreadZZZ
+			//übergeben wird, der das Verhalten des ...UserCrypt... steuert.
 			KeyPressThreadCryptZZZ objKeyPressThread = new KeyPressThreadCryptZZZ(objConsole);
 			objConsole.setKeyPressThread(objKeyPressThread);
 						
@@ -24,6 +24,7 @@ public class DebugCryptConsoleMainZZZ {
 			objConsole.start();
 			
 			//TODO 20230127: Weitere-Threads anbinden können, d.h. objConsole.setConsoleUserObejects(Array von IConsoleUser) 
+			//               Aber: Zu bedenken ist, das wohl immer nur 1 Thread per Scanner - Klasse auf die Eingaben hören kann. 
 		} catch (ExceptionZZZ e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -13,6 +13,7 @@ import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
+import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.character.ICharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -99,16 +100,60 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		return bReturn;
 	}
 		
-		private void printTableASCII_(HashMapExtendedZZZ hmVariable) {
-			// TODO Auto-generated method stub
-			
+		private boolean printTableASCII_(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
+			//Ausgabe der ASCII-Zeichen auf dem aktuellen System
+			boolean bReturn = true;
+			main:{
+				int iLine=1;
+				for(int i = 0; i<=255; i++) {					
+					char c = (char)i;
+					System.out.print(StringZZZ.padLeft(Integer.toString(i),3));
+					
+					if(i==9) {
+					//if(CharZZZ.toString(c)=="\\t") {
+						System.out.print(": T | ");
+					//}else if(CharZZZ.toString(c)=="\\n") {
+					}else if(i==10) {
+						System.out.print(": L | ");
+					//}else if(CharZZZ.toString(c)=="\\r") {
+					}else if(i==13) {
+						System.out.print(": R | ");
+					}else {
+						System.out.print(": " + c + " | ");
+					}
+					//if (((i+1)%80)==0) System.out.println();	 // neue Zeile
+					//System.out.print("X"+((((9*i)+9)%20)==0));
+					//Wichtige Erkenntnis... modulo wirkt hier auf die Anzahl der Zeichen.
+					//                       Das ist egal wie lang so etwas ist, eine Tatsache, die in der Kryptografie ( und meinen Crypt Klassen) ausgenutzt wird!!!
+					//if ((((9*i)+9)%20)==0) System.out.println(); // neue Zeile (normalerweise 80 Zeichen), Pro Zeichendarstellung werden 9 Zeichen verbraucht
+					
+					//Also: Althergebracht...
+					if (((9*iLine)+9)>80) {
+						System.out.println(); // neue Zeile (normalerweise 80 Zeichen), Pro Zeichendarstellung werden 9 Zeichen verbraucht
+						iLine=0;
+					}else {
+						iLine++;
+					}
+		
+				}			
+				System.out.println(StringZZZ.crlf());
+								
+				
+				this.isCurrentMenue(true);//das Menue erneut aufbauen
+        		this.isCurrentInputFinished(true);
+        		this.isInputAllFinished(true);//das beendet diesen Menuelauf
+        		this.isOutputAllFinished(true);//das bewirkt, das kein anderer Thread eine Ausgabe macht.
+        		
+				System.out.println("Weiter mit der Menueeingabe....");
+			}//end main:
+			return bReturn;						
 		}
 		public boolean processMenuePostArgumentInput(HashMapExtendedZZZ hmVariable) throws ExceptionZZZ {
 			boolean bReturn = true;
 			main:{
 
         		//######################################################################
-	        	//### Eingabe des zu verschlüsselnden Textes
+	        	//### Eingabe des zu verschluesselnden Textes
 	        	//Beispieltexte zum Rauskopieren, enthalten alles relevante...
 	        	//abcdefgHIJK1234abcdefg
 	        	//Das ist das 4711 Haus der Riesenmaus 0815

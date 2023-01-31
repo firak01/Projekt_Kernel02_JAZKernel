@@ -24,6 +24,26 @@ import debug.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
 			}
         }
         
+		@Override
+		public boolean isInputAllFinished() {
+			return this.getConsole().isInputAllFinished();
+		}
+
+		@Override
+		public void isInputAllFinished(boolean bInputFinished) {
+			this.getConsole().isInputAllFinished(bInputFinished);
+		}
+
+		@Override
+		public boolean isOutputAllFinished() {
+			return this.getConsole().isOutputAllFinished();
+		}
+
+		@Override
+		public void isOutputAllFinished(boolean bOutputFinished) {
+			this.getConsole().isOutputAllFinished(bOutputFinished);
+		}	
+		
         public boolean isStopped() {
     		return this.getConsole().isStopped();
     	}
@@ -52,7 +72,7 @@ import debug.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
 		                long lSleepTime = this.getConsole().getSleepTime();
 		                //System.out.println("ConsoleThread.sleep: " + lSleepTime);
 		                Thread.sleep(lSleepTime);			                		               
-		                if(this.getConsole().isInputAllFinished()&& this.getConsole().isOutputAllFinished()){
+		                if(this.getConsole().isInputAllFinished()){
 			                IConsoleUserZZZ objUser = this.getConsole().getConsoleUserObject();
 			                if(objUser!=null) {
 			                	boolean bStop = this.getConsole().isStopped(); 
@@ -63,6 +83,7 @@ import debug.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
 			                		if(!this.getConsole().isConsoleUserThreadRunning()) { //den Thread nicht mehrmals starten
 					                		boolean bResult = this.getConsole().getConsoleUserObject().start();					                		
 					                		this.getConsole().isInputAllFinished(false); //Bereit für neue Eingabe...					                				                			
+					                		this.getConsole().isOutputAllFinished(false); //Bereit für neue Ausgabe...
 			                		}//end if isConsoleUserThreadRunning()
 				                }			                				               
 			                }else {
@@ -76,6 +97,6 @@ import debug.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
 	            }
 			}//end main
 			return bReturn;
-		}				
+		}			
     }
 

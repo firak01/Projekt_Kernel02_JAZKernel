@@ -14,6 +14,9 @@ public interface IConsoleZZZ extends IThreadUserZZZ {
 	public boolean isInputAllFinished();
 	public void isInputAllFinished(boolean bInputFinished);
 	
+	public boolean isOutputAllFinished();
+	public void isOutputAllFinished(boolean bOutputFinished);
+	
 	public IKeyPressThreadZZZ getKeyPressThread();
 	public void setKeyPressThread(IKeyPressThreadZZZ objKeyPressThread);
 	
@@ -21,12 +24,7 @@ public interface IConsoleZZZ extends IThreadUserZZZ {
 	public void isKeyPressThreadFinished(boolean bInputThreadFinished); //setzen, wenn die Eingabe im KeyPressThread vorerst abgeschlossen ist.
 	
 	public boolean isKeyPressThreadRunning();
-	public void isKeyPressThreadRunning(boolean bInputThreadRunning); //setzen, wenn die Eingabe im KeyPressThread vorerst abgeschlossen ist.
-	
-	
-	
-	public boolean isOutputAllFinished();
-	public void isOutputAllFinished(boolean bOutputFinished);
+	public void isKeyPressThreadRunning(boolean bInputThreadRunning); //setzen, wenn die Eingabe im KeyPressThread vorerst abgeschlossen ist.	
 	
 	public boolean isConsoleUserThreadRunning();
 	public void isConsoleUserThreadRunning(boolean bConsoleUserThreadRunning); //setzen, wenn der gestartete ConsolenUserThread beendet wurde. Dann kann eine neue Eingabe gestartet werden.

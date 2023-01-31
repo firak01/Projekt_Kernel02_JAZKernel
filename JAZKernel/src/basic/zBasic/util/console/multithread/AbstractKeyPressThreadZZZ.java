@@ -28,6 +28,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		
 		protected boolean bCurrentInputValid=false;
 		protected boolean bCurrentInputFinished=false;
+		//protected boolean bCurrentOutputFinished=false;
 		protected boolean bMakeMenue=true;//true, damit die erste Anzeige generiert wird
 		
 		@Override
@@ -61,6 +62,16 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         @Override
         public synchronized void isInputAllFinished(boolean bInputAllFinished) {
         	this.getConsole().isInputAllFinished(bInputAllFinished);
+        }
+        
+        @Override
+        public synchronized boolean isOutputAllFinished() {
+        	return this.getConsole().isOutputAllFinished();
+        } 
+        
+        @Override
+        public synchronized void isOutputAllFinished(boolean bOutputAllFinished) {
+        	this.getConsole().isOutputAllFinished(bOutputAllFinished);
         }
 		
 		@Override
@@ -214,8 +225,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 				        		System.out.println("KeyPressThread: bSkipArguments=true");
 				        	}else {				        		
 				        		do {
-				        			this.isCurrentInputValid(false);
 				        			this.isCurrentInputFinished(false);
+				        			this.isCurrentInputValid(false);				        							        		
 						        	 try {
 						        		if(this.isCurrentMenue()) {				        			
 							        		this.makeMenueMain();  									
@@ -228,23 +239,26 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 					                //das holt wohl wort fuer wort von der Konsole: String sInput = inputReader.next();
 						        	Scanner inputReader = this.getInputReader();				      
 						        	sInput = inputReader.nextLine();
-					                System.out.println("Pressed Crypt:" + sInput);
+					                System.out.println("Pressed Menueselection:" + sInput);
 					                if(sInput==null) break main;
 					                
 					                boolean bGoon = this.processMenueMainArgumentInput(sInput,hmVariable);
 					                if(!bGoon) break main;//Quit
 					                
 				        		}while(!this.isCurrentInputValid());	                
-				        	}//end if bSkipArguments
-
-				        	if(!this.isCurrentInputFinished()) {
+				        	}//end if bSkipArguments				        	
+		        			this.isInputAllFinished(false);
+				        	this.isOutputAllFinished(false);//erst nach der Eingabe einen ggfs. vorher
+				        	
+				        	
+				        	 if(!this.isCurrentInputFinished() && !this.isInputAllFinished()) {
 				        		boolean bGoon = this.processMenuePostArgumentInput(hmVariable);
 				        		if(!bGoon) break main; //Quit
 				        	}
 				        	
 		                	//######################################################################
 		                	//### Frage nach Mehrfacheingabe
-				        	if(!this.isCurrentInputFinished()) {
+				        	 if(!this.isCurrentInputFinished() && !this.isInputAllFinished()) {
 		                		sInput = KeyPressUtilZZZ.makeQuestionYesNoQuit(this.getInputReader(), "Wollen Sie danach zurueck zum Menue oder mit den akuellen Menueangaben weiteren Text verschluesseln?");		                		                			                			    	                			                				               
 		                		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyQuit)){
 		                			this.quit();
@@ -261,7 +275,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	                		
 				        	//#########################################################################
 			                try {
-			                	System.out.println("Nach der Eingabe.");
+			                	System.out.println("Warte auf neue Eingabe.");
 			                	Thread.sleep(lSleepTime);			                	
 							} catch (InterruptedException e) {
 								System.out.println("KeyPressThread: 2. Wait Error");
@@ -272,7 +286,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	            	}//end input:
 	            	//}//End synchro
 	            	
-	            	while(!this.getConsole().isOutputAllFinished() && !this.getConsole().isConsoleUserThreadFinished() && !this.getConsole().isStopped()) {
+	            	while(!this.getConsole().isConsoleUserThreadFinished() && !this.getConsole().isStopped()) {
 			        	 try {
 			             	//System.out.println("Warte auf Ergebnis des Cryptlaufs...");                 	
 							Thread.sleep(lSleepTime);  		

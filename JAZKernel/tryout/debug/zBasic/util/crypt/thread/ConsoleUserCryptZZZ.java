@@ -14,6 +14,8 @@ import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
+	private static final long serialVersionUID = 1L;
+
 	public ConsoleUserCryptZZZ() throws ExceptionZZZ {
 		super();
 	}
@@ -37,7 +39,8 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			//Merke: Diesen Teil nicht als Schleife ausführen... viel zu kompliziert... es gibt schon genug andere Threads
 			//while(!this.isStopped()) {
 			if(this.isStopped()) break main;
-			
+			if(this.isOutputAllFinished()) break main; //wenn Z.B. schon ein Menuepunkt ausgefuehrt worden ist. Z.B. eine einfache ASCII-Tabelle ausgegeben wurde.
+			if(!this.isInputAllFinished()) break main; 
 			String sInput = null;
 			
 			//Merke: Man kann keine zweite Scanner Klasse auf den sys.in Stream ansetzen.
@@ -56,7 +59,8 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			}while(!this.getConsole().isInputAllFinished());
 			System.out.println("####### CryptThread ENDE: WARTE AUF FERTIGE KONSOLENEINGABE ######");
 			
-			this.isOutputAllFinished(false);
+			
+			//this.isOutputAllFinished(false);
 			
 			
 			this.iCounter++;

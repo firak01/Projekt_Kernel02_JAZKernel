@@ -39,9 +39,22 @@ public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConso
 		return this.iCounter;
 	}
 	
+	@Override
+	public synchronized boolean isInputAllFinished() {
+		return this.getConsole().isInputAllFinished();
+	}
+	
+	@Override
+	public synchronized void isInputAllFinished(boolean bInputFinished) {
+		this.getConsole().isInputAllFinished(bInputFinished);
+	}
+	
+	@Override
 	public synchronized boolean isOutputAllFinished() {
 		return this.getConsole().isOutputAllFinished();
 	}
+	
+	@Override
 	public synchronized void isOutputAllFinished(boolean bOutputFinished) {
 		this.getConsole().isOutputAllFinished(bOutputFinished);
 	}
