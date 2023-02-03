@@ -10,7 +10,6 @@ import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
-import use.openvpn.serverui.ConfigOVPN;
 
 public class DebugCryptConsoleMainZZZ {
 
