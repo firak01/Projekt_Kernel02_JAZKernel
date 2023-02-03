@@ -1,15 +1,10 @@
 package debug.zBasic.util.crypt.thread;
 
-import java.util.HashMap;
-
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.console.multithread.ConsoleZZZ;
 import basic.zBasic.util.console.multithread.IConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zKernel.KernelZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
 public class DebugCryptConsoleMainZZZ {
 
