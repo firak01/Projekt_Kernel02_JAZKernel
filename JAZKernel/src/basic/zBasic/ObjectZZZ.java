@@ -81,7 +81,16 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 	
 		
 	
-	//### FlagMethods ##########################
+	//### Aus IFlagUserZZZ ##########################
+	@Override
+	public boolean getFlag(FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public void setFlag(FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
 	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
 	 * 	 Weitere Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
@@ -166,6 +175,8 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 			return false;
 		}
 	}
+	
+	
 	
 	@Override
 	public HashMap<String, Boolean>getHashMapFlagZ(){

@@ -12,6 +12,7 @@ import basic.zBasic.util.crypt.code.IVigenereNnZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 
 public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 	private static final long serialVersionUID = 1L;
@@ -23,7 +24,13 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 	public ConsoleUserCryptZZZ(IConsoleZZZ objConsole) throws ExceptionZZZ {
 		super(objConsole);
 	}
-
+	public ConsoleUserCryptZZZ(IConsoleZZZ objConsole, String sFlag) throws ExceptionZZZ {
+		super(objConsole, sFlag);
+	}
+	public ConsoleUserCryptZZZ(IConsoleZZZ objConsole, String[] saFlag) throws ExceptionZZZ {
+		super(objConsole, saFlag);
+	}
+	
 	private int iCounter = 0;
 		
 	public int getcounter() {
@@ -47,7 +54,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			//       Darum muss man alles in dem KeyPressThread erledigen
 			//Warten auf die fertige Eingabe.			
 			//if(!this.getConsole().isKeyPressThreadFinished()) break main;
-			System.out.println("####### CryptThread START: WARTE AUF FERTIGE KONSOLENEINGABE ######");				
+			if(this.getFlag(IFlagUserZZZ.FLAGZ.DEBUG)) System.out.println("####### CryptThread START: WARTE AUF FERTIGE KONSOLENEINGABE ######");				
 			do {
 				 try {				 
 					 Thread.sleep(200);
@@ -57,14 +64,14 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 					e.printStackTrace();
 				}				 
 			}while(!this.getConsole().isInputAllFinished());
-			System.out.println("####### CryptThread ENDE: WARTE AUF FERTIGE KONSOLENEINGABE ######");
+			if(this.getFlag(IFlagUserZZZ.FLAGZ.DEBUG)) System.out.println("####### CryptThread ENDE: WARTE AUF FERTIGE KONSOLENEINGABE ######");
 			
 			
 			//this.isOutputAllFinished(false);
 			
 			
 			this.iCounter++;
-			System.out.println("Zähler crypt: " + iCounter);
+			if(this.getFlag(IFlagUserZZZ.FLAGZ.DEBUG)) System.out.println("Zähler crypt: " + iCounter);
 
 			HashMapExtendedZZZ<String,Object>hmVariable=this.getConsole().getVariableHashMap();
 			if(hmVariable!=null) {
@@ -155,14 +162,14 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				System.out.println("noch kein Schluesselalgorithmus festgelegt.");
 				bReturn = false;
 			}
-			System.out.println("####### CryptThread START: DUMMYWARTEN ALS TEST ######");
+			if(this.getFlag(IFlagUserZZZ.FLAGZ.DEBUG)) System.out.println("####### CryptThread START: DUMMYWARTEN ALS TEST ######");
 			 try {				 
 				 Thread.sleep(4500);
 			} catch (InterruptedException e) {
 				System.out.println("KeyPressThread: Wait Error");
 				e.printStackTrace();
 			}
-			 System.out.println("####### CryptThread ENDE: DUMMYWARTEN ALS TEST ######");			 
+			 if(this.getFlag(IFlagUserZZZ.FLAGZ.DEBUG)) System.out.println("####### CryptThread ENDE: DUMMYWARTEN ALS TEST ######");			 
 			 this.isOutputAllFinished(true);			
 			//}//end while !isStopped
 		}//end main:

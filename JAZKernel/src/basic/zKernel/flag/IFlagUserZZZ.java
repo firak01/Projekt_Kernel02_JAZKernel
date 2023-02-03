@@ -2,6 +2,7 @@ package basic.zKernel.flag;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 
 public interface IFlagUserZZZ{
 	public final String sERROR_FLAG_UNAVAILABLE = "this flag is not available: ";
@@ -13,6 +14,10 @@ public interface IFlagUserZZZ{
 	
 	public abstract boolean getFlag(String sFlagName);
 	public abstract boolean setFlag(String sFlagName, boolean bValue);
+	
+	//damit muss man nicht mehr tippen hinter dem enum .name()
+	public abstract boolean getFlag(IFlagUserZZZ.FLAGZ objEnumFlag);
+	public abstract void setFlag(IFlagUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
 	
 	//202211228: Leider wird dann als Methode nur das FLAGZ in den erbenden Klassen eingesetzt.
 	//           Und das ist "ambigous". Es geht also das Interface verloren.

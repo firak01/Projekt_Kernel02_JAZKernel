@@ -240,8 +240,18 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		sReturn = ReflectionToStringBuilder.toString(this);
 		return sReturn;
 	}
+
+	//### Aus IFlagUserZZZ
+	@Override
+	public boolean getFlag(IFlagUserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
 	
-	//### FlagMethods ##########################		
+	@Override
+	public void setFlag(IFlagUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}	
+	
 		@Override
 		public boolean getFlag(String sFlagName) {
 			//Version Vor Java 1.6

@@ -30,13 +30,16 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         }
 		@Override
 		public void makeMenueMain() throws InterruptedException {
-			System.out.println("Eingaben: + - zur Console-Threadgeschwindigkeit | Q zum Abbruch | A für die Ausgabe der ASCII-Tabelle");
-			System.out.println("Bitte wählen Sie den Algorithmus:");
-			System.out.println("1: Rot13");
-			System.out.println("2: Rotascii");
-			System.out.println("3: RotNumeric");
-			System.out.println("4: RotNn");
-			System.out.println("5: VigenereNn");
+			System.out.println();//Leerzeile zum ggfs. vorherigen Consolentext
+			System.out.println("#######################################################################################################");
+			System.out.println("# Eingaben: + - zur Console-Threadgeschwindigkeit | Q zum Abbruch | A für die Ausgabe der ASCII-Tabelle");
+			System.out.println("# Bitte wählen Sie den Algorithmus:");
+			System.out.println("# 1: Rot13");
+			System.out.println("# 2: Rotascii");
+			System.out.println("# 3: RotNumeric");
+			System.out.println("# 4: RotNn");
+			System.out.println("# 5: VigenereNn");
+			System.out.println("#####################################################################################################");
          	System.out.println("Warte auf Eingabe Crypt...");                 	
 			Thread.sleep(this.getSleepTime()); 
 		}
