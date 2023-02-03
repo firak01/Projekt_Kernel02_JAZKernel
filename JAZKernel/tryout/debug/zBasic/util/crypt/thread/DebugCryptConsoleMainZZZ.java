@@ -10,7 +10,7 @@ public class DebugCryptConsoleMainZZZ {
 
 	public static void main(String[] args) {
 		try {
-			//TODOGOON20230203;//Per args uebergebenen Parameter auslesen
+			TODOGOON20230203;//Per args uebergebenen Parameter auslesen
 			//Parameter aus args auslesen
 			//String[]saFlag = {"useExpression","useFormula","useEncryption"};
 			//ConfigCryptZZZ   machen wie:    ConfigOVPN objConfig = new ConfigOVPN(saArg, saFlag);
