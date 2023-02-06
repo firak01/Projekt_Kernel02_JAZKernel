@@ -116,6 +116,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	            //Capital letters are 60 to 90
 	            if (ascii > 64 && ascii < 91) {
 	                rotated = (char) (rotated + iCryptKey);
+	            	//int iRotated = rotated;
 	                if (rotated > 90) {
 	                    rotated += -90 + 64;
 	                }
@@ -124,6 +125,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	                }
 	            } else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
 	                rotated = (char) (rotated + iCryptKey);
+	            	//int iRotated = rotated;
 	                if (rotated > 122) {
 	                    rotated += -122 + 96;
 	                }
@@ -134,12 +136,15 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	            //Numeric values are between 48 to 57 
 	            if (bNumeric && ascii > 47 && ascii < 58) {
 	                rotated = (char) (rotated + iCryptKey);
-	                if (rotated > 47) {
-	                    rotated += -57 + 47;
+	            	//int iRotated = rotated;
+	            	
+	            	if (rotated < 47) {
+	                    rotated += 10;
 	                }
-	                if (rotated < 58) {
-	                    rotated += -47 + 57;
+	                if (rotated > 58) {
+	                    rotated += -10;
 	                }
+	            	
 	            }
 	            result += (char) rotated;
 	        }
@@ -151,33 +156,42 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 		        for (int i = iStart; i < length; i++) {
 		            char ascii = input.charAt(i);
 		            char rotated = ascii;
-		            //Capital letters are 60 to 90
-		            if (ascii > 64 && ascii < 91) {
-		                rotated = (char) (rotated - iCryptKey);
-		                if (rotated > 90) {
+		            		            
+		            //Capital letters are 60 to 90		            		            
+		            if (ascii > 64 && ascii < 91) {	
+		            	rotated = (char) (rotated - iCryptKey);
+		            	int iRotated = rotated;
+		            	if(iRotated<=64) {
+		            		iRotated = iRotated+26;
+		            		rotated = (char) iRotated;
+		            	}
+		            	
+		                if (rotated > 90-iCryptKey) {
 		                    rotated += -90 + 64;
 		                }
-		                if (rotated < 65) {
+		                if (rotated < 65-iCryptKey) {
 		                    rotated += -64 + 90;
 		                }
 		            } else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
-		                rotated = (char) (rotated - iCryptKey);
-		                if (rotated > 122) {
+		            	rotated = (char) (rotated - iCryptKey);
+		            	int iRotated = rotated;
+		            	if(iRotated<=96) {
+		            		iRotated = iRotated+26;
+		            		rotated = (char) iRotated;
+		            	}else if (rotated > 122) {
 		                    rotated += -122 + 96;
-		                }
-		                if (rotated < 97) {
+		                }else if (rotated < 97) {
 		                    rotated += -96 + 122;
 		                }
 		            }
 		            //Numeric values are between 48 to 57 
 		            if (bNumeric && ascii > 47 && ascii < 58) {
-		                rotated = (char) (rotated - iCryptKey);
-		                if (rotated > 47) {
-		                    rotated += -57 + 47;
-		                }
-		                if (rotated < 58) {
-		                    rotated += -47 + 57;
-		                }
+		            	rotated = (char) (rotated - iCryptKey);
+		            	int iRotated = rotated;
+		            	if(iRotated<=47) {
+		            		iRotated = iRotated+10;
+		            		rotated = (char) iRotated;
+		            	}
 		            }
 		            result += (char) rotated;
 		        }
@@ -187,47 +201,4 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	   }//end main:
 	   return sReturn;
 	}
-	public static List<String> cryptAll(String input, boolean numeric) {
-		    List<String> output = new ArrayList<>();
-		    for (int n = 0; n < 26; n++) {
-		        String result = "";
-		        int length = input.length();
-
-		        for (int i = 0; i < length; i++) {
-		            char ascii = input.charAt(i);
-		            char rotated = ascii;
-		            //Capital letters are 60 to 90
-		            if (ascii > 64 && ascii < 91) {
-		                rotated = (char) (rotated + n);
-		                if (rotated > 90) {
-		                    rotated += -90 + 64;
-		                }
-		                if (rotated < 65) {
-		                    rotated += -64 + 90;
-		                }
-		            } else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
-		                rotated = (char) (rotated + n);
-		                if (rotated > 122) {
-		                    rotated += -122 + 96;
-		                }
-		                if (rotated < 97) {
-		                    rotated += -96 + 122;
-		                }
-		            }
-		            //Numeric values are between 48 to 57 
-		            if (numeric && ascii > 47 && ascii < 58) {
-		                rotated = (char) (rotated + n);
-		                if (rotated > 47) {
-		                    rotated += -57 + 47;
-		                }
-		                if (rotated < 58) {
-		                    rotated += -47 + 57;
-		                }
-		            }
-		            result += (char) rotated;
-		        }
-		        output.add(result);
-		    }
-		    return output;
-		}	
 }
