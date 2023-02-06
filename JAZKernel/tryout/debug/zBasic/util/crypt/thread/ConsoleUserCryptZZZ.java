@@ -131,14 +131,17 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USECHARACTERPOOL.name())) {
 					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
 					if(!StringZZZ.isEmpty(sInput)) {
-						objCrypt.setCharacterPool(sInput);
+						objCrypt.setCharacterPoolBase(sInput);
 						
 						//... und dann auch das fehlende Zeichen setzen
 						CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ('¶');//Mal was anderes verwenden als den "DefaultBuchstaben" aus ICharacterPoolUserConstantZZZ
 						objCrypt.setCharacterMissingReplacement(objCharacterMissingReplacement);
 					}
-				}
-				//+++++++++++++++++++++++++++++++++++++++++++++++++								
+					
+					//ba) 
+					//TODOGOON20230206;//Zusaetzlichen Zeichenpool setzen, wenn verwendet
+					
+				}						
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
 								
 				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);				

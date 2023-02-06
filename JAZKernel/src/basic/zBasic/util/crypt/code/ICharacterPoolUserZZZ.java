@@ -16,15 +16,23 @@ public interface ICharacterPoolUserZZZ extends ICharacterPoolUserConstantZZZ{
 		public void setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
 		
 		//Besonderheit bei Nn ist der CharacterPool
-		public ArrayListExtendedZZZ<CharacterExtendedZZZ>getCharacterPoolList() throws ExceptionZZZ;
-		public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool);
-		
 		//stehen schon in ICryptZZZ
 		//public String getCharacterPool();
 		//public void setCharacterPool(String sCharacterPool);	
 		//public String getCryptKey();
 		//public void setCryptKey(String sCryptKey); //Manche Algorithmen benoetigen einen String, z.B. alle Vigenere Verfahren.
 
+		public ArrayListExtendedZZZ<CharacterExtendedZZZ>getCharacterPoolList() throws ExceptionZZZ;
+		
+
+		public String getCharacterPoolBase();
+		public void setCharacterPoolBase(String sCharacterPool);
+				
+		public String getCharacterPoolAdditional();
+		public void setCharacterPoolAdditional(String sCharacterPool);
+		
+		
+		
 		public int[] getEncryptedCharacterPoolPosition();
 		public void setEncryptedCharacterPoolPosition(int[]iaPoolPosition);
 

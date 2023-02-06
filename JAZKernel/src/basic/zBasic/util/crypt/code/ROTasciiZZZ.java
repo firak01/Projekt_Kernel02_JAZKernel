@@ -82,7 +82,7 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 		this.setCryptNumber(iCryptKey);
 		
 		String sCharacterPool = ROTasciiZZZ.getCharacterPoolStringAscii();
-		this.setCharacterPool(sCharacterPool);
+		this.setCharacterPoolBase(sCharacterPool);
 		
 		
 		
@@ -115,12 +115,11 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 	}
 	
 	@Override
-	public String getCharacterPool() {
-		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
-			return ROTasciiZZZ.getCharacterPoolStringAscii();
-		}else {
-			return this.sCharacterUsedForRot;
+	public String getCharacterPoolBase() {
+		if(StringZZZ.isEmpty(this.sCharacterPoolBase)) {
+			this.sCharacterPoolBase = ROTasciiZZZ.getCharacterPoolStringAscii();
 		}
+		return this.sCharacterPoolBase;
 	}
 		
 	public static String encrypt(String sInput, int n)  throws IllegalArgumentException {

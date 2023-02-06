@@ -19,9 +19,12 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public static int iOffsetForAsciiRange=0;//wird dann später aus der Laenge des CharacterPools errechnet.
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
 	
-	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
 	protected CharacterExtendedZZZ objCharacterMissingReplacement = null;
-	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = null;
+	ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
+
+	protected String sCharacterPoolBase = null;
+	protected String sCharacterPoolAdditional = null;
+	
 	protected int[] iaEncryptedPositionInPool = null;
 	protected int[] iaDecryptedPositionInPool = null;
 	
@@ -83,19 +86,26 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */	
-	public static String encrypt(String sInput, String sCharacterPoolIn, char cCharacterReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
 			
-			String sCharacterPool= null;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPool= AbstractVigenereNnZZZ.getCharacterPoolDefault();
+			String sCharacterPoolBase = null;
+			if(StringZZZ.isEmpty(sCharacterPoolBaseIn)) {
+				sCharacterPoolBase= AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
 			}else {
-				sCharacterPool = sCharacterPoolIn;
+				sCharacterPoolBase = sCharacterPoolBaseIn;
+			}
+
+			String sCharacterPoolAdditional = null;
+			if(sCharacterPoolAdditionalIn==null) {
+				sCharacterPoolAdditional = AbstractVigenereNnZZZ.getCharacterPoolAdditionalDefault();
+			}else {
+				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
 			}
 			
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter);			
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sCharacterPoolAdditional);			
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyword, listasCharacterPool);
@@ -144,6 +154,8 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
+			if(StringZZZ.isEmpty(sInput))break main;
+			
 			String sKeyword = this.getCryptKey();
 
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
@@ -256,20 +268,27 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static String decrypt(String sInput, String sCharacterPoolIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		//Merke: Bei Vigenere reicht das einfache Umdrehen des Codes wie bei Caesar oder anderen Rotierenden Verschluesselungen nicht mehr aus.
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
 			
-			String sCharacterPool= null;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPool= AbstractVigenereNnZZZ.getCharacterPoolDefault();
+			String sCharacterPoolBase = null;
+			if(StringZZZ.isEmpty(sCharacterPoolBaseIn)) {
+				sCharacterPoolBase= AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
 			}else {
-				sCharacterPool = sCharacterPoolIn;
+				sCharacterPoolBase = sCharacterPoolBaseIn;
 			}
-			
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter);	
+
+			String sCharacterPoolAdditional = null;
+			if(sCharacterPoolAdditionalIn==null) {
+				sCharacterPoolAdditional= AbstractVigenereNnZZZ.getCharacterPoolAdditionalDefault();
+			}else {
+				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
+			}
+						
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter,sCharacterPoolAdditional);	
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);					
 			
 			int[]ppure = AbstractVigenereNnZZZ.decrypt(sInput,listasCharacterPool,sKeyword);
@@ -440,7 +459,9 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		String sReturn = null;
-		main:{			
+		main:{	
+			if(StringZZZ.isEmpty(sInput))break main;
+			
 			int[] iaEncryptedTextTEST = UnicodeZZZ.toIntArray(sInput);
 			
 			char[] caEntryptedText = sInput.toCharArray();
@@ -534,49 +555,68 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 
 	@Override
-	public void setCharacterPool(String sCharacterPool) {
-		this.sCharacterUsedForRot = sCharacterPool;
-	}
-	
-	
-	@Override
 	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
 		if(ArrayListZZZ.isEmpty(this.listasCharacterPool)) {
-			String sCharacterPool = this.getCharacterPool();
+			String sCharacterPoolBase = this.getCharacterPoolBase();
+			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
 			
 			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
 			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
 			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sCharacterPoolAdditional);
 					
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			this.listasCharacterPool = listasCharacterPool;
 		}
 		return this.listasCharacterPool;
 	}
-	
 
 	@Override
-	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
-		this.listasCharacterPool = listasCharacterPool;
+	public String getCharacterPool() throws ExceptionZZZ {
 		
-		String sCharacterPool =this.listasCharacterPool.debugString("");
-		this.setCharacterPool(sCharacterPool);
-	}
-
-	@Override
-	public String getCharacterPool() {
-		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
-			this.sCharacterUsedForRot =  ROTnnZZZ.getCharacterPoolDefault();
-		}
-		return this.sCharacterUsedForRot;		
+		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();		
+		String sCharacterPool =listasCharacterPool.debugString("");
+		return sCharacterPool;		
 	}
 	
-	public static String getCharacterPoolDefault() {
+	public static String getCharacterPoolBaseDefault() {
 		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 	}
 
+	public static String getCharacterPoolAdditionalDefault() {
+		return CharacterExtendedZZZ.sCHARACTER_ADDITIONAL;
+	}
+	
+	@Override
+	public String getCharacterPoolBase() {
+		if(StringZZZ.isEmpty(this.sCharacterPoolBase)) {
+			this.sCharacterPoolBase = AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
+		}
+		return this.sCharacterPoolBase;
+	}
+	@Override
+	public void setCharacterPoolBase(String sCharacterPoolBase) {
+		this.sCharacterPoolBase = sCharacterPoolBase;
+		
+		//!!! nach dem Ändern der Base die Liste leeren, so dass diese neu aufgebaut würde.
+		this.listasCharacterPool.clear();
+	}
+	@Override
+	public String getCharacterPoolAdditional() {
+		if(StringZZZ.isEmpty(this.sCharacterPoolAdditional)) {
+			this.sCharacterPoolAdditional = AbstractVigenereNnZZZ.getCharacterPoolAdditionalDefault();
+		}
+		return this.sCharacterPoolAdditional;
+	}
+	@Override
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+		this.sCharacterPoolAdditional = sCharacterPoolAdditional;
+		
+		//!!! nach dem Ändern der Zusatzzeichen die Liste leeren, so dass diese neu aufgebaut würde.
+		this.listasCharacterPool.clear();
+	}
+	
 	@Override
 	public int[] getEncryptedCharacterPoolPosition() {
 		return this.iaEncryptedPositionInPool;

@@ -14,6 +14,7 @@ public interface IKeyPressThreadCryptConstantsZZZ extends IKeyPressThreadConstan
 	public static String sINPUT_KEY_STRING = "INPUT_KEY_STRING";    //Schluesselwort, z.B. fuer Vigenere Verschlüsselung
 	public static String sINPUT_TEXT_UNCRYPTED = "INPUT_TEXT_UNCRYPTED";
 	public static String sINPUT_CHARACTERPOOL = "INPUT_CHARACTERPOOL";
+	public static String sINPUT_CHARACTERPOOL_ADDITIONAL = "INPUT_CHARACTERPOOL_ADDITIONAL";
 	public static String sINPUT_BOOLEAN_SKIP_ARGUMENTS = "INPUT_BOOLEAN_SKIP_ARGUMENTS";
 	
 	//Merke: Mit "INPUT_FLAG" werden Eingabewerte gekennzeichnet, die später dann als Flag den Objekten übergeben werden können.	

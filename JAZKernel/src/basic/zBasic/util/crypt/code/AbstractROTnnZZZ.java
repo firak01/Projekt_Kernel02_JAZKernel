@@ -25,9 +25,12 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZZZ{
 	private static final long serialVersionUID = 1L;
 		
-	protected String sCharacterUsedForRot = null; //protected, damit erbende Klassen auch nur auf diesen Wert zugreifen!!!
 	protected CharacterExtendedZZZ objCharacterMissingReplacement = null;
-	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = null;
+	protected ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = new ArrayListExtendedZZZ<CharacterExtendedZZZ>();
+	
+	protected String sCharacterPoolBase = null;
+	protected String sCharacterPoolAdditional = null;
+	
 	protected int[] iaEncryptedPositionInPool = null;
 	protected int[] iaDecryptedPositionInPool = null;
 	
@@ -86,7 +89,7 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		this.setCryptNumber(iCryptKey);
 		
 		String sCharacterPool = AbstractROTnnZZZ.getCharacterPoolStringAscii();
-		this.setCharacterPool(sCharacterPool);
+		this.setCharacterPoolBase(sCharacterPool);
 		
 		
 		
@@ -134,13 +137,14 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	@Override
 	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
 		if(ArrayListZZZ.isEmpty(this.listasCharacterPool)) {
-			String sCharacterPool = this.getCharacterPool();
+			String sCharacterPoolBase = this.getCharacterPoolBase();
+			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
 			
 			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
 			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
 			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPool, bUseUppercasePool, bUseLowercasePool, bUseNumericPool,bUseAdditionalCharacter);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool,bUseAdditionalCharacter,sCharacterPoolAdditional);
 					
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			this.listasCharacterPool = listasCharacterPool;
@@ -148,27 +152,31 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 		return this.listasCharacterPool;
 	}
 	
-
 	@Override
-	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
-		this.listasCharacterPool = listasCharacterPool;
+	public String getCharacterPool() throws ExceptionZZZ {
+		ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = this.getCharacterPoolList();
+		return listasCharacterPool.debugString("");
+	}
+	
+	@Override
+	public void setCharacterPoolBase(String sCharacterPoolBase) {
+		this.sCharacterPoolBase = sCharacterPoolBase;
 		
-		String sCharacterPool =this.listasCharacterPool.debugString("");
-		this.setCharacterPool(sCharacterPool);
+		//Nach Ändern des Werts die Liste leeren, so dass diese neu aufgebaut werden muss.
+		this.listasCharacterPool.clear();
 	}
 	
 	@Override
-	public String getCharacterPool() {
-		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
-			return AbstractROTnnZZZ.getCharacterPoolStringAscii();
-		}else {
-			return this.sCharacterUsedForRot;
-		}
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+		this.sCharacterPoolAdditional = sCharacterPoolAdditional;
+		
+		//Nach Ändern des Werts die Liste leeren, so dass diese neu aufgebaut werden muss.
+		this.listasCharacterPool.clear();
 	}
 	
 	@Override
-	public void setCharacterPool(String sCharacterPool) {
-		this.sCharacterUsedForRot = sCharacterPool;
+	public String getCharacterPoolAdditional() {
+		return this.sCharacterPoolAdditional;
 	}
 		
 	public static String encrypt(String sInput, int n)  throws IllegalArgumentException, ExceptionZZZ {

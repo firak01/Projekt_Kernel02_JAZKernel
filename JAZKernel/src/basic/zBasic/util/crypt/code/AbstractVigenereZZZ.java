@@ -290,31 +290,34 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	//+++ nur wichtig für ROT-Verfahren
 	@Override
 	public void setCryptNumber(int iCryptKey) {
-		
+		//wg. ICryptZZZ
 	}
 	
 	//### Methoden werden zwar z.B. nur fuer Vigenere Verschluesselung, bzw. fuer Verschluesselung mit CharacterPool gebraucht.
 	//    Um den Einsatz von ICrypt - Objekten zu standardiesieren, hier notwendig.
 	@Override
-	public String getCharacterPool() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getCharacterPool() throws ExceptionZZZ {
+		return null;		//wg. ICryptZZZ
 	}
 
 	@Override
-	public void setCharacterPool(String sCharacterPool) {
-		// TODO Auto-generated method stub		
+	public void setCharacterPoolBase(String sCharacterPool) {
+		//wg. ICryptZZZ		
 	}
 	
 	@Override
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+		return null;		//wg. ICryptZZZ
 	}
 
 	@Override
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
-		// TODO Auto-generated method stub		
+		//wg. ICryptZZZ	
+	}
+	
+	@Override
+	public String getCharacterPoolBase() {
+		return null;		//wg. ICryptZZZ
 	}
 	
 }

@@ -58,27 +58,33 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 	}
 	
 	//##############################
-	public static String computeCharacterPoolExtended(String sCharacterPoolIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter) {
+	public static String computeCharacterPoolExtended(String sCharacterPoolBaseIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) {
 		String sReturn="";
 		main:{
-			String sCharacterPoolStarting;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
+			String sCharacterPoolBase;
+			if(StringZZZ.isEmpty(sCharacterPoolBaseIn)) {
+				sCharacterPoolBase=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
 			}else {
-				sCharacterPoolStarting = sCharacterPoolIn;
+				sCharacterPoolBase = sCharacterPoolBaseIn;
 			}
 			
-			sReturn=sCharacterPoolStarting;
+			
+			String sCharacterPoolAdditional="";
+			if(sCharacterPoolAdditionalIn==null) {
+				sCharacterPoolAdditional = CharacterExtendedZZZ.sCHARACTER_ADDITIONAL;				
+			}else {
+				sCharacterPoolAdditional = sCharacterPoolBaseIn;
+			}
 			
 			
 			//Wichtig: Das Leerzeichen bei der Erweiterung der Liste raus. Spätestens beim Dekodieren faellt einem die andere Position (beim Umdrehen des Strings) auf die Fuesse.
 			if(bUseUppercase) {
-				String stemp = sCharacterPoolStarting.trim().toUpperCase();
-				sReturn = StringZZZ.appendMissing(sCharacterPoolStarting, stemp);
+				String stemp = sCharacterPoolBase.trim().toUpperCase();
+				sReturn = StringZZZ.appendMissing(sCharacterPoolBase, stemp);
 			}
 			
 			if(bUseLowercase) {
-				String stemp = sCharacterPoolStarting.trim().toLowerCase();
+				String stemp = sCharacterPoolBase.trim().toLowerCase();
 				sReturn = StringZZZ.appendMissing(sReturn, stemp);
 			}
 			
@@ -87,7 +93,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			}
 			
 			if(bUseAdditionalCharacter) {
-				sReturn = StringZZZ.appendMissing(sReturn, CharacterExtendedZZZ.sCHARACTER_ADDITIONAL);
+				sReturn = StringZZZ.appendMissing(sReturn, sCharacterPoolAdditional);
 			}
 			
 		}//end main:

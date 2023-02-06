@@ -39,8 +39,9 @@ public interface ICryptZZZ extends IFlagUserZZZ{
 	
 	//Methoden um <Z:CharacterPool> Werte zu setzen
 	//Wichtig fuer ROTnn - Verschluesselung
-	public String getCharacterPool();
-	public void setCharacterPool(String sCharacterPool);	
+	public String getCharacterPool() throws ExceptionZZZ;
+	public String getCharacterPoolBase();
+	public void setCharacterPoolBase(String sCharacterPoolBase);	
 	
 	//Falls ein Zeichen nicht im CharacterPool enthalten ist.
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;

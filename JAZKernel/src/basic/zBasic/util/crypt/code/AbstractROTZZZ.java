@@ -66,29 +66,31 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ{
 	}
 	
 	@Override
-	public String getCryptKey() {
-		// TODO Auto-generated method stub
+	public String getCryptKey() {		
 		return null;
 	}
 	@Override
-	public String getCharacterPool() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setCharacterPool(String sCharacterPool) {
-		// TODO Auto-generated method stub		
+	public String getCharacterPool() throws ExceptionZZZ{
+		return null; //Nur wg. ICryptZZZ
 	}
 	
 	@Override
-	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public void setCharacterPoolBase(String sCharacterPoolBase) {
+		//Nur wg. ICryptZZZ
+	}
+	
+	@Override
+	public String getCharacterPoolBase() {
+		return null; //Nur wg. ICryptZZZ
+	}
+		
+	@Override
+	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ{
+		return null; //Nur wg. ICryptZZZ
 	}
 
 	@Override
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
-		// TODO Auto-generated method stub		
+		//Nur wg. ICryptZZZ
 	}
 }

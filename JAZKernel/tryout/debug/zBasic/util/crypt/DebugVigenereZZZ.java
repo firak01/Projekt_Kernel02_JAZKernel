@@ -29,10 +29,10 @@ public class DebugVigenereZZZ {
 		boolean bUseNumericPool = false;
 		boolean bUseAdditionalCharacter = false;
         String sKeyString = SchluesselWort;
-        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "", CharZZZ.getEmpty(), bUseUppercasePool,bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
+        String sVigenere = VigenereNnZZZ.encrypt("KRYPTOGRAFIE", "", CharZZZ.getEmpty(), bUseUppercasePool,bUseLowercasePool, bUseNumericPool, sKeyString); //FGL: passend zum Beispiel im Buch, S. 31;
         System.out.println(sVigenere);
         
-        String roundTrip = VigenereNnZZZ.decrypt(sVigenere,"",bUseUppercasePool,bUseLowercasePool, bUseNumericPool,bUseAdditionalCharacter,sKeyString);
+        String roundTrip = VigenereNnZZZ.decrypt(sVigenere,"",bUseUppercasePool,bUseLowercasePool, bUseNumericPool, sKeyString);
         System.out.println(roundTrip);
         
         

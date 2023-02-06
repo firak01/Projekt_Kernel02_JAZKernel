@@ -81,7 +81,7 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 			
 		}
 		this.setCryptNumber(iCryptKey);
-		this.setCharacterPool(sCharacterPool);
+		this.setCharacterPoolBase(sCharacterPool);
 		bReturn = true;
 	}//end main:
 		return bReturn;
@@ -90,71 +90,85 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 	@Override
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
-		String sCharacterPool=this.getCharacterPool();
+		String sCharacterPoolBase=this.getCharacterPoolBase();
+		String sCharacterPoolAdditional=this.getCharacterPoolAdditional();
+		
 		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
 		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
 		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
 		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
-		return ROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric, bUseAdditionalCharacter);
+		return ROTnnZZZ.encrypt(sInput, sCharacterPoolBase, objCharacterMissingReplacement, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric, bUseAdditionalCharacter,sCharacterPoolAdditional);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
-		String sCharacterPool=this.getCharacterPool();
+		String sCharacterPoolBase=this.getCharacterPoolBase();
+		String sCharacterPoolAdditional=this.getCharacterPoolAdditional();
+				
 		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
 		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
 		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
 		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
-		return ROTnnZZZ.decrypt(sInput, sCharacterPool, objCharacterMissingReplacement, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric,bUseAdditionalCharacter);
+		return ROTnnZZZ.decrypt(sInput, sCharacterPoolBase, objCharacterMissingReplacement, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric,bUseAdditionalCharacter,sCharacterPoolAdditional);
 	}
 	
-	public String getCharacterPool() {
-		if(StringZZZ.isEmpty(this.sCharacterUsedForRot)) {
-			this.sCharacterUsedForRot =  ROTnnZZZ.getCharacterPoolDefault();
-		}
-		return this.sCharacterUsedForRot;		
-	}
-	
-	public static String getCharacterPoolDefault() {
-		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
-	}
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
+		return ROTnnZZZ.encrypt(sInput, sCharacterPoolBaseIn, objCharacterMissingReplacement, n, bUseUppercase, bUseLowercase, bUseNumeric, false, null);
+    }
 	
 	
-	
-	public static String encrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter) {
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
 			
-			String sCharacterPoolStarting;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
+			String sCharacterPoolBase = null;
+			if(StringZZZ.isEmpty(sCharacterPoolBaseIn)) {
+				sCharacterPoolBase= AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
 			}else {
-				sCharacterPoolStarting = sCharacterPoolIn;
+				sCharacterPoolBase = sCharacterPoolBaseIn;
+			}
+
+			String sCharacterPoolAdditional = null;
+			if(sCharacterPoolAdditionalIn==null) {
+				sCharacterPoolAdditional= AbstractVigenereNnZZZ.getCharacterPoolAdditionalDefault();
+			}else {
+				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
 			}
 			
-			
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric, bUseAdditionalCharacter);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercase, bUseLowercase, bUseNumeric, bUseAdditionalCharacter,sCharacterPoolAdditional);
 			sReturn = AbstractROTnnZZZ.encrypt(sInput, abcABC, objCharacterMissingReplacement, n);		
 		}//end main;
 		return sReturn;
     }
 	
-	public static String decrypt(String sInput, String sCharacterPoolIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter) {
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric) {
+		return ROTnnZZZ.decrypt(sInput, sCharacterPoolBaseIn, objCharacterMissingReplacement, n, bUseUppercase, bUseLowercase, bUseNumeric,false,null);
+	}
+	
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, CharacterExtendedZZZ objCharacterMissingReplacement, int n, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter,String sCharacterPoolAdditionalIn) {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
 			
-			String sCharacterPoolStarting;
-			if(StringZZZ.isEmpty(sCharacterPoolIn)) {
-				sCharacterPoolStarting=CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
+			String sCharacterPoolBase = null;
+			if(StringZZZ.isEmpty(sCharacterPoolBaseIn)) {
+				sCharacterPoolBase= AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
 			}else {
-				sCharacterPoolStarting = sCharacterPoolIn;
+				sCharacterPoolBase = sCharacterPoolBaseIn;
+			}
+
+			String sCharacterPoolAdditional = null;
+			if(sCharacterPoolAdditionalIn==null) {
+				sCharacterPoolAdditional= AbstractVigenereNnZZZ.getCharacterPoolAdditionalDefault();
+			}else {
+				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
 			}
 			
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolStarting, bUseUppercase, bUseLowercase, bUseNumeric, bUseAdditionalCharacter);
+			
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercase, bUseLowercase, bUseNumeric, bUseAdditionalCharacter,sCharacterPoolAdditional);
 			String sCharacterPool = StringZZZ.reverse(abcABC);	
 			sReturn = AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);
 		}

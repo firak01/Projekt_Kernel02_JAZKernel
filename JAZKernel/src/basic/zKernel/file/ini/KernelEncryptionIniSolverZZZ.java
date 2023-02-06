@@ -125,7 +125,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 					 if(objCharacterPool.isExpression(sExpression)){					
 						 	String sCharacterPool = objCharacterPool.compute(sExpression);
 							if(!StringZZZ.isEmpty(sCharacterPool)) {//Merke: Leerzeichen wäre erlaubt								
-								objAlgorithm.setCharacterPool(sCharacterPool);
+								objAlgorithm.setCharacterPoolBase(sCharacterPool);
 							}																											
 						 }
 					 

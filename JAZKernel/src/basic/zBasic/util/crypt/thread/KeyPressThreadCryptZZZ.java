@@ -309,9 +309,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	this.questionAlphabetKey_(hmVariable);
         	
         	//######################################################################
-        	//### Frage nach Characterpool
+        	//### Frage nach Haupt-Characterpool
         	if(!this.isCurrentInputFinished()) {
-        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Standard-Zeichenvorrat '" + CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT + "' als Ausgangsstring verwenden?");				                						                				    	                			                				                					                		
+        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Zeichenvorrat '" + CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT + "' als Ausgangsstring verwenden (er kann ggfs. noch in folgenden Schritten ergaenzt werden)?");				                						                				    	                			                				                					                		
         		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){					                		
         			this.cancelToMenue(hmVariable);
         		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
@@ -448,28 +448,39 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		}
 		
 		private void questionUseAdditional_(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+		
 			//#####################################################################
-    		//### Frage nach Zahlen        	
-        	if(!this.isCurrentInputFinished()) {
-
-        		boolean bCharacterPoolContainsAdditionalOnly=false;//nur nach Zahlen fragen, wenn der characterPool nicht eh aus Zahlen besteht.
-        		if(StringZZZ.isEmpty(sCharacterPool)) {
+    		//### Frage nach Sonderzeichen, bzw. Zusatzzeichen        	
+        	if(!this.isCurrentInputFinished()) {        		
+        		boolean bCharacterPoolContainsAdditionalOnly=false;//nur nach Sonderzeichen fragen, wenn der characterPool nicht eh aus Sonderzeichen besteht.
+        		if(!StringZZZ.isEmpty(sCharacterPool)) {
         			bCharacterPoolContainsAdditionalOnly=StringZZZ.containsOnly(sCharacterPool, ICharacterExtendedZZZ.sCHARACTER_ADDITIONAL);
         		}
         		        		
         		if(!bCharacterPoolContainsAdditionalOnly) {
-	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit den zusätzlichen Buchstaben '" + ICharacterExtendedZZZ.sCHARACTER_ADDITIONAL + "' verwenden?");	        		
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit diesen Standard-Zusatzbuchstaben '" + ICharacterExtendedZZZ.sCHARACTER_ADDITIONAL + "' verwenden?");
+	        		this.isCurrentInputValid(true); 
 	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
 	        			this.cancelToMenue(hmVariable);
-	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
-	        			this.isCurrentInputValid(true);	
-	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, BooleanZZZ.stringToBoolean(sInput));
-	            	}else {
-	            		this.isCurrentInputValid(true);	
-	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, BooleanZZZ.stringToBoolean(sInput));
-	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {		        				                		
+            			System.out.println("Geben Sie den gewuenschten Standard-Zusatzbuchstaben Zeichenvorrat als String ein, oder keine Zusatzbuchstaben.");		                	
+                    	sInput = this.getInputReader().nextLine();                        	
+                    	if(StringZZZ.isEmpty(sInput)) {
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, false);
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, false);
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL, "");
+                    	}else {
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, true);
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL, sInput);
+                    	}	                        		                        		                                            		        				                			                		                		                			                	              
+	            	}else{	            		
+	            		//STANDARD-FALL	            		
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
+                		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, true);
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL, CharacterExtendedZZZ.sCHARACTER_ADDITIONAL);        					            			      
 	            	}	        		
-        		}
+        		}//end if(!bCharacterPoolContainsAdditionalOnly) {	
         	}
 		}
 }

@@ -108,8 +108,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		}
 		public void cancelToMenue() {			
 			System.out.println("Abbruch. Zurueck zum Menue");
-			this.isCurrentInputValid(false);					
-    		this.isCurrentMenue(true);
+			//this.isCurrentInputValid(false);					
+    		this.isCurrentMenue(true); //wieder zurück zum Menue
     		this.isCurrentInputFinished(true);
 		}
 		
