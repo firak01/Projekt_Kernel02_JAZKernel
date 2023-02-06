@@ -138,9 +138,13 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 						objCrypt.setCharacterMissingReplacement(objCharacterMissingReplacement);
 					}
 					
-					//ba) 
-					//TODOGOON20230206;//Zusaetzlichen Zeichenpool setzen, wenn verwendet
-					
+					//ba) Zusaetzlichen Zeichenpool setzen, wenn verwendet					
+					if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
+						sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL);
+						if(!StringZZZ.isEmpty(sInput)) {
+							objCrypt.setCharacterPoolAdditional(sInput);
+						}
+					}
 				}						
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
 								

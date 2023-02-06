@@ -301,11 +301,6 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	}
 
 	@Override
-	public void setCharacterPoolBase(String sCharacterPool) {
-		//wg. ICryptZZZ		
-	}
-	
-	@Override
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ {
 		return null;		//wg. ICryptZZZ
 	}
@@ -316,8 +311,23 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	}
 	
 	@Override
+	public void setCharacterPoolBase(String sCharacterPool) {
+		//wg. ICryptZZZ		
+	}
+	
+	@Override
 	public String getCharacterPoolBase() {
 		return null;		//wg. ICryptZZZ
+	}
+	
+	@Override
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+		//Nur wg. ICryptZZZ
+	}
+	
+	@Override
+	public String getCharacterPoolAdditional() {
+		return null; //Nur wg. ICryptZZZ
 	}
 	
 }

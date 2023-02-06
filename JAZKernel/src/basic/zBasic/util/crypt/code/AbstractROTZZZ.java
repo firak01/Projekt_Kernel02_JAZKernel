@@ -83,6 +83,16 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ{
 	public String getCharacterPoolBase() {
 		return null; //Nur wg. ICryptZZZ
 	}
+	
+	@Override
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
+		//Nur wg. ICryptZZZ
+	}
+	
+	@Override
+	public String getCharacterPoolAdditional() {
+		return null; //Nur wg. ICryptZZZ
+	}
 		
 	@Override
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ{

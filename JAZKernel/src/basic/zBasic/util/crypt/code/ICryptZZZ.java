@@ -41,9 +41,12 @@ public interface ICryptZZZ extends IFlagUserZZZ{
 	//Wichtig fuer ROTnn - Verschluesselung
 	public String getCharacterPool() throws ExceptionZZZ;
 	public String getCharacterPoolBase();
-	public void setCharacterPoolBase(String sCharacterPoolBase);	
+	public void setCharacterPoolBase(String sCharacterPoolBase);
+	public String getCharacterPoolAdditional();
+	public void setCharacterPoolAdditional(String sCharacterPoolAdditional);
 	
 	//Falls ein Zeichen nicht im CharacterPool enthalten ist.
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
+	
 }

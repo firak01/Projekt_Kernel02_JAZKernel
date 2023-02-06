@@ -73,7 +73,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			if(sCharacterPoolAdditionalIn==null) {
 				sCharacterPoolAdditional = CharacterExtendedZZZ.sCHARACTER_ADDITIONAL;				
 			}else {
-				sCharacterPoolAdditional = sCharacterPoolBaseIn;
+				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
 			}
 			
 			
