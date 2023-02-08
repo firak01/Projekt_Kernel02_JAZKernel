@@ -13,14 +13,12 @@ public class DebugRotNumericZZZ {
 	public static void main(String[] args) {
         try {
         	
-			// Rotate the input string.
+        	// Rotate the input string.
 	        // ... Then rotate the rotated string.
-	        String input = "Do you have any cat pictures?";
-			//String input = "Do you have any cat pictures";
-			
-	        String sOutput = ROTnumericZZZ.encrypt(input,3,false);
+	        String input = " fzADZ049";			
+	        String sOutput = ROTnumericZZZ.encrypt(input,3,true);
 	              
-	        String sRoundtrip = ROTnumericZZZ.decrypt(sOutput,3,false);
+	        String sRoundtrip = ROTnumericZZZ.decrypt(sOutput,3,true);
 	        
 	        System.out.println(input);
 	        System.out.println(sOutput);
@@ -28,13 +26,39 @@ public class DebugRotNumericZZZ {
 	        System.out.println("###########");
                 
 
-			ROTnumericZZZ objCrypt = new ROTnumericZZZ(5);
+			ROTnumericZZZ objCrypt = new ROTnumericZZZ(5,"usenumeric");
 			sOutput = objCrypt.encrypt(input);
 			sRoundtrip = objCrypt.decrypt(sOutput);
 			
 			System.out.println(input);
 		    System.out.println(sOutput);
 	        System.out.println(sRoundtrip);
+	        
+	        System.out.println("#####################");
+	        
+	        //##############################################
+        	
+        	
+			// Rotate the input string.
+	        // ... Then rotate the rotated string.
+	        String input1 = "Do you have any CAT pictures?";			
+	        String sOutput1 = ROTnumericZZZ.encrypt(input1,3,false);
+	              
+	        String sRoundtrip1 = ROTnumericZZZ.decrypt(sOutput1,3,false);
+	        
+	        System.out.println(input1);
+	        System.out.println(sOutput1);
+	        System.out.println(sRoundtrip1);
+	        System.out.println("###########");
+                
+
+			ROTnumericZZZ objCrypt1 = new ROTnumericZZZ(5);
+			sOutput = objCrypt.encrypt(input1);
+			sRoundtrip = objCrypt.decrypt(sOutput1);
+			
+			System.out.println(input1);
+		    System.out.println(sOutput1);
+	        System.out.println(sRoundtrip1);
 	        
 	        System.out.println("#####################");
 	        
@@ -93,6 +117,7 @@ public class DebugRotNumericZZZ {
 	        System.out.println(input4);
 	        System.out.println(sOutput4);
 	        System.out.println(sRoundtrip4);
+	        
 	        System.out.println("###########");
                 
 
