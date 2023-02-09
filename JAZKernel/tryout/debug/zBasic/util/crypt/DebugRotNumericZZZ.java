@@ -13,20 +13,32 @@ public class DebugRotNumericZZZ {
 	public static void main(String[] args) {
         try {
         	
-        	// Rotate the input string.
+        	// Rotate the input string.        	
 	        // ... Then rotate the rotated string.
-	        String input = " fzADZ049";			
-	        String sOutput = ROTnumericZZZ.encrypt(input,3,true);
-	              
-	        String sRoundtrip = ROTnumericZZZ.decrypt(sOutput,3,true);
-	        
-	        System.out.println(input);
-	        System.out.println(sOutput);
-	        System.out.println(sRoundtrip);
-	        System.out.println("###########");
+        	String input = "z 9fADZ04";
+        	String sOutput = ROTnumericZZZ.encrypt(input,12,true);            
+	        String sRoundtrip = ROTnumericZZZ.decrypt(sOutput,12,true);
+        	
+        	
+        	
+        	
+        	for(int iSchieber=1;iSchieber<=13;iSchieber++) {
+	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
+		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true);
+		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true);
+		        
+		        System.out.println(input);
+		        System.out.println(sOutput);
+		        System.out.print(sRoundtrip);
+		        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
+		        System.out.println("\n###########");
+        	}
                 
-
-			ROTnumericZZZ objCrypt = new ROTnumericZZZ(5,"usenumeric");
+        	
+        	System.out.println("### PER OBJEKT ########");
+        	int iSchieber = 5;
+        	System.out.println("### SCHIEBE UM "+ iSchieber);
+			ROTnumericZZZ objCrypt = new ROTnumericZZZ(iSchieber,"usenumeric");
 			sOutput = objCrypt.encrypt(input);
 			sRoundtrip = objCrypt.decrypt(sOutput);
 			
