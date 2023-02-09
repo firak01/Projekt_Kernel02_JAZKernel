@@ -15,14 +15,20 @@ public class DebugRotNumericZZZ {
         	
         	// Rotate the input string.        	
 	        // ... Then rotate the rotated string.
-        	String input = "z 9fADZ04";
-        	String sOutput = ROTnumericZZZ.encrypt(input,12,true);            
-	        String sRoundtrip = ROTnumericZZZ.decrypt(sOutput,12,true);
+        	String input = " 9DzfZA04";
+        	int iCryptKey = 63; //63; //Merke: Bei 63 ist man einmal durch und der verschluesselte Werte entspricht dem entschlusselten wert
+        	                    //       Anzahl Leerzeichen + Anzahl Ziffern + Anzahl Kleinbuchstaben + Anzahl Grossbuchstaben 
+        	String sOutput = null;
+        	String sRoundtrip = null;
+        	
+        	//Zum schnellen Debuggen, falls eine ABWEICHUNG auftritt
+        	sOutput = ROTnumericZZZ.encrypt(input,iCryptKey,true);            
+	        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,true);
         	
         	
         	
         	
-        	for(int iSchieber=1;iSchieber<=13;iSchieber++) {
+        	for(int iSchieber=0;iSchieber<=iCryptKey;iSchieber++) {
 	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
 		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true);
 		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true);
@@ -34,7 +40,7 @@ public class DebugRotNumericZZZ {
 		        System.out.println("\n###########");
         	}
                 
-        	
+        	System.out.println("\n###            ########");
         	System.out.println("### PER OBJEKT ########");
         	int iSchieber = 5;
         	System.out.println("### SCHIEBE UM "+ iSchieber);
