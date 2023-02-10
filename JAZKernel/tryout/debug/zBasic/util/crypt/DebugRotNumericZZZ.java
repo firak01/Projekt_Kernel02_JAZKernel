@@ -22,16 +22,43 @@ public class DebugRotNumericZZZ {
         	String sRoundtrip = null;
         	
         	//Zum schnellen Debuggen, falls eine ABWEICHUNG auftritt
-        	sOutput = ROTnumericZZZ.encrypt(input,iCryptKey,true);            
-	        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,true);
+        	//sOutput = ROTnumericZZZ.encrypt(input,iCryptKey,true,true);            
+	        //sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,true,true);
         	
-        	
-        	
-        	
+        	System.out.println("\n###################################");
+        	System.out.println("### OHNE WEITERE ARGUMENTE ########");
         	for(int iSchieber=0;iSchieber<=iCryptKey;iSchieber++) {
 	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
-		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true);
-		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true);
+		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,false,false);
+		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,false,false);
+		        
+		        System.out.println(input);
+		        System.out.println(sOutput);
+		        System.out.print(sRoundtrip);
+		        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
+		        System.out.println("\n###########");
+        	}
+        	
+        	System.out.println("\n#############################");
+        	System.out.println("### VERWENDE NUMERIC ########");
+        	for(int iSchieber=0;iSchieber<=iCryptKey;iSchieber++) {
+	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
+		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true,false);
+		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true,false);
+		        
+		        System.out.println(input);
+		        System.out.println(sOutput);
+		        System.out.print(sRoundtrip);
+		        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
+		        System.out.println("\n###########");
+        	}
+        	
+        	System.out.println("\n###################################");
+        	System.out.println("### VERWENDE NUMERIC,BLANK ########");
+        	for(int iSchieber=0;iSchieber<=iCryptKey;iSchieber++) {
+	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
+		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true,true);
+		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true,true);
 		        
 		        System.out.println(input);
 		        System.out.println(sOutput);
@@ -40,8 +67,8 @@ public class DebugRotNumericZZZ {
 		        System.out.println("\n###########");
         	}
                 
-        	System.out.println("\n###            ########");
-        	System.out.println("### PER OBJEKT ########");
+        	System.out.println("\n#####################################");
+        	System.out.println("### PER OBJEKT ######################");
         	int iSchieber = 5;
         	System.out.println("### SCHIEBE UM "+ iSchieber);
 			ROTnumericZZZ objCrypt = new ROTnumericZZZ(iSchieber,"usenumeric");
@@ -60,9 +87,9 @@ public class DebugRotNumericZZZ {
 			// Rotate the input string.
 	        // ... Then rotate the rotated string.
 	        String input1 = "Do you have any CAT pictures?";			
-	        String sOutput1 = ROTnumericZZZ.encrypt(input1,3,false);
+	        String sOutput1 = ROTnumericZZZ.encrypt(input1,3,false,false);
 	              
-	        String sRoundtrip1 = ROTnumericZZZ.decrypt(sOutput1,3,false);
+	        String sRoundtrip1 = ROTnumericZZZ.decrypt(sOutput1,3,false,false);
 	        
 	        System.out.println(input1);
 	        System.out.println(sOutput1);
@@ -84,9 +111,9 @@ public class DebugRotNumericZZZ {
 	        
 	        String input2 = "Do 9 cat pictures";
 			
-	        String sOutput2 = ROTnumericZZZ.encrypt(input2,3,true);
+	        String sOutput2 = ROTnumericZZZ.encrypt(input2,3,true,false);
 	              
-	        String sRoundtrip2 = ROTnumericZZZ.decrypt(sOutput2,3,true);
+	        String sRoundtrip2 = ROTnumericZZZ.decrypt(sOutput2,3,true,false);
 	        
 	        System.out.println(input2);
 	        System.out.println(sOutput2);
@@ -106,9 +133,9 @@ public class DebugRotNumericZZZ {
 	        
 	        String input3 = "Do 1 cat picture";
 			
-	        String sOutput3 = ROTnumericZZZ.encrypt(input3,3,true);
+	        String sOutput3 = ROTnumericZZZ.encrypt(input3,3,true,false);
 	              
-	        String sRoundtrip3 = ROTnumericZZZ.decrypt(sOutput3,3,true);
+	        String sRoundtrip3 = ROTnumericZZZ.decrypt(sOutput3,3,true,false);
 	        
 	        System.out.println(input3);
 	        System.out.println(sOutput3);
@@ -128,9 +155,9 @@ public class DebugRotNumericZZZ {
 	        
 	        String input4 = "Do 4 cat pictures";
 			
-	        String sOutput4 = ROTnumericZZZ.encrypt(input4,3,true);
+	        String sOutput4 = ROTnumericZZZ.encrypt(input4,3,true,false);
 	              
-	        String sRoundtrip4 = ROTnumericZZZ.decrypt(sOutput4,3,true);
+	        String sRoundtrip4 = ROTnumericZZZ.decrypt(sOutput4,3,true,false);
 	        
 	        System.out.println(input4);
 	        System.out.println(sOutput4);
@@ -140,8 +167,8 @@ public class DebugRotNumericZZZ {
                 
 
 			ROTnumericZZZ objCrypt4 = new ROTnumericZZZ(5);
-			sOutput4 = objCrypt.encrypt(input4);
-			sRoundtrip4 = objCrypt.decrypt(sOutput4);
+			sOutput4 = objCrypt4.encrypt(input4);
+			sRoundtrip4 = objCrypt4.decrypt(sOutput4);
 			
 			System.out.println(input4);
 		    System.out.println(sOutput4);

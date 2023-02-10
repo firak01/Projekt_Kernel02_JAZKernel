@@ -3,6 +3,7 @@ package debug.zBasic.util.crypt;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.IROTZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
@@ -21,15 +22,15 @@ public class DebugRotNnZZZ {
 			// Rotate the input string.
 	        // ... Then rotate the rotated string.
 	        String input = "Do you have any cat pictures?";
-	        String rotNn = ROTnnZZZ.encrypt(input,sCharacterPool,objCharacterMissingReplacement, iKeyLength, true,false,false);
-	        String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,objCharacterMissingReplacement, iKeyLength, true,false,false);
+	        String rotNn = ROTnnZZZ.encrypt(input,sCharacterPool,objCharacterMissingReplacement, iKeyLength, true,false,false,false);
+	        String roundTrip = ROTnnZZZ.decrypt(rotNn,sCharacterPool,objCharacterMissingReplacement, iKeyLength, true,false,false,false);
 	
 	        System.out.println(input);
 	        System.out.println(rotNn);
 	        System.out.println(roundTrip);
 	        System.out.println("###################");
 	       	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name());
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, IROTUserZZZ.FLAGZ.USEUPPERCASE.name());
 			rotNn = objCrypt.encrypt(input);
 			roundTrip = objCrypt.decrypt(rotNn);
 			

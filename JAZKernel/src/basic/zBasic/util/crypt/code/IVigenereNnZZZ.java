@@ -6,6 +6,6 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
-public interface IVigenereNnZZZ extends IVigenereZZZ, ICharacterPoolUserZZZ{
+public interface IVigenereNnZZZ extends IVigenereZZZ, IROTUserZZZ, ICharacterPoolUserZZZ{
 	
 }

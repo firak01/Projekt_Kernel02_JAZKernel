@@ -11,6 +11,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.crypt.code.IROTUserZZZ;
 import basic.zBasic.util.crypt.code.IROTZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
@@ -128,19 +129,20 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
 			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
-			String sFlagNumeric = ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();
-			String sFlagUppercase = ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
+			String sFlagNumeric = IROTUserZZZ.FLAGZ.USENUMERIC.name();
+			String sFlagUppercase = IROTUserZZZ.FLAGZ.USEUPPERCASE.name();
+			String sFlagBlank = IROTUserZZZ.FLAGZ.USEBLANK.name();
 			String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA="+sValue);
 			objStreamFile.println("WertAencrypted=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
-			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true);
+			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true, false);
 			objStreamFile.println("WertB="+sValue);
 			objStreamFile.println("WertBencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
-			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true,false,false);
+			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true, false, false,false);
 			objStreamFile.println("WertC="+sValue);
 			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			

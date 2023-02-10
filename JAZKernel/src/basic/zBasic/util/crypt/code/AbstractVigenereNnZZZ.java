@@ -14,7 +14,7 @@ import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
-public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implements ICharacterPoolUserZZZ{	
+public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implements IROTUserZZZ, ICharacterPoolUserZZZ{	
 	private static final long serialVersionUID = 1L;
 	public static int iOffsetForAsciiRange=0;//wird dann später aus der Laenge des CharacterPools errechnet.
 	public static int iOffsetForUtf8Range=0; //im CharacterPool sind keine nicht druckbaren Zeichen.
@@ -86,7 +86,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */	
-	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		String sReturn = sInput;
 		main:{
 			if(StringZZZ.isEmpty(sInput)) break main;
@@ -105,7 +105,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
 			}
 			
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sCharacterPoolAdditional);			
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter, sCharacterPoolAdditional);			
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			
 			int[] iaSchluesselwort = UnicodeZZZ.toIntArrayCharacterPoolPosition(sKeyword, listasCharacterPool);
@@ -268,7 +268,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static String decrypt(String sInput, String sCharacterPoolBaseIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
 		//Merke: Bei Vigenere reicht das einfache Umdrehen des Codes wie bei Caesar oder anderen Rotierenden Verschluesselungen nicht mehr aus.
 		String sReturn = sInput;
 		main:{
@@ -288,7 +288,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
 			}
 						
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter,sCharacterPoolAdditional);	
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);	
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);					
 			
 			int[]ppure = AbstractVigenereNnZZZ.decrypt(sInput,listasCharacterPool,sKeyword);
@@ -560,11 +560,12 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			String sCharacterPoolBase = this.getCharacterPoolBase();
 			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
 			
-			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
-			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
-			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
+			boolean bUseUppercasePool = this.getFlag(IROTUserZZZ.FLAGZ.USEUPPERCASE);
+			boolean bUseLowercasePool = this.getFlag(IROTUserZZZ.FLAGZ.USELOWERCASE);
+			boolean bUseNumericPool = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+			boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
 			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
-			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sCharacterPoolAdditional);
+			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter, sCharacterPoolAdditional);
 					
 			ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool = CharacterExtendedZZZ.computeListFromCharacterPoolString(abcABC);
 			this.listasCharacterPool = listasCharacterPool;
@@ -748,6 +749,15 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 //		}//end main:
 //		return iaReturn;
 //	}
+	
+	@Override
+	public boolean getFlag(IROTUserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public void setFlag(IROTUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 	
 	
 	@Override

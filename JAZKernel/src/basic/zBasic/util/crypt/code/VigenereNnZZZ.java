@@ -1,7 +1,5 @@
 package basic.zBasic.util.crypt.code;
 
-import base.files.DateiUtil;
-import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
@@ -35,7 +33,7 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	 * @throws ExceptionZZZ 
 	 */
 	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterMissingReplacement, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return VigenereNnZZZ.encrypt(sInput, sCharacterPoolBaseIn, cCharacterMissingReplacement,true,true,true,true,null, sKeyword);		
+		return VigenereNnZZZ.encrypt(sInput, sCharacterPoolBaseIn, cCharacterMissingReplacement,true,true,true,true,true,null, sKeyword);		
     }
 	
 	
@@ -48,12 +46,12 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterMissingReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool,String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return AbstractVigenereNnZZZ.encrypt(sInput, sCharacterPoolBaseIn, cCharacterMissingReplacement, bUseUppercasePool,  bUseLowercasePool, bUseNumericPool, false, null, sKeyword);
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterMissingReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseBlank, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		return AbstractVigenereNnZZZ.encrypt(sInput, sCharacterPoolBaseIn, cCharacterMissingReplacement, bUseUppercasePool,  bUseLowercasePool, bUseNumericPool, bUseBlank, false, null, sKeyword);
     }
 	
-	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterMissingReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sCharacterPoolAdditional, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return AbstractVigenereNnZZZ.encrypt(sInput, sCharacterPoolBaseIn, cCharacterMissingReplacement, bUseUppercasePool,  bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sCharacterPoolAdditional, sKeyword);
+	public static String encrypt(String sInput, String sCharacterPoolBaseIn, char cCharacterMissingReplacement, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditional, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		return AbstractVigenereNnZZZ.encrypt(sInput, sCharacterPoolBaseIn, cCharacterMissingReplacement, bUseUppercasePool,  bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter, sCharacterPoolAdditional, sKeyword);
     }
 	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
@@ -79,12 +77,12 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	 * @author Fritz Lindhauer, 18.12.2022, 08:58:20
 	 * @throws ExceptionZZZ 
 	 */
-	public static String decrypt(String sInput, String sCharacterPoolBaseIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return AbstractVigenereNnZZZ.decrypt(sInput, sCharacterPoolBaseIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, false, null, sKeyword);
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseBlank, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		return AbstractVigenereNnZZZ.decrypt(sInput, sCharacterPoolBaseIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, false, null, sKeyword);
     }
 	
-	public static String decrypt(String sInput, String sCharacterPoolBaseIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseAdditionalCharacter, String sCharacterPoolAdditional, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
-		return AbstractVigenereNnZZZ.decrypt(sInput, sCharacterPoolBaseIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseAdditionalCharacter, sCharacterPoolAdditional, sKeyword);
+	public static String decrypt(String sInput, String sCharacterPoolBaseIn, boolean bUseUppercasePool, boolean bUseLowercasePool, boolean bUseNumericPool, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditional, String sKeyword) throws IllegalArgumentException, ExceptionZZZ {
+		return AbstractVigenereNnZZZ.decrypt(sInput, sCharacterPoolBaseIn, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter, sCharacterPoolAdditional, sKeyword);
     }
 	
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen
@@ -129,5 +127,5 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	
 	public static int[] makeOriginalValuesAsCharacterPoolPosition(int[] iaPure, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) throws ExceptionZZZ {
 		return AbstractVigenereNnZZZ.makeOriginalValuesAsCharacterPoolPosition(iaPure, listasCharacterPool);
-	}
+	}	
 }

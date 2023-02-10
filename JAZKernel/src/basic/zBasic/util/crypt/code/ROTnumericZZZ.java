@@ -77,31 +77,37 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	@Override
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
-		boolean bNumeric = this.getFlag("useNumeric");
-		return ROTnumericZZZ.encrypt(sInput, iCryptKey, bNumeric);
+		boolean bNumeric = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
+		return ROTnumericZZZ.encrypt(sInput, iCryptKey, bNumeric,bUseBlank);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
-		boolean bNumeric = this.getFlag("useNumeric");
-		return ROTnumericZZZ.decrypt(sInput, iCryptKey, bNumeric);
+		boolean bNumeric = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
+		return ROTnumericZZZ.decrypt(sInput, iCryptKey, bNumeric,bUseBlank);
 	}
 	
 	
 	//###########################################
-	public static String encrypt(String input, int iCryptKey, boolean bNumeric) throws ExceptionZZZ{
-		return ROTnumericZZZ.crypt_(input, iCryptKey, bNumeric,false);
+	public static String encrypt(String input, int iCryptKey, boolean bNumeric, boolean bBlank) throws ExceptionZZZ{
+		return ROTnumericZZZ.crypt_(input, iCryptKey, bNumeric,bBlank, false);
 	}
-	public static String decrypt(String input, int iCryptKey, boolean bNumeric) throws ExceptionZZZ{
-		return ROTnumericZZZ.crypt_(input, iCryptKey, bNumeric,true);
+	public static String decrypt(String input, int iCryptKey, boolean bNumeric, boolean bBlank) throws ExceptionZZZ{
+		return ROTnumericZZZ.crypt_(input, iCryptKey, bNumeric,bBlank, true);
 	}
-	private static String crypt_(String input, int iCryptKey, boolean bNumeric,boolean bReverse) throws ExceptionZZZ {
+	private static String crypt_(String input, int iCryptKey, boolean bNumeric, boolean bBlank, boolean bReverse) throws ExceptionZZZ {
 	   String sReturn = new String();
 	   main:{		  
 		   if(!bNumeric) { 		   
 			   sReturn = ROTnumericZZZ.cryptNumericSimple_(input, iCryptKey, bReverse);
 		   }else {
-			   sReturn = ROTnumericZZZ.cryptNumericAdvanced_(input, iCryptKey, bReverse);
+			   if(!bBlank) {
+				   sReturn = ROTnumericZZZ.cryptNumericAdvanced_(input, iCryptKey, bReverse);
+			   }else{
+				   sReturn = ROTnumericZZZ.cryptNumericAdvancedBlank_(input, iCryptKey, bReverse);
+			   }
 		   }
 	   }//end main:
 	   return sReturn;
@@ -122,7 +128,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 08.02.2023, 10:39:45
 	 */
-	private static String cryptNumericAdvanced_(String input, int iCryptKey, boolean bReverse) throws ExceptionZZZ {
+	private static String cryptNumericAdvancedBlank_(String input, int iCryptKey, boolean bReverse) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{
 			   if(iCryptKey<0 || iCryptKey >=64) {
@@ -359,10 +365,22 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 		   return sReturn;
 	}
 	
-	private static String crypt2(String input, int iCryptKey, boolean bNumeric,boolean bReverse) throws ExceptionZZZ {
+	/** Leerzeichen bleiben erhalten.
+	 *  Zahlen werden ggfs. in den Grossbuchstabenbereich verschoben.
+	 *  Grossbuchstaben werden ggfs. in den Kleinbuchstabenbereich verschoben.
+	 *  Kleinbuchstaben werden ggfs. in den Zahlenbereich verschoben.
+	 *  
+	 * @param input
+	 * @param iCryptKey
+	 * @param bReverse
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 08.02.2023, 10:39:45
+	 */
+	private static String cryptNumericAdvanced_(String input, int iCryptKey, boolean bReverse) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{
-			   TODOGOON 20230209;//Zahlen mit Buchstaben vertauschen, aber die Leerzeichen bleiben erhalten
+			   //TODOGOON 20230209;//Zahlen mit Buchstaben vertauschen, aber die Leerzeichen bleiben erhalten
 			   if(iCryptKey<0 || iCryptKey >=26) {
 				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 25", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
@@ -399,7 +417,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 		                }
 		            }
 		            //Numeric values are between 48 to 57 
-		            if (bNumeric && ascii > 47 && ascii < 58) {
+		            if (ascii > 47 && ascii < 58) {
 		                rotated = (char) (rotated + iCryptKey);
 		            	//int iRotated = rotated;
 		            	
@@ -450,7 +468,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			                }
 			            }
 			            //Numeric values are between 48 to 57 
-			            if (bNumeric && ascii > 47 && ascii < 58) {
+			            if (ascii > 47 && ascii < 58) {
 			            	rotated = (char) (rotated - iCryptKey);
 			            	int iRotated = rotated;
 			            	if(iRotated<=47) {

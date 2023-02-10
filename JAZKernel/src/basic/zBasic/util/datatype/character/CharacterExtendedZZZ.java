@@ -58,7 +58,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 	}
 	
 	//##############################
-	public static String computeCharacterPoolExtended(String sCharacterPoolBaseIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) {
+	public static String computeCharacterPoolExtended(String sCharacterPoolBaseIn, boolean bUseUppercase, boolean bUseLowercase, boolean bUseNumeric, boolean bUseBlank, boolean bUseAdditionalCharacter, String sCharacterPoolAdditionalIn) {
 		String sReturn="";
 		main:{
 			String sCharacterPoolBase;
@@ -90,6 +90,10 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			
 			if(bUseNumeric) {
 				sReturn = StringZZZ.appendMissing(sReturn, CharacterExtendedZZZ.sCHARACTER_NUMERIC);
+			}
+			
+			if(bUseBlank) {
+				sReturn = StringZZZ.appendMissing(sReturn, " ");
 			}
 			
 			if(bUseAdditionalCharacter) {

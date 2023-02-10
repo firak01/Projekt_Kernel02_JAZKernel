@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.thread;
 
 import basic.zBasic.util.console.multithread.IKeyPressThreadConstantZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
+import basic.zBasic.util.crypt.code.IROTUserZZZ;
 
 /**Konstanten, mit denen Werte in einer HashMap gespeichert werden.
  * Die HashMap wird verwendet um die Daten zwischen Threads auszutauschen.
@@ -18,15 +19,12 @@ public interface IKeyPressThreadCryptConstantsZZZ extends IKeyPressThreadConstan
 	public static String sINPUT_BOOLEAN_SKIP_ARGUMENTS = "INPUT_BOOLEAN_SKIP_ARGUMENTS";
 	
 	//Merke: Mit "INPUT_FLAG" werden Eingabewerte gekennzeichnet, die später dann als Flag den Objekten übergeben werden können.	
-	//public static String sINPUT_FLAG_CHARACTER_UPPERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseUpperCase";
-	public static String sINPUT_FLAG_CHARACTER_UPPERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
-	//public static String sINPUT_FLAG_CHARACTER_LOWERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseLowerCase";
-	public static String sINPUT_FLAG_CHARACTER_LOWERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE.name();
-	//public static String sINPUT_FLAG_CHARACTER_NUMERIC = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseNumeric";
-	public static String sINPUT_FLAG_CHARACTER_NUMERIC = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();	
-	public static String sINPUT_FLAG_CHARACTER_ADDITIONAL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER.name();
+	public static String sINPUT_FLAG_CHARACTER_UPPERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + IROTUserZZZ.FLAGZ.USEUPPERCASE.name();
+	public static String sINPUT_FLAG_CHARACTER_LOWERCASE = IKeyPressThreadConstantZZZ.sINPUT_FLAG + IROTUserZZZ.FLAGZ.USELOWERCASE.name();
+	public static String sINPUT_FLAG_CHARACTER_NUMERIC = IKeyPressThreadConstantZZZ.sINPUT_FLAG + IROTUserZZZ.FLAGZ.USENUMERIC.name();	
+	public static String sINPUT_FLAG_CHARACTER_BLANK = IKeyPressThreadConstantZZZ.sINPUT_FLAG + IROTUserZZZ.FLAGZ.USEBLANK.name();
 	
-	//public static String sINPUT_FLAG_USE_CHARACTERPOOL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + "UseCharacterPool";
+	public static String sINPUT_FLAG_CHARACTER_ADDITIONAL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER.name();
 	public static String sINPUT_FLAG_USE_CHARACTERPOOL = IKeyPressThreadConstantZZZ.sINPUT_FLAG + ICharacterPoolUserZZZ.FLAGZ.USECHARACTERPOOL.name();
 	
 	
