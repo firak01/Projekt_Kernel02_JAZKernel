@@ -16,55 +16,71 @@ public class DebugRotNumericZZZ {
         	// Rotate the input string.        	
 	        // ... Then rotate the rotated string.
         	String input = " 9DzfZA04";
-        	int iCryptKey = 63; //63; //Merke: Bei 63 ist man einmal durch und der verschluesselte Werte entspricht dem entschlusselten wert
+        	int iCryptKeyMax = 63; //63; //Merke: Bei 63 ist man einmal durch und der verschluesselte Werte entspricht dem entschlusselten wert
         	                    //       Anzahl Leerzeichen + Anzahl Ziffern + Anzahl Kleinbuchstaben + Anzahl Grossbuchstaben 
         	String sOutput = null;
         	String sRoundtrip = null;
+        	boolean bSkip = false;
         	
         	//Zum schnellen Debuggen, falls eine ABWEICHUNG auftritt
-        	//sOutput = ROTnumericZZZ.encrypt(input,iCryptKey,true,true);            
-	        //sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,true,true);
-        	
-        	System.out.println("\n###################################");
-        	System.out.println("### OHNE WEITERE ARGUMENTE ########");
-        	for(int iSchieber=0;iSchieber<=iCryptKey;iSchieber++) {
-	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
-		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,false,false);
-		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,false,false);
-		        
-		        System.out.println(input);
-		        System.out.println(sOutput);
-		        System.out.print(sRoundtrip);
-		        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
-		        System.out.println("\n###########");
+        	bSkip=true;
+        	if(!bSkip) {
+	        	sOutput = ROTnumericZZZ.encrypt(input,iCryptKeyMax,true,true);            
+		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKeyMax,true,true);
         	}
         	
-        	System.out.println("\n#############################");
-        	System.out.println("### VERWENDE NUMERIC ########");
-        	for(int iSchieber=0;iSchieber<=iCryptKey;iSchieber++) {
-	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
-		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true,false);
-		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true,false);
-		        
-		        System.out.println(input);
-		        System.out.println(sOutput);
-		        System.out.print(sRoundtrip);
-		        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
-		        System.out.println("\n###########");
+        	bSkip=true;
+        	if(!bSkip) {
+	        	System.out.println("\n###################################");
+	        	System.out.println("### OHNE WEITERE ARGUMENTE ########");
+	        	iCryptKeyMax=26;
+	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
+		        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
+			        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,false,false);
+			        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,false,false);
+			        
+			        System.out.println(input);
+			        System.out.println(sOutput);
+			        System.out.print(sRoundtrip);
+			        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
+			        System.out.println("\n###########");
+	        	}
         	}
         	
-        	System.out.println("\n###################################");
-        	System.out.println("### VERWENDE NUMERIC,BLANK ########");
-        	for(int iSchieber=0;iSchieber<=iCryptKey;iSchieber++) {
-	        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
-		        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true,true);
-		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true,true);
-		        
-		        System.out.println(input);
-		        System.out.println(sOutput);
-		        System.out.print(sRoundtrip);
-		        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
-		        System.out.println("\n###########");
+        	bSkip=true;
+	        	if(!bSkip) {
+	        	System.out.println("\n#############################");
+	        	System.out.println("### VERWENDE NUMERIC ########");
+	        	iCryptKeyMax=63;
+	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
+		        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
+			        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true,false);
+			        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true,false);
+			        
+			        System.out.println(input);
+			        System.out.println(sOutput);
+			        System.out.print(sRoundtrip);
+			        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
+			        System.out.println("\n###########");
+	        	}
+        	}
+        	
+        	bSkip=false;
+        	if(!bSkip) {
+	        	System.out.println("\n###################################");
+	        	System.out.println("### VERWENDE NUMERIC,BLANK ########");
+	        	iCryptKeyMax=63;
+	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
+		        	System.out.println("### SCHIEBE UM "+ iSchieber);	       		
+			        sOutput = ROTnumericZZZ.encrypt(input,iSchieber,true,true);
+			        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iSchieber,true,true);
+			        
+			        System.out.println(input);
+			        System.out.println(sOutput);
+			        System.out.print(sRoundtrip);
+			        if(!input.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
+			        System.out.println("\n###########");
+	        	}
         	}
                 
         	System.out.println("\n#####################################");
