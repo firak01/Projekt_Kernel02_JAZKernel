@@ -293,6 +293,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	private static String decryptNumericAdvancedBlank_(String input, int iCryptKey) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{
+			   TODOGOON20230212;
 			   if(iCryptKey<0 || iCryptKey >=64) {
 				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range only from 0 to 63", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
