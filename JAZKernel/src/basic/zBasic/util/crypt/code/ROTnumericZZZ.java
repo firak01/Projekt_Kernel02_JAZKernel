@@ -9,6 +9,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
+import basic.zBasic.util.datatype.character.AsciiTableZZZ;
 import basic.zBasic.util.datatype.character.AsciiZZZ;
 
 /**
@@ -159,9 +160,9 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            if(AsciiZZZ.isBlank(ascii)) {  //Blank is 32
 			            	rotated = (char) (rotated + iCryptKey);	
 			            	int iRotated = rotated;
-			            	TODOGOON20230211;//Verwende einen enum
-			            	if(AsciiZZZ.isHigher(enumAscii.BLANK)) {
-			            	if (iRotated > 32) {
+			            	//TODOGOON20230211;//Verwende einen enum
+			            	//if (iRotated > 32) {
+			            	if(AsciiZZZ.isHigherBlank(iRotated)) {
 			            		iRotated = AsciiZZZ.fromBlank2Number(iRotated);
 			                }
 			            	
