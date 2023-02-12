@@ -71,6 +71,41 @@ public class AsciiZZZ {
 		return AsciiZZZ.isHigher(iAscii, AsciiTableZZZ.SectionZZZ.BLANK);
 	}
 	
+	//###########
+	public static boolean isNumber(char cAscii) {
+		return AsciiZZZ.isNumber((int)cAscii);
+	}
+	public static boolean isNumber(int iAscii) {
+		return AsciiZZZ.is(iAscii,AsciiTableZZZ.SectionZZZ.NUMBER);
+	}
+	public static boolean isHigherNumber(int iAscii) {
+		return AsciiZZZ.isHigher(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER);
+	}
+	
+	//###########
+	public static boolean isLetterLowercase(char cAscii) {
+		return AsciiZZZ.isLetterLowercase((int)cAscii);
+	}
+	public static boolean isLetterLowercase(int iAscii) {
+		return AsciiZZZ.is(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
+	}
+	public static boolean isHigherLetterLowercase(int iAscii) {
+		return AsciiZZZ.isHigher(iAscii, AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
+	}
+	
+	//###########
+	public static boolean isLetterUppercase(char cAscii) {
+		return AsciiZZZ.isLetterUppercase((int)cAscii);
+	}
+	public static boolean isLetterUppercase(int iAscii) {
+		return AsciiZZZ.is(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE);
+	}
+	public static boolean isHigherLetterUppercase(int iAscii) {
+		return AsciiZZZ.isHigher(iAscii, AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE);
+	}
+	
+	
+	
 	
 	public static int fromBlank2Number(int iAscii) {
 		//return iAscii + 15;//15 Zeichen ueberspringen, bis zu den Zahlen.
