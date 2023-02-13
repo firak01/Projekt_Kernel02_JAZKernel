@@ -293,7 +293,6 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	private static String decryptNumericAdvancedBlank_(String input, int iCryptKey) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{
-			   TODOGOON20230212;
 			   if(iCryptKey<0 || iCryptKey >=64) {
 				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range only from 0 to 63", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
@@ -312,97 +311,135 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 				            char rotated = ascii;
 				            		            
 				           		            		            
-				            if (ascii > 64 && ascii < 91) {	 //Capital letters are 65 to 90
+				            //if (ascii > 64 && ascii < 91) {	 //Capital letters are 65 to 90
+				            if(AsciiZZZ.isLetterUppercase(ascii)) {
 				            	int iRotated = rotated;
 				            	iRotated = iRotated - iCryptKey;
 				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
 				            	
-				            	if(iRotated<=64) {
-				            		iRotated=iRotated-7; //7 Zeichen ueberspringen, bis in den Zahlenbereich
+				            	//if(iRotated<=64) {
+				            	if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
+				            		//iRotated=iRotated-7; //7 Zeichen ueberspringen, bis in den Zahlenbereich
+				            		iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated <=47) {
-				            		iRotated=iRotated-15; //15 Zeichen ueberspringen, bis zum Leerzeichen				            		
+				            	//if(iRotated <=47) {
+				            	if(AsciiZZZ.isLowerNumber(iRotated)) {
+				            		//iRotated=iRotated-15; //15 Zeichen ueberspringen, bis zum Leerzeichen
+				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated<32) { 
-				            		   iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
-					                   iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
+				            	//if(iRotated<32) {
+				            	if(AsciiZZZ.isLowerBlank(iRotated)) {
+				            		   //iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
+					                   //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
+					                   iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
 					                   
-					                   if(iRotated <=96) {					                	  
-					                	   iRotated = iRotated - 6;  //rueckwaerts weiterschieben von den Kleinbuchstaben zu den Grossbuchstaben
+					                   //if(iRotated <=96) {
+					                   if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
+					                	   //iRotated = iRotated - 6;  //rueckwaerts weiterschieben von den Kleinbuchstaben zu den Grossbuchstaben
+					                	   iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
 					                   }
 					            } //end if(iRotated<32) { 
 				            	
 				            	rotated = (char)iRotated;
-				            } else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
+				            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
+				            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
 				            	int iRotated = rotated;
 				            	iRotated = iRotated - iCryptKey;
 				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
 				            	
-				            	if(iRotated<=96) {				            		
-				            		iRotated = iRotated - 6; //6 Zeichen ueberspringen, bis zu den Grossbuchstaben
+				            	//if(iRotated<=96) {
+				            	if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
+				            		//iRotated = iRotated - 6; //6 Zeichen ueberspringen, bis zu den Grossbuchstaben
+				            		iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated<=64) {
-				            		iRotated = iRotated - 7; //7 Zeichen ueberspringen, bis zu den Ziffern
+				            	//if(iRotated<=64) {
+				            	if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
+				            		//iRotated = iRotated - 7; //7 Zeichen ueberspringen, bis zu den Ziffern
+				            		iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated<=47) {
-				            		iRotated = iRotated - 15; //15 Zeichen ueberspringen, bis zum Leerzeichen
+				            	//if(iRotated<=47) {
+				            	if(AsciiZZZ.isLowerNumber(iRotated)) {
+				            		//iRotated = iRotated - 15; //15 Zeichen ueberspringen, bis zum Leerzeichen
+				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated<=31) {				            		
-				            		iRotated = iRotated - 31 - (254-122); //rueckwaerts das Leerzeichen zu Kleinbuchstaben machen
-					            	iRotated +=254;                       //... und wieder in der ASCII Tabelle von vorne anfangen.					            	
+				            	//if(iRotated<=31) {
+				            	if(AsciiZZZ.isLowerBlank(iRotated)) {
+				            		//iRotated = iRotated - 31 - (254-122); //rueckwaerts das Leerzeichen zu Kleinbuchstaben machen
+					            	//iRotated +=254;                       //... und wieder in der ASCII Tabelle von vorne anfangen.
+				            		iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
 				            	}
 				            	
 				            	rotated = (char)iRotated;
-				            } else if (ascii==32) { //Das Leerzeichen
+				            //} else if (ascii==32) { //Das Leerzeichen
+				            }else if(AsciiZZZ.isBlank(ascii)) {
 				            	int iRotated = rotated;
 				            	iRotated = iRotated - iCryptKey;
 				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
 				            	
-				            	iRotated = iRotated - 31 - (254-122); //rueckwaerts das Leerzeichen zu Kleinbuchstaben machen
-				            	iRotated = iRotated + 254;                       //... und wieder in der ASCII Tabelle von vorne anfangen.
+				            	//iRotated = iRotated - 31 - (254-122); //rueckwaerts das Leerzeichen zu Kleinbuchstaben machen
+				            	//iRotated = iRotated + 254;                       //... und wieder in der ASCII Tabelle von vorne anfangen.
+				            	iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
 				            					            	
-				            	if(iRotated<=96) {
-				            		iRotated = iRotated - 6; //Kleinbuchstaben zu Grossbuchstaben machen
+				            	//if(iRotated<=96) {
+				            	if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
+				            		//iRotated = iRotated - 6; //Kleinbuchstaben zu Grossbuchstaben machen
+				            		iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated<=64) {
-				            		iRotated = iRotated - 7; //Grossbuchstaben zu Ziffern machen
+				            	//if(iRotated<=64) {
+				            	if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
+				            		//iRotated = iRotated - 7; //Grossbuchstaben zu Ziffern machen
+				            		iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated<=47) {
-				            		iRotated = iRotated - 15; //Ziffern wieder zum Leerzeichen machen				            		
+				            	//if(iRotated<=47) {
+				            	if(AsciiZZZ.isLowerNumber(iRotated)) {
+				            		//iRotated = iRotated - 15; //Ziffern wieder zum Leerzeichen machen
+				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
 				            	}
 				            	
-				            	if(iRotated>=123) {
-				            		iRotated = iRotated - 91; //Zeichen groesser als Kleinbuchstaben zu Leerzeichen machen.
+				            	//if(iRotated>=123) {
+				            	if(AsciiZZZ.isHigherLetterLowercase(iRotated)) {
+				            		//iRotated = iRotated - 91; //Zeichen groesser als Kleinbuchstaben zu Leerzeichen machen.
+				            		//iRotated = AsciiZZZ.fromLetterLowercase2BlankReverse(iRotated);
+				            		iRotated = AsciiZZZ.fromLetterLowercase2Blank(iRotated);
 				            	}			
 				            	
 				            	
 				            	rotated = (char)iRotated;
 				            	
-				            } else if (ascii > 47 && ascii < 58) { //Numeric values are between 48 to 57 
+				            //} else if (ascii > 47 && ascii < 58) { //Numeric values are between 48 to 57
+				            }else if (AsciiZZZ.isNumber(ascii)) {
 				            	int iRotated = rotated;
 				            	iRotated = iRotated - iCryptKey;				            	
 				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
 				            	
-				            	if(iRotated<=47) {
-				            		iRotated = iRotated - 15; //genau diese Zahl zu Leerzeichen machen					            						            	
+				            	//if(iRotated<=47) {
+				            	if(AsciiZZZ.isLowerNumber(iRotated)) {				            		
+				            		//iRotated = iRotated - 15; //genau diese Zahl zu Leerzeichen machen
+				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
 	
-					            	if(iRotated<32) { 
-				            		   iRotated = iRotated - 31 - (254-122); //Leerzeichen rueckwaerts zu Kleinbuchstaben machen
-					                   iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.	
+					            	//if(iRotated<32) {
+				            		if(AsciiZZZ.isLowerBlank(iRotated)) {
+				            		   //iRotated = iRotated - 31 - (254-122); //Leerzeichen rueckwaerts zu Kleinbuchstaben machen
+					                   //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
+				            			iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
 					                   					                   					                  
-						            	if(iRotated <=96) {
-						            		iRotated = iRotated - 6;  //Weiterschieben rueckwaerts von Kleinbuchstaben zu Grossbuchstaben
+						            	//if(iRotated <=96) {
+				            			if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
+						            		//iRotated = iRotated - 6;  //Weiterschieben rueckwaerts von Kleinbuchstaben zu Grossbuchstaben
+				            				iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
 						            	}
 						            	
-						            	if(iRotated <= 64) {
-						            		iRotated = iRotated - 7;  //Weiterschieben rueckwaerts von Grossbuchstaben zu Ziffern
+						            	//if(iRotated <= 64) {
+				            			if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
+						            		//iRotated = iRotated - 7;  //Weiterschieben rueckwaerts von Grossbuchstaben zu Ziffern
+				            				iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
 						            	}
 					            	}					            						            	
 				            	}
