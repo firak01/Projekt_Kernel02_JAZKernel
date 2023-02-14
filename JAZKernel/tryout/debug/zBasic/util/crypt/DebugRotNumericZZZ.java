@@ -15,21 +15,33 @@ public class DebugRotNumericZZZ {
         	
         	// Rotate the input string.        	
 	        // ... Then rotate the rotated string.
-        	String input = " 9DzfZA04";
-        	int iCryptKeyMax = 63; //63; //Merke: Bei 63 ist man einmal durch und der verschluesselte Werte entspricht dem entschlusselten wert
+        	String input = "Z 9DzfA04";
+        	int iCryptKeyMax = 26; //63; //Merke: Bei 63 ist man einmal durch und der verschluesselte Werte entspricht dem entschlusselten wert
         	                    //       Anzahl Leerzeichen + Anzahl Ziffern + Anzahl Kleinbuchstaben + Anzahl Grossbuchstaben 
         	String sOutput = null;
         	String sRoundtrip = null;
         	boolean bSkip = false;
         	
         	//Zum schnellen Debuggen, falls eine ABWEICHUNG auftritt
-        	bSkip=true;
+        	bSkip=false;
         	if(!bSkip) {
-	        	sOutput = ROTnumericZZZ.encrypt(input,iCryptKeyMax,true,true);            
-		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKeyMax,true,true);
+        		System.out.println("\n###################################");
+	        	System.out.println("### DEBUG EINZELWERT - SPEZIELL EINGETELLT ########");
+        		String sInputDebug = "9Z DzfA04";
+        		int iCryptKey=11;
+        		System.out.println("### SCHIEBE UM "+ iCryptKey);
+	        	sOutput = ROTnumericZZZ.encrypt(sInputDebug,iCryptKey,false,false);            
+		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,false,false);
+		        
+		        System.out.println(sInputDebug);
+		        System.out.println(sOutput);
+		        System.out.print(sRoundtrip);
+		        if(!sInputDebug.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
+		        System.out.println("\n###########");
         	}
         	
-        	bSkip=true;
+        	//Alle Verschiebungen testen
+        	bSkip=false;
         	if(!bSkip) {
 	        	System.out.println("\n###################################");
 	        	System.out.println("### OHNE WEITERE ARGUMENTE ########");
@@ -47,7 +59,7 @@ public class DebugRotNumericZZZ {
 	        	}
         	}
         	
-        	bSkip=true;
+        	bSkip=false;
 	        	if(!bSkip) {
 	        	System.out.println("\n#############################");
 	        	System.out.println("### VERWENDE NUMERIC ########");
@@ -65,7 +77,7 @@ public class DebugRotNumericZZZ {
 	        	}
         	}
         	
-        	bSkip=false;
+        	bSkip=true;
         	if(!bSkip) {
 	        	System.out.println("\n###################################");
 	        	System.out.println("### VERWENDE NUMERIC,BLANK ########");

@@ -130,6 +130,32 @@ public class AsciiZZZ {
 	
 	
 	//######################################################################
+	/** Schiebe innerhalb des gelich Typs, 
+	 * also Zahlen bleiben Zahlen, 
+	 * Grossbuchstaben bleiben Grossbuchstaben, 
+	 * Kleinbuchstaben bleiben Kleinbuchstaben
+	 * @param iAscii
+	 * @param objEnumSection
+	 * @return
+	 * @author Fritz Lindhauer, 14.02.2023, 09:50:52
+	 */
+	public static int from2from(int iAscii, AsciiTableZZZ.SectionZZZ objEnumSection) {
+		int iReturn = iAscii + ((255-objEnumSection.getEnd()-1)+objEnumSection.getStart());
+		iReturn = iReturn - 255;
+		return iReturn;
+	}
+	public static int from2fromReverse(int iAscii, AsciiTableZZZ.SectionZZZ objEnumSection) {
+		int iReturn = iAscii - objEnumSection.getStart() - (254 - objEnumSection.getEnd());
+		iReturn = iReturn + 255;
+		return iReturn;
+		
+		
+//		int iReturn = iAscii - (AsciiTableZZZ.SectionZZZ.BLANK.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
+//		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.
+//		return iReturn;
+	}
+	
+	//###################
 	public static int fromBlank2Number(int iAscii) {
 		//return iAscii + 15;//15 Zeichen ueberspringen, bis zu den Zahlen.
 		return iAscii + AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-AsciiTableZZZ.SectionZZZ.BLANK.getEnd() -1;
@@ -150,13 +176,25 @@ public class AsciiZZZ {
 		//iRotated=iRotated-15; //15 Zeichen ueberspringen, bis zum Leerzeichen
 		return iAscii - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-AsciiTableZZZ.SectionZZZ.BLANK.getEnd() -1);
 	}
-	
+	public static int fromNumber2Number(int iAscii) { //verwendet bei cyrptNumericSimple, Zahlen bleiben Zahlen 9 wird also wieder zur 0
+		//return iAscii + ((255-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1)+AsciiTableZZZ.SectionZZZ.NUMBER.getStart())-255;
+		return AsciiZZZ.from2from(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER);
+	}
+	public static int fromNumber2NumberReverse(int iAscii) { //verwendet bei cyrptNumericSimple, Zahlen bleiben Zahlen 9 wird also wieder zur 0
+		//return iAscii + ((255-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1)+AsciiTableZZZ.SectionZZZ.NUMBER.getStart())-255;
+		return AsciiZZZ.from2fromReverse(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER);
+	}
 	
 	public static int fromLetterUppercase2LetterLowercase(int iAscii) {
 		//return iAscii + 6;//Grossbuschstaben zu Kleinbuchstaben weiterschieben.	
 		return iAscii + AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart()-AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd() -1;
 	}
-	
+	public static int fromLetterUppercase2LetterUppercase(int iAscii) {//verwendet bei cyrptNumericSimple, Grossbuchstaben bleiben Grossbuchstaben Z wird also wieder zu A
+		return AsciiZZZ.from2from(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE);			
+	}
+	public static int fromLetterUppercase2LetterUppercaseReverse(int iAscii) {//verwendet bei cyrptNumericSimple, Grossbuchstaben bleiben Grossbuchstaben Z wird also wieder zu A
+		return AsciiZZZ.from2fromReverse(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE);			
+	}
 	public static int fromLetterUppercase2NumberReverse(int iAscii) {
 		//iRotated=iRotated-7; //7 Zeichen ueberspringen, bis in den Zahlenbereich
 		return iAscii - (AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart()-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1);
@@ -170,6 +208,13 @@ public class AsciiZZZ {
 		iReturn = iReturn - 255;
 		return iReturn;
 	}
+	public static int fromLetterLowercase2LetterLowercase(int iAscii) {//verwendet bei cyrptNumericSimple, Kleinbuchstaben bleiben Kleinbuchstaben z wird also wieder zu a
+		return AsciiZZZ.from2from(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
+	}
+	public static int fromLetterLowercase2LetterLowercaseReverse(int iAscii) {//verwendet bei cyrptNumericSimple, Kleinbuchstaben bleiben Kleinbuchstaben z wird also wieder zu a
+		return AsciiZZZ.from2fromReverse(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
+	}
+	
 //	public static int fromLetterLowercase2BlankReverse(int iAscii) {
 //		//iRotated = iRotated - 91; //Zeichen groesser als Kleinbuchstaben zu Leerzeichen machen.
 //		return iAscii - (AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd())-AsciiTableZZZ.SectionZZZ.BLANK.getStart(); 			
