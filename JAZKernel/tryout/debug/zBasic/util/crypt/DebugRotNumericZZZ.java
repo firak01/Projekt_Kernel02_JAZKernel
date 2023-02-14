@@ -15,7 +15,7 @@ public class DebugRotNumericZZZ {
         	
         	// Rotate the input string.        	
 	        // ... Then rotate the rotated string.
-        	String input = "Z 9DzfA04";
+        	String input = "Z 9DzfA04";//Merke: Zum Testen die Grenzwerte der Zeichenbereiche und einen Wert in der Mitte genommen.        
         	int iCryptKeyMax = 26; //63; //Merke: Bei 63 ist man einmal durch und der verschluesselte Werte entspricht dem entschlusselten wert
         	                    //       Anzahl Leerzeichen + Anzahl Ziffern + Anzahl Kleinbuchstaben + Anzahl Grossbuchstaben 
         	String sOutput = null;
@@ -27,11 +27,12 @@ public class DebugRotNumericZZZ {
         	if(!bSkip) {
         		System.out.println("\n###################################");
 	        	System.out.println("### DEBUG EINZELWERT - SPEZIELL EINGETELLT ########");
-        		String sInputDebug = "9Z DzfA04";
-        		int iCryptKey=11;
+	        	//Den problematischen Buchstaben als erstes Zeichen unten eintragen.
+        		String sInputDebug = "DfA09Zz 4";//Merke: Zum Testen die Grenzwerte der Zeichenbereiche und einen Wert in der Mitte genommen.
+        		int iCryptKey=48;
         		System.out.println("### SCHIEBE UM "+ iCryptKey);
-	        	sOutput = ROTnumericZZZ.encrypt(sInputDebug,iCryptKey,false,false);            
-		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,false,false);
+	        	sOutput = ROTnumericZZZ.encrypt(sInputDebug,iCryptKey,true,false);            
+		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,true,false);
 		        
 		        System.out.println(sInputDebug);
 		        System.out.println(sOutput);

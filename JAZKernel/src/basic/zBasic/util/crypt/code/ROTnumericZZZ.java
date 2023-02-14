@@ -491,40 +491,95 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            char rotated = ascii;
 			            		            
 			            //Capital letters are 60 to 90		            		            
-			            if (ascii > 64 && ascii < 91) {	
+			            //if (ascii > 64 && ascii < 91) {
+			            if(AsciiZZZ.isLetterUppercase(ascii)) {
 			            	rotated = (char) (rotated - iCryptKey);
-			            	int iRotated = rotated;
-			            	if(iRotated<=64) {
-			            		iRotated = iRotated+26;
-			            		rotated = (char) iRotated;
+			            	//int iRotated = rotated;
+			            	//if(iRotated<=64) {
+			            	if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
+			            		rotated = (char) AsciiZZZ.fromLetterUppercase2NumberReverse(rotated);
+//			            		iRotated = iRotated+26;
+//			            		rotated = (char) iRotated;			            	
+			            	
+				            	if(AsciiZZZ.isLowerNumber(rotated)) {
+				            		rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
+				            		
+					            	if(AsciiZZZ.isLowerLetterLowercase(rotated)) {
+					            		rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
+					            	}
+				            	}
+				            	
+	//			                if (rotated > 90-iCryptKey) {
+	//			                    rotated += -90 + 64;
+	//			                }
+
+	//			                if (rotated < 65-iCryptKey) {
+	//			                    rotated += -64 + 90;
+	//			                }
+			            	}
+			            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
+			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
+			            	rotated = (char) (rotated - iCryptKey);
+			            	//int iRotated = rotated;
+			            	//if(iRotated<=96) {
+			            	if(AsciiZZZ.isLowerLetterLowercase(rotated)) {
+			            		rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
+//			            		iRotated = iRotated+26;
+//			            		rotated = (char) iRotated;
+			            		
+			            		if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
+			            			rotated = (char) AsciiZZZ.fromLetterUppercase2NumberReverse(rotated);
+			            			
+			            			if(AsciiZZZ.isLowerNumber(rotated)) {
+			            				rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
+			            			}else if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
+			            				rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
+			            			}
+			            		}
+			            		
+			            	}
+//			            	}else if (rotated > 122) {
+//			                    rotated += -122 + 96;
+//			                }else if (rotated < 97) {
+//			                    rotated += -96 + 122;
+//			                }
+			            }else if(AsciiZZZ.isNumber(ascii)) {
+			            //Numeric values are between 48 to 57 
+			            //if (ascii > 47 && ascii < 58) {
+			            	int iRotated = rotated - iCryptKey;
+			            	//rotated = (char) (rotated - iCryptKey);
+			            	//			            	if(iRotated<=47) {
+//			            		iRotated = iRotated+10;
+//			            		rotated = (char) iRotated;
+//			            	}
+			            	if(AsciiZZZ.isLowerNumber(iRotated)){
+			            		rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
+			            		iRotated = rotated;
+			            		if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
+			            			rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
+			            			
+			            			if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
+			            				rotated = (char) AsciiZZZ.fromLetterUppercase2NumberReverse(rotated);
+			            				
+			            				if(AsciiZZZ.isLowerNumber(rotated)) {
+			            					rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
+			            				}else if(AsciiZZZ.isHigherNumber(rotated)) {
+			            					rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
+			            				}
+			            			}
+			            		}else if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
+			            			TODOGOON20230214;//Bei einem Verschieben von 49 kommt oben -1 als Rechnung raus.  
+			            			                 //bzw. 123 nach dem Verschieben von LetterLowercase2LetterUppercase
+			            			                 //Damit funktioniert die obige Berechnung im if-Zweig nicht.
+			            			                 //Kann etwas im Else - Zweig die Lösung sein?
+			            			                 //Muss etwas in einer Schleife wiederholt werden?
+		            				System.out.println("TEST");
+		            				rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
+			            			iRotated = rotated;
+			            			System.out.println("TEST");
+		            			}
 			            	}
 			            	
-			                if (rotated > 90-iCryptKey) {
-			                    rotated += -90 + 64;
-			                }
-			                if (rotated < 65-iCryptKey) {
-			                    rotated += -64 + 90;
-			                }
-			            } else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
-			            	rotated = (char) (rotated - iCryptKey);
-			            	int iRotated = rotated;
-			            	if(iRotated<=96) {
-			            		iRotated = iRotated+26;
-			            		rotated = (char) iRotated;
-			            	}else if (rotated > 122) {
-			                    rotated += -122 + 96;
-			                }else if (rotated < 97) {
-			                    rotated += -96 + 122;
-			                }
-			            }
-			            //Numeric values are between 48 to 57 
-			            if (ascii > 47 && ascii < 58) {
-			            	rotated = (char) (rotated - iCryptKey);
-			            	int iRotated = rotated;
-			            	if(iRotated<=47) {
-			            		iRotated = iRotated+10;
-			            		rotated = (char) iRotated;
-			            	}
 			            }
 			            result += (char) rotated;
 			        }			   
@@ -564,37 +619,70 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 		            char ascii = input.charAt(i);
 		            char rotated = ascii;
 		            //Capital letters are 60 to 90
-		            if (ascii > 64 && ascii < 91) {
+		            //if (ascii > 64 && ascii < 91) {
+		            if(AsciiZZZ.isLetterUppercase(ascii)) {
 		                rotated = (char) (rotated + iCryptKey);
 		            	//int iRotated = rotated;
-		                if (rotated > 90) {
-		                    rotated += -90 + 64;
+		                //if (rotated > 90) {
+		                if(AsciiZZZ.isHigherLetterUppercase(rotated)) {
+		                    //rotated += -90 + 64;
+		                	rotated = (char) AsciiZZZ.fromLetterUppercase2LetterLowercase(rotated);
+		                	
+		                	if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
+		                		rotated = (char) AsciiZZZ.fromLetterLowercase2Number(rotated);
+		                		
+		                		if(AsciiZZZ.isHigherNumber(rotated)) {
+		                			rotated = (char) AsciiZZZ.fromNumber2LetterUppercase(rotated);
+		                		}
+		                	}
 		                }
-		                if (rotated < 65) {
-		                    rotated += -64 + 90;
-		                }
-		            } else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
+//		                if (rotated < 65) {
+//		                    rotated += -64 + 90;
+//		                }
+//		            } else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
+		            }else if (AsciiZZZ.isLetterLowercase(ascii)) {
 		                rotated = (char) (rotated + iCryptKey);
 		            	//int iRotated = rotated;
-		                if (rotated > 122) {
-		                    rotated += -122 + 96;
-		                }
-		                if (rotated < 97) {
-		                    rotated += -96 + 122;
+		                //if (rotated > 122) {
+		                if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
+		                    //rotated += -122 + 96;
+		                	rotated = (char) AsciiZZZ.fromLetterLowercase2Number(rotated);
+		                
+			                if(AsciiZZZ.isHigherNumber(rotated)) {
+			                	rotated = (char) AsciiZZZ.fromNumber2LetterUppercase(rotated);
+			                }
+	//		                if (rotated < 97) {
+	//		                    rotated += -96 + 122;
+	//		                }
+			                if(AsciiZZZ.isHigherLetterUppercase(rotated)) {
+			                	rotated = (char) AsciiZZZ.fromLetterUppercase2LetterLowercase(rotated);
+			                }
 		                }
 		            }
 		            //Numeric values are between 48 to 57 
-		            if (ascii > 47 && ascii < 58) {
+		            //if (ascii > 47 && ascii < 58) {
+		            else if(AsciiZZZ.isNumber(ascii)) {
 		                rotated = (char) (rotated + iCryptKey);
 		            	//int iRotated = rotated;
-		            	
-		            	if (rotated < 47) {
-		                    rotated += 10;
-		                }
-		                if (rotated > 58) {
-		                    rotated += -10;
-		                }
-		            	
+		            	if(AsciiZZZ.isHigherNumber(rotated)) {
+		            		rotated = (char) AsciiZZZ.fromNumber2LetterUppercase(rotated);
+		            		
+//		            		if (rotated < 47) {
+//			                    rotated += 10;
+//			                }
+			            	 if(AsciiZZZ.isHigherLetterUppercase(rotated)) {
+			                	rotated = (char) AsciiZZZ.fromLetterUppercase2LetterLowercase(rotated);
+			                
+				            	 if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
+				            		 rotated = (char) AsciiZZZ.fromLetterLowercase2Number(rotated);
+				            	 }			            	
+			            	 }
+				            	
+			            	
+//			                if (rotated > 58) {
+//			                    rotated += -10;
+//			                }
+		            	}		            			            	
 		            }
 		            result += (char) rotated;
 		        }
