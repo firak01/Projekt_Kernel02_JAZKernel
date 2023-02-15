@@ -552,7 +552,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 //			            		iRotated = iRotated+10;
 //			            		rotated = (char) iRotated;
 //			            	}
-			            	if(AsciiZZZ.isLowerNumber(iRotated)){
+			            	if(AsciiZZZ.isLowerNumber(iRotated)&&iRotated>=0){
 			            		rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
 			            		iRotated = rotated;
 			            		if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
@@ -567,22 +567,23 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            					rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
 			            				}
 			            			}
-			            		}else if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
-			            			TODOGOON20230214;//Bei einem Verschieben von 49 kommt oben -1 als Rechnung raus.  
-			            			                 //bzw. 123 nach dem Verschieben von LetterLowercase2LetterUppercase
-			            			                 //Damit funktioniert die obige Berechnung im if-Zweig nicht.
-			            			                 //Kann etwas im Else - Zweig die Lösung sein?
-			            			                 //Muss etwas in einer Schleife wiederholt werden?
-		            				System.out.println("TEST");
-		            				rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
-			            			iRotated = rotated;
-			            			System.out.println("TEST");
-		            			}
-			            	}
+			            		}		            			
+			            	}else {
+		            		 //TODOGOON20230214;//Bei einem Verschieben von 49 kommt oben -1 als Rechnung raus.  
+   			                 //bzw. 123 nach dem Verschieben von LetterLowercase2LetterUppercase
+   			                 //Damit funktioniert die obige Berechnung im if-Zweig nicht.
+   			                 //Kann etwas im Else - Zweig die Lösung sein?
+   			                 //Muss etwas in einer Schleife wiederholt werden?
+			            		System.out.println("TEST");
+			            		rotated = (char) AsciiZZZ.fromNumber2LetterUppercaseReverse(rotated);
+			            
+			            		iRotated = rotated;
+			            		System.out.println("TEST");
 			            	
 			            }
 			            result += (char) rotated;
-			        }			   
+			            }
+			        }//end for			   
 		        sReturn = result;
 		   }//end main:
 		   return sReturn;

@@ -175,11 +175,29 @@ public class AsciiZZZ {
 	public static int fromNumber2LetterLowercaseReverse(int iAscii) {
 		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
         //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
-		int iReturn = iAscii - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend von den Zahlen		
+		int iReturn=iAscii;	
+		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend von den Zahlen		
 		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.
-		//iReturn = iReturn -1; //TEST
+					
 		return iReturn;
 	}
+	public static int fromNumber2LetterUppercaseReverse(int iAscii) {
+		TODOGOON
+		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
+        //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
+		int iReturn=iAscii;	
+		iReturn = 255-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd();		
+		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd()-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart());		
+		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart() - AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd());
+		
+		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd() - AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart());
+		
+		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend von den Zahlen
+		
+		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.					
+		return iReturn;
+	}
+	
 	public static int fromNumber2BlankReverse(int iAscii) {
 		//iRotated=iRotated-15; //15 Zeichen ueberspringen, bis zum Leerzeichen
 		return iAscii - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-AsciiTableZZZ.SectionZZZ.BLANK.getEnd() -1);
