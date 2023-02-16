@@ -29,13 +29,13 @@ public class DebugRotNumericZZZ {
 	        	System.out.println("### DEBUG EINZELWERT - SPEZIELL EINGETELLT ########");
 	        	//Den problematischen Buchstaben als erstes Zeichen unten eintragen.
         		String sInputDebug = "DfA09Zz 4";//Merke: Zum Testen die Grenzwerte der Zeichenbereiche und einen Wert in der Mitte genommen.
-        		int iCryptKey=49;
-        		System.out.println("### SCHIEBE UM "+ iCryptKey);
-	        	sOutput = ROTnumericZZZ.encrypt(sInputDebug,iCryptKey,true,false);            
+        		int iCryptKey=48;
+        		System.out.println("### INPUT='" + sInputDebug + "' | SCHIEBE UM iCryptKey="+iCryptKey);        		
+	        	sOutput = ROTnumericZZZ.encrypt(sInputDebug,iCryptKey,true,false); 
+	        	System.out.println(sInputDebug);
+	        	System.out.println(sOutput);
+	        	
 		        sRoundtrip = ROTnumericZZZ.decrypt(sOutput,iCryptKey,true,false);
-		        
-		        System.out.println(sInputDebug);
-		        System.out.println(sOutput);
 		        System.out.print(sRoundtrip);
 		        if(!sInputDebug.equals(sRoundtrip)) System.out.print(" <== ABWEICHUNG !!!");
 		        System.out.println("\n###########");

@@ -22,6 +22,7 @@ import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificant
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZTest;
 import basic.zBasic.util.counter.CounterByCharacterAscii_NumericZZZTest;
 import basic.zBasic.util.datatype.binary.BinaryTokenizerZZZTest;
+import basic.zBasic.util.datatype.character.AsciiZZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
@@ -68,6 +69,7 @@ public class KernelAllTestZZZ {
 		
 		//Tests für Datentypen etc.
 		objReturn.addTestSuite(ArrayListExtendedZZZTest.class);		
+		objReturn.addTestSuite(AsciiZZZTest.class);		
 		
 		objReturn.addTestSuite(HashMapZZZTest.class);
 		objReturn.addTestSuite(HashMapIterableKeyZZZTest.class);

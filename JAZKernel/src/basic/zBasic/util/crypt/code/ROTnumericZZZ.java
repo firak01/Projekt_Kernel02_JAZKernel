@@ -518,31 +518,8 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	//			                }
 			            	}
 			            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
-			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
-			            	rotated = (char) (rotated - iCryptKey);
-			            	//int iRotated = rotated;
-			            	//if(iRotated<=96) {
-			            	if(AsciiZZZ.isLowerLetterLowercase(rotated)) {
-			            		rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
-//			            		iRotated = iRotated+26;
-//			            		rotated = (char) iRotated;
-			            		
-			            		if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
-			            			rotated = (char) AsciiZZZ.fromLetterUppercase2NumberReverse(rotated);
-			            			
-			            			if(AsciiZZZ.isLowerNumber(rotated)) {
-			            				rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
-			            			}else if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
-			            				rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
-			            			}
-			            		}
-			            		
-			            	}
-//			            	}else if (rotated > 122) {
-//			                    rotated += -122 + 96;
-//			                }else if (rotated < 97) {
-//			                    rotated += -96 + 122;
-//			                }
+			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {			            	
+			            	rotated = (char) AsciiZZZ.fromLetterLowercaseReverse(rotated,iCryptKey);			            	
 			            }else if(AsciiZZZ.isNumber(ascii)) {
 			            //Numeric values are between 48 to 57 
 			            //if (ascii > 47 && ascii < 58) {
