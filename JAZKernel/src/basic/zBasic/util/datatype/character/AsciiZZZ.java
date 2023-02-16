@@ -237,12 +237,20 @@ public class AsciiZZZ {
     	}else if(AsciiZZZ.isLowerLetterLowercase(iAscii)) {
     		
     		if(AsciiZZZ.isLetterUppercase(iAscii)) {
-    			iReturn = AsciiZZZ.fromLetterUppercase2LetterUppercaseReverse(iAscii);
+    			iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iAscii);
+    			if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+    				iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);    				
+    			}
+    			
+    			
+    			
     		}else if(AsciiZZZ.isLowerLetterUppercase(iAscii)) {
     			
     			if(AsciiZZZ.isNumber(iAscii)){
     				iReturn = AsciiZZZ.fromNumber2NumberReverse(iAscii);
-    			}    			
+    			}else if(AsciiZZZ.isHigherNumber(iAscii)) {
+    				iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iAscii);
+    			}
     			
     		}else if(AsciiZZZ.isHigherLetterUppercase(iAscii)){
     			iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iAscii);

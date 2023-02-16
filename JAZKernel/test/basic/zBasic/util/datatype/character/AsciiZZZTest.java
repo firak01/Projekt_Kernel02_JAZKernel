@@ -58,18 +58,24 @@ public class AsciiZZZTest extends TestCase{
 	 
 	 public void testFromLetterLowercaseReverse(){
 //		 try{
-		char cAscii = 'b';
-		int iBorder = AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart();
-		System.out.println("OBERE GRENZE= " + iBorder);
-
-	    //Nun in einer Schleife testen	
+		
+	    	
 		int itemp; 
-		TODOGOON20230216;
-	    int[] iaRotValue = {1,2,3,4,26,27,28}; int iRotValue;
-	    char[] caExpected = {'b','a','Z','y','B','A','9'};
+		
+		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
+		char cAscii = 'b'; //Das Ausgangszeichen		
+	    int[] iaRotValue =   {0,  1,  2,  3, 26, 27, 28, 29, 36, 38 }; int iRotValue;
+	    char[] caExpected = {'b','a','Z','Y','B','A','9','8','0','z'};
 	    
-	    for(int i=0; i>=2;i++) {
+	    //Nun in einer Schleife testen
+	    int iUbound = iaRotValue.length-1;
+	    for(int i=0; i<=iUbound;i++) {
 	    	iRotValue=iaRotValue[i];
+	    	if(iRotValue==36) {
+	    		TODOGOON20230216;
+	    		System.out.println("TEST BREAKPOINT");
+	    		System.out.println("TEST BREAKPOINT");
+	    	}
 	    	itemp = AsciiZZZ.fromLetterLowercaseReverse(cAscii, iRotValue);
 	    	System.out.println("abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + i + " | itemp = " + itemp + " | Zeichen ='" + (char)itemp + "'");
     		assertTrue("New Ascii code", caExpected[i]==(char)itemp);	    
