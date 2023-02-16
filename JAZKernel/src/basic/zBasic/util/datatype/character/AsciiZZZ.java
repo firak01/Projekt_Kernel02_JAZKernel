@@ -176,13 +176,14 @@ public class AsciiZZZ {
 		return iAscii + AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart()-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd() -1;
 	}	
 	public static int fromNumber2LetterLowercaseReverse(int iAscii) {
-		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
-        //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
-		int iReturn=iAscii;	
-		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend von den Zahlen		
-		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.
-					
-		return iReturn;
+//		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
+//        //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
+//		int iReturn=iAscii;	
+//		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend von den Zahlen		
+//		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.
+//					
+//		return iReturn;
+		return AsciiZZZ.from2fromReverse(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER, AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
 	}
 	public static int fromNumber2LetterUppercaseReverse(int iAscii) {
 		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
@@ -213,6 +214,20 @@ public class AsciiZZZ {
 		return AsciiZZZ.from2fromReverse(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER);
 	}
 	
+	public static int fromLetterUppercaseReverse(char cAscii, int iRotationValue) {
+		int iReturn=0;    	
+		int iAscii=cAscii-iRotationValue;
+    	if(AsciiZZZ.isLetterUppercase(iAscii)) {
+    		iReturn = AsciiZZZ.fromLetterUppercase2LetterUppercaseReverse(iAscii); 
+		}else if(AsciiZZZ.isLowerLetterUppercase(iAscii)) {
+    		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iAscii);
+    		
+    		if(AsciiZZZ.isLowerNumber(iReturn)) {
+    			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);    			
+    		}
+    	}
+    	return iReturn;
+	}
 	public static int fromLetterUppercase2LetterLowercase(int iAscii) {
 		//return iAscii + 6;//Grossbuschstaben zu Kleinbuchstaben weiterschieben.	
 		return iAscii + AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart()-AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd() -1;
@@ -225,7 +240,8 @@ public class AsciiZZZ {
 	}
 	public static int fromLetterUppercase2NumberReverse(int iAscii) {
 		//iRotated=iRotated-7; //7 Zeichen ueberspringen, bis in den Zahlenbereich
-		return iAscii - (AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart()-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1);
+		//return iAscii - (AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart()-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1);
+		return AsciiZZZ.from2fromReverse(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE, AsciiTableZZZ.SectionZZZ.NUMBER);
 	}
 	
 	
@@ -235,28 +251,14 @@ public class AsciiZZZ {
     	if(AsciiZZZ.isLetterLowercase(iAscii)) {
     		iReturn = AsciiZZZ.fromLetterLowercase2LetterLowercaseReverse(iAscii); 
     	}else if(AsciiZZZ.isLowerLetterLowercase(iAscii)) {
+    		iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iAscii);
     		
-    		if(AsciiZZZ.isLetterUppercase(iAscii)) {
-    			iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iAscii);
-    			if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
-    				iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);    				
-    			}
+    		if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+    			iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
     			
-    			
-    			
-    		}else if(AsciiZZZ.isLowerLetterUppercase(iAscii)) {
-    			
-    			if(AsciiZZZ.isNumber(iAscii)){
-    				iReturn = AsciiZZZ.fromNumber2NumberReverse(iAscii);
-    			}else if(AsciiZZZ.isHigherNumber(iAscii)) {
-    				iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iAscii);
-    			}
-    			
-    		}else if(AsciiZZZ.isHigherLetterUppercase(iAscii)){
-    			iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iAscii);
-    			
-    		}else if(AsciiZZZ.isLowerNumber(iAscii)) {
-    			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iAscii);
+    			if(AsciiZZZ.isLowerNumber(iReturn)) {
+        			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);
+        		}
     		}
     	}
     	return iReturn;

@@ -26,7 +26,7 @@ public class DebugRotNumericZZZ {
         	bSkip=false;
         	if(!bSkip) {
         		System.out.println("\n###################################");
-	        	System.out.println("### DEBUG EINZELWERT - SPEZIELL EINGETELLT ########");
+	        	System.out.println("### DEBUG EINZELWERT - SPEZIELL EINGESTELLT ########");
 	        	//Den problematischen Buchstaben als erstes Zeichen unten eintragen.
         		String sInputDebug = "DfA09Zz 4";//Merke: Zum Testen die Grenzwerte der Zeichenbereiche und einen Wert in der Mitte genommen.
         		int iCryptKey=48;

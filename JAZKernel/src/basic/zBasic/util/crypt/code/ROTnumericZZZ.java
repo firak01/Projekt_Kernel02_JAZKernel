@@ -493,30 +493,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            //Capital letters are 60 to 90		            		            
 			            //if (ascii > 64 && ascii < 91) {
 			            if(AsciiZZZ.isLetterUppercase(ascii)) {
-			            	rotated = (char) (rotated - iCryptKey);
-			            	//int iRotated = rotated;
-			            	//if(iRotated<=64) {
-			            	if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
-			            		rotated = (char) AsciiZZZ.fromLetterUppercase2NumberReverse(rotated);
-//			            		iRotated = iRotated+26;
-//			            		rotated = (char) iRotated;			            	
-			            	
-				            	if(AsciiZZZ.isLowerNumber(rotated)) {
-				            		rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
-				            		
-					            	if(AsciiZZZ.isLowerLetterLowercase(rotated)) {
-					            		rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
-					            	}
-				            	}
-				            	
-	//			                if (rotated > 90-iCryptKey) {
-	//			                    rotated += -90 + 64;
-	//			                }
-
-	//			                if (rotated < 65-iCryptKey) {
-	//			                    rotated += -64 + 90;
-	//			                }
-			            	}
+			            	rotated = (char) AsciiZZZ.fromLetterUppercaseReverse(ascii,iCryptKey);			            	
 			            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
 			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {			            	
 			            	rotated = (char) AsciiZZZ.fromLetterLowercaseReverse(rotated,iCryptKey);			            	
@@ -557,9 +534,9 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            		iRotated = rotated;
 			            		System.out.println("TEST");
 			            	
+			            }			            
 			            }
 			            result += (char) rotated;
-			            }
 			        }//end for			   
 		        sReturn = result;
 		   }//end main:

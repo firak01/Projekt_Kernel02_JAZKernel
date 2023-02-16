@@ -60,27 +60,54 @@ public class AsciiZZZTest extends TestCase{
 //		 try{
 		
 	    	
-		int itemp; 
+		int itemp; int iAsciiNew;
 		
 		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
 		char cAscii = 'b'; //Das Ausgangszeichen		
-	    int[] iaRotValue =   {0,  1,  2,  3, 26, 27, 28, 29, 36, 38 }; int iRotValue;
-	    char[] caExpected = {'b','a','Z','Y','B','A','9','8','0','z'};
+	    int[] iaRotValue =   {0,  1,  2,  3, 26, 27, 28, 29, 36, 37, 38, 39, 62, 63 }; int iRotValue;
+	    char[] caExpected = {'b','a','Z','Y','B','A','9','8','1','0','z','y','b','a'};
 	    
 	    //Nun in einer Schleife testen
 	    int iUbound = iaRotValue.length-1;
 	    for(int i=0; i<=iUbound;i++) {
 	    	iRotValue=iaRotValue[i];
-	    	if(iRotValue==36) {
+	    	if(iRotValue==53) {
+	    		System.out.println("TEST BREAKPOINT");
+	    		System.out.println("TEST BREAKPOINT");
+	    	}
+	    	iAsciiNew = AsciiZZZ.fromLetterLowercaseReverse(cAscii, iRotValue);
+	    	System.out.println("Index="+ i + " |abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + iAsciiNew + " | Zeichen ='" + (char)iAsciiNew + "'");
+    		assertTrue("New Ascii code", caExpected[i]==(char)iAsciiNew);	    
+	    }
+	 }
+	 
+	 public void testFromLetterUppercaseReverse(){
+//		 try{
+		
+	    	
+		int itemp; int iAsciiNew;
+		
+		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
+		char cAscii = 'B'; //Das Ausgangszeichen		
+	    int[] iaRotValue =   {0,  1,  2,  3, 10, 11, 12, 13, 36, 37, 38, 39, 62, 63 }; int iRotValue;
+	    char[] caExpected = {'B','A','9','8','1','0','z','y','b','a','Z','Y','B','A'};
+	    
+	    //Nun in einer Schleife testen
+	    int iUbound = iaRotValue.length-1;
+	    for(int i=0; i<=iUbound;i++) {
+	    	iRotValue=iaRotValue[i];
+	    	if(iRotValue==38) {
 	    		TODOGOON20230216;
 	    		System.out.println("TEST BREAKPOINT");
 	    		System.out.println("TEST BREAKPOINT");
 	    	}
-	    	itemp = AsciiZZZ.fromLetterLowercaseReverse(cAscii, iRotValue);
-	    	System.out.println("abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + i + " | itemp = " + itemp + " | Zeichen ='" + (char)itemp + "'");
-    		assertTrue("New Ascii code", caExpected[i]==(char)itemp);	    
+	    	iAsciiNew = AsciiZZZ.fromLetterUppercaseReverse(cAscii, iRotValue);
+	    	System.out.println("Index="+ i + " |abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + iAsciiNew + " | Zeichen ='" + (char)iAsciiNew + "'");
+    		assertTrue("New Ascii code", caExpected[i]==(char)iAsciiNew);	    
 	    }
 	 }
+	 
+	 
 	
 	 public void testFromNumber2LetterLowercaseReverse(){
 //		 try{
