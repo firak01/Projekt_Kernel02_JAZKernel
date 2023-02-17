@@ -202,6 +202,20 @@ public class AsciiZZZ {
     	return iReturn;
 	}
 	
+	public static int fromNumberReverseTYPECONSTANT(char cAscii, int iRotationValue) {
+		int iReturn=0;    	
+		int iAscii=cAscii-iRotationValue;
+		iReturn = iAscii;
+		while(!AsciiZZZ.isNumber(iReturn)){
+			if(AsciiZZZ.isLowerNumber(iReturn)) {
+				iReturn = iReturn + (57 - 47) ;	
+	    	}else if(AsciiZZZ.isHigherNumber(iReturn)) {
+	    		iReturn = iReturn - 57 + 47;
+	    	}
+		}
+    	return iReturn;
+	}
+	
 	public static int fromNumber2LetterUppercase(int iAscii) {
 		//return iAscii + 7;//Zahlen zu Grossbuchstaben weiterschieben.
 		return iAscii + AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart()-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd() -1;
@@ -264,6 +278,22 @@ public class AsciiZZZ {
     	}
     	return iReturn;
 	}
+	public static int fromLetterUppercaseReverseTYPECONSTANT(char cAscii, int iRotationValue) {
+		int iReturn=0;    	
+		int iAscii=cAscii-iRotationValue;
+		iReturn = iAscii;
+    	while(!AsciiZZZ.isLetterUppercase(iReturn)) {
+    		if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+	    		iReturn = iReturn + (90 - 64);	    	
+	    	}else if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+	    		iReturn = iReturn - 90 + 64;
+	    	}
+    	}
+    	return iReturn;
+	}
+	
+	
+	
 	public static int fromLetterUppercase2LetterLowercase(int iAscii) {
 		//return iAscii + 6;//Grossbuschstaben zu Kleinbuchstaben weiterschieben.	
 		return iAscii + AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart()-AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd() -1;
@@ -296,6 +326,19 @@ public class AsciiZZZ {
         			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);
         		}
     		}
+    	}
+    	return iReturn;
+	}
+	public static int fromLetterLowercaseReverseTYPECONSTANT(char cAscii, int iRotationValue) {
+		int iReturn=0;    	
+		int iAscii=cAscii-iRotationValue;
+		iReturn = iAscii;
+    	while(!AsciiZZZ.isLetterLowercase(iReturn)) {
+    		if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {
+	    		iReturn = iReturn + (122 - 96);
+	    	}else if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+	    		iReturn = iReturn - 122 + 96;
+	    	}
     	}
     	return iReturn;
 	}
