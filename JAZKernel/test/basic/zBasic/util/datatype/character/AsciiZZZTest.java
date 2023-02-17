@@ -60,7 +60,7 @@ public class AsciiZZZTest extends TestCase{
 //		 try{
 		
 	    	
-		int itemp; int iAsciiNew;
+		int iAsciiNew;
 		
 		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
 		char cAscii = 'b'; //Das Ausgangszeichen		
@@ -71,7 +71,7 @@ public class AsciiZZZTest extends TestCase{
 	    int iUbound = iaRotValue.length-1;
 	    for(int i=0; i<=iUbound;i++) {
 	    	iRotValue=iaRotValue[i];
-	    	if(iRotValue==53) {
+	    	if(iRotValue==2) {
 	    		System.out.println("TEST BREAKPOINT");
 	    		System.out.println("TEST BREAKPOINT");
 	    	}
@@ -85,7 +85,7 @@ public class AsciiZZZTest extends TestCase{
 //		 try{
 		
 	    	
-		int itemp; int iAsciiNew;
+		int iAsciiNew;
 		
 		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
 		char cAscii = 'B'; //Das Ausgangszeichen		
@@ -97,7 +97,6 @@ public class AsciiZZZTest extends TestCase{
 	    for(int i=0; i<=iUbound;i++) {
 	    	iRotValue=iaRotValue[i];
 	    	if(iRotValue==38) {
-	    		TODOGOON20230216;
 	    		System.out.println("TEST BREAKPOINT");
 	    		System.out.println("TEST BREAKPOINT");
 	    	}
@@ -107,49 +106,54 @@ public class AsciiZZZTest extends TestCase{
 	    }
 	 }
 	 
+	 public void testFromNumberReverse(){
+//		 try{
+
+		int iAsciiNew;
+		
+		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
+		char cAscii = '1'; //Das Ausgangszeichen		
+	    int[] iaRotValue =   {0,  1,  2,  3, 26, 27, 28, 29, 52, 53, 54, 55, 62, 63 }; int iRotValue;
+	    char[] caExpected = {'1','0','z','y','b','a','Z','Y','B','A','9','8','1','0'};
+	    
+	    //Nun in einer Schleife testen
+	    int iUbound = iaRotValue.length-1;
+	    for(int i=0; i<=iUbound;i++) {
+	    	iRotValue=iaRotValue[i];
+	    	if(iRotValue==10) {
+	    		System.out.println("TEST BREAKPOINT");
+	    		System.out.println("TEST BREAKPOINT");
+	    	}
+	    	iAsciiNew = AsciiZZZ.fromNumberReverse(cAscii, iRotValue);
+	    	System.out.println("Index="+ i + " |abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + iAsciiNew + " | Zeichen ='" + (char)iAsciiNew + "'");
+    		assertTrue("New Ascii code", caExpected[i]==(char)iAsciiNew);	    
+	    }
+	 }
+	 
 	 
 	
 	 public void testFromNumber2LetterLowercaseReverse(){
 //		 try{
-		char cAscii = '0';
-		int iBorder = AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd();
-		System.out.println("OBERE GRENZE= " + iBorder);
-
-		int itest = (int) cAscii;
-	    int itemp = AsciiZZZ.fromNumber2LetterLowercaseReverse(itest);
-	    //Wenn durch den ROT -  Crypt - Algorithmus nix verschoben wird, kommt eine Zahl +1 hoeher als die obere Grenze heraus.
-	    assertTrue("New Ascii code", itemp==iBorder+1 ); 
-
-	    //Wird durch den Crypt-Algorithmus etwas verschoben (-1), dann kommt die Zahl der oberen Grenze heraus.		    
-	    itest = (int) cAscii;
-	    itest = itest - 1;
-	    itemp = AsciiZZZ.fromNumber2LetterLowercaseReverse(itest);
-	    assertTrue("New Ascii code", itemp==iBorder ); 
-
-	    //Nun in einer Schleife testen		    
-	    int iRotValue = -1;
-	    for(int i=(int)cAscii; i>=-1;i--) {
-	    	iRotValue++;
-	    	itemp = AsciiZZZ.fromNumber2LetterLowercaseReverse(i);
-	    	System.out.println("abzuziehender iRotValue= " + iRotValue + "| i= " + i + " | itemp = " + itemp + " | Zeichen ='" + (char)itemp + "'");
-	    	assertTrue("New Ascii code", itemp==(iBorder-iRotValue+1));
-	    	
-	    	//Merke: Wenn iRotValue > 26 Zeichen ist, kommen keine Lowercase - Buchstaben mehr heraus.
-	    }
+		 int iAsciiNew;int iAscii;
+		 
+		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
+			char cAscii = '0'; //Das Ausgangszeichen		
+		    int[] iaRotValue =   {1,  2,  3, 26, 27 }; int iRotValue;
+		    char[] caExpected = {'z','y','x','a','`'};
 		    
-		  //++++++++++++++++++
-//			try{
-//				sTest = "AA";
-//				sErg = StringZZZ.abbreviateStrictFromRight(sTest, 1);
-//				fail("Method should have thrown an exception");
-//			 
-//			}catch(ExceptionZZZ ez){
-//				//HIER WIRD EIN FEHLER ERWARTET
-//			}
-		    
-//		 }catch(ExceptionZZZ ez){
-//				fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		    //Nun in einer Schleife testen
+		    int iUbound = iaRotValue.length-1;
+		    for(int i=0; i<=iUbound;i++) {
+		    	iRotValue=iaRotValue[i];
+		    	if(iRotValue==53) {
+		    		System.out.println("TEST BREAKPOINT");
+		    		System.out.println("TEST BREAKPOINT");
+		    	}
+		    	iAscii = cAscii - iRotValue;
+		    	iAsciiNew = AsciiZZZ.fromNumber2LetterLowercaseReverse(iAscii);
+		    	System.out.println("Index="+ i + " |abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + iAsciiNew + " | Zeichen ='" + (char)iAsciiNew + "'");
+	    		assertTrue("New Ascii code", caExpected[i]==(char)iAsciiNew);	    
+		    }
 	 }
 	 
 	 public void testFromLetterLowercase2LetterUppercaseReverse(){

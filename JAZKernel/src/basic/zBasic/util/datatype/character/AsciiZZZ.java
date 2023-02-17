@@ -146,15 +146,27 @@ public class AsciiZZZ {
 	}
 	public static int from2fromReverse(int iAscii, AsciiTableZZZ.SectionZZZ objEnumSection) {
 		int iReturn = (iAscii+254) - objEnumSection.getStart() - (254 - objEnumSection.getEnd());
-		iReturn = iReturn - (objEnumSection.getEnd()-objEnumSection.getStart());
+		//if(!AsciiZZZ.is(iReturn, objEnumSection)) {
+			//Dann noch mal in die Section verschieben
+			iReturn = iReturn - (objEnumSection.getEnd()-objEnumSection.getStart());
+		//}
+		
 		return iReturn;
 	}
 	public static int from2fromReverse(int iAscii, AsciiTableZZZ.SectionZZZ objEnumSectionStart, AsciiTableZZZ.SectionZZZ objEnumSectionEnd ) {
-		int iReturn = iAscii - (objEnumSectionStart.getStart() - objEnumSectionEnd.getEnd());
-		iReturn = iReturn + 1;
-		
-		//int iReturn = (iAscii+254) - objEnumSectionStart.getStart() - (254 - objEnumSectionEnd.getEnd());
-		//iReturn = iReturn + (objEnumSectionEnd.getEnd()-objEnumSectionEnd.getStart());
+		int iReturn=0;
+		if(objEnumSectionStart.getStart() > objEnumSectionEnd.getStart()) {
+			//Verschiebung ohne das Verlassen der Tabelle über die untere Grenze hinaus.
+			iReturn = iAscii - (objEnumSectionStart.getStart() - objEnumSectionEnd.getEnd());
+			iReturn = iReturn + 1;
+		}else if(objEnumSectionStart.getStart() < objEnumSectionEnd.getStart()) {
+			//Verschiebund mit Verlassen der Tabelle über die untere Grenze hinaus.
+			iReturn = (iAscii) - (objEnumSectionStart.getStart() - (254-objEnumSectionEnd.getEnd()));
+			iReturn = iReturn - (objEnumSectionStart.getEnd() - objEnumSectionStart.getStart());	
+		}else if(objEnumSectionStart.equals(objEnumSectionEnd)) {
+			//Verschieben im gleichen Typ
+			iReturn = AsciiZZZ.from2from(iAscii, objEnumSectionStart);
+		}
 		return iReturn;
 	}
 	
@@ -169,6 +181,25 @@ public class AsciiZZZ {
 		int iReturn = iAscii - (AsciiTableZZZ.SectionZZZ.BLANK.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
 		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.
 		return iReturn;
+	}
+	
+	public static int fromNumberReverse(char cAscii, int iRotationValue) {
+		int iReturn=0;    	
+		int iAscii=cAscii-iRotationValue;
+    	if(AsciiZZZ.isNumber(iAscii)) {
+    		iReturn = AsciiZZZ.fromNumber2NumberReverse(iAscii); 
+		}else if(AsciiZZZ.isLowerNumber(iAscii)) {
+			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iAscii);
+    		
+    		if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {
+    			iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
+    			
+    			if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+        			iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
+        		}
+    		}    		
+    	}
+    	return iReturn;
 	}
 	
 	public static int fromNumber2LetterUppercase(int iAscii) {
@@ -201,6 +232,7 @@ public class AsciiZZZ {
 		return iReturn;
 	}
 	
+	
 	public static int fromNumber2BlankReverse(int iAscii) {
 		//iRotated=iRotated-15; //15 Zeichen ueberspringen, bis zum Leerzeichen
 		return iAscii - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-AsciiTableZZZ.SectionZZZ.BLANK.getEnd() -1);
@@ -223,8 +255,12 @@ public class AsciiZZZ {
     		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iAscii);
     		
     		if(AsciiZZZ.isLowerNumber(iReturn)) {
-    			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);    			
-    		}
+    			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);
+    			
+    			if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {
+        			iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
+        		}
+    		}    		    	
     	}
     	return iReturn;
 	}
