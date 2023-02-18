@@ -183,6 +183,33 @@ public class AsciiZZZ {
 		return iReturn;
 	}
 	
+	
+	
+	//##########################
+	public static int fromNumber(char cAscii, int iRotationValue) {
+		int iReturn=cAscii+iRotationValue;
+		
+		 boolean bCorrectCharacterFound=false;
+         do {
+         	if(AsciiZZZ.isHigherNumber(iReturn)) {
+         		iReturn = (char) AsciiZZZ.fromNumber2LetterUppercase(iReturn);
+	            	 if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+	            		 iReturn = (char) AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+	                
+		            	 if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+		            		 iReturn = (char) AsciiZZZ.fromLetterLowercase2Number(iReturn);
+		            	 }else {
+		            		 bCorrectCharacterFound=true;
+		            	 }
+	            	 }else {
+	            		 bCorrectCharacterFound=true;
+	            	 }
+         	}else {
+         		bCorrectCharacterFound=true;
+         	}
+         }while(!bCorrectCharacterFound);
+		return iReturn;
+	}
 	public static int fromNumberReverse(char cAscii, int iRotationValue) {
 		int iReturn=0;    	
 		int iAscii=cAscii-iRotationValue;
@@ -260,13 +287,38 @@ public class AsciiZZZ {
 		return AsciiZZZ.from2fromReverse(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER);
 	}
 	
+	public static int fromLetterUppercase(char cAscii, int iRotationValue) {
+		int iReturn=cAscii+iRotationValue;
+		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+        do {
+            if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {		                    
+            	iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+            	
+            	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+            		iReturn = AsciiZZZ.fromLetterLowercase2Number(iReturn);            		
+            		if(AsciiZZZ.isHigherNumber(iReturn)) {
+            			iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);            			
+            		}else {
+            			bCorrectCharacterFound=true;
+            		}
+            	}else {
+            		bCorrectCharacterFound=true;
+            	}
+            }else {
+            	bCorrectCharacterFound=true;
+            }
+        }while(!bCorrectCharacterFound);		
+		return iReturn;
+	}
 	public static int fromLetterUppercaseReverse(char cAscii, int iRotationValue) {
-		int iReturn=0;    	
-		int iAscii=cAscii-iRotationValue;
-    	if(AsciiZZZ.isLetterUppercase(iAscii)) {
-    		iReturn = AsciiZZZ.fromLetterUppercase2LetterUppercaseReverse(iAscii); 
-		}else if(AsciiZZZ.isLowerLetterUppercase(iAscii)) {
-    		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iAscii);
+		int iReturn=cAscii-iRotationValue;
+    	if(AsciiZZZ.isLetterUppercase(iReturn)) {
+    		iReturn = AsciiZZZ.fromLetterUppercase2LetterUppercaseReverse(iReturn); 
+		}else if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+    		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
     		
     		if(AsciiZZZ.isLowerNumber(iReturn)) {
     			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);
@@ -310,23 +362,62 @@ public class AsciiZZZ {
 		return AsciiZZZ.from2fromReverse(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE, AsciiTableZZZ.SectionZZZ.NUMBER);
 	}
 	
-	
+	public static int fromLetterLowercase(char cAscii, int iRotationValue) {
+		int iReturn=cAscii+iRotationValue;
+		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+        do {
+            if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+            	bCorrectCharacterFound=false;
+            	iReturn = (char) AsciiZZZ.fromLetterLowercase2Number(iReturn);
+            }else {
+            	bCorrectCharacterFound=true;
+            }
+            if(AsciiZZZ.isHigherNumber(iReturn)) {
+            	bCorrectCharacterFound=false;
+            	iReturn = (char) AsciiZZZ.fromNumber2LetterUppercase(iReturn);
+            }else {
+            	bCorrectCharacterFound=true;
+            }
+            if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+            	bCorrectCharacterFound=false;
+            	iReturn = (char) AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+            }else {
+            	bCorrectCharacterFound=true;
+            }
+        }while(!bCorrectCharacterFound);		
+		return iReturn;
+	}
 	public static int fromLetterLowercaseReverse(char cAscii, int iRotationValue) {
-		int iReturn=0;    	
-		int iAscii=cAscii-iRotationValue;
-    	if(AsciiZZZ.isLetterLowercase(iAscii)) {
-    		iReturn = AsciiZZZ.fromLetterLowercase2LetterLowercaseReverse(iAscii); 
-    	}else if(AsciiZZZ.isLowerLetterLowercase(iAscii)) {
-    		iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iAscii);
-    		
-    		if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
-    			iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
-    			
-    			if(AsciiZZZ.isLowerNumber(iReturn)) {
-        			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);
-        		}
-    		}
-    	}
+		int iReturn=cAscii-iRotationValue;
+		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+		do {
+	    	if(AsciiZZZ.isLetterLowercase(iReturn)) {
+	    		iReturn = AsciiZZZ.fromLetterLowercase2LetterLowercaseReverse(iReturn);
+	    		bCorrectCharacterFound=true;
+	    	}else if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {
+	    		iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
+	    		
+	    		if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+	    			iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
+	    			
+	    			if(AsciiZZZ.isLowerNumber(iReturn)) {
+	        			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);
+	        		}else {
+	        			bCorrectCharacterFound=true;
+	        		}
+	    		}else {
+	    			bCorrectCharacterFound=true;
+	    		}
+	    	}else {
+	    		bCorrectCharacterFound=true;
+	    	}
+		}while(!bCorrectCharacterFound);		
     	return iReturn;
 	}
 	public static int fromLetterLowercaseReverseTYPECONSTANT(char cAscii, int iRotationValue) {
