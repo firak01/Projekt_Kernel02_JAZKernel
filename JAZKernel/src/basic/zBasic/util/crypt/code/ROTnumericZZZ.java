@@ -490,45 +490,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {			            	
 			            	rotated = (char) AsciiZZZ.fromLetterLowercaseReverse(rotated,iCryptKey);			            	
 			            }else if(AsciiZZZ.isNumber(ascii)) {
-			            	rotated = (char) AsciiZZZ.fromNumberReverse(rotated,iCryptKey);
-			            	
-//			            //Numeric values are between 48 to 57 
-//			            //if (ascii > 47 && ascii < 58) {
-//			            	int iRotated = rotated - iCryptKey;
-//			            	//rotated = (char) (rotated - iCryptKey);
-//			            	//			            	if(iRotated<=47) {
-////			            		iRotated = iRotated+10;
-////			            		rotated = (char) iRotated;
-////			            	}
-//			            	if(AsciiZZZ.isLowerNumber(iRotated)&&iRotated>=0){
-//			            		rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
-//			            		iRotated = rotated;
-//			            		if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
-//			            			rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
-//			            			
-//			            			if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
-//			            				rotated = (char) AsciiZZZ.fromLetterUppercase2NumberReverse(rotated);
-//			            				
-//			            				if(AsciiZZZ.isLowerNumber(rotated)) {
-//			            					rotated = (char) AsciiZZZ.fromNumber2LetterLowercaseReverse(rotated);
-//			            				}else if(AsciiZZZ.isHigherNumber(rotated)) {
-//			            					rotated = (char) AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(rotated);
-//			            				}
-//			            			}
-//			            		}		            			
-//			            	}else {
-//		            		 //TODOGOON20230214;//Bei einem Verschieben von 49 kommt oben -1 als Rechnung raus.  
-//   			                 //bzw. 123 nach dem Verschieben von LetterLowercase2LetterUppercase
-//   			                 //Damit funktioniert die obige Berechnung im if-Zweig nicht.
-//   			                 //Kann etwas im Else - Zweig die Lösung sein?
-//   			                 //Muss etwas in einer Schleife wiederholt werden?
-//			            		System.out.println("TEST");
-//			            		rotated = (char) AsciiZZZ.fromNumber2LetterUppercaseReverse(rotated);
-//			            
-//			            		iRotated = rotated;
-//			            		System.out.println("TEST");
-//			            	
-//			            }			            
+			            	rotated = (char) AsciiZZZ.fromNumberReverse(rotated,iCryptKey);			            	         
 			            }
 			            result += (char) rotated;
 			        }//end for			   

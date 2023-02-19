@@ -112,22 +112,43 @@ public class AsciiZZZTest extends TestCase{
 		int iAsciiNew;
 		
 		//!!! TESTDATEN OHNE LEERZEICHEN / BLANK, das zu verschieben waere.
-		char cAscii = '1'; //Das Ausgangszeichen		
-	    int[] iaRotValue =   {0,  1,  2,  3, 26, 27, 28, 29, 52, 53, 54, 55, 62, 63 }; int iRotValue;
-	    char[] caExpected = {'1','0','z','y','b','a','Z','Y','B','A','9','8','1','0'};
-	    
-	    //Nun in einer Schleife testen
+		char cAscii = '1'; //Das Ausgangszeichen
+		int[] iaIndex    =   {0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16 }; int iIndex; //Damit man nicht immer wieder abzählen muss...
+	    int[] iaRotValue =   {0,  1,  2,  3, 26, 27, 28, 29, 52, 53, 54, 55, 62, 63, 64, 65, 88 }; int iRotValue;
+	    char[] caExpected = {'1','0','z','y','b','a','Z','Y','B','A','9','8','1','0','z','y','b'};
 	    int iUbound = iaRotValue.length-1;
+	    
+	    //Nun in einer Schleife testen	   
 	    for(int i=0; i<=iUbound;i++) {
-	    	iRotValue=iaRotValue[i];
-	    	if(iRotValue==10) {
+	    	iIndex = iaIndex[i];
+	    	iRotValue=iaRotValue[iIndex];
+	    	if(iRotValue==14) {
 	    		System.out.println("TEST BREAKPOINT");
 	    		System.out.println("TEST BREAKPOINT");
 	    	}
 	    	iAsciiNew = AsciiZZZ.fromNumberReverse(cAscii, iRotValue);
 	    	System.out.println("Index="+ i + " |abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + iAsciiNew + " | Zeichen ='" + (char)iAsciiNew + "'");
-    		assertTrue("New Ascii code", caExpected[i]==(char)iAsciiNew);	    
+    		assertTrue("1. Testcharacter: False Ascii code at Index " + i + " ('"+(char)iAsciiNew+"'). Expected: '"+(char)caExpected[iIndex]+"'. Rotation: " + iaRotValue[iIndex], caExpected[iIndex]==(char)iAsciiNew);	    
 	    }
+	    
+	    
+	    //############################
+	    cAscii = '5'; //Anderes Ausgangszeichen
+	    int[] caExpected2 = {'5','4','3','2','f','e','d','c','F','E','D','C','5','4','3','2','f'};
+	    
+	    //Nun in einer Schleife testen	    
+	    for(int i=0; i<=iUbound;i++) {
+	    	iIndex = iaIndex[i];
+	    	iRotValue=iaRotValue[iIndex];
+	    	if(iRotValue==14) {
+	    		System.out.println("TEST BREAKPOINT");
+	    		System.out.println("TEST BREAKPOINT");
+	    	}
+	    	iAsciiNew = AsciiZZZ.fromNumberReverse(cAscii, iRotValue);
+	    	System.out.println("Index="+ i + " |abzuziehender iRotValue= " + iRotValue + "| iAsciiNew= " + iAsciiNew + " | Zeichen ='" + (char)iAsciiNew + "'");
+    		assertTrue("2. Testcharacter: False Ascii code at Index " + i + " ('"+(char)iAsciiNew+"'). Expected: '"+(char)caExpected2[iIndex]+"'. Rotation: " + iaRotValue[iIndex], caExpected2[iIndex]==(char)iAsciiNew);	    
+	    }
+	    
 	 }
 	 
 	 
