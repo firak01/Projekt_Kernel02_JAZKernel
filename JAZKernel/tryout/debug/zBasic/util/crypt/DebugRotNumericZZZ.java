@@ -65,7 +65,7 @@ public class DebugRotNumericZZZ {
         	if(!bSkip) {
 	        	System.out.println("\n###################################");
 	        	System.out.println("### OHNE WEITERE ARGUMENTE ########");
-	        	iCryptKeyMax=63;
+	        	iCryptKeyMax=64;
 	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
 		        	System.out.println("### SCHIEBE UM "+ iSchieber);	       					        
 			        System.out.println(input);
@@ -85,7 +85,7 @@ public class DebugRotNumericZZZ {
 	        	System.out.println("### VERWENDE NUR NUMERIC, ohne blank ########");
 	        	//TODOGOON20230217; //Weil das Leerzeichen nicht berücksichtigt wird, 
 	        	                  //gibt es hier wohl Abweichungen, nachdem alles mit Leerzeichen entwickelt wurde
-	        	iCryptKeyMax=63;
+	        	iCryptKeyMax=64;
 	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
 		        	System.out.println("### SCHIEBE UM "+ iSchieber);
 		        	System.out.println(input);
@@ -103,7 +103,7 @@ public class DebugRotNumericZZZ {
         	if(!bSkip) {
 	        	System.out.println("\n###################################");
 	        	System.out.println("### VERWENDE NUMERIC,BLANK ########");
-	        	iCryptKeyMax=63;
+	        	iCryptKeyMax=64;
 	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
 		        	System.out.println("### SCHIEBE UM "+ iSchieber);
 		        	System.out.println(input);

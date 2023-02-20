@@ -465,8 +465,8 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	private static String decryptNumericAdvanced_(String input, int iCryptKey) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{
-			   if(iCryptKey<0 || iCryptKey >=64) {
-				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 63", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			   if(iCryptKey<0 || iCryptKey >=65) {
+				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 64", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
 			   }
 			   
@@ -514,8 +514,8 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	private static String encryptNumericAdvanced_(String input, int iCryptKey) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{			   
-			   if(iCryptKey<0 || iCryptKey >=64) {
-				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 63", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			   if(iCryptKey<0 || iCryptKey >=65) {
+				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 64", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
 			   }
 			   
