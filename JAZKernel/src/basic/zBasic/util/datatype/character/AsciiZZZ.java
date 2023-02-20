@@ -408,24 +408,30 @@ public class AsciiZZZ {
     	//darum in einer Schleife
         boolean bCorrectCharacterFound=false;
         do {
-            if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
-            	bCorrectCharacterFound=false;
-            	iReturn = (char) AsciiZZZ.fromLetterLowercase2Number(iReturn);
-            }else {
-            	bCorrectCharacterFound=true;
-            }
-            if(AsciiZZZ.isHigherNumber(iReturn)) {
-            	bCorrectCharacterFound=false;
-            	iReturn = (char) AsciiZZZ.fromNumber2LetterUppercase(iReturn);
-            }else {
-            	bCorrectCharacterFound=true;
-            }
-            if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
-            	bCorrectCharacterFound=false;
-            	iReturn = (char) AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
-            }else {
-            	bCorrectCharacterFound=true;
-            }
+        	if(AsciiZZZ.isLetterLowercase(iReturn)) {
+				bCorrectCharacterFound=true;
+			}else{
+	            if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+	            	bCorrectCharacterFound=false;
+	            	iReturn = (char) AsciiZZZ.fromLetterLowercase2Number(iReturn);
+	            	
+	            	 if(AsciiZZZ.isHigherNumber(iReturn)) {
+	 	            	bCorrectCharacterFound=false;
+	 	            	iReturn = (char) AsciiZZZ.fromNumber2LetterUppercase(iReturn);
+	 	            	
+	 	            	 if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+	 	 	            	bCorrectCharacterFound=false;
+	 	 	            	iReturn = (char) AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+	 	 	            }else {
+	 	 	            	bCorrectCharacterFound=true;
+	 	 	            }
+	 	            }else {
+	 	            	bCorrectCharacterFound=true;
+	 	            }	 	           
+	            }else {
+	            	bCorrectCharacterFound=true;
+	            }	           
+			}
         }while(!bCorrectCharacterFound);		
 		return iReturn;
 	}
