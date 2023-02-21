@@ -4,6 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.console.multithread.ConsoleZZZ;
 import basic.zBasic.util.console.multithread.IConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
+import basic.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
 
 public class DebugCryptConsoleMainZZZ {

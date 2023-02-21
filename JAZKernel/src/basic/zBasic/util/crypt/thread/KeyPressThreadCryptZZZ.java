@@ -200,7 +200,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         		//###############################################################
         		this.questionNumericKey_(hmVariable);        		
         		//###############################################################        		
-        		this.questionUseNumeric_(hmVariable, null);        		        		        		
+        		this.questionUseNumeric_(hmVariable, null); 
+        		//###############################################################
+        		this.questionUseBlank_(hmVariable,null);
         	}
 		}
 		
@@ -441,6 +443,32 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	            	}else {
 	            		this.isCurrentInputValid(true);	
 	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
+	            	}	        		
+        		}
+        	}
+		}
+		
+		private void questionUseBlank_(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+			//#####################################################################
+    		//### Frage nach Zahlen        	
+        	if(!this.isCurrentInputFinished()) {
+
+        		boolean bCharacterPoolContainsNumericOnly=false;//nur nach Zahlen fragen, wenn der characterPool nicht eh aus Zahlen besteht.
+        		if(StringZZZ.isEmpty(sCharacterPool)) {
+        			bCharacterPoolContainsNumericOnly=StringZZZ.containsNumericAndBlankOnly(sCharacterPool);
+        		}
+        		        		
+        		if(!bCharacterPoolContainsNumericOnly) {
+	        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie den Pool ergaenzend mit dem 'Leerzeichen' verwenden?");	        		
+	        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+	        			this.cancelToMenue(hmVariable);
+	        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+	        			this.isCurrentInputValid(true);	
+	                	if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_BLANK, BooleanZZZ.stringToBoolean(sInput));
+	            	}else {
+	            		this.isCurrentInputValid(true);	
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_BLANK, BooleanZZZ.stringToBoolean(sInput));
 	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
 	            	}	        		
         		}

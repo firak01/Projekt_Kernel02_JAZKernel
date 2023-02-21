@@ -153,11 +153,11 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            char ascii = input.charAt(i);
 			            char rotated = ascii;
 			            			           
-			            if(AsciiZZZ.isBlank(ascii)) {  //Blank is 32
+			            if(AsciiZZZ.isBlank(ascii)) {
 			            	rotated = (char) (rotated + iCryptKey);	
 			            	int iRotated = rotated;
-			            	//TODOGOON20230211;//Verwende einen enum
-			            	//if (iRotated > 32) {
+			            	TODOGOON20230221;// mache AsciiZZZ.fromBlankAdvancedBlank
+
 			            	if(AsciiZZZ.isHigherBlank(iRotated)) {
 			            		iRotated = AsciiZZZ.fromBlank2Number(iRotated);
 			                }
@@ -181,6 +181,7 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            	
 			            //} else if (ascii > 64 && ascii < 91) {  //Capital letters are 65 to 90
 			            } else if(AsciiZZZ.isLetterUppercase(ascii)) {
+			            	TODOGOON20230221;// mache AsciiZZZ.fromLetterUppercaseAdvancedBlank
 			                rotated = (char) (rotated + iCryptKey);		
 			                int iRotated = rotated;
 			                //if (iRotated >= 91) {
@@ -206,9 +207,10 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			                
 			               
 			                rotated=(char)iRotated;
+			                			          
 			                
-			            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
 			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
+			            	TODOGOON20230221;// mache AsciiZZZ.fromLetterLowerCaseAdvancedBlank
 			                rotated = (char) (rotated + iCryptKey);
 			            	int iRotated = rotated;
 			                //if (rotated >= 123) {
@@ -235,6 +237,9 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            }
 			            //Numeric values are between 48 to 57 
 			            //if (ascii > 47 && ascii < 58) {
+			            
+			            
+			          TODOGOON20230221;// mache AsciiZZZ.fromNumberAdvancedBlank
 			            if(AsciiZZZ.isNumber(ascii)) {
 			                rotated = (char) (rotated + iCryptKey);
 			            	int iRotated = rotated;			            	
