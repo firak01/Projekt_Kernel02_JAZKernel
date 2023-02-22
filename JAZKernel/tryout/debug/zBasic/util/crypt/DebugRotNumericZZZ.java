@@ -49,7 +49,7 @@ public class DebugRotNumericZZZ {
         		System.out.println("### " + sNumeric);
         		System.out.println("### " + sBlank);
         		System.out.println(sInputDebug);
-        		TODOGOON20230222; //Diese Testkonstellation liefert falsches Ergebnis, ggfs. intern eine Schleife einführen.
+        		//TODOGOON20230222; //Diese Testkonstellation liefert falsches Ergebnis, ggfs. intern eine Schleife einführen.
 	        	sOutput = ROTnumericZZZ.encrypt(sInputDebug,iCryptKey,bNumeric,bBlank); 	        	
 	        	System.out.println(sOutput);
 	        	

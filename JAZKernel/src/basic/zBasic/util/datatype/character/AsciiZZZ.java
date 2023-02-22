@@ -193,22 +193,41 @@ public class AsciiZZZ {
 	public static int fromBlankAdvancedBlank(char rotated,int iCryptKey){
 		int iReturn=rotated+iCryptKey;
 		
-    	if(AsciiZZZ.isHigherBlank(iReturn)) {
-    		iReturn = AsciiZZZ.fromBlank2Number(iReturn);
-        }
-    	
-    	if(AsciiZZZ.isHigherNumber(iReturn)) {
-    		iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);  
-         }
-    	 
-    	if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
-    		iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn); 
-    	 }
-
-    	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
-    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);			                 
-    	 }
-    	
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+		do {
+	    	if(AsciiZZZ.isHigherBlank(iReturn)) {
+	    		iReturn = AsciiZZZ.fromBlank2Number(iReturn);
+	    		
+	    		if(AsciiZZZ.isHigherNumber(iReturn)) {
+		    		iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
+		    		
+		    		 
+			    	if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+			    		iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+			    		
+			    		if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+				    		iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+				    		
+					    	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+					    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);			                 
+					    	 }else {
+					    		 bCorrectCharacterFound=true;
+					    	 }
+				    	 }else {
+				    		 bCorrectCharacterFound=true;
+				    	 }
+			    	 }else {
+			    		 bCorrectCharacterFound=true;
+			    	 }
+		         }else {
+		        	 bCorrectCharacterFound=true;
+		         }
+	        }else {
+	        	bCorrectCharacterFound=true;
+	        }
+		}while(bCorrectCharacterFound==false);
     	return iReturn;
 	}
 	
@@ -299,22 +318,35 @@ public class AsciiZZZ {
 	public static int fromNumberAdvancedBlank(char cAscii, int iRotationValue) {
 		int iReturn=cAscii+iRotationValue;
 
-    	if(AsciiZZZ.isHigherNumber(iReturn)) {
-    		iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
-        }
-        
-    	if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
-    		iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
-        }
-        
-    	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
-    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);
-
-        	if(AsciiZZZ.isHigherBlank(iReturn)) {
-        		iReturn = AsciiZZZ.fromBlank2Number(iReturn); 
-            }
-        }
-
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+        do {
+	    	if(AsciiZZZ.isHigherNumber(iReturn)) {
+	    		iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
+	    		
+	    		if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+		    		iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+		    		
+		    		if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+			    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);
+			
+			        	if(AsciiZZZ.isHigherBlank(iReturn)) {
+			        		iReturn = AsciiZZZ.fromBlank2Number(iReturn);
+			        		
+			            }else {
+				        	bCorrectCharacterFound=true;
+				        }
+			        }else {
+			        	bCorrectCharacterFound=true;
+			        }
+		        }else {
+		        	bCorrectCharacterFound=true;
+		        }	    		
+	        }else {
+	        	bCorrectCharacterFound=true;
+	        }
+        }while(!bCorrectCharacterFound);
 		return iReturn;
 	}
 	
@@ -434,22 +466,34 @@ public class AsciiZZZ {
 	public static int fromLetterUppercaseAdvancedBlank(char cAscii, int iRotationValue) {
 		int iReturn=cAscii+iRotationValue;
 
-        if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
-        	iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn); //6 Zeichen ueberspringen, bis zu den Kleinbuchstaben.
-        }
-        
-    	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
-    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);
-    		
-            if(AsciiZZZ.isHigherBlank(iReturn)) {
-            	iReturn = AsciiZZZ.fromBlank2Number(iReturn);			                	
-            }
-            
-            if(AsciiZZZ.isHigherNumber(iReturn)) {
-            	iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
-            }
-             
-        }//end if 
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+		do {
+	        if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+	        	iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn); //6 Zeichen ueberspringen, bis zu den Kleinbuchstaben.
+	        	
+	        	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+		    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);
+		    		
+		            if(AsciiZZZ.isHigherBlank(iReturn)) {
+		            	iReturn = AsciiZZZ.fromBlank2Number(iReturn);
+		            	
+		            	if(AsciiZZZ.isHigherNumber(iReturn)) {
+			            	iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
+			            }else {
+			            	bCorrectCharacterFound=true;
+			            }
+		            }else {
+		            	bCorrectCharacterFound = true;
+		            }  
+		        }else{
+		        	bCorrectCharacterFound = true;
+		        }
+	        }else{
+	        	bCorrectCharacterFound = true;
+	        }//end if)	        	    	
+		}while(bCorrectCharacterFound==false);
 		return iReturn;
 	}
 	
@@ -551,24 +595,36 @@ public class AsciiZZZ {
 	public static int fromLetterLowercaseAdvancedBlank(char cAscii, int iRotationValue) {
 		int iReturn=cAscii+iRotationValue;
 		
-		if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
-			iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);
-        				            
-            //Wenn das nicht das Leerzeichen ist, noch weiterschieben.
-        	if(AsciiZZZ.isHigherBlank(iReturn)) {
-        		iReturn = AsciiZZZ.fromBlank2Number(iReturn);			                    					                   
-            }
-            
-        	if(AsciiZZZ.isHigherNumber(iReturn)) {
-        		iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
-            }
-            
-    		if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
-    			iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
-            }
-                 
-        }// end if
-		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+        do {
+			if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+				iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);
+				
+				 //Wenn das nicht das Leerzeichen ist, noch weiterschieben.
+	        	if(AsciiZZZ.isHigherBlank(iReturn)) {
+	        		iReturn = AsciiZZZ.fromBlank2Number(iReturn);	
+	        		
+	        		if(AsciiZZZ.isHigherNumber(iReturn)) {
+		        		iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
+		        		
+		        		if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
+			    			iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
+			    			
+			            }else {
+			            	bCorrectCharacterFound=true;
+			            }
+		            }else {
+		            	bCorrectCharacterFound=true;
+		            }		            		    		
+	            }else {
+	            	bCorrectCharacterFound=true;
+	            }
+			}else {
+				bCorrectCharacterFound=true;			   
+	        }// end if
+        }while(!bCorrectCharacterFound);
 		return iReturn;
 	}
 	
