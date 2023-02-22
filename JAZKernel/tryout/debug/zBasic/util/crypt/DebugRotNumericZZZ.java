@@ -29,10 +29,10 @@ public class DebugRotNumericZZZ {
 	        	System.out.println("### DEBUG EINZELWERT - SPEZIELL EINGESTELLT ########");
 	        	
 	        	//Den problematischen Buchstaben als erstes Zeichen unten eintragen.	        		        	
-        		String sInputDebug = "fZ 9DzA04";//Merke: Zum Testen die Grenzwerte der Zeichenbereiche und einen Wert in der Mitte genommen.
-        		int iCryptKey=63;
+        		String sInputDebug = "Z 9DzfA04";//Merke: Zum Testen die Grenzwerte der Zeichenbereiche und einen Wert in der Mitte genommen.
+        		int iCryptKey=64;
         		boolean bNumeric=true;
-        		boolean bBlank=false;        		
+        		boolean bBlank=true;        		
         		System.out.println("### INPUT='" + sInputDebug + "' | SCHIEBE UM iCryptKey="+iCryptKey);
         		
         		String sNumeric=""; String sBlank="";
@@ -49,6 +49,7 @@ public class DebugRotNumericZZZ {
         		System.out.println("### " + sNumeric);
         		System.out.println("### " + sBlank);
         		System.out.println(sInputDebug);
+        		TODOGOON20230222; //Diese Testkonstellation liefert falsches Ergebnis, ggfs. intern eine Schleife einführen.
 	        	sOutput = ROTnumericZZZ.encrypt(sInputDebug,iCryptKey,bNumeric,bBlank); 	        	
 	        	System.out.println(sOutput);
 	        	
@@ -79,7 +80,7 @@ public class DebugRotNumericZZZ {
 	        	}
         	}
         	
-        	bSkip=false;
+        	bSkip=true;
 	        	if(!bSkip) {
 	        	System.out.println("\n#############################");
 	        	System.out.println("### VERWENDE NUR NUMERIC, ohne blank ########");
@@ -99,7 +100,7 @@ public class DebugRotNumericZZZ {
 	        	}
         	}
         	
-        	bSkip=true;
+        	bSkip=false;
         	if(!bSkip) {
 	        	System.out.println("\n###################################");
 	        	System.out.println("### VERWENDE NUMERIC,BLANK ########");

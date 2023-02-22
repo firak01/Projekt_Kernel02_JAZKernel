@@ -138,8 +138,8 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	private static String encryptNumericAdvancedBlank_(String input, int iCryptKey) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{
-			   if(iCryptKey<0 || iCryptKey >=64) {
-				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range only from 0 to 63", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			   if(iCryptKey<0 || iCryptKey >=65) {
+				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range only from 0 to 64", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
 			   }
 			   
@@ -153,119 +153,14 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 			            char ascii = input.charAt(i);
 			            char rotated = ascii;
 			            			           
-			            if(AsciiZZZ.isBlank(ascii)) {
-			            	rotated = (char) (rotated + iCryptKey);	
-			            	int iRotated = rotated;
-			            	TODOGOON20230221;// mache AsciiZZZ.fromBlankAdvancedBlank
-
-			            	if(AsciiZZZ.isHigherBlank(iRotated)) {
-			            		iRotated = AsciiZZZ.fromBlank2Number(iRotated);
-			                }
-			            	
-			            	 //if(iRotated>57) {
-			            	if(AsciiZZZ.isHigherNumber(iRotated)) {
-			                   	iRotated = AsciiZZZ.fromNumber2LetterUppercase(iRotated);  
-			                 }
-			            	 
-			            	 //if(iRotated>90) {
-			            	if(AsciiZZZ.isHigherLetterUppercase(iRotated)) {
-			            		 iRotated = AsciiZZZ.fromLetterUppercase2LetterLowercase(iRotated); 
-			            	 }
-			            	 
-			            	 //if(iRotated>=123) {
-			            	if(AsciiZZZ.isHigherLetterLowercase(iRotated)) {
-			            		 iRotated = AsciiZZZ.fromLetterLowercase2Blank(iRotated);			                 
-			            	 }
-			            	 			            	 
-			            	 rotated=(char)iRotated;
-			            	
-			            //} else if (ascii > 64 && ascii < 91) {  //Capital letters are 65 to 90
-			            } else if(AsciiZZZ.isLetterUppercase(ascii)) {
-			            	TODOGOON20230221;// mache AsciiZZZ.fromLetterUppercaseAdvancedBlank
-			                rotated = (char) (rotated + iCryptKey);		
-			                int iRotated = rotated;
-			                //if (iRotated >= 91) {
-			                if(AsciiZZZ.isHigherLetterUppercase(iRotated)) {
-			                    iRotated = AsciiZZZ.fromLetterUppercase2LetterLowercase(iRotated); //6 Zeichen ueberspringen, bis zu den Kleinbuchstaben.
-			                }
-			                //if (iRotated >= 123) {
-			            	if(AsciiZZZ.isHigherLetterLowercase(iRotated)) {
-			                    iRotated = AsciiZZZ.fromLetterLowercase2Blank(iRotated);
-			                    
-			                    //if(iRotated >=33) {
-			                    if(AsciiZZZ.isHigherBlank(iRotated)) {
-				                	iRotated = AsciiZZZ.fromBlank2Number(iRotated);			                	
-				                }
-			                    
-			                    //if(iRotated >=58) {
-			                    if(AsciiZZZ.isHigherNumber(iRotated)) {
-			                    	iRotated = AsciiZZZ.fromNumber2LetterUppercase(iRotated);
-			                    }
-			                    
-			                    
-			                }//end if iRotated >=124	
-			                
-			               
-			                rotated=(char)iRotated;
-			                			          
-			                
+			            if(AsciiZZZ.isBlank(ascii)) {			            			          	 			            	
+			            	 rotated=(char)AsciiZZZ.fromBlankAdvancedBlank(rotated, iCryptKey);			            				          
+			            } else if(AsciiZZZ.isLetterUppercase(ascii)) {			            	
+			                rotated=(char)AsciiZZZ.fromLetterUppercaseAdvancedBlank(rotated,iCryptKey);			                			          			                
 			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
-			            	TODOGOON20230221;// mache AsciiZZZ.fromLetterLowerCaseAdvancedBlank
-			                rotated = (char) (rotated + iCryptKey);
-			            	int iRotated = rotated;
-			                //if (rotated >= 123) {
-			            	if(AsciiZZZ.isHigherLetterLowercase(iRotated)) {
-			                	iRotated = AsciiZZZ.fromLetterLowercase2Blank(iRotated);
-			                				            
-			                    //Wenn das nicht das Leerzeichen ist, noch weiterschieben.
-			                    //if(iRotated>32) {
-			                	if(AsciiZZZ.isHigherBlank(iRotated)) {
-			                    	iRotated = AsciiZZZ.fromBlank2Number(iRotated);			                    					                   
-			                    }
-			                    
-			                    //if(iRotated>57) {
-			                	if(AsciiZZZ.isHigherNumber(iRotated)) {
-			                    	iRotated = AsciiZZZ.fromNumber2LetterUppercase(iRotated);
-			                    }
-			                    
-			                    //if(iRotated>90) {
-			            		if(AsciiZZZ.isHigherLetterUppercase(iRotated)) {
-			                    	iRotated = AsciiZZZ.fromLetterUppercase2LetterLowercase(iRotated);
-			                    }
-			                    rotated=(char)iRotated;     
-			                }// end if (rotated >= 123) {
-			            }
-			            //Numeric values are between 48 to 57 
-			            //if (ascii > 47 && ascii < 58) {
-			            
-			            
-			          TODOGOON20230221;// mache AsciiZZZ.fromNumberAdvancedBlank
-			            if(AsciiZZZ.isNumber(ascii)) {
-			                rotated = (char) (rotated + iCryptKey);
-			            	int iRotated = rotated;			            	
-
-			                //if (iRotated >= 58) {
-			            	if(AsciiZZZ.isHigherNumber(iRotated)) {
-			                    iRotated = AsciiZZZ.fromNumber2LetterUppercase(iRotated);
-			                }
-			                
-			                //if (iRotated >=91) {
-			            	if(AsciiZZZ.isHigherLetterUppercase(iRotated)) {
-			                	iRotated = AsciiZZZ.fromLetterUppercase2LetterLowercase(iRotated);
-			                }
-			                
-			                //if (iRotated >= 123) {
-			            	if(AsciiZZZ.isHigherLetterLowercase(iRotated)) {
-			                	iRotated = AsciiZZZ.fromLetterLowercase2Blank(iRotated);
-			                    
-			                    //if(iRotated >=33) {
-			                	if(AsciiZZZ.isHigherBlank(iRotated)) {
-					                iRotated = AsciiZZZ.fromBlank2Number(iRotated); 
-					            }
-			                }
-			                
-			               	
-			            	rotated = (char) iRotated;
+			            	rotated = (char) AsciiZZZ.fromLetterLowercaseAdvancedBlank(rotated,iCryptKey);			              
+			            }else if(AsciiZZZ.isNumber(ascii)) {
+			            	rotated = (char) AsciiZZZ.fromNumberAdvancedBlank(rotated,iCryptKey);			             
 			            }
 			            result += (char) rotated;
 			        }				   				   
@@ -294,8 +189,8 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	private static String decryptNumericAdvancedBlank_(String input, int iCryptKey) throws ExceptionZZZ {
 		   String sReturn = new String();
 		   main:{
-			   if(iCryptKey<0 || iCryptKey >=64) {
-				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range only from 0 to 63", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			   if(iCryptKey<0 || iCryptKey >=65) {
+				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range only from 0 to 64", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				   throw ez;
 			   }
 			   
