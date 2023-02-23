@@ -1,11 +1,5 @@
 package basic.zBasic.util.datatype.character;
 
-import java.util.EnumSet;
-
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ.TypeZZZ;
-import basic.zBasic.util.datatype.character.AsciiTableZZZ.SectionZZZ;
-
 /**Mit dieser Klasse bewegt man sich in der ASCII-Tabelle.
  * Wird z.B. verwendet in den Verschluesselungsmethoden, ROT..., also zum Verschieben von Zeichen.
  *
@@ -17,19 +11,6 @@ import basic.zBasic.util.datatype.character.AsciiTableZZZ.SectionZZZ;
  * 
  */
 public class AsciiZZZ {
-	
-	//TODOGOON20230211;//Mache eine enum mit 
-	//Blank,Number,Letter_Lowercase,Letter_Uppercase
-	//Weise dieser Enumeration einen Ascii-Codewert zu
-	//Beispiel für solch eine Enum ist CryptAlgorithmMaintypeZZZ
-	
-	//Mache dann eine Methode
-	//public static boolean is(enum,int iAscii){
-	//}
-	//Mache dann eine Methode
-	//pulbic static boolean isHigher(enum, int iAscii){
-	//}
-	
 	public static boolean is(int iAscii,AsciiTableZZZ.SectionZZZ objEnumSection) {
 		boolean bReturn = false;
 		main:{
@@ -75,8 +56,6 @@ public class AsciiZZZ {
 		return AsciiZZZ.isBlank((int)cAscii);
 	}
 	public static boolean isBlank(int iAscii) {
-		//return iAscii==32;	
-		//return iAscii == AsciiTableZZZ.SectionZZZ.BLANK.getStart();
 		return AsciiZZZ.is(iAscii,AsciiTableZZZ.SectionZZZ.BLANK);
 	}
 	public static boolean isHigherBlank(int iAscii) {
@@ -146,50 +125,34 @@ public class AsciiZZZ {
 	}
 	public static int from2fromReverse(int iAscii, AsciiTableZZZ.SectionZZZ objEnumSection) {
 		int iReturn = (iAscii+254) - objEnumSection.getStart() - (254 - objEnumSection.getEnd());
-		//if(!AsciiZZZ.is(iReturn, objEnumSection)) {
-			//Dann noch mal in die Section verschieben
-			iReturn = iReturn - (objEnumSection.getEnd()-objEnumSection.getStart());
-		//}
+		
+		//Dann noch mal in die Section verschieben
+		iReturn = iReturn - (objEnumSection.getEnd()-objEnumSection.getStart());
 		
 		return iReturn;
 	}
 	public static int from2fromReverse(int iAscii, AsciiTableZZZ.SectionZZZ objEnumSectionStart, AsciiTableZZZ.SectionZZZ objEnumSectionEnd ) {
 		int iReturn=0;
-//		if(iAscii<0) {
-//			System.out.println("from2from iAscii="+iAscii);
-//			//Alle beteiligten Werte um 254 erhöhen, also quasi am oberen Rand der Tabelle anfangen
-//			iAscii = 254 + iAscii;						
-//			int iLBorder = 254 + objEnumSectionStart.getEnd();    
-//			int iUBorder = 254 + objEnumSectionEnd.getStart();
-//			if(objEnumSectionStart.getStart() > objEnumSectionEnd.getStart()){
-//				iReturn = iAscii - (objEnumSectionStart.getStart() - objEnumSectionEnd.getEnd());
-//			}else if(objEnumSectionStart.getStart() < objEnumSectionEnd.getStart()) {
-//				//Verschieben mit Verlassen der Tabelle über die untere Grenze hinaus.
-//				iReturn = (iAscii) - ((objEnumSectionStart.getStart()+254) - (254-objEnumSectionEnd.getEnd()+254));
-//				iReturn = iReturn - ((objEnumSectionStart.getEnd() +254)- (objEnumSectionStart.getStart()+254));
-//			}
-//		}else {			
-			if(objEnumSectionStart.getStart() > objEnumSectionEnd.getStart()) {
-				//Verschieben ohne das Verlassen der Tabelle über die untere Grenze hinaus.
-				iReturn = iAscii - (objEnumSectionStart.getStart() - objEnumSectionEnd.getEnd());
-				iReturn = iReturn + 1;
-			}else if(objEnumSectionStart.getStart() < objEnumSectionEnd.getStart()) {
-				//Verschieben mit Verlassen der Tabelle über die untere Grenze hinaus.
-				iReturn = (iAscii) - (objEnumSectionStart.getStart() - (254-objEnumSectionEnd.getEnd()));
-				iReturn = iReturn - (objEnumSectionStart.getEnd() - objEnumSectionStart.getStart());	
-			}else if(objEnumSectionStart.equals(objEnumSectionEnd)) {
-				//Verschieben im gleichen Typ
-				iReturn = AsciiZZZ.from2from(iAscii, objEnumSectionStart);
-			}
-//		}
 		
+		if(objEnumSectionStart.getStart() > objEnumSectionEnd.getStart()) {
+			//Verschieben ohne das Verlassen der Tabelle über die untere Grenze hinaus.
+			iReturn = iAscii - (objEnumSectionStart.getStart() - objEnumSectionEnd.getEnd());
+			iReturn = iReturn + 1;
+		}else if(objEnumSectionStart.getStart() < objEnumSectionEnd.getStart()) {
+			//Verschieben mit Verlassen der Tabelle über die untere Grenze hinaus.
+			iReturn = (iAscii) - (objEnumSectionStart.getStart() - (254-objEnumSectionEnd.getEnd()));
+			iReturn = iReturn - (objEnumSectionStart.getEnd() - objEnumSectionStart.getStart());	
+		}else if(objEnumSectionStart.equals(objEnumSectionEnd)) {
+			//Verschieben im gleichen Typ
+			iReturn = AsciiZZZ.from2from(iAscii, objEnumSectionStart);
+		}
+
 		return iReturn;
 	}
 	
 	
 	
-	//###################
-	
+	//###########################################################################
 	public static int fromBlankAdvancedBlank(char rotated,int iCryptKey){
 		int iReturn=rotated+iCryptKey;
 		
@@ -202,22 +165,15 @@ public class AsciiZZZ {
 	    		
 	    		if(AsciiZZZ.isHigherNumber(iReturn)) {
 		    		iReturn = AsciiZZZ.fromNumber2LetterUppercase(iReturn);
-		    		
-		    		 
+		    				    		 
 			    	if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
 			    		iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
 			    		
-			    		if(AsciiZZZ.isHigherLetterUppercase(iReturn)) {
-				    		iReturn = AsciiZZZ.fromLetterUppercase2LetterLowercase(iReturn);
-				    		
-					    	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
-					    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);			                 
-					    	 }else {
-					    		 bCorrectCharacterFound=true;
-					    	 }
+				    	if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {
+				    		iReturn = AsciiZZZ.fromLetterLowercase2Blank(iReturn);			                 
 				    	 }else {
 				    		 bCorrectCharacterFound=true;
-				    	 }
+				    	 }				    	
 			    	 }else {
 			    		 bCorrectCharacterFound=true;
 			    	 }
@@ -231,24 +187,54 @@ public class AsciiZZZ {
     	return iReturn;
 	}
 	
+	public static int fromBlankAdvancedBlankReverse(char rotated,int iCryptKey){
+		int iReturn=rotated-iCryptKey;
+		//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
+		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+		do {
+			if(AsciiZZZ.isBlank(iReturn)){
+				bCorrectCharacterFound=true;
+			}else if(AsciiZZZ.isLowerBlank(iReturn)) {
+				iReturn = AsciiZZZ.fromBlank2LetterLowercaseReverse(iReturn);
+					
+				if(AsciiZZZ.isLetterLowercase(iReturn)){
+					bCorrectCharacterFound=true;
+				}else if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {	        		
+					iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
+	        		
+					if(AsciiZZZ.isLetterUppercase(iReturn)){
+						bCorrectCharacterFound=true;
+					}else if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+		        		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
+
+			        	if(AsciiZZZ.isNumber(iReturn)){
+			        		bCorrectCharacterFound=true;		        		
+			        	}else if(AsciiZZZ.isLowerNumber(iReturn)) {				        		
+			        		iReturn = AsciiZZZ.fromNumber2BlankReverse(iReturn);
+			        	}
+					}
+				}
+			}
+		}while(bCorrectCharacterFound==false);
+    	return iReturn;		
+	}
+	
 	
 	public static int fromBlank2Number(int iAscii) {
-		//return iAscii + 15;//15 Zeichen ueberspringen, bis zu den Zahlen.
 		return iAscii + AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-AsciiTableZZZ.SectionZZZ.BLANK.getEnd() -1;
 	}
 	public static int fromBlank2LetterLowercaseReverse(int iAscii) {
-		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
-        //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
 		int iReturn = iAscii - (AsciiTableZZZ.SectionZZZ.BLANK.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
 		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.
 		return iReturn;
 	}
 	
-	
-	
 	//##########################
-	public static int fromNumber(char cAscii, int iRotationValue) {
-		int iReturn=cAscii+iRotationValue;
+	public static int fromNumber(char cAscii, int iCryptKey) {
+		int iReturn=cAscii+iCryptKey;
 		
 		 boolean bCorrectCharacterFound=false;
          do {
@@ -271,8 +257,8 @@ public class AsciiZZZ {
          }while(!bCorrectCharacterFound);
 		return iReturn;
 	}
-	public static int fromNumberReverse(char cAscii, int iRotationValue) {
-		int iReturn=cAscii-iRotationValue;
+	public static int fromNumberReverse(char cAscii, int iCryptKey) {
+		int iReturn=cAscii-iCryptKey;
 		boolean bCorrectCharacterFound=false;  
 		do {
 			if(AsciiZZZ.isNumber(iReturn)) {
@@ -301,9 +287,9 @@ public class AsciiZZZ {
     	return iReturn;
 	}
 	
-	public static int fromNumberReverseTYPECONSTANT(char cAscii, int iRotationValue) {
+	public static int fromNumberReverseTYPECONSTANT(char cAscii, int iCryptKey) {
 		int iReturn=0;    	
-		int iAscii=cAscii-iRotationValue;
+		int iAscii=cAscii-iCryptKey;
 		iReturn = iAscii;
 		while(!AsciiZZZ.isNumber(iReturn)){
 			if(AsciiZZZ.isLowerNumber(iReturn)) {
@@ -315,8 +301,8 @@ public class AsciiZZZ {
     	return iReturn;
 	}
 	
-	public static int fromNumberAdvancedBlank(char cAscii, int iRotationValue) {
-		int iReturn=cAscii+iRotationValue;
+	public static int fromNumberAdvancedBlank(char cAscii, int iCryptKey) {
+		int iReturn=cAscii+iCryptKey;
 
 		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
     	//darum in einer Schleife
@@ -349,24 +335,50 @@ public class AsciiZZZ {
         }while(!bCorrectCharacterFound);
 		return iReturn;
 	}
+	public static int fromNumberAdvancedBlankReverse(char cAscii, int iCryptKey) {
+		int iReturn=cAscii-iCryptKey;
+		//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
+		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+        do {
+        	if(AsciiZZZ.isNumber(iReturn)) {
+        		bCorrectCharacterFound = true;        		
+        	}else if(AsciiZZZ.isLowerNumber(iReturn)) {				            		        		
+        		iReturn = AsciiZZZ.fromNumber2BlankReverse(iReturn);
+        		
+        		if(AsciiZZZ.isBlank(iReturn)) {
+            		bCorrectCharacterFound=true;            		
+            	}else if(AsciiZZZ.isLowerBlank(iReturn)) {
+            		iReturn = AsciiZZZ.fromBlank2LetterLowercaseReverse(iReturn);
+            		
+            		if(AsciiZZZ.isLetterLowercase(iReturn)) {
+        	        	bCorrectCharacterFound = true;        	        	
+        	        }else if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {
+        	        	iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
+        	        	
+	       	        	 if(AsciiZZZ.isLetterUppercase(iReturn)){
+	       	 	    		 bCorrectCharacterFound = true;        	 	    		
+	       	 	    	 }else if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {	            		
+	        	 	            iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);  
+	        	 	            
+	       	 	    	 }	
+        	        }
+            	}
+        	}	    	
+        }while(!bCorrectCharacterFound);
+		return iReturn;
+	}
+	
 	
 	public static int fromNumber2LetterUppercase(int iAscii) {
-		//return iAscii + 7;//Zahlen zu Grossbuchstaben weiterschieben.
 		return iAscii + AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart()-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd() -1;
 	}	
 	public static int fromNumber2LetterLowercaseReverse(int iAscii) {
-//		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
-//        //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
-//		int iReturn=iAscii;	
-//		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-1) - (254-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd());//rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend von den Zahlen		
-//		iReturn += 254; //... und wieder in der ASCII Tabelle von vorne anfangen.
-//					
-//		return iReturn;
 		return AsciiZZZ.from2fromReverse(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER, AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
 	}
 	public static int fromNumber2LetterUppercaseReverse(int iAscii) {
-		//iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
-        //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
 		int iReturn=iAscii;	
 		iReturn = 255-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd();		
 		iReturn = iReturn - (AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd()-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart());		
@@ -382,19 +394,15 @@ public class AsciiZZZ {
 	
 	
 	public static int fromNumber2BlankReverse(int iAscii) {
-		//iRotated=iRotated-15; //15 Zeichen ueberspringen, bis zum Leerzeichen
 		return iAscii - (AsciiTableZZZ.SectionZZZ.NUMBER.getStart()-AsciiTableZZZ.SectionZZZ.BLANK.getEnd() -1);
 	}
-	public static int fromNumber2Number(int iAscii) { //verwendet bei cyrptNumericSimple, Zahlen bleiben Zahlen 9 wird also wieder zur 0
-		//return iAscii + ((255-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1)+AsciiTableZZZ.SectionZZZ.NUMBER.getStart())-255;
+	public static int fromNumber2Number(int iAscii) { 
 		return AsciiZZZ.from2from(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER);
 	}
-	public static int fromNumber2NumberReverse(int iAscii) { //verwendet bei cyrptNumericSimple, Zahlen bleiben Zahlen 9 wird also wieder zur 0
-		//return iAscii + ((255-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1)+AsciiTableZZZ.SectionZZZ.NUMBER.getStart())-255;
+	public static int fromNumber2NumberReverse(int iAscii) { 
 		return AsciiZZZ.from2fromReverse(iAscii, AsciiTableZZZ.SectionZZZ.NUMBER);
 	}
-	
-	
+		
 	//#############################################
 	public static int fromLetterUppercase(char cAscii, int iRotationValue) {
 		int iReturn=cAscii+iRotationValue;
@@ -426,13 +434,12 @@ public class AsciiZZZ {
 		int iReturn=cAscii-iRotationValue;
 		 boolean bCorrectCharacterFound=false;
 	     do {
+	    	//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+		    //darum in einer Schleife
 	    	if(AsciiZZZ.isLetterUppercase(iReturn)) {
 	    		iReturn = AsciiZZZ.fromLetterUppercase2LetterUppercaseReverse(iReturn); 
 	    		bCorrectCharacterFound=true;
-			}else if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
-				//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
-		    	//darum in einer Schleife
-		       
+			}else if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {						       
 	    		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);	    		
 	    		if(AsciiZZZ.isLowerNumber(iReturn)) {
 	    			iReturn = AsciiZZZ.fromNumber2LetterLowercaseReverse(iReturn);
@@ -463,8 +470,8 @@ public class AsciiZZZ {
     	return iReturn;
 	}
 	
-	public static int fromLetterUppercaseAdvancedBlank(char cAscii, int iRotationValue) {
-		int iReturn=cAscii+iRotationValue;
+	public static int fromLetterUppercaseAdvancedBlank(char cAscii, int iCryptKey) {
+		int iReturn=cAscii+iCryptKey;
 
 		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
     	//darum in einer Schleife
@@ -497,10 +504,44 @@ public class AsciiZZZ {
 		return iReturn;
 	}
 	
+	public static int fromLetterUppercaseAdvancedBlankReverse(char cAscii, int iCryptKey) {
+		int iReturn=cAscii-iCryptKey;
+		//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
+		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+		do {
+        	if(AsciiZZZ.isLetterUppercase(iReturn)) {
+        		bCorrectCharacterFound = true;
+        	}else if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {
+        		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
+        		
+        		if(AsciiZZZ.isNumber(iReturn)){
+        			bCorrectCharacterFound = true;
+        		}else if(AsciiZZZ.isLowerNumber(iReturn)) {        	
+	        		iReturn = AsciiZZZ.fromNumber2BlankReverse(iReturn);
+	        		
+	        		if(AsciiZZZ.isBlank(iReturn)){
+	        			bCorrectCharacterFound = true;
+	        		}else if(AsciiZZZ.isLowerBlank(iReturn)) {       
+	        			iReturn = AsciiZZZ.fromBlank2LetterLowercaseReverse(iReturn);
+		                   
+						if(AsciiZZZ.isLetterLowercase(iReturn)) {
+							 bCorrectCharacterFound = true;
+						} else if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {
+							iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
+						   
+						}
+	        		}
+	        	}
+        	}//end if
+		}while(bCorrectCharacterFound==false);
+		return iReturn;
+	}
 	
 	
 	public static int fromLetterUppercase2LetterLowercase(int iAscii) {
-		//return iAscii + 6;//Grossbuschstaben zu Kleinbuchstaben weiterschieben.	
 		return iAscii + AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart()-AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd() -1;
 	}
 	public static int fromLetterUppercase2LetterUppercase(int iAscii) {//verwendet bei cyrptNumericSimple, Grossbuchstaben bleiben Grossbuchstaben Z wird also wieder zu A
@@ -509,9 +550,7 @@ public class AsciiZZZ {
 	public static int fromLetterUppercase2LetterUppercaseReverse(int iAscii) {//verwendet bei cyrptNumericSimple, Grossbuchstaben bleiben Grossbuchstaben Z wird also wieder zu A
 		return AsciiZZZ.from2fromReverse(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE);			
 	}
-	public static int fromLetterUppercase2NumberReverse(int iAscii) {
-		//iRotated=iRotated-7; //7 Zeichen ueberspringen, bis in den Zahlenbereich
-		//return iAscii - (AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getStart()-AsciiTableZZZ.SectionZZZ.NUMBER.getEnd()-1);
+	public static int fromLetterUppercase2NumberReverse(int iAscii) {		
 		return AsciiZZZ.from2fromReverse(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE, AsciiTableZZZ.SectionZZZ.NUMBER);
 	}
 	
@@ -556,8 +595,7 @@ public class AsciiZZZ {
     	//darum in einer Schleife
         boolean bCorrectCharacterFound=false;
 		do {
-	    	if(AsciiZZZ.isLetterLowercase(iReturn)) {
-	    		iReturn = AsciiZZZ.fromLetterLowercase2LetterLowercaseReverse(iReturn);
+	    	if(AsciiZZZ.isLetterLowercase(iReturn)) {	    		
 	    		bCorrectCharacterFound=true;
 	    	}else if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {
 	    		iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
@@ -628,9 +666,44 @@ public class AsciiZZZ {
 		return iReturn;
 	}
 	
+	public static int fromLetterLowercaseAdvancedBlankReverse(char cAscii, int iCryptKey) {
+		int iReturn=cAscii-iCryptKey;
+		//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
+		
+		//Ziel: Auch mit iCryptKey >63 arbeiten können!!!
+    	//darum in einer Schleife
+        boolean bCorrectCharacterFound=false;
+        do {
+        	if(AsciiZZZ.isLetterLowercase(iReturn)) {
+        		bCorrectCharacterFound=true;
+        	}else if(AsciiZZZ.isLowerLetterLowercase(iReturn)) {        		
+	        	iReturn = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iReturn);
+	        		
+	            if(AsciiZZZ.isLetterUppercase(iReturn)){
+	            	bCorrectCharacterFound=true;
+	            }else if(AsciiZZZ.isLowerLetterUppercase(iReturn)) {     
+            		iReturn = AsciiZZZ.fromLetterUppercase2NumberReverse(iReturn);
+            		
+            		if(AsciiZZZ.isNumber(iReturn)) {
+            			bCorrectCharacterFound=true;
+            		}else if(AsciiZZZ.isLowerNumber(iReturn)) {        	
+            			iReturn = AsciiZZZ.fromNumber2BlankReverse(iReturn);
+                		
+                		if(AsciiZZZ.isBlank(iReturn)) {
+                			bCorrectCharacterFound=true;
+                		}else if(AsciiZZZ.isLowerBlank(iReturn)) {        		
+                			iReturn = AsciiZZZ.fromBlank2LetterLowercaseReverse(iReturn);
+                			
+                    	}
+            		}
+	            }
+	        }//end if
+        }while(!bCorrectCharacterFound);
+		return iReturn;
+	}
 	
-	public static int fromLetterLowercase2Blank(int iAscii) {
-		//int iReturn = iAscii + (255-123)+32; //Kleinbuchstaben zu Leerzeichen machen
+	
+	public static int fromLetterLowercase2Blank(int iAscii) {		
 		int iReturn = iAscii + (255-AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd()-1)+AsciiTableZZZ.SectionZZZ.BLANK.getStart();
 		iReturn = iReturn - 255;
 		return iReturn;
@@ -640,26 +713,14 @@ public class AsciiZZZ {
 		iReturn = iReturn - 255;
 		return iReturn;
 	}
-	public static int fromLetterLowercase2LetterLowercase(int iAscii) {//verwendet bei cyrptNumericSimple, Kleinbuchstaben bleiben Kleinbuchstaben z wird also wieder zu a
+	public static int fromLetterLowercase2LetterLowercase(int iAscii) {
 		return AsciiZZZ.from2from(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
 	}
-	public static int fromLetterLowercase2LetterLowercaseReverse(int iAscii) {//verwendet bei cyrptNumericSimple, Kleinbuchstaben bleiben Kleinbuchstaben z wird also wieder zu a
+	public static int fromLetterLowercase2LetterLowercaseReverse(int iAscii) {
 		return AsciiZZZ.from2fromReverse(iAscii,AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE);
 	}
-	
-//	public static int fromLetterLowercase2BlankReverse(int iAscii) {
-//		//iRotated = iRotated - 91; //Zeichen groesser als Kleinbuchstaben zu Leerzeichen machen.
-//		return iAscii - (AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getEnd())-AsciiTableZZZ.SectionZZZ.BLANK.getStart(); 			
-//	}
-	
+		
 	public static int fromLetterLowercase2LetterUppercaseReverse(int iAscii) {
-		 //iRotated = iRotated - 6;  //rueckwaerts weiterschieben von den Kleinbuchstaben zu den Grossbuchstaben
-		//return iAscii - (AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE.getStart()-AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE.getEnd()-1);
 		return AsciiZZZ.from2fromReverse(iAscii, AsciiTableZZZ.SectionZZZ.LETTER_LOWERCASE, AsciiTableZZZ.SectionZZZ.LETTER_UPPERCASE);
 	}
-
-	
-	
-	
-	
-	}//End Class
+}//End Class

@@ -143,27 +143,25 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 				   throw ez;
 			   }
 			   
-			   String result = "";
-			   
-			   int length; int iStart;			   
-				 length = input.length();
-				 iStart = 0;
+			   String result = "";	   
+			   int length = input.length();
+			   int iStart = 0;
 			    
-			        for (int i = iStart; i < length; i++) {
-			            char ascii = input.charAt(i);
-			            char rotated = ascii;
-			            			           
-			            if(AsciiZZZ.isBlank(ascii)) {			            			          	 			            	
-			            	 rotated=(char)AsciiZZZ.fromBlankAdvancedBlank(rotated, iCryptKey);			            				          
-			            } else if(AsciiZZZ.isLetterUppercase(ascii)) {			            	
-			                rotated=(char)AsciiZZZ.fromLetterUppercaseAdvancedBlank(rotated,iCryptKey);			                			          			                
-			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
-			            	rotated = (char) AsciiZZZ.fromLetterLowercaseAdvancedBlank(rotated,iCryptKey);			              
-			            }else if(AsciiZZZ.isNumber(ascii)) {
-			            	rotated = (char) AsciiZZZ.fromNumberAdvancedBlank(rotated,iCryptKey);			             
-			            }
-			            result += (char) rotated;
-			        }				   				   
+		        for (int i = iStart; i < length; i++) {
+		            char ascii = input.charAt(i);
+		            char rotated = ascii;
+		            			           
+		            if(AsciiZZZ.isBlank(ascii)) {		            	
+		            	 rotated=(char)AsciiZZZ.fromBlankAdvancedBlank(rotated, iCryptKey);			            				          
+		            } else if(AsciiZZZ.isLetterUppercase(ascii)) {			            	
+		                rotated=(char)AsciiZZZ.fromLetterUppercaseAdvancedBlank(rotated,iCryptKey);			                			          			                
+		            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
+		            	rotated = (char) AsciiZZZ.fromLetterLowercaseAdvancedBlank(rotated,iCryptKey);			              
+		            }else if(AsciiZZZ.isNumber(ascii)) {
+		            	rotated = (char) AsciiZZZ.fromNumberAdvancedBlank(rotated,iCryptKey);			             
+		            }
+		            result += (char) rotated;
+		        }				   				   
 		        sReturn = result;			   
 		   }//end main:
 		   return sReturn;
@@ -194,157 +192,25 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 				   throw ez;
 			   }
 			   
-			   String result = "";
-			   
-			   int length; int iStart;
-			   
-					   //REVERSE, für das decrypten
-					   length = input.length();
-						 iStart = 0;
-					    
-				        for (int i = iStart; i < length; i++) {
-				            char ascii = input.charAt(i);
-				            char rotated = ascii;
-				            		            
-				           		            		            
-				            //if (ascii > 64 && ascii < 91) {	 //Capital letters are 65 to 90
-				            if(AsciiZZZ.isLetterUppercase(ascii)) {
-				            	int iRotated = rotated;
-				            	iRotated = iRotated - iCryptKey;
-				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
-				            	
-				            	//if(iRotated<=64) {
-				            	if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
-				            		//iRotated=iRotated-7; //7 Zeichen ueberspringen, bis in den Zahlenbereich
-				            		iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated <=47) {
-				            	if(AsciiZZZ.isLowerNumber(iRotated)) {
-				            		//iRotated=iRotated-15; //15 Zeichen ueberspringen, bis zum Leerzeichen
-				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated<32) {
-				            	if(AsciiZZZ.isLowerBlank(iRotated)) {
-				            		   //iRotated = iRotated - 31 - (254-122); //rueckwaerts weiterschieben zu den Kleinbuchstaben, ausgehend vom Leerzeichen
-					                   //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
-					                   iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
-					                   
-					                   //if(iRotated <=96) {
-					                   if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
-					                	   //iRotated = iRotated - 6;  //rueckwaerts weiterschieben von den Kleinbuchstaben zu den Grossbuchstaben
-					                	   iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
-					                   }
-					            } //end if(iRotated<32) { 
-				            	
-				            	rotated = (char)iRotated;
-				            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
-				            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
-				            	int iRotated = rotated;
-				            	iRotated = iRotated - iCryptKey;
-				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
-				            	
-				            	//if(iRotated<=96) {
-				            	if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
-				            		//iRotated = iRotated - 6; //6 Zeichen ueberspringen, bis zu den Grossbuchstaben
-				            		iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated<=64) {
-				            	if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
-				            		//iRotated = iRotated - 7; //7 Zeichen ueberspringen, bis zu den Ziffern
-				            		iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated<=47) {
-				            	if(AsciiZZZ.isLowerNumber(iRotated)) {
-				            		//iRotated = iRotated - 15; //15 Zeichen ueberspringen, bis zum Leerzeichen
-				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated<=31) {
-				            	if(AsciiZZZ.isLowerBlank(iRotated)) {
-				            		//iRotated = iRotated - 31 - (254-122); //rueckwaerts das Leerzeichen zu Kleinbuchstaben machen
-					            	//iRotated +=254;                       //... und wieder in der ASCII Tabelle von vorne anfangen.
-				            		iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
-				            	}
-				            	
-				            	rotated = (char)iRotated;
-				            //} else if (ascii==32) { //Das Leerzeichen
-				            }else if(AsciiZZZ.isBlank(ascii)) {
-				            	int iRotated = rotated;
-				            	iRotated = iRotated - iCryptKey;
-				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
-				            	
-				            	//iRotated = iRotated - 31 - (254-122); //rueckwaerts das Leerzeichen zu Kleinbuchstaben machen
-				            	//iRotated = iRotated + 254;                       //... und wieder in der ASCII Tabelle von vorne anfangen.
-				            	iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
-				            					            	
-				            	//if(iRotated<=96) {
-				            	if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
-				            		//iRotated = iRotated - 6; //Kleinbuchstaben zu Grossbuchstaben machen
-				            		iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated<=64) {
-				            	if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
-				            		//iRotated = iRotated - 7; //Grossbuchstaben zu Ziffern machen
-				            		iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated<=47) {
-				            	if(AsciiZZZ.isLowerNumber(iRotated)) {
-				            		//iRotated = iRotated - 15; //Ziffern wieder zum Leerzeichen machen
-				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
-				            	}
-				            	
-				            	//if(iRotated>=123) {
-				            	if(AsciiZZZ.isHigherLetterLowercase(iRotated)) {
-				            		//iRotated = iRotated - 91; //Zeichen groesser als Kleinbuchstaben zu Leerzeichen machen.
-				            		//iRotated = AsciiZZZ.fromLetterLowercase2BlankReverse(iRotated);
-				            		iRotated = AsciiZZZ.fromLetterLowercase2Blank(iRotated);
-				            	}			
-				            	
-				            	
-				            	rotated = (char)iRotated;
-				            	
-				            //} else if (ascii > 47 && ascii < 58) { //Numeric values are between 48 to 57
-				            }else if (AsciiZZZ.isNumber(ascii)) {
-				            	int iRotated = rotated;
-				            	iRotated = iRotated - iCryptKey;				            	
-				            	//Merke: das gibt z.B. 65519, wenn der Wert von iCryptKey groesser als rotated ist) rotated = (char) (rotated - iCryptKey);
-				            	
-				            	//if(iRotated<=47) {
-				            	if(AsciiZZZ.isLowerNumber(iRotated)) {				            		
-				            		//iRotated = iRotated - 15; //genau diese Zahl zu Leerzeichen machen
-				            		iRotated = AsciiZZZ.fromNumber2BlankReverse(iRotated);
-	
-					            	//if(iRotated<32) {
-				            		if(AsciiZZZ.isLowerBlank(iRotated)) {
-				            		   //iRotated = iRotated - 31 - (254-122); //Leerzeichen rueckwaerts zu Kleinbuchstaben machen
-					                   //iRotated += 254;      //... und wieder in der ASCII Tabelle von vorne anfangen.
-				            			iRotated = AsciiZZZ.fromBlank2LetterLowercaseReverse(iRotated);
-					                   					                   					                  
-						            	//if(iRotated <=96) {
-				            			if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
-						            		//iRotated = iRotated - 6;  //Weiterschieben rueckwaerts von Kleinbuchstaben zu Grossbuchstaben
-				            				iRotated = AsciiZZZ.fromLetterLowercase2LetterUppercaseReverse(iRotated);
-						            	}
-						            	
-						            	//if(iRotated <= 64) {
-				            			if(AsciiZZZ.isLowerLetterUppercase(iRotated)) {
-						            		//iRotated = iRotated - 7;  //Weiterschieben rueckwaerts von Grossbuchstaben zu Ziffern
-				            				iRotated = AsciiZZZ.fromLetterUppercase2NumberReverse(iRotated);
-						            	}
-					            	}					            						            	
-				            	}
-				            	
-				            	rotated = (char)iRotated;
-				            }
-				            result += (char) rotated;
-				        }
-				  
+			   String result = "";			   
+			   int length = input.length();
+			   int iStart = 0;
+
+				//REVERSE, für das decrypten
+		        for (int i = iStart; i < length; i++) {
+		            char ascii = input.charAt(i);
+		            char rotated = ascii;         		            
+		            if(AsciiZZZ.isLetterUppercase(ascii)) {
+		            	rotated = (char)AsciiZZZ.fromLetterUppercaseAdvancedBlankReverse(rotated,iCryptKey);				          
+		            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
+		            	rotated = (char)AsciiZZZ.fromLetterLowercaseAdvancedBlankReverse(rotated, iCryptKey);
+		            }else if(AsciiZZZ.isBlank(ascii)) {				            	
+		            	rotated = (char)AsciiZZZ.fromBlankAdvancedBlankReverse(rotated, iCryptKey);				            				            
+		            }else if (AsciiZZZ.isNumber(ascii)) {				            	
+		            	rotated = (char)AsciiZZZ.fromNumberAdvancedBlankReverse(rotated,iCryptKey);
+		            }
+		            result += (char) rotated;
+		        }				 
 		        sReturn = result;			   
 		   }//end main:
 		   return sReturn;
@@ -370,30 +236,24 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 				   throw ez;
 			   }
 			   
-			   String result = "";
-			   
-			   int length; int iStart;
-			   
-				   //REVERSE, für das decrypten
-				   length = input.length();
-					 iStart = 0;
-				    
-			        for (int i = iStart; i < length; i++) {
-			            char ascii = input.charAt(i);
-			            char rotated = ascii;
-			            		            
-			            //Capital letters are 60 to 90		            		            
-			            //if (ascii > 64 && ascii < 91) {
-			            if(AsciiZZZ.isLetterUppercase(ascii)) {
-			            	rotated = (char) AsciiZZZ.fromLetterUppercaseReverse(ascii,iCryptKey);			            	
-			            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
-			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {			            	
-			            	rotated = (char) AsciiZZZ.fromLetterLowercaseReverse(rotated,iCryptKey);			            	
-			            }else if(AsciiZZZ.isNumber(ascii)) {
-			            	rotated = (char) AsciiZZZ.fromNumberReverse(rotated,iCryptKey);			            	         
-			            }
-			            result += (char) rotated;
-			        }//end for			   
+			   //REVERSE, für das decrypten
+			   String result = "";			   				  
+			   int length = input.length();
+			   int iStart = 0;
+			    
+		        for (int i = iStart; i < length; i++) {
+		            char ascii = input.charAt(i);
+		            char rotated = ascii;
+
+		            if(AsciiZZZ.isLetterUppercase(ascii)) {
+		            	rotated = (char) AsciiZZZ.fromLetterUppercaseReverse(ascii,iCryptKey);			            			          
+		            }else if(AsciiZZZ.isLetterLowercase(ascii)) {			            	
+		            	rotated = (char) AsciiZZZ.fromLetterLowercaseReverse(rotated,iCryptKey);			            	
+		            }else if(AsciiZZZ.isNumber(ascii)) {
+		            	rotated = (char) AsciiZZZ.fromNumberReverse(rotated,iCryptKey);			            	         
+		            }
+		            result += (char) rotated;
+		        }//end for			   
 		        sReturn = result;
 		   }//end main:
 		   return sReturn;
@@ -452,84 +312,35 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	 * @author Fritz Lindhauer, 08.02.2023, 10:39:45
 	 */
 	private static String decryptNumericSimple_(String input, int iCryptKey) throws ExceptionZZZ {
-		   String sReturn = new String();
-		   main:{
-			   if(iCryptKey<0 || iCryptKey >63) {
-				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 26", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				   throw ez;
-			   }
-			   
-			   String result = "";
-			   
-			   int length; int iStart;
-	
-				   //REVERSE, für das decrypten
-				   length = input.length();
-					 iStart = 0;
-				    
-			        for (int i = iStart; i < length; i++) {
-			            char ascii = input.charAt(i);
-			            char rotated = ascii;
-			            if(AsciiZZZ.isBlank(ascii)) {
-			            	//Merke: Leerzeichen bleibt unveraendert
-			            			           
-			        }else if(AsciiZZZ.isLetterUppercase(ascii)) {
-			        	rotated = (char) AsciiZZZ.fromLetterUppercaseReverseTYPECONSTANT(ascii,iCryptKey);
-//			        	 //Capital letters are 60 to 90		            		            
-//			            //if (ascii > 64 && ascii < 91) {
-//			        	
-//			            	rotated = (char) (rotated - iCryptKey);
-//			            	//int iRotated = rotated;
-//			            	//if(iRotated<=64) {
-//			            	if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
-//			            		//iRotated = iRotated+26;
-//			            		//rotated = (char) iRotated;
-//			            		rotated = (char) AsciiZZZ.fromLetterUppercase2LetterUppercaseReverse(rotated);
-//			            	}
-//			            	
-////			                if (rotated > 90-iCryptKey) {
-////			                    rotated += -90 + 64;
-////			                }
-////			                if (rotated < 65-iCryptKey) {
-////			                    rotated += -64 + 90;
-////			                }
-//			            //} else if (ascii > 96 && ascii < 123) { //Lowercase letters are between 97 and 122
-			            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
-			            	rotated = (char) AsciiZZZ.fromLetterLowercaseReverseTYPECONSTANT(ascii, iCryptKey);
-//			            	rotated = (char) (rotated - iCryptKey);
-//			            	int iRotated = rotated;
-//			            	if(AsciiZZZ.isLowerLetterLowercase(iRotated)) {
-//			            	//if(iRotated<=96) {
-//			            		iRotated = AsciiZZZ.fromLetterLowercase2LetterLowercaseReverse(iRotated);
-//			            		
-//			            		//iRotated = iRotated+26;
-//			            		rotated = (char) iRotated;
-//			            	}else if (rotated > 122) {
-//			                    rotated += -122 + 96;
-//			                }else if (rotated < 97) {
-//			                    rotated += -96 + 122;
-//			                }
-			            }else if(AsciiZZZ.isNumber(ascii)) {
-			            	rotated = (char) AsciiZZZ.fromNumberReverseTYPECONSTANT(ascii,iCryptKey);
-			            	
-//			            //Numeric values are between 48 to 57 
-//			            //if (ascii > 47 && ascii < 58) {
-//			            	rotated = (char) (rotated - iCryptKey);
-////			            	int iRotated = rotated;
-////			            	if(iRotated<=47) {
-////			            		iRotated = iRotated+10;
-////			            		rotated = (char) iRotated;
-////			            	}
-//			            	while(AsciiZZZ.isLowerNumber(rotated)) {
-//			            		rotated = (char) AsciiZZZ.fromNumber2NumberReverse(rotated);
-//			            	}
-			            }
-			            //Merke: Leerzeichen bleibt unveraendert
-			            result += (char) rotated;
-			        }			   
-		        sReturn = result;			   
-		   }//end main:
-		   return sReturn;
+	   String sReturn = new String();
+	   main:{
+		   if(iCryptKey<0 || iCryptKey >635) {
+			   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 64", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			   throw ez;
+		   }
+		   
+		   //REVERSE, für das decrypten
+		   String result = "";			  
+		   int length = input.length();
+		   int iStart = 0;
+		   
+		   for (int i = iStart; i < length; i++) {
+			   char ascii = input.charAt(i);
+			   char rotated = ascii;
+	           if(AsciiZZZ.isBlank(ascii)) {
+	        	   //Merke: Leerzeichen bleibt unveraendert			            			          
+		        }else if(AsciiZZZ.isLetterUppercase(ascii)) {
+		        	rotated = (char) AsciiZZZ.fromLetterUppercaseReverseTYPECONSTANT(ascii,iCryptKey);
+		            }else if(AsciiZZZ.isLetterLowercase(ascii)) {
+		            	rotated = (char) AsciiZZZ.fromLetterLowercaseReverseTYPECONSTANT(ascii, iCryptKey);
+		            }else if(AsciiZZZ.isNumber(ascii)) {
+		            	rotated = (char) AsciiZZZ.fromNumberReverseTYPECONSTANT(ascii,iCryptKey);
+		            }			           
+		            result += (char) rotated;
+		    }			   
+	        sReturn = result;			   
+	   }//end main:
+	   return sReturn;
 	}
 	
 	/** Leerzeichen bleibt Leerzeichen.
@@ -545,58 +356,54 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	 * @author Fritz Lindhauer, 08.02.2023, 10:39:45
 	 */
 	private static String encryptNumericSimple_(String input, int iCryptKey) throws ExceptionZZZ {
-		   String sReturn = new String();
-		   main:{
-			   if(iCryptKey<0 || iCryptKey >63) {
-				   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 26", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				   throw ez;
-			   }
-			   
-			   String result = "";
-			   
-			   int length; int iStart;			 
-				 length = input.length();
-				 iStart = 0;
-			    
-		        for (int i = iStart; i < length; i++) {
-		            char ascii = input.charAt(i);
-		            char rotated = ascii;
-		            if(AsciiZZZ.isBlank(ascii)) {
-		            	//Merke: Leerzeichen bleibt unveraendert
-		        }else if(AsciiZZZ.isLetterUppercase(ascii)) {
-		                rotated = (char) (rotated + iCryptKey);
-		                while(!AsciiZZZ.isLetterUppercase(rotated)) {
-			                if(AsciiZZZ.isHigherLetterUppercase(rotated)) {
-			                    rotated += -90 + 64;			                	
-			                }else if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
-			                	rotated += -64 + 90;
-			                }		                		                
-		                }		                		           
-		            }else if (AsciiZZZ.isLetterLowercase(ascii)) {
-		                rotated = (char) (rotated + iCryptKey);
-		                while(!AsciiZZZ.isLetterLowercase(rotated)) {
-			                if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
-			                    rotated += -122 + 96;			                	
-			                }else if (AsciiZZZ.isLowerLetterLowercase(rotated)) {
-			                    rotated += -96 + 122;
-			                }
+	   String sReturn = new String();
+	   main:{
+		   if(iCryptKey<0 || iCryptKey >65) {
+			   ExceptionZZZ ez = new ExceptionZZZ("iCryptKey must range from 0 to 64", iERROR_PARAMETER_VALUE, ROTnumericZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			   throw ez;
+		   }
+		   
+		   String result = "";		 
+		   int length = input.length();
+		   int iStart = 0;
+		    
+	        for (int i = iStart; i < length; i++) {
+	            char ascii = input.charAt(i);
+	            char rotated = ascii;
+	            if(AsciiZZZ.isBlank(ascii)) {
+	            	//Merke: Leerzeichen bleibt unveraendert
+	            }else if(AsciiZZZ.isLetterUppercase(ascii)) {
+	                rotated = (char) (rotated + iCryptKey);
+	                while(!AsciiZZZ.isLetterUppercase(rotated)) {
+		                if(AsciiZZZ.isHigherLetterUppercase(rotated)) {
+		                    rotated += -90 + 64;			                	
+		                }else if(AsciiZZZ.isLowerLetterUppercase(rotated)) {
+		                	rotated += -64 + 90;
+		                }		                		                
+	                }		                		           
+	            }else if (AsciiZZZ.isLetterLowercase(ascii)) {
+	                rotated = (char) (rotated + iCryptKey);
+	                while(!AsciiZZZ.isLetterLowercase(rotated)) {
+		                if(AsciiZZZ.isHigherLetterLowercase(rotated)) {
+		                    rotated += -122 + 96;			                	
+		                }else if (AsciiZZZ.isLowerLetterLowercase(rotated)) {
+		                    rotated += -96 + 122;
 		                }
-		            }else if (AsciiZZZ.isNumber(ascii)) {
-		                rotated = (char) (rotated + iCryptKey);
-		            	while(!AsciiZZZ.isNumber(rotated)) {
-		            		if(AsciiZZZ.isHigherNumber(rotated)) {
-		            			rotated += -57 + 47; 
-		            		}else if(AsciiZZZ.isLowerNumber(rotated)) {
-		            			rotated += -47 + 57;
-		            		}		           
-		                }
-		            	
-		            }		            
-		            result += (char) rotated;
-		        }
-			   			   
-		        sReturn = result;			   
-		   }//end main:
-		   return sReturn;
+	                }
+	            }else if (AsciiZZZ.isNumber(ascii)) {
+	                rotated = (char) (rotated + iCryptKey);
+	            	while(!AsciiZZZ.isNumber(rotated)) {
+	            		if(AsciiZZZ.isHigherNumber(rotated)) {
+	            			rotated += -57 + 47; 
+	            		}else if(AsciiZZZ.isLowerNumber(rotated)) {
+	            			rotated += -47 + 57;
+	            		}		           
+	                }		            	
+	            }		            
+	            result += (char) rotated;
+	        }			   			  
+	        sReturn = result;			   
+	   }//end main:
+	   return sReturn;
 	}
 }

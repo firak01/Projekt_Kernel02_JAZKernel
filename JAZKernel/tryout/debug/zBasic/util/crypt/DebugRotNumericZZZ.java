@@ -23,7 +23,7 @@ public class DebugRotNumericZZZ {
         	boolean bSkip = false;
         	
         	//Zum schnellen Debuggen, falls eine ABWEICHUNG auftritt
-        	bSkip=false;
+        	bSkip=true;
         	if(!bSkip) {
         		System.out.println("\n###################################");
 	        	System.out.println("### DEBUG EINZELWERT - SPEZIELL EINGESTELLT ########");
@@ -62,10 +62,11 @@ public class DebugRotNumericZZZ {
         	//#######################################################
         	//Alle Verschiebungen testen, per bSkip ein-/ausschaltbar
         	//#######################################################
-        	bSkip=true;
+        	bSkip=false;
         	if(!bSkip) {
 	        	System.out.println("\n###################################");
 	        	System.out.println("### OHNE WEITERE ARGUMENTE ########");
+	        	
 	        	iCryptKeyMax=64;
 	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
 		        	System.out.println("### SCHIEBE UM "+ iSchieber);	       					        
@@ -80,12 +81,11 @@ public class DebugRotNumericZZZ {
 	        	}
         	}
         	
-        	bSkip=true;
+        	bSkip=false;
 	        	if(!bSkip) {
 	        	System.out.println("\n#############################");
 	        	System.out.println("### VERWENDE NUR NUMERIC, ohne blank ########");
-	        	//TODOGOON20230217; //Weil das Leerzeichen nicht berücksichtigt wird, 
-	        	                  //gibt es hier wohl Abweichungen, nachdem alles mit Leerzeichen entwickelt wurde
+	        	
 	        	iCryptKeyMax=64;
 	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
 		        	System.out.println("### SCHIEBE UM "+ iSchieber);
@@ -104,6 +104,7 @@ public class DebugRotNumericZZZ {
         	if(!bSkip) {
 	        	System.out.println("\n###################################");
 	        	System.out.println("### VERWENDE NUMERIC,BLANK ########");
+	        	
 	        	iCryptKeyMax=64;
 	        	for(int iSchieber=0;iSchieber<=iCryptKeyMax;iSchieber++) {
 		        	System.out.println("### SCHIEBE UM "+ iSchieber);
