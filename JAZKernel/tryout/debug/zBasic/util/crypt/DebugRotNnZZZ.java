@@ -30,7 +30,7 @@ public class DebugRotNnZZZ {
 	        System.out.println(roundTrip);
 	        System.out.println("###################");
 	       	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, IROTUserZZZ.FLAGZ.USEUPPERCASE.name());
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKeyLength, ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name());
 			rotNn = objCrypt.encrypt(input);
 			roundTrip = objCrypt.decrypt(rotNn);
 			

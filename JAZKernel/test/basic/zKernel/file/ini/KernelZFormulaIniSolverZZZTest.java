@@ -129,8 +129,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
 			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
-			String sFlagNumeric = IROTUserZZZ.FLAGZ.USENUMERIC.name();
-			String sFlagUppercase = IROTUserZZZ.FLAGZ.USEUPPERCASE.name();
+			String sFlagNumeric = ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();
+			String sFlagUppercase = ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
 			String sFlagBlank = IROTUserZZZ.FLAGZ.USEBLANK.name();
 			String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");

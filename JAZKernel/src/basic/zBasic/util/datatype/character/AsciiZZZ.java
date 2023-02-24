@@ -561,7 +561,7 @@ public class AsciiZZZ {
     	//darum in einer Schleife
         boolean bCorrectCharacterFound=false;
         do {
-        	if(AsciiZZZ.isLetterLowercase(iReturn)) {
+if(AsciiZZZ.isLetterLowercase(iReturn)) {
 				bCorrectCharacterFound=true;
 			}else{
 	            if(AsciiZZZ.isHigherLetterLowercase(iReturn)) {

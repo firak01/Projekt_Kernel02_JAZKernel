@@ -5,6 +5,6 @@ public interface IROTUserConstantZZZ {
 		//Merke: Diese Flags beziehen sich auf den Characterpool, d.h. teilweise nur wichtig in IVigenereNnZZZ
 	    //       Die Flags werden aber auch teilweise in den ROTnumeric Algorithmen verwendet 
 		public enum FLAGZ{
-			USENUMERIC,USEUPPERCASE,USELOWERCASE,USEBLANK
+			USESTRATEGY_CASECHANGE,USEBLANK
 		}	
 }

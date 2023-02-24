@@ -83,9 +83,9 @@ class Vig_DecodeNnZZZmain { 	// Vigenereentschluesselung mit bekanntem Schluesse
     	}
     }
     VigenereNnUiZZZ objVigenere = new VigenereNnUiZZZ(SchluesselWort, sFilePath);
-    objVigenere.setFlag(IROTUserZZZ.FLAGZ.USELOWERCASE, true);
-    objVigenere.setFlag(IROTUserZZZ.FLAGZ.USEUPPERCASE, true);
-    objVigenere.setFlag(IROTUserZZZ.FLAGZ.USENUMERIC, true);
+    objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE, true);
+    objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE, true);
+    objVigenere.setFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC, true);
     objVigenere.setFlag(IROTUserZZZ.FLAGZ.USEBLANK, true);
 	objVigenere.isFileOriginalEncrypted(true);
 	    

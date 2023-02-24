@@ -94,9 +94,9 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		String sCharacterPoolAdditional=this.getCharacterPoolAdditional();
 		
 		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
-		boolean bUseUpperCase = this.getFlag(IROTUserZZZ.FLAGZ.USEUPPERCASE);
-		boolean bUseLowerCase = this.getFlag(IROTUserZZZ.FLAGZ.USELOWERCASE);
-		boolean bUseNumeric = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
+		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
+		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
 		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
 		return ROTnnZZZ.encrypt(sInput, sCharacterPoolBase, objCharacterMissingReplacement, iCryptKey,  bUseUpperCase, bUseLowerCase, bUseNumeric, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);
@@ -108,9 +108,9 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		String sCharacterPoolAdditional=this.getCharacterPoolAdditional();
 				
 		CharacterExtendedZZZ objCharacterMissingReplacement = this.getCharacterMissingReplacment();
-		boolean bUseUpperCase = this.getFlag(IROTUserZZZ.FLAGZ.USEUPPERCASE);
-		boolean bUseLowerCase = this.getFlag(IROTUserZZZ.FLAGZ.USELOWERCASE);
-		boolean bUseNumeric = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+		boolean bUseUpperCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
+		boolean bUseLowerCase = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
+		boolean bUseNumeric = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
 		boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
 		return ROTnnZZZ.decrypt(sInput, sCharacterPoolBase, objCharacterMissingReplacement, iCryptKey, bUseUpperCase, bUseLowerCase, bUseNumeric, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);

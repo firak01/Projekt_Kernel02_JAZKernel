@@ -44,7 +44,7 @@ public class DebugRotNn_MyPassordZZZ {
         try {        	
         	System.out.println("###################");
         	
-			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKey, IROTUserZZZ.FLAGZ.USEUPPERCASE.name());
+			ROTnnZZZ objCrypt = new ROTnnZZZ(sCharacterPool, iKey, ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name());
 			String rotNn = objCrypt.encrypt(input);
 			String roundTrip = objCrypt.decrypt(rotNn);
 			

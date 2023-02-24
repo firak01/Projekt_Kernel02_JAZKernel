@@ -71,30 +71,30 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 	@Override
 	public String encrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
-		boolean bNumeric = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+		boolean bCaseChange = this.getFlag(IROTUserZZZ.FLAGZ.USESTRATEGY_CASECHANGE);
 		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
-		return ROTnumericZZZ.encrypt(sInput, iCryptKey, bNumeric,bUseBlank);
+		return ROTnumericZZZ.encrypt(sInput, iCryptKey, bCaseChange,bUseBlank);
 	}
 	@Override
 	public String decrypt(String sInput) throws ExceptionZZZ {
 		int iCryptKey = this.getCryptNumber();
-		boolean bNumeric = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+		boolean bCaseChange = this.getFlag(IROTUserZZZ.FLAGZ.USESTRATEGY_CASECHANGE);
 		boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
-		return ROTnumericZZZ.decrypt(sInput, iCryptKey, bNumeric,bUseBlank);
+		return ROTnumericZZZ.decrypt(sInput, iCryptKey, bCaseChange,bUseBlank);
 	}
 	
 	
 	//###########################################
-	public static String encrypt(String input, int iCryptKey, boolean bNumeric, boolean bBlank) throws ExceptionZZZ{
-		return ROTnumericZZZ.crypt_(input, iCryptKey, bNumeric,bBlank, false);
+	public static String encrypt(String input, int iCryptKey, boolean bCaseChange, boolean bBlank) throws ExceptionZZZ{
+		return ROTnumericZZZ.crypt_(input, iCryptKey, bCaseChange,bBlank, false);
 	}
-	public static String decrypt(String input, int iCryptKey, boolean bNumeric, boolean bBlank) throws ExceptionZZZ{
-		return ROTnumericZZZ.crypt_(input, iCryptKey, bNumeric,bBlank, true);
+	public static String decrypt(String input, int iCryptKey, boolean bCaseChange, boolean bBlank) throws ExceptionZZZ{
+		return ROTnumericZZZ.crypt_(input, iCryptKey, bCaseChange,bBlank, true);
 	}
-	private static String crypt_(String input, int iCryptKey, boolean bNumeric, boolean bBlank, boolean bReverse) throws ExceptionZZZ {
+	private static String crypt_(String input, int iCryptKey, boolean bCaseChange, boolean bBlank, boolean bReverse) throws ExceptionZZZ {
 	   String sReturn = new String();
 	   main:{		  
-		   if(!bNumeric) {
+		   if(!bCaseChange) {
 			   if(bReverse) {
 				   sReturn = ROTnumericZZZ.decryptNumericSimple_(input, iCryptKey);
 			   }else {

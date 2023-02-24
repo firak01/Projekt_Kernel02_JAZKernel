@@ -140,9 +140,9 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 			String sCharacterPoolBase = this.getCharacterPoolBase();
 			String sCharacterPoolAdditional = this.getCharacterPoolAdditional();
 			
-			boolean bUseUppercasePool = this.getFlag(IROTUserZZZ.FLAGZ.USEUPPERCASE);
-			boolean bUseLowercasePool = this.getFlag(IROTUserZZZ.FLAGZ.USELOWERCASE);
-			boolean bUseNumericPool = this.getFlag(IROTUserZZZ.FLAGZ.USENUMERIC);
+			boolean bUseUppercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE);
+			boolean bUseLowercasePool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USELOWERCASE);
+			boolean bUseNumericPool = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USENUMERIC);
 			boolean bUseBlank = this.getFlag(IROTUserZZZ.FLAGZ.USEBLANK);
 			boolean bUseAdditionalCharacter = this.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER);
 			String abcABC = CharacterExtendedZZZ.computeCharacterPoolExtended(sCharacterPoolBase, bUseUppercasePool, bUseLowercasePool, bUseNumericPool, bUseBlank, bUseAdditionalCharacter,sCharacterPoolAdditional);

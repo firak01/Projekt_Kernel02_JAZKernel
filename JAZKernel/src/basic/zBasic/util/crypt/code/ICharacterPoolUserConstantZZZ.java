@@ -5,7 +5,7 @@ public interface ICharacterPoolUserConstantZZZ extends IROTUserConstantZZZ{
 		//Merke: Diese Flags beziehen sich auf den Characterpool, d.h. teilweise nur wichtig in IVigenereNnZZZ
 	    //       Die Flags werden aber auch teilweise in den ROTnumeric Algorithmen verwendet 
 		public enum FLAGZ{
-			USEADDITIONALCHARACTER,USECHARACTERPOOL
+			USESTRATEGY_CHARACTERPOOL, USEADDITIONALCHARACTER,USENUMERIC,USEUPPERCASE,USELOWERCASE
 		}	
 		
 		public static char cCHARACTER_MISSING_REPLACEMENT_DEFAULT = '¦'; // ein anderer schoener Charakter wäre '¶'

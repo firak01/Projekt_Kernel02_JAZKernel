@@ -200,9 +200,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         		//###############################################################
         		this.questionNumericKey_(hmVariable);        		
         		//###############################################################        		
-        		this.questionUseNumeric_(hmVariable, null); 
-        		//###############################################################
-        		this.questionUseBlank_(hmVariable,null);
+        		this.questionUseStrategy_CaseChange_(hmVariable, null);         		
         	}
 		}
 		
@@ -237,7 +235,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             		this.isCurrentInputValid(true);	
             		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT);			
             	}
-        		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
+        		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL, true);
         	}
         	String sCharacterPool = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
     		
@@ -330,7 +328,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             		this.isCurrentInputValid(true);	
             		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL, CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT);			
             	}
-        		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
+        		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL, true);
         	}
         	String sCharacterPool = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
     		
@@ -423,6 +421,28 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         	}
 		}
 		
+		
+		private void questionUseStrategy_CaseChange_(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
+			//#####################################################################
+    		//### Frage nach der Stragegy "CaseChange"        	
+        	if(!this.isCurrentInputFinished()) {
+        		String sInput = KeyPressUtilZZZ.makeQuestionYesNoCancel(this.getInputReader(), "Wollen Sie als Strategie den Austausch zwischen den Typen Gross-/Kleinbuchstaben und Numerischen Zeichen verwenden (y) oder soll der Austausch innerhalb des Typs bleiben (N)?");	        		
+        		if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyCancel)){
+        			this.cancelToMenue(hmVariable);
+        		}else if(StringZZZ.equalsIgnoreCase(sInput, IKeyPressConstantZZZ.cKeyNo)) {
+        			this.isCurrentInputValid(true);	
+        			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CASECHANGE, BooleanZZZ.stringToBoolean(sInput));
+            	}else {
+            		this.isCurrentInputValid(true);	            		
+            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CASECHANGE, BooleanZZZ.stringToBoolean(sInput));
+            		
+            		//###############################################################
+            		this.questionUseBlank_(hmVariable,null);
+            	}	        		
+    		}
+    	}
+		
+		
 		private void questionUseNumeric_(HashMapExtendedZZZ hmVariable, String sCharacterPool) throws ExceptionZZZ {
 			//#####################################################################
     		//### Frage nach Zahlen        	
@@ -443,7 +463,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	            	}else {
 	            		this.isCurrentInputValid(true);	
 	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_NUMERIC, BooleanZZZ.stringToBoolean(sInput));
-	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
 	            	}	        		
         		}
         	}
@@ -469,7 +489,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	            	}else {
 	            		this.isCurrentInputValid(true);	
 	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_BLANK, BooleanZZZ.stringToBoolean(sInput));
-	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL, BooleanZZZ.stringToBoolean(sInput));
 	            	}	        		
         		}
         	}
@@ -494,17 +514,17 @@ import basic.zBasic.util.datatype.string.StringZZZ;
             			System.out.println("Geben Sie den gewuenschten Standard-Zusatzbuchstaben Zeichenvorrat als String ein, oder keine Zusatzbuchstaben.");		                	
                     	sInput = this.getInputReader().nextLine();                        	
                     	if(StringZZZ.isEmpty(sInput)) {
-                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, false);
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL, false);
                     		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, false);
                     		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL, "");
                     	}else {
-                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
+                    		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL, true);
                     		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, true);
                     		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL, sInput);
                     	}	                        		                        		                                            		        				                			                		                		                			                	              
 	            	}else{	            		
 	            		//STANDARD-FALL	            		
-	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_CHARACTERPOOL, true);
+	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_USE_STRATEGY_CHARACTERPOOL, true);
                 		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_FLAG_CHARACTER_ADDITIONAL, true);
 	            		if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL, CharacterExtendedZZZ.sCHARACTER_ADDITIONAL);        					            			      
 	            	}	        		

@@ -127,7 +127,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				}
 				
 				//b) CharacterPool setzen, wenn verwendet
-				if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USECHARACTERPOOL.name())) {
+				if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
 					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
 					if(!StringZZZ.isEmpty(sInput)) {
 						objCrypt.setCharacterPoolBase(sInput);
