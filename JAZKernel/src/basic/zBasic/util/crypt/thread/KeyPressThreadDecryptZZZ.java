@@ -112,16 +112,13 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 
         		//######################################################################
 	        	//### Eingabe des zu verschluesselnden Textes
-	        	//Beispieltexte zum Rauskopieren, enthalten alles relevante...
-	        	//abcdefgHIJK1234abcdefg
-	        	//Das ist das 4711 Haus der Riesenmaus 0815
-	        	
-        		
+	        	//Merke: Verschluesselte Beispiele kann man sich mit EncryptConsoleMainZZZ erstellen.
+				
         		//Merke Fehler abfangen, wie z.B.: Exception in thread "Thread-1" java.lang.IllegalArgumentException: Illegal character 'ß'
 				//Das passiert beim Aufruf der Verschlüsselung selbst.
-	        	System.out.println("Geben Sie den zu verschluesselnden Text als String ein");
+	        	System.out.println("Geben Sie den zu entschluesselnden Text als String ein");
             	String sInput = this.getInputReader().nextLine();
-            	if(hmVariable!=null) hmVariable.put(KeyPressThreadDecryptZZZ.sINPUT_TEXT_UNCRYPTED, sInput);
+            	if(hmVariable!=null) hmVariable.put(KeyPressThreadDecryptZZZ.sINPUT_TEXT_ENCRYPTED, sInput);
             	if(StringZZZ.isEmpty(sInput)) {
             		this.cancelToMenue(hmVariable);
             	}

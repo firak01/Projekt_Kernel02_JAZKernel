@@ -80,8 +80,9 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			
 			if(hmVariable!=null) {
 				//Ausgabewerte zurücksetzen
-				hmVariable.remove(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_CRYPTED);
+				hmVariable.remove(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_ENCRYPTED);
 				hmVariable.remove(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_UNCRYPTED);
+				hmVariable.remove(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_DECRYPTED);
 			}
 					
 			//Die eingegebenen Variablen über eine HashMap aus der Console für die Steuereung der Verschlüsselung nutzen. 			
@@ -150,7 +151,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_TEXT_UNCRYPTED);				
 				try {
 					String sOutput = objCrypt.encrypt(sInput);
-					hmVariable.put(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_CRYPTED, sOutput);
+					hmVariable.put(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_ENCRYPTED, sOutput);
 					
 					System.out.println("Verschluesselter Wert:\n"+sOutput);
 					String sOutput2 = objCrypt.decrypt(sOutput);
