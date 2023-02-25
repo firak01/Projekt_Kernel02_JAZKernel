@@ -67,6 +67,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			}else {
 				sCharacterPoolBase = sCharacterPoolBaseIn;
 			}
+			sReturn = sCharacterPoolBase;
 			
 			
 			String sCharacterPoolAdditional="";
@@ -80,7 +81,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			//Wichtig: Das Leerzeichen bei der Erweiterung der Liste raus. Spätestens beim Dekodieren faellt einem die andere Position (beim Umdrehen des Strings) auf die Fuesse.
 			if(bUseUppercase) {
 				String stemp = sCharacterPoolBase.trim().toUpperCase();
-				sReturn = StringZZZ.appendMissing(sCharacterPoolBase, stemp);
+				sReturn = StringZZZ.appendMissing(sReturn, stemp);
 			}
 			
 			if(bUseLowercase) {
