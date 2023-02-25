@@ -1,4 +1,4 @@
-package use.zBasic.util.console;
+package use.zBasic.util.console.example;
 
 import java.io.BufferedReader;
 import java.io.File;

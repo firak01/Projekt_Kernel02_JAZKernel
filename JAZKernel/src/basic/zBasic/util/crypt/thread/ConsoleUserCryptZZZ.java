@@ -80,13 +80,13 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 			
 			if(hmVariable!=null) {
 				//Ausgabewerte zurücksetzen
-				hmVariable.remove(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_CRYPTED);
-				hmVariable.remove(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_UNCRYPTED);
+				hmVariable.remove(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_CRYPTED);
+				hmVariable.remove(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_UNCRYPTED);
 			}
 					
 			//Die eingegebenen Variablen über eine HashMap aus der Console für die Steuereung der Verschlüsselung nutzen. 			
 			//String sCipher = (String) hmVariable.get(CryptCipherAlgorithmMappedValueZZZ.CryptCipherTypeZZZ.ROT13.getAbbreviation());
-			String sCipher = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CIPHER);
+			String sCipher = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CIPHER);
 			if(!StringZZZ.isEmpty(sCipher)) {
 				ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(sCipher);
 								
@@ -94,7 +94,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				if(objCrypt.getSubtype()==CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()) {
 					//A) Für ROT-Algorithmen
 					//0) NumericKey
-					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_KEY_NUMERIC);
+					sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_KEY_NUMERIC);
 					if(!StringZZZ.isEmpty(sInput)) {
 						Integer intCryptKey = new Integer(sInput);
 						int iCryptKey = intCryptKey.intValue();
@@ -104,7 +104,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				}else if(objCrypt.getSubtype()==CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal()) {
 					//B) Für Vigenere-Algorithmen
 					//0) StringKey
-					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_KEY_STRING);
+					sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_KEY_STRING);
 					if(!StringZZZ.isEmpty(sInput)) {
 						String sCryptKey = sInput;						
 						objCrypt.setCryptKey(sCryptKey);
@@ -117,10 +117,10 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++				
 				//a) alle Flags setzen und ggfs. auswerten
-				String[] saFlags = hmVariable.getKeysAsStringStartingWith(KeyPressThreadCryptZZZ.sINPUT_FLAG);
+				String[] saFlags = hmVariable.getKeysAsStringStartingWith(KeyPressThreadEncryptZZZ.sINPUT_FLAG);
 				if(saFlags!=null) {
 					for(String stemp : saFlags) {
-						String sFlagName = StringZZZ.right(stemp,KeyPressThreadCryptZZZ.sINPUT_FLAG);
+						String sFlagName = StringZZZ.right(stemp,KeyPressThreadEncryptZZZ.sINPUT_FLAG);
 						Boolean bValue = (Boolean) hmVariable.get(stemp);
 						objCrypt.setFlag(sFlagName, bValue);
 					}
@@ -128,7 +128,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				
 				//b) CharacterPool setzen, wenn verwendet
 				if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
-					sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL);
+					sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CHARACTERPOOL);
 					if(!StringZZZ.isEmpty(sInput)) {
 						objCrypt.setCharacterPoolBase(sInput);
 						
@@ -139,7 +139,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 					
 					//ba) Zusaetzlichen Zeichenpool setzen, wenn verwendet					
 					if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
-						sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL);
+						sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL);
 						if(!StringZZZ.isEmpty(sInput)) {
 							objCrypt.setCharacterPoolAdditional(sInput);
 						}
@@ -147,14 +147,14 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 				}						
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
 								
-				sInput = (String) hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_TEXT_UNCRYPTED);				
+				sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_TEXT_UNCRYPTED);				
 				try {
 					String sOutput = objCrypt.encrypt(sInput);
-					hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_CRYPTED, sOutput);
+					hmVariable.put(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_CRYPTED, sOutput);
 					
 					System.out.println("Verschluesselter Wert:\n"+sOutput);
 					String sOutput2 = objCrypt.decrypt(sOutput);
-					hmVariable.put(KeyPressThreadCryptZZZ.sOUTPUT_TEXT_UNCRYPTED, sOutput2);
+					hmVariable.put(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_UNCRYPTED, sOutput2);
 					System.out.println("Wieder entschluesselter Wert:\n"+sOutput2);
 					
 					bReturn = true;

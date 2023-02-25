@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
-import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
+import basic.zBasic.util.crypt.thread.KeyPressThreadEncryptZZZ;
 import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -103,7 +103,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
         }
         
         public void cancelToMenue(HashMapExtendedZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
-			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyNo));//wieder so als würde das Menü nicht übersprungen.
+			if(hmVariable!=null) hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyNo));//wieder so als würde das Menü nicht übersprungen.
 			this.cancelToMenue();
 		}
 		public void cancelToMenue() {			
@@ -114,7 +114,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		}
 		
         public void validToMenue(HashMapExtendedZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
-			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyNo));//so, damit die Eingabe der Menue-Argumente übersprungen.
+			if(hmVariable!=null) hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyNo));//so, damit die Eingabe der Menue-Argumente übersprungen.
 			this.validToMenue();
 		}
 		public void validToMenue() {			
@@ -125,7 +125,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		}
 		
 		public void validSkipMenue(HashMapExtendedZZZ hmVariable) throws IllegalArgumentException, ExceptionZZZ {
-			if(hmVariable!=null) hmVariable.put(KeyPressThreadCryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyYes)); //so, damit die Eingabe der Menue-Argumente uebersprungen wird 
+			if(hmVariable!=null) hmVariable.put(KeyPressThreadEncryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS, BooleanZZZ.charToBoolean(IKeyPressConstantZZZ.cKeyYes)); //so, damit die Eingabe der Menue-Argumente uebersprungen wird 
 			this.validSkipMenue();
 		}
 		public void validSkipMenue() {			
@@ -208,7 +208,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 		            	//while(!this.getConsole().isKeyPressThreadFinished()) {
 		            	if(!this.isInputAllFinished()) {
 			        	    if(hmVariable!=null) {
-			        	    	Object obj = hmVariable.get(KeyPressThreadCryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS);
+			        	    	Object obj = hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_BOOLEAN_SKIP_ARGUMENTS);
 			        	    	if(obj==null) {
 			        	    		bSkipArguments = false;
 			        	    	}else if (obj instanceof Boolean) {

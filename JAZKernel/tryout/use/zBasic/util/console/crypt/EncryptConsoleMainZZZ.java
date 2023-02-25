@@ -1,13 +1,14 @@
-package debug.zBasic.util.crypt.thread;
+package use.zBasic.util.console.crypt;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.console.multithread.ConsoleZZZ;
 import basic.zBasic.util.console.multithread.IConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
+import basic.zBasic.util.console.multithread.IKeyPressThreadZZZ;
 import basic.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
-import basic.zBasic.util.crypt.thread.KeyPressThreadCryptZZZ;
+import basic.zBasic.util.crypt.thread.KeyPressThreadEncryptZZZ;
 
-public class DebugCryptConsoleMainZZZ {
+public class EncryptConsoleMainZZZ {
 
 	public static void main(String[] args) {
 		try {
@@ -23,7 +24,8 @@ public class DebugCryptConsoleMainZZZ {
 			//Merke: Ziel ist es, das was in DebugRot13ZZZ (oder ähnlichen) gemacht wird in einer Endlosschleife durchzuführen.
 			//Der ConsoleUser und die Eingabe so eng miteinander verknüpft, dass man hier den KeyPressCryptThreadZZZ
 			//übergeben wird, der das Verhalten des ...UserCrypt... steuert.
-			KeyPressThreadCryptZZZ objKeyPressThread = new KeyPressThreadCryptZZZ(objConsole);
+			//KeyPressThreadEncryptZZZ objKeyPressThread = new KeyPressThreadEncryptZZZ(objConsole);
+			IKeyPressThreadZZZ objKeyPressThread = new KeyPressThreadEncryptZZZ(objConsole);
 			objConsole.setKeyPressThread(objKeyPressThread);
 						
 			//TODOGOON20230203; Übergib die Argumente aus objConsole and objConsoleUser, analog zu KernelKernelZZZ und dort an FileIniZZZ
