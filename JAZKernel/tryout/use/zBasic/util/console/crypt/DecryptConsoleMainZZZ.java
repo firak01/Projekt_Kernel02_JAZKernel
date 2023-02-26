@@ -5,7 +5,8 @@ import basic.zBasic.util.console.multithread.ConsoleZZZ;
 import basic.zBasic.util.console.multithread.IConsoleUserZZZ;
 import basic.zBasic.util.console.multithread.IConsoleZZZ;
 import basic.zBasic.util.console.multithread.IKeyPressThreadZZZ;
-import basic.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
+import basic.zBasic.util.crypt.thread.ConsoleUserDecryptZZZ;
+import basic.zBasic.util.crypt.thread.ConsoleUserEncryptZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadDecryptZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadEncryptZZZ;
 
@@ -49,7 +50,7 @@ public class DecryptConsoleMainZZZ {
 			
 			//Merke: Ziel ist, dass der ConsoleUser-Thread und der KeyPressThread "Daten" miteinander austauschen können. 
 			//IConsoleUserZZZ objConsoleUser = new ConsoleUserCryptZZZ(objConsole,"DEBUG");
-			IConsoleUserZZZ objConsoleUser = new ConsoleUserCryptZZZ(objConsole);
+			IConsoleUserZZZ objConsoleUser = new ConsoleUserDecryptZZZ(objConsole);
 			objConsole.setConsoleUserObject(objConsoleUser);
 			objConsole.start();
 			

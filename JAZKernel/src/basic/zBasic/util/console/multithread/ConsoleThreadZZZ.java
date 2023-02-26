@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
-import basic.zBasic.util.crypt.thread.ConsoleUserCryptZZZ;
+import basic.zBasic.util.crypt.thread.ConsoleUserEncryptZZZ;
 
 	public class ConsoleThreadZZZ implements Runnable,IConsoleThreadZZZ, IConsoleUserZZZ {
 		private IConsoleZZZ objConsole = null;		

@@ -13,20 +13,20 @@ import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
-public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
+public class ConsoleUserEncryptZZZ extends AbstractConsoleUserCryptZZZ {
 	private static final long serialVersionUID = 1L;
 
-	public ConsoleUserCryptZZZ() throws ExceptionZZZ {
+	public ConsoleUserEncryptZZZ() throws ExceptionZZZ {
 		super();
 	}
 	
-	public ConsoleUserCryptZZZ(IConsoleZZZ objConsole) throws ExceptionZZZ {
+	public ConsoleUserEncryptZZZ(IConsoleZZZ objConsole) throws ExceptionZZZ {
 		super(objConsole);
 	}
-	public ConsoleUserCryptZZZ(IConsoleZZZ objConsole, String sFlag) throws ExceptionZZZ {
+	public ConsoleUserEncryptZZZ(IConsoleZZZ objConsole, String sFlag) throws ExceptionZZZ {
 		super(objConsole, sFlag);
 	}
-	public ConsoleUserCryptZZZ(IConsoleZZZ objConsole, String[] saFlag) throws ExceptionZZZ {
+	public ConsoleUserEncryptZZZ(IConsoleZZZ objConsole, String[] saFlag) throws ExceptionZZZ {
 		super(objConsole, saFlag);
 	}
 	
@@ -155,7 +155,7 @@ public class ConsoleUserCryptZZZ extends AbstractConsoleUserZZZ {
 					
 					System.out.println("Verschluesselter Wert:\n"+sOutput);
 					String sOutput2 = objCrypt.decrypt(sOutput);
-					hmVariable.put(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_UNCRYPTED, sOutput2);
+					hmVariable.put(KeyPressThreadEncryptZZZ.sOUTPUT_TEXT_DECRYPTED, sOutput2);
 					System.out.println("Wieder entschluesselter Wert:\n"+sOutput2);
 					
 					bReturn = true;

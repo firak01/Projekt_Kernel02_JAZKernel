@@ -111,14 +111,14 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 			main:{
 
         		//######################################################################
-	        	//### Eingabe des zu verschluesselnden Textes
+	        	//### Eingabe des zu verarbeitenden/hier: entschluesslenden Textes
 	        	//Merke: Verschluesselte Beispiele kann man sich mit EncryptConsoleMainZZZ erstellen.
 				
         		//Merke Fehler abfangen, wie z.B.: Exception in thread "Thread-1" java.lang.IllegalArgumentException: Illegal character 'ß'
 				//Das passiert beim Aufruf der Verschlüsselung selbst.
 	        	System.out.println("Geben Sie den zu entschluesselnden Text als String ein");
             	String sInput = this.getInputReader().nextLine();
-            	if(hmVariable!=null) hmVariable.put(KeyPressThreadDecryptZZZ.sINPUT_TEXT_ENCRYPTED, sInput);
+            	if(hmVariable!=null) hmVariable.put(KeyPressThreadDecryptZZZ.sINPUT_TEXT_UNCRYPTED, sInput);
             	if(StringZZZ.isEmpty(sInput)) {
             		this.cancelToMenue(hmVariable);
             	}
