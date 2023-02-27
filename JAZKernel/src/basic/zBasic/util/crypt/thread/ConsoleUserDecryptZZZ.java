@@ -66,10 +66,7 @@ public class ConsoleUserDecryptZZZ extends AbstractConsoleUserCryptZZZ {
 			if(this.getFlag(IFlagUserZZZ.FLAGZ.DEBUG)) System.out.println("####### CryptThread ENDE: WARTE AUF FERTIGE KONSOLENEINGABE ######");
 			
 			
-			//this.isOutputAllFinished(false);
-			
-			TODOGOON20230226;//Start: Verschiebe allgemeingültiges in die gemeinsam genutzte abstracte Klasse AbstractConsoleUserCryptZZZ.
-			
+			//this.isOutputAllFinished(false);			
 			this.iCounter++;
 			if(this.getFlag(IFlagUserZZZ.FLAGZ.DEBUG)) System.out.println("Zähler crypt: " + iCounter);
 
@@ -78,6 +75,7 @@ public class ConsoleUserDecryptZZZ extends AbstractConsoleUserCryptZZZ {
 				String sDebug = hmVariable.debugString("|","<BR>");
 				System.out.println(sDebug);
 			}
+			
 			
 			if(hmVariable!=null) {
 				//Ausgabewerte zurücksetzen
@@ -91,63 +89,12 @@ public class ConsoleUserDecryptZZZ extends AbstractConsoleUserCryptZZZ {
 			String sCipher = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CIPHER);
 			if(!StringZZZ.isEmpty(sCipher)) {
 				ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(sCipher);
-								
-				//+++ Zusätzlich gesetzte Argumente				
-				if(objCrypt.getSubtype()==CryptAlgorithmMaintypeZZZ.TypeZZZ.ROT.ordinal()) {
-					//A) Für ROT-Algorithmen
-					//0) NumericKey
-					sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_KEY_NUMERIC);
-					if(!StringZZZ.isEmpty(sInput)) {
-						Integer intCryptKey = new Integer(sInput);
-						int iCryptKey = intCryptKey.intValue();
-						objCrypt.setCryptNumber(iCryptKey);
-					}
-
-				}else if(objCrypt.getSubtype()==CryptAlgorithmMaintypeZZZ.TypeZZZ.VIGENERE.ordinal()) {
-					//B) Für Vigenere-Algorithmen
-					//0) StringKey
-					sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_KEY_STRING);
-					if(!StringZZZ.isEmpty(sInput)) {
-						String sCryptKey = sInput;						
-						objCrypt.setCryptKey(sCryptKey);
-					}
-										
-				}else {
-					System.out.println("Der Algorithmus-Subtyp wird nicht behandelt.");
-					bReturn = false;
+				boolean bSuccess = this.preProcessingFlags(objCrypt, hmVariable);
+				if(!bSuccess) {					
+					System.out.println("PreProcessing nicht erfolgreich, Abbruch");
+					bReturn=false;
+					break main;
 				}
-				
-				//+++++++++++++++++++++++++++++++++++++++++++++++++				
-				//a) alle Flags setzen und ggfs. auswerten
-				String[] saFlags = hmVariable.getKeysAsStringStartingWith(KeyPressThreadEncryptZZZ.sINPUT_FLAG);
-				if(saFlags!=null) {
-					for(String stemp : saFlags) {
-						String sFlagName = StringZZZ.right(stemp,KeyPressThreadEncryptZZZ.sINPUT_FLAG);
-						Boolean bValue = (Boolean) hmVariable.get(stemp);
-						objCrypt.setFlag(sFlagName, bValue);
-					}
-				}
-				
-				//b) CharacterPool setzen, wenn verwendet
-				if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
-					sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CHARACTERPOOL);
-					if(!StringZZZ.isEmpty(sInput)) {
-						objCrypt.setCharacterPoolBase(sInput);
-						
-						//... und dann auch das fehlende Zeichen setzen
-						CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ('¶');//Mal was anderes verwenden als den "DefaultBuchstaben" aus ICharacterPoolUserConstantZZZ
-						objCrypt.setCharacterMissingReplacement(objCharacterMissingReplacement);
-					}
-					
-					//ba) Zusaetzlichen Zeichenpool setzen, wenn verwendet					
-					if(objCrypt.getFlag(ICharacterPoolUserZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
-						sInput = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CHARACTERPOOL_ADDITIONAL);
-						if(!StringZZZ.isEmpty(sInput)) {
-							objCrypt.setCharacterPoolAdditional(sInput);
-						}
-					}
-				}	
-				TODOGOON20230226;//ENDE: Verschiebe allgemeingültiges in die gemeinsam genutzte abstracte Klasse AbstractConsoleUserCryptZZZ.
 				
 				//+++++++++++++++++++++++++++++++++++++++++++++++++
 								
