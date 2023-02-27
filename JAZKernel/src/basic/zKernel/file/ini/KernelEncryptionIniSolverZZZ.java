@@ -123,16 +123,25 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 					 					
 					 KernelEncryption_CharacterPoolZZZ objCharacterPool = new KernelEncryption_CharacterPoolZZZ();
 					 if(objCharacterPool.isExpression(sExpression)){					
-						 	String sCharacterPool = objCharacterPool.compute(sExpression);
-							if(!StringZZZ.isEmpty(sCharacterPool)) {//Merke: Leerzeichen wäre erlaubt								
-								objAlgorithm.setCharacterPoolBase(sCharacterPool);
-							}																											
-						 }
+					 	String sCharacterPool = objCharacterPool.compute(sExpression);
+						if(!StringZZZ.isEmpty(sCharacterPool)) {//Merke: Leerzeichen wäre erlaubt								
+							objAlgorithm.setCharacterPoolBase(sCharacterPool);
+						}																											
+					}
 					 
+					 KernelEncryption_CharacterPoolAdditionalZZZ objCharacterPoolAdditional = new KernelEncryption_CharacterPoolAdditionalZZZ();
+					 if(objCharacterPoolAdditional.isExpression(sExpression)){					
+					 	String sCharacterPoolAdditional = objCharacterPoolAdditional.compute(sExpression);
+						if(!StringZZZ.isEmpty(sCharacterPoolAdditional)) {							
+							objAlgorithm.setCharacterPoolAdditional(sCharacterPoolAdditional);
+						}																											
+					}
+					 
+					 TODOGOON20230227;//saFlagcontrol verarbeiten, Also der String ist mit "," getrennt. 
 					 String sFlagControl="";
 					 Kernel_FlagControlZZZ objFlagControl = new Kernel_FlagControlZZZ();
 					 if(objFlagControl.isExpression(sExpression)){					
-						String sControl = objFlagControl.compute(sExpression);
+						String sControl = objFlagControl.compute(sExpression);//TODOGOON: .computeAsArray(sExpression)
 						if(!StringZZZ.isEmptyTrimmed(sControl)) {													
 							objAlgorithm.setFlag(sControl,true);
 						}													
