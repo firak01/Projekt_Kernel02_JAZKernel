@@ -1,6 +1,7 @@
 package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
@@ -39,14 +40,19 @@ public interface ICryptZZZ extends IFlagUserZZZ{
 	
 	//Methoden um <Z:CharacterPool> Werte zu setzen
 	//Wichtig fuer ROTnn - Verschluesselung
+	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ;
+	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool);
+	
 	public String getCharacterPool() throws ExceptionZZZ;
+	//Merke: Kein Setzen... dies wird aus CharacterPoolList berechnet
+	
 	public String getCharacterPoolBase();
 	public void setCharacterPoolBase(String sCharacterPoolBase);
+	
 	public String getCharacterPoolAdditional();
 	public void setCharacterPoolAdditional(String sCharacterPoolAdditional);
 	
 	//Falls ein Zeichen nicht im CharacterPool enthalten ist.
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
-	
 }

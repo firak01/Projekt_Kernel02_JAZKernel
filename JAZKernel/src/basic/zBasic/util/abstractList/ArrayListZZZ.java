@@ -327,7 +327,7 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 		return aReturn;	
 	}
 	
-	public static int[]toArrayInt(ArrayList<Integer> lista){
+	public static int[]toIntArray(ArrayList<?> lista){
 		int[] iaReturn = null;
 		main:{
 			if(lista==null) break main;

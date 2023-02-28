@@ -5,6 +5,7 @@ import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -25,15 +26,15 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 		super();
 	}
 	public AbstractVigenereZZZ(String[]saFlagControl) throws ExceptionZZZ {
-		super();
+		super(saFlagControl);
 		AbstractVigenereNew_("","", saFlagControl);
 	}	
 	public AbstractVigenereZZZ(String sSchluesselWort) throws ExceptionZZZ {
-		super();
+		super((String[])null);
 		AbstractVigenereNew_(sSchluesselWort,"", null);
 	}
 	public AbstractVigenereZZZ(String sSchluesselWort, String sFilePath) throws ExceptionZZZ {	
-		super();
+		super((String[])null);
 		AbstractVigenereNew_(sSchluesselWort,sFilePath, null);		
 	}
 	
@@ -329,5 +330,17 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 	public String getCharacterPoolAdditional() {
 		return null; //Nur wg. ICryptZZZ
 	}
+	
+	@Override
+	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
+		return null; //Nur wg. ICryptZZZ
+	}
+	
+	@Override
+	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+		//Nur wg. ICryptZZZ
+	}
+	
+	
 	
 }

@@ -4,8 +4,10 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -221,6 +223,34 @@ public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IK
 			
 		}//end main:
 		return sReturn;
+	}
+	
+	@Override
+	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+						
+			String sDelimiter;
+			if(StringZZZ.isEmpty(sDelimiterIn)) {
+				sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+			}else {
+				sDelimiter = sDelimiterIn;
+			}
+			
+			String[] saExpression = StringZZZ.explode(sLineWithExpression, sDelimiter);
+			
+			//Hier einfach das Leerzeichen zurückgeben
+			String sValue = null;
+			ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
+			for(String sExpression : saExpression) {
+				sValue = this.compute(sExpression);
+				listasValue.add(sValue);
+			}
+			saReturn = listasValue.toStringArray();
+			
+		}//end main:
+		return saReturn;
 	}
 	
 	@Override

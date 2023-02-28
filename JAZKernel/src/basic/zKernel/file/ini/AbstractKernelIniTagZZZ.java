@@ -4,8 +4,12 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -160,18 +164,54 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 			
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-				String sReturn = sLineWithExpression;
-				main:{
-					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+		String sReturn = sLineWithExpression;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			
+			sReturn = (String) vecAll.get(1);
+			this.setValue(sReturn);
+								
+		}//end main:
+		return sReturn;
+	}	
+	
+	@Override
+	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+		String[] saReturn = null; //new String[];//sLineWithExpression;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+			
+			String sDelimiter;
+			if(StringZZZ.isEmpty(sDelimiterIn)) {
+				sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+			}else {
+				sDelimiter = sDelimiterIn;
+			}
+				   
+			String sExpressionTotal = this.compute(sLineWithExpression); //Hole erst einmal den Kernel-Tag-Wert.
+			if(!StringZZZ.isEmpty(sExpressionTotal)) {
+				String[] saExpression = StringZZZ.explode(sExpressionTotal, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
+				
+				String sValue = null;
+				ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
+				for(String sExpression : saExpression) {
 					
-					Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-					
-					sReturn = (String) vecAll.get(1);
-					this.setValue(sReturn);
-										
-				}//end main:
-				return sReturn;
-			}	
+					//Nur für den etwas komplizierteren Fall einer Verschachtelung ...
+					if(this.isExpression(sExpression)){
+						sValue = this.compute(sExpression);
+					}else {
+						sValue = sExpression;
+					}
+					listasValue.add(sValue);
+				}
+								
+				saReturn = listasValue.toStringArray();				
+			}
+		}//end main:
+		return saReturn;
+	}
 	
 	@Override
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{

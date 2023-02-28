@@ -90,7 +90,7 @@ public class ConsoleUserEncryptZZZ extends AbstractConsoleUserCryptZZZ {
 			String sCipher = (String) hmVariable.get(KeyPressThreadEncryptZZZ.sINPUT_CIPHER);
 			if(!StringZZZ.isEmpty(sCipher)) {
 				ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(sCipher);
-				boolean bSuccess = this.preProcessingFlags(objCrypt, hmVariable);
+				boolean bSuccess = this.preProcessing(objCrypt, hmVariable);
 				if(!bSuccess) {					
 					System.out.println("PreProcessing nicht erfolgreich, Abbruch");
 					bReturn=false;

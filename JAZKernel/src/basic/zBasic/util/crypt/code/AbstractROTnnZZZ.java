@@ -160,6 +160,11 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
+	public String getCharacterPoolBase() {
+		return this.sCharacterPoolBase;
+	}
+	
+	@Override
 	public void setCharacterPoolBase(String sCharacterPoolBase) {
 		this.sCharacterPoolBase = sCharacterPoolBase;
 		
@@ -178,6 +183,14 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	@Override
 	public String getCharacterPoolAdditional() {
 		return this.sCharacterPoolAdditional;
+	}
+	
+	public static String getCharacterPoolBaseDefault() {
+		return CharacterExtendedZZZ.sCHARACTER_POOL_DEFAULT;
+	}
+
+	public static String getCharacterPoolAdditionalDefault() {
+		return CharacterExtendedZZZ.sCHARACTER_ADDITIONAL;
 	}
 		
 	public static String encrypt(String sInput, int n)  throws IllegalArgumentException, ExceptionZZZ {
@@ -301,5 +314,5 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	@Override
 	public void setCryptKey(String sCryptKey) {
 		//Nur wg. ICryptZZZ
-	}	
+	}			
 }

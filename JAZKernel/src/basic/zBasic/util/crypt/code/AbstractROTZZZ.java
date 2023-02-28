@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUserZZZ{
@@ -78,6 +79,18 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUs
 	public String getCryptKey() {		
 		return null;
 	}
+	
+	@Override
+	public ArrayListExtendedZZZ<CharacterExtendedZZZ> getCharacterPoolList() throws ExceptionZZZ {
+		return null; //Nur wg. ICryptZZZ
+	}
+	
+	@Override
+	public void setCharacterPoolList(ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool) {
+		//Nur wg. ICryptZZZ
+	}
+		
+	
 	@Override
 	public String getCharacterPool() throws ExceptionZZZ{
 		return null; //Nur wg. ICryptZZZ
@@ -90,8 +103,10 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUs
 	
 	@Override
 	public String getCharacterPoolBase() {
-		return null; //Nur wg. ICryptZZZ
+		///Nur wg. ICryptZZZ
+		return null;
 	}
+		
 	
 	@Override
 	public void setCharacterPoolAdditional(String sCharacterPoolAdditional) {
@@ -100,16 +115,20 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUs
 	
 	@Override
 	public String getCharacterPoolAdditional() {
-		return null; //Nur wg. ICryptZZZ
+		//Nur wg. ICryptZZZ
+		return null;
 	}
 		
 	@Override
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ{
-		return null; //Nur wg. ICryptZZZ
+		//Nur wg. ICryptZZZ
+		return null;
 	}
+		
 
 	@Override
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement) {
 		//Nur wg. ICryptZZZ
-	}
+	} 
+		
 }

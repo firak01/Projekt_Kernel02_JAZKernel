@@ -443,4 +443,12 @@ public class ArrayListExtendedZZZ<T> extends ArrayList<T> implements  IConstantZ
 	public ArrayList toArrayList() {
 		return (ArrayList)this;
 	}	
+	
+	public String[] toStringArray() {
+		return ArrayListZZZ.toStringArray(this);
+	}
+	
+	public int[] toIntArray() {
+		return ArrayListZZZ.toIntArray(this);
+	}
 	}//end class

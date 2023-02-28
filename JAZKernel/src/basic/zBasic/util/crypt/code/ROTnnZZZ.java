@@ -25,12 +25,12 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  */
 public class ROTnnZZZ extends AbstractROTnnZZZ{	
 	ROTnnZZZ() throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
-		super();
+		super(null);
 		String[] saFlagControl = {"init"};
 		RotNnNew_(null,-1,saFlagControl);
 	}
 	ROTnnZZZ(String[]saFlagControl) throws ExceptionZZZ { //Paktesichtbarkeit dieses Konstrktors auf PACKAGE geändert, damit die Factory einfach das Objekt erstellen kann. 
-		super();		
+		super(null);		
 		RotNnNew_(null,-1,saFlagControl);
 	}
 	public ROTnnZZZ(int iCryptKey) throws ExceptionZZZ {
@@ -128,7 +128,7 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 			
 			String sCharacterPoolBase = null;
 			if(StringZZZ.isEmpty(sCharacterPoolBaseIn)) {
-				sCharacterPoolBase= AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
+				sCharacterPoolBase= AbstractROTnnZZZ.getCharacterPoolBaseDefault();
 			}else {
 				sCharacterPoolBase = sCharacterPoolBaseIn;
 			}
@@ -157,14 +157,14 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 			
 			String sCharacterPoolBase = null;
 			if(StringZZZ.isEmpty(sCharacterPoolBaseIn)) {
-				sCharacterPoolBase= AbstractVigenereNnZZZ.getCharacterPoolBaseDefault();
+				sCharacterPoolBase= AbstractROTnnZZZ.getCharacterPoolBaseDefault();
 			}else {
 				sCharacterPoolBase = sCharacterPoolBaseIn;
 			}
 
 			String sCharacterPoolAdditional = null;
 			if(sCharacterPoolAdditionalIn==null) {
-				sCharacterPoolAdditional= AbstractVigenereNnZZZ.getCharacterPoolAdditionalDefault();
+				sCharacterPoolAdditional= AbstractROTnnZZZ.getCharacterPoolAdditionalDefault();
 			}else {
 				sCharacterPoolAdditional = sCharacterPoolAdditionalIn;
 			}

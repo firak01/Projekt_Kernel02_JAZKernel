@@ -10,6 +10,7 @@ import basic.zBasic.util.crypt.code.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 
@@ -137,13 +138,15 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 						}																											
 					}
 					 
-					 TODOGOON20230227;//saFlagcontrol verarbeiten, Also der String ist mit "," getrennt. 
+					 //saFlagcontrol verarbeiten, Also der String ist mit "," getrennt. 
 					 String sFlagControl="";
 					 Kernel_FlagControlZZZ objFlagControl = new Kernel_FlagControlZZZ();
 					 if(objFlagControl.isExpression(sExpression)){					
-						String sControl = objFlagControl.compute(sExpression);//TODOGOON: .computeAsArray(sExpression)
-						if(!StringZZZ.isEmptyTrimmed(sControl)) {													
-							objAlgorithm.setFlag(sControl,true);
+						String[] saControl = objFlagControl.computeAsArray(sExpression,",");
+						if(!StringArrayZZZ.isEmptyTrimmed(saControl)) {	
+							for(String sControl:saControl) {
+								objAlgorithm.setFlag(sControl,true);								
+							}
 						}													
 					 }
 					
@@ -199,6 +202,20 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 			}									
 		}//end main:
 		return sReturn;
+	}
+	
+	@Override
+	public String[] computeAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+			if(bUseEncryption) {
+				saReturn = super.computeAsArray(sLineWithExpression, sDelimiter);
+			}else {
+				saReturn = StringZZZ.explode(sLineWithExpression, sDelimiter);
+			}		
+		}//end main
+		return saReturn;
 	}
 	
 	@Override

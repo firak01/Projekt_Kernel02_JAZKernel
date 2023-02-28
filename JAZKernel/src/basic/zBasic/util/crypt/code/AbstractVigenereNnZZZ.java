@@ -32,15 +32,15 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		super();		
 	}
 	public AbstractVigenereNnZZZ(String[]saFlagControl) throws ExceptionZZZ {
-		super();		
+		super(saFlagControl);		
 		AbstractVigenereNnNew_("","",saFlagControl);
 	}
 	public AbstractVigenereNnZZZ(String sSchluesselWort) throws ExceptionZZZ {
-		super();
+		super((String[])null);
 		AbstractVigenereNnNew_(sSchluesselWort,"",null);
 	}
 	public AbstractVigenereNnZZZ(String sSchluesselWort, String sFilePath) throws ExceptionZZZ {
-		super();
+		super((String[])null);
 		AbstractVigenereNnNew_(sSchluesselWort,sFilePath,null);
 	}
 	
@@ -696,7 +696,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 			
 			//Nun Array ggfs. wieder "zusammenfassen"
 			ArrayListZZZ.remove(listaInt, new Integer(-1000));
-			iaReturn = ArrayListZZZ.toArrayInt(listaInt);
+			iaReturn = ArrayListZZZ.toIntArray(listaInt);
 			
 		}//end main:
 		return iaReturn;				
