@@ -12,6 +12,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
+import base.util.abstractArray.ArrayUtil;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -87,8 +89,25 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public void setFlag(FLAGZ objEnumFlag, boolean bFlagValue) {
-		this.setFlag(objEnumFlag.name(), bFlagValue);
+	public boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
 	}
 	
 	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
@@ -176,6 +195,23 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 		}
 	}
 	
+	
+	@Override
+	public boolean[] setFlag(String[] saFlagName, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!StringArrayZZZ.isEmptyTrimmed(saFlagName)) {
+				baReturn = new boolean[saFlagName.length];
+				int iCounter=-1;
+				for(String sFlagName:saFlagName) {
+					iCounter++;
+					boolean bReturn = this.setFlag(sFlagName, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
 	
 	
 	@Override

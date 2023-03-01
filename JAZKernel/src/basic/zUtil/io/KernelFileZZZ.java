@@ -14,6 +14,7 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -248,9 +249,26 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	}
 	
 	@Override
-	public void setFlag(IFlagUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
-		this.setFlag(objEnumFlag.name(), bFlagValue);
+	public boolean setFlag(IFlagUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}	
+	
+	@Override
+	public boolean[] setFlag(IFlagUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IFlagUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
 	
 		@Override
 		public boolean getFlag(String sFlagName) {
@@ -313,6 +331,23 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
 				return false;
 			}
+		}
+		
+		@Override
+		public boolean[] setFlag(String[] saFlagName, boolean bFlagValue) {
+			boolean[] baReturn=null;
+			main:{
+				if(!StringArrayZZZ.isEmptyTrimmed(saFlagName)) {
+					baReturn = new boolean[saFlagName.length];
+					int iCounter=-1;
+					for(String sFlagName:saFlagName) {
+						iCounter++;
+						boolean bReturn = this.setFlag(sFlagName, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
 		}
 		
 		/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)

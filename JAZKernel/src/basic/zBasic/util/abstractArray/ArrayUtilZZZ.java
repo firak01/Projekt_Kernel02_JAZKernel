@@ -27,6 +27,21 @@ public class ArrayUtilZZZ<T>{
 		}
 		return bReturn;
 	}
+	public static boolean isEmpty(boolean[] ba) {
+		boolean bReturn = false;
+		main:{
+			if(ba == null) {
+				bReturn = true;
+				break main;
+			}
+			
+			if(ba.length==0) {
+				bReturn = true;
+				break main;
+			}
+		}
+		return bReturn;
+	}
 	
 	public static boolean isEmpty(int[] ia) {
 		boolean bReturn = false;

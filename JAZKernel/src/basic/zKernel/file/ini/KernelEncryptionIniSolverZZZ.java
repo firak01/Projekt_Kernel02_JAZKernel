@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
@@ -151,11 +152,15 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 					 String sFlagControl="";
 					 Kernel_FlagControlZZZ objFlagControl = new Kernel_FlagControlZZZ();
 					 if(objFlagControl.isExpression(sExpression)){					
-						String[] saControl = objFlagControl.computeAsArray(sExpression,",");
-						//objAlgorithm.setFlag(saControl, true);
-						if(!StringArrayZZZ.isEmptyTrimmed(saControl)) {	
-							for(String sControl:saControl) {
-								objAlgorithm.setFlag(sControl,true);								
+						String[] saControl = objFlagControl.computeAsArray(sExpression,",");						
+						boolean[] baFound = objAlgorithm.setFlag(saControl, true);
+						if(!ArrayUtilZZZ.isEmpty(baFound)) {
+							int iCounter = -1;
+							for(boolean bFound:baFound) {
+								iCounter++;
+								if(!bFound) {
+									this.getLogObject().WriteLineDate("Flag not available: '"+saControl[iCounter]+"'");
+								}
 							}
 						}													
 					 }
