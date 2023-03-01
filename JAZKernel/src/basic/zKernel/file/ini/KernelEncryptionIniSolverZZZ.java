@@ -152,6 +152,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 					 Kernel_FlagControlZZZ objFlagControl = new Kernel_FlagControlZZZ();
 					 if(objFlagControl.isExpression(sExpression)){					
 						String[] saControl = objFlagControl.computeAsArray(sExpression,",");
+						//objAlgorithm.setFlag(saControl, true);
 						if(!StringArrayZZZ.isEmptyTrimmed(saControl)) {	
 							for(String sControl:saControl) {
 								objAlgorithm.setFlag(sControl,true);								
