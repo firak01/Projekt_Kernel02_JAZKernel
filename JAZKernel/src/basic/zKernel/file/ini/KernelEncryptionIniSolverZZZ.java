@@ -121,6 +121,15 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 							}								
 						}													
 					 }
+					 
+					 KernelEncryption_KeyStringZZZ objKeyString = new KernelEncryption_KeyStringZZZ();
+					 if(objKeyString.isExpression(sExpression)){					
+						String sKeyString = objKeyString.compute(sExpression);
+						if(!StringZZZ.isEmptyTrimmed(sKeyString)) {
+								objAlgorithm.setCryptKey(sKeyString);											
+						}													
+					 }
+					 
 					 					
 					 KernelEncryption_CharacterPoolZZZ objCharacterPool = new KernelEncryption_CharacterPoolZZZ();
 					 if(objCharacterPool.isExpression(sExpression)){					
