@@ -56,12 +56,13 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 	public ObjectZZZ(String sFlag) throws ExceptionZZZ {
 		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);
 	}
-	public ObjectZZZ(String[] saFlag) {
+	public ObjectZZZ(String[] saFlag) throws ExceptionZZZ {
 		if(saFlag!=null){
 			if(saFlag.length>=1){
 				for(int icount =0; icount <= saFlag.length-1; icount++){
 					if(!StringZZZ.isEmpty(saFlag[icount])){						
-						this.setFlag(saFlag[icount], true);
+						boolean bFound = this.setFlag(saFlag[icount], true);
+						if(!bFound) System.out.println(ReflectCodeZZZ.getPositionCurrent()+" - Flag not available: '" + saFlag[icount] +"'");
 					}
 				}
 			}

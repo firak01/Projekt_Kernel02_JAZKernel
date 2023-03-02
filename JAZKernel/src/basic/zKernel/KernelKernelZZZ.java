@@ -54,6 +54,8 @@ import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
+import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
@@ -74,7 +76,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelExpressionIniConverterUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ {
+public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IKernelExpressionIniSolverZZZ {
 	private FileFilterModuleZZZ objFileFilterModule=null;
 	
 	//Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
@@ -6328,4 +6330,20 @@ MeinTestParameter=blablaErgebnis
 						}
 		}//end main:
 	}
+	
+	//######### Intefaces ############################################################################
+	
+	//###### aus IKernelExpressionIniSolver
+	
+	//### aus IKernelEncryptionIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		
+		@Override
+		public void setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+			this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
 }//end class// end class

@@ -1271,7 +1271,20 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 
 	
 	
+	
 	//### Interface
+	//### aus IKernelEncryptionIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public void setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	
 	//aus IKernelExpressionIniConverterUserZZZ
 	//Damit eine aufrufende Methode mitbekommt, ob ein Converter den Wert verändert hat.
 //	public boolean isValueConverted(){

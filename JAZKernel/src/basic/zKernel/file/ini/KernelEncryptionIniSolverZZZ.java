@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 
-public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ implements IKernelEncryptionIniSolverZZZ{
+public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  implements IKernelEncryptionIniSolverZZZ{
 	public static String sTAG_NAME = "Z:encrypted";
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		super();
@@ -199,17 +199,30 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 	}
 	
 	//###### Getter / Setter
+	//### Aus Interface IKernelEncryptionIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public void setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	
+
+	//### Aus Interface IKernelExpressionIniZZZ
 	public String getExpressionTagName(){
 		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
 	}
 	
-
-	//### Aus Interface IKernelExpressionIniZZZ
+	
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{			
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
 				sReturn = super.compute(sLineWithExpression);
 			}else {
@@ -223,7 +236,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ imple
 	public String[] computeAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
 				saReturn = super.computeAsArray(sLineWithExpression, sDelimiter);
 			}else {

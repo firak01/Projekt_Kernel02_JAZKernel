@@ -32,7 +32,7 @@ public class ObjectZZZTest extends TestCase{
 	 
 	
 	public void testConstructor(){
-		//try{
+		try{
 			//Init - Object
 			String[] saFlag = {"init"};
 			ObjectZZZ objObjectInit = new ObjectZZZ(saFlag);
@@ -41,9 +41,9 @@ public class ObjectZZZTest extends TestCase{
 			
 			//TestKonfiguration pr�fen
 			assertFalse(objObjectTest.getFlag("init")==true); //Nun wäre init falsch
-//		}catch(ExceptionZZZ ez){
-//			fail("An exception happend testing: " + ez.getDetailAllLast());
-//		}
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 	}
 	
 	public void testGetFlagZ(){

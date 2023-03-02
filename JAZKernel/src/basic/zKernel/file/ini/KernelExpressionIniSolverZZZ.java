@@ -106,6 +106,20 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 	 }//end function KernelExpressionIniSolverNew_
 	
 	//###### Getter / Setter	
+	//### aus IKernelEncryptionIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public void setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	
+	
+	//###
 		public void setFileIni(FileIniZZZ objFileIni){
 			this.objFileIni = objFileIni;
 		}

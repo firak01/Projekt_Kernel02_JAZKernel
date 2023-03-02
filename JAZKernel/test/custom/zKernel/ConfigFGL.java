@@ -2,6 +2,7 @@ package custom.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.KernelConfigZZZ;
+import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 
 
 /**Klasse enth�lt die Werte, die im Kernel als default angesehen werden.
@@ -45,13 +46,5 @@ public class ConfigFGL extends KernelConfigZZZ{
 	public String getSystemNumberDefault() {
 		return ConfigFGL.sNUMBER_SYSTEM_DEFAULT;
 }
-	
-
-
-	
-
-	
-
-	
 
 }

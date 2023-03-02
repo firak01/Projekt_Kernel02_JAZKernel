@@ -27,6 +27,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
@@ -390,6 +391,18 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	
 	public String getPatternStringDefault() {
 		return IKernelConfigZZZ.sPATTERN_DEFAULT;
+	}
+	
+	//###### aus IKernelExpressionIniConverterUserZZZ
+	//### aus IKernelEncryptionIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public void setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 		
 	//##########

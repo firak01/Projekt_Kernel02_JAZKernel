@@ -227,5 +227,5 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 					
 				}//end main:
 				return sReturn;
-			}	
+			}			
 }//End class
