@@ -6422,25 +6422,25 @@ MeinTestParameter=blablaErgebnis
 	
 	//### aus IKernelEncryptionIniSolverZZZ
 		@Override
-		public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
+		public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
+			return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
 		}
 		
 		@Override
-		public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
+			return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
 		}
 		
 		@Override
-		public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-					baReturn = new boolean[objaEnumFlag.length];
+				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelEncryptionIniSolverZZZ)) {
+					baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
 					int iCounter=-1;
-					for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {
 						iCounter++;
-						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						boolean bReturn = this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ, bFlagValue);
 						baReturn[iCounter]=bReturn;
 					}
 				}
@@ -6450,25 +6450,25 @@ MeinTestParameter=blablaErgebnis
 		
 		//### aus IKernelJsonIniSolverZZZ
 		@Override
-		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
+		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ) {
+			return this.getFlag(objEnum_IKernelJsonIniSolverZZZ.name());
 		}
 		
 		@Override
-		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ, boolean bFlagValue) {
+			return this.setFlag(objEnum_IKernelJsonIniSolverZZZ.name(), bFlagValue);
 		}
 
 		@Override
-			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnum_IKernelJsonIniSolverZZZ, boolean bFlagValue) {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-						baReturn = new boolean[objaEnumFlag.length];
+					if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJsonIniSolverZZZ)) {
+						baReturn = new boolean[objaEnum_IKernelJsonIniSolverZZZ.length];
 						int iCounter=-1;
-						for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						for(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ:objaEnum_IKernelJsonIniSolverZZZ) {
 							iCounter++;
-							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+							boolean bReturn = this.setFlag(objEnum_IKernelJsonIniSolverZZZ, bFlagValue);
 							baReturn[iCounter]=bReturn;
 						}
 					}

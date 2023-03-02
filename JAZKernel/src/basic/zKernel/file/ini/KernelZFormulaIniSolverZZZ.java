@@ -245,25 +245,25 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 	
 	//### aus IKernelZFormulaIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag) {
-		return this.getFlag(objEnumFlag.name());
+	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ) {
+		return this.getFlag(objEnum_IKernelZFormulaIniSolverZZZ.name());
 	}
 	
 	@Override
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
-		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) {
+		return this.setFlag(objEnum_IKernelZFormulaIniSolverZZZ.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-				baReturn = new boolean[objaEnumFlag.length];
+			if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelZFormulaIniSolverZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelZFormulaIniSolverZZZ.length];
 				int iCounter=-1;
-				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ:objaEnum_IKernelZFormulaIniSolverZZZ) {
 					iCounter++;
-					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					boolean bReturn = this.setFlag(objEnum_IKernelZFormulaIniSolverZZZ, bFlagValue);
 					baReturn[iCounter]=bReturn;
 				}
 			}

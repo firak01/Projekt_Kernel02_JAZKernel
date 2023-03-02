@@ -78,7 +78,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 				if(objCipher.isExpression(sExpression)){					
 					String sCipher = objCipher.compute(sExpression);	
 					 
-					 //TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
+					 //START: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
 					 EnumSet<?> objEnumSet = CryptEnumSetFactoryZZZ.getInstance().getEnumSet(sCipher);
 					 //wie verwenden???? EnumSetUtilZZZ.readEnumConstant_IndexValue(, "ROT13");
 					 
@@ -94,7 +94,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 					 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
 					 
 					 
-					 //+++++++++++++
+					 //ENDE: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++
 					 
 					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
 					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance(objKernel);					 
@@ -203,25 +203,25 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 	
 	//### Aus Interface IKernelEncryptionIniSolverZZZ
 	@Override
-	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
-		return this.getFlag(objEnumFlag.name());
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
+		return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
 	}
 	
 	@Override
-	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
-		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
+		return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-				baReturn = new boolean[objaEnumFlag.length];
+			if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelEncryptionIniSolverZZZ)) {
+				baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
 				int iCounter=-1;
-				for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {
 					iCounter++;
-					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					boolean bReturn = this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ, bFlagValue);
 					baReturn[iCounter]=bReturn;
 				}
 			}

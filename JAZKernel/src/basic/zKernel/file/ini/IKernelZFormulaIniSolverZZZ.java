@@ -6,7 +6,7 @@ public interface IKernelZFormulaIniSolverZZZ {
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag);
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);		
+	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ);
+	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue);
+	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue);		
 }

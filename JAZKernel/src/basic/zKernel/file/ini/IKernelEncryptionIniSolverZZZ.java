@@ -8,8 +8,8 @@ public interface IKernelEncryptionIniSolverZZZ{
 		USEENCRYPTION
 	}
 	
-	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag);	
-	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public boolean[]setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue);
+	//damit muss man nicht mehr tippen hinter dem enum .name(), gib den Typen an, damit es so in der Entwicklungsumgebung, in der Vorschlagsliste steht.
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ);	
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue);
+	public boolean[]setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue);
 }
