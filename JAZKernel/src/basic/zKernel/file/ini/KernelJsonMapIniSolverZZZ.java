@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
@@ -261,4 +262,33 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		}//end main:
 		return hmReturn;
 	}
+	
+	//### aus IKernelJsonIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+						baReturn = new boolean[objaEnumFlag.length];
+						int iCounter=-1;
+						for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+	
 }//End class

@@ -199,6 +199,8 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 	}
 	
 	//###### Getter / Setter
+	
+	
 	//### Aus Interface IKernelEncryptionIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -206,18 +208,32 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 	}
 	
 	@Override
-	public void setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
-		this.setFlag(objEnumFlag.name(), bFlagValue);
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
+	@Override
+	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
 	
-
 	//### Aus Interface IKernelExpressionIniZZZ
 	public String getExpressionTagName(){
 		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
 	}
-	
-	
+		
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;

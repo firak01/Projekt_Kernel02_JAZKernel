@@ -6,6 +6,7 @@ import java.util.Map;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -90,6 +91,33 @@ public abstract class AbstractKernelModuleZZZ  extends KernelUseObjectZZZ implem
 	public void setModuleName(String sModuleName){
 		this.sModuleName=sModuleName;
 	}
+	
+	//### Aus IKernelModuleZZZ
+		@Override
+		public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		@Override
+		public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IKernelModuleZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
+		}
 	
 	public void resetModuleUsed() {
 		this.sModuleName = null;

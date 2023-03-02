@@ -15,7 +15,10 @@ public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCach
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
 	}
-		
+	//damit muss man nicht mehr tippen hinter dem enum .name()
+	public boolean getFlag(IKernelZZZ.FLAGZ objEnumFlag);
+	public boolean setFlag(IKernelZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);	
 	
 	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ;
 	

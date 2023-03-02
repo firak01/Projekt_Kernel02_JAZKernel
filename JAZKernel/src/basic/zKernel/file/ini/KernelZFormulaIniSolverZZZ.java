@@ -8,6 +8,7 @@ import java.util.Vector;
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -240,5 +241,33 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 			}
 		}//end main:
 		return sReturn;
+	}
+	
+	//### aus IKernelZFormulaIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
 	}
 }//End class

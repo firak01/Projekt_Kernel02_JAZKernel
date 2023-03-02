@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -31,6 +32,13 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		this.setFlag(IKernelProgramZZZ.FLAGZ.ISKERNELPROGRAM.name(), true);		
 	}
 	
+	public void setProgramName(String sProgramName){
+		this.sProgramName = sProgramName;
+	}
+	
+	
+	//### Aus IKernelProgramZZZ
+	@Override
 	public String getProgramName(){
 		if(StringZZZ.isEmpty(this.sProgramName)) {
 			if(this.getFlag(IKernelProgramZZZ.FLAGZ.ISKERNELPROGRAM.name())) {
@@ -39,10 +47,10 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		}
 		return this.sProgramName;
 	}
-	public void setProgramName(String sProgramName){
-		this.sProgramName = sProgramName;
-	}	
+		
+		
 	
+	@Override
 	public void resetProgramUsed() {
 		this.sProgramName = null;
 		//this.sProgramAlias = null;
@@ -54,6 +62,35 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public boolean getFlag(IKernelProgramZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IKernelProgramZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelProgramZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	
+	
 	
 	public String readModuleName() throws ExceptionZZZ {
 		String sReturn = null;
@@ -86,12 +123,41 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		this.sModuleName = null;
 	}
 	
-	//### Aus IKernelModuleUserZZZ
+	//### Aus IKernelModuleUserZZZ	
+	@Override
 	public IKernelModuleZZZ getModule() {
 		return this.objModule;
 	}
+	
+	@Override
 	public void setModule(IKernelModuleZZZ objModule) {
 		this.objModule = objModule;
+	}
+	
+	@Override
+	public boolean getFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelModuleUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
 	}
 			
 	//### Methoden

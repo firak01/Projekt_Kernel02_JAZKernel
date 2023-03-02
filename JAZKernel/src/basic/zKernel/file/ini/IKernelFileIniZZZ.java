@@ -21,6 +21,11 @@ public interface IKernelFileIniZZZ extends IKernelUserZZZ{
 	public enum FLAGZ{
 		FILEUNSAVED, FILENEW, FILECHANGED;
 	}
+	//damit muss man nicht mehr tippen hinter dem enum .name()
+	public boolean getFlag(IKernelFileIniZZZ.FLAGZ objEnumFlag);
+	public boolean setFlag(IKernelFileIniZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+	public boolean[] setFlag(IKernelFileIniZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);
+	
 	
 	public File getFileObject();		
 	public IniFile getFileIniObject();

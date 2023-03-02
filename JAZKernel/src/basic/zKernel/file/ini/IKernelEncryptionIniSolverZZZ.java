@@ -9,6 +9,7 @@ public interface IKernelEncryptionIniSolverZZZ{
 	}
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag);
-	public void setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag);	
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+	public boolean[]setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue);
 }
