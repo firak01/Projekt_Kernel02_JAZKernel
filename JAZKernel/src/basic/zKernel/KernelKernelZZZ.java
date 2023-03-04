@@ -1315,7 +1315,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						FileIniZZZ exDummy = new FileIniZZZ();					
 						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);						
 						objReturn = new FileIniZZZ(this, objFileModule, saFlagZpassed);
-
+						
 					}else{
 						//Übernimm die gesetzten FlagZ...
 						HashMap<String,Boolean>hmFlagZ = this.getFileConfigKernelIni().getHashMapFlagZ();

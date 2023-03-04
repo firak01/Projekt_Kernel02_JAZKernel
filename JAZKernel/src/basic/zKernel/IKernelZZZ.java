@@ -7,10 +7,11 @@ import javax.swing.ImageIcon;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCacheUserZZZ{
+public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCacheUserZZZ,IFlagUserZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;

@@ -26,13 +26,9 @@ public class KernelZZZTest extends TestCase {
 	 * Die Main Methode von AllTest kann ausgefuehrt werden.
 	 */
 	
-	private KernelZZZ objKernelFGL;
-	//TODO IFlag muss in IKernelZZZ rein, damit geht: IKernelZZZ objKernelFGL = new KernelZZZ();
-	
-	private KernelZZZ objKernelTest;
-	//TODO IFlag muss in IKernelZZZ rein, damit geht: IKernelZZZ objKernelTest = new KernelZZZ();
-	
-	
+	private IKernelZZZ objKernelFGL;	
+	private IKernelZZZ objKernelTest;
+		
 	protected void setUp(){
 		try {			
 			//TODO: Diese Datei zuvor per Programm erstellen
@@ -714,18 +710,14 @@ public void testGetProgramAliasFor() {
  */
 public void testSetParameterByProgramAlias(){
 	try {
-		//String sModuleExtern = "TestModuleExtern";
 		String sModule = this.getClass().getName();
-		
-		//String sProgram = "TestProgExtern";
 		String sProgram = "TestProg";
-		
-		//String sProperty = "testProgramPropertyExtern4";
 		String sProperty = "testProgramProperty4";
 		
-		//##########################################
-		//### EXTERNES MODUL
-		//##########################################
+		//############################################
+		//### "NICHT EXTERNES" MODUL
+		//############################################
+		//Teste das "Parameter Holen" auch für das "nicht externe", d.h. über den aktuellen Klassennamen angegebene Test Modul
 		
 		//Erst testen, dass auch kein Leerwert kommt			
 		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
@@ -741,7 +733,7 @@ public void testSetParameterByProgramAlias(){
 		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntry.hasAnyValue());		
 		sReturnSaved = objEntry.getValue();
-		//sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
 		assertEquals(sValue,sReturnSaved);		
 	
 		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
@@ -754,38 +746,63 @@ public void testSetParameterByProgramAlias(){
 		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntry.hasAnyValue());		
 		sReturnSaved = objEntry.getValue();
-		//sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
 		assertEquals(sValue,sReturnSaved);	
 		
-		//############################################
-		//### "NICHT EXTERNES" MODUL
-		//############################################
-		//Teste das "Parameter Holen" auch für dieses "nicht externe" Test Modul
-		
-
-//		String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
-//		assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
-//		
-//		//nun den Wert testen, wie er im setup definiert wurde
-//		assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());
-//		
-//		//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
-//		assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry").getValue());
-//		
-//		//NEU 20070306: Hier über eine Formel die Property auslesen
-//		objFileIniTest.setFlag("useFormula", false);
-//		String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
-//		assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
-//		
-//		objFileIniTest.setFlag("useFormula", true);
-//		sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
-//		assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
-//		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	}
 }
 
+/** void, Test: Replacing an entry in a section of the ini-file
+ * @author Fritz Lindhauer, 13.08.2022, 08:46:20
+ */
+public void testSetParameterByProgramAlias_Encrypted(){
+	try {
+		TODOGOON20230304;					
+		String sModule = this.getClass().getName();
+		String sProgram = "TestProg";
+		String sProperty = "testProgramPropertyEncrypted1";
+		
+		//############################################
+		//### "NICHT EXTERNES" MODUL
+		//############################################
+		//Teste das "Parameter Holen" auch für das "nicht externe", d.h. über den aktuellen Klassennamen angegebene Test Modul
+				
+		//Erst testen, dass auch kein Leerwert kommt			
+		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());
+		String sReturnSaved = objEntry.getValue();
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals("testwert4 local 4 program",sReturnSaved);
+		
+		//Testvariante A: Jetzt wird der Wert aber aus dem Cache geholt
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
+		String sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);				
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());		
+		sReturnSaved = objEntry.getValue();
+		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals(sValue,sReturnSaved);		
+	
+		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP TEIL!!!
+		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
+		
+		objKernelFGL.getCacheObject().clear();
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());		
+		sReturnSaved = objEntry.getValue();
+		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals(sValue,sReturnSaved);	
+		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+}
 
 /** void, Test: Replacing an entry in a section of the ini-file
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
@@ -793,7 +810,6 @@ public void testSetParameterByProgramAlias(){
 public void testSetParameterByProgramAlias_ExternesModule(){
 	try {
 		String sModuleExtern = "TestModuleExtern";
-		String sModule = this.getClass().getName();
 		
 		String sProgram = "TestProgExtern";
 		String sProperty = "testProgramPropertyExtern4";
@@ -801,6 +817,7 @@ public void testSetParameterByProgramAlias_ExternesModule(){
 		//##########################################
 		//### EXTERNES MODUL
 		//##########################################
+		//Teste das "Parameter Holen" auch für oben angegebenes "externe" Test Modul
 		
 		//Erst testen, dass auch kein Leerwert kommt			
 		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModuleExtern, sProgram, sProperty);

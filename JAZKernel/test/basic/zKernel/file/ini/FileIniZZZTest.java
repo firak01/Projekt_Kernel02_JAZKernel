@@ -3,17 +3,20 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.*;
@@ -27,7 +30,7 @@ public class FileIniZZZTest extends TestCase {
 	private Hashtable objHtSection;  
 	
 	private File objFile;
-	private KernelZZZ objKernel;
+	private IKernelZZZ objKernel;
 	private LogZZZ objLog;
 	
 	/// +++ Die eigentlichen Test-Objekte
@@ -149,18 +152,42 @@ public class FileIniZZZTest extends TestCase {
 	
 	
 	public void testFlagHandling(){
-		//try{
-		
+		try{
 			
-			//TestKonfiguration pr�fen
+			//TestKonfiguration prüfen.
+			//1. Hole alle FlagZ des Objekts
+			String[] saTest01 = objFileIniInit.getFlagZ();
+			assertNotNull(saTest01);		
+			assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie mehr als 2 FlagZ erwartet: Also nicht nur DEBUG und INIT.",saTest01.length>=3);
+			
+			//2. Hole alle FlagZ Einträge, die entsprechend true/false gesetzt sind.
+			//Init - Object
+			assertTrue(objFileIniInit.getFlag("init")==true);
+			
+			String[]saTest02 = objFileIniInit.getFlagZ(true);
+			assertNotNull(saTest02);		
+			assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur 1 FlagZ für 'true' erwartet: INIT.",saTest02.length==1);
+					
+			String[]saTest02b = objFileIniInit.getFlagZ(false);
+			assertNotNull(saTest02b);		
+			assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie mehr als 1 FlagZ für 'false' erwartet: Also nicht nur DEBUG.",saTest02b.length>=2);
+			
+			objFileIniInit.setFlag("DEBUG", true);
+			String[]saTest02c = objFileIniInit.getFlagZ(false);
+			assertNotNull(saTest02c);		
+			assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT EIN FLAG WENIGER für 'false' erwartet.",saTest02c.length==saTest02b.length-1);
+			
+			//TestKonfiguration pruefen
 			assertTrue(objFileIniInit.getFlag("init")==true);
 			assertFalse(objFileIniTest.getFlag("init")==true); //Nun wäre init falsch
 			
+			
+			
 
 			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	/** Erweitertes Flag Handling. 
@@ -168,40 +195,61 @@ public class FileIniZZZTest extends TestCase {
 	 * 
 	 */
 	public void testFlagPassHandling(){
-		//A) Teste an dier Stelle die Funktionalitäten aus ObjectZZZ
-		
+		//TESTE DIE FUNKTIONALITÄT DER FLAG - ÜBERGABE.
+		//Merke: Das wird z.B. bei Erzeugung von FileIniZZZ Objekten im Kernel gemacht, so dass wichtige Flags in den erzeugten Objekten auch gesetzt sind.		
 		try{
+		
+			File objFileModule = objFile;//Die im setup konstruierte Datei		
+			FileIniZZZ objReturn = null; //Das Objekt, das neu erzeugt wird.
+			
+			//+++ Wie es im Kernel angewendet wird....
+			//a) FileConfigKernelIni ist vorhanden.
+			FileIniZZZ objFileIniKernelConfig = objKernel.getFileConfigKernelIni(); 			
+			if(objFileIniKernelConfig==null){												
+				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+				FileIniZZZ exDummy = new FileIniZZZ();					
+				String[] saFlagZpassed = objKernel.getFlagZ_passable(true, exDummy);						
+				objReturn = new FileIniZZZ(objKernel, objFileModule, saFlagZpassed);
+	
 				
-		//TestKonfiguration prüfen.
-		//1. Hole alle FlagZ des Objekts
-		String[] saTest01 = objFileIniInit.getFlagZ();
-		assertNotNull(saTest01);		
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie mehr als 2 FlagZ erwartet: Also nicht nur DEBUG und INIT.",saTest01.length>=3);
-		
-		//2. Hole alle FlagZ Einträge, die entsprechend true/false gesetzt sind.
-		//Init - Object
-		assertTrue(objFileIniInit.getFlag("init")==true);
-		
-		String[]saTest02 = objFileIniInit.getFlagZ(true);
-		assertNotNull(saTest02);		
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie nur 1 FlagZ für 'true' erwartet: INIT.",saTest02.length==1);
+			}else{
+				//Übernimm die gesetzten FlagZ...
+				HashMap<String,Boolean>hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
 				
-		String[]saTest02b = objFileIniInit.getFlagZ(false);
-		assertNotNull(saTest02b);		
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie mehr als 1 FlagZ für 'false' erwartet: Also nicht nur DEBUG.",saTest02b.length>=2);
+				//Übernimm die gesetzten Variablen...
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
+				objReturn = new FileIniZZZ(objKernel,  objFileModule, hmFlagZ);
+				objReturn.setHashMapVariable(hmVariable);	
+			}
+			
+			//b) FileConfigKernelIni ist NICHT vorhanden.
+			IKernelZZZ objKernelInit = new KernelZZZ();
+			
+			TODOGOON20230305;//Hier gibt es momentan noch eine Endlosschleife... dies verhindern!!!
+			objFileIniKernelConfig = objKernelInit.getFileConfigKernelIni(); 			
+			if(objFileIniKernelConfig==null){												
+				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+				FileIniZZZ exDummy = new FileIniZZZ();					
+				String[] saFlagZpassed = objKernel.getFlagZ_passable(true, exDummy);						
+				objReturn = new FileIniZZZ(objKernel, objFileModule, saFlagZpassed);
+	
+				
+			}else{
+				//Übernimm die gesetzten FlagZ...
+				HashMap<String,Boolean>hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
+				
+				//Übernimm die gesetzten Variablen...
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
+				objReturn = new FileIniZZZ(objKernel,  objFileModule, hmFlagZ);
+				objReturn.setHashMapVariable(hmVariable);	
+			}
+			
+			
+			boolean btemp = objReturn.getFlag("init");
 		
-		objFileIniInit.setFlag("DEBUG", true);
-		String[]saTest02c = objFileIniInit.getFlagZ(false);
-		assertNotNull(saTest02c);		
-		assertTrue("Es wurden auf dieser Ebenen der Objekthierarrchie JETZT EIN FLAG WENIGER für 'false' erwartet.",saTest02c.length==saTest02b.length-1);
-		
-		
-		//B) TESTE DIE FUNKTIONALITÄT DER FLAG - ÜBERGABE.
-		
-		
-	}catch(ExceptionZZZ ez){
-		fail("An exception happend testing: " + ez.getDetailAllLast());
-	}
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
 		
 	}
 	
