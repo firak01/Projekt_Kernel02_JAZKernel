@@ -226,11 +226,17 @@ public class FileIniZZZTest extends TestCase {
 				objReturn = new FileIniZZZ(objKernel,  objFileModule, hmFlagZ);
 				objReturn.setHashMapVariable(hmVariable);	
 			}
+									
+			HashMap<String,Boolean> hmFlagz = objReturn.getHashMapFlagZ();
+			assertNotNull(hmFlagz);
+			int iFlagz = hmFlagz.size();
+			assertTrue("Es wurde mindestens 1 gesetztes Flag erwartet", iFlagz>=1);
 			
-			
+			//... aber das init-Flag sollte nicht dabei sein.
 			boolean btemp = objReturn.getFlag("init");
 			assertFalse(btemp);
 			
+					
 			//##############################################
 			
 			
@@ -255,9 +261,14 @@ public class FileIniZZZTest extends TestCase {
 				objReturn.setHashMapVariable(hmVariable);	
 			}
 			
+			hmFlagz = objReturn.getHashMapFlagZ();
+			assertNotNull(hmFlagz);
+			iFlagz = hmFlagz.size();
+			assertTrue("Es wurde nur 1 gesetztes Flag erwartet", iFlagz==1);
 			
+			//... und das sollte das init Flag sein.
 			btemp = objReturn.getFlag("init");
-			assertFalse(btemp);
+			assertTrue(btemp);
 			
 			
 		}catch(ExceptionZZZ ez){
