@@ -1755,7 +1755,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			sFilePath = sFilePathIn;					
 		}else {
 			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
-			if(sFilePathIn==null){
+			if(sFilePathIn==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePathIn)){
 	//			stemp = "''FilePath'";
 	//			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING + stemp, iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");			  
 	//			throw ez;	

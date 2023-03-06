@@ -78,7 +78,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ, IKernelExpressionIniSolverZZZ {
+public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, IKernelConfigConstantZZZ, IKernelLogUserZZZ, IKernelContextUserZZZ, IKernelCacheUserZZZ, IResourceHandlingObjectZZZ {
 	private FileFilterModuleZZZ objFileFilterModule=null;
 	
 	//Merke 20180721: Wichtig ist mir, dass die neue HashMap für Variablen NICHT im Kernel-Objekt gespeichert wird. 
@@ -503,9 +503,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.sDirectoryConfig = sDirectoryConfig;
 	}
 	
+	@Override
 	public IniFile getFileConfigKernelAsIni() throws ExceptionZZZ{
 		IniFile objReturn = null;
-		if(this.getFileConfigKernelIni()==null){			
+		//if(this.getFileConfigKernelIni()==null){ //!!!Endlosschleife!!!
+		if(this.objFileIniKernelConfig==null) {
 			File objFile = this.getFileConfigKernel();
 			try {
 				objReturn = new IniFile(objFile.getPath());
@@ -788,7 +790,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return alsReturn;
 	}
 	
-	
+	@Override
 	public ArrayList<String> computeSystemSectionNamesForProgram(String sProgram) throws ExceptionZZZ{
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{
@@ -1342,6 +1344,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;
 	}
 	
+	@Override
 	public String searchAliasForModule(String sModule) throws ExceptionZZZ {
 		String sReturn=null;
 		main:{
@@ -1523,6 +1526,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;
 	}
 	
+	@Override
 	public FileIniZZZ searchModuleFileWithProgramAlias(String sModule, String sProgramOrSection) throws ExceptionZZZ {
 		FileIniZZZ objReturn = null;
 		main:{
@@ -1546,6 +1550,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public File[] getFileConfigModuleAllByDir(String sDirIn) throws ExceptionZZZ{
 		File[] objaReturn=null;
 		main:{
@@ -4348,7 +4353,8 @@ MeinTestParameter=blablaErgebnis
 		}
 		return hmReturn;
 	}
-	
+
+	@Override
 	public HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapEntryByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		HashMapIndexedZZZ<Integer, IKernelConfigSectionEntryZZZ>hmReturn = null;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
@@ -4516,6 +4522,7 @@ MeinTestParameter=blablaErgebnis
 		return iconReturn;
 	}
 	
+	@Override
 	public String searchAliasForProgram(String sProgramName) throws ExceptionZZZ{		
 		String sReturn = null;
 		main:{
@@ -4538,6 +4545,7 @@ MeinTestParameter=blablaErgebnis
 		return sReturn;
 	}
 	
+	@Override
 	public String searchAliasForProgram(String sModule, String sProgramName) throws ExceptionZZZ{		
 		String sReturn = null;
 		main:{
@@ -4568,6 +4576,7 @@ MeinTestParameter=blablaErgebnis
 		return sReturn;
 	}
 	
+	@Override
 	public IKernelConfigSectionEntryZZZ getProgramAliasFor(String sModuleOrProgram) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -6067,6 +6076,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 12.01.2007 09:10:41
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getSectionAliasFor(String sModuleOrProgramAsSection) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{

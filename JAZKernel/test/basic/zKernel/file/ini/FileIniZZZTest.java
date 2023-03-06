@@ -205,11 +205,16 @@ public class FileIniZZZTest extends TestCase {
 			//+++ Wie es im Kernel angewendet wird....
 			//a) FileConfigKernelIni ist vorhanden.
 			FileIniZZZ objFileIniKernelConfig = objKernel.getFileConfigKernelIni(); 			
-			if(objFileIniKernelConfig==null){												
-				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-				FileIniZZZ exDummy = new FileIniZZZ();					
-				String[] saFlagZpassed = objKernel.getFlagZ_passable(true, exDummy);						
-				objReturn = new FileIniZZZ(objKernel, objFileModule, saFlagZpassed);
+			if(objFileIniKernelConfig==null){	
+				
+				//DAS DARF HIER NICHT PASSIEREN !!! Dieses objKernel-Objekt sollte im Test immer eine ini-Datei haben !!!
+				fail("This Kernel Object should have a valid ini-File.");
+				
+				//Ini File neu erstellen!!!
+//				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+//				FileIniZZZ exDummy = new FileIniZZZ();					
+//				String[] saFlagZpassed = objKernel.getFlagZ_passable(true, exDummy);						
+//				objReturn = new FileIniZZZ(objKernel, objFileModule, saFlagZpassed);
 	
 				
 			}else{
@@ -222,10 +227,16 @@ public class FileIniZZZTest extends TestCase {
 				objReturn.setHashMapVariable(hmVariable);	
 			}
 			
+			
+			boolean btemp = objReturn.getFlag("init");
+			assertFalse(btemp);
+			
+			//##############################################
+			
+			
 			//b) FileConfigKernelIni ist NICHT vorhanden.
 			IKernelZZZ objKernelInit = new KernelZZZ();
-			
-			TODOGOON20230305;//Hier gibt es momentan noch eine Endlosschleife... dies verhindern!!!
+
 			objFileIniKernelConfig = objKernelInit.getFileConfigKernelIni(); 			
 			if(objFileIniKernelConfig==null){												
 				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
@@ -245,8 +256,10 @@ public class FileIniZZZTest extends TestCase {
 			}
 			
 			
-			boolean btemp = objReturn.getFlag("init");
-		
+			btemp = objReturn.getFlag("init");
+			assertFalse(btemp);
+			
+			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}

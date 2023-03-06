@@ -104,8 +104,7 @@ public void testContructor(){
 
 		try{
 		//Dann wird das Objekt nur initialisiert, um statische Methoden zu verwenden
-		//TODO IFlag muss in IKernelZZZ rein, damit geht: IKernelZZZ objKernelInit = new KernelZZZ();
-		KernelZZZ objKernelInit = new KernelZZZ();
+		IKernelZZZ objKernelInit = new KernelZZZ();
 		assertTrue(objKernelInit.getFlag("init")==true);
 		
 		//TestKonfiguration pr�fen
@@ -404,8 +403,7 @@ public void testGetParameter(){
 		String sValue = objKernelTest.getParameter("TestGetParameter").getValue();
 		String stemp = StringZZZ.left(sValue+"|","|");
 		assertEquals("Test erfolgreich", stemp);
-		
-		
+				
 		String sRaw = objKernelTest.getParameter("TestGetParameter_Encrypted").getValue();
 		stemp = StringZZZ.left(sRaw+"|","|");
 		assertEquals("<Z><Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted></Z>",sRaw);
