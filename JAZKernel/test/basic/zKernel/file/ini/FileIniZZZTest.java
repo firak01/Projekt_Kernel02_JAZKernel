@@ -31,6 +31,7 @@ public class FileIniZZZTest extends TestCase {
 	
 	private File objFile;
 	private IKernelZZZ objKernel;
+	private IKernelZZZ objKernelInit;
 	private LogZZZ objLog;
 	
 	/// +++ Die eigentlichen Test-Objekte
@@ -125,10 +126,9 @@ public class FileIniZZZTest extends TestCase {
 			objKernel = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String)null);
 			objLog = objKernel.getLogObject();
 			
-			//### Die TestObjecte
-			
+			//### Die TestObjecte			
 			//An object just initialized
-			//TODO Default construktor in der Klasse zur Verf�gung stellen objFileInit = new FileIniZZZ();
+			objKernelInit = new KernelZZZ();
 			
 			String[] saFlag = {"init"};
 			objFileIniInit = new FileIniZZZ(objKernel,  objFile, saFlag);
@@ -198,6 +198,24 @@ public class FileIniZZZTest extends TestCase {
 		//TESTE DIE FUNKTIONALITÄT DER FLAG - ÜBERGABE.
 		//Merke: Das wird z.B. bei Erzeugung von FileIniZZZ Objekten im Kernel gemacht, so dass wichtige Flags in den erzeugten Objekten auch gesetzt sind.		
 		try{
+			
+			//### Erst einmal direkt testen						
+			HashMap<String, Boolean> hmFlagZ = new HashMap<String, Boolean>();					
+			FileIniZZZ exDummy = new FileIniZZZ();					
+			String[] saFlagZpassed = objKernelInit.getFlagZ_passable(true, exDummy);						
+			assertNotNull(saFlagZpassed);
+			int iFlagz = saFlagZpassed.length;
+			assertTrue("Es wurde genau 1 gesetztes Flag erwartet", iFlagz==1);
+			
+			//... und das sollte das init Flag sein.
+			boolean btemp = exDummy.getFlag("init");
+			assertTrue(btemp);
+			btemp = objKernelInit.getFlag("init");
+			assertTrue(btemp);
+			
+			//####################################
+			//### Nun mit Objekt-Einsatz
+			//####################################
 		
 			File objFileModule = objFile;//Die im setup konstruierte Datei		
 			FileIniZZZ objReturn = null; //Das Objekt, das neu erzeugt wird.
@@ -209,17 +227,10 @@ public class FileIniZZZTest extends TestCase {
 				
 				//DAS DARF HIER NICHT PASSIEREN !!! Dieses objKernel-Objekt sollte im Test immer eine ini-Datei haben !!!
 				fail("This Kernel Object should have a valid ini-File.");
-				
-				//Ini File neu erstellen!!!
-//				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-//				FileIniZZZ exDummy = new FileIniZZZ();					
-//				String[] saFlagZpassed = objKernel.getFlagZ_passable(true, exDummy);						
-//				objReturn = new FileIniZZZ(objKernel, objFileModule, saFlagZpassed);
-	
-				
+								
 			}else{
 				//Übernimm die gesetzten FlagZ...
-				HashMap<String,Boolean>hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
+				hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
 				
 				//Übernimm die gesetzten Variablen...
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
@@ -227,13 +238,13 @@ public class FileIniZZZTest extends TestCase {
 				objReturn.setHashMapVariable(hmVariable);	
 			}
 									
-			HashMap<String,Boolean> hmFlagz = objReturn.getHashMapFlagZ();
-			assertNotNull(hmFlagz);
-			int iFlagz = hmFlagz.size();
+			hmFlagZ = objReturn.getHashMapFlagZ();
+			assertNotNull(hmFlagZ);
+			iFlagz = hmFlagZ.size();
 			assertTrue("Es wurde mindestens 1 gesetztes Flag erwartet", iFlagz>=1);
 			
 			//... aber das init-Flag sollte nicht dabei sein.
-			boolean btemp = objReturn.getFlag("init");
+			btemp = objReturn.getFlag("init");
 			assertFalse(btemp);
 			
 					
@@ -242,18 +253,15 @@ public class FileIniZZZTest extends TestCase {
 			
 			//b) FileConfigKernelIni ist NICHT vorhanden.
 			IKernelZZZ objKernelInit = new KernelZZZ();
-
-			objFileIniKernelConfig = objKernelInit.getFileConfigKernelIni(); 			
-			if(objFileIniKernelConfig==null){												
-				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-				FileIniZZZ exDummy = new FileIniZZZ();					
-				String[] saFlagZpassed = objKernel.getFlagZ_passable(true, exDummy);						
-				objReturn = new FileIniZZZ(objKernel, objFileModule, saFlagZpassed);
-	
+			objFileIniKernelConfig = objKernelInit.getFileConfigKernelIni();
+			if(objFileIniKernelConfig==null){
 				
+				//DAS DARF HIER NICHT PASSIEREN !!! Dieses objKernel-Objekt sollte im Test immer eine ini-Datei haben !!!
+				fail("This DEFAULT - Kernel Object should have a valid DEFAULT ini-File.");
+
 			}else{
 				//Übernimm die gesetzten FlagZ...
-				HashMap<String,Boolean>hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
+				hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
 				
 				//Übernimm die gesetzten Variablen...
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
@@ -261,16 +269,17 @@ public class FileIniZZZTest extends TestCase {
 				objReturn.setHashMapVariable(hmVariable);	
 			}
 			
-			hmFlagz = objReturn.getHashMapFlagZ();
-			assertNotNull(hmFlagz);
-			iFlagz = hmFlagz.size();
+			hmFlagZ = objReturn.getHashMapFlagZ();
+			assertNotNull(hmFlagZ);
+			iFlagz = hmFlagZ.size();
 			assertTrue("Es wurde nur 1 gesetztes Flag erwartet", iFlagz==1);
 			
 			//... und das sollte das init Flag sein.
 			btemp = objReturn.getFlag("init");
 			assertTrue(btemp);
-			
-			
+			objFileIniKernelConfig.getFlag("init");
+			assertTrue(btemp);
+						
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}

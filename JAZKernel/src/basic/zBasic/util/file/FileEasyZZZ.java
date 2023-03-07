@@ -806,25 +806,35 @@ public static boolean isPathSubExistingOfDirectoryTemp(String sFilePath) throws 
 	return bReturn;
 }
 
-public static  boolean isPathAbsolut(String sFilePathName)throws ExceptionZZZ{
+public static  boolean isPathAbsolut(String sFilePathNameIn)throws ExceptionZZZ{
 	boolean bReturn = false;
 	main:{
-		if(sFilePathName==null){//Merke: Darf ein Leerstring sein.
+		String sFilePathName=null;
+		if(sFilePathNameIn==null){//Merke: Darf ein Leerstring sein.
 			ExceptionZZZ ez  = new ExceptionZZZ("FilePathName", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
-		if(sFilePathName.equals("")) break main; //Merke: Leerstring ist kein absoluter Pfad.
+		if(sFilePathNameIn.equals("")) break main; //Merke: Leerstring ist kein absoluter Pfad.
+		sFilePathName=sFilePathNameIn;
 		
 		Pattern p = Pattern.compile(FileEasyZZZ.sFILE_ABSOLUT_REGEX); 
 		 Matcher m =p.matcher( sFilePathName ); 
 		 bReturn =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
 		 if(bReturn) break main;
 		 
-		 //Wohl für Netzwerkpfade...
-		 if ( sFilePathName.startsWith("\\\\")) {
+		 
+		 if ( sFilePathName.startsWith("\\\\")) { //Wohl für Netzwerkpfade...
 			 bReturn = true;
 			 break main;
-		 }		                        
+		 }else if (sFilePathName.startsWith("\\")){
+			 //irgendwie wohl ein Backslash hinzugekommen, normalerweise relativ, aber noch mal testen
+			 sFilePathName = StringZZZ.stripFileSeparatorsLeft(sFilePathName);
+			 bReturn = FileEasyZZZ.isPathAbsolut(sFilePathName);			 
+		 }else if (sFilePathName.startsWith("/")){
+			 //irgendwie wohl ein Slash hinzugekommen, normalerweise relativ, aber noch mal testen
+			 sFilePathName = StringZZZ.stripFileSeparatorsLeft(sFilePathName);
+			 bReturn = FileEasyZZZ.isPathAbsolut(sFilePathName);
+		 }
 	}//end main:
 	return bReturn;
 }
@@ -2413,7 +2423,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){	
 					String sWorkspaceURL = workspaceURL.getPath();					
-					sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);
+					sWorkspaceURL = StringZZZ.stripFileSeparators(sWorkspaceURL);
 					objReturn = new File(sWorkspaceURL);	
 					if(FileEasyZZZ.exists(objReturn)) {
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt gefunden '" + sPath + "'";

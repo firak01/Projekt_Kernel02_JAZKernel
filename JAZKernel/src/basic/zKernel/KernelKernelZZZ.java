@@ -62,6 +62,7 @@ import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import custom.zKernel.ConfigZZZ;
@@ -385,7 +386,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName() );
 				throw ez;
 			}else if(objReturn.exists()==false){			
-				sLog = "'Configuration File' does not exist in the current directory or in: " + sDirectoryConfig + this.sFileConfig + " or in the classpath.";
+				sLog = "Configuration File '" + this.sFileConfig + "' does not exist in the current directory or in: '" + sDirectoryConfig + "' or in the classpath.";
 				System.out.println(sLog);				
 				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName() );
 				throw ez;
@@ -433,19 +434,21 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	
 	public String getFileConfigKernelDirectory() throws ExceptionZZZ{		
 		String sDirectoryConfig = this.sDirectoryConfig;
+		File objDir = null;
+		
 		boolean bDirectoryFound = false;
 		if(StringZZZ.isEmpty(sDirectoryConfig)){
 			IKernelConfigZZZ objConfig = this.getConfigObject();
 			sDirectoryConfig=objConfig.getConfigDirectoryNameDefault();
-			if(sDirectoryConfig.equals("")){
+			if(sDirectoryConfig.equals("")||KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty().equals(sDirectoryConfig)){
 				String sDirConfigTemp = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT; 
-				File objDir = new File(sDirConfigTemp);
+				objDir = new File(sDirConfigTemp);
 				if(objDir.exists()){
 					sDirectoryConfig = sDirConfigTemp;
 					bDirectoryFound = true;
 				}else{
 					//Pfad relativ zum Eclipse Workspace
-					URL workspaceURL;
+					URL workspaceURL=null;
 					try {
 						workspaceURL = new File(sDirectoryConfig).toURI().toURL();
 						String sWorkspaceURL = workspaceURL.getPath();					
@@ -467,8 +470,35 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
 					}			
-				}				
-			}			
+				}									
+		}else if(sDirectoryConfig==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sDirectoryConfig)){
+			
+			//Pfad relativ zum Eclipse Workspace
+			URL workspaceURL=null;;
+			try {
+				workspaceURL = new File(FileEasyZZZ.sDIRECTORY_CURRENT).toURI().toURL();
+				String sWorkspaceURL = workspaceURL.getPath();					
+				sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);				
+				objDir = FileEasyZZZ.searchDirectory(sWorkspaceURL);
+				if(objDir.exists()){
+					sDirectoryConfig = objDir.getAbsolutePath();
+					bDirectoryFound = true;
+				}else{
+					//Pfad relativ zum src - Ordner
+					String sDirConfigTemp = FileEasyZZZ.getFileRootPath(); 		
+					objDir = new File(sDirConfigTemp);
+					if(objDir.exists()){
+						sDirectoryConfig = sDirConfigTemp;
+						bDirectoryFound = true;
+					}
+				}
+			} catch (MalformedURLException e) {
+				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+		}
+			
 		}else{
 			/* Merke: Das sind die hierin verarbeiteten Suchpfade
 			 * if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT) | sDirectoryIn.equals(""))==> FileEasyZZZ.getFileRootPath();
@@ -476,7 +506,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		     * if(FileEasyZZZ.isPathRelative(sDirectoryIn))==> FileEasyZZZ.getFileRootPath() + File.separator + sDirectoryIn;
 		     * und dann wird auf die Existenz des Verzeichnisses geprüft.
 			 */
-			File objDir = FileEasyZZZ.searchDirectory(sDirectoryConfig);
+			objDir = FileEasyZZZ.searchDirectory(sDirectoryConfig);
 			if(objDir!=null){
 				//sofort gefunden... dann nimm es.
 				sDirectoryConfig = objDir.getAbsolutePath();
@@ -486,7 +516,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				String sDirConfigTemp = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT+File.separator+sDirectoryConfig;			
 				objDir = new File(sDirConfigTemp);
 				if(objDir.exists()){
-					sDirectoryConfig = sDirConfigTemp;
+					sDirectoryConfig = objDir.getAbsolutePath();//sDirConfigTemp;
 					bDirectoryFound = true;
 				}else{
 					//Merke 20190129: Hier wird keine Fehlermeldung geworfen. Jetzt ist die Idee mit einer temporären Minimalkonfigurationsdatei (selbst erzeugt) weiterzuarbeiten.
@@ -506,20 +536,22 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	@Override
 	public IniFile getFileConfigKernelAsIni() throws ExceptionZZZ{
 		IniFile objReturn = null;
-		//if(this.getFileConfigKernelIni()==null){ //!!!Endlosschleife!!!
-		if(this.objFileIniKernelConfig==null) {
-			File objFile = this.getFileConfigKernel();
-			try {
-				objReturn = new IniFile(objFile.getPath());
-			} catch (IOException e) {
-				String sLog = "Configuration File. Not able to create ini-FileObject.";
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName() );
-				throw ez;
-			} 
-		}else {
-			objReturn = this.getFileConfigKernelIni().getFileIniObject();
-		}
+		main:{
+			if(this.objFileIniKernelConfig==null) {
+				File objFile = this.getFileConfigKernel();
+				if(objFile==null)break main;
+				try {				
+					objReturn = new IniFile(objFile.getPath());
+				} catch (IOException e) {
+					String sLog = "Configuration File. Not able to create ini-FileObject.";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName() );
+					throw ez;
+				} 
+			}else {
+				objReturn = this.objFileIniKernelConfig.getFileIniObject();
+			}
+		}//end main:
 		return objReturn;	
 	}
 	
@@ -538,7 +570,12 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}//end check:
 			
 			//Hole zuerst das "Basis-File"
-			IniFile objIni = this.getFileConfigKernelAsIni(); 
+			File objFile = this.getFileConfigKernel();
+			if(objFile==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Empty Property FileConfigKernel",iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+			IKernelFileIniZZZ objConfigIni = new FileIniZZZ(this,objFile);
 			
 			//########################################
 			//### Vereinfachung mit ArrayList
@@ -546,10 +583,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sApplicationKey = this.getApplicationKey();
 			String sSystemNumber = this.getSystemNumber();
 			
-			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(this.getFileConfigKernelIni(), sModule, sApplicationKey, sSystemNumber);			
+			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(objConfigIni, sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
 			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
-			objReturn = this.KernelSearchFileConfigDirectLookup_(objIni, sModule, listasModuleSection);
+			objReturn = this.KernelSearchFileConfigDirectLookup_(objConfigIni.getFileIniObject(), sModule, listasModuleSection);
 						
 		}//end main:
 		return objReturn;
@@ -5529,11 +5566,11 @@ MeinTestParameter=blablaErgebnis
 			}
 	
 	public static String getModuleDirectoryPrefix() {
-		String stemp = IKernelConfigConstantZZZ.MODULEPROPERTY.PATH.name();
+		String stemp = IKernelConfigConstantZZZ.MODULEPROPERTY.Path.name();
 		return KernelConfigDefaultEntryZZZ.sMODULE_PREFIX+stemp;		
 	}
 	public static String getModuleFilenamePrefix() {
-		String stemp = IKernelConfigConstantZZZ.MODULEPROPERTY.FILE.name();
+		String stemp = IKernelConfigConstantZZZ.MODULEPROPERTY.File.name();
 		return KernelConfigDefaultEntryZZZ.sMODULE_PREFIX+stemp;	
 	}
 	

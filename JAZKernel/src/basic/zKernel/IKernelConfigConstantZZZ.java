@@ -2,7 +2,7 @@ package basic.zKernel;
 
 public interface IKernelConfigConstantZZZ {
 	public enum MODULEPROPERTY{
-		PATH, FILE ; //20220814: EIGENSCHAFTEN, DIE ZUR Definition der ini-Datei Einträge fuer Module genutzt werden können
+		Path, File ; //20220814: EIGENSCHAFTEN, DIE ZUR Definition der ini-Datei Einträge fuer Module genutzt werden können
 	}
 	
 	//Zum Auslesen der Konfigurationseinträge in der INI-Datei
@@ -13,7 +13,7 @@ public interface IKernelConfigConstantZZZ {
 	public final static String sMODULE_PREFIX="KernelConfig";
 	
 	//Scheinbar manchmal Probleme diese Konstanten "Auszurechnen". Verwende dann die Methode KernelKernelZZZ.getModuleDirectoryPrefix()
-	public final static String sMODULE_DIRECTORY_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.PATH.name();
+	public final static String sMODULE_DIRECTORY_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.Path.name();
 	//Scheinbar manchmal Probleme diese Konstanten "Auszurechnen". Verwende dann die Methode KernelKernelZZZ.getModuleFilenamePrefix()
-	public final static String sMODULE_FILENAME_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.FILE.name();
+	public final static String sMODULE_FILENAME_PREFIX=sMODULE_PREFIX+MODULEPROPERTY.File.name();
 }
