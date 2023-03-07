@@ -757,10 +757,10 @@ public void testSetParameterByProgramAlias(){
  */
 public void testSetParameterByProgramAlias_Encrypted(){
 	try {
-		TODOGOON20230304;					
+		//TODOGOON20230304;					
 		String sModule = this.getClass().getName();
 		String sProgram = "TestProg";
-		String sProperty = "testProgramPropertyEncrypted1";
+		String sProperty = "testProgramPropertyEncryptedROT13";
 		
 		//############################################
 		//### "NICHT EXTERNES" MODUL
@@ -772,7 +772,13 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		assertTrue(objEntry.hasAnyValue());
 		String sReturnSaved = objEntry.getValue();
 		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
-		assertEquals("testwert4 local 4 program",sReturnSaved);
+		assertEquals("testwert4decrypted local 4 program",sReturnSaved);
+		
+		
+		TODOGOON20230307;//Nun erst die spezielle setEncrypted Methode testen...
+		
+		
+		
 		
 		//Testvariante A: Jetzt wird der Wert aber aus dem Cache geholt
 		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
