@@ -3,6 +3,7 @@ package basic.zKernel;
 import basic.zKernel.ConfigZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 
 public class KernelSingletonZZZ extends KernelKernelZZZ{
@@ -130,5 +131,5 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 				bReturn = JarEasyUtilZZZ.isInJar(KernelSingletonZZZ.class);
 			}
 			return bReturn;
-		}
+		}		
 }

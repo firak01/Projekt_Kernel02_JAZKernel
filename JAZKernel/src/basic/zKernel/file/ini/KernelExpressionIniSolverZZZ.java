@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -25,6 +26,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniSolverZZZ{
 	private FileIniZZZ objFileIni=null;
+	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	public KernelExpressionIniSolverZZZ() throws ExceptionZZZ{
@@ -278,9 +280,10 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					
 					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
+					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();	
+					ReferenceZZZ<ICryptZZZ>objobjReturnAlgorithmCrypt=new ReferenceZZZ<ICryptZZZ>();
 					boolean bForFurtherProcessing = true; 
-					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objsReturnValue);
+					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objsReturnValue, objobjReturnAlgorithmCrypt);
 					if(bAnyEncryption) {
 						objReturn.isRawEncrpyted(true);	
 						objReturn.setRawEncrypted(sLineWithExpressionUsed);
@@ -295,6 +298,9 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
 						}
 						
+						
+						ICryptZZZ objCrypt = objobjReturnAlgorithmCrypt.get();
+						objReturn.setAlgorithmType(objCrypt); //Zur späteren Verwendung, z.B. einen anderen Wert neu Verschluesseln.
 						
 					}
 				}
@@ -402,5 +408,16 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 			}//end main;
 			return hmReturn;
 			
+		}
+
+		//### Aus Interface ICryptUserZZZ
+		@Override
+		public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+			return this.objCrypt;
+		}
+
+		@Override
+		public void setAlgorithmType(ICryptZZZ objCrypt) {
+			this.objCrypt = objCrypt;
 		}
 }

@@ -21,6 +21,7 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -55,7 +56,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 //		USEFORMULA, USEFORMULA_MATH;
 //	}
 	
-	private GetOptZZZ objOpt = null;	 
+	private GetOptZZZ objOpt = null;
+	private ICryptZZZ objCrypt = null;
 	public KernelConfigZZZ() throws ExceptionZZZ{
 		super("init");//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		ConfigNew_(null);
@@ -508,6 +510,15 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return baReturn;
 	}
 
+	//### Aus Interface ICryptUserZZZ
+	@Override
+	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+		return this.objCrypt;
+	}
+	@Override
+	public void setAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCrypt=objCrypt;
+	}
 		
 	//##########
 	// Getter / Setter

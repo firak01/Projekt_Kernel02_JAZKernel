@@ -1,9 +1,8 @@
 package basic.zKernel.file.ini;
 
-import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
+import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 
-public interface IKernelEncryptionIniSolverZZZ{
+public interface IKernelEncryptionIniSolverZZZ extends ICryptUserZZZ{
 	public enum FLAGZ{
 		USEENCRYPTION
 	}

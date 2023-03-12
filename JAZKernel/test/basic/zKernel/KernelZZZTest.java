@@ -7,6 +7,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -773,36 +774,51 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		String sReturnSaved = objEntry.getValue();
 		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
 		assertEquals("testwert4decrypted local 4 program",sReturnSaved);
+
+		//Sichern des "RAW" Werts
+		String sRaw = objEntry.getRawEncrypted();
 		
+		//Funktioniert nur, wenn es schon einen CRYPT-Tag gibt in der Property. Dann wird der gefundene Crypt-Algorithmus wiederverwendet.
+		ICryptZZZ objCrypt = objEntry.getAlgorithmType();
+		sReturnSaved = sReturnSaved + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
+		String sValue = objCrypt.encrypt(sReturnSaved);
+		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue); //PROBLEM!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE 
 		
 		TODOGOON20230307;//Nun erst die spezielle setEncrypted Methode testen...
+		//PROBLEM!!! OBIGES SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE
+		//Funktioniert auch ohne ein CRYPT-TAG, also für ganz neue Einträge, die Verschlüsselt werden sollen
+		//               Die CRYPT-TAG Einträge müssen geschrieben werden.
+		//ICryptZZZ objCrypt2 = null;//TODO: neu aus der CryptFactory holen....
+		//objKernelFGL.setParameterByProgramAliasEncrypted(sModule, sProgram, sProperty, sValue, objCrypt2);
 		
+		//Verwende intern
+		//private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, ICryptZZZ objCrypt, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		
-		
-		
-		//Testvariante A: Jetzt wird der Wert aber aus dem Cache geholt
-		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
-		String sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
-		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);				
-		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
-		assertTrue(objEntry.hasAnyValue());		
-		sReturnSaved = objEntry.getValue();
-		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
-		assertEquals(sValue,sReturnSaved);		
-	
-		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
-		objKernelFGL.getCacheObject().clear();
-		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP TEIL!!!
-		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
-		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
-		
-		objKernelFGL.getCacheObject().clear();
-		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
-		assertTrue(objEntry.hasAnyValue());		
-		sReturnSaved = objEntry.getValue();
-		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
-		assertEquals(sValue,sReturnSaved);	
-		
+//		
+//		
+//		//Testvariante A: Jetzt wird der Wert aber aus dem Cache geholt
+//		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
+//		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+//		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);				
+//		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+//		assertTrue(objEntry.hasAnyValue());		
+//		sReturnSaved = objEntry.getValue();
+//		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+//		assertEquals(sValue,sReturnSaved);		
+//	
+//		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
+//		objKernelFGL.getCacheObject().clear();
+//		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP TEIL!!!
+//		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+//		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
+//		
+//		objKernelFGL.getCacheObject().clear();
+//		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+//		assertTrue(objEntry.hasAnyValue());		
+//		sReturnSaved = objEntry.getValue();
+//		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+//		assertEquals(sValue,sReturnSaved);	
+//		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getMessageLast());
 	}

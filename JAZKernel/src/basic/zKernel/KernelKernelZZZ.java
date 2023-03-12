@@ -45,6 +45,7 @@ import basic.zBasic.util.counter.ICounterStrategyAlphabetSignificantZZZ;
 import basic.zBasic.util.counter.ICounterStrategyAlphabetZZZ;
 import basic.zBasic.util.counter.ICounterStrategyAlphanumericSignificantZZZ;
 import basic.zBasic.util.counter.ICounterStringZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -101,6 +102,8 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.)
 	
 	private IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
+	
+	private ICryptZZZ objCrypt = null; //Ein CryptAlgorithmus für in der Ini-Konfiguration verschlüsselte Werte.
 	
 /**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
@@ -6493,6 +6496,17 @@ MeinTestParameter=blablaErgebnis
 				}
 			}//end main:
 			return baReturn;
+		}
+		
+		//# aus ICryptUserZZZ
+		@Override
+		public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+			return this.objCrypt;
+		}
+
+		@Override
+		public void setAlgorithmType(ICryptZZZ objCrypt) {
+			this.objCrypt = objCrypt;
 		}
 		
 		//### aus IKernelJsonIniSolverZZZ

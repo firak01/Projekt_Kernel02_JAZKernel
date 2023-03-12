@@ -17,7 +17,7 @@ import basic.zKernel.KernelUseObjectZZZ;
 public class KernelCryptAlgorithmFactoryZZZ extends KernelUseObjectZZZ implements ICryptUserZZZ{
 
 private static KernelCryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss static sein, wg. getInstance()!!!
-	
+private ICryptZZZ objCryptAlgorithmCreatedLast = null;	
 	/**Konstruktor ist private, wg. Singleton
 	 * @param objKernel
 	 * @throws ExceptionZZZ
@@ -41,10 +41,21 @@ private static KernelCryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  
 		}
 		return objCryptAlgorithmFactory;		
 	}
-	
-	@Override
+		
 	public ICryptZZZ createAlgorithmType(String sCipher) throws ExceptionZZZ {	
-		return CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(sCipher);
+		ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(sCipher);
+		this.setAlgorithmType(objCrypt);
+		return objCrypt;
+	}
+	
+	//### Aus Interface ICryptZZZ
+	@Override
+	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+		return this.objCryptAlgorithmCreatedLast;
+	}
+	@Override
+	public void setAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCryptAlgorithmCreatedLast = objCrypt;
 	}
 	
 	

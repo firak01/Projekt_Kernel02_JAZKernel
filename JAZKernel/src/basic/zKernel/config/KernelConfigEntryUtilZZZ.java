@@ -8,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -132,7 +133,7 @@ public class KernelConfigEntryUtilZZZ {
 	 *  
 	 * 
 	 */
-	 public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueEncryptionSolved) throws ExceptionZZZ{
+	 public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueEncryptionSolved, ReferenceZZZ<ICryptZZZ>objobjReturn) throws ExceptionZZZ{
 		 boolean bReturn = false;
 		 main:{			 			 								
 	 		if(!bUseEncryption)break main;
@@ -162,6 +163,8 @@ public class KernelConfigEntryUtilZZZ {
 					}					
 					sRaw=stemp;//Sonst Endlosschleife.
 				}
+				ICryptZZZ objCrypt = ex.getAlgorithmType();//Zur weiteren Verwendung, z.B. zum erneuten Verschluesseln mit einem geaenderten Wert hier auch zurueckgeben.
+				objobjReturn.set(objCrypt);
 			}
 			sValueEncryptionSolved = sRaw;
 			if(bAnyFormula){
@@ -285,4 +288,6 @@ public class KernelConfigEntryUtilZZZ {
 		}//end main:
 		return bReturn;
 	}
+	
+	
 }

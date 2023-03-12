@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
@@ -35,6 +37,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private String sRawEncrypted = null;
 	private boolean bDecrypted = false;
 	private String sRawDecrypted = null;
+	private ICryptZZZ objCrypt = null; //wichtig, falls z.B. ein verschluesselter Wert mit einem neuen Wert ersetzt werden soll. Dann muss das Algortithmus-Objekt nicht neu erstellt werden.
 	
 	
 	private String sKey = null;
@@ -454,5 +457,18 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void setRawEncrypted(String sRaw) {
 		this.sRawEncrypted = sRaw;
+	}
+
+
+	//### Aus Interface ICryptZZZ
+	@Override
+	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+		return this.objCrypt;
+	}
+
+
+	@Override
+	public void setAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCrypt = objCrypt;
 	}
 }

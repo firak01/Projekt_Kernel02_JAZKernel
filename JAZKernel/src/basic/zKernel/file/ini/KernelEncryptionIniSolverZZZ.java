@@ -17,6 +17,7 @@ import basic.zKernel.IKernelZZZ;
 
 public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  implements IKernelEncryptionIniSolverZZZ{
 	public static String sTAG_NAME = "Z:encrypted";
+	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		super();
 	}
@@ -99,6 +100,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
 					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance(objKernel);					 
 					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmType(sCipher);
+					 this.setAlgorithmType(objAlgorithm); //Damit kann der gefundene Wert durch einen anderen Wert ersetzt werden ohne die CryptAlgorithmFactoryZZZ neu zu bemuehen.
 					 
 					 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					 //+++++ Weitere Parameter suchen und ggfs. dem Algorithmusobjekt hinzufügen.
@@ -295,5 +297,16 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	//### Aus Inteface ICryptUserZZZ
+	@Override
+	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+		return this.objCryptAlgorithmLast;
+	}
+
+	@Override
+	public void setAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCryptAlgorithmLast = objCrypt;
 	}	
 }//End class

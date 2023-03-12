@@ -3,6 +3,7 @@ package basic.zKernel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 
 /** Ein Objekt dieser Klasse enthält die Werte aus einer konfigurierten ini-Datei.
@@ -18,7 +19,7 @@ import basic.zKernel.cache.ICachableObjectZZZ;
  * @author Fritz Lindhauer, 17.07.2019, 09:27:00
  * 
  */
-public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, Cloneable{
+public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICryptUserZZZ, Cloneable{
 	public String getSection();
 	public void setSection(String sSection);
 	

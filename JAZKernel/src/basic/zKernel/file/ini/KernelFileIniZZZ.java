@@ -21,6 +21,7 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
@@ -61,6 +62,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	private IniFile objFileIni;
 	private File objFile;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
+	private ICryptZZZ objCrypt = null;
 	
 	//20190718: Durch KernelConfigEntryZZZ - Klasse soll es nicht mehr notwendig sein die Werte in KernelFileIniZZZ zu speichern.
 	//20190226: Problem: Wenn ein Wert (z.B. <z:Empty/> konvertiert wurde, weiss das die aufrufenden Methode nicht.
@@ -1385,6 +1387,18 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		}//end main:
 		return baReturn;
 	}
+	
+	
+	//# aus ICryptUserZZZ
+	@Override
+	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+		return this.objCrypt;
+	}
+
+	@Override
+	public void setAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCrypt = objCrypt;
+	}
 
 	
 	//### aus IKernelJsonIniSolverZZZ
@@ -1414,6 +1428,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		}//end main:
 		return baReturn;
 	}
+
+	
 
 	
 	
