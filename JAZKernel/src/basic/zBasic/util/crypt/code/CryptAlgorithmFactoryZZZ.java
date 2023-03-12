@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.code;
 
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.flag.IFlagUserZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -36,6 +37,16 @@ private ICryptZZZ objCryptCreatedLast = null;
 		ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(sCipher);
 		this.setAlgorithmType(objCrypt);
 		return objCrypt;
+	}
+	
+	//damit muss man nicht mehr tippen hinter dem enum .name()
+	public ICryptZZZ createAlgorithmType(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ objEnumCipher) throws ExceptionZZZ{
+		return CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(objEnumCipher);		
+	}
+	
+	//damit muss man nicht mehr tippen hinter dem enum .name()
+	public static ICryptZZZ createAlgorithmTypeByCipher(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ objEnumCipher) throws ExceptionZZZ{
+		return CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(objEnumCipher.name());
 	}
 	
 	public static ICryptZZZ createAlgorithmTypeByCipher(String sCipher) throws ExceptionZZZ{

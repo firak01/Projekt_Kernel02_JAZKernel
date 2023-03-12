@@ -11,6 +11,9 @@ import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
@@ -342,6 +345,29 @@ public class FileIniZZZTest extends TestCase {
 			
 			//nun mal mit speichern, demnach wird alles andere auch gespeichert
 			assertTrue(objFileIniTest.setPropertyValue("Section C", "Testentry1","Testvalue1", true));
+			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testSetProperty_encrypted(){
+		try {
+			//Bestehenden Wert in einer bestehenden Section ändern
+		
+			//1. Den Crypt-Algorithmus erzeugen, Merke ROT13 braucht keine weiteren Argumente, darum wählen wir ihn.		
+			ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.getInstance().createAlgorithmType(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13);
+				
+		    //Testen: Wird die neue Section gleichzeitig angelegt ???
+		    //erst einmal nicht speichern
+			assertTrue(objFileIniTest.setPropertyValue("Section D", "Testentry1EncryptedROT13","Testvalue1", objCrypt, false));
+			
+			//nun mal mit speichern, demnach wird alles andere auch gespeichert
+			assertTrue(objFileIniTest.setPropertyValue("Section E", "Testentry1EncryptedROT13","Testvalue1", objCrypt, true));
+			
+			//An der Stelle wird nun ein Ausdruck erwartet wie:
+			//testProgramPropertyEncryptedROT13=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>
 			
 			
 		} catch (ExceptionZZZ ez) {

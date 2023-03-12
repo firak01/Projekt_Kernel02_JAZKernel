@@ -623,6 +623,27 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	
 	/** 
 	 this will add an entry to the ini-file
+	 the entry will be encrypted
+	 if bFlagSaveImmidiate= false, the change will be kept  in memory only.
+	 Then you have to call the save() method to write this to the filesystem.
+	 if bFlagSaveImmidiate = true, the change will be written to the file immidiately	 	 
+	 
+	 * @param sSectionIn
+	 * @param sPropertyIn
+	 * @param sValueIn
+	 * @param objCryptAlgorithm
+	 * @param bFlagSaveImmidiate
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 12.03.2023, 13:53:24
+	 */
+	public boolean setPropertyValue(String sSectionIn, String sPropertyIn, String sValueIn, ICryptZZZ objCrypt, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+		return this.setPropertyValue_(sSectionIn, sPropertyIn, sValueIn, objCrypt, bFlagSaveImmidiate);
+	}//end function
+	
+	
+	/** 
+	 this will add an entry to the ini-file
 	 if bFlagSaveImmidiate= false, the change will be kept  in memory only.
 	 Then you have to call the save() method to write this to the filesystem.
 	 if bFlagSaveImmidiate = true, the change will be written to the file immidiately
@@ -636,6 +657,10 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	 @throws ExceptionZZZ
 	 */
 	public boolean setPropertyValue(String sSectionIn, String sPropertyIn, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+		return this.setPropertyValue_(sSectionIn, sPropertyIn, sValueIn, null, bFlagSaveImmidiate);
+	}//end function
+	
+	private boolean setPropertyValue_(String sSectionIn, String sPropertyIn, String sValueIn, ICryptZZZ objCrypt, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		boolean bReturn = false;
 			main:{
 				try {
@@ -658,34 +683,49 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 						sProperty = sPropertyIn;
 					}				
 					
+					//Remark: An empty String may be allowed !!!
 					if(sValueIn==null){
 						ExceptionZZZ ez = new ExceptionZZZ("missing parameter 'Value'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 						throw ez;	
-					}else{
-						//Remark: An empty String may be allowed !!! 
-						
-						//Hole den passenden Converter
-						IKernelZFormulaIniZZZ objExpression = KernelZFormulaIniConverterZZZ.getAsObject(sValueIn);
-						
-						//20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
-						if(objExpression!=null){
-							sValue = objExpression.convert(sValueIn);
-							if(!sValueIn.equals(sValue)){
-								System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value durch ExpressionIniConverter verändert von '" + sValueIn + "' nach '" + sValue +"'");
-							}
-						}else{						
-							sValue = sValueIn;
-						}
-					}
+					}						 													
 				}//end check:
-			
-				
-				//Merke: 20211130: Beim Einlesen in den "Eigenschafts Editor" DLGBox4Ini gab es das Problem, dass <z:Null> zum Leerstring wird " "!!!
+																		
+				if(objCrypt!=null) {
+					//1. Verschluessel den Wert mit dem übergebenen Algorithmus
+					sValue = objCrypt.encrypt(sValueIn);
+					
+					//2. Baue für den Wert und die Parameterwerte des Algorithmus einen Expression-Tag String
+					//Z.B.: <Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>
+					TODOGOON20230312;
+					
+					//Mache aus dieser Eingabe einen kuenstlichen Entry
+					//Neue Klasse
+					IKernelConfigSectionEntryZZZ objEntryWithCrypt = KernelConfigSectionEntryCreatorZZZ.createEntry(sValue, objCrypt);
+					
+					//Neue Klasse
+					KernelExpressionIniCreatorZZZ.createLineFor(IKernelConfigSectionEntryZZZ objEntryWithCrypt);
+					sValue = "TODO: Expression-Tag String bauen..."+sValue;										
+				}else {
+					//Merke: 20211130: Beim Einlesen in den "Eigenschafts Editor" DLGBox4Ini gab es das Problem, dass <z:Null> zum Leerstring wird " "!!!
 				       //          Das darf nicht sein, denn beim Zurückspeichern wird korrekterweise ein Leerstring " " zu <z:Empty>!!!
 				       //Lösung: USEEXPRESSION wird nun über den -z Paramter als false übergeben an das neu zu erstellende Kernel-Objekt.
 				       //        Damit wird dieser Wert in dem FileIniZZZ Objekt nicht gesetzt => Es findet keine Übersetzung statt. 
 				       //        Korrekterweise bleibt dann z.B. <z:Null> bestehen!!!
 				
+					
+					//Hole den passenden Converter. 
+					IKernelZFormulaIniZZZ objExpression = KernelZFormulaIniConverterZZZ.getAsObject(sValueIn);
+					
+					//20190123: Hier den Stringwert in ein ini-Tag wandeln, falls er z.B. Leerstring ist => KernelExpressionIni_Empty Klasse.
+					if(objExpression!=null){
+						sValue = objExpression.convert(sValueIn);
+						if(!sValueIn.equals(sValue)){
+							System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Value durch ExpressionIniConverter verändert von '" + sValueIn + "' nach '" + sValue +"'");
+						}
+					}else{						
+						sValue = sValueIn;
+					}
+				}			
 				
 				//20211130: Ziel muss es sein den Wert in die passende Section zu füllen, also dort wo schon etwas drin steht.
 				String sSectionUsed = this.getSectionUsedForPropertyBySystemKey(sSection, sProperty);
