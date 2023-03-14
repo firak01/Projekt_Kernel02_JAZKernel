@@ -390,11 +390,18 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 						
 			int iReturn = objExpressionSolver.compute(sExpression, objSectionEntry);
 			assertTrue(iReturn==10); //10 für die Encryption
+			assertNotNull(objSectionEntry);
+			
+			TODOGOON20230314;//objSectionEntry sieht so aus, als hätte es die ganzen Werte "vergessen".
+			                 //Das muss also unbeding per Referenz an die compute-Methode übergeben werden!!!
+			assertTrue(objSectionEntry.isEncrypted());
 									
 			bFlagAvailable = objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);				
 			iReturn = objExpressionSolver.compute(sExpression, objSectionEntry);
 			assertTrue(iReturn==11); //10 für die Encryption  PLUS 1 für die Formelauswertung als String
+			assertNotNull(objSectionEntry);
+			assertTrue(objSectionEntry.isEncrypted());
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		

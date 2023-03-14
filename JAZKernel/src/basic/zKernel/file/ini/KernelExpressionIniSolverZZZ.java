@@ -288,12 +288,14 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objsReturnValue, objobjReturnAlgorithmCrypt);
 					if(bAnyEncryption) {
 						String sLineDecrypted = objsReturnValue.get();//Wert zur weiteren Verarbeitung weitergeben
+						ICryptZZZ objCrypt = objobjReturnAlgorithmCrypt.get();
 						
 						//TODOGOON20230314; //eigentlich müsste zuerst ein objCrypt erzeugt werden
 						//                  //und dann könnte man die Entschlüsselung hierin machen
-						//objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sValue, objCrypt);
+						//objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sValue, objCrypt);						
 						objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sLineWithExpression, sLineDecrypted, objCrypt);
-//						
+						sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
+						
 //						objReturn.isRawEncrpyted(true);	
 //						objReturn.setRawEncrypted(sLineWithExpressionUsed);
 //												
