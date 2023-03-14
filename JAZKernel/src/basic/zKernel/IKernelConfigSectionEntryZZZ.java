@@ -80,15 +80,23 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public String getRawDecrypted();
 	abstract void setRawDecrypted(String sRaw);
 	
+	boolean isEncrypted();
+	abstract void isEncrypted(boolean bEncrypted);
+	
+	abstract void isRawDecrypted(boolean bRawDecrypted);
+	boolean isRawDecrypted();
+	
 	public boolean isRawEncrypted();
 	abstract void isRawEncrpyted(boolean bIsRawEncrypted);
 	public String getRawEncrypted();
 	abstract void setRawEncrypted(String sRaw);
+	
 	
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);
 	
 	//In clonable protected
 	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException;
+	
 	
 }

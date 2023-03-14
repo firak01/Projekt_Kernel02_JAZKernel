@@ -19,6 +19,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
@@ -279,29 +280,37 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					String[] saFlagZpassed = this.getFlagZ_passable(true, encryptionDummy);
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					
+					
 					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();	
 					ReferenceZZZ<ICryptZZZ>objobjReturnAlgorithmCrypt=new ReferenceZZZ<ICryptZZZ>();
 					boolean bForFurtherProcessing = true; 
 					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objsReturnValue, objobjReturnAlgorithmCrypt);
 					if(bAnyEncryption) {
-						objReturn.isRawEncrpyted(true);	
-						objReturn.setRawEncrypted(sLineWithExpressionUsed);
-												
 						String sLineDecrypted = objsReturnValue.get();//Wert zur weiteren Verarbeitung weitergeben
-						if(sLineWithExpressionUsed.equalsIgnoreCase(sLineDecrypted)) {												
-							objReturn.isDecrypted(false);
-						}else {
-							objReturn.isDecrypted(true);
-							objReturn.setRawDecrypted(sLineDecrypted);
-							objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.
-							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
-						}
 						
-						
-						ICryptZZZ objCrypt = objobjReturnAlgorithmCrypt.get();
-						objReturn.setAlgorithmType(objCrypt); //Zur späteren Verwendung, z.B. einen anderen Wert neu Verschluesseln.
-						
+						//TODOGOON20230314; //eigentlich müsste zuerst ein objCrypt erzeugt werden
+						//                  //und dann könnte man die Entschlüsselung hierin machen
+						//objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sValue, objCrypt);
+						objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sLineWithExpression, sLineDecrypted, objCrypt);
+//						
+//						objReturn.isRawEncrpyted(true);	
+//						objReturn.setRawEncrypted(sLineWithExpressionUsed);
+//												
+//						
+//						if(sLineWithExpressionUsed.equalsIgnoreCase(sLineDecrypted)) {												
+//							objReturn.isDecrypted(false);
+//						}else {
+//							objReturn.isDecrypted(true);
+//							objReturn.setRawDecrypted(sLineDecrypted);
+//							objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.
+//							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
+//						}
+//						
+//						
+//						ICryptZZZ objCrypt = objobjReturnAlgorithmCrypt.get();
+//						objReturn.setAlgorithmType(objCrypt); //Zur späteren Verwendung, z.B. einen anderen Wert neu Verschluesseln.
+//						
 					}
 				}
 				

@@ -32,13 +32,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
 	private boolean bJsonMap = false;
-	
-	private boolean bRawEncrypted = false;
-	private String sRawEncrypted = null;
-	private boolean bDecrypted = false;
-	private String sRawDecrypted = null;
+
 	private ICryptZZZ objCrypt = null; //wichtig, falls z.B. ein verschluesselter Wert mit einem neuen Wert ersetzt werden soll. Dann muss das Algortithmus-Objekt nicht neu erstellt werden.
 	
+	private boolean bEncrypted = false;
+	private boolean bRawEncrypted = false;
+	private String sRawEncrypted = null;
+	
+	private boolean bDecrypted = false;
+	private boolean bRawDecrypted = false;	
+	private String sRawDecrypted = null;
 	
 	private String sKey = null;
 	
@@ -424,7 +427,28 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		this.bDecrypted = bDecrypted;
 	}
 	
+	
+	@Override
+	public boolean isEncrypted() {
+		return this.bEncrypted;
+	}
 
+
+	@Override
+	public void isEncrypted(boolean bEncrypted) {
+		this.bEncrypted = bEncrypted;
+	}
+	
+	@Override
+	public void isRawDecrypted(boolean bRawDecrypted) {
+		this.bRawDecrypted = bRawDecrypted;
+	}
+	
+	@Override
+	public boolean isRawDecrypted() {
+		return this.bRawDecrypted;
+	}
+	
 	@Override
 	public String getRawDecrypted() {
 		return this.sRawDecrypted;

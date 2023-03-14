@@ -33,6 +33,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -692,19 +693,15 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 																		
 				if(objCrypt!=null) {
 					//1. Verschluessel den Wert mit dem übergebenen Algorithmus
-					sValue = objCrypt.encrypt(sValueIn);
+					IKernelConfigSectionEntryZZZ objEntryWithCrypt = KernelConfigSectionEntryCreatorZZZ.createEntryEncrypted(sValueIn, objCrypt);
 					
+					//TODOGOON20230314;
 					//2. Baue für den Wert und die Parameterwerte des Algorithmus einen Expression-Tag String
 					//Z.B.: <Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>
-					TODOGOON20230312;
-					
-					//Mache aus dieser Eingabe einen kuenstlichen Entry
-					//Neue Klasse
-					IKernelConfigSectionEntryZZZ objEntryWithCrypt = KernelConfigSectionEntryCreatorZZZ.createEntry(sValue, objCrypt);
 					
 					//Neue Klasse
-					KernelExpressionIniCreatorZZZ.createLineFor(IKernelConfigSectionEntryZZZ objEntryWithCrypt);
-					sValue = "TODO: Expression-Tag String bauen..."+sValue;										
+					//KernelExpressionIniCreatorZZZ.createLineFor(IKernelConfigSectionEntryZZZ objEntryWithCrypt);
+					sValue = "TODO: Expression-Tag String bauen..."+sValueIn;										
 				}else {
 					//Merke: 20211130: Beim Einlesen in den "Eigenschafts Editor" DLGBox4Ini gab es das Problem, dass <z:Null> zum Leerstring wird " "!!!
 				       //          Das darf nicht sein, denn beim Zurückspeichern wird korrekterweise ein Leerstring " " zu <z:Empty>!!!
