@@ -1855,7 +1855,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}else{
 				hmDebug.put("Not in CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
 			}
-									
+			
+			//### weiter gehts ohne CACHE Erfolg			
+			objFound = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objFound.setProperty(sPropertyCacheUsed);
+			objFound.setProperty(sPropertyCacheUsed);
 			
 			//###############################################
 			//Hole die Konfigurationsdatei des Moduls
@@ -2783,6 +2787,10 @@ MeinTestParameter=blablaErgebnis
 			}else {
 				hmDebug.put("DISABLED CACHE FOR: " + sSectionCacheUsed, sPropertyCacheUsed);
 			}
+			
+			//### weiter gehts ohne CACHE Erfolg			
+			objFound = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objFound.setProperty(sProperty);
 				
 				
 				//###################################################################################################			
@@ -2839,6 +2847,7 @@ MeinTestParameter=blablaErgebnis
 			    
 			    for(String sSectionModuleUsed : alsSectionModule) {
 			    	sSectionUsed = sSectionModuleUsed;
+			    	objFound.setSection(sSectionUsed);
 			    	iCounter++;
 			    	sDebugKey = "(" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
 			    	hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionUsed, sProperty);
@@ -3405,7 +3414,8 @@ MeinTestParameter=blablaErgebnis
 			}else{									
 				objReturn.sectionExists(false);
 			}
-			objReturn.setSection(sSection);	
+			objReturn.setSection(sSection);
+			objReturn.setProperty(sProperty);
 			
 		}//End main:
 		return objReturn;
@@ -3460,14 +3470,16 @@ MeinTestParameter=blablaErgebnis
 				throw ez;
 			}
 			
+			objReturn.setSection(sSection);
+			objReturn.setProperty(sProperty);
 			if(!StringZZZ.isEmpty(sSection)){
 			    boolean bSectionExists = objFileIniConfig.proofSectionExists(sSection);
-				if(bSectionExists==true){										
-					objReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);
-				}else{					
-					objReturn.setSection(sSection);	
+				if(bSectionExists==true){						
+					objReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);					
+					objReturn.sectionExists(true);
+				}else{						
 					objReturn.sectionExists(false);
-				}
+				}				
 			}
 		}//End main:
 		return objReturn;
@@ -3506,7 +3518,8 @@ MeinTestParameter=blablaErgebnis
 		String sSectionCacheUsed = sProgramOrSection;		
 		String sPropertyCacheUsed = sProperty;
 		
-		IKernelConfigSectionEntryZZZ objFound=null;boolean bExistsInCache=false;
+		IKernelConfigSectionEntryZZZ objFound=null;
+		boolean bExistsInCache=false;
 		main:{		
 			//############################
 			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST
@@ -3524,6 +3537,10 @@ MeinTestParameter=blablaErgebnis
 				hmDebug.put("DISABLED CACHE FOR: " + sSectionCacheUsed, sPropertyCacheUsed);
 			}
 			
+			//### weiter gehts ohne CACHE Erfolg			
+			objFound = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+			objFound.setSection(sSectionCacheUsed);
+			objFound.setProperty(sPropertyCacheUsed);
 			
 			//###################################################################################################			
 		    //IDEE: Mache eine Factory, über die dann ein 'AsciiCounterZweistellig' Objekt erstellt werden kann
@@ -3585,6 +3602,7 @@ MeinTestParameter=blablaErgebnis
 		    ArrayList<String> alsSectionProgram = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileIniConfig, sProgramOrSectionUsed, sMainSectionAsModuleUsed, sApplicationKey, sSystemNumber);		    		   
 		    for(String sSectionProgramUsed : alsSectionProgram) {
 		    	sSectionUsed = sSectionProgramUsed;
+		    	objFound.setSection(sSectionUsed);
 		    	iCounter++;
 		    	sDebugKey = "(" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
 		    	if(hmDebug!=null) hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + "Module: |" + sSectionUsed + "'| Program: '" + sSectionProgramUsed + "'", sProperty);
@@ -4828,10 +4846,15 @@ MeinTestParameter=blablaErgebnis
 				
 			//###############################################
 			//0. Suche nach dem Program in den Systemkeys	
+			objReturn.setProperty(sProgram);
+		
 			ArrayList<String> listasSystemKey = KernelKernelZZZ.computeSystemSectionNames(sApplicationOrModule, sSystemNumber);
 			for(String sSystemKey : listasSystemKey) {								
 				if(hmDebug!=null) hmDebug.put("Im SystemKey: " + sSystemKey, sProgram);					
-							
+				objReturn.setSection(sSystemKey);
+				
+				
+				
 				//Zuerst den im SystemKey definierten Programnamen finden.
 				IKernelConfigSectionEntryZZZ objEntrySectionProgram = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileIniConfig, sSystemKey, sProgram);
 				if(objEntrySectionProgram.hasAnyValue()) {

@@ -409,15 +409,17 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					throw ez;		
 				}else{
 					sSection = sSectionIn;
+					objReturn.setSection(sSection);
 				}			
 				if(StringZZZ.isEmpty(sPropertyIn)){
 					ExceptionZZZ ez = new ExceptionZZZ("missing parameter 'Property'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		
 				}else{
 					sProperty = sPropertyIn;
+					objReturn.setProperty(sProperty);
 				}					
 			}//end check:
-									
+							
 			//############################
 			//### GRUNDSATZ:
 			//### ENDLOSSCHLEIFENGEFAHR, WENN NICHT AUF DIESER EBENE DIREKT MIT DEM INIFILE GEARBEITET WUERDE 
@@ -474,6 +476,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				KernelExpressionIniSolverZZZ objExpressionSolver = new KernelExpressionIniSolverZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
 				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReference.set(objReturn);
 				int iReturnValue = objExpressionSolver.compute(sReturnRaw,objReturnReference);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");
 				objReturn = objReturnReference.get();
@@ -486,17 +489,17 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
-			if(StringZZZ.isEmpty(sProperty)) break main;
+			objReturn.setSection(sSection);	
+			if(StringZZZ.isEmpty(sProperty)) break main;						
+			objReturn.setProperty(sProperty);
 			
 			boolean bSectionExists = this.proofSectionExists(sSection);
 			if(bSectionExists) {
 				String sReturnRaw=null;
-				objReturn.setSection(sSection);	
 				objReturn.sectionExists(true);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
-				if(sReturnRaw!=null) {						
-					objReturn.setProperty(sProperty);
+				if(sReturnRaw!=null) {											
 					objReturn.setRaw(sReturnRaw);
 					objReturn.setValue(sReturnRaw);						
 				}

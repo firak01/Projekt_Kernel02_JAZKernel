@@ -401,7 +401,7 @@ public class FileIniZZZTest extends TestCase {
 		try{
 		String[] saSection = objFileIniTest.getSectionAll();
 		assertNotNull("Unexpected: The array of all sections is null", saSection);
-		assertEquals(10, saSection.length);
+		assertEquals(12, saSection.length);
 		}catch(ExceptionZZZ ez){
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

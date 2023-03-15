@@ -268,8 +268,9 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 		//public int compute(String sLineWithExpression, IKernelConfigSectionEntryZZZ objReturn) throws ExceptionZZZ{
 		public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
 			int iReturn = 0;
-			boolean bAnyEncryption = false;
-			IKernelConfigSectionEntryZZZ objReturn=new KernelConfigSectionEntryZZZ();			
+			boolean bAnyEncryption = false;			
+			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();			
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());

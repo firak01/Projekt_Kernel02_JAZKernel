@@ -212,7 +212,11 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		if(this.hasNullValue()){
 			return null;		
 		}else if (this.hasAnyValue()==false){
-			return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!
+			if(this.sectionExists()) {
+				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!
+			}else {
+				return null; //wenn die Section nicht existiert, dann auch kein Wert.
+			}
 		}else {
 			return this.sValue;
 		}
