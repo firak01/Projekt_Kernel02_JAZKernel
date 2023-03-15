@@ -61,6 +61,13 @@ public class HashMapZZZTest extends TestCase{
 					
 					DummyObjectZZZ objTestZ = (DummyObjectZZZ) hmIndexed.getValueNext();
 					assertNull(objTestZ);
+					
+					DummyObjectZZZ objTestZ2 = (DummyObjectZZZ) hmIndexed.getValue("75");
+					assertNotNull(objTestZ2);
+					
+					DummyObjectZZZ objTestZ3 = (DummyObjectZZZ) hmIndexed.getValue("NichtDa");
+					assertNull(objTestZ3);
+					
 				} catch (ExceptionZZZ ez) {
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
@@ -88,6 +95,11 @@ public class HashMapZZZTest extends TestCase{
 					DummyObjectZZZ objTest02 = (DummyObjectZZZ)hmIndexed.getValueByIndex(intKey);
 					assertNotNull(objTest02);
 					assertTrue(objTest02.getValue().equals("2"));
+					
+					
+					DummyObjectZZZ objTest02b = (DummyObjectZZZ)hmIndexed.getValueByIndex(1);
+					assertNotNull(objTest02b);
+					assertTrue(objTest02b.getValue().equals("2"));
 					
 					DummyObjectZZZ objTestX = (DummyObjectZZZ) hmIndexed.getValueNext();
 					assertNotNull(objTestX);

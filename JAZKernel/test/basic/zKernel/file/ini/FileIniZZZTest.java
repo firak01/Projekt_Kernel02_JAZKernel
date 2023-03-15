@@ -310,6 +310,8 @@ public class FileIniZZZTest extends TestCase {
 			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
 			
 			objFileIniTest.setFlag("useFormula", true);
+			
+			TODOGOON20230315;//Auflösungsfehler beheben!!
 			sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
 			assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
 			

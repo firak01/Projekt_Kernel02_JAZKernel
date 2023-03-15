@@ -1708,7 +1708,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @author Fritz Lindhauer, 21.04.2021, 10:10:26
 	 */
 	private IKernelConfigSectionEntryZZZ KernelSearchAliasForModule_(FileIniZZZ objFileConfigIni, String sModule, String sApplicationOrModule) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn=null;
+		IKernelConfigSectionEntryZZZ objReturn=new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		
 		String sSectionCacheUsed = sApplicationOrModule; 
@@ -1828,7 +1828,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @author Fritz Lindhauer, 21.04.2021, 10:10:26
 	 */
 	private IKernelConfigSectionEntryZZZ KernelSearchAliasForProgram_(String sApplicationOrModule, String sProgram) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn=null;
+		IKernelConfigSectionEntryZZZ objReturn= new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		
 		check:{
 			if(StringZZZ.isEmpty(sApplicationOrModule)) {
@@ -2071,7 +2071,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	}
 	
 	private IKernelConfigSectionEntryZZZ searchPropertyByAliasOLDDIRECT(String sAlias, String sProperty) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null;
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			check:{
 			if(StringZZZ.isEmpty(sAlias)){								
@@ -2425,7 +2425,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	 * @throws ExceptionZZZ
 	 */
 	public IKernelConfigSectionEntryZZZ getParameterByModuleAlias(String sModuleAlias, String sParameter)  throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
 			check:{
 				if(sModuleAlias == null){
@@ -2690,7 +2690,7 @@ MeinTestParameter=blablaErgebnis
 		
 	
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(File objFileConfig, String sModuleAlias, String sParameter) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 				check:{
 					if(objFileConfig == null){
@@ -2754,7 +2754,7 @@ MeinTestParameter=blablaErgebnis
 		
 	
 	private IKernelConfigSectionEntryZZZ KernelSearchParameterByModuleFile_(FileIniZZZ objFileIniConfigIn, String sModuleAlias, String sProperty, boolean bUseCache) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 							
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug;

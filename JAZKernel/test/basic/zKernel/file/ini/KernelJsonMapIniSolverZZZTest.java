@@ -123,7 +123,12 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			HashMap<String,String>hm1 = objExpressionSolver.computeHashMap(sLineWithExpression);
 			assertTrue("Ohne Auflösung soll es keine HashMap geben",hm1.size()==0);
 				
-			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
+			objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true); //Damit der Wert sofort ausgerechnet wird
+			//Aber ohne Map-Flag wird noch nix gefunden...
+			HashMap<String,String>hmDummy = objExpressionSolver.computeHashMap(sLineWithExpression);
+			assertTrue("Ohne Auflösung soll es keine HashMap geben",hmDummy.size()==0);
+						
+			objExpressionSolver.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP, true); //Damit der Wert sofort ausgerechnet wird			
 			HashMap<String,String>hm2 = objExpressionSolver.computeHashMap(sLineWithExpression);
 			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm2.size()==2);
 

@@ -68,9 +68,11 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 				if(vecIndex.hasAnyElement()) {
 					Integer intIndex  =  (Integer) vecIndex.elementAt(0);			
 					this.setIndexCurrent(0); 
+					objReturn = intIndex;
 					
-					HashMap<Integer,Object>hmIndexed = this.getHashMap();
-					objReturn = hmIndexed.get(intIndex);
+					//Das wäre der Wert und nicht der Key!!!
+//					HashMap<Integer,Object>hmIndexed = this.getHashMap();
+//					objReturn = hmIndexed.get(intIndex);					
 				}
 			}
 //		}catch(ExceptionZZZ ez){
@@ -92,9 +94,11 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 				if(vecIndex.hasAnyElement()) {
 					Integer intIndex=(Integer) vecIndex.lastElement();
 					this.setIndexCurrent(vecIndex.size()-1);
+					objReturn = intIndex;
 					
-					HashMap<Integer,Object>hmIndexed = this.getHashMap();
-					objReturn = hmIndexed.get(intIndex);
+					//Das wäre schon der Wert!!
+//					HashMap<Integer,Object>hmIndexed = this.getHashMap();
+//					objReturn = hmIndexed.get(intIndex);
 				}
 			}
 //		}catch(ExceptionZZZ ez){
@@ -120,9 +124,11 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 				
 						Integer intIndex =  (Integer) vecIndex.elementAt(iIndexTest);			
 						this.setIndexCurrent(iIndexTest);
-						
-						HashMap<Integer,Object>hmIndexed = this.getHashMap();
-						objReturn = hmIndexed.get(intIndex);
+						objReturn = intIndex; 
+								
+						//das wäre schon der Wert!!!
+//						HashMap<Integer,Object>hmIndexed = this.getHashMap();
+//						objReturn = hmIndexed.get(intIndex);
 					}
 				}
 //			}catch(ExceptionZZZ ez){
@@ -161,7 +167,7 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtable f�r den ersten Key (gem�� der Sortierung) zur�ck.
+	/** Object, Gibt den Wert der Hashtable f�r den ersten Key (gemaes der Sortierung) zurueck.
 	* Lindhauer; 27.04.2006 11:30:25
 	 * @return Object
 	 * @throws ExceptionZZZ 

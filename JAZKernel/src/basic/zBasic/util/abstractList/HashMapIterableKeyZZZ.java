@@ -46,12 +46,11 @@ public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements ICollectio
 	public X getValueFirst() throws ExceptionZZZ {
 		X objReturn = null;
 		main:{
-			T objKey = this.getKeyFirst();
-			if(objKey==null) break main;
+			T objIndex = this.getKeyFirst();
+			if(objIndex==null) break main;
 			
-			HashMap<T,X>hmOriginal =this.getHashMap();
-			objReturn = hmOriginal.get(objKey);
-			
+			objReturn = this.getValueByIndex(objIndex);
+
 		}//end main:
 		return objReturn;
 	}
@@ -69,11 +68,10 @@ public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements ICollectio
 	public X getValueLast() throws ExceptionZZZ {
 		X objReturn = null;
 		main:{
-			T objKey = this.getKeyLast();
-			if(objKey==null) break main;
+			T objIndex = this.getKeyLast();
+			if(objIndex==null) break main;
 			
-			HashMap<T,X>hmOriginal =this.getHashMap();
-			objReturn = hmOriginal.get(objKey);
+			objReturn = this.getValueByIndex(objIndex);
 			
 		}//end main:
 		return objReturn;
@@ -91,11 +89,10 @@ public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements ICollectio
 	public X getValueNext() throws ExceptionZZZ {
 		X objReturn = null;
 		main:{
-			T objKey = this.getKeyNext();
-			if(objKey==null) break main;
+			T objIndex = this.getKeyNext();
+			if(objIndex==null) break main;
 			
-			HashMap<T,X>hmOriginal =this.getHashMap();
-			objReturn = hmOriginal.get(objKey);
+			objReturn = this.getValueByIndex(objIndex);
 			
 		}//end main:
 		return objReturn;
@@ -117,21 +114,27 @@ public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements ICollectio
 	public X getValueByIndex(int iIndex) throws ExceptionZZZ {
 		X objReturn = null;
 		main:{
-			Integer intIndex = new Integer(iIndex);
-			objReturn = this.getValueByIndex(intIndex);
+			if(iIndex <= -1) break main;
 			
+			T intIndex = (T) new Integer(iIndex);
+			objReturn = this.getValueByIndex(intIndex);			
 		}//end main;
 		return objReturn;
 	}
-	public X getValueByIndex(Integer intIndex) throws ExceptionZZZ {
+	
+	public X getValueByIndex(T objIndex) throws ExceptionZZZ {
 		X objReturn = null;
 		main:{
-			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();
-			T objKey = (T) hmIndex.getValue(intIndex);
-			if(objKey==null)break main;
+			if (objIndex==null) break main;
+						
+			//Hole aus der Indexmap den Schluessel aus der gewuenschten Postion (hier: Erster Index, also 0);
+			HashMapIndexedZZZ<Integer,T> hmIndex = this.getHashMapIndexedKey();			
+			Object objKeyTemp = hmIndex.getValue((Integer) objIndex);
+			X objKey = (X) objKeyTemp;
 			
-			HashMap<T,X> hmOriginal = this.getHashMap();
-			objReturn = (X) hmOriginal.get(objKey);
+			//Hole mit dem Schluessel den Wert aus der Originalen HashMap.
+			HashMap<T,X>hmOriginal =this.getHashMap();
+			objReturn = hmOriginal.get(objKey);
 		}//end main;
 		return objReturn;
 	}

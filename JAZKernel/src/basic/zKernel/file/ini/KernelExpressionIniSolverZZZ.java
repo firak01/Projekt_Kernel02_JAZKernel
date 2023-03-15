@@ -20,6 +20,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
@@ -264,13 +265,18 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 			return (String) this.getHashMapVariable().get(sKey);
 		}
 		
-		public int compute(String sLineWithExpression, IKernelConfigSectionEntryZZZ objReturn) throws ExceptionZZZ{
+		//public int compute(String sLineWithExpression, IKernelConfigSectionEntryZZZ objReturn) throws ExceptionZZZ{
+		public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
 			int iReturn = 0;
 			boolean bAnyEncryption = false;
+			IKernelConfigSectionEntryZZZ objReturn=new KernelConfigSectionEntryZZZ();			
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
 				if(!bUseExpression) break main;
+						
+				objReturn.setValue(sLineWithExpression);//Schon mal setzen, falls es ein normaler Wert ist. Falls es ein Formelwert/Verschluesselter Wert ist, wird das eh ueberschrieben.
+				iReturn = 1;
 				
 				String sLineWithExpressionUsed = sLineWithExpression;
 				
@@ -333,8 +339,8 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
 					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
 					boolean bAnyExpression = false;
-					iReturn = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
-					if(iReturn>=1){
+					int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
+					if(iReturnExpression>=1){
 						bAnyExpression = true;
 						objReturn.isExpression(true);
 						
@@ -342,13 +348,13 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 						String sReturnValue=null;
 							
 						String sReturnFormula = objsReturnValueExpressionSolved.get();			
-						if(iReturn==1 | iReturn==3) {
+						if(iReturnExpression==1 | iReturnExpression==3) {
 							objReturn.isFormula(true);
 							sReturnValue=sReturnFormula;
 						}
 						
 						String sReturnExpression = objsReturnValueConverted.get();			
-						if(iReturn==2 | iReturn==3) {
+						if(iReturnExpression==2 | iReturnExpression==3) {
 							objReturn.isConverted(true);							
 							sReturnValue = sReturnExpression;
 						}	
@@ -356,10 +362,12 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 						if(!bAnyExpression){
 							sReturnValue = objsReturnValue.get();
 						}
-						objReturn.setValue(sReturnValue);						 					
+						objReturn.setValue(sReturnValue);	
+						iReturn = iReturn + iReturnExpression;
 						break main;
 					}
-				}
+				}//end bUseFormula
+
 												
 				boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name());
 				if(bUseJson) {
@@ -372,9 +380,9 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();
 					
 					//TODOGOON; //20210729 Hier nur 1 statische Methode aufrufen, die einen Integerwert zurückliefert, der dann die Befüllung von objReturn steuert.					
-					iReturn = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);
+					int iReturnJson = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);
 					
-					if(iReturn==5) {
+					if(iReturnJson==5) {
 						objReturn.isJsonArray(true);
 						objReturn.isJson(true);
 						objReturn.isExpression(true);
@@ -382,20 +390,21 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 						objReturn.setValue(objalsReturnValueJsonSolved.getArrayList());												
 					}
 					
-					if(iReturn==6) {
+					if(iReturnJson==6) {
 						objReturn.isJsonMap(true);
 						objReturn.isJson(true);
 						objReturn.isExpression(true);
 						objReturn.setValue(HashMapExtendedZZZ.debugString(objhmReturnValueJsonSolved.get()));
 						objReturn.setValue(objhmReturnValueJsonSolved.get());
 					}
-														
-				}					
+					iReturn = iReturn + iReturnJson;									
+				}									
 			}//end main:
 			if(bAnyEncryption) {
 				//Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
 				iReturn = iReturn+10;
 			}
+			objReturnReference.set(objReturn);
 			return iReturn;
 		}
 	
