@@ -305,13 +305,16 @@ public class FileIniZZZTest extends TestCase {
 			assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry").getValue());
 			
 			//NEU 20070306: Hier über eine Formel die Property auslesen
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,false);
 			objFileIniTest.setFlag("useFormula", false);
 			String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
 			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
 			
-			objFileIniTest.setFlag("useFormula", true);
-			
-			TODOGOON20230315;//Auflösungsfehler beheben!!
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);//Das reicht nicht			
+			sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
+		
+			objFileIniTest.setFlag("useFormula", true);//jetzt sollte es klappen
 			sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
 			assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
 			

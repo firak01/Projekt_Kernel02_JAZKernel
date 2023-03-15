@@ -274,9 +274,10 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
 				if(!bUseExpression) break main;
-						
+				
+				iReturn=1;
 				objReturn.setValue(sLineWithExpression);//Schon mal setzen, falls es ein normaler Wert ist. Falls es ein Formelwert/Verschluesselter Wert ist, wird das eh ueberschrieben.
-				iReturn = 1;
+				
 				
 				String sLineWithExpressionUsed = sLineWithExpression;
 				

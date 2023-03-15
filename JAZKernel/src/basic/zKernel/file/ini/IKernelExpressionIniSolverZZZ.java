@@ -5,7 +5,7 @@ public interface IKernelExpressionIniSolverZZZ extends IKernelZFormulaIniSolverZ
 		USEEXPRESSION
 	}
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag);
-	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);
+	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ);
+	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue);
+	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objEnum_IKernelExpressionIniSolverZZZ, boolean bFlagValue);
 }

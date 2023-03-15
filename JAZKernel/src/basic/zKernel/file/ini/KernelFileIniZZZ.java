@@ -462,7 +462,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			if(sReturnRaw==null) break main;
 						
 			//+++ 20191126: Auslagern der Formelausrechung in einen Utility Klasse. Ziel: Diese Routine von mehreren Stellen aus aufrufen können. 
-			boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
+			boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION);
 			if(bUseExpression) {
 				
 				//20210725: Noch eine Ebene dazwischen engebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
