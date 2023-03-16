@@ -14,15 +14,18 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.ICacheFilterZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 
 public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
 	private String sSection = null;
 	private String sProperty = null;
+	private String sSystemNumber = null;
 	private String sRaw = null;
 	private String sValue = new String("");
 	private HashMap<String,String> hmValue = new HashMap<String,String>();
 	private ArrayList<String> alValue = new ArrayList<String>();
 	private boolean bSectionExists = false;
+	private boolean bAnySectionExists = false;
 	private boolean bAnyValue = false;
 	private boolean bNullValue = false;
 	private boolean bExpression = false;
@@ -179,22 +182,32 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 
 	@Override
 	public void setSection(String sSection) {
-		if(sSection!=null){
+		//if(sSection!=null){
 			this.sSection=sSection;
-			this.sectionExists(true);
-		}else{
-			this.sectionExists(false);
-		}
+			this.sectionExists(false);//es ist noch nicht bewiesen, dass es diese Section ueberhaupt gibt!!!
+		//}else{
+		//	this.sectionExists(false);
+		//}
 	}
 
 	@Override
 	public String getProperty() {
-		return this.sProperty;
+		return this.sProperty;		
 	}
 
 	@Override
 	public void setProperty(String sProperty) {
 		this.sProperty=sProperty;
+	}
+	
+	@Override
+	public String getSystemNumber() {
+		return this.sSystemNumber;
+	}
+	
+	@Override
+	public void setSystemNumber(String sSystemNumber) {
+		this.sSystemNumber = sSystemNumber;
 	}
 
 	@Override
@@ -213,7 +226,8 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 			return null;		
 		}else if (this.hasAnyValue()==false){
 			if(this.sectionExists()) {
-				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!
+				//return KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
+				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
 			}else {
 				return null; //wenn die Section nicht existiert, dann auch kein Wert.
 			}
@@ -266,21 +280,23 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public boolean hasAnyValue() {
 		return this.bAnyValue;
-	}
-	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
-	private void hasAnyValue(boolean bAnyValue) {
-		this.bAnyValue=bAnyValue;
-	}
-	
+	}	
 	
 	@Override
 	public boolean hasNullValue() {
 		return this.bNullValue;
 	}
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
-		private void hasNullValue(boolean bNullValue) {
-			this.bNullValue=bNullValue;
-		}
+	private void hasNullValue(boolean bNullValue) {
+		this.bNullValue=bNullValue;
+	}
+	
+	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
+	//Wurde einmal true gesetzt, dann bleibt das auch so. Damit wird bei der nächsten Suche nach einer Section der Wert nicht verändet, auch wenn die neue Section nicht existiert!!!
+	private void hasAnySectionExists(boolean bAnySectionExists) {
+		if(!this.bAnySectionExists) this.bAnySectionExists=bAnySectionExists;
+	}
+		
 	
 	@Override
 	public boolean isExpression(){
@@ -350,6 +366,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void sectionExists(boolean bSectionExists) {
 		this.bSectionExists = bSectionExists;
+		this.hasAnySectionExists(bSectionExists);
+	}
+	
+	@Override
+	public boolean hasAnySectionExists() {
+		return this.bAnySectionExists;
+	}
+	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
+	private void hasAnyValue(boolean bAnyValue) {
+		this.bAnyValue=bAnyValue;
 	}
 
 	//Aus Interface IObjectCachableZZZ

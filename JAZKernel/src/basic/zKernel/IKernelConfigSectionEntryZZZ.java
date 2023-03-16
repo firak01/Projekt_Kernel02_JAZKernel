@@ -26,6 +26,9 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public String getProperty();
 	public void setProperty(String sProperty);
 	
+	public String getSystemNumber();
+	public void setSystemNumber(String sSystemNumber);
+	
 	public String getRaw();
 	public void setRaw(String sRaw);
 	
@@ -90,10 +93,12 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	abstract void isRawEncrpyted(boolean bIsRawEncrypted);
 	public String getRawEncrypted();
 	abstract void setRawEncrypted(String sRaw);
-	
-	
+		
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);
+	
+	public boolean hasAnySectionExists(); //existierte auf dem Suchpfad nach einer Property ueberhaupt einmal eine Section?
+	//soll nur private eingesetzt werden. abstract void hasAnySectionExists(boolean bValue);
 	
 	//In clonable protected
 	public IKernelConfigSectionEntryZZZ clone() throws CloneNotSupportedException;

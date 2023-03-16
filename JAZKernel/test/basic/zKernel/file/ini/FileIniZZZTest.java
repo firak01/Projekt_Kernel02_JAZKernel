@@ -298,11 +298,25 @@ public class FileIniZZZTest extends TestCase {
 			String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
 			assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
 			
+			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section A", "Testentry1 NOT EXISTING");
+			assertNotNull("Auch wenn es alles nicht gibt, ein Entry-Objekt soll zurückgeliefert werden.", objEntry);
+			
+			TODOGOON20230316;//Das Problem ist, das bei jeder Pruefung auf eine Section ein neues Entry-Objekt erstellt wird.
+			                 //Es müsste also eine Methode geben, bei der das Referenzobjekt übergeben wird.
+			assertTrue("Die Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.hasAnySectionExists());
+			assertNotNull("Wenn es die Section gibt, den Wert aber nicht, dann soll der Rueckgabewert aber NICHT NULL sein", objEntry.getValue());
+			assertTrue("Wenn es die Section gibt, den Wert aber nicht, dann soll der Rueckgabewert aber der Leerstring sein", objEntry.getValue().equals(""));
+			
 			//nun den Wert testen, wie er im setup definiert wurde
 			assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());
 			
 			//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
-			assertEquals("", objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry").getValue());
+			objEntry = objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry");
+			assertNotNull("Auch wenn es alles nicht gibt, ein Entry-Objekt soll zurückgeliefert werden.", objEntry);
+			assertFalse("Die Section sollte als nicht existent geflagt sein.",objEntry.sectionExists());
+			assertNull("Wenn es alles nicht gibt, dann soll der Rueckgabewert aber NULL sein", objEntry.getValue());
+			
+			
 			
 			//NEU 20070306: Hier über eine Formel die Property auslesen
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,false);
@@ -448,11 +462,11 @@ public void testSetSectionSave(){
 public void testProofSectionExists(){
 	try{
 		//Fehlerfall pr�fen
-		boolean btemp = objFileIniTest.proofSectionExists("Section This does not exist");
+		boolean btemp = objFileIniTest.proofSectionExistsDirectLookup("Section This does not exist");
 		assertFalse("The section 'Section This does not exist' was expected not to exist",btemp);
 				
 		//Truefall pr�fen
-		boolean btemp2 = objFileIniTest.proofSectionExists("Section for proofsectionexists");   //!!! Damit ist auch bewiesen, dass Gro�-/Kleinschreibung keine Rolle spielt 
+		boolean btemp2 = objFileIniTest.proofSectionExistsDirectLookup("Section for proofsectionexists");   //!!! Damit ist auch bewiesen, dass Gro�-/Kleinschreibung keine Rolle spielt 
 		assertTrue("The section 'Section for ProofSectionExists' was expected to exist",btemp2);
 		
 	}catch(ExceptionZZZ ez){
@@ -469,8 +483,8 @@ public void testGetPropertyValueSystemNrSearched(){
 		String sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","Value1", "01").getValue();
 		assertEquals("first value systemnr 01",sValue);
 		
-		//Wenn der Wert nicht gefunden wird, so wird im globalen nachgesehen
-		sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","ValueGlobalOnly", "01").getValue();
+		//Ohne explizite Uebergabe der SystemNr gilt: Wenn der Wert nicht gefunden wird, so wird im globalen nachgesehen		
+		sValue = objFileIniTest.getPropertyValueSystemNrSearched("Section for testGetPropertyValueSystemNrSearched","ValueGlobalOnly", null).getValue();
 		assertEquals("second value global",sValue);
 		
 		//Wird allerdings die Sektion schon lokal übergeben, so wird nur in der lokalen konfiguration nachgesehen

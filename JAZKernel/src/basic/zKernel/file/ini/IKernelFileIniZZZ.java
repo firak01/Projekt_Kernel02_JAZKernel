@@ -32,5 +32,5 @@ public interface IKernelFileIniZZZ extends IKernelUserZZZ{
 	//Setter als private, damit die Erstellung über den Konstruktor nicht umgangen werden kann:
 	//public void setFileIniObject(IniFile objIniFile);
 	
-	public boolean proofSectionExists(String sSection) throws ExceptionZZZ;
+	public boolean proofSectionExistsDirectLookup(String sSection) throws ExceptionZZZ;
 }
