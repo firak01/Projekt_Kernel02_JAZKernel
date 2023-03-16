@@ -224,8 +224,9 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	public String getValue() {
 		if(this.hasNullValue()){
 			return null;		
-		}else if (this.hasAnyValue()==false){
-			if(this.sectionExists()) {
+		}else if (!this.hasAnyValue()){
+			//if(this.sectionExists()) {
+			if(this.hasAnySectionExists()) {
 				//return KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
 				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
 			}else {

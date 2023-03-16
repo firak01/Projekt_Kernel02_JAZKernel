@@ -398,6 +398,25 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	public IKernelConfigSectionEntryZZZ getPropertyValue(String sSectionIn, String sPropertyIn) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReference.set(objReturn);
+			this.getPropertyValue_(sSectionIn, sPropertyIn, objReturnReference);
+			objReturn = objReturnReference.get();
+		}//end main:
+		return objReturn;
+	}//end function
+	
+	/**  String, the value of a property in a section	
+	 @author 0823 , date: 18.10.2004
+	 @param sSectionIn
+	 @param sPropertyIn
+	 @return the string entry at the section for the specified property
+	 @throws ExceptionZZZ
+	 */
+	private IKernelConfigSectionEntryZZZ getPropertyValue_(String sSectionIn, String sPropertyIn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{
 			String sSection; String sProperty;
 			check:{
 				if(this.objFileIni==null){				
@@ -442,7 +461,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				objReturn.setSystemNumber(sSystemNumberUsed);
 				
 				//Zuerst direkt in der übergebenen Section nachsehen
-				objReturn = this.getPropertyValueDirectLookup(sSection, sProperty);			
+				getPropertyValueDirectLookup_(sSection, sProperty, objReturnReference);	
+				objReturn = objReturnReference.get();
 			}
 			
 			
@@ -459,7 +479,9 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen UND das als Program behandeln.
 				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(this, sSection, sApplicationKeyUsed, sSystemNumberUsed);
 				for(String sSectionUsed:alsSection) {
-					objReturn = this.getPropertyValueDirectLookup(sSectionUsed, sProperty);
+					objReturnReference.set(objReturn);
+					this.getPropertyValueDirectLookup_(sSectionUsed, sProperty, objReturnReference);
+					objReturn = objReturnReference.get();
 					if(objReturn.hasAnyValue()) break;								
 				}				
 			}
@@ -479,18 +501,30 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				
 				KernelExpressionIniSolverZZZ objExpressionSolver = new KernelExpressionIniSolverZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
 				
-				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReference.set(objReturn);
 				int iReturnValue = objExpressionSolver.compute(sReturnRaw,objReturnReference);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");
 				objReturn = objReturnReference.get();
 			}
 		}//end main:
+		objReturnReference.set(objReturn);
 		return objReturn;
 	}//end function
 	
 	public IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup(String sSection, String sProperty) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
+		main:{			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			objReturnReference.set(objReturn);
+			this.getPropertyValueDirectLookup_(sSection, sProperty, objReturnReference);
+			objReturn = objReturnReference.get();
+		}//end main:
+		return objReturn;
+	}
+	
+	private IKernelConfigSectionEntryZZZ getPropertyValueDirectLookup_(String sSection, String sProperty, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+		if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.	
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
 			objReturn.setSection(sSection);	
@@ -511,6 +545,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				objReturn.sectionExists(false);
 			}
 		}//end main:
+		objReturnReference.set(objReturn);
 		return objReturn;
 	}
 	
@@ -558,8 +593,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	 * @throws ExceptionZZZ 
 	 */
 	public IKernelConfigSectionEntryZZZ getPropertyValueSystemNrSearched(String sSectionIn, String sPropertyIn, String sSystemNrIn) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-		
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		main:{
 			String sSectionUsed; String sProperty; String sSystemNumberUsed;
 				if(this.objFileIni==null){				
@@ -585,24 +619,27 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					objReturn.setProperty(sProperty);
 				}
 				
+				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+				objReturnReference.set(objReturn);				
 				if(StringZZZ.isEmpty(sSystemNrIn)){
 					sSystemNumberUsed = this.getKernelObject().getSystemNumber();
 					
 					String sSectionUsedFirst = KernelKernelZZZ.computeSystemSectionNameForSection(sSectionUsed, sSystemNumberUsed);
 					
 					//Zuerst direkt in der übergebenen Section, mit allen Systemnr. nachsehen
-					objReturn = this.getPropertyValue(sSectionUsedFirst, sProperty);				
-				
-					if(!objReturn.hasAnyValue()) {
-						String sApplicationKeyUsed = this.getKernelObject().getApplicationKey();
+					this.getPropertyValue_(sSectionUsedFirst, sProperty, objReturnReference);				
+					objReturn = objReturnReference.get();
+					if(objReturn.hasAnyValue())  break main;
+					
+					String sApplicationKeyUsed = this.getKernelObject().getApplicationKey();
 						
-						//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen UND das als Program behandeln.
-						ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(this, sSectionUsed, sApplicationKeyUsed, sSystemNumberUsed);
-						for(String sSectionUsedTemp:alsSection) {
-							objReturn = this.getPropertyValueDirectLookup(sSectionUsedTemp, sProperty);
-							if(objReturn.hasAnyValue()) break;								
-						}				
-					}
+					//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen UND das als Program behandeln.
+					ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(this, sSectionUsed, sApplicationKeyUsed, sSystemNumberUsed);
+					for(String sSectionUsedTemp:alsSection) {
+						this.getPropertyValueDirectLookup_(sSectionUsedTemp, sProperty, objReturnReference);
+						objReturn = objReturnReference.get();
+						if(objReturn.hasAnyValue()) break;								
+					}									
 					
 				}else{
 					//Hier nur nach der explizit uebergebenen SystemNr. Suchen
@@ -612,7 +649,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					//Das entfällt String sSectionUsedFirst = KernelKernelZZZ.computeSystemSectionNameForSection(sSectionUsed, sSystemNumberUsed);					
 					//Direkt in der übergebenen Section, mit der Systemnr. nachsehen					
 					objReturn = this.getPropertyValueDirectLookup(sSectionUsed, sProperty,sSystemNumberUsed);
-				}									
+				}
+				
 		}//end main:
 		return objReturn;
 	}

@@ -100,9 +100,12 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 						throw ez;
 					}
 					
-					//20080109 FGL: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
-					String sSystemNr = this.getKernelObject().getSystemNumber();
-					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
+					//20080109: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
+ 					//20230316: Aber, jetzt ist es allgemeingültiger nicht eine konkrete SystemNumber vorzugeben. Darum null dafür.
+					//          Dann werden alle Sections durchsucht
+					//String sSystemNr = this.getKernelObject().getSystemNumber();					
+					//String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
+					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
 					
 					//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
 					if(!StringZZZ.isEmpty(sValue)){

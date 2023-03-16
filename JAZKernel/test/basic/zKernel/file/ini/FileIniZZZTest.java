@@ -295,25 +295,29 @@ public class FileIniZZZTest extends TestCase {
 	public void testGetProperty(){
 		try {
 			//Erst testen, dass auch kein Leerwert kommt
-			String sTestValueTemp =  objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue();
-			assertFalse("An empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
+			IKernelConfigSectionEntryZZZ objEntry =objFileIniTest.getPropertyValue("Section A", "Testentry1"); 
+			assertNotNull("Es soll ein Entry-Object zurueckgeliefert werden.", objEntry);
+			String sTestValueTemp = objEntry.getValue();
+			assertFalse("No empty entry was expected for  the property 'Testentry1' in 'Section A'", sTestValueTemp.equals(""));
 			
-			IKernelConfigSectionEntryZZZ objEntry = objFileIniTest.getPropertyValue("Section A", "Testentry1 NOT EXISTING");
-			assertNotNull("Auch wenn es alles nicht gibt, ein Entry-Objekt soll zurückgeliefert werden.", objEntry);
-			
-			TODOGOON20230316;//Das Problem ist, das bei jeder Pruefung auf eine Section ein neues Entry-Objekt erstellt wird.
-			                 //Es müsste also eine Methode geben, bei der das Referenzobjekt übergeben wird.
-			assertTrue("Die Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.hasAnySectionExists());
+			objEntry = objFileIniTest.getPropertyValue("Section A", "Testentry1 NOT EXISTING");
+			assertNotNull("Auch wenn es alles nicht gibt, ein Entry-Objekt soll zurueckgeliefert werden.", objEntry);
+			assertTrue("Zumindest eine Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.hasAnySectionExists());
 			assertNotNull("Wenn es die Section gibt, den Wert aber nicht, dann soll der Rueckgabewert aber NICHT NULL sein", objEntry.getValue());
 			assertTrue("Wenn es die Section gibt, den Wert aber nicht, dann soll der Rueckgabewert aber der Leerstring sein", objEntry.getValue().equals(""));
 			
 			//nun den Wert testen, wie er im setup definiert wurde
-			assertEquals("Testvalue1", objFileIniTest.getPropertyValue("Section A", "Testentry1").getValue());
+			objEntry = objFileIniTest.getPropertyValue("Section A", "Testentry1");
+			assertNotNull("Es soll ein Entry-Object zurueckgeliefert werden.", objEntry);
+			assertTrue("Die Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.sectionExists());
+			assertTrue("Zumindest eine Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.hasAnySectionExists());			
+			assertEquals("Testvalue1", objEntry.getValue());
 			
 			//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
 			objEntry = objFileIniTest.getPropertyValue("blablbllalbl SECTION DOES NOT EXIST", "Not existing entry");
-			assertNotNull("Auch wenn es alles nicht gibt, ein Entry-Objekt soll zurückgeliefert werden.", objEntry);
+			assertNotNull("Auch wenn es alles nicht gibt, ein Entry-Objekt soll zurueckgeliefert werden.", objEntry);
 			assertFalse("Die Section sollte als nicht existent geflagt sein.",objEntry.sectionExists());
+			assertFalse("Keine Section sollte existent geflagt sein.",objEntry.hasAnySectionExists());			
 			assertNull("Wenn es alles nicht gibt, dann soll der Rueckgabewert aber NULL sein", objEntry.getValue());
 			
 			
@@ -321,15 +325,18 @@ public class FileIniZZZTest extends TestCase {
 			//NEU 20070306: Hier über eine Formel die Property auslesen
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,false);
 			objFileIniTest.setFlag("useFormula", false);
-			String sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
+			String sTestValueFormula = objEntry.getValue();
 			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
 			
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);//Das reicht nicht			
-			sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);//Das reicht nicht
+			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
+			sTestValueFormula = objEntry.getValue();
 			assertEquals("Das ist der '<Z>[Section for formula value]Value1</Z>' Wert.", sTestValueFormula); 
 		
 			objFileIniTest.setFlag("useFormula", true);//jetzt sollte es klappen
-			sTestValueFormula = objFileIniTest.getPropertyValue("Section for formula", "Formula1").getValue();
+			objEntry = objFileIniTest.getPropertyValue("Section for formula", "Formula1");
+			sTestValueFormula = objEntry.getValue();
 			assertEquals("Das ist der 'first value' Wert.", sTestValueFormula); //Schliesslich soll erst hier umgerechnet werden.
 			
 		} catch (ExceptionZZZ ez) {

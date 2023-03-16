@@ -293,10 +293,15 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();	
 					ReferenceZZZ<ICryptZZZ>objobjReturnAlgorithmCrypt=new ReferenceZZZ<ICryptZZZ>();
 					boolean bForFurtherProcessing = true; 
+					
+					TODOGOON20230316;//Mache das direkter und verwende objReturnReference . Das sollte ggfs. schon als einziger Übergaberefernzwert reichen!!!
+					
 					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objsReturnValue, objobjReturnAlgorithmCrypt);
 					if(bAnyEncryption) {
 						String sLineDecrypted = objsReturnValue.get();//Wert zur weiteren Verarbeitung weitergeben
 						ICryptZZZ objCrypt = objobjReturnAlgorithmCrypt.get();
+						
+						
 						
 						//TODOGOON20230314; //eigentlich müsste zuerst ein objCrypt erzeugt werden
 						//                  //und dann könnte man die Entschlüsselung hierin machen
