@@ -336,11 +336,8 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 
 					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 					ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
-					ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();
-					
-					//TODOGOON; //20210729 Hier nur 1 statische Methode aufrufen, die einen Integerwert zurückliefert, der dann die Befüllung von objReturn steuert.					
-					int iReturnJson = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);
-					
+					ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
+					int iReturnJson = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
 					if(iReturnJson==5) {
 						objReturn.isJsonArray(true);
 						objReturn.isJson(true);
@@ -359,9 +356,8 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					iReturn = iReturn + iReturnJson;									
 				}									
 			}//end main:
-			if(bAnyEncryption) {
-				//Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
-				iReturn = iReturn+10;
+			if(bAnyEncryption) {				
+				iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
 			}
 			objReturnReference.set(objReturn);
 			return iReturn;
