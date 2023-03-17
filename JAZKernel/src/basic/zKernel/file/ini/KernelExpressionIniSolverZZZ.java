@@ -323,25 +323,7 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
 					int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
 					if(iReturnExpression>=1){						
-						objReturn.isExpression(true);
-						
-						//++++ usw. das Ergebnis als String in objReturn packen.
-//						String sReturnValue=null;							
-//						String sReturnFormula = objsReturnValueExpressionSolved.get();			
-//						if(iReturnExpression==1 | iReturnExpression==3) {
-//							objReturn.isFormula(true);
-//							sReturnValue=sReturnFormula;
-//						}
-//						
-//						String sReturnExpression = objsReturnValueConverted.get();			
-//						if(iReturnExpression==2 | iReturnExpression==3) {
-//							objReturn.isConverted(true);							
-//							sReturnValue = sReturnExpression;
-//						}						
-//						objReturn.setValue(sReturnValue);	
-//						iReturn = iReturn + iReturnExpression;
-//						break main;
-//					}												
+						objReturn.isExpression(true);													
 					}
 				}//end bUseFormula
 
