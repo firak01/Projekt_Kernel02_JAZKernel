@@ -465,16 +465,6 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				objReturn = objReturnReference.get();
 			}
 			
-			
-//			if(!objReturn.hasAnyValue()) {
-//				//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen						
-//				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForSection(sSection, sApplicationKeyUsed, sSystemNumberUsed);
-//				for(String sSectionUsed:alsSection) {
-//					objReturn = this.getPropertyValueDirectLookup(sSectionUsed, sProperty);
-//					if(objReturn.hasAnyValue()) break;								
-//				}
-//			}
-			
 			if(!objReturn.hasAnyValue()) {
 				//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen UND das als Program behandeln.
 				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(this, sSection, sApplicationKeyUsed, sSystemNumberUsed);

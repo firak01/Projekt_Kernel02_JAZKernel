@@ -270,7 +270,10 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 			int iReturn = 0;
 			boolean bAnyEncryption = false;			
 			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();			
+			if(objReturn==null) {
+				objReturn = new KernelConfigSectionEntryZZZ();
+				objReturnReference.set(objReturn);
+			}
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
@@ -289,43 +292,19 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					
 					
-					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();	
-					ReferenceZZZ<ICryptZZZ>objobjReturnAlgorithmCrypt=new ReferenceZZZ<ICryptZZZ>();
+					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 					boolean bForFurtherProcessing = true; 
-					
-					TODOGOON20230316;//Mache das direkter und verwende objReturnReference . Das sollte ggfs. schon als einziger Übergaberefernzwert reichen!!!
-					
-					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objsReturnValue, objobjReturnAlgorithmCrypt);
+					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 					if(bAnyEncryption) {
-						String sLineDecrypted = objsReturnValue.get();//Wert zur weiteren Verarbeitung weitergeben
-						ICryptZZZ objCrypt = objobjReturnAlgorithmCrypt.get();
-						
-						
-						
-						//TODOGOON20230314; //eigentlich müsste zuerst ein objCrypt erzeugt werden
-						//                  //und dann könnte man die Entschlüsselung hierin machen
-						//objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sValue, objCrypt);						
-						objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sLineWithExpression, sLineDecrypted, objCrypt);
-						sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
-						
-//						objReturn.isRawEncrpyted(true);	
-//						objReturn.setRawEncrypted(sLineWithExpressionUsed);
-//												
-//						
-//						if(sLineWithExpressionUsed.equalsIgnoreCase(sLineDecrypted)) {												
-//							objReturn.isDecrypted(false);
-//						}else {
-//							objReturn.isDecrypted(true);
-//							objReturn.setRawDecrypted(sLineDecrypted);
-//							objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.
-//							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben
-//						}
-//						
-//						
-//						ICryptZZZ objCrypt = objobjReturnAlgorithmCrypt.get();
-//						objReturn.setAlgorithmType(objCrypt); //Zur späteren Verwendung, z.B. einen anderen Wert neu Verschluesseln.
-//						
+						String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
+						if(sLineWithExpressionUsed.equals(sLineDecrypted)) {												
+							objReturn.isDecrypted(false);
+						}else {
+							objReturn.isDecrypted(true);
+							objReturn.setRawDecrypted(sLineDecrypted);
+							objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
+						}
+						sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
 					}
 				}
 				
@@ -341,37 +320,28 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					String[] saFlagZpassed = this.getFlagZ_passable(true, formulaDummy);
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					
-					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-					ReferenceZZZ<String>objsReturnValueConverted=new ReferenceZZZ<String>();
-					ReferenceZZZ<String>objsReturnValueExpressionSolved=new ReferenceZZZ<String>();
-					ReferenceZZZ<String>objsReturnValue=new ReferenceZZZ<String>();			
-					boolean bAnyExpression = false;
-					int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);			
-					if(iReturnExpression>=1){
-						bAnyExpression = true;
+					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
+					int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
+					if(iReturnExpression>=1){						
 						objReturn.isExpression(true);
 						
 						//++++ usw. das Ergebnis als String in objReturn packen.
-						String sReturnValue=null;
-							
-						String sReturnFormula = objsReturnValueExpressionSolved.get();			
-						if(iReturnExpression==1 | iReturnExpression==3) {
-							objReturn.isFormula(true);
-							sReturnValue=sReturnFormula;
-						}
-						
-						String sReturnExpression = objsReturnValueConverted.get();			
-						if(iReturnExpression==2 | iReturnExpression==3) {
-							objReturn.isConverted(true);							
-							sReturnValue = sReturnExpression;
-						}	
-						
-						if(!bAnyExpression){
-							sReturnValue = objsReturnValue.get();
-						}
-						objReturn.setValue(sReturnValue);	
-						iReturn = iReturn + iReturnExpression;
-						break main;
+//						String sReturnValue=null;							
+//						String sReturnFormula = objsReturnValueExpressionSolved.get();			
+//						if(iReturnExpression==1 | iReturnExpression==3) {
+//							objReturn.isFormula(true);
+//							sReturnValue=sReturnFormula;
+//						}
+//						
+//						String sReturnExpression = objsReturnValueConverted.get();			
+//						if(iReturnExpression==2 | iReturnExpression==3) {
+//							objReturn.isConverted(true);							
+//							sReturnValue = sReturnExpression;
+//						}						
+//						objReturn.setValue(sReturnValue);	
+//						iReturn = iReturn + iReturnExpression;
+//						break main;
+//					}												
 					}
 				}//end bUseFormula
 

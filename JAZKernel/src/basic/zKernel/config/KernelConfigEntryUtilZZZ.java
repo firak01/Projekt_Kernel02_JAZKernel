@@ -15,7 +15,9 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
@@ -50,30 +52,32 @@ public class KernelConfigEntryUtilZZZ {
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 19.12.2019, 11:18:39
 	 */
-	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved, ReferenceZZZ<String>objsReturnValueConverted, ReferenceZZZ<String>objsReturnValue) throws ExceptionZZZ{
+	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
 
 			String sRawExpressionSolved = null;
+			ReferenceZZZ<String> objsReturnValueExpressionSolved= new ReferenceZZZ<String>();			
 			boolean bExpressionSolved = KernelConfigEntryUtilZZZ.getValueExpressionSolved(objFileIni, sRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved);							
 			if(bExpressionSolved) {
-				sRawExpressionSolved = objsReturnValueExpressionSolved.get();
-				objsReturnValue.set(sRawExpressionSolved);
+				objReturnReference.get().isExpression(true);
+				sRawExpressionSolved = objsReturnValueExpressionSolved.get();				
 				iReturn = iReturn + 1;
 			}else {
 				sRawExpressionSolved = sRaw;
 			}
 
 			String sRawConverted = null;
+			ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>();
 			boolean bConverted = KernelConfigEntryUtilZZZ.getValueConverted(objFileIni, sRawExpressionSolved, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueConverted);
 			if(bConverted) {
-				sRawConverted = objsReturnValueExpressionSolved.get();
+				objReturnReference.get().isConverted(true);
+				sRawConverted = objsReturnValueExpressionSolved.get();				
 				iReturn = iReturn + 2;
 			}else {
 				sRawConverted = sRawExpressionSolved;
 			}
-						
-			objsReturnValue.set(sRawConverted);						
+			objReturnReference.get().setValue(sRawConverted);
 		}//end main:
 		return iReturn;
 	}
@@ -133,16 +137,22 @@ public class KernelConfigEntryUtilZZZ {
 	 *  
 	 * 
 	 */
-	 public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueEncryptionSolved, ReferenceZZZ<ICryptZZZ>objobjReturn) throws ExceptionZZZ{
+	 //public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueEncryptionSolved, ReferenceZZZ<ICryptZZZ>objobjReturn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+	public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
 		 boolean bReturn = false;
 		 main:{			 			 								
 	 		if(!bUseEncryption)break main;
 	 		
+
+		 	IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+				 		
 	 		String sValueEncryptionSolved=null;
 			boolean bAnyFormula = false;
 			
 			KernelEncryptionIniSolverZZZ objDummy = new KernelEncryptionIniSolverZZZ();			
 			while(objDummy.isExpression(sRaw)){//Schrittweise die Formel auflösen.
+				objReturn.setRaw(sRaw);
 				bAnyFormula = true;
 									
 				IKernelZZZ objKernel = null;
@@ -154,24 +164,31 @@ public class KernelConfigEntryUtilZZZ {
 					String stemp = ex.compute(sRaw);
 					if(!StringZZZ.equals(stemp,sRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall a) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
+						objReturn.isDecrypted(true);
+						objReturn.setRawDecrypted(stemp);
 					}					
 					sRaw=stemp;//Sonst Endlosschleife.
 				}else {
 					String stemp = ex.computeAsExpression(sRaw);
-					if(!StringZZZ.equals(stemp,sRaw)){
+					if(!StringZZZ.equals(stemp,sRaw)){						
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall b) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
+						objReturn.isDecrypted(true);
+						objReturn.setRawDecrypted(stemp);
 					}					
 					sRaw=stemp;//Sonst Endlosschleife.
 				}
 				ICryptZZZ objCrypt = ex.getAlgorithmType();//Zur weiteren Verwendung, z.B. zum erneuten Verschluesseln mit einem geaenderten Wert hier auch zurueckgeben.
-				objobjReturn.set(objCrypt);
+				objReturn.setAlgorithmType(objCrypt);
+				//objobjReturn.set(objCrypt);//TODO RAUS...
 			}
-			sValueEncryptionSolved = sRaw;
+			//sValueEncryptionSolved = sRaw;
 			if(bAnyFormula){
-				objsReturnValueEncryptionSolved.set(sValueEncryptionSolved);	
+				
+				//objsReturnValueEncryptionSolved.set(sValueEncryptionSolved);	//TODO raus
 				bReturn = true;
 			}				
-								 		 			
+					
+			objReturnReference.set(objReturn);
 		 }//end main:
 		 return bReturn;
 	 }

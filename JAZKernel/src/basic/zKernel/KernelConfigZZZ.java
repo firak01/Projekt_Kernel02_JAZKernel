@@ -132,13 +132,12 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		String sDirectoryNameRead = sDirectoryNameReadIn;//z.B. auch "<z:Null/>"
 		//20191031: Dieser Wert muss vom Programm verarbeitet/Übersetzt werden werden - wie ein ini-Datei Eintrag auch übersetzt würde.
 		//return "<z:Null/>";//Merke '.' oder Leerstring '' = src Verzeichnis
-		ReferenceZZZ<String> objsReturnValueExpressionSolved= new ReferenceZZZ<String>();
-		ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>();
-		ReferenceZZZ<String> objsReturnValue= new ReferenceZZZ<String>();
+		
+		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		try {
 			if(bUseExpression && bUseFormula) {
-				int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ) null, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objsReturnValueExpressionSolved, objsReturnValueConverted, objsReturnValue);
-				sReturn = objsReturnValue.get();
+				int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ) null, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objReturnReference);
+				sReturn = objReturnReference.get().getValue();
 			}else {
 				sReturn  = sDirectoryNameRead;
 			}

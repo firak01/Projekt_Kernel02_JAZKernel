@@ -328,7 +328,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
 			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
-			//objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH.name(),true);
 			
 			//Anwenden der ersten Formel
 			objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
@@ -341,8 +340,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			
 			boolean bIsRawEncrypted = objEntry.isRawEncrypted();
 			assertFalse(bIsRawEncrypted);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
-			
-			
+						
 			objFileIniTest.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), true);			
 			objEntry = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAencrypted");
 			assertNotNull(objEntry);
