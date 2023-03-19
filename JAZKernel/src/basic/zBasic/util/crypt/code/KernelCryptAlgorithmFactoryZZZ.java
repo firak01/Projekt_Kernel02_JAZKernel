@@ -44,17 +44,17 @@ private ICryptZZZ objCryptAlgorithmCreatedLast = null;
 		
 	public ICryptZZZ createAlgorithmType(String sCipher) throws ExceptionZZZ {	
 		ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(sCipher);
-		this.setAlgorithmType(objCrypt);
+		this.setCryptAlgorithmType(objCrypt);
 		return objCrypt;
 	}
 	
 	//### Aus Interface ICryptZZZ
 	@Override
-	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 		return this.objCryptAlgorithmCreatedLast;
 	}
 	@Override
-	public void setAlgorithmType(ICryptZZZ objCrypt) {
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCryptAlgorithmCreatedLast = objCrypt;
 	}
 	

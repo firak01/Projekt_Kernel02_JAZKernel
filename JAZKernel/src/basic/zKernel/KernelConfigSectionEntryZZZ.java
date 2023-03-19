@@ -517,13 +517,13 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 
 	//### Aus Interface ICryptZZZ
 	@Override
-	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 		return this.objCrypt;
 	}
 
 
 	@Override
-	public void setAlgorithmType(ICryptZZZ objCrypt) {
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCrypt = objCrypt;
 	}
 }

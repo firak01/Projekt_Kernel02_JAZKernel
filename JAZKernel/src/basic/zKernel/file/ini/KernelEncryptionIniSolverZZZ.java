@@ -100,7 +100,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 					 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen
 					 KernelCryptAlgorithmFactoryZZZ objFactory = KernelCryptAlgorithmFactoryZZZ.getInstance(objKernel);					 
 					 ICryptZZZ objAlgorithm = objFactory.createAlgorithmType(sCipher);
-					 this.setAlgorithmType(objAlgorithm); //Damit kann der gefundene Wert durch einen anderen Wert ersetzt werden ohne die CryptAlgorithmFactoryZZZ neu zu bemuehen.
+					 this.setCryptAlgorithmType(objAlgorithm); //Damit kann der gefundene Wert durch einen anderen Wert ersetzt werden ohne die CryptAlgorithmFactoryZZZ neu zu bemuehen.
 					 
 					 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 					 //+++++ Weitere Parameter suchen und ggfs. dem Algorithmusobjekt hinzufügen.
@@ -301,12 +301,12 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 
 	//### Aus Inteface ICryptUserZZZ
 	@Override
-	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 		return this.objCryptAlgorithmLast;
 	}
 
 	@Override
-	public void setAlgorithmType(ICryptZZZ objCrypt) {
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCryptAlgorithmLast = objCrypt;
 	}	
 }//End class

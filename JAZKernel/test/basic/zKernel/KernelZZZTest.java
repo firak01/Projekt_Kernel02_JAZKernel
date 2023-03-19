@@ -767,32 +767,45 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		//### "NICHT EXTERNES" MODUL
 		//############################################
 		//Teste das "Parameter Holen" auch für das "nicht externe", d.h. über den aktuellen Klassennamen angegebene Test Modul
-				
-		//Erst testen, dass auch kein Leerwert kommt			
-		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
-		assertTrue(objEntry.hasAnyValue());
-		String sReturnSaved = objEntry.getValue();
-		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
-		assertEquals("testwert4decrypted local 4 program",sReturnSaved);
+
+		//### FALL A) Es gibt bereits einen verschluesselten Wert 
+		//Erst testen, dass auch durch Verschluesselung kein Leerwert kommt			
+		IKernelConfigSectionEntryZZZ objEntryDecrypted = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntryDecrypted.hasAnyValue());
+		String sDecryptedOriginal = objEntryDecrypted.getValue();
+		sDecryptedOriginal = StringZZZ.left(sDecryptedOriginal+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals("testwert4decrypted local 4 program",sDecryptedOriginal);
 
 		//Sichern des "RAW" Werts
-		String sRaw = objEntry.getRawEncrypted();
+		String sRaw = objEntryDecrypted.getRawEncrypted();
 		
 		//Funktioniert nur, wenn es schon einen CRYPT-Tag gibt in der Property. Dann wird der gefundene Crypt-Algorithmus wiederverwendet.
-		ICryptZZZ objCrypt = objEntry.getAlgorithmType();
-		sReturnSaved = sReturnSaved + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
-		String sValue = objCrypt.encrypt(sReturnSaved);
-		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue); //PROBLEM!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE 
+		ICryptZZZ objCrypt = objEntryDecrypted.getCryptAlgorithmType();
+		sDecryptedOriginal = sDecryptedOriginal + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
+		String sEncrypted = objCrypt.encrypt(sDecryptedOriginal);
 		
-		TODOGOON20230307;//Nun erst die spezielle setEncrypted Methode testen...
-		//PROBLEM!!! OBIGES SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE
-		//Funktioniert auch ohne ein CRYPT-TAG, also für ganz neue Einträge, die Verschlüsselt werden sollen
-		//               Die CRYPT-TAG Einträge müssen geschrieben werden.
-		//ICryptZZZ objCrypt2 = null;//TODO: neu aus der CryptFactory holen....
-		//objKernelFGL.setParameterByProgramAliasEncrypted(sModule, sProgram, sProperty, sValue, objCrypt2);
+		//PROBLEM!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE
+		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sEncrypted);  
+
+		//TODOGOON20230307;//Nun erst die spezielle setEncrypted Methode testen...		
+		//Die CRYPT-TAG Einträge müssen neu geschrieben werden.
+		ICryptZZZ objCrypt2 = objEntryDecrypted.getCryptAlgorithmType();//Das Crypt - Objekt kommt aus der vorherigen Abfrage, wird also wiederverwendet.
+		objKernelFGL.setParameterByProgramAliasEncrypted(sModule, sProgram, sProperty, sEncrypted, objCrypt2);
 		
 		//Verwende intern
 		//private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, ICryptZZZ objCrypt, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+				
+		
+		
+		
+		//Vergleich diese Methode, die den Wert unverschluesselt bekommt und in der Methode selbst verschluesselt.
+		//objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sDecryptedOriginal, objCrypt2);
+		
+		
+		//### FALL B) Es gibt noch keinen verschluesselten Wert, bzw. den Wert neu setzen		
+		//TODO: neu aus der CryptFactory holen.... ICryptZZZ objCrypt3 = null;
+		//....
+		
 		
 //		
 //		

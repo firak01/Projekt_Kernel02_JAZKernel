@@ -35,7 +35,7 @@ private ICryptZZZ objCryptCreatedLast = null;
 			
 	public ICryptZZZ createAlgorithmType(String sCipher) throws ExceptionZZZ {	
 		ICryptZZZ objCrypt = CryptAlgorithmFactoryZZZ.createAlgorithmTypeByCipher(sCipher);
-		this.setAlgorithmType(objCrypt);
+		this.setCryptAlgorithmType(objCrypt);
 		return objCrypt;
 	}
 	
@@ -87,10 +87,13 @@ private ICryptZZZ objCryptCreatedLast = null;
 	
 	
 	//Interface aus ICryptUserZZZ
-	public void setAlgorithmType(ICryptZZZ objCrypt) {
+	@Override
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCryptCreatedLast=objCrypt;
 	}
-	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ{
+	
+	@Override
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ{
 		return this.objCryptCreatedLast;
 	}
 	

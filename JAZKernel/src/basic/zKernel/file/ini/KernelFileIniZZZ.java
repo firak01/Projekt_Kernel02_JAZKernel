@@ -1496,12 +1496,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	
 	//# aus ICryptUserZZZ
 	@Override
-	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 		return this.objCrypt;
 	}
 
 	@Override
-	public void setAlgorithmType(ICryptZZZ objCrypt) {
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCrypt = objCrypt;
 	}
 

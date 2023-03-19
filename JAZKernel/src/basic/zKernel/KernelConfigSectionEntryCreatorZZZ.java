@@ -61,7 +61,7 @@ public class KernelConfigSectionEntryCreatorZZZ implements IConstantZZZ{
 			if(objCrypt==null) {				
 				objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sRawValueIn, null, null);				
 			}else {
-				objReturn.setAlgorithmType(objCrypt);				
+				objReturn.setCryptAlgorithmType(objCrypt);				
 				String sDecrypted = objCrypt.decrypt(sRawValueIn);				
 				objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryDecrypted(sRawValueIn, sDecrypted, objCrypt);
 			}
@@ -84,7 +84,7 @@ public class KernelConfigSectionEntryCreatorZZZ implements IConstantZZZ{
 				objReturn.isEncrypted(false);
 				objReturn.setRawEncrypted(null);				
 			}else {
-				objReturn.setAlgorithmType(objCrypt);
+				objReturn.setCryptAlgorithmType(objCrypt);
 				
 				objReturn.setValue(sDecrypted);
 				objReturn.setRawEncrypted(sRawValueIn);

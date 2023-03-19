@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
+import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -52,6 +53,19 @@ public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCach
 	
 	public String searchAliasForProgram(String sProgramName) throws ExceptionZZZ;
 	public String searchAliasForProgram(String sModule, String sProgramName) throws ExceptionZZZ;
+	
+	
+	//Schreibe einen Wert mit weiteren Argumenten als <Z> - Expression. Der uebergebene Wert wird in der Methode erst noch verschluesselt. 
+	public void setParameterByProgramAlias(String sSectionOrProgram, String sProperty,
+			String sEncrypted, ICryptZZZ objCrypt) throws ExceptionZZZ;
+	
+	//Schreibe einen Wert mit weiteren Argumenten als <Z> - Expression. Der uebergebene Wert wird in der Methode erst noch verschluesselt. 
+	public void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty,
+			String sEncrypted, ICryptZZZ objCrypt) throws ExceptionZZZ;
+	
+	//Schreibe einen Wert mit weiteren Argumenten als <Z> - Expression. Der übergebene Wert ist schon verschluesselt.
+	public void setParameterByProgramAliasEncrypted(String sModule, String sSectionOrProgram, String sProperty,
+			String sEncrypted, ICryptZZZ objCrypt) throws ExceptionZZZ;
 	
 	
 }

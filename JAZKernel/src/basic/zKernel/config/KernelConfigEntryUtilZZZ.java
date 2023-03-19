@@ -177,8 +177,8 @@ public class KernelConfigEntryUtilZZZ {
 					}					
 					sRaw=stemp;//Sonst Endlosschleife.
 				}
-				ICryptZZZ objCrypt = ex.getAlgorithmType();//Zur weiteren Verwendung, z.B. zum erneuten Verschluesseln mit einem geaenderten Wert hier auch zurueckgeben.
-				objReturn.setAlgorithmType(objCrypt);
+				ICryptZZZ objCrypt = ex.getCryptAlgorithmType();//Zur weiteren Verwendung, z.B. zum erneuten Verschluesseln mit einem geaenderten Wert hier auch zurueckgeben.
+				objReturn.setCryptAlgorithmType(objCrypt);
 				//objobjReturn.set(objCrypt);//TODO RAUS...
 			}
 			//sValueEncryptionSolved = sRaw;

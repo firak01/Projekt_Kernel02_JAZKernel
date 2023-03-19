@@ -387,12 +387,12 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 
 		//### Aus Interface ICryptUserZZZ
 		@Override
-		public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+		public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 			return this.objCrypt;
 		}
 
 		@Override
-		public void setAlgorithmType(ICryptZZZ objCrypt) {
+		public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 			this.objCrypt = objCrypt;
 		}
 }

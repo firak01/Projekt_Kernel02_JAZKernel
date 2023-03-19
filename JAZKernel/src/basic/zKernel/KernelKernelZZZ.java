@@ -3964,6 +3964,36 @@ MeinTestParameter=blablaErgebnis
 		return bReturn;
 	}
 	
+	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, String sValueIn, ICryptZZZ objCrypt, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+		boolean bReturn = false;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
+		main:{	
+			//1) Zuerst muss mit Hilfe des CryptAlgorithmus und die Verschluesselung des Eingabewerts erstellt werden.
+			String sValueEncrypted = objCrypt.encrypt(sValueIn);
+						
+			//2) Nun diesen Wert als <Z> - Expression setzen
+			bReturn = this.KernelSetParameterByProgramAliasEncrypted_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, sValueEncrypted, objCrypt, bFlagSaveImmidiate);
+		}//end main:
+		return bReturn;
+	}
+	
+	private boolean KernelSetParameterByProgramAliasEncrypted_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, String sValueEncryptedIn, ICryptZZZ objCrypt, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
+		boolean bReturn = false;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
+		main:{	
+			//1) Zuerst muss aus dem CryptAlgorithmus und dem schon verschluesseltem Wert der <Z> - Expression String erstellt werden.
+			TDOGOON20230319;//Z-EXPRESSION STRING MACHEN
+			String sValueEncryptedAsExpression = "TODO Z-EXPRESSION STRING MACHEN";
+						
+			//2) Nun diesen Wert normal setzen, wie ohne Verschluesselung
+			bReturn = this.KernelSetParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, sValueEncryptedAsExpression, bFlagSaveImmidiate);
+		}//end main:
+		return bReturn;
+	}
+	
+	
 	/**Merke: Hier wird davon ausgegangen, das Modul - und Programmname identisch sind !!!
 	 * FGL 20180909: Müsste nicht eigentlich der Kernel-ApplicationKey als ModulAlias verwendet werden??? Statt Gleichheit???
 	* @param sModuleAndProgramAndSection
@@ -4258,33 +4288,7 @@ MeinTestParameter=blablaErgebnis
 	}//end main:
 }//end function setParameterByProgramAlias	
 	
-	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
-	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
-	* Lindhauer; 20.05.2006 09:40:36
-	 * @param sModule
-	 * @param sSectionOrProgram
-	 * @param sProperty
-	 * @param sValue
-	 * @throws ExceptionZZZ
-	 */
-	public synchronized void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue) throws ExceptionZZZ{			
-			main:{
-						check:{
-							if(StringZZZ.isEmpty(sModule)){
-								ExceptionZZZ ez = new ExceptionZZZ("Module",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-								throw ez;
-							}
-																			
-							//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
-						}//end check:
 	
-						if(sModule.equals(sSectionOrProgram)){
-							this.setParameterByModuleAlias(sModule, sProperty, sValue, true); //Es muss sofort gespeichert werden, da man keine chance hat auf das noch nicht gespeicherte FiniIni-Objekt von aussen zuzugreifen und dieses anschliessend zu speichern.
-						}else{					
-							this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, true);
-						}
-		}//end main:
-	}
 	
 	/** Use this method only when Modulename, Sectionname and Programname are equal.
 	 *   will call .setParameterByProgramAlias(sModuleAndSectionAndProgram, sModuleAndSectionAndProgram, sProperty, sValue);
@@ -4334,6 +4338,124 @@ MeinTestParameter=blablaErgebnis
 			}
 						
 		}
+	}
+	
+	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
+	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
+	* Lindhauer; 20.05.2006 09:40:36
+	 * @param sModule
+	 * @param sSectionOrProgram
+	 * @param sProperty
+	 * @param sValue
+	 * @throws ExceptionZZZ
+	 */
+	public synchronized void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue) throws ExceptionZZZ{			
+			main:{
+						check:{
+							if(StringZZZ.isEmpty(sModule)){
+								ExceptionZZZ ez = new ExceptionZZZ("Module",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}
+																			
+							//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
+						}//end check:
+	
+						if(sModule.equals(sSectionOrProgram)){
+							this.setParameterByModuleAlias(sModule, sProperty, sValue, true); //Es muss sofort gespeichert werden, da man keine chance hat auf das noch nicht gespeicherte FiniIni-Objekt von aussen zuzugreifen und dieses anschliessend zu speichern.
+						}else{					
+							this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, true);
+						}
+		}//end main:
+	}
+	
+	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
+	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
+	* Lindhauer; 20.05.2006 09:40:36
+	 * @param sModule
+	 * @param sSectionOrProgram
+	 * @param sProperty
+	 * @param sValue
+	 * @throws ExceptionZZZ
+	 */
+	public synchronized void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue, boolean bSaveImidiately) throws ExceptionZZZ{			
+			main:{
+						check:{
+							if(StringZZZ.isEmpty(sModule)){
+								ExceptionZZZ ez = new ExceptionZZZ("Module",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}
+																			
+							//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
+						}//end check:
+	
+						if(sModule.equals(sSectionOrProgram)){
+							this.setParameterByModuleAlias(sModule, sProperty, sValue, bSaveImidiately);
+						}else{					
+							this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, bSaveImidiately);
+						}
+		}//end main:
+	}
+	
+	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
+	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
+	* Lindhauer; 20.05.2006 09:40:36
+	 * @param sModule
+	 * @param sSectionOrProgram
+	 * @param sProperty
+	 * @param sValue
+	 * @throws ExceptionZZZ
+	 */
+	public synchronized void setParameterByProgramAliasEncrypted(String sModule, String sSectionOrProgram, String sProperty, String sValue, ICryptZZZ objCrypt) throws ExceptionZZZ{			
+			main:{
+				check:{
+					if(StringZZZ.isEmpty(sModule)){
+						ExceptionZZZ ez = new ExceptionZZZ("Module",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					
+					if(objCrypt==null){
+						ExceptionZZZ ez = new ExceptionZZZ("Crypt-Algorithmtype",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+																	
+					//Merke: Die Werte selbst werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
+				}//end check:
+
+				if(sModule.equals(sSectionOrProgram)){
+					this.setParameterByModuleAliasEncrypted(sSectionOrProgram, sProperty, sValue, objCrypt);
+				}else{					
+					this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, objCrypt, true);
+				}
+		}//end main:
+	}
+	
+	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
+	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
+	* Lindhauer; 20.05.2006 09:40:36
+	 * @param sModule
+	 * @param sSectionOrProgram
+	 * @param sProperty
+	 * @param sValue
+	 * @throws ExceptionZZZ
+	 */
+	public synchronized void setParameterByProgramAliasEncrypted(String sSectionOrProgram, String sProperty, String sValue, ICryptZZZ objCrypt) throws ExceptionZZZ{			
+			main:{
+				check:{
+					if(StringZZZ.isEmpty(sSectionOrProgram)){
+						ExceptionZZZ ez = new ExceptionZZZ("Section or Program",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					
+					if(objCrypt==null){
+						ExceptionZZZ ez = new ExceptionZZZ("Crypt-Algorithmtype",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+																	
+					//Merke: Die Werte selbst werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
+				}//end check:
+					
+				this.KernelSetParameterByProgramAliasEncrypted_(null, null, sSectionOrProgram, sProperty, sValue, objCrypt, true);			
+		}//end main:
 	}
 	
 	/**Returns an array-object of a configured ini value. 
@@ -6426,33 +6548,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 
-	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
-	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.
-	* Lindhauer; 20.05.2006 09:40:36
-	 * @param sModule
-	 * @param sSectionOrProgram
-	 * @param sProperty
-	 * @param sValue
-	 * @throws ExceptionZZZ
-	 */
-	public synchronized void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue, boolean bSaveImidiately) throws ExceptionZZZ{			
-			main:{
-						check:{
-							if(StringZZZ.isEmpty(sModule)){
-								ExceptionZZZ ez = new ExceptionZZZ("Module",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-								throw ez;
-							}
-																			
-							//Merke: Die Werte werden nicht gecheckt. Ein NULL-Wert bedeutet entfernen der Property aus dem ini-File
-						}//end check:
 	
-						if(sModule.equals(sSectionOrProgram)){
-							this.setParameterByModuleAlias(sModule, sProperty, sValue, bSaveImidiately);
-						}else{					
-							this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, bSaveImidiately);
-						}
-		}//end main:
-	}
 	
 	//######### Intefaces ############################################################################
 		
@@ -6571,12 +6667,12 @@ MeinTestParameter=blablaErgebnis
 		
 		//# aus ICryptUserZZZ
 		@Override
-		public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+		public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 			return this.objCrypt;
 		}
 
 		@Override
-		public void setAlgorithmType(ICryptZZZ objCrypt) {
+		public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 			this.objCrypt = objCrypt;
 		}
 		

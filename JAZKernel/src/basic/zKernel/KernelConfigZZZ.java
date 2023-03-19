@@ -511,11 +511,11 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 
 	//### Aus Interface ICryptUserZZZ
 	@Override
-	public ICryptZZZ getAlgorithmType() throws ExceptionZZZ {
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
 		return this.objCrypt;
 	}
 	@Override
-	public void setAlgorithmType(ICryptZZZ objCrypt) {
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCrypt=objCrypt;
 	}
 		
