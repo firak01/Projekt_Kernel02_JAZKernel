@@ -63,6 +63,7 @@ import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniLineZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
@@ -3983,9 +3984,8 @@ MeinTestParameter=blablaErgebnis
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
 		main:{	
-			//1) Zuerst muss aus dem CryptAlgorithmus und dem schon verschluesseltem Wert der <Z> - Expression String erstellt werden.
-			TDOGOON20230319;//Z-EXPRESSION STRING MACHEN
-			String sValueEncryptedAsExpression = "TODO Z-EXPRESSION STRING MACHEN";
+			//1) Zuerst muss aus dem CryptAlgorithmus und dem schon verschluesseltem Wert der <Z> - Expression String erstellt werden.			
+			String sValueEncryptedAsExpression = KernelZFormulaIniLineZZZ.createLineFrom(objCrypt);
 						
 			//2) Nun diesen Wert normal setzen, wie ohne Verschluesselung
 			bReturn = this.KernelSetParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, sValueEncryptedAsExpression, bFlagSaveImmidiate);
