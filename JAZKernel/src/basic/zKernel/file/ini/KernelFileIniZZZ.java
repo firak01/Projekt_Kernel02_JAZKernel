@@ -768,8 +768,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					//Z.B.: <Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>
 					
 					//Neue Klasse
-					//KernelExpressionIniCreatorZZZ.createLineFor(IKernelConfigSectionEntryZZZ objEntryWithCrypt);
-					sValue = "TODO: Expression-Tag String bauen..."+sValueIn;										
+					//sValue = "TODO: Expression-Tag String bauen..."+sValueIn;
+					
+					//ICryptZZZ objCrypt = objEntryWithCrypt.getCryptAlgorithmType();
+					//sValue = KernelZFormulaIniLineZZZ.createLineFor(objEntryWithCrypt);
+						
+					sValue = KernelZFormulaIniLineZZZ.createLineFrom(objEntryWithCrypt);
 				}else {
 					//Merke: 20211130: Beim Einlesen in den "Eigenschafts Editor" DLGBox4Ini gab es das Problem, dass <z:Null> zum Leerstring wird " "!!!
 				       //          Das darf nicht sein, denn beim Zurückspeichern wird korrekterweise ein Leerstring " " zu <z:Empty>!!!

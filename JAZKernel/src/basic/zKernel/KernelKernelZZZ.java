@@ -4422,12 +4422,34 @@ MeinTestParameter=blablaErgebnis
 				}//end check:
 
 				if(sModule.equals(sSectionOrProgram)){
-					this.setParameterByModuleAliasEncrypted(sSectionOrProgram, sProperty, sValue, objCrypt);
+					this.setParameterByProgramAliasEncrypted(sSectionOrProgram, sProperty, sValue, objCrypt);
 				}else{					
 					this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, objCrypt, true);
 				}
 		}//end main:
 	}
+	
+	@Override
+	public synchronized void setParameterByProgramAlias(String sSectionOrProgram, String sProperty, String sEncrypted,
+			ICryptZZZ objCrypt) throws ExceptionZZZ {
+		this.KernelSetParameterByProgramAlias_(null, null, sSectionOrProgram, sProperty, sEncrypted, objCrypt, true);
+	}
+
+	@Override
+	public synchronized void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty,
+			String sEncrypted, ICryptZZZ objCrypt) throws ExceptionZZZ {
+		if(objCrypt==null){
+			ExceptionZZZ ez = new ExceptionZZZ("Crypt-Algorithmtype",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		if(sModule.equals(sSectionOrProgram)){
+			this.setParameterByProgramAlias(sSectionOrProgram, sProperty, sEncrypted, objCrypt);
+		}else{					
+			this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sEncrypted, objCrypt, true);
+		}
+		
+	}	
 	
 	/** void, set a value to a property in a section. The section is either provided directly or will be the value of another property in the systemkey-section (this i call then a 'program'). 
 	 * Remark: The change wil be saved immidiately, because you have no chance to get a handle on the FileIniZZZ-Object which is used internally.

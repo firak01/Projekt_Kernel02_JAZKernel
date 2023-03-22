@@ -11,7 +11,7 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 	private static KernelSingletonZZZ objKernelSingleton; //muss als Singleton static sein	
 	public static KernelSingletonZZZ getInstance() throws ExceptionZZZ{
 		if(objKernelSingleton==null){
-			//Das hier nur zu initialisieren ist falsch. Schliesslich kennt man doch denk Application-Key
+			//Das hier nur zu initialisieren ist falsch. Schliesslich kennt man doch den Application-Key
 			//String[] saFlagZ={"init"};
 			//objKernelSingelton = new KernelSingletonZZZ(saFlagZ);	
 			
@@ -131,5 +131,5 @@ public class KernelSingletonZZZ extends KernelKernelZZZ{
 				bReturn = JarEasyUtilZZZ.isInJar(KernelSingletonZZZ.class);
 			}
 			return bReturn;
-		}		
+		}	
 }

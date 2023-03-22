@@ -5,28 +5,28 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniLineZZZ;
 
 public class KernelConfigSectionEntryCreatorZZZ implements IConstantZZZ{
-	public static IKernelConfigSectionEntryZZZ createEntryEncrypted(String sRawValueIn, String sValueEncrypted, ICryptZZZ objCrypt) throws ExceptionZZZ{
+	public static IKernelConfigSectionEntryZZZ createEntryEncrypted(String sValueEncrypted, ICryptZZZ objCrypt) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ();
 		main:{
-			if(StringZZZ.isEmpty(sRawValueIn)) {
-				ExceptionZZZ ez = new ExceptionZZZ("Missing Parameter RAW-String line with Expression", iERROR_PARAMETER_MISSING, KernelConfigSectionEntryCreatorZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			if(objCrypt==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Missing Parameter CryptAlgorithm Object", iERROR_PARAMETER_MISSING, KernelConfigSectionEntryCreatorZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}	
 			
-			objReturn.setRaw(sRawValueIn);
-			objReturn.setValue(sValueEncrypted);
-			if(sRawValueIn.equals(sValueEncrypted)) {
-				objReturn.isEncrypted(false);
-			}else {
-				objReturn.isEncrypted(true);
-			}
+			
+			objReturn.setValue(sValueEncrypted);						
+			String sLine = KernelZFormulaIniLineZZZ.createLineEncryptedFrom(sValueEncrypted,objCrypt);
+			objReturn.setCryptAlgorithmType(objCrypt);
+			objReturn.isEncrypted(true);
+			objReturn.setValue(sLine);
 		}//end main:
 		return objReturn;
 	}
 	
-	public static IKernelConfigSectionEntryZZZ createEntryEncrypted(String sRawValueIn, ICryptZZZ objCrypt) throws ExceptionZZZ{
+	public static IKernelConfigSectionEntryZZZ createEntry(String sRawValueIn, ICryptZZZ objCrypt) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ();
 		main:{
 			if(StringZZZ.isEmpty(sRawValueIn)) {
@@ -42,7 +42,7 @@ public class KernelConfigSectionEntryCreatorZZZ implements IConstantZZZ{
 				objReturn.setRawEncrypted(null);				
 			}else {
 				String sValueEncrypted = objCrypt.encrypt(sRawValueIn);				
-				objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryEncrypted(sRawValueIn, sValueEncrypted, objCrypt);
+				objReturn = KernelConfigSectionEntryCreatorZZZ.createEntryEncrypted(sValueEncrypted, objCrypt);
 			}
 			 
 		}//end main:
