@@ -10,6 +10,7 @@ import base.files.EncodingMappedValueZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.datatype.string.FileEncodingUtil;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
@@ -40,6 +41,16 @@ public class Vigenere26ZZZ extends AbstractVigenereZZZ{
   public Vigenere26ZZZ(String sSchluesselWort, String sFilePath) throws ExceptionZZZ {
 	  super(sSchluesselWort, sFilePath);
   }
+  
+  @Override
+	public Enum<?> getCipherTypeAsEnum() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE26;
+	}
+	
+	@Override
+	public CipherTypeZZZ getCipherType() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE26;
+	}
 
   @Override
 	public int getOffsetForAsciiRange() {

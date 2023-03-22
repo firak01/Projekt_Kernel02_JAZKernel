@@ -1,7 +1,10 @@
 package basic.zBasic.util.crypt.code;
 
+import java.util.EnumSet;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zKernel.flag.IFlagUserZZZ;
 
@@ -18,8 +21,11 @@ public interface ICryptZZZ extends IFlagUserZZZ{
 	public int[] getOriginalValuesAsInt();
 	public void setOriginalValues(int[] iaOriginal);
 	
-	
+	public Enum<?> getCipherTypeAsEnum();    //Also der Eintrag aus der Enumeration in CryptAlgorithmMappedValue
+	public CipherTypeZZZ getCipherType();    //Also der Eintrag aus der Enumeration in CryptAlgorithmMappedValue
 	public int getSubtype(); //Hiermit wird festgelegt, welches Unterverfahren verwendet werden soll (also auch welche weiteren Parameter benötigt werden, z.B. KeyNumber oder KeyString)
+	
+	
 	
 	//#########################################################
 	//### Methoden, die Klassen verwendet werden, die ICryptZZZ nutzen
@@ -55,4 +61,5 @@ public interface ICryptZZZ extends IFlagUserZZZ{
 	//Falls ein Zeichen nicht im CharacterPool enthalten ist.
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
+	
 }

@@ -7,6 +7,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -53,6 +54,17 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 		saFlagControl[0]=sFlagControl;
 		RotNnNew_(sCharacterPool,iCryptKey,saFlagControl);
 	}
+	
+	@Override
+	public Enum<?> getCipherTypeAsEnum() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn;
+	}
+	
+	@Override
+	public CipherTypeZZZ getCipherType() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn;
+	}
+	
 	private boolean RotNnNew_(String sCharacterPool, int iCryptKey, String[] saFlagControlIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{

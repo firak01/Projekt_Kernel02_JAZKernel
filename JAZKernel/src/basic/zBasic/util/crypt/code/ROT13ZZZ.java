@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 public class ROT13ZZZ extends AbstractROTZZZ{
@@ -45,6 +46,16 @@ public class ROT13ZZZ extends AbstractROTZZZ{
 			bReturn = true;
 		}//end main
 		return bReturn;
+	}
+	
+	@Override
+	public Enum<?> getCipherTypeAsEnum() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13;
+	}
+	
+	@Override
+	public CipherTypeZZZ getCipherType() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13;
 	}
 	
 	@Override

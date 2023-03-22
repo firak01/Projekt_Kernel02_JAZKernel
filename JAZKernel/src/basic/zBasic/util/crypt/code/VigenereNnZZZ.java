@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
 public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZZZ{
@@ -21,6 +22,16 @@ public class VigenereNnZZZ extends AbstractVigenereNnZZZ implements IVigenereNnZ
 	
 	public VigenereNnZZZ(String sKeyString, String sFilePath) throws ExceptionZZZ {
 		super(sKeyString,sFilePath);		
+	}
+	
+	@Override
+	public Enum<?> getCipherTypeAsEnum() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn;
+	}
+	
+	@Override
+	public CipherTypeZZZ getCipherType() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn;
 	}
 
 	/** Wie AbstractVigenereZZZ, aber auf den CharacterPool bezogen

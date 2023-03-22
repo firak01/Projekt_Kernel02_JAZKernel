@@ -2,6 +2,7 @@ package basic.zBasic.util.crypt.code;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.character.AsciiZZZ;
 
 /**
@@ -34,6 +35,17 @@ public class ROTnumericZZZ extends AbstractROTZZZ implements ICharacterPoolUserC
 		saFlagControl[0]=sFlagControl;
 		RotNumericNew_(iCryptKey,saFlagControl);
 	}
+	
+	@Override
+	public Enum<?> getCipherTypeAsEnum() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric;
+	}
+	
+	@Override
+	public CipherTypeZZZ getCipherType() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnumeric;
+	}
+	
 	private boolean RotNumericNew_(int iCryptKey, String[] saFlagControlIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{

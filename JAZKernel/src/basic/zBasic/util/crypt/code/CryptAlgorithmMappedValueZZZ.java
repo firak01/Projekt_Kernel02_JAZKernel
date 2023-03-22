@@ -49,6 +49,8 @@ public class CryptAlgorithmMappedValueZZZ  implements Serializable{
 		}
     	return CipherTypeZZZ.class;    	
     }
+    
+    
 	
 //#######################################################
 //### Eingebettete Enum-Klasse mit den Defaultwerten, diese Werte werden auch per Konstruktor übergeben.

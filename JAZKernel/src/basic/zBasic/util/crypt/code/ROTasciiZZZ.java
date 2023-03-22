@@ -6,6 +6,7 @@ import java.util.Map;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Als Liste von Zeichen wird der gesamte ASCII Raum verwendet.
@@ -50,6 +51,16 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 		String[]saFlagControl = new String[1];
 		saFlagControl[0]=sFlagControl;
 		RotAsciiNew_(iCryptKey,saFlagControl);
+	}
+	
+	@Override
+	public Enum<?> getCipherTypeAsEnum() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii;
+	}
+	
+	@Override
+	public CipherTypeZZZ getCipherType() {
+		return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTascii;
 	}
 
 	private boolean RotAsciiNew_(int iCryptKey, String[] saFlagControlIn) throws ExceptionZZZ {

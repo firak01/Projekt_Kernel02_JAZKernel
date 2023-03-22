@@ -4,6 +4,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
@@ -34,6 +35,15 @@ public class Vigenere256ZZZ extends AbstractVigenereZZZ{ 		// Vigenereverschlues
 		  super(sSchluesselWort, sFilePath);
 	  }
 		
+	  @Override
+		public Enum<?> getCipherTypeAsEnum() {
+			return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE256;
+		}
+		
+		@Override
+		public CipherTypeZZZ getCipherType() {
+			return CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENERE256;
+		}
 
 	@Override
 	public int getOffsetForAsciiRange() {
