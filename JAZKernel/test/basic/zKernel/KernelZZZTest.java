@@ -757,8 +757,7 @@ public void testSetParameterByProgramAlias(){
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias_Encrypted(){
-	try {
-		//TODOGOON20230304;					
+	try {					
 		String sModule = this.getClass().getName();
 		String sProgram = "TestProg";
 		String sProperty = "testProgramPropertyEncryptedROT13";
@@ -785,6 +784,7 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		String sEncrypted = objCrypt.encrypt(sDecryptedOriginal);
 		
 		//PROBLEM!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE
+		TODOGOON20230323;//Debugge, ob das jetzt klappt
 		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sEncrypted);  
 
 		//TODOGOON20230307;//Nun erst die spezielle setEncrypted Methode testen...		

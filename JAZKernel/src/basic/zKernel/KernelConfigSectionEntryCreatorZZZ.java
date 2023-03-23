@@ -18,7 +18,7 @@ public class KernelConfigSectionEntryCreatorZZZ implements IConstantZZZ{
 			
 			
 			objReturn.setValue(sValueEncrypted);						
-			String sLine = KernelZFormulaIniLineZZZ.createLineEncryptedFrom(sValueEncrypted,objCrypt);
+			String sLine = KernelZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncrypted,objCrypt);
 			objReturn.setCryptAlgorithmType(objCrypt);
 			objReturn.isEncrypted(true);
 			objReturn.setValue(sLine);

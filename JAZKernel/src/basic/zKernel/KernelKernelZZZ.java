@@ -3985,7 +3985,7 @@ MeinTestParameter=blablaErgebnis
 		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
 		main:{	
 			//1) Zuerst muss aus dem CryptAlgorithmus und dem schon verschluesseltem Wert der <Z> - Expression String erstellt werden.			
-			String sValueEncryptedAsExpression = KernelZFormulaIniLineZZZ.createLineFrom(objCrypt);
+			String sValueEncryptedAsExpression = KernelZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncryptedIn, objCrypt);
 						
 			//2) Nun diesen Wert normal setzen, wie ohne Verschluesselung
 			bReturn = this.KernelSetParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, sValueEncryptedAsExpression, bFlagSaveImmidiate);

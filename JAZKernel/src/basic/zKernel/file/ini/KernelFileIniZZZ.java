@@ -765,14 +765,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					
 					//TODOGOON20230314;
 					//2. Baue für den Wert und die Parameterwerte des Algorithmus einen Expression-Tag String
-					//Z.B.: <Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>
-					
-					//Neue Klasse
-					//sValue = "TODO: Expression-Tag String bauen..."+sValueIn;
-					
-					//ICryptZZZ objCrypt = objEntryWithCrypt.getCryptAlgorithmType();
-					//sValue = KernelZFormulaIniLineZZZ.createLineFor(objEntryWithCrypt);
-						
+					//Z.B.: <Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>					
 					sValue = KernelZFormulaIniLineZZZ.createLineFrom(objEntryWithCrypt);
 				}else {
 					//Merke: 20211130: Beim Einlesen in den "Eigenschafts Editor" DLGBox4Ini gab es das Problem, dass <z:Null> zum Leerstring wird " "!!!
