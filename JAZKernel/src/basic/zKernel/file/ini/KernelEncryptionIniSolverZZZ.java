@@ -16,7 +16,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 
 public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  implements IKernelEncryptionIniSolverZZZ{
-	public static String sTAG_NAME = "Z:encrypted";
+	public static String sTAG_NAME = "Z:Encrypted";
 	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
 		super();

@@ -14,7 +14,7 @@ import basic.zKernel.flag.IFlagUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelEncryption_CodeZZZ  extends AbstractKernelIniTagZZZ{
-	public static String sTAG_NAME = "Z:code";
+	public static String sTAG_NAME = "Z:Code";
 	
 	public KernelEncryption_CodeZZZ() throws ExceptionZZZ{
 		super();

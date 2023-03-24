@@ -766,31 +766,56 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		//### "NICHT EXTERNES" MODUL
 		//############################################
 		//Teste das "Parameter Holen" auch für das "nicht externe", d.h. über den aktuellen Klassennamen angegebene Test Modul
-
+		
 		//### FALL A) Es gibt bereits einen verschluesselten Wert 
 		//Erst testen, dass auch durch Verschluesselung kein Leerwert kommt			
-		IKernelConfigSectionEntryZZZ objEntryDecrypted = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
-		assertTrue(objEntryDecrypted.hasAnyValue());
-		String sDecryptedOriginal = objEntryDecrypted.getValue();
+		IKernelConfigSectionEntryZZZ objEntryDecryptedOriginal = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntryDecryptedOriginal.hasAnyValue());
+		String sDecryptedOriginal = objEntryDecryptedOriginal.getValue();
 		sDecryptedOriginal = StringZZZ.left(sDecryptedOriginal+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
 		assertEquals("testwert4decrypted local 4 program",sDecryptedOriginal);
 
 		//Sichern des "RAW" Werts
-		String sRaw = objEntryDecrypted.getRawEncrypted();
+		String sRaw = objEntryDecryptedOriginal.getRawEncrypted();
 		
 		//Funktioniert nur, wenn es schon einen CRYPT-Tag gibt in der Property. Dann wird der gefundene Crypt-Algorithmus wiederverwendet.
-		ICryptZZZ objCrypt = objEntryDecrypted.getCryptAlgorithmType();
-		sDecryptedOriginal = sDecryptedOriginal + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
-		String sEncrypted = objCrypt.encrypt(sDecryptedOriginal);
-		
-		//PROBLEM!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE
-		TODOGOON20230323;//Debugge, ob das jetzt klappt
+		ICryptZZZ objCrypt = objEntryDecryptedOriginal.getCryptAlgorithmType();
+		String sDecrypted = sDecryptedOriginal + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
+		String sEncrypted = objCrypt.encrypt(sDecrypted);
+				
+		//ACHTUNG!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE		
 		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sEncrypted);  
 
-		//TODOGOON20230307;//Nun erst die spezielle setEncrypted Methode testen...		
-		//Die CRYPT-TAG Einträge müssen neu geschrieben werden.
-		ICryptZZZ objCrypt2 = objEntryDecrypted.getCryptAlgorithmType();//Das Crypt - Objekt kommt aus der vorherigen Abfrage, wird also wiederverwendet.
-		objKernelFGL.setParameterByProgramAliasEncrypted(sModule, sProgram, sProperty, sEncrypted, objCrypt2);
+		//+++ Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+		
+		IKernelConfigSectionEntryZZZ objEntryDecrypted = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntryDecrypted.hasAnyValue());
+		String stemp = objEntryDecrypted.getValue();
+		assertTrue(sEncrypted.equals(stemp));
+
+		//+++ Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+				
+		//+++ Die CRYPT-TAG Einträge müssen statt des Einzelwerts neu geschrieben werden.
+		ICryptZZZ objCryptOriginal = objEntryDecryptedOriginal.getCryptAlgorithmType();//Das Crypt - Objekt kommt aus der vorherigen Abfrage, wird also wiederverwendet.
+		//Merke: Die Verschluesselung wird nun ohne Timestamp geschrieben.
+		sEncrypted = objCryptOriginal.encrypt(sDecryptedOriginal);
+		objKernelFGL.setParameterByProgramAliasEncrypted(sModule, sProgram, sProperty, sEncrypted, objCryptOriginal);
+		
+		//+++ Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+		
+		//Prüfe das oben gesetzte Ergebnis PUR, also USEEXPRESSION auf false
+		objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, false);
+		
+		TODOGOON20230324;//Das Flag USEEXPRESSION=false wird ignoriert. 
+		                 //Es wird trotzdem der entschluesselte Wert zurückgegeben!!!
+		IKernelConfigSectionEntryZZZ objEntryRaw = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntryRaw.hasAnyValue());
+		String stest = objEntryRaw.getValue();
+		assertEquals(sRaw,stest);//Also der String muss nach all der Transformation identisch sein.
+		
 		
 		//Verwende intern
 		//private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, ICryptZZZ objCrypt, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{

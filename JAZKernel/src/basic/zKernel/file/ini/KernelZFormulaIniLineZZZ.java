@@ -100,13 +100,17 @@ public class KernelZFormulaIniLineZZZ  extends ObjectZZZ{
 			//sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation();
 			//Class objClass = CryptAlgorithmMappedValueZZZ.getEnumClassStatic();			
 			String sCipher = objCrypt.getCipherType().getAbbreviation();
-			objElementZCipher.addContent(sCipher);
-						
+			objElementZCipher.addContent(sCipher);						
 			objElementZEncryption.addContent(objElementZCipher);
 			
+			stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CodeZZZ.sTAG_NAME);
+			Element objElementZCode = new Element(stemp);	
+			String sCode = sValue;
+			objElementZCode.addContent(sCode);
+			objElementZEncryption.addContent(objElementZCode);
+		
 			XMLUtil.addContent(objRoot, objElementZEncryption);			
 			objDocument.setRootElement(objRoot);
-									
 			String sXmlReplaced = XmlUtilZZZ.documentToString(objDocument);
 
 			//Aus diesem String die "validen" Tags wieder durch Tags mit : ersetzten, was dann der ZExpression entspricht

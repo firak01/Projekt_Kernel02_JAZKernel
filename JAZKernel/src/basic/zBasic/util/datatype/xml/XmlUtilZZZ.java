@@ -187,14 +187,20 @@ public class XmlUtilZZZ  extends ObjectZZZ{
 				 
 			    outputter.setFormat(format);  //Das muss man machen, sonst sind werden die neuen Format Einstellungen nicht uebernommen				
 				outputter.output(objDocument,objWriter);				
-				//Das ergibt auch keinen sinnvollen String nur mit den XML-Tags sReturn = outputter.toString();
-				sReturn = objWriter.toString();
-								
-				String sContent = objDocument.toString();				
-				objWriter.write(sContent);
-								
-				objWriter.close();
+				//Das ergibt auch keinen sinnvollen String nur mit den XML-Tags 
+				//sReturn = outputter.toString();
 				
+				//Das ergibt auch keinen sinnvollen String nur mit den XML-Tags
+				//String sContent = objDocument.toString();
+				//objWriter.write(sReturn);
+				
+				//PROBLEM: Hier wird immer ein \r\n angehängt!!!
+				sReturn = objWriter.toString();
+				
+				char[] caToStrip = {'\r','\n'};//Also extra beheben, sonst hat man in Ergebnis immer zusätzliche Zeichen.
+				sReturn = StringZZZ.stripCharacters(sReturn, caToStrip);
+		
+				objWriter.close();				
 			}catch(IOException ioe){
 				ExceptionZZZ ez = new ExceptionZZZ("IOException: " + ioe.getMessage(), iERROR_RUNTIME, KernelZFormulaIniLineZZZ.class,ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;

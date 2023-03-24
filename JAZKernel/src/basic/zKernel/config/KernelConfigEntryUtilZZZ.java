@@ -164,6 +164,7 @@ public class KernelConfigEntryUtilZZZ {
 					String stemp = ex.compute(sRaw);
 					if(!StringZZZ.equals(stemp,sRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall a) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
+						objReturn.setRawEncrypted(sRaw);
 						objReturn.isDecrypted(true);
 						objReturn.setRawDecrypted(stemp);
 					}					
@@ -172,14 +173,14 @@ public class KernelConfigEntryUtilZZZ {
 					String stemp = ex.computeAsExpression(sRaw);
 					if(!StringZZZ.equals(stemp,sRaw)){						
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall b) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
+						objReturn.setRawEncrypted(sRaw);
 						objReturn.isDecrypted(true);
 						objReturn.setRawDecrypted(stemp);
 					}					
 					sRaw=stemp;//Sonst Endlosschleife.
 				}
 				ICryptZZZ objCrypt = ex.getCryptAlgorithmType();//Zur weiteren Verwendung, z.B. zum erneuten Verschluesseln mit einem geaenderten Wert hier auch zurueckgeben.
-				objReturn.setCryptAlgorithmType(objCrypt);
-				//objobjReturn.set(objCrypt);//TODO RAUS...
+				objReturn.setCryptAlgorithmType(objCrypt);				
 			}
 			//sValueEncryptionSolved = sRaw;
 			if(bAnyFormula){
