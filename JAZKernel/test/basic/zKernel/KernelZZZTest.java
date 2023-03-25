@@ -807,10 +807,14 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		objKernelFGL.getCacheObject().clear();
 		
 		//Prüfe das oben gesetzte Ergebnis PUR, also USEEXPRESSION auf false
+		TODOGOON20230325;//Das Flag USEEXPRESSION=false wird ignoriert, wenn es nur am Kernel-Objekt geändert wird. 
+        //Es wird dann trotzdem der entschluesselte Wert zurückgegeben!!!
+		//GRUND: Das intern verwendete KernelFileIniZZZ - Objekt wird über das Setzen des Flags nicht informiert.
+		//IDEE:  Erbende Flag-Objekte müssen sich registrieren und werden dann benachrichtigt, wenn das Flag gesetzt wird (Listener Prinzip)
 		objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, false);
+		objKernelFGL.getFileConfigKernelIni().setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, false);
 		
-		TODOGOON20230324;//Das Flag USEEXPRESSION=false wird ignoriert. 
-		                 //Es wird trotzdem der entschluesselte Wert zurückgegeben!!!
+		
 		IKernelConfigSectionEntryZZZ objEntryRaw = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntryRaw.hasAnyValue());
 		String stest = objEntryRaw.getValue();

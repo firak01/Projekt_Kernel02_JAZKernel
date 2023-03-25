@@ -4424,7 +4424,7 @@ MeinTestParameter=blablaErgebnis
 				if(sModule.equals(sSectionOrProgram)){
 					this.setParameterByProgramAliasEncrypted(sSectionOrProgram, sProperty, sValue, objCrypt);
 				}else{					
-					this.KernelSetParameterByProgramAlias_(null, sModule, sSectionOrProgram, sProperty, sValue, objCrypt, true);
+					this.KernelSetParameterByProgramAliasEncrypted_(null, sModule, sSectionOrProgram, sProperty, sValue, objCrypt, true);
 				}
 		}//end main:
 	}
