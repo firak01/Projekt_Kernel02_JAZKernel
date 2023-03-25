@@ -807,6 +807,7 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		objKernelFGL.getCacheObject().clear();
 		
 		//Prüfe das oben gesetzte Ergebnis PUR, also USEEXPRESSION auf false
+		//TEST GITHUB RSA SSH
 		TODOGOON20230325;//Das Flag USEEXPRESSION=false wird ignoriert, wenn es nur am Kernel-Objekt geändert wird. 
         //Es wird dann trotzdem der entschluesselte Wert zurückgegeben!!!
 		//GRUND: Das intern verwendete KernelFileIniZZZ - Objekt wird über das Setzen des Flags nicht informiert.
