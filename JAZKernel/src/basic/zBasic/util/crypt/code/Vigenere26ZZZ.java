@@ -12,7 +12,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.datatype.string.FileEncodingUtil;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 31ff
  *  Die Klasse stammt aus der Buch CD, aus dem Verzeichnis poly

@@ -2,7 +2,7 @@ package basic.zBasic.util.crypt.code;
 
 import base.files.DateiUtil;
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 
 public interface IVigenereUiZZZ extends IVigenereZZZ, ICryptUIZZZ{
 	//Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen

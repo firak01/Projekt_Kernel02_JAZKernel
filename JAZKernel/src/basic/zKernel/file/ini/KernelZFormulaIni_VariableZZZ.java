@@ -12,7 +12,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface:
@@ -45,7 +45,7 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//Ke
 						stemp = saFlagControlIn[iCount];
 						btemp = setFlag(stemp, true);
 						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 							throw ez;		 
 						}
 					}														

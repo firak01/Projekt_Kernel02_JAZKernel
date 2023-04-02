@@ -20,12 +20,18 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zKernel.IKernelConfigZZZ;
 import basic.zKernel.KernelLogZZZ;
-import basic.zKernel.flag.FlagZHelperZZZ;
+import basic.zKernel.flag.EventObjectFlagZsetZZZ;
+import basic.zKernel.flag.IEventBrokerFlagZsetUserZZZ;
+import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
 import basic.zKernel.flag.IFlagLocalUserZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
+import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
+import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
+import basic.zKernel.flag.json.FlagZHelperZZZ;
 import custom.zKernel.LogZZZ;
 
-public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUserZZZ, IFlagLocalUserZZZ{
+public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -40,6 +46,9 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 	private HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
 	
 	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
+	
+	protected ISenderObjectFlagZsetZZZ objEventFlagZBroker = null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines Flags per Event informiert zu werden.
+	
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
@@ -75,7 +84,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 				String stemp = sKey;
 				boolean btemp = this.setFlagZ(sKey, hmFlag.get(sKey));
 				if(btemp==false){
-					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		 
 				}
 			}
@@ -297,15 +306,15 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 		 * @return
 		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(bValueToSearchFor, false, objUsingFlagZ);
 		}
 		
-		public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(bValueToSearchFor, bLookupExplizitInHashMap, objUsingFlagZ);
 		}
 		
-		private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{
 				
@@ -329,11 +338,11 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 		 * @return
 		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ_passable(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(objUsingFlagZ);
 		}
 		
-		private String[] getFlagZ_passable_(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		private String[] getFlagZ_passable_(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{
 				
@@ -375,7 +384,15 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 				
 				//Setze das Flag nun in die HashMap
 				HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
-				hmFlag.put(sFlagName.toUpperCase(), bFlagValue);
+				hmFlag.put(sFlagName.toUpperCase(), bFlagValue);								
+				
+				//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+				//Dann erzeuge den Event und feuer ihn ab.
+				if(this.objEventFlagZBroker!=null) {
+					IEventObjectFlagZsetZZZ event = new EventObjectFlagZsetZZZ(this,1,sFlagName.toUpperCase(), bFlagValue);
+					this.objEventFlagZBroker.fireEvent(event);
+				}
+				
 				bFunction = true;								
 			}										
 		}	// end main:
@@ -547,6 +564,34 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagUs
 			}
 				
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+			//### Aus dem Interface IEventBrokerFlagZUserZZZ
+			@Override
+			public ISenderObjectFlagZsetZZZ getSenderFlagUsed() throws ExceptionZZZ {
+				if(this.objEventFlagZBroker==null) {
+					//++++++++++++++++++++++++++++++
+					//Nun geht es darum den Sender fuer Aenderungen an den Flags zu erstellen, der dann registrierte Objekte ueber Aenderung von Flags informiert
+					ISenderObjectFlagZsetZZZ objSenderFlag = new KernelSenderObjectFlagZsetZZZ();
+					this.objEventFlagZBroker = objSenderFlag;
+				}
+				return this.objEventFlagZBroker;
+			}
+
+			@Override
+			public void setSenderFlagUsed(ISenderObjectFlagZsetZZZ objSenderFlag) {
+				this.objEventFlagZBroker = objSenderFlag;
+			}
+			
+			@Override
+			public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {
+				this.getSenderFlagUsed().addListenerObjectFlagZset(objEventListener);
+			}
+			
+			@Override
+			public void unregisterForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {
+				this.getSenderFlagUsed().removeListenerObjectFlagZset(objEventListener);
+			}
+			
 			//++++++++++++++++++++++++
 	
 	/* (non-Javadoc)

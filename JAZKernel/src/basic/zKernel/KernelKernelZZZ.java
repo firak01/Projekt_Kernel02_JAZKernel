@@ -1,10 +1,8 @@
 package basic.zKernel;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,9 +13,6 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import org.apache.commons.io.FileUtils;
-
-import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
@@ -29,22 +24,12 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.counter.CounterByCharacterAsciiFactoryZZZ;
-import basic.zBasic.util.counter.CounterByCharacterAscii_AlphabetZZZ;
-import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.counter.CounterHandlerSingleton_AlphabetSignificantZZZ;
 import basic.zBasic.util.counter.CounterHandlerSingleton_AlphabetZZZ;
-import basic.zBasic.util.counter.CounterHandlerSingleton_AlphanumericSignificantZZZ;
-import basic.zBasic.util.counter.CounterStrategyAlphabetSerialZZZ;
 import basic.zBasic.util.counter.CounterStrategyAlphabetSignificantZZZ;
-import basic.zBasic.util.counter.CounterStrategyAlphanumericSignificantZZZ;
 import basic.zBasic.util.counter.ICounterAlphabetSignificantZZZ;
 import basic.zBasic.util.counter.ICounterAlphabetZZZ;
-import basic.zBasic.util.counter.ICounterAlphanumericSignificantZZZ;
 import basic.zBasic.util.counter.ICounterStrategyAlphabetSignificantZZZ;
-import basic.zBasic.util.counter.ICounterStrategyAlphabetZZZ;
-import basic.zBasic.util.counter.ICounterStrategyAlphanumericSignificantZZZ;
-import basic.zBasic.util.counter.ICounterStringZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -52,9 +37,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
-import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
+import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
@@ -62,12 +47,14 @@ import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.KernelFileIniZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniLineZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
-import basic.zKernel.file.ini.KernelFileIniZZZ;
+import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
+import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
+import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
 import custom.zKernel.LogZZZ;
@@ -106,7 +93,7 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	private IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
 	
 	private ICryptZZZ objCrypt = null; //Ein CryptAlgorithmus für in der Ini-Konfiguration verschlüsselte Werte.
-	
+		
 /**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini
@@ -5985,7 +5972,7 @@ MeinTestParameter=blablaErgebnis
 					bReturn = true;
 					break main; 
 				} 
-				
+											
 				//++++++++++++++++++++++++++++++
 				//Nun geht es darum ggfs. die Flags zu übernehmen, die in irgeendeiner Klasse gesetzt werden sollen.
 				//D.h. ggfs. stehen sie in dieser Klasse garnicht zur Verfügung
@@ -6234,6 +6221,9 @@ MeinTestParameter=blablaErgebnis
 				String[] saFlagFileIniZZZ = StringArrayZZZ.remove(saFlagRelevantFileIniZZZ, saFlagZpassedFalse, true);				
 				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
 				this.setFileConfigKernelIni(objFileIniZZZ);
+				
+				//Registriere das FileIniZZZ - Objekt fuer Aenderungen an den Kernel Flags. Z.B. wenn mal die <Z>-Formeln ausgewertet werden sollen, mal nicht.
+				this.registerForFlagEvent(objFileIniZZZ);
 				
 				//Wirf eine Exception wenn weder der Application noch der SystemKey in der Konfigurationsdatei existieren
 				String sKeyToProof = this.getApplicationKey();
@@ -6724,8 +6714,5 @@ MeinTestParameter=blablaErgebnis
 					}
 				}//end main:
 				return baReturn;
-			}
-
-
-
+			}		
 }//end class// end class

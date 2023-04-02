@@ -21,10 +21,10 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.flag.FlagZHelperZZZ;
 import basic.zKernel.flag.IFlagLocalUserZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
-import basic.zKernel.flag.IFlagUserZZZ.FLAGZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
+import basic.zKernel.flag.json.FlagZHelperZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
@@ -40,7 +40,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagUserZZZ, IFlagLocalUserZZZ{ //IFunctionZZZ {
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZUserZZZ, IFlagLocalUserZZZ{ //IFunctionZZZ {
 	private IFileExpansionZZZ objExpansion=null;
 	private ExceptionZZZ objException=null;
 	
@@ -131,7 +131,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 						btemp = this.setFlag(stemp, true);
 						
 						if(btemp==false){ 								   
-							   ExceptionZZZ ez = new ExceptionZZZ( IFlagUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+							   ExceptionZZZ ez = new ExceptionZZZ( IFlagZUserZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 							   throw ez;		 
 						}
 					}
@@ -244,23 +244,23 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 
 	//### Aus IFlagUserZZZ
 	@Override
-	public boolean getFlag(IFlagUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(IFlagUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}	
 	
 	@Override
-	public boolean[] setFlag(IFlagUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IFlagUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IFlagZUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -634,15 +634,15 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		 * @return
 		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(bValueToSearchFor, false, objUsingFlagZ);
 		}
 		
-		public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(bValueToSearchFor, bLookupExplizitInHashMap, objUsingFlagZ);
 		}
 		
-		private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		private String[] getFlagZ_passable_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{
 				
@@ -666,11 +666,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		 * @return
 		 * @throws ExceptionZZZ 
 		 */
-		public String[] getFlagZ_passable(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		public String[] getFlagZ_passable(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			return this.getFlagZ_passable_(objUsingFlagZ);
 		}
 		
-		private String[] getFlagZ_passable_(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ{
+		private String[] getFlagZ_passable_(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ{
 			String[] saReturn = null;
 			main:{
 				

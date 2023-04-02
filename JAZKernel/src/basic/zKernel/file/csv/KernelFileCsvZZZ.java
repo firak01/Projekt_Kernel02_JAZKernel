@@ -18,7 +18,7 @@ import basic.zBasic.util.file.csv.CSVReader;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -61,7 +61,7 @@ public class KernelFileCsvZZZ  extends KernelUseObjectZZZ{
 						   stemp = saFlagControlIn[iCount];
 						   btemp = setFlag(stemp, true);
 						   if(btemp==false){
-							   ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+							   ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 							   throw ez;		 
 						   }
 					   }

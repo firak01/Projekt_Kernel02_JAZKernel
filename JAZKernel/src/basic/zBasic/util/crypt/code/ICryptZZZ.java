@@ -6,9 +6,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ.CipherTypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 
-public interface ICryptZZZ extends IFlagUserZZZ{	
+public interface ICryptZZZ extends IFlagZUserZZZ{	
 	//Merke: IFlagUser ermöglicht dann Methoden um <Z:FlagControl> zu setzen	
 //	public enum FLAGZ{
 //		USENUMERIC,USEUPPERCASE,USELOWERCASE,USECHARACTERPOOL

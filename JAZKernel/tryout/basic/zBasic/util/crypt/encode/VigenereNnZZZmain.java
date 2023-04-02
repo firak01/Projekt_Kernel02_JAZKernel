@@ -15,7 +15,7 @@ import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 33f
  *  Die Klasse stammt aus der Buch CD, aus dem Verzeichnis poly

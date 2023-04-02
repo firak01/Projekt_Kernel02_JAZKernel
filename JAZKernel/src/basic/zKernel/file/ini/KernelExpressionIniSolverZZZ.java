@@ -23,7 +23,7 @@ import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniSolverZZZ{

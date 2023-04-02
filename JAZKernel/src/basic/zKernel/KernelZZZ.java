@@ -18,6 +18,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
+import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
 import custom.zKernel.LogZZZ;
@@ -188,6 +189,6 @@ public KernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
 				bReturn = JarEasyUtilZZZ.isInJar(KernelZZZ.class);
 			}
 			return bReturn;
-		}
+		}		
 
 }//end class// end class

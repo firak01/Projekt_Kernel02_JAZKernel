@@ -13,7 +13,7 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelZFormulaIni_EmptyZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{	
@@ -56,7 +56,7 @@ public class KernelZFormulaIni_EmptyZZZ  extends KernelUseObjectZZZ implements I
 						stemp = saFlagControlIn[iCount];
 						btemp = setFlag(stemp, true);
 						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 							throw ez;		 
 						}
 					}														

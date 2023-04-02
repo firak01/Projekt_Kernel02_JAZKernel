@@ -41,6 +41,9 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.flag.EventObjectFlagZsetZZZ;
+import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
+import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -49,7 +52,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileIniZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
+public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
@@ -1529,6 +1532,29 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			}
 		}//end main:
 		return baReturn;
+	}
+
+	//+++ Aus Interface: IListenerObjectFlagZsetZZZ
+	@Override
+	public void flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
+		
+		main:{
+			if(eventFlagZset==null) break main;
+			
+			//Wenn das Objekt ueber die Aenderung des Setzen des Flags informiert wird. 
+			//Dieses Setzen des Flags ggfs. nachvollziehen.
+			String sFlagText = eventFlagZset.getFlagText();
+			boolean bFlagValue = eventFlagZset.getFlagValue();
+			
+			try {
+				this.setFlagZ(sFlagText, bFlagValue);
+			} catch (ExceptionZZZ e) {
+				//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
+				//Es kann aber auch ggfs. anders verfahren werden. 
+			}
+			
+		}//end main:
+	
 	}
 
 	

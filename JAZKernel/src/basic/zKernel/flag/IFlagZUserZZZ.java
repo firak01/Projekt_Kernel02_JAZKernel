@@ -4,7 +4,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 
-public interface IFlagUserZZZ{
+public interface IFlagZUserZZZ{
 	public final String sERROR_FLAG_UNAVAILABLE = "this flag is not available: ";
 	public final int iERROR_FLAG_UNAVAILABLE = 50;
 
@@ -17,9 +17,9 @@ public interface IFlagUserZZZ{
 	public abstract boolean[] setFlag(String[] saFlagName, boolean bValue);
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public abstract boolean getFlag(IFlagUserZZZ.FLAGZ objEnumFlag);
-	public abstract boolean setFlag(IFlagUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public abstract boolean[] setFlag(IFlagUserZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);
+	public abstract boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag);
+	public abstract boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+	public abstract boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);
 	
 	//202211228: Leider wird dann als Methode nur das FLAGZ in den erbenden Klassen eingesetzt.
 	//           Und das ist "ambigous". Es geht also das Interface verloren.
@@ -40,7 +40,7 @@ public interface IFlagUserZZZ{
 	
 	public abstract HashMap<String, Boolean>getHashMapFlagZpassed();
 	public abstract void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed);
-	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ;
-	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ;
-	public String[] getFlagZ_passable(IFlagUserZZZ objUsingFlagZ) throws ExceptionZZZ;//Hole alle auf true gesetzten Flags....
+	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;
+	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;
+	public String[] getFlagZ_passable(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;//Hole alle auf true gesetzten Flags....
 }

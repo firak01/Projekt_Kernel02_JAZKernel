@@ -19,7 +19,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.FlagZZZ;
+import basic.zKernel.flag.json.FlagZZZ;
 
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;

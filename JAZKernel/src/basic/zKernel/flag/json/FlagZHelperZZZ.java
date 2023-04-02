@@ -1,4 +1,4 @@
-package basic.zKernel.flag;
+package basic.zKernel.flag.json;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

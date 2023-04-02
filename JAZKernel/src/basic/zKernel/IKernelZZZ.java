@@ -3,19 +3,18 @@ package basic.zKernel;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
-import basic.zKernel.flag.IFlagUserZZZ;
+import basic.zKernel.flag.IEventBrokerFlagZsetUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCacheUserZZZ,IFlagUserZZZ,IKernelExpressionIniSolverZZZ{
+public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;
