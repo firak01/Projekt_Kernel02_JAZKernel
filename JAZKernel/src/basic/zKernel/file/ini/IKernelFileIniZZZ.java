@@ -28,7 +28,7 @@ public interface IKernelFileIniZZZ extends IKernelUserZZZ{
 	
 	
 	public File getFileObject();		
-	public IniFile getFileIniObject();
+	public IniFile getFileIniObject() throws ExceptionZZZ;
 	//Setter als private, damit die Erstellung über den Konstruktor nicht umgangen werden kann:
 	//public void setFileIniObject(IniFile objIniFile);
 	

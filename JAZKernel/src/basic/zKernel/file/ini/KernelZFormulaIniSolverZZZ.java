@@ -27,9 +27,8 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
-	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionIniSolverNew_(null, null,saFlag);
+	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{		
+		KernelExpressionIniSolverNew_(null, null, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{

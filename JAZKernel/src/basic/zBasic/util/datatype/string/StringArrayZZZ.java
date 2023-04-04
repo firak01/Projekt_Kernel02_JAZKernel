@@ -350,18 +350,64 @@ public class StringArrayZZZ implements IConstantZZZ{
 		return sReturn;	
 	}
 	
-	
 	public boolean contains(String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		
 		if(this.bIsString == true){
-			bReturn = StringArrayZZZ.contains(this.getArray(), sToFind);
+			bReturn = StringArrayZZZ.containsExact(this.getArray(), sToFind);
+		} //end if
+		
+		return bReturn;
+	}//end contains
+	
+	public boolean contains(String sToFind, boolean bExact) throws ExceptionZZZ{
+		boolean bReturn = false;
+		
+		if(this.bIsString == true){
+			bReturn = StringArrayZZZ.contains(this.getArray(), sToFind, bExact);
 		} //end if
 			
 		return bReturn;
 	}//end contains
 	
+	/** containsExact als Default verwenden
+	 * @param saSource
+	 * @param sToFind
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 04.04.2023, 09:11:26
+	 */
 	public static boolean contains(String[] saSource, String sToFind) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(saSource==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			bReturn = StringArrayZZZ.containsExact(saSource, sToFind);
+					
+		}//end main;		
+		return bReturn;
+	}
+	
+	public static boolean contains(String[] saSource, String sToFind, boolean bExact) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(saSource==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, StringArrayZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(bExact) {
+				bReturn = StringArrayZZZ.containsExact(saSource, sToFind);
+			}else {
+				bReturn = StringArrayZZZ.containsIgnoreCase(saSource, sToFind);
+			}			
+		}//end main;		
+		return bReturn;
+	}
+	
+	public static boolean containsIgnoreCase(String[] saSource, String sToFind) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(saSource==null){

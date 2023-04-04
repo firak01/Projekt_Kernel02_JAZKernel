@@ -32,6 +32,7 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 	                                                                                          //             mehrere Events, an verschiedenen Komponenten, unabh�ngig voneinander zu verwalten.
 	public final void fireEvent(IEventObjectFlagZsetZZZ event){	
 		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
+		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
 		if(event.getSource() instanceof ISenderSelectionResetZZZ){
 			ISenderSelectionResetZZZ sender = (ISenderSelectionResetZZZ) event.getSource();
 			for(int i = 0 ; i < sender.getListenerRegisteredAll().size(); i++){

@@ -1290,6 +1290,37 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sKey = this.getApplicationKey();
 			objReturn = this.getFileConfigModuleIni(sKey);
 			this.objFileIniKernelConfig = objReturn;
+		}else if(objReturn.getFlag("INIT")) {
+			String sLog=null;
+			
+			//Nun vollständig initialisieren
+			String sDirectoryConfig = this.getFileConfigKernelDirectory();
+			String sFileConfig = this.getFileConfigKernelName();			
+			String sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfig, sFileConfig);					
+			boolean bExists = FileEasyZZZ.exists(sFilePath);
+			if(!bExists) {
+				String sDirectoryConfigDefault = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
+				sLog = "Default Filename for configuration does not exist here: '" + sFilePath + "'. Looking in default direcotry '" + sDirectoryConfigDefault + "'" ;
+				this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+
+				sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfigDefault, sFileConfig);						
+				bExists = FileEasyZZZ.exists(sFilePath);
+				
+				if(!bExists) {
+					sLog = "Default file in default directory not found: '" + sFilePath + "'";
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}else {
+					//sLog = "Changing directory to '" + sDirectoryConfigDefault + "'";
+					//this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					//this.setFileConfigKernelDirectory(sDirectoryConfigDefault);
+					sLog = "Directory for other files still used '" + sDirectoryConfig + "'";
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);	
+				}
+			}
+			File objFile = new File(sFilePath);
+			objReturn.setFileObject(objFile);						
 		}
 		return objReturn;	
 	}
@@ -1351,11 +1382,16 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					}else{
 						//Übernimm die gesetzten FlagZ...
 						HashMap<String,Boolean>hmFlagZ = this.getFileConfigKernelIni().getHashMapFlagZ();
+						TODOGOON20230404; //Uebernimm nur die relevanten Flags, also nur die Flags, die sowohl im Kernel als auch im KernelFile gesetzt sind!!!
+						
 						
 						//Übernimm die gesetzten Variablen...
 						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigKernelIni().getHashMapVariable();
 						objReturn = new FileIniZZZ(this,  objFileModule, hmFlagZ);
-						objReturn.setHashMapVariable(hmVariable);	
+						objReturn.setHashMapVariable(hmVariable);
+						
+
+						
 					}
 					
 									
@@ -5951,7 +5987,23 @@ MeinTestParameter=blablaErgebnis
 					//Übernimm die direkt gesetzten FlagZ...
 					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlagZ();
 					saFlagUsed = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
-				}																																		 
+				}			
+				
+
+				if(saFlagUsed!=null){
+					if(StringArrayZZZ.containsIgnoreCase(saFlagUsed, "INIT")) {
+						this.setFlag("INIT", true);					 
+					} 
+				}
+				bReturn = this.getFlag("INIT");
+		 		if(bReturn) break main;
+				
+				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this);
+				this.setFileConfigKernelIni(objFileIniZZZ);
+		
+				//Registriere das FileIniZZZ - Objekt fuer Aenderungen an den Kernel Flags. Z.B. wenn mal die <Z>-Formeln ausgewertet werden sollen, mal nicht.
+				this.registerForFlagEvent(objFileIniZZZ);
+				
 				if(saFlagUsed!=null) {
 					//setzen der ggfs. aus dem Config Objekt zu übernehmende, gültige Flags
 					for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
@@ -5968,14 +6020,10 @@ MeinTestParameter=blablaErgebnis
 					}
 				}//end if saFlagUsed!=null
 				
-				if(this.getFlag("INIT")==true){
-					bReturn = true;
-					break main; 
-				} 
 											
 				//++++++++++++++++++++++++++++++
-				//Nun geht es darum ggfs. die Flags zu übernehmen, die in irgeendeiner Klasse gesetzt werden sollen.
-				//D.h. ggfs. stehen sie in dieser Klasse garnicht zur Verfügung
+				//Nun geht es darum ggfs. die Flags zu übernehmen, die in irgendeiner Klasse gesetzt werden sollen.
+				//D.h. ggfs. stehen sie in dieser Klasse gar nicht zur Verfügung
 				//Falls sie aber übergeben wurden, dann als Kommandozeilen-Argument. D.h. diese Flag - Angaben sollen alles übersteuern. Darum auch nach den "normalen" Flags verarbeiten.
 				//Merke: Auch wenn nichts übergeben wurde, ist das Kommandozeilen-Argument ein Array mit 1 Leerwert zu sein.
 				if(objConfig==null && !StringArrayZZZ.isEmptyTrimmed(saArg)) {
@@ -6098,7 +6146,7 @@ MeinTestParameter=blablaErgebnis
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++
 				//get the Application-Configuration-File
 				//A) Directory
-				//     Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
+				//   Hier kann auf das Config Objekt verzichtet werden. wenn nix gefunden wird, wird "." als aktuelles Verzeichnis genommen				
 				if(objConfig!=null && StringZZZ.isEmpty(sDirectoryConfigIn)){
 					if(objConfig.isOptionObjectLoaded()==false){
 						//Fall: Das objConfig - Objekt existiert, aber es "lebt" von den dort vorhandenenen DEFAULT-Einträgen
@@ -6173,8 +6221,7 @@ MeinTestParameter=blablaErgebnis
 				if(StringZZZ.isEmpty(sFileConfig)){
 					sFileConfig = KernelKernelZZZ.sFILENAME_CONFIG_DEFAULT;
 					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object. Using default: '" + sFileConfig + "'";
-					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-//					
+					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);					
 					
 					//Prüfe nun ob ggfs. auch das Verzeichnis default sein muss
 					String sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfig, sFileConfig);					
@@ -6183,8 +6230,7 @@ MeinTestParameter=blablaErgebnis
 						String sDirectoryConfigDefault = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 						sLog = "Default Filename for configuration does not exist here: '" + sFilePath + "'. Looking in default direcotry '" + sDirectoryConfigDefault + "'" ;
 						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-						
-						
+
 						sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfigDefault, sFileConfig);						
 						bExists = FileEasyZZZ.exists(sFilePath);
 						
@@ -6209,22 +6255,30 @@ MeinTestParameter=blablaErgebnis
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
 				}							
 				
-				//#############################################################
+				//##################################################################
+				//### Initialisiere das FileIniZZZ-Objekt
+				//### - Uebernahme der relevanten Flags
+				//### - Registrierung am KernelObjekt für Flag Aenderungsevent 
+				//TODOGOON20230404: DEN CODE IN EINE FlagUtilZZZ-Klasse packen (und damit "retten").
+				//TODOGOON20230404: DEN CODE HIER LOESCHEN UND STATT DESSEN komplett auf Flag - Event setzen...
+				
 				//read the ini-content: 
 				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen								
-				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-				FileIniZZZ exDummy = new FileIniZZZ();
-				//String[] saFlagRelevantFileIniZZZ = exDummy.getFlagZ();//Aber darin sind ja auch DEBUG, INIT, etc.
-				String[] saFlagRelevantFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP", "USEENCRYPTION"};
-				String[] saFlagZpassedFalse = this.getFlagZ_passable(false, true, exDummy);	
+//				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+//				FileIniZZZ exDummy = new FileIniZZZ();
+//				//String[] saFlagRelevantFileIniZZZ = exDummy.getFlagZ();//Aber darin sind ja auch DEBUG, INIT, etc.
+//				String[] saFlagRelevantFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP", "USEENCRYPTION"};
+//				String[] saFlagZpassedFalse = this.getFlagZ_passable(false, true, exDummy);	
+//				
+//				String[] saFlagFileIniZZZ = StringArrayZZZ.remove(saFlagRelevantFileIniZZZ, saFlagZpassedFalse, true);				
+//				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
+//				this.setFileConfigKernelIni(objFileIniZZZ);
+//				
+//				//Registriere das FileIniZZZ - Objekt fuer Aenderungen an den Kernel Flags. Z.B. wenn mal die <Z>-Formeln ausgewertet werden sollen, mal nicht.
+//				this.registerForFlagEvent(objFileIniZZZ);
+				//####################################################################
 				
-				String[] saFlagFileIniZZZ = StringArrayZZZ.remove(saFlagRelevantFileIniZZZ, saFlagZpassedFalse, true);				
-				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
-				this.setFileConfigKernelIni(objFileIniZZZ);
-				
-				//Registriere das FileIniZZZ - Objekt fuer Aenderungen an den Kernel Flags. Z.B. wenn mal die <Z>-Formeln ausgewertet werden sollen, mal nicht.
-				this.registerForFlagEvent(objFileIniZZZ);
-				
+				//### Arbeite mit den Einträgen in der Ini-Datei
 				//Wirf eine Exception wenn weder der Application noch der SystemKey in der Konfigurationsdatei existieren
 				String sKeyToProof = this.getApplicationKey();
 				boolean bProofConfigMain = this.proofSectionIsConfigured(sKeyToProof);

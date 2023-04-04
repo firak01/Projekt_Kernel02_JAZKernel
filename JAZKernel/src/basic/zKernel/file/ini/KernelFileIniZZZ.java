@@ -78,52 +78,67 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 
 	public KernelFileIniZZZ() throws ExceptionZZZ{
 		super("init");//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(null, null, null, null);
+		KernelFileIniNew_(null, null, null, null, null);
+	}
+	
+	public KernelFileIniZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+		super(objKernel);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
+		
+		String[]saFlagControl = {"INIT"};
+		KernelFileIniNew_(null, null, null, null, saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(null, sDirectory, sFilename, null);
+		KernelFileIniNew_(null, sDirectory, sFilename, null,saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel, hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(null, sDirectory, sFilename, null);
+		
+		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		KernelFileIniNew_(null, sDirectory, sFilename, null,saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile) throws ExceptionZZZ{
 		super(objKernel, (String) null);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(objFile,null, null, null);
+		KernelFileIniNew_(objFile,null, null, null, null);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(objFile,null, null, null);
+		KernelFileIniNew_(objFile,null, null, null, saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile,HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel,hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(objFile,null, null, null);
+		
+		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		KernelFileIniNew_(objFile,null, null, null, saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(null, sDirectory, sFilename, null);
+		KernelFileIniNew_(null, sDirectory, sFilename, null, saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename,  HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel, hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(null, sDirectory, sFilename, hmVariable);
+		
+		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		KernelFileIniNew_(null, sDirectory, sFilename, hmVariable, saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagControl) throws ExceptionZZZ{
 		super(objKernel, saFlagControl);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(objFile, null, null, hmVariable);
+		KernelFileIniNew_(objFile, null, null, hmVariable, saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, File objFile, HashMapCaseInsensitiveZZZ<String,String> hmVariable, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(objKernel,hmFlag);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
-		KernelFileIniNew_(objFile,null, null, hmVariable);
+		
+		String[]saFlagControl = HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlag, new Boolean(true));
+		KernelFileIniNew_(objFile,null, null, hmVariable, saFlagControl);
 	}
 	
 	// DESTRUCTOR
@@ -141,16 +156,20 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	 @param saFlagControl
 	 @return
 	 */
-	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ {
+	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagUsed) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; String sLog;
 	 main:{
 		 	
 	 	try{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}
+	 		if(saFlagUsed!=null){
+		 		if(StringArrayZZZ.containsIgnoreCase(saFlagUsed, "INIT")) {
+					this.setFlag("INIT", true);
+				} 
+	 		}
+	 		bReturn = this.getFlag("INIT");
+	 		if(bReturn) break main;
+	 			
 
 			if (this.getFlag("filenew")==false){		
 				if(objFileIn==null & (sDirectoryIn==null | sFileIn == null)){
@@ -160,16 +179,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		
 				File objFile = null;			 
 				if(objFileIn !=null){
-					if(objFileIn.exists()==false){
-						ExceptionZZZ ez = new ExceptionZZZ("File not found '" + objFileIn.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez; 
-					}
-					if(objFileIn.isDirectory()){
-						ExceptionZZZ ez = new ExceptionZZZ("Parameter File is a directory: '" + objFileIn.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez; 
-					}
-					objFile = objFileIn;
-						
+					this.setFileObject(objFileIn);
+					objFile = objFileIn;						
 				}else if(sFileIn.equals("")){
 						ExceptionZZZ ez = new ExceptionZZZ( "Parameter Filename is empty: '" + objFile.getPath() + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez; 
@@ -883,7 +894,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	public String[] getSectionAll() throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			if(this.objFileIni==null){
+			IniFile objFileIni = this.getFileIniObject();
+			if(objFileIni==null){
 				String stemp =  "missing property 'FileIniObject'";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
 				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
@@ -1292,11 +1304,23 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	public File getFileObject() {
 		return objFile;
 	}
-	/** Merke: Private, damit die Erstellung über den Konstruktor nicht umgangen wird.
+	/** 
 	 @param file
 	 */
-	private void setFileObject(File file) {
-		objFile = file;
+	public void setFileObject(File objFile) throws ExceptionZZZ{		
+		if(objFile!=null) {
+			if(objFile.exists()==false){
+				ExceptionZZZ ez = new ExceptionZZZ("File not found '" + objFile.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez; 
+			}
+			if(objFile.isDirectory()){
+				ExceptionZZZ ez = new ExceptionZZZ("Parameter File is a directory: '" + objFile.getPath() + "'", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez; 
+			}
+		}
+		this.objFile = objFile;
+		this.setFlag("INIT", false);
+		this.objFileIni = null; //wichtig. Dieses Objekt muss nach einem "umsetzen" neu initialisiert werden.
 	}
 		
 
@@ -1304,10 +1328,27 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	/** 
 	 @date: 26.10.2004
 	 @return FileObject
+	 * @throws ExceptionZZZ 
 	 */
 	@Override
-	public IniFile getFileIniObject() {
-		return objFileIni;
+	public IniFile getFileIniObject() throws ExceptionZZZ {
+		
+		if(this.objFileIni==null) {
+			try {
+				File objFile = this.getFileObject();
+				if(objFile==null){
+					String stemp =  "missing property 'FileObject'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					throw ez;		
+				}
+				IniFile objFileIni = new IniFile(objFile.getPath(), false); //the target is not to save the file, everytime an entry is made, performance !!!
+				this.objFileIni = objFileIni;
+			}catch (IOException e){
+		 		System.out.println(e.getMessage());			 				 		
+			 }
+		}		
+		return this.objFileIni;
 	}
 	/** Merke: Private, damit die Erstellung über den Konstruktor nicht umgangen wird.
 	 @param file

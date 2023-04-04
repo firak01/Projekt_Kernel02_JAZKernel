@@ -82,6 +82,8 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	    return null;
 	  }
 	
+	
+	
 	/** Versuche für das angegebene Objekt die Schlüsselwert zurückzugeben.
 	 * @param hm
 	 * @param value
@@ -96,6 +98,30 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	      }
 	    }
 	    return listasObject.toArray();
+	  }
+	
+	/** Versuche für das angegebene Objekt die Schlüsselwert als String zurückzugeben.
+	 * @param hm
+	 * @param value
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	public static String[] getKeysAsStringFromValue(Map hm, Object value) throws ExceptionZZZ {
+		String[] saReturn = null;
+		
+		if(hm == null){
+			ExceptionZZZ ez = new ExceptionZZZ("HashMap to compare", iERROR_PARAMETER_MISSING,   HashMapExtendedZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());								  
+			throw ez;	
+		  }
+				
+		ArrayList<Object>listasObject = new ArrayList<Object>();		
+	    for (Object o : hm.keySet()) {
+	      if (hm.get(o).equals(value)) {
+	        listasObject.add(o);
+	      }
+	    }
+	    saReturn = ArrayListZZZ.toStringArray(listasObject);
+	    return saReturn;
 	  }
 	
 	public static String[] getKeysAsStringStartingWith(Map<Object, ?> objHashMap, String sValueToFind) throws ExceptionZZZ {		

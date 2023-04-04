@@ -19,9 +19,8 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 	public static String sTAG_NAME = ""; //Hier kein Tag 
 	private FileIniZZZ objFileIni=null;
 		
-	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionIniPathNew_(null, saFlag);
+	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{		
+		KernelExpressionIniPathNew_(null, null);
 	}
 	
 	public KernelZFormulaIni_PathZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		

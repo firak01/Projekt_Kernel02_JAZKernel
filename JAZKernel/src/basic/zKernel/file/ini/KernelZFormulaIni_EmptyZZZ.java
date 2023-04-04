@@ -20,9 +20,8 @@ public class KernelZFormulaIni_EmptyZZZ  extends KernelUseObjectZZZ implements I
 	public static String sTAG_NAME = "z:Empty";
 	private FileIniZZZ objFileIni=null;
 		
-	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionIniEmptyNew_(null, saFlag);
+	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{		
+		KernelExpressionIniEmptyNew_(null, null);
 	}
 	
 	public KernelZFormulaIni_EmptyZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		

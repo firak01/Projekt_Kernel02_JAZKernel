@@ -23,6 +23,10 @@ public class FileIniZZZ extends KernelFileIniZZZ{
 		super();
 	}
 	
+	public FileIniZZZ(IKernelZZZ objKernel) throws ExceptionZZZ {
+		super(objKernel);
+	}
+	
 	/** CONSTRUCTOR
 	 @author 0823 , date: 05.10.2004
 	 @param kernelZZZ

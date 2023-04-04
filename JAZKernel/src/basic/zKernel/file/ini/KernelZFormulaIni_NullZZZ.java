@@ -26,9 +26,8 @@ public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IK
 	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
 		
-	public KernelZFormulaIni_NullZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionIniNullNew_(null, saFlag);
+	public KernelZFormulaIni_NullZZZ() throws ExceptionZZZ{		
+		KernelExpressionIniNullNew_(null, null);
 	}
 	
 	public KernelZFormulaIni_NullZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		

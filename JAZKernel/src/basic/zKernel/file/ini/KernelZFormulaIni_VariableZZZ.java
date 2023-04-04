@@ -19,9 +19,8 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//Ke
 	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			
-	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionIniVariableNew_(null, saFlag);
+	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{		
+		KernelExpressionIniVariableNew_(null, null);
 	}
 			
 	public KernelZFormulaIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{

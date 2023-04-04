@@ -769,6 +769,7 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		
 		//### FALL A) Es gibt bereits einen verschluesselten Wert 
 		//Erst testen, dass auch durch Verschluesselung kein Leerwert kommt			
+		objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
 		IKernelConfigSectionEntryZZZ objEntryDecryptedOriginal = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntryDecryptedOriginal.hasAnyValue());
 		String sDecryptedOriginal = objEntryDecryptedOriginal.getValue();
@@ -811,12 +812,11 @@ public void testSetParameterByProgramAlias_Encrypted(){
         //Es wird dann trotzdem der entschluesselte Wert zurückgegeben!!!
 		//GRUND: Das intern verwendete KernelFileIniZZZ - Objekt wird über das Setzen des Flags nicht informiert.
 		//IDEE:  Erbende Flag-Objekte müssen sich registrieren und werden dann benachrichtigt, wenn das Flag gesetzt wird (Listener Prinzip)
+		//Merke: Das ist nicht mehr notwendig, wenn das Registrieren am Flag-Event klappt:
+		//       objKernelFGL.getFileConfigKernelIni().setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, false);
+
 		objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, false);
 
-		//Das ist nicht mehr notwendig, wenn das Registrieren am Flag-Event klappt:
-		//objKernelFGL.getFileConfigKernelIni().setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, false);
-		
-		
 		IKernelConfigSectionEntryZZZ objEntryRaw = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntryRaw.hasAnyValue());
 		String stest = objEntryRaw.getValue();
