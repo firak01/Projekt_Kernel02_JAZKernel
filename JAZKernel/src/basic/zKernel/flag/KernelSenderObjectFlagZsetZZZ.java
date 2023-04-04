@@ -56,7 +56,10 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 				IListenerObjectFlagZsetZZZ l = (IListenerObjectFlagZsetZZZ) this.getListenerRegisteredAll().get(i);				
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 				try {
-					l.flagChanged(event);
+					boolean bFlagChanged = l.flagChanged(event);
+					if(bFlagChanged) {
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt." );
+					}					
 				} catch (ExceptionZZZ ez) {
 					//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					

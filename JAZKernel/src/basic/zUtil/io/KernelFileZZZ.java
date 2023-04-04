@@ -40,7 +40,9 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZUserZZZ, IFlagLocalUserZZZ{ //IFunctionZZZ {
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZUserZZZ, IFlagLocalUserZZZ{
+	private static final long serialVersionUID = 2355847392852232484L;
+	
 	private IFileExpansionZZZ objExpansion=null;
 	private ExceptionZZZ objException=null;
 	
@@ -652,9 +654,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				//2. Hole alle FlagZ der Zielklasse
 				String[] saFlagTarget = objUsingFlagZ.getFlagZ();
 				
-				//ArrayList<String>listasFlagPassable=new ArrayList<String>();
-				//Nun nur die Schnittmenge der beiden StringÄrrays hiolen.
-				
+				//Nun nur die Schnittmenge der beiden StringÄrrays holen.				
 				saReturn = StringArrayZZZ.intersect(saFlag, saFlagTarget);
 			}//end main:
 			return saReturn;

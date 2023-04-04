@@ -52,28 +52,31 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 				 throw ez;
 			}
 			
-			//Die Klasse selbst
+			//Die Klasse selbst und alle Elternklassen, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
 			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZInheritedAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
 			if(saFlagAvailable!=null) {
-				if(StringArrayZZZ.contains(saFlagAvailable, sFlagName)) {
+				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sFlagName)) {
 					bReturn = true;	
 					break main;
 				}
 			}
 			
-			//Alle Elternklassen
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getSuperClasses(cls);
-			for(Class<?>objClass : listaClass) {
-				String[] saFlagAvailableInherited = FlagZHelperZZZ.getFlagsZInheritedAvailable(objClass); //20210406 das reicht nicht saFlagAvailable = FlagZHelperZZZ.getFlagsZDirectAvailable(objClass);
-				if(saFlagAvailableInherited!=null) {
-					if(StringArrayZZZ.contains(saFlagAvailableInherited, sFlagName)) {
-						bReturn = true;	
-						break main;
-					}
-				}
-			}
+			//Alle Elternklassen, wird nun als Rekursion in FlagZHelperZZZ.getFlagsZInheritedAvailable(cls) gemacht
+//			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getSuperClasses(cls);
+//			for(Class<?>objClass : listaClass) {
+//				String[] saFlagAvailableInherited = FlagZHelperZZZ.getFlagsZInheritedAvailable(objClass); //20210406 das reicht nicht saFlagAvailable = FlagZHelperZZZ.getFlagsZDirectAvailable(objClass);
+//				if(saFlagAvailableInherited!=null) {
+//					if(StringArrayZZZ.contains(saFlagAvailableInherited, sFlagName)) {
+//						bReturn = true;	
+//						break main;
+//					}
+//				}
+//			}
+			
+			
+			
 /*
-			//+++++ ZUM DEBUGGEN / EXPERIMENTEIEREN
+			//+++++ ZUM DEBUGGEN / EXPERIMENTIEREN
 			//TODOGONN 20200404; //Es fehlen die Elternklassen der Interfaces.
 			//ICH SUCHE 
 			//interface IPanelCascadedZZZ extends IComponentCascadedUserZZZ
@@ -366,6 +369,19 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 				}			
 			}
 		}
+		
+		//3. Hole die Elternklassen.
+		ArrayList<Class<?>> listaClassSuper=ReflectClassZZZ.getSuperClasses(cls);
+		for(Class<?> objclsSuper : listaClassSuper) {
+			//!!!Rekursion
+			ArrayList<String> listaFlagByClassSuper=FlagZHelperZZZ.getFlagsZListInheritedAvailable(objclsSuper);
+			for(String sEnum : listaFlagByClassSuper) {
+				if(!listasReturn.contains(sEnum)) {
+					listasReturn.add(sEnum);
+				}
+			}
+		}
+		
 		
 	}//end main:
 	return listasReturn;

@@ -146,8 +146,7 @@ public class KernelConfigEntryUtilZZZ {
 
 		 	IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-				 		
-	 		String sValueEncryptionSolved=null;
+
 			boolean bAnyFormula = false;
 			
 			KernelEncryptionIniSolverZZZ objDummy = new KernelEncryptionIniSolverZZZ();			

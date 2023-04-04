@@ -158,7 +158,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	 */
 	private boolean KernelFileIniNew_(File objFileIn, String sDirectoryIn, String sFileIn, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagUsed) throws ExceptionZZZ {
 	 boolean bReturn = false;
-	 String stemp; boolean btemp; String sLog;
+	 String sLog;
 	 main:{
 		 	
 	 	try{
@@ -1577,8 +1577,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 
 	//+++ Aus Interface: IListenerObjectFlagZsetZZZ
 	@Override
-	public void flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
-		
+	public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
+		boolean bReturn = false;
 		main:{
 			if(eventFlagZset==null) break main;
 			
@@ -1588,14 +1588,14 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			boolean bFlagValue = eventFlagZset.getFlagValue();
 			
 			try {
-				this.setFlagZ(sFlagText, bFlagValue);
+				bReturn = this.setFlagZ(sFlagText, bFlagValue);
 			} catch (ExceptionZZZ e) {
 				//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
 				//Es kann aber auch ggfs. anders verfahren werden. 
 			}
 			
 		}//end main:
-	
+		return bReturn;
 	}
 
 	

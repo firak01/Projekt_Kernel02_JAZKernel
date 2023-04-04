@@ -55,6 +55,7 @@ import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
 import custom.zKernel.LogZZZ;
@@ -1381,17 +1382,18 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						
 					}else{
 						//Übernimm die gesetzten FlagZ...
-						HashMap<String,Boolean>hmFlagZ = this.getFileConfigKernelIni().getHashMapFlagZ();
-						TODOGOON20230404; //Uebernimm nur die relevanten Flags, also nur die Flags, die sowohl im Kernel als auch im KernelFile gesetzt sind!!!
+						//Aber so werden alle Flags geholt, was nicht korrekt ist, denn das sind auch die nicht gesetzten Flags
+						//HashMap<String,Boolean>hmFlagZ = this.getFileConfigKernelIni().getHashMapFlagZ();
+						//objReturn = new FileIniZZZ(this,  objFileModule, hmFlagZ);
 						
+						//Uebernimm nur die relevanten Flags, also nur die Flags, die sowohl im Kernel als auch im KernelFile gesetzt sind!!!
+						FileIniZZZ exDummy = new FileIniZZZ();
+						String[]saFlagRelevant = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true);
+						objReturn = new FileIniZZZ(this,  objFileModule, saFlagRelevant);
 						
 						//Übernimm die gesetzten Variablen...
-						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigKernelIni().getHashMapVariable();
-						objReturn = new FileIniZZZ(this,  objFileModule, hmFlagZ);
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigKernelIni().getHashMapVariable();						
 						objReturn.setHashMapVariable(hmVariable);
-						
-
-						
 					}
 					
 									
@@ -6254,30 +6256,7 @@ MeinTestParameter=blablaErgebnis
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationfile: '" + sFileConfig + "'");
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
 				}							
-				
-				//##################################################################
-				//### Initialisiere das FileIniZZZ-Objekt
-				//### - Uebernahme der relevanten Flags
-				//### - Registrierung am KernelObjekt für Flag Aenderungsevent 
-				//TODOGOON20230404: DEN CODE IN EINE FlagUtilZZZ-Klasse packen (und damit "retten").
-				//TODOGOON20230404: DEN CODE HIER LOESCHEN UND STATT DESSEN komplett auf Flag - Event setzen...
-				
-				//read the ini-content: 
-				//Merke: Falls die Datei nicht existiert, wird ein Fehler geworfen								
-//				HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-//				FileIniZZZ exDummy = new FileIniZZZ();
-//				//String[] saFlagRelevantFileIniZZZ = exDummy.getFlagZ();//Aber darin sind ja auch DEBUG, INIT, etc.
-//				String[] saFlagRelevantFileIniZZZ = {"USEEXPRESSION", "USEFORMULA", "USEFORMULA_MATH", "USEJSON", "USEJSON_ARRAY", "USEJSON_MAP", "USEENCRYPTION"};
-//				String[] saFlagZpassedFalse = this.getFlagZ_passable(false, true, exDummy);	
-//				
-//				String[] saFlagFileIniZZZ = StringArrayZZZ.remove(saFlagRelevantFileIniZZZ, saFlagZpassedFalse, true);				
-//				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this, this.getFileConfigKernelDirectory(), this.getFileConfigKernelName(), saFlagFileIniZZZ);
-//				this.setFileConfigKernelIni(objFileIniZZZ);
-//				
-//				//Registriere das FileIniZZZ - Objekt fuer Aenderungen an den Kernel Flags. Z.B. wenn mal die <Z>-Formeln ausgewertet werden sollen, mal nicht.
-//				this.registerForFlagEvent(objFileIniZZZ);
-				//####################################################################
-				
+								
 				//### Arbeite mit den Einträgen in der Ini-Datei
 				//Wirf eine Exception wenn weder der Application noch der SystemKey in der Konfigurationsdatei existieren
 				String sKeyToProof = this.getApplicationKey();

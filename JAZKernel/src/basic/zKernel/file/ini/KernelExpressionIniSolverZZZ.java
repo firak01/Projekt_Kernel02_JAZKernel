@@ -86,11 +86,11 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 							// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
 							// throw ez;		 
 						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
+					}					
+				}
+				if(this.getFlag("init")==true){
+					bReturn = true;
+					break main;
 				}
 			
 				if(objFileIn==null ){

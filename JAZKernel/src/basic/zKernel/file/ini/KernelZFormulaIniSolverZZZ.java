@@ -27,7 +27,8 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
-	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{		
+	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
+		super("init");
 		KernelExpressionIniSolverNew_(null, null, null);
 	}
 	
@@ -77,11 +78,11 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 							throw ez;		 
 						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
+					}					
+				}
+				if(this.getFlag("init")==true){
+					bReturn = true;
+					break main;
 				}
 			
 				if(objFileIn==null ){

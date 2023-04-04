@@ -768,8 +768,15 @@ public void testSetParameterByProgramAlias_Encrypted(){
 		//Teste das "Parameter Holen" auch für das "nicht externe", d.h. über den aktuellen Klassennamen angegebene Test Modul
 		
 		//### FALL A) Es gibt bereits einen verschluesselten Wert 
-		//Erst testen, dass auch durch Verschluesselung kein Leerwert kommt			
-		objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
+		//Erst testen, dass auch durch Verschluesselung kein Leerwert kommt
+		
+		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
+		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
+		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
 		IKernelConfigSectionEntryZZZ objEntryDecryptedOriginal = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntryDecryptedOriginal.hasAnyValue());
 		String sDecryptedOriginal = objEntryDecryptedOriginal.getValue();
@@ -864,7 +871,7 @@ public void testSetParameterByProgramAlias_Encrypted(){
 //		assertEquals(sValue,sReturnSaved);	
 //		
 	} catch (ExceptionZZZ ez) {
-		fail("Method throws an exception." + ez.getMessageLast());
+		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
 }
 
