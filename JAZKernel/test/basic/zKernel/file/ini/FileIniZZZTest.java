@@ -246,7 +246,7 @@ public class FileIniZZZTest extends TestCase {
 			iFlagz = hmFlagZ.size();
 			assertTrue("Es wurde mindestens 1 gesetztes Flag erwartet", iFlagz>=1);
 			
-			//... aber das init-Flag sollte nicht dabei sein.
+			//... aber das init-Flag sollte nicht als gesetzt dabei sein.
 			btemp = objReturn.getFlag("init");
 			assertFalse(btemp);
 			
@@ -277,12 +277,43 @@ public class FileIniZZZTest extends TestCase {
 			iFlagz = hmFlagZ.size();
 			assertTrue("Es wurde nur 1 gesetztes Flag erwartet", iFlagz==1);
 			
-			//... und das sollte das init Flag sein.
+			//... und dann sollte das init Flag gesetzt sein.
 			btemp = objReturn.getFlag("init");
 			assertTrue(btemp);
 			objFileIniKernelConfig.getFlag("init");
 			assertTrue(btemp);
 						
+			//##############################################################
+			//c) Beim objKernelInit und der weiteren Verwendung sieht das genauso aus
+			IKernelZZZ objKernelInit2 = new KernelZZZ();
+			objFileIniKernelConfig = objKernelInit2.getFileConfigKernelIni();
+			if(objFileIniKernelConfig==null){
+				
+				//DAS DARF HIER NICHT PASSIEREN !!! Dieses objKernel-Objekt sollte im Test immer eine ini-Datei haben !!!
+				fail("This DEFAULT - Kernel Object should have a valid DEFAULT ini-File.");
+
+			}else{
+				//Übernimm die gesetzten FlagZ...
+				hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
+				
+				//Übernimm die gesetzten Variablen...
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
+				objReturn = new FileIniZZZ(objKernelInit2,  objFileModule, hmFlagZ);
+				objReturn.setHashMapVariable(hmVariable);	
+			}
+			
+			hmFlagZ = objReturn.getHashMapFlagZ();
+			assertNotNull(hmFlagZ);
+			iFlagz = hmFlagZ.size();
+			assertTrue("Es wurde nur 1 gesetztes Flag erwartet", iFlagz==1);
+			
+			//... und das sollte das nicht das gesetzte init Flag sein.
+			btemp = objReturn.getFlag("init");
+			assertTrue(btemp);
+			objFileIniKernelConfig.getFlag("init");
+			assertTrue(btemp);
+			
+			
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}

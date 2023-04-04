@@ -44,6 +44,7 @@ import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.EventObjectFlagZsetZZZ;
 import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
 import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -497,12 +498,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION);
 			if(bUseExpression) {
 				
-				//20210725: Noch eine Ebene dazwischen engebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
+				//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
 				KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
-				String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
 				
-				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-				
+				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();				
 				KernelExpressionIniSolverZZZ objExpressionSolver = new KernelExpressionIniSolverZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
 				
 				objReturnReference.set(objReturn);
@@ -1237,7 +1237,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		//Das Array aller Sections nach der einen Section durchsuchen
 		String[] saSectionAll = this.getSectionAll();
 		StringArrayZZZ saZZZ = new StringArrayZZZ(saSectionAll);
-		bReturn = saZZZ.contains(sSection);
+		bReturn = saZZZ.containsIgnoreCase(sSection);
 				
 		}//END main
 		return bReturn;

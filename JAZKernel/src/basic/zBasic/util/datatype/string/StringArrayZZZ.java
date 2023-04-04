@@ -360,6 +360,16 @@ public class StringArrayZZZ implements IConstantZZZ{
 		return bReturn;
 	}//end contains
 	
+	public boolean containsIgnoreCase(String sToFind) throws ExceptionZZZ{
+		boolean bReturn = false;
+		
+		if(this.bIsString == true){
+			bReturn = StringArrayZZZ.containsIgnoreCase(this.getArray(), sToFind);
+		} //end if
+		
+		return bReturn;
+	}//end contains
+	
 	public boolean contains(String sToFind, boolean bExact) throws ExceptionZZZ{
 		boolean bReturn = false;
 		

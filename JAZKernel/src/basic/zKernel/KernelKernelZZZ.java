@@ -568,7 +568,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				ExceptionZZZ ez = new ExceptionZZZ("Empty Property FileConfigKernel",iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}			
-			IKernelFileIniZZZ objConfigIni = new FileIniZZZ(this,objFile);
+			KernelFileIniZZZ objFileIniDummy = new FileIniZZZ();
+			String[]saFlagControl = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objFileIniDummy, true);
+			IKernelFileIniZZZ objConfigIni = new FileIniZZZ(this,objFile,saFlagControl);
 			
 			//########################################
 			//### Vereinfachung mit ArrayList
@@ -1287,11 +1289,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 	
 	public FileIniZZZ getFileConfigKernelIni() throws ExceptionZZZ{
 		FileIniZZZ objReturn = this.objFileIniKernelConfig;
-		if(objReturn==null){
+		if(objReturn==null && !this.getFlag("INIT")){
 			String sKey = this.getApplicationKey();
 			objReturn = this.getFileConfigModuleIni(sKey);
 			this.objFileIniKernelConfig = objReturn;
-		}else if(objReturn.getFlag("INIT")) {
+		}else if(objReturn!=null && objReturn.getFlag("INIT") && !this.getFlag("INIT")) {
 			String sLog=null;
 			
 			//Nun vollständig initialisieren
@@ -1322,6 +1324,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			File objFile = new File(sFilePath);
 			objReturn.setFileObject(objFile);						
+		}else if(objReturn==null && this.getFlag("INIT")){
+			objReturn = new FileIniZZZ(); //also Flag init=false
+			this.objFileIniKernelConfig = objReturn;
+		}else {
+			//dann sollte alles fertig sein.
 		}
 		return objReturn;	
 	}
@@ -1377,7 +1384,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					if(this.objFileIniKernelConfig==null){												
 						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
 						FileIniZZZ exDummy = new FileIniZZZ();					
-						String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy);						
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true);//this.getFlagZ_passable(true, exDummy);						
 						objReturn = new FileIniZZZ(this, objFileModule, saFlagZpassed);
 						
 					}else{
@@ -2742,9 +2749,9 @@ MeinTestParameter=blablaErgebnis
 					}
 				}//end check:
 					
-				//first, get the Ini-file-object			                 	
-				String[] saFlagZpassed = this.getFlagZ_passable(true, this);
-				saFlagZpassed = StringArrayZZZ.remove(saFlagZpassed, "INIT", true);
+				//first, get the Ini-file-object
+				FileIniZZZ objIniDummy = new FileIniZZZ();
+				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objIniDummy, true);
 				FileIniZZZ objFileIniConfig = new FileIniZZZ(this,  objFileConfig, saFlagZpassed);						
 								
 				objReturn = KernelSearchParameterByModuleFile_(objFileIniConfig, sModuleAlias, sParameter, true);						

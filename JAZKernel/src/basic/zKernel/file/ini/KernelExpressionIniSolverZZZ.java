@@ -24,6 +24,7 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniSolverZZZ{
@@ -97,14 +98,15 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 				}else{
-					this.setFileIni(objFileIn);	
-					if(objFileIn.getHashMapVariable()!=null){
-						this.setHashMapVariable(objFileIn.getHashMapVariable());
-					}
+					this.setFileIni(objFileIn);						
 				}
 				
 				if(hmVariable!=null){				
 						this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+				}else {
+					if(objFileIn.getHashMapVariable()!=null){
+						this.setHashMapVariable(objFileIn.getHashMapVariable());
+					}
 				}
 	 	}//end main:
 		return bReturn;
@@ -288,10 +290,9 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 				boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
 				if(bUseEncryption) {
 					KernelEncryptionIniSolverZZZ encryptionDummy = new KernelEncryptionIniSolverZZZ();
-					String[] saFlagZpassed = this.getFlagZ_passable(true, encryptionDummy);
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-					
-					
+
 					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 					boolean bForFurtherProcessing = true; 
 					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
@@ -317,7 +318,7 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 					//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
 					//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
 					KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ();
-					String[] saFlagZpassed = this.getFlagZ_passable(true, formulaDummy);
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaDummy, true);
 					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 					
 					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
