@@ -55,9 +55,14 @@ public class KernelConfigEntryUtilZZZ {
 	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
-
+			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+			if(objReturn==null) {
+				objReturn = new KernelConfigSectionEntryZZZ();
+				objReturnReference.set(objReturn);
+			}
+			
 			String sRawExpressionSolved = null;
-			ReferenceZZZ<String> objsReturnValueExpressionSolved= new ReferenceZZZ<String>();			
+			ReferenceZZZ<String> objsReturnValueExpressionSolved= new ReferenceZZZ<String>("");			
 			boolean bExpressionSolved = KernelConfigEntryUtilZZZ.getValueExpressionSolved(objFileIni, sRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved);							
 			if(bExpressionSolved) {
 				objReturnReference.get().isExpression(true);
@@ -68,7 +73,7 @@ public class KernelConfigEntryUtilZZZ {
 			}
 
 			String sRawConverted = null;
-			ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>();
+			ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>("");
 			boolean bConverted = KernelConfigEntryUtilZZZ.getValueConverted(objFileIni, sRawExpressionSolved, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueConverted);
 			if(bConverted) {
 				objReturnReference.get().isConverted(true);
