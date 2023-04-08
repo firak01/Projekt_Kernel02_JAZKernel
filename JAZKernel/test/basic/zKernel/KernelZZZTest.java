@@ -756,6 +756,111 @@ public void testSetParameterByProgramAlias(){
 	}
 }
 
+public void testSetParameterByProgramAlias_CreateSectionWhenNotExisist(){
+	try {
+		//String sModule = this.getClass().getName();
+		String sModule = "SectionNotExistTest";
+		String sProgram = "TestProg4SectionNotExist";
+		String sProperty = "testProgramProperty4SectionNotExist";
+		
+		//############################################
+		//### "NICHT EXTERNES" MODUL
+		//############################################
+		//Teste das "Parameter Holen" auch für das "nicht externe", d.h. über den aktuellen Klassennamen angegebene Test Modul
+		
+		//### Erst testen, dass auch auf jeden Fall ein NULL kommt			
+		IKernelConfigSectionEntryZZZ objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertFalse(objEntry.hasAnyValue());
+		String sReturnSaved = objEntry.getValue();
+		assertNull("Null als Ergebnis erwartet",sReturnSaved);
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals("'null' als Ergebnis erwartet","null",sReturnSaved);
+		
+		//Merke: Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+		
+		//### Nun das Setzen durchführen
+		String sValueNotExisting = "testValue4SectionNotExist";
+		String sValue = null;
+		String sReturnSection = null;
+		sValue = sValueNotExisting + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+		
+		TODOGOON20230408;//Wenn das Programm definiert ist, Section erstellen.
+		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
+				
+		//Merke: Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+		
+		//### Testen, ob das Ergebnis kommt
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());
+		sReturnSaved = objEntry.getValue();
+		assertNotNull("Null als Ergebnis NICHT erwartet",sReturnSaved);
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals("Als Ergebnis erwartet '" + sValueNotExisting + "'",sValueNotExisting,sReturnSaved);
+		
+		//ABER: Auch wenn die Section nicht existiert, wird der Wert in die Ini-Datei geschrieben. 
+		//      Das Schreiben erfolgt dann auf Applikationsebene.
+		//      Daher unbedingt in dem Rueckgabeentry auf den Section-Eintrag pruefen.
+		sReturnSection = objEntry.getSection();
+		//Nicht sofort prüfen, sonst abbruch... assertEquals("Der Wert wurde nicht in die definierte aber fehlende Section geschrieben '"+ sProgram + "'",sProgram,sReturnSection );
+		//Es muss der Wert auf jeden Fall geloescht werden.
+		if(!sProgram.equals(sReturnSection)) {
+		   //Den Wert loeschen und danach den fail werfen...
+		   objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, null, true);
+			
+			
+		   fail("Der Wert wurde zwar geschrieben, aber nicht in die definierte aber fehlende (und zu erstellende!) Section: '"+ sProgram + "'");
+		}
+		
+		
+		
+		//Merke: Den Cache bei jedem Schritt explizit leeren
+		//Ausser dieses Mal, denn der Wert soll nun aus dem Cache kommen... objKernelFGL.getCacheObject().clear();
+		
+		
+		
+		//Testvariante: Jetzt wird der Wert aber aus dem Cache geholt
+//		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
+//		String sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+//		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);				
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertTrue(objEntry.hasAnyValue());
+		sReturnSaved = objEntry.getValue();
+		assertNotNull("Null als Ergebnis NICHT erwartet",sReturnSaved);
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals("Als Ergebnis erwartet '" + sValueNotExisting + "'",sValueNotExisting,sReturnSaved);
+				
+	//############################################################################
+	//### Aufraeumen
+	//############################################################################
+	//TODOGOON 20230408: Nun wieder die Section komplett loeschen. Momentan wird nur der Eintrag geloescht.
+		 objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, null, true);
+	//TODOGOON: Das muss als Methode für FileIniZZZ entwickelt werden.
+		
+		
+		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
+		objKernelFGL.getCacheObject().clear();
+//		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP TEIL!!!
+//		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
+//		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
+		
+		
+		//Pruefen, ob nach dem Test die Section und der Wert auch weg sind.
+		objKernelFGL.getCacheObject().clear();
+		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
+		assertFalse(objEntry.hasAnyValue());
+		sReturnSaved = objEntry.getValue();
+		assertNull("Null als Ergebnis erwartet",sReturnSaved);
+		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+		assertEquals("'null' als Ergebnis erwartet","null",sReturnSaved);
+		
+		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+}
+
 /** void, Test: Replacing an entry in a section of the ini-file
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
