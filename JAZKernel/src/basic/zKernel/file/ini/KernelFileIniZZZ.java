@@ -809,11 +809,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				this.objFileIni.setValue(sSectionUsed, sProperty, sValue);
 				if(bFlagSaveImmidiate==true){
 					this.objFileIni.saveFile();
-					this.setFlag("FileUnsaved", false);
+					this.setFlag(IKernelFileIniZZZ.FLAGZ.FILEUNSAVED, false);
 				}else{
-					this.setFlag("FileUnsaved", true);				   				 
+					this.setFlag(IKernelFileIniZZZ.FLAGZ.FILEUNSAVED, true);				   				 
 				}
-				 this.setFlag("FileChanged", true);
+				 this.setFlag(IKernelFileIniZZZ.FLAGZ.FILECHANGED, true);
 				
 				 //if this works, everything is fine
 				 bReturn = true;
@@ -982,6 +982,46 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		}//end main:
 		return sReturn;
 	}
+	
+	
+	/**
+	 * @param sSectionIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.04.2023, 07:49:08
+	 */
+	public boolean createSection(String sSectionIn) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			try{
+			String sSection = new String("");
+			if(StringZZZ.isEmpty(sSectionIn)){
+				ExceptionZZZ ez = new ExceptionZZZ("missing parameter 'SectionName'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+				throw ez;		
+			}else{
+				sSection = sSectionIn;
+			}
+			
+			
+			if(this.objFileIni==null){
+				ExceptionZZZ ez = new ExceptionZZZ( "missing property 'FileIniObject'", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+				throw ez;		
+			}
+			
+			
+			//#####
+			this.objFileIni.createSubject(sSection);
+			bReturn = true;
+			
+			//#####			
+	} catch (IOException e) {
+		ExceptionZZZ ez =	new ExceptionZZZ(	"IOException: '" + e.getMessage(),iERROR_RUNTIME,this,ReflectCodeZZZ.getMethodCurrentName());
+		throw ez;
+	}
+		
+		}//end main
+		return bReturn;
+	}// end function
 	
 	/** 
 	 * removes as section and all of the property-entries of the section 

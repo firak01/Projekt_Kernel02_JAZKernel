@@ -722,6 +722,23 @@ public String[] getValueAsArray(String subject, String variable, String sSeparat
       }
    }
 
+	   /**
+	 * @param subject
+	 * @throws IOException
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.04.2023, 07:50:27
+	 */
+	public void createSubject(String subject) throws IOException,ExceptionZZZ
+	   {
+		//NEIN, Keine Section Klammern hier hierumsetzen, wird später gemacht...
+		//String sSubjectNew = IniFile.sINI_SUBJECT_START + subject + IniFile.sINI_SUBJECT_END; 
+	
+	    this.addSection(subject);
+	      
+	    if (saveOnChange) saveFile();
+	}
+   
+   
    /**
    * delete a subject and all its variables
    * @param subject the subject heading (e.g. "Widget Settings")

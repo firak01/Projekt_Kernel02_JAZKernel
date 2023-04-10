@@ -3822,12 +3822,28 @@ MeinTestParameter=blablaErgebnis
 		return bReturn;
 	}
 	
+	/**
+	 * 		Merke: Wenn es fuer dieses Program einen Aliasnamen gibt, 
+			die Section [Aliasname] aber noch nicht in der ini Datei vorhanden ist,
+			dann wird eine entsprechende Section angelegt und die Werte dort hineingeschrieben.
+	 * 
+	 * @param objFileIniConfigIn
+	 * @param sMainSection
+	 * @param sProgramOrSection
+	 * @param sProperty
+	 * @param sValueIn
+	 * @param bFlagSaveImmidiate
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.04.2023, 09:10:28
+	 */
 	private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		boolean bReturn = false;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
 		main:{	
 			//TODO 20190815: CACHE VERWENDUNG AUCH BEIM SETZEN EINBAUEN
+			//TODO 20230410: DAS SETZEN DES CACHE EINTRAGS BEIM SETZEN EINER NEUEN SECTION PASSIERTIMMER NOCH NICHT.
 			//
 			//			
 			//#######################################################################			
@@ -3909,22 +3925,45 @@ MeinTestParameter=blablaErgebnis
 	    
 		if(bFlagDelete){	
 			//Falls der Wert nicht gefunden wurde, hier bReturn = false, aber keine Exception
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Zu löschende Property nicht gefunden. Ende, keine Exception.");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Section fuer zu löschende Property nicht gefunden. Ende, keine Exception.");
 			bReturn = false;
 			break main;
 		}
 	    
-	    //Falls kein früherer Wert gefunden worden ist, setze den Wert neu, an der ersten Stelle des Suchstrings.
-	    iCounter = -1;	
-	    for(String sSectionProgramUsed : alsSectionProgram) {
-	    	sSectionUsed = sSectionProgramUsed;
-	    	iCounter++;
-	    	sDebugKey = "Setze Wert (" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
-	    	hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionProgramUsed, sProperty);
-	    	//Setze an diese Stelle die Werte.				    
-			bReturn = KernelSetParameterByProgramAlias_DirectLookup_(objFileIniConfig , sSectionProgramUsed, sProperty, sValue, true, bFlagDelete, bFlagSaveImmidiate);
-			if(bReturn)break main;				
-	    }	
+	    //Falls kein früherer Wert gefunden worden ist, pruefe, ob die Section fuer den Program Alias vorhanden ist.
+		//Falls nein: Erstelle sie
+		String sProgramAliasUsed = null;
+		boolean bSectionProgramAliasExists = false;
+		for(String sProgramAlias: listasAlias) {
+			bSectionProgramAliasExists = objFileIniConfig.proofSectionExistsDirectLookup(sProgramAlias);
+			if(bSectionProgramAliasExists) {
+				sProgramAliasUsed = sProgramAlias;
+				break;
+			}
+		}
+		if(!bSectionProgramAliasExists) {
+			int iIndexLast = listasAlias.size()-1;
+			sProgramAliasUsed=listasAlias.get(iIndexLast); //Nimm den untersten der Liste
+			bReturn = objFileIniConfig.createSection(sProgramAliasUsed);
+			if(bReturn) {
+				//Setze an diese Stelle die Werte.				    
+				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(objFileIniConfig , sProgramAliasUsed, sProperty, sValue, true, bFlagDelete, bFlagSaveImmidiate);
+				if(bReturn)break main;
+			}
+		}else {
+		    //Falls also die Section existierte
+			//und falls dort kein früherer Wert gefunden worden ist, setze den Wert neu, an der ersten Stelle des Suchstrings.
+		    iCounter = -1;	
+		    for(String sSectionProgramUsed : alsSectionProgram) {
+		    	sSectionUsed = sSectionProgramUsed;
+		    	iCounter++;
+		    	sDebugKey = "Setze Wert (" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
+		    	hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionProgramUsed, sProperty);
+		    	//Setze an diese Stelle die Werte.				    
+				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(objFileIniConfig , sSectionProgramUsed, sProperty, sValue, true, bFlagDelete, bFlagSaveImmidiate);
+				if(bReturn)break main;				
+		    }
+		}
 	    
 	    
 	    //#####################################################################		

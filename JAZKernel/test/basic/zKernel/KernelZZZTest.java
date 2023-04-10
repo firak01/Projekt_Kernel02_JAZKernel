@@ -760,7 +760,8 @@ public void testSetParameterByProgramAlias_CreateSectionWhenNotExisist(){
 	try {
 		//String sModule = this.getClass().getName();
 		String sModule = "SectionNotExistTest";
-		String sProgram = "TestProg4SectionNotExist";
+		String sProgram = "SectionNotExistJUnitTest";
+		String sProgramAlias = "TestProg4SectionNotExist";
 		String sProperty = "testProgramProperty4SectionNotExist";
 		
 		//############################################
@@ -785,7 +786,7 @@ public void testSetParameterByProgramAlias_CreateSectionWhenNotExisist(){
 		String sReturnSection = null;
 		sValue = sValueNotExisting + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
 		
-		TODOGOON20230408;//Wenn das Programm definiert ist, Section erstellen.
+		//TODOGOON20230408;//Wenn das Programm definiert ist, Section erstellen.
 		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
 				
 		//Merke: Den Cache bei jedem Schritt explizit leeren
