@@ -272,6 +272,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagZExists(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagZExists(objEnumFlag.name());
+	}
+	
+	//##################################
 		@Override
 		public boolean getFlag(String sFlagName) {
 			//Version Vor Java 1.6

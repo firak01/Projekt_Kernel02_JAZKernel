@@ -13,7 +13,9 @@ public interface ICharacterPoolUserZZZ extends ICharacterPoolUserConstantZZZ{
 		
 		//damit muss man nicht mehr tippen hinter dem enum .name()
 		public boolean getFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag);
-		public void setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+		public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+		public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue); 
+		boolean proofFlagZExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
 		
 		//Besonderheit bei Nn ist der CharacterPool
 		//stehen schon in ICryptZZZ
@@ -38,7 +40,7 @@ public interface ICharacterPoolUserZZZ extends ICharacterPoolUserConstantZZZ{
 
 		public int[] getDecryptedCharacterPoolPosition();
 		public void setDecryptedCharacterPoolPosition(int[]iaPoolPosition);
-	
+			
 		//Verlagert nach ICryptZZZ, wie auch der CharacterPool
 		//public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
 		//public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);

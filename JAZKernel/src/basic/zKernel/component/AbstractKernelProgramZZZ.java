@@ -89,10 +89,12 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagZExists(IKernelProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagZExists(objEnumFlag.name());
+		}
 	
-	
-	
-	public String readModuleName() throws ExceptionZZZ {
+		public String readModuleName() throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			IKernelModuleZZZ objModule = this.getModule();
@@ -159,6 +161,11 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		}//end main:
 		return baReturn;
 	}
+	
+	@Override
+	public boolean proofFlagZExists(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagZExists(objEnumFlag.name());
+		}
 			
 	//### Methoden
 	public abstract void reset();

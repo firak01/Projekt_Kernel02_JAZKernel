@@ -13,5 +13,7 @@ public interface IROTUserZZZ extends IROTUserConstantZZZ{
 		
 		//damit muss man nicht mehr tippen hinter dem enum .name()
 		public boolean getFlag(IROTUserZZZ.FLAGZ objEnumFlag);
-		public void setFlag(IROTUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+		public boolean setFlag(IROTUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
+		public boolean[] setFlag(IROTUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue);
+		public boolean proofFlagZExists(IROTUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 }

@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ.TypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
@@ -65,12 +66,35 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUs
 	public boolean getFlag(IROTUserConstantZZZ.FLAGZ objEnumFlag) {		
 		return this.getFlag(objEnumFlag.name());
 	}
+	
 	@Override
-	public void setFlag(IROTUserConstantZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
-		this.setFlag(objEnumFlag.name(), bFlagValue);
+	public boolean setFlag(IROTUserConstantZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
+	@Override
+	public boolean[] setFlag(IROTUserConstantZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IROTUserConstantZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+	return baReturn;	
+	}
 	
+	@Override
+	public boolean proofFlagZExists(IROTUserConstantZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagZExists(objEnumFlag.name());
+	}
+	
+		
 	//### Methoden werden zwar z.B. nur fuer Vigenere Verschluesselung, bzw. fuer Verschluesselung mit CharacterPool gebraucht.
 	//    Um den Einsatz von ICrypt - Objekten zu standardiesieren, hier notwendig.
 	@Override

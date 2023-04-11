@@ -187,6 +187,5 @@ public class ROTnnZZZ extends AbstractROTnnZZZ{
 			sReturn = AbstractROTnnZZZ.encrypt(sInput, sCharacterPool, objCharacterMissingReplacement, n);
 		}
 		return sReturn;						
-	}
-	
+	}		
 }

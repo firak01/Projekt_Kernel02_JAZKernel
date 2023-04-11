@@ -212,6 +212,6 @@ public class ROTasciiZZZ extends AbstractROTnnZZZ{
 		sCharacterPool = StringZZZ.reverse(sCharacterPool);
 		
 		return ROTasciiZZZ.encrypt(sInput, sCharacterPool, n);		
-	}
+	}	
 }
 
