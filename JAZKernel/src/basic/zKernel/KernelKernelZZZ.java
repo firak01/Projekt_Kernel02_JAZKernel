@@ -3943,27 +3943,31 @@ MeinTestParameter=blablaErgebnis
 		}
 		if(!bSectionProgramAliasExists) {
 			int iIndexLast = listasAlias.size()-1;
-			sProgramAliasUsed=listasAlias.get(iIndexLast); //Nimm den untersten der Liste
-			bReturn = objFileIniConfig.createSection(sProgramAliasUsed);
-			if(bReturn) {
-				//Setze an diese Stelle die Werte.				    
-				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(objFileIniConfig , sProgramAliasUsed, sProperty, sValue, true, bFlagDelete, bFlagSaveImmidiate);
-				if(bReturn)break main;
+			if(iIndexLast>=0) {
+				sProgramAliasUsed=listasAlias.get(iIndexLast); //Nimm den untersten der Liste
+				bReturn = objFileIniConfig.createSection(sProgramAliasUsed);
+				if(bReturn) {
+					//Setze an diese Stelle die Werte.				    
+					bReturn = KernelSetParameterByProgramAlias_DirectLookup_(objFileIniConfig , sProgramAliasUsed, sProperty, sValue, true, bFlagDelete, bFlagSaveImmidiate);
+					if(bReturn)break main;
+				}				
 			}
-		}else {
-		    //Falls also die Section existierte
-			//und falls dort kein früherer Wert gefunden worden ist, setze den Wert neu, an der ersten Stelle des Suchstrings.
-		    iCounter = -1;	
-		    for(String sSectionProgramUsed : alsSectionProgram) {
-		    	sSectionUsed = sSectionProgramUsed;
-		    	iCounter++;
-		    	sDebugKey = "Setze Wert (" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
-		    	hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionProgramUsed, sProperty);
-		    	//Setze an diese Stelle die Werte.				    
-				bReturn = KernelSetParameterByProgramAlias_DirectLookup_(objFileIniConfig , sSectionProgramUsed, sProperty, sValue, true, bFlagDelete, bFlagSaveImmidiate);
-				if(bReturn)break main;				
-		    }
 		}
+		
+	    //Falls also die Section existierte
+		//und falls dort kein früherer Wert gefunden worden ist, setze den Wert neu, an der ersten Stelle des Suchstrings.
+	    //Das gilt auch, wenn ein Alias für die Section nicht definiert ist
+	    iCounter = -1;	
+	    for(String sSectionProgramUsed : alsSectionProgram) {
+	    	sSectionUsed = sSectionProgramUsed;
+	    	iCounter++;
+	    	sDebugKey = "Setze Wert (" + StringZZZ.padLeft(Integer.toString(iCounter), 2, '0') + ")";
+	    	hmDebug.put(sDebugKey + "(" + sSearchCounter + ") " + sSectionProgramUsed, sProperty);
+	    	//Setze an diese Stelle die Werte.				    
+			bReturn = KernelSetParameterByProgramAlias_DirectLookup_(objFileIniConfig , sSectionProgramUsed, sProperty, sValue, true, bFlagDelete, bFlagSaveImmidiate);
+			if(bReturn)break main;				
+	    }
+		
 	    
 	    
 	    //#####################################################################		
