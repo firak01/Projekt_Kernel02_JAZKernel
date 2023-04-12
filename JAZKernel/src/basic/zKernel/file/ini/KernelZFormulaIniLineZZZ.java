@@ -86,7 +86,7 @@ public class KernelZFormulaIniLineZZZ  extends ObjectZZZ{
 			              			
 			//Merke: Aus KernelZFormulaIniSolverTest. Dort wird im setup die Datei aufgebaut und eine Zeile hat z.B. folgende Struktur:
 			//objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
-			
+			//bzw:     //TestGetParameter_Encrypted=<Z><Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted></Z>
 			Document objDocument = XmlUtilZZZ.createDocumentWithRootTag("Z");
 			org.jdom.Element objRoot = objDocument.getRootElement();
 									
@@ -109,6 +109,13 @@ public class KernelZFormulaIniLineZZZ  extends ObjectZZZ{
 			objElementZCode.addContent(sCode);
 			objElementZEncryption.addContent(objElementZCode);
 		
+			TODOGOON20230412;//Es fehlen noch: 
+			//z:KeyNumber
+			//z:KeyString
+			//z:CharacterPool
+			//z:CharacterPoolAdditional
+			//z:FlagControl
+			
 			XMLUtil.addContent(objRoot, objElementZEncryption);			
 			objDocument.setRootElement(objRoot);
 			String sXmlReplaced = XmlUtilZZZ.documentToString(objDocument);

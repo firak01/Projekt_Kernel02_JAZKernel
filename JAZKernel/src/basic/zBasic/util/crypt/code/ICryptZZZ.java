@@ -62,4 +62,5 @@ public interface ICryptZZZ extends IFlagZUserZZZ{
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
 	
+	//Merke: Hier kein setFlag(enum) zur Verfügung stellen, da z.B. CharacterPoolUser dann auch bei den ROT Verschluesselungen implementiert werden muesste.
 }

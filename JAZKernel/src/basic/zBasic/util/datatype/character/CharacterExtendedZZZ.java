@@ -32,6 +32,10 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 		super();
 		CharacterExtendedNew_(objChar);
 	}
+	public CharacterExtendedZZZ(int i) throws ExceptionZZZ {
+		Character objChar = new Character((char) i);
+		CharacterExtendedNew_(objChar);
+	}
 	
 	private void CharacterExtendedNew_(Character objChar) throws ExceptionZZZ {
 		if(objChar== null){
@@ -166,16 +170,41 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 				objCharMissingReplacement = objCharMissingReplacementIn;
 			}
 			
-			//die Arraylist nutzen zum bestimmen der Zeichen
+			//Vorab pruefen, ob alle Wert nicht die Groesse des CharacterPools uebersteigen.
+			//Das ist ggfs. der Fall, wenn kein Schluesselwort bei Vigenere angegeben worden ist.
+			boolean bUseCharacterPool = true;
+			for(int i= 0; i<iaPosition.length-1;i++) {
+				int iCharPos = iaPosition[i];
+				if(iCharPos>listasCharacterPool.size()) {
+					bUseCharacterPool = false;
+					break;
+				}
+			}
+			
+			
 		    StringBuilder sb = new StringBuilder();
-		    for(int i = 0; i<iaPosition.length;i++) {
-		    	int iCharPos = iaPosition[i];
-		    	if(iCharPos==-1 && objCharMissingReplacement!=null) {
-		    		sb.append(objCharMissingReplacement.getChar());
-		    	}else {
-			    	CharacterExtendedZZZ objChar = listasCharacterPool.get(iCharPos);
-			    	sb.append(objChar);
-		    	}
+		    
+		    //die Arraylist nutzen zum bestimmen der Zeichen, entweder mit CharacterPool oder so..
+		    if(bUseCharacterPool) { 
+			    for(int i = 0; i<iaPosition.length-1;i++) {
+			    	int iCharPos = iaPosition[i];
+			    	if(iCharPos==-1 && objCharMissingReplacement!=null) {
+			    		sb.append(objCharMissingReplacement.getChar());
+			    	}else {		
+			    		CharacterExtendedZZZ objChar = listasCharacterPool.get(iCharPos);			    		
+				    	sb.append(objChar);
+			    	}
+			    }
+		    }else {
+		    	for(int i = 0; i<iaPosition.length-1;i++) {
+			    	int iCharPos = iaPosition[i];
+			    	if(iCharPos==-1 && objCharMissingReplacement!=null) {
+			    		sb.append(objCharMissingReplacement.getChar());
+			    	}else {		
+			    		CharacterExtendedZZZ objChar = new CharacterExtendedZZZ(iCharPos);			    		
+				    	sb.append(objChar);
+			    	}
+			    }
 		    }
 		    sReturn = sb.toString();
 		}//end main:

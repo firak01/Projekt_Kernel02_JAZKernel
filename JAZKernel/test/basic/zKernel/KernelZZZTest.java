@@ -9,7 +9,9 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserConstantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -935,6 +937,58 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
 }
+
+/** void, Test: Replacing an entry in a section of the ini-file
+ * @author Fritz Lindhauer, 13.08.2022, 08:46:20
+ */
+public void testSetParameterByProgramAlias_Encrypted_VIGENEREnn_NewValueBa(){
+	try {					
+		String sModule = this.getClass().getName();
+		String sProgram = "TestProg";
+		String sPropertyOld = "testProgramProperty_old_ForEncryption";
+		String sPropertyEncryptedValue = "testProgramPropertyEncrypted_new_VIGENEREnn";
+		
+		//+++ Stetzen der notwendigen FlagZ-Eintraege
+		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
+		assertTrue("Flag '"+IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
+		bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
+		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
+		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
+		
+		
+		//############################################
+		//### "NICHT EXTERNES" MODUL
+		//############################################
+		//Teste das "Parameter Holen" auch für das "nicht externe", d.h. über den aktuellen Klassennamen angegebene Test Modul
+		
+		//Zuerst muss das gewuenschte CRYPT-Objekt erstellt werden, also der zu verwendende Crypt-Algorithmus.
+		CryptAlgorithmFactoryZZZ objCryptFactory = CryptAlgorithmFactoryZZZ.getInstance();
+		assertNotNull(objCryptFactory);
+		ICryptZZZ objCrypt = objCryptFactory.createAlgorithmType(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.VIGENEREnn);
+		assertNotNull(objCrypt);
+		
+		//Speziell fuer Vigenere - Verschluesselungen
+		//Das soll abgebildet werden:
+		//TestGetParameter_Encrypted=<Z><Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted></Z>
+		objCrypt.setCryptKey("Hundi");
+		objCrypt.setCharacterPoolBase(" abcdefghijklmnopqrstuvwxyz");
+		objCrypt.setCharacterPoolAdditional("!");
+		
+		//USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER
+		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEUPPERCASE.name(), true);
+		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USENUMERIC.name(), true);
+		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USELOWERCASE.name(), true);
+		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name(), true);
+		
+		//Aufruf der privaten Testmethode
+		boolean bErg = testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
+		
+		
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getDetailAllLast());
+	}
+}
 	
 private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sPropertyOld, String sPropertyEncryptedValue, ICryptZZZ objCrypt){
 	boolean bReturn=false;
@@ -962,12 +1016,21 @@ private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(IKernelZZZ
 //!!!!!         //Besonderheit: In diesem Test vorher verschluesseln				
 				String sEncryptedTimestamp = objCrypt.encrypt(sOriginalTimestamp);
 				assertNotNull(sEncryptedTimestamp);
-						
+				assertFalse("Originalwert und verschluesselter Wert sollten unterschiedliche sein",sOriginalTimestamp.equals(sEncryptedTimestamp));
+				
 				//Merke: Den Timestamp kann man in diesem Fall wieder herausholen, da | nicht verschluesselt werden sollte.
 				//       Und nur der Wert ohne Timestamp bleibt ja immer fix.
-				String sEncrypted = StringZZZ.left(sEncryptedTimestamp+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
+				String sSeparator=null;
+				CharacterExtendedZZZ objCharacterReplacement = objCrypt.getCharacterMissingReplacment();
+				if(objCharacterReplacement!=null) {
+					sSeparator = objCharacterReplacement.toString();
+				}else {
+					sSeparator = "|";
+				}
+				String sEncrypted = StringZZZ.left(sEncryptedTimestamp+sSeparator, sSeparator);//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
 				assertNotNull(sEncrypted);
-				assertEquals("Mh irefpuyhrffryaqre Jreg",sEncrypted);//den Wert hier mal konstant vorgeben.
+				//assertEquals("Mh irefpuyhrffryaqre Jreg",sEncrypted);//den Wert hier mal konstant vorgeben.
+				assertEquals("vPnznZNqlu2zGwnTIriAHfsvC",sEncrypted);//den Wert hier mal konstant vorgeben.
 				
 				objKernelUsed.setParameterByProgramAliasEncrypted(sModule, sProgram, sPropertyEncryptedValue, sEncryptedTimestamp, objCrypt);
 				
@@ -978,7 +1041,7 @@ private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(IKernelZZZ
 				IKernelConfigSectionEntryZZZ objEntryDecrypted = objKernelUsed.getParameterByProgramAlias(sModule, sProgram, sPropertyEncryptedValue);
 				assertTrue(objEntryDecrypted.hasAnyValue());
 				String stemp = objEntryDecrypted.getValue();
-				stemp = StringZZZ.left(stemp+"|", "|");//Damit das ggfs. frühere Setzen eines Timestamps in der Property keinen Fehler erzeugt.
+				stemp = StringZZZ.left(stemp+sSeparator, sSeparator);//Damit das ggfs. frühere Setzen eines Timestamps in der Property keinen Fehler erzeugt.
 				assertTrue(sOriginal.equals(stemp));
 				
 				stemp = objEntryDecrypted.getRaw();
