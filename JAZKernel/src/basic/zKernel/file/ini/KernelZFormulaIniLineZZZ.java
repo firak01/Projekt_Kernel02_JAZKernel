@@ -18,8 +18,12 @@ import base.xml.XMLUtil;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
+import basic.zBasic.util.crypt.code.CryptAlgorithmUtilZZZ;
+import basic.zBasic.util.crypt.code.ICharacterPoolUserConstantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.crypt.code.IROTUserConstantZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -80,7 +84,7 @@ public class KernelZFormulaIniLineZZZ  extends ObjectZZZ{
 		String sReturn = null;
 		main:{
 			if(objCrypt==null) {
-				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'KernelConfigSectionEntry Object'",iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'CryptAlgorithm Object'",iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			              			
@@ -96,6 +100,7 @@ public class KernelZFormulaIniLineZZZ  extends ObjectZZZ{
 			stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CipherZZZ.sTAG_NAME);
 			Element objElementZCipher = new Element(stemp);
 			
+			//z:Cipher
 			//Alternative Ansätze, aber jetzt hat ICryptZZZ die Methode getCipherType(), da braucht man die Workarounds nicht
 			//sCipher = CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROTnn.getAbbreviation();
 			//Class objClass = CryptAlgorithmMappedValueZZZ.getEnumClassStatic();			
@@ -103,19 +108,97 @@ public class KernelZFormulaIniLineZZZ  extends ObjectZZZ{
 			objElementZCipher.addContent(sCipher);						
 			objElementZEncryption.addContent(objElementZCipher);
 			
+			//z:code
 			stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CodeZZZ.sTAG_NAME);
 			Element objElementZCode = new Element(stemp);	
 			String sCode = sValue;
 			objElementZCode.addContent(sCode);
 			objElementZEncryption.addContent(objElementZCode);
 		
-			TODOGOON20230412;//Es fehlen noch: 
-			//z:KeyNumber
-			//z:KeyString
-			//z:CharacterPool
-			//z:CharacterPoolAdditional
-			//z:FlagControl
 			
+			//z:KeyNumber
+			int iKeyNumber = objCrypt.getCryptNumber();
+			if(iKeyNumber>-1) {				
+				stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_KeyNumberZZZ.sTAG_NAME);
+				Element objElementZKeyNumber = new Element(stemp);
+				String sKeyNumber = Integer.toString(iKeyNumber);
+				objElementZKeyNumber.addContent(sKeyNumber);
+				objElementZEncryption.addContent(objElementZKeyNumber);
+			}
+						
+			//z:KeyString
+			String sKeyString = objCrypt.getCryptKey();
+			if(!StringZZZ.isEmpty(sKeyString)) {
+				stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_KeyStringZZZ.sTAG_NAME);
+				Element objElementZKeyString = new Element(stemp);				
+				objElementZKeyString.addContent(sKeyString);
+				objElementZEncryption.addContent(objElementZKeyString);
+			}
+			
+			//z:CharacterPool
+			if(CryptAlgorithmUtilZZZ.isUsingCharacterPoolBase(objCrypt)){
+				String sCharacterPool = objCrypt.getCharacterPoolBase();
+				if(!StringZZZ.isEmpty(sCharacterPool)) {
+					stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CharacterPoolZZZ.sTAG_NAME);
+					Element objElementZCharacterPoolString = new Element(stemp);				
+					objElementZCharacterPoolString.addContent(sCharacterPool);
+					objElementZEncryption.addContent(objElementZCharacterPoolString);
+				}
+				
+				//z:CharacterPoolAdditional
+				String sCharacterPoolAdditional = objCrypt.getCharacterPoolAdditional();
+				if(!StringZZZ.isEmpty(sCharacterPoolAdditional)) {
+					stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CharacterPoolAdditionalZZZ.sTAG_NAME);
+					Element objElementZCharacterPoolString = new Element(stemp);				
+					objElementZCharacterPoolString.addContent(sCharacterPoolAdditional);
+					objElementZEncryption.addContent(objElementZCharacterPoolString);
+				}
+				
+				//z:FlagControl
+				StringBuilder objBuilderFlag = new StringBuilder();
+				
+				//USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER				
+				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name())) {
+					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
+					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name());
+				}
+				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USELOWERCASE.name())) {
+					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
+					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USELOWERCASE.name());
+				}
+				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USENUMERIC.name())) {
+					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
+					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USENUMERIC.name());
+				}
+				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name())) {
+					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
+					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USESTRATEGY_CHARACTERPOOL.name());
+				}
+				if(objCrypt.getFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEUPPERCASE.name())) {
+					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
+					objBuilderFlag.append(ICharacterPoolUserConstantZZZ.FLAGZ.USEUPPERCASE.name());
+				}
+				
+				//USESTRATEGY_CASECHANGE,USEBLANK
+				if(objCrypt.getFlag(IROTUserConstantZZZ.FLAGZ.USEBLANK.name())) {
+					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
+					objBuilderFlag.append(IROTUserConstantZZZ.FLAGZ.USEBLANK.name());
+				}
+				if(objCrypt.getFlag(IROTUserConstantZZZ.FLAGZ.USESTRATEGY_CASECHANGE.name())) {
+					if(objBuilderFlag.length()>0)objBuilderFlag.append(",");
+					objBuilderFlag.append(IROTUserConstantZZZ.FLAGZ.USESTRATEGY_CASECHANGE.name());
+				}
+								
+				//XML-Element setzen
+				String sFlag = objBuilderFlag.toString();												
+				if(!StringZZZ.isEmpty(sFlag)) {
+					stemp = XmlUtilZZZ.replaceColonInXmlTag(Kernel_FlagControlZZZ.sTAG_NAME);
+					Element objElementZFlagControl = new Element(stemp);				
+					objElementZFlagControl.addContent(sFlag);
+					objElementZEncryption.addContent(objElementZFlagControl);
+				}
+			}
+					
 			XMLUtil.addContent(objRoot, objElementZEncryption);			
 			objDocument.setRootElement(objRoot);
 			String sXmlReplaced = XmlUtilZZZ.documentToString(objDocument);

@@ -294,6 +294,12 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 		//wg. ICryptZZZ
 	}
 	
+	@Override
+	public int getCryptNumber() {
+		return -1;
+		//wg. ICryptZZZ
+	}
+	
 	//### Methoden werden zwar z.B. nur fuer Vigenere Verschluesselung, bzw. fuer Verschluesselung mit CharacterPool gebraucht.
 	//    Um den Einsatz von ICrypt - Objekten zu standardiesieren, hier notwendig.
 	@Override

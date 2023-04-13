@@ -14,6 +14,9 @@ public interface ICryptZZZ extends IFlagZUserZZZ{
 //		USENUMERIC,USEUPPERCASE,USELOWERCASE,USECHARACTERPOOL
 //	}
 	
+	//WICHTIG: Hier kein setFlag(enum) zur Verfügung stellen, da z.B. CharacterPoolUser dann auch bei den ROT Verschluesselungen implementiert werden muesste.
+	
+	
 	public String encrypt(String sInput) throws ExceptionZZZ;
 	public String decrypt(String sInput) throws ExceptionZZZ;
 	public int[] getDecryptedValuesAsInt();
@@ -37,6 +40,7 @@ public interface ICryptZZZ extends IFlagZUserZZZ{
 	//Methoden für ROT - Verfahren
 	//Methoden um <Z:KeyNumber> Werte zu setzen
 	//Wichtig für alle ROT - Verschluesselungen
+	public int getCryptNumber();
 	public void setCryptNumber(int iCryptKey); //Manche Algorithmen benoetigen eine Zahl, z.B. alle ROT (=rotierenden) Algorithmen.
 	
 	//############################################################
@@ -61,6 +65,4 @@ public interface ICryptZZZ extends IFlagZUserZZZ{
 	//Falls ein Zeichen nicht im CharacterPool enthalten ist.
 	public CharacterExtendedZZZ getCharacterMissingReplacment() throws ExceptionZZZ;
 	public void setCharacterMissingReplacement(CharacterExtendedZZZ objCharacterMissingReplacement);
-	
-	//Merke: Hier kein setFlag(enum) zur Verfügung stellen, da z.B. CharacterPoolUser dann auch bei den ROT Verschluesselungen implementiert werden muesste.
 }

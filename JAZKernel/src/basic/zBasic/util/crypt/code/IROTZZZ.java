@@ -13,6 +13,7 @@ public interface IROTZZZ extends ICryptZZZ{
 	//Methoden für ROT - Verfahren
 	//Methoden um <Z:KeyNumber> Werte zu setzen
 	//Wichtig für alle ROT - Verschluesselungen
-	public int getCryptNumber();
-	public void setCryptNumber(int iCryptKey); //Manche Algorithmen benötigen eine Zahl, z.B. alle ROT (=rotierenden) Algorithmen.
+	//sind in ICryptZZZ
+	//public int getCryptNumber();
+	//public void setCryptNumber(int iCryptKey); //Manche Algorithmen benötigen eine Zahl, z.B. alle ROT (=rotierenden) Algorithmen.
 }

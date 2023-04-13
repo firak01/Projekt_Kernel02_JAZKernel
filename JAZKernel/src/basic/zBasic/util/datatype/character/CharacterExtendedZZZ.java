@@ -173,7 +173,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			//Vorab pruefen, ob alle Wert nicht die Groesse des CharacterPools uebersteigen.
 			//Das ist ggfs. der Fall, wenn kein Schluesselwort bei Vigenere angegeben worden ist.
 			boolean bUseCharacterPool = true;
-			for(int i= 0; i<iaPosition.length-1;i++) {
+			for(int i= 0; i<iaPosition.length;i++) {
 				int iCharPos = iaPosition[i];
 				if(iCharPos>listasCharacterPool.size()) {
 					bUseCharacterPool = false;
@@ -186,7 +186,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 		    
 		    //die Arraylist nutzen zum bestimmen der Zeichen, entweder mit CharacterPool oder so..
 		    if(bUseCharacterPool) { 
-			    for(int i = 0; i<iaPosition.length-1;i++) {
+			    for(int i = 0; i<iaPosition.length;i++) {
 			    	int iCharPos = iaPosition[i];
 			    	if(iCharPos==-1 && objCharMissingReplacement!=null) {
 			    		sb.append(objCharMissingReplacement.getChar());
@@ -196,7 +196,7 @@ public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtende
 			    	}
 			    }
 		    }else {
-		    	for(int i = 0; i<iaPosition.length-1;i++) {
+		    	for(int i = 0; i<iaPosition.length;i++) {
 			    	int iCharPos = iaPosition[i];
 			    	if(iCharPos==-1 && objCharMissingReplacement!=null) {
 			    		sb.append(objCharMissingReplacement.getChar());
