@@ -462,8 +462,6 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 		main:{	
 			if(StringZZZ.isEmpty(sInput))break main;
 			
-			int[] iaEncryptedTextTEST = UnicodeZZZ.toIntArray(sInput);
-			
 			char[] caEntryptedText = sInput.toCharArray();
 			int[] iaEncryptedText = CharArrayZZZ.toIntArray(caEntryptedText);
 			
