@@ -68,12 +68,12 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IKernelProgramZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelProgramZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -90,8 +90,8 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	}
 	
 	@Override
-	public boolean proofFlagZExists(IKernelProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagZExists(objEnumFlag.name());
+	public boolean proofFlagExists(IKernelProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
 		}
 	
 		public String readModuleName() throws ExceptionZZZ {
@@ -141,12 +141,12 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -163,8 +163,8 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	}
 	
 	@Override
-	public boolean proofFlagZExists(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagZExists(objEnumFlag.name());
+	public boolean proofFlagExists(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
 		}
 			
 	//### Methoden

@@ -21,7 +21,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.flag.IFlagLocalUserZZZ;
+import basic.zKernel.flag.IFlagZLocalUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
 import basic.zKernel.flag.json.FlagZHelperZZZ;
@@ -40,7 +40,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZUserZZZ, IFlagLocalUserZZZ{
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionUserZZZ, IFileExpansionProxyZZZ, IFlagZUserZZZ, IFlagZLocalUserZZZ{
 	private static final long serialVersionUID = 2355847392852232484L;
 	
 	private IFileExpansionZZZ objExpansion=null;
@@ -251,12 +251,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	}
 	
 	@Override
-	public boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}	
 	
 	@Override
-	public boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -273,13 +273,13 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	}
 	
 	@Override
-	public boolean proofFlagZExists(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagZExists(objEnumFlag.name());
+	public boolean proofFlagExists(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
 	//##################################
-		@Override
-		public boolean getFlag(String sFlagName) {
+//		@Override
+//		public boolean getFlag(String sFlagName) {
 			//Version Vor Java 1.6
 //			boolean bFunction = false;
 //		main:{
@@ -303,11 +303,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 //		}	// end main:
 	//	
 //		return bFunction;	
-			return this.getFlagZ(sFlagName);
-		}
-		@Override
-		public boolean setFlag(String sFlagName, boolean bFlagValue) {
-			//Version Vor Java 1.6
+//			return this.getFlagZ(sFlagName);
+//		}
+		
+//		@Override
+//		public boolean setFlag(String sFlagName, boolean bFlagValue) {
+//			Version Vor Java 1.6
 //			boolean bFunction = true;
 //			main:{
 //				if(StringZZZ.isEmpty(sFlagName)) break main;
@@ -333,16 +334,16 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 //			}	// end main:
 //			
 //			return bFunction;	
-			try {
-				return this.setFlagZ(sFlagName, bFlagValue);
-			} catch (ExceptionZZZ e) {
-				System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
-				return false;
-			}
-		}
+//			try {
+//				return this.setFlag(sFlagName, bFlagValue);
+//			} catch (ExceptionZZZ e) {
+//				System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
+//				return false;
+//			}
+//		}
 		
 		@Override
-		public boolean[] setFlag(String[] saFlagName, boolean bFlagValue) {
+		public boolean[] setFlag(String[] saFlagName, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
 				if(!StringArrayZZZ.isEmptyTrimmed(saFlagName)) {
@@ -359,16 +360,16 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		}
 		
 		/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
-		 * 	 Weteire Voraussetzungen:
+		 * 	 Weitere Voraussetzungen:
 		 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
-		 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
+		 * - Innere Klassen muessen auch public deklariert werden.(non-Javadoc)
 		 */
-		public boolean getFlagZ(String sFlagName) {
+		public boolean getFlag(String sFlagName) {
 			boolean bFunction = false;
 			main:{
 				if(StringZZZ.isEmpty(sFlagName)) break main;
 											
-				HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
+				HashMap<String, Boolean> hmFlag = this.getHashMapFlag();
 				Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
 				if(objBoolean==null){
 					bFunction = false;
@@ -390,7 +391,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	 * @return
 	 * lindhaueradmin, 23.07.2013
 	 */
-	public boolean setFlagZ(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName)) {
@@ -398,11 +399,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				break main;
 			}
 						
-			bFunction = this.proofFlagZExists(sFlagName);															
+			bFunction = this.proofFlagExists(sFlagName);															
 			if(bFunction == true){
 				
 				//Setze das Flag nun in die HashMap
-				HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
+				HashMap<String, Boolean> hmFlag = this.getHashMapFlag();
 				hmFlag.put(sFlagName.toUpperCase(), bFlagValue);
 				bFunction = true;								
 			}										
@@ -412,16 +413,16 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	}
 		
 	@Override
-	public HashMap<String, Boolean>getHashMapFlagZ(){
+	public HashMap<String, Boolean>getHashMapFlag(){
 		return this.hmFlag;
 	}
 		
 	@Override
-	public HashMap<String, Boolean> getHashMapFlagZpassed() {
+	public HashMap<String, Boolean> getHashMapFlagPassed() {
 		return this.hmFlagPassed;
 	}
 	@Override
-	public void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed) {
+	public void setHashMapFlagPassed(HashMap<String, Boolean> hmFlagPassed) {
 		this.hmFlagPassed = hmFlagPassed;
 	}
 	
@@ -457,7 +458,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				//FALLUNTERSCHEIDUNG: Alle gesetzten FlagZ werden in der HashMap gespeichert. Aber die noch nicht gesetzten FlagZ stehen dort nicht drin.
 				//                                  Diese kann man nur durch Einzelprüfung ermitteln.
 				if(bLookupExplizitInHashMap) {
-					HashMap<String,Boolean>hmFlag=this.getHashMapFlagZ();
+					HashMap<String,Boolean>hmFlag=this.getHashMapFlag();
 					if(hmFlag==null) break main;
 					
 					Set<String> setKey = hmFlag.keySet();
@@ -476,7 +477,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 					//         auch wenn sie garnicht gesetzt wurden.
 					//Lösung:  Statt dessen explitzit über die HashMap der gesetzten Werte gehen....						
 					for(String sFlagZ : saFlagZ){
-						boolean btemp = this.getFlagZ(sFlagZ);
+						boolean btemp = this.getFlag(sFlagZ);
 						if(btemp==bValueToSearchFor ){ //also 'true'
 							listasTemp.add(sFlagZ);
 						}
@@ -494,12 +495,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 				 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
 				 */
-				public boolean getFlagZLocal(String sFlagName) {
+				public boolean getFlagLocal(String sFlagName) {
 					boolean bFunction = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName)) break main;
 													
-						HashMap<String, Boolean> hmFlag = this.getHashMapFlagZLocal();
+						HashMap<String, Boolean> hmFlag = this.getHashMapFlagLocal();
 						Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
 						if(objBoolean==null){
 							bFunction = false;
@@ -522,7 +523,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * @return
 				 * lindhaueradmin, 23.07.2013
 				 */
-				public boolean setFlagZLocal(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
+				public boolean setFlagLocal(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
 					boolean bFunction = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName)) {
@@ -530,11 +531,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 							break main;
 						}
 									
-						bFunction = this.proofFlagZLocalExists(sFlagName);															
+						bFunction = this.proofFlagLocalExists(sFlagName);															
 						if(bFunction == true){
 							
 							//Setze das Flag nun in die HashMap
-							HashMap<String, Boolean> hmFlag = this.getHashMapFlagZLocal();
+							HashMap<String, Boolean> hmFlag = this.getHashMapFlagLocal();
 							hmFlag.put(sFlagName.toUpperCase(), bFlagValue);
 							bFunction = true;								
 						}										
@@ -542,14 +543,31 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 					
 					return bFunction;	
 				}
+				
+				@Override
+				public boolean[] setFlagLocal(String[] saFlag, boolean bValue) throws ExceptionZZZ {
+					boolean[] baReturn=null;
+					main:{
+						if(!StringArrayZZZ.isEmptyTrimmed(saFlag)) {
+							baReturn = new boolean[saFlag.length];
+							int iCounter=-1;
+							for(String sFlagName:saFlag) {
+								iCounter++;
+								boolean bReturn = this.setFlag(sFlagName, bValue);
+								baReturn[iCounter]=bReturn;
+							}
+						}
+					}//end main:
+					return baReturn;
+				}
 					
 				@Override
-				public HashMap<String, Boolean>getHashMapFlagZLocal(){
+				public HashMap<String, Boolean>getHashMapFlagLocal(){
 					return this.hmFlagLocal;
 				}
 				
 				@Override
-				public void setHashMapFlagZLocal(HashMap<String, Boolean> hmFlagLocal) {
+				public void setHashMapFlagLocal(HashMap<String, Boolean> hmFlagLocal) {
 					this.hmFlagLocal = hmFlagLocal;
 				}
 				
@@ -585,7 +603,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 						//FALLUNTERSCHEIDUNG: Alle gesetzten FlagZ werden in der HashMap gespeichert. Aber die noch nicht gesetzten FlagZ stehen dort nicht drin.
 						//                                  Diese kann man nur durch Einzelprüfung ermitteln.
 						if(bLookupExplizitInHashMap) {
-							HashMap<String,Boolean>hmFlag=this.getHashMapFlagZLocal();
+							HashMap<String,Boolean>hmFlag=this.getHashMapFlagLocal();
 							if(hmFlag==null) break main;
 							
 							Set<String> setKey = hmFlag.keySet();
@@ -604,7 +622,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 							//         auch wenn sie garnicht gesetzt wurden.
 							//Lösung:  Statt dessen explitzit über die HashMap der gesetzten Werte gehen....						
 							for(String sFlagZ : saFlagZ){
-								boolean btemp = this.getFlagZLocal(sFlagZ);
+								boolean btemp = this.getFlagLocal(sFlagZ);
 								if(btemp==bValueToSearchFor ){ //also 'true'
 									listasTemp.add(sFlagZ);
 								}
@@ -623,7 +641,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * lindhaueradmin, 23.07.2013
 				 * @throws ExceptionZZZ 
 				 */
-				public boolean proofFlagZLocalExists(String sFlagName) throws ExceptionZZZ{
+				public boolean proofFlagLocalExists(String sFlagName) throws ExceptionZZZ{
 					boolean bReturn = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName))break main;
@@ -702,7 +720,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	 * lindhaueradmin, 23.07.2013
 	 * @throws ExceptionZZZ 
 	 */
-	public boolean proofFlagZExists(String sFlagName) throws ExceptionZZZ{
+	public boolean proofFlagExists(String sFlagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName))break main;
@@ -1085,5 +1103,9 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String 
 			sReturn = objFileExpansion.searchExpansionFreeLowest();
 		}
 		return sReturn;
-	}	
+	}
+
+	
+
+	
 }//end class

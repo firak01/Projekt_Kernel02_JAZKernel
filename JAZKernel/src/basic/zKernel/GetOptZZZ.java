@@ -671,8 +671,9 @@ public class GetOptZZZ extends ObjectZZZ{
 	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
 	 * 	"isLoaded": Wird gesetzt, wenn die interne HashMap erfolgreich gef�llt worden ist, z.B. in .loadOptionAll(..);
+	 * @throws ExceptionZZZ 
 	 */
-	public boolean setFlag(String sFlagName, boolean bFlagValue){
+	public boolean setFlag(String sFlagName, boolean bFlagValue) throws ExceptionZZZ{
 		boolean bFunction = false;
 		main:{
 		if(StringZZZ.isEmpty(sFlagName)) break main;

@@ -116,7 +116,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 			//20210331: Nun die HashMap für die weiterzureichenden FlagZ Werte füllen
 			String sJson = this.objOpt.readValue("z");
 			HashMap<String, Boolean> hmFlagZpassed = KernelConfigZZZ.computeHashMapFlagFromJSON(sJson);
-			this.setHashMapFlagZpassed(hmFlagZpassed);
+			this.setHashMapFlagPassed(hmFlagZpassed);
 			
 			bReturn = true;
 		}
@@ -127,8 +127,8 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	public String expressionSolveConfigDirectoryNameDefault(String sDirectoryNameReadIn) {
 		String sReturn=null;
 		main:{		
-		boolean bUseExpression = this.getFlagZ(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
-		boolean bUseFormula = this.getFlagZ(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
+		boolean bUseExpression = this.getFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name());
+		boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
 		String sDirectoryNameRead = sDirectoryNameReadIn;//z.B. auch "<z:Null/>"
 		//20191031: Dieser Wert muss vom Programm verarbeitet/Übersetzt werden werden - wie ein ini-Datei Eintrag auch übersetzt würde.
 		//return "<z:Null/>";//Merke '.' oder Leerstring '' = src Verzeichnis
@@ -404,12 +404,12 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		}
 		
 		@Override
-		public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnumFlag.name(), bFlagValue);
 		}
 		
 		@Override
-		public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
 				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -424,6 +424,11 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 			}//end main:
 			return baReturn;
 		}
+		
+		@Override
+		public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
 	
 	//###### aus IKernelExpressionIniSolverZZZ
 	@Override
@@ -432,12 +437,12 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	}
 	
 	@Override
-	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 
 	@Override
-	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -453,6 +458,11 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelExpressionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
 	//### aus IKernelEncryptionIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -460,12 +470,12 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	}
 	
 	@Override
-	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -481,6 +491,11 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelEncryptionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
 	//### aus IKernelJsonIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -488,12 +503,12 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	}
 	
 	@Override
-	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -507,6 +522,11 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 			}
 		}//end main:
 		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
 	}
 
 	//### Aus Interface ICryptUserZZZ

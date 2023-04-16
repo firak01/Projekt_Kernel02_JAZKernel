@@ -210,12 +210,17 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 	}
 	
 	@Override
-	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
+	public boolean proofFlagExists(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelEncryptionIniSolverZZZ)) {

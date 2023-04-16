@@ -233,7 +233,7 @@ public class FileIniZZZTest extends TestCase {
 								
 			}else{
 				//Übernimm die gesetzten FlagZ...
-				hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
+				hmFlagZ = objFileIniKernelConfig.getHashMapFlag();
 				
 				//Übernimm die gesetzten Variablen...
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
@@ -241,7 +241,7 @@ public class FileIniZZZTest extends TestCase {
 				objReturn.setHashMapVariable(hmVariable);	
 			}
 									
-			hmFlagZ = objReturn.getHashMapFlagZ();
+			hmFlagZ = objReturn.getHashMapFlag();
 			assertNotNull(hmFlagZ);
 			iFlagz = hmFlagZ.size();
 			assertTrue("Es wurde mindestens 1 gesetztes Flag erwartet", iFlagz>=1);
@@ -264,7 +264,7 @@ public class FileIniZZZTest extends TestCase {
 
 			}else{
 				//Übernimm die gesetzten FlagZ...
-				hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
+				hmFlagZ = objFileIniKernelConfig.getHashMapFlag();
 				
 				//Übernimm die gesetzten Variablen...
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
@@ -272,7 +272,7 @@ public class FileIniZZZTest extends TestCase {
 				objReturn.setHashMapVariable(hmVariable);	
 			}
 			
-			hmFlagZ = objReturn.getHashMapFlagZ();
+			hmFlagZ = objReturn.getHashMapFlag();
 			assertNotNull(hmFlagZ);
 			iFlagz = hmFlagZ.size();
 			assertTrue("Es wurde nur 1 gesetztes Flag erwartet", iFlagz==1);
@@ -294,7 +294,7 @@ public class FileIniZZZTest extends TestCase {
 
 			}else{
 				//Übernimm die gesetzten FlagZ...
-				hmFlagZ = objFileIniKernelConfig.getHashMapFlagZ();
+				hmFlagZ = objFileIniKernelConfig.getHashMapFlag();
 				
 				//Übernimm die gesetzten Variablen...
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = objFileIniKernelConfig.getHashMapVariable();
@@ -302,7 +302,7 @@ public class FileIniZZZTest extends TestCase {
 				objReturn.setHashMapVariable(hmVariable);	
 			}
 			
-			hmFlagZ = objReturn.getHashMapFlagZ();
+			hmFlagZ = objReturn.getHashMapFlag();
 			assertNotNull(hmFlagZ);
 			iFlagz = hmFlagZ.size();
 			assertTrue("Es wurde nur 1 gesetztes Flag erwartet", iFlagz==1);

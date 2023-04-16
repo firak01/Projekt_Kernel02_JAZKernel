@@ -180,8 +180,9 @@ public class KernelFileTextCopyZZZ   extends KernelUseObjectZZZ{
 	 * @param sFlagName
 	 * 			  source_rename: after copying the source_files will be renamed.
 	 * 			  source_remove: after copying the source_files will be removed.
+	 * @throws ExceptionZZZ 
 	 */
-	public boolean setFlag(String sFlagName, boolean bFlagValue){
+	public boolean setFlag(String sFlagName, boolean bFlagValue) throws ExceptionZZZ{
 		boolean bFunction = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName)) break main;

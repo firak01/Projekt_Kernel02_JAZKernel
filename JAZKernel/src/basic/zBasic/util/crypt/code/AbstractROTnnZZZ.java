@@ -307,12 +307,12 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
-	public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -329,8 +329,8 @@ public abstract class AbstractROTnnZZZ extends AbstractROTZZZ implements IROTnnZ
 	}
 	
 	@Override
-	public boolean proofFlagZExists(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagZExists(objEnumFlag.name());
+	public boolean proofFlagExists(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
 	

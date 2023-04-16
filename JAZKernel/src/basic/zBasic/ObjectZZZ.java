@@ -23,7 +23,7 @@ import basic.zKernel.KernelLogZZZ;
 import basic.zKernel.flag.EventObjectFlagZsetZZZ;
 import basic.zKernel.flag.IEventBrokerFlagZsetUserZZZ;
 import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
-import basic.zKernel.flag.IFlagLocalUserZZZ;
+import basic.zKernel.flag.IFlagZLocalUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
@@ -31,7 +31,7 @@ import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.json.FlagZHelperZZZ;
 import custom.zKernel.LogZZZ;
 
-public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagLocalUserZZZ{
+public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -82,7 +82,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		if(hmFlag!=null){
 			for(String sKey:hmFlag.keySet()){
 				String stemp = sKey;
-				boolean btemp = this.setFlagZ(sKey, hmFlag.get(sKey));
+				boolean btemp = this.setFlag(sKey, hmFlag.get(sKey));
 				if(btemp==false){
 					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available (passed by hashmap).", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		 
@@ -99,12 +99,12 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -121,21 +121,22 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 	}
 	
 	@Override
-	public boolean proofFlagZExists(IFlagZUserZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagZExists(objaEnumFlag.name());
+	public boolean proofFlagExists(IFlagZUserZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
 	}	
+	
 	
 	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
 	 * 	 Weitere Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 	 * - Innere Klassen muessen auch public deklariert werden.(non-Javadoc)
 	 */
-	public boolean getFlagZ(String sFlagName) {
+	public boolean getFlag(String sFlagName) {
 		boolean bFunction = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName)) break main;
 										
-			HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
+			HashMap<String, Boolean> hmFlag = this.getHashMapFlag();
 			Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
 			if(objBoolean==null){
 				bFunction = false;
@@ -147,8 +148,8 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		
 		return bFunction;	
 	}
-	@Override
-	public boolean getFlag(String sFlagName) {
+//	@Override
+//	public boolean getFlag(String sFlagName) {
 		//Version Vor Java 1.6
 //		boolean bFunction = false;
 //	main:{
@@ -172,11 +173,11 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 //	}	// end main:
 //	
 //	return bFunction;	
-		return this.getFlagZ(sFlagName);
-	}
-	@Override
-	public boolean setFlag(String sFlagName, boolean bFlagValue) {
-		//Version Vor Java 1.6
+//		return this.getFlag(sFlagName);
+//	}
+//	@Override
+//	public boolean setFlag(String sFlagName, boolean bFlagValue) {
+//		//Version Vor Java 1.6
 //		boolean bFunction = true;
 //		main:{
 //			if(StringZZZ.isEmpty(sFlagName)) break main;
@@ -202,17 +203,17 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 //		}	// end main:
 //		
 //		return bFunction;	
-		try {
-			return this.setFlagZ(sFlagName, bFlagValue);
-		} catch (ExceptionZZZ e) {
-			System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
-			return false;
-		}
-	}
+//		try {
+//			return this.setFlag(sFlagName, bFlagValue);
+//		} catch (ExceptionZZZ e) {
+//			System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
+//			return false;
+//		}
+//	}
 	
 	
 	@Override
-	public boolean[] setFlag(String[] saFlagName, boolean bFlagValue) {
+	public boolean[] setFlag(String[] saFlagName, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!StringArrayZZZ.isEmptyTrimmed(saFlagName)) {
@@ -230,16 +231,16 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 	
 	
 	@Override
-	public HashMap<String, Boolean>getHashMapFlagZ(){
+	public HashMap<String, Boolean>getHashMapFlag(){
 		return this.hmFlag;
 	}
 		
 	@Override
-	public HashMap<String, Boolean> getHashMapFlagZpassed() {
+	public HashMap<String, Boolean> getHashMapFlagPassed() {
 		return this.hmFlagPassed;
 	}
 	@Override
-	public void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed) {
+	public void setHashMapFlagPassed(HashMap<String, Boolean> hmFlagPassed) {
 		this.hmFlagPassed = hmFlagPassed;
 	}
 	
@@ -275,7 +276,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 				//FALLUNTERSCHEIDUNG: Alle gesetzten FlagZ werden in der HashMap gespeichert. Aber die noch nicht gesetzten FlagZ stehen dort nicht drin.
 				//                                  Diese kann man nur durch Einzelprüfung ermitteln.
 				if(bLookupExplizitInHashMap) {
-					HashMap<String,Boolean>hmFlag=this.getHashMapFlagZ();
+					HashMap<String,Boolean>hmFlag=this.getHashMapFlag();
 					if(hmFlag==null) break main;
 					
 					Set<String> setKey = hmFlag.keySet();
@@ -294,7 +295,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 					//         auch wenn sie garnicht gesetzt wurden.
 					//Lösung:  Statt dessen explitzit über die HashMap der gesetzten Werte gehen....						
 					for(String sFlagZ : saFlagZ){
-						boolean btemp = this.getFlagZ(sFlagZ);
+						boolean btemp = this.getFlag(sFlagZ);
 						if(btemp==bValueToSearchFor ){ //also 'true'
 							listasTemp.add(sFlagZ);
 						}
@@ -374,7 +375,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 	 * @return
 	 * lindhaueradmin, 23.07.2013
 	 */
-	public boolean setFlagZ(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName)) {
@@ -382,11 +383,11 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 				break main;
 			}
 						
-			bFunction = this.proofFlagZExists(sFlagName);															
+			bFunction = this.proofFlagExists(sFlagName);															
 			if(bFunction == true){
 				
 				//Setze das Flag nun in die HashMap
-				HashMap<String, Boolean> hmFlag = this.getHashMapFlagZ();
+				HashMap<String, Boolean> hmFlag = this.getHashMapFlag();
 				hmFlag.put(sFlagName.toUpperCase(), bFlagValue);								
 				
 				//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
@@ -411,7 +412,8 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 	 * lindhaueradmin, 23.07.2013
 	 * @throws ExceptionZZZ 
 	 */
-	public boolean proofFlagZExists(String sFlagName) throws ExceptionZZZ{
+	@Override
+	public boolean proofFlagExists(String sFlagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName))break main;
@@ -428,12 +430,12 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 			 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 			 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
 			 */
-			public boolean getFlagZLocal(String sFlagName) {
+			public boolean getFlagLocal(String sFlagName) {
 				boolean bFunction = false;
 				main:{
 					if(StringZZZ.isEmpty(sFlagName)) break main;
 												
-					HashMap<String, Boolean> hmFlag = this.getHashMapFlagZLocal();
+					HashMap<String, Boolean> hmFlag = this.getHashMapFlagLocal();
 					Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
 					if(objBoolean==null){
 						bFunction = false;
@@ -456,7 +458,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 			 * @return
 			 * lindhaueradmin, 23.07.2013
 			 */
-			public boolean setFlagZLocal(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
+			public boolean setFlagLocal(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
 				boolean bFunction = false;
 				main:{
 					if(StringZZZ.isEmpty(sFlagName)) {
@@ -464,11 +466,11 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 						break main;
 					}
 								
-					bFunction = this.proofFlagZLocalExists(sFlagName);															
+					bFunction = this.proofFlagLocalExists(sFlagName);															
 					if(bFunction == true){
 						
 						//Setze das Flag nun in die HashMap
-						HashMap<String, Boolean> hmFlag = this.getHashMapFlagZLocal();
+						HashMap<String, Boolean> hmFlag = this.getHashMapFlagLocal();
 						hmFlag.put(sFlagName.toUpperCase(), bFlagValue);
 						bFunction = true;								
 					}										
@@ -476,14 +478,31 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 				
 				return bFunction;	
 			}
+			
+			@Override
+			public boolean[] setFlagLocal(String[] saFlag, boolean bValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!StringArrayZZZ.isEmptyTrimmed(saFlag)) {
+						baReturn = new boolean[saFlag.length];
+						int iCounter=-1;
+						for(String sFlag:saFlag) {
+							iCounter++;
+							boolean bReturn = this.setFlag(sFlag, bValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
 				
 			@Override
-			public HashMap<String, Boolean>getHashMapFlagZLocal(){
+			public HashMap<String, Boolean>getHashMapFlagLocal(){
 				return this.hmFlagLocal;
 			}
 			
 			@Override
-			public void setHashMapFlagZLocal(HashMap<String, Boolean> hmFlagLocal) {
+			public void setHashMapFlagLocal(HashMap<String, Boolean> hmFlagLocal) {
 				this.hmFlagLocal = hmFlagLocal;
 			}
 			
@@ -519,7 +538,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 					//FALLUNTERSCHEIDUNG: Alle gesetzten FlagZ werden in der HashMap gespeichert. Aber die noch nicht gesetzten FlagZ stehen dort nicht drin.
 					//                                  Diese kann man nur durch Einzelprüfung ermitteln.
 					if(bLookupExplizitInHashMap) {
-						HashMap<String,Boolean>hmFlag=this.getHashMapFlagZLocal();
+						HashMap<String,Boolean>hmFlag=this.getHashMapFlagLocal();
 						if(hmFlag==null) break main;
 						
 						Set<String> setKey = hmFlag.keySet();
@@ -538,7 +557,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 						//         auch wenn sie garnicht gesetzt wurden.
 						//Lösung:  Statt dessen explitzit über die HashMap der gesetzten Werte gehen....						
 						for(String sFlagZ : saFlagZ){
-							boolean btemp = this.getFlagZLocal(sFlagZ);
+							boolean btemp = this.getFlagLocal(sFlagZ);
 							if(btemp==bValueToSearchFor ){ //also 'true'
 								listasTemp.add(sFlagZ);
 							}
@@ -557,7 +576,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 			 * lindhaueradmin, 23.07.2013
 			 * @throws ExceptionZZZ 
 			 */
-			public boolean proofFlagZLocalExists(String sFlagName) throws ExceptionZZZ{
+			public boolean proofFlagLocalExists(String sFlagName) throws ExceptionZZZ{
 				boolean bReturn = false;
 				main:{
 					if(StringZZZ.isEmpty(sFlagName))break main;
@@ -627,6 +646,5 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		sReturn = ReflectionToStringBuilder.toString(this);
 		return sReturn;
 	}
-	
 	
 }

@@ -1469,12 +1469,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	}
 	
 	@Override
-	public boolean setFlag(IKernelFileIniZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelFileIniZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelFileIniZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelFileIniZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -1490,6 +1490,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelFileIniZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
 	//### aus IKernelZFormulaIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -1497,12 +1502,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	}
 	
 	@Override
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -1518,6 +1523,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
 	//### Aus Interface IKernelExpressionIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -1525,12 +1535,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	}
 	
 	@Override
-	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -1546,6 +1556,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelExpressionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
 	//### aus IKernelEncryptionIniSolverZZZ
 	@Override
 	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) {
@@ -1553,12 +1568,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	}
 	
 	@Override
-	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 
 	@Override
-	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -1574,6 +1589,10 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelEncryptionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
 	
 	//# aus ICryptUserZZZ
 	@Override
@@ -1594,12 +1613,12 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	}
 	
 	@Override
-	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -1615,6 +1634,11 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		return baReturn;
 	}
 
+	@Override
+	public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
 	//+++ Aus Interface: IListenerObjectFlagZsetZZZ
 	@Override
 	public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
@@ -1628,7 +1652,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			boolean bFlagValue = eventFlagZset.getFlagValue();
 			
 			try {
-				bReturn = this.setFlagZ(sFlagText, bFlagValue);
+				bReturn = this.setFlag(sFlagText, bFlagValue);
 			} catch (ExceptionZZZ e) {
 				//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
 				//Es kann aber auch ggfs. anders verfahren werden. 
@@ -1637,6 +1661,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		}//end main:
 		return bReturn;
 	}
+	
+	
 
 	
 

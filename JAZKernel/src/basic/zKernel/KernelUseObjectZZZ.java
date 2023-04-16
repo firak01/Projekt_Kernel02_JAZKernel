@@ -117,7 +117,7 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 				IKernelConfigZZZ objConfig = this.getKernelObject().getConfigObject();
 				if(objConfig!=null) {
 					//Übernimm die als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
-					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();
+					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagPassed();
 					if(hmFlagZpassed!=null) {
 						Set<String> setFlag = hmFlagZpassed.keySet();
 						Iterator<String> itFlag = setFlag.iterator();

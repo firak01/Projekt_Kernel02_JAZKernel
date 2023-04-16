@@ -16,7 +16,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ.FLAGZ;
 
 /**Klasse dient zum Schreiben in TextDateien. Dies ist ein Wrapper um "RandomAccessFile".
- * Bietet Komfortmethoden, wie z.B. das Einfügen einer Zeile in eine sortierte Datei.
+ * Bietet Komfortmethoden, wie z.B. das Einfï¿½gen einer Zeile in eine sortierte Datei.
  * 
  * @author lindhaueradmin
  *
@@ -31,7 +31,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 		IsFileSorted, IgnoreCase, TopOfEmptyLine, TopOfCommentLine;
 	}
 	
-	//Aus IFlagZZZ, über die abstrakte TxtCommonZZZ Klasse
+	//Aus IFlagZZZ, ï¿½ber die abstrakte TxtCommonZZZ Klasse
 	@Override
 	public Class getClassZ() {
 		return FLAGZ.class;
@@ -58,17 +58,17 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 	private boolean TxtWriterNew_(TxtReaderZZZ objReader, File file, String[] saFlagControlIn ) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-		 //setzen der übergebenen Flags	
+		 //setzen der ï¿½bergebenen Flags	
 		  if(saFlagControlIn != null){
 			  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 				  String stemp = saFlagControlIn[iCount];
-				  boolean btemp = setFlagZ(stemp, true);
+				  boolean btemp = setFlag(stemp, true);
 				  if(btemp==false){						
 					  ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 					  throw ez;		 
 				  }
 			  }
-				if(this.getFlagZ("INIT")==true){
+				if(this.getFlag("INIT")==true){
 					bReturn = true;
 					break main; 
 				}		
@@ -95,7 +95,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 
 
 
-	/** Gibt die BytePosition, in die eingefügt wurde zurück.
+	/** Gibt die BytePosition, in die eingefï¿½gt wurde zurï¿½ck.
 	* @param sToBeInserted
 	* @return
 	* 
@@ -103,7 +103,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public long insertLine(String sToBeInserted) throws ExceptionZZZ{
-		long lReturn=-1;  //Merke: Selbst wenn es noch keinen Inhalt gibt, dann sollte dieser Wert auf 0 geändert werden.
+		long lReturn=-1;  //Merke: Selbst wenn es noch keinen Inhalt gibt, dann sollte dieser Wert auf 0 geï¿½ndert werden.
 		main:{
 			try{
 			if(StringZZZ.isEmpty(sToBeInserted)==true) break main;
@@ -111,13 +111,13 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 			RandomAccessFile rwFile = this.getRandomAccessFileObject();
 			
 			
-			boolean bFlagSorted = this.getFlagZ("IsFileSorted");
+			boolean bFlagSorted = this.getFlag("IsFileSorted");
 			//Falls man davon ausgehen kann, dass die Datei sortiert ist ...
 			if(bFlagSorted==true){
 				boolean bInserted = false;
-				boolean bFlagIgnoreCommentLine = this.getFlagZ("TopOfCommentLine");
-				boolean bFlagIgnoreCase = this.getFlagZ("IgnoreCase");
-				boolean bFlagTopOfEmptyLine = this.getFlagZ("TopOfEmptyLine");
+				boolean bFlagIgnoreCommentLine = this.getFlag("TopOfCommentLine");
+				boolean bFlagIgnoreCase = this.getFlag("IgnoreCase");
+				boolean bFlagTopOfEmptyLine = this.getFlag("TopOfEmptyLine");
 				
 				rwFile.seek(0);
 				
@@ -127,7 +127,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 					boolean bTopOfLine = false;
 					
 					currentLine:{
-						//ggf. prüfen, ob eine Komentarzeile
+						//ggf. prï¿½fen, ob eine Komentarzeile
 						if(bFlagIgnoreCommentLine==true){
 							if(this.isCommentLine(sLine)){
 								bTopOfLine = true;
@@ -151,16 +151,16 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 						
 						
 						if(iProof >= 0){
-							//der neue String ist grösser oder gleich
+							//der neue String ist grï¿½sser oder gleich
 							
 							//TODO den Rest der Datei irgendwo zwischenspeichern
-							//          Erste Alternative: ArrayList mit den restlichen Zeilen füllen
-							//          Ggf. mal in eine temporäre Datei speichern. Das ist aber nur bei SEHR grossen Dateine sinnvoll.
+							//          Erste Alternative: ArrayList mit den restlichen Zeilen fï¿½llen
+							//          Ggf. mal in eine temporï¿½re Datei speichern. Das ist aber nur bei SEHR grossen Dateine sinnvoll.
 							TxtReaderZZZ objReader = new TxtReaderZZZ(this, null);
 																				
 							Vector vec = objReader.readVectorStringByByte(lReturn);
 							
-							//Nun an der alten Stelle einfügen
+							//Nun an der alten Stelle einfï¿½gen
 							if(lReturn == rwFile.length()){
 								//a) Am Ende der Datei
 								if(lReturn<=-1) lReturn = 0;
@@ -176,7 +176,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 								sToBeInserted = sToBeInserted + "\r\n";
 								rwFile.writeBytes(sToBeInserted);
 								
-								//Den Speicher wieder auslesen und alle fehlenden Datensätze schreiben. 
+								//Den Speicher wieder auslesen und alle fehlenden Datensï¿½tze schreiben. 
 								this.appendVectorString(rwFile.getFilePointer(), vec);								
 								break main;
 								
@@ -196,7 +196,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 				}
 				
 			}else{		
-				//... falls es eine unsortierte Datei ist. Einfach anhängen.
+				//... falls es eine unsortierte Datei ist. Einfach anhï¿½ngen.
 				lReturn = rwFile.length();
 				if(lReturn<=-1) lReturn = 0;
 				rwFile.seek(lReturn);
@@ -226,8 +226,8 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 			RandomAccessFile rwFile = this.getRandomAccessFileObject();
 			rwFile.seek(lPosition);
 			
-			boolean bFlagSorted = this.getFlagZ("IsFileSorted");
-			boolean bFlagIgnoreCase = this.getFlagZ("IgnoreCase");
+			boolean bFlagSorted = this.getFlag("IsFileSorted");
+			boolean bFlagIgnoreCase = this.getFlag("IgnoreCase");
 			
 			String sLine = rwFile.readLine();	
 			
@@ -249,26 +249,26 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 						
 							
 							//TODO den Rest der Datei irgendwo zwischenspeichern
-							//          Erste Alternative: ArrayList mit den restlichen Zeilen füllen
-							//          Ggf. mal in eine temporäre Datei speichern. Das ist aber nur bei SEHR grossen Dateine sinnvoll.
+							//          Erste Alternative: ArrayList mit den restlichen Zeilen fï¿½llen
+							//          Ggf. mal in eine temporï¿½re Datei speichern. Das ist aber nur bei SEHR grossen Dateine sinnvoll.
 							TxtReaderZZZ objReader = new TxtReaderZZZ(this, null);		
 							lPosition = rwFile.getFilePointer();
 												
-							//Nun an der alten Stelle einfügen
+							//Nun an der alten Stelle einfï¿½gen
 							if(lPosition == rwFile.length()){
-								//a) am Ende der Date nix machen, ausser die Dateilänge zu verkürzen
+								//a) am Ende der Date nix machen, ausser die Dateilï¿½nge zu verkï¿½rzen
 								rwFile.setLength(lReturn);
 								
 							}else{
 								//b) Mitten in der Datei
 							
-								//Speicher mit den restlichen Zeilen füllen
+								//Speicher mit den restlichen Zeilen fï¿½llen
 								Vector vec = objReader.readVectorStringByByte(lPosition);
 															
-								//Den Speicher wieder auslesen und alle fehlenden Datensätze schreiben. 
+								//Den Speicher wieder auslesen und alle fehlenden Datensï¿½tze schreiben. 
 								this.appendVectorString(lReturn, vec);								
 								
-	//							Die Dateilänge entsprechend verlürzen
+	//							Die Dateilï¿½nge entsprechend verlï¿½rzen
 								lPosition = rwFile.getFilePointer();
 								rwFile.setLength(lPosition);
 								
@@ -300,25 +300,25 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 					
 													
 							//TODO den Rest der Datei irgendwo zwischenspeichern
-							//          Erste Alternative: ArrayList mit den restlichen Zeilen füllen
-							//          Ggf. mal in eine temporäre Datei speichern. Das ist aber nur bei SEHR grossen Dateine sinnvoll.
+							//          Erste Alternative: ArrayList mit den restlichen Zeilen fï¿½llen
+							//          Ggf. mal in eine temporï¿½re Datei speichern. Das ist aber nur bei SEHR grossen Dateine sinnvoll.
 							TxtReaderZZZ objReader = new TxtReaderZZZ(this, null);		
 							lPosition = rwFile.getFilePointer();
 													
-							//Nun an der alten Stelle einfügen
+							//Nun an der alten Stelle einfï¿½gen
 							if(lPosition == rwFile.length()){
-								//a) am Ende der Date nix machen, auser die Datei zu verkürzen
+								//a) am Ende der Date nix machen, auser die Datei zu verkï¿½rzen
 								rwFile.setLength(lReturn);
 							}else{
 								//b) Mitten in der Datei
 								
-								//Speicher mit den restlichen Zeilen füllen
+								//Speicher mit den restlichen Zeilen fï¿½llen
 								Vector vec = objReader.readVectorStringByByte(lPosition);
 								
-								//Den Speicher wieder auslesen und alle fehlenden Datensätze schreiben. 
+								//Den Speicher wieder auslesen und alle fehlenden Datensï¿½tze schreiben. 
 								this.appendVectorString(lReturn, vec);		
 								
-								//Die Dateilänge entsprechend verlürzen
+								//Die Dateilï¿½nge entsprechend verlï¿½rzen
 								lPosition = rwFile.getFilePointer();
 								rwFile.setLength(lPosition);
 								
@@ -350,8 +350,8 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 		}
 	}
 	
-	/** Anhängen von Datensätzen ab der bestimtten Position 
-	 *  !!! Dabei werden aber ggf. folgende Bytes überschrieben !!!
+	/** Anhï¿½ngen von Datensï¿½tzen ab der bestimtten Position 
+	 *  !!! Dabei werden aber ggf. folgende Bytes ï¿½berschrieben !!!
 	 *  
 	 *  !!! Auch bei sortierten Dateien wird (noch nicht ?) neu sortiert.
 	* @param lPositionin
@@ -378,7 +378,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 				Iterator it = vec.iterator();
 				while(it.hasNext()){
 					String sLine = (String) it.next();
-					//Problem, wie fragt man die vorherige Zeile ab.   if(lPosition>=1), darum wird \r\n angehängt und nicht vorangestellt
+					//Problem, wie fragt man die vorherige Zeile ab.   if(lPosition>=1), darum wird \r\n angehï¿½ngt und nicht vorangestellt
 					sLine = sLine + "\r\n";
 					raFile.writeBytes(sLine);
 					lPosition = raFile.getFilePointer();
@@ -392,7 +392,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 	
 	
 	
-	/** Gibt den Mode für das RandomAccessFile zurück.
+	/** Gibt den Mode fï¿½r das RandomAccessFile zurï¿½ck.
 	 *   Es muss sowohl lesend als auch schreibend auf die Datei zugegriffen werden.
 	* @return
 	* 
@@ -472,7 +472,7 @@ public class TxtWriterZZZ  extends TxtCommonZZZ{
 //				break main;
 //			} else if(stemp.equals("isfilesorted")){
 //				this.bFlagIsFileSorted = bFlagValue;
-//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag überhaupt gibt !!!
+//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag ï¿½berhaupt gibt !!!
 //				break main;
 //			}else if(stemp.equals("ignorecase")){
 //				this.bFlagIgnoreCase = bFlagValue;

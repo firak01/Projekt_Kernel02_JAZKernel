@@ -754,12 +754,12 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 	
 	@Override
-	public boolean setFlag(IROTUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IROTUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IROTUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IROTUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -776,8 +776,8 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 
 	@Override
-	public boolean proofFlagZExists(IROTUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagZExists(objEnumFlag.name());
+	public boolean proofFlagExists(IROTUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
 	
@@ -787,12 +787,12 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 	
 	@Override
-	public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(ICharacterPoolUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -809,7 +809,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	}
 
 	@Override
-	public boolean proofFlagZExists(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagZExists(objEnumFlag.name());
+	public boolean proofFlagExists(ICharacterPoolUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
 		}
 }

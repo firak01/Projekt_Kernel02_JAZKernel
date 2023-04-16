@@ -25,7 +25,7 @@ public class KernelUseObjectZZZTest extends TestCase {
 	* Lindhauer; 20.04.2006 09:05:11
 	 */
 	public void testFlagHandling(){
-		//try{			
+		try{			
 			//Testen, ob das Setzen der Flags möglich ist.
 			assertTrue("Setting the Flag 'DEBUG' failed.", objKernelUserTest.setFlag("debug", true));			
 			assertTrue("Receiving the previously set Flag 'DEBUG' failed.", objKernelUserTest.getFlag("debug"));
@@ -34,9 +34,9 @@ public class KernelUseObjectZZZTest extends TestCase {
 			assertTrue("Setting the Flag 'DEBUG' failed.", objKernelUserTest.setFlag("debug", false));			
 			assertFalse("Receiving the previously set Flag 'DEBUG' failed.", objKernelUserTest.getFlag("debug"));
 			
-//		}catch(ExceptionZZZ ez){
-//			fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
-//		}
+		}catch(ExceptionZZZ ez){
+			fail("An Exception happend looking for the configuration file for some alias: " + ez.getDetailAllLast());
+		}
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
 
 public interface IKernelFileIniZZZ extends IKernelUserZZZ{		
 	//Verwendete Konstanten stammen aus IniFile
@@ -23,9 +24,9 @@ public interface IKernelFileIniZZZ extends IKernelUserZZZ{
 	}
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public boolean getFlag(IKernelFileIniZZZ.FLAGZ objEnum_IKernelFileIniZZZ);
-	public boolean setFlag(IKernelFileIniZZZ.FLAGZ objEnum_IKernelFileIniZZZ, boolean bFlagValue);
-	public boolean[] setFlag(IKernelFileIniZZZ.FLAGZ[] objEnum_IKernelFileIniZZZ, boolean bFlagValue);
-	
+	public boolean setFlag(IKernelFileIniZZZ.FLAGZ objEnum_IKernelFileIniZZZ, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean[] setFlag(IKernelFileIniZZZ.FLAGZ[] objEnum_IKernelFileIniZZZ, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean proofFlagExists(IKernelFileIniZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public File getFileObject();		
 	public IniFile getFileIniObject() throws ExceptionZZZ;

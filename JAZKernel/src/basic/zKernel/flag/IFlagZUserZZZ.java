@@ -12,15 +12,18 @@ public interface IFlagZUserZZZ{
 		DEBUG, INIT ; //20170307 - Verschoben aus ObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Java spezifischen Klasse erben).
 	}
 	
+	//KONVENTION: 
+	//Das Z im Methodennamen ...FlagZ... wird nur für Methoden verwendet, die ein Array zurueckliefern.
 	public abstract boolean getFlag(String sFlagName);
-	public abstract boolean setFlag(String sFlagName, boolean bValue);
-	public abstract boolean[] setFlag(String[] saFlagName, boolean bValue);
+	public abstract boolean setFlag(String sFlagName, boolean bValue) throws ExceptionZZZ;;
+	public abstract boolean[] setFlag(String[] saFlagName, boolean bValue) throws ExceptionZZZ;;
+	public abstract boolean proofFlagExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public abstract boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag);
-	public abstract boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public abstract boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue);
-	public abstract boolean proofFlagZExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public abstract boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	//202211228: Leider wird dann als Methode nur das FLAGZ in den erbenden Klassen eingesetzt.
 	//           Und das ist "ambigous". Es geht also das Interface verloren.
@@ -29,18 +32,14 @@ public interface IFlagZUserZZZ{
 	//public abstract void getFlag(IFlagUserZZZ.FLAGZ objEnumFlag);
 	//public abstract <T extends IFlagUserZZZ.FLAGZ> void setFlag(T objEnumFlag, boolean bValue);
 	
-	public abstract HashMap<String, Boolean>getHashMapFlagZ();
-		
-	public abstract boolean getFlagZ(String sFlag);
-	public abstract boolean setFlagZ(String sFlag, boolean bValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.	
+	public abstract HashMap<String, Boolean>getHashMapFlag();
 	
-	public abstract boolean proofFlagZExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.		
 	public String[] getFlagZ(boolean bFlagValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZ(boolean bFlagValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZ() throws ExceptionZZZ;
 	
-	public abstract HashMap<String, Boolean>getHashMapFlagZpassed();
-	public abstract void setHashMapFlagZpassed(HashMap<String, Boolean> hmFlagPassed);
+	public abstract HashMap<String, Boolean>getHashMapFlagPassed();
+	public abstract void setHashMapFlagPassed(HashMap<String, Boolean> hmFlagPassed);
 	public String[] getFlagZ_passable(boolean bValueToSearchFor, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;
 	public String[] getFlagZ_passable(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap, IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;
 	public String[] getFlagZ_passable(IFlagZUserZZZ objUsingFlagZ) throws ExceptionZZZ;//Hole alle auf true gesetzten Flags....

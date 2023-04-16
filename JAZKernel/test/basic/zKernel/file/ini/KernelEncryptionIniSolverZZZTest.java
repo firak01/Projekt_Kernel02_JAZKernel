@@ -56,7 +56,7 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 	}//END setup
 	
 	public void testFlagHandling(){
-		//try{							
+		try{							
 		assertTrue(objExpressionSolverInit.getFlag("init")==true);
 		assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
 		
@@ -67,9 +67,9 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 		assertFalse("Das Flag 'gibtEsNicht' sollte nicht zur Verfügung stehen.", bFlagAvailable);
 		
 		
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 	/** void, Test: Reading an entry in a section of the ini-file

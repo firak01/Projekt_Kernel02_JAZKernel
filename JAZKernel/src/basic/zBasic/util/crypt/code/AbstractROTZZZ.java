@@ -68,12 +68,12 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUs
 	}
 	
 	@Override
-	public boolean setFlag(IROTUserConstantZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IROTUserConstantZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IROTUserConstantZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IROTUserConstantZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -90,8 +90,8 @@ public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUs
 	}
 	
 	@Override
-	public boolean proofFlagZExists(IROTUserConstantZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagZExists(objEnumFlag.name());
+	public boolean proofFlagExists(IROTUserConstantZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
 		

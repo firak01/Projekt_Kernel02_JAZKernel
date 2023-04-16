@@ -10,7 +10,7 @@ import basic.zBasic.ExceptionZZZ;
  * @author Fritz Lindhauer, 21.07.2022, 08:48:45
  * 
  */
-public interface IFlagLocalUserZZZ{
+public interface IFlagZLocalUserZZZ{
 	public final String sERROR_FLAG_UNAVAILABLE = "this LOCAL flag is not available: ";
 	public final int iERROR_FLAG_UNAVAILABLE = 51;
 	
@@ -20,10 +20,18 @@ public interface IFlagLocalUserZZZ{
 //		SKIPDEBUGUI;
 //	}	
 	
-	public abstract boolean proofFlagZLocalExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.		
+	//KONVENTION: 
+	//Das Z im Methodennamen ...FlagZ... wird nur für Methoden verwendet, die ein Array zurueckliefern.
+	public abstract HashMap<String, Boolean>getHashMapFlagLocal();
+	public abstract void setHashMapFlagLocal(HashMap<String, Boolean> hmFlagLocal);	
+	
+	public abstract boolean getFlagLocal(String sFlag);
+	public abstract boolean setFlagLocal(String sFlag, boolean bValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.	
+	public abstract boolean[] setFlagLocal(String[] saFlag, boolean bValue) throws ExceptionZZZ; 
+	public abstract boolean proofFlagLocalExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
+	
 	public String[] getFlagZLocal(boolean bFlagValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZLocal(boolean bFlagValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZLocal() throws ExceptionZZZ;
-	public abstract HashMap<String, Boolean>getHashMapFlagZLocal();
-	public abstract void setHashMapFlagZLocal(HashMap<String, Boolean> hmFlagLocal);	
+
 }

@@ -6037,7 +6037,7 @@ MeinTestParameter=blablaErgebnis
 				String[] saFlagUsed = null;				
 				if(objConfig!=null) {
 					//Übernimm die direkt gesetzten FlagZ...
-					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlagZ();
+					Map<String,Boolean>hmFlagZ = objConfig.getHashMapFlag();
 					saFlagUsed = (String[]) HashMapExtendedZZZ.getKeysAsStringFromValue(hmFlagZ, Boolean.TRUE);
 				}			
 				
@@ -6089,7 +6089,7 @@ MeinTestParameter=blablaErgebnis
 					this.setConfigObject(objConfig);
 						
 					//Übernimm die direkt als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
-					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagZpassed();	
+					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagPassed();	
 					if(hmFlagZpassed!=null) {
 						Set<String> setFlag = hmFlagZpassed.keySet();
 						Iterator<String> itFlag = setFlag.iterator();
@@ -6654,12 +6654,12 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	@Override
-	public boolean setFlag(IKernelZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 
 	@Override
-	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -6674,6 +6674,11 @@ MeinTestParameter=blablaErgebnis
 		}//end main:
 		return baReturn;
 	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
 
 	//### aus IKernelZFormulaIniSolverZZZ
 	@Override
@@ -6682,12 +6687,12 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	@Override
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -6703,6 +6708,10 @@ MeinTestParameter=blablaErgebnis
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
 	
 	//### Aus Interface IKernelExpressionIniSolverZZZ
 	@Override
@@ -6711,12 +6720,12 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	@Override
-	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+	public boolean setFlag(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -6732,6 +6741,11 @@ MeinTestParameter=blablaErgebnis
 		return baReturn;
 	}
 	
+	@Override
+	public boolean proofFlagExists(IKernelExpressionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
 	//### aus IKernelEncryptionIniSolverZZZ
 		@Override
 		public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
@@ -6739,12 +6753,12 @@ MeinTestParameter=blablaErgebnis
 		}
 		
 		@Override
-		public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
+		public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
 		}
 		
 		@Override
-		public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) {
+		public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
 				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelEncryptionIniSolverZZZ)) {
@@ -6758,6 +6772,11 @@ MeinTestParameter=blablaErgebnis
 				}
 			}//end main:
 			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(IKernelEncryptionIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
 		}
 		
 		//# aus ICryptUserZZZ
@@ -6778,12 +6797,12 @@ MeinTestParameter=blablaErgebnis
 		}
 		
 		@Override
-		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ, boolean bFlagValue) {
+		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnum_IKernelJsonIniSolverZZZ.name(), bFlagValue);
 		}
 
 		@Override
-			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnum_IKernelJsonIniSolverZZZ, boolean bFlagValue) {
+			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnum_IKernelJsonIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
 					if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJsonIniSolverZZZ)) {
@@ -6798,4 +6817,10 @@ MeinTestParameter=blablaErgebnis
 				}//end main:
 				return baReturn;
 			}		
+		
+		
+		@Override
+		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
 }//end class// end class

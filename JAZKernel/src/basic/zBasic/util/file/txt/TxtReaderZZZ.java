@@ -54,14 +54,14 @@ main:{
 	  for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
 		  String stemp = saFlagControlIn[iCount];
 		  if(!StringZZZ.isEmpty(stemp)){
-			  boolean btemp = setFlagZ(stemp, true);
+			  boolean btemp = setFlag(stemp, true);
 			  if(btemp==false){						
 				  ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 				  throw ez;		 
 			  }
 		  }
 	  }
-		if(this.getFlagZ("INIT")==true){
+		if(this.getFlag("INIT")==true){
 			bReturn = true;
 			break main; 
 		}		
@@ -135,7 +135,7 @@ public long readPositionLineFirst(String sLine2proof, long lStartByteIn) throws 
 			}
 			
 			RandomAccessFile raFile = this.getRandomAccessFileObject();
-			boolean bFlagIgnoreCase = this.getFlagZ("IgnoreCase");
+			boolean bFlagIgnoreCase = this.getFlag("IgnoreCase");
 			
 			long lPosition = lStartByte;
 			raFile.seek(lPosition);
@@ -263,8 +263,8 @@ public Vector readVectorStringByByte(long lStartByteIn) throws ExceptionZZZ{
 			RandomAccessFile raFile = this.getRandomAccessFileObject();
 			raFile.seek(lStartByte);
 			
-			boolean bIgnoreCommentLine = this.getFlagZ("IgnoreCommentLine");
-			boolean bIgnoreEmptyLine = this.getFlagZ("IgnoreEmptyLine");
+			boolean bIgnoreCommentLine = this.getFlag("IgnoreCommentLine");
+			boolean bIgnoreEmptyLine = this.getFlag("IgnoreEmptyLine");
 			
 			//Nun die Zeilen auslesen und in einen Vector packen
 			String sLine = raFile.readLine();

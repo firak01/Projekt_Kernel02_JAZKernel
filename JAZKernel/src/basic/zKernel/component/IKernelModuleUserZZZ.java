@@ -8,9 +8,9 @@ public interface IKernelModuleUserZZZ {
 	}
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public boolean getFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag);
-	public boolean setFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public boolean[] setFlag(IKernelModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue);
-	public boolean proofFlagZExists(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public boolean setFlag(IKernelModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean[] setFlag(IKernelModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean proofFlagExists(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public IKernelModuleZZZ getModule() throws ExceptionZZZ;
 	public void setModule(IKernelModuleZZZ objModule);	

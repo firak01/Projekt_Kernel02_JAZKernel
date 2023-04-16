@@ -250,12 +250,12 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 	}
 	
 	@Override
-	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) {
+	public boolean setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnum_IKernelZFormulaIniSolverZZZ.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) {
+	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelZFormulaIniSolverZZZ)) {
@@ -269,5 +269,10 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 			}
 		}//end main:
 		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
 	}
 }//End class

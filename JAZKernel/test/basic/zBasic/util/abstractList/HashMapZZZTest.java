@@ -118,7 +118,8 @@ public class HashMapZZZTest extends TestCase{
 
 		private Map<String,Object>setUp_fillTest_StringObject(){
 			Map<String,Object> hmTest = new HashMap<String,Object>();
-			main:{						
+			main:{
+				try {
 				//### Das spezielle Generics Testobjekt
 				DummyObjectZZZ objTest01 = new DummyObjectZZZ();
 				objTest01.setFlag("init", true);
@@ -134,13 +135,18 @@ public class HashMapZZZTest extends TestCase{
 				objTest02.setFlag("init", true);
 				objTest02.setValue("2");
 				hmTest.put("80",objTest02);
+				} catch (ExceptionZZZ ez) {
+					fail("Method throws an exception." + ez.getMessageLast());
+				} 
+				
 			}//end main:
 		return hmTest;		
 	}
 		
 		private Map<Integer,Object>setUp_fillTest_IntegerObject(){
 			Map<Integer,Object> hmTest = new HashMap<Integer,Object>();
-			main:{						
+			main:{	
+				try {
 				//### Das spezielle Generics Testobjekt
 				DummyObjectZZZ objTest01 = new DummyObjectZZZ();
 				objTest01.setFlag("init", true);
@@ -159,7 +165,10 @@ public class HashMapZZZTest extends TestCase{
 				objTest02.setValue("2");
 				Integer intKey3 = new Integer(80);
 				hmTest.put(intKey3,objTest02);
-
+				} catch (ExceptionZZZ ez) {
+					fail("Method throws an exception." + ez.getMessageLast());
+				} 
+				
 			}//end main:
 		return hmTest;		
 	}

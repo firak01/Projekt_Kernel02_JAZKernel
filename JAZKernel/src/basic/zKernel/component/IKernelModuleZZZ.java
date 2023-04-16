@@ -9,9 +9,9 @@ public interface IKernelModuleZZZ extends IFlagZUserZZZ {
 	}	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag);
-	public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);
-	public boolean proofFlagZExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public static String sMODULE_UNDEFINED="Modul_undefined";
 	

@@ -64,12 +64,12 @@ public class FileExpansionZZZTest extends TestCase {
 	
 	public void testFlagZ(){
 		try{
-		boolean  bExists = objExpansionTest.proofFlagZExists("NIXDA");
+		boolean  bExists = objExpansionTest.proofFlagExists("NIXDA");
 		assertFalse("Object should NOT have FlagZ 'NIXDA'",bExists);
 		
 		boolean bSetted = false;
 			try{
-				bSetted = objExpansionTest.setFlagZ("NIXDA", true);
+				bSetted = objExpansionTest.setFlag("NIXDA", true);
 				assertFalse("Setting an unavailable FLAGZ 'NIXDA' should return false",bSetted);
 			} catch (ExceptionZZZ ez) {
 				fail("Setting an unavailable FLAGZ should NOT throw an error.");		

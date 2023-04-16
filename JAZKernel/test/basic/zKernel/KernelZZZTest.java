@@ -867,7 +867,7 @@ public void testSetParameterByProgramAlias_CreateSectionWhenNotExisist(){
  * @author Fritz Lindhauer, 13.08.2022, 08:46:20
  */
 public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
-	//try {					
+	try {					
 		String sModule = this.getClass().getName();
 		String sProgram = "TestProg";
 		String sProperty = "testProgramPropertyEncryptedROT13";
@@ -893,9 +893,9 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
 		boolean bErg = testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(objKernelFGL, sModule, sProgram, sProperty);
 		
 		
-//	} catch (ExceptionZZZ ez) {
-//		fail("Method throws an exception." + ez.getDetailAllLast());
-//	}
+	} catch (ExceptionZZZ ez) {
+		fail("Method throws an exception." + ez.getDetailAllLast());
+	}
 }
 
 

@@ -127,26 +127,26 @@ public class TxtReaderZZZTest  extends TestCase{
 		try{
 		boolean bSetted = false;
 			try{
-				bSetted = objReaderEmpty.setFlagZ("NIXDA", true);
+				bSetted = objReaderEmpty.setFlag("NIXDA", true);
 				assertFalse("Setting an unavailable FLAGZ 'NIXDA' should return false",bSetted);
 			} catch (ExceptionZZZ ez) {
 				fail("Setting an unavailable FLAGZ should NOT throw an error.");		
 			}
-			boolean  bExists = objReaderEmpty.proofFlagZExists("NIXDA");
+			boolean  bExists = objReaderEmpty.proofFlagExists("NIXDA");
 			assertFalse("Object should NOT have FlagZ 'NIXDA'",bExists);
 			
 			//++++++++++++
-			bExists = objReaderSorted.proofFlagZExists("IsFileSorted");
+			bExists = objReaderSorted.proofFlagExists("IsFileSorted");
 			assertTrue("Object should have FlagZ '" + TxtReaderZZZ.FLAGZ.IsFileSorted + "'",bExists);
 			
-			bExists = objReaderSorted.proofFlagZExists("NIXDA");
+			bExists = objReaderSorted.proofFlagExists("NIXDA");
 			assertFalse("Object should NOT have FlagZ 'NIXDA'",bExists);
 		
-			boolean btemp = objReaderSorted.getFlagZ("IsFileSorted");
+			boolean btemp = objReaderSorted.getFlag("IsFileSorted");
 			assertTrue("Object should have FlagZ '" + TxtReaderZZZ.FLAGZ.IsFileSorted + "' set to true", btemp);
 			
 			//+++++++++++++++++
-			btemp = objReaderUnsorted.getFlagZ("IsFileSorted");
+			btemp = objReaderUnsorted.getFlag("IsFileSorted");
 			assertFalse("Object should NOT have FlagZ '" + TxtReaderZZZ.FLAGZ.IsFileSorted + "' set to true", btemp);
 			
 		} catch (ExceptionZZZ ez) {

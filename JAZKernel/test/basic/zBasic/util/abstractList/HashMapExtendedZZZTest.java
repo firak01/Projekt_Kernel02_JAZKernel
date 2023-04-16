@@ -13,7 +13,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 	 
 	    protected void setUp(){
 	      
-		//try {			
+		try {			
 			//### Die TestObjecte, normal	
 			hmTest=new HashMapExtendedZZZ();
 			hmTest.put("Alias1","Das ist ein Test");
@@ -29,11 +29,11 @@ public class HashMapExtendedZZZTest extends TestCase{
 			hmTestGenerics.put("test01", objTest01);
 			hmTestGenerics.put("test02", objTest02);
 			
-		/*
+		
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} 
-		*/
+		
 		
 	}//END setup
 	    

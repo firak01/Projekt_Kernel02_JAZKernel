@@ -98,12 +98,12 @@ public abstract class AbstractKernelModuleZZZ  extends KernelUseObjectZZZ implem
 			return this.getFlag(objEnumFlag.name());
 		}
 		@Override
-		public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnumFlag.name(), bFlagValue);
 		}
 		
 		@Override
-		public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+		public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
 				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -120,8 +120,8 @@ public abstract class AbstractKernelModuleZZZ  extends KernelUseObjectZZZ implem
 		}
 		
 		@Override
-		public boolean proofFlagZExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagZExists(objEnumFlag.name());
+		public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagExists(objEnumFlag.name());
 			}
 	
 	public void resetModuleUsed() {

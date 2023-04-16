@@ -9,6 +9,7 @@ import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelFileIniZZZ;
 import basic.zKernel.flag.IEventBrokerFlagZsetUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
@@ -21,8 +22,10 @@ public interface IKernelZZZ extends IKernelConfigSectionEntryUserZZZ,IKernelCach
 	}
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public boolean getFlag(IKernelZZZ.FLAGZ objEnumFlag);
-	public boolean setFlag(IKernelZZZ.FLAGZ objEnumFlag, boolean bFlagValue);
-	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue);	
+	public boolean setFlag(IKernelZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;	
+	public abstract boolean proofFlagExists(IKernelZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	
 	
 	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ;	
 	public LogZZZ getLogObject();

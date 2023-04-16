@@ -200,12 +200,12 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		}
 		
 		@Override
-		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) {
+		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnumFlag.name(), bFlagValue);
 		}
 
 		@Override
-			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) {
+			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
 					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
@@ -220,5 +220,10 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 				}//end main:
 				return baReturn;
 			}
+		
+		@Override
+		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
 	
 }//End class
