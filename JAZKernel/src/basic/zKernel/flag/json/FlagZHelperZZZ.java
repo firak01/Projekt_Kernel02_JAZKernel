@@ -43,7 +43,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 					bReturn = true;	
 					break main;
 				}
-			}
+			}												
 		}//end main:
 		return bReturn;
 	}
@@ -313,9 +313,9 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		for(Class objclsByInterface : objclsaByInterface) {
 			Enum[] enumaByInterface = null;
 			if(bLocal) {
-				getEnumFlagZLocal(objclsByInterface);
+				enumaByInterface = getEnumFlagZLocal(objclsByInterface);
 			}else {
-				getEnumFlagZ(objclsByInterface);
+				enumaByInterface = getEnumFlagZ(objclsByInterface);
 			}
 			if(enumaByInterface!=null) {			
 				for(Enum objEnum : enumaByInterface) {
