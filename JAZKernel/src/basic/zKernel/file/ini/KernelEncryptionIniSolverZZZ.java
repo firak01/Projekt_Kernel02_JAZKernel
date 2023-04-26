@@ -176,6 +176,8 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
 					}
 					
+					TODOGOON20230426;//Das ist der reine kodierte Wert. Wie den in objEntry.getValueEncrypted() ablegen?
+					                 //Vielleicht mit einem zusätzlichen Referenze-Objekt als Argument?
 					 if(!StringZZZ.isEmpty(sCode)) {
 						 sValue = objAlgorithm.decrypt(sCode);
 					 }

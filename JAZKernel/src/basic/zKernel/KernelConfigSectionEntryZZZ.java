@@ -41,6 +41,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bEncrypted = false;
 	private boolean bRawEncrypted = false;
 	private String sRawEncrypted = null;
+	private String sValueEncrypted=new String("");
 	
 	private boolean bDecrypted = false;
 	private boolean bRawDecrypted = false;	
@@ -253,6 +254,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 				this.hasNullValue(false);
 			}
 		}
+	}
+	
+	@Override
+	public String getValueEncrypted() {
+		return this.sValueEncrypted;
+	}
+
+	@Override
+	public void setValueEncrypted(String sValueEncrypted) {
+		this.sValueEncrypted = sValueEncrypted;
 	}
 	
 	

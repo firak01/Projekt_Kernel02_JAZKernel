@@ -93,7 +93,11 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	abstract void isRawEncrpyted(boolean bIsRawEncrypted);
 	public String getRawEncrypted();
 	abstract void setRawEncrypted(String sRaw);
-		
+	public String getValueEncrypted(); //nur den Einwelwert verschluesselt und nicht die RAW-Tags drumherum
+	public void setValueEncrypted(String sValueEncryptd);
+	
+	
+	//Suchpfaddetail	
 	public boolean sectionExists();
 	abstract void sectionExists(boolean bSectionExists);
 	
