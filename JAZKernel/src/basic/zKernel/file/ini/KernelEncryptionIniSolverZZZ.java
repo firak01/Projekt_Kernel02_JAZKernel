@@ -10,12 +10,15 @@ import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  implements IKernelEncryptionIniSolverZZZ{
+public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  implements IKernelEncryptionIniSolverZZZ{
 	public static String sTAG_NAME = "Z:Encrypted";
 	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
@@ -24,16 +27,16 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 		
 	public KernelEncryptionIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionMathSolverNew_(saFlag);
+		KernelEncryptionIniSolverNew_(saFlag);
 	}
 	
 	public KernelEncryptionIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel,saFlag);
-		KernelExpressionMathSolverNew_(saFlag);
+		KernelEncryptionIniSolverNew_(saFlag);
 	}
 	
 	
-	private boolean KernelExpressionMathSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelEncryptionIniSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 //	 boolean bReturn = false;
 //	 String stemp; boolean btemp; 
 //	 main:{
@@ -61,10 +64,15 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 	
 	
 	
+	//public Vector computeExpressionAllVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+//			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+//			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+
 			
 			String sValue=null;  String sCode=null;
 			
@@ -176,9 +184,11 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
 					}
 					
-					TODOGOON20230426;//Das ist der reine kodierte Wert. Wie den in objEntry.getValueEncrypted() ablegen?
+					
 					                 //Vielleicht mit einem zusätzlichen Referenze-Objekt als Argument?
 					 if(!StringZZZ.isEmpty(sCode)) {
+						 //Das ist der reine kodierte Wert. Er gehört in objEntry.getValueEncrypted().
+						 //objReturn.setValueEncrypted(sCode);						 
 						 sValue = objAlgorithm.decrypt(sCode);
 					 }
 					 
@@ -196,7 +206,10 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 				if(sValue!=null){
 					vecReturn.removeElementAt(1);
 					vecReturn.add(1, sValue);
-				}												
+				}	
+				
+				//Das Referenzobjekt auch zurückgeben.
+//				objReturnReference.set(objReturn);
 			}
 		}
 		return vecReturn;
@@ -256,7 +269,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 		}//end main:
 		return sReturn;
 	}
-	
+		
 	@Override
 	public String[] computeAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
@@ -285,7 +298,6 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 		return sReturn;
 	}
 	
-	
 
 	@Override
 	public String convert(String sLine) throws ExceptionZZZ {
@@ -306,6 +318,21 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 		return false;
 	}
 
+	//### Aus IKernelIniSolver
+	@Override
+	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{			
+			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
+			if(bUseEncryption) {
+				objReturn = super.computeAsEntry(sLineWithExpression);
+			}else {
+				objReturn.setValue(sLineWithExpression);
+			}									
+		}//end main:
+		return objReturn;
+	}
+	
 	//### Aus Inteface ICryptUserZZZ
 	@Override
 	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
@@ -315,5 +342,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniTagZZZ  impl
 	@Override
 	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCryptAlgorithmLast = objCrypt;
-	}	
+	}
+
+		
 }//End class

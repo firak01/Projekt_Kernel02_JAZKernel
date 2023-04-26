@@ -16,6 +16,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
@@ -99,6 +100,49 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 			
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	/** void, Test: Reading an entry in a section of the ini-file
+	* Lindhauer; 22.04.2006 12:54:32
+	 */
+	public void testCompute01asEntry(){
+		try {
+			String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
+			
+			
+			boolean bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			
+			//### Teilberechnungen durchführen
+			IKernelConfigSectionEntryZZZ objEntryTemp = new KernelConfigSectionEntryZZZ();//Hierin können während der Verarbeitung Zwischenergebnisse abgelegt werden, z.B. vor der Entschluesselung der pure Verscluesselte Wert.
+			
+			TODOGOON20230426;//Als Zwischenschritt die bisherigen rein Stringbasierten Methoden im objEntry erweitern
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression, objEntryTemp);
+			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
+			
+			
+			//### Nun die Gesamtberechnung durchführen
+			IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.computeAsEntry(sLineWithExpression);
+			//String sValue = objExpressionSolver.compute(sLineWithExpression);
+			String sValue = objEntry.getValue();
+			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
+		
+			//Anwenden der ersten Formel		
+			objExpressionSolver.setFlag("useencryption", true); //Damit der Wert sofort ausgerechnet wird						
+			IKernelConfigSectionEntryZZZ objEntry2 = objExpressionSolver.computeAsEntry(sLineWithExpression);
+			sValue = objEntry2.getValue();
+			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			
+			//20230426: DAS IST VORERST DAS ZIEL, DAMIT IN DER FTPCREDENTIALS MASKE DER VERSCHLUESSELTE WERT AUCH ANGEZEIGT WERDEN KANN!!!
+			sValue = objEntry2.getValueEncrypted();
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++
 			
