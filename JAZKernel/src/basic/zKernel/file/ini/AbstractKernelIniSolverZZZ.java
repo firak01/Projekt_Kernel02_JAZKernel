@@ -76,16 +76,61 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 		this.sValue = sValue;
 	}
 	
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	/**TODOGOON: Sollte diese Methode nicht einfach abstrakt sein?
+	 * @param sLineWithExpression
+	 * @param objEntryReference
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
+	 */
+	public abstract Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;	
+//	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector vecReturn = new Vector();
+//		main:{
+//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+//						
+//			//TODO: Mehrere Ausdrücke ineinander verschachtelt. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+//			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+//			
+//			//... und vielleicht erneut den Math-Solver auf den Rest ansetzen.
+//			
+//		}
+//		return vecReturn;
+//	}
+	
+	/**TODOGOON: Sollte diese Methode nicht einfach abstrakt sein?
+	 * @param sLineWithExpression
+	 * @param objEntryReference
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
+	 */
+	public abstract Vector computeExpressionAllVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference) throws ExceptionZZZ;
+//	public Vector computeExpressionAllVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference) throws ExceptionZZZ{
+//		Vector vecReturn = new Vector();
+//		main:{
+//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+//						
+//			//TODO: Mehrere Ausdrücke ineinander verschachtelt. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+//			vecReturn = this.computeExpressionFirstVector(sLineWithExpression,objEntryReference);			
+//			
+//			//... und vielleicht erneut den Math-Solver auf den Rest ansetzen.
+//			
+//		}
+//		return vecReturn;
+//	}
+	
+	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	* @param sLineWithExpression
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:20:34
+	 * @throws ExceptionZZZ 
+	 */
+	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();		
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
-			//TODO: Mehrere Ausdrücke ineinander verschachtelt. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			
-			//... und vielleicht erneut den Math-Solver auf den Rest ansetzen.
-			
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
 		}
 		return vecReturn;
 	}
@@ -97,7 +142,7 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+	public Vector computeExpressionFirstVector(String sLineWithExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
@@ -189,7 +234,8 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 					
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
-			TODOGOON20230426;//Hier die Methode abwandeln und objReturn ueber ein Referenzobjekt hineingeben. Damit können darin zwischenergebnisse abgelegt werden.
+			
+			//TODOGOON20230426;//Hier die Methode abwandeln und objReturn ueber ein Referenzobjekt hineingeben. Damit können darin zwischenergebnisse abgelegt werden.
 			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression, objReturnReference);
 			
 			String sReturn = (String) vecAll.get(1);

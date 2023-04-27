@@ -13,6 +13,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -122,9 +123,11 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//### Teilberechnungen durchführen
 			IKernelConfigSectionEntryZZZ objEntryTemp = new KernelConfigSectionEntryZZZ();//Hierin können während der Verarbeitung Zwischenergebnisse abgelegt werden, z.B. vor der Entschluesselung der pure Verscluesselte Wert.
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference = new ReferenceZZZ();
+			objEntryReference.set(objEntryTemp);
 			
-			TODOGOON20230426;//Als Zwischenschritt die bisherigen rein Stringbasierten Methoden im objEntry erweitern
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression, objEntryTemp);
+			//TODOGOON20230427;//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression, objEntryReference);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			
 			
