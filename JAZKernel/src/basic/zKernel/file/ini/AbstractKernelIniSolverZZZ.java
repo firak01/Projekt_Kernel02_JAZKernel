@@ -20,8 +20,8 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ, IKernelIniSolverZZZ{
-	private String sValue;
+public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagZZZ implements IKernelZFormulaIniZZZ, IKernelIniSolverZZZ{
+	private IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	public AbstractKernelIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
@@ -69,14 +69,14 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 	 }//end function KernelExpressionMathSolverNew_
 	
 	public String getValue() {
-		return this.sValue;
+		return this.getEntry().getValue();
 	}
 
 	public void setValue(String sValue) {
-		this.sValue = sValue;
+		this.getEntry().setValue(sValue);
 	}
 	
-	/**TODOGOON: Sollte diese Methode nicht einfach abstrakt sein?
+	/**Methode muss vom konkreten "solver" entwickelt werden.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
 	 * @return
@@ -84,132 +84,11 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
 	public abstract Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;	
-//	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector vecReturn = new Vector();
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//						
-//			//TODO: Mehrere Ausdrücke ineinander verschachtelt. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-//			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-//			
-//			//... und vielleicht erneut den Math-Solver auf den Rest ansetzen.
-//			
-//		}
-//		return vecReturn;
-//	}
-	
-	/**TODOGOON: Sollte diese Methode nicht einfach abstrakt sein?
-	 * @param sLineWithExpression
-	 * @param objEntryReference
-	 * @return
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
-	 */
-	public abstract Vector computeExpressionAllVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference) throws ExceptionZZZ;
-//	public Vector computeExpressionAllVector(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference) throws ExceptionZZZ{
-//		Vector vecReturn = new Vector();
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//						
-//			//TODO: Mehrere Ausdrücke ineinander verschachtelt. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
-//			vecReturn = this.computeExpressionFirstVector(sLineWithExpression,objEntryReference);			
-//			
-//			//... und vielleicht erneut den Math-Solver auf den Rest ansetzen.
-//			
-//		}
-//		return vecReturn;
-//	}
-	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
-		}
-		return vecReturn;
-	}
-	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression,ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
-		}
-		return vecReturn;
-	}
-	
-	
-	public boolean isExpression(String sLine) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, this.getExpressionTagStarting(),false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, this.getExpressionTagClosing(),false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
+
 	//###### Getter / Setter
 	public abstract String getExpressionTagName();
-	
-	public String getExpressionTagStarting() throws ExceptionZZZ{
-		return AbstractKernelIniSolverZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
-	}
-	public String getExpressionTagClosing() throws ExceptionZZZ{
-		return AbstractKernelIniSolverZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
-	}	
-	public String getExpressionTagEmpty()throws ExceptionZZZ{
-		return AbstractKernelIniSolverZZZ.computeExpressionTagEmpty(this.getExpressionTagName());		
-	}
-	
-	public static String computeExpressionTagStarting(String sTagName) throws ExceptionZZZ{
-		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniSolverZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
-			throw ez;
-		}
-		return "<" + sTagName + ">";
-	}
-	
-	public static String computeExpressionTagClosing(String sTagName)throws ExceptionZZZ{
-		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniSolverZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
-			throw ez;
-		}
-		return "</" + sTagName + ">"; 
-	}
-	
-	public static String computeExpressionTagEmpty(String sTagName)throws ExceptionZZZ{
-		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniSolverZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
-			throw ez;
-		}
-		return "<" + sTagName + "/>";
-	}
-	
 
-	//### Aus Interface IKernelExpressionIniZZZ
-	public abstract boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ;
-	public abstract String convert(String sLine) throws ExceptionZZZ;		
 	
-	public abstract boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;
-			
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
@@ -226,24 +105,21 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 	}	
 	
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.file.ini.IKernelIniSolverZZZ#computeAsEntry(java.lang.String)
+	 */
 	@Override
 	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-					
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReference.set(objReturn);
-			
-			//TODOGOON20230426;//Hier die Methode abwandeln und objReturn ueber ein Referenzobjekt hineingeben. Damit können darin zwischenergebnisse abgelegt werden.
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression, objReturnReference);
+											
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 			
 			String sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn);
+			this.setValue(sReturn); //Merke: Internes Entry-Objekt nutzen. Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
 			
-			objReturn = objReturnReference.get();
-			objReturn.setValue(sReturn);
-			
+			objReturn = this.getEntry();			
 		}//end main:
 		return objReturn;
 	}	
@@ -284,6 +160,9 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 		return saReturn;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#computeAsExpression(java.lang.String)
+	 */
 	@Override
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 				String sReturn = sLineWithExpression;
@@ -298,5 +177,16 @@ public abstract class AbstractKernelIniSolverZZZ  extends KernelUseObjectZZZ imp
 					
 				}//end main:
 				return sReturn;
-			}			
+			}
+	
+	//### Interface aus IKernelExpressionIniSolver
+	public IKernelConfigSectionEntryZZZ getEntry() {
+		if(this.objEntry==null) {
+			this.objEntry = new KernelConfigSectionEntryZZZ();			
+		}
+		return this.objEntry;
+	}
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		this.objEntry = objEntry;
+	}
 }//End class

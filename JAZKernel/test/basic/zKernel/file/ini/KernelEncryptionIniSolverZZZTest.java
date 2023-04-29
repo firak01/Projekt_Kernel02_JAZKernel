@@ -123,11 +123,13 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			
 			//### Teilberechnungen durchführen
 			IKernelConfigSectionEntryZZZ objEntryTemp = new KernelConfigSectionEntryZZZ();//Hierin können während der Verarbeitung Zwischenergebnisse abgelegt werden, z.B. vor der Entschluesselung der pure Verscluesselte Wert.
-			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference = new ReferenceZZZ();
-			objEntryReference.set(objEntryTemp);
+//			ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference = new ReferenceZZZ();
+//			objEntryReference.set(objEntryTemp);
+			
+			objExpressionSolver.setEntry(objEntryTemp);
 			
 			//TODOGOON20230427;//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
-			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression, objEntryReference);
+			Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
 			assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 			
 			
@@ -142,10 +144,11 @@ public class KernelEncryptionIniSolverZZZTest extends TestCase {
 			IKernelConfigSectionEntryZZZ objEntry2 = objExpressionSolver.computeAsEntry(sLineWithExpression);
 			sValue = objEntry2.getValue();
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe1: '" + sValue + "'\n");
 			
 			//20230426: DAS IST VORERST DAS ZIEL, DAMIT IN DER FTPCREDENTIALS MASKE DER VERSCHLUESSELTE WERT AUCH ANGEZEIGT WERDEN KANN!!!
 			sValue = objEntry2.getValueEncrypted();
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe2: '" + sValue + "'\n");
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++
 			

@@ -165,16 +165,19 @@ public class KernelConfigEntryUtilZZZ {
 				}
 				KernelEncryptionIniSolverZZZ ex = new KernelEncryptionIniSolverZZZ(objKernel, saFlagZpassed);
 				if(!bForFurtherProcessing) {
-					String stemp = ex.compute(sRaw);
+					//String stemp = ex.compute(sRaw);
+					IKernelConfigSectionEntryZZZ objReturnTemp = ex.computeAsEntry(sRaw);
+					String stemp = objReturnTemp.getValue();
 					if(!StringZZZ.equals(stemp,sRaw)){
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall a) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
 						objReturn.setRawEncrypted(sRaw);
 						objReturn.isDecrypted(true);
 						objReturn.setRawDecrypted(stemp);
+						objReturn.setValueEncrypted(objReturnTemp.getValueEncrypted());
 					}					
 					sRaw=stemp;//Sonst Endlosschleife.
 				}else {
-					String stemp = ex.computeAsExpression(sRaw);
+					String stemp = ex.computeAsExpression(sRaw);					
 					if(!StringZZZ.equals(stemp,sRaw)){						
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": (Fall b) Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + stemp +"'");
 						objReturn.setRawEncrypted(sRaw);

@@ -56,6 +56,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 //		USEFORMULA, USEFORMULA_MATH;
 //	}
 	
+	private IKernelConfigSectionEntryZZZ objEntry = null;
 	private GetOptZZZ objOpt = null;
 	private ICryptZZZ objCrypt = null;
 	public KernelConfigZZZ() throws ExceptionZZZ{
@@ -385,6 +386,17 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 			}
 		}
 		return bReturn;
+	}
+	
+	//### Interface aus IKernelExpressionIniSolver
+	public IKernelConfigSectionEntryZZZ getEntry() {
+		if(this.objEntry==null) {
+			this.objEntry = new KernelConfigSectionEntryZZZ();			
+		}
+		return this.objEntry;
+	}
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		this.objEntry = objEntry;
 	}
 	
 

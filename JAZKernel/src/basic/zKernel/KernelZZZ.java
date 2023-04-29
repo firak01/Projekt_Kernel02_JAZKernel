@@ -35,9 +35,10 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 @Deprecated
-public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelContextUserZZZ,IKernelZZZ {
+public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelContextUserZZZ{
 	private static final long serialVersionUID = -2734877463371564724L;
-
+	
+	
 	/**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig
 	 * - Datei:		ZKernelConfigKernel_default.ini

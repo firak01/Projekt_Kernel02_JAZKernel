@@ -8,10 +8,13 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -87,6 +90,8 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 		return vecReturn;
 	}
 	
+	
+	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
@@ -101,7 +106,6 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 		}
 		return vecReturn;
 	}
-	
 	
 	public boolean isExpression(String sLine) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -227,5 +231,5 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 					
 				}//end main:
 				return sReturn;
-			}			
+	}	
 }//End class

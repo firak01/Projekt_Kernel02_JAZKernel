@@ -68,6 +68,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	private File objFile;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
 	private ICryptZZZ objCrypt = null;
+	private IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	//20190718: Durch KernelConfigEntryZZZ - Klasse soll es nicht mehr notwendig sein die Werte in KernelFileIniZZZ zu speichern.
 	//20190226: Problem: Wenn ein Wert (z.B. <z:Empty/> konvertiert wurde, weiss das die aufrufenden Methode nicht.
@@ -1364,6 +1365,17 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	}
 		
 
+	//### Interface aus IKernelExpressionIniSolver
+		public IKernelConfigSectionEntryZZZ getEntry() {
+			if(this.objEntry==null) {
+				this.objEntry = new KernelConfigSectionEntryZZZ();			
+			}
+			return this.objEntry;
+		}
+		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+			this.objEntry = objEntry;
+		}
+	
 	//######## AUS Interface IKernelFileZZZ
 	/** 
 	 @date: 26.10.2004

@@ -80,6 +80,7 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private IniFile objIniConfig=null;
 	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private File objFileKernelConfig=null;
 	protected FileIniZZZ objFileIniKernelConfig = null; 
+	private IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	private String sFileConfig="";
 	private String sDirectoryConfig="";
@@ -6788,6 +6789,17 @@ MeinTestParameter=blablaErgebnis
 		@Override
 		public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 			this.objCrypt = objCrypt;
+		}
+		
+		//### Interface aus IKernelExpressionIniSolver
+		public IKernelConfigSectionEntryZZZ getEntry() {
+			if(this.objEntry==null) {
+				this.objEntry = new KernelConfigSectionEntryZZZ();			
+			}
+			return this.objEntry;
+		}
+		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+			this.objEntry = objEntry;
 		}
 		
 		//### aus IKernelJsonIniSolverZZZ

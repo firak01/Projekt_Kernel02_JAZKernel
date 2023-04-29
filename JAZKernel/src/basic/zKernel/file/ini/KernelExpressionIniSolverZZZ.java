@@ -32,6 +32,8 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
+	IKernelConfigSectionEntryZZZ objEntry = null;
+	
 	public KernelExpressionIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionIniSolverNew_(null, null,saFlag);
@@ -404,6 +406,17 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 			
 		}
 
+		//### Interface aus IKernelExpressionIniSolver
+		public IKernelConfigSectionEntryZZZ getEntry() {
+			if(this.objEntry==null) {
+				this.objEntry = new KernelConfigSectionEntryZZZ();			
+			}
+			return this.objEntry;
+		}
+		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+			this.objEntry = objEntry;
+		}
+		
 		//### Aus Interface ICryptUserZZZ
 		@Override
 		public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {

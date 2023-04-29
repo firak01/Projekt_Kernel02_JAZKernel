@@ -42,6 +42,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bRawEncrypted = false;
 	private String sRawEncrypted = null;
 	private String sValueEncrypted=new String("");
+	private String sValueDecrypted=new String("");
 	
 	private boolean bDecrypted = false;
 	private boolean bRawDecrypted = false;	
@@ -266,6 +267,15 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		this.sValueEncrypted = sValueEncrypted;
 	}
 	
+	@Override
+	public String getValueDecrypted() {
+		return this.sValueDecrypted;
+	}
+
+	@Override
+	public void setValueDecrypted(String sValueDecrypted) {
+		this.sValueDecrypted = sValueDecrypted;
+	}
 	
 	@Override
 	public HashMap<String, String> getValueHashMap() {		
