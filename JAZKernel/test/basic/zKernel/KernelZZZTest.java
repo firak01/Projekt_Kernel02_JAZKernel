@@ -879,9 +879,8 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
 		
 		//#######################################################
 		//### FALL A) Es gibt bereits einen verschluesselten Wert
+		//###         Dann wird nach der erfolgreichen Suche das vorhandenen CRYPT-Objekt wiederverwendet
 		//#######################################################
-		
-		//Erst testen, dass auch durch Verschluesselung kein Leerwert kommt
 		
 		boolean bFlagExists = objKernelFGL.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
 		assertTrue("Flag '"+IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name()+ "' sollte vorhanden sein.",bFlagExists);
@@ -890,7 +889,9 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_ChangeValueA(){
 		bFlagExists = objKernelFGL.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION, true);
 		assertTrue("Flag '"+IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name()+ "' sollte vorhanden sein.",bFlagExists);
 		
-		boolean bErg = testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(objKernelFGL, sModule, sProgram, sProperty);
+		//Aufruf der privaten Testmethode
+		String sErg = testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(objKernelFGL, sModule, sProgram, sProperty);
+		assertEquals("<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>",sErg);
 		
 		
 	} catch (ExceptionZZZ ez) {
@@ -930,9 +931,14 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBa(){
 		assertNotNull(objCrypt);
 		
 		//Aufruf der privaten Testmethode
-		boolean bErg = testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
+		String sEncrypted = testSetParameterByProgramAlias_Encrypted_NewValue1_Ba_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
+		assertEquals("Mh irefpuyhrffryaqre Jreg",sEncrypted);//den Wert hier mal konstant vorgeben.
 		
-		
+		String sOriginal = testSetParameterByProgramAlias_Encrypted_NewValue2_Ba_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, sEncrypted, objCrypt);
+		assertEquals("Zu verschluesselnder Wert",sOriginal);
+				
+		String sEmpty = testSetParameterByProgramAlias_Encrypted_NewValueClear_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, objCrypt);
+		assertNull(sEmpty);		
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
@@ -981,17 +987,22 @@ public void testSetParameterByProgramAlias_Encrypted_VIGENEREnn_NewValueBa(){
 		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USELOWERCASE.name(), true);
 		objCrypt.setFlag(ICharacterPoolUserConstantZZZ.FLAGZ.USEADDITIONALCHARACTER.name(), true);
 		
-		//Aufruf der privaten Testmethode
-		boolean bErg = testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
+		//Aufruf der privaten Testmethoden
+		String sEncrypted = testSetParameterByProgramAlias_Encrypted_NewValue1_Ba_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
+		assertEquals("vPnznZNqlu2zGwnTIriAHfsvC",sEncrypted);//den Wert hier mal konstant vorgeben.
 		
-		
+		String sOriginal = testSetParameterByProgramAlias_Encrypted_NewValue2_Ba_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, sEncrypted, objCrypt);
+		assertEquals("Zu verschluesselnder Wert",sOriginal);
+				
+		String sEmpty = testSetParameterByProgramAlias_Encrypted_NewValueClear_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, objCrypt);
+		assertNull(sEmpty);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
 }
 	
-private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sPropertyOld, String sPropertyEncryptedValue, ICryptZZZ objCrypt){
-	boolean bReturn=false;
+private String testSetParameterByProgramAlias_Encrypted_NewValue1_Ba_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sPropertyOld, String sPropertyEncryptedValue, ICryptZZZ objCrypt){
+	String sReturn = null;
 	try {
 		
 				//#######################################################
@@ -1029,9 +1040,28 @@ private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(IKernelZZZ
 				}
 				String sEncrypted = StringZZZ.left(sEncryptedTimestamp+sSeparator, sSeparator);//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
 				assertNotNull(sEncrypted);
-				//assertEquals("Mh irefpuyhrffryaqre Jreg",sEncrypted);//den Wert hier mal konstant vorgeben.
-				assertEquals("vPnznZNqlu2zGwnTIriAHfsvC",sEncrypted);//den Wert hier mal konstant vorgeben.
 				
+				//Merke: Auf einen konkreten Wert hier nicht abprüfen, da diese private Methode mehrmals mit anderen Werten aufgerufen wird.
+				//Den gefundenen Wert zurückgeben
+				sReturn = sEncrypted;
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getDetailAllLast());
+			}
+	return sReturn;	
+}
+
+private String testSetParameterByProgramAlias_Encrypted_NewValue2_Ba_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sPropertyEncryptedValue, String sEncryptedValue, ICryptZZZ objCrypt){
+	String sReturn = null;
+	try {
+		
+				//#######################################################
+				//### Folgetest
+				//### FALL B) Jetzt gibt es einen verschluesselten Wert 
+				//###         und der muss wieder neu geschrieben werden.  
+				//#######################################################
+				
+		//assertEquals("vPnznZNqlu2zGwnTIriAHfsvC",sEncrypted);//den Wert hier mal konstant vorgeben.
+				String sEncryptedTimestamp = sEncryptedValue + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
 				objKernelUsed.setParameterByProgramAliasEncrypted(sModule, sProgram, sPropertyEncryptedValue, sEncryptedTimestamp, objCrypt);
 				
 				//+++ Den Cache bei jedem Schritt explizit leeren
@@ -1040,15 +1070,43 @@ private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(IKernelZZZ
 				//+++ ... und wieder auslesen
 				IKernelConfigSectionEntryZZZ objEntryDecrypted = objKernelUsed.getParameterByProgramAlias(sModule, sProgram, sPropertyEncryptedValue);
 				assertTrue(objEntryDecrypted.hasAnyValue());
-				String stemp = objEntryDecrypted.getValue();
-				stemp = StringZZZ.left(stemp+sSeparator, sSeparator);//Damit das ggfs. frühere Setzen eines Timestamps in der Property keinen Fehler erzeugt.
-				assertTrue(sOriginal.equals(stemp));
 				
-				stemp = objEntryDecrypted.getRaw();
+				String stemp = objEntryDecrypted.getRaw();
 				assertNotNull(stemp);
 				//Im RAW String wird der oben verwendete CIPHER-String erwartet.
 				boolean btemp = StringZZZ.contains(stemp, objCrypt.getCipherType().getAbbreviation());//CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
 				assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ objCrypt.getCipherType().getAbbreviation() +"'",btemp);
+				
+				
+				
+				
+				stemp = objEntryDecrypted.getValue();
+				
+				//Merke: Den Timestamp kann man in diesem Fall wieder herausholen, da | nicht verschluesselt werden sollte.
+				//       Und nur der Wert ohne Timestamp bleibt ja immer fix.
+				String sSeparator=null;
+				CharacterExtendedZZZ objCharacterReplacement = objCrypt.getCharacterMissingReplacment();
+				if(objCharacterReplacement!=null) {
+					sSeparator = objCharacterReplacement.toString();
+				}else {
+					sSeparator = "|";
+				}
+				sReturn = StringZZZ.left(stemp+sSeparator, sSeparator);//Damit das ggfs. frühere Setzen eines Timestamps in der Property keinen Fehler erzeugt.
+				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getDetailAllLast());
+			}
+	return sReturn;	
+}
+
+private String testSetParameterByProgramAlias_Encrypted_NewValueClear_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sPropertyEncryptedValue, ICryptZZZ objCrypt){
+	String sReturn = null;
+	try {
+		
+				//#######################################################
+				//### Folgetest
+				//### FALL B) Jetzt den neu geschriebenen Wert loeschen  
+				//#######################################################
 				
 				//+++ Den Cache bei jedem Schritt explizit leeren
 				objKernelUsed.getCacheObject().clear();
@@ -1063,12 +1121,12 @@ private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Ba_(IKernelZZZ
 				//+++ Nun soll kein Wert gefunden werden
 				IKernelConfigSectionEntryZZZ objEntryNichtMehrDa = objKernelUsed.getParameterByProgramAlias(sModule, sProgram, sPropertyEncryptedValue);
 				assertFalse(objEntryNichtMehrDa.hasAnyValue());
-					
-				bReturn = true;
+				
+				sReturn = objEntryNichtMehrDa.getValue();
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getDetailAllLast());
 			}
-	return bReturn;	
+	return sReturn;	
 }
 
 /** void, Test: Replacing an entry in a section of the ini-file
@@ -1107,8 +1165,11 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBb(){
 		ICryptZZZ objCrypt = objCryptFactory.createAlgorithmType(CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13);
 		assertNotNull(objCrypt);
 		
-		boolean bErg = testSetParameterByProgramAlias_Encrypted_NewValue_Bb_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
-				
+		String sErg = testSetParameterByProgramAlias_Encrypted_NewValue_Bb_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
+		assertEquals("",sErg);
+		
+		String sEmpty = testSetParameterByProgramAlias_Encrypted_NewValueClear_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, objCrypt);
+		assertNull(sEmpty);
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
@@ -1164,10 +1225,14 @@ public void testSetParameterByProgramAlias_ExternesModule(){
 	}
 }
 
-private boolean testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sProperty) {
-	boolean bReturn = false;
+private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sProperty) {
+	String sReturn = null;
 	try {
+
+		//+++ Den Cache bei jedem Schritt explizit leeren
+		objKernelUsed.getCacheObject().clear();				
 		
+		//Erst testen, dass auch durch Verschluesselung kein Leerwert kommt		
 		IKernelConfigSectionEntryZZZ objEntryDecryptedOriginal = objKernelUsed.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntryDecryptedOriginal.hasAnyValue());
 		String sDecryptedOriginal = objEntryDecryptedOriginal.getValue();
@@ -1175,33 +1240,47 @@ private boolean testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZ
 		assertEquals("testwert4decrypted local 4 program",sDecryptedOriginal);
 
 		//Sichern des "RAW" Werts
-		String sRaw = objEntryDecryptedOriginal.getRawEncrypted();
+		String sRawEncrypted = objEntryDecryptedOriginal.getRawEncrypted();
+		String sRaw =  objEntryDecryptedOriginal.getRaw();
+		assertEquals(sRawEncrypted,sRaw);
 		
+		//Im RAW String wird der oben verwendete CIPHER-String erwartet.
+		boolean btemp = StringZZZ.contains(sRaw, CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
+		assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation() +"'",btemp);
+
+		//####################################
+		//+++ Den Cache bei jedem Schritt explizit leeren
+		objKernelUsed.getCacheObject().clear();
+						
 		//Funktioniert nur, wenn es schon einen CRYPT-Tag gibt in der Property. Dann wird der gefundene Crypt-Algorithmus wiederverwendet.
 		ICryptZZZ objCrypt = objEntryDecryptedOriginal.getCryptAlgorithmType();
-		String sDecrypted = sDecryptedOriginal + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
-		String sEncrypted = objCrypt.encrypt(sDecrypted);
+		String sDecryptedTimestamp = sDecryptedOriginal + "|Timestamp: "+ DateTimeZZZ.computeTimestamp();//Hänge einen Zeitstempel an
+		String sEncryptedTimestamp = objCrypt.encrypt(sDecryptedTimestamp);
 				
 		//ACHTUNG!!! DAS SETZT NUR DEN VERSCHLUESSELTEN WERT, OHNE DIE ARGUMENTE		
-		objKernelUsed.setParameterByProgramAlias(sModule, sProgram, sProperty, sEncrypted);  
+		objKernelUsed.setParameterByProgramAlias(sModule, sProgram, sProperty, sEncryptedTimestamp);  
 
+		//########################################
 		//+++ Den Cache bei jedem Schritt explizit leeren
 		objKernelUsed.getCacheObject().clear();
 		
 		IKernelConfigSectionEntryZZZ objEntryDecrypted = objKernelUsed.getParameterByProgramAlias(sModule, sProgram, sProperty);
 		assertTrue(objEntryDecrypted.hasAnyValue());
 		String stemp = objEntryDecrypted.getValue();
-		assertTrue(sEncrypted.equals(stemp));
+		assertTrue(sEncryptedTimestamp.equals(stemp));
 
+		//##########################################
 		//+++ Den Cache bei jedem Schritt explizit leeren
 		objKernelUsed.getCacheObject().clear();
 				
 		//+++ Die CRYPT-TAG Einträge müssen statt des Einzelwerts neu geschrieben werden.
+		//MERKE: DAS IST DIE BESONDERHEIT DIESES TESTS: ES WIRD DAS ORIGINAL CRYPT-OBJEKT NACH DER ERSTEN SUCHE WIEDERVERWENDET
 		ICryptZZZ objCryptOriginal = objEntryDecryptedOriginal.getCryptAlgorithmType();//Das Crypt - Objekt kommt aus der vorherigen Abfrage, wird also wiederverwendet.
 		//Merke: Die Verschluesselung wird nun ohne Timestamp geschrieben.
-		sEncrypted = objCryptOriginal.encrypt(sDecryptedOriginal);
+		String sEncrypted = objCryptOriginal.encrypt(sDecryptedOriginal);
 		objKernelUsed.setParameterByProgramAliasEncrypted(sModule, sProgram, sProperty, sEncrypted, objCryptOriginal);
 		
+		//############################################
 		//+++ Den Cache bei jedem Schritt explizit leeren
 		objKernelUsed.getCacheObject().clear();
 		
@@ -1220,60 +1299,24 @@ private boolean testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZ
 		String stest = objEntryRaw.getValue();
 		assertEquals(sRaw,stest);//Also der String muss nach all der Transformation identisch sein.
 		
+		stest = objEntryRaw.getRaw();
+		assertNotNull(stest);
+		assertEquals(sRaw,stest);//Also der String muss nach all der Transformation identisch sein.
 		
 		
-		
-		
-		
-		//Verwende intern
-		//private boolean KernelSetParameterByProgramAlias_(FileIniZZZ objFileIniConfigIn, String sMainSection, String sProgramOrSection, String sProperty, ICryptZZZ objCrypt, String sValueIn, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
-				
-		
-		
-		
-		//Vergleich diese Methode, die den Wert unverschluesselt bekommt und in der Methode selbst verschluesselt.
-		//objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sDecryptedOriginal, objCrypt2);
-		
-		
-		//### FALL B) Es gibt noch keinen verschluesselten Wert, bzw. den Wert neu setzen		
-		//TODO: neu aus der CryptFactory holen.... ICryptZZZ objCrypt3 = null;
-		//....
-		
-		
-//		
-//		
-//		//Testvariante A: Jetzt wird der Wert aber aus dem Cache geholt
-//		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP WERT.
-//		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
-//		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);				
-//		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
-//		assertTrue(objEntry.hasAnyValue());		
-//		sReturnSaved = objEntry.getValue();
-//		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
-//		assertEquals(sValue,sReturnSaved);		
-//	
-//		//Testvariante B: Den Cache bei jedem Schritt explizit leeren
-//		objKernelFGL.getCacheObject().clear();
-//		sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//STRING OHNE DEN TIMESTAMP TEIL!!!
-//		sValue = sReturnSaved + "|Timestamp: "+DateTimeZZZ.computeTimestamp();
-//		objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sProperty, sValue, true);
-//		
-//		objKernelFGL.getCacheObject().clear();
-//		objEntry = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sProperty);
-//		assertTrue(objEntry.hasAnyValue());		
-//		sReturnSaved = objEntry.getValue();
-//		//Vergleiche den String MIT der TIMESTAMP VARIANTE, also nicht: sReturnSaved = StringZZZ.left(sReturnSaved+"|", "|");//Damit das Setzen des Timestamps in der Property keinen Fehler erzeugt.
-//		assertEquals(sValue,sReturnSaved);	
-//		
-		bReturn = true;
+		//Im RAW String wird der oben verwendete CIPHER-String erwartet.
+		btemp = StringZZZ.contains(stest, CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
+		assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation() +"'",btemp);
+
+		sReturn = stest;
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
-	return bReturn;
+	return sReturn;
 }
 
-private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Bb_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sPropertyOld, String sPropertyEncryptedValue, ICryptZZZ objCrypt){
-	boolean bReturn = false;
+private String testSetParameterByProgramAlias_Encrypted_NewValue_Bb_(IKernelZZZ objKernelUsed, String sModule, String sProgram, String sPropertyOld, String sPropertyEncryptedValue, ICryptZZZ objCrypt){
+	String sReturn = null;
 	try {
 		
 		        //Erst den zu verschluesselnden Wert aus der INI-Datei auslesen						
@@ -1301,37 +1344,26 @@ private boolean testSetParameterByProgramAlias_Encrypted_NewValue_Bb_(IKernelZZZ
 				//+++ ... und wieder auslesen
 				IKernelConfigSectionEntryZZZ objEntryDecrypted = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sPropertyEncryptedValue);
 				assertTrue(objEntryDecrypted.hasAnyValue());
-				String stemp = objEntryDecrypted.getValue();
+				
+				String stemp = objEntryDecrypted.getRaw();
+				assertNotNull(stemp);
+				
+				//Im RAW String wird der oben verwendete CIPHER-String erwartet.
+				boolean btemp = StringZZZ.contains(stemp, CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
+				assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation() +"'",btemp);
+				
+				
+				stemp = objEntryDecrypted.getValue();
 				
 				//Merke: Bei ROT13 ist sichergestellt, das | nicht verschluesselt wird.
 				stemp = StringZZZ.left(stemp+"|", "|");//Damit das ggfs. frühere Setzen eines Timestamps in der Property keinen Fehler erzeugt.
 				assertTrue(sOriginal.equals(stemp));
 				
-				stemp = objEntryDecrypted.getRaw();
-				assertNotNull(stemp);
-				//Im RAW String wird der oben verwendete CIPHER-String erwartet.
-				boolean btemp = StringZZZ.contains(stemp, CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
-				assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation() +"'",btemp);
-				
-				//+++ Den Cache bei jedem Schritt explizit leeren
-				objKernelFGL.getCacheObject().clear();
-				
-				//++++++++++++++
-				//Den Wert leersetzen.
-				objKernelFGL.setParameterByProgramAlias(sModule, sProgram, sPropertyEncryptedValue, (String) null);
-				
-				//+++ Den Cache bei jedem Schritt explizit leeren
-				objKernelFGL.getCacheObject().clear();
-					
-				//+++ Nun soll kein Wert gefunden werden
-				IKernelConfigSectionEntryZZZ objEntryNichtMehrDa = objKernelFGL.getParameterByProgramAlias(sModule, sProgram, sPropertyEncryptedValue);
-				assertFalse(objEntryNichtMehrDa.hasAnyValue());
-				
-				bReturn=true;
+				sReturn = stemp;												
 	} catch (ExceptionZZZ ez) {
 		fail("Method throws an exception." + ez.getDetailAllLast());
 	}
-	return bReturn;
+	return sReturn;
 	}
 	
 
