@@ -164,7 +164,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 						
 						 KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
 						 if(objValue.isExpression(sExpression)){
-							
+							this.getEntry().setValueEncrypted(sExpression);	//Zwischenstand festhalten
 							sCode = objValue.compute(sExpression);
 //							String sDebug = (String) vecValue.get(1);
 //							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
@@ -173,7 +173,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 												                 
 						 if(!StringZZZ.isEmpty(sCode)) {
 							 //Das ist der reine kodierte Wert. Er gehört in objEntry.getValueEncrypted().
-							 this.getEntry().setValueEncrypted(sCode);	//Zwischenstand festhalten					 
+							 this.getEntry().setValueEncrypted(sCode);	//Zwischenstand festhalten
 							 sValue = objAlgorithm.decrypt(sCode);
 							 this.getEntry().setValueDecrypted(sValue); //Zwischenstand festhalten
 						 }
@@ -183,6 +183,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 						//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
 						KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
 						if(objValue.isExpression(sExpression)){						
+							this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
 							sCode = objValue.compute(sExpression);
 						}						
 						this.getEntry().setValueDecrypted(sCode);//Zwischenstand festhalten
