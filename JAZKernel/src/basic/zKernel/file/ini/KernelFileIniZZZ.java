@@ -500,14 +500,14 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			if(bUseExpression) {
 				
 				//Noch eine Ebene dazwischen eingebaut, da zusätzlich/alternativ zu den einfachen ZFormeln nun auch JSONArray / JSONMap konfigurierbar sind.
-				KernelExpressionIniSolverZZZ exDummy = new KernelExpressionIniSolverZZZ();
+				KernelExpressionIniHandlerZZZ exDummy = new KernelExpressionIniHandlerZZZ();
 				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true); //this.getFlagZ_passable(true, exDummy);
 				
 				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();				
-				KernelExpressionIniSolverZZZ objExpressionSolver = new KernelExpressionIniSolverZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
+				KernelExpressionIniHandlerZZZ objExpressionHandler = new KernelExpressionIniHandlerZZZ((FileIniZZZ) this, hmVariable, saFlagZpassed);
 				
 				objReturnReference.set(objReturn);
-				int iReturnValue = objExpressionSolver.compute(sReturnRaw,objReturnReference);	
+				int iReturnValue = objExpressionHandler.compute(sReturnRaw,objReturnReference);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Ergebnis der Expression ist vom Typ '" + iReturnValue + "'");
 				objReturn = objReturnReference.get();
 			}

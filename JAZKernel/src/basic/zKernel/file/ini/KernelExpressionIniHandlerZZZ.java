@@ -27,7 +27,13 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIniSolverZZZ  extends AbstractKernelIniSolverZZZ implements IKernelExpressionIniSolverZZZ{
+/** Klasse, welche die "Ini-Solver" Klassen anwendet
+ *  
+ * 
+ * @author Fritz Lindhauer, 02.05.2023, 19:55:30
+ * 
+ */
+public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ implements IKernelExpressionIniSolverZZZ{
 	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
 	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
@@ -35,37 +41,37 @@ public class KernelExpressionIniSolverZZZ  extends AbstractKernelIniSolverZZZ im
 	
 	IKernelConfigSectionEntryZZZ objEntry = null;
 	
-	public KernelExpressionIniSolverZZZ() throws ExceptionZZZ{
+	public KernelExpressionIniHandlerZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelExpressionIniSolverNew_(null, null,saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, null, null);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIniHandlerZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
+	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, null);
 	}
 	
-	public KernelExpressionIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
 	
-	public KernelExpressionIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
+	public KernelExpressionIniHandlerZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
@@ -288,7 +294,6 @@ public class KernelExpressionIniSolverZZZ  extends AbstractKernelIniSolverZZZ im
 			return (String) this.getHashMapVariable().get(sKey);
 		}
 		
-		//public int compute(String sLineWithExpression, IKernelConfigSectionEntryZZZ objReturn) throws ExceptionZZZ{
 		public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
 			int iReturn = 0;
 			boolean bAnyEncryption = false;			
@@ -435,7 +440,7 @@ public class KernelExpressionIniSolverZZZ  extends AbstractKernelIniSolverZZZ im
 		 */
 		@Override
 		public String getExpressionTagName() {
-			return KernelExpressionIniSolverZZZ.sTAG_NAME;
+			return KernelExpressionIniHandlerZZZ.sTAG_NAME;
 		}
 
 		@Override
@@ -445,6 +450,9 @@ public class KernelExpressionIniSolverZZZ  extends AbstractKernelIniSolverZZZ im
 		}
 		
 		//### Sonstige Interfaces
+		/* (non-Javadoc)
+		 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#isStringForConvertRelevant(java.lang.String)
+		 */
 		@Override
 		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
 			return false;

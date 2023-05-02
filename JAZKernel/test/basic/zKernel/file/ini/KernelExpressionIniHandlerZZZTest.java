@@ -35,17 +35,17 @@ import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIniSolverZZZTest extends TestCase {	
+public class KernelExpressionIniHandlerZZZTest extends TestCase {	
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelExpressionIniSolverZZZTest.ini");
+	private final static String strFILE_NAME_DEFAULT = new String("JUnit_KernelExpressionIniHandlerZZZTest.ini");
 	
 	private File objFile;
 	private IKernelZZZ objKernel;
 	private FileIniZZZ objFileIniTest=null;
 	
 	/// +++ Die eigentlichen Test-Objekte	
-	private KernelExpressionIniSolverZZZ objExpressionSolver;
-	private KernelExpressionIniSolverZZZ objExpressionSolverInit;
+	private KernelExpressionIniHandlerZZZ objExpressionHandler;
+	private KernelExpressionIniHandlerZZZ objExpressionHandlerInit;
 	
 	
 
@@ -171,10 +171,10 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			
 			//#### Ein init TestObjekt
 			String[] saFlagInit = {"init"};
-			objExpressionSolverInit = new KernelExpressionIniSolverZZZ(objKernel, objFileIniTest, saFlagInit);
+			objExpressionHandlerInit = new KernelExpressionIniHandlerZZZ(objKernel, objFileIniTest, saFlagInit);
 			
 			String[] saFlag = {""};
-			objExpressionSolver = new KernelExpressionIniSolverZZZ(objKernel, objFileIniTest, saFlag);
+			objExpressionHandler = new KernelExpressionIniHandlerZZZ(objKernel, objFileIniTest, saFlag);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		} catch (FileNotFoundException e) {			
@@ -189,22 +189,22 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	
 	public void testFlagHandling(){
 		try{							
-			assertTrue(objExpressionSolverInit.getFlag("init")==true);
-			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
+			assertTrue(objExpressionHandlerInit.getFlag("init")==true);
+			assertFalse(objExpressionHandler.getFlag("init")==true); //Nun wäre init falsch
 			
-			String[] saFlag = objExpressionSolver.getFlagZ();
+			String[] saFlag = objExpressionHandler.getFlagZ();
 			assertTrue(saFlag.length==9);
 			
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			boolean bFlagAvailable = objExpressionHandler.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			bFlagAvailable = objExpressionSolver.setFlag("usejson_array", false); //Ansonsten wird der Wert sofort ausgerechnet
+			bFlagAvailable = objExpressionHandler.setFlag("usejson_array", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson_array' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			bFlagAvailable = objExpressionSolver.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
+			bFlagAvailable = objExpressionHandler.setFlag("usejson_map", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			bFlagAvailable = objExpressionSolver.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
+			bFlagAvailable = objExpressionHandler.setFlag("useencryption", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 		} catch (ExceptionZZZ ez) {
@@ -216,7 +216,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 		try {					
 			String sFlagUseExpression = IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name();
 			
-			boolean bFlagAvailable = objExpressionSolver.setFlag(sFlagUseExpression, false); //Ansonsten wird der Wert sofort ausgerechnet
+			boolean bFlagAvailable = objExpressionHandler.setFlag(sFlagUseExpression, false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag '"+sFlagUseExpression+"' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			
@@ -224,7 +224,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			//#########################################################
 			//#### SECTION A ########################################## 
 			//+++ Anwenden der ersten Formel, ohne Berechnung
-			objExpressionSolver.setFlag(sFlagUseExpression, false); //Ansonsten wird der Wert sofort ausgerechnet
+			objExpressionHandler.setFlag(sFlagUseExpression, false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sLineWithExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.",sLineWithExpression);
 			
@@ -232,10 +232,10 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertEquals("Testvalue1 to be found",sLineWithValue);
 			
 			//+++ Anwenden der ersten Formel, mit Berechnung
-			objExpressionSolver.setFlag(sFlagUseExpression, true); 
-			objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objExpressionHandler.setFlag(sFlagUseExpression, true); 
+			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionSolver.compute(sLineWithExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.compute(sLineWithExpression, objSectionEntryReference);
 			assertTrue(iReturn==1);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
@@ -265,11 +265,11 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertEquals("Testvalue2 local to be found",sLineWithValue2);
 			
 			//+++ Anwenden der zweiten Formel, mit Berechnung			
-			objExpressionSolver.setFlag(sFlagUseExpression, true); 
-			objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objExpressionHandler.setFlag(sFlagUseExpression, true); 
+			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntry2Reference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn2 = objExpressionSolver.compute(sLineWithExpression2, objSectionEntry2Reference);
+			int iReturn2 = objExpressionHandler.compute(sLineWithExpression2, objSectionEntry2Reference);
 			assertTrue(iReturn2==1);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry2 = objSectionEntry2Reference.get();
@@ -298,11 +298,11 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertEquals("Testvalue3 local to be found",sLineWithValue3);
 			
 			//+++ Anwenden der zweiten Formel, mit Berechnung			
-			objExpressionSolver.setFlag(sFlagUseExpression, true); 
-			objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
+			objExpressionHandler.setFlag(sFlagUseExpression, true); 
+			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntry3Reference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn3 = objExpressionSolver.compute(sLineWithExpression3, objSectionEntry3Reference);
+			int iReturn3 = objExpressionHandler.compute(sLineWithExpression3, objSectionEntry3Reference);
 			assertTrue(iReturn3==1);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry3 = objSectionEntry3Reference.get();
@@ -327,7 +327,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	public void testComputeHashMap(){
 
 		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
+			boolean bFlagAvailable = objExpressionHandler.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			//Anwenden der ersten Formel, ohne Berechnung			
@@ -335,15 +335,15 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertEquals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT,sExpression);
 			
 			//Berechne die erste Formel, DIRECT			
-			bFlagAvailable = objExpressionSolver.setFlag("useexpression", true);
+			bFlagAvailable = objExpressionHandler.setFlag("useexpression", true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionSolver.setFlag("usejson", true);
+			bFlagAvailable = objExpressionHandler.setFlag("usejson", true);
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionSolver.setFlag("usejson_map", true);
+			bFlagAvailable = objExpressionHandler.setFlag("usejson_map", true);
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionSolver.compute(sExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
 			assertTrue(iReturn==6);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
@@ -384,7 +384,7 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 	public void testComputeEncrypted(){
 
 		try {					
-			boolean bFlagAvailable = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
+			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'useencryption' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			//Anwenden der ersten Formel, ohne Berechnung			
@@ -392,13 +392,13 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			assertEquals(KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT,sExpression);
 			
 			//Berechne die erste Formel, DIRECT			
-			bFlagAvailable = objExpressionSolver.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objExpressionSolver.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name(), true);
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			int iReturn = objExpressionSolver.compute(sExpression, objSectionEntryReference);
+			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
 			assertTrue(iReturn==10); //10 für die Encryption
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
@@ -408,9 +408,9 @@ public class KernelExpressionIniSolverZZZTest extends TestCase {
 			                 //Das muss also unbeding per Referenz an die compute-Methode übergeben werden!!!
 			assertTrue(objSectionEntry.isEncrypted());
 									
-			bFlagAvailable = objExpressionSolver.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);				
-			iReturn = objExpressionSolver.compute(sExpression, objSectionEntryReference);
+			iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
 			assertTrue(iReturn==11); //10 für die Encryption  PLUS 1 für die Formelauswertung als String
 			assertNotNull(objSectionEntry);
 			assertTrue(objSectionEntry.isEncrypted());
