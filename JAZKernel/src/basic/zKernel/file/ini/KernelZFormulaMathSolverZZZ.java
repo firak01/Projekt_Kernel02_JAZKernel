@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	public KernelZFormulaMathSolverZZZ() throws ExceptionZZZ{
 		super();
 	}
@@ -101,8 +101,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//Ker
 		return "Z:math";
 	}
 	
-	//### Aus Interface IKernelExpressionIniZZZ
-		
+	//### Aus Interface IKernelExpressionIniZZZ		
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
@@ -118,22 +117,19 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniTagZZZ {//Ker
 		return sReturn;
 	}
 
+	//### Andere Interfaces
 	@Override
 	public String convert(String sLine) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
 		return false;
 	}
 
 	@Override
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }//End class

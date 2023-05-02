@@ -28,7 +28,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKernelJsonIniSolverZZZ{
+public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelJsonIniSolverZZZ{
 	public static String sTAG_NAME = "JSON:MAP";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
@@ -44,7 +44,7 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 	}
 	
 	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni, saFlag);
+		super(objFileIni);
 		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
 	}
 	
@@ -118,52 +118,11 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		}//end main:
 		return vecReturn;
 	}
-	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelJsonMapIniSolverZZZ.getExpressionTagStarting(), KernelJsonMapIniSolverZZZ.getExpressionTagClosing(), false,false);
-		}
-		return vecReturn;
-	}
-	
-	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelJsonMapIniSolverZZZ.getExpressionTagStarting(),false);
-			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelJsonMapIniSolverZZZ.getExpressionTagClosing(),false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
+	public String getExpressionTagName(){
 		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + ">"; 
-	}
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelJsonMapIniSolverZZZ.getExpressionTagName() + "/>";
-	}
-	
 	
 	public void setFileIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
@@ -294,5 +253,21 @@ public class KernelJsonMapIniSolverZZZ extends KernelUseObjectZZZ implements IKe
 		@Override
 		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
+		}
+
+		//### Andere Interfaces
+		@Override
+		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+			return false;
+		}
+
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {
+			return null;
+		}
+
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+			return false;
 		}
 }//End class

@@ -18,6 +18,7 @@ import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.file.ini.AbstractKernelIniTagZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
@@ -94,7 +95,7 @@ public class KernelConfigEntryUtilZZZ {
 			
 			String sValueExpressionSolved=null;
 			boolean bAnyFormula = false;
-			while(KernelZFormulaIniSolverZZZ.isExpression(sRaw)){//Schrittweise die Formel auflösen.
+			while(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelZFormulaIniSolverZZZ.sTAG_NAME)){//Schrittweise die Formel auflösen.
 				bAnyFormula = true;
 									
 				KernelZFormulaIniSolverZZZ ex = new KernelZFormulaIniSolverZZZ(objFileIni, hmVariable, saFlagZpassed);
@@ -261,7 +262,7 @@ public class KernelConfigEntryUtilZZZ {
 				boolean bAnyJson = false;
 				
 				ArrayList<String> alstemp = null;
-				if(KernelJsonArrayIniSolverZZZ.isExpression(sRaw)){
+				if(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelJsonArrayIniSolverZZZ.sTAG_NAME)){
 														
 					KernelJsonArrayIniSolverZZZ ex = new KernelJsonArrayIniSolverZZZ(objFileIni, saFlagZpassed);
 					alstemp = ex.computeArrayList(sRaw);
@@ -292,7 +293,7 @@ public class KernelConfigEntryUtilZZZ {
 				boolean bAnyJson = false;
 				
 				HashMap<String,String> hmtemp = null;
-				if(KernelJsonMapIniSolverZZZ.isExpression(sRaw)){
+				if(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelJsonMapIniSolverZZZ.sTAG_NAME)){
 														
 					KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed);
 					hmtemp = ex.computeHashMap(sRaw);
@@ -311,6 +312,20 @@ public class KernelConfigEntryUtilZZZ {
 				//unverändert
 			}		
 		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean isExpression(String sLine, String sExpressionTagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			boolean btemp = StringZZZ.contains(sLine, AbstractKernelIniTagZZZ.computeExpressionTagStarting(sExpressionTagName),false);
+			if(btemp==false) break main;
+		
+			btemp = StringZZZ.contains(sLine, AbstractKernelIniTagZZZ.computeExpressionTagClosing(sExpressionTagName),false);
+			if(btemp==false) break main;
+			
+			bReturn = true;
+		}//end main
 		return bReturn;
 	}
 	

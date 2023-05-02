@@ -71,6 +71,11 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 		KernelUseObjectNew_(objKernel, null, objKernelContext);						
 	}
 	
+	public KernelUseObjectZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+		super();
+		KernelUseObjectNew_(null, objKernelUsing, null);
+	}
+	
 	public KernelUseObjectZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		KernelUseObjectNew_(null, objKernelUsing, null);

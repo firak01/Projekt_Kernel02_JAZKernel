@@ -27,7 +27,8 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements IKernelExpressionIniSolverZZZ{
+public class KernelExpressionIniSolverZZZ  extends AbstractKernelIniSolverZZZ implements IKernelExpressionIniSolverZZZ{
+	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
 	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
@@ -426,6 +427,37 @@ public class KernelExpressionIniSolverZZZ  extends KernelUseObjectZZZ implements
 		@Override
 		public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 			this.objCrypt = objCrypt;
+		}
+
+		//### Interface
+		/* (non-Javadoc)
+		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#getExpressionTagName()
+		 */
+		@Override
+		public String getExpressionTagName() {
+			return KernelExpressionIniSolverZZZ.sTAG_NAME;
+		}
+
+		@Override
+		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		//### Sonstige Interfaces
+		@Override
+		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+			return false;
+		}
+
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {
+			return null;
+		}
+
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+			return false;
 		}
 		
 }

@@ -1166,7 +1166,7 @@ public void testSetParameterByProgramAlias_Encrypted_ROT13_NewValueBb(){
 		assertNotNull(objCrypt);
 		
 		String sErg = testSetParameterByProgramAlias_Encrypted_NewValue_Bb_(objKernelFGL, sModule, sProgram, sPropertyOld, sPropertyEncryptedValue, objCrypt);
-		assertEquals("",sErg);
+		assertEquals("Zu verschluesselnder Wert",sErg);
 		
 		String sEmpty = testSetParameterByProgramAlias_Encrypted_NewValueClear_(objKernelFGL, sModule, sProgram, sPropertyEncryptedValue, objCrypt);
 		assertNull(sEmpty);

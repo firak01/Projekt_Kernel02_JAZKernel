@@ -12,11 +12,13 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -39,6 +41,16 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	
 	public AbstractKernelIniTagZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
+		AbstractKernelIniTagNew_(saFlag);
+	}
+	
+	public AbstractKernelIniTagZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
+		super(objKernelUsing);
+		AbstractKernelIniTagNew_(null);
+	}
+	
+	public AbstractKernelIniTagZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
+		super(objKernelUsing);
 		AbstractKernelIniTagNew_(saFlag);
 	}
 	
@@ -108,20 +120,9 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	}
 	
 	public boolean isExpression(String sLine) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, this.getExpressionTagStarting(),false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, this.getExpressionTagClosing(),false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
+		return KernelConfigEntryUtilZZZ.isExpression(sLine, this.getExpressionTagName());
 	}
-	
-	
+		
 	//###### Getter / Setter
 	public abstract String getExpressionTagName();
 	

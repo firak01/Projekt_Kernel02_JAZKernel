@@ -12,6 +12,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -25,25 +26,34 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagZZ
 	
 	public AbstractKernelIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
-		AbstractKernelIniTagNew_(saFlag);
+		AbstractKernelIniSolverNew_(saFlag);
 	}
 		
 	public AbstractKernelIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{		
-		AbstractKernelIniTagNew_(saFlag);
+		AbstractKernelIniSolverNew_(saFlag);
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		AbstractKernelIniTagNew_(null);
+		AbstractKernelIniSolverNew_(null);
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
-		AbstractKernelIniTagNew_(saFlag);
+		AbstractKernelIniSolverNew_(saFlag);
 	}
 	
+	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
+		super(objKernelUsing);
+		AbstractKernelIniSolverNew_(null);
+	}
 	
-	private boolean AbstractKernelIniTagNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
+		super(objKernelUsing);
+		AbstractKernelIniSolverNew_(saFlag);
+	}
+	
+	private boolean AbstractKernelIniSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 
 	 main:{

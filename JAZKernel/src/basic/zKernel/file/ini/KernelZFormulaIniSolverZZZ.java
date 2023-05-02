@@ -23,12 +23,13 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IKernelZFormulaIniSolverZZZ{	
+public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelZFormulaIniSolverZZZ{
+	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
-		super("init");
+		super();
 		KernelExpressionIniSolverNew_(null, null, null);
 	}
 	
@@ -134,52 +135,11 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 		}//end main:
 		return vecReturn;
 	}
-	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIniSolverZZZ.getExpressionTagStarting(), KernelZFormulaIniSolverZZZ.getExpressionTagClosing(), false,false);
-		}
-		return vecReturn;
-	}
-	
-	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIniSolverZZZ.getExpressionTagStarting(),false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, KernelZFormulaIniSolverZZZ.getExpressionTagClosing(),false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
+
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
-		return "Z";
+	public String getExpressionTagName(){
+		return KernelZFormulaIniSolverZZZ.sTAG_NAME;
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelZFormulaIniSolverZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelZFormulaIniSolverZZZ.getExpressionTagName() + ">"; 
-	}
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelZFormulaIniSolverZZZ.getExpressionTagName() + "/>";
-	}
-	
 	
 	public void setFileIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
@@ -274,5 +234,21 @@ public class KernelZFormulaIniSolverZZZ extends KernelUseObjectZZZ implements IK
 	@Override
 	public boolean proofFlagExists(IKernelZFormulaIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objaEnumFlag.name());
+	}
+
+	//### Andere Interfaces
+	@Override
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {		
+		return false;
+	}
+
+	@Override
+	public String convert(String sLine) throws ExceptionZZZ {		
+		return null;
+	}
+
+	@Override
+	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
+		return false;
 	}
 }//End class

@@ -27,7 +27,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKernelJsonIniSolverZZZ{
+public class KernelJsonIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelJsonIniSolverZZZ{
 	public static String sTAG_NAME = "JSON";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
@@ -89,35 +89,11 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		return bReturn;
 	 }//end function KernelJsonIniSolverNew_
 					
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelJsonIniSolverZZZ.getExpressionTagStarting(),false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, KernelJsonIniSolverZZZ.getExpressionTagClosing(),false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
 	//###### Getter / Setter
-	public static String getExpressionTagName(){
+	@Override
+	public String getExpressionTagName(){
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
 	}
-	public static String getExpressionTagStarting(){
-		return "<" + KernelJsonIniSolverZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + KernelJsonIniSolverZZZ.getExpressionTagName() + ">"; 
-	}
-	public static String getExpressionTagEmpty(){
-		return "<" + KernelJsonIniSolverZZZ.getExpressionTagName() + "/>";
-	}
-	
 	
 	public void setFileIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
@@ -224,6 +200,31 @@ public class KernelJsonIniSolverZZZ extends KernelUseObjectZZZ implements IKerne
 		@Override
 		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
+		}
+
+		
+		//### Andere Interfaces
+		/* (non-Javadoc)
+		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeExpressionAllVector(java.lang.String)
+		 */
+		@Override
+		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
+			return null;
+		}
+
+		@Override
+		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {			
+			return false;
+		}
+
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {			
+			return null;
+		}
+
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {			
+			return false;
 		}
 	
 }//End class

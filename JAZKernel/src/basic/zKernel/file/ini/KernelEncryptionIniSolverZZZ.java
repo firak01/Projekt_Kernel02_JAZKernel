@@ -237,6 +237,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 	}
 	
 	//### Aus Interface IKernelExpressionIniZZZ
+	@Override
 	public String getExpressionTagName(){
 		return KernelEncryptionIniSolverZZZ.sTAG_NAME;
 	}
@@ -269,6 +270,9 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 		return saReturn;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsExpression(java.lang.String)
+	 */
 	@Override
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
@@ -284,21 +288,17 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 	}
 	
 	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public String convert(String sLine) throws ExceptionZZZ {		
 		return null;
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
 		return false;
 	}
 
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {		
 		return false;
 	}
 

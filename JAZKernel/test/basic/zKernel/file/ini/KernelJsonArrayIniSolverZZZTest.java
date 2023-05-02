@@ -139,7 +139,7 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 	}
 	
 	public void testJson() {
-//		try {			
+		try {			
 			String sExpression = "<JSON>kljkljlkjklj</JSON>";
 			boolean bValue = objExpressionSolver.isExpression(sExpression);
 			assertFalse(bValue);
@@ -148,9 +148,9 @@ public class KernelJsonArrayIniSolverZZZTest extends TestCase {
 			bValue = objExpressionSolver.isExpression(sExpression);
 			assertTrue(bValue);
 			
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	}
 	
 }//END class
