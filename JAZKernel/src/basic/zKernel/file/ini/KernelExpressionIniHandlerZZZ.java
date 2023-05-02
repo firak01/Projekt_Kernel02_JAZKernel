@@ -27,8 +27,9 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-/** Klasse, welche die "Ini-Solver" Klassen anwendet
- *  
+/** Klasse, welche die "Ini-Solver" Klassen anwendet.
+ *  Somit ist sie die "Ausgangsklasse" für die FileIniZZZ-Methoden
+ *  einen Wert zu errechnen.
  * 
  * @author Fritz Lindhauer, 02.05.2023, 19:55:30
  * 
