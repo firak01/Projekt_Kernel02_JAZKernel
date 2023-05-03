@@ -13,25 +13,25 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelEncryption_CipherZZZ  extends AbstractKernelIniTagZZZ{
-	public static String sTAG_NAME = "Z:Cipher";
+public class KernelJavaCall_MethodZZZ  extends AbstractKernelIniTagZZZ{
+	public static String sTAG_NAME = "Z:Method";
 	
-	public KernelEncryption_CipherZZZ() throws ExceptionZZZ{
+	public KernelJavaCall_MethodZZZ() throws ExceptionZZZ{
 		super();
 	}
 		
-	public KernelEncryption_CipherZZZ(String[] saFlag) throws ExceptionZZZ{	
+	public KernelJavaCall_MethodZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionMathValueNew_(saFlag);
+		KernelJavaCallMethodNew_(saFlag);
 	}
 	
-	public KernelEncryption_CipherZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public KernelJavaCall_MethodZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel,saFlag);
-		KernelExpressionMathValueNew_(saFlag);
+		KernelJavaCallMethodNew_(saFlag);
 	}
 	
 	
-	private boolean KernelExpressionMathValueNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelJavaCallMethodNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 //	 boolean bReturn = false;
 //	 String stemp; boolean btemp; 
 //	 main:{
@@ -57,33 +57,26 @@ public class KernelEncryption_CipherZZZ  extends AbstractKernelIniTagZZZ{
 		
 		return true;
 	 }//end function KernelExpressionMathSolverNew_
-	
-	public String getCipher() {
-		return this.getValue();
-	}
-	public void setCipher(String sCipher) {
-		this.setValue(sCipher);
-	}
 		
+	
 	//###### Getter / Setter
 	public String getExpressionTagName(){
-		return KernelEncryption_CipherZZZ.sTAG_NAME;
+		return KernelJavaCall_MethodZZZ.sTAG_NAME;
 	}
-
+			
 	//### Aus Interface IKernelExpressionIniZZZ
 	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-		return false;
-	}
-
-	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		return false;
-	}
-
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
+	public String convert(String sLine) throws ExceptionZZZ {		
 		return null;
 	}
-						
+	
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {		
+		return false;
+	}
+
+	@Override
+	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
+		return false;
+	}						
 }//End class

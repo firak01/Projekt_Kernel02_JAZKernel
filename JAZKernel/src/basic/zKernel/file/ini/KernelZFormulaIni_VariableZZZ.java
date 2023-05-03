@@ -186,19 +186,16 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//Ke
 
 	@Override
 	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String convert(String sLine) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }//End class

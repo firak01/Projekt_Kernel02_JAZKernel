@@ -96,19 +96,16 @@ public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagZZZ{ //Ker
 
 			@Override
 			public String convert(String sLine) throws ExceptionZZZ {
-				// TODO Auto-generated method stub
 				return null;
 			}
 
 			@Override
 			public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-				// TODO Auto-generated method stub
 				return false;
 			}
 
 			@Override
 			public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-				// TODO Auto-generated method stub
 				return false;
 			}						
 }//End class

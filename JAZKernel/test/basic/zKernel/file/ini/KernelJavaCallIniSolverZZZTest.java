@@ -43,10 +43,10 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				//#### Ein init TestObjekt
 				String[] saFlagInit = {"init"};
-				objExpressionSolverInit = new KernelEncryptionIniSolverZZZ(objKernel, saFlagInit);
+				objExpressionSolverInit = new KernelJavaCallIniSolverZZZ(objKernel, saFlagInit);
 				
 				String[] saFlag = {""};
-				objExpressionSolver = new KernelEncryptionIniSolverZZZ(objKernel, saFlag);
+				objExpressionSolver = new KernelJavaCallIniSolverZZZ(objKernel, saFlag);
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -65,7 +65,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			boolean bFlagAvailable = objExpressionSolver.setFlag("usecall", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usejavacall", false); //Ansonsten wird der Wert sofort ausgerechnet
+			bFlagAvailable = objExpressionSolver.setFlag("usejavacall", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			bFlagAvailable = objExpressionSolver.setFlag("gibtEsNicht", false); //Ansonsten wird der Wert sofort ausgerechnet
@@ -82,6 +82,9 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		 */
 		public void testCompute01(){
 			try {
+				TODOGOON;//20230504: 
+				
+				
 				String sLineWithExpression = KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT;
 				
 				

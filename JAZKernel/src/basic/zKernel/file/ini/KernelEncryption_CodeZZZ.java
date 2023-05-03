@@ -67,19 +67,16 @@ public class KernelEncryption_CodeZZZ  extends AbstractKernelIniTagZZZ{
 	//### Aus Interface IKernelExpressionIniZZZ
 	@Override
 	public String convert(String sLine) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
 		return false;
 	}						
 }//End class

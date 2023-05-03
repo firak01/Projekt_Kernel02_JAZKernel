@@ -2,6 +2,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import basic.zBasic.ReflectTHECodeKernelZZZTest;
 import basic.zBasic.ReflectTHECodeZZZTest;
+import basic.zBasic.ReflectUtilZZZTest;
 import basic.zBasic.ReflectEnvironmentZZZTest;
 import basic.zBasic.util.abstractEnum.EnumSetMappedZZZTest;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZTest;
@@ -62,6 +63,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(ReflectEnvironmentZZZTest.class);
 		objReturn.addTestSuite(ReflectTHECodeZZZTest.class);
 		objReturn.addTestSuite(ReflectTHECodeKernelZZZTest.class);
+		objReturn.addTestSuite(ReflectUtilZZZTest.class);
 		
 		//Tests für Enum
 		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);

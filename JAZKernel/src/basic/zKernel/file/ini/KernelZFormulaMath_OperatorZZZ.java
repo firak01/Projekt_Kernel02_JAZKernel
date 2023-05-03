@@ -212,20 +212,16 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagZZZ{ //
 
 		@Override
 		public String convert(String sLine) throws ExceptionZZZ {
-			// TODO Auto-generated method stub
 			return null;
 		}
 		
 		@Override
-		public boolean isStringForComputeRelevant(String sExpressionToProof)
-				throws ExceptionZZZ {
-			// TODO Auto-generated method stub
+		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
 			return false;
 		}
 
 		@Override
 		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-			// TODO Auto-generated method stub
 			return false;
 		}
 				
