@@ -19,6 +19,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import custom.zKernel.ConfigFGL;
 import custom.zKernel.LogZZZ;
@@ -1517,8 +1518,8 @@ public void testGetModuleAliasAll(){
 			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'",bFlagExists);
-			bFlagExists = objKernelFGL.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
-			assertTrue("Flag wurde erwartet: '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP + "'",bFlagExists);
+			bFlagExists = objKernelFGL.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
+			assertTrue("Flag wurde erwartet: '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'",bFlagExists);
 			
 			HashMap<String,String> hm = objKernelFGL.getParameterHashMapStringByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
 			assertNotNull(hm);

@@ -2,9 +2,9 @@ package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface IKernelJsonIniSolverZZZ {
+public interface IKernelJsonIniSolverZZZ{
 	public enum FLAGZ{
-		USEJSON,USEJSON_MAP,USEJSON_ARRAY
+		USEJSON
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()

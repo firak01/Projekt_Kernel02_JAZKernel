@@ -122,7 +122,162 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
 	
-	//###### Getter / Setter	
+	//### GETTER / SETTER
+			public void setFileIni(FileIniZZZ objFileIni){
+				this.objFileIni = objFileIni;
+			}
+			public FileIniZZZ getFileIni(){
+				return this.objFileIni;
+			}
+			
+			public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+				this.hmVariable = hmVariable;
+			}
+			public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+				return this.hmVariable;
+			}
+			
+			public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+				if(this.hmVariable==null){
+					this.hmVariable = hmVariable;
+				}else{
+					if(hmVariable==null){
+						//nix....
+					}else{
+						//füge Werte hinzu.
+						Set<String> sSet =  this.hmVariable.keySet();
+						for(String sKey : sSet){
+							this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
+						}
+					}
+				}
+			}
+			
+			public String getVariable(String sKey){
+				return (String) this.getHashMapVariable().get(sKey);
+			}
+			
+			public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
+				int iReturn = 0;
+				boolean bAnyEncryption = false;			
+				IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+				if(objReturn==null) {
+					objReturn = new KernelConfigSectionEntryZZZ();
+					objReturnReference.set(objReturn);
+				}
+				main:{
+					if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+					boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
+					if(!bUseExpression) break main;
+					
+					iReturn=1;
+					objReturn.setValue(sLineWithExpression);//Schon mal setzen, falls es ein normaler Wert ist. Falls es ein Formelwert/Verschluesselter Wert ist, wird das eh ueberschrieben.
+					
+					
+					String sLineWithExpressionUsed = sLineWithExpression;
+					
+					boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+					if(bUseEncryption) {
+						KernelEncryptionIniSolverZZZ encryptionDummy = new KernelEncryptionIniSolverZZZ();
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+
+						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+						boolean bForFurtherProcessing = true; 
+						bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+						if(bAnyEncryption) {
+							String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
+							if(sLineWithExpressionUsed.equals(sLineDecrypted)) {												
+								objReturn.isDecrypted(false);
+							}else {
+								objReturn.isDecrypted(true);
+								objReturn.setRawDecrypted(sLineDecrypted);
+								objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
+							}
+							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
+						}
+					}
+					
+					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
+					if(bUseFormula) {
+					
+						//Hier KernelZFormulIniSolverZZZ
+						//und KernelJsonInisolverZZZ verwenden
+						//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
+						//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
+						//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
+						KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ();
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaDummy, true);
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+						
+						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
+						int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
+						if(iReturnExpression>=1){						
+							objReturn.isExpression(true);													
+						}
+					}//end bUseFormula
+
+													
+					boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+					if(bUseJson) {
+						int iReturnJson=0;
+						
+						KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
+						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
+
+						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+						ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
+						ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
+						iReturnJson = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
+						if(iReturnJson==5) {
+							objReturn.isJsonArray(true);
+							objReturn.isJson(true);
+							objReturn.isExpression(true);
+							objReturn.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));
+							objReturn.setValue(objalsReturnValueJsonSolved.getArrayList());												
+						}
+					
+					
+						if(iReturnJson==6) {
+							objReturn.isJsonMap(true);
+							objReturn.isJson(true);
+							objReturn.isExpression(true);
+							objReturn.setValue(HashMapExtendedZZZ.debugString(objhmReturnValueJsonSolved.get()));
+							objReturn.setValue(objhmReturnValueJsonSolved.get());
+						}
+						
+						iReturn = iReturn + iReturnJson;						
+					}									
+				}//end main:
+				if(bAnyEncryption) {				
+					iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
+				}
+				objReturnReference.set(objReturn);
+				return iReturn;
+			}
+		
+			public ArrayList<String> computeArrayList(String sLineWithExpression)throws ExceptionZZZ{
+				ArrayList<String> alsReturn=  new ArrayList<String>();
+				main:{
+					
+					//Hier KernelJsonInisolverZZZ verwenden
+					
+				}//end main;
+				return alsReturn;
+				
+			}
+			
+			public HashMap<String,String> computeHashMap(String sLineWithExpression)throws ExceptionZZZ{
+				HashMap<String,String> hmReturn=  new HashMap<String,String>();
+				main:{
+					
+					//Hier KernelJsonInisolverZZZ verwenden				
+					
+				}//end main;
+				return hmReturn;
+				
+			}
 	
 	//######### Interfaces #############################################
 	
@@ -227,192 +382,6 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 
-	//### aus IKernelJsonIniSolverZZZ
-	@Override
-	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
-		return this.getFlag(objEnumFlag.name());
-	}
-	
-	@Override
-	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		return this.setFlag(objEnumFlag.name(), bFlagValue);
-	}
-	
-	@Override
-	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		boolean[] baReturn=null;
-		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-				baReturn = new boolean[objaEnumFlag.length];
-				int iCounter=-1;
-				for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-					iCounter++;
-					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-					baReturn[iCounter]=bReturn;
-				}
-			}
-		}//end main:
-		return baReturn;
-	}
-	
-	@Override
-	public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objEnumFlag.name());
-	}
-	
-	//###
-		public void setFileIni(FileIniZZZ objFileIni){
-			this.objFileIni = objFileIni;
-		}
-		public FileIniZZZ getFileIni(){
-			return this.objFileIni;
-		}
-		
-		public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-			this.hmVariable = hmVariable;
-		}
-		public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
-			return this.hmVariable;
-		}
-		
-		public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-			if(this.hmVariable==null){
-				this.hmVariable = hmVariable;
-			}else{
-				if(hmVariable==null){
-					//nix....
-				}else{
-					//füge Werte hinzu.
-					Set<String> sSet =  this.hmVariable.keySet();
-					for(String sKey : sSet){
-						this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
-					}
-				}
-			}
-		}
-		
-		public String getVariable(String sKey){
-			return (String) this.getHashMapVariable().get(sKey);
-		}
-		
-		public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
-			int iReturn = 0;
-			boolean bAnyEncryption = false;			
-			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
-			if(objReturn==null) {
-				objReturn = new KernelConfigSectionEntryZZZ();
-				objReturnReference.set(objReturn);
-			}
-			main:{
-				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-				boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
-				if(!bUseExpression) break main;
-				
-				iReturn=1;
-				objReturn.setValue(sLineWithExpression);//Schon mal setzen, falls es ein normaler Wert ist. Falls es ein Formelwert/Verschluesselter Wert ist, wird das eh ueberschrieben.
-				
-				
-				String sLineWithExpressionUsed = sLineWithExpression;
-				
-				boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
-				if(bUseEncryption) {
-					KernelEncryptionIniSolverZZZ encryptionDummy = new KernelEncryptionIniSolverZZZ();
-					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
-					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-
-					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-					boolean bForFurtherProcessing = true; 
-					bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
-					if(bAnyEncryption) {
-						String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
-						if(sLineWithExpressionUsed.equals(sLineDecrypted)) {												
-							objReturn.isDecrypted(false);
-						}else {
-							objReturn.isDecrypted(true);
-							objReturn.setRawDecrypted(sLineDecrypted);
-							objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
-						}
-						sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
-					}
-				}
-				
-				boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
-				if(bUseFormula) {
-				
-					//Hier KernelZFormulIniSolverZZZ
-					//und KernelJsonInisolverZZZ verwenden
-					//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
-					//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
-					//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
-					KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ();
-					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaDummy, true);
-					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-					
-					//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
-					int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
-					if(iReturnExpression>=1){						
-						objReturn.isExpression(true);													
-					}
-				}//end bUseFormula
-
-												
-				boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name());
-				if(bUseJson) {
-					KernelJsonIniSolverZZZ exDummy03 = new KernelJsonIniSolverZZZ();
-					String[] saFlagZpassed = this.getFlagZ_passable(true, exDummy03);					
-					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-
-					//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-					ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
-					ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
-					int iReturnJson = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
-					if(iReturnJson==5) {
-						objReturn.isJsonArray(true);
-						objReturn.isJson(true);
-						objReturn.isExpression(true);
-						objReturn.setValue(ArrayListExtendedZZZ.debugString(objalsReturnValueJsonSolved.getArrayList()));
-						objReturn.setValue(objalsReturnValueJsonSolved.getArrayList());												
-					}
-					
-					if(iReturnJson==6) {
-						objReturn.isJsonMap(true);
-						objReturn.isJson(true);
-						objReturn.isExpression(true);
-						objReturn.setValue(HashMapExtendedZZZ.debugString(objhmReturnValueJsonSolved.get()));
-						objReturn.setValue(objhmReturnValueJsonSolved.get());
-					}
-					iReturn = iReturn + iReturnJson;									
-				}									
-			}//end main:
-			if(bAnyEncryption) {				
-				iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
-			}
-			objReturnReference.set(objReturn);
-			return iReturn;
-		}
-	
-		public ArrayList<String> computeArrayList(String sLineWithExpression)throws ExceptionZZZ{
-			ArrayList<String> alsReturn=  new ArrayList<String>();
-			main:{
-				
-				//Hier KernelJsonInisolverZZZ verwenden
-				
-			}//end main;
-			return alsReturn;
-			
-		}
-		
-		public HashMap<String,String> computeHashMap(String sLineWithExpression)throws ExceptionZZZ{
-			HashMap<String,String> hmReturn=  new HashMap<String,String>();
-			main:{
-				
-				//Hier KernelJsonInisolverZZZ verwenden				
-				
-			}//end main;
-			return hmReturn;
-			
-		}
-
 		//### Interface aus IKernelExpressionIniSolver
 		public IKernelConfigSectionEntryZZZ getEntry() {
 			if(this.objEntry==null) {
@@ -450,6 +419,105 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 			return null;
 		}
 		
+		//Aus IKernelJsonMapIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+			public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+						baReturn = new boolean[objaEnumFlag.length];
+						int iCounter=-1;
+						for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+	
+		@Override
+		public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
+		//### aus IKernelJsonArrayIniSolverZZZ
+				@Override
+				public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
+					return this.getFlag(objEnumFlag.name());
+				}
+				
+				@Override
+				public boolean setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+					return this.setFlag(objEnumFlag.name(), bFlagValue);
+				}
+
+				@Override
+					public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+						boolean[] baReturn=null;
+						main:{
+							if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+								baReturn = new boolean[objaEnumFlag.length];
+								int iCounter=-1;
+								for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+									iCounter++;
+									boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+									baReturn[iCounter]=bReturn;
+								}
+							}
+						}//end main:
+						return baReturn;
+					}
+				
+				@Override
+				public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+					return this.proofFlagExists(objaEnumFlag.name());
+				}
+				
+				//### aus IKernelJsonIniSolverZZZ
+				@Override
+				public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
+					return this.getFlag(objEnumFlag.name());
+				}
+				
+				@Override
+				public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+					return this.setFlag(objEnumFlag.name(), bFlagValue);
+				}
+
+				@Override
+					public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+						boolean[] baReturn=null;
+						main:{
+							if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+								baReturn = new boolean[objaEnumFlag.length];
+								int iCounter=-1;
+								for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+									iCounter++;
+									boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+									baReturn[iCounter]=bReturn;
+								}
+							}
+						}//end main:
+						return baReturn;
+					}
+				
+				@Override
+				public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+					return this.proofFlagExists(objaEnumFlag.name());
+				}
+		
 		//### Sonstige Interfaces
 		/* (non-Javadoc)
 		 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#isStringForConvertRelevant(java.lang.String)
@@ -468,5 +536,6 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
 			return false;
 		}
-		
+
+
 }

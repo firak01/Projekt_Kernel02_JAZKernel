@@ -362,14 +362,14 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	
 	public void testComputeJson() {
 		try {
-			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);
 			
 			//Auch wenn die ZExpression-Ausdrücke gesetzt sind, muss es funktionieren.
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
-			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH.name(),true);
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA, true);
+			objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH,true);
 			
 			//Anwenden der ersten Formel
-			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
+			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sExpression = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1").getValue();
 			assertNotNull(sExpression);
 			
@@ -377,9 +377,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			boolean bIsJson = objEntry.isJson();
 			assertFalse(bIsJson);//Wenn das Flag auf false gesetzt ist, wird das nicht behandelt
 			
-			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name(), true);
-			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name(), true);
-			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name(), true);
+			objFileIniTest.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
+			objFileIniTest.setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY, true);
+			objFileIniTest.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
 			objEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
 			bIsJson = objEntry.isJson();
 			assertTrue(bIsJson);//Erst wenn das Flag auf true gesetzt ist, wird es überhaupt behandelt und ggfs. als JSON erkannt.

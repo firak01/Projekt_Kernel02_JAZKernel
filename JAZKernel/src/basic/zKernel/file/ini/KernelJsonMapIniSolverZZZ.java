@@ -28,7 +28,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelJsonIniSolverZZZ{
+public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelJsonMapIniSolverZZZ{
 	public static String sTAG_NAME = "JSON:MAP";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
@@ -172,7 +172,7 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 				
 			sReturn = sLineWithExpression;
 			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
+			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
 			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
 			if(hmReturn!=null) {
@@ -187,7 +187,7 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name())== false) break main;
+			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
 			
 			String sReturn = "";
 			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
@@ -221,8 +221,57 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 		}//end main:
 		return hmReturn;
 	}
+
+		//### Andere Interfaces
+		@Override
+		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
+			return false;
+		}
+
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {
+			return null;
+		}
+
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+			return false;
+		}
+		
+		//Aus IKernelJsonMapIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+			public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+						baReturn = new boolean[objaEnumFlag.length];
+						int iCounter=-1;
+						for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
 	
-	//### aus IKernelJsonIniSolverZZZ
+		@Override
+		public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
+		//Aus IKernelJsonIniSolverZZZ
 		@Override
 		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
 			return this.getFlag(objEnumFlag.name());
@@ -253,21 +302,5 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 		@Override
 		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
-		}
-
-		//### Andere Interfaces
-		@Override
-		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-			return false;
-		}
-
-		@Override
-		public String convert(String sLine) throws ExceptionZZZ {
-			return null;
-		}
-
-		@Override
-		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-			return false;
 		}
 }//End class

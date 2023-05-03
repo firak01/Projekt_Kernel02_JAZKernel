@@ -15,13 +15,17 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.file.ini.AbstractKernelIniTagZZZ;
+import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
+import basic.zKernel.file.ini.KernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -216,27 +220,41 @@ public class KernelConfigEntryUtilZZZ {
 		 main:{			 			 								
 			 		if(!bUseJson)break main;
 			 		
-			 		//boolean bUseJsonArray = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name());
-					//if(bUseJsonArray) {
+			 		boolean bUseJsonArray = objFileIni.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
+					if(bUseJsonArray) {
+						
+						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonArray passen.
+						//      Darum neu definieren
+						KernelJsonArrayIniSolverZZZ exDummy03 = new KernelJsonArrayIniSolverZZZ();
+						String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
+					
+						
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.						
-						boolean bAnyJsonArray = KernelConfigEntryUtilZZZ.getValueJsonArraySolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved);			
+						boolean bAnyJsonArray = KernelConfigEntryUtilZZZ.getValueJsonArraySolved(objFileIni, sRaw, bUseJson, saFlagZpassed03, objalsReturnValueJsonSolved);			
 						if(bAnyJsonArray) {
 							iReturn = 5;
 							break main;
 						}else {										
 						}					
-					//}
+					}
 			 		
-			 		//boolean bUseJsonMap = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON_MAP.name());
-					//if(bUseJsonMap) {				
+			 		boolean bUseJsonMap = objFileIni.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
+					if(bUseJsonMap) {				
+						
+						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonMap passen
+//				      Darum neu definieren
+						KernelJsonMapIniSolverZZZ exDummy03 = new KernelJsonMapIniSolverZZZ();
+						String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
+					
+						
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.				                   
-						boolean bAnyJsonMap = KernelConfigEntryUtilZZZ.getValueJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed, objhmReturnValueJsonSolved);			
+						boolean bAnyJsonMap = KernelConfigEntryUtilZZZ.getValueJsonMapSolved(objFileIni, sRaw, bUseJson, saFlagZpassed03, objhmReturnValueJsonSolved);			
 						if(bAnyJsonMap) {
 							iReturn = 6;
 							break main;
 						}else {										
 						}
-					//}
+					}
 					
 					
 			 		 			 

@@ -1470,9 +1470,6 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		return null;
 	}
 
-	
-	
-	
 	//### Interface
 	//### aus IKernelKernelFileIniZZZ
 	@Override
@@ -1651,36 +1648,94 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 		return this.proofFlagExists(objaEnumFlag.name());
 	}
 	
-	//+++ Aus Interface: IListenerObjectFlagZsetZZZ
+	//Aus IKernelJsonMapIniSolverZZZ
 	@Override
-	public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			if(eventFlagZset==null) break main;
-			
-			//Wenn das Objekt ueber die Aenderung des Setzen des Flags informiert wird. 
-			//Dieses Setzen des Flags ggfs. nachvollziehen.
-			String sFlagText = eventFlagZset.getFlagText();
-			boolean bFlagValue = eventFlagZset.getFlagValue();
-			
-			try {
-				bReturn = this.setFlag(sFlagText, bFlagValue);
-			} catch (ExceptionZZZ e) {
-				//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
-				//Es kann aber auch ggfs. anders verfahren werden. 
-			}
-			
-		}//end main:
-		return bReturn;
+	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
 	}
 	
-	
+	@Override
+	public boolean setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 
-	
+	@Override
+		public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
+		}
 
-	
-	
+	@Override
+	public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
 
+	//### aus IKernelJsonArrayIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+			public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+						baReturn = new boolean[objaEnumFlag.length];
+						int iCounter=-1;
+						for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+		
+		@Override
+		public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
+		//+++ Aus Interface: IListenerObjectFlagZsetZZZ
+		@Override
+		public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
+			boolean bReturn = false;
+			main:{
+				if(eventFlagZset==null) break main;
+				
+				//Wenn das Objekt ueber die Aenderung des Setzen des Flags informiert wird. 
+				//Dieses Setzen des Flags ggfs. nachvollziehen.
+				String sFlagText = eventFlagZset.getFlagText();
+				boolean bFlagValue = eventFlagZset.getFlagValue();
+				
+				try {
+					bReturn = this.setFlag(sFlagText, bFlagValue);
+				} catch (ExceptionZZZ e) {
+					//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
+					//Es kann aber auch ggfs. anders verfahren werden. 
+				}
+				
+			}//end main:
+			return bReturn;
+		}
 	
 	//aus IKernelExpressionIniConverterUserZZZ
 	//Damit eine aufrufende Methode mitbekommt, ob ein Converter den Wert verändert hat.
