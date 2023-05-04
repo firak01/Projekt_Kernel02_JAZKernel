@@ -546,7 +546,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 
 
 	@Override
-	public void isRawEncrpyted(boolean bRawEncrypted) {
+	public void isRawEncrypted(boolean bRawEncrypted) {
 		this.bRawEncrypted = bRawEncrypted;
 	}
 

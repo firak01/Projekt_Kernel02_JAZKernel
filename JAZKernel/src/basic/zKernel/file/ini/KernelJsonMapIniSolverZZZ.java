@@ -88,36 +88,36 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 	
 	
 	
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			String sExpression = (String) vecReturn.get(1);									
-			if(!StringZZZ.isEmpty(sExpression)){
-				
-				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
-				while(objVariable.isExpression(sExpression)){
-					sExpression = objVariable.compute(sExpression);			
-				} //end while
-					
-								
-				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
-				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.computeAsExpression(sExpression);			
-				} //end while
-									
-				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				vecReturn.add(1, sExpression);
-			
-			} //end if sExpression = ""					
-		}//end main:
-		return vecReturn;
-	}
+//	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector vecReturn = new Vector();
+//		main:{
+//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+//			
+//			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+//			String sExpression = (String) vecReturn.get(1);									
+//			if(!StringZZZ.isEmpty(sExpression)){
+//				
+//				//ZUERST: Löse ggfs. übergebene Variablen auf.
+//				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+//				while(objVariable.isExpression(sExpression)){
+//					sExpression = objVariable.compute(sExpression);			
+//				} //end while
+//					
+//								
+//				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+//				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+//				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
+//						sExpression = objIniPath.computeAsExpression(sExpression);			
+//				} //end while
+//									
+//				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+//				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//				vecReturn.add(1, sExpression);
+//			
+//			} //end if sExpression = ""					
+//		}//end main:
+//		return vecReturn;
+//	}
 		
 	//###### Getter / Setter
 	public String getExpressionTagName(){

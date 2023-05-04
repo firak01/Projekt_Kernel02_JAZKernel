@@ -32,6 +32,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -342,9 +343,15 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			bFlagAvailable = objExpressionHandler.setFlag("usejson_map", true);
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 			
+			//Diese Flags reichen aber noch nicht. Auch im Ini-Datei Objekt müssen die Flags gesetzt werden.
+			FileIniZZZ objFileIni = objExpressionHandler.getFileIni();
+			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(objExpressionHandler, objFileIni,true);
+			objFileIni.setFlag(saFlag, true);
+			
+			//...weitermachen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
-			assertTrue(iReturn==6);
+			assertEquals(7,iReturn);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
 			HashMap<String,String> hm = objSectionEntry.getValueHashMap();
@@ -355,12 +362,19 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			
 			//NUN INDIREKT IM INI-OBJEKT TESTEN
-			bFlagAvailable = objFileIniTest.setFlag("useexpression", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
-			bFlagAvailable = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
-			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+//Flags wurden oben schon getestet
+//			bFlagAvailable = objExpressionHandler.setFlag("useexpression", true); //Ansonsten wird der Wert sofort ausgerechnet
+//			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+//			bFlagAvailable = objExpressionHandler.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
+//			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
+//			bFlagAvailable = objExpressionHandler.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
+//			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
+//			
+//			//Diese Flags reichen aber noch nicht. Auch im Ini-Datei Objekt müssen die Flags gesetzt werden.
+//			objFileIni = objExpressionHandler.getFileIni();
+//			saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(objExpressionHandler, objFileIni,true);
+//			objFileIni.setFlag(saFlag, true);
 			
 			IKernelConfigSectionEntryZZZ objFileEntry = objFileIniTest.getPropertyValue("Section for testJsonHashmap", "Map1");
 			assertNotNull(objFileEntry);
@@ -391,6 +405,12 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			String sExpression = objFileIniTest.getPropertyValue("Section for testEncrypted", "WertAencrypted").getValue();
 			assertEquals(KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT,sExpression);
 			
+			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
+			assertNotNull(objSectionEntry);
+			assertFalse(objSectionEntry.isDecrypted());
+			assertFalse(objSectionEntry.isRawEncrypted());
+			
+			//###################################################
 			//Berechne die erste Formel, DIRECT			
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -399,21 +419,22 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
-			assertTrue(iReturn==10); //10 für die Encryption
+			assertEquals(11,iReturn); //+10 für die Encryption
 			
-			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
+			objSectionEntry = objSectionEntryReference.get();
 			assertNotNull(objSectionEntry);
+			assertTrue(objSectionEntry.isDecrypted());
+			assertTrue(objSectionEntry.isRawEncrypted());
 			
-			//TODOGOON20230314;//objSectionEntry sieht so aus, als hätte es die ganzen Werte "vergessen".
-			                 //Das muss also unbeding per Referenz an die compute-Methode übergeben werden!!!
-			assertTrue(objSectionEntry.isEncrypted());
-									
+			
+			//#####################################################
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);				
 			iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
 			assertTrue(iReturn==11); //10 für die Encryption  PLUS 1 für die Formelauswertung als String
 			assertNotNull(objSectionEntry);
-			assertTrue(objSectionEntry.isEncrypted());
+			assertTrue(objSectionEntry.isDecrypted());
+			assertTrue(objSectionEntry.isRawEncrypted());
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		

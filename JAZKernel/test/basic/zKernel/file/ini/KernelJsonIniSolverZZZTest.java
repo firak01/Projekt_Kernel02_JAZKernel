@@ -189,6 +189,8 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertNotNull(sValue);
 			assertFalse(sValue.equals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
 			
+			bFlagAvailable = objFileIniTest.setFlag("useexpression", true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objFileIniTest.setFlag("usejson_map", true); //Ansonsten wird der Wert sofort ausgerechnet
@@ -228,6 +230,8 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertNotNull(sValue);
 			assertFalse(sValue.equals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
 			
+			bFlagAvailable = objFileIniTest.setFlag("useexpression", true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objFileIniTest.setFlag("usejson_array", true); //Ansonsten wird der Wert sofort ausgerechnet

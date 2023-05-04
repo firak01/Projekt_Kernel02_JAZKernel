@@ -186,6 +186,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 						boolean bForFurtherProcessing = true; 
 						bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyEncryption) {
+							objReturn.isRawEncrypted(true);
 							String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
 							if(sLineWithExpressionUsed.equals(sLineDecrypted)) {												
 								objReturn.isDecrypted(false);
@@ -195,6 +196,8 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 								objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
 							}
 							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
+						}else {
+							objReturn.isRawEncrypted(false);
 						}
 					}
 					

@@ -19,8 +19,9 @@ public class KernelZFormulaIniConverterZZZ extends KernelUseObjectZZZ{
 	private FileIniZZZ objFileIni=null;
 	
 	//###########################################
-	public KernelZFormulaIniConverterZZZ() throws ExceptionZZZ{		
-		KernelExpressionIniConverterNew_(null, null);
+	public KernelZFormulaIniConverterZZZ() throws ExceptionZZZ{
+		String[]saFlagControl = {"init"};
+		KernelExpressionIniConverterNew_(null, saFlagControl);
 	}
 	
 	public KernelZFormulaIniConverterZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{

@@ -1,5 +1,6 @@
 package basic.zKernel.file.ini;
 
+import java.util.Set;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
@@ -7,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -23,6 +25,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagZZZ implements IKernelZFormulaIniZZZ, IKernelIniSolverZZZ{
 	private IKernelConfigSectionEntryZZZ objEntry = null;
+	private FileIniZZZ objFileIni=null;
+	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	public AbstractKernelIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
@@ -86,18 +90,93 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagZZ
 		this.getEntry().setValue(sValue);
 	}
 	
-	/**Methode muss vom konkreten "solver" entwickelt werden.
+	/**Methode ersetzt in der Zeile Variablen und Ini-Pfade.
+	 * Methode Kann vom konkreten "solver" entwickelt werden.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
-	public abstract Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;	
+	//public abstract Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
+	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			String sExpression = (String) vecReturn.get(1);									
+			if(!StringZZZ.isEmpty(sExpression)){
+				
+				//ZUERST: Löse ggfs. übergebene Variablen auf.
+				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				while(objVariable.isExpression(sExpression)){
+					sExpression = objVariable.compute(sExpression);			
+				} //end while
+					
+								
+				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+				//Problem hier: [ ] ist auch der JSON Array-Ausdruck
+				String sExpressionOld = sExpression;
+				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
+						sExpression = objIniPath.computeAsExpression(sExpression);	
+						if(StringZZZ.isEmpty(sExpression)) {
+							sExpression = sExpressionOld;
+							break;
+						}else{
+							sExpressionOld = sExpression;							
+						}
+				} //end while
+									
+				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+				vecReturn.add(1, sExpression);
+			
+			} //end if sExpression = ""					
+		}//end main:
+		return vecReturn;
+	}
 
 	//###### Getter / Setter
 	public abstract String getExpressionTagName();
 
+	public void setFileIni(FileIniZZZ objFileIni){
+		this.objFileIni = objFileIni;
+	}
+	public FileIniZZZ getFileIni(){
+		return this.objFileIni;
+	}
+	
+	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		this.hmVariable = hmVariable;
+	}
+	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
+		return this.hmVariable;
+	}
+	
+	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
+		if(this.hmVariable==null){
+			this.hmVariable = hmVariable;
+		}else{
+			if(hmVariable==null){
+				//nix....
+			}else{
+				//füge Werte hinzu.
+				Set<String> sSet =  this.hmVariable.keySet();
+				for(String sKey : sSet){
+					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
+				}
+			}
+		}
+	}
+	
+	public String getVariable(String sKey){
+		return (String) this.getHashMapVariable().get(sKey);
+	}
+	//#########################################
+
+	
 	
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{

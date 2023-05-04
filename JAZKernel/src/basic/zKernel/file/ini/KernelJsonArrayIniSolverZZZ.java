@@ -33,9 +33,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  */
 public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelJsonArrayIniSolverZZZ{
 	public static String sTAG_NAME = "JSON:ARRAY";
-	private FileIniZZZ objFileIni=null;
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
-		
+			
 	public KernelJsonArrayIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelJsonArrayIniSolverNew_(null, saFlag);
@@ -88,87 +86,12 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelJsonMapIniSolverNew_
-	
-	
-	
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			String sExpression = (String) vecReturn.get(1);									
-			if(!StringZZZ.isEmpty(sExpression)){
-				
-				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
-				while(objVariable.isExpression(sExpression)){
-					sExpression = objVariable.compute(sExpression);			
-				} //end while
-					
-								
-				//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				//Problem hier: [ ] ist auch der JSON Array-Ausdruck
-				String sExpressionOld = sExpression;
-				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
-				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.computeAsExpression(sExpression);	
-						if(StringZZZ.isEmpty(sExpression)) {
-							sExpression = sExpressionOld;
-							break;
-						}else{
-							sExpressionOld = sExpression;							
-						}
-				} //end while
-									
-				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				vecReturn.add(1, sExpression);
-			
-			} //end if sExpression = ""					
-		}//end main:
-		return vecReturn;
-	}
-	
+		
 	//###### Getter / Setter
 	public String getExpressionTagName(){
 		return KernelJsonArrayIniSolverZZZ.sTAG_NAME;
 	}
 
-	public void setFileIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
-	public FileIniZZZ getFileIni(){
-		return this.objFileIni;
-	}
-	
-	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		this.hmVariable = hmVariable;
-	}
-	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
-		return this.hmVariable;
-	}
-	
-	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		if(this.hmVariable==null){
-			this.hmVariable = hmVariable;
-		}else{
-			if(hmVariable==null){
-				//nix....
-			}else{
-				//füge Werte hinzu.
-				Set<String> sSet =  this.hmVariable.keySet();
-				for(String sKey : sSet){
-					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
-				}
-			}
-		}
-	}
-	
-	public String getVariable(String sKey){
-		return (String) this.getHashMapVariable().get(sKey);
-	}
-	
 	/**Eine ArrayList wird zum String umgewandelt. 
 	 * Das ist momentan die DEBUG-Variante, z.B. für die Ausgabe auf der Konsole.
 	 * @param sLineWithExpression

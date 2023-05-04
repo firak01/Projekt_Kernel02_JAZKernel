@@ -95,7 +95,7 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	boolean isRawDecrypted();
 	
 	public boolean isRawEncrypted();
-	abstract void isRawEncrpyted(boolean bIsRawEncrypted);
+	abstract void isRawEncrypted(boolean bIsRawEncrypted);
 	public String getRawEncrypted();//Wert mit den Z-Tags drumherum
 	abstract void setRawEncrypted(String sRaw);
 	public String getValueEncrypted(); 
