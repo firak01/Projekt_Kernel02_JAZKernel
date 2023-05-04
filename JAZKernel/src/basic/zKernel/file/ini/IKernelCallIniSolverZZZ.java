@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 
 public interface IKernelCallIniSolverZZZ {
 	public enum FLAGZ{
-		USEJSON,USEJSON_MAP,USEJSON_ARRAY
+		USECALL
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()

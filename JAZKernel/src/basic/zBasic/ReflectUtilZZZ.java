@@ -37,11 +37,16 @@ public class ReflectUtilZZZ {
     
    
     /** Einfacher Fall: Statische Methode ohne weitere Argumente aufrufen.
+     * 
+     * Abgewandelt von:
+     * Klasse: ReflectionUtil
+     * public static void invokeStaticMethod(String qualifiedClassname, String methodName, Class<?>[] parameterTypes, Object[] parameterValues) {
+     * 
      * @param qualifiedClassname
      * @param methodName
      * @author Fritz Lindhauer, 03.05.2023, 16:11:40
      */
-    //public static void invokeStaticMethod(String qualifiedClassname, String methodName, Class<?>[] parameterTypes, Object[] parameterValues) {
+    
     public static Object invokeStaticMethod(Method objMethod) throws ExceptionZZZ {
     	Object objReturn = null;
     	main:{

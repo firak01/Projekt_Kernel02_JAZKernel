@@ -35,6 +35,12 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
 	private boolean bJsonMap = false;
+	
+	private boolean bCall = false;
+	private boolean bJavaCall = false;
+	
+	private String sCallingClassname = null;
+	private String sCallingMethodname = null;
 
 	private ICryptZZZ objCrypt = null; //wichtig, falls z.B. ein verschluesselter Wert mit einem neuen Wert ersetzt werden soll. Dann muss das Algortithmus-Objekt nicht neu erstellt werden.
 	
@@ -381,6 +387,26 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 	
 	@Override
+	public boolean isCall() {
+		return this.bCall;
+	}
+	
+	@Override
+	public void isCall(boolean bCall) {
+		this.bCall = true;
+	}
+	
+	@Override
+	public boolean isJavaCall() {
+		return this.bJavaCall;
+	}
+	
+	@Override
+	public void isJavaCall(boolean bJavaCall) {
+		this.bJavaCall = bJavaCall;
+	}
+	
+	@Override
 	public boolean sectionExists() {
 		return this.bSectionExists;
 	}
@@ -535,6 +561,28 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		this.sRawEncrypted = sRaw;
 	}
 
+	
+	//### Java Methoden Aufruf in ini-Datei konfigurieren
+	@Override
+	public String getCallingClassname() {
+		return this.sCallingClassname;
+	}
+
+	@Override
+	public void setCallingClassname(String sJavaCallingClassName) {
+		this.sCallingClassname = sJavaCallingClassName;
+	}
+
+	@Override
+	public String getCallingMethodname() {
+		return this.sCallingMethodname;
+	}
+
+	@Override
+	public void setCallingMethodname(String sJavaCallingMethodName) {
+		this.sCallingMethodname = sJavaCallingMethodName;
+	}
+	
 
 	//### Aus Interface ICryptZZZ
 	@Override

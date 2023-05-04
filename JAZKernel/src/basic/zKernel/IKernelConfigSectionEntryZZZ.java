@@ -65,6 +65,11 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public boolean isJsonArray();
 	abstract void isJsonArray(boolean bIsJsonArray);
 
+	public boolean isCall();
+	abstract void isCall(boolean bIsCall);
+	
+	public boolean isJavaCall();
+	abstract void isJavaCall(boolean bIsJavaCall);
 	
 	//Falls eine Section eine Form des Arrays enthält und dieses in Einzelwerte zerlegt wurde (mit explode)
 	public boolean isExploded();
@@ -98,7 +103,12 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public String getValueDecrypted(); 
 	public void setValueDecrypted(String sValueEncryptd);
 	
+	//Falls ein Wert einen Aufruf enthält hier die Details ablegen
+	public String getCallingClassname();
+	public void setCallingClassname(String sJavaCallingClassName);
 	
+	public String getCallingMethodname();
+	public void setCallingMethodname(String sJavaCallingMethodName);
 	
 	//Suchpfaddetail	
 	public boolean sectionExists();

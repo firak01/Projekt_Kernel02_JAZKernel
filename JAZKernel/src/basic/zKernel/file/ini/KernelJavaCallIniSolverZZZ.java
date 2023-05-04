@@ -20,7 +20,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  implements IKernelEncryptionIniSolverZZZ{
+public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  implements IKernelJavaCallIniSolverZZZ{
 	public static String sTAG_NAME = "Z:Java";
 	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelJavaCallIniSolverZZZ() throws ExceptionZZZ{
@@ -74,8 +74,11 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 				String sExpression = (String) vecReturn.get(1);
-				this.getEntry().setRawEncrypted(sExpression);
+				this.getEntry().setRaw(sExpression);
 				if(!StringZZZ.isEmpty(sExpression)){
+					this.getEntry().isCall(true);
+					this.getEntry().isJavaCall(true);
+					
 					Class objClass = null; Method objMethod = null;
 					
 					//++++++++++++++++++++++++++++++++++++++++++++
@@ -84,6 +87,8 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 					if(objJavaCallClass.isExpression(sExpression)){					
 						String sJavaCallClass = objJavaCallClass.compute(sExpression);	
 						if(StringZZZ.isEmpty(sJavaCallClass)) break main;
+						
+						this.getEntry().setCallingClassname(sJavaCallClass);
 						
 						//Mit diesem Klassennamen nun das Class-Objekt erstellen
 						objClass = ReflectUtilZZZ.findClass(sJavaCallClass);
@@ -101,10 +106,12 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 					//Nun den z:method Tag suchen
 					KernelJavaCall_MethodZZZ objJavaCallMethod = new KernelJavaCall_MethodZZZ();
 					if(objJavaCallMethod.isExpression(sExpression)){					
-						String sJavaCallMethod = objJavaCallClass.compute(sExpression);	
+						String sJavaCallMethod = objJavaCallMethod.compute(sExpression);	
 						if(StringZZZ.isEmpty(sJavaCallMethod)) break main;
 						
-						//Mit diesem Klassennamen nun das Class-Objekt erstellen
+						this.getEntry().setCallingMethodname(sJavaCallMethod);
+						
+						//Mit diesem Klassennamen nun das Method-Objekt erstellen
 						objMethod = ReflectUtilZZZ.findMethodForMethodName(objClass, sJavaCallMethod);
 						if(objMethod==null) break main;
 	
@@ -133,40 +140,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	
 	//###### Getter / Setter
 	
-	
-	//### Aus Interface IKernelEncryptionIniSolverZZZ
-	@Override
-	public boolean getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ) {
-		return this.getFlag(objEnum_IKernelEncryptionIniSolverZZZ.name());
-	}
-	
-	@Override
-	public boolean setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-		return this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ.name(), bFlagValue);
-	}
-	
-	@Override
-	public boolean proofFlagExists(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objEnumFlag.name());
-	}
-	
-	@Override
-	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
-		boolean[] baReturn=null;
-		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelEncryptionIniSolverZZZ)) {
-				baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
-				int iCounter=-1;
-				for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {
-					iCounter++;
-					boolean bReturn = this.setFlag(objEnum_IKernelEncryptionIniSolverZZZ, bFlagValue);
-					baReturn[iCounter]=bReturn;
-				}
-			}
-		}//end main:
-		return baReturn;
-	}
-	
+
 	//### Aus Interface IKernelExpressionIniZZZ
 	@Override
 	public String getExpressionTagName(){
@@ -177,8 +151,8 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{			
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
-			if(bUseEncryption) {
+			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			if(bUse) {
 				sReturn = super.compute(sLineWithExpression);
 			}else {
 				sReturn = sLineWithExpression;
@@ -191,8 +165,8 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	public String[] computeAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
-			if(bUseEncryption) {
+			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			if(bUse) {
 				saReturn = super.computeAsArray(sLineWithExpression, sDelimiter);
 			}else {
 				saReturn = StringZZZ.explode(sLineWithExpression, sDelimiter);
@@ -208,8 +182,8 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{			
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
-			if(bUseEncryption) {
+			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			if(bUse) {
 				sReturn = super.computeAsExpression(sLineWithExpression);
 			}else {
 				sReturn = sLineWithExpression;
@@ -241,8 +215,8 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
-			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
-			if(bUseEncryption) {
+			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
+			if(bUse) {
 				objReturn = super.computeAsEntry(sLineWithExpression);
 			}else {
 				objReturn.setValue(sLineWithExpression);
@@ -251,16 +225,72 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 		return objReturn;
 	}
 	
-	//### Aus Inteface ICryptUserZZZ
-	@Override
-	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
-		return this.objCryptAlgorithmLast;
-	}
+		//### Aus Interface IKernelCallIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ) {
+			return this.getFlag(objEnum_IKernelCallIniSolverZZZ.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnum_IKernelCallIniSolverZZZ.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean proofFlagExists(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnum_IKernelCallIniSolverZZZ.name());
+		}
+		
+		@Override
+		public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelCallIniSolverZZZ)) {
+					baReturn = new boolean[objaEnum_IKernelCallIniSolverZZZ.length];
+					int iCounter=-1;
+					for(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ:objaEnum_IKernelCallIniSolverZZZ) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnum_IKernelCallIniSolverZZZ, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
+		}
 
-	@Override
-	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
-		this.objCryptAlgorithmLast = objCrypt;
-	}
+	
+		//### Aus Interface IKernelJavaCallIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
+			return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
+		}
+		
+		@Override
+		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+					baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
+					int iCounter=-1;
+					for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
+		}
 
 		
 }//End class
