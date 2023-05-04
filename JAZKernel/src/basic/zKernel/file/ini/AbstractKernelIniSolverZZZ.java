@@ -91,14 +91,13 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagZZ
 	}
 	
 	/**Methode ersetzt in der Zeile Variablen und Ini-Pfade.
-	 * Methode Kann vom konkreten "solver" entwickelt werden.
+	 * Methode Kann vom konkreten "solver" ueberschrieben werden, wenn darin keine Pfade oder Variablen ersetzt werden sollen.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
-	//public abstract Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
 		main:{
