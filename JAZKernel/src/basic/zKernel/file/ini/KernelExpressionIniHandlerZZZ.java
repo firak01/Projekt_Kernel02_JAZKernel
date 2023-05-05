@@ -159,7 +159,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 			
 			public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
 				int iReturn = 0;
-				boolean bAnyEncryption = false;			
+				boolean bAnyEncryption = false;		boolean bAnyCall = false;	
 				IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 				if(objReturn==null) {
 					objReturn = new KernelConfigSectionEntryZZZ();
@@ -175,31 +175,6 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 					
 					
 					String sLineWithExpressionUsed = sLineWithExpression;
-					
-					boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
-					if(bUseEncryption) {
-						KernelEncryptionIniSolverZZZ encryptionDummy = new KernelEncryptionIniSolverZZZ();
-						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
-						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-
-						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-						boolean bForFurtherProcessing = true; 
-						bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
-						if(bAnyEncryption) {
-							objReturn.isRawEncrypted(true);
-							String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
-							if(sLineWithExpressionUsed.equals(sLineDecrypted)) {												
-								objReturn.isDecrypted(false);
-							}else {
-								objReturn.isDecrypted(true);
-								objReturn.setRawDecrypted(sLineDecrypted);
-								objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
-							}
-							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
-						}else {
-							objReturn.isRawEncrypted(false);
-						}
-					}
 					
 					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
 					if(bUseFormula) {
@@ -219,6 +194,50 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagZZZ impl
 							objReturn.isExpression(true);													
 						}
 					}//end bUseFormula
+					
+					
+					boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name());
+					if(bUseCall){
+						KernelCallIniSolverZZZ callDummy = new KernelCallIniSolverZZZ();
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callDummy, true);
+						
+						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+						boolean bForFurtherProcessing = true; 
+						bAnyCall = KernelConfigEntryUtilZZZ.getValueCallSolved(this.getFileIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+						if(bAnyCall) {
+							objReturn.isCall(true);
+							
+						}else {
+							objReturn.isCall(false);
+						}
+						
+					}
+					
+					boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+					if(bUseEncryption) {
+						KernelEncryptionIniSolverZZZ encryptionDummy = new KernelEncryptionIniSolverZZZ();
+						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
+						
+						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
+						boolean bForFurtherProcessing = true; 
+						bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+						if(bAnyEncryption) {
+							objReturn.isRawEncrypted(true);
+							String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
+							if(sLineWithExpressionUsed.equals(sLineDecrypted)) {												
+								objReturn.isDecrypted(false);
+							}else {
+								objReturn.isDecrypted(true);
+								objReturn.setRawDecrypted(sLineDecrypted);
+								objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
+							}
+							sLineWithExpressionUsed = sLineDecrypted; //Zur Verarbeitung weitergeben			
+						}else {
+							objReturn.isRawEncrypted(false);
+						}
+					}
+					
+					
 
 													
 					boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);

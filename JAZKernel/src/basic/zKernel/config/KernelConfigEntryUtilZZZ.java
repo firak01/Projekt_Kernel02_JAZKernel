@@ -23,6 +23,7 @@ import basic.zKernel.file.ini.AbstractKernelIniTagZZZ;
 import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
+import basic.zKernel.file.ini.KernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonIniSolverZZZ;
@@ -117,6 +118,66 @@ public class KernelConfigEntryUtilZZZ {
 		}//end main:
 		return bReturn;
 	}
+	
+	/** Nur true / false zurückzugeben reicht nicht. Darum wird ein Integerwert zurückgegeben, der die Kombinationen verschlüsselt enthält:
+	 *  0 = nix
+
+		
+	 *  usw. denkbar fortsetzbar
+	 *  
+	 * 
+	 */
+	 //public static boolean getValueEncryptionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseEncryption, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueEncryptionSolved, ReferenceZZZ<ICryptZZZ>objobjReturn, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+	public static boolean getValueCallSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseCall, boolean bForFurtherProcessing, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{
+		 boolean bReturn = false;
+		 main:{			 			 								
+	 		if(!bUseCall)break main;
+	 		
+
+		 	IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
+			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+
+			boolean bAnyFormula = false;
+			
+			KernelCallIniSolverZZZ objDummy = new KernelCallIniSolverZZZ();			
+			while(objDummy.isExpression(sRaw)){//Schrittweise die Formel auflösen.
+				objReturn.setRaw(sRaw);
+				bAnyFormula = true;
+									
+				IKernelZZZ objKernel = null;
+				if(objFileIni!=null) {
+					objKernel = objFileIni.getKernelObject();
+				}
+				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
+				IKernelConfigSectionEntryZZZ objReturnTemp = null;
+				String sValue = null; String sFall=null;
+				if(!bForFurtherProcessing) {
+					sFall = "computeAsEntry";
+					objReturnTemp = ex.computeAsEntry(sRaw);
+					sValue = objReturnTemp.getValue();
+					
+				}else {
+					sFall = "computeAsExpression";
+					sValue = ex.computeAsExpression(sRaw);
+					objReturnTemp = ex.getEntry();					
+				}
+				
+				if(!StringZZZ.equals(sValue,sRaw)){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " - " + sFall + ": Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + sValue +"'");
+					objReturn.setRaw(sRaw);					
+				}					
+				sRaw=sValue;//Sonst Endlosschleife.							
+			}
+
+			if(bAnyFormula){
+				bReturn = true;
+			}				
+					
+			objReturnReference.set(objReturn);
+		 }//end main:
+		 return bReturn;
+	 }
+	
 	
 	public static boolean getValueConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueConverted) throws ExceptionZZZ{
 		boolean bReturn = false;

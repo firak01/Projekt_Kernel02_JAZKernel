@@ -142,7 +142,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			objStreamFile.println("Array1="+ KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT);
 			
 			
-			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
+			//20220926 Tests fuer die Arbeit mit verschluesselten / encrypted Werten
 			String sValue = "abcde"; int iKeyNumber=5; String sCharacterPool="?! abcdefghijklmnopqrstuvwxyz";
 			String sFlagNumeric = ICharacterPoolUserZZZ.FLAGZ.USENUMERIC.name();
 			String sFlagUppercase = ICharacterPoolUserZZZ.FLAGZ.USEUPPERCASE.name();
@@ -161,6 +161,19 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true,false,false,false);
 			objStreamFile.println("WertC="+sValue);
 			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			
+			//20230505 Tests fuer die Arbeit mit JavaCall Aufrufen
+			objStreamFile.println("[Section for testCall]");
+			objStreamFile.println("WertCalled=<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>");
+			
+			
+			//20230505 Tests fuer die Arbeit mit Werten aus einem JavaCall Aufruf
+			objStreamFile.println("[ArgumentSection for testCallComputed]");
+			objStreamFile.println("JavaClass=EnvironmentZZZ");
+			objStreamFile.println("JavaMethod=getHostName");
+			
+			objStreamFile.println("[Section for testCallComputed]");
+			objStreamFile.println("WertCalledComputed=<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>");
 			
 			
 			objFile = new File(sFilePathTotal);		
@@ -386,6 +399,93 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			String sValueFile01 = hmFile.get("UIText01");
 			assertTrue(sValueFile01.equals("TESTWERT2DO2JSON01"));
 															
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		
+	}
+	
+	
+	/**void, Test: Reading an entry in a section of the ini-file
+	 * 
+	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
+	 */
+	public void testComputeCall(){
+
+		try {					
+			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			//Anwenden der ersten Formel, ohne Berechnung			
+			String sExpression = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT,sExpression);
+			
+			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
+			assertNotNull(objSectionEntry);
+			
+			
+			//###################################################
+			//Berechne die erste Formel, DIRECT			
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), true);
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA.name(), true);
+			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
+			assertEquals(101,iReturn); //+100 für den Call
+			
+			objSectionEntry = objSectionEntryReference.get();
+			assertNotNull(objSectionEntry);
+			assertTrue(objSectionEntry.isCall());
+			assertEquals("basic.zBasic.util.machine.EnvironmentZZZ",objSectionEntry.getCallingClassname());
+			assertEquals("getHostName",objSectionEntry.getCallingMethodname());
+			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}		
+	}
+	
+	/**void, Test: Reading an entry in a section of the ini-file
+	 * 
+	 * @author Fritz Lindhauer, 05.05.2023, 08:54:30
+	 */
+	public void testComputeCallComputed(){
+
+		try {					
+			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			//Anwenden der ersten Formel, ohne Berechnung			
+			String sExpression = objFileIniTest.getPropertyValue("Section for testCallComputed", "WertCalledComputed").getValue();
+			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT,sExpression);
+			
+			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
+			assertNotNull(objSectionEntry);
+			
+			
+			//###################################################
+			//Berechne die erste Formel, DIRECT			
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), true);
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA.name(), true);
+			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
+			
+			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
+			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
+			assertEquals(101,iReturn); //+100 für den Call
+			
+			objSectionEntry = objSectionEntryReference.get();
+			assertNotNull(objSectionEntry);
+			assertTrue(objSectionEntry.isCall());
+			assertEquals("basic.zBasic.util.machine.EnvironmentZZZ",objSectionEntry.getCallingClassname());
+			assertEquals("getHostName",objSectionEntry.getCallingMethodname());
+			
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
