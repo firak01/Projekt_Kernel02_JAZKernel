@@ -13,13 +13,17 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelJavaCall_MethodZZZ  extends AbstractKernelIniTagZZZ{
+public class KernelJavaCall_MethodZZZ  extends AbstractKernelIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:Method";
 	
 	public KernelJavaCall_MethodZZZ() throws ExceptionZZZ{
 		super();
 	}
-		
+	public KernelJavaCall_MethodZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+		super(objKernel);
+		KernelJavaCallMethodNew_(null);
+	}	
+	
 	public KernelJavaCall_MethodZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
 		KernelJavaCallMethodNew_(saFlag);

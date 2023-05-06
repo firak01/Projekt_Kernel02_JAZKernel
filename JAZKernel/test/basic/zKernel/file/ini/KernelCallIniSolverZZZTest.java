@@ -85,7 +85,9 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 			try {						
 				String sLineWithExpression = KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 				
-				boolean bFlagAvailable = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
+				boolean bFlagAvailable = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, false); //Ansonsten wird der Wert sofort ausgerechnet
+				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
+				bFlagAvailable = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
 				assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
 				
 				
@@ -98,8 +100,12 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sValue = objExpressionSolver.compute(sLineWithExpression);
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
-				//Anwenden der ersten Formel		
-				objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird			
+				//Anwenden der ersten Formel	
+				bFlagAvailable = objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Ansonsten wird der Wert sofort ausgerechnet
+				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
+				bFlagAvailable = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird				
+				assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
+				
 				sValue = objExpressionSolver.compute(sLineWithExpression);			
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");

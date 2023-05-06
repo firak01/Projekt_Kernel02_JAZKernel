@@ -176,7 +176,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 	}
 	
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			

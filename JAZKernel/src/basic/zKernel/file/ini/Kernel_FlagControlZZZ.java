@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class Kernel_FlagControlZZZ  extends AbstractKernelIniTagZZZ{
+public class Kernel_FlagControlZZZ  extends AbstractKernelIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:FlagControl";
 	
 	public Kernel_FlagControlZZZ() throws ExceptionZZZ{

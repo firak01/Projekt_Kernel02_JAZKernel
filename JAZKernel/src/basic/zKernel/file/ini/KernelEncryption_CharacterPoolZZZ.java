@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelEncryption_CharacterPoolZZZ  extends AbstractKernelIniTagZZZ{
+public class KernelEncryption_CharacterPoolZZZ  extends AbstractKernelIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:CharacterPool";
 	
 	public KernelEncryption_CharacterPoolZZZ() throws ExceptionZZZ{

@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagSimpleZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	public static String sTAG_NAME = "Z:val";
 	public KernelZFormulaMath_ValueZZZ() throws ExceptionZZZ{
 		super();

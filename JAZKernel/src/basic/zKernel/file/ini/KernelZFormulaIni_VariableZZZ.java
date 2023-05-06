@@ -15,7 +15,7 @@ import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagZZZ{//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface:
+public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagSimpleZZZ{//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface:
 	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			

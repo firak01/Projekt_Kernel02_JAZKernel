@@ -29,8 +29,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
+import basic.zKernel.file.ini.IKernelJavaCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
@@ -52,7 +54,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhauer
  * 
  */
-public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
+public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 //	public enum FLAGZ{
 //		USEFORMULA, USEFORMULA_MATH;
@@ -61,20 +63,20 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 	private IKernelConfigSectionEntryZZZ objEntry = null;
 	private GetOptZZZ objOpt = null;
 	private ICryptZZZ objCrypt = null;
-	public KernelConfigZZZ() throws ExceptionZZZ{
+	public AbstractKernelConfigZZZ() throws ExceptionZZZ{
 		super("init");//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		ConfigNew_(null);
 	}
-	public KernelConfigZZZ(String[] saArg) throws ExceptionZZZ{
+	public AbstractKernelConfigZZZ(String[] saArg) throws ExceptionZZZ{
 		super((String[])null);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		ConfigNew_(saArg);
 	}	
-	public KernelConfigZZZ(String[] saArg, String[]saFlagControl) throws ExceptionZZZ{
+	public AbstractKernelConfigZZZ(String[] saArg, String[]saFlagControl) throws ExceptionZZZ{
 		super(saFlagControl); //20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt 	
 		ConfigNew_(saArg);
 	}
 	
-	public KernelConfigZZZ(String[] saArg, String sFlagControl) throws ExceptionZZZ{
+	public AbstractKernelConfigZZZ(String[] saArg, String sFlagControl) throws ExceptionZZZ{
 		super(sFlagControl); //20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		ConfigNew_(saArg);
 	}
@@ -118,7 +120,7 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 			
 			//20210331: Nun die HashMap für die weiterzureichenden FlagZ Werte füllen
 			String sJson = this.objOpt.readValue("z");
-			HashMap<String, Boolean> hmFlagZpassed = KernelConfigZZZ.computeHashMapFlagFromJSON(sJson);
+			HashMap<String, Boolean> hmFlagZpassed = AbstractKernelConfigZZZ.computeHashMapFlagFromJSON(sJson);
 			this.setHashMapFlagPassed(hmFlagZpassed);
 			
 			bReturn = true;
@@ -607,6 +609,72 @@ public abstract class KernelConfigZZZ extends ObjectZZZ implements IKernelConfig
 		@Override
 		public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
+		//### aus IKernelCallIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+			public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+				boolean[] baReturn=null;
+				main:{
+					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+						baReturn = new boolean[objaEnumFlag.length];
+						int iCounter=-1;
+						for(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+							iCounter++;
+							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+							baReturn[iCounter]=bReturn;
+						}
+					}
+				}//end main:
+				return baReturn;
+			}
+		
+		@Override
+		public boolean proofFlagExists(IKernelCallIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objaEnumFlag.name());
+		}
+		
+		//### Aus Interface IKernelJavaCallIniSolverZZZ
+		@Override
+		public boolean getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) {
+			return this.getFlag(objEnum_IKernelJavaCallIniSolverZZZ.name());
+		}
+		
+		@Override
+		public boolean setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean proofFlagExists(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnum_IKernelJavaCallIniSolverZZZ.name());
+		}
+		
+		@Override
+		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+					baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
+					int iCounter=-1;
+					for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnum_IKernelJavaCallIniSolverZZZ, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
 		}
 
 	//### Aus Interface ICryptUserZZZ

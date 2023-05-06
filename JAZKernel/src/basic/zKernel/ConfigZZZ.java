@@ -1,7 +1,7 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.KernelConfigZZZ;
+import basic.zKernel.AbstractKernelConfigZZZ;
 
 /**
  *  Default Configuration of this project
@@ -10,7 +10,7 @@ import basic.zKernel.KernelConfigZZZ;
  * 
  */
 @SuppressWarnings("unchecked")
-public class ConfigZZZ extends KernelConfigZZZ{
+public class ConfigZZZ extends AbstractKernelConfigZZZ{
 	private static final long serialVersionUID = 1L;
 	private static String sDIRECTORY_CONFIG_DEFAULT = "";
 	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";

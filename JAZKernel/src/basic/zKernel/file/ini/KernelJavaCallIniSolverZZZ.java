@@ -70,6 +70,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 				String sValue=null;  String sCode=null;
+				String sJavaCallClass = null; String sJavaCallMethod = null;
 				
 				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
@@ -78,21 +79,20 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 				if(!StringZZZ.isEmpty(sExpression)){
 					this.getEntry().isCall(true);
 					this.getEntry().isJavaCall(true);
-					
-					Class objClass = null; Method objMethod = null;
-					
+										
 					//++++++++++++++++++++++++++++++++++++++++++++
 					//Nun den z:class Tag suchen				
 					KernelJavaCall_ClassZZZ objJavaCallClass = new KernelJavaCall_ClassZZZ();
 					if(objJavaCallClass.isExpression(sExpression)){					
-						String sJavaCallClass = objJavaCallClass.compute(sExpression);	
+						sJavaCallClass = objJavaCallClass.compute(sExpression);	
 						if(StringZZZ.isEmpty(sJavaCallClass)) break main;
 						
 						this.getEntry().setCallingClassname(sJavaCallClass);
 						
+						//NEIN, wenn die Klasse nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
 						//Mit diesem Klassennamen nun das Class-Objekt erstellen
-						objClass = ReflectUtilZZZ.findClass(sJavaCallClass);
-						if(objClass==null) break main;
+						//objClass = ReflectUtilZZZ.findClass(sJavaCallClass);
+						//if(objClass==null) break main;
 						
 						
 						
@@ -106,14 +106,15 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 					//Nun den z:method Tag suchen
 					KernelJavaCall_MethodZZZ objJavaCallMethod = new KernelJavaCall_MethodZZZ();
 					if(objJavaCallMethod.isExpression(sExpression)){					
-						String sJavaCallMethod = objJavaCallMethod.compute(sExpression);	
+						sJavaCallMethod = objJavaCallMethod.compute(sExpression);	
 						if(StringZZZ.isEmpty(sJavaCallMethod)) break main;
 						
 						this.getEntry().setCallingMethodname(sJavaCallMethod);
 						
+						//NEIN, wenn die Methode nicht gefunden werden kann, dann gibt es später eine Fehlermeldung, die dies ausgibt
 						//Mit diesem Klassennamen nun das Method-Objekt erstellen
-						objMethod = ReflectUtilZZZ.findMethodForMethodName(objClass, sJavaCallMethod);
-						if(objMethod==null) break main;
+						//objMethod = ReflectUtilZZZ.findMethodForMethodName(objClass, sJavaCallMethod);
+						//if(objMethod==null) break main;
 	
 					}else{
 						//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
@@ -123,7 +124,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 					
 								
 					//Nun die Methode aufrufen.
-					Object objReturn = ReflectUtilZZZ.invokeStaticMethod(objMethod);
+					Object objReturn = ReflectUtilZZZ.invokeStaticMethod(sJavaCallClass,sJavaCallMethod);
 					if(objReturn==null)break main;
 						
 					sValue = objReturn.toString();
@@ -149,7 +150,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 		
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {
@@ -180,7 +181,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	 */
 	@Override
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {

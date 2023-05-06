@@ -13,7 +13,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelEncryption_KeyStringZZZ  extends AbstractKernelIniTagZZZ{
+public class KernelEncryption_KeyStringZZZ  extends AbstractKernelIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:KeyString";
 	
 	public KernelEncryption_KeyStringZZZ() throws ExceptionZZZ{

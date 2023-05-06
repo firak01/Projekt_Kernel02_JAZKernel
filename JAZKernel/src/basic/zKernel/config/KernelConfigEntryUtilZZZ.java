@@ -19,7 +19,7 @@ import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.file.ini.AbstractKernelIniTagZZZ;
+import basic.zKernel.file.ini.AbstractKernelIniTagSimpleZZZ;
 import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
@@ -397,10 +397,10 @@ public class KernelConfigEntryUtilZZZ {
 	public static boolean isExpression(String sLine, String sExpressionTagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, AbstractKernelIniTagZZZ.computeExpressionTagStarting(sExpressionTagName),false);
+			boolean btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, AbstractKernelIniTagZZZ.computeExpressionTagClosing(sExpressionTagName),false);
+			btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;

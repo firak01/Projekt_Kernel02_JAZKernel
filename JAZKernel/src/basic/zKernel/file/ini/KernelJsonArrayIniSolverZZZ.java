@@ -100,7 +100,7 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 	 * @author Fritz Lindhauer, 17.07.2021, 09:06:10
 	 */
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{			
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				
@@ -248,5 +248,46 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 		@Override
 		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objaEnumFlag.name());
+		}
+
+		@Override
+		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
+             //Darin können also auch Variablen, etc. sein
+			Vector vecReturn = new Vector();
+			main:{
+				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+				
+				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+				String sExpression = (String) vecReturn.get(1);									
+				if(!StringZZZ.isEmpty(sExpression)){
+					
+					//ZUERST: Löse ggfs. übergebene Variablen auf.
+					KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+					while(objVariable.isExpression(sExpression)){
+						sExpression = objVariable.compute(sExpression);			
+					} //end while
+						
+									
+					//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+					//Problem hier: [ ] ist auch der JSON Array-Ausdruck
+					String sExpressionOld = sExpression;
+					KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+					while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
+							sExpression = objIniPath.computeAsExpression(sExpression);	
+							if(StringZZZ.isEmpty(sExpression)) {
+								sExpression = sExpressionOld;
+								break;
+							}else{
+								sExpressionOld = sExpression;							
+							}
+					} //end while
+										
+					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+					vecReturn.add(1, sExpression);
+				
+				} //end if sExpression = ""					
+			}//end main:
+			return vecReturn;
 		}
 }//End class

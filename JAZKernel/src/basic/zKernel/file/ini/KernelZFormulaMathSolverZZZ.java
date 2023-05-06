@@ -104,7 +104,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 	//### Aus Interface IKernelExpressionIniZZZ		
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			

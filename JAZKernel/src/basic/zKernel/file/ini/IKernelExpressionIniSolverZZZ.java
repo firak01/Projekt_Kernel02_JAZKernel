@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public interface IKernelExpressionIniSolverZZZ extends IKernelZFormulaIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelEncryptionIniSolverZZZ{
+public interface IKernelExpressionIniSolverZZZ extends IKernelZFormulaIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ, IKernelEncryptionIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
 	public enum FLAGZ{
 		USEEXPRESSION
 	}

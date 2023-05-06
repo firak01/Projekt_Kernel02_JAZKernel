@@ -151,20 +151,20 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA="+sValue);
-			objStreamFile.println("WertAencrypted=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertAencrypted="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true,false);
 			objStreamFile.println("WertB="+sValue);
-			objStreamFile.println("WertBencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertBencrypted="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true,false,false,false);
 			objStreamFile.println("WertC="+sValue);
-			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertCencrypted="+ KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION03_DEFAULT); //<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			
 			//20230505 Tests fuer die Arbeit mit JavaCall Aufrufen
 			objStreamFile.println("[Section for testCall]");
-			objStreamFile.println("WertCalled=<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>");
+			objStreamFile.println("WertCalled="+KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT); //<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>");
 			
 			
 			//20230505 Tests fuer die Arbeit mit Werten aus einem JavaCall Aufruf
@@ -173,7 +173,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			objStreamFile.println("JavaMethod=getHostName");
 			
 			objStreamFile.println("[Section for testCallComputed]");
-			objStreamFile.println("WertCalledComputed=<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>");
+			objStreamFile.println("WertCalledComputed="+ KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT); //<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>");
 			
 			
 			objFile = new File(sFilePathTotal);		
@@ -207,7 +207,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertFalse(objExpressionHandler.getFlag("init")==true); //Nun wäre init falsch
 			
 			String[] saFlag = objExpressionHandler.getFlagZ();
-			assertTrue(saFlag.length==9);
+			assertEquals(11,saFlag.length);
 			
 			boolean bFlagAvailable = objExpressionHandler.setFlag("usejson", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usejson' sollte zur Verfügung stehen.", bFlagAvailable);
@@ -364,7 +364,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//...weitermachen
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
-			assertEquals(7,iReturn);
+			assertEquals(6,iReturn);
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
 			HashMap<String,String> hm = objSectionEntry.getValueHashMap();
@@ -422,7 +422,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
 			assertNotNull(objSectionEntry);
-			
+			assertFalse(objSectionEntry.isCall());
 			
 			//###################################################
 			//Berechne die erste Formel, DIRECT			
@@ -519,7 +519,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
-			assertEquals(11,iReturn); //+10 für die Encryption
+			assertEquals(10,iReturn); //+10 für die Encryption
 			
 			objSectionEntry = objSectionEntryReference.get();
 			assertNotNull(objSectionEntry);

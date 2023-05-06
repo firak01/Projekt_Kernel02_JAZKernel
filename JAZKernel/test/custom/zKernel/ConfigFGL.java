@@ -2,7 +2,7 @@ package custom.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
-import basic.zKernel.KernelConfigZZZ;
+import basic.zKernel.AbstractKernelConfigZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 
 
@@ -16,7 +16,7 @@ import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
  * @author lindhauer
  *
  */
-public class ConfigFGL extends KernelConfigZZZ{
+public class ConfigFGL extends AbstractKernelConfigZZZ{
 	//private static String sDIRECTORY_CONFIG_DEFAULT = "c:\\fglKernel\\KernelConfig";//Wenn der String absolut angegeben ist, so muss er auch vorhanden sein.
 	private static String sDIRECTORY_CONFIG_DEFAULT = "<z:Null/>";//Merke: Ein Leerstring ist der Root vom Classpath, z.B. in Eclipse der src-Ordner. Ein "." oder ein NULL-Wert ist der Projektordner in Eclipse
 	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";

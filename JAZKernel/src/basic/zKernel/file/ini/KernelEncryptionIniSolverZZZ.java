@@ -244,7 +244,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 		
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{			
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
@@ -275,7 +275,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 	 */
 	@Override
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = null;
+		String sReturn = sLineWithExpression;
 		main:{			
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
 			if(bUseEncryption) {

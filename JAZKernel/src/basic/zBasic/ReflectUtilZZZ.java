@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import base.reflection.ReflectionUtil;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Sammlung von bewährten Methoden. 
  * Dabei wird auf andere refelctionUtil - Klassen zurückgegriffen
@@ -12,7 +13,7 @@ import base.reflection.ReflectionUtil;
  * @author Fritz Lindhauer, 03.05.2023, 15:51:55
  * 
  */
-public class ReflectUtilZZZ {
+public class ReflectUtilZZZ implements IConstantZZZ{
 	 /**
      * sucht eine Klasse anhand ihres Namens
      *
@@ -77,6 +78,42 @@ public class ReflectUtilZZZ {
 	            ExceptionZZZ ez = new ExceptionZZZ(e);
 	        	throw ez;
 	        }
+    	}//end main:
+    	return objReturn;
+    }
+    
+    
+    public static Object invokeStaticMethod(String sClassnameWithPackage, String sMethodname) throws ExceptionZZZ {
+    	Object objReturn = null;
+    	main:{
+    		if(StringZZZ.isEmpty(sClassnameWithPackage)){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING+"ClassnameWithPackage", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;					
+			}
+    		if(StringZZZ.isEmpty(sMethodname)){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_MISSING+"Methodname", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;					
+			}
+    		
+    		//1. Die Klasse holen
+    		Class objClass = ReflectUtilZZZ.findClass(sClassnameWithPackage);
+    		if(objClass==null) {
+    			String sLog = "Klasse '" + sClassnameWithPackage + "' nicht gefunden";
+    			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+sLog, iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;				    			
+    		}
+    		
+    		//2. Die Methode in der Klasse finden
+    		Method objMethod = ReflectUtilZZZ.findMethodForMethodName(objClass, sMethodname);
+    		if(objClass==null) {
+    			String sLog = "Klasse '" + sClassnameWithPackage + "' hat keine statische Methode '" + sMethodname + "'";
+    			ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+sLog, iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;				    			
+    		}
+    		
+    		//3. Aufruf der gefundenen Methode
+    		objReturn = ReflectUtilZZZ.invokeStaticMethod(objMethod);
+    		
     	}//end main:
     	return objReturn;
     }

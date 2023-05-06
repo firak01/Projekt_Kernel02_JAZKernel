@@ -22,34 +22,34 @@ import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	private String sValue;
 	
-	public AbstractKernelIniTagZZZ() throws ExceptionZZZ{
+	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		AbstractKernelIniTagNew_(saFlag);
 	}
 		
-	public AbstractKernelIniTagZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public AbstractKernelIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ{		
 		AbstractKernelIniTagNew_(saFlag);
 	}
 	
-	public AbstractKernelIniTagZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
 		AbstractKernelIniTagNew_(null);
 	}
 	
-	public AbstractKernelIniTagZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		AbstractKernelIniTagNew_(saFlag);
 	}
 	
-	public AbstractKernelIniTagZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
+	public AbstractKernelIniTagSimpleZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
 		super(objKernelUsing);
 		AbstractKernelIniTagNew_(null);
 	}
 	
-	public AbstractKernelIniTagZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelIniTagSimpleZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
 		super(objKernelUsing);
 		AbstractKernelIniTagNew_(saFlag);
 	}
@@ -93,10 +93,9 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 						
-			//TODO: Mehrere Ausdrücke ineinander verschachtelt. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			
-			//... und vielleicht erneut den Math-Solver auf den Rest ansetzen.
 			
 		}
 		return vecReturn;
@@ -127,18 +126,18 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	public abstract String getExpressionTagName();
 	
 	public String getExpressionTagStarting() throws ExceptionZZZ{
-		return AbstractKernelIniTagZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
+		return AbstractKernelIniTagSimpleZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
 	}
 	public String getExpressionTagClosing() throws ExceptionZZZ{
-		return AbstractKernelIniTagZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
+		return AbstractKernelIniTagSimpleZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
 	}	
 	public String getExpressionTagEmpty()throws ExceptionZZZ{
-		return AbstractKernelIniTagZZZ.computeExpressionTagEmpty(this.getExpressionTagName());		
+		return AbstractKernelIniTagSimpleZZZ.computeExpressionTagEmpty(this.getExpressionTagName());		
 	}
 	
 	public static String computeExpressionTagStarting(String sTagName) throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "<" + sTagName + ">";
@@ -146,7 +145,7 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	
 	public static String computeExpressionTagClosing(String sTagName)throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "</" + sTagName + ">"; 
@@ -154,7 +153,7 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	
 	public static String computeExpressionTagEmpty(String sTagName)throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "<" + sTagName + "/>";
@@ -163,6 +162,7 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 
 	//### Aus Interface IKernelExpressionIniZZZ
 	public abstract boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ;
+	
 	public abstract String convert(String sLine) throws ExceptionZZZ;		
 	
 	public abstract boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;
@@ -173,7 +173,8 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			
+			Vector vecAll = this.computeExpressionFirstVector(sLineWithExpression);
 			
 			sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn);
@@ -220,17 +221,17 @@ public abstract class AbstractKernelIniTagZZZ  extends KernelUseObjectZZZ implem
 	
 	@Override
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
-				String sReturn = sLineWithExpression;
-				main:{
-					if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-					
-					Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-					
-					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-					sReturn = VectorZZZ.implode(vecAll);
-					this.setValue(sReturn);
-					
-				}//end main:
-				return sReturn;
+	String sReturn = sLineWithExpression;
+	main:{
+		if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+		
+		Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+		
+		//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+		sReturn = VectorZZZ.implode(vecAll);
+		this.setValue(sReturn);
+		
+	}//end main:
+	return sReturn;
 	}	
 }//End class
