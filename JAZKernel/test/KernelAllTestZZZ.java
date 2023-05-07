@@ -47,6 +47,7 @@ import basic.zKernel.KernelZZZTest;
 import basic.zKernel.LogZZZTest;
 import basic.zKernel.config.EnumSetKernelConfigDefaultEntryUtilZZZTest;
 import basic.zKernel.file.ini.FileIniZZZTest;
+import basic.zKernel.file.ini.KernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniHandlerZZZTest;
@@ -115,16 +116,22 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(TxtWriterZZZTest.class);
 		
 		
-		//FileIni - Tests
-		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht			
+		//FileIni - Tests		
+		objReturn.addTestSuite(KernelZFormulaIniSolverZZZTest.class);
+		
 		objReturn.addTestSuite(KernelEncryptionIniSolverZZZTest.class);
-		objReturn.addTestSuite(KernelExpressionIniConverterZZZTest.class);		
+		objReturn.addTestSuite(KernelExpressionIniConverterZZZTest.class);
+				
 		objReturn.addTestSuite(KernelJavaCallIniSolverZZZTest.class);
+		objReturn.addTestSuite(KernelCallIniSolverZZZ.class);
+		
 		objReturn.addTestSuite(KernelJsonMapIniSolverZZZTest.class);
 		objReturn.addTestSuite(KernelJsonArrayIniSolverZZZTest.class);
-		objReturn.addTestSuite(KernelJsonIniSolverZZZTest.class);				
-		objReturn.addTestSuite(KernelZFormulaIniSolverZZZTest.class);
+		objReturn.addTestSuite(KernelJsonIniSolverZZZTest.class);	
+				
 		objReturn.addTestSuite(KernelExpressionIniHandlerZZZTest.class);
+		
+		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht		
 		objReturn.addTestSuite(FileIniZZZTest.class);
 		
 		//Test für Filter auf jar/zip Dateien

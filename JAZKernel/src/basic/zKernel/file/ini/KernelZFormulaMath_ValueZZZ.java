@@ -92,20 +92,5 @@ public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagSimpleZZZ{
 					//this.setValue(sReturn);
 				}//end main:
 				return sReturn;			
-			}
-
-			@Override
-			public String convert(String sLine) throws ExceptionZZZ {
-				return null;
-			}
-
-			@Override
-			public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-				return false;
-			}
-
-			@Override
-			public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-				return false;
-			}						
+			}					
 }//End class

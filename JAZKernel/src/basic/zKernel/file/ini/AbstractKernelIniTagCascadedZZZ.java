@@ -22,7 +22,7 @@ import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIniTagSimpleZZZ implements IKernelZFormulaIniZZZ{	
+public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIniTagSimpleZZZ implements IKernelZTagIniZZZ{	
 	public AbstractKernelIniTagCascadedZZZ() throws ExceptionZZZ{
 		super();		
 	}

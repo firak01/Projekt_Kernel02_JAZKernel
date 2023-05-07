@@ -62,24 +62,5 @@ public class Kernel_FlagControlZZZ  extends AbstractKernelIniTagSimpleZZZ{
 	//###### Getter / Setter
 	public String getExpressionTagName(){
 		return Kernel_FlagControlZZZ.sTAG_NAME;
-	}
-			
-	//### Aus Interface IKernelExpressionIniZZZ
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}						
+	}				
 }//End class

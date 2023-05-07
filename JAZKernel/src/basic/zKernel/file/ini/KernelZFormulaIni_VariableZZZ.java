@@ -183,19 +183,4 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagSimpleZZ
 			}//end main:
 			return sReturn;
 		}
-
-	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-		return false;
-	}
-
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		return null;
-	}
-
-	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		return false;
-	}
 }//End class

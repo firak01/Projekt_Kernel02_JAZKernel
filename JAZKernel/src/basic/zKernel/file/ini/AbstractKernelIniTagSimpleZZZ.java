@@ -22,8 +22,9 @@ import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ implements IKernelZTagIniZZZ{
 	private String sValue;
+	private IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
@@ -160,20 +161,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 	}
 	
 
-	//### Aus Interface IKernelExpressionIniZZZ
-	public abstract boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ;
-	
-	public abstract String convert(String sLine) throws ExceptionZZZ;		
-	
-	public abstract boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;
-			
+	//### Aus Interface IKernelZTagIniZZZ			
+	/* (non-Javadoc)
+	 * @see basic.zKernel.file.ini.IKernelZTagIniZZZ#compute(java.lang.String)
+	 */
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			
-			
+						
 			Vector vecAll = this.computeExpressionFirstVector(sLineWithExpression);
 			
 			sReturn = (String) vecAll.get(1);
@@ -181,6 +178,22 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 								
 		}//end main:
 		return sReturn;
+	}	
+	
+	@Override
+	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+											
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			
+			String sReturn = (String) vecAll.get(1);
+			this.setValue(sReturn); //Merke: Internes Entry-Objekt nutzen. Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
+			
+			objReturn = this.getEntry();			
+		}//end main:
+		return objReturn;
 	}	
 	
 	@Override
@@ -234,4 +247,14 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 	}//end main:
 	return sReturn;
 	}	
+	
+	public IKernelConfigSectionEntryZZZ getEntry() {
+		if(this.objEntry==null) {
+			this.objEntry = new KernelConfigSectionEntryZZZ();			
+		}
+		return this.objEntry;
+	}
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		this.objEntry = objEntry;
+	}
 }//End class

@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import basic.zBasic.ExceptionZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelConfigSectionEntryUserZZZ extends IKernelConfigFileUserZZZ{
+public interface IKernelConfigParameterHandlerZZZ extends IKernelConfigFileUserZZZ{
 	public ArrayList<String> getModuleAll() throws ExceptionZZZ;
 	
 	public ArrayList<String> getProgramAliasUsed(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ;

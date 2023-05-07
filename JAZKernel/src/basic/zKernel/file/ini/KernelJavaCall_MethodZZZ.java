@@ -66,21 +66,5 @@ public class KernelJavaCall_MethodZZZ  extends AbstractKernelIniTagSimpleZZZ{
 	//###### Getter / Setter
 	public String getExpressionTagName(){
 		return KernelJavaCall_MethodZZZ.sTAG_NAME;
-	}
-			
-	//### Aus Interface IKernelExpressionIniZZZ
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {		
-		return null;
-	}
-	
-	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {		
-		return false;
-	}
-
-	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
-		return false;
-	}						
+	}					
 }//End class

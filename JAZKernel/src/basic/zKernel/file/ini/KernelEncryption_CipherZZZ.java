@@ -68,22 +68,5 @@ public class KernelEncryption_CipherZZZ  extends AbstractKernelIniTagSimpleZZZ{
 	//###### Getter / Setter
 	public String getExpressionTagName(){
 		return KernelEncryption_CipherZZZ.sTAG_NAME;
-	}
-
-	//### Aus Interface IKernelExpressionIniZZZ
-	@Override
-	public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-		return false;
-	}
-
-	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		return false;
-	}
-
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		return null;
-	}
-						
+	}				
 }//End class

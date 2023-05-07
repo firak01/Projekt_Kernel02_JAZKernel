@@ -23,8 +23,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCascadedZZZ implements IKernelZFormulaIniZZZ, IKernelIniSolverZZZ{
-	private IKernelConfigSectionEntryZZZ objEntry = null;
+public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCascadedZZZ implements IKernelZFormulaIniZZZ, IKernelZTagIniZZZ, IKernelIniSolverZZZ{	
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
@@ -152,26 +151,6 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 		return sReturn;
 	}	
 	
-	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.file.ini.IKernelIniSolverZZZ#computeAsEntry(java.lang.String)
-	 */
-	@Override
-	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ{
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-											
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			String sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn); //Merke: Internes Entry-Objekt nutzen. Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
-			
-			objReturn = this.getEntry();			
-		}//end main:
-		return objReturn;
-	}	
-	
 	@Override
 	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
 		String[] saReturn = null; //new String[];//sLineWithExpression;
@@ -227,14 +206,4 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 				return sReturn;
 			}
 	
-	//### Interface aus IKernelExpressionIniSolver
-	public IKernelConfigSectionEntryZZZ getEntry() {
-		if(this.objEntry==null) {
-			this.objEntry = new KernelConfigSectionEntryZZZ();			
-		}
-		return this.objEntry;
-	}
-	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-		this.objEntry = objEntry;
-	}
 }//End class

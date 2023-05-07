@@ -626,24 +626,5 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 					return baReturn;
 				}
 		
-		//### Sonstige Interfaces
-		/* (non-Javadoc)
-		 * @see basic.zKernel.file.ini.AbstractKernelIniTagZZZ#isStringForConvertRelevant(java.lang.String)
-		 */
-		@Override
-		public boolean isStringForConvertRelevant(String sToProof) throws ExceptionZZZ {
-			return false;
-		}
-
-		@Override
-		public String convert(String sLine) throws ExceptionZZZ {
-			return null;
-		}
-
-		@Override
-		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-			return false;
-		}
-
-
+		//### Sonstige Interfaces		
 }

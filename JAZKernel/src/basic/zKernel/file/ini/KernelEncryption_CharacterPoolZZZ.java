@@ -62,21 +62,5 @@ public class KernelEncryption_CharacterPoolZZZ  extends AbstractKernelIniTagSimp
 	//###### Getter / Setter
 	public String getExpressionTagName(){
 		return KernelEncryption_CharacterPoolZZZ.sTAG_NAME;
-	}
-			
-	//### Aus Interface IKernelExpressionIniZZZ
-	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		return null;
-	}
-	
-	@Override
-	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-		return false;
-	}
-
-	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		return false;
-	}						
+	}				
 }//End class
