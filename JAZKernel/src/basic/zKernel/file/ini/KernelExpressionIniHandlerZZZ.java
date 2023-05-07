@@ -210,7 +210,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 							bAnyFormula = true;																			
 						}
 						if(bAnyFormula) {
-							objReturn.isExpression(true);
+							objReturn.isFormula(true);
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
 					}//end bUseFormula
 					
@@ -266,7 +266,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
 						
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
-						boolean bForFurtherProcessing = true; 
+						boolean bForFurtherProcessing = false; 
 						bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyEncryption) {
 							objReturn.isRawEncrypted(true);
@@ -291,6 +291,9 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 				}
 				if(bAnyCall) {
 					iReturn = iReturn+100;
+				}
+				if(bAnyFormula || bAnyEncryption || bAnyCall) {
+					objReturn.isExpression(true);
 				}
 				objReturnReference.set(objReturn);
 				return iReturn;

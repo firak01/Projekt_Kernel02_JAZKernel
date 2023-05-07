@@ -65,6 +65,9 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public boolean isJsonArray();
 	abstract void isJsonArray(boolean bIsJsonArray);
 
+	public boolean isCrypt();
+	abstract void isCrypt(boolean bIsCrypt);
+	
 	public boolean isCall();
 	abstract void isCall(boolean bIsCall);
 	

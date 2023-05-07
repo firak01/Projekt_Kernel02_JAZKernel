@@ -218,12 +218,12 @@ public class KernelConfigEntryUtilZZZ {
 		 	IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 
-			boolean bAnyFormula = false;
+			boolean bAnyEncryption = false;
 			
 			KernelEncryptionIniSolverZZZ objDummy = new KernelEncryptionIniSolverZZZ();			
 			while(objDummy.isExpression(sRaw)){//Schrittweise die Formel auflösen.
 				objReturn.setRaw(sRaw);
-				bAnyFormula = true;
+				bAnyEncryption = true;
 									
 				IKernelZZZ objKernel = null;
 				if(objFileIni!=null) {
@@ -258,7 +258,8 @@ public class KernelConfigEntryUtilZZZ {
 				objReturn.setCryptAlgorithmType(objCrypt);				
 			}
 
-			if(bAnyFormula){
+			if(bAnyEncryption){
+				objReturn.isCrypt(true);
 				bReturn = true;
 			}				
 					

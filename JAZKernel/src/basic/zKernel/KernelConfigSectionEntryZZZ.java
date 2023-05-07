@@ -31,6 +31,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bExpression = false;
 	private boolean bConverted = false;
 	private boolean bFormula = false;
+	private boolean bCrypt = false;
 	
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
@@ -494,6 +495,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 
 
+	@Override
+	public boolean isCrypt() {
+		return this.bCrypt;		
+	}
+	
+	@Override
+	public void isCrypt(boolean bCrypt) {
+		this.bCrypt = bCrypt;
+	}
+	
 	@Override
 	public boolean isDecrypted() {
 		return this.bDecrypted;
