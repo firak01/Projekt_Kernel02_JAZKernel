@@ -23,7 +23,6 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ implements IKernelZTagIniZZZ{
-	private String sValue;
 	private IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ{
@@ -82,11 +81,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 	 }//end function KernelExpressionMathSolverNew_
 	
 	public String getValue() {
-		return this.sValue;
+		return this.getEntry().getValue();
 	}
 
 	public void setValue(String sValue) {
-		this.sValue = sValue;
+		this.getEntry().setValue(sValue);
 	}
 	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{

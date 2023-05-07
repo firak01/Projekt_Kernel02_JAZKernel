@@ -142,6 +142,8 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				
 				//### Nun die Gesamtberechnung durchführen
+				TODOGOON;//20230507: WARUM WIRD DER PFAD [ ...] aufgelöst, wenn useformula nicht gesetzt ist????
+				
 				IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.computeAsEntry(sLineWithExpression);
 				//String sValue = objExpressionSolver.compute(sLineWithExpression);
 				String sValue = objEntry.getValue();

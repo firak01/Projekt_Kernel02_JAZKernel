@@ -428,6 +428,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//Berechne die erste Formel, DIRECT			
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), true);
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA.name(), true);
@@ -435,11 +437,12 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
-			assertEquals(101,iReturn); //+100 für den Call
+			assertEquals(101,iReturn); //+100 für den Call , +1 für den Ini Path, der als Formel aufgeloest wird.
 			
 			objSectionEntry = objSectionEntryReference.get();
 			assertNotNull(objSectionEntry);
 			assertTrue(objSectionEntry.isCall());
+			assertTrue(objSectionEntry.isJavaCall());
 			assertEquals("basic.zBasic.util.machine.EnvironmentZZZ",objSectionEntry.getCallingClassname());
 			assertEquals("getHostName",objSectionEntry.getCallingMethodname());
 			

@@ -17,6 +17,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -210,46 +211,67 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//vecReturn = super.computeExpressionAllVector(sLineWithExpression);
+			String sExpression = null; boolean bAnyCall = false; boolean bAnyJavaCall = false;
+			
+			//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
+
+			//Fuer den abschliessenden Aufruf selbst.
+			String sClassnameWithPackage=null; String sMethodname=null;
+			
 			
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			String sExpression = (String) vecReturn.get(1);									
+			sExpression = (String) vecReturn.get(1);									
 			if(!StringZZZ.isEmpty(sExpression)){
 				
-				//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
-				
-				
-				//Fuer den abschliessenden Aufruf selbst.
-				String sClassnameWithPackage=null; String sMethodname=null;
 				
 				//Alle CALL Ausdruecke ersetzen				
 				String sExpressionOld = sExpression;
 				//KernelJavaCall_ClassZZZ objIniPath = new KernelJavaCall_ClassZZZ(this.getKernelObject(), this.getFileIni());
 				KernelJavaCall_ClassZZZ objClassname = new KernelJavaCall_ClassZZZ(this.getKernelObject());
 				while(objClassname.isExpression(sExpression)){
-						sExpression = objClassname.computeAsExpression(sExpression);	
+						IKernelConfigSectionEntryZZZ objEntry = objClassname.computeAsEntry(sExpression);	
+						sExpression = objEntry.getValue();
 						if(StringZZZ.isEmpty(sExpression)) {
 							sExpression = sExpressionOld;
 							break;
 						}else{
 							sExpressionOld = sExpression;
 							sClassnameWithPackage = sExpression;
-							this.getEntry().setCallingClassname(sClassnameWithPackage);
-							
+							bAnyCall=true;
+							bAnyJavaCall=true;
 						}
 				} //end while
+			}
+			
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			sExpression = (String) vecReturn.get(1);									
+			if(!StringZZZ.isEmpty(sExpression)){
 				
+				//Alle CALL Ausdruecke ersetzen				
+				String sExpressionOld = sExpression;
 				KernelJavaCall_MethodZZZ objMethodname = new KernelJavaCall_MethodZZZ(this.getKernelObject());
 				while(objMethodname.isExpression(sExpression)){
-						sExpression = objMethodname.computeAsExpression(sExpression);	
+						IKernelConfigSectionEntryZZZ objEntry = objMethodname.computeAsEntry(sExpression);
+						sExpression = objEntry.getValue();
 						if(StringZZZ.isEmpty(sExpression)) {
 							sExpression = sExpressionOld;
 							break;
 						}else{
 							sExpressionOld = sExpression;
 							sMethodname = sExpression;
-							this.getEntry().setCallingMethodname(sMethodname);
+							bAnyCall=true;	
+							bAnyJavaCall=true;
 						}
 				} //end while
+				
+				if(bAnyCall) {
+					this.getEntry().setCallingClassname(sClassnameWithPackage);
+					this.getEntry().setCallingMethodname(sMethodname);
+					this.getEntry().isCall(true);					
+				}
+				if(bAnyJavaCall) {
+					this.getEntry().isJavaCall(true);
+				}
 				
 				
 				//Abschliessend die Berechung durchführen.
@@ -259,6 +281,7 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 				}else {
 					sExpression = KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
 				}
+				this.setValue(sExpression);
 				
 				
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen

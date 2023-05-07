@@ -210,6 +210,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 							bAnyFormula = true;																			
 						}
 						if(bAnyFormula) {
+							objReturn = objReturnReference.get();
 							objReturn.isFormula(true);
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
 					}//end bUseFormula
@@ -224,6 +225,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 						boolean bForFurtherProcessing = false; 
 						bAnyCall = KernelConfigEntryUtilZZZ.getValueCallSolved(this.getFileIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyCall) {
+							objReturn = objReturnReference.get();
 							objReturn.isCall(true);						
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
 					}
@@ -241,6 +243,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 						ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
 						iReturnJson = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
 						if(iReturnJson==5) {
+							objReturn = objReturnReference.get();
 							objReturn.isJsonArray(true);
 							objReturn.isJson(true);
 							objReturn.isExpression(true);
@@ -250,6 +253,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 					
 					
 						if(iReturnJson==6) {
+							objReturn = objReturnReference.get();
 							objReturn.isJsonMap(true);
 							objReturn.isJson(true);
 							objReturn.isExpression(true);
@@ -271,9 +275,11 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 						if(bAnyEncryption) {
 							objReturn.isRawEncrypted(true);
 							String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						
-							if(sLineWithExpressionUsed.equals(sLineDecrypted)) {												
+							if(sLineWithExpressionUsed.equals(sLineDecrypted)) {
+								objReturn = objReturnReference.get();
 								objReturn.isDecrypted(false);
 							}else {
+								objReturn = objReturnReference.get();
 								objReturn.isDecrypted(true);
 								objReturn.setRawDecrypted(sLineDecrypted);
 								objReturn.setValue(sLineDecrypted);       //quasi erst mal den Zwischenstand festhalten.							
@@ -293,6 +299,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 					iReturn = iReturn+100;
 				}
 				if(bAnyFormula || bAnyEncryption || bAnyCall) {
+					objReturn = objReturnReference.get();
 					objReturn.isExpression(true);
 				}
 				objReturnReference.set(objReturn);

@@ -47,7 +47,7 @@ import basic.zKernel.KernelZZZTest;
 import basic.zKernel.LogZZZTest;
 import basic.zKernel.config.EnumSetKernelConfigDefaultEntryUtilZZZTest;
 import basic.zKernel.file.ini.FileIniZZZTest;
-import basic.zKernel.file.ini.KernelCallIniSolverZZZ;
+import basic.zKernel.file.ini.KernelCallIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniConverterZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniHandlerZZZTest;
@@ -123,7 +123,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(KernelExpressionIniConverterZZZTest.class);
 				
 		objReturn.addTestSuite(KernelJavaCallIniSolverZZZTest.class);
-		objReturn.addTestSuite(KernelCallIniSolverZZZ.class);
+		objReturn.addTestSuite(KernelCallIniSolverZZZTest.class);
 		
 		objReturn.addTestSuite(KernelJsonMapIniSolverZZZTest.class);
 		objReturn.addTestSuite(KernelJsonArrayIniSolverZZZTest.class);

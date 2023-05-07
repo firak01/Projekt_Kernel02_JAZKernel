@@ -27,7 +27,7 @@ import custom.zUtil.io.FileZZZ;
 
 public class FileIniZZZTest extends TestCase {
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
-	private final static String strFILE_NAME_DEFAULT = new String("JUnitTest.ini");
+	private final static String strFILE_NAME_DEFAULT = new String("JUnitFileIniTest.ini");
 	
 	private final static String[] saValueTestGetAll ={"ValueA", "ValueB", "ValueC", "ValueD", "ValueE"} ;
 	private Hashtable objHtSection;  
@@ -45,10 +45,24 @@ public class FileIniZZZTest extends TestCase {
 	protected void setUp(){
 		try {			
 			
-			//### Eine Beispieldatei. Merke: Die Eintr�ge werden immer neu geschrieben und nicht etwa angeh�ngt.
-			//Merke: Erst wenn es �bberhaupt einen Test gibt, wird diese DAtei erstellt
+			//### Eine Beispieldatei. Merke: Die Einträge werden immer neu geschrieben und nicht etwa angehängt. 
+			//Merke: Erst wenn es überhaupt einen Test gibt, wird diese Datei erstellt
+			//Merke: Damit die Datei nicht im Code-Repository landet, wird sie explizit immer auf der lokalen Festplatte erzeugt.
+			//       ALSO NICHT im Eclipse Workspace
+			
 			String sFileDirectoryUsed = strFILE_DIRECTORY_DEFAULT;
-			String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
+			if(!FileEasyZZZ.exists(sFileDirectoryUsed)){
+				FileEasyZZZ.createDirectoryForDirectory(sFileDirectoryUsed);
+			}
+			String sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );				
+//			if(sFilePathTotal==null){
+//				//Eclipse Workspace
+//				File f = new File("");
+//			    String sPathEclipse = f.getAbsolutePath();
+//			    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
+//			    sFilePathTotal = FileEasyZZZ.joinFilePathName(sPathEclipse + File.separator + "test", strFILE_NAME_DEFAULT );			   
+//			}
+			
 			IStreamZZZ objStreamFile = null;
 			try{
 				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file			
@@ -57,7 +71,6 @@ public class FileIniZZZTest extends TestCase {
 				sFilePathTotal = FileEasyZZZ.joinFilePathName(sFileDirectoryUsed, strFILE_NAME_DEFAULT );
 				objStreamFile = new StreamZZZ(sFilePathTotal, 1);  //This is not enough, to create the file
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			objStreamFile.println(";This is a temporarily test file for FileIniZZZTest.");      //Now the File is created. This is a comment line

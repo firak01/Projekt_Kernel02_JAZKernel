@@ -149,21 +149,21 @@ public class KernelConfigEntryUtilZZZ {
 					objKernel = objFileIni.getKernelObject();
 				}
 				KernelCallIniSolverZZZ ex = new KernelCallIniSolverZZZ(objKernel, saFlagZpassed);
-				IKernelConfigSectionEntryZZZ objReturnTemp = null;
+				ex.setEntry(objReturn);
 				String sValue = null; String sFall=null;
 				if(!bForFurtherProcessing) {
 					sFall = "computeAsEntry";
-					objReturnTemp = ex.computeAsEntry(sRaw);
-					sValue = objReturnTemp.getValue();
+					objReturn= ex.computeAsEntry(sRaw);
+					sValue = objReturn.getValue();
 					
 				}else {
 					sFall = "computeAsExpression";
 					sValue = ex.computeAsExpression(sRaw);
-					objReturnTemp = ex.getEntry();					
+					objReturn = ex.getEntry();					
 				}
 				
 				if(!StringZZZ.equals(sValue,sRaw)){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " - " + sFall + ": Value durch EncryptionIniSolverZZZ verändert von '" + sRaw + "' nach '" + sValue +"'");
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " - " + sFall + ": Value durch CallIniSolverZZZ verändert von '" + sRaw + "' nach '" + sValue +"'");
 					objReturn.setRaw(sRaw);					
 				}					
 				sRaw=sValue;//Sonst Endlosschleife.							
@@ -183,7 +183,9 @@ public class KernelConfigEntryUtilZZZ {
 		boolean bReturn = false;
 		main:{
 			if(!bUseFormula) break main;
-							
+				
+			
+			
 			//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
 			//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
 			boolean bAnyExpression = false;				
@@ -230,17 +232,17 @@ public class KernelConfigEntryUtilZZZ {
 					objKernel = objFileIni.getKernelObject();
 				}
 				KernelEncryptionIniSolverZZZ ex = new KernelEncryptionIniSolverZZZ(objKernel, saFlagZpassed);
-				IKernelConfigSectionEntryZZZ objReturnTemp = null;
+				ex.setEntry(objReturn);
 				String sValue = null; String sFall=null;
 				if(!bForFurtherProcessing) {
 					sFall = "computeAsEntry";
-					objReturnTemp = ex.computeAsEntry(sRaw);
-					sValue = objReturnTemp.getValue();
+					objReturn = ex.computeAsEntry(sRaw);
+					sValue = objReturn.getValue();
 					
 				}else {
 					sFall = "computeAsExpression";
 					sValue = ex.computeAsExpression(sRaw);
-					objReturnTemp = ex.getEntry();					
+					objReturn = ex.getEntry();					
 				}
 				
 				if(!StringZZZ.equals(sValue,sRaw)){
@@ -249,7 +251,7 @@ public class KernelConfigEntryUtilZZZ {
 					objReturn.isDecrypted(true);
 					objReturn.setRawDecrypted(sValue);
 					objReturn.setValueDecrypted(sValue);
-					objReturn.setValueEncrypted(objReturnTemp.getValueEncrypted());
+					//objReturn.setValueEncrypted(objReturnTemp.getValueEncrypted());
 				}					
 				sRaw=sValue;//Sonst Endlosschleife.
 				
