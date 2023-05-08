@@ -34,7 +34,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 02.05.2023, 19:55:30
  * 
  */
-public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZZ implements IKernelExpressionIniSolverZZZ{
+public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascadedZZZ implements IKernelExpressionIniSolverZZZ{
 	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
 	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
@@ -187,11 +187,13 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 					boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
 					if(!bUseExpression) break main;
 					
-					iReturn=0;
-					
-					String sLineWithExpressionUsed = sLineWithExpression;
+					//Zuerst einmal <Z> - Tag herausrechen.
+					Vector<String> vec = this.computeExpressionFirstVector(sLineWithExpression);
+					String sLineWithExpressionUsed = vec.get(1);
 					objReturn.setValue(sLineWithExpressionUsed);//Schon mal setzen, falls es ein normaler Wert ist. Falls es ein Formelwert/Verschluesselter Wert ist, wird das eh ueberschrieben.
 
+					//Darin dann weiterrechnen...
+					iReturn=0;
 					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
 					if(bUseFormula) {
 					
@@ -212,6 +214,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagSimpleZZ
 						if(bAnyFormula) {
 							objReturn = objReturnReference.get();
 							objReturn.isFormula(true);
+							sLineWithExpressionUsed = objReturn.getValue();
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
 					}//end bUseFormula
 					

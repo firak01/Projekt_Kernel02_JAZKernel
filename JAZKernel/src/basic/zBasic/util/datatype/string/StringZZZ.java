@@ -930,6 +930,35 @@ public class StringZZZ implements IConstantZZZ{
 		return sReturn;
 	}
 	
+	/** This example returns Lennard. 
+@LeftBack("Lennard Wallace"; " ")
+
+	This example returns Lennard Wall. 
+@LeftBack("Lennard Wallace";3)
+	* @param sString
+	* @param sToFind
+	* 
+	* lindhaueradmin; 04.04.2009 13:15:27
+	 */
+	public static String leftback(String sString, String sToFind,boolean bExactMatch){
+		String sReturn = "";
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) break main;
+			
+			int iPosition = -1;
+			if(bExactMatch) {			
+				iPosition = sString.lastIndexOf(sToFind);				
+			}else {
+				iPosition = sString.toLowerCase().lastIndexOf(sToFind.toLowerCase());
+			}
+			if (iPosition == -1) break main;
+			
+			sReturn = sString.substring(0, iPosition);				
+		}
+		return sReturn;
+	}
+	
 	public static String leftback(String sString, int iPosFromTheRight){
 		String sReturn = sString;
 		main:{
@@ -1099,6 +1128,155 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
+	public static Vector vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();
+		main:{
+			if(StringZZZ.isEmpty(sStringToParse)) break main;
+			if(StringZZZ.isEmpty(sLeftSep)){
+				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sRightSep)){
+				ExceptionZZZ ez = new ExceptionZZZ("Right separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sLeft = StringZZZ.left(sStringToParse, sLeftSep);
+			if(sLeft==null) sLeft="";
+			/*
+			if(StringZZZ.isEmpty(sLeft))
+				{
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+				}
+				*/
+			
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sLeftSep.length());
+			/*
+			if(StringZZZ.isEmpty(sRemainingTagged)){
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+			}
+			*/
+			
+			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sRightSep);
+			if(StringZZZ.isEmpty(sExpressionTagged)){
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+			}
+			
+			
+			//nun gibt es einen Ausdruck			
+			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());
+			if(sRight==null) sRight = "";
+			
+			//Nun die Werte in den ErgebnisVector zusammenfassen
+			vecReturn.add(sLeft);
+			
+			if(bReturnSeparators ==true){
+				sExpressionTagged = sLeftSep + sExpressionTagged + sRightSep;
+				vecReturn.add(sExpressionTagged);
+			}else{				
+				vecReturn.add(sExpressionTagged);
+			}
+			vecReturn.add(sRight);
+		}
+		return vecReturn;
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector vecMid(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();
+		main:{					
+			if(bExactMatch){
+				vecReturn = StringZZZ.vecMid(sStringToParse, sLeftSep, sRightSep, bReturnSeparators);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sStringToParse)) break main;
+			if(StringZZZ.isEmpty(sLeftSep)){
+				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sRightSep)){
+				ExceptionZZZ ez = new ExceptionZZZ("Right separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sLeft = StringZZZ.left(sStringToParse, sLeftSep, false);
+			if(sLeft==null) sLeft="";
+			/*
+			if(StringZZZ.isEmpty(sLeft))
+				{
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+				}
+				*/
+			
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sLeftSep.length());
+			/*
+			if(StringZZZ.isEmpty(sRemainingTagged)){
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+			}
+			*/
+			
+			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sRightSep, false);
+			if(StringZZZ.isEmpty(sExpressionTagged)){
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+				vecReturn.add("");
+				break main;
+			}
+			
+			
+			//nun gibt es einen Ausdruck			
+			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());
+			if(sRight==null) sRight = "";
+			
+			//Nun die Werte in den ErgebnisVector zusammenfassen
+			vecReturn.add(sLeft);
+			
+			if(bReturnSeparators ==true){
+				sExpressionTagged = sLeftSep + sExpressionTagged + sRightSep;
+				vecReturn.add(sExpressionTagged);
+			}else{				
+				vecReturn.add(sExpressionTagged);
+			}
+			vecReturn.add(sRight);
+		}
+		return vecReturn;		
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Die Mitte ist nur vorhanden, falls es sowohl den linken als auch den rechten SeparatorString gibt.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
 	public static Vector vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
 		main:{
@@ -1124,7 +1302,7 @@ public class StringZZZ implements IConstantZZZ{
 				}
 				*/
 			
-			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sLeftSep.length());
 			/*
 			if(StringZZZ.isEmpty(sRemainingTagged)){
 				vecReturn.add(sStringToParse);
@@ -1134,7 +1312,7 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			*/
 			
-			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep);
+			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep);//!!!nur left, wg. "First", anders als sonst leftback!!!
 			if(StringZZZ.isEmpty(sExpressionTagged)){
 				vecReturn.add(sStringToParse);
 				vecReturn.add("");
@@ -1143,21 +1321,18 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			
-			//nun gibt es einen Ausdruck
-			sExpressionTagged = sExpressionTagged + sRightSep;
-			
-			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length());
+			//nun gibt es einen Ausdruck			
+			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());
 			if(sRight==null) sRight = "";
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			vecReturn.add(sLeft);
 			
 			if(bReturnSeparators ==true){
+				sExpressionTagged = sLeftSep + sExpressionTagged + sRightSep;
 				vecReturn.add(sExpressionTagged);
-			}else{
-				String sExpression = StringZZZ.right(sExpressionTagged, sExpressionTagged.length()-sLeftSep.length());
-				sExpression = StringZZZ.left(sExpression, sExpression.length()-sRightSep.length());
-				vecReturn.add(sExpression);
+			}else{				
+				vecReturn.add(sExpressionTagged);
 			}
 			vecReturn.add(sRight);
 		}
@@ -1176,7 +1351,7 @@ public class StringZZZ implements IConstantZZZ{
 	 */
 	public static Vector vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
-		main:{					
+		main:{
 			if(bExactMatch){
 				vecReturn = StringZZZ.vecMidFirst(sStringToParse, sLeftSep, sRightSep, bReturnSeparators);
 				break main;
@@ -1192,7 +1367,7 @@ public class StringZZZ implements IConstantZZZ{
 				throw ez;
 			}
 			
-			String sLeft = StringZZZ.left(sStringToParse, sLeftSep, bExactMatch);
+			String sLeft = StringZZZ.left(sStringToParse, sLeftSep,false);
 			if(sLeft==null) sLeft="";
 			/*
 			if(StringZZZ.isEmpty(sLeft))
@@ -1204,7 +1379,7 @@ public class StringZZZ implements IConstantZZZ{
 				}
 				*/
 			
-			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sLeftSep.length());
 			/*
 			if(StringZZZ.isEmpty(sRemainingTagged)){
 				vecReturn.add(sStringToParse);
@@ -1214,7 +1389,7 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			*/
 			
-			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep, bExactMatch);
+			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep,false);//!!!nur left, wg. "First", anders als sonst leftback!!!
 			if(StringZZZ.isEmpty(sExpressionTagged)){
 				vecReturn.add(sStringToParse);
 				vecReturn.add("");
@@ -1223,21 +1398,18 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			
-			//nun gibt es einen Ausdruck
-			sExpressionTagged = sExpressionTagged + sRightSep;
-			
-			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length());
+			//nun gibt es einen Ausdruck			
+			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());
 			if(sRight==null) sRight = "";
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			vecReturn.add(sLeft);
 			
 			if(bReturnSeparators ==true){
+				sExpressionTagged = sLeftSep + sExpressionTagged + sRightSep;
 				vecReturn.add(sExpressionTagged);
-			}else{
-				String sExpression = StringZZZ.right(sExpressionTagged, sExpressionTagged.length()-sLeftSep.length());
-				sExpression = StringZZZ.left(sExpression, sExpression.length()-sRightSep.length());
-				vecReturn.add(sExpression);
+			}else{				
+				vecReturn.add(sExpressionTagged);
 			}
 			vecReturn.add(sRight);
 		}

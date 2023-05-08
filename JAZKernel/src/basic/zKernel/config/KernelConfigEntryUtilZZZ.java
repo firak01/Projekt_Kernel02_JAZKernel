@@ -72,7 +72,8 @@ public class KernelConfigEntryUtilZZZ {
 			boolean bExpressionSolved = KernelConfigEntryUtilZZZ.getValueExpressionSolved(objFileIni, sRaw, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueExpressionSolved);							
 			if(bExpressionSolved) {
 				objReturnReference.get().isExpression(true);
-				sRawExpressionSolved = objsReturnValueExpressionSolved.get();				
+				if(bUseFormula) objReturnReference.get().isFormula(true);
+				sRawExpressionSolved = objsReturnValueExpressionSolved.get();					
 				iReturn = iReturn + 1;
 			}else {
 				sRawExpressionSolved = sRaw;
@@ -112,7 +113,7 @@ public class KernelConfigEntryUtilZZZ {
 			}
 			sValueExpressionSolved = sRaw;
 			if(bAnyFormula){
-				objsReturnValueExpressionSolved.set(sValueExpressionSolved);	
+				objsReturnValueExpressionSolved.set(sValueExpressionSolved);
 				bReturn = true;
 			}															
 		}//end main:

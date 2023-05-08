@@ -113,6 +113,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naeste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
 		}
 		return vecReturn;

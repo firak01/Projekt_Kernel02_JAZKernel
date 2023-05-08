@@ -169,7 +169,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			
 			//20230505 Tests fuer die Arbeit mit Werten aus einem JavaCall Aufruf
 			objStreamFile.println("[ArgumentSection for testCallComputed]");
-			objStreamFile.println("JavaClass=EnvironmentZZZ");
+			objStreamFile.println("JavaClass=basic.zBasic.util.machine.EnvironmentZZZ");
 			objStreamFile.println("JavaMethod=getHostName");
 			
 			objStreamFile.println("[Section for testCallComputed]");
@@ -416,7 +416,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			//Anwenden der ersten Formel, ohne Berechnung			
+			//Anwenden der ersten Formel, ohne Berechnung oder Formelersetzung			
 			String sExpression = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
 			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT,sExpression);
 			

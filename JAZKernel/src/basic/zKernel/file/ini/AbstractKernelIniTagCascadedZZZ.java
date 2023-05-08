@@ -80,4 +80,20 @@ public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIni
 	//In den erbenden Klassen werden darin die enthaltenden Tags aufgelöst
 	abstract public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
 	
+	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	* @param sLineWithExpression
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:20:34
+	 * @throws ExceptionZZZ 
+	 */
+	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();		
+		main:{
+			//Bei dem verschachtelten Tag werden die äußeren Tags genommen...
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+		}
+		return vecReturn;
+	}
+	
 }//End class

@@ -146,7 +146,7 @@ public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IK
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_NullZZZ.getExpressionTagStarting(), KernelZFormulaIni_NullZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, KernelZFormulaIni_NullZZZ.getExpressionTagStarting(), KernelZFormulaIni_NullZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}

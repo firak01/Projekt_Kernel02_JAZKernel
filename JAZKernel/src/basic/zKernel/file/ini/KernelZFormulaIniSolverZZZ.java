@@ -104,6 +104,22 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 	 }//end function KernelExpressionIniSolverNew_
 	
 	
+	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	* @param sLineWithExpression
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:20:34
+	 * @throws ExceptionZZZ 
+	 */
+	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector vecReturn = new Vector();		
+		main:{
+			//Merke: Das ist zwar ein "Cascaded" Solver, aber hier die Tags wie beim einfachen Solver nehmen.
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naeste schliessende Tag...
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+		}
+		return vecReturn;
+	}
 	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();

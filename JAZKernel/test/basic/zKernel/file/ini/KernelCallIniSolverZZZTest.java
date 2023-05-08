@@ -25,8 +25,8 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelCallIniSolverZZZTest  extends TestCase {
-		protected final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
-		protected final static String sEXPRESSION_CALL01COMPUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
+		protected final static String sEXPRESSION_CALL01COMPUTED_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class>basic.zBasic.util.machine.EnvironmentZZZ</Z:Class><Z:Method>getHostName</Z:Method></Z:Java></Z:Call></Z>";
+		protected final static String sEXPRESSION_CALL01_DEFAULT = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
 		//protected final static String sEXPRESSION_ENCRYPTION03_DEFAULT = "<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>5</z:KeyNumber><z:CharacterPool> abcdefghijklmnopqrstuvwxyz?!</z:CharacterPool><z:FlagControl>USEUPPERCASE</Z:FlagControl><Z:Code>fghij</Z:Code></Z:Encrypted></Z>";
 		
 		private KernelZZZ objKernel;
@@ -142,7 +142,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				
 				
 				//### Nun die Gesamtberechnung durchführen
-				TODOGOON;//20230507: WARUM WIRD DER PFAD [ ...] aufgelöst, wenn useformula nicht gesetzt ist????
+				//TODOGOON;//20230507: WARUM WIRD DER PFAD [ ...] aufgelöst, wenn useformula nicht gesetzt ist????
 				
 				IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.computeAsEntry(sLineWithExpression);
 				//String sValue = objExpressionSolver.compute(sLineWithExpression);
