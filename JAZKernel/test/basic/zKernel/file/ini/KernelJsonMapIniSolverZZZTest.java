@@ -22,7 +22,7 @@ import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
-	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>";
+	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON></Z>";
 	
 	
 	private KernelZZZ objKernel;

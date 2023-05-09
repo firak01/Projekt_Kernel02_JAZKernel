@@ -1277,8 +1277,8 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	public static Vector<String> vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sStringToParse)) break main;
 			if(StringZZZ.isEmpty(sLeftSep)){
@@ -1349,8 +1349,8 @@ public class StringZZZ implements IConstantZZZ{
 	* 
 	* lindhaueradmin; 06.03.2007 11:56:33
 	 */
-	public static Vector vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	public static Vector<String>vecMidFirst(String sStringToParse, String sLeftSep, String sRightSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(bExactMatch){
 				vecReturn = StringZZZ.vecMidFirst(sStringToParse, sLeftSep, sRightSep, bReturnSeparators);

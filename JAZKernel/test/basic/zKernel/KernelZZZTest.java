@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmFactoryZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
@@ -1507,6 +1508,23 @@ public void testGetModuleAliasAll(){
 						
 			String sAlias = objEntryAlias.getValue();
 			assertTrue(sAlias.equals("TestProg"));						
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+	}
+	
+	public void testGetParameterArrayStringByProgramAlias() {
+		try {
+			boolean bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION, true);
+			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
+			bFlagExists = objKernelFGL.setFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON, true);
+			assertTrue("Flag wurde erwartet: '" + IKernelJsonIniSolverZZZ.FLAGZ.USEJSON + "'",bFlagExists);
+			bFlagExists = objKernelFGL.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
+			assertTrue("Flag wurde erwartet: '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'",bFlagExists);
+			
+			String[]sa = objKernelFGL.getParameterArrayStringByProgramAlias("Test", "testGetParameterArrayByProgramAlias", "testValue01");
+			assertNotNull(sa);
+			assertFalse(ArrayUtilZZZ.isEmpty(sa));											
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}

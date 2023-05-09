@@ -20,6 +20,7 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -39,9 +40,16 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 		KernelJsonArrayIniSolverNew_(null, saFlag);
 	}
 	
-	public KernelJsonArrayIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
-		super((IKernelZZZ)null, saFlag);
+	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+		super(objKernel);
+		
+		String[] saFlag = {"init"};
 		KernelJsonArrayIniSolverNew_(null, saFlag);
+	}
+	
+	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
+		super(objFileIni);
+		KernelJsonArrayIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
@@ -82,6 +90,7 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 				}
 				
 				this.setFileIni(objFileIni);
+				if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
 							
 	 	}//end main:
 		return bReturn;
@@ -120,8 +129,8 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 		ArrayList<String> alsReturn = new ArrayList<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)== false) break main;
+			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main;
+			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;
 			
 			String sReturn = "";
 			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
@@ -277,7 +286,9 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 							if(StringZZZ.isEmpty(sExpression)) {
 								sExpression = sExpressionOld;
 								break;
-							}else{
+							}else if(sExpressionOld.equals(sExpression)){
+								break;
+							}else {
 								sExpressionOld = sExpression;							
 							}
 					} //end while

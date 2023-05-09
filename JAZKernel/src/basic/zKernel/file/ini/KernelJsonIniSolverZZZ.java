@@ -21,6 +21,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
  *  Es kann dann in einem dieser Formeln z.B. auf den Property-Wert einer anderen Sektion zugegriffen werden. So entstehen 'dynamische' ini-Dateien.
@@ -140,15 +141,13 @@ public class KernelJsonIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)==false) break main; 			
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
 		
-				//WICHTIG: DIE FLAGS VERERBEN !!!
-				KernelJsonMapIniSolverZZZ init4FlagLookup = new KernelJsonMapIniSolverZZZ();
-				String[] saFlagZpassed = this.getFlagZ_passable(true, init4FlagLookup);
-				HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
-				FileIniZZZ objFileIni = this.getFileIni();
+			//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.			
+			FileIniZZZ objFileIni = this.getFileIni();
 				
-				//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.				
-				KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed); 
-				hmReturn=objJsonMapSolver.computeHashMap(sLineWithExpression);			
+			KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni);
+			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonMapSolver, true);
+			objJsonMapSolver.setFlag(saFlag,true);
+			hmReturn=objJsonMapSolver.computeHashMap(sLineWithExpression);			
 			}				
 		}//end main:
 		return hmReturn;
@@ -158,13 +157,17 @@ public class KernelJsonIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 		ArrayList<String>alsReturn=new ArrayList<String>();				
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)==false) break main; 			
-			if(this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())==true){				
+			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main; 			
+			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;				
 		
-				//Dann erzeuge neues KernelJsonArraySolverZZZ - Objekt.
-				KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(); 
-				alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);															
-			}					
+			//Dann erzeuge neues KernelJsonArraySolverZZZ - Objekt.		
+			FileIniZZZ objFileIni = this.getFileIni();
+			
+			KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(objFileIni);
+			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonArraySolver, true);
+			objJsonArraySolver.setFlag(saFlag,true);
+			alsReturn=objJsonArraySolver.computeArrayList(sLineWithExpression);															
+							
 		}//end main:
 		return alsReturn;
 	}
@@ -194,104 +197,104 @@ public class KernelJsonIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 	}
 	
 	//### aus IKernelJsonIniSolverZZZ
-		@Override
-		public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		
-		@Override
-		public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
+	@Override
+	public boolean getFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 
-		@Override
-			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-				boolean[] baReturn=null;
-				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-						baReturn = new boolean[objaEnumFlag.length];
-						int iCounter=-1;
-						for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-							iCounter++;
-							boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-							baReturn[iCounter]=bReturn;
-						}
-					}
-				}//end main:
-				return baReturn;
+	@Override
+	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
 			}
-		
-		@Override
-		public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objaEnumFlag.name());
-		}
-		
-		
-		//Aus IKernelJsonArrayIniSolverZZZ
-				@Override
-				public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
-					return this.getFlag(objEnumFlag.name());
-				}
-				
-				@Override
-				public boolean setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-					return this.setFlag(objEnumFlag.name(), bFlagValue);
-				}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelJsonIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
+	
+	
+	//Aus IKernelJsonArrayIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 
-				@Override
-					public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-						boolean[] baReturn=null;
-						main:{
-							if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-								baReturn = new boolean[objaEnumFlag.length];
-								int iCounter=-1;
-								for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-									iCounter++;
-									boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-									baReturn[iCounter]=bReturn;
-								}
-							}
-						}//end main:
-						return baReturn;
-					}
-				
-				
-				@Override
-				public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-					return this.proofFlagExists(objaEnumFlag.name());
+	@Override
+	public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
 				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	
+	@Override
+	public boolean proofFlagExists(IKernelJsonArrayIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
 
 
-				//Aus IKernelJsonMapIniSolverZZZ
-				@Override
-				public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
-					return this.getFlag(objEnumFlag.name());
-				}
-				
-				@Override
-				public boolean setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-					return this.setFlag(objEnumFlag.name(), bFlagValue);
-				}
+	//Aus IKernelJsonMapIniSolverZZZ
+	@Override
+	public boolean getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 
-				@Override
-					public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-						boolean[] baReturn=null;
-						main:{
-							if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-								baReturn = new boolean[objaEnumFlag.length];
-								int iCounter=-1;
-								for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-									iCounter++;
-									boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-									baReturn[iCounter]=bReturn;
-								}
-							}
-						}//end main:
-						return baReturn;
-					}
-				
-				@Override
-				public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-					return this.proofFlagExists(objaEnumFlag.name());
+	@Override
+	public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
 				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelJsonMapIniSolverZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objaEnumFlag.name());
+	}
 }//End class

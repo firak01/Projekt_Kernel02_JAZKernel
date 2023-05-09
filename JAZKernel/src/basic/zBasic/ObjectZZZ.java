@@ -29,6 +29,7 @@ import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.json.FlagZHelperZZZ;
+import basic.zKernel.flag.json.IFlagZZZ;
 import custom.zKernel.LogZZZ;
 
 public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
@@ -115,6 +116,10 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
 				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -224,6 +229,10 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 					boolean bReturn = this.setFlag(sFlagName, bFlagValue);
 					baReturn[iCounter]=bReturn;
 				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
@@ -491,6 +500,10 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 							boolean bReturn = this.setFlag(sFlag, bValue);
 							baReturn[iCounter]=bReturn;
 						}
+						
+						//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+						//    Es wird entfernt.
+						this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
 					}
 				}//end main:
 				return baReturn;

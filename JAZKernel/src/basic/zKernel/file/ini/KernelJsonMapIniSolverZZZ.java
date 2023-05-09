@@ -38,9 +38,16 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 		KernelJsonMapIniSolverNew_(null, saFlag);
 	}
 	
-	public KernelJsonMapIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
-		super((IKernelZZZ)null, saFlag);
+	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+		super(objKernel);
+				
+		String[] saFlag = {"init"};
 		KernelJsonMapIniSolverNew_(null, saFlag);
+	}
+	
+	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
+		super(objFileIni);
+		KernelJsonMapIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
@@ -81,6 +88,7 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 				}
 				
 				this.setFileIni(objFileIni);
+				if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
 							
 	 	}//end main:
 		return bReturn;

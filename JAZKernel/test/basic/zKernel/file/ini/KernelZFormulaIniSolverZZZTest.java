@@ -124,7 +124,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//                           also: NavigatorContentJson=<JSON>{"UIText01":"TESTWERT2DO2JSON01","UIText02":"TESTWERT2DO2JSON02"}</JSON>
 			//Gib den JSON-Array-Wert so an: {"wert1","wert2"}
 			objStreamFile.println("[Section for testJsonHashmap]");
-			objStreamFile.println("Map1=<JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON>");
+			objStreamFile.println("Map1="+KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT);
 									
 			
 			//20220926 Tests für die Arbeit mit verschluesselten / encrypted Werten
@@ -135,16 +135,16 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			String sEncrypted = ROT13ZZZ.encryptIt(sValue);
 			objStreamFile.println("[Section for testEncrypted]");
 			objStreamFile.println("WertA="+sValue);
-			objStreamFile.println("WertAencrypted=<Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertAencrypted="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION01_DEFAULT);
 			
 			sEncrypted = ROTnumericZZZ.encrypt(sValue, iKeyNumber, true, false);
 			objStreamFile.println("WertB="+sValue);
-			objStreamFile.println("WertBencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnumeric</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><Z:FlagControl>"+sFlagNumeric+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertBencrypted="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT);
 			
 			CharacterExtendedZZZ objCharacterMissingReplacement = new CharacterExtendedZZZ(ICharacterPoolUserZZZ.cCHARACTER_MISSING_REPLACEMENT_DEFAULT);
 			sEncrypted = ROTnnZZZ.encrypt(sValue, sCharacterPool, objCharacterMissingReplacement, iKeyNumber, true, false, false,false);
 			objStreamFile.println("WertC="+sValue);
-			objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
+			objStreamFile.println("WertCencrypted="+KernelEncryptionIniSolverZZZTest.sEXPRESSION_ENCRYPTION02_DEFAULT);
 			
 			
 			

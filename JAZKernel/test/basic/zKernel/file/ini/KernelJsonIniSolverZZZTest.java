@@ -230,6 +230,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			assertNotNull(sValue);
 			assertFalse(sValue.equals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
 			
+			//Berechne nun aus einem ini-File heraus
 			bFlagAvailable = objFileIniTest.setFlag("useexpression", true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objFileIniTest.setFlag("usejson", true); //Ansonsten wird der Wert sofort ausgerechnet

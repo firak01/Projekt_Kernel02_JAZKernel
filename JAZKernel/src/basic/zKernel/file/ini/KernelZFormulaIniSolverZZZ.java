@@ -139,8 +139,10 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 								
 				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				String sExpressionOld = sExpression;
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.computeAsExpression(sExpression);			
+						sExpression = objIniPath.computeAsExpression(sExpression);
+						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
 				} //end while
 										
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen

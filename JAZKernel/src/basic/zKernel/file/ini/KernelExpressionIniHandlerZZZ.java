@@ -48,7 +48,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
+		super(objFileIni);
 		KernelExpressionIniSolverNew_(objFileIni, null, null);
 	}
 	
@@ -63,12 +63,12 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
+		super(objFileIni);
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
+		super(objFileIni);
 		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
 	}
 	
@@ -184,14 +184,14 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 				}
 				main:{
 					if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-					boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
+					boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION);
 					if(!bUseExpression) break main;
 					if(!this.isExpression(sLineWithExpression)) break main;
 					objReturn = objReturnReference.get();
 					objReturn.isExpression(true);	
 										
-					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
-					boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name());
+					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA);
+					boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 					boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
 					boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
 					if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;

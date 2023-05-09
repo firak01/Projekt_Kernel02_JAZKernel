@@ -22,5 +22,5 @@ public interface IKernelZFormulaIniZZZ {
 	
 	//Vector mit 3 Elementen und den Indexwerten 0 = Vor dem Tag, 1= Der Taginhalt 2= Nach dem Tag
 	//Damit kann man dann Formeln aufloesen.
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ;
+	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ;
 }
