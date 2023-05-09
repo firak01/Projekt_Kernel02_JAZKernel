@@ -195,26 +195,24 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(! this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA)) break main;
 			
 			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			sReturn = VectorZZZ.implode(vecAll);
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-			if(this.getFlag("useFormula_math")==true){				
-				sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
-			
-				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
-													
-				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-				while(objMathSolver.isExpression(sReturn)){
-					String sValueMath = objMathSolver.compute(sReturn);
-					sReturn=sValueMath;				
-				}													
-			}else{													
-				sReturn = VectorZZZ.implode(vecAll);
-			}
+			if(!this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH)) break main;				
+						
+			//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+			KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
+												
+			//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+			while(objMathSolver.isExpression(sReturn)){
+				String sValueMath = objMathSolver.compute(sReturn);
+				sReturn=sValueMath;				
+			}																
 		}//end main:
 		return sReturn;
 	}

@@ -39,8 +39,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	private KernelZZZ objKernel;
 	
 	/// +++ Die eigentlichen Test-Objekte	
-	private KernelZFormulaIniSolverZZZ objExpressionSolver;
-	private KernelZFormulaIniSolverZZZ objExpressionSolverInit;
+	private KernelZFormulaIniSolverZZZ objFormulaSolver;
+	private KernelZFormulaIniSolverZZZ objFormulaSolverInit;
 	
 	
 
@@ -156,8 +156,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest = new FileIniZZZ(objKernel,  objFile, (String[]) null);
 			 			
 			//### Die TestObjecte
-			objExpressionSolverInit = new KernelZFormulaIniSolverZZZ();
-			objExpressionSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);
+			objFormulaSolverInit = new KernelZFormulaIniSolverZZZ();
+			objFormulaSolver = new KernelZFormulaIniSolverZZZ(objKernel, objFileIniTest, null);
 			
 			//TestKonfiguration prüfen
 //			assertTrue(objExpressionSolverInit.getFlag("init")==true);
@@ -181,11 +181,11 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	public void testFlagHandling(){
 		try{
 				
-			assertTrue(objExpressionSolverInit.getFlag("init")==true);
-			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
+			assertTrue(objFormulaSolverInit.getFlag("init")==true);
+			assertFalse(objFormulaSolver.getFlag("init")==true); //Nun wäre init falsch
 	
 			
-			String[] saFlag = objExpressionSolver.getFlagZ();
+			String[] saFlag = objFormulaSolver.getFlagZ();
 			assertTrue(saFlag.length==4);
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -202,12 +202,21 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//Anwenden der ersten Formel			
 			objFileIniTest.setFlag("useformula", false); //Ansonsten wird der Wert sofort ausgerechnet
 			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
-			String sValue = objExpressionSolver.compute(sExpression);
-			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
+			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
 			
+			String sValue = objFormulaSolver.compute(sExpression);
+			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
+				
+			//+++++++++++++++++++++++++++++++++++++++
+			objFormulaSolver.setFlag("useformula",true);
+			sValue = objFormulaSolver.compute(sExpression);
+			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
+							
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
-			assertEquals(sValue, sExpression);
+			sValue = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
+			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
+			//++++++++++++++++++++++++++++++++++++++++
+			
 			
 			//Anwenden der Formel, so da� ein localer Wert vor einem globalen Wert gefunden wird.
 			/*objStreamFile.println("[Section B!01]");
@@ -218,7 +227,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			*/
 			objFileIniTest.setFlag("useformula", false);//Ansonsten wird der Wert sofort ausgerechnet
 			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
-			sValue = objExpressionSolver.compute(sExpression);
+			sValue = objFormulaSolver.compute(sExpression);
 			assertEquals("Der dynamische Wert2 ist 'Testvalue local to be found'. FGL rulez.", sValue);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird

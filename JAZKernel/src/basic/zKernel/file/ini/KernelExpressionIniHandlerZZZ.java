@@ -186,15 +186,23 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 					if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 					boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name());
 					if(!bUseExpression) break main;
+					if(!this.isExpression(sLineWithExpression)) break main;
+					objReturn = objReturnReference.get();
+					objReturn.isExpression(true);	
+										
+					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
+					boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name());
+					boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+					boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+					if(!(bUseFormula | bUseCall | bUseJson | bUseEncryption )) break main;
 					
 					//Zuerst einmal <Z> - Tag herausrechen.
-					Vector<String> vec = this.computeExpressionFirstVector(sLineWithExpression);
-					String sLineWithExpressionUsed = vec.get(1);
-					objReturn.setValue(sLineWithExpressionUsed);//Schon mal setzen, falls es ein normaler Wert ist. Falls es ein Formelwert/Verschluesselter Wert ist, wird das eh ueberschrieben.
-
+					//Vector<String> vec = this.computeExpressionFirstVector(sLineWithExpression);
+					//String sLineWithExpressionUsed = vec.get(1);
+					String sLineWithExpressionUsed = sLineWithExpression;
+					
 					//Darin dann weiterrechnen...
-					iReturn=0;
-					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name());
+					iReturn=0;					
 					if(bUseFormula) {
 					
 						//Hier KernelZFormulIniSolverZZZ
@@ -214,12 +222,19 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 						if(bAnyFormula) {
 							objReturn = objReturnReference.get();
 							objReturn.isFormula(true);
+							
+
+							//Diese Rueckgabe wieder mit den anderen Werten verbinden.
 							sLineWithExpressionUsed = objReturn.getValue();
+//							if(vec.size()>=2) {
+//								vec.remove(1);
+//								vec.setElementAt(sLineWithExpressionUsed, 1);
+//							}
+//							sLineWithExpressionUsed = VectorZZZ.implode(vec);																																		
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
 					}//end bUseFormula
 					
-					
-					boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name());
+										
 					if(bUseCall){
 						KernelCallIniSolverZZZ callDummy = new KernelCallIniSolverZZZ();
 						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, callDummy, true);
@@ -229,11 +244,11 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 						bAnyCall = KernelConfigEntryUtilZZZ.getValueCallSolved(this.getFileIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyCall) {
 							objReturn = objReturnReference.get();
-							objReturn.isCall(true);						
+							objReturn.isCall(true);																						
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus ein Call enthalten
 					}
 												
-					boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
+					
 					if(bUseJson) {
 						int iReturnJson=0;
 						
@@ -266,8 +281,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 						
 						iReturn = iReturn + iReturnJson;						
 					}									
-					
-					boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION.name());
+										
 					if(bUseEncryption) {
 						KernelEncryptionIniSolverZZZ encryptionDummy = new KernelEncryptionIniSolverZZZ();
 						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, encryptionDummy, true);
@@ -300,10 +314,6 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 				}
 				if(bAnyCall) {
 					iReturn = iReturn+100;
-				}
-				if(bAnyFormula || bAnyEncryption || bAnyCall) {
-					objReturn = objReturnReference.get();
-					objReturn.isExpression(true);
 				}
 				objReturnReference.set(objReturn);
 				return iReturn;
