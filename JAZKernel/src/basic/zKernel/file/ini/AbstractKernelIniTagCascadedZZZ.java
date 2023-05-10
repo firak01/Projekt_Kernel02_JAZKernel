@@ -22,7 +22,7 @@ import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIniTagSimpleZZZ implements IKernelZTagIniZZZ{	
+public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIniTagSimpleZZZ{	
 	public AbstractKernelIniTagCascadedZZZ() throws ExceptionZZZ{
 		super();		
 	}
@@ -78,7 +78,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIni
 	 }//end function KernelExpressionMathSolverNew_
 		
 	//In den erbenden Klassen werden darin die enthaltenden Tags aufgelöst
-	abstract public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
+	abstract public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
 	
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
@@ -87,8 +87,8 @@ public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIni
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
+	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem verschachtelten Tag werden die äußeren Tags genommen...
 			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);

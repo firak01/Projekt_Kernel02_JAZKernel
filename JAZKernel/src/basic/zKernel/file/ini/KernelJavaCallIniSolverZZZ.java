@@ -151,13 +151,13 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
-		main:{			
-			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
-			if(bUse) {
-				sReturn = super.compute(sLineWithExpression);
-			}else {
-				sReturn = sLineWithExpression;
-			}									
+		main:{	
+			
+			if(!this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)) break main;
+			if(!this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)) break main;
+			
+			sReturn = super.compute(sLineWithExpression);
+			
 		}//end main:
 		return sReturn;
 	}
@@ -165,7 +165,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	@Override
 	public String[] computeAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
-		main:{
+		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {
 				saReturn = super.computeAsArray(sLineWithExpression, sDelimiter);

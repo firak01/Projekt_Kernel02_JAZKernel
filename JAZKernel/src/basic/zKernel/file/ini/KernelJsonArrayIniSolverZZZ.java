@@ -114,8 +114,8 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				
 			sReturn = sLineWithExpression;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY.name())== false) break main;
+			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main;
+			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;
 						
 			ArrayList<String> alsReturn = this.computeArrayList(sLineWithExpression);
 			if(alsReturn!=null) {

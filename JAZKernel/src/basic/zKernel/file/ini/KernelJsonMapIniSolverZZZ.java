@@ -146,8 +146,8 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				
 			sReturn = sLineWithExpression;
-			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
-			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
+			if(!this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON)) break main;
+			if(!this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)) break main;
 			
 			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
 			if(hmReturn!=null) {

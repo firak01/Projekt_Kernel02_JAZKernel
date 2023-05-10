@@ -225,7 +225,7 @@ public class KernelConfigEntryUtilZZZ {
 			
 			KernelEncryptionIniSolverZZZ objDummy = new KernelEncryptionIniSolverZZZ();			
 			while(objDummy.isExpression(sRaw)){//Schrittweise die Formel auflösen.
-				objReturn.setRaw(sRaw);
+				objReturn.setRawEncrypted(sRaw);
 				bAnyEncryption = true;
 									
 				IKernelZZZ objKernel = null;
@@ -251,8 +251,7 @@ public class KernelConfigEntryUtilZZZ {
 					objReturn.setRawEncrypted(sRaw);
 					objReturn.isDecrypted(true);
 					objReturn.setRawDecrypted(sValue);
-					objReturn.setValueDecrypted(sValue);
-					//objReturn.setValueEncrypted(objReturnTemp.getValueEncrypted());
+					objReturn.setValueDecrypted(sValue);					
 				}					
 				sRaw=sValue;//Sonst Endlosschleife.
 				

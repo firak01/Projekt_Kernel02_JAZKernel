@@ -20,6 +20,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -196,6 +197,37 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 		return alsReturn;
 	}
 	
+	@Override
+	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{			
+			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			if(bUseCall) {
+				objReturn = super.computeAsEntry(sLineWithExpression);
+			}else {
+				objReturn.setValue(sLineWithExpression);
+			}									
+		}//end main:
+		return objReturn;
+	}
+	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeAsExpression(java.lang.String)
+	 */
+	@Override
+	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithExpression;
+		main:{			
+			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
+			if(bUseCall) {
+				sReturn = super.computeAsExpression(sLineWithExpression);
+			}else {
+				sReturn = sLineWithExpression;
+			}									
+		}//end main:
+		return sReturn;
+	}
+	
 	//### Andere Interfaces
 	/**Methode ersetzt in der Zeile alle CALL Werte.
 	 * Methode überschreibt den abstrakten "solver", weil erst einmal keine Pfade oder Variablen ersetzt werden sollen.
@@ -209,24 +241,22 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 		Vector vecReturn = new Vector();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			//vecReturn = super.computeExpressionAllVector(sLineWithExpression);
+						
 			String sExpression = null; boolean bAnyCall = false; boolean bAnyJavaCall = false;
 			
 			//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
 
 			//Fuer den abschliessenden Aufruf selbst.
 			String sClassnameWithPackage=null; String sMethodname=null;
-			
-			
+						
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			sExpression = (String) vecReturn.get(1);									
 			if(!StringZZZ.isEmpty(sExpression)){
 				
-				
+				//++++++++++++++++++++++++++++++++++++++++++++
 				//Alle CALL Ausdruecke ersetzen				
 				String sExpressionOld = sExpression;
-				//KernelJavaCall_ClassZZZ objIniPath = new KernelJavaCall_ClassZZZ(this.getKernelObject(), this.getFileIni());
+				
 				KernelJavaCall_ClassZZZ objClassname = new KernelJavaCall_ClassZZZ(this.getKernelObject());
 				while(objClassname.isExpression(sExpression)){
 						IKernelConfigSectionEntryZZZ objEntry = objClassname.computeAsEntry(sExpression);	

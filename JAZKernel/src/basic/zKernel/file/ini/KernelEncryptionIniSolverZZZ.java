@@ -71,8 +71,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 				
 				//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-				String sExpression = (String) vecReturn.get(1);
-				this.getEntry().setRawEncrypted(sExpression);
+				String sExpression = (String) vecReturn.get(1);				
 				if(!StringZZZ.isEmpty(sExpression)){
 					
 					//++++++++++++++++++++++++++++++++++++++++++++
