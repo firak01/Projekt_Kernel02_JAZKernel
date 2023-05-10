@@ -418,6 +418,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			objReturnReference.set(objReturn);
 			this.getPropertyValue_(sSectionIn, sPropertyIn, objReturnReference);
 			objReturn = objReturnReference.get();
+			this.setEntry(objReturn);
 		}//end main:
 		return objReturn;
 	}//end function
@@ -523,6 +524,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			objReturnReference.set(objReturn);
 			this.getPropertyValueDirectLookup_(sSection, sProperty, objReturnReference);
 			objReturn = objReturnReference.get();
+			this.setEntry(objReturn);
 		}//end main:
 		return objReturn;
 	}
@@ -585,6 +587,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				}
 			}			
 		}//end main:
+		this.setEntry(objReturn);
 		return objReturn;
 	}
 	
@@ -657,6 +660,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 				}
 				
 		}//end main:
+		this.setEntry(objReturn);
 		return objReturn;
 	}
 	

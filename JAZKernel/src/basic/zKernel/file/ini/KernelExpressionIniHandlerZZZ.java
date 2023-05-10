@@ -175,7 +175,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 			 * @author Fritz Lindhauer, 06.05.2023, 07:41:02
 			 */
 			public int compute(String sLineWithExpression, ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference) throws ExceptionZZZ{		
-				int iReturn = 0;
+				int iReturn = -1;
 				boolean bAnyEncryption = false;		boolean bAnyCall = false;	boolean bAnyFormula = false; boolean bAnyJson = false;
 				IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 				if(objReturn==null) {
@@ -189,7 +189,8 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 					if(!this.isExpression(sLineWithExpression)) break main;
 					objReturn = objReturnReference.get();
 					objReturn.isExpression(true);	
-										
+					iReturn=0;
+					
 					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA);
 					boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 					boolean bUseJson = this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON);
@@ -201,8 +202,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 					//String sLineWithExpressionUsed = vec.get(1);
 					String sLineWithExpressionUsed = sLineWithExpression;
 					
-					//Darin dann weiterrechnen...
-					iReturn=0;					
+					//Darin dann weiterrechnen...										
 					if(bUseFormula) {
 					
 						//Hier KernelZFormulIniSolverZZZ
@@ -226,11 +226,19 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 
 							//Diese Rueckgabe wieder mit den anderen Werten verbinden.
 							sLineWithExpressionUsed = objReturn.getValue();
-//							if(vec.size()>=2) {
-//								vec.remove(1);
-//								vec.setElementAt(sLineWithExpressionUsed, 1);
-//							}
-//							sLineWithExpressionUsed = VectorZZZ.implode(vec);																																		
+							
+							//Merke: <Z> wieder drumsetzen, ggfs. wird ja sonst nicht gemacht.
+							Vector<String>vec = new Vector<String>();
+							
+							//Bei einem vollkommen neuen Vektor geht das nicht mit Indexpositionersetzung.
+//							vec.setElementAt("<Z>", 0);
+//							vec.setElementAt(sLineWithExpressionUsed, 1);
+//							vec.setElementAt("</Z>",2);
+							vec.add("<Z>");
+							vec.add(sLineWithExpressionUsed);
+							vec.add("</Z>");
+							sLineWithExpressionUsed = VectorZZZ.implode(vec);
+							objReturn.setValue(sLineWithExpressionUsed);
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
 					}//end bUseFormula
 					
@@ -319,6 +327,25 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 				return iReturn;
 			}
 		
+			/* Muss das noch ausprogrammiert werden? 
+			 * Ich habe erst mal die SimpleTag-Lösung eingesetzt.
+			 * 
+			 * (non-Javadoc)
+			 * @see basic.zKernel.file.ini.AbstractKernelIniTagCascadedZZZ#computeExpressionAllVector(java.lang.String)
+			 */
+			public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+				Vector<String> vecReturn = new Vector<String>();
+				main:{
+					if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+								
+					//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+					//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
+					vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+					
+				}
+				return vecReturn;
+			}
+			
 			public ArrayList<String> computeArrayList(String sLineWithExpression)throws ExceptionZZZ{
 				ArrayList<String> alsReturn=  new ArrayList<String>();
 				main:{
@@ -473,12 +500,6 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 		@Override
 		public String getExpressionTagName() {
 			return KernelExpressionIniHandlerZZZ.sTAG_NAME;
-		}
-
-		@Override
-		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
-			// TODO Auto-generated method stub
-			return null;
 		}
 		
 		//Aus IKernelJsonMapIniSolverZZZ

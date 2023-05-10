@@ -25,6 +25,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
@@ -458,30 +459,63 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 	 */
 	public void testComputeCallComputed(){
 
-		try {					
+		try {	
+			//Hole den RAW Wert aus der Ini Datei
 			boolean bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
 			
+
+			//###########################################################
 			//Anwenden der ersten Formel, ohne Berechnung			
-			String sExpression = objFileIniTest.getPropertyValue("Section for testCallComputed", "WertCalledComputed").getValue();
-			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT,sExpression);
-			
+			String sExpression = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT,sExpression);			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objFileIniTest.getEntry();
 			assertNotNull(objSectionEntry);
+			assertFalse(objSectionEntry.isExpression());
+			assertFalse(objSectionEntry.isFormula());
+			assertFalse(objSectionEntry.isCall());
+			assertFalse(objSectionEntry.isJavaCall());
+			
+			//Nur Expression ausrechnen, ist aber unverändert vom reinen Ergebnis her.			
+			bFlagAvailable = objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION, true);
+			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			String sExpressionComputed = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT,sExpressionComputed);			
+			objSectionEntry = objFileIniTest.getEntry();
+			assertNotNull(objSectionEntry);
+			assertTrue(objSectionEntry.isExpression());
+			assertFalse(objSectionEntry.isFormula());
+			assertFalse(objSectionEntry.isCall());
+			assertFalse(objSectionEntry.isJavaCall());
 			
 			
-			//###################################################
+			//... erste die Formelberechnung hinzunehmen ändert etwas
+			bFlagAvailable = objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA,true);
+			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
+			String sExpressionFormulaComputed = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT,sExpressionFormulaComputed);
+			objSectionEntry = objFileIniTest.getEntry();
+			assertNotNull(objSectionEntry);
+			assertTrue(objSectionEntry.isExpression());
+			assertTrue(objSectionEntry.isFormula());
+			assertFalse(objSectionEntry.isCall());
+			assertFalse(objSectionEntry.isJavaCall());
+			
+			
+			//###################################################		
 			//Berechne die erste Formel, DIRECT			
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(), true);
 			assertTrue("Das Flag 'useexpression' sollte zur Verfügung stehen.", bFlagAvailable);
+			bFlagAvailable = objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA,true);
+			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL.name(), true);
-			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
+			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);			
 			bFlagAvailable = objExpressionHandler.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA.name(), true);
 			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
-			
+						
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.compute(sExpression, objSectionEntryReference);
-			assertEquals(101,iReturn); //+100 für den Call
+			assertEquals(101,iReturn); //+100 fuer den Call +1 fuer die Formula
 			
 			objSectionEntry = objSectionEntryReference.get();
 			assertNotNull(objSectionEntry);
@@ -489,7 +523,11 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertEquals("basic.zBasic.util.machine.EnvironmentZZZ",objSectionEntry.getCallingClassname());
 			assertEquals("getHostName",objSectionEntry.getCallingMethodname());
 			
-			
+			//Diese Berechnung so nachvollziehen und vergleichen
+			String sValue = objSectionEntry.getValue();
+			String sTest = EnvironmentZZZ.getHostName();
+			assertEquals(sTest,sValue);
+
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
