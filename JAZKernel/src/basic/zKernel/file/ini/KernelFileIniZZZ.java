@@ -612,25 +612,43 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 					ExceptionZZZ ez = new ExceptionZZZ( "missing parameter 'Section'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		
 				}else{
-					sSectionUsed = KernelKernelZZZ.extractModuleFromSection(sSectionIn);
-					if(StringZZZ.isEmpty(sSectionUsed)){
-						ExceptionZZZ ez = new ExceptionZZZ( "not extractable parameter 'Section' from '"+sSectionIn + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
-						throw ez;
+					//Gibt es einen Programnamen im der Section?
+					//Wenn ja , dann das die ganze Section Vewrenenden.
+					String sProgram = KernelKernelZZZ.extractProgramFromSection(sSectionIn);
+					if(StringZZZ.isEmpty(sProgram)){										
+						sSectionUsed = KernelKernelZZZ.extractModuleFromSection(sSectionIn);
+						if(StringZZZ.isEmpty(sSectionUsed)){
+							ExceptionZZZ ez = new ExceptionZZZ( "not extractable parameter 'Section' from '"+sSectionIn + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+							throw ez;
+						}	
+					}else {
+						sSectionUsed = sSectionIn;
+					}
+				}
+				objReturn.setSection(sSectionUsed);
+				
+				if(StringZZZ.isEmpty(sSystemNrIn)) {
+					sSystemNumberUsed = KernelKernelZZZ.extractSytemNumberFromSection(sSectionIn);
+					//Falls leer, keine Exception, sondern die default verwenden
+					if(StringZZZ.isEmpty(sSystemNumberUsed)) {
+						sSystemNumberUsed = this.getKernelObject().getSystemNumber();
 					}					
-					objReturn.setSection(sSectionUsed);
-				}			
+				}else {
+					sSystemNumberUsed = sSystemNrIn;
+				}
+				objReturn.setSystemNumber(sSystemNumberUsed);
+				
 				if(StringZZZ.isEmpty(sPropertyIn)){
 					ExceptionZZZ ez = new ExceptionZZZ("missing parameter 'Property'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 					throw ez;		
 				}else{
-					sProperty = sPropertyIn;
-					objReturn.setProperty(sProperty);
+					sProperty = sPropertyIn;					
 				}
+				objReturn.setProperty(sProperty);
 				
 				ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 				objReturnReference.set(objReturn);				
 				if(StringZZZ.isEmpty(sSystemNrIn)){
-					sSystemNumberUsed = this.getKernelObject().getSystemNumber();
 					
 					String sSectionUsedFirst = KernelKernelZZZ.computeSystemSectionNameForSection(sSectionUsed, sSystemNumberUsed);
 					

@@ -3524,7 +3524,7 @@ MeinTestParameter=blablaErgebnis
 				throw ez;
 			}
 			
-			objReturn.setSection(sSection);
+			objReturn.setSection(sSection); //Hier erst einmal setzen. Es wird in der LookupFunktion noch genauer gesetzt.
 			objReturn.setProperty(sProperty);
 			if(!StringZZZ.isEmpty(sSection)){
 			    boolean bSectionExists = objFileIniConfig.proofSectionExistsDirectLookup(sSection);

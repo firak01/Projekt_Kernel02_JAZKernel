@@ -79,7 +79,7 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 			Vector<String>vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
-			String sProperty = (String) vecSection.get(2);
+			String sProperty = (String) vecSection.get(2);//Zu diesem Zeitpunkt eigentlich der Rest...
 			String sBefore = (String) vecSection.get(0);;
 			String sRest = "";
 						
