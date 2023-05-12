@@ -198,7 +198,7 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 					
 					Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 					
-					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+					//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss					
 					sReturn = VectorZZZ.implode(vecAll);
 					this.setValue(sReturn);
 					

@@ -218,7 +218,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {
-				objReturn = super.computeAsEntry(sLineWithExpression);
+				objReturn = super.computeAsEntry(sLineWithExpression);				
 			}else {
 				objReturn.setValue(sLineWithExpression);
 			}									

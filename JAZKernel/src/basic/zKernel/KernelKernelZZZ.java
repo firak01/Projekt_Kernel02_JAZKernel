@@ -888,7 +888,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		    	}
 		    	
 		    }else {
-		    	sSystemNumberUsed = KernelKernelZZZ.extractSytemNumberFromSection(sSystemNumberIn);	    		
+		    	sSystemNumberUsed = sSystemNumberIn;	    		
 		    }
 		    		    
 		    						
@@ -1112,8 +1112,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sSection)) break main;
-			if(!StringZZZ.contains(sSection, IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER)) {
-				sReturn = sSection;
+			if(!StringZZZ.contains(sSection, IKernelFileIniZZZ.sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER)) {				
 				break main;
 			}
 			

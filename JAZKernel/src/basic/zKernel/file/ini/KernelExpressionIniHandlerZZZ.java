@@ -221,24 +221,18 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 						}
 						if(bAnyFormula) {
 							objReturn = objReturnReference.get();
-							objReturn.isFormula(true);
-							
-
-							//Diese Rueckgabe wieder mit den anderen Werten verbinden.
+							objReturn.isFormula(true);														
 							sLineWithExpressionUsed = objReturn.getValue();
+							objReturn.setValue(sLineWithExpressionUsed);
 							
+							//Diese Rueckgabe wieder mit den anderen Werten verbinden.
 							//Merke: <Z> wieder drumsetzen, ggfs. wird ja sonst nicht gemacht.
-							Vector<String>vec = new Vector<String>();
-							
-							//Bei einem vollkommen neuen Vektor geht das nicht mit Indexpositionersetzung.
-//							vec.setElementAt("<Z>", 0);
-//							vec.setElementAt(sLineWithExpressionUsed, 1);
-//							vec.setElementAt("</Z>",2);
+							Vector<String>vec = new Vector<String>();													
 							vec.add("<Z>");
 							vec.add(sLineWithExpressionUsed);
 							vec.add("</Z>");
-							sLineWithExpressionUsed = VectorZZZ.implode(vec);
-							objReturn.setValue(sLineWithExpressionUsed);
+							String sLineWithExpressionUsedFormula = VectorZZZ.implode(vec);
+							objReturn.setValueFormulaSolvedAndConvertedAsExpression(sLineWithExpressionUsedFormula);
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
 					}//end bUseFormula
 					

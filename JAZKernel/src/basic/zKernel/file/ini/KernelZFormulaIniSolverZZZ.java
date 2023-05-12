@@ -113,10 +113,13 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 	 */
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
-		main:{
+		main:{			
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+			
 			//Merke: Das ist zwar ein "Cascaded" Solver, aber hier die Tags wie beim einfachen Solver nehmen.
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naeste schliessende Tag...
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+			
 		}
 		return vecReturn;
 	}
@@ -126,7 +129,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);	// <Z> Tags entfernen	
 			String sExpression = (String) vecReturn.get(1);									
 			if(!StringZZZ.isEmpty(sExpression)){
 				
@@ -141,7 +144,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				String sExpressionOld = sExpression;
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.computeAsExpression(sExpression);
+						sExpression = objIniPath.compute(sExpression);//in computeAsExpression wäre Z-Tags
 						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
 				} //end while
 										

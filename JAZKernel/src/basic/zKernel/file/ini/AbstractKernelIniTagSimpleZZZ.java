@@ -113,7 +113,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naeste schliessende Tag...
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
 		}
 		return vecReturn;
@@ -171,10 +171,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 						
-			Vector vecAll = this.computeExpressionFirstVector(sLineWithExpression);
+			Vector<String> vecAll = this.computeExpressionFirstVector(sLineWithExpression);
 			
+			//Bei einfachen Tags, den Wert zurückgeben
 			sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn);
+			
+			//implode nur bei CASCADED Tags
+//			String sExpressionImploded = VectorZZZ.implode(vecAll);
+//			this.setValue(sExpressionImploded);
+			
 								
 		}//end main:
 		return sReturn;
@@ -186,10 +192,16 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ 
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 											
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
 			
+			//Das ist bei einfachen Tag Werten so
 			String sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn); //Merke: Internes Entry-Objekt nutzen. Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
+			
+			//Bei verschachtelten (CASCADED) Tag Werten so 
+//			String sExpressionImploded = VectorZZZ.implode(vecAll);
+//			this.setValue(sExpressionImploded);
+			
 			
 			objReturn = this.getEntry();			
 		}//end main:

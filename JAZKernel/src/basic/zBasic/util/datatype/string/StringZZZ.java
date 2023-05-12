@@ -1401,7 +1401,7 @@ public class StringZZZ implements IConstantZZZ{
 			//nun gibt es einen Ausdruck			
 			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());
 			if(sRight==null) sRight = "";
-			
+						
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			vecReturn.add(sLeft);
 			

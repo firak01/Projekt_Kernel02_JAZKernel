@@ -34,6 +34,9 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	
 	public String getValue();
 	public void setValue(String sValue);
+	
+	public String getValueAsExpression();
+	public void setValueAsExpression(String sValueAsExpression);
 			
 	public HashMap<String,String> getValueHashMap();
 	public void setValue(HashMap<String,String> hmValue);
@@ -50,12 +53,20 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public boolean isExpression();
 	abstract void isExpression(boolean bIsExpression);	
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//Formula
 	public boolean isFormula();
 	abstract void isFormula(boolean bIsFormula);
 		
 	public boolean isConverted();
 	abstract void isConverted(boolean bIsConverted);
 	
+	public String getValueFormulaSolvedAndConvertedAsExpression(); 
+	public void setValueFormulaSolvedAndConvertedAsExpression(String sValueSolvedAndConverted);
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//JSON
 	public boolean isJson();
 	abstract void isJson(boolean bIsJson);
 	
@@ -65,25 +76,10 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public boolean isJsonArray();
 	abstract void isJsonArray(boolean bIsJsonArray);
 
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//CRYPT
 	public boolean isCrypt();
 	abstract void isCrypt(boolean bIsCrypt);
-	
-	public boolean isCall();
-	abstract void isCall(boolean bIsCall);
-	
-	public boolean isJavaCall();
-	abstract void isJavaCall(boolean bIsJavaCall);
-	
-	//Falls eine Section eine Form des Arrays enthält und dieses in Einzelwerte zerlegt wurde (mit explode)
-	public boolean isExploded();
-	abstract void isExploded(boolean bIsExploded);
-	public int getIndex();
-	abstract void setIndex(int iIndex);
-	
-	//Falls eine Section eine Form der HashMap enthält und diese in Einzelwerte zerlegt wurde (mit explode)
-	public String getKey();
-	public void setKey(String sKey);
-
 	
 	//Falls ein Wert einen Verschlüsselungsalgorithmus enthielt und dieser zur Berechnung erfolgreich angewendet wurde
 	public boolean isDecrypted();
@@ -105,6 +101,15 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public void setValueEncrypted(String sValueEncryptd);
 	public String getValueDecrypted(); 
 	public void setValueDecrypted(String sValueEncryptd);
+		
+		
+	//++++++++++++++++++++++++++++++++++++++++++++
+	//CALL
+	public boolean isCall();
+	abstract void isCall(boolean bIsCall);
+	
+	public boolean isJavaCall();
+	abstract void isJavaCall(boolean bIsJavaCall);
 	
 	//Falls ein Wert einen Aufruf enthält hier die Details ablegen
 	public String getCallingClassname();
@@ -112,6 +117,22 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	
 	public String getCallingMethodname();
 	public void setCallingMethodname(String sJavaCallingMethodName);
+		
+	public String getValueCallSolvedAsExpression();
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression);
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++
+	//SONSTIGES:
+	//Falls eine Section eine Form des Arrays enthält und dieses in Einzelwerte zerlegt wurde (mit explode)
+	public boolean isExploded();
+	abstract void isExploded(boolean bIsExploded);
+	public int getIndex();
+	abstract void setIndex(int iIndex);
+	
+	//Falls eine Section eine Form der HashMap enthält und diese in Einzelwerte zerlegt wurde (mit explode)
+	public String getKey();
+	public void setKey(String sKey);
+
 	
 	//Suchpfaddetail	
 	public boolean sectionExists();

@@ -22,6 +22,8 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private String sSystemNumber = null;
 	private String sRaw = null;
 	private String sValue = new String("");
+	private String sValueAsExpression = new String("");
+	
 	private HashMap<String,String> hmValue = new HashMap<String,String>();
 	private ArrayList<String> alValue = new ArrayList<String>();
 	private boolean bSectionExists = false;
@@ -32,6 +34,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bConverted = false;
 	private boolean bFormula = false;
 	private boolean bCrypt = false;
+	private String sValueFormulaSolvedAndConvertedAsExpression = null;
 	
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
@@ -42,6 +45,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	
 	private String sCallingClassname = null;
 	private String sCallingMethodname = null;
+	private String sValueCallSolvedAsExpression = null;
 
 	private ICryptZZZ objCrypt = null; //wichtig, falls z.B. ein verschluesselter Wert mit einem neuen Wert ersetzt werden soll. Dann muss das Algortithmus-Objekt nicht neu erstellt werden.
 	
@@ -262,6 +266,26 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 				this.hasNullValue(false);
 			}
 		}
+	}
+	
+	@Override
+	public String getValueAsExpression() {
+		return this.sValueAsExpression;
+	}
+	
+	@Override 
+	public void setValueAsExpression(String sValueAsExpression) {
+		this.sValueAsExpression = sValueAsExpression;
+	}
+	
+	@Override 
+	public String getValueFormulaSolvedAndConvertedAsExpression() {
+		return this.sValueFormulaSolvedAndConvertedAsExpression;
+	}
+	
+	@Override
+	public void setValueFormulaSolvedAndConvertedAsExpression(String sValueSolvedAndConverted) {
+		this.sValueFormulaSolvedAndConvertedAsExpression = sValueSolvedAndConverted;
 	}
 	
 	@Override
@@ -592,6 +616,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	@Override
 	public void setCallingMethodname(String sJavaCallingMethodName) {
 		this.sCallingMethodname = sJavaCallingMethodName;
+	}
+	
+	@Override
+	public String getValueCallSolvedAsExpression() {
+		return this.sValueCallSolvedAsExpression;
+	}
+	
+	@Override
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression) {
+		this.sValueCallSolvedAsExpression = sValueCallSolvedAsExpression;
 	}
 	
 

@@ -91,7 +91,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.");
 			objStreamFile.println("Formula2=Der dynamische Wert2 ist '<Z>[Section B]Testentry2</Z>'. FGL rulez.");
 			objStreamFile.println("Formula3=Der dynamische Wert3 ist '<Z>[Section C]Testentry3</Z>'. FGL rulez.");
-			
+							
 			objStreamFile.println("[Section for testComputeMathArguments]");
 			objStreamFile.println("WertA=4");
 			objStreamFile.println("WertB=5");
@@ -493,7 +493,11 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			bFlagAvailable = objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA,true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
 			String sExpressionFormulaComputed = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
-			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT,sExpressionFormulaComputed);
+			
+			TODOGOON20230512; //Der Wert wird ausgerechnet, aber die Expressin passt nicht, bzw. ist nicht gefüllt!!!
+			
+			String sExpressionFormulaComputedAsExpression = objFileIniTest.getEntry().getValueAsExpression();
+			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT,sExpressionFormulaComputedAsExpression);
 			objSectionEntry = objFileIniTest.getEntry();
 			assertNotNull(objSectionEntry);
 			assertTrue(objSectionEntry.isExpression());

@@ -96,4 +96,36 @@ public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIni
 		return vecReturn;
 	}
 	
+	@Override
+	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ{
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+											
+			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
+			
+			//Das ist bei einfachen Tag Werten reicht das...
+			//String sReturn = (String) vecAll.get(1);
+			//this.setValue(sReturn); //Merke: Internes Entry-Objekt nutzen. Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
+		
+			//...bei verschachtelten (CASCADED) Werten aber zusammenfassen.
+			String sExpressionImploded = VectorZZZ.implode(vecAll);
+
+			//Nun die Z-Tags raus
+			String stemp = StringZZZ.replace(sExpressionImploded, "<Z>", "");
+			String sValue = StringZZZ.replace(stemp, "</Z>", "");
+			
+			objReturn = this.getEntry();
+			
+			//Den gerade errechneten Wert setzen
+			objReturn.setValue(sValue);
+			
+			//Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den Expression Ausdruck mit Z-Tags
+			//Damit kann ggfs. weiter gearbeitet werden
+			objReturn.setValueAsExpression(sExpressionImploded);
+			
+		}//end main:
+		return objReturn;
+	}	
+	
 }//End class

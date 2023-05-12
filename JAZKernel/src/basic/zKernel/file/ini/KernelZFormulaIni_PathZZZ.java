@@ -79,9 +79,11 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 			Vector<String>vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
-			String sProperty = (String) vecSection.get(2);//Zu diesem Zeitpunkt eigentlich der Rest...
-			String sBefore = (String) vecSection.get(0);;
-			String sRest = "";
+			String sRest = (String) vecSection.get(2);//Zu diesem Zeitpunkt eigentlich der Rest...
+			String sProperty = StringZZZ.left(sRest, "</Z>");
+			
+			String sBefore = (String) vecSection.get(0);
+			sRest = StringZZZ.right(sRest, sProperty);
 						
 			if(StringZZZ.isEmpty(sSection) | StringZZZ.isEmpty(sProperty)){
 				//Dann ist das nicht ein richtig konfigurierter Pfad, also unverändert zurueckgeben.

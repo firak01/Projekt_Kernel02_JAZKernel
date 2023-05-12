@@ -204,6 +204,7 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			if(bUseCall) {
 				objReturn = super.computeAsEntry(sLineWithExpression);
+				objReturn.setValueCallSolvedAsExpression(objReturn.getValueAsExpression());
 			}else {
 				objReturn.setValue(sLineWithExpression);
 			}									
@@ -237,47 +238,58 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 						
-			String sExpression = null; boolean bAnyCall = false; boolean bAnyJavaCall = false;
-			
-			//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
-
+			String sExpression = null; boolean bAnyCall = false; boolean bAnyJavaCall = false; boolean bAnyJavaClass = false; boolean bAnyJavaMethod = false;
+						
 			//Fuer den abschliessenden Aufruf selbst.
 			String sClassnameWithPackage=null; String sMethodname=null;
 						
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			sExpression = (String) vecReturn.get(1);									
-			if(!StringZZZ.isEmpty(sExpression)){
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);//Alle Z:Call Ausdruecke ersetzen						
+			String sLineWithExpression2 = (String) vecReturn.get(1);
+			if(!StringZZZ.isEmpty(sLineWithExpression2)& !sLineWithExpression.equals(sLineWithExpression2)) {
+				bAnyCall = true;
+			}
+			
+			
+			//Dazwischen müsste eigentlich noch ein KernelJavaCallIniSolver stehen
+            //Aber jetzt entfernen wir das einfach so:
+			//Bei dem verschachtelten Tag werden die äußeren Tags genommen...
+			Vector<String>vecReturn2 = StringZZZ.vecMid(sLineWithExpression2, "<Z:Java>", "</Z:Java>", false, false);//Alle z:Java Ausdruecke ersetzen
+			String sLineWithExpression3=VectorZZZ.implode(vecReturn2);
+			if(!StringZZZ.isEmpty(sLineWithExpression3)& !sLineWithExpression2.equals(sLineWithExpression3)) {
+				bAnyJavaCall = true;
+			}
+			
+			
+			if(!StringZZZ.isEmpty(sLineWithExpression3)){
 				
-				//++++++++++++++++++++++++++++++++++++++++++++
-				//Alle CALL Ausdruecke ersetzen				
+				//++++++++++++++++++++++++++++++++++++++++++++				
+				sExpression = sLineWithExpression3;
 				String sExpressionOld = sExpression;
-				
 				KernelJavaCall_ClassZZZ objClassname = new KernelJavaCall_ClassZZZ(this.getKernelObject());
 				while(objClassname.isExpression(sExpression)){
-						IKernelConfigSectionEntryZZZ objEntry = objClassname.computeAsEntry(sExpression);	
+						IKernelConfigSectionEntryZZZ objEntry = objClassname.computeAsEntry(sLineWithExpression2);	
 						sExpression = objEntry.getValue();
 						if(StringZZZ.isEmpty(sExpression)) {
 							sExpression = sExpressionOld;
 							break;
 						}else{
 							sExpressionOld = sExpression;
-							sClassnameWithPackage = sExpression;
-							bAnyCall=true;
-							bAnyJavaCall=true;
+							sClassnameWithPackage = sExpression;							
+							bAnyJavaClass=true;
 						}
 				} //end while
 			}
 			
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			sExpression = (String) vecReturn.get(1);									
-			if(!StringZZZ.isEmpty(sExpression)){
+							
+			if(!StringZZZ.isEmpty(sLineWithExpression3)){
 				
-				//Alle CALL Ausdruecke ersetzen				
+				//++++++++++++++++++++++++++++++++++++++++++++++
+				sExpression = sLineWithExpression3;
 				String sExpressionOld = sExpression;
 				KernelJavaCall_MethodZZZ objMethodname = new KernelJavaCall_MethodZZZ(this.getKernelObject());
 				while(objMethodname.isExpression(sExpression)){
@@ -288,9 +300,8 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 							break;
 						}else{
 							sExpressionOld = sExpression;
-							sMethodname = sExpression;
-							bAnyCall=true;	
-							bAnyJavaCall=true;
+							sMethodname = sExpression;							
+							bAnyJavaMethod=true;
 						}
 				} //end while
 				
@@ -307,17 +318,15 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 				//Abschliessend die Berechung durchführen.
 				Object objValue = ReflectUtilZZZ.invokeStaticMethod(sClassnameWithPackage, sMethodname);
 				if(objValue!=null) {
-					sExpression = objValue.toString();
+					sExpression = objValue.toString();					
 				}else {
 					sExpression = KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
 				}
-				this.setValue(sExpression);
-				
-				
+								
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 				vecReturn.add(1, sExpression);
-			
+
 			} //end if sExpression = ""					
 		}//end main:
 		return vecReturn;
