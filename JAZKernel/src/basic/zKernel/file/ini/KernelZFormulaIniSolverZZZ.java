@@ -111,12 +111,14 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
-		main:{			
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector();		
+		main:{		
+			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
+			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), true, false);
 			
-			//Merke: Das ist zwar ein "Cascaded" Solver, aber hier die Tags wie beim einfachen Solver nehmen.
+			//Merke: Das ist zwar ein "Cascaded" Solver, aber hier die Tags wie beim einfachen Solver nehmen. Also "aufeinander folgend".
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naeste schliessende Tag...
 			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
 			
@@ -124,11 +126,10 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 		return vecReturn;
 	}
 	
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
 		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);	// <Z> Tags entfernen	
 			String sExpression = (String) vecReturn.get(1);									
 			if(!StringZZZ.isEmpty(sExpression)){
@@ -146,12 +147,43 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);//in computeAsExpression wäre Z-Tags
 						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
+						sExpressionOld = sExpression;
 				} //end while
-										
+				
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-				vecReturn.add(1, sExpression);
-			
+				if(!StringZZZ.isEmpty(sExpression)){
+					String sBefore = vecReturn.get(0);
+					
+					//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
+					if(!StringZZZ.isEmpty(sBefore)){
+						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+						//Nachbereitung: Ein ggfs. Z-Tag am Ende entfernen
+						//Hier: Nur dann, wenn es nicht der String selber ist.
+						if(!sBefore.equals("<Z>") & StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
+							sBefore = StringZZZ.leftback(sBefore, "<Z>");
+						}
+						vecReturn.add(0, sBefore);
+					}else{
+						vecReturn.add(0,"");
+					}
+															
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+					vecReturn.add(1, sExpression);
+					
+					String sRest = vecReturn.get(2);					
+					if(!StringZZZ.isEmpty(sRest)){	
+						if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+						
+						//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
+						//Hier: Nur dann, wenn es nicht der String selber ist.
+						if(!sRest.equals("</Z>") & StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
+							sRest = StringZZZ.rightback(sRest, "</Z>");
+						}
+						vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
+					}else{
+						vecReturn.add(2,"");
+					}		
+			}//end if sValue!=null
 			} //end if sExpression = ""					
 		}//end main:
 		return vecReturn;

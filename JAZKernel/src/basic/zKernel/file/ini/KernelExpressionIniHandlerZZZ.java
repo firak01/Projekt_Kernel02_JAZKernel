@@ -227,12 +227,14 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 							
 							//Diese Rueckgabe wieder mit den anderen Werten verbinden.
 							//Merke: <Z> wieder drumsetzen, ggfs. wird ja sonst nicht gemacht.
-							Vector<String>vec = new Vector<String>();													
-							vec.add("<Z>");
-							vec.add(sLineWithExpressionUsed);
-							vec.add("</Z>");
-							String sLineWithExpressionUsedFormula = VectorZZZ.implode(vec);
-							objReturn.setValueFormulaSolvedAndConvertedAsExpression(sLineWithExpressionUsedFormula);
+//							Vector<String>vec = new Vector<String>();													
+//							vec.add("<Z>");
+//							vec.add(sLineWithExpressionUsed);
+//							vec.add("</Z>");
+//							String sLineWithExpressionUsedFormula = VectorZZZ.implode(vec);
+							String sLineWithExpressionUsedFormula = sLineWithExpressionUsed;
+							objReturn.setValueFormulaSolvedAndConverted(sLineWithExpressionUsedFormula);
+							objReturnReference.set(objReturn);
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus eine Formel enthalten
 					}//end bUseFormula
 					

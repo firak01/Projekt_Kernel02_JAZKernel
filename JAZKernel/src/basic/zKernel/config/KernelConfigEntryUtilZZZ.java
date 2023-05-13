@@ -94,13 +94,14 @@ public class KernelConfigEntryUtilZZZ {
 		return iReturn;
 	}
 	
-	public static boolean getValueExpressionSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved) throws ExceptionZZZ{
+	public static boolean getValueExpressionSolved(FileIniZZZ objFileIni, String sRawIn, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<String>objsReturnValueExpressionSolved) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(!bUseFormula) break main;
 			
 			String sValueExpressionSolved=null;
 			boolean bAnyFormula = false;
+			String sRaw = sRawIn;
 			while(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelZFormulaIniSolverZZZ.sTAG_NAME)){//Schrittweise die Formel auflösen.
 				bAnyFormula = true;
 									
@@ -108,7 +109,9 @@ public class KernelConfigEntryUtilZZZ {
 				String stemp = ex.compute(sRaw);
 				if(!StringZZZ.equals(stemp,sRaw)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + stemp +"'");
-				}					
+				}else {
+					break;
+				}
 				sRaw=stemp;//Sonst Endlosschleife.
 			}
 			sValueExpressionSolved = sRaw;

@@ -34,7 +34,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bConverted = false;
 	private boolean bFormula = false;
 	private boolean bCrypt = false;
-	private String sValueFormulaSolvedAndConvertedAsExpression = null;
+	private String sValueFormulaSolvedAndConverted = null;
 	
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
@@ -279,13 +279,13 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 	
 	@Override 
-	public String getValueFormulaSolvedAndConvertedAsExpression() {
-		return this.sValueFormulaSolvedAndConvertedAsExpression;
+	public String getValueFormulaSolvedAndConverted() {
+		return this.sValueFormulaSolvedAndConverted;
 	}
 	
 	@Override
-	public void setValueFormulaSolvedAndConvertedAsExpression(String sValueSolvedAndConverted) {
-		this.sValueFormulaSolvedAndConvertedAsExpression = sValueSolvedAndConverted;
+	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted) {
+		this.sValueFormulaSolvedAndConverted = sValueSolvedAndConverted;
 	}
 	
 	@Override

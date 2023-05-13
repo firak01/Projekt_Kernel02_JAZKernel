@@ -95,10 +95,10 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 
 				//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
 				String sMathValueTag = KernelZFormulaMath_ValueZZZ.computeExpressionTagClosing(KernelZFormulaMath_ValueZZZ.sTAG_NAME);
-				if(StringZZZ.contains(sProperty, sMathValueTag)){
+				if(StringZZZ.contains(sRest, sMathValueTag)){
 					sBefore = (String) vecSection.get(0);
 					sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
-					sProperty = StringZZZ.left(sProperty, sMathValueTag);												
+					//sProperty = StringZZZ.left(sProperty, sMathValueTag);												
 				}
 									
 				FileIniZZZ objFileIni = this.getFileIni();
@@ -120,6 +120,11 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 					//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
 					if(!StringZZZ.isEmpty(sBefore)){
 						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+						//Nachbereitung: Ein ggfs. Z-Tag am Ende entfernen
+						//Hier: Immer, auch wenn es nur der String selber ist.
+						if(StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
+							sBefore = StringZZZ.leftback(sBefore, "<Z>");
+						}
 						vecReturn.add(0, sBefore);
 					}else{
 						vecReturn.add(0,"");
@@ -129,7 +134,12 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 					vecReturn.add(1, sValue);
 					
 					if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
-					if(!StringZZZ.isEmpty(sRest)){							
+					if(!StringZZZ.isEmpty(sRest)){	
+						//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
+						//Hier: Immer, auch wenn es nur der String selber ist.
+						if(StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
+							sRest = StringZZZ.rightback(sRest, "</Z>");
+						}
 						vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
 					}else{
 						vecReturn.add(2,"");
@@ -219,8 +229,8 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
 			
 			//nun nur den Wert an Index 1 zurückgeben
-			sReturn = (String) vecAll.get(1);
-			
+			//...ist falsch für Formeln, die "aufeinander folgen" sReturn = (String) vecAll.get(1);
+			sReturn = VectorZZZ.implode(vecAll);
 		}//end main:
 		return sReturn;
 	}

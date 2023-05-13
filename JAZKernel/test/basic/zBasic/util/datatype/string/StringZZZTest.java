@@ -36,7 +36,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("das ist ein Test", -1);
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("das ist ein Test", 1);
 		 assertEquals("d", stemp);
@@ -66,7 +66,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.right("das ist ein Test", -1);
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.right("das ist ein Test", 1);
 		 assertEquals("t", stemp);
@@ -94,7 +94,8 @@ public class StringZZZTest extends TestCase{
 		
 		 //Teste den linken Rand
 		 stemp = StringZZZ.mid(sTest, -1, 1);
-		 assertNull(stemp);
+		 assertEquals("", stemp);
+		 
 		 stemp = StringZZZ.mid(sTest, 0, -1);
 		 assertEquals("", stemp);
 		 
@@ -151,20 +152,20 @@ public class StringZZZTest extends TestCase{
 		
 		
 		//########################################
-		//Teste �ber die R�nder hinaus
-		//a) �ber den rechten Rand
+		//Teste ueber die Raender hinaus
+		//a) ueber den rechten Rand
 		 stemp =StringZZZ.midLeftRight(sTest, "x", "~");
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRight(sTest, "y", "~");
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 
-		 //b) �ber den linken Rand
+		 //b) ueber den linken Rand
 		 stemp =StringZZZ.midLeftRight(sTest, "~", "c");
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 		 
 		 stemp =StringZZZ.midLeftRight(sTest, "~", "b");
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		
 	}
 	
@@ -200,7 +201,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("123456789", "0");
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("123456789", "2");
 		 assertEquals("1", stemp);
@@ -326,7 +327,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.right("123456789", "0");
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.right("123456789", "8");
 		 assertEquals("9", stemp);

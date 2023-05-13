@@ -741,7 +741,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, int iPos){
-		String sReturn=null;
+		String sReturn=sString;
 		main:{
 			check:{
 				if (sString==null) break main;
@@ -763,7 +763,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, int iPos){
-		String sReturn=null;
+		String sReturn=sString;
 		main:{
 			check:{
 				if (sString==null) break main;
@@ -791,7 +791,7 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 18.03.2008 06:29:53
 	 */
 	public static String mid(String sString, int iPos, int iLength){
-		String sReturn = null;
+		String sReturn = sString;
 		main:{
 			check:{
 				if (sString==null) break main;
@@ -825,7 +825,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, String sToFind){
-		String sReturn=null;
+		String sReturn=sString;
 		main:{
 			check:{
 				if (sString==null) break main;
@@ -849,7 +849,7 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, String sToFind, boolean bExactMatch){
-		String sReturn=null;
+		String sReturn=sString;
 		main:{
 			if(bExactMatch){
 				sReturn = StringZZZ.left(sString, sToFind);
@@ -883,7 +883,7 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhauer; 06.07.2007 07:24:05
 	 */
 	public static String left(String sString, int iPosition, String sToFind){
-		String sReturn=null;
+		String sReturn=sString;
 		main:{
 			if (sString==null) break main;
 			if(sString.equals("")) break main;
@@ -976,7 +976,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	public static String letterAtPosition(String sString, int iIndex){
-		String sReturn = null;
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 								
@@ -993,7 +993,7 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	public static String letterLast(String sString){
-		String sReturn = null;
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 			sReturn = StringZZZ.letterAtPosition(sString, sString.length()-1);
@@ -1014,11 +1014,11 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, String sToFind){
-		String sReturn=null;
+		String sReturn=sString;
 		main:{
 			check:{
-				if (sString==null) break main;
-				if(sString.equals("")) break main;
+				if (StringZZZ.isEmpty(sString)) break main;
+				if(StringZZZ.isEmpty(sToFind)) break main;	
 			}
 		int iIndex = sString.lastIndexOf(sToFind);
 		if(iIndex<= -1) break main;
@@ -1040,28 +1040,28 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, String sToFind, boolean bExactMatch){
-		String sReturn=null;
+		String sReturn=sString;
 		main:{
 			check:{
+				if(StringZZZ.isEmpty(sString)) break main;
+				if(StringZZZ.isEmpty(sToFind)) break main;	
+			 }
+		
 				if(bExactMatch){
 					sReturn = StringZZZ.right(sString, sToFind);
 					break main;
 				}
 
-				if (sString==null) break main;
-				if(sString.equals("")) break main;
-			    }
+				String sStringLCase = sString.toLowerCase();
+				String sToFindLCase = sToFind.toLowerCase();
 				
-					String sStringLCase = sString.toLowerCase();
-					String sToFindLCase = sToFind.toLowerCase();
+				int iIndex = sStringLCase.lastIndexOf(sToFindLCase);
+				if(iIndex<= -1) break main;
+			
+				//die Länge des Strings aufaddieren
+				iIndex = iIndex + sToFind.length();
 					
-					int iIndex = sStringLCase.lastIndexOf(sToFindLCase);
-					if(iIndex<= -1) break main;
-				
-					//die Länge des Strings aufaddieren
-					iIndex = iIndex + sToFind.length();
-						
-					sReturn = sString.substring(iIndex);						
+				sReturn = sString.substring(iIndex);						
 		}//END main:
 		return sReturn;
 	}
@@ -1254,13 +1254,13 @@ public class StringZZZ implements IConstantZZZ{
 			if(sRight==null) sRight = "";
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
+			if(bReturnSeparators) {
+				sLeft = sLeft + sLeftSep;
+			}
 			vecReturn.add(sLeft);
-			
-			if(bReturnSeparators ==true){
-				sExpressionTagged = sLeftSep + sExpressionTagged + sRightSep;
-				vecReturn.add(sExpressionTagged);
-			}else{				
-				vecReturn.add(sExpressionTagged);
+			vecReturn.add(sExpressionTagged);
+			if(bReturnSeparators) {
+				sRight = sRightSep + sRight;
 			}
 			vecReturn.add(sRight);
 		}
@@ -1932,12 +1932,13 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 20.09.2011 14:54:55
 	 */
 	public static String toCamelCase(String s){
-		String sReturn = "";
+		String sReturn = s;
 		main:{
 			if(StringZZZ.isEmpty(s)) break main;
 					
 			//+++++++++++
-		  		   
+		  		
+		   sReturn = "";
 		   for (int icount=0; icount <= s.length()-2; icount++){
 			   String cur = s.substring(icount,icount+1);
 			   String part = s.substring(icount+1,icount+2); //der n�chste teilstring
@@ -1950,7 +1951,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 			   }
 		   }
 		   
-		   //Den letzten Wert �bernehmen.
+		   //Den letzten Wert uebernehmen.
 		   sReturn = sReturn + s.substring(s.length()-1, s.length() );
 		   
 	}//endmain:
@@ -1958,7 +1959,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	}
 
 		public static String toProperCase(String s) {
-			String sReturn = "";
+			String sReturn = s;
 			main:{
 				if(StringZZZ.isEmpty(s)) break main;
 				sReturn = s.substring(0, 1).toUpperCase() +  s.substring(1).toLowerCase();
@@ -1967,14 +1968,9 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		}
 		
 		public static String toShorten(String s, int iShortenMethodType, int iOffset) throws ExceptionZZZ{
-			String sReturn = null;
+			String sReturn = s;
 			main:{
-				if(null==s) break main;
-			
-				if(StringZZZ.isEmpty(s)) {
-					sReturn = new String("");
-					break main;
-				}
+				if(StringZZZ.isEmpty(s)) break main;
 								
 				//Ersetz werden nur Worte >= 3 Buchstaben mehr als das OFFSET
 				if(s.length() <= 3 + iOffset){
@@ -2028,11 +2024,14 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		 * Von FGL angepasst
 		 */
 		public static InputStream toInputStream(String s){
-			InputStream objReturn=null;;
-			try {
-				objReturn = new ByteArrayInputStream(s.getBytes("UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+			InputStream objReturn=null;
+			main:{
+				if(s==null) break main;			
+				try {
+					objReturn = new ByteArrayInputStream(s.getBytes("UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
 			return objReturn;
 		}
@@ -2170,10 +2169,15 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 15.06.2007 00:52:08
 	 */
 	public static String rightback(String sString, int iPosition){
-		String sReturn = "";
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(iPosition >= sString.length()) break main;
+			
+			
+			if(iPosition >= sString.length()) {
+				sReturn = "";
+				break main;
+			}
 			if(iPosition <= 0){
 				sReturn = sString;
 				break main;

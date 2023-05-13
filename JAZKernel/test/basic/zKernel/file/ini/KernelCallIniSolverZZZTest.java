@@ -143,7 +143,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sValue = objEntry.getValue();
 				assertEquals("Ohne Aufloesung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
-				String sValueAsExpression = objEntry.getValueFormulaSolvedAndConvertedAsExpression();
+				String sValueAsExpression = objEntry.getValueFormulaSolvedAndConverted();
 				assertNull("Ohne Aufloesung soll die Ausgabe des Expression Werts NULL sein", sValueAsExpression);				
 				assertFalse("Ohne Aufloesung soll auch keine Expression vorliegen",objEntry.isExpression());
 				
@@ -211,7 +211,7 @@ public class KernelCallIniSolverZZZTest  extends TestCase {
 				String sValue = objEntry.getValue();
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
-				String sValueAsExpressionSolved = objEntry.getValueFormulaSolvedAndConvertedAsExpression();				
+				String sValueAsExpressionSolved = objEntry.getValueFormulaSolvedAndConverted();				
 				assertNull("Ohne Aufloesung soll die Ausgabe des Expression Werts NULL sein", sValueAsExpressionSolved);				
 				assertFalse("Ohne Aufloesung soll auch keine Expression vorliegen",objEntry.isExpression());
 				

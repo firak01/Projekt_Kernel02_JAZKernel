@@ -61,8 +61,8 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public boolean isConverted();
 	abstract void isConverted(boolean bIsConverted);
 	
-	public String getValueFormulaSolvedAndConvertedAsExpression(); 
-	public void setValueFormulaSolvedAndConvertedAsExpression(String sValueSolvedAndConverted);
+	public String getValueFormulaSolvedAndConverted(); 
+	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted);
 	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
