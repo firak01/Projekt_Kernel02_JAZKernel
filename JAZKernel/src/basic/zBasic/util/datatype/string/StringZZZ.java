@@ -746,7 +746,10 @@ public class StringZZZ implements IConstantZZZ{
 			check:{
 				if (sString==null) break main;
 				if(sString.equals("")) break main;
-				if(iPos<=-1)break main;
+				if(iPos<=0) {
+					sReturn = "";
+					break main;
+				}
 			}
 			if (iPos > sString.length()){
 				sReturn = sString;
@@ -766,18 +769,20 @@ public class StringZZZ implements IConstantZZZ{
 		String sReturn=sString;
 		main:{
 			check:{
-				if (sString==null) break main;
-				if(sString.equals("")) break main;
-				if(iPos<=-1)break main;
+				if (StringZZZ.isEmpty(sString)) break main;
+				
+				sReturn = "";
+				if(iPos<=0) break main;				
 			}
-		int iLength = sString.length();
-		int iBeginn = iLength-iPos;
 		
-		if(iBeginn>iLength || iBeginn<0 ){
-			sReturn = sString;		
-		}else{		
+			sReturn = sString;
+			int iLength = sString.length();
+			int iBeginn = iLength-iPos;
+			if(iBeginn<=0) break main;			
+			if(iBeginn>=iLength) break main;
+		
 			sReturn = sString.substring(iBeginn);
-		}
+
 		}//END main:
 		return sReturn;
 	}
@@ -794,17 +799,12 @@ public class StringZZZ implements IConstantZZZ{
 		String sReturn = sString;
 		main:{
 			check:{
-				if (sString==null) break main;
-				if(sString.equals("")) break main;
-				if(iPos<=-1)break main;
-				if(iLength<=0){
-					sReturn = "";
-					break main;
-				}
-				if(iPos > sString.length()){
-					sReturn = "";
-					break main;
-				}
+				if (StringZZZ.isEmpty(sString)) break main;
+				
+				sReturn = "";
+				if(iPos<0) break main;								
+				if(iLength<=0) break main;				
+				if(iPos > sString.length())	break main;				
 			}
 		
 			int iIndexRight = iPos + iLength;
@@ -828,16 +828,16 @@ public class StringZZZ implements IConstantZZZ{
 		String sReturn=sString;
 		main:{
 			check:{
-				if (sString==null) break main;
-				if(sString.equals("")) break main;
+				if (StringZZZ.isEmpty(sString)) break main;				
 			}
-		int iIndex = sString.indexOf(sToFind);
-		if(iIndex<= -1) break main;
-		if(iIndex-1<= -1) {
-			sReturn = new String("");
-		}else{
+		
+			sReturn = "";
+			int iIndex = sString.indexOf(sToFind);
+			if(iIndex<= -1) break main;
+			if(iIndex-1<= -1) break main;
+			
 			sReturn = sString.substring(0, iIndex);
-		}
+			
 		}//END main:
 		return sReturn;
 	}
@@ -857,16 +857,16 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			
 			check:{
-				if (sString==null) break main;
-				if(sString.equals("")) break main;
+				if (StringZZZ.isEmpty(sString)) break main;				
 			}
-		int iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase()); //Hier wird ignoreCase realisiert.
-		if(iIndex<= -1) break main;
-		if(iIndex-1<= -1) {
-			sReturn = new String("");
-		}else{
+			
+			sReturn = "";
+			int iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase()); //Hier wird ignoreCase realisiert.
+			if(iIndex<= -1) break main;
+			if(iIndex-1<= -1) break main;
+			
 			sReturn = sString.substring(0, iIndex);
-		}
+			
 		}//END main:
 		return sReturn;
 	}
@@ -885,8 +885,9 @@ public class StringZZZ implements IConstantZZZ{
 	public static String left(String sString, int iPosition, String sToFind){
 		String sReturn=sString;
 		main:{
-			if (sString==null) break main;
-			if(sString.equals("")) break main;
+			if (StringZZZ.isEmpty(sString)) break main;
+
+			sReturn = "";			
 			int iStart = 0;
 			if(iPosition < 0) {
 				iStart = 0;
@@ -894,14 +895,13 @@ public class StringZZZ implements IConstantZZZ{
 				iStart =  iPosition ;  //Weil wir mit rightback den Wert holen
 			}
 			String sStart = StringZZZ.rightback(sString, iStart); //Hole den String rechts von der angegebenen Position
-			
+						
 			int iIndex = sStart.indexOf(sToFind);
 			if(iIndex<= -1) break main;
-			if(iIndex-1<= -1) {
-				sReturn = new String("");
-			}else{
-				sReturn = sStart.substring(0, iIndex);
-			}
+			if(iIndex-1<= -1) break main;
+			
+			sReturn = sStart.substring(0, iIndex);
+			
 		}//END main:
 		return sReturn;
 	}
@@ -917,11 +917,12 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 04.04.2009 13:15:27
 	 */
 	public static String leftback(String sString, String sToFind){
-		String sReturn = "";
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sToFind)) break main;
 			
+			sReturn = "";
+			if(StringZZZ.isEmpty(sToFind)) break main;			
 			int iPosition = sString.lastIndexOf(sToFind);
 			if (iPosition == -1) break main;
 		
@@ -941,9 +942,11 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 04.04.2009 13:15:27
 	 */
 	public static String leftback(String sString, String sToFind,boolean bExactMatch){
-		String sReturn = "";
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
+			
+			sReturn = "";
 			if(StringZZZ.isEmpty(sToFind)) break main;
 			
 			int iPosition = -1;
@@ -963,13 +966,12 @@ public class StringZZZ implements IConstantZZZ{
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
+			
+			sReturn = "";
 			if(iPosFromTheRight<=0) break main;
-						
 			int iPosition = sString.length()-iPosFromTheRight;
-			if (iPosition <= -1){
-				sReturn= "";
-				break main;
-			}		
+			if (iPosition <= -1) break main;
+					
 			sReturn = sString.substring(0, iPosition);				
 		}
 		return sReturn;
@@ -979,7 +981,11 @@ public class StringZZZ implements IConstantZZZ{
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-								
+			if(iIndex<0) {
+				sReturn = null;
+				break main;
+			}
+			
 			char[] ca = sString.toCharArray();
 			char c = ca[iIndex];
 			
@@ -1018,15 +1024,18 @@ public class StringZZZ implements IConstantZZZ{
 		main:{
 			check:{
 				if (StringZZZ.isEmpty(sString)) break main;
+				
+				sReturn = "";
 				if(StringZZZ.isEmpty(sToFind)) break main;	
 			}
-		int iIndex = sString.lastIndexOf(sToFind);
-		if(iIndex<= -1) break main;
-		
-		//die Länge des Strings aufaddieren
-		iIndex = iIndex + sToFind.length();
-				
-		sReturn = sString.substring(iIndex);
+					
+			int iIndex = sString.lastIndexOf(sToFind);
+			if(iIndex<= -1) break main;
+			
+			//die Länge des Strings aufaddieren
+			iIndex = iIndex + sToFind.length();
+					
+			sReturn = sString.substring(iIndex);
 
 		}//END main:
 		return sReturn;
@@ -1044,6 +1053,8 @@ public class StringZZZ implements IConstantZZZ{
 		main:{
 			check:{
 				if(StringZZZ.isEmpty(sString)) break main;
+				
+				sReturn = "";
 				if(StringZZZ.isEmpty(sToFind)) break main;	
 			 }
 		
@@ -1470,14 +1481,14 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String repeat(String sString, int iTimes){
-		String sReturn = "";
+		String sReturn = sString;
 		main:{
 			check:{
-				if(sString==null) break main;
-				if(iTimes <= 0) break main;
-				
-				sReturn = sString;
-				if(sString.equals("")) break main;						
+				if(StringZZZ.isEmpty(sString)) break main;
+				if(iTimes <= 0) {
+					sReturn = "";
+					break main;
+				}						
 				if(iTimes==1) break main;				
 			}//END check:
 		
@@ -1524,17 +1535,15 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 	public static String word(String sString, String sDelimiter, long lPosition){
-		String sReturn = null;
+		String sReturn = sString;
 		main:{
 			check:{
-				if(sString==null) break main;
-				if(sDelimiter==null) break main;
-				if(lPosition <= 0) break main;
-				if(sString.equals("")||sDelimiter.equals("")){ 
-					sReturn = "";
-					break main;
+				if(StringZZZ.isEmpty(sString)) break main;
+				if(StringZZZ.isEmpty(sDelimiter)) break main;
+				if(lPosition <= 0) {
+					sReturn = null;
+					break main;								
 				}
-				
 		}//END check
 		
 		long lcount=0;
@@ -1904,25 +1913,22 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 20.09.2011 14:46:19
 	 */
-	public static String toCamelCase(String s, String sDelimiter){
-		String sReturn = "";
+	public static String toCamelCase(String sString, String sDelimiter){
+		String sReturn = sString;
 		main:{
-			if(StringZZZ.isEmpty(s)) break main;
-			if(StringZZZ.isEmpty(sDelimiter)){
-				sReturn = s;
-				break main;
-			}
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sDelimiter)) break main;
 			
 			//+++++++++++
-		   String[] parts = s.split(sDelimiter);
+		   String[] parts = sString.split(sDelimiter);
 		   
 		   for (int icount=0; icount <= parts.length-1; icount++){
 			   String part = parts[icount];
-		     sReturn = sReturn + toProperCase(part);
+			   sReturn = sReturn + toProperCase(part);
 		   }
-	}//endmain:
-		   return sReturn;
-		}
+		}//endmain:
+	   return sReturn;
+	}
 	
 	/** Dieser CamelCase arbeitet ohne Delimiter. 
 	 *   Wenn der nachfolgende Buchstabe ein Gro�buchstabe ist, wird der aktuelle Buchstabe zum Kleinbuchstaben.
@@ -1931,17 +1937,16 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 20.09.2011 14:54:55
 	 */
-	public static String toCamelCase(String s){
-		String sReturn = s;
+	public static String toCamelCase(String sString){
+		String sReturn = sString;
 		main:{
-			if(StringZZZ.isEmpty(s)) break main;
+			if(StringZZZ.isEmpty(sString)) break main;
 					
 			//+++++++++++
-		  		
 		   sReturn = "";
-		   for (int icount=0; icount <= s.length()-2; icount++){
-			   String cur = s.substring(icount,icount+1);
-			   String part = s.substring(icount+1,icount+2); //der n�chste teilstring
+		   for (int icount=0; icount <= sString.length()-2; icount++){
+			   String cur = sString.substring(icount,icount+1);
+			   String part = sString.substring(icount+1,icount+2); //der n�chste teilstring
 			   if(StringZZZ.isCapitalized(part)){
 				   //Wenn der Folgebuchstabe ein Großbuchstabe ist, dann den aktuellen Buchstaben zum Kleinbuchstaben umwandeln
 				   sReturn = sReturn + cur.toLowerCase();
@@ -1952,34 +1957,34 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		   }
 		   
 		   //Den letzten Wert uebernehmen.
-		   sReturn = sReturn + s.substring(s.length()-1, s.length() );
+		   sReturn = sReturn + sString.substring(sString.length()-1, sString.length() );
 		   
-	}//endmain:
-		   return sReturn;
+		}//endmain:
+		return sReturn;
 	}
 
-		public static String toProperCase(String s) {
-			String sReturn = s;
+		public static String toProperCase(String sString) {
+			String sReturn = sString;
 			main:{
-				if(StringZZZ.isEmpty(s)) break main;
-				sReturn = s.substring(0, 1).toUpperCase() +  s.substring(1).toLowerCase();
+				if(StringZZZ.isEmpty(sString)) break main;
+				sReturn = sString.substring(0, 1).toUpperCase() +  sString.substring(1).toLowerCase();
 			}
 		    return sReturn;
 		}
 		
-		public static String toShorten(String s, int iShortenMethodType, int iOffset) throws ExceptionZZZ{
-			String sReturn = s;
+		public static String toShorten(String sString, int iShortenMethodType, int iOffset) throws ExceptionZZZ{
+			String sReturn = sString;
 			main:{
-				if(StringZZZ.isEmpty(s)) break main;
+				if(StringZZZ.isEmpty(sString)) break main;
 								
 				//Ersetz werden nur Worte >= 3 Buchstaben mehr als das OFFSET
-				if(s.length() <= 3 + iOffset){
-					sReturn = s;
+				if(sString.length() <= 3 + iOffset){
+					sReturn = sString;
 					break main;
 				}
 				
-				String sOffset = s.substring(0,iOffset);
-				String sToParse = s.substring(iOffset);
+				String sOffset = sString.substring(0,iOffset);
+				String sToParse = sString.substring(iOffset);
 				
 				org.apache.regexp.RE objReRemove = null;
 				switch(iShortenMethodType){
@@ -1998,16 +2003,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 					ExceptionZZZ ez = new ExceptionZZZ("Not configured ShortenMethodType.", iERROR_PARAMETER_VALUE, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;					
 				}
-				
-											
-//				String sReplace = StringZZZ.midBounds(sString2Parse, 1, 1);
-//				boolean bTest = objReVowel.match(sReplace);
-//				if(bTest==true){
-//					sReturn = sString2Parse;
-//					break main;
-//				}
-				
-				
+								
 			if(objReRemove!=null){
 				sReturn = objReRemove.subst(sToParse,"");
 			}else{
@@ -2023,12 +2019,12 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		/* http://www.kodejava.org/examples/266.html
 		 * Von FGL angepasst
 		 */
-		public static InputStream toInputStream(String s){
+		public static InputStream toInputStream(String sString){
 			InputStream objReturn=null;
 			main:{
-				if(s==null) break main;			
+				if(sString==null) break main;			
 				try {
-					objReturn = new ByteArrayInputStream(s.getBytes("UTF-8"));
+					objReturn = new ByteArrayInputStream(sString.getBytes("UTF-8"));
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
@@ -2036,10 +2032,10 @@ null will return false. An empty CharSequence (length()=0) will return false.
 			return objReturn;
 		}
 						
-		public static JsonArrayZZZ toJsonArray(String s) throws ExceptionZZZ {
+		public static JsonArrayZZZ toJsonArray(String sString) throws ExceptionZZZ {
 			JsonArrayZZZ objReturn = null;
 			main:{
-				objReturn = new JsonArrayZZZ(s);											
+				objReturn = new JsonArrayZZZ(sString);											
 			}//end main
 			return objReturn;
 		}
@@ -2267,13 +2263,10 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midLeftRight(String sString, String sLeft, String sRight){
-		String sReturn = "";
+		String sReturn = sString;
 		main:{
-			if(StringZZZ.isEmpty(sString))break main;
-			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight)){
-				sReturn = sString;
-				break main;
-			}
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
 			
 			if (StringZZZ.isEmpty(sLeft)){
 				sReturn = StringZZZ.left(sString, sRight);
@@ -2407,7 +2400,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	}
 	
 	public static String replaceCharacterGermanFromSentence(String sString2ParseIn) throws ExceptionZZZ{
-		String sReturn = "";
+		String sReturn = sString2ParseIn;
 		main:{
 			if(StringZZZ.isEmptyNull(sString2ParseIn)) break main;
 			
@@ -2444,7 +2437,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	}
 	
 	private static String abbreviateDynamic_(String sSource, int iMaxCharactersAllowed, boolean bRight) throws ExceptionZZZ{
-		String sReturn = "";
+		String sReturn = sSource;
 		main:{
 			if(StringZZZ.isEmptyNull(sSource)) break main;			
 			if(iMaxCharactersAllowed >= sSource.length()){
@@ -2517,13 +2510,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 	private static String abbreviateStrict_(String sSource, int iMaxCharactersAllowed, boolean bFromLeft) throws ExceptionZZZ{
-		String sReturn = "";
+		String sReturn = sSource;
 		main:{
 			if(StringZZZ.isEmptyNull(sSource)) break main;			
-			if(iMaxCharactersAllowed >= sSource.length()){
-				sReturn = sSource;
-				break main;
-			}
+			if(iMaxCharactersAllowed >= sSource.length()) break main;
+			
 			if(iMaxCharactersAllowed<=1){
 				ExceptionZZZ ez = new ExceptionZZZ("MaxCharactersAllowed to small. Must be >= 2.", iERROR_PARAMETER_VALUE, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -2629,13 +2620,10 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	 * @author Fritz Lindhauer, 05.11.2022, 09:09:25
 	 */
 	public static String appendMissing(String sString, String sToAppend) {
-		String sReturn = "";
+		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)&&StringZZZ.isEmpty(sToAppend)) break main;
-			if(StringZZZ.isEmpty(sToAppend)) {
-				sReturn = sString;
-				break main;
-			}			
+			if(StringZZZ.isEmpty(sToAppend)) break main;						
 			if(StringZZZ.isEmpty(sString)) {
 				sReturn = sToAppend;
 				break main;
@@ -2684,7 +2672,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 			}
 		}//END for
 		
-		//Falls die L�nge von iEndCur unver�ndert geblieben ist, dann wurde nix gefunden. Es wird -1 zur�ckgegeben
+		//Falls die Laenge von iEndCur unver�ndert geblieben ist, dann wurde nix gefunden. Es wird -1 zurueckgegeben
 		if(iEndCur==sSource.length()+1) break main;
 		iReturn = iEndCur;
 		
@@ -2761,21 +2749,22 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return listaString;
 	}
 	
-	/** 'Heuristische' L�sung einen 'sprechenden Key' / eine Abk�rzung zu generieren.
-	 * Es werden Gro�buchstaben und Zahlen im �bergebenenString verwendet.
+	/** 'Heuristische' Loesung einen 'sprechenden Key' / eine Abkuerzung zu generieren.
+	 * Es werden Grossbuchstaben und Zahlen im �bergebenenString verwendet.
 	 * @author Fritz Lindhauer
 	 *
-	 * @param name
+	 * @param sString
 	 * @return
 	 */
-	public static String toUpperCaseNumberAbbreviation(String name){
-		String key = new String("");
+	public static String toUpperCaseNumberAbbreviation(String sString){
+		String sReturn = sString;
 		main:{
-			if(name==null || name.equals(""))break main;
+			if(StringZZZ.isEmpty(sString))break main;
 			
+			sReturn = "";
 			boolean isNumeric=false;
-			for(int iIndex=0; iIndex<=name.length()-1; iIndex++){
-				String s = name.substring(iIndex, iIndex+1);
+			for(int iIndex=0; iIndex<=sString.length()-1; iIndex++){
+				String s = sString.substring(iIndex, iIndex+1);
 				try{
 					@SuppressWarnings("unused")
 					Integer intObj = Integer.parseInt(s);
@@ -2785,28 +2774,28 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 				}
 				
 				if(s.toUpperCase().equals(s) || isNumeric){
-					key+=s;
+					sReturn+=s;
 				}
 			}				
 		}
-		return key;
+		return sReturn;
 	}
 	
 	/**
-	 * @param sValue
+	 * @param sString
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 15.11.2022, 08:50:02
 	 * 
 	 * siehe auch UnicodeZZZ.toByteArray(string) und .from(byte[])
 	 */
-	public static String toUtf8(String sValue) throws ExceptionZZZ{
-		
-		String sReturn=null;
+	public static String toUtf8(String sString) throws ExceptionZZZ{		
+		String sReturn=sString;
 		main:{
-			if(StringZZZ.isEmpty(sValue))break main;
+			if(StringZZZ.isEmpty(sString))break main;
+			
 			try {
-				sReturn = new String(sValue.getBytes(),"UTF-8");
+				sReturn = new String(sString.getBytes(),"UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				ExceptionZZZ ez = new ExceptionZZZ("UnsupportedEncodingException", iERROR_PARAMETER_VALUE, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -2816,46 +2805,46 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	}
 	
 	/**Merke: So einfach kann man sonst nicht nach float parsen
-	 * @param sValue
+	 * @param sString
 	 * @return
 	 */
-	public static float toFloat(String sValue){
+	public static float toFloat(String sString){
 		float fReturn=0.0f;
 		main:{
-			if(StringZZZ.isEmpty(sValue)) break main;
+			if(StringZZZ.isEmpty(sString)) break main;
 			
-			if(StringZZZ.isFloat(sValue)){
-				Float fltValue = new Float(sValue);
+			if(StringZZZ.isFloat(sString)){
+				Float fltValue = new Float(sString);
 				fReturn = fltValue.floatValue();
 			}else{
-				int iValue = Integer.parseInt(sValue);	
+				int iValue = Integer.parseInt(sString);	
 				fReturn = (float) iValue;
 			}
 		}//end main:
 		return fReturn;
 	}
 	
-	public static String asHtml(String sValue) throws ExceptionZZZ{
-		String sReturn = new String("");
+	public static String asHtml(String sString) throws ExceptionZZZ{
+		String sReturn = null;
 		main:{
 			
-			if(StringZZZ.isEmpty(sValue)){
+			if(StringZZZ.isEmpty(sString)){
 				sReturn = "<html><body></body></html>";
 				break main;
 			}
 			
-			sReturn = StringZZZ.toHtml(sValue);
+			sReturn = StringZZZ.toHtml(sString);
 			
 
-			if(!StringZZZ.startsWithIgnoreCase(sValue, "<html>")){
-				if(!StringZZZ.startsWithIgnoreCase(sValue, "<body>")) {
+			if(!StringZZZ.startsWithIgnoreCase(sString, "<html>")){
+				if(!StringZZZ.startsWithIgnoreCase(sString, "<body>")) {
 					sReturn = "<body>" + sReturn;					
 				}
 				sReturn = "<html>" + sReturn;				
 			}
 			
-			if(!StringZZZ.endsWithIgnoreCase(sValue, "</html>")){
-				if(!StringZZZ.endsWithIgnoreCase(sValue, "</body>")) {
+			if(!StringZZZ.endsWithIgnoreCase(sString, "</html>")){
+				if(!StringZZZ.endsWithIgnoreCase(sString, "</body>")) {
 					sReturn = sReturn + "</body>";
 				}
 				sReturn = sReturn + "</html>";
@@ -2864,18 +2853,18 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return sReturn;
 	}
 	
-	public static String toHtml(String sValue) throws ExceptionZZZ{
+	public static String toHtml(String sString) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
-			if(StringZZZ.isEmpty(sValue)) break main;
-			sReturn = StringZZZ.toHtmlEscaped(sValue);
-			sReturn = StringZZZ.toHtmlCrlf(sValue);
+			if(StringZZZ.isEmpty(sString)) break main;
+			sReturn = StringZZZ.toHtmlEscaped(sString);
+			sReturn = StringZZZ.toHtmlCrlf(sString);
 			
 			//Merke: Will man die HTML - Tags noch haben, dann StringZZZ.asHtml(...)
 		}
 		return sReturn;
 	}
-	public static String toHtmlSimple(String s){
+	public static String toHtmlSimple(String sString){
 		/*
 		 You should do some replacements on the text programmatically. Here are some clues:
 
@@ -2895,7 +2884,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		 */
 		StringBuilder builder = new StringBuilder();
 	    boolean previousWasASpace = false;
-	    for( char c : s.toCharArray() ) {
+	    for( char c : sString.toCharArray() ) {
 	        if( c == ' ' ) {
 	            if( previousWasASpace ) {
 	                builder.append("&nbsp;");
@@ -2925,14 +2914,14 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	    return builder.toString();
 	}
 	
-	public static String toHtmlCrlf(String sValue) throws ExceptionZZZ{
-		String sReturn = StringZZZ.replace(sValue, StringZZZ.crlf(), "<br>");
+	public static String toHtmlCrlf(String sString) throws ExceptionZZZ{
+		String sReturn = StringZZZ.replace(sString, StringZZZ.crlf(), "<br>");
 		return sReturn;
 	}
 	
 	
-	public static String toHtmlEscaped(String sValue){
-		String sReturn = StringEscapeUtils.escapeHtml(sValue);
+	public static String toHtmlEscaped(String sString){
+		String sReturn = StringEscapeUtils.escapeHtml(sString);
 		return sReturn;
 	}
 	

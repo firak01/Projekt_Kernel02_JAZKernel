@@ -80,7 +80,12 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 								
 			String sSection = (String) vecSection.get(1);
 			String sRest = (String) vecSection.get(2);//Zu diesem Zeitpunkt eigentlich der Rest...
-			String sProperty = StringZZZ.left(sRest, "</Z>");
+			String sProperty = "";
+			if(StringZZZ.contains(sRest,"</Z>")) {
+				sProperty = StringZZZ.left(sRest, "</Z>");
+			}else {
+				sProperty = sRest;
+			}
 			
 			String sBefore = (String) vecSection.get(0);
 			sRest = StringZZZ.right(sRest, sProperty);

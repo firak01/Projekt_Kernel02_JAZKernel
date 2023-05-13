@@ -229,7 +229,7 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("123456789", 0, "0");
-		 assertNull(stemp);
+		 assertEquals("",stemp);
 		 
 		 stemp = StringZZZ.left("123456789", 0, "2");
 		 assertEquals("1", stemp);
@@ -248,13 +248,13 @@ public class StringZZZTest extends TestCase{
 		 assertEquals("",stemp);
 		 
 		 //#######################################
-		 //Eweiterungen f�r den index-parameter
+		 //Eweiterungen fuer den index-parameter
 		 //		Teste den linken Rand 
 		 stemp = StringZZZ.left("123456789", 1, "2");
 		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("123456789",1, "1");
-		 assertNull(stemp);
+		 assertEquals("", stemp);
 		 
 		 stemp = StringZZZ.left("123456789", 1, "3");
 		 assertEquals("2", stemp);
@@ -263,12 +263,12 @@ public class StringZZZTest extends TestCase{
 		 //########################################'
 		 //Teste den rechten Rand
 		 sDummy = new String("123456789");		
-		 stemp =StringZZZ.left(sDummy, 8, sDummy);  //Dat h�ngt nicht im speziellen von der 8 ab, sondern gilt f�r jden wert > 0, wg. sDummy = sDummy
-		 assertNull(stemp);
+		 stemp =StringZZZ.left(sDummy, 8, sDummy);  //Dat haengt nicht im speziellen von der 8 ab, sondern gilt fuer jden wert > 0, wg. sDummy = sDummy
+		 assertEquals("",stemp);
 		 
 		 sDummy = new String("123456789");		
 		 stemp =StringZZZ.left(sDummy, 7, sDummy);
-		 assertNull(stemp);
+		 assertEquals("",stemp);
 		 		 
 		 stemp =StringZZZ.left("123456789", 8, "9");
 		 assertEquals("", stemp);
@@ -286,7 +286,7 @@ public class StringZZZTest extends TestCase{
 		 //##################
 		 //Was passiert, wenn es ein Zeichen im String nicht gibt ?
 		 stemp =StringZZZ.left("123456789",7, "A");
-		 assertNull(stemp);
+		 assertEquals("",stemp);
 		 
 		 //System.out.println(stemp);
 	 }

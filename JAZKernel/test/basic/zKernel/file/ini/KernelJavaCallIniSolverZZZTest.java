@@ -32,8 +32,8 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		private KernelZZZ objKernel;
 		
 		/// +++ Die eigentlichen Test-Objekte	
-		private KernelJavaCallIniSolverZZZ objExpressionSolver;
-		private KernelJavaCallIniSolverZZZ objExpressionSolverInit;
+		private KernelJavaCallIniSolverZZZ objExpressionJavaCallSolver;
+		private KernelJavaCallIniSolverZZZ objExpressionJavaCallSolverInit;
 		
 		
 
@@ -44,10 +44,10 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				//#### Ein init TestObjekt
 				String[] saFlagInit = {"init"};
-				objExpressionSolverInit = new KernelJavaCallIniSolverZZZ(objKernel, saFlagInit);
+				objExpressionJavaCallSolverInit = new KernelJavaCallIniSolverZZZ(objKernel, saFlagInit);
 				
 				String[] saFlag = {""};
-				objExpressionSolver = new KernelJavaCallIniSolverZZZ(objKernel, saFlag);
+				objExpressionJavaCallSolver = new KernelJavaCallIniSolverZZZ(objKernel, saFlag);
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -60,16 +60,16 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 		
 		public void testFlagHandling(){
 			try{							
-			assertTrue(objExpressionSolverInit.getFlag("init")==true);
-			assertFalse(objExpressionSolver.getFlag("init")==true); //Nun wäre init falsch
+			assertTrue(objExpressionJavaCallSolverInit.getFlag("init")==true);
+			assertFalse(objExpressionJavaCallSolver.getFlag("init")==true); //Nun wäre init falsch
 			
-			boolean bFlagAvailable = objExpressionSolver.setFlag("usecall", false); //Ansonsten wird der Wert sofort ausgerechnet
+			boolean bFlagAvailable = objExpressionJavaCallSolver.setFlag("usecall", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			bFlagAvailable = objExpressionSolver.setFlag("usecall_java", false); //Ansonsten wird der Wert sofort ausgerechnet
+			bFlagAvailable = objExpressionJavaCallSolver.setFlag("usecall_java", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
 			
-			bFlagAvailable = objExpressionSolver.setFlag("gibtEsNicht", false); //Ansonsten wird der Wert sofort ausgerechnet
+			bFlagAvailable = objExpressionJavaCallSolver.setFlag("gibtEsNicht", false); //Ansonsten wird der Wert sofort ausgerechnet
 			assertFalse("Das Flag 'gibtEsNicht' sollte nicht zur Verfügung stehen.", bFlagAvailable);
 			
 			
@@ -85,23 +85,23 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			try {						
 				String sLineWithExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 				
-				boolean bFlagAvailable = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
+				boolean bFlagAvailable = objExpressionJavaCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
 				assertTrue("Das Flag 'usecall_java' sollte zur Verfügung stehen.", bFlagAvailable);
 				
 				
 				//### Teilberechnungen durchführen
-				Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+				Vector<String> vecReturn = objExpressionJavaCallSolver.computeExpressionFirstVector(sLineWithExpression);
 				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
 				
 				//### Nun die Gesamtberechnung durchführen
-				String sValue = objExpressionSolver.compute(sLineWithExpression);
+				String sValue = objExpressionJavaCallSolver.compute(sLineWithExpression);
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
 				//Anwenden der ersten Formel		
-				objExpressionSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Damit der Wert sofort ausgerechnet wird
-				objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird			
-				sValue = objExpressionSolver.compute(sLineWithExpression);			
+				objExpressionJavaCallSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Damit der Wert sofort ausgerechnet wird
+				objExpressionJavaCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird			
+				sValue = objExpressionJavaCallSolver.compute(sLineWithExpression);			
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 				
@@ -120,7 +120,7 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 			try {				
 				String sLineWithExpression = KernelJavaCallIniSolverZZZTest.sEXPRESSION_CALL01_DEFAULT;
 								
-				boolean bFlagAvailable = objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
+				boolean bFlagAvailable = objExpressionJavaCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, false); //Ansonsten wird der Wert sofort ausgerechnet
 				assertTrue("Das Flag 'usecall' sollte zur Verfügung stehen.", bFlagAvailable);
 				
 				
@@ -129,22 +129,22 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 //				ReferenceZZZ<IKernelConfigSectionEntryZZZ> objEntryReference = new ReferenceZZZ();
 //				objEntryReference.set(objEntryTemp);
 				
-				objExpressionSolver.setEntry(objEntryTemp);
+				objExpressionJavaCallSolver.setEntry(objEntryTemp);
 				
 				//TODOGOON20230427;//Als Zwischenschritt die bisherigen rein stringbasierten Methoden im objEntry erweitern
-				Vector<String> vecReturn = objExpressionSolver.computeExpressionFirstVector(sLineWithExpression);
+				Vector<String> vecReturn = objExpressionJavaCallSolver.computeExpressionFirstVector(sLineWithExpression);
 				assertFalse(StringZZZ.isEmpty(vecReturn.get(1))); //in der 0ten Position ist der String vor der Encryption, in der 3ten Position ist der String nach der Encryption.
 				
 				
 				//### Nun die Gesamtberechnung durchführen
-				IKernelConfigSectionEntryZZZ objEntry = objExpressionSolver.computeAsEntry(sLineWithExpression);
+				IKernelConfigSectionEntryZZZ objEntry = objExpressionJavaCallSolver.computeAsEntry(sLineWithExpression);
 				//String sValue = objExpressionSolver.compute(sLineWithExpression);
 				String sValue = objEntry.getValue();
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
 				//Anwenden der ersten Formel		
-				objExpressionSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird						
-				IKernelConfigSectionEntryZZZ objEntry2 = objExpressionSolver.computeAsEntry(sLineWithExpression);
+				objExpressionJavaCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird						
+				IKernelConfigSectionEntryZZZ objEntry2 = objExpressionJavaCallSolver.computeAsEntry(sLineWithExpression);
 				sValue = objEntry2.getValue();
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe1: '" + sValue + "'\n");

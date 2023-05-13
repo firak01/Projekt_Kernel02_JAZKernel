@@ -331,7 +331,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		}
 	}
 	
-	public void testComputeEncryption() {
+	public void testComputeEncryption() {		
 		try {
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION.name(),true);
 			
@@ -369,7 +369,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 		}
 	}
 	
-	public void testComputeJson() {
+	public void testComputeJson() {		
 		try {
 			objFileIniTest.setFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION,true);
 			
