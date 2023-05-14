@@ -20,6 +20,7 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -168,8 +169,14 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				//TESTE DEN WERT:
 				sValue = objEntry2.getValue();
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe5: '" + sValue + "'\n");
-				String sTest = EnvironmentZZZ.getHostName();
 				
+				//Besonderheit: Weil noch ein Call-Solver drum ist, ist korrekterweise der Z:Call Tag noch drin
+				String sTagStart = KernelCallIniSolverZZZ.computeExpressionTagStarting(KernelCallIniSolverZZZ.sTAG_NAME);
+				String sTagEnd = KernelCallIniSolverZZZ.computeExpressionTagClosing(KernelCallIniSolverZZZ.sTAG_NAME);
+				sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagRemoved(sValue, sTagStart, sTagEnd);	
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe6: '" + sValue + "'\n");
+				
+				String sTest = EnvironmentZZZ.getHostName();
 				assertEquals(sTest,sValue);
 				
 				//++++++++++++++++++++++++++++++++++++++++++++++++++

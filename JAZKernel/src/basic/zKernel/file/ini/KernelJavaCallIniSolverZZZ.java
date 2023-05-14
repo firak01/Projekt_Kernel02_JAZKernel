@@ -64,8 +64,8 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 		return true;
 	 }//end function KernelExpressionMathSolverNew_
 	
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{		
-			Vector vecReturn = new Vector();
+	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{		
+			Vector<String>vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
@@ -125,17 +125,17 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 								
 					//Nun die Methode aufrufen.
 					Object objReturn = ReflectUtilZZZ.invokeStaticMethod(sJavaCallClass,sJavaCallMethod);
-					if(objReturn==null)break main;
-						
+					if(objReturn==null)break main;						
 					sValue = objReturn.toString();
 					
+					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
 					//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 					if(sValue!=null){
-						vecReturn.removeElementAt(1);
+						if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
 						vecReturn.add(1, sValue);
 					}	
 				}
-			}
+			}//end main:
 			return vecReturn;
 		}
 	

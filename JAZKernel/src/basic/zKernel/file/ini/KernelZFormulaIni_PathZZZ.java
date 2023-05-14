@@ -121,35 +121,15 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 				
 				//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
 				if(!StringZZZ.isEmpty(sValue)){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+					vecReturn.add(0, sBefore);
 					
-					//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-					if(!StringZZZ.isEmpty(sBefore)){
-						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-						//Nachbereitung: Ein ggfs. Z-Tag am Ende entfernen
-						//Hier: Immer, auch wenn es nur der String selber ist.
-						if(StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
-							sBefore = StringZZZ.leftback(sBefore, "<Z>");
-						}
-						vecReturn.add(0, sBefore);
-					}else{
-						vecReturn.add(0,"");
-					}
-															
 					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 					vecReturn.add(1, sValue);
 					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
-					if(!StringZZZ.isEmpty(sRest)){	
-						//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-						//Hier: Immer, auch wenn es nur der String selber ist.
-						if(StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
-							sRest = StringZZZ.rightback(sRest, "</Z>");
-						}
-						vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
-					}else{
-						vecReturn.add(2,"");
-					}		
-			}//end if sValue!=null
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+					vecReturn.add(2, sRest);
+				}//end if sValue!=null
 		}//end main:
 		return vecReturn;
 	}

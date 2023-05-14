@@ -109,21 +109,24 @@ public abstract class AbstractKernelIniTagCascadedZZZ  extends AbstractKernelIni
 			//this.setValue(sReturn); //Merke: Internes Entry-Objekt nutzen. Darin wurden in den vorherigen Methoden auch Zwischenergebnisse gespeichert.
 		
 			//...bei verschachtelten (CASCADED) Werten aber zusammenfassen.
-			String sExpressionImploded = VectorZZZ.implode(vecAll);
-
-			//Nun die Z-Tags raus
-			String stemp = StringZZZ.replace(sExpressionImploded, "<Z>", "");
-			String sValue = StringZZZ.replace(stemp, "</Z>", "");
-			
-			objReturn = this.getEntry();
-			
-			//Den gerade errechneten Wert setzen
-			objReturn.setValue(sValue);
+			String sExpressionWithTags = VectorZZZ.implode(vecAll);//Der String hat noch alle Z-Tags
+			objReturn = this.getEntry();			
 			
 			//Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den Expression Ausdruck mit Z-Tags
 			//Damit kann ggfs. weiter gearbeitet werden
-			objReturn.setValueAsExpression(sExpressionImploded);
+			objReturn.setValueAsExpression(sExpressionWithTags);
 			
+			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
+			String sTagStart = this.getExpressionTagStarting();
+			String sTagEnd = this.getExpressionTagClosing();
+			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			
+			//Nun die Z-Tags raus
+			String stemp = StringZZZ.replace(sExpression, "<Z>", "");
+			String sValue = StringZZZ.replace(stemp, "</Z>", "");
+			
+			//Den gerade errechneten Wert setzen
+			objReturn.setValue(sValue);			
 		}//end main:
 		return objReturn;
 	}	

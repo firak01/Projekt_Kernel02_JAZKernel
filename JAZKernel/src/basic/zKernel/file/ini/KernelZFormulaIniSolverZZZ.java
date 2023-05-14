@@ -12,10 +12,12 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
@@ -151,39 +153,50 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 				} //end while
 				
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-				if(!StringZZZ.isEmpty(sExpression)){
-					String sBefore = vecReturn.get(0);
-					
-					//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-					if(!StringZZZ.isEmpty(sBefore)){
-						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-						//Nachbereitung: Ein ggfs. Z-Tag am Ende entfernen
-						//Hier: Nur dann, wenn es nicht der String selber ist.
-						if(!sBefore.equals("<Z>") & StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
-							sBefore = StringZZZ.leftback(sBefore, "<Z>");
-						}
-						vecReturn.add(0, sBefore);
-					}else{
-						vecReturn.add(0,"");
-					}
-															
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//				if(!StringZZZ.isEmpty(sExpression)){
+//					String sBefore = vecReturn.get(0);
+//					
+//					//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
+//					if(!StringZZZ.isEmpty(sBefore)){
+//						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+//						//Nachbereitung: Ein ggfs. Z-Tag am Ende entfernen
+//						//Hier: Nur dann, wenn es nicht der String selber ist.
+//						if(!sBefore.equals("<Z>") & StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
+//							sBefore = StringZZZ.leftback(sBefore, "<Z>");
+//						}
+//						vecReturn.add(0, sBefore);
+//					}else{
+//						vecReturn.add(0,"");
+//					}
+//															
+//					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+//					vecReturn.add(1, sExpression);
+//					
+//					String sRest = vecReturn.get(2);					
+//					if(!StringZZZ.isEmpty(sRest)){	
+//						if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+//						
+//						//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
+//						//Hier: Nur dann, wenn es nicht der String selber ist.
+//						if(!sRest.equals("</Z>") & StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
+//							sRest = StringZZZ.rightback(sRest, "</Z>");
+//						}
+//						vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
+//					}else{
+//						vecReturn.add(2,"");
+//					}		
+//				}//end if sValue!=null
+				
+				
+				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
+				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+				//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
+				if(sExpression!=null){
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
 					vecReturn.add(1, sExpression);
-					
-					String sRest = vecReturn.get(2);					
-					if(!StringZZZ.isEmpty(sRest)){	
-						if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
-						
-						//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-						//Hier: Nur dann, wenn es nicht der String selber ist.
-						if(!sRest.equals("</Z>") & StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
-							sRest = StringZZZ.rightback(sRest, "</Z>");
-						}
-						vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
-					}else{
-						vecReturn.add(2,"");
-					}		
-			}//end if sValue!=null
+				}
+				
+
 			} //end if sExpression = ""					
 		}//end main:
 		return vecReturn;
@@ -235,21 +248,35 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			if(! this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA)) break main;
 			
 			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			sReturn = VectorZZZ.implode(vecAll);
+			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat noch alle Z-Tags
+			
+			//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
+			IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
+			objReturn.setValueAsExpression(sExpressionWithTags);
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
 			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
-			if(!this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH)) break main;				
+			if(this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA_MATH)) {				
 						
-			//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
-			KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
-												
-			//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
-			while(objMathSolver.isExpression(sReturn)){
-				String sValueMath = objMathSolver.compute(sReturn);
-				sReturn=sValueMath;				
-			}																
+				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
+													
+				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				while(objMathSolver.isExpression(sExpressionWithTags)){
+					String sValueMath = objMathSolver.compute(sExpressionWithTags);
+					sExpressionWithTags=sValueMath;				
+				}				
+			}
+
+			//Als echten Ergebniswert aber die Z-Tags rausrechnen
+			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
+			String sTagStart = this.getExpressionTagStarting();
+			String sTagEnd = this.getExpressionTagClosing();
+			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			objReturn.setValue(sExpression);
+			
+			sReturn = sExpression;			
 		}//end main:
 		return sReturn;
 	}

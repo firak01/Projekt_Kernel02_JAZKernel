@@ -218,7 +218,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			//++++++++++++++++++++++++++++++++++++++++
 			
 			
-			//Anwenden der Formel, so da� ein localer Wert vor einem globalen Wert gefunden wird.
+			//Anwenden der Formel, so dass ein localer Wert vor einem globalen Wert gefunden wird.
 			/*objStreamFile.println("[Section B!01]");
 			objStreamFile.println("Testentry2=Testvalue local to be found");
 			
@@ -264,6 +264,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertEquals(sValue, sExpression);
 			
 			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.
+			TODOGOON;//20230514
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
 			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula2").getValue();
