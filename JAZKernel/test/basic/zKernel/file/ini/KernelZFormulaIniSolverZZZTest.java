@@ -255,31 +255,6 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
 			assertEquals(sValue, sExpression);
 			
-			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält.
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula1").getValue();
-			sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
-			assertEquals(sValue, sExpression);
-			
-			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.
-			TODOGOON;//20230514
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula2").getValue();
-			sValue="Der dynamische Wert2 ist '8'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete '8' erwartet.", StringZZZ.contains(sExpression, "8"));
-			assertEquals(sValue, sExpression);
-			
-			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.... diesmal 2 Path Anweisungen!!!
-			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
-			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
-			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula3").getValue();
-			sValue="Der dynamische Wert3 ist '20'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
-			assertTrue("Im Ergebnis wurde eine ausgerechnete '20' erwartet.", StringZZZ.contains(sExpression, "20"));
-			assertEquals(sValue, sExpression);
-			
 			//+++ Die Tags brauchen nicht exact zu sein hinsichtlich der Groß-/Kleinescheibung. Außerdem wird der '+' Operator getestet.
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
@@ -296,7 +271,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
 			assertEquals(sValue, sExpression);
 			
-			//+++ Teste Übergaebe von Variablen
+			//+++ Teste Uebergabe von Variablen
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Math ist keine Voraussetzung für Variablen
 			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
@@ -331,6 +306,44 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
+	
+	public void testCompute_Math_Cascaded() {
+		try {
+			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name(),true);
+				
+			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält.
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			String sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula1").getValue();
+			String sValue="Der dynamische Wert ist '6'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '6' erwartet.", StringZZZ.contains(sExpression, "6"));
+			assertEquals(sValue, sExpression);
+			
+		
+			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.
+			//TODOGOON;//20230514
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula2").getValue();
+			sValue="Der dynamische Wert2 ist '8'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertEquals(sValue, sExpression);
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '8' erwartet.", StringZZZ.contains(sExpression, "8"));
+			
+			//+++ Verschachtelt, hier wird auf eine Section Verwiesen, die einen Math-Ausdruck enthält, der wiederum eine IniPath-Anweisung hat.... diesmal 2 Path Anweisungen!!!
+			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
+			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
+			sExpression = objFileIniTest.getPropertyValue("Section for testComputePathWithMath", "Formula3").getValue();
+			sValue="Der dynamische Wert3 ist '20'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			assertTrue("Im Ergebnis wurde eine ausgerechnete '20' erwartet.", StringZZZ.contains(sExpression, "20"));
+			assertEquals(sValue, sExpression);
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+			
+	}
+
 	
 	public void testComputeEncryption() {		
 		try {
@@ -456,7 +469,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	}
 		
 	}
-
+	
+	
 	
 }//END class
 	

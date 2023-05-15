@@ -87,6 +87,12 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 				sProperty = sRest;
 			}
 			
+			if(StringZZZ.contains(sRest,"</Z:val>")) {      //Wenn der Pfad Bestandteil einer Mathematischen Formel ist, also eine Section mit einem "Wert".
+				sProperty = StringZZZ.left(sRest, "</Z:val>");
+			}else {
+				sProperty = sRest;
+			}
+			
 			String sBefore = (String) vecSection.get(0);
 			sRest = StringZZZ.right(sRest, sProperty);
 						
@@ -99,12 +105,12 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 			}
 
 				//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-				String sMathValueTag = KernelZFormulaMath_ValueZZZ.computeExpressionTagClosing(KernelZFormulaMath_ValueZZZ.sTAG_NAME);
-				if(StringZZZ.contains(sRest, sMathValueTag)){
-					sBefore = (String) vecSection.get(0);
-					sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
-					//sProperty = StringZZZ.left(sProperty, sMathValueTag);												
-				}
+//				String sMathValueTag = KernelZFormulaMath_ValueZZZ.computeExpressionTagClosing(KernelZFormulaMath_ValueZZZ.sTAG_NAME);
+//				if(StringZZZ.contains(sRest, sMathValueTag)){
+//					sBefore = (String) vecSection.get(0);
+//					sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
+//					//sProperty = StringZZZ.left(sProperty, sMathValueTag);												
+//				}
 									
 				FileIniZZZ objFileIni = this.getFileIni();
 				if(objFileIni==null){
@@ -205,6 +211,9 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 		return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelZFormulaIniZZZ#compute(java.lang.String)
+	 */
 	@Override
 	public String compute(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
