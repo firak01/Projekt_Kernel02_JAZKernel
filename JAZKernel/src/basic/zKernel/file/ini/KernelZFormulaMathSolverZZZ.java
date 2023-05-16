@@ -10,6 +10,7 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -57,13 +58,13 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 	
 	
 	
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			
-			//Mehrere Ausdr�cke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
+			//Mehrere Ausdruecke. Dann muss der jeweilige "Rest-Bestandteil" des ExpressionFirst-Vectors weiter zerlegt werden.
 			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
 			String sExpression = (String) vecReturn.get(1);
 			if(!StringZZZ.isEmpty(sExpression)){
@@ -90,7 +91,12 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 				if(sValue!=null){
 					vecReturn.removeElementAt(1);
 					vecReturn.add(1, sValue);
-				}												
+				}		
+				
+				// Z-Tags entfernen.
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>";
+				KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 			}
 		}
 		return vecReturn;
@@ -99,22 +105,6 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 	//###### Getter / Setter
 	public String getExpressionTagName(){
 		return "Z:math";
-	}
-	
-	//### Aus Interface IKernelExpressionIniZZZ		
-	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
-			
-		}//end main:
-		return sReturn;
 	}
 
 	//### Andere Interfaces

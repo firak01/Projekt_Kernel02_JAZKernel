@@ -1337,15 +1337,24 @@ public class StringZZZ implements IConstantZZZ{
 			if(sRight==null) sRight = "";
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
+			if(bReturnSeparators) {
+				sLeft = sLeft + sLeftSep;
+				sRight = sRightSep + sRight;
+			}
 			vecReturn.add(sLeft);
 			
-			if(bReturnSeparators ==true){
-				sExpressionTagged = sLeftSep + sExpressionTagged + sRightSep;
-				vecReturn.add(sExpressionTagged);
-			}else{				
-				vecReturn.add(sExpressionTagged);
-			}
+			vecReturn.add(sExpressionTagged);
+			
 			vecReturn.add(sRight);
+			
+			
+//			if(bReturnSeparators ==true){
+//				sExpressionTagged = sLeftSep + sExpressionTagged + sRightSep;
+//				vecReturn.add(sExpressionTagged);
+//			}else{				
+//				vecReturn.add(sExpressionTagged);
+//			}
+//			
 		}
 		return vecReturn;
 	}

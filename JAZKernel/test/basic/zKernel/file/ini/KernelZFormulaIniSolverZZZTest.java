@@ -237,7 +237,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Damit noch KEINE MATH FORMEL ausgerechnet wird
 			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
-			sValue="Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			sValue="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertEquals(sValue, sExpression);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
@@ -271,11 +271,21 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '20.0' erwartet.", StringZZZ.contains(sExpression, "20.0"));
 			assertEquals(sValue, sExpression);
 			
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testCompute_Variables() {
+		try {
+			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name(),true);
+			
 			//+++ Teste Uebergabe von Variablen
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Math ist keine Voraussetzung für Variablen
-			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
-			sValue="Der dynamische Wert ist 'myTestVariableString'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			String sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula1").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
+			String sValue="Der dynamische Wert ist 'myTestVariableString'. FGL rulez."; //Also der Wert mit einer uebergebenen Variablen ausgerechnet.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete 'myTestVariableString' erwartet.", StringZZZ.contains(sExpression, "myTestVariableString"));
 			assertEquals(sValue, sExpression);
 			 

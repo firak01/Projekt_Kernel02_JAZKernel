@@ -132,24 +132,7 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 	public String getVariable(String sKey){
 		return (String) this.getHashMapVariable().get(sKey);
 	}
-	//#########################################
-
-	
-	
-	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn);
-								
-		}//end main:
-		return sReturn;
-	}	
+	//#########################################	
 	
 	@Override
 	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{

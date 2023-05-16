@@ -12,6 +12,7 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -87,10 +88,9 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 				sProperty = sRest;
 			}
 			
-			if(StringZZZ.contains(sRest,"</Z:val>")) {      //Wenn der Pfad Bestandteil einer Mathematischen Formel ist, also eine Section mit einem "Wert".
-				sProperty = StringZZZ.left(sRest, "</Z:val>");
-			}else {
-				sProperty = sRest;
+			
+			if(StringZZZ.contains(sProperty,"</Z:val>")) {      //Wenn der Pfad Bestandteil einer Mathematischen Formel ist, also eine Section mit einem "Wert".
+				sProperty = StringZZZ.left(sProperty, "</Z:val>");
 			}
 			
 			String sBefore = (String) vecSection.get(0);
@@ -135,6 +135,12 @@ public class KernelZFormulaIni_PathZZZ  extends KernelUseObjectZZZ implements IK
 					
 					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
 					vecReturn.add(2, sRest);
+					
+					//Z-Tags "aus der Mitte entfernen"... Wichtig z.B. für Z:JavaCall Tags
+					String sTagStart="<Z>";
+					String sTagEnd="</Z>";
+					KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+					
 				}//end if sValue!=null
 		}//end main:
 		return vecReturn;

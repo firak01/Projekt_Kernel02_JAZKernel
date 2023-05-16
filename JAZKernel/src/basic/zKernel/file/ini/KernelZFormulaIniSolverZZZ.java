@@ -152,42 +152,6 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 						sExpressionOld = sExpression;
 				} //end while
 				
-				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-//				if(!StringZZZ.isEmpty(sExpression)){
-//					String sBefore = vecReturn.get(0);
-//					
-//					//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-//					if(!StringZZZ.isEmpty(sBefore)){
-//						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//						//Nachbereitung: Ein ggfs. Z-Tag am Ende entfernen
-//						//Hier: Nur dann, wenn es nicht der String selber ist.
-//						if(!sBefore.equals("<Z>") & StringZZZ.endsWithIgnoreCase(sBefore, "<Z>")) {
-//							sBefore = StringZZZ.leftback(sBefore, "<Z>");
-//						}
-//						vecReturn.add(0, sBefore);
-//					}else{
-//						vecReturn.add(0,"");
-//					}
-//															
-//					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//					vecReturn.add(1, sExpression);
-//					
-//					String sRest = vecReturn.get(2);					
-//					if(!StringZZZ.isEmpty(sRest)){	
-//						if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
-//						
-//						//Nachbereitung: Ein ggfs. /Z-Tag am Anfang des Rest entfernen
-//						//Hier: Nur dann, wenn es nicht der String selber ist.
-//						if(!sRest.equals("</Z>") & StringZZZ.startsWithIgnoreCase(sRest, "</Z>")) {
-//							sRest = StringZZZ.rightback(sRest, "</Z>");
-//						}
-//						vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
-//					}else{
-//						vecReturn.add(2,"");
-//					}		
-//				}//end if sValue!=null
-				
-				
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
 				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 				//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
@@ -247,11 +211,12 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			if(! this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA)) break main;
 			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat noch alle Z-Tags
-			
 			//Diesen Zwischenstand fuer weitere Verarbeitungen festhalten
 			IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
+			objReturn.setRaw(sLineWithExpression);
+			
+			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat noch alle Z-Tags
 			objReturn.setValueAsExpression(sExpressionWithTags);
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
@@ -271,9 +236,10 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 
 			//Als echten Ergebniswert aber die Z-Tags rausrechnen
 			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
+			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden 
 			String sTagStart = this.getExpressionTagStarting();
 			String sTagEnd = this.getExpressionTagClosing();
-			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			objReturn.setValue(sExpression);
 			
 			sReturn = sExpression;			

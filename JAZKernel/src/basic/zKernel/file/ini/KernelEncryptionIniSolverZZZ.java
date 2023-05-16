@@ -94,8 +94,6 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 						 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
 						 stest = EnumSetUtilZZZ.readEnumConstant_NameValue(enumClass, "ROT13");
 						 System.out.println(ReflectCodeZZZ.getPositionCurrent()+ " Wert aus Enum-Klasse ueber EnumSetUtilZZZ stest="+stest);
-						 
-						 
 						 //ENDE: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++
 						 
 						 //Nun mit diesem Schlüssel über eine Factory den SchlüsselAlgorithmus holen

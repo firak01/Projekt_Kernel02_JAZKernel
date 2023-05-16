@@ -1244,12 +1244,18 @@ private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZ
 		//Sichern des "RAW" Werts
 		String sRawEncrypted = objEntryDecryptedOriginal.getRawEncrypted();
 		String sRaw =  objEntryDecryptedOriginal.getRaw();
-		assertFalse(sRaw.equals(sRawEncrypted));
 		
 		//Im RAW String wird der oben verwendete CIPHER-String erwartet.
 		boolean btemp = StringZZZ.contains(sRaw, CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
 		assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation() +"'",btemp);
 
+		assertTrue(sRaw.equals(sRawEncrypted));//Vor der Entschluesselung wird der RAW String hier noch "archiviert".
+		
+		//Testen der entschluesselten Werte
+		String sValueAsExpression = objEntryDecryptedOriginal.getValueAsExpression();
+		assertFalse(sRaw.equals(sValueAsExpression));      
+		assertFalse(sValueAsExpression.equals(sDecryptedOriginal));//um den Expression String sollte Z-Tag drum sein.		
+		
 		//####################################
 		//+++ Den Cache bei jedem Schritt explizit leeren
 		objKernelUsed.getCacheObject().clear();

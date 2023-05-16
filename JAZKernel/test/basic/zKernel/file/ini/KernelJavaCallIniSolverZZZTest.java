@@ -170,11 +170,17 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				sValue = objEntry2.getValue();
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe5: '" + sValue + "'\n");
 				
-				//Besonderheit: Weil noch ein Call-Solver drum ist, ist korrekterweise der Z:Call Tag noch drin
+				//Besonderheit: Weil noch ein Call-Solver drum ist, ist korrekterweise beim Ausfuehren des Z:JavaCall noch der Z:Call Tag drin. Zum Vergleichen also noch rausrechnen.
 				String sTagStart = KernelCallIniSolverZZZ.computeExpressionTagStarting(KernelCallIniSolverZZZ.sTAG_NAME);
 				String sTagEnd = KernelCallIniSolverZZZ.computeExpressionTagClosing(KernelCallIniSolverZZZ.sTAG_NAME);
-				sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagRemoved(sValue, sTagStart, sTagEnd);	
+				sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sValue, sTagStart, sTagEnd);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe6: '" + sValue + "'\n");
+				
+				//Besonderheit: Weil der Z:Call noch drin ist, bleiben die <Z>-Tags auch noch drin. Zum Vergleichen also noch rausrechnen.
+				String sTagStartZ = "<Z>";
+				String sTagEndZ = "</Z>"; 
+				sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sValue, sTagStartZ, sTagEndZ);	
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe7: '" + sValue + "'\n");
 				
 				String sTest = EnvironmentZZZ.getHostName();
 				assertEquals(sTest,sValue);
