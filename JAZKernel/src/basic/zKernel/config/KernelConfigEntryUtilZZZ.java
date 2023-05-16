@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
@@ -17,6 +18,8 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -32,7 +35,7 @@ import basic.zKernel.file.ini.KernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelConfigEntryUtilZZZ {
+public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 	/** Die statischen Methoden dieser Klasse leisten mehr als nur die ...Solver... aufzurufen.
 	 *  Durch den Rückgabewert können dann die Details im letztendlich benötigten IKernelConfigSectionEntryZZZ object gesetzt werden.
 	 *  Also z.B. bJson, bJsonMap, etc...
@@ -63,6 +66,13 @@ public class KernelConfigEntryUtilZZZ {
 	public static int getValueExpressionSolvedAndConverted(FileIniZZZ objFileIni, String sRaw, boolean bUseFormula, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlagZpassed, ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
+			if(objFileIni==null){
+				String stemp = "'IniFile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
 			IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 			if(objReturn==null) {
 				objReturn = new KernelConfigSectionEntryZZZ();
@@ -85,8 +95,12 @@ public class KernelConfigEntryUtilZZZ {
 			ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>("");
 			boolean bConverted = KernelConfigEntryUtilZZZ.getValueConverted(objFileIni, sRawExpressionSolved, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueConverted);
 			if(bConverted) {
+				
 				objReturnReference.get().isConverted(true);
-				sRawConverted = objsReturnValueExpressionSolved.get();				
+				
+				String sValueAsExpression= objReturnReference.get().getValue();
+				objReturnReference.get().setValueAsExpression(sValueAsExpression);
+				sRawConverted = objsReturnValueConverted.get();				
 				iReturn = iReturn + 2;
 			}else {
 				sRawConverted = sRawExpressionSolved;
@@ -100,6 +114,13 @@ public class KernelConfigEntryUtilZZZ {
 		boolean bReturn = false;
 		main:{
 			if(!bUseFormula) break main;
+			
+			if(objFileIni==null){
+				String stemp = "'IniFile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 			
 			String sValueExpressionSolved=null;
 			boolean bAnyFormula = false;
@@ -142,6 +163,12 @@ public class KernelConfigEntryUtilZZZ {
 		 main:{			 			 								
 	 		if(!bUseCall)break main;
 	 		
+	 		if(objFileIni==null){
+				String stemp = "'IniFile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 
 		 	IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
@@ -193,7 +220,12 @@ public class KernelConfigEntryUtilZZZ {
 		main:{
 			if(!bUseFormula) break main;
 				
-			
+			if(objFileIni==null){
+				String stemp = "'IniFile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 			
 			//20190122: Ein Ansatz leere Werte zu visualisieren. Merke: <z:Empty/> wird dann als Wert erkannt und durch einen echten Leerstring erstetzt.
 			//Merke: Der Expression-Wert kann sowohl direkt in der Zeile stehen, als auch erst durch einen Formel gesetzt worden sein.
@@ -225,7 +257,12 @@ public class KernelConfigEntryUtilZZZ {
 		 main:{			 			 								
 	 		if(!bUseEncryption)break main;
 	 		
-
+	 		if(objFileIni==null){
+				String stemp = "'IniFile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 		 	IKernelConfigSectionEntryZZZ objReturn=objReturnReference.get();
 			if(objReturn==null) objReturn = new KernelConfigSectionEntryZZZ();//Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 
@@ -294,6 +331,12 @@ public class KernelConfigEntryUtilZZZ {
 			 		
 			 		boolean bUseJsonArray = objFileIni.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 					if(bUseJsonArray) {
+						if(objFileIni==null){
+							String stemp = "'IniFile'";
+							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}
 						
 						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonArray passen.
 						//      Darum neu definieren
@@ -312,6 +355,12 @@ public class KernelConfigEntryUtilZZZ {
 			 		
 			 		boolean bUseJsonMap = objFileIni.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
 					if(bUseJsonMap) {				
+						if(objFileIni==null){
+							String stemp = "'IniFile'";
+							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+							throw ez;
+						}
 						
 						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonMap passen
 //				      Darum neu definieren
@@ -348,6 +397,13 @@ public class KernelConfigEntryUtilZZZ {
 		boolean bReturn = false;
 		main:{
 			if(bUseJson){
+				if(objFileIni==null){
+					String stemp = "'IniFile'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
 				ArrayList<String> alsRawJsonSolved=null;
 				boolean bAnyJson = false;
 				
@@ -379,6 +435,13 @@ public class KernelConfigEntryUtilZZZ {
 		boolean bReturn = false;
 		main:{
 			if(bUseJson){
+				if(objFileIni==null){
+					String stemp = "'IniFile'";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
 				HashMap<String,String> hmValueSolved=null;
 				boolean bAnyJson = false;
 				
@@ -408,6 +471,18 @@ public class KernelConfigEntryUtilZZZ {
 	public static boolean isExpression(String sLine, String sExpressionTagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
+			//NULL und EMPTY Werte sind auch Ausdrücke. Sie entstehen sogar, wenn nur der Leerstring konfiguriert wird
+			boolean bIsEmptyTag = StringZZZ.contains(sLine, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
+			if(bIsEmptyTag) {
+				bReturn = true;
+				break main;
+			}
+			boolean bIsNullTag = StringZZZ.contains(sLine, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty());
+			if(bIsNullTag) {
+				bReturn = true;
+				break main;
+			}
+			
 			boolean btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
 			if(btemp==false) break main;
 		

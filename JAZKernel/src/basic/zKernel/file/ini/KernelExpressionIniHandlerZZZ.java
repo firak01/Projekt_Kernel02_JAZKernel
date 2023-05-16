@@ -217,7 +217,8 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
 						int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
 						if(iReturnExpression>=1){	
-							bAnyFormula = true;																			
+							bAnyFormula = true;
+							iReturn = iReturn + iReturnExpression;
 						}
 						if(bAnyFormula) {
 							objReturn = objReturnReference.get();
@@ -301,9 +302,6 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 					}
 					
 				}//end main:
-				if(bAnyFormula) {
-					iReturn = iReturn+1;
-				}
 				if(bAnyEncryption) {				
 					iReturn = iReturn+10; //Falls irgendeine Verschlüsselung vorliegt den Wert um 10 erhöhen.
 				}

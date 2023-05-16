@@ -251,7 +251,8 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			objExpressionHandler.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(),true);
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objSectionEntryReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			int iReturn = objExpressionHandler.compute(sLineWithExpression, objSectionEntryReference);
-			assertTrue(iReturn==1);
+			assertEquals(1,iReturn); //+1 für den Ini Path, der als Formel aufgeloest wird.
+
 			
 			IKernelConfigSectionEntryZZZ objSectionEntry = objSectionEntryReference.get();
 			String sValue = objSectionEntry.getValue();
