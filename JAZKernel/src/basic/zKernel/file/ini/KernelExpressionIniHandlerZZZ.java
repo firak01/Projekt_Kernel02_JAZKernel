@@ -34,7 +34,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 02.05.2023, 19:55:30
  * 
  */
-public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascadedZZZ implements IKernelExpressionIniSolverZZZ{
+public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ implements IKernelExpressionIniSolverZZZ{
 	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
 	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
@@ -186,9 +186,20 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 					if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 					boolean bUseExpression = this.getFlag(IKernelExpressionIniSolverZZZ.FLAGZ.USEEXPRESSION);
 					if(!bUseExpression) break main;
-					if(!this.isExpression(sLineWithExpression)) break main;
-					objReturn = objReturnReference.get();
-					objReturn.isExpression(true);	
+					
+					//Aber <z:Null/> und <z:Empty/> muessen auch behandelt werden durch die Expression verarbeitung
+					boolean bIsConversion = this.isStringForConvertRelevant(sLineWithExpression); 
+					if(bIsConversion) {
+						objReturn.isConversion(true);
+					}
+					
+					//Behandle die konkreten Tags dieses Ausdrucks <Z>
+					boolean bIsExpression = this.isExpression(sLineWithExpression);
+					if(bIsExpression){
+						objReturn.isExpression(true);	
+					}
+					if(! (bIsExpression  | bIsConversion)) break main;						
+										
 					iReturn=0;
 					
 					boolean bUseFormula = this.getFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA);
@@ -651,6 +662,8 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniTagCascaded
 					}//end main:
 					return baReturn;
 				}
+
+				
 		
 		//### Sonstige Interfaces		
 }

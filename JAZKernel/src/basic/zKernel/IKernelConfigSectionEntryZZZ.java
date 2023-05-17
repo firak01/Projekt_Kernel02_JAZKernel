@@ -53,13 +53,20 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public boolean isExpression();
 	abstract void isExpression(boolean bIsExpression);	
 	
+	public boolean isConversion();
+	abstract void isConversion(boolean bIsConversion);
+	
+	public boolean isConverted();
+	abstract void isConverted(boolean bIsConverted);
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//Formula
 	public boolean isFormula();
 	abstract void isFormula(boolean bIsFormula);
 		
-	public boolean isConverted();
-	abstract void isConverted(boolean bIsConverted);
+	
+	public String getValueAsConversion();
+	public void setValueAsConversion(String sValueConverted);
 	
 	public String getValueFormulaSolvedAndConverted(); 
 	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted);

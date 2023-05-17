@@ -85,7 +85,10 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 			if(bExpressionSolved) {
 				objReturnReference.get().isExpression(true);
 				if(bUseFormula) objReturnReference.get().isFormula(true);
-				sRawExpressionSolved = objsReturnValueExpressionSolved.get();					
+				String sValueAsExpression = objsReturnValueExpressionSolved.get();					
+				objReturnReference.get().setValueAsExpression(sValueAsExpression);
+				
+				sRawExpressionSolved = sValueAsExpression;
 				iReturn = iReturn + 1;
 			}else {
 				sRawExpressionSolved = sRaw;
@@ -94,12 +97,13 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 			String sRawConverted = null;
 			ReferenceZZZ<String> objsReturnValueConverted= new ReferenceZZZ<String>("");
 			boolean bConverted = KernelConfigEntryUtilZZZ.getValueConverted(objFileIni, sRawExpressionSolved, bUseFormula, hmVariable, saFlagZpassed, objsReturnValueConverted);
-			if(bConverted) {
-				
+			if(bConverted) {				
 				objReturnReference.get().isConverted(true);
 				
-				String sValueAsExpression= objReturnReference.get().getValue();
-				objReturnReference.get().setValueAsExpression(sValueAsExpression);
+				
+				String sValueAsConversion= objReturnReference.get().getValue();
+				objReturnReference.get().setValueAsConversion(sValueAsConversion);
+				
 				sRawConverted = objsReturnValueConverted.get();				
 				iReturn = iReturn + 2;
 			}else {
@@ -471,7 +475,25 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 	public static boolean isExpression(String sLine, String sExpressionTagName) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			//NULL und EMPTY Werte sind auch Ausdrücke. Sie entstehen sogar, wenn nur der Leerstring konfiguriert wird
+			//Merke: z:null und z:empty sind nicht Tagspezifische Ausdrücke, gelten als Conversion
+			
+			boolean btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
+			if(btemp==false) break main;
+		
+			btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
+			if(btemp==false) break main;
+			
+			bReturn = true;
+		}//end main
+		return bReturn;
+	}
+	
+	public static boolean isConvertable(String sLine) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			
+			//Anders als Tags sind NULL und EMPTY Werte Conversions. 
+			//Sie entstehen sogar, wenn nur der Leerstring konfiguriert wird
 			boolean bIsEmptyTag = StringZZZ.contains(sLine, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
 			if(bIsEmptyTag) {
 				bReturn = true;
@@ -483,15 +505,9 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 				break main;
 			}
 			
-			boolean btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
+		}//end main:
 		return bReturn;
+		
 	}
 	
 	public static String getValueExpressionTagSurroundingRemoved(String sValueExpression, String sTagStart, String sTagEnd) throws ExceptionZZZ {

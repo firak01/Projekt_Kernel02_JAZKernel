@@ -31,10 +31,15 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bAnyValue = false;
 	private boolean bNullValue = false;
 	private boolean bExpression = false;
-	private boolean bConverted = false;
 	private boolean bFormula = false;
 	private boolean bCrypt = false;
 	private String sValueFormulaSolvedAndConverted = null;
+
+	private boolean bConversion = false;
+	private boolean bConverted = false;
+	private String sValueAsConversion = null;
+	
+	
 	
 	private boolean bJson = false;
 	private boolean bJsonArray = false;
@@ -372,14 +377,36 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 	
 	@Override
-	public boolean isConverted() {
-		return this.bConverted;
+	public boolean isConversion() {
+		return this.bConversion;
 	}
 
 	@Override
+	public void isConversion(boolean bConversion) {
+		this.bConversion = bConversion;
+	}
+	
+	@Override 
 	public void isConverted(boolean bConverted) {
 		this.bConverted = bConverted;
 	}
+	
+	@Override
+	public boolean isConverted() {
+		return this.bConverted; 
+	}
+	
+	@Override
+	public void setValueAsConversion(String sValueConverted) {
+		this.sValueAsConversion = sValueConverted;
+	}
+	
+	@Override 
+	public String getValueAsConversion() {
+		return this.sValueAsConversion;
+	}
+	
+	
 	
 	@Override
 	public boolean isJson(){

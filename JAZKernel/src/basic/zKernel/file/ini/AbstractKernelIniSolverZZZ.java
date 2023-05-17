@@ -20,6 +20,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -188,5 +189,32 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 				}//end main:
 				return sReturn;
 			}
+	
+	//### aus IKernelZFormulaIniZZZ
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelZFormulaIniZZZ#isStringForConvertRelevant(java.lang.String)
+	 */
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
+		return KernelConfigEntryUtilZZZ.isConvertable(sStringToProof);
+	}
+	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelZFormulaIniZZZ#convert(java.lang.String)
+	 */
+	@Override
+	public String convert(String sLine) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelZFormulaIniZZZ#isStringForComputeRelevant(java.lang.String)
+	 */
+	@Override
+	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }//End class
