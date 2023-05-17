@@ -228,9 +228,13 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
 													
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				String sExpressionWithTagsOld = sExpressionWithTags;
 				while(objMathSolver.isExpression(sExpressionWithTags)){
 					String sValueMath = objMathSolver.compute(sExpressionWithTags);
 					sExpressionWithTags=sValueMath;				
+					
+					if(sExpressionWithTagsOld.equals(sExpressionWithTags)) break; //Sicherheitsmassnahme gegen Endlosschleife
+					sExpressionWithTagsOld = sExpressionWithTags;					
 				}				
 			}
 

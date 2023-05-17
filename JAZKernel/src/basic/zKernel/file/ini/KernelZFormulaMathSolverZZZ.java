@@ -77,11 +77,16 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
 					KernelZFormulaMath_ValueZZZ objValue = new KernelZFormulaMath_ValueZZZ();
+					
+					String sExpressionOld = sExpression; 
 					while(objValue.isExpression(sExpression)){
 						sExpression = objValue.compute(sExpression);
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
+						
+						if(sExpressionOld.equals(sExpression)) break; //Sicherheitsmassnahme gegen Endlosschleife
+						sExpressionOld = sExpression;
 					}					
 				}
 								
