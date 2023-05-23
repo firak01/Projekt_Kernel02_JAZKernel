@@ -10,8 +10,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 
-public class FileDirectoryEmptyPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryEmptyPartFilterZipZZZ{
-	private String sDirectoryPath;
+public class FileDirectoryEmptyPartFilterZipZZZ extends AbstractFilenamePartFilterZipZZZ implements IFileDirectoryEmptyPartFilterZipZZZ{
 	
 	public FileDirectoryEmptyPartFilterZipZZZ() {
 		super();
@@ -21,47 +20,38 @@ public class FileDirectoryEmptyPartFilterZipZZZ extends ObjectZZZ implements IFi
 		this.setDirectoryPath(sDirectoryPath);
 	}
 	
-	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
-		this.sDirectoryPath = FileCommonsForFilterZipZZZ.computeDirectoryPath(sDirectoryPathIn);
-	}
-	public String getDirectoryPath() {
-		return this.sDirectoryPath;
-	}
-	
-	
 	@Override
 	public boolean accept(ZipEntry ze) {
 		 boolean bReturn=false;
-			main:{
+		main:{			
+			try {
 				if(ze==null) break main;
 				
 				//Wichtig: Filtert dadurch nur Verzeichnisse!!!
 				//ABER: In einer JAR DATEI GIBT ES DIESEN FALL NUR FÜR LEERE VERZEICHNISS ODER WENN DIE JAR DATEI EXPLIZIT MIT VERZEICHNISSEN ERSTELLT WURDE.
 				if(!ze.isDirectory()) break main;
-				
-				if(StringZZZ.isEmpty(this.getCriterion())) {
-					bReturn = true;
-					break main;
-				}				
+
+					if(StringZZZ.isEmpty(this.getCriterion())) {
+						bReturn = true;
+						break main;
+					}						
 				String sName = ze.getName();
 								
 				//Verzeichnisname mit dem Pfad vergleichen, d.h. damit bekommt man auch Unterverzeichnisse!!!
 				if(StringZZZ.contains(sName, this.getCriterion(), true)){ 
 					bReturn = true;	
 				}
-			}//END main:
-			return bReturn;
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}//END main:
+		return bReturn;
 	}
 
 	@Override
 	public void setCriterion(String sCriterion) throws ExceptionZZZ {
+		super.setCriterion(sCriterion);
 		this.setDirectoryPath(sCriterion);
 	}
-
-	@Override
-	public String getCriterion() {
-		return this.getDirectoryPath();
-	}
-	
-
 }

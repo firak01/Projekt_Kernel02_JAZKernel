@@ -6,5 +6,6 @@ import basic.zBasic.ExceptionZZZ;
 
 public interface IFilenamePartFilterZipZZZ extends ZipEntryFilter {
 	public void setCriterion(String sCriterion) throws ExceptionZZZ;
-	public String getCriterion() throws ExceptionZZZ;
+	public String getCriterion() throws ExceptionZZZ;	
+	public String computeCriterion() throws ExceptionZZZ;
 }

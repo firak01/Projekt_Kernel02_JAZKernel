@@ -9,14 +9,14 @@ import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IJarEasyConstantsZZZ;
+import basic.zBasic.util.file.JarEasyHelperZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
-	private String sDirectoryPath=null;
-	private String sFileName=null;
-	
+public class FilenamePartFilterPathTotalZipZZZ extends AbstractFilenamePartFilterZipZZZ {
+	private String sCriterionPath=null;
 	
 	public FilenamePartFilterPathTotalZipZZZ() {
 		super();
@@ -24,7 +24,7 @@ public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFil
 	public FilenamePartFilterPathTotalZipZZZ(String sDirectoryPath) throws ExceptionZZZ{
 		super();
 		this.setDirectoryPath(sDirectoryPath);
-		this.setFileName(sFileName);
+		this.setFileName(null);
 	}
 	
 	@Override
@@ -32,13 +32,15 @@ public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFil
 		    boolean bReturn=false;
 			main:{
 		    	try {
-					if(ze==null) break main;								
-					if(StringZZZ.isEmpty(this.getDirectoryPath())) {
+					if(ze==null) break main;
+					String sDirectoryPath = this.getDirectoryPath();
+					if(StringZZZ.isEmpty(sDirectoryPath)) {
 						bReturn = true;
 						break main;
 					}	
-					String sName = ze.getName();					
-					if(sName.equals(this.getCriterion())) {//Genaue übereinstimmung zwischen Pfad und Dateiname. Also EINZIGARTIG!
+					String sName = ze.getName();	
+					String sCriterion = this.getCriterion();
+					if(sName.equals(sCriterion)) {//Genaue übereinstimmung zwischen Pfad und Dateiname. Also EINZIGARTIG!
 						bReturn = true;
 						break main;
 					}
@@ -52,41 +54,50 @@ public class FilenamePartFilterPathTotalZipZZZ extends ObjectZZZ implements IFil
 	
 	//########################
 	//### Getter / Setter
-	public String getDirectoryPath(){
-		return this.sDirectoryPath;
-	}
-	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ{
-		this.sDirectoryPath = FileCommonsForFilterZipZZZ.computeDirectoryPath(sDirectoryPathIn);
-	}
-	
-	public String getFileName(){
-		return this.sFileName;
-	}
-	public void setFileName(String sName){
-		this.sFileName = sName;
-	}
+
 	
 	//### Aus Interface
 	@Override
-	public void setCriterion(String sCriterion) throws ExceptionZZZ{
+	public void setCriterion(String sCriterion) throws ExceptionZZZ{				
+		super.setCriterion(sCriterion);		
 		
+		String sCriterionPath = this.computeCriterionPath(sCriterion);
+		this.setCriterionPath(sCriterionPath);
+	}
+	
+	@Override
+	public String computeCriterion() throws ExceptionZZZ {
+		//Merke: Einfaches zusammenfuegen erzeugt ggfs. doppelte / . Die sind im Jar nicht erlaubt und daher würde kein gültiger Dateiname errechnet.
+		//return this.computeCriterionPath(this.getDirectoryPath()+IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR+this.getFileName());
+		return this.computeCriterionPath(JarEasyUtilZZZ.joinJarFilePathName(this.getDirectoryPath(), this.getFileName()));
+	}
+	
+	public String computeCriterionPath(String sCriterion) throws ExceptionZZZ{
+		String sReturn = sCriterion;
+		main:{
 		String sFileName = JarEasyUtilZZZ.computeFilenameFromJarPath(sCriterion);
 		String sDirectory = JarEasyUtilZZZ.computeDirectoryFromJarPath(sCriterion);
 		
 		this.setDirectoryPath(sDirectory);
 		this.setFileName(sFileName);
-	}
-	
-	@Override
-	public String getCriterion() throws ExceptionZZZ {
-		String sReturn = null;
-		main:{
-			String sDirectoryPath = this.getDirectoryPath();
-			String sFileName = this.getFileName();
-			sReturn = JarEasyUtilZZZ.joinJarFilePathName(sDirectoryPath, sFileName);
-		}//end main:
+		sReturn = JarEasyUtilZZZ.joinJarFilePathName(sDirectory, sFileName);
+		}//end main;
 		return sReturn;
+		
 	}
 	
-
-}
+	public String getCriterionPath()throws ExceptionZZZ{
+		if(this.sCriterionPath==null) {
+			String sCriterion = this.getCriterion();
+			String stemp = this.computeCriterionPath(sCriterion);
+			this.sCriterionPath = stemp;
+		}
+		return this.sCriterionPath;
+	}
+	
+	private void setCriterionPath(String sCriterionPath) {
+		this.sCriterionPath = sCriterionPath;
+	}
+	
+	
+	}

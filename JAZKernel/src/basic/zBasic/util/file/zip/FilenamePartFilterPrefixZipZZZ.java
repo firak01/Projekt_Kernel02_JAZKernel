@@ -10,7 +10,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterPrefixZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
+public class FilenamePartFilterPrefixZipZZZ extends AbstractFilenamePartFilterZipZZZ implements IFilenamePartFilterZipZZZ  {
 	private String sFilePrefix;
 	
 	public FilenamePartFilterPrefixZipZZZ() {

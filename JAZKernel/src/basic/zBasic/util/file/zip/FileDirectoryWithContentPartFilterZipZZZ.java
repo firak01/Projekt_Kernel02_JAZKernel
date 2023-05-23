@@ -8,8 +8,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 
-public class FileDirectoryWithContentPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryWithContentPartFilterZipZZZ{
-	private String sDirectoryPath;
+public class FileDirectoryWithContentPartFilterZipZZZ extends AbstractFilenamePartFilterZipZZZ implements IFileDirectoryWithContentPartFilterZipZZZ{
 	
 	public FileDirectoryWithContentPartFilterZipZZZ() {
 		super();
@@ -21,12 +20,8 @@ public class FileDirectoryWithContentPartFilterZipZZZ extends ObjectZZZ implemen
 	
 	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
 		String sDirectoryPath = JarEasyUtilZZZ.toJarDirectoryPath(sDirectoryPathIn);
-		this.sDirectoryPath = sDirectoryPath;
+		super.setDirectoryPath(sDirectoryPath);
 	}
-	public String getDirectoryPath() {
-		return this.sDirectoryPath;
-	}
-	
 	
 	@Override
 	public boolean accept(ZipEntry ze) {

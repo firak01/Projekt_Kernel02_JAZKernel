@@ -1709,11 +1709,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ 
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, false);
 	}
 	
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false, false);
 	}
 	
 	/**
@@ -1725,7 +1725,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 05.02.2021, 08:45:42
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, boolean bRemote) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, bRemote);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, bRemote, false);
 	}
 	
 	/**
@@ -1738,7 +1738,25 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:01
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, bRemote);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, bRemote, false);
+	}
+	
+	/**Den Dateipfad so zusammensetzen wie er für ein ZIP / JAR Archiv gueltig ist.
+	 * Ein normaler Dateipfad bekommt ggfs. src-Ordner vorangestellt
+	 * Ein normaler Dateipfad bekommt ggfs. Backslashe.
+	 * 
+	 * Das ist hier nicht der Fall.
+	 * 
+	 * @param sFilePathIn
+	 * @param sFileNameIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
+	 */
+	public static String joinFilePathNameInJar(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
+		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, true); //Ohne src voranzustellen
+		sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn); //Backslash in Slash umwandeln, etc.                    
+		return sReturn;
 	}
 	
 	/**
@@ -1750,7 +1768,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:13
 	 */
-	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote) throws ExceptionZZZ{
+	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote, boolean bJar) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 		String stemp;
@@ -1763,7 +1781,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			//Zumindest bei T-Online FTP Server ist der fuehrende Slah gewünscht.
 			sRoot = CharZZZ.toString(cDirectorySeparator);
 			sFilePath = sFilePathIn;					
-		}else {
+		}else if(bJar) {
+			//!!! Wenn Pfade in einem JAR / ZIP File bearbeitet werden, dann keine src-Folder voranstellen
+			sRoot = "";
+			sFilePath = sFilePathIn;
+		} else{
 			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
 			if(sFilePathIn==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePathIn)){
 	//			stemp = "''FilePath'";

@@ -677,8 +677,8 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				sFilePathNormed = JarEasyUtilZZZ.toFilePath(sFilePath);
 			}
 			
-			sReturn = FileEasyZZZ.joinFilePathName(sDirectoryPathNormed, sFilePathNormed);
-			sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn);
+			//!!! Achtung ohne die spezielle Jar-Variante würde ein src vorangestellt... aber in der JAR-Datei ist das nicht so!!!
+			sReturn = FileEasyZZZ.joinFilePathNameInJar(sDirectoryPathNormed, sFilePathNormed);			
 		}//end main:
 		return sReturn;		
 	}

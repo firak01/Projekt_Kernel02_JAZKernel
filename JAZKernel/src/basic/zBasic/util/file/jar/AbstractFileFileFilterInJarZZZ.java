@@ -289,12 +289,12 @@ public abstract class AbstractFileFileFilterInJarZZZ extends ObjectZZZ implement
 		}
 		
 		protected void setName(String sName) {
-			this.getNamePartFilter().setName(sName);
+			this.getNamePartFilter().setFileName(sName);
 			this.getPathTotalFilter().setFileName(sName);
 			
 		}
 		protected String getName() {
-			return this.getNamePartFilter().getName();
+			return this.getNamePartFilter().getFileName();
 		}
 		
 		protected void setPrefix(String sPrefix) {

@@ -11,15 +11,13 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.IJarEasyConstantsZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
-	private String sFileName;
-	
+public class FilenamePartFilterNameZipZZZ extends AbstractFilenamePartFilterZipZZZ implements IFilenamePartFilterZipZZZ  {	
 	public FilenamePartFilterNameZipZZZ() {
 		super();
 	}
 	public FilenamePartFilterNameZipZZZ(String sFileName){
 		super();
-		this.setName(sFileName);
+		this.setFileName(sFileName);
 	}
 	
 	@Override
@@ -27,7 +25,7 @@ public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilename
 		    boolean bReturn=false;
 			main:{
 				if(ze==null) break main;				
-				if(StringZZZ.isEmpty(this.getName())) {
+				if(StringZZZ.isEmpty(this.getFileName())) {
 					bReturn = true;
 					break main;
 				}				
@@ -52,21 +50,16 @@ public class FilenamePartFilterNameZipZZZ extends ObjectZZZ implements IFilename
 	
 	//########################
 	//### Getter / Setter
-		public String getName(){
-			return this.sFileName;
-		}
-		public void setName(String sName){
-			this.sFileName = sName;
-		}
+
 	
 	//### Aus Interface
 	@Override
 	public void setCriterion(String sCriterion) {
-		this.setName(sCriterion);		
+		this.setFileName(sCriterion);		
 	}
 	@Override
 	public String getCriterion() {
-		return IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR + this.getName();
+		return IJarEasyConstantsZZZ.sDIRECTORY_SEPARATOR + this.getFileName();
 	}
 	
 

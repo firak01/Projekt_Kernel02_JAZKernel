@@ -10,7 +10,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterEndingZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
+public class FilenamePartFilterEndingZipZZZ extends AbstractFilenamePartFilterZipZZZ implements IFilenamePartFilterZipZZZ  {
 	private String sFileEnding;
 	
 	public FilenamePartFilterEndingZipZZZ() {
@@ -57,6 +57,4 @@ public class FilenamePartFilterEndingZipZZZ extends ObjectZZZ implements IFilena
 	public String getCriterion() {
 		return this.getEnding();
 	}
-	
-
 }

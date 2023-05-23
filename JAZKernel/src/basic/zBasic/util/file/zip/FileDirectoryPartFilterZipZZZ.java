@@ -10,22 +10,13 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 
-public class FileDirectoryPartFilterZipZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipZZZ{
-	private String sDirectoryPath;
-	
+public class FileDirectoryPartFilterZipZZZ extends AbstractFilenamePartFilterZipZZZ implements IFileDirectoryPartFilterZipZZZ{	
 	public FileDirectoryPartFilterZipZZZ() {
 		super();
 	}
 	public FileDirectoryPartFilterZipZZZ(String sDirectoryPath) throws ExceptionZZZ {
 		super();		
 		this.setDirectoryPath(sDirectoryPath);
-	}
-	
-	public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ {
-		this.sDirectoryPath = FileCommonsForFilterZipZZZ.computeDirectoryPath(sDirectoryPathIn);
-	}
-	public String getDirectoryPath() {
-		return this.sDirectoryPath;
 	}
 	
 	

@@ -13,9 +13,8 @@ import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilenamePartFilterZipZZZ  {
-	private String sDirectoryPath=null;
-		
+public class FilenamePartFilterPathZipZZZ extends AbstractFilenamePartFilterZipZZZ implements IFilenamePartFilterZipZZZ  {
+			
 	public FilenamePartFilterPathZipZZZ() {
 		super();
 	}
@@ -59,14 +58,7 @@ public class FilenamePartFilterPathZipZZZ extends ObjectZZZ implements IFilename
 	
 	//########################
 	//### Getter / Setter
-		public String getDirectoryPath(){
-			return this.sDirectoryPath;
-		}
-		public void setDirectoryPath(String sDirectoryPathIn) throws ExceptionZZZ{			
-			this.sDirectoryPath = FileCommonsForFilterZipZZZ.computeDirectoryPath(sDirectoryPathIn);
-		}
-		
-		
+	
 	
 	//### Aus Interface
 	@Override
