@@ -52,9 +52,13 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  * 
  */
 public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
-
+	public static String sDIRECTORY_CURRENT = FileEasyZZZ.sDIRECTORY_CURRENT;
+	public static String sDIRECTORY_PARENT = FileEasyZZZ.sDIRECTORY_PARENT;
+	public static String sDIRECTORY_SEPARATOR = FileEasyZZZ.sDIRECTORY_SEPARATOR;
+	public static char cDIRECTORY_SEPARATOR = FileEasyZZZ.cDIRECTORY_SEPARATOR;
+	public static String sDIRECTORY_RESSOURCE_ROOT = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Wenn man ein Projekt in eine JAR packt, hängt alles unter dem src Ordner
 	
-	
+		
 	/** Merke: Wenn ein Verzeichnis aus der JAR Datei zu extrahieren ist, dann wird lediglich die JAR Datei zurückgegeben.
 	 *         Verwende für die Behandlung eines ganzen Verzeichnisses (oder auch nur des Verzeichnisses) 
 	 *         die Methode, die ein Verzeichnis im TEMP-Ordner des HOST Rechners erstellt. 
@@ -1917,6 +1921,16 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 			return objaReturn;
 			}
 		
+		
+		public static boolean hasResourceDirectory(JarFile jar, String sPath) {
+			boolean bReturn = false;
+			main:{
+				//TODOGOON;//20230525: Wenn man nur prüfen will, ob es ein konkretes Verzeichnis gibt...
+				//ABER: GEHT DAS OHNE DIE GESAMTE JAR - DATEI ZU EXTRAHIEREN UND SO AUF PLATTE ZU PACKEN????
+			}//end main:
+			return bReturn; 
+		}
+		
 		/** Man sucht hiermit das Verzeichnis, dieses wird auch extrahiert(ggfs. mit Dateien) existieren.
 		 * @param sPath
 		 * @param sTargetDirectoryPathRootIn
@@ -1955,7 +1969,7 @@ private static File[] findFileInJar_(File objFileJar, ZipEntryFilter objPartFilt
 			return objaReturn;
 			}
 		
-		/** Man sucht hiermit das Verzeichnis und die darin enthaltenen Dateien dieses wird auch (GGfs. OHNE DATEIEN) extrahiert existieren.
+		/** Man sucht hiermit das Verzeichnis und die darin enthaltenen Dateien dieses wird auch (GGfs. OHNE DATEIEN) extrahiert.
 		 * @param sPath
 		 * @param sTargetDirectoryPathRootIn
 		 * @return

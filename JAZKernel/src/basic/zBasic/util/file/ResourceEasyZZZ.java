@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.jar.JarFile;
@@ -304,6 +305,8 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 	public static File searchDirectory(String sDirToSearch)throws ExceptionZZZ {
 		File objReturn = null;
 		main:{
+			
+			
 			String sLog = "(1) Directory to search for: '" + sDirToSearch + "'";
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 			objReturn = FileEasyZZZ.searchDirectory(sDirToSearch);
@@ -312,13 +315,54 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 			}
 			
 			if(ResourceEasyZZZ.isInJarStatic()) {
-				sLog = "(2) Directory to search for: '" + sDirToSearch + "'";
+				sDirToSearch = JarEasyInCurrentJarZZZ.joinFilePathName("src", sDirToSearch)	;			
+				sLog = "(2) Directory to search for: '" + sDirToSearch + "'";				
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 				objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectory(sDirToSearch, null, true);
 			}
 		}//end main:
 		return objReturn;
 	}
+	
+	public static String searchDirectoryAsString(String sDirToSearch) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			File objReturn = ResourceEasyZZZ.searchDirectory(sDirToSearch);
+			if(objReturn!=null) {
+					sReturn = objReturn.getAbsolutePath();			
+			}			
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String searchDirectoryAsStringRelative(String sDirToSearch) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String sDirectoryPath = ResourceEasyZZZ.searchDirectoryAsString(sDirToSearch);
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Directory Path found = '" + sDirectoryPath + "'");
+			if(sDirectoryPath ==null) break main;
+			
+			String sDirectoryWorkspace = null;
+			if(ResourceEasyZZZ.isInJarStatic()){
+				//Datei oder Verzeichnis wurden temporär abgelegt, hier: 'C:\DOKUME~1\LINDHA~1\LOKALE~1\Temp\ZZZ\src\resourceZZZ\image\tray'
+				//Das ist aber egal... 
+				
+				sDirectoryWorkspace =  JarEasyZZZ.sDIRECTORY_RESSOURCE_ROOT + JarEasyZZZ.sDIRECTORY_SEPARATOR + sDirToSearch;
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Path in Jar found = '" + sDirectoryPath + "'");
+				
+				sReturn = sDirectoryWorkspace;
+			}else {
+				sDirectoryWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();				
+				sDirectoryWorkspace = sDirectoryWorkspace + FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER + FileEasyZZZ.sDIRECTORY_SEPARATOR;
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Workspace Path found = '" + sDirectoryPath + "'");				
+				sReturn = StringZZZ.right(sDirectoryPath, sDirectoryWorkspace);	
+			}
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Found DirectoryAsStringRelative = '" + sReturn + "'");						
+		}//end main:
+		return sReturn;
+	}
+	
+	
 	
 	/** Finde das Verzeichnis. Zuerst auf einer Festplatte nachsehen, danach ggfs. in der JAR Datei, wenn der Code in einer JAR Datei ausgeführt wird.
 	 *  Es wird ein File-Objekt zurückgegeben, das auf der Platte gespeichert ist, bzw. ein das Temp-Verzeichnis auf die Platte gespeichert wird.

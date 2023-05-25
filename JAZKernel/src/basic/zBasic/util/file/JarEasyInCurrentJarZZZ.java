@@ -64,6 +64,10 @@ public class JarEasyInCurrentJarZZZ  implements IConstantZZZ,IResourceHandlingOb
 		return bReturn;
 	}
 	
+	public static String joinFilePathName(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ {
+		return FileEasyZZZ.joinFilePathNameForUrl(sFilePathIn, sFileNameIn);
+	}
+	
 	/**Extrahiert die Datei als echte TEMP Datei. Verzeichnisse werden dabei nicht angegelgt, sondern kommen in den Dateinamen
 	 * Z.B. template_template_server_starter.txt35232264199775134.tmp ist dann die Datei template_server_starter.txt im template Verzeichnis.
 	 * @param sPath

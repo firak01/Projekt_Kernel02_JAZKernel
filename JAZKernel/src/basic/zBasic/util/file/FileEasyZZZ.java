@@ -54,6 +54,7 @@ public class FileEasyZZZ extends ObjectZZZ{
 	public static String sDIRECTORY_CURRENT = ".";
 	public static String sDIRECTORY_PARENT = "..";
 	public static String sDIRECTORY_SEPARATOR = File.separator; //z.B. Backslash in Windows
+	public static char cDIRECTORY_SEPARATOR = File.separatorChar;
 	public static String sDIRECTORY_SEPARATOR_WINDOWS ="\\";
 	public static String sDIRECTORY_SEPARATOR_UNIX ="/";
 	
@@ -610,7 +611,7 @@ private static File splitFilePathName_(String sFilePath, ReferenceZZZ<String> st
 public static File searchDirectory(String sDirectoryPathIn) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
-		String sLog = "Directory to search for: '" + sDirectoryPathIn + "'";
+		String sLog = ReflectCodeZZZ.getPositionCurrent() + ": Directory to search for= '" + sDirectoryPathIn + "'";
 		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 		objReturn = FileEasyZZZ.searchDirectory(sDirectoryPathIn, false);
 	}//end main:
@@ -1716,19 +1717,22 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false, false);
 	}
 	
-	/**
+	/** Es wird der lokale Root bei relativen Pfaden nicht vorangestellt.
+	 *                               Sondern nur ein SLASH.
+	 *                               Ist quasi für Pfade auf anderen Servern, z.B. FTP.
 	 * @param sFilePathIn
-	 * @param sFileNameIn
-	 * @param bRemote,               wenn true, dann wird der lokale Root bei relativen Pfaden nicht vorangestellt. Ist quasi für Pfade auf anderen Servern.
+	 * @param sFileNameIn              
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.02.2021, 08:45:42
 	 */
-	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, boolean bRemote) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, bRemote, false);
+	public static String joinFilePathNameForRemote(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, true, false);
 	}
 	
-	/**
+	/** Es wird der lokale Root bei relativen Pfaden nicht vorangestellt.
+	 *                               Sondern nur ein SLASH.
+	 *                               Ist quasi für Pfade auf anderen Servern, z.B. FTP.
 	 * @param sFilePathIn
 	 * @param sFileNameIn
 	 * @param cDirectorySeparator
@@ -1737,8 +1741,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:01
 	 */
-	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, bRemote, false);
+	public static String joinFilePathNameForRemote(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, true, false);
 	}
 	
 	/**Den Dateipfad so zusammensetzen wie er für ein ZIP / JAR Archiv gueltig ist.
@@ -1753,8 +1757,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
 	 */
-	public static String joinFilePathNameInJar(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, true); //Ohne src voranzustellen
+	public static String joinFilePathNameForUrl(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{		
+		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, true); //Ohne src voranzustellen
 		sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn); //Backslash in Slash umwandeln, etc.                    
 		return sReturn;
 	}
@@ -1768,7 +1772,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:13
 	 */
-	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote, boolean bJar) throws ExceptionZZZ{
+	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote, boolean bUrl) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 		String stemp;
@@ -1781,7 +1785,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			//Zumindest bei T-Online FTP Server ist der fuehrende Slah gewünscht.
 			sRoot = CharZZZ.toString(cDirectorySeparator);
 			sFilePath = sFilePathIn;					
-		}else if(bJar) {
+		}else if(bUrl) {
 			//!!! Wenn Pfade in einem JAR / ZIP File bearbeitet werden, dann keine src-Folder voranstellen
 			sRoot = "";
 			sFilePath = sFilePathIn;
@@ -1795,6 +1799,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				sFilePath = FileEasyZZZ.getDirectoryOfExecutionAsString();
 			}else{
 				sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
+				sFilePath = StringZZZ.stripFileSeparatorsLeft(sFilePath);
 				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {
 					sRoot = FileEasyZZZ.getFileRootPath();									
 					if(!(sFilePath + sDirectorySeparator).startsWith(sRoot + sDirectorySeparator) && !(sFilePath + sDirectorySeparator).startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {													
@@ -2655,6 +2660,25 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}
 		return sReturn;
 	}
+	
+	
+	public static String getDirectoryOfSystemClassloaderAsString() throws ExceptionZZZ {
+		String sReturn = "";
+		main:{						
+			URL url= ClassLoader.getSystemResource(".");
+			if(url==null) {
+				String sLog = "unable to receive url object";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}else {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": URL = '"+url.toExternalForm() + "'");
+			}
+			sReturn = url.toExternalForm();
+		}//end main:
+		return sReturn;
+	}
+	
 	
 	/** Wenn der Code in Eclipse läuft, wird der Pfad zum Projekt zurückgegeben, z.B.:
 	 * C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZKernel\JAZKernel

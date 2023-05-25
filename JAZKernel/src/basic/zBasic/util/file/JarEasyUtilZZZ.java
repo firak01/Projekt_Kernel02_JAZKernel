@@ -427,9 +427,6 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			
 			//Innerhalb der JAR-Datei wird immer mit / gearbeitet.
 			sReturn = StringZZZ.replace(sReturn, FileEasyZZZ.sDIRECTORY_SEPARATOR, "/");
-		
-			
-			
 		}
 		return sReturn;
 	}
@@ -678,7 +675,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			}
 			
 			//!!! Achtung ohne die spezielle Jar-Variante würde ein src vorangestellt... aber in der JAR-Datei ist das nicht so!!!
-			sReturn = FileEasyZZZ.joinFilePathNameInJar(sDirectoryPathNormed, sFilePathNormed);			
+			sReturn = FileEasyZZZ.joinFilePathNameForUrl(sDirectoryPathNormed, sFilePathNormed);			
 		}//end main:
 		return sReturn;		
 	}
