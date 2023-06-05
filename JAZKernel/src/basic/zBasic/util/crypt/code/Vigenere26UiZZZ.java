@@ -9,7 +9,7 @@ import base.files.EncodingMaintypeZZZ;
 import base.files.EncodingMappedValueZZZ;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.datatype.string.FileEncodingUtil;
+import basic.zBasic.util.datatype.string.FileEncodingUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 

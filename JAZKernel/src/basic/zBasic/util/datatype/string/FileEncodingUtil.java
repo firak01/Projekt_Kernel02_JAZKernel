@@ -1,4 +1,4 @@
-package basic.zBasic.datatype.string;
+package basic.zBasic.util.datatype.string;
 
 import java.io.BufferedInputStream;
 import java.io.File;

@@ -9,6 +9,7 @@ import basic.zBasic.util.web.cgi.UrlLogicZZZ;
 public abstract class UrlLogicBaseZZZ implements IUrlLogicZZZ{	
 	public static final String sURL_SEPARATOR_PROTOCOL = "://";
 	public static final String sURL_SEPARATOR_PROTOCOL_FILE = ":///"; //Irgendwie ein Slash mehr, warum?
+	public static final String sURL_SEPARATOR_PROTOCOL_FILE_ABSOLUT = ":/"; //Irgendwie nur 1 Slash, warum?
 	private String sUrl;
 	
 	public UrlLogicBaseZZZ(){		
@@ -78,13 +79,32 @@ public abstract class UrlLogicBaseZZZ implements IUrlLogicZZZ{
 				throw ez;
 			}
 			
-			bReturn = StringZZZ.contains(sUrl, sURL_SEPARATOR_PROTOCOL);
-			
+			bReturn = StringZZZ.contains(sUrl, sURL_SEPARATOR_PROTOCOL);			
 			if(bReturn){
 				String stemp = StringZZZ.left(sUrl, sURL_SEPARATOR_PROTOCOL);
 				if(StringZZZ.isEmpty(stemp)) bReturn = false;
-			}			
+				break main;
+			}
+			
+			String sProtocolPlusSeparator = "file" + sURL_SEPARATOR_PROTOCOL_FILE_ABSOLUT;
+			bReturn = UrlLogicBaseZZZ.hasProtocol(sUrl, sProtocolPlusSeparator);
 		}
 		return bReturn;
+	}
+	
+	public static boolean hasProtocol(String sUrl, String sProtocolPlusSeparator) {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sUrl)) break main;
+			if(StringZZZ.isEmpty(sProtocolPlusSeparator)) break main;
+			
+			bReturn = StringZZZ.contains(sUrl, sProtocolPlusSeparator);			
+			if(bReturn){
+				String stemp = StringZZZ.left(sUrl, sProtocolPlusSeparator);
+				if(!StringZZZ.isEmpty(stemp)) bReturn = false;
+				break main;
+			}
+		}//end main:
+		return bReturn;		
 	}
 }

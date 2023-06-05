@@ -7,7 +7,7 @@ import base.files.DateiUtil;
 import base.files.EncodingMaintypeZZZ;
 import base.files.EncodingMappedValueZZZ;
 import base.io.IoUtil;
-import basic.zBasic.datatype.string.FileEncodingUtil;
+import basic.zBasic.util.datatype.string.FileEncodingUtil;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 
 /** Aus "Kryptographie mit Java", Seite 31ff

@@ -39,6 +39,36 @@ public class FileEasyZZZTest extends TestCase{
 		}
 	}//END tearDown
 	
+	public void testJoinFilePathName() {
+		try {
+			String sDirPathTotal = FileEasyZZZ.joinFilePathName("directory", "testNotExisting.txt");
+			System.out.println(sDirPathTotal);
+			assertEquals("src\\directory\\testNotExisting.txt",sDirPathTotal);
+			
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("tryout\\basic\\zKernel\\html\\writer","TableData4Debug.xml");
+			System.out.println(sDirPathTotal);
+			assertEquals("tryout\\basic\\zKernel\\html\\writer\\TableData4Debug.xml",sDirPathTotal);
+			
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("test\\basic\\zKernel\\html\\writer","TableData4Debug.xml");
+			System.out.println(sDirPathTotal);
+			assertEquals("test\\basic\\zKernel\\html\\writer\\TableData4Debug.xml",sDirPathTotal);
+			
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("src\\basic\\zKernel\\html\\writer","TableData4Debug.xml");
+			System.out.println(sDirPathTotal);
+			assertEquals("src\\basic\\zKernel\\html\\writer\\TableData4Debug.xml",sDirPathTotal);
+			
+			
+			System.out.println(sDirPathTotal);
+			
+			
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
+	
 	
 		
 	public void testRemoveDirectoryContent(){

@@ -387,6 +387,12 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				  if(obj == null) break main;
 			  }//END check:
 		  
+		  //TODOGOON: Falls eine Class übergeben wird, kommt java.lang raus.
+		  //          Das ist nicht gewünscht. Es sollte ein Objekt der Klasse instantiert werden 
+		  //          und davon der Pfad geholt werden
+		  //          z.B. String sPackagePath = ReflectCodeZZZ.getPackagePath(DebugWriterHtmlByXsltZZZ.class);
+
+		  
 		  Class objClass = obj.getClass();
 		  Package objPackage  = objClass.getPackage();
 		  if(objPackage!=null) {

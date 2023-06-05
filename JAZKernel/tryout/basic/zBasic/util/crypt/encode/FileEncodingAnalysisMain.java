@@ -5,7 +5,7 @@ import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 
-import basic.zBasic.datatype.string.FileEncodingUtil;
+import basic.zBasic.util.datatype.string.FileEncodingUtil;
 
 public class FileEncodingAnalysisMain {
 
