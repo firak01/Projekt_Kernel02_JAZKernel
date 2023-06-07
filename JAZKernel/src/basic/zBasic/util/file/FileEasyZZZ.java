@@ -1645,6 +1645,17 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return sReturn;
 	}
 
+	public static String getParent(File objFile) throws ExceptionZZZ{
+		String sReturn = "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
+		main:{
+			if(objFile==null) break main;
+			
+			String sFilePath = objFile.getAbsolutePath();
+			sReturn = FileEasyZZZ.getParent(sFilePath);
+		}
+		return sReturn;
+	}
+
 	public static String getParent(String sFilePathIn) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{

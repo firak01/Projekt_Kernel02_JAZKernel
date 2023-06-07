@@ -401,6 +401,36 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 		return sReturn;			
 	  }
 	
+	 
+	  /** String, use this method for receiving the path to the current package. This will return a string containg File.seperator-character.
+	   *  Remark: Using Class.getPackagePath will result in a String beginning with the word 'Package '.
+	   *  
+	   *  REMARK: THIS METHOD THROWS NO EXCEPTION. THEN IT CAN BE USED FOR THE DECLARATION OF STATIC VARIABLES
+	   *  
+	   	Falls eine Class übergeben wird, kommt java.lang raus.
+		Das ist nicht gewünscht. Es sollte ein Objekt der Klasse instantiert werden 
+		und davon der Pfad geholt werden
+		z.B. String sPackagePath = ReflectCodeZZZ.getPackagePath(DebugWriterHtmlByXsltZZZ.class);
+		
+		Darum eine neue Methode mit Class als Argument.
+	   *  
+	* lindhaueradmin; 25.06.2006 12:51:08
+	 * @param obj
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	public static String getPackagePathForConstant(Object obj){
+		  String sReturn = null;
+		  main:{
+			  if(obj == null) break main;
+			  
+			  Class objClass = obj.getClass();
+			  sReturn = ReflectCodeZZZ.getPackagePathForConstant(objClass);
+		  
+		  }//END Main:
+		return sReturn;			
+	  }
+	
 	  /** String, use this method for receiving the path to the current package. This will return a string containg File.seperator-character.
 	   *  Remark: Using Class.getPackagePath will result in a String beginning with the word 'Package '.
 	   *  
@@ -409,6 +439,31 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	 * @return
 	 */
 	public static String getPackagePath(Class objClass)throws ExceptionZZZ{
+		  String sReturn = null;
+		  main:{			 
+				  if(objClass == null) break main;
+				  
+				  Package objPackage  = objClass.getPackage();
+				  if(objPackage!=null) {
+					  sReturn = objPackage.getName(); //Merke: Wenn Klassen in einem JAR-File zusammengefasst werden, dann haben sie ein leeres Package
+					  sReturn =StringZZZ.replace(sReturn,  ReflectCodeZZZ.sPACKAGE_SEPERATOR, File.separator);
+				  }else{
+					  sReturn = ".";
+				  }				  
+		  }//END Main:
+		return sReturn;			
+	  }
+	
+	 /** String, use this method for receiving the path to the current package. This will return a string containg File.seperator-character.
+	   *  Remark: Using Class.getPackagePath will result in a String beginning with the word 'Package '.
+	   *  
+	   *  REMARK: THIS METHOD THROWS NO EXCEPTION. THEN IT CAN BE USED FOR THE DECLARATION OF STATIC VARIABLES 
+	   *  
+	* lindhaueradmin; 25.06.2006 12:51:08
+	 * @param obj
+	 * @return
+	 */
+	public static String getPackagePathForConstant(Class objClass){
 		  String sReturn = null;
 		  main:{			 
 				  if(objClass == null) break main;
