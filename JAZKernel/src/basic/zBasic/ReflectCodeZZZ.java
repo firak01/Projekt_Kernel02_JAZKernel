@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -376,35 +377,82 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	  /** String, use this method for receiving the path to the current package. This will return a string containg File.seperator-character.
 	   *  Remark: Using Class.getPackagePath will result in a String beginning with the word 'Package '.
 	   *  
+	   	Falls eine Class übergeben wird, kommt java.lang raus.
+  		Das ist nicht gewünscht. Es sollte ein Objekt der Klasse instantiert werden 
+		und davon der Pfad geholt werden
+		z.B. String sPackagePath = ReflectCodeZZZ.getPackagePath(DebugWriterHtmlByXsltZZZ.class);
+		
+		Darum eine neue Methode mit Class als Argument.
+	   *  
 	* lindhaueradmin; 25.06.2006 12:51:08
 	 * @param obj
 	 * @return
+	 * @throws ExceptionZZZ 
 	 */
-	public static String getPackagePath(Object obj){
+	public static String getPackagePath(Object obj) throws ExceptionZZZ{
 		  String sReturn = null;
 		  main:{
-			  check:{
-				  if(obj == null) break main;
-			  }//END check:
-		  
-		  //TODOGOON: Falls eine Class übergeben wird, kommt java.lang raus.
-		  //          Das ist nicht gewünscht. Es sollte ein Objekt der Klasse instantiert werden 
-		  //          und davon der Pfad geholt werden
-		  //          z.B. String sPackagePath = ReflectCodeZZZ.getPackagePath(DebugWriterHtmlByXsltZZZ.class);
-
-		  
-		  Class objClass = obj.getClass();
-		  Package objPackage  = objClass.getPackage();
-		  if(objPackage!=null) {
-			  sReturn = objPackage.getName(); //Merke: Wenn Klassen in einem JAR-File zusammengefasst werden, dann haben sie ein leeres Package
-			  sReturn =StringZZZ.replace(sReturn,  ReflectCodeZZZ.sPACKAGE_SEPERATOR, File.separator);
-		  }else{
-			  sReturn = ".";
-		  }
+			  if(obj == null) break main;
+			  
+			  Class objClass = obj.getClass();
+			  sReturn = ReflectCodeZZZ.getPackagePath(objClass);
 		  
 		  }//END Main:
 		return sReturn;			
 	  }
+	
+	  /** String, use this method for receiving the path to the current package. This will return a string containg File.seperator-character.
+	   *  Remark: Using Class.getPackagePath will result in a String beginning with the word 'Package '.
+	   *  
+	* lindhaueradmin; 25.06.2006 12:51:08
+	 * @param obj
+	 * @return
+	 */
+	public static String getPackagePath(Class objClass)throws ExceptionZZZ{
+		  String sReturn = null;
+		  main:{			 
+				  if(objClass == null) break main;
+				  
+				  Package objPackage  = objClass.getPackage();
+				  if(objPackage!=null) {
+					  sReturn = objPackage.getName(); //Merke: Wenn Klassen in einem JAR-File zusammengefasst werden, dann haben sie ein leeres Package
+					  sReturn =StringZZZ.replace(sReturn,  ReflectCodeZZZ.sPACKAGE_SEPERATOR, File.separator);
+				  }else{
+					  sReturn = ".";
+				  }				  
+		  }//END Main:
+		return sReturn;			
+	  }
+	
+	  /** String, use this method for receiving the path to the current package. This will return a string containg File.seperator-character.
+	   *  Remark: Using Class.getPackagePath will result in a String beginning with the word 'Package '.
+	   *  
+	* lindhaueradmin; 25.06.2006 12:51:08
+	 * @param obj
+	 * @return
+	 */
+	public static String getPackagePathByReflection(Class objClass)throws ExceptionZZZ{
+		  String sReturn = null;
+		  main:{
+			  try {
+				  if(objClass == null) break main;
+				
+				//Merke: Fuer einen anderen Konstruktor, z.B. int,int,double
+				//final Myclass v = MyClass.class.getConstructor(
+				//	   int.class, int.class, double.class).newInstance(_xval1,_xval2,_pval);
+				  				  
+				  Object obj = objClass.getConstructor().newInstance();				
+				  sReturn = ReflectCodeZZZ.getPackagePath(obj);				  
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				ExceptionZZZ ez = new ExceptionZZZ(e);
+				throw ez;
+			}
+		  }//END Main:
+		return sReturn;			
+	  }
+	
+	
 	
 	/**  Gibt den reinen Klassennamen (also ohne . oder / ) zur�ck.
 	 * Falls "this" in einer statischen Methode aufgerufen wird, so gibt es die gleiche Methode noch mit einem erwarteten class-Object als Parameter.
