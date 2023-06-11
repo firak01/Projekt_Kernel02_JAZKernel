@@ -8,7 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class HashMapMultiIndexedZZZ extends HashMapMultiZZZ{
+public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	private int iIndexLast = -1;
 	private int iIndexHigh = -1;
 	

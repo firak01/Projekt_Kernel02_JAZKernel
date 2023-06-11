@@ -1,5 +1,6 @@
 package basic.zBasic.util.abstractList;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -11,16 +12,19 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Klasse dient dazu eine bestehende HashMap zu verwenden, aber das Ergebnis garantiert über eine eindeutigen Schlüsselindex zurückzubekommen.
  * Die Klasse erweitert nicht HashMap, weil sonst alle Methoden auf einen Schlag überschrieben werden müssten.
  * @author Lindhauer
  *
  */
-public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{	
+public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>,Serializable{	
 	private HashMap<Integer,Object> hmIndexed=null;
 	private VectorExtendedZZZ<Integer> vecIndex=null;	
 	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
+	
+	private String sDummy=null;
 	
 	public HashMapIndexedZZZ() throws ExceptionZZZ{
 		HashMapIndexedNew_(null);
@@ -54,8 +58,18 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 		return bReturn;
 	}
 	
+	public String getDummy() {
+		if(this.sDummy==null) {
+			this.sDummy = "TESTWERT DEFAULT. Statisch, nicht uebergeben!!";
+		}
+		return this.sDummy;
+	}
+	public void setDummy(String sDummy) {		
+		this.sDummy = sDummy;
+	}
+	
 
-	/** Object, Den Key des ersten Objekts zur�ckgeben. (Das ist das erste Element des internen Vectors.)
+	/** Object, Den Key des ersten Objekts zurueckgeben. (Das ist das erste Element des internen Vectors.)
 	* Lindhauer; 27.04.2006 08:13:07
 	 * @return Object
 	 * @throws ExceptionZZZ 
@@ -398,6 +412,15 @@ public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>{
 			}
 		}//end main;
 		return bReturn;
+	}
+	
+	public String toString() {
+		String sReturn = null;
+		main:{
+			HashMap<Integer,Object>hm = this.getHashMap();
+			sReturn = hm.toString();				
+		}//end main:
+		return sReturn;
 	}
 
 	
