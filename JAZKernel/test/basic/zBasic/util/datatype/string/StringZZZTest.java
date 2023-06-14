@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import junit.framework.TestCase;
 
@@ -605,6 +606,12 @@ public void testVecMidFirst(){
 		Vector vec = StringZZZ.vecMidFirst(sTest, "[", "]", false);
 		assertEquals(vec.size(), 3);
 		
+		//Es soll noch 1x der umgebenden Tags mehr vorhanden sein.
+		String sProof = VectorZZZ.implode(vec);
+		assertEquals(StringZZZ.count(sProof, "["),1);
+		assertEquals(StringZZZ.count(sProof, "]"),1);
+		
+
 		String sFormula0 = (String) vec.get(0);
 		assertEquals("<Z><Z:Call><Z:Java><Z:Class><Z>", sFormula0);
 		
@@ -613,7 +620,10 @@ public void testVecMidFirst(){
 		
 		String sFormula2 = (String) vec.get(2);
 		assertEquals("JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>", sFormula2);
-				
+
+		//###############################
+		
+		
 	}catch(ExceptionZZZ ez){
 		fail("Method throws an exception." + ez.getMessageLast());
 	}

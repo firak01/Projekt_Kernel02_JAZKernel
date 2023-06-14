@@ -244,7 +244,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag("useformula_math", true); //Damit jetzt die MATH FORMEL ausgerechnet wird
 			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMathValue", "Formula1").getValue();
 			sValue="Der dynamische Wert ist '23'. FGL rulez."; //Also der Wert ohne einen Operator auszurechnen.
-			assertTrue("Im Ergebnis wurde eine zusammengesetzte '23' erwartet.", StringZZZ.contains(sExpression, "23"));
+			assertTrue("Im Ergebnis '" + sExpression + "' wurde eine zusammengesetzte '23' erwartet.", StringZZZ.contains(sExpression, "23"));
 			assertEquals(sValue, sExpression);
 			
 			

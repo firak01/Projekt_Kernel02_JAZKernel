@@ -33,7 +33,9 @@ public interface IKernelZZZ extends IKernelConfigParameterHandlerZZZ,IKernelCach
 	public String getApplicationKey() throws ExceptionZZZ;
 	public String getSystemKey() throws ExceptionZZZ;	
 	public String getSystemNumber() throws ExceptionZZZ;
-			
+	public String getFileConfigKernelDirectory()throws ExceptionZZZ;
+	public String getFileConfigKernelName()throws ExceptionZZZ;
+	
 	public boolean isOnServer() throws ExceptionZZZ;
 	public boolean isInJar() throws ExceptionZZZ;	
 	

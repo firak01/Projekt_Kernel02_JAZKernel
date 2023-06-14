@@ -1303,17 +1303,19 @@ public class StringZZZ implements IConstantZZZ{
 			
 			String sLeft = StringZZZ.left(sStringToParse, sLeftSep);
 			if(sLeft==null) sLeft="";
-			/*
-			if(StringZZZ.isEmpty(sLeft))
-				{
-				vecReturn.add(sStringToParse);
-				vecReturn.add("");
-				vecReturn.add("");
-				break main;
-				}
-				*/
+			boolean bNixLinks=false;
+			if(StringZZZ.isEmpty(sLeft)){
+				bNixLinks = true;
+//				vecReturn.add("");
+//				vecReturn.add(sStringToParse);
+//				vecReturn.add("");
+//				break main;
+			}
+				
 			
-			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sLeftSep.length());
+			//String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sLeftSep.length());
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length());
+			if(sRemainingTagged==null) sRemainingTagged="";
 			/*
 			if(StringZZZ.isEmpty(sRemainingTagged)){
 				vecReturn.add(sStringToParse);
@@ -1323,23 +1325,37 @@ public class StringZZZ implements IConstantZZZ{
 			}
 			*/
 			
-			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep);//!!!nur left, wg. "First", anders als sonst leftback!!!
-			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.add(sStringToParse);
-				vecReturn.add("");
-				vecReturn.add("");
-				break main;
+			//nun gibt es einen Ausdruck			
+//			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());
+			String sRight = StringZZZ.rightback(sRemainingTagged, sRightSep);
+			if(sRight==null) sRight = "";
+			boolean bNixRechts=false;
+			if(StringZZZ.isEmpty(sRight)){
+				bNixRechts=true;
+//				vecReturn.add(sLeft);
+//				vecReturn.add(sRemainingTagged);
+//				vecReturn.add("");
+//				break main;
 			}
 			
+			String sExpressionTagged = StringZZZ.left(sRemainingTagged + sRightSep, sRightSep);//!!!nur left, wg. "First", anders als sonst leftback!!!
+			if(sExpressionTagged==null) sExpressionTagged="";
 			
-			//nun gibt es einen Ausdruck			
-			String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length());
-			if(sRight==null) sRight = "";
+			sExpressionTagged = StringZZZ.right(sLeftSep + sExpressionTagged, sLeftSep);
+			if(sExpressionTagged==null) sExpressionTagged="";
 			
+//			if(StringZZZ.isEmpty(sExpressionTagged)){
+//				vecReturn.add(sStringToParse);
+//				vecReturn.add("");
+//				vecReturn.add("");
+//				break main;
+//			}
+			
+						
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			if(bReturnSeparators) {
 				sLeft = sLeft + sLeftSep;
-				sRight = sRightSep + sRight;
+				sRight = sRightSep + sRight; 
 			}
 			vecReturn.add(sLeft);
 			

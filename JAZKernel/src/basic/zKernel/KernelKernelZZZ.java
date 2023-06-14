@@ -417,6 +417,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return objReturn;
 	}
 	
+	@Override
 	public String getFileConfigKernelName() throws ExceptionZZZ{		
 		String sFileConfigKernelName = this.sFileConfig;
 		if(StringZZZ.isEmpty(sFileConfigKernelName)){
@@ -430,6 +431,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		this.sFileConfig = sFileConfig;
 	}
 	
+	@Override
 	public String getFileConfigKernelDirectory() throws ExceptionZZZ{		
 		String sDirectoryConfig = this.sDirectoryConfig;
 		File objDir = null;
@@ -1953,7 +1955,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			}
 			
 			
-			FileIniZZZ objFileConfigIni = this.getFileConfigKernelIni();
+			//FileIniZZZ objFileConfigIni = this.getFileConfigKernelIni();
 			
 			
 			//Nun alle Ausprägungen der Systemkey in eine ArrayList packen
@@ -6053,29 +6055,6 @@ MeinTestParameter=blablaErgebnis
 				}
 				bReturn = this.getFlag("INIT");
 		 		if(bReturn) break main;
-				
-				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this);
-				this.setFileConfigKernelIni(objFileIniZZZ);
-		
-				//Registriere das FileIniZZZ - Objekt fuer Aenderungen an den Kernel Flags. Z.B. wenn mal die <Z>-Formeln ausgewertet werden sollen, mal nicht.
-				this.registerForFlagEvent(objFileIniZZZ);
-				
-				if(saFlagUsed!=null) {
-					//setzen der ggfs. aus dem Config Objekt zu übernehmende, gültige Flags
-					for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
-					  stemp = saFlagUsed[iCount];
-					  if(!StringZZZ.isEmpty(stemp)){
-						  btemp = setFlag(stemp, true);
-						  if(btemp==false){
-							  sLog = "the flag '" + stemp + "' is not available.";
-							  this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
-							  throw ez;		 
-						  }
-					  }
-					}
-				}//end if saFlagUsed!=null
-				
 											
 				//++++++++++++++++++++++++++++++
 				//Nun geht es darum ggfs. die Flags zu übernehmen, die in irgendeiner Klasse gesetzt werden sollen.
@@ -6310,7 +6289,12 @@ MeinTestParameter=blablaErgebnis
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationfile: '" + sFileConfig + "'");
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
 				}							
-								
+						
+				//##################################################################################
+				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this);
+				this.setFileConfigKernelIni(objFileIniZZZ);
+		
+				
 				//### Arbeite mit den Einträgen in der Ini-Datei
 				//Wirf eine Exception wenn weder der Application noch der SystemKey in der Konfigurationsdatei existieren
 				String sKeyToProof = this.getApplicationKey();
@@ -6323,6 +6307,25 @@ MeinTestParameter=blablaErgebnis
 					throw ez;
 				}
 						
+				//Registriere das FileIniZZZ - Objekt fuer Aenderungen an den Kernel Flags. Z.B. wenn mal die <Z>-Formeln ausgewertet werden sollen, mal nicht.
+				this.registerForFlagEvent(objFileIniZZZ);
+				
+				if(saFlagUsed!=null) {
+					//setzen der ggfs. aus dem Config Objekt zu übernehmende, gültige Flags
+					for(int iCount = 0;iCount<=saFlagUsed.length-1;iCount++){
+					  stemp = saFlagUsed[iCount];
+					  if(!StringZZZ.isEmpty(stemp)){
+						  btemp = setFlag(stemp, true);
+						  if(btemp==false){
+							  sLog = "the flag '" + stemp + "' is not available.";
+							  this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+							  throw ez;		 
+						  }
+					  }
+					}
+				}//end if saFlagUsed!=null
+				
 				//##################################################################################
 				//create the log using the configured path/file
 				IniFile objIni = this.getFileConfigKernelAsIni();

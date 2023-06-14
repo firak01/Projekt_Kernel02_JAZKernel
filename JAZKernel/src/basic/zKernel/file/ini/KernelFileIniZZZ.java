@@ -86,8 +86,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	public KernelFileIniZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);//20210402: Die direkte FlagVerarbeitung wird nun im ElternObjekt gemacht
 		
-		String[]saFlagControl = {"INIT"};
-		KernelFileIniNew_(null, null, null, null, saFlagControl);
+		String[]saFlagControl = {""};
+		KernelFileIniNew_(null, objKernel.getFileConfigKernelDirectory(), objKernel.getFileConfigKernelName(), null, saFlagControl);
 	}
 	
 	public KernelFileIniZZZ(IKernelZZZ objKernel, String sDirectory, String sFilename, String[] saFlagControl) throws ExceptionZZZ{

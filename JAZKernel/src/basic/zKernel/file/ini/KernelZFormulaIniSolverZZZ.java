@@ -240,7 +240,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 
 			//Als echten Ergebniswert aber die Z-Tags rausrechnen
 			//An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
-			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND es sind noch andere Formel Z-Tags "<Z:... im String vorhanden 
+			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND(!) es sind noch andere Formel Z-Tags "<Z:... im String vorhanden 
 			String sTagStart = this.getExpressionTagStarting();
 			String sTagEnd = this.getExpressionTagClosing();
 			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);

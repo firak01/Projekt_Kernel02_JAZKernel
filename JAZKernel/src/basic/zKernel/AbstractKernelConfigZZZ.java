@@ -140,8 +140,9 @@ public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKern
 		
 		ReferenceZZZ<IKernelConfigSectionEntryZZZ> objReturnReference= new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 		try {
-			if(bUseExpression && bUseFormula) {
-				int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted((FileIniZZZ) null, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objReturnReference);
+			if(bUseExpression && bUseFormula) {	
+				FileIniZZZ objFileIniConfig = new FileIniZZZ();
+				int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(objFileIniConfig, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objReturnReference);
 				sReturn = objReturnReference.get().getValue();
 			}else {
 				sReturn  = sDirectoryNameRead;
@@ -236,7 +237,7 @@ public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKern
 			if(sReturn==null){
 				sReturn = this.getConfigDirectoryNameDefault();				
 			}
-			sReturn = this.expressionSolveConfigDirectoryNameDefault(sReturn);
+			sReturn = this.expressionSolveConfigDirectoryNameDefault(sReturn);			
 		}//end main:						
 		return sReturn;
 	} 

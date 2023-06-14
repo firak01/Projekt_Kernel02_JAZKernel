@@ -233,6 +233,28 @@ public static File getDirectory(String sFilePathTotal) throws ExceptionZZZ {
 	return objReturn;
 }
 
+public static String getDirectoryNameFirst(String sFilePathTotal) throws ExceptionZZZ {
+	String sReturn=sFilePathTotal;
+	main:{
+		if(StringZZZ.isEmpty(sFilePathTotal)) break main;
+		
+		StringTokenizer objTokenizer = new StringTokenizer(sFilePathTotal, FileEasyZZZ.sDIRECTORY_SEPARATOR);
+		sReturn = objTokenizer.nextToken();
+	}//end main:
+	return sReturn;	
+}
+
+public static String getDirectoryPathFollowing(String sDirectoryStart, String sFilePathTotal) throws ExceptionZZZ{
+	String sReturn = sFilePathTotal;
+	main:{
+		if(StringZZZ.isEmpty(sFilePathTotal)) break main;
+		if(StringZZZ.isEmpty(sDirectoryStart)) break main;
+		
+		sReturn = StringZZZ.left(sFilePathTotal, sDirectoryStart+FileEasyZZZ.sDIRECTORY_SEPARATOR);
+	}//end main:
+	return sReturn;	
+}
+
 
 /**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
  *  Darum wird hier per classloader die Ressource geholt.
@@ -636,38 +658,48 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		boolean bUseProjectBaseForTest=false;boolean bUseProjectBaseForTryout=false;
 		boolean bUseClasspathSource=false;
 	
-		//SUCHE NACH RELATIVEN PFADEN
+		//SUCHE NACH RELATIVEN PFADEN				
 		//Merke: Änderungen auch hier berücksichtigen: searchFileObjectByClassloader_(String sPathIn) throws ExceptionZZZ{
 		if(sDirectoryIn==null){			
 			bUseProjectBase=true;	
-		}else if(sDirectoryIn.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){		
-			bUseProjectBase=true;			
-		}else if(sDirectoryIn.equals("")){			
-			bUseClasspathSource=true;
-		}else if(sDirectoryIn.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){			
-			bUseClasspathSource=true;		
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_PARENT)){
-			bUseProjectBase=true;
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){			
-			bUseClasspathSource=true;						
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
-			bUseProjectBaseForTest=true;
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
-			bUseProjectBaseForTryout=true;
-		}else if(sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
-			bUseClasspathSource=true;
 		}else {
-			if(FileEasyZZZ.isPathAbsolut(sDirectoryIn)) {
-				objReturn = searchFileObjectByClassloader_(sDirectoryIn, false);
-				break main;
-			}
-						
-			//+++ Der Normalfall, aber auch hier darauf achten, nicht den Root erneut davorzusetzen.
-			String sPathRoot = FileEasyZZZ.getFileRootPath();
-			if( !(sDirectoryIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+			if(sDirectoryIn.startsWith(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty()+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+			   | (sDirectoryIn.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty()))){		
+				bUseProjectBase=true;			
+			}else if(sDirectoryIn.equals("")
+				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_SEPARATOR)){			
+				bUseClasspathSource=true;
+			}else if(sDirectoryIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){			
+				bUseClasspathSource=true;		
+			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_PARENT+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_PARENT)){
+				bUseProjectBase=true;
+			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+				bUseClasspathSource=true;						
+			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+				bUseProjectBaseForTest=true;
+			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
+				bUseProjectBaseForTryout=true;
+			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
 				bUseClasspathSource=true;
 			}else {
-				bUseClasspathSource=false;
+				if(FileEasyZZZ.isPathAbsolut(sDirectoryIn)) {
+					objReturn = searchFileObjectByClassloader_(sDirectoryIn, false);
+					break main;
+				}
+							
+				//+++ Der Normalfall, aber auch hier darauf achten, nicht den Root erneut davorzusetzen.
+				String sPathRoot = FileEasyZZZ.getFileRootPath();
+				if( !(sDirectoryIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+					bUseClasspathSource=true;
+				}else {
+					bUseClasspathSource=false;
+				}				
 			}
 			sDirectory = sDirectoryIn;
 		}
@@ -682,7 +714,9 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		
 		//+++ Spezialfall ('test')
 		if(bUseProjectBaseForTest){		
-			sDirectory = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+			String sDirectoryFirst = FileEasyZZZ.getDirectoryNameFirst(sDirectory);
+			String sDirectoryRemaining = FileEasyZZZ.getDirectoryPathFollowing(sDirectoryFirst, sDirectory);
+			sDirectory = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER, sDirectoryRemaining);
 			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
@@ -690,8 +724,10 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		}
 		
 		//+++ Spezialfall ('tryout')
-		if(bUseProjectBaseForTest){		
-			sDirectory = FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
+		if(bUseProjectBaseForTryout){
+			String sDirectoryFirst = FileEasyZZZ.getDirectoryNameFirst(sDirectory);
+			String sDirectoryRemaining = FileEasyZZZ.getDirectoryPathFollowing(sDirectoryFirst, sDirectory);
+			sDirectory = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER, sDirectoryRemaining);
 			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
