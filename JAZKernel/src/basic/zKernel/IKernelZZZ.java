@@ -29,6 +29,7 @@ public interface IKernelZZZ extends IKernelConfigParameterHandlerZZZ,IKernelCach
 	
 	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ;	
 	public LogZZZ getLogObject();
+	public void setLogObject(LogZZZ objLog);
 	
 	public String getApplicationKey() throws ExceptionZZZ;
 	public String getSystemKey() throws ExceptionZZZ;	
@@ -48,7 +49,7 @@ public interface IKernelZZZ extends IKernelConfigParameterHandlerZZZ,IKernelCach
 	
 	public FileIniZZZ searchModuleFileWithProgramAlias(String sModule, String sProgramOrSection) throws ExceptionZZZ;
 	
-	HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapEntryByProgramAlias(String sModule, String sKeyInHashMapForProgramOrSection, String sValueInHashMapForsProperty) throws ExceptionZZZ;
+	//HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapWithEntryByProgramAlias(String sModule, String sKeyInHashMapForProgramOrSection, String sValueInHashMapForsProperty) throws ExceptionZZZ;
 	
 	public IKernelConfigSectionEntryZZZ getProgramAliasFor(String sModuleOrProgram) throws ExceptionZZZ;
 	public IKernelConfigSectionEntryZZZ getSectionAliasFor(String sModuleOrProgramAsSection) throws ExceptionZZZ;

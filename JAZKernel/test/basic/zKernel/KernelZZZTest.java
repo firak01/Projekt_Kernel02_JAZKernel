@@ -1519,7 +1519,7 @@ public void testGetModuleAliasAll(){
 		}
 	}
 	
-	public void testGetParameterArrayStringByProgramAlias() {
+	public void testGetParameterArrayWithStringByProgramAlias() {
 		try {
 			boolean bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
@@ -1528,7 +1528,7 @@ public void testGetModuleAliasAll(){
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'",bFlagExists);
 			
-			String[]sa = objKernelFGL.getParameterArrayStringByProgramAlias("Test", "testGetParameterArrayByProgramAlias", "testValue01");
+			String[]sa = objKernelFGL.getParameterArrayWithStringByProgramAlias("Test", "testGetParameterArrayByProgramAlias", "testValue01");
 			assertNotNull(sa);
 			assertFalse(ArrayUtilZZZ.isEmpty(sa));											
 		}catch(ExceptionZZZ ez){
@@ -1536,7 +1536,7 @@ public void testGetModuleAliasAll(){
 		}
 	}
 	
-	public void testGetParameterHashMapStringByProgramAlias() {
+	public void testGetParameterHashMapWithStringByProgramAlias() {
 		try {
 			boolean bFlagExists = objKernelFGL.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION + "'",bFlagExists);
@@ -1545,7 +1545,7 @@ public void testGetModuleAliasAll(){
 			bFlagExists = objKernelFGL.setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP, true);
 			assertTrue("Flag wurde erwartet: '" + IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP + "'",bFlagExists);
 			
-			HashMap<String,String> hm = objKernelFGL.getParameterHashMapStringByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
+			HashMap<String,String> hm = objKernelFGL.getParameterHashMapWithStringByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
 			assertNotNull(hm);
 			assertFalse(hm.isEmpty());
 									
@@ -1554,10 +1554,10 @@ public void testGetModuleAliasAll(){
 		}
 	}
 	
-	public void testGetParameterHashMapEntryByProgramAlias() {
+	public void testGetParameterHashMapWithEntryByProgramAlias() {
 		try {
 
-			HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hm= objKernelFGL.getParameterHashMapEntryByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
+			HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hm= objKernelFGL.getParameterHashMapWithEntryByProgramAlias("Test", "testGetParameterHashMapStringByProgramAlias", "testValue01");
 			assertNotNull(hm);
 			assertFalse(hm.isEmpty());
 			

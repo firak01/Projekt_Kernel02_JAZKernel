@@ -190,6 +190,6 @@ public KernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZZZ{
 				bReturn = JarEasyUtilZZZ.isInJar(KernelZZZ.class);
 			}
 			return bReturn;
-		}		
+		}	
 
 }//end class// end class

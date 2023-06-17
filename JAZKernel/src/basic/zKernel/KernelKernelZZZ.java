@@ -306,6 +306,7 @@ public KernelKernelZZZ(String[] saArg, String[] saFlagControl) throws ExceptionZ
 	
 	
 	//############################
+	@Override
 	public LogZZZ getLogObject(){
 		return this.objLog;
 	}
@@ -4111,9 +4112,29 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 	
+	@Override
+	public IKernelConfigSectionEntryZZZ[] getParameterArrayWithEntryByProgramAlias(String sProgramAndSection, String sProperty) throws ExceptionZZZ {
+		IKernelConfigSectionEntryZZZ[] objaReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
+		String sDebug = "";
+		main:{
+			
+			//### Modulalias holen
+			//Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
+			//Das passt aber nicht... IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
+			//if(objAlias.hasAnyValue()) {
+			//	String sAlias = objAlias.getProperty();
+			//	hmReturn = this.getParameterArrayWithEntryByProgramAlias(sAlias, sModuleAndProgramAndSection,sProperty);
+			//}else {
+			    //Applicationkey als Modulalias
+				objaReturn = this.getParameterArrayWithEntryByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);
+			//}	
+		
+		}//end main:
+		return objaReturn;
+	}
 	
 	//############################################################################
-	public IKernelConfigSectionEntryZZZ[] getParameterArrayByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+	public IKernelConfigSectionEntryZZZ[] getParameterArrayWithEntryByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ[] objaReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		String sDebug = "";
 		main:{
@@ -4595,6 +4616,25 @@ MeinTestParameter=blablaErgebnis
 	}
 		
 	
+
+	@Override
+	public String[] getParameterArrayWithStringByProgramAlias(String sProgramAndSection, String sProperty)throws ExceptionZZZ {
+		String[] saReturn = null;
+		main:{
+			//### Modulalias holen
+			//Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
+			//Das passt aber nicht... IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
+			//if(objAlias.hasAnyValue()) {
+			//	String sAlias = objAlias.getProperty();
+			//	hmReturn = this.getParameterArrayWithStringByProgramAlias(sAlias, sModuleAndProgramAndSection,sProperty);
+			//}else {
+			    //Applicationkey als Modulalias
+				saReturn = this.getParameterArrayWithStringByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);
+			//}	
+		}//end main:
+		return saReturn;
+	}
+	
 	/**Returns an array-object on a configured value. 
 	 * Because it is used very often, this comfortabel method is available.
 	 * Remark: If the Separator is not provided a default one will be used.
@@ -4606,11 +4646,11 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 07.04.2020, 08:10:43
 	 */
-	public String[] getParameterArrayStringByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
+	public String[] getParameterArrayWithStringByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			//String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue();
-			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterArrayByProgramAlias(sModule, sSectionOrProgram, sProperty);
+			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterArrayWithEntryByProgramAlias(sModule, sSectionOrProgram, sProperty);
 			if(objaEntry!=null){
 				
 				//Hole getValue aus jedem Entry und packe es in eine ArrayList, die dann als StringArray zurückgegeben wird.
@@ -4629,7 +4669,58 @@ MeinTestParameter=blablaErgebnis
 		return saReturn;
 	}
 	
-	public HashMap<String,String>getParameterHashMapStringByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+	public HashMap<String,String>getParameterHashMapWithStringByProgramAlias(String sProgramAndSection, String sProperty) throws ExceptionZZZ{
+		HashMap<String,String>hmReturn = null;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		String sDebug;
+			
+		main:{				
+			//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
+			//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
+			//Aber: Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
+				//  Darum findet hier nicht das Nachsehen im Cache statt. 
+			
+			
+			//### Modulalias holen
+			//Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
+			//Das passt aber nicht... IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
+			//if(objAlias.hasAnyValue()) {
+			//	String sAlias = objAlias.getProperty();
+			//	hmReturn = this.getParameterHashMapWithStringByProgramAlias(sAlias, sModuleAndProgramAndSection,sProperty);
+			//}else {
+			    //Applicationkey als Modulalias
+				hmReturn = this.getParameterHashMapWithStringByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);
+			//}				
+		}
+		return hmReturn;
+	}
+	
+	public HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapWithEntryByProgramAlias(String sProgramAndSection, String sProperty) throws ExceptionZZZ{
+		HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hmReturn = null;		
+		String sDebug;
+			
+		main:{				
+			//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
+			//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
+			//Aber: Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
+				//  Darum findet hier nicht das Nachsehen im Cache statt. 
+			
+			
+			//### Modulalias holen
+			//Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
+			//Das passt aber nicht... IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
+			//if(objAlias.hasAnyValue()) {
+			//	String sAlias = objAlias.getProperty();
+			//	hmReturn = this.getParameterHashMapWithEntryByProgramAlias(sAlias, sModuleAndProgramAndSection,sProperty);
+			//}else {
+			    //Applicationkey als Modulalias
+				hmReturn = this.getParameterHashMapWithEntryByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);
+			//}			
+		}
+		return hmReturn;
+	}
+	
+	public HashMap<String,String>getParameterHashMapWithStringByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn = null;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug;
@@ -4648,6 +4739,7 @@ MeinTestParameter=blablaErgebnis
 			IKernelConfigSectionEntryZZZ objReturn =  new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			objReturn.setSection(sProgramOrSection);
 			objReturn.setProperty(sProperty);
+
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
 			objReturnReference.set(objReturn);
 			objReturn = this.KernelSearchParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true, objReturnReference);
@@ -4662,21 +4754,23 @@ MeinTestParameter=blablaErgebnis
 		}
 		return hmReturn;
 	}
+	
+	
 
 	@Override
-	public HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapEntryByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+	public HashMapIndexedZZZ<Integer, IKernelConfigSectionEntryZZZ> getParameterHashMapWithEntryByProgramAlias(String sModuleAlias, String sProgramOrSection, String sProperty) throws ExceptionZZZ {
 		HashMapIndexedZZZ<Integer, IKernelConfigSectionEntryZZZ>hmReturn = null;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		String sDebug;
 			
 		main:{		
 			
-			hmDebug.put("+++ HashMapMethod calling SectionEntry-Method. Input: " + sModule + "," + sProgramOrSection ,sProperty);
+			hmDebug.put("+++ HashMapMethod calling SectionEntry-Method. Input: " + sModuleAlias + "," + sProgramOrSection ,sProperty);
 			
 			//Erst einmal das Array holen. 
 			//Merke: Die Werte im Array sind geclont 
 			//und es soll bei einer HashMap entsprechende Flags und Werte (z.B. speziell für HashMap ein Aliaswert) gesetzt sein.
-			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterArrayByProgramAlias(sModule, sProgramOrSection, sProperty);
+			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterArrayWithEntryByProgramAlias(sModuleAlias, sProgramOrSection, sProperty);
 			if(objaEntry!=null){
 				
 				//Packe jeden Entry in eine HashMap. Verwende dabei den Index des Entrywerts als Schlüssel für die Indizierte HashMap.
@@ -4697,6 +4791,8 @@ MeinTestParameter=blablaErgebnis
 		}
 		return hmReturn;
 	}
+
+	
 	
 	
 	/** Return a file-object on a configured file name. 
