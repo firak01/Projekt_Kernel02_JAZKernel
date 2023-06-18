@@ -3,6 +3,7 @@ package basic.zBasic.util.datatype.json;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -131,7 +132,7 @@ public class JsonEasyZZZ extends ObjectZZZ{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 03.04.2021, 09:52:34
 	 */
-	public static HashMap<?,?> toHashMap(TypeToken typeToken, String sJson) throws ExceptionZZZ {
+	public static HashMap<?,?> toHashMap(String sJson) throws ExceptionZZZ {
 		HashMap<?,?> hmReturn = null; 
 		main:{
 			if(StringZZZ.isEmpty(sJson)){
@@ -143,14 +144,33 @@ public class JsonEasyZZZ extends ObjectZZZ{
 				throw ez;
 			}
 			
-			if(typeToken==null){
-				ExceptionZZZ ez = new ExceptionZZZ("No TypeToken available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-			hmReturn = new HashMap();
-						
+			
+			//Das berücksichtigt nicht die Reihenfolge!!
+			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
+									
 			Gson gson=new GsonBuilder().create();
 			Type type = typeToken.getType();
+			hmReturn = gson.fromJson(sJson, type);		
+		}//end main:
+		return hmReturn;
+	}
+	
+	public static LinkedHashMap<?,?> toLinkedHashMap(String sJson) throws ExceptionZZZ{
+		LinkedHashMap<?,?> hmReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sJson)){
+				ExceptionZZZ ez = new ExceptionZZZ("No string available.", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(!JsonEasyZZZ.isJsonValid(sJson)) {
+				ExceptionZZZ ez = new ExceptionZZZ("JsonString not valid '" + sJson + "'", iERROR_PARAMETER_MISSING, JsonEasyZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+	
+			TypeToken<LinkedHashMap<String, String>> typeToken = new TypeToken<LinkedHashMap<String, String>>(){};
+			Type type = typeToken.getType();
+			
+			Gson gson=new GsonBuilder().create();
 			hmReturn = gson.fromJson(sJson, type);		
 		}//end main:
 		return hmReturn;

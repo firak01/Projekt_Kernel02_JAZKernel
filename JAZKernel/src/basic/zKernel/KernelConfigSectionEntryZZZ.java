@@ -148,45 +148,35 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		IKernelConfigSectionEntryZZZ[] objaReturn = {};//Mit diesem Trick wird ein leeres Array initialisiert, statt null;
 		main:{
 			if(objEntry==null) break main;
-			if(!objEntry.hasAnyValue()) {
-//				objaReturn = new IKernelConfigSectionEntryZZZ[1];
-//				objaReturn[0] = objEntry;
-				break main;
-			}else {
-				if(!objEntry.isJsonMap()) {
-					break main;
-				}else {
-					
-					//20210812 jetzt auch für die Map clonen UND DABEI DEN ALIAS-WERT SETZEN
-					HashMap<String,String>hmss = objEntry.getValueHashMap();
-					if(hmss==null)break main;
-					if(hmss.isEmpty())break main;
-					
-					objaReturn = new IKernelConfigSectionEntryZZZ[hmss.size()];
-					int iCounter=-1;
-					
-					Set<String> setKey = hmss.keySet();
-					Iterator<String>itKey = setKey.iterator();
-					while(itKey.hasNext()) {
-						IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone(); //damit werden alle Ursprungswerte übernommen.
-						
-						String sKey = itKey.next();
-						String sValue = hmss.get(sKey);
-						
-						objEntrytemp.setKey(sKey);        //Speziell für die HashMap						
-						objEntrytemp.setValue(sValue);		//Merke: sRaw wird nicht zerlegt!!!	
-						//objEntrytemp.isJson(false);       //Dementsprechend soll auch Ursprungstyp nicht geändert werden.
-						//objEntrytemp.isJsonArray(false);
-												
-						objEntrytemp.isExploded(true);
-						
-						iCounter++; 
-						objEntrytemp.setIndex(iCounter);
-		
-						objaReturn[iCounter] = objEntrytemp;
-					}
-				}			
-			}
+			if(!objEntry.hasAnyValue()) break main;
+			if(!objEntry.isJsonMap()) break main;			
+							
+			//20210812 jetzt auch für die Map clonen UND DABEI DEN ALIAS-WERT SETZEN
+			HashMap<String,String>hmss = objEntry.getValueHashMap();
+			if(hmss==null)break main;
+			if(hmss.isEmpty())break main;
+			
+			objaReturn = new IKernelConfigSectionEntryZZZ[hmss.size()];
+			int iCounter=-1;
+			
+			Set<String> setKey = hmss.keySet();
+			Iterator<String>itKey = setKey.iterator();
+			while(itKey.hasNext()) {
+				IKernelConfigSectionEntryZZZ objEntrytemp = objEntry.clone(); //damit werden alle Ursprungswerte übernommen.
+				
+				String sKey = itKey.next();
+				String sValue = hmss.get(sKey);
+				
+				objEntrytemp.setKey(sKey);        //Speziell für die HashMap						
+				objEntrytemp.setValue(sValue);		//Merke: sRaw wird nicht zerlegt!!!	
+										
+				objEntrytemp.isExploded(true);
+				
+				iCounter++; 
+				objEntrytemp.setIndex(iCounter);
+
+				objaReturn[iCounter] = objEntrytemp;
+			}		
 		}//end main:
 		return objaReturn;
 	}

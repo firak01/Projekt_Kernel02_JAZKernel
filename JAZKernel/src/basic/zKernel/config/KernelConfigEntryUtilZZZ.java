@@ -333,14 +333,16 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 		 main:{			 			 								
 			 		if(!bUseJson)break main;
 			 		
+			 		if(objFileIni==null){
+						String stemp = "'IniFile'";
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+						ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+			 		
 			 		boolean bUseJsonArray = objFileIni.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY);
 					if(bUseJsonArray) {
-						if(objFileIni==null){
-							String stemp = "'IniFile'";
-							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-						}
+						
 						
 						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonArray passen.
 						//      Darum neu definieren
@@ -359,14 +361,8 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 			 		
 			 		boolean bUseJsonMap = objFileIni.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP);
 					if(bUseJsonMap) {				
-						if(objFileIni==null){
-							String stemp = "'IniFile'";
-							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-							ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
-							throw ez;
-						}
-						
-						//ABER: Nicht alle flags aus saFlagZpassed mussen für JsonMap passen
+												
+					  //ABER: Nicht alle flags aus saFlagZpassed mussen für JsonMap passen
 //				      Darum neu definieren
 						KernelJsonMapIniSolverZZZ exDummy03 = new KernelJsonMapIniSolverZZZ();
 						String[] saFlagZpassed03 = FlagZFassadeZZZ.seekFlagZrelevantForObject(objFileIni, exDummy03, true); //this.getFlagZ_passable(true, exDummy);					
@@ -438,36 +434,31 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 	public static boolean getValueJsonMapSolved(FileIniZZZ objFileIni, String sRaw, boolean bUseJson, String[] saFlagZpassed, ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			if(bUseJson){
-				if(objFileIni==null){
-					String stemp = "'IniFile'";
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
-					ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PROPERTY_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+			if(!bUseJson) break main;
+			
+			if(objFileIni==null){
+				String stemp = "'IniFile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, KernelConfigEntryUtilZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			boolean bAnyJson = false;
+			
+			HashMap<String,String> hmtemp = null;
+			if(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelJsonMapIniSolverZZZ.sTAG_NAME)){												
+				KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed);
+				hmtemp = ex.computeLinkedHashMap(sRaw);
+				if(hmtemp.isEmpty()) {				
+				}else{
+					bAnyJson = true;
 				}
-				
-				HashMap<String,String> hmValueSolved=null;
-				boolean bAnyJson = false;
-				
-				HashMap<String,String> hmtemp = null;
-				if(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelJsonMapIniSolverZZZ.sTAG_NAME)){
-														
-					KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed);
-					hmtemp = ex.computeHashMap(sRaw);
-					if(hmtemp.isEmpty()) {				
-					}else{
-						bAnyJson = true;
-					}
-				}
+			}
 
-				if(bAnyJson){
-					objhmReturnValueJsonSolved.set(hmtemp);	
-					bReturn = true;
-				}												
-			}else{
-				//Fall: Keine Formel soll interpretiert werden.
-				//unverändert
-			}		
+			if(bAnyJson){
+				objhmReturnValueJsonSolved.set(hmtemp);	
+				bReturn = true;
+			}													
 		}//end main:
 		return bReturn;
 	}

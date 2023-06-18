@@ -176,7 +176,7 @@ public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKern
 			if(!JsonEasyZZZ.isJsonValid(sJSON)) break main;
 						
 			TypeToken<HashMap<String, Boolean>> typeToken = new TypeToken<HashMap<String, Boolean>>(){};
-			hmReturn = (HashMap<String, Boolean>) JsonEasyZZZ.toHashMap(typeToken, sJSON);												
+			hmReturn = (HashMap<String, Boolean>) JsonEasyZZZ.toHashMap(sJSON);												
 		}//end main
 		return hmReturn;
 	}

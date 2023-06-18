@@ -3,6 +3,7 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.Vector;
 
@@ -189,8 +190,49 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 			//ANSCHLIESSEND die HashMap erstellen
 			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
 			
-			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
-			hmReturn = JsonEasyZZZ.toHashMap(typeToken, sReturn);
+			//Merke: Die Reihenfolge nicht berücksichtige		
+			hmReturn = JsonEasyZZZ.toHashMap(sReturn);
+			
+			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
+		}//end main:
+		return hmReturn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public HashMap<String,String> computeLinkedHashMap(String sLineWithExpression) throws ExceptionZZZ{
+		LinkedHashMap<String,String> hmReturn = new LinkedHashMap<String,String>();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			if(this.getFlag(IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name())== false) break main;
+			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP)== false) break main;
+			
+			String sReturn = "";
+			Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			
+			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
+			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
+			//GuiLabelFontSize_float=<Z><Z:math><Z:val>[THM]GuiLabelFontSizeBase_float</Z:val><Z:op>*</Z:op><Z:val><z:var>GuiZoomFactorUsed</z:var></Z:val></Z:math></Z>
+			
+			//Beschränke das ausrechnen auf den JSON-MAP Teil  sReturn = VectorZZZ.implode(vecAll);//Erst den Vector der "übersetzten" Werte zusammensetzen
+			sReturn = vecAll.get(1);
+			if(this.getFlag("useFormula_math")==true){				
+				//Dann erzeuge neues KernelExpressionMathSolverZZZ - Objekt.
+				KernelZFormulaMathSolverZZZ objMathSolver = new KernelZFormulaMathSolverZZZ(); 
+													
+				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
+				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?
+				while(objMathSolver.isExpression(sReturn)){
+					String sValueMath = objMathSolver.compute(sReturn);
+					sReturn=sValueMath;				
+				}	
+				//sReturn = VectorZZZ.implode(vecAll);
+			}
+			
+			//ANSCHLIESSEND die HashMap erstellen
+			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
+			
+			//Ziel: Die Reihenfolge berücksichtige		
+			hmReturn = (LinkedHashMap<String, String>) JsonEasyZZZ.toLinkedHashMap(sReturn);
 			
 			//Merke: Die Positionen vec(0) und vec(2) werden also dann entfallen.
 		}//end main:
