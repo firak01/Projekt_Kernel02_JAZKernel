@@ -17,11 +17,15 @@ import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
  *
  */
 public class ConfigFGL extends AbstractKernelConfigZZZ{
+	private static String sPROJECT_PATH = "Projekt_Kernel02_JAZKernel";
+	private static String sPROJECT_NAME = "JAZKernel";
 	//private static String sDIRECTORY_CONFIG_DEFAULT = "c:\\fglKernel\\KernelConfig";//Wenn der String absolut angegeben ist, so muss er auch vorhanden sein.
 	private static String sDIRECTORY_CONFIG_DEFAULT = "<z:Null/>";//Merke: Ein Leerstring ist der Root vom Classpath, z.B. in Eclipse der src-Ordner. Ein "." oder ein NULL-Wert ist der Projektordner in Eclipse
 	private static String sFILE_CONFIG_DEFAULT = "ZKernelConfigKernel_default.ini";
 	private static String sKEY_APPLICATION_DEFAULT = "FGL";
 	private static String sNUMBER_SYSTEM_DEFAULT= "01";
+	
+	
 
 	
 	public ConfigFGL() throws ExceptionZZZ{
@@ -47,4 +51,12 @@ public class ConfigFGL extends AbstractKernelConfigZZZ{
 	public String getSystemNumberDefault() {
 		return ConfigFGL.sNUMBER_SYSTEM_DEFAULT;
 }
+	@Override
+	public String getProjectName() {
+		return ConfigFGL.sPROJECT_NAME;
+	}
+	@Override
+	public String getProjectDirectory() {
+		return ConfigFGL.sPROJECT_PATH;
+	}
 }

@@ -8,7 +8,7 @@ public class DummyClassImplementingEnumByInterface extends AbstractKernelProgram
 	public enum FLAGZ{
 		CLASSZZZ_DUMMYENUM01, CLASSZZZ_DUMMYENUM02; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
 	}
-	public DummyClassImplementingEnumByInterface() {
+	public DummyClassImplementingEnumByInterface() throws ExceptionZZZ {
 		super();
 	}
 	

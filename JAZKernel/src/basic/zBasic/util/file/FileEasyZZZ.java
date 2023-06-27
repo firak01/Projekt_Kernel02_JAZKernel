@@ -38,10 +38,12 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
+import basic.zKernel.IKernelConfigZZZ;
 import basic.zKernel.KernelKernelZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
@@ -112,6 +114,27 @@ public static boolean exists (String sFileName) throws ExceptionZZZ {
 	return bReturn;
 } 
 
+/** Überprüft, ob unter dem angegebenen pfadnamen "fileName" eine Datei existiert.
+ *  Merke: Das hat einen anderen Algorithums, als die gleiche Methode mit File-Objekt als Parameter
+ * @param fileName
+ * @return
+ * @throws ExceptionZZZ 
+ */
+public static boolean existsInWorkspace(String sFileName) throws ExceptionZZZ {
+	boolean bReturn = false;
+	main:{
+		if(StringZZZ.isEmpty(sFileName)){
+			ExceptionZZZ ez  = new ExceptionZZZ("FileName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		//Prüfen, ob der Dateiname existiert oder nicht. Dabei wird ggf. auch ein relativer DateiPfad ber�cksichtig.
+		File f = FileEasyZZZ.searchFileInWorkspace(sFileName);
+		if(f!=null) bReturn = f.exists();
+	}//end main:
+	return bReturn;
+} 
+
 /** Überprüft, ob das angegebene Fileobjekt existiert.
  *  Merke1: objDir.exists(); //!!! Pfade, die auf ein Verzeichnis weisen existieren immer
  *  Merke2: Das hat einen anderen Algorithums, als die gleiche Methode mit String Parameter
@@ -142,41 +165,7 @@ public static boolean exists(File objFile) throws ExceptionZZZ {
 			break main;
 		}
 		
-		/* Was ist davon zu halten?
-		 * 
-		 * public class Test
-{
-
-  public static void main(String[] args)
-  {
-
-    File file = new File("C:\\Temp");
-    System.out.println("File Folder Exist" + isFileDirectoryExists(file));
-    System.out.println("Directory Exists" + isDirectoryExists("C:\\Temp"));
-
-  }
-
-  public static boolean isFileDirectoryExists(File file)
-
-  {
-    if (file.exists())
-    {
-      return true;
-    }
-    return false;
-  }
-
-  public static boolean isDirectoryExists(String directoryPath)
-
-  {
-    if (!Paths.get(directoryPath).toFile().isDirectory())
-    {
-      return false;
-    }
-    return true;
-  }
-  
-		 */
+		
 		
 	}//end main:
 	return bReturn;
@@ -305,6 +294,19 @@ public static File searchFile(String sFilePath) throws ExceptionZZZ{
 	return objReturn;
 }
 
+
+public static File searchFileInWorkspace(String sFilePath) throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		if(StringZZZ.isEmpty(sFilePath)){
+			ExceptionZZZ ez  = new ExceptionZZZ("FileName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}		
+	    objReturn = FileEasyZZZ.searchFileObjectInWorkspace(sFilePath);
+	}//end main:
+	return objReturn;
+}
+
 /**Das Problem mit einfachen java.io.File ist, dass es in .jar Datei nicht funktioniert. 
  *  Darum wird hier per classloader die Ressource geholt.
  * @param sFilePath
@@ -324,6 +326,36 @@ public static File searchFile(String sDirectory, String sFileNameIn)throws Excep
 			
 		String sFilePath = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);	
 		objReturn = FileEasyZZZ.searchFile(sFilePath);
+
+	}//END main:
+	return objReturn;	
+}
+
+public static File searchFileInWorkspace(IKernelConfigZZZ objConfig, String sDirectory, String sFileNameIn)throws ExceptionZZZ{
+	File objReturn = null;
+	main:{
+		String sFileName;
+		if(StringZZZ.isEmpty(sFileNameIn)){
+			ExceptionZZZ ez  = new ExceptionZZZ("FileName", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}else {
+			sFileName = sFileNameIn;
+		}
+		
+		 if(objConfig==null) {
+	    	ExceptionZZZ ez = new ExceptionZZZ("IKernelConfig - Object", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+	    }
+		//Das ist ein Z-Kernel Konzept und funktioniert nur innerhalb der Entwicklungsumgebung
+	    if(!objConfig.isInIDE()) break main;
+		
+//	    String sWorkspaceProjekt = objConfig.getProjectPathTotal();
+//	    String sDirectoryTotal = FileEasyZZZ.joinFilePathNameForWorkspace(sWorkspaceProjekt, sDirectory);		
+	    String sDirectoryTotal = ReflectWorkspaceZZZ.computeWorkspacePath(objConfig, sDirectory);
+	    
+	    //Da vorher schon ggfs. ein src-Verzeichnis hinzugefügt worden ist jetzt explizit keines mehr hinzufügen
+		String sFilePath = FileEasyZZZ.joinFilePathNameForUrl(sDirectoryTotal, sFileName);	
+		objReturn = FileEasyZZZ.searchFileInWorkspace(sFilePath);
 
 	}//END main:
 	return objReturn;	
@@ -455,12 +487,10 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 		}
 		sLog = ReflectCodeZZZ.getPositionCurrent()+": (4) Searching for file '" + sFilePathTotal +"'";
 	    System.out.println(sLog);
-		objReturn = FileEasyZZZ.getFileObjectInProjectPath(sFilePathTotal);
+		objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sFilePathTotal);
 		if(objReturn!=null){
 			if(objReturn.exists()) break main;
 		}
-		
-
 		
 		//+++ 4. Versuch (WebService) im Classpath suchen 
 		//Problematik: Zugriff auf die Datei, wenn Sie in einem WAR File gepackt ist.
@@ -689,7 +719,8 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				bUseClasspathSource=true;
 			}else {
 				if(FileEasyZZZ.isPathAbsolut(sDirectoryIn)) {
-					objReturn = searchFileObjectByClassloader_(sDirectoryIn, false);
+					//objReturn = searchFileObjectByClassloader_(sDirectoryIn, false);
+					objReturn = FileEasyZZZ.searchFileObject(sDirectoryIn);
 					break main;
 				}
 							
@@ -717,7 +748,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			String sDirectoryFirst = FileEasyZZZ.getDirectoryNameFirst(sDirectory);
 			String sDirectoryRemaining = FileEasyZZZ.getDirectoryPathFollowing(sDirectoryFirst, sDirectory);
 			sDirectory = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER, sDirectoryRemaining);
-			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);			
+			objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
@@ -728,7 +759,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			String sDirectoryFirst = FileEasyZZZ.getDirectoryNameFirst(sDirectory);
 			String sDirectoryRemaining = FileEasyZZZ.getDirectoryPathFollowing(sDirectoryFirst, sDirectory);
 			sDirectory = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER, sDirectoryRemaining);
-			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);			
+			objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
 			}
@@ -772,14 +803,15 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				if(FileEasyZZZ.exists(objReturn)) break main;
 			}
 			
-			//+++ 2. Versuch im Eclipse Workspace zu suchen.
-			objReturn = FileEasyZZZ.getFileObjectInProjectPath(sDirectory);	
+			//+++ 2. Versuch im Eclipse Workspace, im aktuellen Projekt suchen.
+			objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sDirectory);	
 			if(objReturn!=null){
 				if(FileEasyZZZ.exists(objReturn)) break main;
 			}
 			
-			String sLog = "Directory not found: '" + sDirectory + "'";
+			String sLog = "Directory not found in RunningExecutionProjectPath: '" + sDirectory + "'";
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+			
 			if(!bSearchInJar) break main;
 			
 			//##################################################
@@ -1791,11 +1823,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ 
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, false, false);
 	}
 	
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false, false, false);
 	}
 	
 	/** Es wird der lokale Root bei relativen Pfaden nicht vorangestellt.
@@ -1808,7 +1840,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 05.02.2021, 08:45:42
 	 */
 	public static String joinFilePathNameForRemote(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, true, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, true, false, false);
 	}
 	
 	/** Es wird der lokale Root bei relativen Pfaden nicht vorangestellt.
@@ -1823,7 +1855,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:01
 	 */
 	public static String joinFilePathNameForRemote(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, true, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, true, false, false);
 	}
 	
 	/**Den Dateipfad so zusammensetzen wie er für ein ZIP / JAR Archiv gueltig ist.
@@ -1839,8 +1871,23 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
 	 */
 	public static String joinFilePathNameForUrl(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{		
-		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, true); //Ohne src voranzustellen
+		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, true, false); //Ohne src voranzustellen
 		sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn); //Backslash in Slash umwandeln, etc.                    
+		return sReturn;
+	}
+	
+	/**Den Dateipfad so zusammensetzen dass immer der ermittelte ROOT-Pfad, also ggfs. src verwendet wird.
+	 * Slash in Backslash umwandeln, etc.
+	 * 
+	 * @param sFilePathIn
+	 * @param sFileNameIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
+	 */
+	public static String joinFilePathNameForWorkspace(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{		
+		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, false, true); //Ohne src voranzustellen
+		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.                    
 		return sReturn;
 	}
 	
@@ -1853,12 +1900,21 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:13
 	 */
-	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote, boolean bUrl) throws ExceptionZZZ{
+	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote, boolean bUrl, boolean bWorkspace) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 		String stemp;
 		String sFilePath; 	String sFileName; String sRoot="";
 		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
+				
+		//ZUALLERERST DEN FILENAME pruefen
+		sFileName = StringZZZ.stripFileSeparators(sFileNameIn);
+		if(!StringZZZ.isEmpty(sFileName)) {
+			if(FileEasyZZZ.isPathAbsolut(sFileName)){
+				sReturn = sFileName;
+				break main;
+			}
+		}
 		
 		//ZUERST DEN ROOT AUSRECHNEN
 		//!!! WENN bRemote, dann den Pfad nicht verändern!!!
@@ -1870,6 +1926,16 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}else if(bUrl) {
 			//!!! Wenn Pfade in einem JAR / ZIP File bearbeitet werden, dann keine src-Folder voranstellen
 			sFilePath = sFilePathIn;
+		} else if(bWorkspace) {
+			//!!! Wenn sichergestellt werden soll, dass ein src-Verzeichnis ggfs. verwendet wird, auch bei ggf. absoluten Pfaden
+			sFilePath = sFilePathIn;						
+			if(!(StringZZZ.endsWith(sFilePath, FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER) |
+				 StringZZZ.endsWith(sFilePath, FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER) |
+				 StringZZZ.endsWith(sFilePath, FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER))){
+				
+				sRoot = FileEasyZZZ.getFileRootPath();
+				sFilePath = FileEasyZZZ.joinFilePathName(sFilePath, sRoot, cDirectorySeparator);
+			}
 		} else{
 			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
 			if(sFilePathIn==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePathIn)){
@@ -1893,50 +1959,52 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
 					}
 				}else if(FileEasyZZZ.isPathRelative(sFilePath) & StringZZZ.isEmpty(sFilePath)){
-					sFilePath = "";
-					sRoot = FileEasyZZZ.getFileRootPath();					
+					if(sFilePath=="") {
+						sRoot = FileEasyZZZ.getFileRootPath();
+					}else if(sFilePath==null) {
+						sFilePath = "";
+						sRoot = "";
+					}
 				}
 			}
 		}
 				
-		sFileName = StringZZZ.stripFileSeparators(sFileNameIn);		
 		if(StringZZZ.isEmpty(sFileName)){
-			//An empty string or NULL is allowed for Filename			
+			//An empty string or NULL is allowed for Filename	
 			sReturn = sFilePath;
 			break main;
-		}else{
-			//Falls sFileNameIn ein Teil von sFilePathIn ist, oder in einem anderen Verzeichnis			
-			//1. TEST: Name hat Bestandteil des Filepfads enthalten
-			if(!StringZZZ.isEmpty(sFilePath)) {
-				if(sFileNameIn.startsWith(sFilePath+sDirectorySeparator)) {
-					sFileName = StringZZZ.right(sFileName, sFilePath+sDirectorySeparator, true);
-				}											   	
-			}		 	
-		}		
+		}
 		
-							
-			StringTokenizer objToken;			
-			String sDelim = sDirectorySeparator;
+		//Falls sFileNameIn ein Teil von sFilePathIn ist, oder in einem anderen Verzeichnis			
+		//1. TEST: Name hat Bestandteil des Filepfads enthalten
+		if(!StringZZZ.isEmpty(sFilePath)) {
+			if(sFileName.startsWith(sFilePath+sDirectorySeparator)) {
+				sFileName = StringZZZ.right(sFileName, sFilePath+sDirectorySeparator, true);
+			}											   	
+		}		 	
+						
+		StringTokenizer objToken;			
+		String sDelim = sDirectorySeparator;
+		
+		//+++ Get the strings in the expected value for joining them
+		if(!sFilePath.equals("")){
+			objToken = new StringTokenizer(sFilePath, sDelim);
 			
-			//+++ Get the strings in the expected value for joining them
-			if(!sFilePath.equals("")){
-				objToken = new StringTokenizer(sFilePath, sDelim);
-				
-				//Eleminate empty strings
-				String sFilePathTemp = new String("");
-				int iNrOfTokenTotal = objToken.countTokens(); //Merke: Dies wird durch den Aufruf von .nextToken() immer ver�ndert/weniger. Darum vorher in einer Variablen sichern.
-				for( int icount = 1;icount <= iNrOfTokenTotal; icount++){
-					stemp = objToken.nextToken();									
-					if(!stemp.equals("") && !stemp.equals(sDelim)){
-							if(!sFilePathTemp.equals("")){
-								sFilePathTemp = sFilePathTemp + sDelim + stemp;
-							}else{
-								sFilePathTemp = stemp;
-							}
+			//Eleminate empty strings
+			String sFilePathTemp = new String("");
+			int iNrOfTokenTotal = objToken.countTokens(); //Merke: Dies wird durch den Aufruf von .nextToken() immer ver�ndert/weniger. Darum vorher in einer Variablen sichern.
+			for( int icount = 1;icount <= iNrOfTokenTotal; icount++){
+				stemp = objToken.nextToken();									
+				if(!stemp.equals("") && !stemp.equals(sDelim)){
+						if(!sFilePathTemp.equals("")){
+							sFilePathTemp = sFilePathTemp + sDelim + stemp;
+						}else{
+							sFilePathTemp = stemp;
 						}
-					} //END for
-				sFilePath = sFilePathTemp;												
-				}
+					}
+				} //END for
+			sFilePath = sFilePathTemp;												
+			}
 					
 			//+++  Join the strings		
 			if(sFilePath.equals("")){
@@ -2182,26 +2250,57 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return bReturn;
 	}
 	
-	/** Prüft, ob die Anwendung auf einem Webserver läuft oder im Eclipse Workspace.
-	 *  Beim Eclipse Workspace wird vom Vorhandensein des "src" - Ordners ausgegangen.
-	 *  Beim Serverlauf, gibt es den src-Ordner nicht. Er liegt dann auf dem Classpath. 
-	 *  
-	 *  Heuristische Lösung. 
-	 *  Funktioniert so im Vergleich "Webservice" vs. "Swing Standalone in Eclipse"
-	 * @return
-	 */
-	public static boolean isOnServer(){
-		boolean bReturn = false;
-		main:{
-			File objFileTest = new File(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER);
-			bReturn = !objFileTest.exists();			
-		}//end main:
-		return bReturn;
-	}
 	
-	//### Ressourcen werden anders geholt, wenn die Klasse in einer JAR-Datei gepackt ist. Also:
-		/** Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
-		 *   Merke: Static Klassen müssen diese Methode selbst implementieren.
+		/**Resourcen in anderen Projektordnern müssen anders geholt werden als ueber den den Classloader.
+		 * Wenn die Projekte in einer .jar Datei zusammengepackt sind, dann gibt es dieses Problem nicht.
+		 * 
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 24.06.2023, 12:51:14
+		 */
+		public static boolean isInIDE() throws ExceptionZZZ{
+			boolean bReturn = false;
+			main:{
+				boolean bProof = FileEasyZZZ.isOnServer();
+				if(bProof) break main;
+				
+				bProof = FileEasyZZZ.isInJarStatic();
+				if(bProof) break main;					
+				
+				bReturn = true;
+			}//end main:
+			return bReturn;
+		}
+		
+		/**Resourcen in anderen Projektordnern müssen anders geholt werden als ueber den den Classloader.
+		 * Wenn die Projekte in einer .jar Datei zusammengepackt sind, dann gibt es dieses Problem nicht.
+		 * 
+		 * @return
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 24.06.2023, 12:51:14
+		 */
+		public static boolean isInIDE(Class<?> classObject) throws ExceptionZZZ{
+			boolean bReturn = false;
+			main:{
+				if(classObject==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No class object provided.", iERROR_PARAMETER_MISSING, JarEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
+				boolean bProof = FileEasyZZZ.isOnServer();
+				if(bProof) break main;
+				
+				bProof = JarEasyUtilZZZ.isInJar(classObject);
+				if(bProof) break main;					
+				
+				bReturn = true;
+			}//end main:
+			return bReturn;
+		}
+		
+		/** Resourcen werden anders geholt, wenn die Klasse in einer JAR-Datei gepackt ist.
+		 *  Das Problem ist, das ein Zugriff auf Ressourcen anders gestaltet werden muss, wenn die Applikation in einer JAR-Datei läuft.
+		 *  Merke: Static Klassen müssen diese Methode selbst implementieren.
 		 * @return
 		 * @author lindhaueradmin, 21.02.2019
 		 * @throws ExceptionZZZ 
@@ -2213,6 +2312,24 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			}
 			return bReturn;
 		}
+		
+		/** Prüft, ob die Anwendung auf einem Webserver läuft oder im Eclipse Workspace.
+		 *  Beim Eclipse Workspace wird vom Vorhandensein des "src" - Ordners ausgegangen.
+		 *  Beim Serverlauf, gibt es den src-Ordner nicht. Er liegt dann auf dem Classpath. 
+		 *  
+		 *  Heuristische Lösung. 
+		 *  Funktioniert so im Vergleich "Webservice" vs. "Swing Standalone in Eclipse"
+		 * @return
+		 */
+		public static boolean isOnServer(){
+			boolean bReturn = false;
+			main:{
+				File objFileTest = new File(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER);
+				bReturn = !objFileTest.exists();			
+			}//end main:
+			return bReturn;
+		}
+		
 		
 		 /**
 		   * Determine whether a file is a JAR File.
@@ -2373,17 +2490,76 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 */
 	public static File searchFileObject(String sFile) throws ExceptionZZZ{
 		File objReturn = null;
-		main:{
-			//Problem: WAS MIT NULL!!!! Da hier nicht im Workspace gesucht wird, Fehler.
+		main:{			
 			if(sFile==null){
 				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 					
 			objReturn = searchFileObjectByClassloader_(sFile, false);
+			if(objReturn==null) {
+				objReturn = searchFileObjectByUri_(sFile,false);
+			}
 		}//end main:
 		return objReturn;			
 		
+	}
+	
+	public static File searchFileObjectInWorkspace(String sFile) throws ExceptionZZZ{
+		File objReturn = null;
+		main:{			
+			if(sFile==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No filepath provided.", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+					
+			objReturn = searchFileObjectByUri_(sFile, false);
+		}//end main:
+		return objReturn;		
+	}
+	
+	/** Problematik: Java kennt keine Projekte und der Classloader wird also nur das aktuell laufende nutzen.
+	 *  Ziel ist es in der Entwicklungumgebung Dateien in anderen Projekten zu finden, 
+	 *  diese Projekte können als Module genutzt und in der ini-Datei definiert sein.
+	 * 
+	 * @param sFile
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	public static File searchFileObjectInWorkspace(IKernelConfigZZZ objConfig, String sFile) throws ExceptionZZZ{
+		File objReturn = null;
+		main:{
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": Suche auf Projektebene im Workspace.";
+		    System.out.println(sLog);
+		    
+		    if(objConfig==null) {
+		    	ExceptionZZZ ez = new ExceptionZZZ("IKernelConfig - Object", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+		    }
+			//Das ist ein Z-Kernel Konzept und funktioniert nur innerhalb der Entwicklungsumgebung
+		    if(objConfig.isInJar() || objConfig.isOnServer()) break main;
+					    
+		    String sModule = objConfig.getProjectPath();//z.B. "Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup"
+		    if(StringZZZ.isEmpty(sModule)){							
+			  	ExceptionZZZ ez = new ExceptionZZZ("IKernelConfig - Object has no project path.", iERROR_PROPERTY_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;								
+			}
+		    
+//			String sProjectPathTotal = objConfig.getProjectPathTotal();
+//			System.out.println("Verzeichnis erweitert zu: '" + sProjectPathTotal + "'");
+//			
+//			//Ziel ist z.B.: C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup\src\ZKernelConfig_HtmlTableHandler.ini
+//			String sFilePath = FileEasyZZZ.joinFilePathNameForWorkspace(sProjectPathTotal, sFile);
+//			System.out.println("Erweitertes Verzeichnis mit Dateinamen zu: '" + sFilePath + "'");
+			
+			String sFilePath = ReflectWorkspaceZZZ.computeWorkspacePath(objConfig, sFile);		   
+			boolean bExists = FileEasyZZZ.existsInWorkspace(sFilePath);
+			if(bExists) {
+				objReturn = new File(sFilePath);
+			}			
+				
+		}//end main:
+		return objReturn;			
 	}
 	
 	/** Problematik: In der Entwicklungumgebung quasi die "Codebase" ermitteln oder dort wo der Code aufgerufen wird
@@ -2391,14 +2567,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
-	public static File getFileObjectInProjectPath(String sFile) throws ExceptionZZZ{
+	public static File searchFileObjectInRunningExecutionProjectPath(String sFile) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": Suche auf Projektebene.";
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+": Suche auf der Ebene des ausfuehrenden Projekts.";
 		    System.out.println(sLog);
 		    
-			//Problem: WAS MIT NULL!!!!
-			//Lösungsidee 3: Merke: "." holt doch tatsächlich den Ordner des Projekts!!!
+			//Lösungsidee 3: Merke: "." holt doch tatsächlich den Ordner des aktuell ausgefuehrten Projekts!!!
 			if(sFile==null) {//Merke: NULL führt in der searchFileObjectByClassloader_ Methode zu einer Exception.				
 				sFile=FileEasyZZZ.getFileRootPath();
 				sLog = ReflectCodeZZZ.getPositionCurrent()+": NULL in '" + sFile +"' umgeändert.";
@@ -2468,7 +2643,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			URL workspaceURL = null; String sLog=null;
 			
 			if(sPathIn==null){							
-			  	 ExceptionZZZ ez = new ExceptionZZZ("Path", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			  	ExceptionZZZ ez = new ExceptionZZZ("Path", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;								
 			}
 			
@@ -2538,40 +2713,18 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					}else {
 						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
 					}
-				}
-				
-				
+				}								
 			}
-			
-			
-			//1. Versuch ohne Classloader
-			try {		
+						
+			try {						
+				//1. Versuch mit Classloader
 				workspaceURL = new File(sPath).toURI().toURL();
-				if(workspaceURL!=null){	
-					String sWorkspaceURL = workspaceURL.getPath();					
-					sWorkspaceURL = StringZZZ.stripFileSeparators(sWorkspaceURL);
-					objReturn = new File(sWorkspaceURL);	
-					if(FileEasyZZZ.exists(objReturn)) {
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt gefunden '" + sPath + "'";
-					    System.out.println(sLog);
-						break main;
-					}else{
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt nicht gefunden '" + sPath + "'";
-					    System.out.println(sLog);
-					}
-				}else{
-//					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Objekt null für '" + sPath + "'";
-//				    System.out.println(sLog);
-				}
-				
-				//2. Versuch mit Classloader
 				if(workspaceURL!=null){
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B) Searching for file by classloader.getResource '" + sPath +"', stripping bin - Directory";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B) Searching for file by classloader.getResource '" + sPath +"'";
 				    System.out.println(sLog);
 					String sPathInWorkspace = workspaceURL.getPath();
 					String[] saStringsToBeStripped ={File.separator};
-					String sParthNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped);
-					workspaceURL = classLoader.getResource(sParthNormed);
+					String sPathNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped);					
 					if(workspaceURL!=null){
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (B) URL is not null'";
 					    System.out.println(sLog);
@@ -2588,13 +2741,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					}
 				}
 				
-				//3. Versuch (beim "." wird ggfs. das bin - - Verzeichnis zurükgegeben. Dies entfernen.
+				//2. Versuch (beim "." wird ggfs. das bin - - Verzeichnis zurükgegeben. Dies entfernen.
 				if(workspaceURL!=null){
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": (C) Searching for file by classloader.getResource '" + sPath +"', stripping bin - Directory";
 				    System.out.println(sLog);
 					String sPathInWorkspace = workspaceURL.getPath();
-					String[] saStringsToBeStripped ={"bin",File.separator};
-					String sParthNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped);
+					String[] saStringsToBeStripped2 ={"bin",File.separator};
+					String sParthNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped2);
 					workspaceURL = classLoader.getResource(sParthNormed);
 					if(workspaceURL!=null){
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (C) URL is not null'";
@@ -2610,6 +2763,116 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 						sLog = ReflectCodeZZZ.getPositionCurrent()+": (C) URL is null'";
 					    System.out.println(sLog);
 					}
+				}				
+			} catch (MalformedURLException e) {	
+				ExceptionZZZ ez  = new ExceptionZZZ("MalformedURLException: " + e.getMessage(), iERROR_PARAMETER_VALUE, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+		}//end main:
+		return objReturn;
+	}
+	
+	private static File searchFileObjectByUri_(String sPathIn, boolean bUseProjectBase) throws ExceptionZZZ{
+		File objReturn = null;
+		main:{			
+			URL workspaceURL = null; String sLog=null;
+			
+			if(sPathIn==null){							
+			  	ExceptionZZZ ez = new ExceptionZZZ("Path", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;								
+			}
+			
+			//Versuch den eingegebenen Pfad zu normieren. Die Pfade werden dabei behandelt wie in FileEasyZZZ.searchDirectory(String sDirectoryIn, boolean bSearchInJar)		
+			String sPath; boolean bUseClasspathSource=false; boolean bUseProjectBaseForTest=false; boolean bUseProjectBaseForTryout=false;
+			if(bUseProjectBase) {
+				sPath = sPathIn;
+			}else {
+				if(sPathIn.startsWith(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){			
+					bUseProjectBase=true;
+					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty());
+				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
+					bUseClasspathSource=true;
+					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
+				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_PARENT)){
+					bUseProjectBase=true;
+					sPath = sPathIn;
+				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+					bUseClasspathSource=true;
+					sPath = sPathIn;				
+				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+					bUseProjectBaseForTest=true;
+					sPath = sPathIn;
+				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
+					bUseProjectBaseForTryout=true;
+					sPath = sPathIn;
+				}else{
+					if(FileEasyZZZ.isPathAbsolut(sPathIn)) {
+						sPath = sPathIn;
+					}else {					
+						//+++ Der Normalfall, aber auch hier darauf achten, nicht den Root erneut davorzusetzen.
+						String sPathRoot = FileEasyZZZ.getFileRootPath();
+						if( !(sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+							bUseClasspathSource=true;
+						}else {
+							bUseClasspathSource=false;
+						}
+						sPath = sPathIn;
+					}
+				}
+					
+				//Nun ggfs. noch vorhandene Pfadzeichen am Anfang/Ende entfernen.
+				sPath = StringZZZ.stripFileSeparators(sPath);
+				
+				if(bUseClasspathSource) {										
+					String sPathRoot = FileEasyZZZ.getFileRootPath();
+					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+						sPath = sPathIn;
+					}else {
+						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					}
+				}
+				
+				if(bUseProjectBaseForTest) {					
+					String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+						sPath = sPathIn;
+					}else {
+						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					}
+				}
+				
+				if(bUseProjectBaseForTryout) {					
+					String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
+					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+						sPath = sPathIn;
+					}else {
+						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
+					}
+				}							
+			}
+			
+			
+			//1. Versuch ohne Classloader
+			try {		
+				workspaceURL = new File(sPath).toURI().toURL();
+				if(workspaceURL!=null){	
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A) Searching for file by URI '" + sPath +"'";
+				    System.out.println(sLog);
+				    
+					String sWorkspaceURL = workspaceURL.getPath();					
+					sWorkspaceURL = StringZZZ.stripFileSeparators(sWorkspaceURL);
+					objReturn = new File(sWorkspaceURL);	
+					if(FileEasyZZZ.exists(objReturn)) {
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt gefunden '" + sPath + "'";
+					    System.out.println(sLog);
+						break main;
+					}else{
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt nicht gefunden '" + sPath + "'";
+					    System.out.println(sLog);
+					}
+				}else{
+//					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) Objekt null für '" + sPath + "'";
+//				    System.out.println(sLog);
 				}
 				
 			} catch (MalformedURLException e) {	
@@ -2663,17 +2926,17 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		main:{
 			//if(sFilePathRaw==null) break main;
 			if(sFilePathRaw==null){
-				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
 			}else if(sFilePathRaw.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){
-				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
 			}else if(sFilePathRaw.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
 				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
 				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
-				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
 			}else{
 				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){				               				
@@ -2696,20 +2959,20 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		main:{
 			//if(sFilePathRaw==null) break main;
 			if(sFilePathRaw==null){
-				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
 			}else if(sFilePathRaw.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){
-				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
 			}else if(sFilePathRaw.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
 				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
 				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
-				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
 			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
-				File objReturn = FileEasyZZZ.getFileObjectInProjectPath(null);
+				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
 			}else{
 				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){				               				

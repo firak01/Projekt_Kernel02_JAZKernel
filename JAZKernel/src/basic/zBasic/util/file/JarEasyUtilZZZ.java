@@ -191,7 +191,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
-	public static boolean isInJar(Class classObject) throws ExceptionZZZ{
+	public static boolean isInJar(Class<?> classObject) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(classObject==null){
@@ -338,7 +338,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 		return objReturn;
 	}
 
-	/**Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen.
+	/**Innerhalb der JAR-Datei wird immer mit / gearbeitet dies wieder rückgängig machen und ggfs. den Windows Trenner verwenden.
 	 * @param sJarPath
 	 * @return
 	 * @author Fritz Lindhauer, 19.07.2020, 07:35:08
@@ -353,7 +353,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				throw ez;
 			}
 			
-			sReturn = StringZZZ.replace(sJarPath, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
+			sReturn = StringZZZ.replace(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_UNIX, FileEasyZZZ.sDIRECTORY_SEPARATOR);
 			
 			//UND: Abschliessend gibt es bei Verzeichnissen ein \ ... aber NUR 1x
 			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);

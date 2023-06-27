@@ -691,6 +691,27 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	/* Unter Java String gibt es nur startsWith.*/
+	public static boolean endsWith(String sString, String sMatch){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sMatch)) break main;
+									
+			
+			int iMatchLength=sMatch.length();			
+			if(sString.length() < iMatchLength) break main;
+			
+			String sSub = sString.substring(sString.length() - iMatchLength, sString.length());
+			if(sSub.equals(sMatch)){
+				bReturn = true;
+				break main;
+			}
+			
+		} //end main:		
+		return bReturn;
+	}
+	
 	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
 	public static boolean endsWithIgnoreCase(String sString, String sMatch){
 		boolean bReturn = false;

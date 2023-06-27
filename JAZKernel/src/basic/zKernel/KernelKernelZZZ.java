@@ -31,6 +31,7 @@ import basic.zBasic.util.counter.ICounterAlphabetSignificantZZZ;
 import basic.zBasic.util.counter.ICounterAlphabetZZZ;
 import basic.zBasic.util.counter.ICounterStrategyAlphabetSignificantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -42,6 +43,7 @@ import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -84,7 +86,7 @@ public abstract class KernelKernelZZZ extends ObjectZZZ implements IKernelZZZ, I
 	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private IniFile objIniConfig=null;
 	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private File objFileKernelConfig=null;
 	protected FileIniZZZ objFileIniKernelConfig = null; 
-	private IKernelConfigSectionEntryZZZ objEntry = null;
+	//private IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	private String sFileConfig="";
 	private String sDirectoryConfig="";
@@ -589,7 +591,57 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(objConfigIni, sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
 			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
-			objReturn = this.KernelSearchFileConfigDirectLookup_(objConfigIni.getFileIniObject(), sModule, listasModuleSection);
+			
+			IniFile objIni = objConfigIni.getFileIniObject();
+			objReturn = this.KernelSearchFileConfigDirectLookup_(objIni, sModule, listasModuleSection);
+						
+		}//end main:
+		return objReturn;
+	}
+	
+	public IniFile getFileConfigModuleAsIniInWorkspace(IKernelConfigZZZ objConfig, String sModule) throws ExceptionZZZ{
+		IniFile objReturn = null;
+		main:{
+			if(objConfig==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("'IKernelConfig-Object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			//Vorraussetzung: Nicht in .Jar oder auf einem Server, also in Eclipse Entwicklungs Umgebung
+			if(!objConfig.isInIDE()) break main;
+			
+			check:{
+				if(sModule == null){							
+					ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				if(sModule.equals("")){							
+					ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}						
+			}//end check:
+			
+			//Hole zuerst das "Basis-File"
+			File objFile = this.getFileConfigKernel();
+			if(objFile==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Empty Property FileConfigKernel",iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+			KernelFileIniZZZ objFileIniDummy = new FileIniZZZ();
+			String[]saFlagControl = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objFileIniDummy, true);
+			IKernelFileIniZZZ objConfigIni = new FileIniZZZ(this,objFile,saFlagControl);
+			
+			//########################################
+			//### Vereinfachung mit ArrayList
+			//########################################			
+			String sApplicationKey = this.getApplicationKey();
+			String sSystemNumber = this.getSystemNumber();
+			
+			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(objConfigIni, sModule, sApplicationKey, sSystemNumber);			
+			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
+			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
+			
+			IniFile objIni = objConfigIni.getFileIniObject();
+			objReturn = this.KernelSearchFileConfigDirectLookupInWorkspace_(objConfig, objIni, sModule, listasModuleSection);
 						
 		}//end main:
 		return objReturn;
@@ -1376,10 +1428,10 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					//NEIN, das wäre wohl eine Endlosschleife: FileIniZZZ objKernelIni = this.getFileConfigIniByAlias(sAlias);
 					IniFile objIni = this.getFileConfigModuleAsIni(sAlias);
 					if(objIni==null){
-						String sLog = "FileIni missing for Alias: " + sAlias;
+						String sLog = "FileIni missing for Alias in execution Project Path: " + sAlias;
 						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 						//ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-						//throw ez;
+						//throw ez;																		
 						break main;
 					} //20190705: UND ... WAS WIRD NUN MIT DER GEFUNDENEN INI-DATEI gemacht? Neu: Setze die Datei.
 																			
@@ -1425,6 +1477,100 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				}//end main:
 		return objReturn;
 	}
+	
+	/** Nur fuer die Arbeit in einer Entwicklungsumgebung. 
+	 *  Hier werden dann ggfs. andere Projektordner durchsucht.
+	 *  Die Bestimmung der Projektordner erfolgt über die Kernel-Konfiguration und darin vorhandenene Methoden.
+	  
+	Reads in  the Kernel-Configuration-File the,directory and name information. Returns a file object. But: Doesn't proof the file existance !!! <CR>
+	Gets the Entries starting with 'KernelConfigPath...', 'KernelConfigFile...', where ... is the Alias.
+	<CR><CR>
+	e.g. for the alias 'Export' the following entries may be found<CR>
+	KernelConfigPathExport=c:\tempfgl\KernelConfig<CR>
+	KernelConfigFileExport=ZKernelConfigExport_default.ini<CR>
+	
+ @date: 26.10.2004
+ @param sAlias
+ @return FileIniZZZ, like getFileConfigByAlias.
+ @throws ExceptionZZZ
+ */
+public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, String sModuleAlias) throws ExceptionZZZ{
+	FileIniZZZ objReturn = null;		
+			main:{
+				if(objConfig==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("'IKernelConfig-Object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				//Vorraussetzung: Nicht in .Jar oder auf einem Server, also in Eclipse Entwicklungs Umgebung
+				if(!objConfig.isInIDE()) break main;
+				
+				check:{
+					if(sModuleAlias == null){							
+						ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					if(sModuleAlias.equals("")){							
+						ExceptionZZZ ez = new ExceptionZZZ("Empty parameter: 'Alias'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}						
+				}//end check:
+				
+				String sAlias = KernelKernelZZZ.extractModuleFromSection(sModuleAlias);
+	
+				//first, get the Kernel-Configuration-INI-File
+				//IniFile objIni = this.getFileConfigKernelAsIni(); //Hier fehlt der Alias...
+				//NEIN, das wäre wohl eine Endlosschleife: FileIniZZZ objKernelIni = this.getFileConfigIniByAlias(sAlias);
+				IniFile objIni = this.getFileConfigModuleAsIniInWorkspace(objConfig, sAlias);
+				if(objIni==null){
+					String sLog = "FileIni missing for Alias in IDE Workspace Project Path: " + sAlias;
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+					//ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PROPERTY_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					//throw ez;																		
+					break main;
+				} //20190705: UND ... WAS WIRD NUN MIT DER GEFUNDENEN INI-DATEI gemacht? Neu: Setze die Datei.
+																		
+				String sFilePathTotal = objIni.getFileName();
+				File objFileModule = new File(sFilePathTotal);			
+				
+				//++++++++++++++++++++++++++++++++++++++++++++++++++++	
+				//3. Neues FileIniZZZ Objekt erstellen, ggfs.
+				if(this.objFileIniKernelConfig==null){												
+					HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+					FileIniZZZ exDummy = new FileIniZZZ();					
+					String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true);//this.getFlagZ_passable(true, exDummy);						
+					objReturn = new FileIniZZZ(this, objFileModule, saFlagZpassed);
+					
+				}else{
+					//Übernimm die gesetzten FlagZ...
+					//Aber so werden alle Flags geholt, was nicht korrekt ist, denn das sind auch die nicht gesetzten Flags
+					//HashMap<String,Boolean>hmFlagZ = this.getFileConfigKernelIni().getHashMapFlagZ();
+					//objReturn = new FileIniZZZ(this,  objFileModule, hmFlagZ);
+					
+					//Uebernimm nur die relevanten Flags, also nur die Flags, die sowohl im Kernel als auch im KernelFile gesetzt sind!!!
+					FileIniZZZ exDummy = new FileIniZZZ();
+					String[]saFlagRelevant = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, exDummy, true);
+					objReturn = new FileIniZZZ(this,  objFileModule, saFlagRelevant);
+					
+					//Übernimm die gesetzten Variablen...
+					HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getFileConfigKernelIni().getHashMapVariable();						
+					objReturn.setHashMapVariable(hmVariable);
+				}
+				
+								
+				/* Achtung: Es ist nicht Aufgabe dieser Funktion die Existenz der Datei zu pr�fen
+				if(objReturn.exists()==false){
+					sMethod = this.getMethodCurrentName();
+					ExceptionZZZ ez = new ExceptionZZZ("File not found '" + sFilePath + "\\" + sFileName + "'",101, this, sMethod, null );
+					throw ez;		
+				}
+				*/
+				//20210421: Nein, damit würde die Hauptkernelkonfiguratin ggfs. durch eine Modulkonfiguration überschrieben
+				//          this.setFileConfigIni(objReturn);
+				
+				
+			}//end main:
+	return objReturn;
+}
 	
 	@Override
 	public String searchAliasForModule(String sModule) throws ExceptionZZZ {
@@ -1595,15 +1741,26 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		return sReturn;
 	}
 	
+	/** Merke: Arbeit in anderen Projektordnern einer Entwicklungsumgebung ist aktuell nur mit Hilfe des ConfigObjekts und darin enthaltenere Einstellungen abprüfbar.
+	 * @param sModule
+	 * @param bExistingOnly
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 24.06.2023, 12:32:15
+	 */
 	public FileIniZZZ searchModuleFileByModule(String sModule, boolean bExistingOnly) throws ExceptionZZZ {
 		FileIniZZZ objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sModule)){							
-				ExceptionZZZ ez = new ExceptionZZZ("'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
-			}
-					
+		main:{								
 			objReturn = this.searchModuleFileByModule_(sModule, bExistingOnly);
+		}//end main:
+		return objReturn;
+	}
+	
+	public FileIniZZZ searchModuleFileByModuleInWorkspace(String sModule, boolean bExistingOnly) throws ExceptionZZZ {
+		FileIniZZZ objReturn = null;
+		main:{			
+			IKernelConfigZZZ  objConfig = this.getConfigObject();
+			objReturn = this.searchModuleFileByModuleInWorkspace_(objConfig, sModule, bExistingOnly);
 		}//end main:
 		return objReturn;
 	}
@@ -1965,9 +2122,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 
 			//#############################
 			objFound = this.searchModuleFileByModule(sModule, true);			
-			if(objFound==null){								
-				ExceptionZZZ ez = new ExceptionZZZ("Missing configurationfile. No file defined or available for Module '" + sModule + "' or Application '" + sApplicationKeyUsed + "' and Systemnumber '" + sSystemNumberUsed + "'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
+			if(objFound==null){
+				
+				//Falls das Modul in einem anderen Workspace Projekt definiert ist.
+				objFound = this.searchModuleFileByModuleInWorkspace(sModule, true);
+				if(objFound==null){				
+					ExceptionZZZ ez = new ExceptionZZZ("Missing configurationfile. No file defined or available for Module '" + sModule + "' or Application '" + sApplicationKeyUsed + "' and Systemnumber '" + sSystemNumberUsed + "'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
 			}else {
 				hmDebug.put("Searching in file", objFound.getFileObject().getAbsolutePath());
 			}
@@ -1988,28 +2150,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					}catch(ExceptionZZZ ez2){
 			    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über ProgramOrSection '" + sProgramOrSectionTemp + "' schlägt fehl. ...");
 			    	}
-				}//end for
-	    				   					    
-	    		//+++++++++++++++++++++++++++++++++++
-			//TODOGOON: Das sollte überflüssig sein, wenn obige Liste die ganzen "Sektionen" enthält
-//				ArrayList<String>listasSystemSection = this.computeSystemSectionNames();
-//				for(String sSystemSectionTemp : listasSystemSection) {
-//					
-//					//ggfs. noch den Programnamen ausrechnen?
-//					IKernelConfigSectionEntryZZZ objEntryAlias = this.KernelGetParameter_DirectLookup_(objFound, sSystemSectionTemp, sSystemSectionTemp);
-//					if(objEntryAlias.hasAnyValue()) {
-//						String sAlias = objEntryAlias.getValue();		    					
-//						hmDebug.put("ProgramOrSection by Alias (found in): ", sAlias + "(" + sSystemSectionTemp + ")");
-//						    						
-//    					ArrayList<String>listasProgramOrSectionAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram(objFileConfigIni, sAlias, sModule, sApplicationKeyUsed, sSystemNumberUsed);
-//    					for(String sProgramOrSectionAliasTemp : listasProgramOrSectionAlias) {
-//    						bExistsSection = objFound.proofSectionExists(sProgramOrSectionAliasTemp);				    						
-//    						if(bExistsSection) break main;
-//    					}
-//					}	    										
-//			}//end for
-//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Versuch über 'ProgramOrSection' auch erfolglos.");
-				
+				}//end for	    				   					  
 		}//end main:	
 		if(!bExistsSection && objFound==null) {
 			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
@@ -2027,24 +2168,20 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
 			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
 			objReturn = objFound;
-			
-//Müsste beim Abändern in eine static Methode separat 			
-//			if(objReturn!=null) {
-//				this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objReturn);
-//			}
 		}
 		return objReturn;								
 	}
 	
 	private FileIniZZZ searchModuleFileByModule_(String sModule, boolean bExistingOnly) throws ExceptionZZZ{
-		FileIniZZZ objReturn=null;
-		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
-		
-//		String sSectionCacheUsed = sModule;		
-//		boolean bExistsSection=false;ICachableObjectZZZ objFromCache=null;
-		
+		FileIniZZZ objReturn=null;		
 		FileIniZZZ objFound = null;boolean bExists=false;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
 		main:{
+			if(StringZZZ.isEmpty(sModule)){							
+				ExceptionZZZ ez = new ExceptionZZZ("'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}	
+			
 //			//############################
 //			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST			
 //			objFromCache = (ICachableObjectZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
@@ -2077,7 +2214,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 							break bymodule;
 						}
 					}
-				}
+				}								
 					
 				byapplication:{
 					ArrayList<String>alsApplicationKey = KernelKernelZZZ.computeSystemSectionNames(sApplicationKeyUsed,sSystemNumberUsed);
@@ -2098,15 +2235,112 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 					}
 					
 				}//end byapplication:
-			}//end bymodule:							
+			}//end bymodule:	
+			
+			
+			
 		}//end main:	
 		if(objFound==null) {
-			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
 		}else {
-			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ  für das Modul im Project Excecution Pfad +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+    		
+    		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
+			//this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
+			objReturn = objFound;
+		}
+		return objReturn;								
+	}
+	
+
+	private FileIniZZZ searchModuleFileByModuleInWorkspace_(IKernelConfigZZZ objConfig, String sModule, boolean bExistingOnly) throws ExceptionZZZ{
+		FileIniZZZ objReturn=null;				
+		FileIniZZZ objFound = null;boolean bExists=false;
+		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
+		main:{												
+			if(objConfig==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("'IKernelConfig-Object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			//Vorraussetzung: Nicht in .Jar oder auf einem Server, also in Eclipse Entwicklungs Umgebung
+			if(!objConfig.isInIDE()) break main;
+			
+			if(StringZZZ.isEmpty(sModule)){							
+				ExceptionZZZ ez = new ExceptionZZZ("'Module'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+				
+				
+//			//############################
+//			//VORWEG: IM CACHE NACHSEHEN, OB DER EINTRAG VORHANDEN IST			
+//			objFromCache = (ICachableObjectZZZ) this.getCacheObject().getCacheEntry(sSectionCacheUsed, sPropertyCacheUsed);
+//			if(objFromCache!=null){					
+//					hmDebug.put("From CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+//					objFound = (FileIniZZZ) objFromCache;
+//					break main;				
+//			}else{
+//				hmDebug.put("Not in CacheZZZ: " + sSectionCacheUsed, sPropertyCacheUsed);
+//			}
+					
+
+			//Nun alle Ausprägungen der Systemkey in eine ArrayList packen
+			String sApplicationKeyUsed = this.getApplicationKey();
+			String sSystemNumberUsed = this.getSystemNumber();
+
+
+			bymodule:{
+				ArrayList<String>alsModuleKey = KernelKernelZZZ.computeSystemSectionNames(sModule,sSystemNumberUsed);
+				for(String sModuleKey : alsModuleKey) {
+					//Hole das Modulfile
+					objFound = this.getFileConfigModuleIniInWorkspace(objConfig, sModuleKey);
+					if(objFound!=null) {
+						//Existiert diese Datei?
+						if(bExistingOnly) {
+							bExists = FileEasyZZZ.exists(objFound.getFileObject());
+							if(bExists) {
+								break bymodule;						
+							}
+						}else {
+							break bymodule;
+						}
+					}
+				}								
+					
+				byapplication:{
+					ArrayList<String>alsApplicationKey = KernelKernelZZZ.computeSystemSectionNames(sApplicationKeyUsed,sSystemNumberUsed);
+					for(String sApplicationKey : alsApplicationKey) {
+						//Hole das Applicationfile
+						objFound = this.getFileConfigModuleIniInWorkspace(objConfig, sApplicationKey);
+						if(objFound!=null) {
+							//Existiert diese Datei?
+							if(bExistingOnly) {
+								bExists = FileEasyZZZ.exists(objFound.getFileObject());
+								if(bExists) {
+									break bymodule;						
+								}
+							}else {
+								break bymodule;
+							}
+						}
+					}
+					
+				}//end byapplication:
+			}//end bymodule:	
+			
+			
+			
+		}//end main:	
+		if(objFound==null) {
+			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
+//			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+//			throw ez;
+		}else {
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ  für das Modul im Project Excecution Pfad +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
@@ -3163,7 +3397,7 @@ MeinTestParameter=blablaErgebnis
 				
 				//#######################################
 				//### Proof the existance of the file
-				//#############################
+				//#######################################
 				String sFileTotal = FileEasyZZZ.joinFilePathName(sDirectoryname, sFilename);
 				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
 				File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
@@ -3179,7 +3413,75 @@ MeinTestParameter=blablaErgebnis
 				}else {
 					sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";
 					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					objReturn = null;
+				}								
+			} catch (IOException ioe) {
+				String sLog = "IOException: Configuration File. Not able to create ini-FileObject.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				ExceptionZZZ ez = new ExceptionZZZ(sLog,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName(), ioe );
+				throw ez;
+			}
+			
+		}//end main:
+		return objReturn;
+	}
+	
+	private IniFile KernelSearchFileConfigDirectLookupInWorkspace_(IKernelConfigZZZ objConfig, IniFile objFileIni, String sModule, ArrayList<String>listasModuleOrApplicationSection) throws ExceptionZZZ {
+		IniFile objReturn = null;
+		main:{
+			if(objConfig==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("'IKernelConfig-Object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			//Vorraussetzung: Nicht in .Jar oder auf einem Server, also in Eclipse Entwicklungs Umgebung
+			if(!objConfig.isInIDE()) break main;
+			
+			
+			if(objFileIni==null){
+				String stemp = "'Inifile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(listasModuleOrApplicationSection==null) {
+				String stemp = "'ListAsModuleOrApplication Section'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			try {							
+				String sFilename=null;
+				for(String sModuleOrApplicationSectionSection:listasModuleOrApplicationSection) {
+					sFilename = this.KernelSearchFileConfigFilenameDirectLookupInWorkspace_(objConfig, objFileIni, sModuleOrApplicationSectionSection, sModule);
+					if(!StringZZZ.isEmpty(sFilename)) break;
+				}								
+				if(StringZZZ.isEmpty(sFilename)) break main;//Leerer Dateiname ist ein Abbruchkriterium
+				
+				String sDirectoryname=null;
+				for(String sModuleSection:listasModuleOrApplicationSection) {
+					sDirectoryname = this.KernelSearchFileConfigFiledirectoryDirectLookupInWorkspace_(objConfig, objFileIni, sModuleSection, sModule);
+					if(!StringZZZ.isEmpty(sDirectoryname)) break;				
+				}
+				//Merke: Bei leerem Verzeichnisnamen wird ein Projektverzeichnis genommen.
+				
+				//#######################################
+				//### Proof the existance of the file
+				//#######################################
+				String sFileTotal = FileEasyZZZ.joinFilePathNameForWorkspace(sDirectoryname, sFilename);
+				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
+				File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
+				
+				//Mache das neue Ini-Objekt
+				String sPathTotalToUse = objFile.getAbsolutePath();
+				String sLog = "Trying to create new IniFile Object for path '" + sPathTotalToUse + "'.";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
+				if(FileEasyZZZ.existsInWorkspace(sPathTotalToUse)) {
+					objReturn = new IniFile(sPathTotalToUse);
+					//TODO GOON 20190214: Hier das neue Ini File der ArrayList der Dateien hinzufügen. Dann muss man es auch nicht immer wieder neu erstellen....
+					
+				}else {
+					sLog = "File does not exist '" + sPathTotalToUse + "'. Will not create ini File (it would bei empty).";
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);					
 				}								
 			} catch (IOException ioe) {
 				String sLog = "IOException: Configuration File. Not able to create ini-FileObject.";
@@ -3195,6 +3497,71 @@ MeinTestParameter=blablaErgebnis
 	private String KernelSearchFileConfigFilenameDirectLookup_(IniFile objFileIni, String sModuleOrApplicationSection,String sModule) throws ExceptionZZZ{
 		String sReturn = null;	
 		main:{
+			if(objFileIni==null){
+				String stemp = "'Inifile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModuleOrApplicationSection)) {
+				String stemp ="ModuleOrApplicationSection String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModule)) {
+				String stemp ="ModuleSection String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sModuleOrApplicationSectionUsed=sModuleOrApplicationSection;
+			//sModuleOrApplicationSectionUsed = KernelKernelZZZ.extractModuleFromSection(sModuleOrApplicationSection);
+//			if(StringZZZ.isEmpty(sModuleOrApplicationSectionUsed)) {
+//				String stemp ="ModuleOrApplicationSection String - Module not available";
+//				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+//			}
+			
+			String sPropertyUsed = null;
+			String sFileNameUsed = null; String sFileName = null;
+			
+			//########################################
+			//A) DATEINAME	
+			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX +sModule;								
+			sFileName =objFileIni.getValue(sModuleOrApplicationSectionUsed, sPropertyUsed ); 					
+			if(StringZZZ.isEmpty(sFileName)) {			
+											
+				//GGFS. OHNE MODUL WIRD DIE APPLIKATION ANGEGEBEN SEIN
+				sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_FILENAME_PREFIX;
+				sFileName =objFileIni.getValue(sModuleOrApplicationSectionUsed, sPropertyUsed ); 										
+				
+			}
+			if(StringZZZ.isEmpty(sFileName)) break main;//Leer konfiguriert, bedeutet.. an anderer Stelle suchen
+			
+			
+			sFileNameUsed = KernelZFormulaIniConverterZZZ.getAsString(sFileName);				
+			if(!StringZZZ.equals(sFileName,sFileNameUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFileName + "' nach '" + sFileNameUsed +"'");
+				//this.setValueRaw(sFileName);
+			}else{
+				//this.setValueRaw(null);
+			}
+			if(StringZZZ.isEmpty(sFileNameUsed)) break main;
+			sReturn = sFileNameUsed;
+		}//end main:
+		return sReturn;
+	}
+	
+	private String KernelSearchFileConfigFilenameDirectLookupInWorkspace_(IKernelConfigZZZ objConfig, IniFile objFileIni, String sModuleOrApplicationSection,String sModule) throws ExceptionZZZ{
+		String sReturn = null;	
+		main:{
+			if(objConfig==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("'IKernelConfig-Object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			//Vorraussetzung: Nicht in .Jar oder auf einem Server, also in Eclipse Entwicklungs Umgebung
+			if(!objConfig.isInIDE()) break main;
+			
 			if(objFileIni==null){
 				String stemp = "'Inifile'";
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
@@ -3307,9 +3674,116 @@ MeinTestParameter=blablaErgebnis
 			}
 			
 			//Merke: Ein leeres Verzeichnis ist kein Problem, dann Projektstandardverzeichnis nehmen. if(StringZZZ.isEmpty(sFilePathUsed)) break main;
-			File objReturn2 = FileEasyZZZ.getFileObjectInProjectPath(sFilePathUsed);
-			sFilePathUsed = objReturn2.getAbsolutePath();
+			//Problem: Hierin wird per Classloader gesucht... Das bedeutet es wird beim Modulen ggfs. im falschen Projektordner gesucht.
+			File objReturn2 = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sFilePathUsed);
+			if(objReturn2!=null) {
+				sFilePathUsed = objReturn2.getAbsolutePath();
+				sReturn = sFilePathUsed;
+				break main;
+			}
 			
+			//... und wenn dort nix gefunden worden ist
+			
+			//Bei "Modulen" ist das ein Problem, da nun das Projekt des "starts" genommen wird.
+			//Ziel: Das Projekt des Moduls nehmen.			
+			IKernelConfigZZZ objConfig = this.getConfigObject();
+			if(objConfig!=null) {
+				objReturn2 = FileEasyZZZ.searchFileObjectInWorkspace(objConfig, sFilePathUsed);
+				if(objReturn2!=null) {
+					sFilePathUsed = objReturn2.getAbsolutePath();
+					sReturn = sFilePathUsed;
+					break main;
+				}
+			}						
+			sReturn = sFilePathUsed;				
+		}//end main:
+		return sReturn;
+	}
+	
+	private String  KernelSearchFileConfigFiledirectoryDirectLookupInWorkspace_(IKernelConfigZZZ objConfig, IniFile objFileIni, String sModuleOrApplicationSection, String sModule) throws ExceptionZZZ{
+		String sReturn = null;	
+		main:{
+			if(objConfig==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("'IKernelConfig-Object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			//Vorraussetzung: Nicht in .Jar oder auf einem Server, also in Eclipse Entwicklungs Umgebung
+			if(!objConfig.isInIDE()) break main;
+									
+			if(objFileIni==null){
+				String stemp = "'Inifile'";
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": "+ stemp);
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModuleOrApplicationSection)) {
+				String stemp ="ModuleOrApplicationSection String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(StringZZZ.isEmpty(sModule)) {
+				String stemp ="Module String";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sModuleOrApplicationSectionUsed=sModuleOrApplicationSection;
+			//sModuleOrApplicationSectionUsed = KernelKernelZZZ.extractModuleFromSection(sModuleOrApplicationSection);
+			if(StringZZZ.isEmpty(sModuleOrApplicationSectionUsed)) {
+				String stemp ="ModuleOrApplicationSection String - Module not available";
+				ExceptionZZZ ez = new ExceptionZZZ(stemp,iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sPropertyUsed = null;
+			String sFilePathUsed = null; String sFilePath = null;
+			
+			//########################################
+			//##########################################
+			//B) VERZEICHNISNAME
+			sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX +sModule;						
+			sFilePath = objFileIni.getValue(sModuleOrApplicationSectionUsed,sPropertyUsed);				
+			if(StringZZZ.isEmpty(sFilePath)) {
+				
+				//GGFS. OHNE MODUL WIRD DIE APPLIKATION ANGEGEBEN SEIN
+				sPropertyUsed = IKernelConfigConstantZZZ.sMODULE_DIRECTORY_PREFIX;						
+				sFilePath = objFileIni.getValue(sModuleOrApplicationSectionUsed,sPropertyUsed);
+			}
+			if(StringZZZ.isEmpty(sFilePath)) break main;//Merke: Ein Leer definiertes Verzeichnis ist ein Grund woanders zu suchen.
+								
+			//Ein per Platzhalter leer definiertes Verzeichnis bedeutet "nicht an anderer Konfigurationsstelle weitersuchen"
+			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
+			//if(StringZZZ.equalsIgnoreCase(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) break main;
+						
+			sFilePathUsed = KernelZFormulaIniConverterZZZ.getAsString(sFilePath);
+			if(!StringZZZ.equals(sFilePath,sFilePathUsed)){
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniConverter verändert von '" + sFilePath + "' nach '" + sFilePathUsed +"'");								
+				//this.setValueRaw(sFilePath);
+			}else{
+				//this.setValueRaw(null);
+			}
+			
+			//Merke: Ein leeres Verzeichnis ist kein Problem, dann Projektstandardverzeichnis nehmen. if(StringZZZ.isEmpty(sFilePathUsed)) break main;
+			//Problem: Hierin wird per Classloader gesucht... Das bedeutet es wird beim Modulen ggfs. im falschen Projektordner gesucht.
+//			File objReturn2 = FileEasyZZZ.getFileObjectInRunningExecutionProjectPath(sFilePathUsed);
+//			if(objReturn2!=null) {
+//				sFilePathUsed = objReturn2.getAbsolutePath();
+//				sReturn = sFilePathUsed;
+//				break main;
+//			}
+			
+			//... und wenn dort nix gefunden worden ist
+			
+			//Bei "Modulen" ist das ein Problem, da nun das Projekt des "starts" genommen wird.
+			//Ziel: Das Projekt des Moduls nehmen.			
+//			if(objConfig!=null) {
+				File objReturn2 = FileEasyZZZ.searchFileObjectInWorkspace(objConfig, sFilePathUsed);
+				if(objReturn2!=null) {
+					sFilePathUsed = objReturn2.getAbsolutePath();
+					sReturn = sFilePathUsed;
+					break main;
+				}
+//			}						
 			sReturn = sFilePathUsed;				
 		}//end main:
 		return sReturn;
@@ -3666,47 +4140,45 @@ MeinTestParameter=blablaErgebnis
 		    	objFound = KernelSearchParameterByProgramAlias_DirectLookup_(objFileIniConfig, sSectionProgramUsed, sProperty);
 				if(objFound.hasAnyValue()) break main;				
 		    }//end for
-		    
-		    
-		    
-		    //#################################################
-		    
+		    			
+		    //#################################################		    
 			//Abbruch der Parametersuche. Ohne diesen else-Zweig, gibt es ggfs. eine Endlosschleife.
 			sDebug = hmDebug.debugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ABBRUCH DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug + " in der Datei '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'");
-//				ExceptionZZZ ez = new ExceptionZZZ(sDebug, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;
-			}//END main:
+//			ExceptionZZZ ez = new ExceptionZZZ(sDebug, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+//			throw ez;
+		}//END main:
 			
-			sDebug = hmDebug.debugString(":"," | ");
-			if(objFound!=null && objFound.hasAnyValue()) {
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sMainSection='" + sMainSection + "'/sSectionUsed='"+sSectionUsed+"' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
-				
-				//################
-				//DEBUG: Entsprechen die oben eingegebenen Suchstrings auch dem 1. Suchschritt?
-				/*
-				Set<Integer> setKeyOuter = hmDebug.keySet();
-				Integer[] objaKeyOuter = (Integer[]) setKeyOuter.toArray(new Integer[setKeyOuter.size()]);
-				Integer obj = objaKeyOuter[0];
-				
-				//Nun diesen Wert in den Cache übernehmen.
-				HashMap<String,String>hmInner = hmDebug.getInnerHashMap(obj);//Das war der 1. Versuch. Er sollte die Eingabewerte beinhalten. Diese sollen die Keys für den Cache sein. Dann wird der Wert beim 2. Aufruf sofort gefunden.
-				Set<String> setKey = hmInner.keySet();
-				String[] saKey = (String[]) setKey.toArray(new String[setKey.size()]);				
-				String sKey = saKey[0];					
-				String sValue = hmInner.get(sKey);
-				*/
-				//###################
-				
-				//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
-				if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
-				objReturn = objFound;
-			}else{
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEIN WERT GEFUNDEN fuer sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
-			}				
-			return objReturn;
+		sDebug = hmDebug.debugString(":"," | ");
+		if(objFound!=null && objFound.hasAnyValue()) {
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sMainSection='" + sMainSection + "'/sSectionUsed='"+sSectionUsed+"' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
+			
+			//################
+			//DEBUG: Entsprechen die oben eingegebenen Suchstrings auch dem 1. Suchschritt?
+			/*
+			Set<Integer> setKeyOuter = hmDebug.keySet();
+			Integer[] objaKeyOuter = (Integer[]) setKeyOuter.toArray(new Integer[setKeyOuter.size()]);
+			Integer obj = objaKeyOuter[0];
+			
+			//Nun diesen Wert in den Cache übernehmen.
+			HashMap<String,String>hmInner = hmDebug.getInnerHashMap(obj);//Das war der 1. Versuch. Er sollte die Eingabewerte beinhalten. Diese sollen die Keys für den Cache sein. Dann wird der Wert beim 2. Aufruf sofort gefunden.
+			Set<String> setKey = hmInner.keySet();
+			String[] saKey = (String[]) setKey.toArray(new String[setKey.size()]);				
+			String sKey = saKey[0];					
+			String sValue = hmInner.get(sKey);
+			*/
+			//###################
+			
+			//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
+			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
+			objReturnReference.set(objFound);
+			objReturn = objFound;
+		}else{
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEIN WERT GEFUNDEN fuer sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
+		}				
+		return objReturn;
 	}
 	
 	private boolean KernelSetParameterByProgramAlias_DirectLookup_(FileIniZZZ objFileIniConfig, String sSection, String sProperty, String sValue, boolean bSetNew, boolean bFlagDelete, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
@@ -3850,7 +4322,7 @@ MeinTestParameter=blablaErgebnis
 		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
 		main:{	
 			//TODO 20190815: CACHE VERWENDUNG AUCH BEIM SETZEN EINBAUEN
-			//TODO 20230410: DAS SETZEN DES CACHE EINTRAGS BEIM SETZEN EINER NEUEN SECTION PASSIERTIMMER NOCH NICHT.
+			//TODO 20230410: DAS SETZEN DES CACHE EINTRAGS BEIM SETZEN EINER NEUEN SECTION PASSIERT IMMER NOCH NICHT.
 			//
 			//			
 			//#######################################################################			
@@ -4741,16 +5213,35 @@ MeinTestParameter=blablaErgebnis
 			objReturn.setProperty(sProperty);
 
 			ReferenceZZZ<IKernelConfigSectionEntryZZZ>objReturnReference=new ReferenceZZZ<IKernelConfigSectionEntryZZZ>();
-			objReturnReference.set(objReturn);
+			objReturnReference.set(objReturn);						
 			objReturn = this.KernelSearchParameterByProgramAlias_(objFileIniConfig, sModule, sProgramOrSection, sProperty, true, objReturnReference);
-			
-			sDebug = hmDebug.debugString(":"," | ");
-			if(objReturn.hasAnyValue()) {										
-				//Merke: Hier wird keine HashMap von Entry-Objekten zurückgegeben, sondern die HashMap selbst
-				//       Darum nicht: System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Zerlege gefundenen Wert nun in HahMap" + sDebug);
-				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Uebernehme gefundenen Wert " + sDebug);
-				hmReturn = objReturn.getValueHashMap();				
+			String sRaw = null;
+			if(!objReturn.hasAnyValue()) {
+				hmDebug.put("No value found for property", sProperty);
+				break main;
+			}else {
+				sRaw = objReturn.getValue();
+				hmDebug.put("Raw value '" + sRaw + "' found for property", sProperty);
 			}
+						
+			ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();			
+			boolean bSuccess = KernelConfigEntryUtilZZZ.getValueJsonMapSolved(objFileIniConfig, sRaw, true, null, objhmReturnValueJsonSolved);			
+			if(!bSuccess) {
+				hmDebug.put("No hashmap value found in '" + sRaw + "' for property", sProperty);
+				break main;
+			}
+
+			hmDebug.put("Hashmap value found in '" + sRaw + "' for property", sProperty);
+			hmReturn = objhmReturnValueJsonSolved.get();
+			//Merke: Hier wird keine HashMap von Entry-Objekten zurückgegeben, sondern die HashMap selbst
+			//       Darum nicht: System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Zerlege gefundenen Wert nun in HahMap" + sDebug);
+				
+			
+			sDebug = hmDebug.debugString(":"," | ");			
+			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Uebernehme gefundenen Wert " + sDebug);
+			objReturn.isJson(true);
+			objReturn.isJsonMap(true);
+			objReturn.setValue(hmReturn);
 		}
 		return hmReturn;
 	}
@@ -6353,18 +6844,48 @@ MeinTestParameter=blablaErgebnis
 					sFileConfig = KernelKernelZZZ.sFILENAME_CONFIG_DEFAULT;
 					sLog = "Filename for configuration is empty. Not passed and not readable from Config-Object. Using default: '" + sFileConfig + "'";
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);					
+				}
+				this.setFileConfigKernelName(sFileConfig);
+				
+				//#################################################################################
+		
+				//Prüfe nun ob ggfs. auch das Verzeichnis default sein muss
+				String sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfig, sFileConfig);					
+				boolean bExists = FileEasyZZZ.exists(sFilePath);
+				if(!bExists) {
+			
+					//##################################################################################
+					//Die Datei existiert hier nicht
+					//Problem mit Modulen, die in einem anderen Projekt definiert werden.
+					//Dann sind die Pfade ggfs. unter Eclipse nicht korrekt
+					if(!this.isInJar() && !this.isOnServer()) {							
+						if(objConfig!=null) {
+							//Workaround. Man kann nun objConfig - Pfad versuchen zu nehmen
+							String s = objConfig.getClass().getPackage().toString();
+							System.out.println("Ueberschreibe Verzeichnis, nehme Package: '" + s + "'");
+							
+							String sProjectPathTotal = objConfig.getProjectPathTotal();
+							
+							//C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup\src\ZKernelConfig_HtmlTableHandler.ini
+							sFilePath = FileEasyZZZ.joinFilePathNameForWorkspace(sProjectPathTotal, sFileConfig);					
+							bExists = FileEasyZZZ.exists(sFilePath);
+							if(bExists) {
+								sProjectPathTotal = FileEasyZZZ.getParent(sFilePath);
+								this.setFileConfigKernelDirectory(sProjectPathTotal);
+							}
+						}
+					}
 					
-					//Prüfe nun ob ggfs. auch das Verzeichnis default sein muss
-					String sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfig, sFileConfig);					
-					boolean bExists = FileEasyZZZ.exists(sFilePath);
+					
 					if(!bExists) {
+						//Anderes Verzeichnis probieren
 						String sDirectoryConfigDefault = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 						sLog = "Default Filename for configuration does not exist here: '" + sFilePath + "'. Looking in default direcotry '" + sDirectoryConfigDefault + "'" ;
 						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-
+						
 						sFilePath = FileEasyZZZ.joinFilePathName(sDirectoryConfigDefault, sFileConfig);						
 						bExists = FileEasyZZZ.exists(sFilePath);
-						
+			
 						if(!bExists) {
 							sLog = "Default file in default directory not found: '" + sFilePath + "'";
 							this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
@@ -6379,13 +6900,15 @@ MeinTestParameter=blablaErgebnis
 						}
 					}
 				}
-				this.setFileConfigKernelName(sFileConfig);
+		
 				if(this.getFlag("DEBUG")){
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - SystemNr: '" + sSystemNumber + "'");
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationfile: '" + sFileConfig + "'");
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + " - Configurationpath: '" + sDirectoryConfig + "'");
 				}							
 						
+				
+				
 				//##################################################################################
 				FileIniZZZ objFileIniZZZ = new FileIniZZZ(this);
 				this.setFileConfigKernelIni(objFileIniZZZ);
@@ -6396,7 +6919,7 @@ MeinTestParameter=blablaErgebnis
 				String sKeyToProof = this.getApplicationKey();
 				boolean bProofConfigMain = this.proofSectionIsConfigured(sKeyToProof);
 				if(!bProofConfigMain) {
-					String sFilePath = FileEasyZZZ.joinFilePathName(this.getFileConfigKernelDirectory(), this.getFileConfigKernelName());
+					sFilePath = FileEasyZZZ.joinFilePathName(this.getFileConfigKernelDirectory(), this.getFileConfigKernelName());
 					sLog = "In the configuration file '" + sFilePath + "' does the the section for the ApplicationKey '" + this.getApplicationKey() + "' and the section for the SystemKey '" + this.getSystemKey() + "' not exist or the section is empty.";
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
 					ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
@@ -6458,7 +6981,7 @@ MeinTestParameter=blablaErgebnis
 					
 					//4. Fehlermeldung, wenn kein Log definiert
 					if(StringZZZ.isEmpty(sDirectoryLog) && StringZZZ.isEmpty(sFileLog)){
-						String sFilePath = FileEasyZZZ.joinFilePathName(this.getFileConfigKernelDirectory(), this.getFileConfigKernelName());
+						sFilePath = FileEasyZZZ.joinFilePathName(this.getFileConfigKernelDirectory(), this.getFileConfigKernelName());
 						sLog = "In the configuration file '" + sFilePath + "' is no log configured (Properties 'KernelLogPath', 'KernelLogFile'   ";
 						System.out.println(sLog);
 						ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
@@ -6894,15 +7417,18 @@ MeinTestParameter=blablaErgebnis
 		}
 		
 		//### Interface aus IKernelExpressionIniSolver
-		public IKernelConfigSectionEntryZZZ getEntry() {
-			if(this.objEntry==null) {
-				this.objEntry = new KernelConfigSectionEntryZZZ();			
-			}
-			return this.objEntry;
-		}
-		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-			this.objEntry = objEntry;
-		}
+//		@Override
+//		public IKernelConfigSectionEntryZZZ getEntry() {
+//			if(this.objEntry==null) {
+//				this.objEntry = new KernelConfigSectionEntryZZZ();			
+//			}
+//			return this.objEntry;
+//		}
+//		
+//		@Override
+//		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+//			this.objEntry = objEntry;
+//		}
 		
 		//### aus IKernelJsonIniSolverZZZ
 		@Override

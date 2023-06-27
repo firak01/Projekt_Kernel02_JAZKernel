@@ -19,6 +19,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
@@ -63,8 +64,10 @@ public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKern
 	private IKernelConfigSectionEntryZZZ objEntry = null;
 	private GetOptZZZ objOpt = null;
 	private ICryptZZZ objCrypt = null;
+	private String sCallingProjectPathTotal = null;//Zum Ausrechnen des Pfads diese Projekts, wenn es aus einem anderen Projekt aus aufgerufen wird.
+	
 	public AbstractKernelConfigZZZ() throws ExceptionZZZ{
-		super("init");//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		ConfigNew_(null);
 	}
 	public AbstractKernelConfigZZZ(String[] saArg) throws ExceptionZZZ{
@@ -278,10 +281,26 @@ public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKern
 	 * @return
 	 * @author lindhaueradmin, 07.11.2018, 07:26:27
 	 */
-	public boolean isOnServer(){
+	@Override
+	public boolean isOnServer() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			bReturn = FileEasyZZZ.isOnServer();
+		}
+		return bReturn;
+	}
+		
+		
+	/** Ist notwendig, da der Zugriff auf Ressource anders ist,  wenn die Applikation in einer .jar Datei liegt.
+	 * @return
+	 * @author lindhaueradmin, 07.11.2018, 07:26:27
+	 * @throws ExceptionZZZ 
+	 */
+	@Override
+	public boolean isInJar() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
 		}
 		return bReturn;
 	}
@@ -291,10 +310,11 @@ public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKern
 	 * @author lindhaueradmin, 07.11.2018, 07:26:27
 	 * @throws ExceptionZZZ 
 	 */
-	public boolean isInJar() throws ExceptionZZZ{
+	@Override
+	public boolean isInIDE() throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			bReturn = JarEasyUtilZZZ.isInJar(this.getClass());
+			bReturn = FileEasyZZZ.isInIDE(this.getClass());
 		}
 		return bReturn;
 	}
@@ -688,6 +708,55 @@ public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKern
 		this.objCrypt=objCrypt;
 	}
 		
+	
+	//### Aus Interface IKernelConfigProjectHelperZZZ
+	@Override
+	public String getProjectPath() throws ExceptionZZZ{
+		return this.computeProjectPath();
+	}
+	@Override
+	public String computeProjectPath() throws ExceptionZZZ {
+		return AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
+	}
+	
+	public static String computeProjectPath(String sProjektDirectory, String sProjectName) throws ExceptionZZZ {
+		String sReturn = FileEasyZZZ.joinFilePathNameForUrl(sProjektDirectory, sProjectName);
+		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
+		return sReturn;
+	}
+	
+	@Override 
+	public String computeProjectPathTotal() throws ExceptionZZZ {
+		String sReturn = null;
+		String sWorkspacePath = ReflectWorkspaceZZZ.computeWorkspaceRunningProjectPath(); //Hole den aktuellen Pfad des gesamten "aktuellen" Projekts
+		
+		//Davon einen ggfs. vorhandenen Aufrufenden Projektpfad abziehen.
+		String sProjectCallingPath = this.getCallingProjectPath();
+		String sWorkspacePathPure = StringZZZ.leftback(sWorkspacePath, sProjectCallingPath);
+		sWorkspacePathPure = StringZZZ.stripFileSeparators(sWorkspacePathPure);
+		
+		String sProjectPath = AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
+		
+		sReturn = FileEasyZZZ.joinFilePathNameForUrl(sWorkspacePathPure, sProjectPath);
+		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
+		return sReturn;
+	}
+	
+	@Override
+	public String getProjectPathTotal() throws ExceptionZZZ {
+		return this.computeProjectPathTotal();
+	}
+	
+	@Override
+	public String getCallingProjectPath() {
+		return this.sCallingProjectPathTotal;
+	}
+	
+	@Override
+	public void setCallingProjectPath(String sCallingProjectPathTotal) {
+		this.sCallingProjectPathTotal = sCallingProjectPathTotal;
+	}
+	
 	//##########
 	// Getter / Setter
 	//##########

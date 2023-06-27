@@ -7,7 +7,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhauer
  *
  */
-public interface IKernelConfigZZZ extends IFlagZUserZZZ,IKernelConfigConstantZZZ{
+public interface IKernelConfigZZZ extends IFlagZUserZZZ,IKernelConfigProjectHelperZZZ, IKernelConfigConstantZZZ{
 	//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 	//          Das ist gescheitert, da zuviel zu ändern ist, u.a in der intern verwendeten GetOpt-Klasse.
 	final static String sPATTERN_DEFAULT="k:s:f:d:z:";	
@@ -39,7 +39,9 @@ public interface IKernelConfigZZZ extends IFlagZUserZZZ,IKernelConfigConstantZZZ
 	public String readPatternString();
 	public String getPatternStringDefault();
 	
-	public boolean isOnServer();
+	public boolean isOnServer() throws ExceptionZZZ;
+	public boolean isInJar() throws ExceptionZZZ;
+	public boolean isInIDE() throws ExceptionZZZ;
 	public boolean isOptionObjectLoaded();
 	
 	public boolean isApplicationKeyDefault(String sApplicationKey);

@@ -20,20 +20,33 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	/**Z.B. Wg. Reflection immer den Standardkonstruktor zur Verfügung stellen.
 	 * 
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
+	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelProgramZZZ() {
+	public AbstractKernelProgramZZZ() throws ExceptionZZZ {
 		super();
+		AbstractKernelProgramNew_();
+	}
+	
+	public AbstractKernelProgramZZZ(IKernelZZZ objKernel, String[]saFlag) throws ExceptionZZZ {
+		super(objKernel,saFlag);
+		AbstractKernelProgramNew_();
 	}
 	
 	public AbstractKernelProgramZZZ(IKernelZZZ objKernel) throws ExceptionZZZ {
-		super(objKernel); 
-		
-		//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!
-		this.setFlag(IKernelProgramZZZ.FLAGZ.ISKERNELPROGRAM.name(), true);		
+		super(objKernel); 	
+		AbstractKernelProgramNew_();
 	}
 	
 	public void setProgramName(String sProgramName){
-		this.sProgramName = sProgramName;
+		this.sProgramName = sProgramName;		
+	}
+	
+	private boolean AbstractKernelProgramNew_() throws ExceptionZZZ {
+		
+		//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!
+	    this.setFlag(IKernelProgramZZZ.FLAGZ.ISKERNELPROGRAM.name(), true);	
+				
+		return true;
 	}
 	
 	

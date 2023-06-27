@@ -15,6 +15,7 @@ import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
@@ -446,8 +447,13 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 			boolean bAnyJson = false;
 			
 			HashMap<String,String> hmtemp = null;
-			if(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelJsonMapIniSolverZZZ.sTAG_NAME)){												
-				KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZpassed);
+			if(KernelConfigEntryUtilZZZ.isExpression(sRaw,KernelJsonMapIniSolverZZZ.sTAG_NAME)){
+				//Ohne diese "minimal notwendigen "Flags macht diese utility - Methode keinen Sinn.
+				//Dann noch die übergebenen Flags hinzunehmen.
+				String[]saFlagZ = {IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name() , IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()};
+				saFlagZ =StringArrayZZZ.appendMissing(saFlagZ, saFlagZpassed, null);
+				
+				KernelJsonMapIniSolverZZZ ex = new KernelJsonMapIniSolverZZZ(objFileIni, saFlagZ);
 				hmtemp = ex.computeLinkedHashMap(sRaw);
 				if(hmtemp.isEmpty()) {				
 				}else{

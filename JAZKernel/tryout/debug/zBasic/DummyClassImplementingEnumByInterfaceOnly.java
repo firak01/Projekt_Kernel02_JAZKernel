@@ -6,7 +6,7 @@ import basic.zKernel.component.AbstractKernelProgramZZZ;
 
 public class DummyClassImplementingEnumByInterfaceOnly extends AbstractKernelProgramZZZ{
 
-	public DummyClassImplementingEnumByInterfaceOnly() {
+	public DummyClassImplementingEnumByInterfaceOnly() throws ExceptionZZZ {
 		super();
 	}
 	
