@@ -2536,28 +2536,15 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		    	ExceptionZZZ ez = new ExceptionZZZ("IKernelConfig - Object", iERROR_PARAMETER_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 		    }
-			//Das ist ein Z-Kernel Konzept und funktioniert nur innerhalb der Entwicklungsumgebung
-		    if(objConfig.isInJar() || objConfig.isOnServer()) break main;
-					    
-		    String sModule = objConfig.getProjectPath();//z.B. "Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup"
-		    if(StringZZZ.isEmpty(sModule)){							
-			  	ExceptionZZZ ez = new ExceptionZZZ("IKernelConfig - Object has no project path.", iERROR_PROPERTY_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;								
-			}
-		    
-//			String sProjectPathTotal = objConfig.getProjectPathTotal();
-//			System.out.println("Verzeichnis erweitert zu: '" + sProjectPathTotal + "'");
-//			
-//			//Ziel ist z.B.: C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup\src\ZKernelConfig_HtmlTableHandler.ini
-//			String sFilePath = FileEasyZZZ.joinFilePathNameForWorkspace(sProjectPathTotal, sFile);
-//			System.out.println("Erweitertes Verzeichnis mit Dateinamen zu: '" + sFilePath + "'");
-			
+			//Das ist ein Z-Kernel Konzept. Vorraussetzung: Nicht in .Jar oder auf einem Server, also in Eclipse Entwicklungs Umgebung
+			if(!objConfig.isInIDE()) break main;					    		    
+		
+			//Ziel ist z.B.: C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup\src\ZKernelConfig_HtmlTableHandler.ini			
 			String sFilePath = ReflectWorkspaceZZZ.computeWorkspacePath(objConfig, sFile);		   
 			boolean bExists = FileEasyZZZ.existsInWorkspace(sFilePath);
 			if(bExists) {
 				objReturn = new File(sFilePath);
-			}			
-				
+			}						
 		}//end main:
 		return objReturn;			
 	}

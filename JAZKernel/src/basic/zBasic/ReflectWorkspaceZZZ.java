@@ -75,8 +75,13 @@ public class ReflectWorkspaceZZZ implements IConstantZZZ {
 		    }
 			//Das ist ein Z-Kernel Konzept und funktioniert nur innerhalb der Entwicklungsumgebung
 		    if(objConfig.isInJar() || objConfig.isOnServer()) break main;
-				 
+		    	 
 		    String sWorkspaceProjekt = ReflectWorkspaceZZZ.computeWorkspacePath(objConfig);
+		    if(StringZZZ.isEmpty(sWorkspaceProjekt)){							
+			  	ExceptionZZZ ez = new ExceptionZZZ("IKernelConfig - Object has no project path.", iERROR_PROPERTY_MISSING,   FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;								
+			}
+		    
 		    String sDirectoryTotal = FileEasyZZZ.joinFilePathNameForWorkspace(sWorkspaceProjekt, sDirectory);
 		    sReturn = sDirectoryTotal;
 		}//end main:

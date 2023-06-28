@@ -13,7 +13,7 @@ import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelProgramZZZ, IKernelModuleUserZZZ {
-	protected IKernelModuleZZZ objModule=null; //Das Modul, z.B. die Dialogbox, in der das Program gestartet wird.
+	protected IKernelModuleZZZ objModule=null; //Das Modul, in der UI Variante z.B. die Dialogbox, in der das Program gestartet wird.
 	protected String sModuleName=null;	
 	protected String sProgramName=null;
 	

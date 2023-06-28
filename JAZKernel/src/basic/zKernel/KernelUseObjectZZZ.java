@@ -152,7 +152,7 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	/* (non-Javadoc)
 	 * @see zzzKernel.basic.KernelAssetKernelZZZ#getKernelObject()
 	 */
-	public IKernelZZZ getKernelObject() {
+	public IKernelZZZ getKernelObject() throws ExceptionZZZ {
 		return this.objKernel;
 	}
 
@@ -189,17 +189,17 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 
 	//aus IKernelLogObjectUserZZZ, analog zu KernelKernelZZZ
 	@Override
-	public LogZZZ getLogObject() {
+	public LogZZZ getLogObject() throws ExceptionZZZ {
 		return this.objLog;
 	}
 
 	@Override
-	public void setLogObject(LogZZZ objLog) {
+	public void setLogObject(LogZZZ objLog) throws ExceptionZZZ {
 		this.objLog = objLog;
 	}	
 	
 	@Override
-	public void logLineDate(String sLog) {
+	public void logLineDate(String sLog) throws ExceptionZZZ {
 		LogZZZ objLog = this.getLogObject();
 		if(objLog==null) {
 			String sTemp = KernelLogZZZ.computeLineDate(sLog);

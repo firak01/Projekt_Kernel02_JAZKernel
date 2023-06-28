@@ -33,6 +33,11 @@ public abstract class AbstractKernelModuleZZZ  extends KernelUseObjectZZZ implem
 		KernelModuleNew_("", null);
 	}
 	
+	public AbstractKernelModuleZZZ(IKernelZZZ objKernel, String[] saFlagUsed) throws ExceptionZZZ {
+		super(objKernel); 		
+		KernelModuleNew_("", saFlagUsed);
+	}
+	
 	public AbstractKernelModuleZZZ(IKernelZZZ objKernel, String sModule) throws ExceptionZZZ {
 		super(objKernel);
 		KernelModuleNew_(sModule, null);

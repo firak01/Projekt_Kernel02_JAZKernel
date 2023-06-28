@@ -1,5 +1,6 @@
 package basic.zKernel;
 
+import basic.zBasic.ExceptionZZZ;
 import custom.zKernel.LogZZZ;
 
 
@@ -12,6 +13,6 @@ import custom.zKernel.LogZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public interface IKernelUserZZZ extends IKernelLogUserZZZ{
-	public abstract IKernelZZZ getKernelObject();
+	public abstract IKernelZZZ getKernelObject() throws ExceptionZZZ;
 	public abstract void setKernelObject(IKernelZZZ objKernel);			
 }

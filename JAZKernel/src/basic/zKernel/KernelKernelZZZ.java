@@ -17,6 +17,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
@@ -3765,18 +3766,16 @@ MeinTestParameter=blablaErgebnis
 			
 			//Merke: Ein leeres Verzeichnis ist kein Problem, dann Projektstandardverzeichnis nehmen. if(StringZZZ.isEmpty(sFilePathUsed)) break main;
 			//Problem: Hierin wird per Classloader gesucht... Das bedeutet es wird beim Modulen ggfs. im falschen Projektordner gesucht.
-//			File objReturn2 = FileEasyZZZ.getFileObjectInRunningExecutionProjectPath(sFilePathUsed);
+//			File objReturn2 = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sFilePathUsed);
 //			if(objReturn2!=null) {
 //				sFilePathUsed = objReturn2.getAbsolutePath();
 //				sReturn = sFilePathUsed;
 //				break main;
 //			}
 			
-			//... und wenn dort nix gefunden worden ist
-			
-			//Bei "Modulen" ist das ein Problem, da nun das Projekt des "starts" genommen wird.
+			//Bei "Modulen" ist das ein Problem, da nun das Projekt des "starts" - also main() -genommen wird.
 			//Ziel: Das Projekt des Moduls nehmen.			
-//			if(objConfig!=null) {
+
 				File objReturn2 = FileEasyZZZ.searchFileObjectInWorkspace(objConfig, sFilePathUsed);
 				if(objReturn2!=null) {
 					sFilePathUsed = objReturn2.getAbsolutePath();
@@ -5149,20 +5148,12 @@ MeinTestParameter=blablaErgebnis
 		main:{				
 			//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
 			//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
-			//Aber: Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
-				//  Darum findet hier nicht das Nachsehen im Cache statt. 
+			//Aber:  Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
+			//       Darum findet hier nicht das Nachsehen im Cache statt. 
 			
 			
-			//### Modulalias holen
-			//Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
-			//Das passt aber nicht... IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
-			//if(objAlias.hasAnyValue()) {
-			//	String sAlias = objAlias.getProperty();
-			//	hmReturn = this.getParameterHashMapWithStringByProgramAlias(sAlias, sModuleAndProgramAndSection,sProperty);
-			//}else {
-			    //Applicationkey als Modulalias
-				hmReturn = this.getParameterHashMapWithStringByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);
-			//}				
+			//### Applicationkey als Modulalias
+			hmReturn = this.getParameterHashMapWithStringByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);						
 		}
 		return hmReturn;
 	}
@@ -5174,20 +5165,11 @@ MeinTestParameter=blablaErgebnis
 		main:{				
 			//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
 			//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
-			//Aber: Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
-				//  Darum findet hier nicht das Nachsehen im Cache statt. 
-			
-			
-			//### Modulalias holen
-			//Versuch einen Alias als Wert zu holen, erst aus dem Systemkey, dann aus dem ApplicationKey
-			//Das passt aber nicht... IKernelConfigSectionEntryZZZ objAlias = this.getSectionAliasFor(sModuleAndProgramAndSection);
-			//if(objAlias.hasAnyValue()) {
-			//	String sAlias = objAlias.getProperty();
-			//	hmReturn = this.getParameterHashMapWithEntryByProgramAlias(sAlias, sModuleAndProgramAndSection,sProperty);
-			//}else {
-			    //Applicationkey als Modulalias
-				hmReturn = this.getParameterHashMapWithEntryByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);
-			//}			
+			//Aber:  Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
+			//       Darum findet hier nicht das Nachsehen im Cache statt. 
+						
+			//### Applicationkey als Modulalias
+			hmReturn = this.getParameterHashMapWithEntryByProgramAlias(this.getApplicationKey(), sProgramAndSection, sProperty);					
 		}
 		return hmReturn;
 	}
@@ -5200,8 +5182,8 @@ MeinTestParameter=blablaErgebnis
 		main:{				
 			//Merke: Die Eingabewerte werden ggfs. als Schlüssel für den Cache verwendet.
 			//       Sowohl für die Suche im Cache, als auch für das Speichern im Cache. Dadurch wird Performance erreicht.
-			//Aber: Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
-				//  Darum findet hier nicht das Nachsehen im Cache statt. 
+			//Aber:  Es wird im Cache kein Array gespeichert, sondern der zu zerlegende String !!!
+			//       Darum findet hier nicht das Nachsehen im Cache statt. 
 						
 			//############################
 			hmDebug.put("+++ HashMapMethod calling StringMethod for search. Input: " + sModule + "," + sProgramOrSection ,sProperty);
@@ -5238,7 +5220,7 @@ MeinTestParameter=blablaErgebnis
 				
 			
 			sDebug = hmDebug.debugString(":"," | ");			
-			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Uebernehme gefundenen Wert " + sDebug);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "+++ HashMapMethod calling StringMethod for search. Uebernehme gefundenen Wert " + sDebug);
 			objReturn.isJson(true);
 			objReturn.isJsonMap(true);
 			objReturn.setValue(hmReturn);
@@ -6860,17 +6842,13 @@ MeinTestParameter=blablaErgebnis
 					//Dann sind die Pfade ggfs. unter Eclipse nicht korrekt
 					if(!this.isInJar() && !this.isOnServer()) {							
 						if(objConfig!=null) {
-							//Workaround. Man kann nun objConfig - Pfad versuchen zu nehmen
-							String s = objConfig.getClass().getPackage().toString();
-							System.out.println("Ueberschreibe Verzeichnis, nehme Package: '" + s + "'");
-							
-							String sProjectPathTotal = objConfig.getProjectPathTotal();
-							
-							//C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup\src\ZKernelConfig_HtmlTableHandler.ini
-							sFilePath = FileEasyZZZ.joinFilePathNameForWorkspace(sProjectPathTotal, sFileConfig);					
+							//Workaround. Man kann nun objConfig - Pfad versuchen zu nehmen							
+							//Das Ziel, z.B. in einem anderen Projektordner: C:\1fgl\repo\EclipseOxygen_V01\Projekt_Kernel02_JAZLanguageMarkup\JAZLanguageMarkup\src\ZKernelConfig_HtmlTableHandler.ini
+							sFilePath = ReflectWorkspaceZZZ.computeWorkspacePath(objConfig, sFileConfig);
+							System.out.println("Ueberschreibe Verzeichnis, nehme Pfad in anderem Projektordnder: '" + sFilePath + "'");							
 							bExists = FileEasyZZZ.exists(sFilePath);
 							if(bExists) {
-								sProjectPathTotal = FileEasyZZZ.getParent(sFilePath);
+								String sProjectPathTotal = FileEasyZZZ.getParent(sFilePath);
 								this.setFileConfigKernelDirectory(sProjectPathTotal);
 							}
 						}
@@ -6878,7 +6856,7 @@ MeinTestParameter=blablaErgebnis
 					
 					
 					if(!bExists) {
-						//Anderes Verzeichnis probieren
+						//Anderes Verzeichnis- DEFAULT, mit absolutem Pfad - probieren
 						String sDirectoryConfigDefault = KernelKernelZZZ.sDIRECTORY_CONFIG_DEFAULT;
 						sLog = "Default Filename for configuration does not exist here: '" + sFilePath + "'. Looking in default direcotry '" + sDirectoryConfigDefault + "'" ;
 						this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);

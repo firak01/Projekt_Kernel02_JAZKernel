@@ -644,7 +644,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 	
 	
 	@Override
-	public void logLineDate(String sLog) {
+	public void logLineDate(String sLog) throws ExceptionZZZ {
 		String sTemp = KernelLogZZZ.computeLineDate(sLog);
 		System.out.println(sTemp);		
 	}
