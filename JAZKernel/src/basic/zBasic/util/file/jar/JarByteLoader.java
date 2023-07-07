@@ -7,6 +7,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import basic.zBasic.util.file.ByteLoader;
+import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.JarEasyZZZ;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 
 
@@ -67,6 +69,9 @@ public class JarByteLoader {
     if( resourceName == null )
       throw new JarInfoException( "supplied resourceName to getResourceAsBytes() was null" );
 
+    String sRoot = FileEasyZZZ.getRoot(resourceName);
+    
+    
     ZipEntry ze = fInfo.getZipEntry( resourceName );
     if( ze == null )
       throw new JarInfoException( "no such resource '" +

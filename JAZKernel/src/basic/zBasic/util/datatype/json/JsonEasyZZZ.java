@@ -146,7 +146,7 @@ public class JsonEasyZZZ extends ObjectZZZ{
 			
 			
 			//Das berücksichtigt nicht die Reihenfolge!!
-			TypeToken<HashMap<String, String>> typeToken = new TypeToken<HashMap<String, String>>(){};
+			TypeToken<HashMap<?,?>> typeToken = new TypeToken<HashMap<?,?>>(){};
 									
 			Gson gson=new GsonBuilder().create();
 			Type type = typeToken.getType();
@@ -167,7 +167,7 @@ public class JsonEasyZZZ extends ObjectZZZ{
 				throw ez;
 			}
 	
-			TypeToken<LinkedHashMap<String, String>> typeToken = new TypeToken<LinkedHashMap<String, String>>(){};
+			TypeToken<LinkedHashMap<?,?>> typeToken = new TypeToken<LinkedHashMap<?,?>>(){};
 			Type type = typeToken.getType();
 			
 			Gson gson=new GsonBuilder().create();
