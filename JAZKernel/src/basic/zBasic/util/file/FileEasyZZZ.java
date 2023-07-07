@@ -2903,73 +2903,73 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return sReturn;
 	}
 	
-	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück.
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück, nach Möglichkeit "relativ", ggfs. aber auch "absolut"
 	 * @param sFilePathRaw
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getFileUsedPath(String sFilePathRaw) throws ExceptionZZZ{
-		String sReturn=null;
-		main:{
-			//if(sFilePathRaw==null) break main;
-			if(sFilePathRaw==null){
-				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
-				sReturn = objReturn.getAbsolutePath();
-			}else if(sFilePathRaw.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){
-				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
-				sReturn = objReturn.getAbsolutePath();
-			}else if(sFilePathRaw.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
-				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
-			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-				sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
-			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
-				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
-				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
-			}else{
-				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){				               				
-					sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;
-				}else{
-					sReturn = sFilePathRaw;
-				}
-			}
-		}//end main
-		return sReturn;
+		return FileEasyZZZ.getFileUsedPath_(sFilePathRaw, false);
 	}
 	
-	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück.
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück, nach Möglichkeit "absolut".
 	 * @param sFilePathRaw
 	 * @return
 	 * @throws ExceptionZZZ 
 	 */
 	public static String getFileUsedPathAbsolute(String sFilePathRaw) throws ExceptionZZZ{
+		return FileEasyZZZ.getFileUsedPath_(sFilePathRaw, true);
+	}
+	
+	private static String getFileUsedPath_(String sFilePathRaw, boolean bAsAbsolute) throws ExceptionZZZ{
 		String sReturn=null;
 		main:{
 			//if(sFilePathRaw==null) break main;
 			if(sFilePathRaw==null){
 				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
+				
+				
 			}else if(sFilePathRaw.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){
 				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
+				
+				
 			}else if(sFilePathRaw.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
-				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+				if(bAsAbsolute) {				
+					sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+				}else {
+					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+				}																
 			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
-				sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+				if(bAsAbsolute) {
+					sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+				}else {
+					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
+				}
 			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
+				
+			
 			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
 				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
+				
+				
 			}else{
-				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){				               				
-					sReturn = FileEasyZZZ.getFileRootPathAbsolute() +  File.separator + sFilePathRaw;
+				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){
+					if(bAsAbsolute) {
+						sReturn = FileEasyZZZ.getFileRootPathAbsolute() +  File.separator + sFilePathRaw;
+					}else {
+						sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;
+					}
 				}else{
 					sReturn = sFilePathRaw;
 				}
 			}
 		}//end main
-		return sReturn;
+		return sReturn;		
 	}
 	
 	/** Returns the root-string of a file.

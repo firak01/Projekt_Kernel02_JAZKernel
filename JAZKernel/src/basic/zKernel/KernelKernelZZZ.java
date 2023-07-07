@@ -5202,7 +5202,7 @@ MeinTestParameter=blablaErgebnis
 				hmDebug.put("No value found for property", sProperty);
 				break main;
 			}else {
-				sRaw = objReturn.getValue();
+				sRaw = objReturn.getRaw(); //Merke: .getValue würde ggfs. den Text einer HashMap in Debug-Form zurueckliefern, wie: UIText01	| TESTWERT2DO2JSON01 \n UIText02	| TESTWERT2DO2JSON02 
 				hmDebug.put("Raw value '" + sRaw + "' found for property", sProperty);
 			}
 						

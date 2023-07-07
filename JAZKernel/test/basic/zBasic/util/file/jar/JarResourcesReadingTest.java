@@ -32,7 +32,7 @@ public class JarResourcesReadingTest extends TestCase {
     String archiveName = JarInfoTestConstants.kJAR_FILE_ONE;
     ZipEntryFilter zipFilter = new SuffixZipEntryFilter( ".ovpn" );
     //String resourceName = "org/apache/tools/ant/taskdefs/optional/junit/xsl/junit-frames.xsl";
-    String resourceName = "template/template_server_TCP_443.ovpn";
+    String resourceName = "resourceZZZ/template/template_server_TCP_443.ovpn";
     
     JarByteLoader jarByteLoader = null;
     try {
