@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.ByteLoader;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
@@ -63,16 +64,16 @@ public class JarByteLoader {
    * @param the class name
    * @return bytes for the named class.  if it can't be found
    * this method returns null
-   * @exception basic.zBasic.util.file.jar.ack.tools.jarinfo.JarInfoException reports problems getting resources from jar
+ * @throws ExceptionZZZ,JarInfoException 
    */
-  public byte[] getResourceAsBytes( String resourceName ) throws JarInfoException {
+  public byte[] getResourceAsBytes( String resourceName ) throws ExceptionZZZ,JarInfoException {
     if( resourceName == null )
       throw new JarInfoException( "supplied resourceName to getResourceAsBytes() was null" );
-
-    String sRoot = FileEasyZZZ.getRoot(resourceName);
     
+    String sRoot = FileEasyZZZ.getFileRootPath();
+    String sResourceName = FileEasyZZZ.joinFilePathNameForUrl(sRoot, resourceName);
     
-    ZipEntry ze = fInfo.getZipEntry( resourceName );
+    ZipEntry ze = fInfo.getZipEntry( sResourceName );
     if( ze == null )
       throw new JarInfoException( "no such resource '" +
                                   resourceName + "' in archive -> " + fInfo.getZipFileName() );

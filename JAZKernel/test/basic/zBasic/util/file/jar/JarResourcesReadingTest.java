@@ -1,5 +1,6 @@
 package basic.zBasic.util.file.jar;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.zip.SuffixZipEntryFilter;
 import basic.zBasic.util.file.zip.ZipEntryFilter;
 //import com.ack.tools.jarinfo.JarByteLoader;
@@ -50,11 +51,12 @@ public class JarResourcesReadingTest extends TestCase {
 
       // print out the resource
       System.out.println( new String( theBytes ) );
-    }
-    catch( JarInfoException jie ) {    	
-      jie.printStackTrace();      
-      fail(jie.getDetailAllLast());
-    }
+    }catch( JarInfoException jie ) {    	
+        jie.printStackTrace();      
+        fail(jie.getDetailAllLast());     
+	  } catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());	  
+	  }
   }
 }
 

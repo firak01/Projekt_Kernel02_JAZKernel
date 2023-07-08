@@ -1858,11 +1858,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, true, false, false);
 	}
 	
-	/**Den Dateipfad so zusammensetzen wie er für ein ZIP / JAR Archiv gueltig ist.
+	/**Den Dateipfad so zusammensetzen wie er für ein Url gueltig ist.
 	 * Ein normaler Dateipfad bekommt ggfs. src-Ordner vorangestellt
-	 * Ein normaler Dateipfad bekommt ggfs. Backslashe.
-	 * 
-	 * Das ist hier nicht der Fall.
+	 * Ein normaler Dateipfad bekommt ggfs. Slashe.
 	 * 
 	 * @param sFilePathIn
 	 * @param sFileNameIn
@@ -1871,6 +1869,20 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
 	 */
 	public static String joinFilePathNameForUrl(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{		
+		return joinFilePathNameForJar(sFilePathIn, sFileNameIn);
+	}
+	
+	/**Den Dateipfad so zusammensetzen wie er für ein ZIP / JAR Archiv gueltig ist.
+	 * Ein normaler Dateipfad bekommt ggfs. src-Ordner vorangestellt
+	 * Ein normaler Dateipfad bekommt ggfs. Slashe.
+	 * 
+	 * @param sFilePathIn
+	 * @param sFileNameIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
+	 */
+	public static String joinFilePathNameForJar(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{		
 		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, true, false); //Ohne src voranzustellen
 		sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn); //Backslash in Slash umwandeln, etc.                    
 		return sReturn;
