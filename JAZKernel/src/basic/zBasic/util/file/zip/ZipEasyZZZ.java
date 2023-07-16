@@ -16,6 +16,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 
 public class ZipEasyZZZ implements IConstantZZZ {	
@@ -128,7 +129,7 @@ public class ZipEasyZZZ implements IConstantZZZ {
 			}
 			
 			String sKey = ze.getName();
-			String sKeyNormed = StringZZZ.replace(sKey, "/", FileEasyZZZ.sDIRECTORY_SEPARATOR);
+			String sKeyNormed = StringZZZ.replace(sKey, "/", IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR);
 			String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirPathRoot, sKeyNormed);
 			sLog = ReflectCodeZZZ.getPositionCurrent()+": sFilePathTotal='" + sFilePathTotal + "'";
 		   	System.out.println(sLog);

@@ -52,46 +52,10 @@ import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
  * @author lindhaueradmin
  *
  */
-public class FileEasyZZZ extends ObjectZZZ{
-	public static String sDIRECTORY_CURRENT = ".";
-	public static String sDIRECTORY_PARENT = "..";
-	public static String sDIRECTORY_SEPARATOR = File.separator; //z.B. Backslash in Windows
-	public static char cDIRECTORY_SEPARATOR = File.separatorChar;
-	public static String sDIRECTORY_SEPARATOR_WINDOWS ="\\";
-	public static String sDIRECTORY_SEPARATOR_UNIX ="/";
-	
-	//https://stackoverflow.com/questions/51494579/regex-windows-path-validator
-	public static String sDIRECTORY_VALID_WINDOWS_REGEX="^(?:[a-z]:)?[\\/\\\\]{0,2}(?:[.\\/\\\\ ](?![.\\/\\\\\\n])|[^<>:\"|?*.\\/\\\\ \\n])+$";
-	/* So the regex is as follows:
-	
-	    ^ - Start of the string.
-	    (?:[a-z]:)? - Drive letter and a colon, optional.
-	    [\/\\]{0,2} - Either a backslash or a slash, between 0 and 2 times.
-	    (?: - Start of the non-capturing group, needed due to the + quantifier after it.
-	        [.\/\\ ] - The first alternative.
-	        (?![.\/\\\n]) - Negative lookahead - "forbidden" chars.
-	    | - Or.
-	        [^<>:"|?*.\/\\ \n] - The second alternative.
-	    )+ - End of the non-capturing group, may occur multiple times.
-	    $ - End of the string.
-	
-	If you attempt to match each path separately, use only i option.
-	
-	But if you have multiple paths in separate rows, and match them globally in one go, add also g and m options.
-	
-	For a working example see https://regex101.com/r/4JY31I/1
-	 */
-	           
-	public static String sFILE_ENDING_SEPARATOR = ".";
-	public static String sFILE_ABSOLUT_REGEX="^[A-Za-z]:[\\\\/]"; //Merke: Um 1 Backslash auszukommentieren 4 verwenden zum ausmaskieren.
-	public static String sFILE_VALID_WINDOWS_REGEX="^(?>[a-z]:)?(?>\\|/)?([^\\/?%*:|\"<>\r\n]+(?>\\|/)?)+$";
-	
-	public static String sDIRECTORY_CONFIG_SOURCEFOLDER="src";//Dient zur Unterscheidung, ob die Applikation auf deinem Server oder lokal läuft. Der Ordner ist auf dem Server nicht vorhanden (Voraussetzung)!!!
-	public static String sDIRECTORY_CONFIG_TESTFOLDER="test";//FÜR DIE AUSFÜHRUNG VON TESTKLASSEN
-	public static String sDIRECTORY_CONFIG_TRYOUTFOLDER="tryout";//FÜR DIE DEBUG und TRYOUTKLASSEN
-private FileEasyZZZ(){
-	//Zum Verstecken des Konstruktors
-}
+public class FileEasyZZZ extends ObjectZZZ implements IFileEasyConstantsZZZ{
+	private FileEasyZZZ(){
+		//Zum Verstecken des Konstruktors, sind halt nur static MEthoden
+	}
 
 /** Überprüft, ob unter dem angegebenen pfadnamen "fileName" eine Datei existiert.
  *  Merke: Das hat einen anderen Algorithums, als die gleiche Methode mit File-Objekt als Parameter
@@ -227,7 +191,7 @@ public static String getDirectoryNameFirst(String sFilePathTotal) throws Excepti
 	main:{
 		if(StringZZZ.isEmpty(sFilePathTotal)) break main;
 		
-		StringTokenizer objTokenizer = new StringTokenizer(sFilePathTotal, FileEasyZZZ.sDIRECTORY_SEPARATOR);
+		StringTokenizer objTokenizer = new StringTokenizer(sFilePathTotal, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR);
 		sReturn = objTokenizer.nextToken();
 	}//end main:
 	return sReturn;	
@@ -239,7 +203,7 @@ public static String getDirectoryPathFollowing(String sDirectoryStart, String sF
 		if(StringZZZ.isEmpty(sFilePathTotal)) break main;
 		if(StringZZZ.isEmpty(sDirectoryStart)) break main;
 		
-		sReturn = StringZZZ.left(sFilePathTotal, sDirectoryStart+FileEasyZZZ.sDIRECTORY_SEPARATOR);
+		sReturn = StringZZZ.left(sFilePathTotal, sDirectoryStart+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR);
 	}//end main:
 	return sReturn;	
 }
@@ -443,7 +407,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 			//4. Bei NULL: Versuch den Projektordner verwenden
 			//System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (2) Path is relativ. '" + sDirectoryIn + "'");
 			String sDirectory = null;
-			File objDirectory = FileEasyZZZ.searchDirectory(FileEasyZZZ.sDIRECTORY_CURRENT); 
+			File objDirectory = FileEasyZZZ.searchDirectory(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT); 
 			String sLog = null;
 			if(objDirectory!=null){
 				sDirectory = objDirectory.getPath();
@@ -693,29 +657,29 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		if(sDirectoryIn==null){			
 			bUseProjectBase=true;	
 		}else {
-			if(sDirectoryIn.startsWith(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty()+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+			if(sDirectoryIn.startsWith(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty()+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)
 			   | (sDirectoryIn.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty()))){		
 				bUseProjectBase=true;			
 			}else if(sDirectoryIn.equals("")
-				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_SEPARATOR)){			
+				| sDirectoryIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)){			
 				bUseClasspathSource=true;
-			}else if(sDirectoryIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()+FileEasyZZZ.sDIRECTORY_SEPARATOR)
+			}else if(sDirectoryIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)
 				| sDirectoryIn.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){			
 				bUseClasspathSource=true;		
-			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_PARENT+FileEasyZZZ.sDIRECTORY_SEPARATOR)
-				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_PARENT)){
+			}else if(sDirectoryIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_PARENT+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)){
 				bUseProjectBase=true;
-			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT+FileEasyZZZ.sDIRECTORY_SEPARATOR)
-				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+			}else if(sDirectoryIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)){			
 				bUseClasspathSource=true;						
-			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER+FileEasyZZZ.sDIRECTORY_SEPARATOR)
-				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+			}else if(sDirectoryIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 				bUseProjectBaseForTest=true;
-			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER+FileEasyZZZ.sDIRECTORY_SEPARATOR)
-				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
+			}else if(sDirectoryIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
 				bUseProjectBaseForTryout=true;
-			}else if(sDirectoryIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER+FileEasyZZZ.sDIRECTORY_SEPARATOR)
-				| sDirectoryIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
+			}else if(sDirectoryIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)
+				| sDirectoryIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
 				bUseClasspathSource=true;
 			}else {
 				if(FileEasyZZZ.isPathAbsolut(sDirectoryIn)) {
@@ -726,7 +690,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 							
 				//+++ Der Normalfall, aber auch hier darauf achten, nicht den Root erneut davorzusetzen.
 				String sPathRoot = FileEasyZZZ.getFileRootPath();
-				if( !(sDirectoryIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+				if( !(sDirectoryIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 					bUseClasspathSource=true;
 				}else {
 					bUseClasspathSource=false;
@@ -747,7 +711,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		if(bUseProjectBaseForTest){		
 			String sDirectoryFirst = FileEasyZZZ.getDirectoryNameFirst(sDirectory);
 			String sDirectoryRemaining = FileEasyZZZ.getDirectoryPathFollowing(sDirectoryFirst, sDirectory);
-			sDirectory = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER, sDirectoryRemaining);
+			sDirectory = FileEasyZZZ.joinFilePathName(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER, sDirectoryRemaining);
 			objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
@@ -758,7 +722,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		if(bUseProjectBaseForTryout){
 			String sDirectoryFirst = FileEasyZZZ.getDirectoryNameFirst(sDirectory);
 			String sDirectoryRemaining = FileEasyZZZ.getDirectoryPathFollowing(sDirectoryFirst, sDirectory);
-			sDirectory = FileEasyZZZ.joinFilePathName(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER, sDirectoryRemaining);
+			sDirectory = FileEasyZZZ.joinFilePathName(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER, sDirectoryRemaining);
 			objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sDirectory);			
 			if(objReturn!=null){
 				if(objReturn.exists()) break main;
@@ -780,14 +744,14 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 		
 		//+++ Normalfall			
 			//+++ 1. Versuch im Classpath suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, gepackt in ein .jar File.
-			if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
+			if(sDirectory.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
 				sDirectory = FileEasyZZZ.getFileRootPath();
 				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar);
-			}else if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+			}else if(sDirectory.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": TESTORDNER VERWENDET");
 				sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
 				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar);
-			}else if(sDirectory.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
+			}else if(sDirectory.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": TRYOUTORDNER VERWENDET");
 				sDirectory = FileEasyZZZ.getFileRootPath() + File.separator + sDirectory;	
 				objReturn = FileEasyZZZ.searchDirectory(sDirectory, bSearchInJar);									
@@ -856,8 +820,8 @@ public static boolean isPathSubExistingOfDirectory(File objFileDirectory, String
 			ExceptionZZZ ez  = new ExceptionZZZ("FilePath", iERROR_PARAMETER_MISSING, null, ReflectCodeZZZ.getMethodCurrentName());
 			throw ez;
 		}
-		if(sFilePath.equals(FileEasyZZZ.sDIRECTORY_CURRENT)) break main; //Das aktuelle Verzeichnis ist kein Unterverzeichnis
-		if(sFilePath.equals(FileEasyZZZ.sDIRECTORY_PARENT)) break main; //Das Elternverzeichnis ist kein Unterverzeichnis
+		if(sFilePath.equals(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)) break main; //Das aktuelle Verzeichnis ist kein Unterverzeichnis
+		if(sFilePath.equals(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)) break main; //Das Elternverzeichnis ist kein Unterverzeichnis
 		
 		String sDirPathTotal;
 		if(FileEasyZZZ.isPathAbsolut(sFilePath)) {
@@ -902,7 +866,7 @@ public static  boolean isPathAbsolut(String sFilePathNameIn)throws ExceptionZZZ{
 		if(sFilePathNameIn.equals("")) break main; //Merke: Leerstring ist kein absoluter Pfad.
 		sFilePathName=sFilePathNameIn;
 		
-		Pattern p = Pattern.compile(FileEasyZZZ.sFILE_ABSOLUT_REGEX); 
+		Pattern p = Pattern.compile(IFileEasyConstantsZZZ.sFILE_ABSOLUT_REGEX); 
 		 Matcher m =p.matcher( sFilePathName ); 
 		 bReturn =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
 		 if(bReturn) break main;
@@ -961,7 +925,7 @@ public static  boolean isPathValid(String sFilePathName)throws ExceptionZZZ{
 		}
 		if(sFilePathName.equals("")) break main; //Merke: Leerstring ist kein absoluter Pfad.
 		
-		Pattern p = Pattern.compile(FileEasyZZZ.sDIRECTORY_VALID_WINDOWS_REGEX); 
+		Pattern p = Pattern.compile(IFileEasyConstantsZZZ.sDIRECTORY_VALID_WINDOWS_REGEX); 
 		 Matcher m =p.matcher( sFilePathName ); 
 		 boolean bMatched  =  m.find(); //Es geht nicht darum den ganzen Ausdruck, sondern nur einen teil zu finden: m.matches(); 	
 		 if(bMatched) {
@@ -1555,7 +1519,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 		main:{
 					
 		//Ermitteln der Dateinamensendung.
-		iFileOnlyLength = sFileName.lastIndexOf(FileEasyZZZ.sFILE_ENDING_SEPARATOR);
+		iFileOnlyLength = sFileName.lastIndexOf(IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR);
 		if(iFileOnlyLength > -1){
 			sFunction = sFileName.substring(iFileOnlyLength + 1);
 		}
@@ -1673,18 +1637,18 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 		
 		//#########################################
 		//Ermitteln der Dateinamensendung.
-		int iFileOnlyLength = sFileName.lastIndexOf(FileEasyZZZ.sFILE_ENDING_SEPARATOR);
+		int iFileOnlyLength = sFileName.lastIndexOf(IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR);
 		if(iFileOnlyLength > -1){
 			sReturn = StringZZZ.left(sFileName, iFileOnlyLength + 1);
 			if(StringZZZ.isEmpty(sReturn)){
 				//Dann ist irgendwas anders als geplant......
-				sReturn = sFileName + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnd;
+				sReturn = sFileName + IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR + sEnd;
 			}else{
 				sReturn = sReturn + sEnd;
 			}
 		}else{
 			//Es gibt keinen Punkt im Dateinamen
-			sReturn = sFileName + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnd;
+			sReturn = sFileName + IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR + sEnd;
 		}
 		return sReturn;
 	}
@@ -1707,7 +1671,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			String sFileNameLeft = FileEasyZZZ.getNameOnly(sFileName);
 			String sFileNameRight = FileEasyZZZ.getNameEnd(sFileName);
 			
-			sReturn = sFileNameLeft + sSuffix + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sFileNameRight;
+			sReturn = sFileNameLeft + sSuffix + IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR + sFileNameRight;
 		
 		}//end main:
 		return sReturn;
@@ -1741,7 +1705,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			
 			String sDirectorySeparatorUsed;
 			if(StringZZZ.isEmpty(sDirectorySeparatorUsedIn)) {
-				sDirectorySeparatorUsed = FileEasyZZZ.sDIRECTORY_SEPARATOR;
+				sDirectorySeparatorUsed = IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR;
 			}else {
 				sDirectorySeparatorUsed = sDirectorySeparatorUsedIn;
 			}
@@ -1782,7 +1746,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	public static String flattenFilePathToFileName(String sFilePath) {
 		String sReturn = null;
 		main:{
-			String sFilePathNormedForTempFile = StringZZZ.replace(sFilePath, FileEasyZZZ.sDIRECTORY_SEPARATOR, "_");													
+			String sFilePathNormedForTempFile = StringZZZ.replace(sFilePath, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, "_");													
 			sReturn = StringZZZ.replace(sFilePathNormedForTempFile, "/", "_");
 		}//end main:
 		return sReturn;
@@ -1823,11 +1787,20 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ 
 	 */
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, false, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, false, false, false);
+	}
+	
+	/** Joins any Filepath-String with the Filename. E.g. in the case the filepath has an backslash at the end
+	 * @param sFilePath
+	 * @param sFileName
+	 * @throws ExceptionZZZ 
+	 */
+	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, boolean bReturnAsRelativePath) throws ExceptionZZZ{
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, false, false, false, bReturnAsRelativePath);
 	}
 	
 	public static String joinFilePathName(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false, false, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, false, false, false, false);
 	}
 	
 	/** Es wird der lokale Root bei relativen Pfaden nicht vorangestellt.
@@ -1840,7 +1813,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 05.02.2021, 08:45:42
 	 */
 	public static String joinFilePathNameForRemote(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, true, false, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, File.separatorChar, true, false, false, false);
 	}
 	
 	/** Es wird der lokale Root bei relativen Pfaden nicht vorangestellt.
@@ -1855,7 +1828,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:01
 	 */
 	public static String joinFilePathNameForRemote(String sFilePathIn, String sFileNameIn, char cDirectorySeparator) throws ExceptionZZZ{
-		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, true, false, false);
+		return joinFilePathName_(sFilePathIn, sFileNameIn, cDirectorySeparator, true, false, false, false);
 	}
 	
 	/**Den Dateipfad so zusammensetzen wie er für ein Url gueltig ist.
@@ -1883,7 +1856,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
 	 */
 	public static String joinFilePathNameForJar(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{		
-		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, true, false); //Ohne src voranzustellen
+		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, true, false, false); //Ohne src voranzustellen
 		sReturn = JarEasyUtilZZZ.toJarFilePath(sReturn); //Backslash in Slash umwandeln, etc.                    
 		return sReturn;
 	}
@@ -1898,7 +1871,22 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
 	 */
 	public static String joinFilePathNameForWorkspace(String sFilePathIn, String sFileNameIn) throws ExceptionZZZ{		
-		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, false, true); //Ohne src voranzustellen
+		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, false, true, false); //Ohne src voranzustellen
+		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.                    
+		return sReturn;
+	}
+	
+	/**Den Dateipfad so zusammensetzen dass immer der ermittelte ROOT-Pfad, also ggfs. src verwendet wird.
+	 * Slash in Backslash umwandeln, etc.
+	 * 
+	 * @param sFilePathIn
+	 * @param sFileNameIn
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 23.05.2023, 20:53:42
+	 */
+	public static String joinFilePathNameForWorkspace(String sFilePathIn, String sFileNameIn, boolean bReturnAsRelativePath) throws ExceptionZZZ{		
+		String sReturn = joinFilePathName_(sFilePathIn, sFileNameIn, JarEasyZZZ.cDIRECTORY_SEPARATOR, false, false, true, true); //Ohne src voranzustellen
 		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.                    
 		return sReturn;
 	}
@@ -1912,11 +1900,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 05.02.2021, 08:47:13
 	 */
-	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote, boolean bUrl, boolean bWorkspace) throws ExceptionZZZ{
+	private static String joinFilePathName_(String sFilePathIn, String sFileNameIn, char cDirectorySeparator, boolean bRemote, boolean bUrl, boolean bWorkspace, boolean bReturnAsRelativePath) throws ExceptionZZZ{
 		String sReturn= "";//Merke: Es ist wichtig ob null oder Leerstring. Je nachdem würde eine andere Stelle des Classpath als Root verwendet.
 		main:{
 		String stemp;
-		String sFilePath; 	String sFileName; String sRoot="";
+		String sFilePath; String sFileName; String sRoot=""; String sFilePathTotal;
 		String sDirectorySeparator = StringZZZ.char2String(cDirectorySeparator);
 				
 		//ZUALLERERST DEN FILENAME pruefen
@@ -1941,44 +1929,51 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		} else if(bWorkspace) {
 			//!!! Wenn sichergestellt werden soll, dass ein src-Verzeichnis ggfs. verwendet wird, auch bei ggf. absoluten Pfaden
 			sFilePath = sFilePathIn;						
-			if(!(StringZZZ.endsWith(sFilePath, FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER) |
-				 StringZZZ.endsWith(sFilePath, FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER) |
-				 StringZZZ.endsWith(sFilePath, FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER))){
+			if(!(StringZZZ.endsWith(sFilePath, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER) |
+				 StringZZZ.endsWith(sFilePath, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER) |
+				 StringZZZ.endsWith(sFilePath, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER))){
 				
 				sRoot = FileEasyZZZ.getFileRootPath();
 				sFilePath = FileEasyZZZ.joinFilePathName(sFilePath, sRoot, cDirectorySeparator);
 			}
 		} else{
-			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
-			if(sFilePathIn==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePathIn)){
-				sFilePath = FileEasyZZZ.getDirectoryOfExecutionAsString();
-			}else if(sFilePathIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER) || sFilePathIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER) || sFilePathIn.equals(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
-				sFilePath = sFilePathIn;
-			}else {
-				sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
-				sFilePath = StringZZZ.stripFileSeparatorsLeft(sFilePath);
-				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {													
-					if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {
-						sRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
-						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
-					}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER + sDirectorySeparator)) {
-						sRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
-						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
-					}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER + sDirectorySeparator)) {
-						sFilePath = sFilePath + sDirectorySeparator;
-					}else {
-						sRoot = FileEasyZZZ.getFileRootPath();
-						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
-					}
-				}else if(FileEasyZZZ.isPathRelative(sFilePath) & StringZZZ.isEmpty(sFilePath)){
-					if(sFilePath=="") {
-						sRoot = FileEasyZZZ.getFileRootPath();
-					}else if(sFilePath==null) {
-						sFilePath = "";
-						sRoot = "";
-					}
-				}
-			}
+			 IFileEasyPathObjectZZZ objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathIn,cDirectorySeparator, bReturnAsRelativePath);
+			 String sFilePathPure = objPath.getFilePath(); //Darin sind ggfs. ergänzende Verzeichnispfade wie src, test, tryout enthalten.
+			 sRoot = objPath.getRoot();
+			 sFilePath = objPath.getFilePathTotal(); //also: Der Converter liefert für sich den Gesamtpfad zurueck. Aber das .join(...) bildet für sich den Gesamtpfad mit dem Dateinamen. Darum heissen die Variablen so. //alt... FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
+			 System.out.println("TEST: "+ sFilePath);
+			//TODOGOON20230709;//ggfs. noch Fallunterscheidung absolutes / relatives Ergebnis einbauen.		
+			
+//			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
+//			if(sFilePathIn==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePathIn)){
+//				sFilePath = FileEasyZZZ.getDirectoryOfExecutionAsString();
+//			}else if(sFilePathIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER) || sFilePathIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER) || sFilePathIn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER)){
+//				sFilePath = sFilePathIn;
+//			}else {
+//				sFilePath = StringZZZ.stripFileSeparatorsRight(sFilePathIn);
+//				sFilePath = StringZZZ.stripFileSeparatorsLeft(sFilePath);
+//				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {													
+//					if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {
+//						sRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+//						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
+//					}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER + sDirectorySeparator)) {
+//						sRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
+//						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
+//					}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER + sDirectorySeparator)) {
+//						sFilePath = sFilePath + sDirectorySeparator;
+//					}else {
+//						sRoot = FileEasyZZZ.getFileRootPath();
+//						sFilePath = FileEasyZZZ.joinFilePathName(sRoot, sFilePath, cDirectorySeparator);
+//					}
+//				}else if(FileEasyZZZ.isPathRelative(sFilePath) & StringZZZ.isEmpty(sFilePath)){
+//					if(sFilePath=="") {
+//						sRoot = FileEasyZZZ.getFileRootPath();
+//					}else if(sFilePath==null) {
+//						sFilePath = "";
+//						sRoot = "";
+//					}
+//				}
+//			}
 		}
 				
 		if(StringZZZ.isEmpty(sFileName)){
@@ -2032,9 +2027,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					if(FileEasyZZZ.isPathAbsolut(sFilePath)){
 						sReturn = sFilePath;						
 					}else {
-						if((FileEasyZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {
+						if((IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {
 							sReturn = sFilePath + sDirectorySeparator + sFileName; //Für die TESTfälle: Dateien, die im test-Ordner liegen.
-						}else if((FileEasyZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)) {
+						}else if((IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)) {
 							sReturn = sFilePath + sDirectorySeparator + sFileName; //Für die TRYOUTfälle: Dateien, die im tryout-Ordner liegen.
 						}else {
 							sReturn = sDirectorySeparator +  sFilePath;
@@ -2047,9 +2042,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					if(FileEasyZZZ.isPathAbsolut(sFilePath)){
 						sReturn = sFilePath + sDirectorySeparator + sFileName;						
 					}else {
-						if((FileEasyZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {							
+						if((IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {							
 							sReturn = sFilePath + sDirectorySeparator + sFileName; //Für die TESTfälle: Dateien, die im test-Ordner liegen.
-						}else if((FileEasyZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)) {
+						}else if((IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + sFilePath).endsWith(IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)) {
 							sReturn = sFilePath + sDirectorySeparator + sFileName; //Für die TESTfälle: Dateien, die im tryout-Ordner liegen.
 						}else {							
 							sReturn = sFilePath + sDirectorySeparator + sFileName;
@@ -2061,7 +2056,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			//Vor dem Schluss noch einmal normieren
 			sReturn = StringZZZ.stripFileSeparators(sReturn);
 			if(bRemote) {
-				sReturn = FileEasyZZZ.sDIRECTORY_SEPARATOR_UNIX + sReturn; //Somit wird sichergestellt, das auf dem Remote Server ein relativer Pfad vorhanden ist.
+				sReturn = IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR_UNIX + sReturn; //Somit wird sichergestellt, das auf dem Remote Server ein relativer Pfad vorhanden ist.
 			}
 		}//end main
 		return sReturn;
@@ -2112,14 +2107,14 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		
 		//#################
 		String sFileOnly;
-		int iFileOnlyLength = sFileName.lastIndexOf(FileEasyZZZ.sFILE_ENDING_SEPARATOR);
+		int iFileOnlyLength = sFileName.lastIndexOf(IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR);
 		if(iFileOnlyLength > -1){
 			sFileOnly = sFileName.substring(0, iFileOnlyLength);   //.substring(iFileOnlyLength + 1);
 		}else{
 			sFileOnly = sFileName;
 		}
 		
-		sReturn = sFileOnly + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEndNew;
+		sReturn = sFileOnly + IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR + sEndNew;
 			
 	}//end main
 	return sReturn;	
@@ -2336,7 +2331,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		public static boolean isOnServer(){
 			boolean bReturn = false;
 			main:{
-				File objFileTest = new File(FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER);
+				File objFileTest = new File(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER);
 				bReturn = !objFileTest.exists();			
 			}//end main:
 			return bReturn;
@@ -2657,16 +2652,16 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
 					bUseClasspathSource=true;
 					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_PARENT)){
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)){
 					bUseProjectBase=true;
 					sPath = sPathIn;
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)){			
 					bUseClasspathSource=true;
 					sPath = sPathIn;				
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 					bUseProjectBaseForTest=true;
 					sPath = sPathIn;
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
 					bUseProjectBaseForTryout=true;
 					sPath = sPathIn;
 				}else{
@@ -2675,7 +2670,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					}else {					
 						//+++ Der Normalfall, aber auch hier darauf achten, nicht den Root erneut davorzusetzen.
 						String sPathRoot = FileEasyZZZ.getFileRootPath();
-						if( !(sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+						if( !(sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 							bUseClasspathSource=true;
 						}else {
 							bUseClasspathSource=false;
@@ -2689,7 +2684,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				
 				if(bUseClasspathSource) {										
 					String sPathRoot = FileEasyZZZ.getFileRootPath();
-					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+					if((sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 						sPath = sPathIn;
 					}else {
 						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
@@ -2697,8 +2692,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}
 				
 				if(bUseProjectBaseForTest) {					
-					String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
-					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+					String sPathRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+					if((sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 						sPath = sPathIn;
 					}else {
 						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
@@ -2706,8 +2701,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}
 				
 				if(bUseProjectBaseForTryout) {					
-					String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
-					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+					String sPathRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
+					if((sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 						sPath = sPathIn;
 					}else {
 						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
@@ -2792,16 +2787,16 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
 					bUseClasspathSource=true;
 					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_PARENT)){
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)){
 					bUseProjectBase=true;
 					sPath = sPathIn;
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CURRENT)){			
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)){			
 					bUseClasspathSource=true;
 					sPath = sPathIn;				
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 					bUseProjectBaseForTest=true;
 					sPath = sPathIn;
-				}else if(sPathIn.startsWith(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
+				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
 					bUseProjectBaseForTryout=true;
 					sPath = sPathIn;
 				}else{
@@ -2810,7 +2805,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					}else {					
 						//+++ Der Normalfall, aber auch hier darauf achten, nicht den Root erneut davorzusetzen.
 						String sPathRoot = FileEasyZZZ.getFileRootPath();
-						if( !(sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+						if( !(sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 							bUseClasspathSource=true;
 						}else {
 							bUseClasspathSource=false;
@@ -2824,7 +2819,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				
 				if(bUseClasspathSource) {										
 					String sPathRoot = FileEasyZZZ.getFileRootPath();
-					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+					if((sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 						sPath = sPathIn;
 					}else {
 						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
@@ -2832,8 +2827,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}
 				
 				if(bUseProjectBaseForTest) {					
-					String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
-					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+					String sPathRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
+					if((sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 						sPath = sPathIn;
 					}else {
 						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
@@ -2841,8 +2836,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}
 				
 				if(bUseProjectBaseForTryout) {					
-					String sPathRoot = FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
-					if((sPathIn+FileEasyZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+FileEasyZZZ.sDIRECTORY_SEPARATOR)) {
+					String sPathRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
+					if((sPathIn+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR).startsWith(sPathRoot+IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR)) {
 						sPath = sPathIn;
 					}else {
 						sPath = FileEasyZZZ.joinFilePathName(sPathRoot, sPathIn); //Merke: Darin wird auch StripFile Separators gemacht.
@@ -2893,7 +2888,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(isOnServer()){
 				sReturn = "";
 			}else{
-				sReturn = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
+				sReturn = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
 			}
 		}//end main:
 		return sReturn;
@@ -2936,7 +2931,8 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	private static String getFileUsedPath_(String sFilePathRaw, boolean bAsAbsolute) throws ExceptionZZZ{
 		String sReturn=null;
 		main:{
-			//if(sFilePathRaw==null) break main;
+			TODOGOON;//20230716 auch auf die Nutzung von FileEasyConverterZZZ umstellen.
+			
 			if(sFilePathRaw==null){
 				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath();
@@ -2953,18 +2949,18 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				}else {
 					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 				}																
-			}else if(sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CURRENT)){
+			}else if(sFilePathRaw.equals(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)){
 				if(bAsAbsolute) {
 					sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 				}else {
 					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
 				}
-			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
+			}else if (sFilePathRaw.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
 				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
 				
 			
-			}else if (sFilePathRaw.equals(FileEasyZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
+			}else if (sFilePathRaw.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
 				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
 				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
 				
@@ -3066,11 +3062,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		main:{
 			//Das aktuelle Verzeichnis herausfinden, z.B. wenn der Code in einem Eclipse Projekt augeführt wird.
 			//Trick: .....
-			File fileTemp = new File(FileEasyZZZ.sDIRECTORY_CURRENT);
+			File fileTemp = new File(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT);
 			
 			//Allerdings hat der Pfad ggfs. ein \. am Ende. Dies entfernen
 			String sPathTotal = fileTemp.getAbsolutePath();
-			sReturn = StringZZZ.stripRight(sPathTotal, FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CURRENT);
+			sReturn = StringZZZ.stripRight(sPathTotal, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + IFileEasyConstantsZZZ.sDIRECTORY_CURRENT);
 		}
 		return sReturn;	
 		

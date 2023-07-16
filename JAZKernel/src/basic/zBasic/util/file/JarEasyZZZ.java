@@ -52,11 +52,11 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  * 
  */
 public class JarEasyZZZ implements IConstantZZZ, IResourceHandlingObjectZZZ{
-	public static String sDIRECTORY_CURRENT = FileEasyZZZ.sDIRECTORY_CURRENT;
-	public static String sDIRECTORY_PARENT = FileEasyZZZ.sDIRECTORY_PARENT;
-	public static String sDIRECTORY_SEPARATOR = FileEasyZZZ.sDIRECTORY_SEPARATOR;
-	public static char cDIRECTORY_SEPARATOR = FileEasyZZZ.cDIRECTORY_SEPARATOR;
-	public static String sDIRECTORY_RESSOURCE_ROOT = FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Wenn man ein Projekt in eine JAR packt, hängt alles unter dem src Ordner
+	public static String sDIRECTORY_CURRENT = IFileEasyConstantsZZZ.sDIRECTORY_CURRENT;
+	public static String sDIRECTORY_PARENT = IFileEasyConstantsZZZ.sDIRECTORY_PARENT;
+	public static String sDIRECTORY_SEPARATOR = IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR;
+	public static char cDIRECTORY_SEPARATOR = IFileEasyConstantsZZZ.cDIRECTORY_SEPARATOR;
+	public static String sDIRECTORY_RESSOURCE_ROOT = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER; //Merke: Wenn man ein Projekt in eine JAR packt, hängt alles unter dem src Ordner
 	
 		
 	/** Merke: Wenn ein Verzeichnis aus der JAR Datei zu extrahieren ist, dann wird lediglich die JAR Datei zurückgegeben.

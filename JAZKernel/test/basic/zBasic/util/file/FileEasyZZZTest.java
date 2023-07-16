@@ -41,7 +41,12 @@ public class FileEasyZZZTest extends TestCase{
 	
 	public void testJoinFilePathName() {
 		try {
-			String sDirPathTotal = FileEasyZZZ.joinFilePathName("directory", "testNotExisting.txt");
+			String sDirPathTotal=null; 
+			String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
+			
+			
+			//++++++++++++++++++++++++++++++++
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("directory", "testNotExisting.txt");
 			System.out.println(sDirPathTotal);
 			assertEquals("src\\directory\\testNotExisting.txt",sDirPathTotal);
 			
@@ -57,10 +62,16 @@ public class FileEasyZZZTest extends TestCase{
 			System.out.println(sDirPathTotal);
 			assertEquals("src\\basic\\zKernel\\html\\writer\\TableData4Debug.xml",sDirPathTotal);
 			
+			//### Projektebene			
+			//a)absoluter Pfad
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("<Z:NULL/>\\directory", "testNotExisting.txt");
+			System.out.println(sDirPathTotal);						
+			assertEquals(sWorkspace + "\\directory\\testNotExisting.txt",sDirPathTotal);
 			
-			System.out.println(sDirPathTotal);
-			
-			
+			//b) als relativer Pfad
+			sDirPathTotal = FileEasyZZZ.joinFilePathName("<Z:NULL/>\\directory", "testNotExisting.txt",true);
+			System.out.println(sDirPathTotal);						
+			assertEquals("directory\\testNotExisting.txt",sDirPathTotal);
 			
 			
 		}catch(ExceptionZZZ ez){

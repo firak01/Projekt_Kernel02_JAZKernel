@@ -30,6 +30,8 @@ import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZTest;
+import basic.zBasic.util.file.FileEasyConstantConverterZZZTest;
+import basic.zBasic.util.file.FileEasyZZZTest;
 import basic.zBasic.util.file.FileTextParserZZZTest;
 import basic.zBasic.util.file.JarEasyZZZTest;
 import basic.zBasic.util.file.ini.IniFileTest;
@@ -111,6 +113,8 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(StreamZZZTest.class);
 		
 		//Dateiverarbeitung - Tests		
+		objReturn.addTestSuite(FileEasyConstantConverterZZZTest.class);
+		objReturn.addTestSuite(FileEasyZZZTest.class);
 		objReturn.addTestSuite(JarEasyZZZTest.class);
 		objReturn.addTestSuite(TxtReaderZZZTest.class);
 		objReturn.addTestSuite(TxtWriterZZZTest.class);

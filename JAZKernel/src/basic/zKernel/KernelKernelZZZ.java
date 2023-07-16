@@ -37,6 +37,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.ICachableObjectZZZ;
@@ -480,7 +481,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//Pfad relativ zum Eclipse Workspace
 			URL workspaceURL=null;;
 			try {
-				workspaceURL = new File(FileEasyZZZ.sDIRECTORY_CURRENT).toURI().toURL();
+				workspaceURL = new File(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT).toURI().toURL();
 				String sWorkspaceURL = workspaceURL.getPath();					
 				sWorkspaceURL = StringZZZ.stripFileSeparatorsRight(sWorkspaceURL);				
 				objDir = FileEasyZZZ.searchDirectory(sWorkspaceURL);
@@ -6788,7 +6789,7 @@ MeinTestParameter=blablaErgebnis
 				if(objDirectoryProof==null){					
 					sLog = "Directory does not exists (='"+sDirectoryConfig+"'). Using CURRENT - directory.";
 					this.logLineDate(ReflectCodeZZZ.getMethodCurrentName() + ": " + sLog);
-					sDirectoryConfig = FileEasyZZZ.sDIRECTORY_CURRENT;//Falls das Verzeichnis nicht existiert, verwende das aktuelle Verzeichnis.
+					sDirectoryConfig = IFileEasyConstantsZZZ.sDIRECTORY_CURRENT;//Falls das Verzeichnis nicht existiert, verwende das aktuelle Verzeichnis.
 				}else{
 					sDirectoryConfig=objDirectoryProof.getAbsolutePath();						
 				}

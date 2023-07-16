@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractList.DummyObjectZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
@@ -228,7 +229,7 @@ public class FileExpansionZZZTest extends TestCase {
 		    String sPathEclipse = f.getAbsolutePath();
 		    System.out.println("Path for Kernel Directory Default does not exist. Using workspace absolut path: " + sPathEclipse);
 		    
-		    sReturn = sPathEclipse + FileEasyZZZ.sDIRECTORY_SEPARATOR + "test";		   
+		    sReturn = sPathEclipse + IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + "test";		   
 		}
 		return sReturn;
 	}
@@ -237,7 +238,7 @@ public class FileExpansionZZZTest extends TestCase {
 				String sReturn = null;						
 				String sEnding = FileEasyZZZ.getNameEnd(strFILE_NAME_DEFAULT);
 				if(!StringZZZ.isEmpty(sEnding)) {
-					sReturn = FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnding;
+					sReturn = IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR + sEnding;
 				}else {
 					sReturn = sEnding;
 				}
@@ -258,7 +259,7 @@ public class FileExpansionZZZTest extends TestCase {
 		String[] saFileNameAll = StringArrayZZZ.plusString(saStringAll, sFileNameOnly, "BEFORE");
 		String[] saFileNameAllWithEnding = StringArrayZZZ.plusString(saFileNameAll, sEnding, "BEHIND");		
 		for(int iCount=0;iCount<=saFileNameAllWithEnding.length-1;iCount++) {
-			String sFilePathName = sFilePathUsed + FileEasyZZZ.sDIRECTORY_SEPARATOR + saFileNameAllWithEnding[iCount];
+			String sFilePathName = sFilePathUsed + IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + saFileNameAllWithEnding[iCount];
 			FileEasyZZZ.removeFile(sFilePathName);			
 		}		
 }

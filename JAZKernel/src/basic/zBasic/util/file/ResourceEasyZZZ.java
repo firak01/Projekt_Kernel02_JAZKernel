@@ -353,7 +353,7 @@ public class ResourceEasyZZZ extends ObjectZZZ implements IResourceHandlingObjec
 				sReturn = sDirectoryWorkspace;
 			}else {
 				sDirectoryWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();				
-				sDirectoryWorkspace = sDirectoryWorkspace + FileEasyZZZ.sDIRECTORY_SEPARATOR + FileEasyZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER + FileEasyZZZ.sDIRECTORY_SEPARATOR;
+				sDirectoryWorkspace = sDirectoryWorkspace + IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR + IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER + IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR;
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName()+": Workspace Path found = '" + sDirectoryPath + "'");				
 				sReturn = StringZZZ.right(sDirectoryPath, sDirectoryWorkspace);	
 			}

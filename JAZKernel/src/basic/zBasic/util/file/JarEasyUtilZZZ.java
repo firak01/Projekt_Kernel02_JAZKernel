@@ -353,7 +353,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				throw ez;
 			}
 			
-			sReturn = StringZZZ.replace(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_UNIX, FileEasyZZZ.sDIRECTORY_SEPARATOR);
+			sReturn = StringZZZ.replace(sJarPath, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR_UNIX, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR);
 			
 			//UND: Abschliessend gibt es bei Verzeichnissen ein \ ... aber NUR 1x
 			sReturn=StringZZZ.stripFileSeparatorsRight(sReturn);
@@ -426,7 +426,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			sReturn = StringZZZ.stripFileSeparatorsRight(sReturn);
 			
 			//Innerhalb der JAR-Datei wird immer mit / gearbeitet.
-			sReturn = StringZZZ.replace(sReturn, FileEasyZZZ.sDIRECTORY_SEPARATOR, "/");
+			sReturn = StringZZZ.replace(sReturn, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, "/");
 		}
 		return sReturn;
 	}
@@ -616,7 +616,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			
 			//Da es wohl zu kompliziert ist alles in einem Ausdruck zu erfassen:
 			//0. Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
-			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) break main;
+			if(StringZZZ.contains(sJarPath, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) break main;
 						
 			//1. prüfe auf doppelte / ab. Die sind auch nicht erlaubt.
 			boolean bErg = StringZZZ.hasConsecutiveDuplicateCharacter(sJarPath, '/');
@@ -644,7 +644,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 			
 			//Da es wohl zu kompliziert ist alles in einem Ausdruck zu erfassen:
 			//0. Jar-Verzeichniseinträge dürfen keinen "Backslash" haben.
-			if(StringZZZ.contains(sJarPath, FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) break main;
+			if(StringZZZ.contains(sJarPath, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR_WINDOWS)) break main;
 			
 			//1. prüfe auf doppelte / ab. Die sind auch nicht erlaubt.
 			boolean bErg = StringZZZ.hasConsecutiveDuplicateCharacter(sJarPath, '/');

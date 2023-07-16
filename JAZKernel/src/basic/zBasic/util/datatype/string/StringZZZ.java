@@ -37,7 +37,7 @@ import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.json.JsonArrayZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
  
@@ -734,6 +734,24 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	/* Unter Java String gibt es nur startsWith. Der Vollstaendigkeit halber hier quasi uebernommen. */
+	public static boolean startsWith(String sString, String sMatch){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sMatch)) break main;
+									
+			
+			int iMatchLength=sMatch.length();			
+			if(sString.length() < iMatchLength) break main;
+			
+			
+			bReturn = sString.startsWith(sMatch);
+			
+		} //end main:		
+		return bReturn;
+	}
+	
 	/* Unter Java String gibt es nur startsWith. Hier wird zusätzlich noch geleistet, dass Groß-/Kleinschreibung egal ist */
 	public static boolean startsWithIgnoreCase(String sString, String sMatch){
 		boolean bReturn = false;
@@ -1064,9 +1082,11 @@ public class StringZZZ implements IConstantZZZ{
 	
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
+	 * bExactMatch=false => es wird von beiden Strings lowercase gebildet.
 	* Lindhauer; 16.05.2006 08:11:18
 	 * @param sString
 	 * @param sToFind
+	 * @param bExactMatch
 	 * @return String
 	 */
 	public static String right(String sString, String sToFind, boolean bExactMatch){
@@ -2250,6 +2270,39 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		return sReturn;
 	}
 	
+	/**Gibt den String rechts von dem Suchstring zurück.
+	 *  Dabei wird von LINKS nach dem Suchstring gesucht.
+	 *  bExactMatch=false => es wird von beiden Strings lowercase gebildet.
+	 * @param sString
+	 * @param sToFind
+	 * @param bExactMatch
+	 * @return
+	 */
+	public static String rightback(String sString, String sToFind, boolean bExactMatch){
+		String sReturn = "";
+		main:{					
+			if(bExactMatch) {
+				sReturn = StringZZZ.rightback(sString, sToFind);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sToFind)) break main;			
+			
+			String sStringLCase = sString.toLowerCase();
+			String sToFindLCase = sToFind.toLowerCase();
+			
+			int iIndex = sStringLCase.indexOf(sToFindLCase);
+			if(iIndex<= -1) break main;
+		
+			//die Länge des Strings aufaddieren
+			iIndex = iIndex + sToFind.length();
+				
+			sReturn = sString.substring(iIndex);
+		}
+		return sReturn;
+	}
+	
 	
 	/** returns the string cut on the left and on the right
 	* @param sString
@@ -3199,7 +3252,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			
 			sReturn = StringZZZ.stripFileSeparatorsLeft(sString);
 			sReturn = StringZZZ.stripFileSeparatorsRight(sReturn);
-			if(sReturn.equals(FileEasyZZZ.sDIRECTORY_CURRENT)) {
+			if(sReturn.equals(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)) {
 				sReturn = "";
 			}
 		}//end main:
@@ -3211,8 +3264,8 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(sString.length()<=FileEasyZZZ.sDIRECTORY_CURRENT.length())break main;
-			String[] saStringsToBeStripped = {FileEasyZZZ.sDIRECTORY_SEPARATOR, FileEasyZZZ.sDIRECTORY_CURRENT,"/"};
+			if(sString.length()<=IFileEasyConstantsZZZ.sDIRECTORY_CURRENT.length())break main;
+			String[] saStringsToBeStripped = {IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, IFileEasyConstantsZZZ.sDIRECTORY_CURRENT,"/"};
 			sReturn = StringZZZ.stripLeft(sString, saStringsToBeStripped);
 		}//end main:
 		return sReturn;
@@ -3247,8 +3300,8 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		main:{
             //nur entfernen, wenn mehr als 1 Zeichen. Ziel ist es zu verhindern, das das Kennzeichen "." als lokales Kennzeichen weggetrimmt wird.
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(sString.length()<=FileEasyZZZ.sDIRECTORY_CURRENT.length())break main;
-			String[] saStringsToBeStripped = {FileEasyZZZ.sDIRECTORY_SEPARATOR, FileEasyZZZ.sDIRECTORY_CURRENT,"/"};
+			if(sString.length()<=IFileEasyConstantsZZZ.sDIRECTORY_CURRENT.length())break main;
+			String[] saStringsToBeStripped = {IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR, IFileEasyConstantsZZZ.sDIRECTORY_CURRENT,"/"};
 			sReturn = StringZZZ.stripRight(sString, saStringsToBeStripped);
 		}//end main:
 		return sReturn;

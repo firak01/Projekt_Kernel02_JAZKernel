@@ -11,6 +11,7 @@ import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.integer.IntegerZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import custom.zUtil.io.FileZZZ;
 
@@ -438,7 +439,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 			String sNameOnlyWithoutExpansion = StringZZZ.leftback(sNameOnly, iExpansionLength);
 			
 			String sEnding = FileEasyZZZ.getNameEnd(fileToCheck);
-			String sNameWithoutExpansion = sNameOnlyWithoutExpansion + FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnding;
+			String sNameWithoutExpansion = sNameOnlyWithoutExpansion + IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR + sEnding;
 			if(sBasicFilename.equalsIgnoreCase(sNameWithoutExpansion)) bReturn = true;			
 		}
 		return bReturn;
@@ -602,7 +603,7 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
             			}
             			String sEnding = objFileBase.getNameEnd();
             			if(sEnding.length() > 0){
-            				sEnding = FileEasyZZZ.sFILE_ENDING_SEPARATOR + sEnding;
+            				sEnding = IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR + sEnding;
             			}
             			
             			int iCounter = iValue;

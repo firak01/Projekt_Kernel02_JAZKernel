@@ -10,7 +10,7 @@ import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 
 public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenereZZZ{
 
@@ -214,8 +214,8 @@ public abstract class AbstractVigenereZZZ extends ObjectZZZ implements IVigenere
 			  String sFilepath = fileUtil.computeFilePath();
 			  if(StringZZZ.isEmpty(sFilepath)) break main;
 			  
-			  sReturn = StringZZZ.leftback(sFilepath, FileEasyZZZ.sFILE_ENDING_SEPARATOR);
-			  sReturn = StringZZZ.right(sReturn, FileEasyZZZ.sDIRECTORY_SEPARATOR);
+			  sReturn = StringZZZ.leftback(sFilepath, IFileEasyConstantsZZZ.sFILE_ENDING_SEPARATOR);
+			  sReturn = StringZZZ.right(sReturn, IFileEasyConstantsZZZ.sDIRECTORY_SEPARATOR);
 			  sReturn = StringZZZ.right(sReturn, "_");
 		  }//end main:
 		  return sReturn;

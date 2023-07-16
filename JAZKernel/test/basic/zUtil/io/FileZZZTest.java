@@ -99,8 +99,7 @@ public class FileZZZTest extends TestCase {
 		
 		//An here with more directories
 		assertEquals("c:\\test\\1\\test.txt", FileEasyZZZ.joinFilePathName("c:\\test\\1\\\\", "test.txt"));
-		
-		
+				
 		//Path has to be the first param only (ignore any obsolete backslashes)
 		assertEquals("c:\\test", FileEasyZZZ.joinFilePathName("c:\\test\\\\", ""));
 		
