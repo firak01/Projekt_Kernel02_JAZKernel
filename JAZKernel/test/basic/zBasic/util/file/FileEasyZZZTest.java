@@ -80,7 +80,109 @@ public class FileEasyZZZTest extends TestCase{
 		
 	}
 	
-	
+	public void testSearchDirectory() {
+		try {
+			String sDirectory = null;
+			File objFile = null;
+			boolean bProof;
+			
+			//++++++++++++++++++++++++++++
+			sDirectory = "c:\\fglkernel";
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			//+++++++++++++++++++++++++++++
+			sDirectory = "test\\resourceZZZinTest";//Merke: Ohne Test vorangestellt wird explizit im src - Ordner gesucht.
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+		
+			//++++++++++++++++++++++++++++++
+			//Alle besonderen Ausdrücke testen, s. FileEasyConstantConverterZZZTest
+			sDirectory = null; //Projekt - Ordner
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			//+++++++++++++++++
+			sDirectory = ""; //src - Ordner
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			//+++++++++++++++++
+			sDirectory = "src";
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			//++++++++++++++++++
+			sDirectory = "test";
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			//++++++++++++++++++
+			sDirectory = "tryout";
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			//+++++++++++++++++++
+			sDirectory = "src\\resourceZZZ";
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			//+++++++++++++++++++++
+			sDirectory = "tryout\\resourceZZZinTryout";
+			objFile = FileEasyZZZ.searchDirectory(sDirectory);
+			assertNotNull(objFile);
+			
+			bProof = FileEasyZZZ.exists(objFile);
+			assertTrue(bProof);
+			bProof = objFile.isDirectory();
+			assertTrue(bProof);
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
 		
 	public void testRemoveDirectoryContent(){
 		try{

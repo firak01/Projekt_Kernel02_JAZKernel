@@ -1,6 +1,7 @@
 package basic.zBasic.util.file;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
@@ -50,7 +51,11 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 						if(bReturnAsRelativePath) {
 							sReturnFilePathTotal = sReturnFilePath;
 						}else {
-							sReturnFilePathTotal=  sReturnRoot+sDirectorySeparator+sReturnFilePath;
+							if(!StringZZZ.isEmpty(sReturnRoot)) {
+								sReturnFilePathTotal=sReturnRoot+sDirectorySeparator+sReturnFilePath;
+							}else {
+								sReturnFilePathTotal=sReturnFilePath;
+							}
 						}
 				}else if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && (sFilePath + sDirectorySeparator).startsWith(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER + sDirectorySeparator)) {
 						sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
@@ -80,22 +85,40 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 								sReturnFilePath=sFilePath;
 							}
 							
-							if(bReturnAsRelativePath) {								
+							if(StringZZZ.isEmpty(sReturnRoot)) {
 								sReturnFilePathTotal = sReturnFilePath;
 							}else {
-								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
-							}
-							
-							
+								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;								
+								if(bReturnAsRelativePath) {								
+									if(FileEasyZZZ.isPathAbsolute(sReturnFilePathTotal)) {
+										sReturnFilePathTotal = sReturnFilePath;
+									}
+								}								
+							}	
 						}	
 					}else {
-						sReturnRoot = FileEasyZZZ.getFileRootPath();												
-						sReturnFilePath = StringZZZ.rightback(sFilePath, sReturnRoot+sDirectorySeparator);
-						if(StringZZZ.isEmpty(sReturnFilePath)) {
+						sReturnRoot = FileEasyZZZ.getFileRootPath();
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": sReturnRoot='"+sReturnRoot+"'");
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": sFilePath='"+sFilePath+"'");
+						if(!StringZZZ.isEmpty(sReturnRoot)) {
+							sReturnFilePath=StringZZZ.rightback(sFilePath, sReturnRoot+sDirectorySeparator);
+						}else {
 							sReturnFilePath=sFilePath;
 						}
 						
-						sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;						
+						if(StringZZZ.isEmpty(sReturnFilePath)) {
+							sReturnFilePath=sFilePath;
+						}
+						if(StringZZZ.isEmpty(sReturnRoot)) {
+							sReturnFilePathTotal=sReturnFilePath;
+						}else {
+							sReturnFilePathTotal=sReturnRoot+sDirectorySeparator+sReturnFilePath;
+							if(bReturnAsRelativePath) {								
+								if(FileEasyZZZ.isPathAbsolute(sReturnFilePathTotal)) {
+									sReturnFilePathTotal = sReturnFilePath;
+								}
+							}	
+						}										
 					}
 				}else {
 					//absolute Pfade
@@ -109,22 +132,28 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 								sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_SOURCEFOLDER;
 								sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
 								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
-								if(!bReturnAsRelativePath) {
-									sReturnFilePathTotal = sWorkspace + sDirectorySeparator + sReturnFilePathTotal;
+								if(!bReturnAsRelativePath) {									
+									if(!StringZZZ.isEmpty(sWorkspace)) {
+										sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+									}
 								}
 							}else if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)) {
 								sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER;
 								sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
 								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
 								if(!bReturnAsRelativePath) {
-									sReturnFilePathTotal = sWorkspace + sDirectorySeparator + sReturnFilePathTotal;
+									if(!StringZZZ.isEmpty(sWorkspace)) {
+										sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+									}
 								}
 							}else if(StringZZZ.startsWith(sReturnFilePathTemp, IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)) {
 								sReturnRoot = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER;
 								sReturnFilePath = StringZZZ.rightback(sReturnFilePathTemp, sReturnRoot + sDirectorySeparator);
 								sReturnFilePathTotal = sReturnRoot + sDirectorySeparator + sReturnFilePath;
 								if(!bReturnAsRelativePath) {
-									sReturnFilePathTotal = sWorkspace + sDirectorySeparator + sReturnFilePathTotal;
+									if(!StringZZZ.isEmpty(sWorkspace)) {
+										sReturnFilePathTotal=sWorkspace+sDirectorySeparator+sReturnFilePathTotal;
+									}
 								}
 							}else {
 								sReturnRoot = "";

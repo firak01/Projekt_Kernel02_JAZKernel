@@ -127,7 +127,7 @@ public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
 				sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sDirPathInJar);				
 			}else {
 				//FALL 3: Zielverzeichnis angegeben
-				if(!FileEasyZZZ.isPathAbsolut(sTargetDirPathRoot)) {
+				if(!FileEasyZZZ.isPathAbsolute(sTargetDirPathRoot)) {
 					//3A) Als relativer Pfad					
 					sTargetDirPathRoot = FileEasyZZZ.joinFilePathName(EnvironmentZZZ.getHostDirectoryTemp(), sTargetDirPathRoot);
 					

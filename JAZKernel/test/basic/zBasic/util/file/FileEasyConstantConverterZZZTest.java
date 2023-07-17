@@ -65,7 +65,7 @@ public class FileEasyConstantConverterZZZTest extends TestCase{
 			
 			sFilePath=objPath.getFilePath();			
 			assertNotNull(sFilePath);
-			assertTrue(FileEasyZZZ.isPathAbsolut(sFilePath));
+			assertTrue(FileEasyZZZ.isPathAbsolute(sFilePath));
 			
 			sFilePathTotal=objPath.getFilePathTotal();			
 			assertNotNull(sFilePathTotal);
