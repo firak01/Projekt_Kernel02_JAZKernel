@@ -541,7 +541,8 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 			boolean bSectionExists = this.proofSectionExistsDirectLookup(sSection);
 			if(bSectionExists) {
 				String sReturnRaw=null;
-				objReturn.sectionExists(true);				
+				objReturn.sectionExists(true);	
+				objReturn.setSection(sSection);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
 				if(sReturnRaw!=null) {											

@@ -4068,8 +4068,8 @@ MeinTestParameter=blablaErgebnis
 				hmDebug.put("DISABLED CACHE FOR: " + sSectionCacheUsed, sPropertyCacheUsed);
 			}
 			
-			//### weiter gehts ohne CACHE Erfolg
-			objFound = objReturn;
+			//### weiter gehts ohne CACHE Erfolg, setze die Eingabewerte
+			objFound = objReturn;	
 			objFound.setSection(sSectionCacheUsed);
 			objFound.setProperty(sPropertyCacheUsed);
 			
@@ -4172,7 +4172,7 @@ MeinTestParameter=blablaErgebnis
 			
 			//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
 			if(!bExistsInCache) this.getCacheObject().setCacheEntry(sSectionCacheUsed, sPropertyCacheUsed, (ICachableObjectZZZ) objFound);
-			objReturnReference.set(objFound);
+			objReturnReference.set(objFound);         
 			objReturn = objFound;
 		}else{
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEIN WERT GEFUNDEN fuer sMainSection='" + sMainSection + "' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
