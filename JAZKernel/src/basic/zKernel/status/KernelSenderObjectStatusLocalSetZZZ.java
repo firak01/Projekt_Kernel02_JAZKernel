@@ -1,4 +1,4 @@
-package basic.zKernel.flag;
+package basic.zKernel.status;
 
 
 import java.io.Serializable;
@@ -19,18 +19,18 @@ import basic.zKernel.KernelUseObjectZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, Serializable{
+public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusLocalSetZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
-	public KernelSenderObjectFlagZsetZZZ() throws ExceptionZZZ{		
+	public KernelSenderObjectStatusLocalSetZZZ() throws ExceptionZZZ{		
 	}
 	
 	/* (non-Javadoc)
 	 * @see use.via.client.module.export.ISenderEventComponentReset#fireEvent(basic.zKernelUI.component.model.KernelEventComponentSelectionResetZZZ)
 	 */
-	private ArrayList<IListenerObjectFlagZsetZZZ> listaLISTENER_REGISTERED = new ArrayList();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
+	private ArrayList<IListenerObjectStatusLocalSetZZZ> listaLISTENER_REGISTERED = new ArrayList();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
 																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
-	@Override                                                                                          //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
-	public final void fireEvent(IEventObjectFlagZsetZZZ event){	
+	@Override                                                                                     //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
+	public final void fireEvent(IEventObjectStatusLocalSetZZZ event){	
 		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
 		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
 		if(event.getSource() instanceof ISenderSelectionResetZZZ){
@@ -53,16 +53,16 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 			if(event==null)break main;
 			
 			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-				IListenerObjectFlagZsetZZZ l = (IListenerObjectFlagZsetZZZ) this.getListenerRegisteredAll().get(i);				
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+				IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 				try {
-					boolean bFlagChanged = l.flagChanged(event);
-					if(bFlagChanged) {
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt." );
+					boolean bStatusLocalChanged = l.statusLocalChanged(event);
+					if(bStatusLocalChanged) {
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
 					}					
 				} catch (ExceptionZZZ ez) {
 					//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
 				}
 			}
 			
@@ -73,7 +73,7 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 	 * @see use.via.client.module.export.ISenderEventComponentReset#removeSelectionResetListener(basic.zKernelUI.component.model.ISelectionResetListener)
 	 */
 	@Override
-	public final void removeListenerObjectFlagZset(IListenerObjectFlagZsetZZZ l){
+	public final void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ l){
 		this.getListenerRegisteredAll().remove(l);
 	}
 	
@@ -81,13 +81,15 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 	 * @see use.via.client.module.export.ISenderEventComponentReset#addSelectionResetListener(basic.zKernelUI.component.model.ISelectionResetListener)
 	 */
 	@Override
-	public final void addListenerObjectFlagZset(IListenerObjectFlagZsetZZZ l){
+	public final void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ l){
 		this.getListenerRegisteredAll().add(l);
 	}
 	
 	@Override
-	public final ArrayList<IListenerObjectFlagZsetZZZ> getListenerRegisteredAll(){
+	public final ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll(){
 		return listaLISTENER_REGISTERED;
 	}
+
+	
 }
 

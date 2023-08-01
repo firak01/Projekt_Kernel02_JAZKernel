@@ -25,7 +25,7 @@ public interface IFlagZLocalUserZZZ{
 	public abstract HashMap<String, Boolean>getHashMapFlagLocal();
 	public abstract void setHashMapFlagLocal(HashMap<String, Boolean> hmFlagLocal);	
 	
-	public abstract boolean getFlagLocal(String sFlag);
+	public abstract boolean getFlagLocal(String sFlag) throws ExceptionZZZ;
 	public abstract boolean setFlagLocal(String sFlag, boolean bValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.	
 	public abstract boolean[] setFlagLocal(String[] saFlag, boolean bValue) throws ExceptionZZZ; 
 	public abstract boolean proofFlagLocalExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.

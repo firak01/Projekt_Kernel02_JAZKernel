@@ -23,6 +23,9 @@ public interface IFlagZUserZZZ{
 	public abstract boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag);
 	public abstract boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	//20230730 Merke: In IEventBrokerFlagZsetUserZZZ gibt es noch diese Besonderheit, mit der Enum - Werte gesetzt werden können. Die werden dann an Events uebergeben und koennen weitere Informationen enthalten.
+	//boolean setFlag(Enum enumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	
 	public abstract boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	//202211228: Leider wird dann als Methode nur das FLAGZ in den erbenden Klassen eingesetzt.

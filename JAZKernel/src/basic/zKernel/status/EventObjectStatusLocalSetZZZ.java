@@ -1,4 +1,4 @@
-package basic.zKernel.flag;
+package basic.zKernel.status;
 
 import java.util.EventObject;
 
@@ -12,29 +12,29 @@ import basic.zBasic.IObjectZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public final class EventObjectFlagZsetZZZ extends EventObject implements IEventObjectFlagZsetZZZ{
-	private Enum objFlagEnum=null;
-	private String sFlagText=null;
+public final class EventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ{
+	private Enum objStatusEnum=null;
+	private String sStatusText=null;
 	private int iId;
-	private boolean bFlagValue;
+	private boolean bStatusValue;
 	
 	/** In dem Konstruktor wird neben der ID dieses Events auch der identifizierende Name der neu gewaehlten Komponente �bergeben.
 	 * @param source
 	 * @param iID
 	 * @param sComponentItemText, z.B. fuer einen DirectoryJTree ist es der Pfad, fuer eine JCombobox der Name des ausgew�hlten Items 
 	 */
-	public EventObjectFlagZsetZZZ(Object source, int iID,  String sFlagText, boolean bFlagValue) {
+	public EventObjectStatusLocalSetZZZ(Object source, int iID,  String sStatusText, boolean bStatusValue) {
 		super(source);
-		this.sFlagText = sFlagText;
+		this.sStatusText = sStatusText;
 		this.iId = iID;
-		this.bFlagValue = bFlagValue;
+		this.bStatusValue = bStatusValue;
 	}
 	
-	public EventObjectFlagZsetZZZ(Object source, int iID,  Enum objFlagEnum, boolean bFlagValue) {
+	public EventObjectStatusLocalSetZZZ(Object source, int iID,  Enum objStatusEnum, boolean bStatusValue) {
 		super(source);
-		this.objFlagEnum=objFlagEnum;
+		this.objStatusEnum=objStatusEnum;
 		this.iId = iID;
-		this.bFlagValue = bFlagValue;
+		this.bStatusValue = bStatusValue;
 	}
 	
 	@Override
@@ -43,22 +43,22 @@ public final class EventObjectFlagZsetZZZ extends EventObject implements IEventO
 	}
 	
 	@Override
-	public Enum getFlagEnum() {
-		return this.objFlagEnum;
+	public Enum getStatusEnum() {
+		return this.objStatusEnum;
 	}
 	
 	@Override
-	public String getFlagText(){
-		if(this.objFlagEnum==null) {
-			return this.sFlagText;
+	public String getStatusText(){
+		if(this.objStatusEnum==null) {
+			return this.sStatusText;
 		}else {
-			return this.objFlagEnum.name();
+			return this.objStatusEnum.name();
 		}
 	}
 	
 	@Override
-	public boolean getFlagValue() {
-		return this.bFlagValue;
+	public boolean getStatusValue() {
+		return this.bStatusValue;
 	}
 
 	@Override

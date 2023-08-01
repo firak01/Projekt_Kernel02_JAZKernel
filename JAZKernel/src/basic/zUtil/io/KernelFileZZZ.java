@@ -553,7 +553,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 							int iCounter=-1;
 							for(String sFlagName:saFlag) {
 								iCounter++;
-								boolean bReturn = this.setFlag(sFlagName, bValue);
+								boolean bReturn = this.setFlagLocal(sFlagName, bValue);
 								baReturn[iCounter]=bReturn;
 							}
 						}
