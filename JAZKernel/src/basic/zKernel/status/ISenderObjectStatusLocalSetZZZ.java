@@ -1,6 +1,7 @@
 package basic.zKernel.status;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 import basic.zBasic.ExceptionZZZ;
 
@@ -12,11 +13,8 @@ import basic.zBasic.ExceptionZZZ;
  *
  */
 public interface ISenderObjectStatusLocalSetZZZ {
-	public abstract void fireEvent(IEventObjectStatusLocalSetZZZ event);
-
-	public abstract void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;
-
-	public abstract void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;
-	
-	public abstract ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ;
+	public abstract void fireEvent(IEventObjectStatusLocalSetZZZ event);	
+	public abstract void removeListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ;
+	public abstract void addListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ;
+	public abstract ArrayList<?> getListenerRegisteredAll() throws ExceptionZZZ;
 }

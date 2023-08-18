@@ -3,6 +3,7 @@ package basic.zKernel.status;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EventListener;
 
 import basic.zKernel.IKernelZZZ;
 import basic.zBasic.ExceptionZZZ;
@@ -19,7 +20,7 @@ import basic.zKernel.KernelUseObjectZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusLocalSetZZZ, Serializable{
+public abstract class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusLocalSetZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
 	public KernelSenderObjectStatusLocalSetZZZ() throws ExceptionZZZ{		
 	}
@@ -27,10 +28,10 @@ public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusL
 	/* (non-Javadoc)
 	 * @see use.via.client.module.export.ISenderEventComponentReset#fireEvent(basic.zKernelUI.component.model.KernelEventComponentSelectionResetZZZ)
 	 */
-	private ArrayList<IListenerObjectStatusLocalSetZZZ> listaLISTENER_REGISTERED = new ArrayList();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
+	private ArrayList<EventListener> listaLISTENER_REGISTERED = new ArrayList();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
 																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
 	@Override                                                                                     //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
-	public final void fireEvent(IEventObjectStatusLocalSetZZZ event){	
+	public void fireEvent(IEventObjectStatusLocalSetZZZ event){	
 		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
 		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
 		if(event.getSource() instanceof ISenderSelectionResetZZZ){
@@ -52,44 +53,42 @@ public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusL
 		main:{
 			if(event==null)break main;
 			
-			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-				IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-				try {
-					boolean bStatusLocalChanged = l.statusLocalChanged(event);
-					if(bStatusLocalChanged) {
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
-					}					
-				} catch (ExceptionZZZ ez) {
-					//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+			try {
+				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
+					IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
+					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+					try {
+						boolean bStatusLocalChanged = l.statusLocalChanged(event);
+						if(bStatusLocalChanged) {
+							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
+						}					
+					} catch (ExceptionZZZ ez) {
+						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
+						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+					}
 				}
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}//end main:
 	}
-	
-	/* (non-Javadoc)
-	 * @see use.via.client.module.export.ISenderEventComponentReset#removeSelectionResetListener(basic.zKernelUI.component.model.ISelectionResetListener)
-	 */
+		
 	@Override
-	public final void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ l){
-		this.getListenerRegisteredAll().remove(l);
-	}
-	
-	/* (non-Javadoc)
-	 * @see use.via.client.module.export.ISenderEventComponentReset#addSelectionResetListener(basic.zKernelUI.component.model.ISelectionResetListener)
-	 */
-	@Override
-	public final void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ l){
-		this.getListenerRegisteredAll().add(l);
-	}
-	
-	@Override
-	public final ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll(){
+	public ArrayList<EventListener> getListenerRegisteredAll() throws ExceptionZZZ{
 		return listaLISTENER_REGISTERED;
 	}
 
+	@Override
+	public void removeListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ {
+		this.getListenerRegisteredAll().remove(objEventListener);
+	}
+
+	@Override
+	public void addListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ {
+		this.getListenerRegisteredAll().add(objEventListener);
+	}
 	
 }
 

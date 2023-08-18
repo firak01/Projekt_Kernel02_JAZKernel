@@ -12,7 +12,7 @@ import basic.zBasic.IObjectZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public final class EventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ{
+public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ{
 	private Enum objStatusEnum=null;
 	private String sStatusText=null;
 	private int iId;
