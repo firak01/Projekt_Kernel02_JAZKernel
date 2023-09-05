@@ -12,7 +12,7 @@ import basic.zBasic.IObjectZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ{
+public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ, Comparable<IEventObjectStatusLocalSetZZZ>{
 	private Enum objStatusEnum=null;
 	private String sStatusText=null;
 	private int iId;
@@ -72,6 +72,59 @@ public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventO
 		// TODO Auto-generated method stub
 		
 	}
+
+	//### Aus dem Interface Comparable	
+	@Override
+	public int compareTo(IEventObjectStatusLocalSetZZZ o) {
+		//Das macht lediglich .sort funktionsfähig und wird nicht bei .equals(...) verwendet.
+		int iReturn = 0;
+		main:{
+			if(o==null)break main;
+			
+			String sTextToCompare = o.getStatusText();
+			boolean bValueToCompare = o.getStatusValue();
+			
+			String sText = this.getStatusText();
+			boolean bValue = this.getStatusValue();
+			
+			if(sTextToCompare.equals(sText) && bValueToCompare==bValue) iReturn = 1;
+			
+			
+		}
+		return iReturn;
+	}
+	
+	
+	
+	 /**
+	   * Define equality of state.
+	   */
+	   @Override 
+	   public boolean equals(Object aThat) {
+	     if (this == aThat) return true;
+	     if (!(aThat instanceof EventObjectStatusLocalSetZZZ)) return false;
+	     EventObjectStatusLocalSetZZZ that = (EventObjectStatusLocalSetZZZ)aThat;
+	     
+	     String sTextToCompare = that.getStatusText();
+		 boolean bValueToCompare = that.getStatusValue();
+			
+			String sText = this.getStatusText();
+			boolean bValue = this.getStatusValue();
+	     
+			if(sTextToCompare.equals(sText) && bValueToCompare==bValue) return true;
+			
+	     return false;     
+	   }
+
+	   /**
+	   * A class that overrides equals must also override hashCode.
+	   */
+	   @Override 
+	   public int hashCode() {
+	     //return this.getNavigatorElementAlias().hashCode();
+		   return this.getStatusText().hashCode();
+	   }
+
 
 	
 }

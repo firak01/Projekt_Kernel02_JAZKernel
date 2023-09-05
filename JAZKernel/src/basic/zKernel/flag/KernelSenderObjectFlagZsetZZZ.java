@@ -21,6 +21,8 @@ import basic.zKernel.KernelUseObjectZZZ;
  */
 public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
+	private IEventObjectFlagZsetZZZ eventPrevious=null;
+	
 	public KernelSenderObjectFlagZsetZZZ() throws ExceptionZZZ{		
 	}
 	
@@ -52,6 +54,13 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 		main:{
 			if(event==null)break main;
 			
+			//Dafür sorgen, dass der Event nur 1x geworfen wird, wenn der vorherige Event der gleich war.
+			IEventObjectFlagZsetZZZ eventPrevious = this.getEventPrevious();
+			if(eventPrevious!=null) {
+				if(eventPrevious.equals(event))break main;
+			}
+			this.setEventPrevious(event);
+			
 			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
 				IListenerObjectFlagZsetZZZ l = (IListenerObjectFlagZsetZZZ) this.getListenerRegisteredAll().get(i);				
 				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
@@ -67,6 +76,16 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 			}
 			
 		}//end main:
+	}
+	
+	@Override
+	public IEventObjectFlagZsetZZZ getEventPrevious() {
+		return this.eventPrevious;
+	}
+
+	@Override
+	public void setEventPrevious(IEventObjectFlagZsetZZZ event) {
+		this.eventPrevious = event;
 	}
 	
 	/* (non-Javadoc)

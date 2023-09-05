@@ -288,7 +288,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	            	
 	            	while(!this.getConsole().isConsoleUserThreadFinished() && !this.getConsole().isStopped()) {
 			        	 try {
-			             	//System.out.println("Warte auf Ergebnis des Cryptlaufs...");                 	
+			             	//System.out.println("Warte auf Ergebnis des Cryptlaufs...");  			        		
 							Thread.sleep(lSleepTime);  		
 							//this.isInputAllFinished(false);//Bereit für neue Eingaben, hier und nicht nach der Schleife!!!
 						} catch (InterruptedException e) {

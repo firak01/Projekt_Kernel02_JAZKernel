@@ -4,6 +4,8 @@ import java.util.EventObject;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
+import basic.zKernel.status.EventObjectStatusLocalSetZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
 /** 
  * Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )  
  *        Dann erweitert die Event-Klasse aber EventObjekt.
@@ -12,7 +14,7 @@ import basic.zBasic.IObjectZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public final class EventObjectFlagZsetZZZ extends EventObject implements IEventObjectFlagZsetZZZ{
+public final class EventObjectFlagZsetZZZ extends EventObject implements IEventObjectFlagZsetZZZ, Comparable<IEventObjectFlagZsetZZZ>{
 	private Enum objFlagEnum=null;
 	private String sFlagText=null;
 	private int iId;
@@ -73,6 +75,57 @@ public final class EventObjectFlagZsetZZZ extends EventObject implements IEventO
 		
 	}
 
+	//### Aus dem Interface Comparable	
+	@Override
+	public int compareTo(IEventObjectFlagZsetZZZ o) {
+		//Das macht lediglich .sort funktionsfähig und wird nicht bei .equals(...) verwendet.
+		int iReturn = 0;
+		main:{
+			if(o==null)break main;
+			
+			String sTextToCompare = o.getFlagText();
+			boolean bValueToCompare = o.getFlagValue();
+			
+			String sText = this.getFlagText();
+			boolean bValue = this.getFlagValue();
+			
+			if(sTextToCompare.equals(sText) && bValueToCompare==bValue) iReturn = 1;
+			
+			
+		}
+		return iReturn;
+	}
 	
+	
+	
+	 /**
+	   * Define equality of state.
+	   */
+	   @Override 
+	   public boolean equals(Object aThat) {
+	     if (this == aThat) return true;
+	     if (!(aThat instanceof EventObjectFlagZsetZZZ)) return false;
+	     EventObjectFlagZsetZZZ that = (EventObjectFlagZsetZZZ)aThat;
+	     
+	     String sTextToCompare = that.getFlagText();
+		 boolean bValueToCompare = that.getFlagValue();
+			
+			String sText = this.getFlagText();
+			boolean bValue = this.getFlagValue();
+	     
+			if(sTextToCompare.equals(sText) && bValueToCompare==bValue) return true;
+			
+	     return false;     
+	   }
+
+	   /**
+	   * A class that overrides equals must also override hashCode.
+	   */
+	   @Override 
+	   public int hashCode() {
+	     //return this.getNavigatorElementAlias().hashCode();
+		   return this.getFlagText().hashCode();
+	   }
+
 }
 
