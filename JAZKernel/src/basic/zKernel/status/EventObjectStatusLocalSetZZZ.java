@@ -62,15 +62,12 @@ public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventO
 	}
 
 	@Override
-	public ExceptionZZZ getExceptionObject() {
-		// TODO Auto-generated method stub
+	public ExceptionZZZ getExceptionObject() {		
 		return null;
 	}
 
 	@Override
 	public void setExceptionObject(ExceptionZZZ objException) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	//### Aus dem Interface Comparable	
@@ -87,45 +84,33 @@ public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventO
 			String sText = this.getStatusText();
 			boolean bValue = this.getStatusValue();
 			
-			if(sTextToCompare.equals(sText) && bValueToCompare==bValue) iReturn = 1;
-			
+			if(sTextToCompare.equals(sText) && bValueToCompare==bValue) iReturn = 1;		
 			
 		}
 		return iReturn;
 	}
 	
-	
-	
-	 /**
-	   * Define equality of state.
-	   */
-	   @Override 
-	   public boolean equals(Object aThat) {
-	     if (this == aThat) return true;
-	     if (!(aThat instanceof EventObjectStatusLocalSetZZZ)) return false;
-	     EventObjectStatusLocalSetZZZ that = (EventObjectStatusLocalSetZZZ)aThat;
-	     
-	     String sTextToCompare = that.getStatusText();
-		 boolean bValueToCompare = that.getStatusValue();
-			
-			String sText = this.getStatusText();
-			boolean bValue = this.getStatusValue();
-	     
-			if(sTextToCompare.equals(sText) && bValueToCompare==bValue) return true;
-			
-	     return false;     
-	   }
+   @Override 
+   public boolean equals(Object aThat) {
+     if (this == aThat) return true;
+     if (!(aThat instanceof EventObjectStatusLocalSetZZZ)) return false;
+     EventObjectStatusLocalSetZZZ that = (EventObjectStatusLocalSetZZZ)aThat;
+     
+     String sTextToCompare = that.getStatusText();
+	 boolean bValueToCompare = that.getStatusValue();
+		
+		String sText = this.getStatusText();
+		boolean bValue = this.getStatusValue();
+     
+		if(sTextToCompare.equals(sText) && bValueToCompare==bValue) return true;
+		
+     return false;     
+   }
 
-	   /**
-	   * A class that overrides equals must also override hashCode.
-	   */
-	   @Override 
-	   public int hashCode() {
-	     //return this.getNavigatorElementAlias().hashCode();
-		   return this.getStatusText().hashCode();
-	   }
-
-
-	
+   /** A class that overrides equals must also override hashCode.*/
+   @Override 
+   public int hashCode() {
+	   return this.getStatusText().hashCode();
+   }
 }
 
