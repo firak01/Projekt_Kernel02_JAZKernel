@@ -29,9 +29,12 @@ public interface IFlagZLocalUserZZZ{
 	public abstract boolean setFlagLocal(String sFlag, boolean bValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.	
 	public abstract boolean[] setFlagLocal(String[] saFlag, boolean bValue) throws ExceptionZZZ; 
 	public abstract boolean proofFlagLocalExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
+	public abstract boolean proofFlagLocalSetBefore(String sFlagName) throws ExceptionZZZ;
 	
 	public String[] getFlagZLocal(boolean bFlagValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZLocal(boolean bFlagValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZLocal() throws ExceptionZZZ;
+	
+	
 
 }

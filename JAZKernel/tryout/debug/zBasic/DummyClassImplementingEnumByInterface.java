@@ -35,5 +35,4 @@ public class DummyClassImplementingEnumByInterface extends AbstractKernelProgram
 		// TODO Auto-generated method stub
 		
 	}
-
 }

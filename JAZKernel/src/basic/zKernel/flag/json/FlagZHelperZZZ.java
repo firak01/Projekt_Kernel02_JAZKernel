@@ -2,6 +2,7 @@ package basic.zKernel.flag.json;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -11,6 +12,8 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.flag.IFlagZLocalUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zUtil.io.KernelFileZZZ.FLAGZ;
 
 public class FlagZHelperZZZ implements IConstantZZZ{
@@ -44,6 +47,27 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 					break main;
 				}
 			}												
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean proofFlagZLocalSetBefore(IFlagZLocalUserZZZ obj, String sFlagName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+
+				if(obj==null) {
+					 ExceptionZZZ ez = new ExceptionZZZ( "Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					 throw ez;
+				}
+				
+				if(StringZZZ.isEmpty(sFlagName)) {
+					ExceptionZZZ ez = new ExceptionZZZ( "FlagString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					 throw ez;
+				}
+				
+				//Hole die HashMap aller gesetzten Flags
+				HashMap<String,Boolean> hmFlag = obj.getHashMapFlagLocal();
+				bReturn = hmFlag.containsKey(sFlagName);
 		}//end main:
 		return bReturn;
 	}
@@ -183,6 +207,27 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 				}
 			}
 			*/
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean proofFlagZSetBefore(IFlagZUserZZZ obj, String sFlagName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+
+				if(obj==null) {
+					 ExceptionZZZ ez = new ExceptionZZZ( "Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					 throw ez;
+				}
+				
+				if(StringZZZ.isEmpty(sFlagName)) {
+					ExceptionZZZ ez = new ExceptionZZZ( "FlagString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					 throw ez;
+				}
+				
+				//Hole die HashMap aller gesetzten Flags
+				HashMap<String,Boolean> hmFlag = obj.getHashMapFlag();
+				bReturn = hmFlag.containsKey(sFlagName);
 		}//end main:
 		return bReturn;
 	}

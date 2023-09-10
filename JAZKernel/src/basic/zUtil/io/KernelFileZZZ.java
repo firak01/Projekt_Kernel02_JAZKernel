@@ -277,6 +277,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
+	@Override
+	public boolean proofFlagSetBefore(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
 	//##################################
 //		@Override
 //		public boolean getFlag(String sFlagName) {
@@ -491,7 +496,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++
 				/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
-				 * 	 Weteire Voraussetzungen:
+				 * 	 Weitere Voraussetzungen:
 				 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 				 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
 				 */
@@ -649,6 +654,16 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 					}//end main:
 					return bReturn;
 				}
+				
+				@Override
+				public boolean proofFlagLocalSetBefore(String sFlagName) throws ExceptionZZZ{
+					boolean bReturn = false;
+					main:{
+						if(StringZZZ.isEmpty(sFlagName))break main;
+						bReturn = FlagZHelperZZZ.proofFlagZLocalSetBefore(this, sFlagName);
+					}
+					return bReturn;
+				}
 					
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++
@@ -726,6 +741,16 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 			if(StringZZZ.isEmpty(sFlagName))break main;
 			bReturn = FlagZHelperZZZ.proofFlagZExists(this.getClass(), sFlagName);				
 		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(String sFlagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName))break main;
+			bReturn = FlagZHelperZZZ.proofFlagZSetBefore(this, sFlagName);
+		}
 		return bReturn;
 	}
 
@@ -1104,6 +1129,8 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String 
 		}
 		return sReturn;
 	}
+
+	
 
 	
 

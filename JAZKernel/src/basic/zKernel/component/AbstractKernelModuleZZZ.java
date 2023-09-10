@@ -127,7 +127,12 @@ public abstract class AbstractKernelModuleZZZ  extends KernelUseObjectZZZ implem
 		@Override
 		public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.proofFlagExists(objEnumFlag.name());
-			}
+		}
+		
+		@Override
+		public boolean proofFlagSetBefore(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
 	
 	public void resetModuleUsed() {
 		this.sModuleName = null;

@@ -12,6 +12,7 @@ public interface IKernelModuleZZZ extends IFlagZUserZZZ {
 	public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public boolean proofFlagSetBefore(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public static String sMODULE_UNDEFINED="Modul_undefined";
 	

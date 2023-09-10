@@ -18,6 +18,7 @@ public interface IFlagZUserZZZ{
 	public abstract boolean setFlag(String sFlagName, boolean bValue) throws ExceptionZZZ;;
 	public abstract boolean[] setFlag(String[] saFlagName, boolean bValue) throws ExceptionZZZ;;
 	public abstract boolean proofFlagExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
+	public abstract boolean proofFlagSetBefore(String sFlag) throws ExceptionZZZ; //Prueft auf die Existenz des Flags in der HashMap.
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public abstract boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag);
@@ -27,6 +28,8 @@ public interface IFlagZUserZZZ{
 	//boolean setFlag(Enum enumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	
 	public abstract boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public abstract boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ; //Prueft auf die Existenz des Flags in der HashMap.
+	
 	
 	//202211228: Leider wird dann als Methode nur das FLAGZ in den erbenden Klassen eingesetzt.
 	//           Und das ist "ambigous". Es geht also das Interface verloren.

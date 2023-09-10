@@ -107,7 +107,16 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 			return this.proofFlagExists(objEnumFlag.name());
 		}
 	
-		public String readModuleName() throws ExceptionZZZ {
+	@Override
+	public boolean proofFlagSetBefore(IKernelProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}	
+	
+	
+
+	
+	
+	public String readModuleName() throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			IKernelModuleZZZ objModule = this.getModule();
@@ -178,7 +187,12 @@ public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ imple
 	@Override
 	public boolean proofFlagExists(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objEnumFlag.name());
-		}
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
 			
 	//### Methoden
 	public abstract void reset();

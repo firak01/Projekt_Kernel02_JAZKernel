@@ -13,5 +13,7 @@ public interface IKernelModuleUserZZZ {
 	public boolean proofFlagExists(IKernelModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public IKernelModuleZZZ getModule() throws ExceptionZZZ;
-	public void setModule(IKernelModuleZZZ objModule);	
+	public void setModule(IKernelModuleZZZ objModule);
+	
+	boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;	
 }

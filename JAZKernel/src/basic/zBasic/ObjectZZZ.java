@@ -126,8 +126,13 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 	}
 	
 	@Override
-	public boolean proofFlagExists(IFlagZUserZZZ.FLAGZ objaEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objaEnumFlag.name());
+	public boolean proofFlagExists(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IFlagZUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 	
 	
@@ -437,6 +442,16 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		}//end main:
 		return bReturn;
 	}
+	
+	@Override
+	public boolean proofFlagSetBefore(String sFlagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName))break main;
+			bReturn = FlagZHelperZZZ.proofFlagZSetBefore(this, sFlagName);
+		}
+		return bReturn;
+	}
 	//##################################################
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -610,6 +625,16 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		}//end main:
 		return bReturn;
 	}
+	
+	@Override
+	public boolean proofFlagLocalSetBefore(String sFlagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName))break main;
+			bReturn = FlagZHelperZZZ.proofFlagZLocalSetBefore(this, sFlagName);
+		}
+		return bReturn;
+	}
 				
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
@@ -713,5 +738,6 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		sReturn = ReflectionToStringBuilder.toString(this);
 		return sReturn;
 	}
+	
 	
 }
