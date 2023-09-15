@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -45,10 +46,12 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{
 			//Solange laufen, bis ein Fehler auftritt oder eine Verbindung erkannt wird.
 			do{
 				this.writeErrorToLog();
-				if(this.getFlag("hasError")) break;
+				boolean bHasError = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.HASERROR);
+				if(bHasError) break;
 
 				this.writeOutputToLog();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.
-				if(this.getFlag("hasConnection")) {
+				boolean bHasConnection = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.HASCONNECTION);
+				if(bHasConnection) {
 					sLog = "Connection wurde erstellt. Beende ProcessWatchRunner #"+this.getNumber();
 					this.logLineDate(sLog);						
 					break;
@@ -75,10 +78,11 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{
 					ExceptionZZZ ez = new ExceptionZZZ("An InterruptedException happened: '" + e.getMessage() + "''", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
-				
-				if( this.getFlag("stoprequested")==true) break;					
+
+				boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);
+				if(bStopRequested) break;					
 		}while(true);
-		this.bEnded = true;
+		this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.ENDED, true);
 		this.getLogObject().WriteLineDate("ProcessWatchRunner #"+ this.getNumber() + " ended.");
 					
 		}catch(ExceptionZZZ ez){
@@ -239,13 +243,18 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{
 		public boolean analyseInputLineCustom(String sLine) throws ExceptionZZZ {
 			boolean bReturn = false;
 			
+			int iProcess = this.getNumber();
+			String sLog = " Process#: " + iProcess + " - sLine=" + sLine;
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 			if(StringZZZ.contains(sLine,"TCP connection established with")) {
-				this.setFlag("hasConnection", true);
-				bReturn = true;
+				boolean bHasConnection = this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.HASCONNECTION, true);
+				bReturn = bHasConnection;
 			}
 			
 			return bReturn;
 		}
+
+
 	
 	//###### GETTER / SETTER
 	//sind eher in der abstrakten Klasse

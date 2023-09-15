@@ -24,14 +24,14 @@ public interface IStatusLocalUserZZZ{
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
 	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);	
 	
-	public abstract boolean getStatusLocal(Enum objEnumStatus) throws ExceptionZZZ;
-	public abstract boolean getStatusLocal(String sStatus) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(Enum objEnumStatus, boolean bFlagValue) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(String sStatus, boolean bValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
-	public abstract boolean[] setStatusLocal(Enum[] objaEnumStatus, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean[] setStatusLocal(String[] saStatus, boolean bValue) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalExists(Enum objEnumStatus) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalExists(String sStatus) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
+	public abstract boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ;
+	public abstract boolean getStatusLocal(String sStatusName) throws ExceptionZZZ;
+	public abstract boolean setStatusLocal(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
+	public abstract boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean[] setStatusLocal(String[] saStatusName, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalExists(Enum objEnumStatusIn) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
 	
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)

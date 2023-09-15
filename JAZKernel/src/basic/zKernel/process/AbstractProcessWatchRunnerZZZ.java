@@ -5,6 +5,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Set;
 
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -13,8 +17,12 @@ import basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalSetZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalSetZZZ;
+import basic.zKernel.status.StatusLocalHelperZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
@@ -25,17 +33,15 @@ import basic.zKernel.KernelUseObjectZZZ;
  * @author 0823
  *
  */
-public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{
-	private Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
+public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{	
+	private HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
+	TODOGOON20230915;//Auf StatusLocal statt Flags umstellen UND dann ggfs. den Monitor daran "registrieren".
+
+	private Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
 	private int iNumber=0;
-	public  boolean bEnded = false;
-	private boolean bFlagHasError=false;
-	private boolean bFlagHasOutput = false;
-	private boolean bFlagHasConnection = false;	
-	private boolean bFlagHasInput = false;
-	private boolean bFlagStopRequested = false;
+
 	
 	public AbstractProcessWatchRunnerZZZ(IKernelZZZ objKernel, Process objProcess, int iNumber, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
@@ -65,8 +71,8 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 				}
 			}//END check
 	
-	this.objProcess = objProcess;
-	this.iNumber = iNumber;
+			this.objProcess = objProcess;
+			this.iNumber = iNumber;
 		}//END main:
 	}
 	
@@ -116,7 +122,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 				
 				if( this.getFlag("stoprequested")==true) break;					
 		}while(true);
-		this.bEnded = true;
+		this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.ENDED,true);
 		this.getLogObject().WriteLineDate("ProcessWatchRunner #"+ this.getNumber() + " ended.");
 					
 		}catch(ExceptionZZZ ez){
@@ -215,23 +221,24 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	public void writeOutputToLog() throws ExceptionZZZ{	
 		main:{
 			try{
-			check:{
-				if(this.objProcess==null){
-					ExceptionZZZ ez = new ExceptionZZZ("Process-Object", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-			}//END check:
-		
-			BufferedReader in = new BufferedReader( new InputStreamReader(objProcess.getInputStream()) );
+				check:{
+					if(this.objProcess==null){
+						ExceptionZZZ ez = new ExceptionZZZ("Process-Object", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+				}//END check:
+			
+				BufferedReader in = new BufferedReader( new InputStreamReader(objProcess.getInputStream()) );
 				for ( String s; (s = in.readLine()) != null; ){
 				    //System.out.println( s );
 					this.getLogObject().WriteLine(this.getNumber() +"#"+ s);
-					this.setFlag("hasOutput", true);
+					this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.HASOUTPUT, true);
 					
 					boolean bAny = this.analyseInputLineCustom(s);
 														
-					Thread.sleep(20);					
-					if( this.getFlag("stoprequested")==true) break main;
+					Thread.sleep(20);
+					boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);
+					if( bStopRequested) break main;
 				}								
 			} catch (IOException e) {
 				ExceptionZZZ ez = new ExceptionZZZ("IOException happend: '" + e.getMessage() + "'", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
@@ -278,6 +285,48 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 
 
 	//###### FLAGS
+	
+	//### Aus IProcessWatchRunnerZZZ, analog zu IFlagUserZZZ ##########################
+		@Override
+		public boolean getFlag(IProcessWatchRunnerZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		@Override
+		public boolean setFlag(IProcessWatchRunnerZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(IProcessWatchRunnerZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IProcessWatchRunnerZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+					
+					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+					//    Es wird entfernt.
+					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				}
+			}//end main:
+			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(IProcessWatchRunnerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}	
+		
+		@Override
+		public boolean proofFlagSetBefore(IProcessWatchRunnerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}	
+	
 	/* (non-Javadoc)
 	@see zzzKernel.basic.KernelObjectZZZ#getFlag(java.lang.String)
 	Flags used: 
@@ -294,26 +343,28 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			if(bFunction==true) break main;
 		
 			//getting the flags of this object
-			String stemp = sFlagName.toLowerCase();
-			if(stemp.equals("haserror")){
-				bFunction = bFlagHasError;
-				break main;
-			}else if(stemp.equals("hasconnection")) {
-				bFunction = bFlagHasConnection;
-				break main;
-			}else if(stemp.equals("hasoutput")){
-				bFunction = bFlagHasOutput;
-				break main;
-			}else if(stemp.equals("hasinput")){
-				bFunction = bFlagHasInput;
-				break main;
-			}else if(stemp.equals("stoprequested")){
-				bFunction = bFlagStopRequested;
-				break main;
-			}
+//			String stemp = sFlagName.toLowerCase();
+//			if(stemp.equals("haserror")){
+//				bFunction = bFlagHasError;
+//				break main;
+//			}else if(stemp.equals("hasconnection")) {
+//				bFunction = bFlagHasConnection;
+//				break main;
+//			}else if(stemp.equals("hasoutput")){
+//				bFunction = bFlagHasOutput;
+//				break main;
+//			}else if(stemp.equals("hasinput")){
+//				bFunction = bFlagHasInput;
+//				break main;
+//			}else if(stemp.equals("stoprequested")){
+//				bFunction = bFlagStopRequested;
+//				break main;
+//			}
 		}//end main:
 		return bFunction;
 	}
+	
+	
 
 	/**
 	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
@@ -333,32 +384,34 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			if(bFunction==true) break main;
 		
 		//setting the flags of this object
-		String stemp = sFlagName.toLowerCase();
-		if(stemp.equals("haserror")){
-			bFlagHasError = bFlagValue;
-			bFunction = true;
-			break main;
-		}else if(stemp.equals("hasconnection")) {
-			bFlagHasConnection = bFlagValue;
-			bFunction = true;
-			break main;
-		}else if(stemp.equals("hasoutput")){
-			bFlagHasOutput = bFlagValue;
-			bFunction = true;
-			break main;
-		}else if(stemp.equals("hasinput")){
-			bFlagHasInput = bFlagValue;
-			bFunction = true;
-			break main;
-		}else if(stemp.equals("stoprequested")){
-			bFlagStopRequested = bFlagValue;
-			bFunction = true;
-			break main;
-		}
+//		String stemp = sFlagName.toLowerCase();
+//		if(stemp.equals("haserror")){
+//			bFlagHasError = bFlagValue;
+//			bFunction = true;
+//			break main;
+//		}else if(stemp.equals("hasconnection")) {
+//			bFlagHasConnection = bFlagValue;
+//			bFunction = true;
+//			break main;
+//		}else if(stemp.equals("hasoutput")){
+//			bFlagHasOutput = bFlagValue;
+//			bFunction = true;
+//			break main;
+//		}else if(stemp.equals("hasinput")){
+//			bFlagHasInput = bFlagValue;
+//			bFunction = true;
+//			break main;
+//		}else if(stemp.equals("stoprequested")){
+//			bFlagStopRequested = bFlagValue;
+//			bFunction = true;
+//			break main;
+//		}
 
 		}//end main:
 		return bFunction;
 	}
+	
+	
 	
 	//###### GETTER / SETTER
 	
@@ -409,5 +462,344 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalSetZZZ objEventSender) {
 		this.objEventStatusLocalBroker = objEventSender;
 	}
+	
+	//######
+	@Override
+	public HashMap<String, Boolean> getHashMapStatusLocal() {
+		return this.hmStatusLocal;
+	}
 
+	@Override
+	public void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal) {
+		this.hmStatusLocal = hmStatusLocal;
+	}
+
+	@Override
+	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(objEnumStatusIn==null) {
+				break main;
+			}
+			
+			//Merke: Bei einer anderen Klasse, die dieses DesingPattern nutzt, befindet sich der STATUSLOCAL in einer anderen Klasse
+			AbstractProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
+			String sStatusName = enumStatus.name();
+			if(StringZZZ.isEmpty(sStatusName)) break main;
+										
+			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
+			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
+			}
+							
+		}	// end main:
+		
+		return bFunction;	
+	}
+
+	@Override
+	public boolean getStatusLocal(String sStatusName) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName)) break main;
+										
+			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+			Boolean objBoolean = hmStatus.get(sStatusName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
+			}
+							
+		}	// end main:
+		
+		return bFunction;	
+	}
+
+	@Override
+	public boolean setStatusLocal(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(objEnumStatusIn==null) {
+				break main;
+			}
+		//return this.getStatusLocal(objEnumStatus.name());
+		//Nein, trotz der Redundanz nicht machen, da nun der Event anders gefeuert wird, nämlich über das enum
+		
+	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
+	    AbstractProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
+		String sStatusName = enumStatus.name();
+		bFunction = this.proofStatusLocalExists(sStatusName);															
+		if(bFunction == true){
+			
+			//Setze das Flag nun in die HashMap
+			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+		
+			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+			//Dann erzeuge den Event und feuer ihn ab.
+			//Merke: Nun aber ueber das enum			
+			if(this.objEventStatusLocalBroker!=null) {
+				IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,enumStatus, bStatusValue);
+				this.objEventStatusLocalBroker.fireEvent(event);
+			}			
+			bFunction = true;								
+		}										
+	}	// end main:
+	return bFunction;
+	}
+
+	@Override
+	public boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName)) {
+				bFunction = true;
+				break main;
+			}
+						
+			bFunction = this.proofStatusLocalExists(sStatusName);															
+			if(bFunction == true){
+				
+				//Setze das Flag nun in die HashMap
+				HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+				hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+				
+				//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+				//Dann erzeuge den Event und feuer ihn ab.
+				if(this.objEventStatusLocalBroker!=null) {
+					IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,sStatusName.toUpperCase(), bStatusValue);
+					this.objEventStatusLocalBroker.fireEvent(event);
+				}
+				
+				bFunction = true;								
+			}										
+		}	// end main:
+		
+		return bFunction;
+	}
+
+	@Override
+	public boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumStatusIn)) {
+				baReturn = new boolean[objaEnumStatusIn.length];
+				int iCounter=-1;
+				for(Enum objEnumStatus:objaEnumStatusIn) {
+					iCounter++;
+					boolean bReturn = this.setStatusLocal(objEnumStatus, bStatusValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+
+	@Override
+	public boolean[] setStatusLocal(String[] saStatusName, boolean bStatusValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!StringArrayZZZ.isEmptyTrimmed(saStatusName)) {
+				baReturn = new boolean[saStatusName.length];
+				int iCounter=-1;
+				for(String sStatusName:saStatusName) {
+					iCounter++;
+					boolean bReturn = this.setStatusLocal(sStatusName, bStatusValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+
+	@Override
+	public boolean proofStatusLocalExists(Enum objEnumStatus) throws ExceptionZZZ {
+		return this.proofStatusLocalExists(objEnumStatus.name());
+	}
+
+	@Override
+	public boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName))break main;
+			bReturn = StatusLocalHelperZZZ.proofStatusLocalDirectExists(this.getClass(), sStatusName);				
+		}//end main:
+		return bReturn;
+	}
+
+	@Override
+	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ {
+		return this.getStatusLocal_(bStatusValueToSearchFor, false);
+	}
+
+	@Override
+	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ {
+		return this.getStatusLocal_(bStatusValueToSearchFor, bLookupExplizitInHashMap);
+	}
+
+	@Override
+	public String[] getStatusLocal() throws ExceptionZZZ {
+		String[] saReturn = null;
+		main:{	
+			saReturn = StatusLocalHelperZZZ.getStatusLocalDirectAvailable(this.getClass());				
+		}//end main:
+		return saReturn;
+	}
+	
+	private String[]getStatusLocal_(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			ArrayList<String>listasTemp=new ArrayList<String>();
+			
+			//FALLUNTERSCHEIDUNG: Alle gesetzten Status werden in der HashMap gespeichert. Aber die noch nicht gesetzten FlagZ stehen dort nicht drin.
+			//                                  Diese kann man nur durch Einzelprüfung ermitteln.
+			if(bLookupExplizitInHashMap) {
+				HashMap<String,Boolean>hmStatus=this.getHashMapStatusLocal();
+				if(hmStatus==null) break main;
+				
+				Set<String> setKey = hmStatus.keySet();
+				for(String sKey : setKey){
+					boolean btemp = hmStatus.get(sKey);
+					if(btemp==bStatusValueToSearchFor){
+						listasTemp.add(sKey);
+					}
+				}
+			}else {
+				//So bekommt man alle Flags zurück, also auch die, die nicht explizit true oder false gesetzt wurden.						
+				String[]saStatus = this.getStatusLocal();
+				
+				//20211201:
+				//Problem: Bei der Suche nach true ist das egal... aber bei der Suche nach false bekommt man jedes der Flags zurück,
+				//         auch wenn sie garnicht gesetzt wurden.
+				//Lösung:  Statt dessen explitzit über die HashMap der gesetzten Werte gehen....						
+				for(String sStatus : saStatus){
+					boolean btemp = this.getStatusLocal(sStatus);
+					if(btemp==bStatusValueToSearchFor ){ //also 'true'
+						listasTemp.add(sStatus);
+					}
+				}
+			}
+			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
+		}//end main:
+		return saReturn;
+	}
+	
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		//++++++++++++++++++++++++
+		
+		//Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
+			//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
+			public enum STATUSLOCAL implements IEnumSetMappedZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{	
+				ISSTARTED("isstarted","ProcessWatchRunner",""),
+				HASCONNECTION("hasconnection","ProcessWatchRunner ist mit dem Process verbunden",""),
+				HASOUTPUT("hasoutput","Prozess hat Output",""),
+				HASINPUT("hasinput","Prozess hat Input",""),
+				ISSTOPPED("isended","ProcessWatchRunner ist beendet",""),
+				HASERROR("haserror","Ein Fehler ist aufgetreten","");
+											
+			private String sAbbreviation,sStatusMessage,sDescription;
+
+			//#############################################
+			//#### Konstruktoren
+			//Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
+			//In der Util-Klasse habe ich aber einen Workaround gefunden.
+			STATUSLOCAL(String sAbbreviation, String sStatusMessage, String sDescription) {
+			    this.sAbbreviation = sAbbreviation;
+			    this.sStatusMessage = sStatusMessage;
+			    this.sDescription = sDescription;
+			}
+
+			public String getAbbreviation() {
+			 return this.sAbbreviation;
+			}
+			
+			public String getStatusMessage() {
+				 return this.sStatusMessage;
+			}
+			
+			public EnumSet<?>getEnumSetUsed(){
+				return STATUSLOCAL.getEnumSet();
+			}
+
+			/* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
+			@SuppressWarnings("rawtypes")
+			public static <E> EnumSet getEnumSet() {
+				
+			 //Merke: Das wird anders behandelt als FLAGZ Enumeration.
+				//String sFilterName = "FLAGZ"; /
+				//...
+				//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
+				
+				//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
+				Class<STATUSLOCAL> enumClass = STATUSLOCAL.class;
+				EnumSet<STATUSLOCAL> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
+				
+				//Merke: In einer anderen Klasse, die dieses DesingPattern nutzt, befinden sich die Enums in einer anderen Klasse
+				for(Object obj : AbstractProcessWatchRunnerZZZ.class.getEnumConstants()){
+					//System.out.println(obj + "; "+obj.getClass().getName());
+					set.add((STATUSLOCAL) obj);
+				}
+				return set;
+				
+			}
+
+			//TODO: Mal ausprobieren was das bringt
+			//Convert Enumeration to a Set/List
+			private static <E extends Enum<E>>EnumSet<E> toEnumSet(Class<E> enumClass,long vector){
+				  EnumSet<E> set=EnumSet.noneOf(enumClass);
+				  long mask=1;
+				  for (  E e : enumClass.getEnumConstants()) {
+				    if ((mask & vector) == mask) {
+				      set.add(e);
+				    }
+				    mask<<=1;
+				  }
+				  return set;
+				}
+
+			//+++ Das könnte auch in einer Utility-Klasse sein.
+			//the valueOfMethod <--- Translating from DB
+			public static STATUSLOCAL fromAbbreviation(String s) {
+			for (STATUSLOCAL state : values()) {
+			   if (s.equals(state.getAbbreviation()))
+			       return state;
+			}
+			throw new IllegalArgumentException("Not a correct abbreviation: " + s);
+			}
+
+			//##################################################
+			//#### Folgende Methoden bring Enumeration von Hause aus mit. 
+					//Merke: Diese Methoden können aber nicht in eine abstrakte Klasse verschoben werden, zum daraus Erben. Grund: Enum erweitert schon eine Klasse.
+			@Override
+			public String getName() {	
+				return super.name();
+			}
+
+			@Override
+			public String toString() {//Mehrere Werte mit # abtennen
+			    return this.sAbbreviation+"="+this.sDescription;
+			}
+
+			@Override
+			public int getIndex() {
+				return ordinal();
+			}
+
+			//### Folgende Methoden sind zum komfortablen Arbeiten gedacht.
+			@Override
+			public int getPosition() {
+				return getIndex()+1; 
+			}
+
+			@Override
+			public String getDescription() {
+				return this.sDescription;
+			}
+			//+++++++++++++++++++++++++
+			}//End internal Class
 }//END class
