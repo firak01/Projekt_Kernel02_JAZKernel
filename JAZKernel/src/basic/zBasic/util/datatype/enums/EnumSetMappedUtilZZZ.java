@@ -19,7 +19,8 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
-		public EnumSetMappedUtilZZZ(){		
+	
+	public EnumSetMappedUtilZZZ(){		
 	}
 	public EnumSetMappedUtilZZZ(EnumSet<?>enumSetUsed){
 		super(enumSetUsed);

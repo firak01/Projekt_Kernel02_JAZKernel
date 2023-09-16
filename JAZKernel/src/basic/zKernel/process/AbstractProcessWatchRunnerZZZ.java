@@ -37,7 +37,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 	private HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
-	TODOGOON20230915;//Auf StatusLocal statt Flags umstellen UND dann ggfs. den Monitor daran "registrieren".
+	//TODOGOON20230915;//Auf StatusLocal statt Flags umstellen UND dann ggfs. den Monitor daran "registrieren".
 
 	private Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
 	private int iNumber=0;
@@ -80,51 +80,56 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 		
 		main:{
 			try{
-			check:{
-				
-			}//END check:
-			String sLog = "ProcessWatchRunner #"+ this.getNumber() + " started.";
-			this.logLineDate(sLog);
-			
-			//Solange laufen, bis ein Fehler auftritt oder eine Verbindung erkannt wird.
-			do{
-				this.writeErrorToLog();
-				if(this.getFlag("hasError")) break;
-
-				this.writeOutputToLog();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.
-				if(this.getFlag("hasConnection")) {
-					sLog = "Connection wurde erstellt. Beende ProcessWatchRunner #"+this.getNumber();
-					this.logLineDate(sLog);						
-					break;
-				}
-				
-				//TODOGOON: Statt des FlagHandling localStatus verwenden...				
-				
-				//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
-				//Dann erzeuge den Event und feuer ihn ab.
-				//Merke: Nun aber ueber das enum			
-				if(this.objEventStatusLocalBroker!=null) {
-					//IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,ClientMainOVPN.STATUSLOCAL.ISCONNECTED, true);
-					//TODOGOON20230914: Woher kommt nun das Enum? Es gibt ja kein konkretes Beispiel
-					IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,(Enum)null, true);
-					this.objEventStatusLocalBroker.fireEvent(event);
-				}			
-				
-				
-				//Nach irgendeiner Ausgabe enden ist hier falsch, in einer abstrakten Klasse vielleicht richtig, quasi als Muster.
-				//if(this.getFlag("hasOutput")) break;
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					ExceptionZZZ ez = new ExceptionZZZ("An InterruptedException happened: '" + e.getMessage() + "''", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				
-				if( this.getFlag("stoprequested")==true) break;					
-		}while(true);
-		this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.ENDED,true);
-		this.getLogObject().WriteLineDate("ProcessWatchRunner #"+ this.getNumber() + " ended.");
+				check:{
 					
+				}//END check:
+				String sLog = "ProcessWatchRunner #"+ this.getNumber() + " started.";
+				this.logLineDate(sLog);
+				
+				//Solange laufen, bis ein Fehler auftritt oder eine Verbindung erkannt wird.
+				do{
+					this.writeOutputToLog();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.
+					
+					boolean bHasConnection = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.HASCONNECTION);
+					if(bHasConnection) {
+						sLog = "Connection wurde erstellt. Beende ProcessWatchRunner #"+this.getNumber();
+						this.logLineDate(sLog);						
+						break;
+					}
+					
+					//System.out.println("FGLTEST02");
+					this.writeErrorToLog();
+					boolean bError = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.HASERROR);
+					if(bError) break;
+					
+					//TODOGOON20230916;//Statt des FlagHandling localStatus verwenden...				
+					
+					//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+					//Dann erzeuge den Event und feuer ihn ab.
+					//Merke: Nun aber ueber das enum			
+					if(this.objEventStatusLocalBroker!=null) {
+						//IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,ClientMainOVPN.STATUSLOCAL.ISCONNECTED, true);
+						//TODOGOON20230914: Woher kommt nun das Enum? Es gibt ja kein konkretes Beispiel
+						IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,(Enum)null, true);
+						this.objEventStatusLocalBroker.fireEvent(event);
+					}			
+					
+					
+					//Nach irgendeiner Ausgabe enden ist hier falsch, in einer abstrakten Klasse vielleicht richtig, quasi als Muster.
+					//if(this.getFlag("hasOutput")) break;
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						ExceptionZZZ ez = new ExceptionZZZ("An InterruptedException happened: '" + e.getMessage() + "''", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					
+					boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);
+					if(bStopRequested) break;				
+			}while(true);
+			this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.ENDED,true);
+			this.getLogObject().WriteLineDate("ProcessWatchRunner #"+ this.getNumber() + " ended.");
+						
 		}catch(ExceptionZZZ ez){
 			try {
 				this.getLogObject().WriteLineDate(ez.getDetailAllLast());
@@ -140,21 +145,21 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 	public void writeErrorToLog() throws ExceptionZZZ{
 		main:{			
 			try{
-			check:{
-				if(this.objProcess==null){
-					ExceptionZZZ ez = new ExceptionZZZ("Process-Object", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
+				check:{
+					if(this.objProcess==null){
+						ExceptionZZZ ez = new ExceptionZZZ("Process-Object", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+				}//END check:
+			   		
+			    BufferedReader err = new BufferedReader(new InputStreamReader(objProcess.getErrorStream()) );
+			    for ( String s; (s = err.readLine()) != null; ){
+				      //System.out.println( s );
+			    	this.getLogObject().WriteLine(this.getNumber() + "# ERROR: "+ s);
+			    	this.setFlag("hasError", true);
+			    	Thread.sleep(20);			
+			    	if( this.getFlag("stoprequested")==true) break main;
 				}
-			}//END check:
-		   		
-		    BufferedReader err = new BufferedReader(new InputStreamReader(objProcess.getErrorStream()) );
-		    for ( String s; (s = err.readLine()) != null; ){
-			      //System.out.println( s );
-		    	this.getLogObject().WriteLine(this.getNumber() + "# ERROR: "+ s);
-		    	this.setFlag("hasError", true);
-		    	Thread.sleep(20);			
-		    	if( this.getFlag("stoprequested")==true) break main;
-			    }
 			} catch (IOException e) {
 				ExceptionZZZ ez = new ExceptionZZZ("IOException happend: '" + e.getMessage() + "'", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -262,20 +267,20 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	public void sendStringToProcess(String sOut) throws ExceptionZZZ{
 		main:{
 			try{
-			check:{
-				if(this.objProcess==null){
-					ExceptionZZZ ez = new ExceptionZZZ("Process-Object", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
-				if(sOut==null)  break main; //Absichltich keine Exception					
-			}//END check:
-		
-			BufferedWriter out = new BufferedWriter( new OutputStreamWriter(objProcess.getOutputStream()) );
-			out.write(sOut);
-		
-			this.getLogObject().WriteLineDate(this.getNumber() +"# STRING SEND TO PROCESS: "+ sOut);
-			this.setFlag("hasInput", true);
+				check:{
+					if(this.objProcess==null){
+						ExceptionZZZ ez = new ExceptionZZZ("Process-Object", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					if(sOut==null)  break main; //Absichltich keine Exception					
+				}//END check:
 			
+				BufferedWriter out = new BufferedWriter( new OutputStreamWriter(objProcess.getOutputStream()) );
+				out.write(sOut);
+			
+				this.getLogObject().WriteLineDate(this.getNumber() +"# STRING SEND TO PROCESS: "+ sOut);
+				this.setFlag("hasInput", true);
+				
 			} catch (IOException e) {
 				ExceptionZZZ ez = new ExceptionZZZ("IOException happend: '" + e.getMessage() + "'", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -350,16 +355,8 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 //			}else if(stemp.equals("hasconnection")) {
 //				bFunction = bFlagHasConnection;
 //				break main;
-//			}else if(stemp.equals("hasoutput")){
-//				bFunction = bFlagHasOutput;
-//				break main;
-//			}else if(stemp.equals("hasinput")){
-//				bFunction = bFlagHasInput;
-//				break main;
-//			}else if(stemp.equals("stoprequested")){
-//				bFunction = bFlagStopRequested;
-//				break main;
 //			}
+			
 		}//end main:
 		return bFunction;
 	}
@@ -391,18 +388,6 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 //			break main;
 //		}else if(stemp.equals("hasconnection")) {
 //			bFlagHasConnection = bFlagValue;
-//			bFunction = true;
-//			break main;
-//		}else if(stemp.equals("hasoutput")){
-//			bFlagHasOutput = bFlagValue;
-//			bFunction = true;
-//			break main;
-//		}else if(stemp.equals("hasinput")){
-//			bFlagHasInput = bFlagValue;
-//			bFunction = true;
-//			break main;
-//		}else if(stemp.equals("stoprequested")){
-//			bFlagStopRequested = bFlagValue;
 //			bFunction = true;
 //			break main;
 //		}
@@ -452,6 +437,8 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	@Override
 	public abstract boolean analyseInputLineCustom(String sLine) throws ExceptionZZZ;
 
+	
+	//################## Status Local
 	//### aus IEventBrokerStatusLocalSetUserZZZ
 	@Override
 	public ISenderObjectStatusLocalSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
@@ -475,31 +462,8 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	}
 
 	@Override
-	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(objEnumStatusIn==null) {
-				break main;
-			}
-			
-			//Merke: Bei einer anderen Klasse, die dieses DesingPattern nutzt, befindet sich der STATUSLOCAL in einer anderen Klasse
-			AbstractProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
-			String sStatusName = enumStatus.name();
-			if(StringZZZ.isEmpty(sStatusName)) break main;
-										
-			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
-			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
-			if(objBoolean==null){
-				bFunction = false;
-			}else{
-				bFunction = objBoolean.booleanValue();
-			}
-							
-		}	// end main:
-		
-		return bFunction;	
-	}
-
+	abstract public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ;
+	
 	@Override
 	public boolean getStatusLocal(String sStatusName) throws ExceptionZZZ {
 		boolean bFunction = false;
@@ -520,38 +484,8 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	}
 
 	@Override
-	public boolean setStatusLocal(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(objEnumStatusIn==null) {
-				break main;
-			}
-		//return this.getStatusLocal(objEnumStatus.name());
-		//Nein, trotz der Redundanz nicht machen, da nun der Event anders gefeuert wird, nämlich über das enum
-		
-	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-	    AbstractProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
-		String sStatusName = enumStatus.name();
-		bFunction = this.proofStatusLocalExists(sStatusName);															
-		if(bFunction == true){
-			
-			//Setze das Flag nun in die HashMap
-			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
-			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-		
-			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
-			//Dann erzeuge den Event und feuer ihn ab.
-			//Merke: Nun aber ueber das enum			
-			if(this.objEventStatusLocalBroker!=null) {
-				IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,enumStatus, bStatusValue);
-				this.objEventStatusLocalBroker.fireEvent(event);
-			}			
-			bFunction = true;								
-		}										
-	}	// end main:
-	return bFunction;
-	}
-
+	abstract public boolean setStatusLocal(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	
 	@Override
 	public boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
@@ -690,7 +624,10 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		//++++++++++++++++++++++++
+	//DIE INTERNE ENUM-KLASSE FUER STATUSLOCAL.
+	//Merke: Diese könnte auch in eine extra Klasse ausgelagert werden (z.B. um es in einer Datenbank mit Hibernate zu persistieren.
+	//       Für die Auslagerung als extra Klasse, s.: EnumSetMappedTestTypeZZZ
+	//++++++++++++++++++++++++
 		
 		//Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 			//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
@@ -801,5 +738,5 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 				return this.sDescription;
 			}
 			//+++++++++++++++++++++++++
-			}//End internal Class
+			}//End internal Enum Class
 }//END class
