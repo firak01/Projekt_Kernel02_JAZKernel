@@ -47,7 +47,7 @@
 	    <!-- FGL 20221120: Nicht nur testen, sondern parsen <artifactId>tika-core</artifactId> -->
 	    <!--               Damit werden dann zahlreiche andere .jars eingebunden -->
 	    <artifactId>tika-parsers</artifactId>
-	    <version>1.18</version>
+	    <version>1.22</version>
 	</dependency>
   
   </dependencies>
