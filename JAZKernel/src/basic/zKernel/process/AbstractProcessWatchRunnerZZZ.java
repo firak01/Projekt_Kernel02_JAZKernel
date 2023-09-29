@@ -35,11 +35,11 @@ import basic.zKernel.KernelUseObjectZZZ;
  *
  */
 public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{	
-	private HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
+	protected HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
-	private Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
-	private int iNumber=0;
+	protected Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
+	protected int iNumber=0;
 
 	
 	public AbstractProcessWatchRunnerZZZ(IKernelZZZ objKernel, Process objProcess, int iNumber, String[] saFlag) throws ExceptionZZZ{
