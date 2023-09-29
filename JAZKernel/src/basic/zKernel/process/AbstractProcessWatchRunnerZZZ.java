@@ -10,6 +10,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Set;
 
+import base.files.EncodingMaintypeZZZ.TypeZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalSetZZZ;
@@ -37,8 +38,6 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 	private HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
-	//TODOGOON20230915;//Auf StatusLocal statt Flags umstellen UND dann ggfs. den Monitor daran "registrieren".
-
 	private Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
 	private int iNumber=0;
 
@@ -48,8 +47,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 		ProcessWatchRunnerNew_(objProcess, iNumber, saFlag);
 	}
 	
-	private void ProcessWatchRunnerNew_(Process objProcess, int iNumber, String[] saFlagControl) throws ExceptionZZZ{
-		
+	private void ProcessWatchRunnerNew_(Process objProcess, int iNumber, String[] saFlagControl) throws ExceptionZZZ{		
 		main:{			
 			check:{
 				if(saFlagControl != null){
@@ -90,7 +88,10 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 				do{
 					this.writeOutputToLog();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.
 					
-					boolean bHasConnection = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.HASCONNECTION);
+					//Versuch an das spezielle Enum der Klasse heranzukommne
+					//Enum objEnum = this.getEnumStatusLocalUsed(); //Aber daraus kann man nicht auf den Konstanten Enum-Namen zugreifen
+					//Idee... STATUSLOCAL in einem Interface definieren....
+					boolean bHasConnection = this.getStatusLocal(AbstractProcessWatchRunnerZZZ.STATUSLOCAL.HASCONNECTION);										
 					if(bHasConnection) {
 						sLog = "Connection wurde erstellt. Beende ProcessWatchRunner #"+this.getNumber();
 						this.logLineDate(sLog);						
@@ -99,7 +100,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 					
 					//System.out.println("FGLTEST02");
 					this.writeErrorToLog();
-					boolean bError = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.HASERROR);
+					boolean bError = this.getStatusLocal(AbstractProcessWatchRunnerZZZ.STATUSLOCAL.HASERROR);
 					if(bError) break;
 					
 					//TODOGOON20230916;//Statt des FlagHandling localStatus verwenden...				
@@ -127,7 +128,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 					boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);
 					if(bStopRequested) break;				
 			}while(true);
-			this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.ENDED,true);
+			this.setStatusLocal(AbstractProcessWatchRunnerZZZ.STATUSLOCAL.ISSTOPPED, true);
 			this.getLogObject().WriteLineDate("ProcessWatchRunner #"+ this.getNumber() + " ended.");
 						
 		}catch(ExceptionZZZ ez){
@@ -156,7 +157,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 			    for ( String s; (s = err.readLine()) != null; ){
 				      //System.out.println( s );
 			    	this.getLogObject().WriteLine(this.getNumber() + "# ERROR: "+ s);
-			    	this.setFlag("hasError", true);
+			    	this.setStatusLocal(AbstractProcessWatchRunnerZZZ.STATUSLOCAL.HASERROR, true);
 			    	Thread.sleep(20);			
 			    	if( this.getFlag("stoprequested")==true) break main;
 				}
@@ -237,12 +238,12 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 				for ( String s; (s = in.readLine()) != null; ){
 				    //System.out.println( s );
 					this.getLogObject().WriteLine(this.getNumber() +"#"+ s);
-					this.setFlag(IProcessWatchRunnerZZZ.FLAGZ.HASOUTPUT, true);
+					this.setStatusLocal(AbstractProcessWatchRunnerZZZ.STATUSLOCAL.HASOUTPUT, true);
 					
 					boolean bAny = this.analyseInputLineCustom(s);
 														
 					Thread.sleep(20);
-					boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);
+					boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);//Merke: STOPREQUEST ist eine Anweisung.. bleibt also ein Flag und ist kein Status
 					if( bStopRequested) break main;
 				}								
 			} catch (IOException e) {
@@ -622,13 +623,26 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 		return saReturn;
 	}
 	
+    //### Statische Methode (um einfacher darauf zugreifen zu können)
+    public static Class getEnumStatusLocalClass(){
+    	try{
+    		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Diese Methode muss in den daraus erbenden Klassen überschrieben werden.");
+    	}catch(ExceptionZZZ ez){
+			String sError = "ExceptionZZZ: " + ez.getMessageLast() + "+\n ThreadID:" + Thread.currentThread().getId() +"\n";			
+			System.out.println(sError);
+		}
+    	return STATUSLOCAL.class;    	
+    }
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//DIE INTERNE ENUM-KLASSE FUER STATUSLOCAL.
-	//Merke: Diese könnte auch in eine extra Klasse ausgelagert werden (z.B. um es in einer Datenbank mit Hibernate zu persistieren.
+    //Merke1: Diese wird auch vererbt. So dass erbende Klassen auf dieses Enum ueber ihren eingene Klassennamen zugreifen können.
+    //
+	//Merke2: Diese könnte auch in eine extra Klasse ausgelagert werden (z.B. um es in einer Datenbank mit Hibernate zu persistieren.
 	//       Für die Auslagerung als extra Klasse, s.: EnumSetMappedTestTypeZZZ
 	//++++++++++++++++++++++++
-		
+    		
+
 		//Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 			//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
 			public enum STATUSLOCAL implements IEnumSetMappedZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{	

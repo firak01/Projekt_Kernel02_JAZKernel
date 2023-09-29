@@ -7,8 +7,9 @@ import basic.zKernel.status.IStatusLocalUserZZZ;
 
 public interface IProcessWatchRunnerZZZ extends IStatusLocalUserZZZ, IEventBrokerStatusLocalSetUserZZZ{
 	public enum FLAGZ{
-		DUMMY,ENDED,HASERROR,HASCONNECTION,HASINPUT,HASOUTPUT, STOPREQUEST
+		DUMMY, STOPREQUEST
 	}
+
 	boolean getFlag(FLAGZ objEnumFlag);
 	boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;

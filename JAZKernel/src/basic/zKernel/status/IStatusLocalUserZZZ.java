@@ -20,6 +20,9 @@ public interface IStatusLocalUserZZZ{
 //		SKIPDEBUGUI;
 //	}	
 	
+	
+	
+	
 	//KONVENTION: 	
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
 	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);	
