@@ -2,9 +2,14 @@ package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
+import basic.zUtil.io.IFileExpansionUserZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public interface IKernelLogZZZ {
+public interface IKernelLogZZZ extends IFileExpansionUserZZZ{
+//	public enum FLAGZ{
+//		USE_FILE_EXPANSION; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
+//	}
+	
 	public String getFilename();
 	public void setFilename(String sFilename);
 	

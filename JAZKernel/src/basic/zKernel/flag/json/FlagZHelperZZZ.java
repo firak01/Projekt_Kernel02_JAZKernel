@@ -14,7 +14,6 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZLocalUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zUtil.io.KernelFileZZZ.FLAGZ;
 
 public class FlagZHelperZZZ implements IConstantZZZ{
 	public static boolean proofFlagZLocalExists(Class cls, String sFlagName) throws ExceptionZZZ {

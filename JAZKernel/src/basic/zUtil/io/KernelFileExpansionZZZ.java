@@ -22,11 +22,6 @@ public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansi
 	private int iExpansionLength = -1; //Merke: Bei -1 wird der Defaultwert genommen, definiert als Konstante
 	private char cExpansionFilling = CharZZZ.getEmpty();
 	
-	//flags 		
-	public enum FLAGZ{
-		FILE_EXPANSION_APPEND,FILE_CURRENT_FOUND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
-	}
-	
 	public KernelFileExpansionZZZ() throws ExceptionZZZ {
 		super("init");
 	}

@@ -6968,7 +6968,7 @@ MeinTestParameter=blablaErgebnis
 					}
 					
 					if(this.getFlag ("DEBUG")) System.out.println("Initialisiere KernelLog mit folgendem Pfad, Dateinamen: '" + sDirectoryLog +"', '" + sFileLog + "'");
-					objLog = new LogZZZ(sDirectoryLog, sFileLog,KernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name());
+					objLog = new LogZZZ(sDirectoryLog, sFileLog,IKernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name());
 				}else{
 					System.out.println("Verwende LogObject erneut");
 					objLog = objLogIn;

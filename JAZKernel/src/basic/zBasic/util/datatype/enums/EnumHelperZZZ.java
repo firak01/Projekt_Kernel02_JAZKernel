@@ -11,7 +11,6 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zUtil.io.KernelFileZZZ.FLAGZ;
 
 public class EnumHelperZZZ implements IConstantZZZ{
 	

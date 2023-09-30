@@ -5,6 +5,9 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zUtil.io.FileZZZ;
 
 public interface IFileExpansionZZZ extends IFileExpansionProxyZZZ,IFlagZUserZZZ {
+	public enum FLAGZ{
+		FILE_EXPANSION_APPEND,FILE_CURRENT_FOUND; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
+	}
 	
 	public FileZZZ getFileBase();
 	public void setFileBase(FileZZZ objFile);

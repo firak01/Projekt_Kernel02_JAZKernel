@@ -12,7 +12,6 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.enums.EnumHelperZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zUtil.io.KernelFileZZZ.FLAGZ;
 
 public class StatusLocalHelperZZZ implements IConstantZZZ{
 	public static boolean proofStatusLocalExists(Class cls, String sFlagName) throws ExceptionZZZ {

@@ -11,7 +11,8 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zKernel.IKernelConfigConstantZZZ;
-import basic.zKernel.config.KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ;
+import basic.zKernel.IKernelConfigConstantZZZ.EnumConfigDefaultEntryZZZ;
+
 
 public class EnumSetKernelConfigDefaultEntryUtilZZZTest  extends TestCase{
 	 private HashMapExtendedZZZ<String, EnumConfigDefaultEntryZZZ> hmTestGenerics = null;

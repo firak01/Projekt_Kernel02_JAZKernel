@@ -48,12 +48,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	
 	private String sDirectoryPath = new String("");
 	private String sFileName = new String(""); // Der ganze Dateiname, also: FileNameOnly + "." + Ending
-		
-	//flags 
-	//private boolean bFlagUse_FILE_Expansion; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
-	public enum FLAGZ{
-		USE_FILE_EXPANSION; //Merke: DEBUG und INIT über IFlagZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von anderer Objektklasse geerbt.
-	}
+	
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>();
 	private HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); 
 	private HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>();
@@ -146,9 +141,9 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				IFileExpansionZZZ objFileExpansion = null;
 				if(objFileExpansionIn!=null) {
 					objFileExpansion = objFileExpansionIn;
-					this.setFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name(),true);
+					this.setFlag(IFileExpansionUserZZZ.FLAGZ.USE_FILE_EXPANSION.name(),true);
 				}else{
-					if(this.getFlag(KernelFileZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+					if(this.getFlag(IFileExpansionUserZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
 						objFileExpansion = new FileExpansionZZZ((FileZZZ) this);							
 					}
 				}

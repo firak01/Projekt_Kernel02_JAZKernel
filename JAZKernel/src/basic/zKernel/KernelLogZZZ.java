@@ -30,14 +30,12 @@ import custom.zUtil.io.FileZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelLogZZZ extends ObjectZZZ implements IKernelLogZZZ, IFileExpansionUserZZZ {
+public abstract class KernelLogZZZ extends ObjectZZZ implements IKernelLogZZZ{
 	
 	public static final String sLOG_FILE_NAME_DEFAULT= "ZKernelLog_default.txt";
 	//flags 
 	//private boolean bFlagUse_FILE_Expansion; //Zeigt an, ob eine Dateinamens Expansion angehängt werden muss, oder eine bestehende Expansion ersetzt hat.
-	public enum FLAGZ{
-		USE_FILE_EXPANSION; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
-	}
+
 		
 	private String sLogFilename=null;
 	private String sLogDirectorypath=null;
@@ -264,7 +262,7 @@ public String getDirectory() {
 
 
 public IFileExpansionZZZ getFileExpansionObject(){	
-	if(this.getFlag(KernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+	if(this.getFlag(IKernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
 		if(this.objFileExpansion==null) {
 			String sDir = this.getDirectory();			
 			String sName = this.getFilename();
