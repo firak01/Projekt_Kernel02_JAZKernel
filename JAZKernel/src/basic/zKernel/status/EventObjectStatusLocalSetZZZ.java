@@ -13,7 +13,7 @@ import basic.zBasic.IObjectZZZ;
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
 public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ, Comparable<IEventObjectStatusLocalSetZZZ>{
-	private Enum objStatusEnum=null;
+	private Enum objStatusEnum=null;	
 	private String sStatusText=null;
 	private int iId;
 	private boolean bStatusValue;
@@ -24,15 +24,15 @@ public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventO
 	 * @param sComponentItemText, z.B. fuer einen DirectoryJTree ist es der Pfad, fuer eine JCombobox der Name des ausgew�hlten Items 
 	 */
 	public EventObjectStatusLocalSetZZZ(Object source, int iID,  String sStatusText, boolean bStatusValue) {
-		super(source);
+		super(source);		
 		this.sStatusText = sStatusText;
 		this.iId = iID;
 		this.bStatusValue = bStatusValue;
 	}
 	
 	public EventObjectStatusLocalSetZZZ(Object source, int iID,  Enum objStatusEnum, boolean bStatusValue) {
-		super(source);
-		this.objStatusEnum=objStatusEnum;
+		super(source);		
+		this.objStatusEnum=objStatusEnum;		
 		this.iId = iID;
 		this.bStatusValue = bStatusValue;
 	}
@@ -46,6 +46,7 @@ public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventO
 	public Enum getStatusEnum() {
 		return this.objStatusEnum;
 	}
+	
 	
 	@Override
 	public String getStatusText(){
