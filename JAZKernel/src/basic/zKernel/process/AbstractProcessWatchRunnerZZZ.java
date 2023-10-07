@@ -81,12 +81,13 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 				check:{
 					
 				}//END check:
-				String sLog = "ProcessWatchRunner #"+ this.getNumber() + " started.";
+				String sLog = ReflectCodeZZZ.getPositionCurrent() + " ProcessWatchRunner started for Process #"+ this.getNumber();
+				System.out.println(sLog);
 				this.logLineDate(sLog);
 				
 				//Solange laufen, bis ein Fehler auftritt oder eine Verbindung erkannt wird.
 				do{
-					this.writeOutputToLog();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.
+					this.writeOutputToLogPLUSanalyse();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.
 					
 					//Versuch an das spezielle Enum der Klasse heranzukommne
 					//Enum objEnum = this.getEnumStatusLocalUsed(); //Aber daraus kann man nicht auf den Konstanten Enum-Namen zugreifen
@@ -102,9 +103,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ i
 					this.writeErrorToLog();
 					boolean bError = this.getStatusLocal(AbstractProcessWatchRunnerZZZ.STATUSLOCAL.HASERROR);
 					if(bError) break;
-					
-					//TODOGOON20230916;//Statt des FlagHandling localStatus verwenden...				
-					
+										
 					//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 					//Dann erzeuge den Event und feuer ihn ab.
 					//Merke: Nun aber ueber das enum			
@@ -224,7 +223,7 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 03.09.2023, 07:35:31
 	 */
-	public void writeOutputToLog() throws ExceptionZZZ{	
+	public void writeOutputToLogPLUSanalyse() throws ExceptionZZZ{	
 		main:{
 			try{
 				check:{
@@ -497,20 +496,25 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			}
 						
 			bFunction = this.proofStatusLocalExists(sStatusName);															
-			if(bFunction == true){
+			if(bFunction){
 				
-				//Setze das Flag nun in die HashMap
-				HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
-				hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-				
-				//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
-				//Dann erzeuge den Event und feuer ihn ab.
-				if(this.objEventStatusLocalBroker!=null) {
-					IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,sStatusName.toUpperCase(), bStatusValue);
-					this.objEventStatusLocalBroker.fireEvent(event);
+				bFunction = this.proofStatusLocalChanged(sStatusName, bStatusValue);
+				if(bFunction) {		
+					
+					//Holes die HashMap
+					HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+					//Setze den erwiesenermassen geaenderten Status nun in die HashMap
+					hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+					
+					//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+					//Dann erzeuge den Event und feuer ihn ab.
+					if(this.objEventStatusLocalBroker!=null) {
+						IEventObjectStatusLocalSetZZZ event = new EventObjectStatusLocalSetZZZ(this,1,sStatusName.toUpperCase(), bStatusValue);
+						this.objEventStatusLocalBroker.fireEvent(event);
+					}
+					
+					bFunction = true;
 				}
-				
-				bFunction = true;								
 			}										
 		}	// end main:
 		
@@ -562,6 +566,24 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;
 			bReturn = StatusLocalHelperZZZ.proofStatusLocalDirectExists(this.getClass(), sStatusName);				
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean proofStatusLocalChanged(Enum objEnumStatus, boolean bValue) throws ExceptionZZZ {
+		return this.proofStatusLocalChanged(objEnumStatus.name(), bValue);
+	}
+
+	@Override
+	public boolean proofStatusLocalChanged(String sStatusName, boolean bValue) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName))break main;
+			
+			HashMap<String,Boolean>hmStatusLocal = this.getHashMapStatusLocal();
+			bReturn = StatusLocalHelperZZZ.proofStatusLocalChanged(hmStatusLocal, sStatusName, bValue);
+			
 		}//end main:
 		return bReturn;
 	}

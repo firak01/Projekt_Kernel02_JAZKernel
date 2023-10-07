@@ -19,10 +19,7 @@ public interface IStatusLocalUserZZZ{
 //	public enum FLAGZLOCAL {
 //		SKIPDEBUGUI;
 //	}	
-	
-	
-	
-	
+
 	//KONVENTION: 	
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
 	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);	
@@ -34,14 +31,13 @@ public interface IStatusLocalUserZZZ{
 	public abstract boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean[] setStatusLocal(String[] saStatusName, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalExists(Enum objEnumStatusIn) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
+	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalChanged(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalChanged(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
+
+	
 	
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getStatusLocal() throws ExceptionZZZ;
-	
-	
-	
-	
-
 }

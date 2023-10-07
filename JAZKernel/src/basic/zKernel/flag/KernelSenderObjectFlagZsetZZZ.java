@@ -54,6 +54,9 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 		main:{
 			if(event==null)break main;
 			
+			try {
+				
+			
 			//Dafür sorgen, dass der Event nur 1x geworfen wird, wenn der vorherige Event der gleich war.
 			IEventObjectFlagZsetZZZ eventPrevious = this.getEventPrevious();
 			if(eventPrevious!=null) {
@@ -63,16 +66,21 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 			
 			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
 				IListenerObjectFlagZsetZZZ l = (IListenerObjectFlagZsetZZZ) this.getListenerRegisteredAll().get(i);				
-				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 				try {
 					boolean bFlagChanged = l.flagChanged(event);
 					if(bFlagChanged) {
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt." );
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt." );
 					}					
 				} catch (ExceptionZZZ ez) {
 					//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
 				}
+			}
+			
+			} catch (ExceptionZZZ e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}//end main:

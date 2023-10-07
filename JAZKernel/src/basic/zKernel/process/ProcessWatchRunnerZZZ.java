@@ -52,7 +52,7 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{
 				boolean bHasError = this.getStatusLocal(ProcessWatchRunnerZZZ.STATUSLOCAL.HASERROR);
 				if(bHasError) break;
 
-				this.writeOutputToLog();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.				
+				this.writeOutputToLogPLUSanalyse();		//Man muss wohl erst den InputStream abgreifen, damit der Process weiterlaufen kann.				
 				boolean bHasConnection = this.getStatusLocal(ProcessWatchRunnerZZZ.STATUSLOCAL.HASCONNECTION);
 				if(bHasConnection) {
 					sLog = "Connection wurde erstellt. Beende ProcessWatchRunner #"+this.getNumber();

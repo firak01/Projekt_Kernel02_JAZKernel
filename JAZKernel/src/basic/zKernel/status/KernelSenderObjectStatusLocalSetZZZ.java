@@ -56,15 +56,15 @@ public abstract class KernelSenderObjectStatusLocalSetZZZ implements ISenderObje
 			try {
 				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
 					IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
-					System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 					try {
 						boolean bStatusLocalChanged = l.statusLocalChanged(event);
 						if(bStatusLocalChanged) {
-							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
+							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
 						}					
 					} catch (ExceptionZZZ ez) {
 						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
 					}
 				}
 			} catch (ExceptionZZZ e) {

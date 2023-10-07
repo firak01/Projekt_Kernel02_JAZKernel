@@ -2,6 +2,7 @@ package basic.zKernel.status;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -13,7 +14,30 @@ import basic.zBasic.util.datatype.enums.EnumHelperZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class StatusLocalHelperZZZ implements IConstantZZZ{
+public class StatusLocalHelperZZZ implements IConstantZZZ{	
+	public static boolean proofStatusLocalChanged(HashMap<String,Boolean>hmStatusLocal, String sStatusName, boolean bValue) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName))break main;
+			if(hmStatusLocal==null)break main;
+						
+			//1. existiert der Statuswert schon darin
+			Boolean objValue = hmStatusLocal.get(sStatusName.toUpperCase());
+			if(objValue==null) {
+				bReturn = true;
+				break main;
+			}
+			
+			//2. Ist der Statuswert identisch
+			if(objValue.booleanValue()!=bValue) {
+				bReturn = true;
+				break main;
+			}				
+		}//end main:
+		return bReturn;
+	}
+	
+	
 	public static boolean proofStatusLocalExists(Class cls, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
