@@ -26,6 +26,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelUseObjectWithStatusZZZ;
 import basic.zKernel.KernelUseObjectZZZ;
 
 /**This class receives the stream from a process, which was started by the ConfigStarterZZZ class.
@@ -34,8 +35,7 @@ import basic.zKernel.KernelUseObjectZZZ;
  * @author 0823
  *
  */
-public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{	
-	protected HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
+public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectWithStatusZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{		
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
 	protected Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
@@ -289,6 +289,20 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	}
 
 
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ#registerForStatusLocalEvent(basic.zKernel.status.IListenerObjectStatusLocalSetZZZ)
+	 */
+	@Override
+	public void registerForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener)throws ExceptionZZZ {
+		// TODO Auto-generated method stub		
+	}
+	
+	
 	//###### FLAGS
 	
 	//### Aus IProcessWatchRunnerZZZ, analog zu IFlagUserZZZ ##########################
@@ -440,15 +454,15 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	
 	//################## Status Local
 	//### aus IEventBrokerStatusLocalSetUserZZZ
-	@Override
-	public ISenderObjectStatusLocalSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
-		return this.objEventStatusLocalBroker;
-	}
-
-	@Override
-	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalSetZZZ objEventSender) {
-		this.objEventStatusLocalBroker = objEventSender;
-	}
+//	@Override
+//	public ISenderObjectStatusLocalSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
+//		return this.objEventStatusLocalBroker;
+//	}
+//
+//	@Override
+//	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalSetZZZ objEventSender) {
+//		this.objEventStatusLocalBroker = objEventSender;
+//	}
 	
 	//######
 	@Override

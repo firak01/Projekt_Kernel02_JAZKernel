@@ -75,20 +75,20 @@ public abstract class KernelSenderObjectStatusLocalSetZZZ implements ISenderObje
 		}//end main:
 	}
 		
-	@Override
-	public ArrayList<EventListener> getListenerRegisteredAll() throws ExceptionZZZ{
-		return listaLISTENER_REGISTERED;
-	}
-
-	@Override
-	public void removeListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ {
-		this.getListenerRegisteredAll().remove(objEventListener);
-	}
-
-	@Override
-	public void addListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ {
-		this.getListenerRegisteredAll().add(objEventListener);
-	}
+//	@Override
+//	public ArrayList<EventListener> getListenerRegisteredAll() throws ExceptionZZZ{
+//		return listaLISTENER_REGISTERED;
+//	}
+//
+//	@Override
+//	public void removeListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ {
+//		this.getListenerRegisteredAll().remove(objEventListener);
+//	}
+//
+//	@Override
+//	public void addListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ {
+//		this.getListenerRegisteredAll().add(objEventListener);
+//	}
 	
 }
 

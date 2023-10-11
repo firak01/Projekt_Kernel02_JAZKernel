@@ -2,6 +2,7 @@ package basic.zKernel.status;
 
 import basic.zBasic.ExceptionZZZ;
 
+
 /** Interface muss von den Objekten implementiert werden, die den Event-Broker verwenden wollen, um einen Event abzufeuern.
  *  Der Event-Broker verwaltet, dann die Objekte die auf den abgefeuerten Event hoeren.
  *  
@@ -15,8 +16,8 @@ import basic.zBasic.ExceptionZZZ;
  * @author lindhaueradmin
  *
  */
-public interface IEventBrokerStatusLocalSetUserZZZ {
-	public abstract ISenderObjectStatusLocalSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ;
-	public abstract void setSenderStatusLocalUsed(ISenderObjectStatusLocalSetZZZ objEventSender);
+public interface IEventBrokerStatusLocalSetUserZZZ extends ISenderObjectStatusLocalSetUserZZZ{
+	public void registerForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;
+	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;
 }
 
