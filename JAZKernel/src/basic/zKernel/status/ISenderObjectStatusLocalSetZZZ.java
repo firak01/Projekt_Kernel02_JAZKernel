@@ -14,7 +14,7 @@ import basic.zBasic.ExceptionZZZ;
 public interface ISenderObjectStatusLocalSetZZZ{
 	public abstract void fireEvent(IEventObjectStatusLocalSetZZZ event);	
 	public abstract IEventObjectStatusLocalSetZZZ getEventPrevious();
-	public void setEventPrevious(IEventObjectStatusLocalSetZZZ event);
+	public abstract void setEventPrevious(IEventObjectStatusLocalSetZZZ event);
 	
 	public abstract void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;
 	public abstract void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;	

@@ -5,10 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EventListener;
 
-import basic.zKernel.IKernelZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
  *  und auch von den Objekten, die hier registriert sind empfangen wird. Damit fungieren Objekte dieser Klasse als "EventBroker".
@@ -20,8 +18,10 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
  * @author lindhaueradmin
  *
  */
-public abstract class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusLocalSetZZZ, Serializable{
-	private static final long serialVersionUID = 8999783685575147532L;
+public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusLocalSetZZZ, Serializable{
+	private static final long serialVersionUID = 8999783685575147532L;	
+	private IEventObjectStatusLocalSetZZZ eventPrevious=null;
+	
 	public KernelSenderObjectStatusLocalSetZZZ() throws ExceptionZZZ{		
 	}
 	
@@ -73,6 +73,32 @@ public abstract class KernelSenderObjectStatusLocalSetZZZ implements ISenderObje
 			}
 			
 		}//end main:
+	}
+	@Override
+	public IEventObjectStatusLocalSetZZZ getEventPrevious() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setEventPrevious(IEventObjectStatusLocalSetZZZ event) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 //	@Override

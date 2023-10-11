@@ -35,7 +35,7 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
  * @author 0823
  *
  */
-public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObjectWithStatusZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{		
+public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObjectWithStatusZZZ implements Runnable, IProcessWatchRunnerZZZ{		
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
 	protected Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
@@ -287,21 +287,6 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			}
 		}//END main:
 	}
-
-
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ#registerForStatusLocalEvent(basic.zKernel.status.IListenerObjectStatusLocalSetZZZ)
-	 */
-	@Override
-	public void registerForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
-		// TODO Auto-generated method stub		
-	}
-
-	@Override
-	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener)throws ExceptionZZZ {
-		// TODO Auto-generated method stub		
-	}
-	
 	
 	//###### FLAGS
 	

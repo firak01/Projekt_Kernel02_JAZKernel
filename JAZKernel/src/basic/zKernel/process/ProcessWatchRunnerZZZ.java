@@ -1,28 +1,19 @@
 package basic.zKernel.process;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 
-import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.process.AbstractProcessWatchRunnerZZZ.STATUSLOCAL;
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.status.EventObjectStatusLocalSetZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalSetZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalSetZZZ;
-import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
+import basic.zKernel.status.KernelSenderObjectStatusLocalSetZZZ;
 
 /**This class receives the stream from a process, which was started by the ConfigStarterZZZ class.
  * This is necessary, because the process will only goon working, if the streams were "catched" by a target.
@@ -30,7 +21,7 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
  * @author 0823
  *
  */
-public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{	
+public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ implements  IEventBrokerStatusLocalSetUserZZZ{	
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
 	public ProcessWatchRunnerZZZ(IKernelZZZ objKernel, Process objProcess, int iNumber, String[] saFlag) throws ExceptionZZZ{
@@ -343,4 +334,31 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void registerForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
+		this.getSenderStatusLocalUsed().addListenerObjectStatusLocalSet(objEventListener);
+	}
+
+	@Override
+	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
+		this.getSenderStatusLocalUsed().removeListenerObjectStatusLocalSet(objEventListener);
+	}
+
+	@Override
+	public ISenderObjectStatusLocalSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
+		if(this.objEventStatusLocalBroker==null) {
+			//++++++++++++++++++++++++++++++
+			//Nun geht es darum den Sender fuer Aenderungen am Status zu erstellen, der dann registrierte Objekte ueber Aenderung von Flags informiert
+			ISenderObjectStatusLocalSetZZZ objSenderStatusLocal = new KernelSenderObjectStatusLocalSetZZZ();
+			this.objEventStatusLocalBroker = objSenderStatusLocal;
+		}
+		return this.objEventStatusLocalBroker;
+	}
+
+	@Override
+	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalSetZZZ objEventSender) {
+		this.objEventStatusLocalBroker = objEventSender;
+	}
+	
 }//END class

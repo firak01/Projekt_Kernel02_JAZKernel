@@ -11,7 +11,7 @@ import basic.zBasic.ExceptionZZZ;
  * 
  */
 public interface IStatusLocalUserZZZ{
-	public final String sERROR_STATUS_UNAVAILABLE = "this LOCAL flag is not available: ";
+	public final String sERROR_STATUS_UNAVAILABLE = "this LOCAL status is not available: ";
 	public final int iERROR_STATUS_UNAVAILABLE = 51;
 	
 	//Beispiel für das einzubinde Enum als Flag, das NUR in der konkreten Klasse direkt eingebunden werden kann
