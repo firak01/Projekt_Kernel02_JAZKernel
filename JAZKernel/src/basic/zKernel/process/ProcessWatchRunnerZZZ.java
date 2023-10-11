@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
@@ -21,7 +22,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 
 /**This class receives the stream from a process, which was started by the ConfigStarterZZZ class.
  * This is necessary, because the process will only goon working, if the streams were "catched" by a target.
@@ -132,7 +133,7 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{
 	}
 
 	/**
-	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
+	 * @see AbstractKernelUseObjectZZZ.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
 	 * Flags used:<CR>
 	 	- hasError
@@ -298,5 +299,48 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ{
 		}										
 	}	// end main:
 	return bFunction;
+	}
+
+	@Override
+	public void fireEvent(IEventObjectStatusLocalSetZZZ event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList getListenerRegisteredAll() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IEventObjectStatusLocalSetZZZ getEventPrevious() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEventPrevious(IEventObjectStatusLocalSetZZZ event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isStatusLocalRelevant(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }//END class

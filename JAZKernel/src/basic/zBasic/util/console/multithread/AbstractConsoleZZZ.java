@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -21,7 +21,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 16.10.2022, 08:01:04
  * 
  */
-public abstract class AbstractConsoleZZZ extends ObjectZZZ implements IConsoleZZZ {
+public abstract class AbstractConsoleZZZ extends AbstractObjectZZZ implements IConsoleZZZ {
 	protected volatile static IConsoleZZZ objConsole = null;  //muss static sein, wg. getInstance()!!!
 	
 	private IKeyPressThreadZZZ objThreadKeyPress=null;

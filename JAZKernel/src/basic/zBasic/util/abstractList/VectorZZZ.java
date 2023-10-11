@@ -4,11 +4,11 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class VectorZZZ extends ObjectZZZ {
+public class VectorZZZ extends AbstractObjectZZZ {
 	public static Vector unique(Vector vec) throws ExceptionZZZ{
 		Vector objReturn = new Vector();
 		main:{

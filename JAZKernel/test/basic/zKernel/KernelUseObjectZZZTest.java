@@ -1,20 +1,20 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import junit.framework.TestCase;
 
 public class KernelUseObjectZZZTest extends TestCase {
 	private KernelZZZ objKernelFGL;
-	private KernelUseObjectZZZ objKernelUserTest;
+	private DummyTestKernelUseObjectZZZ objKernelUserTest;
 	protected void setUp() throws Exception {
 		try {			
 			//TODO: Diese Datei zuvor per Programm erstellen
 			objKernelFGL = new KernelZZZ("FGL", "01", "test", "ZKernelConfigKernel_test.ini",(String[]) null);
 			
 			//Das eigentliche Testobjekt
-			objKernelUserTest = new KernelUseObjectZZZ(objKernelFGL);
+			objKernelUserTest = new DummyTestKernelUseObjectZZZ(objKernelFGL);
 	
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());

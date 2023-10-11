@@ -16,13 +16,13 @@ import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagSimpleZZZ  extends KernelUseObjectZZZ implements IKernelZTagIniZZZ{
+public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZTagIniZZZ{
 	private IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ{

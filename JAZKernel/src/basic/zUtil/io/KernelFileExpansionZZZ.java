@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
@@ -15,7 +15,7 @@ import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class KernelFileExpansionZZZ<T> extends ObjectZZZ implements IFileExpansionZZZ, Iterable<T> {
+public class KernelFileExpansionZZZ<T> extends AbstractObjectZZZ implements IFileExpansionZZZ, Iterable<T> {
 	private FileZZZ objFileBase=null;
 	private int iExpansionUsedCurrent=0;
 	

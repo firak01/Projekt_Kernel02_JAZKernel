@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 /**Klasse dient dazu eine bestehende Hashtable zu verwenden, aber das Ergebnis garantiert über eine eindeutigen Schlüsselindex zurückzubekommen.
@@ -16,7 +16,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author Lindhauer
  *
  */
-public class HashtableIndexedZZZ<T,X>  extends ObjectZZZ{	
+public class HashtableIndexedZZZ<T,X>  extends AbstractObjectZZZ{	
 	private Hashtable<Integer,Object> objHt=null;
 	private VectorExtendedZZZ<Integer> objVx=null;	
 	private int iIndex=-1;  //Der Index des gerade verarbeiteten Keys im Vektor

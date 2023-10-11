@@ -16,7 +16,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.csv.CSVReader;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
@@ -25,7 +25,7 @@ import custom.zKernel.LogZZZ;
 
 @author 0823 ,date 25.10.2004
 */
-public class KernelFileCsvZZZ  extends KernelUseObjectZZZ{
+public class KernelFileCsvZZZ  extends AbstractKernelUseObjectZZZ{
 	private CSVReader objCSV;
 	private File objFile;
 

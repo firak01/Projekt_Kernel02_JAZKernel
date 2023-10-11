@@ -6,7 +6,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 /**Grundliegende Idee dahinter stammt aus den Converter-Klassen in JSF. 
@@ -15,7 +15,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author Fritz Lindhauer
  *
  */
-public class KernelZFormulaIniConverterZZZ extends KernelUseObjectZZZ{
+public class KernelZFormulaIniConverterZZZ extends AbstractKernelUseObjectZZZ{
 	private FileIniZZZ objFileIni=null;
 	
 	//###########################################

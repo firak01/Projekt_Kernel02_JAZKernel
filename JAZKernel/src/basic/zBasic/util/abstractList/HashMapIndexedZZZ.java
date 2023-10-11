@@ -10,7 +10,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -19,7 +19,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Lindhauer
  *
  */
-public class HashMapIndexedZZZ<X,T>  extends ObjectZZZ implements Iterable<T>,Serializable{	
+public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterable<T>,Serializable{	
 	private HashMap<Integer,Object> hmIndexed=null;
 	private VectorExtendedZZZ<Integer> vecIndex=null;	
 	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor

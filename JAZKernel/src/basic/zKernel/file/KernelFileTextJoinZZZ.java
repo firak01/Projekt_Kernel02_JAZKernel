@@ -17,7 +17,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -33,7 +33,7 @@ The goal is have a valid structured file for the Z-Kernel import routine. (a lot
 
 @author 0823 ,date 01.10.2004
 */
-public class KernelFileTextJoinZZZ extends KernelUseObjectZZZ{
+public class KernelFileTextJoinZZZ extends AbstractKernelUseObjectZZZ{
 	private File objFileBase;
 	private BufferedWriter objWriterBase;
 

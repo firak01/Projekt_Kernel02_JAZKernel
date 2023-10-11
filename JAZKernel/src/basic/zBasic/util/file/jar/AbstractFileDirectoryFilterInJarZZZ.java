@@ -5,7 +5,7 @@ import java.io.FilenameFilter;
 import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.zip.FileDirectoryEmptyPartFilterZipZZZ;
@@ -27,7 +27,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractFileDirectoryFilterInJarZZZ extends ObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
+public abstract class AbstractFileDirectoryFilterInJarZZZ extends AbstractObjectZZZ implements IFileDirectoryPartFilterZipUserZZZ{
 	protected IFileDirectoryEmptyPartFilterZipZZZ objPartFilterDirectoryEmpty; //Nur Verzeichnisse
 	protected IFileDirectoryPartFilterZipZZZ objPartFilterDirectory;	//Nur Dateien, ohne konkreten Verzeichnispfad, also nur nach Dateiname/relativen Pfad.
 	protected IFileDirectoryWithContentPartFilterZipZZZ objPartFilterDirectoryWithContent; //Nur Dateien, Verzeichnispfad am Anfang

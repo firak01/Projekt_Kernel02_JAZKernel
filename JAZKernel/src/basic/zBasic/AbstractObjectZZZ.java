@@ -32,7 +32,7 @@ import basic.zKernel.flag.json.FlagZHelperZZZ;
 import basic.zKernel.flag.json.IFlagZZZ;
 import custom.zKernel.LogZZZ;
 
-public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
+public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -42,9 +42,9 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 //	public enum FLAGZ{
 //		DEBUG, INIT; //Verschoben nach IFlagZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
 //	}
-	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
-	private HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
-	private HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
+	protected HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
+	protected HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
+	protected HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
 	
 	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	
@@ -54,7 +54,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	
-	public ObjectZZZ() {	
+	public AbstractObjectZZZ() {	
 		//Darf so nicht definiert werden, da dieser Konstruktor implizit immer aufgerufen wird. 
 		//wenn dieser Defaultkonstruktor nicht explizit definiert ist in der Kindklasse 
 		//this.setFlag("init", true);
@@ -63,10 +63,10 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 		//rufe im Default Konstuktor der Kindklasse auf:
 		//super("init");		
 	}
-	public ObjectZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractObjectZZZ(String sFlag) throws ExceptionZZZ {
 		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);
 	}
-	public ObjectZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractObjectZZZ(String[] saFlag) throws ExceptionZZZ {
 		if(saFlag!=null){
 			if(saFlag.length>=1){
 				for(int icount =0; icount <= saFlag.length-1; icount++){
@@ -78,7 +78,7 @@ public class ObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZU
 			}
 		}
 	}
-	public ObjectZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractObjectZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		//Die ggf. vorhandenen Flags setzen.
 		if(hmFlag!=null){
 			for(String sKey:hmFlag.keySet()){

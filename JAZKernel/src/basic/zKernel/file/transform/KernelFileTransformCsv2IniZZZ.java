@@ -14,7 +14,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
@@ -26,7 +26,7 @@ import custom.zUtil.io.FileZZZ;
 
 @author 0823 ,date 25.10.2004
 */
-public class KernelFileTransformCsv2IniZZZ  extends KernelUseObjectZZZ{
+public class KernelFileTransformCsv2IniZZZ  extends AbstractKernelUseObjectZZZ{
 	private FileIniZZZ objIniConfigAction;
 	private FileCsvZZZ objFileCsv;	
 	private Hashtable objintHashCC;

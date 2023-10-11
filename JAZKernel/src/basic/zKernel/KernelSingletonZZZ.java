@@ -2,7 +2,7 @@ package basic.zKernel;
 
 import basic.zKernel.ConfigZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 

@@ -1,6 +1,6 @@
 package basic.zBasic;
 
-public class ReflectTHECodeKernelObject4TestingExternalSubZZZ extends ObjectZZZ {
+public class ReflectTHECodeKernelObject4TestingExternalSubZZZ extends AbstractObjectZZZ {
 	//Konstruktor
 	public ReflectTHECodeKernelObject4TestingExternalSubZZZ() throws ExceptionZZZ{
 				super();				

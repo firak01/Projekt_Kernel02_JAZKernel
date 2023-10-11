@@ -7,7 +7,7 @@ import java.util.Iterator;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -21,7 +21,7 @@ import basic.zBasic.util.start.GetOpt;
  * @author lindhauer
  *
  */
-public class GetOptZZZ extends ObjectZZZ{
+public class GetOptZZZ extends AbstractObjectZZZ{
 	private String sPattern; 
 	private HashMap hmOpt = new HashMap();//Die Hashmap der von aussen gesetzten Steuerungsoptionen. Merke: Dann gibt es noch die HashMap der FlagZ in ObjectZZZ
 	private Iterator itOpt = null;
@@ -668,7 +668,7 @@ public class GetOptZZZ extends ObjectZZZ{
 	// FLAGS für diese Klassen
 	//###########
 	/**
-	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
+	 * @see AbstractKernelUseObjectZZZ.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
 	 * 	"isLoaded": Wird gesetzt, wenn die interne HashMap erfolgreich gef�llt worden ist, z.B. in .loadOptionAll(..);
 	 * @throws ExceptionZZZ 

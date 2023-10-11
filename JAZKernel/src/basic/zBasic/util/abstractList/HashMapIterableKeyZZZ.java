@@ -6,11 +6,11 @@ import java.util.Set;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class HashMapIterableKeyZZZ<T,X>  extends ObjectZZZ implements ICollectionConstantZZZ, Iterable<T>{
+public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements ICollectionConstantZZZ, Iterable<T>{
 	private HashMap<T,X> hmOriginal=null;
 	private HashMapIndexedZZZ<Integer,T> hmIndexedKey=null;//also integer als Sortierkrierium , X als originaler Key
 	

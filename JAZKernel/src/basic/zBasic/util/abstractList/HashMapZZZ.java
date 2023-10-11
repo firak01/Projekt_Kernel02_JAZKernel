@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class HashMapZZZ<T,X> extends ObjectZZZ {
+public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 	
 	private HashMapZZZ(){
 	}

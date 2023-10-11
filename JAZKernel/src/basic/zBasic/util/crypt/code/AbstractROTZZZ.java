@@ -3,13 +3,13 @@ package basic.zBasic.util.crypt.code;
 import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ.TypeZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
 
-public abstract class AbstractROTZZZ extends ObjectZZZ implements IROTZZZ,IROTUserZZZ{
+public abstract class AbstractROTZZZ extends AbstractObjectZZZ implements IROTZZZ,IROTUserZZZ{
 	private static final long serialVersionUID = 1L;
 	private int iCryptKey=-1;
 	private int[] iaDecrypted=null;

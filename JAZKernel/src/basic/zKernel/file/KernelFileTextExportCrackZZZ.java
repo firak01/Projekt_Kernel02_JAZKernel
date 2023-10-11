@@ -12,7 +12,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
 
@@ -20,7 +20,7 @@ import custom.zKernel.LogZZZ;
 
 @author 0823 ,date 24.10.2004
 */
-public class KernelFileTextExportCrackZZZ extends KernelUseObjectZZZ{
+public class KernelFileTextExportCrackZZZ extends AbstractKernelUseObjectZZZ{
 	private String sProgramAlias;
    private File objFile;
 

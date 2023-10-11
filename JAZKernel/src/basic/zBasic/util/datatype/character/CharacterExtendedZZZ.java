@@ -1,7 +1,7 @@
 package basic.zBasic.util.datatype.character;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
@@ -16,7 +16,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author Fritz Lindhauer, 23.12.2022, 10:17:15
  * 
  */
-public class CharacterExtendedZZZ extends ObjectZZZ implements ICharacterExtendedZZZ, Comparable<ICharacterExtendedZZZ>{
+public class CharacterExtendedZZZ extends AbstractObjectZZZ implements ICharacterExtendedZZZ, Comparable<ICharacterExtendedZZZ>{
 	private static final long serialVersionUID = 1L;
 	private Character objChar=null; 
 	

@@ -10,7 +10,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -22,7 +22,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *  b) Den Performancegewinn, der dadurch erzielt wird, dass bei der Suche nach dem konfigurierten Parameter 
  *     auch ein NULL - Wert gefunden wird (halt der <z:Null/> Tag). Wenn etwas gefunden wird, dann wird auch diese Parametersuche beendet.   
  */
-public class KernelZFormulaIni_NullZZZ  extends KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
 		

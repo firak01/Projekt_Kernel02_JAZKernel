@@ -5,18 +5,18 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class TxtCommonZZZ extends ObjectZZZ{
+public abstract class TxtCommonZZZ extends AbstractObjectZZZ{
 	private File file=null;
 	private RandomAccessFile rwFile = null;
 	
 	private StringArrayZZZ zsaCommentLineCharakter = null;
 	
-	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
+	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu kï¿½nnen.
 	public TxtCommonZZZ(){
 		super();
 	}
@@ -32,7 +32,7 @@ public abstract class TxtCommonZZZ extends ObjectZZZ{
 	public abstract String getMode();
 	public abstract Class getClassZ();
 	
-//	//Nur durchreichen, wg. der ENUM-Funktionalität der Flags und der Tatsache, das diese Klasse abstact ist, werden hier keine Flags gehalten. 
+//	//Nur durchreichen, wg. der ENUM-Funktionalitï¿½t der Flags und der Tatsache, das diese Klasse abstact ist, werden hier keine Flags gehalten. 
 //	public boolean getFlag(String sFlag){
 //		return super.getFlag(sFlag);
 //	}
@@ -57,7 +57,7 @@ public abstract class TxtCommonZZZ extends ObjectZZZ{
 	protected void setRandomAccessFileObject(RandomAccessFile raFile){
 		this.rwFile = raFile;
 		//!!! es gibt keine Methode von RandomAccessFile, um auf deren File - Objekt zuzugreifen.
-		//     Darum ist diese Methode private !!! Es müsste nämlich auf jeden Fall das dazugehörende File-Objekt auch gesetz werden.
+		//     Darum ist diese Methode private !!! Es mï¿½sste nï¿½mlich auf jeden Fall das dazugehï¿½rende File-Objekt auch gesetz werden.
 		//     In meiner Klasse reicht es daher ein File-Objekt zu setzen und das neue RandomAccessFile-Objekt wird erstellt.
 	}
 	

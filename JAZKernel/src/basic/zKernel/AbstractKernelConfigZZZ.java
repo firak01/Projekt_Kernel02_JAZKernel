@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -55,7 +55,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhauer
  * 
  */
-public abstract class AbstractKernelConfigZZZ extends ObjectZZZ implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
+public abstract class AbstractKernelConfigZZZ extends AbstractObjectZZZ implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 //	public enum FLAGZ{
 //		USEFORMULA, USEFORMULA_MATH;

@@ -3,9 +3,9 @@ package basic.zBasic.util.abstractList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 
-public class HashtableZZZ extends ObjectZZZ{
+public class HashtableZZZ extends AbstractObjectZZZ{
 
 	public static HashMap<String,String> toHashMap_IntegerObject(HashtableIndexedZZZ<Integer,Object> htIndexed){
 		HashMap<String,String>hmReturn=null;

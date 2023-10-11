@@ -11,7 +11,7 @@ import java.util.List;
 
 import alternative.test.ReflectionDummyZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.data.DataFieldZZZ;
@@ -19,7 +19,7 @@ import basic.zBasic.util.file.txt.TxtReaderZZZ;
 import basic.zKernel.flag.json.FlagZHelperZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class DebugReflectClass03ZZZ extends ObjectZZZ{
+public class DebugReflectClass03ZZZ extends AbstractObjectZZZ{
 
 	/** Hier werden spezielle Methoden der ReflectClassZZZ getestet.
 	 *   Insbesondere f�llt auf, das es unterschiede gibt beim Aufruf, je nachdem wie man den Aufruf hinsichtlich der Rechte versucht.

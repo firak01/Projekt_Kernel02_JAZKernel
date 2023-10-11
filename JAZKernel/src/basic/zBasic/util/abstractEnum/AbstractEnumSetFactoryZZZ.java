@@ -6,7 +6,7 @@ import static java.lang.System.out;
 import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.persistence.jdbc.JdbcDatabaseMappedValueZZZ;
@@ -15,7 +15,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 
-public abstract class AbstractEnumSetFactoryZZZ extends ObjectZZZ implements IEnumSetFactoryZZZ {
+public abstract class AbstractEnumSetFactoryZZZ extends AbstractObjectZZZ implements IEnumSetFactoryZZZ {
 	private static IEnumSetFactoryZZZ objEnumFactory = null;  //muss static sein, wg. getInstance()!!!
 	
 	/**Konstruktor ist auf Package beschränkt, wg. Singleton ist die hieraus erbende Klasse mit private Konstrukor versehen.

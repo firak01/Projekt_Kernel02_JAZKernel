@@ -3,11 +3,11 @@ package basic.zBasic.util.file;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public class FilenamePartFilterDirectoryZZZ extends ObjectZZZ implements IFilenamePartFilterZZZ  {
+public class FilenamePartFilterDirectoryZZZ extends AbstractObjectZZZ implements IFilenamePartFilterZZZ  {
 	private String sFileEnding;
 	
 	public FilenamePartFilterDirectoryZZZ() {

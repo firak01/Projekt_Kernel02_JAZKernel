@@ -36,7 +36,7 @@ import org.eclipse.core.runtime.IPath;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -52,7 +52,7 @@ import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
  * @author lindhaueradmin
  *
  */
-public class FileEasyZZZ extends ObjectZZZ implements IFileEasyConstantsZZZ{
+public class FileEasyZZZ extends AbstractObjectZZZ implements IFileEasyConstantsZZZ{
 	private FileEasyZZZ(){
 		//Zum Verstecken des Konstruktors, sind halt nur static MEthoden
 	}

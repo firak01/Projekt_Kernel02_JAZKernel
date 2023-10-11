@@ -6,7 +6,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -14,7 +14,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @author lindhaueradmin
  *
  */
-public class DriveEasyZZZ extends ObjectZZZ{
+public class DriveEasyZZZ extends AbstractObjectZZZ{
 	private DriveEasyZZZ(){
 //		Zum Verstecken des Konstruktors
 	}
@@ -24,7 +24,7 @@ public class DriveEasyZZZ extends ObjectZZZ{
 		main:{
 			if(FileEasyZZZ.isRoot(fileRoot)==false) break main;
 			
-			//Die fileSystemView - Methode funktioniert nur, wenn der absolute Pfad des übergebenen File-Objekts einen Backslash zum Abschluss hat.
+			//Die fileSystemView - Methode funktioniert nur, wenn der absolute Pfad des ï¿½bergebenen File-Objekts einen Backslash zum Abschluss hat.
 			File file2use = null;
 			if(!fileRoot.getAbsolutePath().endsWith(File.separator)){
 				file2use = new File(fileRoot.getAbsolutePath() + File.separator);
@@ -36,9 +36,9 @@ public class DriveEasyZZZ extends ObjectZZZ{
 			//FileSystemView fileSystemView = fc.getFileSystemView();
 			FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 			String stemp = fileSystemView.getSystemDisplayName(file2use);		
-			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#fileSystemView.getSystemDisplayName() liefert für '" + fileRoot.getAbsolutePath() + "' den Wert '" + stemp + "'");
+			System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#fileSystemView.getSystemDisplayName() liefert fï¿½r '" + fileRoot.getAbsolutePath() + "' den Wert '" + stemp + "'");
 			
-			//!!! Das enthält aber auch den Laufwerksbuxhstaben (in Klammern) diesen also rausrechnen
+			//!!! Das enthï¿½lt aber auch den Laufwerksbuxhstaben (in Klammern) diesen also rausrechnen
 			int iLeft = stemp.lastIndexOf("(");
 			if (iLeft == 0){
 				sReturn = "";
@@ -60,16 +60,16 @@ public class DriveEasyZZZ extends ObjectZZZ{
 					}
 				}
 			}else{
-				//Scheint doch kein geklammerter Laufwerksbuchstabe drin enthalten zu sein. Nur falls "betriebsystemabhängig"
+				//Scheint doch kein geklammerter Laufwerksbuchstabe drin enthalten zu sein. Nur falls "betriebsystemabhï¿½ngig"
 				sReturn = stemp;
 				break main;
 			}
 		}
-		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Rückgabewert ist: '" + sReturn + "'");
+		System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "#Rï¿½ckgabewert ist: '" + sReturn + "'");
 		return sReturn;
 	}
 	
-	/** Gibt den Namen der Festplatte, der CD etc. zurück und am Schluss den Laufwerksbuchstaben in runden Klammern.
+	/** Gibt den Namen der Festplatte, der CD etc. zurï¿½ck und am Schluss den Laufwerksbuchstaben in runden Klammern.
 	 *  z.B. "Hannibal (C:)"
 	 *  
 	* @param fileRoot
@@ -90,10 +90,10 @@ public class DriveEasyZZZ extends ObjectZZZ{
 	}
 	
 	
-	/** gibt als Beschreibungstext zurück, um was für einen Laufwerkstyp es sich handelt:
-	 * z.B. CD-Laufwerk, lokaler Datenträger
+	/** gibt als Beschreibungstext zurï¿½ck, um was fï¿½r einen Laufwerkstyp es sich handelt:
+	 * z.B. CD-Laufwerk, lokaler Datentrï¿½ger
 	 * 
-	 * ACHTUNG: Das ist natürlich voll vom Betriebsystem und der dort installierten Sprache abhängig.
+	 * ACHTUNG: Das ist natï¿½rlich voll vom Betriebsystem und der dort installierten Sprache abhï¿½ngig.
 	 * 
 	* @param fileRoot
 	* @return

@@ -36,7 +36,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
@@ -53,7 +53,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
+public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
@@ -1177,7 +1177,7 @@ public class KernelFileIniZZZ extends KernelUseObjectZZZ implements IKernelFileI
 	*/
 
 	/**
-	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
+	 * @see AbstractKernelUseObjectZZZ.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
 	 * Flags used:<CR>
 	 * - FileChanged, if a value is written to the file the flag is changed to true,

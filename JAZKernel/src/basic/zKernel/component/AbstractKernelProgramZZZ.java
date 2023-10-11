@@ -8,11 +8,11 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelProgramZZZ  extends KernelUseObjectZZZ implements IKernelProgramZZZ, IKernelModuleUserZZZ {
+public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZZZ implements IKernelProgramZZZ, IKernelModuleUserZZZ {
 	protected IKernelModuleZZZ objModule=null; //Das Modul, in der UI Variante z.B. die Dialogbox, in der das Program gestartet wird.
 	protected String sModuleName=null;	
 	protected String sProgramName=null;

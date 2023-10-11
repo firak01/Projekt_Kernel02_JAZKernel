@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class ArrayListZZZ<T> extends ObjectZZZ {
+public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 private ArrayListZZZ() { } //static methods only
 public static boolean isEmpty(ArrayList<?> objAL) {
 	boolean bReturn = false;

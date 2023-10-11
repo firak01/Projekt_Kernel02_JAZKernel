@@ -14,7 +14,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -36,7 +36,7 @@ Remark: This class doesn�t need any notes-classes and can also be used for nor
 
 @author 0823 ,date 01.10.2004
  */
-public class KernelFileTextCopyZZZ   extends KernelUseObjectZZZ{
+public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
 	private boolean bFlagSourceRemove;
 	private boolean bFlagSourceRename;
 	private String sDirectoryTarget;
@@ -176,7 +176,7 @@ public class KernelFileTextCopyZZZ   extends KernelUseObjectZZZ{
 	}//end function 
 
 	/**
-	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
+	 * @see AbstractKernelUseObjectZZZ.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
 	 * 			  source_rename: after copying the source_files will be renamed.
 	 * 			  source_remove: after copying the source_files will be removed.

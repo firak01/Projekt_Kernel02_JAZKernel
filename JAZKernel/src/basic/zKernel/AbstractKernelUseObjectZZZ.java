@@ -7,7 +7,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zKernel.LogZZZ;
@@ -20,7 +20,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
 	protected IKernelZZZ objKernel=null;
 	protected LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
@@ -28,11 +28,11 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
-	public KernelUseObjectZZZ(){		
+	public AbstractKernelUseObjectZZZ(){		
 		//20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
 	}
 	
-	public KernelUseObjectZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
 	
@@ -41,20 +41,20 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	 * @param objKernel
 	 * @throws ExceptionZZZ 
 	 */
-	public KernelUseObjectZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
 		KernelUseObjectNew_(objKernel, null, null);		
 	}
-	public KernelUseObjectZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectNew_(objKernel, null, null);
 	}
-	public KernelUseObjectZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
 		KernelUseObjectNew_(objKernel, null, null);
 	}
 	
-	public KernelUseObjectZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectNew_(objKernel, null, null);				
 	}
@@ -66,17 +66,17 @@ public class KernelUseObjectZZZ extends ObjectZZZ implements IKernelUserZZZ, IKe
 	 * @param objKernelSection
 	 * @throws ExceptionZZZ 
 	 */
-	public KernelUseObjectZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
+	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectNew_(objKernel, null, objKernelContext);						
 	}
 	
-	public KernelUseObjectZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+	public AbstractKernelUseObjectZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super();
 		KernelUseObjectNew_(null, objKernelUsing, null);
 	}
 	
-	public KernelUseObjectZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		KernelUseObjectNew_(null, objKernelUsing, null);
 	}

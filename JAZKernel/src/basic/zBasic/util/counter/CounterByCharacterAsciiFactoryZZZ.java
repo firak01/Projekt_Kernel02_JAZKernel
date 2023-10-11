@@ -1,14 +1,14 @@
 package basic.zBasic.util.counter;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zKernel.IKernelZZZ;
 
-public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> extends ObjectZZZ implements ICounterByCharacterAsciiFactoryZZZ {
+public class CounterByCharacterAsciiFactoryZZZ <T extends ICounterStrategyZZZ> extends AbstractObjectZZZ implements ICounterByCharacterAsciiFactoryZZZ {
 	private static CounterByCharacterAsciiFactoryZZZ objCounterFactory = null;  //muss static sein, wg. getInstance()!!!
 	
 	/**Konstruktor ist private, wg. Singleton

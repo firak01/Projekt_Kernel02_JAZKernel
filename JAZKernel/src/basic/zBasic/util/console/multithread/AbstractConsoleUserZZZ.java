@@ -1,14 +1,14 @@
 package basic.zBasic.util.console.multithread;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractConsoleUserZZZ extends ObjectZZZ implements IConsoleUserZZZ {	
+public abstract class AbstractConsoleUserZZZ extends AbstractObjectZZZ implements IConsoleUserZZZ {	
 	private IConsoleZZZ objConsole=null;
 	private int iCounter = 0;
 	

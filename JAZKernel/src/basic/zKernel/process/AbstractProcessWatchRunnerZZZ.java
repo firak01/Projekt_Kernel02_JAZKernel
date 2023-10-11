@@ -26,8 +26,8 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectWithStatusZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectWithStatusZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 
 /**This class receives the stream from a process, which was started by the ConfigStarterZZZ class.
  * This is necessary, because the process will only goon working, if the streams were "catched" by a target.
@@ -35,7 +35,7 @@ import basic.zKernel.KernelUseObjectZZZ;
  * @author 0823
  *
  */
-public abstract class AbstractProcessWatchRunnerZZZ extends KernelUseObjectWithStatusZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{		
+public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObjectWithStatusZZZ implements Runnable, IProcessWatchRunnerZZZ, IEventBrokerStatusLocalSetUserZZZ{		
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
 	protected Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
@@ -378,7 +378,7 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	
 
 	/**
-	 * @see zzzKernel.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
+	 * @see AbstractKernelUseObjectZZZ.basic.KernelUseObjectZZZ#setFlag(java.lang.String, boolean)
 	 * @param sFlagName
 	 * Flags used:<CR>
 	 	- hasError

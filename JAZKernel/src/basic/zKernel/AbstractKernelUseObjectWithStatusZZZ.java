@@ -1,5 +1,6 @@
 package basic.zKernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,9 +9,11 @@ import java.util.Set;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
 import basic.zBasic.AbstractObjectWithStatusZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalSetZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -21,7 +24,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class KernelUseObjectWithStatusZZZ extends AbstractObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
 	protected IKernelZZZ objKernel=null;
 	protected LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
@@ -29,11 +32,11 @@ public class KernelUseObjectWithStatusZZZ extends AbstractObjectWithStatusZZZ im
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
-	public KernelUseObjectWithStatusZZZ(){		
+	public AbstractKernelUseObjectWithStatusZZZ(){		
 		//20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
 	}
 	
-	public KernelUseObjectWithStatusZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
 	
@@ -42,20 +45,20 @@ public class KernelUseObjectWithStatusZZZ extends AbstractObjectWithStatusZZZ im
 	 * @param objKernel
 	 * @throws ExceptionZZZ 
 	 */
-	public KernelUseObjectWithStatusZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
 		KernelUseObjectNew_(objKernel, null, null);		
 	}
-	public KernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectNew_(objKernel, null, null);
 	}
-	public KernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
 		KernelUseObjectNew_(objKernel, null, null);
 	}
 	
-	public KernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectNew_(objKernel, null, null);				
 	}
@@ -67,17 +70,17 @@ public class KernelUseObjectWithStatusZZZ extends AbstractObjectWithStatusZZZ im
 	 * @param objKernelSection
 	 * @throws ExceptionZZZ 
 	 */
-	public KernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectNew_(objKernel, null, objKernelContext);						
 	}
 	
-	public KernelUseObjectWithStatusZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super();
 		KernelUseObjectNew_(null, objKernelUsing, null);
 	}
 	
-	public KernelUseObjectWithStatusZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		KernelUseObjectNew_(null, objKernelUsing, null);
 	}

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 /**This class is used for reading/writing from/to 1 one or more .property-file(s).
@@ -21,7 +21,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author 0823
  *
  */
-public class KernelPropertyZZZ extends ObjectZZZ implements java.io.Serializable {
+public class KernelPropertyZZZ extends AbstractObjectZZZ implements java.io.Serializable {
 		private static KernelPropertyZZZ objProperty;                           //dies ist das eigentliche Singleton Objekt, von dem es nur ein einziges gibt 
 		private static HashMap hmProperty = new HashMap();
 		
@@ -37,7 +37,7 @@ public class KernelPropertyZZZ extends ObjectZZZ implements java.io.Serializable
 		
 		
 		public void finalize(){
-			//Der JUnit Test hat herausgefunden, dass das Objekt so am besten zerstört wird.
+			//Der JUnit Test hat herausgefunden, dass das Objekt so am besten zerstï¿½rt wird.
 			objException=null;
 			hmProperty=null;
 		}
@@ -84,7 +84,7 @@ public class KernelPropertyZZZ extends ObjectZZZ implements java.io.Serializable
 			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(sConfigFile)));			
 			objReturn.load(in);		
 			
-			//Falls das "neue" File nicht vorhanden ist, dann wird eine Exception ausgelöst. Darum kann man nun schreiben... 
+			//Falls das "neue" File nicht vorhanden ist, dann wird eine Exception ausgelï¿½st. Darum kann man nun schreiben... 
 			hmProperty.put(sConfigFile, objReturn);  //.... ohne das p == null ist.
 			
 		}//END main:

@@ -4,13 +4,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import basic.javagently.Stream;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.KernelLogZZZ;
 
-public class FileTextWriterZZZ extends ObjectZZZ{
+public class FileTextWriterZZZ extends AbstractObjectZZZ{
 	public static final String sFILE_NAME_DEFAULT= "NewTextfile_default.txt";
 	private IStreamZZZ objStream = null;
 	private String sFileName = null;

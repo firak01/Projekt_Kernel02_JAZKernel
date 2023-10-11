@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.jar.JarFile;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class JarKernelZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
+public class JarKernelZZZ extends AbstractObjectZZZ implements IJarEasyConstantsZZZ{
 	
 	private JarKernelZZZ() {
 		//Zum Verstecken des Konstruktors

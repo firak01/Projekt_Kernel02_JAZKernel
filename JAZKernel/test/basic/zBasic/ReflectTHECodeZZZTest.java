@@ -12,13 +12,13 @@ import junit.framework.TestCase;
  */
 public class ReflectTHECodeZZZTest  extends TestCase{
 	
-	private ObjectZZZ objObjectTest = null;
+	private DummyTestObjectZZZ objObjectTest = null;
 
 	protected void setUp(){
 		//try {			
 			
 			//The main object used for testing
-			objObjectTest = new ObjectZZZ();
+			objObjectTest = new DummyTestObjectZZZ();
 			
 		
 //		} catch (ExceptionZZZ e) {

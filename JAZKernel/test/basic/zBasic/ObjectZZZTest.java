@@ -10,19 +10,19 @@ import org.apache.regexp.RESyntaxException;
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextParserZZZ;
 
 public class ObjectZZZTest extends TestCase{
 	
-	private ObjectZZZ objObjectTest = null;
+	private DummyTestObjectZZZ objObjectTest = null;
 
 	protected void setUp(){
 		//try {			
 			
 			//The main object used for testing
-			objObjectTest = new ObjectZZZ();
+			objObjectTest = new DummyTestObjectZZZ();
 			
 		
 //		} catch (ExceptionZZZ e) {
@@ -35,7 +35,7 @@ public class ObjectZZZTest extends TestCase{
 		try{
 			//Init - Object
 			String[] saFlag = {"init"};
-			ObjectZZZ objObjectInit = new ObjectZZZ(saFlag);
+			DummyTestObjectZZZ objObjectInit = new DummyTestObjectZZZ(saFlag);
 			assertTrue(objObjectInit.getFlag("init")==true); 
 			
 			
@@ -50,7 +50,7 @@ public class ObjectZZZTest extends TestCase{
 		try{
 		//Init - Object
 		String[] saFlag = {"init"};
-		ObjectZZZ objObjectInit = new ObjectZZZ(saFlag);
+		DummyTestObjectZZZ objObjectInit = new DummyTestObjectZZZ(saFlag);
 		assertTrue(objObjectInit.getFlag("init")==true); 
 		
 		

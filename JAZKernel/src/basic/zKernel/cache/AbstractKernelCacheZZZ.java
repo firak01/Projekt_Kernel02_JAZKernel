@@ -1,7 +1,7 @@
 package basic.zKernel.cache;
 
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 
-public abstract class AbstractKernelCacheZZZ  extends KernelUseObjectZZZ implements IKernelCacheZZZ {
+public abstract class AbstractKernelCacheZZZ  extends AbstractKernelUseObjectZZZ implements IKernelCacheZZZ {
 
 }

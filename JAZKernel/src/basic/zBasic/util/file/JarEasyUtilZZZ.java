@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -28,7 +28,7 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
  * @author Fritz Lindhauer, 19.10.2020, 08:10:14
  * 
  */
-public class JarEasyUtilZZZ extends ObjectZZZ implements IJarEasyConstantsZZZ{
+public class JarEasyUtilZZZ extends AbstractObjectZZZ implements IJarEasyConstantsZZZ{
 	
 	
 	//Ich lasse mal untenstehend da, aus Dokumentationsgründen.

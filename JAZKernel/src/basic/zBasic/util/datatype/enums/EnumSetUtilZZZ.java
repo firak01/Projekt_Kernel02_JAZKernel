@@ -8,7 +8,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
@@ -20,7 +20,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.config.IEnumSetKernelConfigDefaultEntryZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
-public class EnumSetUtilZZZ extends ObjectZZZ{
+public class EnumSetUtilZZZ extends AbstractObjectZZZ{
 	protected EnumSet<?> enumSetCurrent=null;
 	protected IEnumSetFactoryZZZ objEnumSetFactory=null;
 	

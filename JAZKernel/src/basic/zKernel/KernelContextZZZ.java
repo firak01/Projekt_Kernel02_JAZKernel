@@ -1,11 +1,11 @@
 package basic.zKernel;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 
-public class  KernelContextZZZ extends ObjectZZZ implements IKernelContextZZZ{
+public class  KernelContextZZZ extends AbstractObjectZZZ implements IKernelContextZZZ{
 	private String sModuleName = null;
 	private String sProgramName = null;
 	private Class objClass = null;

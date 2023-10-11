@@ -11,11 +11,11 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelModuleZZZ  extends KernelUseObjectZZZ implements IKernelModuleZZZ {	
+public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZZ implements IKernelModuleZZZ {	
 	protected String sModuleName=null;	
 	
 	/**Z.B. Wg. Reflection immer den Standardkonstruktor zur Verfügung stellen.

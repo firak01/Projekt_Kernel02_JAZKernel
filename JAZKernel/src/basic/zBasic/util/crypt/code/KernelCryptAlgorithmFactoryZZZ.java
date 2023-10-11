@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.KernelUseObjectZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 
 /** Idee: Die Kernel Version wird dann später ganze Konfigurationsdateien verschlüsseln, oder so....
  *  
@@ -14,7 +14,7 @@ import basic.zKernel.KernelUseObjectZZZ;
  * @author Fritz Lindhauer, 02.10.2022, 08:50:03
  * 
  */
-public class KernelCryptAlgorithmFactoryZZZ extends KernelUseObjectZZZ implements ICryptUserZZZ{
+public class KernelCryptAlgorithmFactoryZZZ extends AbstractKernelUseObjectZZZ implements ICryptUserZZZ{
 
 private static KernelCryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss static sein, wg. getInstance()!!!
 private ICryptZZZ objCryptAlgorithmCreatedLast = null;	

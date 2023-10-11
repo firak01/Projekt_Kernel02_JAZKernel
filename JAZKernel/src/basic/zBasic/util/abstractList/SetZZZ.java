@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
-public class SetZZZ extends ObjectZZZ implements ICollectionConstantZZZ{
+public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
 	
 	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
 	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.

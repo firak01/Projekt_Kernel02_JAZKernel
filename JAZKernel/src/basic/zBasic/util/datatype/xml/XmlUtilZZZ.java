@@ -11,7 +11,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
@@ -24,7 +24,7 @@ import basic.zKernel.file.ini.KernelZFormulaIniLineZZZ;
  * @author Fritz Lindhauer, 23.03.2023, 12:51:12
  * 
  */
-public class XmlUtilZZZ  extends ObjectZZZ{
+public class XmlUtilZZZ  extends AbstractObjectZZZ{
 
 	/** Hiermit wird das Dokument erstellt und auch schon das erste Root-Element.
 	* 

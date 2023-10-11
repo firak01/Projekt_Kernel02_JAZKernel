@@ -10,7 +10,7 @@ import org.apache.regexp.RESyntaxException;
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ObjectZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectEnvironmentZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -18,13 +18,13 @@ import basic.zBasic.util.file.FileTextParserZZZ;
 
 public class ReflectEnvironmentZZZTest extends TestCase{
 	
-	private ObjectZZZ objObjectTest = null;
+	private DummyTestObjectZZZ objObjectTest = null;
 
 	protected void setUp(){
 		//try {			
 			
 			//The main object used for testing
-			objObjectTest = new ObjectZZZ();
+			objObjectTest = new DummyTestObjectZZZ();
 			
 		
 //		} catch (ExceptionZZZ e) {
