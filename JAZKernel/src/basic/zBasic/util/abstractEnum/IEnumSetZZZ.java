@@ -2,7 +2,7 @@ package basic.zBasic.util.abstractEnum;
 
 import java.util.EnumSet;
 
-public interface IEnumSetZZZ {
+public interface IEnumSetZZZ{
 	//Das bring ENUM von sich auch mit
 	public String name();
 	

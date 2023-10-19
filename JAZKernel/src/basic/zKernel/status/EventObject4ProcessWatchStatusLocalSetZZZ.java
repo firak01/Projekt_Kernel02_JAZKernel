@@ -1,9 +1,8 @@
 package basic.zKernel.status;
 
-import java.util.EventObject;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zKernel.process.ProcessWatchRunnerZZZ;
 
-import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectZZZ;
 /** 
  * Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )  
  *        Dann erweitert die Event-Klasse aber EventObjekt.
@@ -12,42 +11,33 @@ import basic.zBasic.IObjectZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ, Comparable<IEventObjectStatusLocalSetZZZ>{
-	private Enum objStatusEnum=null;	
-	private String sStatusText=null;
-	private int iId;
-	private boolean bStatusValue;
+public class EventObject4ProcessWatchStatusLocalSetZZZ extends AbstractEventObjectStatusLocalSetZZZ implements Comparable<IEventObjectStatusLocalSetZZZ>{
+	private ProcessWatchRunnerZZZ.STATUSLOCAL objStatusEnum=null;	
 	
 	/** In dem Konstruktor wird neben der ID dieses Events auch der identifizierende Name der neu gewaehlten Komponente �bergeben.
 	 * @param source
 	 * @param iID
 	 * @param sComponentItemText, z.B. fuer einen DirectoryJTree ist es der Pfad, fuer eine JCombobox der Name des ausgew�hlten Items 
 	 */
-	public EventObjectStatusLocalSetZZZ(Object source, int iID,  String sStatusText, boolean bStatusValue) {
-		super(source);		
+	public EventObject4ProcessWatchStatusLocalSetZZZ(Object source, int iID,  String sStatusText, boolean bStatusValue) {
+		super(source, iID, sStatusText, bStatusValue);		
 		this.sStatusText = sStatusText;
 		this.iId = iID;
 		this.bStatusValue = bStatusValue;
 	}
 	
-	public EventObjectStatusLocalSetZZZ(Object source, int iID,  Enum objStatusEnum, boolean bStatusValue) {
-		super(source);		
+	public EventObject4ProcessWatchStatusLocalSetZZZ(Object source, int iID, ProcessWatchRunnerZZZ.STATUSLOCAL objStatusEnum, boolean bStatusValue) {
+		super(source, iID, "", bStatusValue);		
 		this.objStatusEnum=objStatusEnum;		
 		this.iId = iID;
 		this.bStatusValue = bStatusValue;
 	}
-	
+		
 	@Override
-	public int getID(){
-		return this.iId;
-	}
-	
-	@Override
-	public Enum getStatusEnum() {
+	public IEnumSetMappedZZZ getStatusEnum() {
 		return this.objStatusEnum;
 	}
-	
-	
+		
 	@Override
 	public String getStatusText(){
 		if(this.objStatusEnum==null) {
@@ -57,21 +47,9 @@ public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventO
 		}
 	}
 	
-	@Override
-	public boolean getStatusValue() {
-		return this.bStatusValue;
-	}
 
-	@Override
-	public ExceptionZZZ getExceptionObject() {		
-		return null;
-	}
-
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-	}
-
-	//### Aus dem Interface Comparable	
+	
+	//### Aus dem Interface Comparable
 	@Override
 	public int compareTo(IEventObjectStatusLocalSetZZZ o) {
 		//Das macht lediglich .sort funktionsfähig und wird nicht bei .equals(...) verwendet.
@@ -91,22 +69,22 @@ public class EventObjectStatusLocalSetZZZ extends EventObject implements IEventO
 		return iReturn;
 	}
 	
-   @Override 
-   public boolean equals(Object aThat) {
-     if (this == aThat) return true;
-     if (!(aThat instanceof EventObjectStatusLocalSetZZZ)) return false;
-     EventObjectStatusLocalSetZZZ that = (EventObjectStatusLocalSetZZZ)aThat;
-     
-     String sTextToCompare = that.getStatusText();
-	 boolean bValueToCompare = that.getStatusValue();
-		
-		String sText = this.getStatusText();
-		boolean bValue = this.getStatusValue();
-     
-		if(sTextToCompare.equals(sText) && bValueToCompare==bValue) return true;
-		
-     return false;     
-   }
+	@Override 
+	   public boolean equals(Object aThat) {
+	     if (this == aThat) return true;
+	     if (!(aThat instanceof EventObject4ProcessWatchStatusLocalSetZZZ)) return false;
+	     EventObject4ProcessWatchStatusLocalSetZZZ that = (EventObject4ProcessWatchStatusLocalSetZZZ)aThat;
+
+	     String sNameToCompare = that.getStatusEnum().getName();
+		 boolean bValueToCompare = that.getStatusValue();
+			
+		 String sName = this.getStatusEnum().getName();
+		 boolean bValue = this.getStatusValue();
+	     
+		 if(sNameToCompare.equals(sName) && bValueToCompare==bValue) return true;
+			
+	     return false;     
+	   }
 
    /** A class that overrides equals must also override hashCode.*/
    @Override 

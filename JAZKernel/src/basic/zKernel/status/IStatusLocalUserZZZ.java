@@ -2,6 +2,7 @@ package basic.zKernel.status;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Flags" abzufragen.
  * Das sind Flags, die so speziell sind, das sie in der Klasse direkt abgelegt werden,
@@ -24,20 +25,22 @@ public interface IStatusLocalUserZZZ{
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
 	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);	
 	
-	public abstract boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ;
+	public abstract boolean getStatusLocal(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean getStatusLocal(String sStatusName) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
-	public abstract boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean[] setStatusLocal(Enum[] enumaStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean[] setStatusLocal(String[] saStatusName, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalExists(Enum objEnumStatusIn) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalExists(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalChanged(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalChanged(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalChanged(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
 
-	
+	public boolean isStatusLocalRelevant(IEnumSetMappedZZZ enumStatusIn) throws ExceptionZZZ;
 	
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getStatusLocal() throws ExceptionZZZ;
+	
 }

@@ -18,9 +18,5 @@ public interface ISenderObjectStatusLocalSetZZZ{
 	
 	public abstract void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;
 	public abstract void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;	
-	public abstract ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ;
-	
-	//public abstract void removeListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ;
-	//public abstract void addListenerObjectStatusLocalSet(EventListener objEventListener) throws ExceptionZZZ;
-	//public abstract ArrayList<?> getListenerRegisteredAll() throws ExceptionZZZ;
+	public abstract ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ;	
 }
