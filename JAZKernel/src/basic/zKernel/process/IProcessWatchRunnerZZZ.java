@@ -10,7 +10,7 @@ import basic.zKernel.status.IStatusLocalUserZZZ;
 
 public interface IProcessWatchRunnerZZZ extends IStatusLocalUserZZZ{
 	public enum FLAGZ{
-		DUMMY, STOPREQUEST, END_ON_CONNECTION
+		DUMMY, STOPREQUEST, END_ON_CONNECTION, END_ON_CONNECTIONLOST
 	}
 
 	boolean getFlag(FLAGZ objEnumFlag);

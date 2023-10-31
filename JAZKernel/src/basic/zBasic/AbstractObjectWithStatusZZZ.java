@@ -8,21 +8,23 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.process.ProcessWatchRunnerZZZ;
-import basic.zKernel.process.IProcessWatchRunnerZZZ.STATUSLOCAL;
-import basic.zKernel.status.EventObject4ProcessWatchStatusLocalSetZZZ;
-import basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ;
-import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalSetZZZ;
-import basic.zKernel.status.ISenderObjectStatusLocalSetZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
-import basic.zKernel.status.KernelSenderObjectStatusLocalSetZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
 public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectZZZ implements IStatusLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	protected HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
+	protected IEnumSetMappedZZZ enumStatusLocal = null; 
+	protected IEnumSetMappedZZZ enumStatusLocalPrevious = null; 
+	
+	//Ein Status String, zum Ueberschreiben des Default Status Werts aus dem Enum
+	protected String sStatusLocal = null;            
+	protected String sStatusLocalPrevious = null;   
+
+	//Ein StatusMessage String, zum Ueberschreiben des Default StatusMessage Werts aus dem Enum
+	protected String sStatusLocalMessage=null;
+	protected String sStatusLocalMessagePrevious=null;
 	
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
@@ -39,72 +41,231 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectZZZ 
 	public AbstractObjectWithStatusZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
 	}
+	
+	public IEnumSetMappedZZZ getStatusLocalEnum() {
+		return this.enumStatusLocal;
+	}
+	public void setStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocalIn) {
+		main:{	
+			//Zuruecksetzen ggfs. ueberschriebener Werte
+			this.setStatusLocalString(null);
+			this.setStatusLocalMessage(null);
 		
+			//NULL und Previous
+			if(enumStatusLocalIn == null) {	
+				if(this.getStatusLocalEnum()!=null) {
+					this.setStatusLocalEnumPrevious(this.enumStatusLocal);
+					this.enumStatusLocal=enumStatusLocalIn;							
+				}
+				break main;
+			}
+			
+			//GGFS. mit Vergleich
+			IEnumSetMappedZZZ enumStatusLocal = this.getStatusLocalEnum();
+			if(enumStatusLocal==null) {
+				this.setStatusLocalEnumPrevious(enumStatusLocal);
+				this.enumStatusLocal = enumStatusLocalIn;
+			}else {
+				if(!enumStatusLocalIn.equals(enumStatusLocal)) {
+					this.setStatusLocalEnumPrevious(enumStatusLocal);
+					this.enumStatusLocal = enumStatusLocalIn;					
+				}
+			}			
+		}//end main:		
+	}
+		
+	public IEnumSetMappedZZZ getStatusLocalEnumPrevious() {
+		return this.enumStatusLocalPrevious;
+	}
+	
+	@Override
+	public void setStatusLocalEnumPrevious(IEnumSetMappedZZZ enumStatusLocal) {
+		this.enumStatusLocalPrevious = enumStatusLocal;
+		this.setStatusLocalStringPrevious(null);
+		this.setStatusLocalMessagePrevious(null);
+	}
+	
+	/**
+	 * @return
+	 * @author Fritz Lindhauer, 11.10.2023, 08:25:40
+	 */
+	@Override
+	public String getStatusLocalString(){
+		String sReturn = null;
+		main:{
+			if(this.sStatusLocal!=null) {
+				sReturn = this.sStatusLocal;
+				break main;				
+			}
+			
+			IEnumSetMappedZZZ objEnum = this.getStatusLocalEnum();
+			if(objEnum!=null) {
+				sReturn = objEnum.getAbbreviation();
+			}
+			
+		}//end main:
+		return sReturn;
+	}
+		
+	
+	/**
+	 * @param sStatusLocal
+	 * @author Fritz Lindhauer, 11.10.2023, 08:25:45
+	 */
+	@Override
+	public void setStatusLocalString(String sStatusIn) {		
+		main:{			
+			if(sStatusIn == null) {
+				if(this.sStatusLocal!=null) {
+					this.setStatusLocalStringPrevious(this.sStatusLocal);
+					this.sStatusLocal = null;
+				}
+				break main;
+			}
+			
+			String sStatus = this.getStatusLocalString();
+			if(sStatus==null) {
+				this.setStatusLocalStringPrevious(sStatus);
+				this.sStatusLocal = sStatusIn;
+			}else {
+				if(!sStatus.equals(sStatusLocalPrevious)) {				
+					this.setStatusLocalStringPrevious(sStatus);
+					this.sStatusLocal = sStatusIn;					
+				}
+			}
+		}//end main:
+	}
+	
+	/**
+	 * @return
+	 * @author Fritz Lindhauer, 11.10.2023, 08:25:54
+	 */
+	@Override
+	public String getStatusLocalStringPrevious() {
+		String sReturn = null;
+		main:{
+			if(this.sStatusLocalPrevious!=null) {
+				sReturn =  this.sStatusLocalPrevious;
+				break main;				
+			}
+			
+			IEnumSetMappedZZZ objEnum = this.getStatusLocalEnumPrevious();
+			if(objEnum!=null) {
+				sReturn = objEnum.getAbbreviation();
+			}			
+		}//end main:
+		return sReturn;
+	}
+	
+	/**
+	 * @param sStatusPrevious
+	 * @author Fritz Lindhauer, 11.10.2023, 08:26:03
+	 */
+	@Override
+	public void setStatusLocalStringPrevious(String sStatusPrevious) {
+		this.sStatusLocalPrevious = sStatusPrevious;
+	}
+	
+	@Override
+	public String getStatusLocalDescription() {
+		String sReturn = null;
+		main:{			
+			IEnumSetMappedZZZ objEnum = this.getStatusLocalEnum();
+			if(objEnum!=null) {
+				sReturn = objEnum.getDescription();
+			}
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public String getStatusLocalDescriptionPrevious() {
+		String sReturn = null;
+		main:{			
+			IEnumSetMappedZZZ objEnum = this.getStatusLocalEnumPrevious();
+			if(objEnum!=null) {
+				sReturn = objEnum.getDescription();
+			}
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override 
+	public String getStatusLocalMessage()	{
+		String sReturn = null;
+		main:{
+			if(this.sStatusLocalMessage!=null) {
+				sReturn =  this.sStatusLocalMessage;
+				break main;				
+			}
+			
+//			//Merke: Erst in OVPN-Klassen gibt es enum mit Message
+//			IEnumSetMappedZZZ.STATUSLOCAL objEnum = (IEnumSetMappedZZZ.STATUSLOCAL)this.getStatusLocalEnum();
+//			if(objEnum!=null) {
+//				sReturn = objEnum.getMessage();
+//			}			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public void setStatusLocalMessage(String sStatusMessageIn) {
+		main:{			
+			if(sStatusMessageIn == null) {
+				if(this.sStatusLocalMessage!=null) {
+					this.setStatusLocalStringPrevious(this.sStatusLocalMessage);
+					this.sStatusLocalMessage = null;
+				}				
+				break main;
+			}
+
+			String sStatusMessage = this.getStatusLocalMessage();
+			if(sStatusMessage==null) {
+				this.setStatusLocalMessagePrevious(sStatusMessage);
+				this.sStatusLocalMessage = sStatusMessageIn;
+			}else {
+				if(!sStatusMessageIn.equals(sStatusMessage)) {
+					this.setStatusLocalMessagePrevious(sStatusMessage);
+					this.sStatusLocalMessage = sStatusMessageIn;				
+				}
+			}
+		}//end main:
+	}
+	
+	@Override
+	public String getStatusLocalMessagePrevious(){
+		String sReturn = null;
+		main:{
+			if(this.sStatusLocalMessage!=null) {
+				sReturn =  this.sStatusLocalMessage;
+				break main;				
+			}
+			
+			//Merke: Erst in OVPN-Klassen gibt es enum mit Message
+//			IEnumSetMappedZZZ objEnum = this.getStatusLocalEnumPrevious();
+//			if(objEnum!=null) {
+//				sReturn = objEnum.getMessage();
+//			}			
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public void setStatusLocalMessagePrevious(String sStatusMessage) {
+		this.sStatusLocalMessagePrevious = sStatusMessage;		
+	}
+	
+	
 	//### aus IStatusLocalUserZZZ
 	@Override
 	abstract public boolean isStatusLocalRelevant(IEnumSetMappedZZZ objEnumStatusIn) throws ExceptionZZZ;
 
-	@Override
-	public boolean setStatusLocal(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(objEnumStatusIn==null) {
-				break main;
-			}
-		//return this.getStatusLocal(objEnumStatus.name());
-		//Nein, trotz der Redundanz nicht machen, da nun der Event anders gefeuert wird, nämlich über das enum
-		
-	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-	    ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
-		String sStatusName = enumStatus.name();
-		bFunction = this.proofStatusLocalExists(sStatusName);															
-		if(bFunction == true){
-			
-			//Setze das Flag nun in die HashMap
-			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
-			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-		
-			//Merke: Da die Events speziell sind, ist dies nichts für eine Abstrakte Klasse.
-			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
-			//Dazu braucht es IEventBrokerStatusLocalSetUserZZZ
-			//Dann erzeuge den Event und feuer ihn ab.
-			//Merke: Nun aber ueber das enum		
-//			if(this.getSenderStatusLocalUsed()!=null) {
-//				IEventObjectStatusLocalSetZZZ event = new EventObject4ProcessWatchStatusLocalSetZZZ(this,1,enumStatus, bStatusValue);
-//				this.getSenderStatusLocalUsed().fireEvent(event);
-//			}			
-			bFunction = true;								
-		}										
-	}	// end main:
-	return bFunction;
-	}
+
 	
 	@Override
-	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(objEnumStatusIn==null) {
-				break main;
-			}
-			
-			//Merke: Bei einer anderen Klasse, die dieses DesingPattern nutzt, befindet sich der STATUSLOCAL in einer anderen Klasse
-			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
-			String sStatusName = enumStatus.name();
-			if(StringZZZ.isEmpty(sStatusName)) break main;
-										
-			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
-			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
-			if(objBoolean==null){
-				bFunction = false;
-			}else{
-				bFunction = objBoolean.booleanValue();
-			}
-							
-		}	// end main:
-		
-		return bFunction;	
-	}
-	
+	public abstract boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ;
 	
 	@Override
 	public boolean getStatusLocal(String sStatusName) throws ExceptionZZZ {
@@ -147,43 +308,130 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectZZZ 
 	public void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal) {
 		this.hmStatusLocal = hmStatusLocal;
 	}
-
+	
 	@Override
-	public boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
+	public boolean setStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;
 		main:{
-			if(StringZZZ.isEmpty(sStatusName)) {
-				bFunction = true;
-				break main;
-			}
-						
-			bFunction = this.proofStatusLocalExists(sStatusName);															
-			if(bFunction){
+			boolean bStatusExists = this.setStatusLocal(sStatusName, bStatusValue);
+			if(!bStatusExists)break main;
 				
-				bFunction = this.proofStatusLocalChanged(sStatusName, bStatusValue);
-				if(bFunction) {		
-					
-					//Holes die HashMap
-					HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
-					//Setze den erwiesenermassen geaenderten Status nun in die HashMap
-					hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-					
-					
-					//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
-					//Dann erzeuge den Event und feuer ihn ab.
-//					if(this.objEventStatusLocalBroker!=null) {
-//						IEventObjectStatusLocalSetZZZ event = new EventObject4ProcessWatchStatusLocalSetZZZ(this,1,sStatusName.toUpperCase(), bStatusValue);
-//						this.objEventStatusLocalBroker.fireEvent(event);
-//					}
-					
-					bFunction = true;
-				}
-			}										
-		}	// end main:
-		
-		return bFunction;
+			//ueberschreibe die Defaultmessage (aus dem enum) durch eine eigene...
+			this.setStatusLocalMessage(sStatusMessage);
+			
+			bReturn=true;
+		}//end main:
+		return bReturn;		
 	}
+	
+	@Override
+	public boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName))break main;			
+			boolean bProof = this.proofStatusLocalExists(sStatusName);
+			if(!bProof)break main;					
+			
+			//TODOGOON: 20231028 - Nun wurde alles aus enum umgestellt, auch die Message holen.
+			//                     Man muss also nur mit dem Namen: Hole das Enum und damit kann es weitergehen.
+			
+			//Setze das Flag nun in die HashMap
+			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+			
+			this.setStatusLocalMessage(sStatusLocalMessage);
+			
+			bReturn=true;
+		}//end main:
+		return bReturn;		
+	}
+//	public boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ {
+//	boolean bFunction = false;
+//	main:{
+//		if(StringZZZ.isEmpty(sStatusName)) {
+//			bFunction = true;
+//			break main;
+//		}
+//					
+//		bFunction = this.proofStatusLocalExists(sStatusName);															
+//		if(bFunction){
+//			
+//			bFunction = this.proofStatusLocalChanged(sStatusName, bStatusValue);
+//			if(bFunction) {		
+//				
+//				//Holes die HashMap
+//				HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+//				//Setze den erwiesenermassen geaenderten Status nun in die HashMap
+//				hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+//				
+//				
+//				//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+//				//Dann erzeuge den Event und feuer ihn ab.
+////				if(this.objEventStatusLocalBroker!=null) {
+////					IEventObjectStatusLocalSetZZZ event = new EventObject4ProcessWatchStatusLocalSetZZZ(this,1,sStatusName.toUpperCase(), bStatusValue);
+////					this.objEventStatusLocalBroker.fireEvent(event);
+////				}
+//				
+//				bFunction = true;
+//			}
+//		}										
+//	}	// end main:
+//	
+//	return bFunction;
+//}
 
+	
+	
+	@Override
+	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+//	@Override
+//	public boolean setStatusLocal(Enum objEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+//		boolean bFunction = false;
+//		main:{
+//			if(objEnumStatusIn==null) {
+//				break main;
+//			}
+//		//return this.getStatusLocal(objEnumStatus.name());
+//		//Nein, trotz der Redundanz nicht machen, da nun der Event anders gefeuert wird, nämlich über das enum
+//		
+//	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
+//	    ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
+//		String sStatusName = enumStatus.name();
+//		bFunction = this.proofStatusLocalExists(sStatusName);															
+//		if(bFunction == true){
+//			
+//			//Setze das Flag nun in die HashMap
+//			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+//			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+//		
+//			//Merke: Da die Events speziell sind, ist dies nichts für eine Abstrakte Klasse.
+//			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+//			//Dazu braucht es IEventBrokerStatusLocalSetUserZZZ
+//			//Dann erzeuge den Event und feuer ihn ab.
+//			//Merke: Nun aber ueber das enum		
+////			if(this.getSenderStatusLocalUsed()!=null) {
+////				IEventObjectStatusLocalSetZZZ event = new EventObject4ProcessWatchStatusLocalSetZZZ(this,1,enumStatus, bStatusValue);
+////				this.getSenderStatusLocalUsed().fireEvent(event);
+////			}			
+//			bFunction = true;								
+//		}										
+//	}	// end main:
+//	return bFunction;
+//	}
+	
+	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IStatusLocalUserZZZ#setStatusLocal(java.lang.Enum, java.lang.String, boolean)
+	 */
+	@Override
+	public abstract boolean setStatusLocal(Enum enumStatusIn, int iIndex, boolean bStatusValue) throws ExceptionZZZ;
+		
+	@Override
+	public abstract boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	
+	@Override
+	public abstract boolean setStatusLocal(Enum enumStatusIn, int iIndex, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	
 	@Override
 	public boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
@@ -262,7 +510,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectZZZ 
 	}
 
 	@Override
-	public String[] getStatusLocal() throws ExceptionZZZ {
+	public String[] getStatusLocalAll() throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{	
 			saReturn = StatusLocalHelperZZZ.getStatusLocalDirectAvailable(this.getClass());				
@@ -290,7 +538,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectZZZ 
 				}
 			}else {
 				//So bekommt man alle Flags zurück, also auch die, die nicht explizit true oder false gesetzt wurden.						
-				String[]saStatus = this.getStatusLocal();
+				String[]saStatus = this.getStatusLocalAll();
 				
 				//20211201:
 				//Problem: Bei der Suche nach true ist das egal... aber bei der Suche nach false bekommt man jedes der Flags zurück,

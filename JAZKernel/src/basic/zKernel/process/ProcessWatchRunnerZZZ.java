@@ -26,59 +26,13 @@ import basic.zKernel.status.KernelSenderObjectStatusLocalSetZZZ;
  *
  */
 public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ implements  IEventBrokerStatusLocalSetUserZZZ, IListenerObjectStatusLocalSetZZZ {	
-	private String sWatchRunnerStatus = new String("");            //Das wird hier gefuellt und kann vom Tray-Objekt bei Bedarf ausgelesen werden.
-	private String sWatchRunnerStatusPrevious = new String("");    //den vorherigen Status festhalten, damit z.B. nicht immer wieder das Icon geholt wird.
-	
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
 	public ProcessWatchRunnerZZZ(IKernelZZZ objKernel, Process objProcess, int iNumber, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, objProcess, iNumber, saFlag);		
 	}
-	
-	/**
-	 * @return
-	 * @author Fritz Lindhauer, 11.10.2023, 08:25:40
-	 */
-	public String getStatusString(){
-		return this.sWatchRunnerStatus;
-	}
-	
-	/**
-	 * @param sStatus
-	 * @author Fritz Lindhauer, 11.10.2023, 08:25:45
-	 */
-	public void setStatusString(String sStatus) {		
-		main:{
-			String sStatusPrevious = this.getStatusString();
-			if(sStatus == null) {
-				if(sStatusPrevious==null)break main;
-			}
-			
-			if(!sStatus.equals(sStatusPrevious)) {
-				String sStatusCurrent = this.getStatusString();
-				this.sWatchRunnerStatus = sStatus;
-				this.setStatusPrevious(sStatusCurrent);
-			}
-		}//end main:
-	
-	}
-	
-	/**
-	 * @return
-	 * @author Fritz Lindhauer, 11.10.2023, 08:25:54
-	 */
-	public String getStatusPreviousString() {
-		return this.sWatchRunnerStatusPrevious;
-	}
-	
-	/**
-	 * @param sStatusPrevious
-	 * @author Fritz Lindhauer, 11.10.2023, 08:26:03
-	 */
-	public void setStatusPrevious(String sStatusPrevious) {
-		this.sWatchRunnerStatusPrevious = sStatusPrevious;
-	}
-	
+
+	//##########################################################
 	public void run() {
 		
 		main:{
@@ -378,17 +332,41 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			}
 			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
 			
-			//Setze die Message, die beim Click auf den Tray angezeigt werden könnte
-			String sStatusMessage = enumStatus.getStatusMessage();
-			this.setStatusString(sStatusMessage);
+			bFunction = this.setStatusLocal(enumStatus, null, bStatusValue);
+		}//end main:
+		return bFunction;
+	}
+	
+	@Override 
+	public boolean setStatusLocal(Enum enumStatusIn, int iIndex, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
 			
-			bFunction = this.setStatusLocal(enumStatus, sStatusMessage, bStatusValue);
+			bFunction = this.setStatusLocal(enumStatus, iIndex, null, bStatusValue);
+		}//end main:
+		return bFunction;
+	}
+	
+	@Override 
+	public boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
+			
+			bFunction = this.setStatusLocal(enumStatus, -1, sStatusMessage, bStatusValue);
 		}//end main:
 		return bFunction;
 	}
 		
 	@Override
-	public boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean setStatusLocal(Enum enumStatusIn, int iIndex, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) {
@@ -406,7 +384,22 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			//Setze das Flag nun in die HashMap
 			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
 			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-		
+			this.setStatusLocalEnum(enumStatus);
+			
+			String sStatusMessageToSet = enumStatus.getStatusMessage();
+			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ProcessWatchRunner verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
+			System.out.println(sLog);
+			this.logLineDate(sLog);
+					
+				//Falls eine Message extra uebergeben worden ist, ueberschreibe...
+				if(sStatusMessage!=null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent() + " ProcessWatchRunner uebersteuere sStatusMessageToSet='" + sStatusMessage + "'";
+					System.out.println(sLog);
+					this.logLineDate(sLog);
+					this.setStatusLocalMessage(sStatusMessage);
+				}	
+			
+			
 			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 			//Dann erzeuge den Event und feuer ihn ab.
 			//Merke: Nun aber ueber das enum			
@@ -511,6 +504,31 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 
 		}//end main:
 		return bReturn;
+	}
+	
+	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(objEnumStatusIn==null) {
+				break main;
+			}
+			
+			//Merke: Bei einer anderen Klasse, die dieses DesingPattern nutzt, befindet sich der STATUSLOCAL in einer anderen Klasse
+			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) objEnumStatusIn;
+			String sStatusName = enumStatus.name();
+			if(StringZZZ.isEmpty(sStatusName)) break main;
+										
+			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
+			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
+			}
+							
+		}	// end main:
+		
+		return bFunction;	
 	}
 
 		//##### aus IListenerObjectStatusLocalSetZZZ

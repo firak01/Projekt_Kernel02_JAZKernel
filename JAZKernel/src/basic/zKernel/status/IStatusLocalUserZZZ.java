@@ -21,26 +21,59 @@ public interface IStatusLocalUserZZZ{
 //		SKIPDEBUGUI;
 //	}	
 
-	//KONVENTION: 	
+	//KONVENTION, speichere alle jemals gesetzten StatusLocal-Werte in der Hashmap: 	
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
 	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);	
 	
+	//++++ Schaue in der HashMap nach...
 	public abstract boolean getStatusLocal(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean getStatusLocal(String sStatusName) throws ExceptionZZZ;
 	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean setStatusLocal(Enum enumStatusIn, int iIndex, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean setStatusLocal(Enum enumStatusIn, int iIndex, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
+	public abstract boolean setStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
 	public abstract boolean[] setStatusLocal(Enum[] enumaStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean[] setStatusLocal(String[] saStatusName, boolean bStatusValue) throws ExceptionZZZ;
+	
+	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
+	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
+	
+	//++++ Schaue in der Klasse nach dem enum STATUSLOCAL
+	public String[] getStatusLocalAll() throws ExceptionZZZ; 
 	public abstract boolean proofStatusLocalExists(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalChanged(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalChanged(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
+	
 
 	public boolean isStatusLocalRelevant(IEnumSetMappedZZZ enumStatusIn) throws ExceptionZZZ;
 	
-	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
-	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
-	public String[] getStatusLocal() throws ExceptionZZZ;
+	//Halte den gesetzten Status als Enum fest
+	void setStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocal);
+	public IEnumSetMappedZZZ getStatusLocalEnum();
+	void setStatusLocalEnumPrevious(IEnumSetMappedZZZ enumStatusLocal);
+	public IEnumSetMappedZZZ getStatusLocalEnumPrevious();
+	
+	
+	
+	//Möglichkeit den aktuellen Status mit beliebigen Strings zu ueberschreiben.
+	public String getStatusLocalString();
+	public void setStatusLocalString(String sStatusLocal);
+	public String getStatusLocalStringPrevious();
+	public void setStatusLocalStringPrevious(String sStatusLocal);
+
+	//wird nicht gespeichert, darum kein setter. Wert wird nur aus dem Enum geholt
+	public String getStatusLocalDescription();
+	public String getStatusLocalDescriptionPrevious();
+	
+	//Merke: Messages gibt es eigentlich erst in OVPN-Klassen....
+	public String getStatusLocalMessage();
+	public void setStatusLocalMessage(String sStatusMessage);
+	public String getStatusLocalMessagePrevious();
+	public void setStatusLocalMessagePrevious(String sStatusMessage);
+	
+
 	
 }
