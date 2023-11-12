@@ -3,77 +3,15 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractList.CircularBufferZZZ;
 
-/**Dieses Interface stellt Methoden zur Verfügung um "lokale Flags" abzufragen.
- * Das sind Flags, die so speziell sind, das sie in der Klasse direkt abgelegt werden,
- * noch nicht einmal in einem Interface, da sie von anderen Klassen nicht benötigt werden sollten. 
- * 
- * @author Fritz Lindhauer, 21.07.2022, 08:48:45
- * 
+/**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */
-public interface IStatusLocalUserZZZ{
-	public final String sERROR_STATUS_UNAVAILABLE = "this LOCAL status is not available: ";
-	public final int iERROR_STATUS_UNAVAILABLE = 51;
+public interface IStatusLocalUserZZZ extends IStatusLocalUserBasicZZZ, ICircularBufferStatusBooleanUserZZZ{	
+	public abstract IStatusBooleanZZZ getStatusLocalObject();
+	public abstract void setStatusLocalObject(IStatusBooleanZZZ objEnum);
+	public abstract IStatusBooleanZZZ getStatusLocalObjectPrevious();
+	public abstract IStatusBooleanZZZ getStatusLocalObjectPrevious(int iIndexStepsBack);
 	
-	//Beispiel für das einzubinde Enum als Flag, das NUR in der konkreten Klasse direkt eingebunden werden kann
-	//s. KernelJPanelCascadedZZZ
-//	public enum FLAGZLOCAL {
-//		SKIPDEBUGUI;
-//	}	
-
-	//KONVENTION, speichere alle jemals gesetzten StatusLocal-Werte in der Hashmap: 	
-	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
-	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);	
-	
-	//++++ Schaue in der HashMap nach...
-	public abstract boolean getStatusLocal(Enum enumStatusIn) throws ExceptionZZZ;
-	public abstract boolean getStatusLocal(String sStatusName) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(Enum enumStatusIn, int iIndex, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(Enum enumStatusIn, int iIndex, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
-	public abstract boolean setStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
-	public abstract boolean[] setStatusLocal(Enum[] enumaStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean[] setStatusLocal(String[] saStatusName, boolean bStatusValue) throws ExceptionZZZ;
-	
-	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
-	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
-	
-	//++++ Schaue in der Klasse nach dem enum STATUSLOCAL
-	public String[] getStatusLocalAll() throws ExceptionZZZ; 
-	public abstract boolean proofStatusLocalExists(Enum enumStatusIn) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalChanged(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean proofStatusLocalChanged(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
-	
-
-	public boolean isStatusLocalRelevant(IEnumSetMappedZZZ enumStatusIn) throws ExceptionZZZ;
-	
-	//Halte den gesetzten Status als Enum fest
-	void setStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocal);
-	public IEnumSetMappedZZZ getStatusLocalEnum();
-	void setStatusLocalEnumPrevious(IEnumSetMappedZZZ enumStatusLocal);
-	public IEnumSetMappedZZZ getStatusLocalEnumPrevious();
-	
-	
-	
-	//Möglichkeit den aktuellen Status mit beliebigen Strings zu ueberschreiben.
-	public String getStatusLocalString();
-	public void setStatusLocalString(String sStatusLocal);
-	public String getStatusLocalStringPrevious();
-	public void setStatusLocalStringPrevious(String sStatusLocal);
-
-	//wird nicht gespeichert, darum kein setter. Wert wird nur aus dem Enum geholt
-	public String getStatusLocalDescription();
-	public String getStatusLocalDescriptionPrevious();
-	
-	//Merke: Messages gibt es eigentlich erst in OVPN-Klassen....
-	public String getStatusLocalMessage();
-	public void setStatusLocalMessage(String sStatusMessage);
-	public String getStatusLocalMessagePrevious();
-	public void setStatusLocalMessagePrevious(String sStatusMessage);
-	
-
-	
+	void setStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocal, boolean bStatusValue);
 }

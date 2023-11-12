@@ -25,7 +25,7 @@ import basic.zKernel.status.KernelSenderObjectStatusLocalSetZZZ;
  * @author 0823
  *
  */
-public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ implements  IEventBrokerStatusLocalSetUserZZZ, IListenerObjectStatusLocalSetZZZ {	
+public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ implements  IEventBrokerStatusLocalSetUserZZZ {	
 	protected ISenderObjectStatusLocalSetZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
 	public ProcessWatchRunnerZZZ(IKernelZZZ objKernel, Process objProcess, int iNumber, String[] saFlag) throws ExceptionZZZ{
@@ -332,13 +332,13 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			}
 			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
 			
-			bFunction = this.setStatusLocal(enumStatus, null, bStatusValue);
+			bFunction = this.offerStatusLocal(enumStatus, null, bStatusValue);
 		}//end main:
 		return bFunction;
 	}
 	
 	@Override 
-	public boolean setStatusLocal(Enum enumStatusIn, int iIndex, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) {
@@ -346,13 +346,13 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			}
 			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
 			
-			bFunction = this.setStatusLocal(enumStatus, iIndex, null, bStatusValue);
+			bFunction = this.offerStatusLocal(iIndexOfProcess, enumStatus, null, bStatusValue);
 		}//end main:
 		return bFunction;
 	}
 	
 	@Override 
-	public boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) {
@@ -360,13 +360,27 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			}
 			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
 			
-			bFunction = this.setStatusLocal(enumStatus, -1, sStatusMessage, bStatusValue);
+			bFunction = this.offerStatusLocal_(-1, enumStatus, sStatusMessage, bStatusValue);
 		}//end main:
 		return bFunction;
 	}
 		
 	@Override
-	public boolean setStatusLocal(Enum enumStatusIn, int iIndex, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
+			
+			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, sStatusMessage, bStatusValue);
+		}//end main:
+		return bFunction;
+	}
+	
+	
+	private boolean offerStatusLocal_(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) {
@@ -384,22 +398,32 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			//Setze das Flag nun in die HashMap
 			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
 			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-			this.setStatusLocalEnum(enumStatus);
 			
-			String sStatusMessageToSet = enumStatus.getStatusMessage();
+			String sStatusMessageToSet = null;
+			if(StringZZZ.isEmpty(sStatusMessage)){
+				if(bStatusValue) {
+					sStatusMessageToSet = enumStatus.getStatusMessage();
+				}else {
+					sStatusMessageToSet = "NICHT " + enumStatus.getStatusMessage();
+				}			
+			}else {
+				sStatusMessageToSet = sStatusMessage;
+			}	
 			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ProcessWatchRunner verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
 			System.out.println(sLog);
 			this.logLineDate(sLog);
 					
-				//Falls eine Message extra uebergeben worden ist, ueberschreibe...
-				if(sStatusMessage!=null) {
-					sLog = ReflectCodeZZZ.getPositionCurrent() + " ProcessWatchRunner uebersteuere sStatusMessageToSet='" + sStatusMessage + "'";
-					System.out.println(sLog);
-					this.logLineDate(sLog);
-					this.setStatusLocalMessage(sStatusMessage);
-				}	
+			//Falls eine Message extra uebergeben worden ist, ueberschreibe...
+			if(sStatusMessage!=null) {
+				sStatusMessageToSet = sStatusMessage;
+				sLog = ReflectCodeZZZ.getPositionCurrent() + " ProcessWatchRunner uebersteuere sStatusMessageToSet='" + sStatusMessage + "'";
+				System.out.println(sLog);
+				this.logLineDate(sLog);					
+			}	
+			//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
+			this.offerStatusLocalEnum(enumStatus, bStatusValue, sStatusMessageToSet);
 			
-			
+		
 			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 			//Dann erzeuge den Event und feuer ihn ab.
 			//Merke: Nun aber ueber das enum			
@@ -426,7 +450,7 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 				bFunction = this.proofStatusLocalExists(sStatusName);															
 				if(bFunction){
 					
-					bFunction = this.proofStatusLocalChanged(sStatusName, bStatusValue);
+					bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
 					if(bFunction) {		
 						
 						//Holes die HashMap
@@ -448,15 +472,6 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			
 			return bFunction;
 		}
-
-	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IListenerObjectStatusLocalSetZZZ#isEventStatusLocalRelevant(basic.zKernel.status.IEventObjectStatusLocalSetZZZ)
-	 */
-	@Override
-	public boolean isEventStatusLocalRelevant(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
-		return true;
-	}
 
 	@Override
 	public void registerForStatusLocalEvent(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
@@ -531,22 +546,5 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 		return bFunction;	
 	}
 
-		//##### aus IListenerObjectStatusLocalSetZZZ
-		@Override
-		public boolean statusLocalChanged(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
-			boolean bReturn = false;
-			
-			main:{
-				//Falls nicht zuständig, mache nix
-			    boolean bProof = this.isEventStatusLocalRelevant(eventStatusLocalSet);
-				if(!bProof) break main;
-				
-				//Nur so als Beispiel, muss ueberschrieben werden:
-				//Lies den Status (geworfen vom Backend aus)
-				String sStatus = eventStatusLocalSet.getStatusText();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Methode muss ueberschrieben werden.");
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sStatus='"+sStatus+"'");
-			}//end main:
-			return bReturn;
-		}
+		
 }//END class

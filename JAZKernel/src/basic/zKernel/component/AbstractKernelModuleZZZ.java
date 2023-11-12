@@ -79,6 +79,8 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 		return bReturn;
 	}
 	
+	
+	//### Aus IKernelModuleZZZ
 	public String readModuleName() throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
@@ -87,57 +89,61 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 		return sReturn;
 	}
 	
+	@Override
 	public String getModuleName() throws ExceptionZZZ{
 		if(StringZZZ.isEmpty(this.sModuleName)) {
 			this.sModuleName = this.readModuleName();
 		}
 		return this.sModuleName;
 	}
-	public void setModuleName(String sModuleName){
+	
+	private void setModuleName(String sModuleName){
 		this.sModuleName=sModuleName;
 	}
 	
-	//### Aus IKernelModuleZZZ
-		@Override
-		public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		@Override
-		public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
-		
-		@Override
-		public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-					baReturn = new boolean[objaEnumFlag.length];
-					int iCounter=-1;
-					for(IKernelModuleZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
-				}
-			}//end main:
-			return baReturn;
-		}
-		
-		@Override
-		public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagExists(objEnumFlag.name());
-		}
-		
-		@Override
-		public boolean proofFlagSetBefore(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-				return this.proofFlagSetBefore(objEnumFlag.name());
-		}
 	
+	@Override
+	public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IKernelModuleZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+	@Override
 	public void resetModuleUsed() {
-		this.sModuleName = null;
+		this.setModuleName(null);
 	}
 	
 	//### Methoden
+	@Override
 	public abstract void reset();
 }

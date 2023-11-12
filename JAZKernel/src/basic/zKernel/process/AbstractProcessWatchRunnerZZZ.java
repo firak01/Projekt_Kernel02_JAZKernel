@@ -40,6 +40,10 @@ public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObj
 	protected Process objProcess=null; //Der externe process, der hierdurch "gemonitored" werden soll
 	protected int iNumber=0;
 
+	public AbstractProcessWatchRunnerZZZ(IKernelZZZ objKernel, Process objProcess, int iNumber) throws ExceptionZZZ{
+		super(objKernel);		
+		ProcessWatchRunnerNew_(objProcess, iNumber, null);
+	}
 	public AbstractProcessWatchRunnerZZZ(IKernelZZZ objKernel, Process objProcess, int iNumber, String sFlag) throws ExceptionZZZ{
 		super(objKernel);
 		String[]saFlag=new String[1];
@@ -378,7 +382,7 @@ public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObj
 			bFunction = this.proofStatusLocalExists(sStatusName);															
 			if(bFunction){
 				
-				bFunction = this.proofStatusLocalChanged(sStatusName, bStatusValue);
+				bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
 				if(bFunction) {		
 					
 					//Holes die HashMap
@@ -413,4 +417,5 @@ public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObj
     }
 
 
+  	
 }//END class

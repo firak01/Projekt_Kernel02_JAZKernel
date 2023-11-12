@@ -8,6 +8,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
+import basic.zBasic.AbstractObjectWithStatusListeningZZZ;
 import basic.zBasic.AbstractObjectWithStatusZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -25,10 +26,12 @@ import custom.zKernel.LogZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+	//Merke: Da es keine Mehrfachvererbung gibt, müssen die Objekte und Methoden aus AbstractKernelUseObjectZZZ hier auch vorkommen...
 	protected IKernelZZZ objKernel=null;
 	protected LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
-		
+	
+	
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
@@ -40,6 +43,15 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 		super(sFlag);
 	}
 	
+	public AbstractKernelUseObjectWithStatusZZZ(String[] saFlag) throws ExceptionZZZ {
+		super(saFlag);
+	}
+	
+	public AbstractKernelUseObjectWithStatusZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+		super(hmFlag);
+	}
+
+	
 	/** This constructor declares the used Log-Object as the Kernel-LogObject.
 	* Lindhauer; 10.05.2006 06:06:00
 	 * @param objKernel
@@ -47,20 +59,20 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 	 */
 	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
-		KernelUseObjectNew_(objKernel, null, null);		
+		KernelUseObjectWithStatusNew_(objKernel, null, null);		
 	}
 	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null, null);
+		KernelUseObjectWithStatusNew_(objKernel, null, null);
 	}
 	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
-		KernelUseObjectNew_(objKernel, null, null);
+		KernelUseObjectWithStatusNew_(objKernel, null, null);
 	}
 	
 	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null, null);				
+		KernelUseObjectWithStatusNew_(objKernel, null, null);				
 	}
 	
 	
@@ -72,20 +84,21 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 	 */
 	public AbstractKernelUseObjectWithStatusZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null, objKernelContext);						
+		KernelUseObjectWithStatusNew_(objKernel, null, objKernelContext);						
 	}
 	
 	public AbstractKernelUseObjectWithStatusZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super();
-		KernelUseObjectNew_(null, objKernelUsing, null);
+		KernelUseObjectWithStatusNew_(null, objKernelUsing, null);
 	}
 	
 	public AbstractKernelUseObjectWithStatusZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
-		KernelUseObjectNew_(null, objKernelUsing, null);
+		KernelUseObjectWithStatusNew_(null, objKernelUsing, null);
 	}
-	
-	private boolean KernelUseObjectNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
+		
+	//### Redundant zu AbstractKernelUseObjectZZZ
+	private boolean KernelUseObjectWithStatusNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{						
 			boolean btemp; String sLog;	
@@ -212,5 +225,6 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 			objLog.WriteLineDate(sLog);
 		}		
 	}
+	
 }//end class
 

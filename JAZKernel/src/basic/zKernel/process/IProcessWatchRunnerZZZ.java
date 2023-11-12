@@ -8,7 +8,7 @@ import basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
 
 
-public interface IProcessWatchRunnerZZZ extends IStatusLocalUserZZZ{
+public interface IProcessWatchRunnerZZZ{
 	public enum FLAGZ{
 		DUMMY, STOPREQUEST, END_ON_CONNECTION, END_ON_CONNECTIONLOST
 	}

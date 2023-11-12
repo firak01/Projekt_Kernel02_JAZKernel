@@ -19,7 +19,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.json.FlagZZZ;
+import basic.zKernel.flag.json.FlagContainerZZZ;
 
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
@@ -112,7 +112,7 @@ public class JsonEasyZZZTest extends TestCase implements IConstantZZZ {
 //		try {
 		String sErg;String sArg;
 		
-			FlagZZZ objFlag = new FlagZZZ();
+			FlagContainerZZZ objFlag = new FlagContainerZZZ();
 			
 			Gson gson = new Gson();
 			sErg = gson.toJson(objFlag);
@@ -135,7 +135,7 @@ public class JsonEasyZZZTest extends TestCase implements IConstantZZZ {
 			//+++++++++++++++++++++++++++++++++++
 			//sArg = "{\"FlagZZZ\":{\"hmFlag\":{}}}";
 			sArg = "{\"FlagZZZ\":{\"hmFlag\":{\"XYZ\":true,\"abc\":true}}}";
-			FlagZZZ objFlagFromJson = gson.fromJson(sArg, FlagZZZ.class);
+			FlagContainerZZZ objFlagFromJson = gson.fromJson(sArg, FlagContainerZZZ.class);
 			
 			//PROBLEM: Darin ist die HashMap nicht enthalten...
 			//boolean bX = objFlagFromJson.getFlag("xxx");

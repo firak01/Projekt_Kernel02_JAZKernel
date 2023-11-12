@@ -11,7 +11,7 @@ public class KernelModuleZZZ extends AbstractKernelModuleZZZ{
 	
 	@Override
 	public void reset() {
-		this.setModuleName("");
+		this.resetModuleUsed();
 	}
 
 }

@@ -29,7 +29,7 @@ import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.json.FlagZHelperZZZ;
-import basic.zKernel.flag.json.IFlagZZZ;
+import basic.zKernel.flag.json.IFlagContainerZZZ;
 import custom.zKernel.LogZZZ;
 
 public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
