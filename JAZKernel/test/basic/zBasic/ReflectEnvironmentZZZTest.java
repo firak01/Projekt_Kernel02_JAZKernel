@@ -10,7 +10,7 @@ import org.apache.regexp.RESyntaxException;
 import junit.framework.TestCase;
 import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectEnvironmentZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;

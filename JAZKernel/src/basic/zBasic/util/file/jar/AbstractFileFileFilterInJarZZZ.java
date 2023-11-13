@@ -5,7 +5,7 @@ import java.io.FilenameFilter;
 import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -27,7 +27,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionUserZZZ{		
+public abstract class AbstractFileFileFilterInJarZZZ extends AbstractObjectWithFlagZZZ implements IFileFilePartFilterZipUserZZZ, ZipEntryFilter,IFileExpansionUserZZZ{		
 	protected FilenamePartFilterPathZipZZZ objFilterPath=null; //Der Dateipfad
 	protected FilenamePartFilterNameZipZZZ objFilterName=null; //Der ganze Name
 	protected FilenamePartFilterPathTotalZipZZZ objFilterPathTotal=null;//Der Dateipfad plus den ganzen Namen

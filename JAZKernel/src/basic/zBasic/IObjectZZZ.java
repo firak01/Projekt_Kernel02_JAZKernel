@@ -14,6 +14,4 @@ import java.util.HashMap;
 public interface IObjectZZZ extends IConstantZZZ, Serializable {  //Was nutzt einem schon das ExceptionZZZ - Objekt ohne die ganzen Fehlerkonstansten.
  	public abstract ExceptionZZZ getExceptionObject();
  	public abstract void setExceptionObject(ExceptionZZZ objException);
- 	
- 	public String toString(); //Nutzt intern eine Jakarta-Commons Klasse
 }

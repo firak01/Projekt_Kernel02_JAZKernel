@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;

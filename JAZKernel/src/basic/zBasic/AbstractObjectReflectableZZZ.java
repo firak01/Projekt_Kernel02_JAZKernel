@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class ObjectReflectableZZZ <T> extends AbstractObjectZZZ implements IObjectReflectableZZZ{
-	private String sClassMethodCalling=null;		
-	private HashMap<String,String> hmClassMethodCalling = new HashMap<String,String>();
+public abstract class AbstractObjectReflectableZZZ <T> extends AbstractObjectZZZ implements IObjectReflectableZZZ{
+	protected String sClassMethodCalling=null;		
+	protected HashMap<String,String> hmClassMethodCalling = new HashMap<String,String>();
 	
-	public ObjectReflectableZZZ(){
+	public AbstractObjectReflectableZZZ(){
 		super();		
 	}
 	@Override

@@ -7,7 +7,7 @@ import java.util.Iterator;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -21,7 +21,7 @@ import basic.zBasic.util.start.GetOpt;
  * @author lindhauer
  *
  */
-public class GetOptZZZ extends AbstractObjectZZZ{
+public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	private String sPattern; 
 	private HashMap hmOpt = new HashMap();//Die Hashmap der von aussen gesetzten Steuerungsoptionen. Merke: Dann gibt es noch die HashMap der FlagZ in ObjectZZZ
 	private Iterator itOpt = null;

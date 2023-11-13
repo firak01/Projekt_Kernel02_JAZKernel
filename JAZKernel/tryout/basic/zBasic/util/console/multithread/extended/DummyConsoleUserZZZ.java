@@ -1,8 +1,8 @@
 package basic.zBasic.util.console.multithread.extended;
 
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 
-public class DummyConsoleUserZZZ extends AbstractObjectZZZ implements IConsoleUserZZZ {
+public class DummyConsoleUserZZZ extends AbstractObjectWithFlagZZZ implements IConsoleUserZZZ {
 	private int iCounter = 0;
 	private boolean bStop = false;
 	

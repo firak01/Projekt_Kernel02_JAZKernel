@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zUtil.io.FileZZZ;

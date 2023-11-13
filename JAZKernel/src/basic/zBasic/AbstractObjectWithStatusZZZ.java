@@ -19,7 +19,7 @@ import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusBooleanZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
-public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectZZZ implements IStatusLocalUserMessageZZZ{
+public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ implements IStatusLocalUserMessageZZZ{
 	private static final long serialVersionUID = 1L;
 	protected HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	

@@ -5,7 +5,7 @@ import java.io.FilenameFilter;
 import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -13,7 +13,7 @@ import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.JarEasyZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public abstract class AbstractFilenamePartFilterZipZZZ extends AbstractObjectZZZ implements IFilenamePartFilterZipZZZ  {
+public abstract class AbstractFilenamePartFilterZipZZZ extends AbstractObjectWithFlagZZZ implements IFilenamePartFilterZipZZZ  {
 	private String sDirectoryPath=null;
 	private String sFileName=null;
 	private String sCriterion=null;

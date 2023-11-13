@@ -8,7 +8,7 @@ import basic.zBasic.util.counter.ICounterStrategyZZZ;
  * @author Fritz Lindhauer, 09.08.2019, 08:43:27
  * 
  */
-public class ReflectTHECodeKernelObject4TestingZZZ <T extends IObjectZZZ> extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ{
+public class ReflectTHECodeKernelObject4TestingZZZ <T extends IObjectZZZ> extends AbstractObjectReflectableZZZ implements IObjectReflectableImplementerZZZ{
 	String[] saCallingStack = null;
 	T objInitializedInternal = null;
 	

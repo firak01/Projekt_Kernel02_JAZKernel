@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.jar.JarFile;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;

@@ -4,13 +4,13 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 
-public class CryptAlgorithmFactoryZZZ extends AbstractObjectZZZ implements ICryptUserZZZ{
+public class CryptAlgorithmFactoryZZZ extends AbstractObjectWithFlagZZZ implements ICryptUserZZZ{
 
 private static CryptAlgorithmFactoryZZZ objCryptAlgorithmFactory = null;  //muss static sein, wg. getInstance()!!!
 private ICryptZZZ objCryptCreatedLast = null; 

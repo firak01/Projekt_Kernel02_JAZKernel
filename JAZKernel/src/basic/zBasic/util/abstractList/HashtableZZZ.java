@@ -3,6 +3,7 @@ package basic.zBasic.util.abstractList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 
 public class HashtableZZZ extends AbstractObjectZZZ{

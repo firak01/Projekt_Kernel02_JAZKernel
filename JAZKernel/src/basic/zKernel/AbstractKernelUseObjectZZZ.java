@@ -7,7 +7,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zKernel.LogZZZ;
@@ -20,7 +20,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
 	protected IKernelZZZ objKernel=null;
 	protected LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.

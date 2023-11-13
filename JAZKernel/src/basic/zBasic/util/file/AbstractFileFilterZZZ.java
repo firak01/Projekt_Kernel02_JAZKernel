@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 
-public abstract class AbstractFileFilterZZZ extends AbstractObjectZZZ implements IFilenameFilterExpansionUserZZZ{
+public abstract class AbstractFileFilterZZZ extends AbstractObjectWithFlagZZZ implements IFilenameFilterExpansionUserZZZ{
 	public enum FLAGZ{
 		REGARD_FILE_EXPANSION_ALL, REGARD_FILE_EXPANSION_LAST;
 	}

@@ -32,7 +32,7 @@ import basic.zKernel.flag.json.FlagZHelperZZZ;
 import basic.zKernel.flag.json.IFlagContainerZZZ;
 import custom.zKernel.LogZZZ;
 
-public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
+public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ implements IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -45,28 +45,22 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	protected HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
 	protected HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
 	protected HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
-	
-	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
-	
+		
 	protected ISenderObjectFlagZsetZZZ objEventFlagZBroker = null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines Flags per Event informiert zu werden.
 	
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.
 	
-	public AbstractObjectZZZ() {	
-		//Darf so nicht definiert werden, da dieser Konstruktor implizit immer aufgerufen wird. 
-		//wenn dieser Defaultkonstruktor nicht explizit definiert ist in der Kindklasse 
-		//this.setFlag("init", true);
-		//
-		//Lösung dies trotzdem zu setzten:
-		//rufe im Default Konstuktor der Kindklasse auf:
-		//super("init");		
+	public AbstractObjectWithFlagZZZ() {	
+		super();		
 	}
-	public AbstractObjectZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractObjectWithFlagZZZ(String sFlag) throws ExceptionZZZ {
+		super();
 		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);
 	}
-	public AbstractObjectZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractObjectWithFlagZZZ(String[] saFlag) throws ExceptionZZZ {
+		super();
 		if(saFlag!=null){
 			if(saFlag.length>=1){
 				for(int icount =0; icount <= saFlag.length-1; icount++){
@@ -78,7 +72,8 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 			}
 		}
 	}
-	public AbstractObjectZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractObjectWithFlagZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+		super();
 		//Die ggf. vorhandenen Flags setzen.
 		if(hmFlag!=null){
 			for(String sKey:hmFlag.keySet()){
@@ -726,18 +721,4 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 		String sTemp = KernelLogZZZ.computeLineDate(sLog);
 		System.out.println(sTemp);		
 	}
-	
-	
-	/**Overwritten and using an object of jakarta.commons.lang
-	 * to create this string using reflection. 
-	 * Remark: this is not yet formated. A style class is available in jakarta.commons.lang. 
-	 */
-	@Override
-	public String toString(){
-		String sReturn = "";
-		sReturn = ReflectionToStringBuilder.toString(this);
-		return sReturn;
-	}
-	
-	
 }

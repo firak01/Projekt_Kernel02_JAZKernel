@@ -6,7 +6,7 @@ import static java.lang.System.out;
 import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.AbstractEnumSetFactoryZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;

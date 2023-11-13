@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -15,7 +16,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author Lindhauer
  *
  */
-public class HashtableSortedZZZ<T,X>  implements IObjectZZZ{
+public class HashtableSortedZZZ<T,X>  extends AbstractObjectZZZ{
 	//TODO Einen eigenen Comparator im Konstruktor hinzufügbar machen.
 	
 	private Hashtable objHt;
@@ -32,6 +33,7 @@ public class HashtableSortedZZZ<T,X>  implements IObjectZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public HashtableSortedZZZ(Hashtable objHt) throws ExceptionZZZ{
+		super();
 		HashtableSortedNew_(objHt,"+");
 	}
 	
@@ -293,24 +295,4 @@ public class HashtableSortedZZZ<T,X>  implements IObjectZZZ{
 		}
 		return objReturn;
 	}
-	
-	
-	
-	
-	
-	//###############################################
-	//### Functions implemented by interface
-	public ExceptionZZZ getExceptionObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setExceptionObject(ExceptionZZZ objException) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-
 }//END Class

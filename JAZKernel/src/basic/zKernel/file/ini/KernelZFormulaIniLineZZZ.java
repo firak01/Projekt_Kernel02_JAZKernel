@@ -16,7 +16,7 @@ import org.jdom.output.XMLOutputter;
 
 import base.xml.XMLUtil;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
@@ -34,7 +34,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
  * @author Fritz Lindhauer, 20.03.2023, 12:21:15
  * 
  */
-public class KernelZFormulaIniLineZZZ  extends AbstractObjectZZZ{
+public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 	private static final long serialVersionUID = 890064280935919576L;
 	
 	public static String createLineFrom(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {

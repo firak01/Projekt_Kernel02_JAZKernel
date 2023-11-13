@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import custom.zUtil.io.FileZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
@@ -24,7 +24,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author 0823
  *
  */
-public class FileTextParserZZZ extends AbstractObjectZZZ{
+public class FileTextParserZZZ extends AbstractObjectWithFlagZZZ{
 	private File objFileSourceOriginal = null;
 	private File objFileSource=null;   //nach jedem Schreiben wird hier das zuvorige Target-File reingesetzt, so dass hier ein erneutes Schreiben von dem zuvor erfolgtem Schreiben ausgehen kann.
 	

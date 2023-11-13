@@ -3,12 +3,12 @@ package basic.zBasic.util.counter;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectReflectableImplementerZZZ;
-import basic.zBasic.ObjectReflectableZZZ;
+import basic.zBasic.AbstractObjectReflectableZZZ;
 import basic.zBasic.ReflectCodeKernelZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractCounterStrategyZZZ extends ObjectReflectableZZZ implements IObjectReflectableImplementerZZZ, ICounterStrategyZZZ{
+public abstract class AbstractCounterStrategyZZZ extends AbstractObjectReflectableZZZ implements IObjectReflectableImplementerZZZ, ICounterStrategyZZZ{
 	//TODO: Default Werte gehören eigentlich als Konstante ins Interface.
 	private int iStartDefault = -1;		
 	private int iStart = -1;

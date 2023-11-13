@@ -27,6 +27,7 @@ import java.util.*;
 import org.apache.commons.lang.ObjectUtils;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
@@ -37,7 +38,7 @@ import basic.zBasic.ReflectCodeZZZ;
  *  20200219: Die Methoden aus der alten klasse in die neue Klasse übernommen
  *                    */
 @SuppressWarnings("rawtypes")
-public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ, ICollectionConstantZZZ{
+public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, ICollectionConstantZZZ{
 	/**
 	 * 
 	 */
@@ -244,18 +245,4 @@ public class VectorExtendedZZZ<T> extends Vector implements IObjectZZZ, ICollect
 		}//end main
 		return iReturn;
 	}
-
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
 }

@@ -44,4 +44,8 @@ public interface IConstantZZZ {
 	
 	public static  final String sERROR_NO="No Error";
 	public static  final int iERROR_NO=0;
+	
+	
+	
+	public String toString(); //Nutzt intern eine Jakarta-Commons Klasse
 }

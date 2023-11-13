@@ -6,13 +6,13 @@ import java.util.EnumSet;
 import java.util.Formatter;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 
-public class EnumSetTestFactoryZZZ extends AbstractObjectZZZ implements IEnumSetFactoryZZZ{
+public class EnumSetTestFactoryZZZ extends AbstractObjectWithFlagZZZ implements IEnumSetFactoryZZZ{
 
 private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein, wg. getInstance()!!!
 	

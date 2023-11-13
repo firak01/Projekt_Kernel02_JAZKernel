@@ -1,5 +1,6 @@
 package basic.zBasic.util.abstractList;
 
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 
 /**Implentation eines Ringspeichers.
@@ -23,6 +24,8 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 //	}
 	
 	public CircularBufferZZZ(int capacity) {
+		super();
+		
 	    this.capacity = (capacity < 1) ? DEFAULT_CAPACITY : capacity;
 	    this.data = (E[]) new Object[this.capacity];
 	    this.readSequence = 0;

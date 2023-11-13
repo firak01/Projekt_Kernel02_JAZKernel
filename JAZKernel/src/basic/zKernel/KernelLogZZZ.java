@@ -3,7 +3,7 @@ package basic.zKernel;
 import basic.javagently.Stream;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -30,7 +30,7 @@ import custom.zUtil.io.FileZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class KernelLogZZZ extends AbstractObjectZZZ implements IKernelLogZZZ{
+public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements IKernelLogZZZ{
 	
 	public static final String sLOG_FILE_NAME_DEFAULT= "ZKernelLog_default.txt";
 	//flags 

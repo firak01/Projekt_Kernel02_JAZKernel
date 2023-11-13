@@ -1,5 +1,6 @@
 package basic.zBasic.util.file;
 
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 
 /** Utility Klasse um mit UTF Dateien (hautpsächlich UTF-8) zu arbeiten.

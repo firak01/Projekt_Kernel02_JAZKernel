@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
@@ -21,7 +22,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author 0823
  *
  */
-public class KernelPropertyZZZ extends AbstractObjectZZZ implements java.io.Serializable {
+public class KernelPropertyZZZ extends AbstractObjectWithFlagZZZ implements java.io.Serializable {
 		private static KernelPropertyZZZ objProperty;                           //dies ist das eigentliche Singleton Objekt, von dem es nur ein einziges gibt 
 		private static HashMap hmProperty = new HashMap();
 		

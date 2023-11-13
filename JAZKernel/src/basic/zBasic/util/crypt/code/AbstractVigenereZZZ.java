@@ -3,7 +3,7 @@ package basic.zBasic.util.crypt.code;
 import base.files.DateiUtil;
 import base.io.IoUtil;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
@@ -12,7 +12,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.string.UnicodeZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 
-public abstract class AbstractVigenereZZZ extends AbstractObjectZZZ implements IVigenereZZZ{
+public abstract class AbstractVigenereZZZ extends AbstractObjectWithFlagZZZ implements IVigenereZZZ{
 
 	private static final long serialVersionUID = 1L;
 	private String sFilePath=null;
