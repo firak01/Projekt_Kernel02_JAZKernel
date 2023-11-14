@@ -197,6 +197,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return sReturn;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IStatusLocalUserMessageZZZ#getStatusLocalMessage()
+	 */
 	@Override 
 	public String getStatusLocalMessage()	{
 		return this.getCircularBufferStatusLocalMessage().getLast();

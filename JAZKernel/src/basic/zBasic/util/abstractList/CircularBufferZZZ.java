@@ -12,7 +12,7 @@ import basic.zBasic.AbstractObjectZZZ;
  * https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/circularbuffer/CircularBuffer.java
  */
 public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
-	private static final int DEFAULT_CAPACITY = 8;
+	private static final int DEFAULT_CAPACITY = 9;
 
     private final int capacity;
     private final E[] data;
@@ -32,8 +32,26 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    this.writeSequence = -1;
 	}
 	
-	 public boolean offer(E element) {
+	 /** Damit das mit dem Circular klappt, muss ich hier eine Erweiterung reinbauen, mit der quasi oben wieder angefangen wird.
+	 * @param element
+	 * @return
+	 * @author Fritz Lindhauer, 14.11.2023, 08:35:42
+	 */
+	public boolean offer(E element) {
 
+	        boolean bOffered = this.offerOnCapacityFree(element);
+	        if(!bOffered) {
+	        	bOffered = this.offerOnCapacityFull(element);
+	        }
+	        return bOffered;
+	    }
+	 
+	 	/**Damit das mit dem Circular klappt, muss ich hier eine Erweiterung reinbauen, mit der quasi oben wieder angefangen wird.
+	 	 * @param element
+	 	 * @return
+	 	 * @author Fritz Lindhauer, 14.11.2023, 08:35:59
+	 	 */
+	 	public boolean offerOnCapacityFree(E element) {
 	        if (isNotFull()) {
 
 	            int nextWriteSeq = writeSequence + 1;
@@ -42,9 +60,29 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	            writeSequence++;
 	            return true;
 	        }
-
 	        return false;
-	    }
+	    }	  
+	       
+        /**Damit das mit dem Circular klappt, muss ich hier eine Erweiterung reinbauen, mit der quasi oben wieder angefangen wird.
+         * @param element
+         * @return
+         * @author Fritz Lindhauer, 14.11.2023, 08:36:06
+         */
+        public boolean offerOnCapacityFull(E element) {
+	        if (isFull()) {		       
+	        	//FGL: Damit das mit dem Circular klappt, muss ich hier eine Erweiterung reinbauen, mit der quasi oben wieder angefangen wird.
+	        	//this.readSequence = 0;
+	     	    //this.writeSequence = -1;
+	        	
+	     	    int nextWriteSeq = writeSequence + 1;
+	            data[nextWriteSeq % capacity] = element;
+
+	            writeSequence++;
+	            return true;
+	        }
+	        return false;
+        }
+ 
 
 	    public E poll() {
 
@@ -58,9 +96,14 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	        return null;
 	    }
 
-	    public int capacity() {
-	        return capacity;
+	    public int getCapacity() {
+	        return this.capacity;
 	    }
+	    
+	    //geht nicht, das Variable final ist.
+//	    private void setCapacity(int iCapacity) {
+//	    	this.capacity = iCapacity;
+//	    }
 
 	    public int size() {
 
@@ -93,7 +136,13 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    	if(iIndex<0) {
 	    		return null;
 	    	}else {
-	    		return this.data[iIndex];
+	    		int iIndexComputed = -1;
+	    		if(iIndex > this.getCapacity()-1) {
+	    			iIndexComputed = iIndex % this.getCapacity();
+	    		}else {
+	    			iIndexComputed = iIndex;
+	    		}
+	    		return this.data[iIndexComputed];
 	    	}
 	    }
 	    
@@ -103,12 +152,14 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    }
 	    
 	    public E getPrevious() {
-	    	int iIndex = this.writeSequence - 1;	    	
+	    	//int iIndex = this.writeSequence - 1;	    	
+	    	int iIndex = this.computeIndexForStepPrevious(1);
 	    	return this.get(iIndex);
 	    }
 	    
 	    public E getPrevious(int iIndexStepsBack) {
-	    	int iIndex = this.writeSequence - iIndexStepsBack;
+	    	//int iIndex = this.writeSequence - iIndexStepsBack;
+	    	int iIndex = this.computeIndexForStepPrevious(iIndexStepsBack);
 	    	return this.get(iIndex);
 	    }
 	    
@@ -124,7 +175,8 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    public boolean replacePreviousWith(E element) {
 	    	boolean bReturn = false;
 	    	main:{
-	    		int iIndex = this.writeSequence - 1;
+	    		//int iIndex = this.writeSequence - 1;
+	    		int iIndex = this.computeIndexForStepPrevious(1);
 	    		bReturn = this.replacePositionWith(iIndex, element);	    		
 	    	}//end main:
 	    	return bReturn;
@@ -142,4 +194,31 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    	}//end main:
 	    	return bReturn;
 	    }
+	    
+	    public int computeIndexForStepPrevious(int iIndexStepsBack) {
+	    	int iReturn = -1;
+	    	main:{
+	    		if(iIndexStepsBack<=-1) break main;
+	    		if(iIndexStepsBack==0) {
+	    			iReturn = this.writeSequence;
+	    			break main;
+	    		}
+	    		
+	    		int iIndextemp = this.writeSequence - iIndexStepsBack; 
+	    		if(iIndextemp<0) {
+	    			iReturn = iIndexStepsBack % this.getCapacity();
+	    		}else {
+	    			iReturn = iIndextemp;
+	    		}
+	    	}	    	
+	    	return iReturn;
+	    }
+	    
+//	    public int getWriteSequence() {
+//	    	return this.writeSequence;//Merke: Variable ist volatil, daher 
+//	    }
+//	    
+//	    public  int getReadSequence() {
+//	    	return this.readSequence;//Merke: Variable ist volatil
+//	    }
 }
