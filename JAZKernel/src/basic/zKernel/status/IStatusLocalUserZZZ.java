@@ -2,6 +2,7 @@ package basic.zKernel.status;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferZZZ;
 
@@ -13,5 +14,5 @@ public interface IStatusLocalUserZZZ extends IStatusLocalUserBasicZZZ, ICircular
 	public abstract IStatusBooleanZZZ getStatusLocalObjectPrevious();
 	public abstract IStatusBooleanZZZ getStatusLocalObjectPrevious(int iIndexStepsBack);
 	
-	void setStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocal, boolean bStatusValue);
+	void setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue);
 }

@@ -1,6 +1,6 @@
 package basic.zKernel.status;
 
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zKernel.process.ProcessWatchRunnerZZZ;
 
 /** 
@@ -34,7 +34,7 @@ public class EventObject4ProcessWatchStatusLocalSetZZZ extends AbstractEventObje
 	}
 		
 	@Override
-	public IEnumSetMappedZZZ getStatusEnum() {
+	public IEnumSetMappedStatusZZZ getStatusEnum() {
 		return this.objStatusEnum;
 	}
 		

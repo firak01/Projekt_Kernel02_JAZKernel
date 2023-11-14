@@ -1,6 +1,6 @@
 package basic.zKernel.status;
 
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 public class StatusBooleanMessageZZZ  extends StatusBooleanZZZ implements IStatusBooleanMessageZZZ{		 
 	private String sMessage = null;
@@ -8,15 +8,15 @@ public class StatusBooleanMessageZZZ  extends StatusBooleanZZZ implements IStatu
 	public StatusBooleanMessageZZZ() {		
 	}
 	
-	public StatusBooleanMessageZZZ(IEnumSetMappedZZZ objEnum) {
+	public StatusBooleanMessageZZZ(IEnumSetMappedStatusZZZ objEnum) {
 		super(objEnum);
 	}
 	
-	public StatusBooleanMessageZZZ(IEnumSetMappedZZZ objEnum, boolean bValue) {
+	public StatusBooleanMessageZZZ(IEnumSetMappedStatusZZZ objEnum, boolean bValue) {
 		super(objEnum,bValue);
 	}
 	
-	public StatusBooleanMessageZZZ(IEnumSetMappedZZZ objEnum, boolean bValue, String sMessage) {
+	public StatusBooleanMessageZZZ(IEnumSetMappedStatusZZZ objEnum, boolean bValue, String sMessage) {
 		this(objEnum,bValue);
 		this.setMessage(sMessage);
 	}

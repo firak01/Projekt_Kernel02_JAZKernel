@@ -32,7 +32,7 @@ public abstract class AbstractEventObjectStatusLocalSetZZZ extends EventObject i
 	}
 	
 	@Override
-	public int getID(){
+	public int getProcessID(){
 		return this.iId;
 	}
 	

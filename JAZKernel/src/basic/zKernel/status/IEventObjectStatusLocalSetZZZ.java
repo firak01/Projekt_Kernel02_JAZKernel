@@ -1,11 +1,11 @@
 package basic.zKernel.status;
 
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 public interface IEventObjectStatusLocalSetZZZ extends IObjectZZZ{
-	public IEnumSetMappedZZZ getStatusEnum();
+	public IEnumSetMappedStatusZZZ getStatusEnum();
 	public String getStatusText();
 	public boolean getStatusValue();
-	public int getID();
+	public int getProcessID();
 }

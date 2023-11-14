@@ -11,6 +11,7 @@ import basic.zBasic.ILogZZZ;
 import basic.zBasic.AbstractObjectWithStatusZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
@@ -27,7 +28,7 @@ import custom.zKernel.LogZZZ;
  */
 public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalSetZZZ {
 	//Wie in AbstractObjectWithStatusListeningZZZ
-	protected HashMap<IEnumSetMappedZZZ,IEnumSetMappedZZZ> hmEnumSet =null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
+	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSet =null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 
 	
 	
@@ -144,9 +145,9 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 			return bReturn;
 		}
 		
-		//### aus IListenerObjectStatusLocalMapForEventUserZZZ	
+		//### aus IStatusLocalMapForCascadingStatusLocalUserZZZ	
 		@Override
-		public HashMap<IEnumSetMappedZZZ, IEnumSetMappedZZZ> getHashMapEnumSetForCascadingStatusLocal() {
+		public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> getHashMapEnumSetForCascadingStatusLocal() {
 			if(this.hmEnumSet==null) {
 				this.hmEnumSet = this.createHashMapEnumSetForCascadingStatusLocalCustom();
 			}
@@ -154,12 +155,12 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 		}
 
 		@Override
-		public void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedZZZ, IEnumSetMappedZZZ> hmEnumSet) {
+		public void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet) {
 			this.hmEnumSet = hmEnumSet;
 		}
 		
 		@Override
-		public abstract HashMap<IEnumSetMappedZZZ, IEnumSetMappedZZZ> createHashMapEnumSetForCascadingStatusLocalCustom();
+		public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> createHashMapEnumSetForCascadingStatusLocalCustom();
 		
 }//end class
 

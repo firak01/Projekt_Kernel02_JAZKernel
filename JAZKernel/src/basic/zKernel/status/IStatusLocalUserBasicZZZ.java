@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferZZZ;
 
@@ -53,14 +54,14 @@ public interface IStatusLocalUserBasicZZZ extends IObjectWithStatusZZZ{
 	public abstract boolean proofStatusLocalValueChanged(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
 	
 
-	public boolean isStatusLocalRelevant(IEnumSetMappedZZZ enumStatusIn) throws ExceptionZZZ;
+	public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ enumStatusIn) throws ExceptionZZZ;
 	
 	//Halte den gesetzten Status als Enum fest, 
 	//Merke: Das offer kommt von der intern zum Speichern verwendeten CircularBuffer Klasse
-	boolean offerStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocal);		
-	public IEnumSetMappedZZZ getStatusLocalEnumCurrent();
-	public IEnumSetMappedZZZ getStatusLocalEnumPrevious();
-	public IEnumSetMappedZZZ getStatusLocalEnumPrevious(int iIndexStepsBack);
+	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal);		
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumCurrent();
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious();
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack);
 	
 	
 	//wird nicht gespeichert, darum kein setter. Wert wird nur aus dem Enum geholt

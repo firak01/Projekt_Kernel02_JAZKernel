@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -73,8 +74,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public IEnumSetMappedZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
-		IEnumSetMappedZZZ objReturn = null;
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
+		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
 			IStatusBooleanMessageZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
 			if(objStatus==null) break main;
@@ -86,8 +87,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	
 	@Override
-	public IEnumSetMappedZZZ getStatusLocalEnumCurrent() {
-		IEnumSetMappedZZZ objReturn = null;
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumCurrent() {
+		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
 			IStatusBooleanMessageZZZ objStatus = this.getStatusLocalObject();
 			if(objStatus==null) break main;
@@ -101,7 +102,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#offerStatusLocalEnum(basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ)
 	 */
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocalIn) {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn) {
 		boolean bReturn = false;
 		main:{
 			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, true, "");
@@ -109,11 +110,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return bReturn;
 	}
 	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#setStatusLocalEnum(basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ, boolean)
-	 */
+	
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedZZZ enumStatusLocalIn, boolean bValue, String sMessage) {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bValue, String sMessage) {
 		boolean bReturn = false;
 		main:{
 			IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
@@ -128,8 +127,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public IEnumSetMappedZZZ getStatusLocalEnumPrevious() {
-		IEnumSetMappedZZZ objReturn = null;
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious() {
+		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
 			IStatusBooleanMessageZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious();
 			if(objStatus==null) break main;
@@ -217,7 +216,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	//### aus IStatusLocalUserZZZ
 	@Override
-	abstract public boolean isStatusLocalRelevant(IEnumSetMappedZZZ objEnumStatusIn) throws ExceptionZZZ;
+	abstract public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ objEnumStatusIn) throws ExceptionZZZ;
 
 
 	

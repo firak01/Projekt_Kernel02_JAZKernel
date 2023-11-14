@@ -3,6 +3,7 @@ package basic.zKernel.process;
 import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
@@ -38,26 +39,32 @@ public interface IProcessWatchRunnerZZZ{
 
 		//Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 			//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
-			public enum STATUSLOCAL implements IEnumSetMappedZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{	
-				ISSTARTED("isstarted","ProcessWatchRunner",""),
-				HASCONNECTION("hasconnection","ProcessWatchRunner ist mit dem Process verbunden",""),
-				HASOUTPUT("hasoutput","Prozess hat Output",""),
-				HASINPUT("hasinput","Prozess hat Input",""),
-				ISSTOPPED("isended","ProcessWatchRunner ist beendet",""),
-				HASERROR("haserror","Ein Fehler ist aufgetreten","");
-											
+			public enum STATUSLOCAL implements IEnumSetMappedStatusZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{	
+				ISSTARTED(0,"isstarted","ProcessWatchRunner",""),
+				HASCONNECTION(0,"hasconnection","ProcessWatchRunner ist mit dem Process verbunden",""),
+				HASOUTPUT(0,"hasoutput","Prozess hat Output",""),
+				HASINPUT(0,"hasinput","Prozess hat Input",""),
+				ISSTOPPED(0,"isended","ProcessWatchRunner ist beendet",""),
+				HASERROR(0,"haserror","Ein Fehler ist aufgetreten","");
+			
+			private int iStatusGroupId;
 			private String sAbbreviation,sStatusMessage,sDescription;
 
 			//#############################################
 			//#### Konstruktoren
 			//Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 			//In der Util-Klasse habe ich aber einen Workaround gefunden.
-			STATUSLOCAL(String sAbbreviation, String sStatusMessage, String sDescription) {
+			STATUSLOCAL(int iStatusGroupId, String sAbbreviation, String sStatusMessage, String sDescription) {
+				this.iStatusGroupId = iStatusGroupId;
 			    this.sAbbreviation = sAbbreviation;
 			    this.sStatusMessage = sStatusMessage;
 			    this.sDescription = sDescription;
 			}
 
+			public int getStatusGroupId() {				
+				return this.iStatusGroupId;
+			}
+			
 			public String getAbbreviation() {
 			 return this.sAbbreviation;
 			}

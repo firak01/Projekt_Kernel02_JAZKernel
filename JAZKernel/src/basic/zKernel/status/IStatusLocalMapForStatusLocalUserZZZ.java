@@ -12,13 +12,13 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
  * HashMap<IEnumSetMappedZZZ,IEnumSetMappedZZZ> = Map<Externer Wert aus Event, Lokaler Wert>
  * So können mehrer Klassen einen Lokalen Wert ansprechen, z.B. für den Error wichtig.
  */
-public interface IStatusLocalMapForCascadingStatusLocalUserZZZ{
+public interface IStatusLocalMapForStatusLocalUserZZZ{
 	public final String sERROR_STATUS_UNMAPPED = "this LOCAL status is not mapped";
 	public final int iERROR_STATUS_UNMAPPED = 52;
 	
-	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ>getHashMapEnumSetForCascadingStatusLocal();
-	public abstract void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet);	
+	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ>getHashMapEnumSetForStatusLocal();
+	public abstract void setHashMapEnumSetForStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> hmEnumSet);	
 	
 	//Map: ExternerWert aus Event, LokalerWert
-	public abstract HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>createHashMapEnumSetForCascadingStatusLocalCustom();
+	public abstract HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ>createHashMapEnumSetForStatusLocalCustom();
 }

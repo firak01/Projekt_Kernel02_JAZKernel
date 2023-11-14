@@ -1,31 +1,31 @@
 package basic.zKernel.status;
 
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 public class StatusBooleanZZZ  implements IStatusBooleanZZZ{		
-	private IEnumSetMappedZZZ enumStatus = null; 
+	private IEnumSetMappedStatusZZZ enumStatus = null; 
 	private boolean bValue = false;
 	
 	public StatusBooleanZZZ() {		
 	}
 	
-	public StatusBooleanZZZ(IEnumSetMappedZZZ objEnum) {
+	public StatusBooleanZZZ(IEnumSetMappedStatusZZZ objEnum) {
 		this.enumStatus = objEnum;
 		this.bValue = true;
 	}
 	
-	public StatusBooleanZZZ(IEnumSetMappedZZZ objEnum, boolean bValue) {
+	public StatusBooleanZZZ(IEnumSetMappedStatusZZZ objEnum, boolean bValue) {
 		this.enumStatus = objEnum;
 		this.bValue = bValue;
 	}
 	
 	@Override
-	public IEnumSetMappedZZZ getEnumObject(){
+	public IEnumSetMappedStatusZZZ getEnumObject(){
 		return this.enumStatus;
 	}
 	
 	@Override
-	public void setEnumObject(IEnumSetMappedZZZ objEnum) {
+	public void setEnumObject(IEnumSetMappedStatusZZZ objEnum) {
 		this.enumStatus = objEnum;
 	}
 	
