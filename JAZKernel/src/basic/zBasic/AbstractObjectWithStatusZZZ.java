@@ -265,6 +265,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		this.hmStatusLocal = hmStatusLocal;
 	}
 	
+	//### aus ICircularBufferStatusBooleanMessageUserZZZ
 	@Override
 	public CircularBufferZZZ<IStatusBooleanMessageZZZ> getCircularBufferStatusLocal(){		
 		return this.cbStatusLocal;
@@ -283,6 +284,34 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	@Override
 	public void setCircularBufferStatusLocalMessage(CircularBufferZZZ<String> cb){
 		this.cbStatusLocalMessage = cb;
+	}
+	
+	@Override
+	public void debugCircularBufferStatusLocalMessage(int iStepsMax) throws ExceptionZZZ {		
+		String sLog="";
+		int iStepsToSearchBackwardsTEST=-1;
+		boolean bGoonTEST = false;
+		IEnumSetMappedStatusZZZ objStatusLocalPreviousTEST = null;
+		do {	
+			iStepsToSearchBackwardsTEST = iStepsToSearchBackwardsTEST + 1; 
+			int iIndex = this.getCircularBufferStatusLocal().computeIndexForStepPrevious(iStepsToSearchBackwardsTEST);
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Vorheriger Status= " + iStepsToSearchBackwardsTEST + " | Verwendeter Index= " + iIndex;
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+			this.logLineDate(sLog);
+			
+			objStatusLocalPreviousTEST = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsToSearchBackwardsTEST);
+			if(objStatusLocalPreviousTEST==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Kein weiterer entsprechend weit entfernter vorheriger Status vorhanden";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+				this.logLineDate(sLog);
+				bGoonTEST=true;
+			}else {				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST : Der " + iStepsToSearchBackwardsTEST + " Schritte vorherige Status im Main ist. GroupId/Abbreviation: " + objStatusLocalPreviousTEST.getStatusGroupId() + "/'" + objStatusLocalPreviousTEST.getAbbreviation()+"'.";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+				this.logLineDate(sLog);							
+			}
+			if(iStepsToSearchBackwardsTEST>=iStepsMax) bGoonTEST=true;											
+		}while(!bGoonTEST);						
 	}
 
 
@@ -591,5 +620,4 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
-	
 }

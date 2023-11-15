@@ -29,6 +29,12 @@ public interface IProcessWatchRunnerZZZ{
 	public abstract boolean analyseInputLineCustom(String sLine) throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//Die StatusId für Stati, aus dieser Klasse selbst. Nicht die Stati der anderen Klassen.
+	public static int iSTATUSLOCAL_GROUPID=0;
+		
+	//++++++++++++++++++++++++
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//DIE INTERNE ENUM-KLASSE FUER STATUSLOCAL.
     //Merke1: Diese wird auch vererbt. So dass erbende Klassen auf dieses Enum ueber ihren eingene Klassennamen zugreifen können.
     //
@@ -40,12 +46,12 @@ public interface IProcessWatchRunnerZZZ{
 		//Merke: Obwohl fullName und abbr nicht direkt abgefragt werden, müssen Sie im Konstruktor sein, um die Enumeration so zu definieren.
 			//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
 			public enum STATUSLOCAL implements IEnumSetMappedStatusZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{	
-				ISSTARTED(0,"isstarted","ProcessWatchRunner",""),
-				HASCONNECTION(0,"hasconnection","ProcessWatchRunner ist mit dem Process verbunden",""),
-				HASOUTPUT(0,"hasoutput","Prozess hat Output",""),
-				HASINPUT(0,"hasinput","Prozess hat Input",""),
-				ISSTOPPED(0,"isended","ProcessWatchRunner ist beendet",""),
-				HASERROR(0,"haserror","Ein Fehler ist aufgetreten","");
+				ISSTARTED(iSTATUSLOCAL_GROUPID,"isstarted","ProcessWatchRunner",""),
+				HASCONNECTION(iSTATUSLOCAL_GROUPID,"hasconnection","ProcessWatchRunner ist mit dem Process verbunden",""),
+				HASOUTPUT(iSTATUSLOCAL_GROUPID,"hasoutput","Prozess hat Output",""),
+				HASINPUT(iSTATUSLOCAL_GROUPID,"hasinput","Prozess hat Input",""),
+				ISSTOPPED(iSTATUSLOCAL_GROUPID,"isended","ProcessWatchRunner ist beendet",""),
+				HASERROR(iSTATUSLOCAL_GROUPID,"haserror","Ein Fehler ist aufgetreten","");
 			
 			private int iStatusGroupId;
 			private String sAbbreviation,sStatusMessage,sDescription;
