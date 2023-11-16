@@ -10,14 +10,11 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.CircularBufferZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.status.IStatusBooleanZZZ;
-import basic.zKernel.status.IStatusLocalUserMessageZZZ;
-import basic.zKernel.status.IStatusLocalMapForCascadingStatusLocalUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
-import basic.zKernel.status.IStatusLocalUserZZZ;
+import basic.zKernel.status.IStatusBooleanZZZ;
+import basic.zKernel.status.IStatusLocalUserMessageZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
-import basic.zKernel.status.StatusBooleanZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
 public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ implements IStatusLocalUserMessageZZZ{
@@ -214,6 +211,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return this.getCircularBufferStatusLocalMessage().getPrevious();
 	}
 	
+	@Override
+	public String getStatusLocalMessagePrevious(int iIndexStepsBack) {
+		return this.getCircularBufferStatusLocalMessage().getPrevious(iIndexStepsBack);
+	}
+	
 	//### aus IStatusLocalUserZZZ
 	@Override
 	abstract public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ objEnumStatusIn) throws ExceptionZZZ;
@@ -286,8 +288,17 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		this.cbStatusLocalMessage = cb;
 	}
 	
+	
+	//++++++++++++++++++++++++++++++++
+	//### aus ICircularBufferStatusBooleanUserBasicZZZ 
 	@Override
-	public void debugCircularBufferStatusLocalMessage(int iStepsMax) throws ExceptionZZZ {		
+	public void debugCircularBufferStatusLocal() throws ExceptionZZZ {
+		int iStepsMax = this.getCircularBufferStatusLocal().getCapacity();
+		this.debugCircularBufferStatusLocal(iStepsMax);
+	}
+	
+	@Override
+	public void debugCircularBufferStatusLocal(int iStepsMax) throws ExceptionZZZ {		
 		String sLog="";
 		int iStepsToSearchBackwardsTEST=-1;
 		boolean bGoonTEST = false;
@@ -313,8 +324,253 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(iStepsToSearchBackwardsTEST>=iStepsMax) bGoonTEST=true;											
 		}while(!bGoonTEST);						
 	}
+	
+	
+	@Override
+	public void debugCircularBufferStatusLocalMessage() throws ExceptionZZZ {
+		int iStepsMax = this.getCircularBufferStatusLocalMessage().getCapacity();
+		this.debugCircularBufferStatusLocalMessage(iStepsMax);
+	}
+	
+	//### aus ICircularBufferStatusBooleanMessageUserZZZ
+	@Override
+	public void debugCircularBufferStatusLocalMessage(int iStepsMax) throws ExceptionZZZ {		
+		String sLog="";
+		int iStepsToSearchBackwardsTEST=-1;
+		boolean bGoonTEST = false;
+		IEnumSetMappedStatusZZZ objStatusLocalPreviousTEST = null;
+		do {	
+			iStepsToSearchBackwardsTEST = iStepsToSearchBackwardsTEST + 1; 
+			int iIndex = this.getCircularBufferStatusLocalMessage().computeIndexForStepPrevious(iStepsToSearchBackwardsTEST);
+			sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Vorheriger Status= " + iStepsToSearchBackwardsTEST + " | Verwendeter Index= " + iIndex;
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+			this.logLineDate(sLog);
+			
+			objStatusLocalPreviousTEST = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsToSearchBackwardsTEST);
+			if(objStatusLocalPreviousTEST==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Kein weiterer entsprechend weit entfernter vorheriger Status vorhanden";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+				this.logLineDate(sLog);
+				bGoonTEST=true;
+			}else {				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST : Der " + iStepsToSearchBackwardsTEST + " Schritte vorherige Status im Main ist. GroupId/Abbreviation: " + objStatusLocalPreviousTEST.getStatusGroupId() + "/'" + objStatusLocalPreviousTEST.getAbbreviation()+"'.";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+				this.logLineDate(sLog);		
+				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST : Message='" + this.getStatusLocalMessagePrevious(iStepsToSearchBackwardsTEST) + "'";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+				this.logLineDate(sLog);	
+			}
+			if(iStepsToSearchBackwardsTEST>=iStepsMax) bGoonTEST=true;											
+		}while(!bGoonTEST);						
+	}
 
+	@Override
+	public int getStatusLocalGroupIdFromCurrent() {
+		int iReturn = -1;
+		main:{
+			IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObject();
+			if(objMessage==null) break main;
+			
+			IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
+			if(objEnum==null) break main;
+			
+			iReturn = objEnum.getStatusGroupId();
+		}//end main
+		return iReturn;
+	}
+	
+	@Override
+	public int getStatusLocalGroupIdFromPrevious() {
+		int iReturn = -1;
+		main:{
+			IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObjectPrevious();
+			if(objMessage==null) break main;
+			
+			IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
+			if(objEnum==null) break main;
+			
+			iReturn = objEnum.getStatusGroupId();
+		}//end main
+		return iReturn;
+	}
+	
+	@Override
+	public int getStatusLocalGroupIdFromPrevious(int iIndexStepsBack) {
+		int iReturn = -1;
+		main:{
+			IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObjectPrevious(iIndexStepsBack);
+			if(objMessage==null) break main;
+			
+			IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
+			if(objEnum==null) break main;
+			
+			iReturn = objEnum.getStatusGroupId();
+		}//end main
+		return iReturn;
 
+	}
+	
+	@Override
+	public int searchStatusLocalGroupIdPreviousDifferentFromCurrent() throws ExceptionZZZ {
+		int iReturn = -1;
+		main:{
+			int iReturnTemp=iReturn;
+			String sLog;
+			
+			//+++ Hole die aktuelle GroupId
+			int iGroupIdCurrent = this.getStatusLocalGroupIdFromCurrent();
+			if(iGroupIdCurrent==-1) break main;
+			
+			//+++ Durchsuche die vorherigen Schritte nach deren GroupId
+			//boolean bGoon = false;
+			IEnumSetMappedStatusZZZ objStatusLocalPrevious = null;
+			int iStepsToSearchBackwards = this.getCircularBufferStatusLocal().getCapacity();
+			//do {					
+				for(int iStepsPrevious = 0;iStepsPrevious<=iStepsToSearchBackwards;iStepsPrevious++) {
+					int iIndex = this.getCircularBufferStatusLocal().computeIndexForStepPrevious(iStepsPrevious);
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Vorheriger Status= " + iStepsPrevious + " | Verwendeter Index= " + iIndex;
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+					this.logLineDate(sLog);
+					
+					objStatusLocalPrevious = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsPrevious);
+					if(objStatusLocalPrevious==null) {
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": Kein entsprechend weit entfernter vorheriger Status vorhanden";
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+						this.logLineDate(sLog);
+						break main;
+					}else {				
+						//Frage nach dem Status im Backend nach...
+						iReturnTemp = objStatusLocalPrevious.getStatusGroupId();
+						
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": Der " + iStepsPrevious + " Schritte vorherige Status im Main ist. GroupId/Abbreviation: " + objStatusLocalPrevious.getStatusGroupId() + "/'" + objStatusLocalPrevious.getAbbreviation()+"'.";
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+						this.logLineDate(sLog);	
+						
+						if(iReturnTemp!=iGroupIdCurrent) {
+							iReturn = iReturnTemp;
+							break main;
+						}
+					}
+				}//end for															
+			//}while(!bGoon);
+			
+		}//end main:
+		return iReturn;
+	}
+
+	//+++
+	@Override
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupCurrent(boolean bWithOutInterruption) throws ExceptionZZZ {
+		int iStatusLocalGroupId = this.getStatusLocalGroupIdFromCurrent();
+		return this.searchStatusLocalGroupById(iStatusLocalGroupId, bWithOutInterruption);
+	}
+
+	@Override
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupPrevious(boolean bWithOutInterruption) throws ExceptionZZZ {
+		int iStatusLocalGroupId = this.getStatusLocalGroupIdFromCurrent();
+		return this.searchStatusLocalGroupById(iStatusLocalGroupId, bWithOutInterruption);
+	}
+
+	@Override
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupById(int iStatusLocalGroupId, boolean bWithOutInterruption) throws ExceptionZZZ {
+		ArrayList<IStatusBooleanZZZ>listaReturn=null;
+		main:{						
+			//+++ Hole die aktuelle GroupId			
+			if(iStatusLocalGroupId<=-1) break main;
+			listaReturn = new ArrayList<IStatusBooleanZZZ>();
+			
+			
+			String sLog;
+			int iGroupIdTemp=-1;
+			
+			//+++ Durchsuche die vorherigen Schritte nach deren GroupId
+			//boolean bGoon = false;
+			//IEnumSetMappedStatusZZZ objStatusLocalPrevious = null;
+			IStatusBooleanZZZ objStatusLocalPrevious = null;
+			boolean bGroupPreviousFound=false;
+			int iStepsToSearchBackwards = this.getCircularBufferStatusLocal().getCapacity();
+			//do {					
+				for(int iStepsPrevious = 0;iStepsPrevious<=iStepsToSearchBackwards;iStepsPrevious++) {
+					int iIndex = this.getCircularBufferStatusLocal().computeIndexForStepPrevious(iStepsPrevious);
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Vorheriger Status= " + iStepsPrevious + " | Verwendeter Index= " + iIndex;
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+					this.logLineDate(sLog);
+					
+					objStatusLocalPrevious = (IStatusBooleanZZZ) this.getStatusLocalObjectPrevious(iStepsPrevious);					
+					if(objStatusLocalPrevious==null) {
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": Kein entsprechend weit entfernter vorheriger Status vorhanden";
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+						this.logLineDate(sLog);
+						break main;
+					}else {				
+						//Frage nach dem Status im Backend nach...
+						iGroupIdTemp = objStatusLocalPrevious.getEnumObject().getStatusGroupId();
+						
+						sLog = ReflectCodeZZZ.getPositionCurrent()+": Der " + iStepsPrevious + " Schritt(e) vorherige Status im Main ist. GroupId/Abbreviation: " + iGroupIdTemp + "/'" + objStatusLocalPrevious.getEnumObject().getAbbreviation()+"'.";
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+						this.logLineDate(sLog);	
+						
+						if(iGroupIdTemp==iStatusLocalGroupId) {
+							sLog = ReflectCodeZZZ.getPositionCurrent()+": Event mit gemappten Status gefunden: " + objStatusLocalPrevious.getEnumObject().getAbbreviation();
+							System.out.println(sLog);
+							this.logLineDate(sLog);
+							
+							
+//							//ggfs. nicht aufnehmen, also quasi weiter schrittweise zurück, wenn der Status ein Steuerevent ist...,d.h. ohne Icon
+//							if(objStatusLocalPrevious!=null) {
+//								objEnum = (ClientTrayStatusTypeZZZ) hmEnum.get(objStatusLocalPrevious);			
+//								if(objEnum!=null) {					
+//									if(StringZZZ.isEmpty(objEnum.getIconFileName())){
+//										iStepsToSearchBackwards=1;
+//										
+//										sLog = ReflectCodeZZZ.getPositionCurrent()+": Steuerevent als gemappten Status aus dem Event-Objekt erhalten. Gehe noch einen weitere " + iStepsToSearchBackwards + " Schritt(e) zurueck.";
+//										System.out.println(sLog);
+//										this.getMainObject().logProtocolString(sLog);							
+//									}else {
+//										bGoon=true;
+//									}
+//								}
+//							}
+							
+							//ggfs. doch nicht aufnehmen, wenn es sich um ein steuer-Eintrag handelt.
+							if(!objStatusLocalPrevious.getEnumObject().getAbbreviation().equalsIgnoreCase("PREVIOUSEVENTRTYPE")) {														
+								listaReturn.add((IStatusBooleanZZZ) objStatusLocalPrevious);
+								if(bWithOutInterruption) {
+									bGroupPreviousFound=true;
+								}
+							}else {
+								sLog = ReflectCodeZZZ.getPositionCurrent()+": Steuerevent als gemappten Status aus dem Event-Objekt erhalten. Gehe noch einen weitere " + iStepsToSearchBackwards + " Schritt(e) zurueck.";
+								System.out.println(sLog);
+								this.logLineDate(sLog);	
+							}
+						}else {
+							//Wurde im Fall: "Ohne Unterbrechung" dann wieder eine andere GroupId gefunden, ist ende
+							if(bGroupPreviousFound)break main;
+						}
+					}
+				}//end for															
+			//}while(!bGoon);
+			
+		}//end main:
+		return listaReturn;
+	}
+	
+	@Override
+	public int searchStatusLocalGroupIndexLowerInBuffer(int iGroupId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int searchStatusLocalGroupIndexUpperInBuffer(int iGroupId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+	
+	//++++++++++++
 	/* (non-Javadoc)
 	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#setStatusLocal(java.lang.String, java.lang.String, boolean)
 	 */

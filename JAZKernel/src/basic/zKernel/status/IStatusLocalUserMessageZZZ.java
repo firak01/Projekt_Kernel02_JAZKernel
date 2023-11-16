@@ -23,5 +23,6 @@ public interface IStatusLocalUserMessageZZZ extends IStatusLocalUserBasicZZZ, IC
 		
 	public abstract String getStatusLocalMessage();
 	public abstract String getStatusLocalMessagePrevious();
+	public abstract String getStatusLocalMessagePrevious(int iIndexStepsBack);
 	public abstract boolean replaceStatusLocalMessage(String sStatusMessage); //Merke: Das replace kommt von der intern verwendeten CircularBuffer Klasse
 }

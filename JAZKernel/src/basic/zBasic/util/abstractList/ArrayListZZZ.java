@@ -28,6 +28,29 @@ public static boolean isEmpty(ArrayList<?> objAL) {
 	}
 	return bReturn;
 }
+public static Object getFirst(ArrayList<?> objAL) throws ExceptionZZZ {
+	Object objReturn = null;
+	main:{
+		if(objAL==null)break main;
+		if(objAL.isEmpty()) break main;
+		
+		objReturn = objAL.get(0);
+	}
+	return objReturn;
+}
+
+public static Object getLast(ArrayList<?> objAL) throws ExceptionZZZ {
+	Object objReturn = null;
+	main:{
+		if(objAL==null)break main;
+		if(objAL.isEmpty()) break main;
+		
+		int iSize = objAL.size();
+		objReturn = objAL.get(iSize-1);
+	}
+	return objReturn;
+}
+
 public static boolean isSameSize(ArrayList objAL1, ArrayList objAL2) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -98,7 +121,7 @@ public static String implodeReversed(ArrayList<?>lista, String sDelimiterIn){
 	return sReturn;
 }
 	
-public static ArrayList join(ArrayList lista1, ArrayList lista2, boolean bFlagUnique){
+public static ArrayList join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique){
 	ArrayList listaReturn = null;
 	main:{
 		check:{
@@ -130,8 +153,8 @@ public static ArrayList join(ArrayList lista1, ArrayList lista2, boolean bFlagUn
 	return listaReturn;
 }
 
-public static ArrayList joinKeepFirst(ArrayList lista1, ArrayList lista2){
-	ArrayList listaReturn = null;
+public static ArrayList<?> joinKeepFirst(ArrayList<?> lista1, ArrayList<?> lista2){
+	ArrayList<?> listaReturn = null;
 	main:{
 		check:{
 			if(lista1==null && lista2 ==null) break main;
@@ -156,7 +179,7 @@ public static ArrayList joinKeepFirst(ArrayList lista1, ArrayList lista2){
 	return listaReturn;
 }
 
-public static ArrayList joinKeepLast(ArrayList lista1, ArrayList lista2){
+public static ArrayList joinKeepLast(ArrayList<?> lista1, ArrayList<?> lista2){
 	ArrayList listaReturn = null;
 	main:{
 		check:{
