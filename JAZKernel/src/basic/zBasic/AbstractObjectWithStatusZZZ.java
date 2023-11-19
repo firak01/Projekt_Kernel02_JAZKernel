@@ -7,6 +7,7 @@ import java.util.Set;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.CircularBufferZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -461,19 +462,33 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 
 	//+++
 	@Override
-	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupCurrent(boolean bWithOutInterruption) throws ExceptionZZZ {
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupCurrent() throws ExceptionZZZ {
+		return this.searchStatusLocalGroupCurrent(false);
+	}
+	
+	@Override
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupCurrent(boolean bWithInterruption) throws ExceptionZZZ {
 		int iStatusLocalGroupId = this.getStatusLocalGroupIdFromCurrent();
-		return this.searchStatusLocalGroupById(iStatusLocalGroupId, bWithOutInterruption);
+		return this.searchStatusLocalGroupById(iStatusLocalGroupId, bWithInterruption);
+	}
+	
+	@Override
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupPrevious() throws ExceptionZZZ {		
+		return this.searchStatusLocalGroupPrevious(false);
+	}
+	
+	@Override
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupPrevious(boolean bWithInterruption) throws ExceptionZZZ {
+		int iStatusLocalGroupId = this.getStatusLocalGroupIdFromCurrent();
+		return this.searchStatusLocalGroupById(iStatusLocalGroupId, bWithInterruption);
 	}
 
 	@Override
-	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupPrevious(boolean bWithOutInterruption) throws ExceptionZZZ {
-		int iStatusLocalGroupId = this.getStatusLocalGroupIdFromCurrent();
-		return this.searchStatusLocalGroupById(iStatusLocalGroupId, bWithOutInterruption);
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupById(int iStatusLocalGroupId) throws ExceptionZZZ {
+		return this.searchStatusLocalGroupById(iStatusLocalGroupId, false);
 	}
-
 	@Override
-	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupById(int iStatusLocalGroupId, boolean bWithOutInterruption) throws ExceptionZZZ {
+	public ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupById(int iStatusLocalGroupId, boolean bWithInterruption) throws ExceptionZZZ {
 		ArrayList<IStatusBooleanZZZ>listaReturn=null;
 		main:{						
 			//+++ Hole die aktuelle GroupId			
@@ -536,7 +551,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 							//ggfs. doch nicht aufnehmen, wenn es sich um ein steuer-Eintrag handelt.
 							if(!objStatusLocalPrevious.getEnumObject().getAbbreviation().equalsIgnoreCase("PREVIOUSEVENTRTYPE")) {														
 								listaReturn.add((IStatusBooleanZZZ) objStatusLocalPrevious);
-								if(bWithOutInterruption) {
+								if(!bWithInterruption) {
 									bGroupPreviousFound=true;
 								}
 							}else {
@@ -557,18 +572,124 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public int searchStatusLocalGroupIndexLowerInBuffer(int iGroupId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int searchStatusLocalGroupIndexLowerInBuffer() throws ExceptionZZZ {
+		int iGroupId = this.getStatusLocalGroupIdFromCurrent();
+		return this.searchStatusLocalGroupIndexLowerInBuffer(iGroupId);
+	}
+	
+	@Override
+	public int searchStatusLocalGroupIndexLowerInBuffer(int iGroupId) throws ExceptionZZZ {
+		return this.searchStatusLocalGroupIndexLowerInBuffer(iGroupId, false);
 	}
 
 	@Override
-	public int searchStatusLocalGroupIndexUpperInBuffer(int iGroupId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int searchStatusLocalGroupIndexLowerInBuffer(int iGroupId, boolean bWithInterruption) throws ExceptionZZZ {
+		return this.searchStatusLocalGroupIndexInBuffer_(iGroupId,bWithInterruption,"LOWER");
+	}
+	
+	@Override
+	public int searchStatusLocalGroupIndexUpperInBuffer() throws ExceptionZZZ {
+		int iGroupId = this.getStatusLocalGroupIdFromCurrent();
+		return this.searchStatusLocalGroupIndexUpperInBuffer(iGroupId);
+	}
+	
+	@Override
+	public int searchStatusLocalGroupIndexUpperInBuffer(int iGroupId) throws ExceptionZZZ {
+		return this.searchStatusLocalGroupIndexUpperInBuffer(iGroupId, false);
 	}
 
-	
+	@Override
+	public int searchStatusLocalGroupIndexUpperInBuffer(int iGroupId, boolean bWithInterruption) throws ExceptionZZZ {
+		return this.searchStatusLocalGroupIndexInBuffer_(iGroupId,bWithInterruption,"UPPER");
+	}
+		
+	public int searchStatusLocalGroupIndexInBuffer_(int iGroupId, boolean bWithInterruption, String sFlagControl) throws ExceptionZZZ {
+		int iReturn = -1;
+		main:{			
+			if(iGroupId<=-1) break main;
+			
+			boolean bLower=false;
+			if(!(StringZZZ.equals(sFlagControl, "") || StringZZZ.equalsIgnoreCase(sFlagControl, "LOWER") || StringZZZ.equalsIgnoreCase(sFlagControl, "UPPER"))){
+				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE + "Flag '" + sFlagControl +"', does not exist. Expected 'UPPER','LOWER',''.", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
+				throw ez;
+			}else if(StringZZZ.equals(sFlagControl,"") || StringZZZ.equalsIgnoreCase(sFlagControl, "LOWER")) {
+				bLower=true;
+			}
+			
+			
+//			String sLog;
+			int iGroupIdTemp=-1;
+			
+			//+++ Durchsuche die vorherigen Schritte nach deren GroupId
+			IStatusBooleanZZZ objStatusLocalPrevious = null;
+			boolean bGroupPreviousFound=false;
+			int iStepsToSearchBackwards = this.getCircularBufferStatusLocal().getCapacity();	
+			for(int iStepsPrevious = 0;iStepsPrevious<=iStepsToSearchBackwards;iStepsPrevious++) {
+				int iIndex = this.getCircularBufferStatusLocal().computeIndexForStepPrevious(iStepsPrevious);
+//				sLog = ReflectCodeZZZ.getPositionCurrent()+": Vorheriger Status= " + iStepsPrevious + " | Verwendeter Index= " + iIndex;
+//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+//				this.logLineDate(sLog);
+				
+				objStatusLocalPrevious = (IStatusBooleanZZZ) this.getStatusLocalObjectPrevious(iStepsPrevious);					
+				if(objStatusLocalPrevious==null) {
+//					sLog = ReflectCodeZZZ.getPositionCurrent()+": Kein entsprechend weit entfernter vorheriger Status vorhanden";
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+//					this.logLineDate(sLog);
+					break main;
+				}else {				
+					//Frage nach dem Status im Backend nach...
+					iGroupIdTemp = objStatusLocalPrevious.getEnumObject().getStatusGroupId();
+					
+//					sLog = ReflectCodeZZZ.getPositionCurrent()+": Der " + iStepsPrevious + " Schritt(e) vorherige Status im Main ist. GroupId/Abbreviation: " + iGroupIdTemp + "/'" + objStatusLocalPrevious.getEnumObject().getAbbreviation()+"'.";
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+//					this.logLineDate(sLog);	
+					
+					if(iGroupIdTemp==iGroupId) {
+//						sLog = ReflectCodeZZZ.getPositionCurrent()+": Event mit gemappten Status gefunden: " + objStatusLocalPrevious.getEnumObject().getAbbreviation();
+//						System.out.println(sLog);
+//						this.logLineDate(sLog);
+						
+						//ggfs. doch nicht aufnehmen, wenn es sich um ein steuer-Eintrag handelt.
+						if(!objStatusLocalPrevious.getEnumObject().getAbbreviation().equalsIgnoreCase("PREVIOUSEVENTRTYPE")) {														
+							iReturn = iIndex;																		
+							if(!bLower) {
+								break main;								
+							}else {
+								bGroupPreviousFound = true;	//Das ist fuer den UPPER Eintrag nicht wichtig. Aber fuer den UPPER Eintrag mit INTERRUPTION
+							}							
+						}else {
+//							sLog = ReflectCodeZZZ.getPositionCurrent()+": Steuerevent als gemappten Status aus dem Event-Objekt erhalten. Gehe noch einen weitere " + iStepsToSearchBackwards + " Schritt(e) zurueck.";
+//							System.out.println(sLog);
+//							this.logLineDate(sLog);	
+						}
+					}else {
+						if(bLower) {							
+							//das ist fuer den UPPER Eintrag nicht wichtig
+							if(bWithInterruption) {
+								if(bGroupPreviousFound) {
+//									sLog = ReflectCodeZZZ.getPositionCurrent()+": Weitere Gruppe gefunden. Unterbrechung erlaubt. Weiter mit diesem vorlaeufigen Index bis zum Ende: " + iIndex;
+//									System.out.println(sLog);
+//									this.logLineDate(sLog);
+								}
+							}else {	
+								if(bGroupPreviousFound) {
+//									sLog = ReflectCodeZZZ.getPositionCurrent()+": Weitere Gruppe gefunden. Keine Unterbrechung suchen. Beende mit diesem Index: " + iIndex;
+//									System.out.println(sLog);
+//									this.logLineDate(sLog);								
+									break main;
+								}
+							}
+						}
+					}
+				}
+			}					
+		}//end main:
+		return iReturn;
+		
+		
+		
+		
+	}	
 	
 	//++++++++++++
 	/* (non-Javadoc)
