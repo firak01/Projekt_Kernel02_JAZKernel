@@ -8,6 +8,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -48,6 +49,38 @@ public class EnumHelperZZZ implements IConstantZZZ{
 	//+++++++++++++++++++++++++++++++++++++++++++
 
 	public static <E extends Enum> E getEnumAsField(Class<E> enumClass, String sFieldname) throws ExceptionZZZ {
+		E enumReturn = null;
+		main:{
+			try {
+				//Auflisten aller Felder
+//				Field[] fa = enumClass.getDeclaredFields();
+//				for(Field f : fa) {
+//					 System.out.println(f);
+//					 System.out.println(f.getName());
+//				     System.out.println(Modifier.toString(f.getModifiers()));
+//				}
+				
+				//Zugriff auf ein konkretes Enum
+			    Field f = enumClass.getDeclaredField(sFieldname);
+//		        System.out.println(f);
+//		        System.out.println(Modifier.toString(f.getModifiers()));
+		        f.setAccessible(true);
+		        Object o = f.get(null);
+		        enumReturn = (E) o;
+		        //return (E[]) o;
+			 }catch (NoSuchFieldException nsfe) {
+				 //Keine Exception werfen, dann ist das Ergebnis einfach NULL
+//				ExceptionZZZ ez = new ExceptionZZZ("NoSuchFieldException", iERROR_RUNTIME, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName(), nsfe);
+//		    	throw ez;
+		    } catch (IllegalAccessException iae) {
+		    	ExceptionZZZ ez = new ExceptionZZZ("IllegalAccessException", iERROR_RUNTIME, ReflectClassZZZ.class, ReflectCodeZZZ.getMethodCurrentName(), iae);
+		    	throw ez;
+		    }			
+		}
+		return enumReturn;
+	}
+	
+	public static <E extends IEnumSetMappedStatusZZZ> E getEnumStatsLocalForGroupAsField(Class<E> enumClass, String sFieldname) throws ExceptionZZZ {
 		E enumReturn = null;
 		main:{
 			try {

@@ -4,10 +4,6 @@ import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zKernel.status.IEventBrokerStatusLocalSetUserZZZ;
-import basic.zKernel.status.IStatusLocalUserZZZ;
-
 
 public interface IProcessWatchRunnerZZZ{
 	public enum FLAGZ{

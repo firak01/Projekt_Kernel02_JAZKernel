@@ -7,6 +7,7 @@ import java.util.Set;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.CircularBufferZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -738,7 +739,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 		
 	@Override
-	public boolean switchStatusLocalAsGroupTo(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
+	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
+	
+	
+	@Override
+	public boolean switchStatusLocalAllGroupTo(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;			
@@ -758,25 +763,94 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public boolean switchStatusLocalAsGroupTo(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ{
-		return this.switchStatusLocalAsGroupTo(enumStatusIn, null, bStatusValue);
+	public boolean switchStatusLocalAllGroupTo(Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ{
+		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, null, bStatusValue);
 	}
 	
 	@Override
-	public boolean switchStatusLocalAsGroupTo(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ{
+	public boolean switchStatusLocalAsGroupTo(Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, sStatusMessage, bStatusValue);	
+	}
+	
+	@Override
+	public boolean switchStatusLocalAllGroupTo(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.switchStatusLocalAsGroupTo_(iIndex, enumStatus, sStatusMessage, bStatusValue);
+	}
+	
+	private boolean switchStatusLocalAsGroupTo_(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		return this.switchStatusLocalForGroupTo_(iIndex, -1, enumStatus, sStatusMessage, bStatusValue);
+	}
+	
+	@Override
+	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ{
+		int iGroupId = enumStatusMapped.getStatusGroupId();
+		Enum enumStatus = (Enum)enumStatusMapped;
+		return this.switchStatusLocalForGroupTo_(-1, iGroupId, enumStatus, null, bStatusValue);
+	}
+	
+	@Override
+	public boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ{
+		return this.switchStatusLocalForGroupTo_(iIndex, iGroupId, enumStatus, null, bStatusValue);
+	}
+		
+	@Override
+	public boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
+			int iGroupId = enumStatusMapped.getStatusGroupId();
+			Enum enumStatus = (Enum) enumStatusMapped;
+			bReturn = this.switchStatusLocalForGroupTo(iIndexOfProcess, iGroupId, enumStatus, null, bStatusValue);
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			int iGroupId = enumStatusMapped.getStatusGroupId();
+			Enum enumStatus = (Enum) enumStatusMapped;
+			bReturn = this.switchStatusLocalForGroupTo(iIndexOfProcess, iGroupId, enumStatus, sStatusMessage, bStatusValue);
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.switchStatusLocalForGroupTo_(iIndex, iGroupId, enumStatus, sStatusMessage, bStatusValue);
+	}
+	
+	private boolean switchStatusLocalForGroupTo_(int iIndex, int iGroupId, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{			
 			if(enumStatusIn==null) break main;
 			String sStatusName = enumStatusIn.name().toUpperCase();
 			
-			//Setze das Flag nun in die HashMap
-			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
-			Set<String> setKey = hmStatus.keySet();
-			for(String sKey : setKey) {
-				if(!sKey.equals(sStatusName)) hmStatus.put(sKey, !bStatusValue);				
-			}
+			bReturn = this.offerStatusLocal(iIndex, enumStatusIn, sStatusMessage, bStatusValue);
+			if(!bReturn)break main;
 			
-			bReturn = this.offerStatusLocal(enumStatusIn, sMessage, bStatusValue);			
+			//Hole die StatusNamen der angegebenen Gruppe
+			if(iGroupId==-1) {
+				HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+				Set<String> setKey = hmStatus.keySet();
+				for(String sKey : setKey) {				
+					if(!sKey.equals(sStatusName)) hmStatus.put(sKey, !bStatusValue); //Setze die anderen Werte, als der uebergebene Status
+				}			
+			}else {
+				String[] saStatusForGroup = StatusLocalHelperZZZ.getStatusLocalForGroup(this.getClass(), iGroupId);
+				if(saStatusForGroup==null) break main;
+				
+				//Setze den Status nun in die HashMap DIESER GUPPE
+				HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+				Set<String> setKey = hmStatus.keySet();
+				for(String sKey : setKey) {				
+					if(!sKey.equals(sStatusName)) {//Setze die anderen Werte, als der uebergebene Status
+						if(StringArrayZZZ.contains(saStatusForGroup, sKey)) { //...aber nur in die Gruppe fuer die GroupId
+							hmStatus.put(sKey, !bStatusValue);
+						}
+					}
+				}					
+			}															
 		}//end main:
 		return bReturn;		
 	}

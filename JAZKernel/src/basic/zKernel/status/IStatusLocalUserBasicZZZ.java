@@ -19,6 +19,12 @@ public interface IStatusLocalUserBasicZZZ extends IObjectWithStatusZZZ{
 //	}
 		
 	
+	//wird nicht gespeichert, darum kein setter. Wert wird nur aus dem Enum geholt
+	public String getStatusLocalAbbreviation();
+	public String getStatusLocalAbbreviationPrevious();
+	public String getStatusLocalDescription();
+	public String getStatusLocalDescriptionPrevious();	
+	
 	//++++ Schaue in der HashMap nach...
 	public abstract boolean getStatusLocal(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean getStatusLocal(String sStatusName) throws ExceptionZZZ;
@@ -32,16 +38,27 @@ public interface IStatusLocalUserBasicZZZ extends IObjectWithStatusZZZ{
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 
-	//++++ Aendere mit einem Aufruf mehrere Statuseintraege ab
-	//public abstract boolean switchStatusLocal(Enum enumStatusIn) throws ExceptionZZZ;//setze den Status von true auf false und umgekehrt
-	//public abstract boolean switchStatusLocalAsGroupTo(Enum enumStatusIn) throws ExceptionZZZ; //setze den uebergebenen Status auf von true auf false oder umgekehrt. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den nicht geswitchten Wert. 
-	public abstract boolean switchStatusLocalAsGroupTo(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ; //setze den uebergebenen Status auf den uebergebenen Wert. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den entsprechend nicht uebergebenen Wert.. 
-	public abstract boolean switchStatusLocalAsGroupTo(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //setze den uebergebenen Status auf den uebergebenen Wert. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den entsprechend nicht uebergebenen Wert..
+	//+++ Verwende IEnumSetMappedStatus. Da kann man viel mehr Informationen unterbringen
+	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ enumStatusIn) throws ExceptionZZZ;
 	
+	//++++ Aendere mit einem Aufruf mehrere Statuseintraege ab, ohne Berücksichtigung einer GroupId
+	public abstract boolean switchStatusLocalAllGroupTo(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ; //setze den uebergebenen Status auf den uebergebenen Wert. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den entsprechend nicht uebergebenen Wert.. 
+	public abstract boolean switchStatusLocalAllGroupTo(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //setze den uebergebenen Status auf den uebergebenen Wert. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den entsprechend nicht uebergebenen Wert..
+	public abstract boolean switchStatusLocalAllGroupTo(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	
+	//+++ Aendere mit einem Aufruf mehrere Statuseintraege ab... FUER DIE ANGEGEBENE GRUPPE
+	//Merke: iIndex muss immer als Argument uebergeben werden. Nur dann wird es mit der iGroupId nicht verwechselt.
+	public abstract boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	
+	
+	//+++ Aendere mit einem Aufruf mehrere Statuseintraege ab... FUER DIE ANGEGEBENE GRUPPE
+	//    Merke: In IEnumSetMappedStatusZZZ ist die StatusGroupId vorhanden.
+	public abstract boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 
-	
-	
-	
 	//++++ Schaue in der Klasse nach dem enum STATUSLOCAL
 	public String[] getStatusLocalAll() throws ExceptionZZZ; 
 	public abstract boolean proofStatusLocalExists(Enum enumStatusIn) throws ExceptionZZZ;
@@ -52,10 +69,7 @@ public interface IStatusLocalUserBasicZZZ extends IObjectWithStatusZZZ{
 	public abstract boolean proofStatusLocalValue(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalValueChanged(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalValueChanged(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
-	
 
-	public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ enumStatusIn) throws ExceptionZZZ;
-	
 	//Halte den gesetzten Status als Enum fest, 
 	//Merke: Das offer kommt von der intern zum Speichern verwendeten CircularBuffer Klasse
 	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal);		
@@ -63,10 +77,6 @@ public interface IStatusLocalUserBasicZZZ extends IObjectWithStatusZZZ{
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious();
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack);
 	
+
 	
-	//wird nicht gespeichert, darum kein setter. Wert wird nur aus dem Enum geholt
-	public String getStatusLocalAbbreviation();
-	public String getStatusLocalAbbreviationPrevious();
-	public String getStatusLocalDescription();
-	public String getStatusLocalDescriptionPrevious();	
 }

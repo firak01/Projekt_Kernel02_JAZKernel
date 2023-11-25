@@ -381,7 +381,7 @@ public static String computeHtmlFromStackTrace(Throwable t){
 	 * @return last reporting function plus last reported errormessage
 	 */
 	public String getDetailAllLast(){
-		String sFunction = this.saFunction[this.saFunction.length - 1] + "#" + this.saMessage[this.saMessage.length - 1];
+		String sFunction =  this.saMessage[this.saMessage.length - 1] + " # " + this.saFunction[this.saFunction.length - 1];
 		return sFunction;
 	}
 	

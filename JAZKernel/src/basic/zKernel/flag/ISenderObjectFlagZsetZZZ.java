@@ -1,6 +1,6 @@
 package basic.zKernel.flag;
 
-import java.util.ArrayList;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 
 
 
@@ -20,5 +20,7 @@ public interface ISenderObjectFlagZsetZZZ {
 
 	public abstract void addListenerObjectFlagZset(IListenerObjectFlagZsetZZZ objEventListener);
 	
-	public abstract ArrayList<IListenerObjectFlagZsetZZZ> getListenerRegisteredAll();
+	//Damit soll sichergestellt werden, dass jedes Objekt sich nur 1x registriert. 
+	//Merke: Wenn ein Objekt mehrmals registriert wird, kann es sein, das beim 2ten feuern des gleichen Events an das gleich Objekt unerwuenschte Nebeneffekte auftreten.
+	public abstract ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ> getListenerRegisteredAll();
 }

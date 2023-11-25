@@ -14,6 +14,7 @@ public interface IStatusLocalUserMessageZZZ extends IStatusLocalUserBasicZZZ, IC
 	public abstract boolean switchStatusLocalAsGroupTo(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	
 	
+	
 	//Merke: Das offer kommt von der intern verwendeten CircularBuffer
 	public abstract boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;	

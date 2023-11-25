@@ -353,6 +353,20 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 	}
 	
 	@Override 
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
+			
+			bReturn = this.offerStatusLocal(enumStatus, null, bStatusValue);
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override 
 	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
@@ -545,7 +559,5 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 		}	// end main:
 		
 		return bFunction;	
-	}
-
-		
+	}		
 }//END class

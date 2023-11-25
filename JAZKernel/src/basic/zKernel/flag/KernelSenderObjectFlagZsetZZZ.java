@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import basic.zKernel.IKernelZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
@@ -29,7 +30,7 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 	/* (non-Javadoc)
 	 * @see use.via.client.module.export.ISenderEventComponentReset#fireEvent(basic.zKernelUI.component.model.KernelEventComponentSelectionResetZZZ)
 	 */
-	private ArrayList<IListenerObjectFlagZsetZZZ> listaLISTENER_REGISTERED = new ArrayList();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
+	private ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ> listaLISTENER_REGISTERED = new ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
 																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
 	@Override                                                                                          //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
 	public final void fireEvent(IEventObjectFlagZsetZZZ event){	
@@ -113,7 +114,7 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 	}
 	
 	@Override
-	public final ArrayList<IListenerObjectFlagZsetZZZ> getListenerRegisteredAll(){
+	public final ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ> getListenerRegisteredAll(){
 		return listaLISTENER_REGISTERED;
 	}
 }

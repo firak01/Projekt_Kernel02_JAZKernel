@@ -13,6 +13,4 @@ public interface IStatusLocalUserZZZ extends IStatusLocalUserBasicZZZ, ICircular
 	public abstract void setStatusLocalObject(IStatusBooleanZZZ objEnum);
 	public abstract IStatusBooleanZZZ getStatusLocalObjectPrevious();
 	public abstract IStatusBooleanZZZ getStatusLocalObjectPrevious(int iIndexStepsBack);
-	
-	void setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue);
 }
