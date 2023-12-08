@@ -38,9 +38,6 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ impleme
 		
 		main:{
 			try{
-			check:{
-				
-			}//END check:
 			String sLog = "ProcessWatchRunner #"+ this.getNumber() + " started.";
 			this.logLineDate(sLog);
 			
@@ -179,6 +176,28 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			}
 		}//END main:
 	}
+	
+	
+	@Override
+	public boolean writeErrorToLogWithStatus() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{			
+			try{
+				bReturn = this.writeErrorToLog();
+				if(!bReturn)break main;
+			   		
+				this.setStatusLocal(IProcessWatchRunnerZZZ.STATUSLOCAL.HASERROR, true);
+		    	Thread.sleep(20);
+
+			} catch (InterruptedException e) {
+				ExceptionZZZ ez = new ExceptionZZZ("InterruptedException happend: '"+ e.getMessage() + "'", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			bReturn = true;
+		}//END Main:	
+		return bReturn;
+	}		
+
 
 
 
@@ -309,7 +328,7 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			String sLog = " Process#: " + iProcess + " - sLine=" + sLine;
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
 			if(StringZZZ.contains(sLine,"TCP connection established with")) {				
-				boolean bHasConnection = this.setStatusLocal(ProcessWatchRunnerZZZ.STATUSLOCAL.HASCONNECTION, true);
+				boolean bHasConnection = this.switchStatusLocalAllGroupTo(ProcessWatchRunnerZZZ.STATUSLOCAL.HASCONNECTION);
 				bReturn = bHasConnection;
 			}
 			
@@ -362,6 +381,20 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (STATUSLOCAL) enumStatusIn;
 			
 			bReturn = this.offerStatusLocal(enumStatus, null, bStatusValue);
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override 
+	public boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			ProcessWatchRunnerZZZ.STATUSLOCAL enumStatus = (ProcessWatchRunnerZZZ.STATUSLOCAL) enumStatusIn;
+			
+			bReturn = this.offerStatusLocal(iIndexOfProcess, enumStatus, null, bStatusValue);
 		}//end main:
 		return bReturn;
 	}
@@ -559,5 +592,6 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 		}	// end main:
 		
 		return bFunction;	
-	}		
-}//END class
+	}
+
+	}//END class

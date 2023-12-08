@@ -102,13 +102,45 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 	
 	//##### aus IListenerObjectStatusLocalSetZZZ
 		@Override
-		public boolean statusLocalChanged(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+		public boolean statusLocalChanged(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ{
 			boolean bReturn = false;
 			
 			main:{
 				//Falls nicht zuständig, mache nix
 			    boolean bProof = this.isEventStatusLocalRelevant(eventStatusLocalSet);
 				if(!bProof) break main;
+				
+				String sLog=null;
+				
+				//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
+				IEnumSetMappedZZZ enumStatus = eventStatusLocalSet.getStatusEnum();
+				if(enumStatus==null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";
+					System.out.println(sLog);
+					this.logLineDate(sLog);
+					break main;
+				}
+				
+				//+++++++++++++++++++++
+				HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>hmEnum = this.getHashMapEnumSetForCascadingStatusLocal();				
+				if(hmEnum==null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+					System.out.println(sLog);
+					this.logLineDate(sLog);
+					break main;
+				}
+				
+				//+++++++++++++++++++++
+				
+				IEnumSetMappedStatusZZZ objEnum = hmEnum.get(enumStatus);							
+				if(objEnum==null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen gemappten Status für en Status aus dem Event-Objekt erhalten. Breche ab";
+					System.out.println(sLog);
+					this.logLineDate(sLog);
+					break main;
+				}
+				
+				
 				
 				//Nur so als Beispiel, muss ueberschrieben werden:
 				//Lies den Status (geworfen vom Backend aus)

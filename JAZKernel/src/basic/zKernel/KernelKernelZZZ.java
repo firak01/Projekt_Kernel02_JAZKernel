@@ -32,6 +32,7 @@ import basic.zBasic.util.counter.ICounterAlphabetSignificantZZZ;
 import basic.zBasic.util.counter.ICounterAlphabetZZZ;
 import basic.zBasic.util.counter.ICounterStrategyAlphabetSignificantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
+import basic.zBasic.util.datatype.booleans.BooleanZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -1573,7 +1574,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 			}//end main:
 	return objReturn;
 }
-	
+
 	@Override
 	public String searchAliasForModule(String sModule) throws ExceptionZZZ {
 		String sReturn=null;
@@ -1651,7 +1652,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 		return sReturn;
 	}
 	
-		
+	@Override
 	public String searchFileConfigIniNameByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ {
 		String sReturn="";
 		main:{
@@ -1690,6 +1691,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 		return sReturn;
 	}
 	
+	@Override
 	public String searchFileConfigIniPathByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ {
 		String sReturn="";
 		main:{
@@ -1750,6 +1752,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 24.06.2023, 12:32:15
 	 */
+	@Override
 	public FileIniZZZ searchModuleFileByModule(String sModule, boolean bExistingOnly) throws ExceptionZZZ {
 		FileIniZZZ objReturn = null;
 		main:{								
@@ -1758,6 +1761,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 		return objReturn;
 	}
 	
+	@Override
 	public FileIniZZZ searchModuleFileByModuleInWorkspace(String sModule, boolean bExistingOnly) throws ExceptionZZZ {
 		FileIniZZZ objReturn = null;
 		main:{			
@@ -1867,6 +1871,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 			return objReturn;
 		}
 	
+	@Override
 	public File getFileConfigModule(String sModuleAlias) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
@@ -2706,6 +2711,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 	 * @return String. Wert hinter dem Gleichheitszeichen
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByModuleAlias(String sModuleAlias, String sParameter)  throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{			
@@ -2750,6 +2756,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 	return objReturn;		
 }//end function getParameterByProgramAlias(..)
 	
+	@Override
 	public IKernelConfigSectionEntryZZZ[] getParameterByModuleAliasAsArray(String sModule, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ[] objaReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		String sDebug = "";
@@ -2781,7 +2788,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 		return objaReturn;
 	}
 	
-	
+	@Override
 	public synchronized void setParameterByModuleAlias(String sModuleAlias, String sParameter, String sValue, boolean bSaveImmediate) throws ExceptionZZZ{
 		main:{
 		check:{
@@ -2871,6 +2878,7 @@ MeinTestParameter=blablaErgebnis
 	* lindhaueradmin; 13.07.2006 10:45:57
 	 * @throws ExceptionZZZ 
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameter(String sParameter) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null; 
 		main:{
@@ -2886,6 +2894,7 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 * lindhaueradmin, 07.07.2013
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameter4System(String sParameter) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -2905,6 +2914,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return String. Wert hinter dem Gleichheitszeichen
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(File objFileConfig, String sParameter) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -2937,6 +2947,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;		
 	}//end function getParameterByProgramAlias(..)
 
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(FileIniZZZ objFileIniConfig, String sParameter) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			main:{
@@ -2970,7 +2981,7 @@ MeinTestParameter=blablaErgebnis
 			return objReturn;		
 		}//end function getParameterByModuleAlias(..)
 		
-	
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(File objFileConfig, String sModuleAlias, String sParameter) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -3002,6 +3013,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;		
 	}//end function getParameterByProgramAlias(..)
 
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByModuleFile(FileIniZZZ objFileIniConfig, String sModuleAlias, String sParameter) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			main:{
@@ -3193,6 +3205,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = null;//new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -3240,6 +3253,7 @@ MeinTestParameter=blablaErgebnis
 	 *
 	 * javadoc created by: 0823, 20.10.2006 - 09:03:54
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sAliasProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -3292,7 +3306,7 @@ MeinTestParameter=blablaErgebnis
 	return objReturn;		
 }//end function getParameterByProgramAlias(..)
 		
-	
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(String sModule, String sProgramOrSection, String sProperty, boolean bUseCache) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		String sDebug = "";
@@ -3325,6 +3339,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;
 	}
 	
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -4557,6 +4572,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 12.01.2007 09:10:41
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(String sModuleAndProgramAndSection, String sProperty, boolean bUseCache) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -4606,6 +4622,7 @@ MeinTestParameter=blablaErgebnis
 	}
 	
 	//############################################################################
+	@Override
 	public IKernelConfigSectionEntryZZZ[] getParameterArrayWithEntryByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ[] objaReturn = null; //new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		String sDebug = "";
@@ -4724,6 +4741,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param sValue,                 the Value to be set, if the parameter does not exist, the entry will be created.	if the value is 'null', the property will be deleted from the file.
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public synchronized void setParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty, String sValue, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 		main:{
 			check:{
@@ -4759,32 +4777,33 @@ MeinTestParameter=blablaErgebnis
 		 * @param sValue,                 the Value to be set, if the parameter does not exist, the entry will be created.	if the value is 'null', the property will be deleted from the file.
 		 * @throws ExceptionZZZ
 		 */
-		public synchronized void setParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty, String sValue) throws ExceptionZZZ{
-			main:{
-				check:{
-								if(objFileConfig == null){
-									ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;
-								}else if(objFileConfig.exists()==false){
-									ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;
-								}else if(objFileConfig.isDirectory()==true){
-									ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' is as directory.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
-									throw ez;
-								}
-												
-							}//end check:
-		
-							//1. Erstellen des FileIni-Objects
-							HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
-							hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
-						
-							FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
-							this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, true);
+	@Override
+	public synchronized void setParameterByProgramAlias(File objFileConfig, String sProgramOrSection, String sProperty, String sValue) throws ExceptionZZZ{
+		main:{
+			check:{
+							if(objFileConfig == null){
+								ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'Configuration file-object'",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}else if(objFileConfig.exists()==false){
+								ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' does not exist.",iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}else if(objFileConfig.isDirectory()==true){
+								ExceptionZZZ ez = new ExceptionZZZ("Wrong parameter: 'Configuration file-object' is as directory.", iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
+								throw ez;
+							}
+											
+						}//end check:
+	
+						//1. Erstellen des FileIni-Objects
+						HashMap<String, Boolean> hmFlag = new HashMap<String, Boolean>();					
+						hmFlag.put(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA.name(), true);
+					
+						FileIniZZZ objFileIni = new FileIniZZZ(this, objFileConfig,hmFlag);
+						this.KernelSetParameterByProgramAlias_(objFileIni, null, sProgramOrSection, sProperty, sValue, true);
 
-			}//end main:
-		}//end function setParameterByProgramAlias
-			
+		}//end main:
+	}//end function setParameterByProgramAlias
+		
 	
 	/**
 	 * @param objFileIniConfig, 			FileIniZZZ, Module-Konfiguration-File
@@ -4794,6 +4813,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param bFlagSaveImmediate,   true if the change should be saved immediately, otherwise the change will be kept im memory and stored in objFileConfig
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public synchronized void setParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sProgramOrSection, String sProperty, String sValue, boolean bFlagSaveImmidiate) throws ExceptionZZZ{
 	main:{
 		try{
@@ -4832,6 +4852,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param bFlagSaveImmediate,   true if the change should be saved immediately, otherwise the change will be kept im memory and stored in objFileConfig
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public synchronized void setParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sProgramOrSection, String sProperty, String sValue) throws ExceptionZZZ{
 	main:{
 		try{
@@ -4876,6 +4897,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 16.01.2007 11:08:36
 	 */
+	@Override
 	public synchronized void setParameterByProgramAlias(String sModuleAndProgramAndSection, String sProperty, String sValue) throws ExceptionZZZ{
 		main:{
 				check:{
@@ -4923,6 +4945,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param sValue
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public synchronized void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue) throws ExceptionZZZ{			
 			main:{
 						check:{
@@ -4951,6 +4974,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param sValue
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public synchronized void setParameterByProgramAlias(String sModule, String sSectionOrProgram, String sProperty, String sValue, boolean bSaveImidiately) throws ExceptionZZZ{			
 			main:{
 						check:{
@@ -4979,6 +5003,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param sValue
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public synchronized void setParameterByProgramAliasEncrypted(String sModule, String sSectionOrProgram, String sProperty, String sValue, ICryptZZZ objCrypt) throws ExceptionZZZ{			
 			main:{
 				check:{
@@ -5034,6 +5059,7 @@ MeinTestParameter=blablaErgebnis
 	 * @param sValue
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public synchronized void setParameterByProgramAliasEncrypted(String sSectionOrProgram, String sProperty, String sValue, ICryptZZZ objCrypt) throws ExceptionZZZ{			
 			main:{
 				check:{
@@ -5064,6 +5090,7 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 07.04.2020, 08:06:58
 	 */
+	@Override
 	public String[] getParameterArrayStringByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
@@ -5118,6 +5145,7 @@ MeinTestParameter=blablaErgebnis
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 07.04.2020, 08:10:43
 	 */
+	@Override
 	public String[] getParameterArrayWithStringByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
@@ -5141,6 +5169,23 @@ MeinTestParameter=blablaErgebnis
 		return saReturn;
 	}
 	
+	@Override
+	public Boolean getParameterBooleanByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
+		Boolean objReturn = null;		
+		main:{
+			IKernelConfigSectionEntryZZZ objEntry = this.getParameterByProgramAlias(sModule, sProgramOrSection, sProperty);
+			if(objEntry.hasAnyValue()) {
+				String sValue = objEntry.getValue();
+				boolean bValue = BooleanZZZ.stringToBoolean(sValue);
+				objReturn = new Boolean(bValue);
+			}else {
+				objReturn = new Boolean(false);
+			}		
+		}//END main:
+		return objReturn;
+	}
+	
+	@Override
 	public HashMap<String,String>getParameterHashMapWithStringByProgramAlias(String sProgramAndSection, String sProperty) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn = null;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
@@ -5159,6 +5204,7 @@ MeinTestParameter=blablaErgebnis
 		return hmReturn;
 	}
 	
+	@Override
 	public HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapWithEntryByProgramAlias(String sProgramAndSection, String sProperty) throws ExceptionZZZ{
 		HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>hmReturn = null;		
 		String sDebug;
@@ -5175,6 +5221,7 @@ MeinTestParameter=blablaErgebnis
 		return hmReturn;
 	}
 	
+	@Override
 	public HashMap<String,String>getParameterHashMapWithStringByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		HashMap<String,String>hmReturn = null;
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ();//Speichere hier die Suchwerte ab, um sie später zu Debug-/Analysezwecken auszugeben.
@@ -5282,6 +5329,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 09.02.2007 10:39:55
 	 */
+	@Override
 	public File getParameterFileByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
 		File fileReturn = null;
 		main:{
@@ -5312,6 +5360,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 09.02.2007 10:39:55
 	 */
+	@Override
 	public File getParameterFileByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
 		File fileReturn = null;
 		main:{
@@ -5342,6 +5391,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 09.02.2007 10:39:55
 	 */
+	@Override
 	public ImageIcon getParameterImageIconByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
 		ImageIcon iconReturn = null;
 		main:{
@@ -5378,6 +5428,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 09.02.2007 10:39:55
 	 */
+	@Override
 	public ImageIcon getParameterImageIconByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
 		ImageIcon iconReturn = null;
 		main:{
@@ -5481,6 +5532,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public ArrayListExtendedZZZ<String> getProgramAliasUsed(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
 		ArrayListExtendedZZZ<String> listasReturn = new ArrayListExtendedZZZ<String>();
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ(); //Für die durchgeführten Suchen. Statt so vieler system.out Anweisungen.
@@ -5776,6 +5828,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public ArrayListExtendedZZZ<String> getProgramAliasUsed_DirectLookup(FileIniZZZ objFileIniConfig, String sMainSection, String sProgramOrAlias, String sSystemNumber) throws ExceptionZZZ{
 		ArrayListExtendedZZZ<String> listasReturn = new ArrayListExtendedZZZ<String>();
 		HashMapMultiIndexedZZZ hmDebug = new HashMapMultiIndexedZZZ(); //Für die durchgeführten Suchen. Statt so vieler system.out Anweisungen.
@@ -6107,6 +6160,7 @@ MeinTestParameter=blablaErgebnis
 			 * @return
 			 * @throws ExceptionZZZ 
 			 */
+	@Override
 	public ArrayList getFileConfigModuleAliasAll(boolean bOnlyConfigured, boolean bOnlyExisting) throws ExceptionZZZ{
 				ArrayList listaReturn = new ArrayList();
 				main:{
@@ -6427,6 +6481,7 @@ MeinTestParameter=blablaErgebnis
 	* lindhaueradmin; 04.03.2007 10:00:37
 	 * @throws ExceptionZZZ 
 	 */
+	@Override
 	public ArrayList getModuleAll() throws ExceptionZZZ{
 		ArrayList listaModuleString = new ArrayList();
 		main:{
@@ -6471,6 +6526,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return 
 	 * @throws ExceptionZZZ 
 	 */
+	@Override
 	public boolean proofFileConfigModuleIsConfigured(String sModule) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -6534,6 +6590,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public boolean proofFileConfigModuleExists(String sModule) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -6567,6 +6624,7 @@ MeinTestParameter=blablaErgebnis
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public boolean proofSectionIsConfigured(String sAlias) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
@@ -6594,7 +6652,7 @@ MeinTestParameter=blablaErgebnis
 		return bReturn;
 	}
 	
-
+	@Override
 	public void setLogObject(LogZZZ objLog){
 		this.objLog = objLog;
 	}
@@ -7022,31 +7080,39 @@ MeinTestParameter=blablaErgebnis
 	}
 
 	
-	//##### Interfaces	
+	//##### Interfaces
+	@Override
 	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ{
 		if(this.objConfig==null){
 			this.objConfig = new ConfigZZZ(null);			
 		}
 		return this.objConfig;
 	}
+	
+	@Override
 	public void setConfigObject(IKernelConfigZZZ objConfig){
 		this.objConfig = objConfig;
 	}
 	
+	@Override
 	public IKernelContextZZZ getContextUsed() {
 		return this.objContext;
 	}
+	
+	@Override
 	public void setContextUsed(IKernelContextZZZ objContext) {
 		this.objContext = objContext;
 	}	
 	
-
+	@Override
 	public IKernelCacheZZZ getCacheObject() throws ExceptionZZZ{
 		if(this.objCache==null){
 			this.objCache = new KernelCacheZZZ();
 		}
 		return this.objCache;		
 	}
+	
+	@Override
 	public void setCacheObject(IKernelCacheZZZ objCache){
 		this.objCache = objCache;
 	}
@@ -7080,6 +7146,7 @@ MeinTestParameter=blablaErgebnis
 		}			
 	}
 
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sModule, String sProgramOrSection, String sProperty, boolean bUseCache) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{
@@ -7130,6 +7197,7 @@ MeinTestParameter=blablaErgebnis
 		 *
 		 * javadoc created by: 0823, 20.10.2006 - 09:03:54
 		 */
+	@Override
 		public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(FileIniZZZ objFileIniConfig, String sAliasProgramOrSection, String sProperty, boolean bUseCache) throws ExceptionZZZ{
 			IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 			main:{
@@ -7184,6 +7252,7 @@ MeinTestParameter=blablaErgebnis
 		return objReturn;		
 	}//end function getParameterByProgramAlias(..)	
 		
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.		
 		String sDebug = "";
@@ -7229,6 +7298,7 @@ MeinTestParameter=blablaErgebnis
 	* 
 	* lindhaueradmin; 12.01.2007 09:10:41
 	 */
+	@Override
 	public IKernelConfigSectionEntryZZZ getParameterByProgramAlias(String sModuleAndProgramAndSection, String sProperty) throws ExceptionZZZ{
 		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main:{

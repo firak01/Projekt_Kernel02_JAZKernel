@@ -23,6 +23,8 @@ public interface IProcessWatchRunnerZZZ{
 	public void setNumber(int iNumber);
 	
 	public abstract boolean analyseInputLineCustom(String sLine) throws ExceptionZZZ;
+	public abstract boolean writeErrorToLog()throws ExceptionZZZ;
+	public abstract boolean writeErrorToLogWithStatus()throws ExceptionZZZ;
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//Die StatusId für Stati, aus dieser Klasse selbst. Nicht die Stati der anderen Klassen.

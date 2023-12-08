@@ -155,7 +155,9 @@ public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObj
 	//MErke: Die genaue Analyse muss im konkreten Process Watch Runner gemacht werden.
 	public abstract void writeOutputToLogPLUSanalyse() throws ExceptionZZZ;
 	
-	public void writeErrorToLog() throws ExceptionZZZ{
+	@Override
+	public boolean writeErrorToLog() throws ExceptionZZZ{
+		boolean bReturn = false;
 		main:{			
 			try{
 				check:{
@@ -168,20 +170,20 @@ public abstract class AbstractProcessWatchRunnerZZZ extends AbstractKernelUseObj
 			    BufferedReader err = new BufferedReader(new InputStreamReader(objProcess.getErrorStream()) );
 			    for ( String s; (s = err.readLine()) != null; ){
 				      //System.out.println( s );
-			    	this.getLogObject().WriteLine(this.getNumber() + "# ERROR: "+ s);
-			    	this.setStatusLocal(AbstractProcessWatchRunnerZZZ.STATUSLOCAL.HASERROR, true);
-			    	Thread.sleep(20);			
+			    	this.getLogObject().WriteLine(this.getNumber() + "# ERROR: "+ s);			
 			    	if( this.getFlag("stoprequested")==true) break main;
 				}
 			} catch (IOException e) {
 				ExceptionZZZ ez = new ExceptionZZZ("IOException happend: '" + e.getMessage() + "'", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
-			} catch (InterruptedException e) {
-				ExceptionZZZ ez = new ExceptionZZZ("InterruptedException happend: '"+ e.getMessage() + "'", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
-				throw ez;
 			}
+			bReturn = true;
 		}//END Main:	
+		return bReturn;
 	}
+	
+	@Override
+	public abstract boolean writeErrorToLogWithStatus() throws ExceptionZZZ;
 	
 
 	

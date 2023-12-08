@@ -741,6 +741,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	@Override
 	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
 	
+	@Override
+	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
+
 	
 	@Override
 	public boolean switchStatusLocalAllGroupTo(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
@@ -763,6 +766,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
+	public boolean switchStatusLocalAllGroupTo(Enum enumStatus) throws ExceptionZZZ{
+		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, null, true);
+	}
+	
+	@Override
 	public boolean switchStatusLocalAllGroupTo(Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ{
 		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, null, bStatusValue);
 	}
@@ -782,10 +790,22 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
+	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped) throws ExceptionZZZ{
+		int iGroupId = enumStatusMapped.getStatusGroupId();
+		Enum enumStatus = (Enum)enumStatusMapped;
+		return this.switchStatusLocalForGroupTo_(-1, iGroupId, enumStatus, null, true);
+	}
+	
+	@Override
 	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ{
 		int iGroupId = enumStatusMapped.getStatusGroupId();
 		Enum enumStatus = (Enum)enumStatusMapped;
 		return this.switchStatusLocalForGroupTo_(-1, iGroupId, enumStatus, null, bStatusValue);
+	}
+	
+	@Override
+	public boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus) throws ExceptionZZZ{
+		return this.switchStatusLocalForGroupTo_(iIndex, iGroupId, enumStatus, null, true);
 	}
 	
 	@Override

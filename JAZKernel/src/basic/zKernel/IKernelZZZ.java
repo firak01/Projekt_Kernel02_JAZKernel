@@ -28,6 +28,7 @@ public interface IKernelZZZ extends IKernelConfigParameterHandlerZZZ,IKernelCach
 	
 	
 	public IKernelConfigZZZ getConfigObject() throws ExceptionZZZ;	
+	public void setConfigObject(IKernelConfigZZZ objConfig);
 	public LogZZZ getLogObject();
 	public void setLogObject(LogZZZ objLog);
 	
@@ -45,9 +46,14 @@ public interface IKernelZZZ extends IKernelConfigParameterHandlerZZZ,IKernelCach
 	public ArrayList<String> computeSystemSectionNamesForProgram(String sProgramName) throws ExceptionZZZ;
 	
 	public IniFile getFileConfigKernelAsIni() throws ExceptionZZZ;
+	public File getFileConfigModule(String sModuleAlias) throws ExceptionZZZ;
 	public File[]getFileConfigModuleAllByDir(String sDir) throws ExceptionZZZ;
 	
+	
 	public FileIniZZZ searchModuleFileWithProgramAlias(String sModule, String sProgramOrSection) throws ExceptionZZZ;
+	public FileIniZZZ searchModuleFileByModule(String sModule, boolean bExistingOnly) throws ExceptionZZZ;
+	public FileIniZZZ searchModuleFileByModuleInWorkspace(String sModule, boolean bExistingOnly) throws ExceptionZZZ;
+	public String searchFileConfigIniPathByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ;
 	
 	//HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>getParameterHashMapWithEntryByProgramAlias(String sModule, String sKeyInHashMapForProgramOrSection, String sValueInHashMapForsProperty) throws ExceptionZZZ;
 	
@@ -55,10 +61,10 @@ public interface IKernelZZZ extends IKernelConfigParameterHandlerZZZ,IKernelCach
 	public IKernelConfigSectionEntryZZZ getSectionAliasFor(String sModuleOrProgramAsSection) throws ExceptionZZZ;
 	
 	public String searchAliasForModule(String sModule) throws ExceptionZZZ;
-	
 	public String searchAliasForProgram(String sProgramName) throws ExceptionZZZ;
 	public String searchAliasForProgram(String sModule, String sProgramName) throws ExceptionZZZ;
 	
+	public String searchFileConfigIniNameByAlias(IniFile objIni, String sAlias) throws ExceptionZZZ;
 	
 	//Schreibe einen Wert mit weiteren Argumenten als <Z> - Expression. Der uebergebene Wert wird in der Methode erst noch verschluesselt. 
 	public void setParameterByProgramAlias(String sSectionOrProgram, String sProperty,
