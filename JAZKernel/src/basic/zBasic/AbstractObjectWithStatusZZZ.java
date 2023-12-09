@@ -21,11 +21,15 @@ import basic.zKernel.status.StatusLocalHelperZZZ;
 
 public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ implements IStatusLocalUserMessageZZZ{
 	private static final long serialVersionUID = 1L;
-	protected HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
+	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	
 	//Der StatusMessageString. Als Extra Speicher. Kann daher zum Ueberschreiben des Default StatusMessage Werts aus dem Enum genutzt werden.
-	protected CircularBufferZZZ<IStatusBooleanMessageZZZ> cbStatusLocal = new CircularBufferZZZ<IStatusBooleanMessageZZZ>(9);	
-	protected CircularBufferZZZ<String> cbStatusLocalMessage = new CircularBufferZZZ<String>(9);
+	protected volatile CircularBufferZZZ<IStatusBooleanMessageZZZ> cbStatusLocal = new CircularBufferZZZ<IStatusBooleanMessageZZZ>(9);	
+	protected volatile CircularBufferZZZ<String> cbStatusLocalMessage = new CircularBufferZZZ<String>(9);
+	
+	//Ein einmaliger Vorgang. Der quasi letzte gemeldete Fehler.
+	//Diese Meldung ist flexibel und nicht in irgendeinem EnumSet hinterlegt.
+	protected volatile String sStatusLocalError=null;
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
@@ -41,6 +45,23 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public AbstractObjectWithStatusZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
 	}
+	
+	@Override
+	public String getStatusLocalError() {
+		return this.sStatusLocalError;
+	}
+	
+	@Override 
+	public void setStatusLocalError(String sError) {
+		this.sStatusLocalError = sError;
+	}
+	
+	
+	@Override
+	public void resetStatusLocalError() {
+		this.sStatusLocalError = null;
+	}
+	
 	
 	@Override
 	public IStatusBooleanMessageZZZ getStatusLocalObject() {
@@ -722,27 +743,53 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//Setze das Flag nun in die HashMap
 			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
 			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-			
-			bReturn=true;
+									
+			bReturn=this.offerStatusLocal(sStatusName, null, bStatusValue);
 		}//end main:
 		return bReturn;		
 	}
 	
-	
-	
-	
+	@Override
+	public boolean setStatusLocal(String sStatusName, String sMessage, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName))break main;			
+			boolean bProof = this.proofStatusLocalExists(sStatusName);
+			if(!bProof)break main;					
+			
+			//Setze das Flag nun in die HashMap
+			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+									
+			bReturn=this.offerStatusLocal(sStatusName, sMessage, bStatusValue);
+		}//end main:
+		return bReturn;		
+	}
 	
 	@Override
 	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 
 	@Override
+	public abstract boolean setStatusLocal(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
+	
+	@Override
 	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-		
+
+	@Override
+	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
+
+	
 	@Override
 	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
 	
 	@Override
+	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
+	
+	@Override
 	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
+
+	@Override
+	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
 
 	
 	@Override

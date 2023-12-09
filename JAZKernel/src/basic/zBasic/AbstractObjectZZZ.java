@@ -35,7 +35,7 @@ import custom.zKernel.LogZZZ;
 public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ{
 	private static final long serialVersionUID = 1L;
 	
-	protected ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
+	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	

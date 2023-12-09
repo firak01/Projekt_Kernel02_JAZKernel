@@ -252,7 +252,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	
 	 public static String formatMethodCallingLine(int iLine){
 		 //Merke: Nach der Zeilenangabe ist # besser. Z.B der Doppelpunkt wird in Vielen Logstrings selbst benutzt
-		 return " - Line# " + iLine;
+		 return " - Line " + iLine + "# ";
 		 
 	 }
 	 

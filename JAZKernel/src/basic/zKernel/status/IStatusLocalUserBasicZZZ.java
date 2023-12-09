@@ -18,6 +18,11 @@ public interface IStatusLocalUserBasicZZZ extends IObjectWithStatusZZZ{
 //		STATUSLOCAL_PROOF_VALUE, STATUSLOCAL_PROOF_VALUECHANGED ; 
 //	}
 		
+	//Falls benötigt wird 1 Fehlerstring gespeichert. 
+	//Merke: Diese Fehlermeldung ist flexibel und nicht etwa in einem EnumSet hinterlegt.	
+	public String getStatusLocalError();
+	public void setStatusLocalError(String sError);
+	public void resetStatusLocalError();	
 	
 	//wird nicht gespeichert, darum kein setter. Wert wird nur aus dem Enum geholt
 	public String getStatusLocalAbbreviation();
