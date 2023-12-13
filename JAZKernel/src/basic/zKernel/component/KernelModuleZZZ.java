@@ -10,8 +10,9 @@ public class KernelModuleZZZ extends AbstractKernelModuleZZZ{
 	}
 	
 	@Override
-	public void reset() {
+	public boolean reset() {
 		this.resetModuleUsed();
+		return true;
 	}
 
 }

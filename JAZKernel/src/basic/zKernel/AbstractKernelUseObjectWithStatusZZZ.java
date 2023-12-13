@@ -180,22 +180,6 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 		this.objKernel=objKernel;
 	}
 	
-	public String getModuleUsed(){
-		if(this.getContextUsed() == null){
-			return this.getClass().getName();
-		}else{
-			return this.getContextUsed().getModuleName();
-		}
-	}
-	
-	public String getProgramUsed(){
-		if(this.getContextUsed() == null){
-			return this.getClass().getName();
-		}else{
-			return this.getContextUsed().getProgramName();
-		}
-	}
-
 	public void setContextUsed(IKernelContextZZZ objContext) {
 		this.objContext = objContext;
 	}

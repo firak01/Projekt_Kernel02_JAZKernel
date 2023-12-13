@@ -15,6 +15,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -657,6 +658,21 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 						if(StringZZZ.isEmpty(sFlagName))break main;
 						bReturn = FlagZHelperZZZ.proofFlagZLocalSetBefore(this, sFlagName);
 					}
+					return bReturn;
+				}
+				
+				@Override
+				public boolean resetFlags() throws ExceptionZZZ{
+					boolean bReturn = false;
+					main:{
+						HashMap<String,Boolean> hm = this.getHashMapFlag();
+						if(hm.isEmpty())break main;
+						
+						ReferenceHashMapZZZ<String,Boolean>objhmReturn=new ReferenceHashMapZZZ<String,Boolean>();
+						objhmReturn.set(hm);
+						
+						bReturn =FlagZHelperZZZ.resetFlags(objhmReturn); 			
+					}//end main:
 					return bReturn;
 				}
 					

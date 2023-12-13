@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.component.IProgramRunnableZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -34,10 +35,9 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ impleme
 	}
 
 	//##########################################################
-	public void run() {
-		
+	public boolean start() throws ExceptionZZZ, InterruptedException {
+		boolean bReturn = false;
 		main:{
-			try{
 			String sLog = "ProcessWatchRunner #"+ this.getNumber() + " started.";
 			this.logLineDate(sLog);
 			
@@ -67,29 +67,17 @@ public class ProcessWatchRunnerZZZ extends AbstractProcessWatchRunnerZZZ impleme
 			
 				//Nach irgendeiner Ausgabe enden ist hier falsch, in einer abstrakten Klasse vielleicht richtig, quasi als Muster.
 				//if(this.getFlag("hasOutput")) break;
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					ExceptionZZZ ez = new ExceptionZZZ("An InterruptedException happened: '" + e.getMessage() + "''", iERROR_RUNTIME, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez;
-				}
+				Thread.sleep(10);
 
-				boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);
+				boolean bStopRequested = this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUESTSTOP);
 				if(bStopRequested) break;					
 		}while(true);
 		this.setStatusLocal(ProcessWatchRunnerZZZ.STATUSLOCAL.ISSTOPPED, true);
 		this.getLogObject().WriteLineDate("ProcessWatchRunner #"+ this.getNumber() + " ended.");
 					
-		}catch(ExceptionZZZ ez){
-			try {
-				this.getLogObject().WriteLineDate(ez.getDetailAllLast());
-				System.out.println(ez.getDetailAllLast());
-			} catch (ExceptionZZZ e) {
-				System.out.println(ez.getDetailAllLast());
-				e.printStackTrace();
-			}
-		}
+			bReturn = true;
 		}//END main
+		return bReturn;
 	}
 	
 	/** In dieser Methode werden die Ausgabezeilen eines Batch-Prozesses ( cmd.exe ) 
@@ -164,7 +152,7 @@ TCP connection established with [AF_INET]192.168.3.116:4999
 					boolean bAny = this.analyseInputLineCustom(s);
 														
 					Thread.sleep(20);
-					boolean bStopRequested = this.getFlag(IProcessWatchRunnerZZZ.FLAGZ.STOPREQUEST);//Merke: STOPREQUEST ist eine Anweisung.. bleibt also ein Flag und ist kein Status
+					boolean bStopRequested = this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUESTSTOP);//Merke: STOPREQUEST ist eine Anweisung.. bleibt also ein Flag und ist kein Status
 					if( bStopRequested) break main;
 				}								
 			} catch (IOException e) {

@@ -3,6 +3,8 @@ package basic.zKernel.flag.json;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -10,6 +12,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZLocalUserZZZ;
@@ -227,6 +230,28 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 				//Hole die HashMap aller gesetzten Flags
 				HashMap<String,Boolean> hmFlag = obj.getHashMapFlag();
 				bReturn = hmFlag.containsKey(sFlagName);
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean resetFlags(ReferenceHashMapZZZ<String,Boolean>objhmReturnValue) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{			
+			HashMap<String,Boolean> hm = objhmReturnValue.get();
+			if(hm.isEmpty()) break main;
+			
+			Set<String> setKey = hm.keySet();
+			Iterator<String> itKey = setKey.iterator();
+			while(itKey.hasNext()) {
+				String sKey = itKey.next();
+				Boolean objValue = hm.get(sKey);
+				if(objValue!=null) {
+					if(objValue.booleanValue()) {
+						hm.put(sKey, false); //also nur die true werte auf false setzen und dann gibt diese Methode auch einen "Aenderungsvermerk" zurueck.
+						bReturn = true;
+					}
+				}				
+			}			
 		}//end main:
 		return bReturn;
 	}

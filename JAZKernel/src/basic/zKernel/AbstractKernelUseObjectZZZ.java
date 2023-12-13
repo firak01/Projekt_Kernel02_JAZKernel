@@ -21,9 +21,9 @@ import custom.zKernel.LogZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
-	protected IKernelZZZ objKernel=null;
-	protected LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
-	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
+	protected volatile IKernelZZZ objKernel=null;
+	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
+	protected volatile IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
 		
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14

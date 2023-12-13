@@ -39,6 +39,7 @@ public interface IFlagZUserZZZ{
 	//public abstract <T extends IFlagUserZZZ.FLAGZ> void setFlag(T objEnumFlag, boolean bValue);
 	
 	public abstract HashMap<String, Boolean>getHashMapFlag();
+	public abstract boolean resetFlags() throws ExceptionZZZ;
 	
 	public String[] getFlagZ(boolean bFlagValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZ(boolean bFlagValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)

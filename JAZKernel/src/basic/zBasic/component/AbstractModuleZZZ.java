@@ -1,9 +1,11 @@
-package basic.zKernel.component;
+package basic.zBasic.component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import basic.zBasic.AbstractObjectWithFlagZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -15,7 +17,7 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZZ implements IKernelModuleZZZ {	
+public abstract class AbstractModuleZZZ  extends AbstractObjectWithFlagZZZ implements IModuleZZZ {	
 	protected String sModuleName=null;	
 	
 	/**Z.B. Wg. Reflection immer den Standardkonstruktor zur Verfügung stellen.
@@ -23,27 +25,23 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelModuleZZZ() throws ExceptionZZZ {
+	public AbstractModuleZZZ() throws ExceptionZZZ {
 		super();
-		KernelModuleNew_("", null);
+		ModuleNew_("", null);
 	}
 	
-	public AbstractKernelModuleZZZ(IKernelZZZ objKernel) throws ExceptionZZZ {
-		super(objKernel); 		
-		KernelModuleNew_("", null);
+	
+	public AbstractModuleZZZ(String[] saFlagUsed) throws ExceptionZZZ {
+		super(); 		
+		ModuleNew_("", saFlagUsed);
 	}
 	
-	public AbstractKernelModuleZZZ(IKernelZZZ objKernel, String[] saFlagUsed) throws ExceptionZZZ {
-		super(objKernel); 		
-		KernelModuleNew_("", saFlagUsed);
+	public AbstractModuleZZZ(String sModule) throws ExceptionZZZ {
+		super();
+		ModuleNew_(sModule, null);
 	}
 	
-	public AbstractKernelModuleZZZ(IKernelZZZ objKernel, String sModule) throws ExceptionZZZ {
-		super(objKernel);
-		KernelModuleNew_(sModule, null);
-	}
-	
-	private boolean KernelModuleNew_(String sModule, String[] saFlagUsed) throws ExceptionZZZ {
+	private boolean ModuleNew_(String sModule, String[] saFlagUsed) throws ExceptionZZZ {
 		boolean bReturn = false;		
 		main:{			
 			String stemp=null; boolean btemp=false; String sLog = null;
@@ -71,7 +69,7 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 			}//end if saFlagUsed!=null
 		
 			//Da dies ein KernelProgram ist automatisch das FLAG IKERNELMODULE Setzen!!!
-			this.setFlag(IKernelModuleZZZ.FLAGZ.ISKERNELMODULE.name(), true);
+			this.setFlag(IModuleZZZ.FLAGZ.ISMODULE.name(), true);
 			this.setModuleName(sModule);
 						
 			bReturn = true;
@@ -103,22 +101,22 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 	
 	
 	@Override
-	public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IModuleZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IKernelModuleZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IModuleZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -129,12 +127,12 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 	}
 	
 	@Override
-	public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagExists(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean proofFlagSetBefore(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 			return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
@@ -145,5 +143,5 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 	
 	//### Methoden
 	@Override
-	public abstract boolean reset();
+	public abstract void reset();
 }

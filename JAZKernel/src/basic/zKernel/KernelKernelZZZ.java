@@ -88,22 +88,22 @@ public abstract class KernelKernelZZZ extends AbstractObjectWithFlagZZZ implemen
 			
 	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private IniFile objIniConfig=null;
 	//20210110: Nur noch über FileIniZZZ - Objekt ereichbar...  private File objFileKernelConfig=null;
-	protected FileIniZZZ objFileIniKernelConfig = null; 
+	protected volatile FileIniZZZ objFileIniKernelConfig = null; 
 	//private IKernelConfigSectionEntryZZZ objEntry = null;
 	
-	private String sFileConfig="";
-	private String sDirectoryConfig="";
+	protected volatile String sFileConfig="";
+	protected volatile String sDirectoryConfig="";
 	
-	private String sSystemNumber="";	
-	private String sApplicationKey="";
+	protected volatile String sSystemNumber="";	
+	protected volatile String sApplicationKey="";
 
-	protected LogZZZ objLog = null;
-	protected IKernelConfigZZZ objConfig = null;   //die Werte für den Applikationskey, Systemnummer, etc.
-	protected IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.)
+	protected volatile LogZZZ objLog = null;
+	protected volatile IKernelConfigZZZ objConfig = null;   //die Werte für den Applikationskey, Systemnummer, etc.
+	protected volatile IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.)
 	
-	private IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
+	protected volatile IKernelCacheZZZ objCache = null; //Ein Zwischenspeicher für die aus der Ini-Konfiguration gelesenen Werte.
 	
-	private ICryptZZZ objCrypt = null; //Ein CryptAlgorithmus für in der Ini-Konfiguration verschlüsselte Werte.
+	protected volatile ICryptZZZ objCrypt = null; //Ein CryptAlgorithmus für in der Ini-Konfiguration verschlüsselte Werte.
 		
 /**  Verwende diesen Konstruktor, wenn die Defaultangaben für das Verzeichnis und für den ini-Dateinamen verwendet werden sollen:
 	 * -Verzeichnis: c:\\fglKernel\\KernelConfig

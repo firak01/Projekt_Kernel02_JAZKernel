@@ -8,12 +8,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import base.util.abstractArray.ArrayUtil;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -696,6 +698,21 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ im
 		}	// end main:
 		
 		return bFunction;
+	}
+	
+	@Override
+	public boolean resetFlags() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			HashMap<String,Boolean> hm = this.getHashMapFlag();
+			if(hm.isEmpty())break main;
+			
+			ReferenceHashMapZZZ<String,Boolean>objhmReturn=new ReferenceHashMapZZZ<String,Boolean>();
+			objhmReturn.set(hm);
+			
+			bReturn =FlagZHelperZZZ.resetFlags(objhmReturn); 			
+		}//end main:
+		return bReturn;
 	}
 	
 	//++++++++++++++++++++++++

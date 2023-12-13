@@ -1,18 +1,18 @@
-package basic.zKernel.component;
+package basic.zBasic.component;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
-public interface IKernelModuleZZZ extends IFlagZUserZZZ {
+public interface IModuleZZZ extends IFlagZUserZZZ {
 	public enum FLAGZ{
-		ISKERNELMODULE;
+		ISMODULE;
 	}	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelModuleZZZ.FLAGZ objEnumFlag);
-	public boolean setFlag(IKernelModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-	public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-	public boolean proofFlagExists(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
-	public boolean proofFlagSetBefore(IKernelModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public boolean getFlag(IModuleZZZ.FLAGZ objEnumFlag);
+	public boolean setFlag(IModuleZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean[] setFlag(IModuleZZZ.FLAGZ[] objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean proofFlagExists(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public boolean proofFlagSetBefore(IModuleZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public static String sMODULE_UNDEFINED="Modul_undefined";
 	
@@ -23,7 +23,7 @@ public interface IKernelModuleZZZ extends IFlagZUserZZZ {
 	
 		
 	public abstract void resetModuleUsed();                      //wird das ISKERNELMODULE Flag neu auf true gesetzt, dann ist angeraten das durchzuführen. Somit würde ein ggfs. ererbtes anderes Modul entfernt und der Modulname neu geholt.
-	public abstract boolean reset();
+	public abstract void reset();
 	
 	
 }

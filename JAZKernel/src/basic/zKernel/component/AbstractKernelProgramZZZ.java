@@ -71,8 +71,7 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	
 	
 	@Override
-	public String getProgramAlias() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
+	public String getProgramAlias() throws ExceptionZZZ {		
 		return null;
 	}
 	

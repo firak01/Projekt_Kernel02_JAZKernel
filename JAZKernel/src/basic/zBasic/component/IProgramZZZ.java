@@ -1,17 +1,20 @@
-package basic.zKernel.component;
+package basic.zBasic.component;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 
-public interface IKernelProgramZZZ{ 
+public interface IProgramZZZ extends IModuleUserZZZ, IFlagZUserZZZ{ 
 	public enum FLAGZ{
-		ISKERNELPROGRAM; 
-	}
+		ISPROGRAM; 
+	}	
+	public boolean start() throws ExceptionZZZ, InterruptedException;//das was ggfs. in run() aufgerufen wird.
+	public boolean reset() throws ExceptionZZZ;
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
-	public boolean getFlag(IKernelProgramZZZ.FLAGZ objEnumFlag);
-	public boolean setFlag(IKernelProgramZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-	public boolean[] setFlag(IKernelProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-	public boolean proofFlagExists(IKernelProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
+	public boolean getFlag(IProgramZZZ.FLAGZ objEnumFlag);
+	public boolean setFlag(IProgramZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean[] setFlag(IProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	public boolean proofFlagExists(IProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ;
 	
 	public abstract String getProgramName() throws ExceptionZZZ;   //Z.B. ein Button, Ist der Package und Klassenname
 	//kein setProgramName(...), da der Name berechnet wird aus der Klasse

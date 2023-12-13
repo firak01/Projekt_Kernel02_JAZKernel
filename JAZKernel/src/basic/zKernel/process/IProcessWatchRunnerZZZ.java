@@ -3,11 +3,12 @@ package basic.zKernel.process;
 import java.util.EnumSet;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.component.IProgramRunnableZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 public interface IProcessWatchRunnerZZZ{
 	public enum FLAGZ{
-		DUMMY, STOPREQUEST, END_ON_CONNECTION, END_ON_CONNECTIONLOST
+		DUMMY, END_ON_CONNECTION, END_ON_CONNECTIONLOST
 	}
 
 	boolean getFlag(FLAGZ objEnumFlag);
