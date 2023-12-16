@@ -58,7 +58,7 @@ public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusL
 					IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 					try {
-						boolean bStatusLocalChanged = l.statusLocalChanged(event);
+						boolean bStatusLocalChanged = l.changeStatusLocal(event);
 						if(bStatusLocalChanged) {
 							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
 						}					

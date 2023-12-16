@@ -30,8 +30,6 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 	//Wie in AbstractObjectWithStatusListeningZZZ
 	protected volatile HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSet =null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 
-	
-	
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
@@ -101,13 +99,16 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 	
 	
 	//##### aus IListenerObjectStatusLocalSetZZZ
+		/* (non-Javadoc)
+		 * @see basic.zKernel.status.IListenerObjectStatusLocalSetZZZ#changeStatusLocal(basic.zKernel.status.IEventObjectStatusLocalSetZZZ)
+		 */
 		@Override
-		public boolean statusLocalChanged(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ{
+		public boolean changeStatusLocal(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ{
 			boolean bReturn = false;
 			
 			main:{
 				//Falls nicht zuständig, mache nix
-			    boolean bProof = this.isEventStatusLocalRelevant(eventStatusLocalSet);
+			    boolean bProof = this.isEventRelevant(eventStatusLocalSet);
 				if(!bProof) break main;
 				
 				String sLog=null;
@@ -151,16 +152,34 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 			return bReturn;
 		}
 		
-		/* (non-Javadoc)
-		 * @see basic.zKernel.status.IListenerObjectStatusLocalSetZZZ#isEventStatusLocalRelevant(basic.zKernel.status.IEventObjectStatusLocalSetZZZ)
-		 */
+		
 		@Override
-		public boolean isEventStatusLocalRelevant(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
-			return true;
+		public boolean isEventRelevant(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean isEventRelevantByClass(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean isEventRelevantByStatusLocal(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean isEventRelevantByStatusLocalValue(IEventObjectStatusLocalSetZZZ eventStatusLocalSet)
+				throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
 		}
 		
 		@Override
-		public boolean isStatusLocalChanged(String sStatusString, boolean bStatusValue) throws ExceptionZZZ{
+		public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{	
 				bReturn = this.proofStatusLocalValueChanged(sStatusString, bStatusValue);	
