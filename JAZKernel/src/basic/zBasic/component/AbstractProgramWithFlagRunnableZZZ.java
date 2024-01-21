@@ -1,22 +1,28 @@
 package basic.zBasic.component;
 
+import java.util.HashMap;
+
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractProgramRunnableZZZ extends AbstractProgramZZZ implements IProgramRunnableZZZ {	
+public abstract class AbstractProgramWithFlagRunnableZZZ extends AbstractProgramWithFlagZZZ implements IProgramRunnableZZZ {	
 	/**Z.B. Wg. Reflection immer den Standardkonstruktor zur Verfügung stellen.
 	 * 
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractProgramRunnableZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithFlagRunnableZZZ() throws ExceptionZZZ {
 		super();		
 	}
 	
-	public AbstractProgramRunnableZZZ(String[]saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithFlagRunnableZZZ(String[]saFlag) throws ExceptionZZZ {
 		super(saFlag);		
+	}
+	
+	public AbstractProgramWithFlagRunnableZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+		super(hmFlag);		
 	}
 	
 	//###
@@ -90,6 +96,12 @@ public abstract class AbstractProgramRunnableZZZ extends AbstractProgramZZZ impl
 	@Override
 	public boolean proofFlagSetBefore(IProgramRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
-	}	
-	//##########################		
+	}
+	
+	
+	
+	//##########################
+	
+	
+	
 }

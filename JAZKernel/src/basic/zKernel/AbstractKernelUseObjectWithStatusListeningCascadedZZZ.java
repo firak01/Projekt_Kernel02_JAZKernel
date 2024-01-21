@@ -16,6 +16,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalSetZZZ;
+import basic.zKernel.status.IStatusLocalMapForCascadingStatusLocalUserZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -26,18 +27,18 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalSetZZZ {
+public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalSetZZZ, IStatusLocalMapForCascadingStatusLocalUserZZZ {
 	//Wie in AbstractObjectWithStatusListeningZZZ
 	protected volatile HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSet =null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
-	public AbstractKernelUseObjectWithStatusListeningZZZ(){		
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(){		
 		//20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
 	
@@ -46,20 +47,20 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 	 * @param objKernel
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectWithStatusListeningZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);		
 	}
-	public AbstractKernelUseObjectWithStatusListeningZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(objKernel, sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);
 	}
-	public AbstractKernelUseObjectWithStatusListeningZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(objKernel, hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);				
 	}
@@ -71,17 +72,17 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 	 * @param objKernelSection
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectWithStatusListeningZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super(objKernel,objKernelContext);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, objKernelContext);						
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super(objKernelUsing);
 		KernelUseObjectWithStatusListeningNew_(null, objKernelUsing, null);
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(objKernelUsing, saFlag);
 		KernelUseObjectWithStatusListeningNew_(null, objKernelUsing, null);
 	}
@@ -108,7 +109,7 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 			
 			main:{
 				//Falls nicht zuständig, mache nix
-			    boolean bProof = this.isEventRelevant(eventStatusLocalSet);
+			    boolean bProof = this.isEventRelevant2ChangeStatusLocal(eventStatusLocalSet);
 				if(!bProof) break main;
 				
 				String sLog=null;
@@ -154,25 +155,25 @@ public abstract class AbstractKernelUseObjectWithStatusListeningZZZ extends Abst
 		
 		
 		@Override
-		public boolean isEventRelevant(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+		public boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
 			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
-		public boolean isEventRelevantByClass(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+		public boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
 			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
-		public boolean isEventRelevantByStatusLocal(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
+		public boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ {
 			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
-		public boolean isEventRelevantByStatusLocalValue(IEventObjectStatusLocalSetZZZ eventStatusLocalSet)
+		public boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusLocalSetZZZ eventStatusLocalSet)
 				throws ExceptionZZZ {
 			// TODO Auto-generated method stub
 			return false;

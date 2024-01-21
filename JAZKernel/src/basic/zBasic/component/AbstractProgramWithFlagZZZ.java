@@ -1,11 +1,13 @@
 package basic.zBasic.component;
 
+import java.util.HashMap;
+
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractProgramZZZ extends AbstractObjectWithFlagZZZ implements IProgramZZZ, IModuleUserZZZ {
+public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZZZ implements IProgramZZZ, IModuleUserZZZ {
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;
 	protected volatile String sModuleName = null;
@@ -15,13 +17,18 @@ public abstract class AbstractProgramZZZ extends AbstractObjectWithFlagZZZ imple
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractProgramZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithFlagZZZ() throws ExceptionZZZ {
 		super();
 		AbstractProgramNew_();
 	}
 	
-	public AbstractProgramZZZ(String[]saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithFlagZZZ(String[]saFlag) throws ExceptionZZZ {
 		super(saFlag);
+		AbstractProgramNew_();
+	}
+	
+	public AbstractProgramWithFlagZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+		super(hmFlag);
 		AbstractProgramNew_();
 	}
 		

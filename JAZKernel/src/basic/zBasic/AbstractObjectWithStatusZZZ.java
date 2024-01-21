@@ -19,6 +19,13 @@ import basic.zKernel.status.IStatusLocalUserMessageZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
+/**Merke: Halte gleich zu AbstractProgramRunnableWithStatusZZZ
+ *        wg. der Implementierung von IStatusLocalUserMessageZZZ
+ * @param <T> 
+ * 
+ * @author Fritz Lindhauer, 20.01.2024, 17:04:43
+ * 
+ */
 public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ implements IStatusLocalUserMessageZZZ{
 	private static final long serialVersionUID = 1L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
@@ -57,6 +64,60 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	
+	//###############################
+		//### Flags
+		//###############################
+		
+		//### Aus IObjectWithStatusZZZ
+		@Override
+		public boolean getFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		@Override
+		public boolean setFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IObjectWithStatusZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+					
+					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+					//    Es wird entfernt.
+					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				}
+			}//end main:
+			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}	
+		
+		@Override
+		public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}	
+
+	//##########################
+	//### STATUS HANDLING 
+	//##########################
+	//Analog zu AbstractProgramRunnableWithStatusZZZ
+	//aus IStatusLocalUserMessageZZZ
+
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#resetStatusLocalError()
+	 */
 	@Override
 	public void resetStatusLocalError() {
 		this.sStatusLocalError = null;
@@ -928,9 +989,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	@Override
 	public abstract boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	
-	//nun durch FLAGZ ersetzt... @Override
-	//public abstract boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue, String[]saFlagControl) throws ExceptionZZZ;
-	
 	@Override
 	public boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
@@ -1094,48 +1152,4 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return saReturn;
 	}
 	
-	//###############################
-	//### Flags
-	//###############################
-	
-	//### Aus IObjectWithStatusZZZ
-	@Override
-	public boolean getFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag) {
-		return this.getFlag(objEnumFlag.name());
-	}
-	@Override
-	public boolean setFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		return this.setFlag(objEnumFlag.name(), bFlagValue);
-	}
-	
-	@Override
-	public boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		boolean[] baReturn=null;
-		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-				baReturn = new boolean[objaEnumFlag.length];
-				int iCounter=-1;
-				for(IObjectWithStatusZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-					iCounter++;
-					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-					baReturn[iCounter]=bReturn;
-				}
-				
-				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
-				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
-			}
-		}//end main:
-		return baReturn;
-	}
-	
-	@Override
-	public boolean proofFlagExists(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objEnumFlag.name());
-	}	
-	
-	@Override
-	public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagSetBefore(objEnumFlag.name());
-	}	
 }

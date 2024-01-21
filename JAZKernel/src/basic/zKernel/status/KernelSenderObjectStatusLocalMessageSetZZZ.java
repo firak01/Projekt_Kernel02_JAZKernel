@@ -17,23 +17,23 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusLocalSetZZZ, Serializable{
+public class KernelSenderObjectStatusLocalMessageSetZZZ implements ISenderObjectStatusLocalMessageSetZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;	
-	private IEventObjectStatusLocalSetZZZ eventPrevious=null;
+	private IEventObjectStatusLocalMessageSetZZZ eventPrevious=null;
 	
 	/* (non-Javadoc)
 	 * @see use.via.client.module.export.ISenderEventComponentReset#fireEvent(basic.zKernelUI.component.model.KernelEventComponentSelectionResetZZZ)
 	 */
-	private ArrayList<IListenerObjectStatusLocalSetZZZ> listaLISTENER_REGISTERED = new ArrayList<IListenerObjectStatusLocalSetZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
+	private ArrayList<IListenerObjectStatusLocalMessageSetZZZ> listaLISTENER_REGISTERED = new ArrayList<IListenerObjectStatusLocalMessageSetZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
 																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht moeglich ist
 	
-	public KernelSenderObjectStatusLocalSetZZZ() throws ExceptionZZZ{
+	public KernelSenderObjectStatusLocalMessageSetZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
 																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
 	@Override                                                                                     //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
-	public void fireEvent(IEventObjectStatusLocalSetZZZ event){	
+	public void fireEvent(IEventObjectStatusLocalMessageSetZZZ event){	
 		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
 		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
 		if(event.getSource() instanceof ISenderSelectionResetZZZ){
@@ -57,16 +57,16 @@ public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusL
 			
 			try {
 				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-					IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+					IListenerObjectStatusLocalMessageSetZZZ l = (IListenerObjectStatusLocalMessageSetZZZ) this.getListenerRegisteredAll().get(i);				
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetMessageZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 					try {
 						boolean bStatusLocalChanged = l.changeStatusLocal(event);
 						if(bStatusLocalChanged) {
-							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
+							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getStatusText() + "' gesetzt." );
 						}					
 					} catch (ExceptionZZZ ez) {
 						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
 					}
 				}
 			} catch (ExceptionZZZ e) {
@@ -77,20 +77,20 @@ public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusL
 		}//end main:
 	}
 	@Override
-	public IEventObjectStatusLocalSetZZZ getEventPrevious() {
+	public IEventObjectStatusLocalMessageSetZZZ getEventPrevious() {
 		return this.eventPrevious;
 	}
 	@Override
-	public void setEventPrevious(IEventObjectStatusLocalSetZZZ event) {
+	public void setEventPrevious(IEventObjectStatusLocalMessageSetZZZ event) {
 		this.eventPrevious = event;
 	}
 	@Override
-	public void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
+	public void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalMessageSetZZZ objEventListener) throws ExceptionZZZ {
 		this.getListenerRegisteredAll().remove(objEventListener);
 	}
 	
 	@Override
-	public void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {	
+	public void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalMessageSetZZZ objEventListener) throws ExceptionZZZ {	
 		this.getListenerRegisteredAll().add(objEventListener);
 	}
 	
@@ -98,7 +98,7 @@ public class KernelSenderObjectStatusLocalSetZZZ implements ISenderObjectStatusL
 	 * @see basic.zKernel.status.ISenderObjectStatusLocalSetZZZ#getListenerRegisteredAll()
 	 */
 	@Override
-	public ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
+	public ArrayList<IListenerObjectStatusLocalMessageSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
 		return listaLISTENER_REGISTERED;
 	}	
 }
