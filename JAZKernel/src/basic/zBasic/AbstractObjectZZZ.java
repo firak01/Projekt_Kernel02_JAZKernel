@@ -53,7 +53,7 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	@Override
 	public ExceptionZZZ getExceptionObject() {
 		return this.objException;
-	}
+	} 
 
 	@Override
 	public void setExceptionObject(ExceptionZZZ objException) {
@@ -78,4 +78,10 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 		String sTemp = KernelLogZZZ.computeLineDate(sLog);
 		System.out.println(sTemp);		
 	}
+	
+	@Override
+	public void logProtocolString(String sLog) throws ExceptionZZZ{
+		this.logLineDate(sLog);
+	}
+	
 }

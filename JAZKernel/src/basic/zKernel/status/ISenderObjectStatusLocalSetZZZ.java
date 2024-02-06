@@ -11,12 +11,13 @@ import basic.zBasic.ExceptionZZZ;
  * @author lindhaueradmin
  *
  */
-public interface ISenderObjectStatusLocalSetZZZ{
-	public abstract void fireEvent(IEventObjectStatusLocalSetZZZ event);	
-	public abstract IEventObjectStatusLocalSetZZZ getEventPrevious();
-	public abstract void setEventPrevious(IEventObjectStatusLocalSetZZZ event);
+public interface ISenderObjectStatusLocalSetZZZ extends ISenderObjectStatusBasicZZZ{
+	//public abstract void fireEvent(IEventObjectStatusLocalSetZZZ event);	
 	
-	public abstract void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;
-	public abstract void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ;	
-	public abstract ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ;	
+//	public abstract IEventObjectStatusBasicZZZ getEventPrevious();
+//	public abstract void setEventPrevious(IEventObjectStatusBasicZZZ event);
+//	
+//	public abstract void removeListenerObject(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ;
+//	public abstract void addListenerObject(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ;	
+//	public abstract ArrayList<IListenerObjectStatusBasicZZZ> getListenerRegisteredAll() throws ExceptionZZZ;	
 }

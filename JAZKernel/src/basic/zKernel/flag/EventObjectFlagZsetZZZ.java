@@ -3,9 +3,6 @@ package basic.zKernel.flag;
 import java.util.EventObject;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectZZZ;
-import basic.zKernel.status.EventObject4ProcessWatchStatusLocalSetZZZ;
-import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
 /** 
  * Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )  
  *        Dann erweitert die Event-Klasse aber EventObjekt.

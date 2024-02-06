@@ -191,6 +191,12 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 	//aus IKernelLogObjectUserZZZ, analog zu KernelKernelZZZ
 	@Override
 	public LogZZZ getLogObject() throws ExceptionZZZ {
+		if(this.objLog==null) {
+			IKernelZZZ objKernel = this.getKernelObject();
+			if(objKernel!=null) {
+				this.objLog = objKernel.getLogObject();
+			}			
+		}
 		return this.objLog;
 	}
 
@@ -199,14 +205,23 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 		this.objLog = objLog;
 	}	
 	
+	
+	//aus ILogZZZ		
+	/**
+	 * Hier wird der Unterschied zum einfachen logLineDate deutlich.
+	 * Ggfs. ist ueber den Kernel eine Protokolldatei definiert, die dann genutzt wird. 
+	 * 
+	* lindhaueradmin; 13.07.2006 08:38:51
+	 * @throws ExceptionZZZ 
+	 */	
 	@Override
-	public void logLineDate(String sLog) throws ExceptionZZZ {
-		LogZZZ objLog = this.getLogObject();
-		if(objLog==null) {
-			String sTemp = KernelLogZZZ.computeLineDate(sLog);
-			System.out.println(sTemp);
+	public void logProtocolString(String sProtocol) throws ExceptionZZZ{
+		
+		if(sProtocol!=null){
+			LogZZZ objLog = this.getLogObject();
+			objLog.WriteLineDate(sProtocol);
 		}else {
-			objLog.WriteLineDate(sLog);
+			this.logLineDate(sProtocol);	
 		}		
 	}
 	

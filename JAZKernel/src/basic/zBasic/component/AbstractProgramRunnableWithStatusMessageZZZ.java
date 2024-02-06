@@ -18,9 +18,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
 import basic.zKernel.status.IStatusLocalUserMessageZZZ;
-import basic.zKernel.status.IStatusLocalUserZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
-import basic.zKernel.status.StatusBooleanZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
 /** Merke: Abstrakte Klasse, welche die Methoden aus AbstractObjectWithStatusZZZ
@@ -30,15 +28,14 @@ import basic.zKernel.status.StatusLocalHelperZZZ;
  * @author Fritz Lindhauer, 20.01.2024, 16:52:42
  * 
  */
-public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgramWithFlagRunnableZZZ implements IStatusLocalUserZZZ {
+public abstract class AbstractProgramRunnableWithStatusMessageZZZ extends AbstractProgramWithFlagRunnableZZZ implements IStatusLocalUserMessageZZZ {
 	private static final long serialVersionUID = 841548064355621206L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	
-	
-	protected volatile CircularBufferZZZ<IStatusBooleanZZZ> cbStatusLocal = new CircularBufferZZZ<IStatusBooleanZZZ>(9);
+	protected volatile CircularBufferZZZ<IStatusBooleanMessageZZZ> cbStatusLocal = new CircularBufferZZZ<IStatusBooleanMessageZZZ>(9);
 	
 	//Der StatusMessageString. Als Extra Speicher. Kann daher zum Ueberschreiben des Default StatusMessage Werts aus dem Enum genutzt werden.
-	//protected volatile CircularBufferZZZ<String> cbStatusLocalMessage = new CircularBufferZZZ<String>(9);
+	protected volatile CircularBufferZZZ<String> cbStatusLocalMessage = new CircularBufferZZZ<String>(9);
 	
 	//Ein einmaliger Vorgang. Der quasi letzte gemeldete Fehler.
 	//Diese Meldung ist flexibel und nicht in irgendeinem EnumSet hinterlegt.
@@ -50,15 +47,15 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractProgramRunnableWithStatusZZZ() throws ExceptionZZZ {
+	public AbstractProgramRunnableWithStatusMessageZZZ() throws ExceptionZZZ {
 		super();		
 	}
 	
-	public AbstractProgramRunnableWithStatusZZZ(String[]saFlag) throws ExceptionZZZ {
+	public AbstractProgramRunnableWithStatusMessageZZZ(String[]saFlag) throws ExceptionZZZ {
 		super(saFlag);		
 	}
 	
-	public AbstractProgramRunnableWithStatusZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractProgramRunnableWithStatusMessageZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);		
 	}
 	
@@ -194,32 +191,32 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	}
 	
 	@Override
-	public IStatusBooleanZZZ getStatusLocalObject() {
+	public IStatusBooleanMessageZZZ getStatusLocalObject() {
 		return this.getCircularBufferStatusLocal().getLast();
 	}
 
-//	@Override
-//	public boolean setStatusLocalObject(IStatusBooleanMessageZZZ objEnum) {
-//		boolean bReturn = false;
-//		main:{
-//			bReturn = this.getCircularBufferStatusLocal().offer(objEnum);
-//			if(!bReturn) break main;
-//				
-//			String sMessage = objEnum.getMessage();
-//			bReturn = this.getCircularBufferStatusLocalMessage().offer(sMessage);
-//			if(!bReturn) break main;
-//						
-//		}//end main
-//		return bReturn;
-//	}
+	@Override
+	public boolean setStatusLocalObject(IStatusBooleanMessageZZZ objEnum) {
+		boolean bReturn = false;
+		main:{
+			bReturn = this.getCircularBufferStatusLocal().offer(objEnum);
+			if(!bReturn) break main;
+				
+			String sMessage = objEnum.getMessage();
+			bReturn = this.getCircularBufferStatusLocalMessage().offer(sMessage);
+			if(!bReturn) break main;
+						
+		}//end main
+		return bReturn;
+	}
 
 	@Override
-	public IStatusBooleanZZZ getStatusLocalObjectPrevious() {
+	public IStatusBooleanMessageZZZ getStatusLocalObjectPrevious() {
 		return this.getCircularBufferStatusLocal().getPrevious();
 	}
 
 	@Override
-	public IStatusBooleanZZZ getStatusLocalObjectPrevious(int iIndexStepsBack) {
+	public IStatusBooleanMessageZZZ getStatusLocalObjectPrevious(int iIndexStepsBack) {
 		return this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
 	}
 
@@ -244,18 +241,21 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	}
 
 	@Override
-	public abstract boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 
 	@Override
-	public abstract boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 		
 	@Override
-	public boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
+	public boolean offerStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			boolean bStatusExists = this.setStatusLocal(sStatusName, bStatusValue);
 			if(!bStatusExists)break main;
-							
+				
+			//ueberschreibe die Defaultmessage (aus dem enum) durch eine eigene...
+			this.replaceStatusLocalMessage(sStatusMessage);
+			
 			bReturn=true;
 		}//end main:
 		return bReturn;		
@@ -265,18 +265,24 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn) {
 		boolean bReturn = false;
 		main:{
-			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, true);
+			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, true, "");
 		}//end main:
 		return bReturn;
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IStatusLocalUserMessageZZZ#offerStatusLocalEnum(basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ, boolean, java.lang.String)
+	 */
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bValue) {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bValue, String sMessage) {
 		boolean bReturn = false;
 		main:{
-			IStatusBooleanZZZ objStatus = new StatusBooleanZZZ(enumStatusLocalIn, bValue);
+			IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
+			if(!bReturn)break main;
+			
+			bReturn = this.getCircularBufferStatusLocalMessage().offer(sMessage);
 			if(!bReturn)break main;
 	
 		}//end main:
@@ -363,52 +369,52 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
 			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
 									
-			bReturn=this.offerStatusLocal(sStatusName, bStatusValue);
+			bReturn=this.offerStatusLocal(sStatusName, null, bStatusValue);
 		}//end main:
 		return bReturn;		
 	}
 	
-//	@Override
-//	public boolean setStatusLocal(String sStatusName, String sMessage, boolean bStatusValue) throws ExceptionZZZ{
-//		boolean bReturn = false;
-//		main:{
-//			if(StringZZZ.isEmpty(sStatusName))break main;			
-//			boolean bProof = this.proofStatusLocalExists(sStatusName);
-//			if(!bProof)break main;					
-//			
-//			//Setze das Flag nun in die HashMap
-//			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
-//			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-//									
-//			bReturn=this.offerStatusLocal(sStatusName, sMessage, bStatusValue);
-//		}//end main:
-//		return bReturn;		
-//	}
+	@Override
+	public boolean setStatusLocal(String sStatusName, String sMessage, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName))break main;			
+			boolean bProof = this.proofStatusLocalExists(sStatusName);
+			if(!bProof)break main;					
+			
+			//Setze das Flag nun in die HashMap
+			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+									
+			bReturn=this.offerStatusLocal(sStatusName, sMessage, bStatusValue);
+		}//end main:
+		return bReturn;		
+	}
 	
 	@Override
 	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 
-//	@Override
-//	public abstract boolean setStatusLocal(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
+	@Override
+	public abstract boolean setStatusLocal(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
 	
 	@Override
 	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 
-//	@Override
-//	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
+	@Override
+	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
 
 	
 	@Override
 	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
 	
-//	@Override
-//	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
+	@Override
+	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
 	
 	@Override
 	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
 
-//	@Override
-//	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
+	@Override
+	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
 
 	
 	@Override
@@ -503,25 +509,25 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	}
 
 	//### aus IStatusLocalUserMessageZZZ
-//	@Override 
-//	public String getStatusLocalMessage()	{
-//		return this.getCircularBufferStatusLocalMessage().getLast();
-//	}
+	@Override 
+	public String getStatusLocalMessage()	{
+		return this.getCircularBufferStatusLocalMessage().getLast();
+	}
 	
-//	@Override
-//	public boolean replaceStatusLocalMessage(String sStatusMessageIn) {
-//		return this.getCircularBufferStatusLocalMessage().replaceLastWith(sStatusMessageIn);
-//	}
+	@Override
+	public boolean replaceStatusLocalMessage(String sStatusMessageIn) {
+		return this.getCircularBufferStatusLocalMessage().replaceLastWith(sStatusMessageIn);
+	}
 	
-//	@Override
-//	public String getStatusLocalMessagePrevious(){
-//		return this.getCircularBufferStatusLocalMessage().getPrevious();
-//	}
+	@Override
+	public String getStatusLocalMessagePrevious(){
+		return this.getCircularBufferStatusLocalMessage().getPrevious();
+	}
 	
-//	@Override
-//	public String getStatusLocalMessagePrevious(int iIndexStepsBack) {
-//		return this.getCircularBufferStatusLocalMessage().getPrevious(iIndexStepsBack);
-//	}
+	@Override
+	public String getStatusLocalMessagePrevious(int iIndexStepsBack) {
+		return this.getCircularBufferStatusLocalMessage().getPrevious(iIndexStepsBack);
+	}
 	
 
 
@@ -562,15 +568,15 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, null, bStatusValue);
 	}
 	
-//	@Override
-//	public boolean switchStatusLocalAsGroupTo(Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
-//		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, sStatusMessage, bStatusValue);	
-//	}
+	@Override
+	public boolean switchStatusLocalAsGroupTo(Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, sStatusMessage, bStatusValue);	
+	}
 	
-//	@Override
-//	public boolean switchStatusLocalAllGroupTo(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-//		return this.switchStatusLocalAsGroupTo_(iIndex, enumStatus, sStatusMessage, bStatusValue);
-//	}
+	@Override
+	public boolean switchStatusLocalAllGroupTo(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.switchStatusLocalAsGroupTo_(iIndex, enumStatus, sStatusMessage, bStatusValue);
+	}
 	
 	private boolean switchStatusLocalAsGroupTo_(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
 		return this.switchStatusLocalForGroupTo_(iIndex, -1, enumStatus, sStatusMessage, bStatusValue);
@@ -633,8 +639,7 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 			if(enumStatusIn==null) break main;
 			String sStatusName = enumStatusIn.name().toUpperCase();
 			
-			//bReturn = this.offerStatusLocal(iIndex, enumStatusIn, sStatusMessage, bStatusValue);
-			bReturn = this.offerStatusLocal(iIndex, enumStatusIn, bStatusValue);
+			bReturn = this.offerStatusLocal(iIndex, enumStatusIn, sStatusMessage, bStatusValue);
 			if(!bReturn)break main;
 			
 			//Hole die StatusNamen der angegebenen Gruppe
@@ -737,7 +742,7 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumCurrent() {
 		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
-			IStatusBooleanZZZ objStatus = this.getStatusLocalObject();
+			IStatusBooleanMessageZZZ objStatus = this.getStatusLocalObject();
 			if(objStatus==null) break main;
 			
 			objReturn = objStatus.getEnumObject();
@@ -749,7 +754,7 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious() {
 		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
-			IStatusBooleanZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious();
+			IStatusBooleanMessageZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious();
 			if(objStatus==null) break main;
 				
 			objReturn = objStatus.getEnumObject();
@@ -757,26 +762,26 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 		return objReturn;
 	}
 	
-	//### aus ICircularBufferStatusBooleanUserZZZ
+	//### aus ICircularBufferStatusBooleanMessageUserZZZ
 	@Override
-	public CircularBufferZZZ<IStatusBooleanZZZ> getCircularBufferStatusLocal(){		
+	public CircularBufferZZZ<IStatusBooleanMessageZZZ> getCircularBufferStatusLocal(){		
 		return this.cbStatusLocal;
 	}
 	
 	@Override
-	public void setCircularBufferStatusLocal(CircularBufferZZZ<IStatusBooleanZZZ> cb){
+	public void setCircularBufferStatusLocal(CircularBufferZZZ<IStatusBooleanMessageZZZ> cb){
 		this.cbStatusLocal = cb;
 	}
 	
-//	@Override
-//	public CircularBufferZZZ<String> getCircularBufferStatusLocalMessage(){		
-//		return this.cbStatusLocalMessage;
-//	}
-//	
-//	@Override
-//	public void setCircularBufferStatusLocalMessage(CircularBufferZZZ<String> cb){
-//		this.cbStatusLocalMessage = cb;
-//	}
+	@Override
+	public CircularBufferZZZ<String> getCircularBufferStatusLocalMessage(){		
+		return this.cbStatusLocalMessage;
+	}
+	
+	@Override
+	public void setCircularBufferStatusLocalMessage(CircularBufferZZZ<String> cb){
+		this.cbStatusLocalMessage = cb;
+	}
 
 	
 	//++++++++++++++++++++++++++++++++
@@ -816,50 +821,50 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 	}
 	
 	
-//	@Override
-//	public void debugCircularBufferStatusLocalMessage() throws ExceptionZZZ {
-//		int iStepsMax = this.getCircularBufferStatusLocalMessage().getCapacity();
-//		this.debugCircularBufferStatusLocalMessage(iStepsMax);
-//	}
+	@Override
+	public void debugCircularBufferStatusLocalMessage() throws ExceptionZZZ {
+		int iStepsMax = this.getCircularBufferStatusLocalMessage().getCapacity();
+		this.debugCircularBufferStatusLocalMessage(iStepsMax);
+	}
 
-//	//### aus ICircularBufferStatusBooleanMessageUserZZZ
-//		@Override
-//		public void debugCircularBufferStatusLocalMessage(int iStepsMax) throws ExceptionZZZ {		
-//			String sLog="";
-//			int iStepsToSearchBackwardsTEST=-1;
-//			boolean bGoonTEST = false;
-//			IEnumSetMappedStatusZZZ objStatusLocalPreviousTEST = null;
-//			do {	
-//				iStepsToSearchBackwardsTEST = iStepsToSearchBackwardsTEST + 1; 
-//				int iIndex = this.getCircularBufferStatusLocalMessage().computeIndexForStepPrevious(iStepsToSearchBackwardsTEST);
-//				sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Vorheriger Status= " + iStepsToSearchBackwardsTEST + " | Verwendeter Index= " + iIndex;
-//				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
-//				this.logLineDate(sLog);
-//				
-//				objStatusLocalPreviousTEST = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsToSearchBackwardsTEST);
-//				if(objStatusLocalPreviousTEST==null) {
-//					sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Kein weiterer entsprechend weit entfernter vorheriger Status vorhanden";
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
-//					this.logLineDate(sLog);
-//					bGoonTEST=true;
-//				}else {				
-//					sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST : Der " + iStepsToSearchBackwardsTEST + " Schritte vorherige Status im Main ist. GroupId/Abbreviation: " + objStatusLocalPreviousTEST.getStatusGroupId() + "/'" + objStatusLocalPreviousTEST.getAbbreviation()+"'.";
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
-//					this.logLineDate(sLog);		
-//					
-//					sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST : Value='" + this.getStatusLocalPrevious(iStepsToSearchBackwardsTEST) + "'";
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
-//					this.logLineDate(sLog);	
-//				}
-//				if(iStepsToSearchBackwardsTEST>=iStepsMax) bGoonTEST=true;											
-//			}while(!bGoonTEST);						
-//		}
+	//### aus ICircularBufferStatusBooleanMessageUserZZZ
+		@Override
+		public void debugCircularBufferStatusLocalMessage(int iStepsMax) throws ExceptionZZZ {		
+			String sLog="";
+			int iStepsToSearchBackwardsTEST=-1;
+			boolean bGoonTEST = false;
+			IEnumSetMappedStatusZZZ objStatusLocalPreviousTEST = null;
+			do {	
+				iStepsToSearchBackwardsTEST = iStepsToSearchBackwardsTEST + 1; 
+				int iIndex = this.getCircularBufferStatusLocalMessage().computeIndexForStepPrevious(iStepsToSearchBackwardsTEST);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Vorheriger Status= " + iStepsToSearchBackwardsTEST + " | Verwendeter Index= " + iIndex;
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+				this.logLineDate(sLog);
+				
+				objStatusLocalPreviousTEST = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsToSearchBackwardsTEST);
+				if(objStatusLocalPreviousTEST==null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST: Kein weiterer entsprechend weit entfernter vorheriger Status vorhanden";
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+					this.logLineDate(sLog);
+					bGoonTEST=true;
+				}else {				
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST : Der " + iStepsToSearchBackwardsTEST + " Schritte vorherige Status im Main ist. GroupId/Abbreviation: " + objStatusLocalPreviousTEST.getStatusGroupId() + "/'" + objStatusLocalPreviousTEST.getAbbreviation()+"'.";
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+					this.logLineDate(sLog);		
+					
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": TEST : Message='" + this.getStatusLocalMessagePrevious(iStepsToSearchBackwardsTEST) + "'";
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);					
+					this.logLineDate(sLog);	
+				}
+				if(iStepsToSearchBackwardsTEST>=iStepsMax) bGoonTEST=true;											
+			}while(!bGoonTEST);						
+		}
 
 		@Override
 		public int getStatusLocalGroupIdFromCurrent() {
 			int iReturn = -1;
 			main:{
-				IStatusBooleanZZZ objMessage = this.getStatusLocalObject();
+				IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObject();
 				if(objMessage==null) break main;
 				
 				IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
@@ -874,7 +879,7 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 		public int getStatusLocalGroupIdFromPrevious() {
 			int iReturn = -1;
 			main:{
-				IStatusBooleanZZZ objMessage = this.getStatusLocalObjectPrevious();
+				IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObjectPrevious();
 				if(objMessage==null) break main;
 				
 				IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();
@@ -889,7 +894,7 @@ public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgr
 		public int getStatusLocalGroupIdFromPrevious(int iIndexStepsBack) {
 			int iReturn = -1;
 			main:{
-				IStatusBooleanZZZ objMessage = this.getStatusLocalObjectPrevious(iIndexStepsBack);
+				IStatusBooleanMessageZZZ objMessage = this.getStatusLocalObjectPrevious(iIndexStepsBack);
 				if(objMessage==null) break main;
 				
 				IEnumSetMappedStatusZZZ objEnum = objMessage.getEnumObject();

@@ -11,6 +11,6 @@ import basic.zBasic.ExceptionZZZ;
  * @author lindhaueradmin
  *
  */
-public interface ISenderObjectStatusLocalMessageSetZZZ extends ISenderObjectStatusBasicZZZ{
-	//public abstract void fireEvent(IEventObjectStatusLocalMessageSetZZZ event);	
+public interface ISenderObjectStatusLocalReactZZZ extends ISenderObjectStatusBasicZZZ{
+//	public abstract void fireEvent(IEventObjectStatusLocalReactZZZ event);
 }

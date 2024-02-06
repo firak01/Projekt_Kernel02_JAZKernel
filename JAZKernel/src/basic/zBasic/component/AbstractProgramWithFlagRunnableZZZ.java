@@ -8,11 +8,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractProgramWithFlagRunnableZZZ extends AbstractProgramWithFlagZZZ implements IProgramRunnableZZZ {	
-	/**Z.B. Wg. Reflection immer den Standardkonstruktor zur Verfügung stellen.
-	 * 
-	 * 31.01.2021, 12:15:10, Fritz Lindhauer
-	 * @throws ExceptionZZZ 
-	 */
+
 	public AbstractProgramWithFlagRunnableZZZ() throws ExceptionZZZ {
 		super();		
 	}
