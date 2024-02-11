@@ -4,8 +4,7 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 public interface IEventObjectStatusBasicZZZ extends IObjectZZZ{
-//	public IEnumSetMappedStatusZZZ getStatusEnum();
-//	public String getStatusText();
-//	public boolean getStatusValue();
-//	public int getProcessID();
+	public Enum getStatusEnum();
+	public String getStatusText(); //Das ist normalerweise der Wert des Enum
+	public boolean getStatusValue();
 }

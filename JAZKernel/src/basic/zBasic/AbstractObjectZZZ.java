@@ -1,40 +1,13 @@
 package basic.zBasic;
 
-import static java.lang.System.out;
-
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
-import base.util.abstractArray.ArrayUtil;
-import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.file.JarEasyZZZ;
-import basic.zKernel.IKernelConfigZZZ;
 import basic.zKernel.KernelLogZZZ;
-import basic.zKernel.flag.EventObjectFlagZsetZZZ;
-import basic.zKernel.flag.IEventBrokerFlagZsetUserZZZ;
-import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
-import basic.zKernel.flag.IFlagZLocalUserZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
-import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
-import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
-import basic.zKernel.flag.json.FlagZHelperZZZ;
-import basic.zKernel.flag.json.IFlagContainerZZZ;
-import custom.zKernel.LogZZZ;
 
 public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ{
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.

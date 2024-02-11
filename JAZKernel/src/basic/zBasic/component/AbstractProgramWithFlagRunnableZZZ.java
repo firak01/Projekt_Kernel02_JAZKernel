@@ -2,12 +2,11 @@ package basic.zBasic.component;
 
 import java.util.HashMap;
 
-import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
 
 public abstract class AbstractProgramWithFlagRunnableZZZ extends AbstractProgramWithFlagZZZ implements IProgramRunnableZZZ {	
+	private static final long serialVersionUID = 1185996372719861922L;
 
 	public AbstractProgramWithFlagRunnableZZZ() throws ExceptionZZZ {
 		super();		

@@ -16,15 +16,9 @@ import basic.zBasic.ExceptionZZZ;
  * @author lindhaueradmin
  *
  */
-public interface IEventBrokerStatusLocalMessageSetUserZZZ extends ISenderObjectStatusLocalMessageSetUserZZZ{
-//	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalMessageSetZZZ event) throws ExceptionZZZ;
-//	public void registerForStatusLocalEvent(IListenerObjectStatusLocalMessageSetZZZ objEventListener) throws ExceptionZZZ;
-//	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalMessageSetZZZ objEventListener) throws ExceptionZZZ;
-
-	
-	//public boolean reactOnStatusLocalEvent(IEventObjectStatusBasicZZZ event) throws ExceptionZZZ;
+public interface IEventBrokerStatusLocalUserZZZ extends ISenderObjectStatusLocalUserZZZ{
+	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalMessageReactZZZ objEventListener) throws ExceptionZZZ;
 	public void registerForStatusLocalEvent(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ;
 	public void unregisterForStatusLocalEvent(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ;
-	
 }
 

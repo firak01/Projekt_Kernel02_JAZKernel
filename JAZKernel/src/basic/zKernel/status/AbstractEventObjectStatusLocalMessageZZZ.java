@@ -13,10 +13,9 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public abstract class AbstractEventObjectStatusLocalSetZZZ extends EventObject implements IEventObjectStatusLocalSetZZZ{
+public abstract class AbstractEventObjectStatusLocalMessageZZZ extends EventObject implements IEventObjectStatusLocalMessageZZZ{
 	//Merke: Das Interface comparable kann nicht mehrmals eingebunden werden. Daher in der Ausgangsklasse comparable nutzen und dort die Methoden erstellen.
-	protected String sStatusText=null;
-	protected int iId;
+	protected String sStatusMessage=null;
 	protected boolean bStatusValue;
 	
 	/** In dem Konstruktor wird neben der ID dieses Events auch der identifizierende Name der neu gewaehlten Komponente �bergeben.
@@ -24,21 +23,20 @@ public abstract class AbstractEventObjectStatusLocalSetZZZ extends EventObject i
 	 * @param iID
 	 * @param sComponentItemText, z.B. fuer einen DirectoryJTree ist es der Pfad, fuer eine JCombobox der Name des ausgew�hlten Items 
 	 */
-	public AbstractEventObjectStatusLocalSetZZZ(Object source, int iID,  String sStatusText, boolean bStatusValue) {
+	public AbstractEventObjectStatusLocalMessageZZZ(Object source, String sStatusText, boolean bStatusValue) {
 		super(source);		
-		this.sStatusText = sStatusText;
-		this.iId = iID;
+		this.sStatusMessage = sStatusText;		
 		this.bStatusValue = bStatusValue;
 	}
-	
+		
 	@Override
-	public int getProcessID(){
-		return this.iId;
+	public String getStatusMessage(){		
+		return this.sStatusMessage;
 	}
 	
-	@Override
-	public String getStatusText(){		
-		return this.sStatusText;
+	@Override 
+	public void setStatusMessage(String sStatusMessage) {
+		this.sStatusMessage = sStatusMessage;
 	}
 	
 	@Override

@@ -6,5 +6,5 @@ package basic.zKernel.status;
  * @author lindhaueradmin
  *
  */
-public interface ISenderObjectStatusLocalReactZZZ extends ISenderObjectStatusBasicZZZ{
+public interface ISenderObjectStatusLocalZZZ extends ISenderObjectStatusBasicZZZ{	
 }

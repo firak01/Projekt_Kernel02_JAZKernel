@@ -7,7 +7,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZZZ implements IProgramZZZ, IModuleUserZZZ {
+public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZZZ<Object> implements IProgramZZZ, IModuleUserZZZ {
+	private static final long serialVersionUID = 3180361146916576628L;
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;
 	protected volatile String sModuleName = null;

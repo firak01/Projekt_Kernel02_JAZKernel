@@ -17,10 +17,10 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectStatusLocalMessageSetZZZ  extends AbstractKernelSenderObjectStatusLocalBasicZZZ{
+public class KernelSenderObjectStatusLocalMessageZZZ  extends AbstractKernelSenderObjectStatusLocalBasicZZZ{
 	private static final long serialVersionUID = 8999783685575147532L;	
 																						  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht moeglich ist	
-	public KernelSenderObjectStatusLocalMessageSetZZZ() throws ExceptionZZZ{
+	public KernelSenderObjectStatusLocalMessageZZZ() throws ExceptionZZZ{
 		super();
 	}
 	

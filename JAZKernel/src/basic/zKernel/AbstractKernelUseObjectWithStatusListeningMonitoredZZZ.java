@@ -14,9 +14,12 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.status.IEventObjectStatusLocalSetZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalSetZZZ;
-import basic.zKernel.status.IStatusLocalMapForCascadingStatusLocalUserZZZ;
+import basic.zKernel.status.IEventObjectStatusBasicZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalMessageReactZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalMessageReactZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -27,7 +30,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalSetZZZ, IStatusLocalMapForCascadingStatusLocalUserZZZ {
+public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalMessageReactZZZ, IStatusLocalMapForMonitoringStatusLocalUserZZZ {
 	//Wie in AbstractObjectWithStatusListeningZZZ
 	
 	//Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
@@ -36,11 +39,11 @@ public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ exte
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
 	 */
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(){		
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(){		
 		//20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
 	
@@ -49,20 +52,20 @@ public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ exte
 	 * @param objKernel
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);		
 	}
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(objKernel, sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);
 	}
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(objKernel, hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, null);				
 	}
@@ -74,17 +77,17 @@ public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ exte
 	 * @param objKernelSection
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super(objKernel,objKernelContext);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectWithStatusListeningNew_(objKernel, null, objKernelContext);						
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super(objKernelUsing);
 		KernelUseObjectWithStatusListeningNew_(null, objKernelUsing, null);
 	}
 	
-	public AbstractKernelUseObjectWithStatusListeningCascadedZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectWithStatusListeningMonitoredZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(objKernelUsing, saFlag);
 		KernelUseObjectWithStatusListeningNew_(null, objKernelUsing, null);
 	}
@@ -106,7 +109,7 @@ public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ exte
 		 * @see basic.zKernel.status.IListenerObjectStatusLocalSetZZZ#changeStatusLocal(basic.zKernel.status.IEventObjectStatusLocalSetZZZ)
 		 */
 		@Override
-		public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalSetZZZ eventStatusLocalSet) throws ExceptionZZZ{
+		public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ{
 			boolean bReturn = false;
 			
 			main:{
@@ -117,7 +120,7 @@ public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ exte
 				String sLog=null;
 				
 				//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
-				IEnumSetMappedZZZ enumStatus = eventStatusLocalSet.getStatusEnum();
+				IEnumSetMappedZZZ enumStatus = eventStatusLocalSet.getStatusLocal();
 				if(enumStatus==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";
 					System.out.println(sLog);
@@ -148,9 +151,13 @@ public abstract class AbstractKernelUseObjectWithStatusListeningCascadedZZZ exte
 				
 				//Nur so als Beispiel, muss ueberschrieben werden:
 				//Lies den Status (geworfen vom Backend aus)
-				String sStatus = eventStatusLocalSet.getStatusText();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Methode muss ueberschrieben werden.");
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sStatus='"+sStatus+"'");
+				if(eventStatusLocalSet instanceof IEventObjectStatusLocalMessageReactZZZ) {
+					IEventObjectStatusLocalMessageReactZZZ eventStatusLocalReact = (IEventObjectStatusLocalMessageReactZZZ) eventStatusLocalSet;					
+					String sStatus = eventStatusLocalReact.getStatusMessage();
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Methode muss ueberschrieben werden.");
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sStatus='"+sStatus+"'");
+				}
+				
 			}//end main:
 			return bReturn;
 		}

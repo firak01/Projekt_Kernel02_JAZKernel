@@ -9,7 +9,7 @@ import basic.zBasic.util.abstractList.CircularBufferZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */
-public interface IStatusLocalUserBasicZZZ extends IObjectWithStatusZZZ{
+public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	public final String sERROR_STATUS_UNAVAILABLE = "this LOCAL status is not available: ";
 	public final int iERROR_STATUS_UNAVAILABLE = 51;
 	

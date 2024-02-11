@@ -1,10 +1,5 @@
 package basic.zKernel.status;
 
-import java.util.ArrayList;
-import java.util.EventListener;
-import basic.zBasic.ExceptionZZZ;
-
-
 /**Dieses Interface enthaelt Methoden, die von den Klassen implementiert werden muessen, 
  * die den Kernel eigenen Event verwalten sollen.
  * 
@@ -12,6 +7,4 @@ import basic.zBasic.ExceptionZZZ;
  *
  */
 public interface ISenderObjectStatusLocalMessageReactZZZ extends ISenderObjectStatusBasicZZZ{
-//	public abstract void fireEvent(IEventObjectStatusLocalMessageReactZZZ event);	
-
 }

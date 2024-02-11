@@ -13,7 +13,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalSetZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusLocalMapForStatusLocalUserZZZ;
 import custom.zKernel.LogZZZ;
 
@@ -25,7 +25,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractKernelUseObjectZZZ implements IListenerObjectFlagZsetZZZ, IListenerObjectStatusLocalSetZZZ, IStatusLocalMapForStatusLocalUserZZZ {
+public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractKernelUseObjectZZZ implements IListenerObjectFlagZsetZZZ, IListenerObjectStatusLocalZZZ, IStatusLocalMapForStatusLocalUserZZZ {
 	//Merke: Das Objekt selbst hat keinen Status. Es nimmt aber Statusaenderungen vom Main-Objekt entgegen und mapped diese auf sein "Aussehen"
 	//       Wie in AbstractObjectWithStatusListeningZZZ wird für das Mappen des reinkommenden Status auf ein Enum eine Hashmap benötigt.
 	protected volatile HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ> hmEnumSet =null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.

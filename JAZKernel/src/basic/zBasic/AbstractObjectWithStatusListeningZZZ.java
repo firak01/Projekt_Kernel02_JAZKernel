@@ -9,13 +9,14 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
-import basic.zKernel.status.IStatusLocalMapForCascadingStatusLocalUserZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
 import basic.zKernel.status.StatusBooleanZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
-public abstract class AbstractObjectWithStatusListeningZZZ <T> extends AbstractObjectWithStatusZZZ implements IStatusLocalMapForCascadingStatusLocalUserZZZ{
+public abstract class AbstractObjectWithStatusListeningZZZ <T> extends AbstractObjectWithStatusZZZ implements IListenerObjectStatusLocalZZZ, IStatusLocalMapForMonitoringStatusLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSet = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 

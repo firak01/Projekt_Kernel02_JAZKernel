@@ -17,7 +17,7 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author lindhaueradmin
  *
  */
-public abstract class AbstractKernelSenderObjectStatusLocalBasicZZZ implements  ISenderObjectStatusLocalReactZZZ, ISenderObjectStatusLocalMessageReactZZZ, ISenderObjectStatusLocalSetZZZ, ISenderObjectStatusLocalMessageSetZZZ, Serializable{
+public abstract class AbstractKernelSenderObjectStatusLocalBasicZZZ implements  ISenderObjectStatusLocalReactZZZ, ISenderObjectStatusLocalMessageReactZZZ, ISenderObjectStatusLocalZZZ, ISenderObjectStatusLocalMessageZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
 	protected ArrayList<IListenerObjectStatusBasicZZZ> listaLISTENER_REGISTERED = new ArrayList<IListenerObjectStatusBasicZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
 	protected IEventObjectStatusBasicZZZ eventPrevious=null;
@@ -54,18 +54,21 @@ public abstract class AbstractKernelSenderObjectStatusLocalBasicZZZ implements  
 					//Mit instanceof den Typ abfragen und dahingehend die passende Unterabfrage des Events aufrufen.
 					//Merke: Ohne das instanceof entstehen typcast-mapping-Fehler.
 					IListenerObjectStatusBasicZZZ l = this.getListenerRegisteredAll().get(i);
-					if(l instanceof IListenerObjectStatusLocalSetZZZ) {
+					if(l instanceof IListenerObjectStatusLocalZZZ) {
+						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
 						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-						IListenerObjectStatusLocalSetZZZ lused = (IListenerObjectStatusLocalSetZZZ) l;
-						lused.reactOnStatusLocalEvent(event);
-					}else if(l instanceof IListenerObjectStatusLocalMessageSetZZZ) {
+						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
+						lused.reactOnStatusLocalEvent(eventUsed);
+					}else if(l instanceof IListenerObjectStatusLocalMessageZZZ) {
+						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;						
 						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-						IListenerObjectStatusLocalMessageSetZZZ lused = (IListenerObjectStatusLocalMessageSetZZZ) l;
-						lused.reactOnStatusLocalEvent(event);
+						IListenerObjectStatusLocalMessageZZZ lused = (IListenerObjectStatusLocalMessageZZZ) l;
+						lused.reactOnStatusLocalEvent(eventUsed);
 					}else if(l instanceof IListenerObjectStatusLocalMessageReactZZZ) {
+						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;						
 						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageReactZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 						IListenerObjectStatusLocalMessageReactZZZ lused = (IListenerObjectStatusLocalMessageReactZZZ) l;
-						lused.reactOnStatusLocalEvent(event);
+						lused.reactOnStatusLocalEvent(eventUsed);
 					}else {						
 						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# type is not used yet: '" + l.getClass().getName() + "'");
 					}

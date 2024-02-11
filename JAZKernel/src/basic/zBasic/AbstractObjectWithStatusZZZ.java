@@ -7,15 +7,13 @@ import java.util.Set;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.CircularBufferZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
-import basic.zKernel.status.IStatusLocalUserMessageZZZ;
+import basic.zKernel.status.IStatusLocalMessageUserZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
@@ -26,7 +24,7 @@ import basic.zKernel.status.StatusLocalHelperZZZ;
  * @author Fritz Lindhauer, 20.01.2024, 17:04:43
  * 
  */
-public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ implements IStatusLocalUserMessageZZZ{
+public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ{
 	private static final long serialVersionUID = 1L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	

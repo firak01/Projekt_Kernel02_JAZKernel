@@ -4,7 +4,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */
-public interface IStatusLocalUserMessageZZZ extends IStatusLocalUserBasicZZZ, ICircularBufferStatusBooleanMessageUserZZZ{
+public interface IStatusLocalMessageUserZZZ extends IStatusLocalBasicUserZZZ, ICircularBufferStatusBooleanMessageUserZZZ{
 	public abstract IStatusBooleanMessageZZZ getStatusLocalObject();
 	public abstract boolean setStatusLocalObject(IStatusBooleanMessageZZZ objEnum);
 	public abstract IStatusBooleanMessageZZZ getStatusLocalObjectPrevious();

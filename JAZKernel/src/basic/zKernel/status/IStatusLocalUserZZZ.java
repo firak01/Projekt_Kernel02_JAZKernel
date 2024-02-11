@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractList.CircularBufferZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */
-public interface IStatusLocalUserZZZ extends IStatusLocalUserBasicZZZ, ICircularBufferStatusBooleanUserZZZ{	
+public interface IStatusLocalUserZZZ extends IStatusLocalBasicUserZZZ, ICircularBufferStatusBooleanUserZZZ{	
 	public abstract IStatusBooleanZZZ getStatusLocalObject();
 	public abstract void setStatusLocalObject(IStatusBooleanZZZ objEnum);
 	public abstract IStatusBooleanZZZ getStatusLocalObjectPrevious();

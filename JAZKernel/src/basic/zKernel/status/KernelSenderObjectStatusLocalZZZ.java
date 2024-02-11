@@ -17,10 +17,10 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectStatusLocalSetZZZ extends AbstractKernelSenderObjectStatusLocalBasicZZZ {
+public class KernelSenderObjectStatusLocalZZZ extends AbstractKernelSenderObjectStatusLocalBasicZZZ {
 	private static final long serialVersionUID = 8999783685575147532L;	
 	
-		public KernelSenderObjectStatusLocalSetZZZ() throws ExceptionZZZ{
+		public KernelSenderObjectStatusLocalZZZ() throws ExceptionZZZ{
 		super();
 	}
 	

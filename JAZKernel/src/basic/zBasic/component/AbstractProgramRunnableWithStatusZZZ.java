@@ -17,7 +17,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
-import basic.zKernel.status.IStatusLocalUserMessageZZZ;
+import basic.zKernel.status.IStatusLocalMessageUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusBooleanZZZ;
@@ -30,7 +30,7 @@ import basic.zKernel.status.StatusLocalHelperZZZ;
  * @author Fritz Lindhauer, 20.01.2024, 16:52:42
  * 
  */
-public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgramWithFlagRunnableZZZ implements IStatusLocalUserZZZ {
+public abstract class AbstractProgramRunnableWithStatusZZZ extends AbstractProgramWithFlagRunnableZZZ implements IProgramRunnableWithStatusZZZ {
 	private static final long serialVersionUID = 841548064355621206L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	
