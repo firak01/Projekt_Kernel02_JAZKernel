@@ -77,21 +77,22 @@ public abstract class AbstractProgramRunnableWithStatusMessageZZZ extends Abstra
 				System.out.println(ez.getDetailAllLast());
 				e1.printStackTrace();
 			}			
-		} catch (InterruptedException e) {					
-			try {
-				String sLog = e.getMessage();
-				this.logLineDate("An error happend: '" + sLog + "'");
-			} catch (ExceptionZZZ e1) {
-				System.out.println(e1.getDetailAllLast());
-				e1.printStackTrace();
-			}
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
+		} 
+//		catch (InterruptedException e) {					
+//			try {
+//				String sLog = e.getMessage();
+//				this.logLineDate("An error happend: '" + sLog + "'");
+//			} catch (ExceptionZZZ e1) {
+//				System.out.println(e1.getDetailAllLast());
+//				e1.printStackTrace();
+//			}
+//			System.out.println(e.getMessage());
+//			e.printStackTrace();
+//		}
 	}
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ, InterruptedException;
+	public abstract boolean start() throws ExceptionZZZ;
 		
 	//##########################################
 	//### FLAG HANDLING I

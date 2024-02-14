@@ -191,7 +191,7 @@ public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ, InterruptedException;
+	public abstract boolean start() throws ExceptionZZZ;
 	
 		
 }

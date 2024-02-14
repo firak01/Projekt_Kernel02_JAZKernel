@@ -7,7 +7,7 @@ public interface IProgramZZZ extends IModuleUserZZZ, IFlagZUserZZZ{
 	public enum FLAGZ{
 		ISPROGRAM; 
 	}	
-	public boolean start() throws ExceptionZZZ, InterruptedException;//das was ggfs. in run() aufgerufen wird.
+	public boolean start() throws ExceptionZZZ;//das was ggfs. in run() aufgerufen wird.
 	public boolean reset() throws ExceptionZZZ;
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()

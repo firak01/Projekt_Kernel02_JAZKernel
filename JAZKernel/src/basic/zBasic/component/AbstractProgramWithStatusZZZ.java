@@ -184,7 +184,7 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 	}
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ, InterruptedException;
+	public abstract boolean start() throws ExceptionZZZ;
 	
 		
 }

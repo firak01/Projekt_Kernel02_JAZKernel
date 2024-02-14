@@ -9,6 +9,7 @@ import basic.zBasic.AbstractObjectWithStatusZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -217,6 +218,11 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 		}else {
 			this.logLineDate(sProtocol);	
 		}		
+	}
+
+	public boolean changedStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }//end class

@@ -11,7 +11,12 @@ public interface IProgramRunnableMonitorZZZ {
 	public ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> getProgramRunnableList();
 	public void setProgramRunnableList(ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> listaRunnables);
 	
-	public void addProgramRunnable(IListenerObjectStatusLocalMessageReactRunnableZZZ objProgramRunnable);
+	//Die lauffähigen Programme in die ArrayList der Programme aufnehmen. 
+	//Merke: Dabei werden sie auch sofort am Monitor registriert, d.h. wenn der Monitor einen Event wirft, dann koennen auch "seine" Programme darauf reagieren.
+	public void addProgramRunnable(IListenerObjectStatusLocalMessageReactRunnableZZZ objProgramRunnable) throws ExceptionZZZ;
+	
+	//Die lauffähigen Programme aus der ArrayList starten.
+	public boolean startProgramRunnableAll() throws ExceptionZZZ;
 	
 	
 	//#############################################################

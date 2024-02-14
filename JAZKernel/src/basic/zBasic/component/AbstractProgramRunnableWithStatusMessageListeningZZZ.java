@@ -49,7 +49,7 @@ public abstract class AbstractProgramRunnableWithStatusMessageListeningZZZ exten
 
 	//#### GETTER / SETTER
 	@Override
-	public abstract boolean start() throws ExceptionZZZ, InterruptedException;
+	public abstract boolean start() throws ExceptionZZZ;
 	
 	//#########################################################
 	//### aus ISenderObjectStatusLocalMessageSetUserZZZ

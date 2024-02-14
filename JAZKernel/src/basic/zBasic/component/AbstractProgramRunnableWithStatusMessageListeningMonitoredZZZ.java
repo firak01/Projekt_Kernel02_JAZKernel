@@ -45,7 +45,7 @@ public abstract class AbstractProgramRunnableWithStatusMessageListeningMonitored
 
 	//#### GETTER / SETTER
 	@Override
-	public abstract boolean start() throws ExceptionZZZ, InterruptedException;
+	public abstract boolean start() throws ExceptionZZZ;
 		
 	//### aus IStatusLocalMapForCascadingStatusLocalUserZZZ	
 	@Override

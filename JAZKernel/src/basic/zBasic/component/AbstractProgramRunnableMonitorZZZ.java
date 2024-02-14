@@ -5,10 +5,12 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
 
 public abstract class AbstractProgramRunnableMonitorZZZ extends AbstractProgramRunnableWithStatusMessageListeningMonitoredZZZ implements IProgramRunnableMonitorZZZ{
@@ -62,14 +64,43 @@ public abstract class AbstractProgramRunnableMonitorZZZ extends AbstractProgramR
 	}
 	
 	@Override
-	public void addProgramRunnable(IListenerObjectStatusLocalMessageReactRunnableZZZ objProgramRunnable) {
+	public void addProgramRunnable(IListenerObjectStatusLocalMessageReactRunnableZZZ objProgramRunnable) throws ExceptionZZZ {
 		this.getProgramRunnableList().add(objProgramRunnable);
+		
+		//Registriere diesen Monitor sofort an dem Event werfenden Program
+		this.registerForStatusLocalEvent(objProgramRunnable);
+		
 	}
 	
 	
 	//#### METHODEN
 	@Override
-	public abstract boolean start() throws ExceptionZZZ, InterruptedException;
+	public boolean start() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+				Thread objThreadMonitor = new Thread(this);
+				objThreadMonitor.start();//Damit wird run() aufgerufen, was wiederum start_() als private Methode aufruft
+				
+				bReturn = true;								
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean startProgramRunnableAll() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> listaProgram = this.getProgramRunnableList();
+			if(listaProgram.isEmpty())break main;
+			
+			for(IListenerObjectStatusLocalMessageReactRunnableZZZ objProgram : listaProgram) {
+				boolean bValue = objProgram.start();
+				if(!bValue)break main;
+			}
+		}//end main:
+		return bReturn;
+	}
+	
 	
 	//#########################################################
 	//### aus ISenderObjectStatusLocalMessageSetUserZZZ
@@ -214,4 +245,102 @@ public abstract class AbstractProgramRunnableMonitorZZZ extends AbstractProgramR
 	}	// end main:
 	return bFunction;
 	}
+	
+	//#######################################
+	@Override
+	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocal(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sMessage, boolean bStatusValue)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue)
+			throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped,
+			boolean bStatusValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage,
+			boolean bStatusValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	//#########################################################
+	
+	@Override
+	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	//#########################################################
+	
+	@Override
+	abstract public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
+
+	@Override
+	abstract public boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal)throws ExceptionZZZ;
+
+	@Override
+	abstract public boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet)throws ExceptionZZZ;
+
+	@Override
+	abstract public boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet)throws ExceptionZZZ;
+
+	@Override
+	abstract public boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet)throws ExceptionZZZ;
+
+	@Override
+	abstract public boolean isEventRelevant(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
+
+	
 }

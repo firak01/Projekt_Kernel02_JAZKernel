@@ -5,6 +5,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalMessageUserZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusBasicZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalMessageZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
@@ -48,7 +49,7 @@ public abstract class AbstractProgramRunnableWithStatusListeningZZZ extends Abst
 
 	//#### GETTER / SETTER
 	@Override
-	public abstract boolean start() throws ExceptionZZZ, InterruptedException;
+	public abstract boolean start() throws ExceptionZZZ;
 	
 	//#########################################################
 	//### aus ISenderObjectStatusLocalMessageSetUserZZZ
@@ -84,14 +85,14 @@ public abstract class AbstractProgramRunnableWithStatusListeningZZZ extends Abst
 	public abstract boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
 	
 	@Override
-	public abstract boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
+	public abstract boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;
 	
 	@Override
-	public abstract boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
+	public abstract boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;
 	
 	@Override
-	public abstract boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
+	public abstract boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;
 	
 	@Override
-	public abstract boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;	
+	public abstract boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;	
 }
