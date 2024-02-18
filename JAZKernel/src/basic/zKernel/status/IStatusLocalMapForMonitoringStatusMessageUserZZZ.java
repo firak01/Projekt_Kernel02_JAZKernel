@@ -2,6 +2,7 @@ package basic.zKernel.status;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.component.IProgramRunnableMonitorZZZ.FLAGZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
@@ -12,7 +13,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
  * HashMap<IEnumSetMappedZZZ,IEnumSetMappedZZZ> = Map<Externer Wert aus Event, Lokaler Wert>
  * So können mehrer Klassen einen Lokalen Wert ansprechen, z.B. für den Error wichtig.
  */
-public interface IStatusLocalMapForMonitoringStatusLocalUserZZZ{
+public interface IStatusLocalMapForMonitoringStatusMessageUserZZZ{
 	public final String sERROR_STATUS_UNMAPPED = "this LOCAL status is not mapped";
 	public final int iERROR_STATUS_UNMAPPED = 52;
 	
@@ -21,4 +22,18 @@ public interface IStatusLocalMapForMonitoringStatusLocalUserZZZ{
 	
 	//Map: ExternerWert aus Event, LokalerWert
 	public abstract HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>createHashMapEnumSetForCascadingStatusLocalCustom();
+	
+	
+	//#############################################################
+	//### FLAGZ
+	//#############################################################
+	public enum FLAGZ{
+		DUMMY
+	}
+		
+	boolean getFlag(FLAGZ objEnumFlag);
+	boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;
 }

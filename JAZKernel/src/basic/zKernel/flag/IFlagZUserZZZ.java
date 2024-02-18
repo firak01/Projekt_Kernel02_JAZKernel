@@ -5,6 +5,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
 
 public interface IFlagZUserZZZ{
+	
+	//#############################################################
+	//### FLAGZ und FLAG - BASIS METHODEN
+	//#############################################################	
 	public final String sERROR_FLAG_UNAVAILABLE = "this flag is not available: ";
 	public final int iERROR_FLAG_UNAVAILABLE = 50;
 

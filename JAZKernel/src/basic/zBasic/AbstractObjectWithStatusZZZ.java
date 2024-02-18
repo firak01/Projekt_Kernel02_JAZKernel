@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import basic.zBasic.component.IProgramRunnableMonitorZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
@@ -11,9 +12,15 @@ import basic.zBasic.util.abstractList.CircularBufferZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.status.EventObjectStatusLocalZZZ;
+import basic.zKernel.status.IEventBrokerStatusLocalMessageUserZZZ;
+import basic.zKernel.status.IEventObjectStatusBasicZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.ISenderObjectStatusLocalMessageZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
 import basic.zKernel.status.IStatusLocalMessageUserZZZ;
+import basic.zKernel.status.KernelSenderObjectStatusLocalMessageZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
@@ -24,7 +31,7 @@ import basic.zKernel.status.StatusLocalHelperZZZ;
  * @author Fritz Lindhauer, 20.01.2024, 17:04:43
  * 
  */
-public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ{
+public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ, IEventBrokerStatusLocalMessageUserZZZ{
 	private static final long serialVersionUID = 1L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	
@@ -35,6 +42,10 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	//Ein einmaliger Vorgang. Der quasi letzte gemeldete Fehler.
 	//Diese Meldung ist flexibel und nicht in irgendeinem EnumSet hinterlegt.
 	protected volatile String sStatusLocalError=null;
+	
+	//fuer ISenderObjectStatusLocalMessageUserZZZ
+	protected volatile ISenderObjectStatusLocalMessageZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich AUCH ANDERE Objekte registrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
+	
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
@@ -62,50 +73,79 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	
+	//#########################################################
+	//### aus ISenderObjectStatusLocalMessageSetUserZZZ
+	@Override
+	public ISenderObjectStatusLocalMessageZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
+		if(this.objEventStatusLocalBroker==null) {
+			//++++++++++++++++++++++++++++++
+			//Nun geht es darum den Sender/Broker fuer Aenderungen am Status zu erstellen, der dann registrierte Objekte ueber Aenderung des Status zu informiert
+			ISenderObjectStatusLocalMessageZZZ objSenderStatusLocal = new KernelSenderObjectStatusLocalMessageZZZ();			
+			this.objEventStatusLocalBroker = objSenderStatusLocal;
+		}		
+		return this.objEventStatusLocalBroker;
+	}
+
+	@Override
+	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalMessageZZZ objEventSender) {
+		this.objEventStatusLocalBroker = objEventSender;
+	}
+
+	@Override
+	public void registerForStatusLocalEvent(IListenerObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
+		this.getSenderStatusLocalUsed().addListenerObject(objEventListener);
+	}
+
+	@Override	
+	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
+		this.getSenderStatusLocalUsed().removeListenerObject(objEventListener);
+	}
+
+	
 	//###############################
-		//### Flags
-		//###############################
-		
-		//### Aus IObjectWithStatusZZZ
-		@Override
-		public boolean getFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag) {
-			return this.getFlag(objEnumFlag.name());
-		}
-		@Override
-		public boolean setFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			return this.setFlag(objEnumFlag.name(), bFlagValue);
-		}
-		
-		@Override
-		public boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-			boolean[] baReturn=null;
-			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-					baReturn = new boolean[objaEnumFlag.length];
-					int iCounter=-1;
-					for(IObjectWithStatusZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-						iCounter++;
-						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-						baReturn[iCounter]=bReturn;
-					}
-					
-					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
-					//    Es wird entfernt.
-					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+	//### Flags
+	//###############################
+	
+	//### Aus IObjectWithStatusZZZ
+	@Override
+	public boolean getFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IObjectWithStatusZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IObjectWithStatusZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
 				}
-			}//end main:
-			return baReturn;
-		}
-		
-		@Override
-		public boolean proofFlagExists(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnumFlag.name());
-		}	
-		
-		@Override
-		public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagSetBefore(objEnumFlag.name());
-		}	
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}	
 
 	//##########################
 	//### STATUS HANDLING 
@@ -153,6 +193,18 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
+	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious() {
+		IEnumSetMappedStatusZZZ objReturn = null;
+		main:{
+			IStatusBooleanMessageZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious();
+			if(objStatus==null) break main;
+				
+			objReturn = objStatus.getEnumObject();
+		}//end main:
+		return objReturn;
+	}
+	
+	@Override
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
 		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
@@ -163,8 +215,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		}//end main:
 		return objReturn;
 	}
-	
-	
+
 	@Override
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumCurrent() {
 		IEnumSetMappedStatusZZZ objReturn = null;
@@ -205,17 +256,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return bReturn;
 	}
 	
-	@Override
-	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious() {
-		IEnumSetMappedStatusZZZ objReturn = null;
-		main:{
-			IStatusBooleanMessageZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious();
-			if(objStatus==null) break main;
-				
-			objReturn = objStatus.getEnumObject();
-		}//end main:
-		return objReturn;
-	}
+
 			
 	/* (non-Javadoc)
 	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#getStatusLocalString()
@@ -275,9 +316,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return sReturn;
 	}
 	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IStatusLocalUserMessageZZZ#getStatusLocalMessage()
-	 */
+	//### aus IStatusLocalUserMessageZZZ
 	@Override 
 	public String getStatusLocalMessage()	{
 		return this.getCircularBufferStatusLocalMessage().getLast();
@@ -290,19 +329,17 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	@Override
 	public String getStatusLocalMessagePrevious(){
-		return this.getCircularBufferStatusLocalMessage().getPrevious();
+		return (String) this.getCircularBufferStatusLocalMessage().getPrevious();
 	}
 	
 	@Override
 	public String getStatusLocalMessagePrevious(int iIndexStepsBack) {
-		return this.getCircularBufferStatusLocalMessage().getPrevious(iIndexStepsBack);
+		return (String) this.getCircularBufferStatusLocalMessage().getPrevious(iIndexStepsBack);
 	}
 	
 	//### aus IStatusLocalUserZZZ
 	@Override
 	abstract public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ objEnumStatusIn) throws ExceptionZZZ;
-
-
 	
 	@Override
 	public abstract boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ;
@@ -326,19 +363,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return bFunction;	
 	}
 	
-	//################## Status Local
-	//### aus IEventBrokerStatusLocalSetUserZZZ
-//	@Override
-//	public ISenderObjectStatusLocalSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
-//		return this.objEventStatusLocalBroker;
-//	}
-//
-//	@Override
-//	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalSetZZZ objEventSender) {
-//		this.objEventStatusLocalBroker = objEventSender;
-//	}
 	
-	//###### aus IStatusLocalUser
+	//###### aus IObjectWithStatusZZZ
 	@Override
 	public HashMap<String, Boolean> getHashMapStatusLocal() {
 		return this.hmStatusLocal;
@@ -773,8 +799,15 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}	
 	
 	//++++++++++++
+	@Override
+	public abstract boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	
+	@Override
+	public abstract boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
+	
+	
 	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#setStatusLocal(java.lang.String, java.lang.String, boolean)
+	 * @see basic.zKernel.status.IStatusLocalMessageUserZZZ#offerStatusLocal(java.lang.String, java.lang.String, boolean)
 	 */
 	@Override
 	public boolean offerStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
@@ -790,6 +823,136 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		}//end main:
 		return bReturn;		
 	}
+	
+	@Override
+	public boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
+		return this.offerStatusLocal(sStatusName, "", bStatusValue);
+	}
+	
+	@Override
+	public boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			
+			IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+			
+			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, "", bStatusValue);				
+		}//end main;
+		return bFunction;
+	}
+	
+	@Override
+	public boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			
+			IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+			
+			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, sStatusMessage, bStatusValue);				
+		}//end main;
+		return bFunction;
+	}
+	
+	private boolean offerStatusLocal_(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(enumStatusIn==null) break main;
+			
+		
+	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
+		IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+		String sStatusName = enumStatus.name();
+		bFunction = this.proofStatusLocalExists(sStatusName);															
+		if(!bFunction) {
+			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process would like to fire event, but this status is not available: '" + sStatusName + "'";
+			System.out.println(sLog);
+			this.logProtocolString(sLog);			
+			break main;
+		}
+			
+		bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
+		if(!bFunction) {
+			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor would like to fire event, but this status has not changed: '" + sStatusName + "'";
+			System.out.println(sLog);
+			this.logProtocolString(sLog);
+			break main;
+		}	
+		
+		//++++++++++++++++++++	
+		//Setze den Status nun in die HashMap
+		HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+		hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+		
+		//Den enumStatus als currentStatus im Objekt speichern...
+		//                   dito mit dem "vorherigen Status"
+		//Setze nun das Enum, und damit auch die Default-StatusMessage
+		String sStatusMessageToSet = null;
+		if(StringZZZ.isEmpty(sStatusMessage)){
+			if(bStatusValue) {
+				sStatusMessageToSet = enumStatus.getStatusMessage();
+			}else {
+				sStatusMessageToSet = "NICHT " + enumStatus.getStatusMessage();
+			}			
+		}else {
+			sStatusMessageToSet = sStatusMessage;
+		}
+		
+		String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerMain verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
+		System.out.println(sLog);
+		this.logProtocolString(sLog);
+
+		//Falls eine Message extra uebergeben worden ist, ueberschreibe...
+		if(sStatusMessageToSet!=null) {
+			sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerMain setze sStatusMessageToSet='" + sStatusMessageToSet + "'";
+			System.out.println(sLog);
+			this.logProtocolString(sLog);
+		}
+		//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
+		this.offerStatusLocalEnum(enumStatus, bStatusValue, sStatusMessageToSet);
+		
+		
+		
+		//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+		//Dann erzeuge den Event und feuer ihn ab.	
+		if(this.getSenderStatusLocalUsed()==null) {
+			sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process would like to fire event '" + enumStatus.getAbbreviation() + "', but no objEventStatusLocalBroker available, any registered?";
+			System.out.println(sLog);
+			this.logProtocolString(sLog);		
+			break main;
+		}
+		
+		//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
+		sLog = ReflectCodeZZZ.getPositionCurrent() + ": Erzeuge Event fuer '" + sStatusName + "'";
+		System.out.println(sLog);
+		this.logProtocolString(sLog);
+		IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, enumStatus, bStatusValue);			
+//		event.setApplicationObjectUsed(this.getMainObject().getApplicationObject());
+					
+		//das ClientStarterObjekt nun auch noch dem Event hinzufuegen
+//		sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process iIndex= '" + iIndexOfProcess + "'";
+//		System.out.println(sLog);
+//		this.logProtocolString(sLog);
+//		if(iIndexOfProcess>=0) {
+//			event.setServerConfigStarterObjectUsed(this.getMainObject().getServerConfigStarterList().get(iIndexOfProcess));
+//		}		
+		
+		sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process fires event '" + enumStatus.getAbbreviation() + "'";
+		System.out.println(sLog);
+		this.logProtocolString(sLog);
+		this.getSenderStatusLocalUsed().fireEvent(event);
+				
+		bFunction = true;				
+	}	// end main:
+	return bFunction;
+	}
+	
+	
 	
 	@Override
 	public boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
@@ -981,12 +1144,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return bReturn;		
 	}
 	
-	@Override
-	public abstract boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 		
-	@Override
-	public abstract boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
-	
 	@Override
 	public boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;

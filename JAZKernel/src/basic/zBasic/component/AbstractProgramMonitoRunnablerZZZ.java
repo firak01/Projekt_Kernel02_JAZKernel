@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -13,15 +14,15 @@ import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
 
-public abstract class AbstractProgramRunnableMonitorZZZ extends AbstractProgramRunnableWithStatusMessageListeningMonitoredZZZ implements IProgramRunnableMonitorZZZ{
+public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ implements IProgramRunnableMonitorZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;		
 	protected volatile ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> listaRunnableWithStatusMessage = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
 			
-	public AbstractProgramRunnableMonitorZZZ() throws ExceptionZZZ {
+	public AbstractProgramMonitoRunnablerZZZ() throws ExceptionZZZ {
 		super();		
 	}
 
-	public AbstractProgramRunnableMonitorZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractProgramMonitoRunnablerZZZ(String[] saFlag) throws ExceptionZZZ {
 		super();	
 		AbstractProgramRunnableMonitorNew_(saFlag);
 	}
@@ -75,6 +76,19 @@ public abstract class AbstractProgramRunnableMonitorZZZ extends AbstractProgramR
 	
 	//#### METHODEN
 	@Override
+	public void run() {		
+		try {
+			this.start();
+		} catch (ExceptionZZZ ez) {
+			try {
+				this.logProtocolString(ez.getDetailAllLast());
+			} catch (ExceptionZZZ e) {				
+				e.printStackTrace();
+			}
+		}
+	}//END run
+	
+	@Override
 	public boolean start() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -99,6 +113,51 @@ public abstract class AbstractProgramRunnableMonitorZZZ extends AbstractProgramR
 			}
 		}//end main:
 		return bReturn;
+	}
+	
+	//###################################################
+	//### FLAGS #########################################
+	//###################################################
+	
+	@Override
+	public boolean getFlag(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean setFlag(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IProgramRunnableMonitorZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+
+	@Override
+	public boolean proofFlagExists(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
+
+	@Override
+	public boolean proofFlagSetBefore(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
 	
@@ -138,6 +197,9 @@ public abstract class AbstractProgramRunnableMonitorZZZ extends AbstractProgramR
 //	public abstract boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
 	
 	
+	/* (non-Javadoc)
+	 * @see basic.zBasic.AbstractObjectWithStatusZZZ#offerStatusLocal(int, java.lang.Enum, java.lang.String, boolean)
+	 */
 	@Override
 	public boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;

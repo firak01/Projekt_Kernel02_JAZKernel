@@ -9,10 +9,10 @@ public interface ICircularBufferStatusBooleanMessageUserZZZ extends ICircularBuf
 	//Merke: Wg. des IStatusBooleanMessageZZZ Parameters erbt diese Klasse nicht von ICircularBufferStatusBooleanZZZ
 	public abstract CircularBufferZZZ<IStatusBooleanMessageZZZ> getCircularBufferStatusLocal();
 	public abstract void setCircularBufferStatusLocal(CircularBufferZZZ<IStatusBooleanMessageZZZ> cb);
-	
+			
 	public abstract CircularBufferZZZ<String> getCircularBufferStatusLocalMessage();
 	public abstract void setCircularBufferStatusLocalMessage(CircularBufferZZZ<String> cb);	
-
+		
 	public abstract void debugCircularBufferStatusLocalMessage() throws ExceptionZZZ;
 	public abstract void debugCircularBufferStatusLocalMessage(int iStepsMax) throws ExceptionZZZ;
 }

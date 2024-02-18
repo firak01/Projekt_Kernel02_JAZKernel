@@ -26,31 +26,11 @@ public abstract class AbstractProgramWithFlagRunnableZZZ extends AbstractProgram
 			this.start();
 		} catch (ExceptionZZZ ez) {
 			try {
-				this.logLineDate(ez.getDetailAllLast());
-			} catch (ExceptionZZZ e1) {
-				System.out.println(e1.getDetailAllLast());
+				this.logProtocolString(ez.getDetailAllLast());
+			} catch (ExceptionZZZ e1) {				
 				e1.printStackTrace();
 			}
-			
-			try {
-				String sLog = ez.getDetailAllLast();
-				this.logLineDate("An error happend: '" + sLog + "'");
-			} catch (ExceptionZZZ e1) {				
-				System.out.println(ez.getDetailAllLast());
-				e1.printStackTrace();
-			}			
-		}
-//		catch (InterruptedException e) {					
-//			try {
-//				String sLog = e.getMessage();
-//				this.logLineDate("An error happend: '" + sLog + "'");
-//			} catch (ExceptionZZZ e1) {
-//				System.out.println(e1.getDetailAllLast());
-//				e1.printStackTrace();
-//			}
-//			System.out.println(e.getMessage());
-//			e.printStackTrace();
-//		}
+		}	
 	}
 	
 	@Override

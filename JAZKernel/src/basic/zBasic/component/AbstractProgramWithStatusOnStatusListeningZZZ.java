@@ -2,37 +2,33 @@ package basic.zBasic.component;
 
 import java.util.HashMap;
 
-import basic.zBasic.AbstractObjectWithStatusZZZ;
+import basic.zBasic.AbstractObjectWithStatusOnStatusListeningZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.status.IEventBrokerStatusLocalMessageUserZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zKernel.status.ISenderObjectStatusLocalMessageZZZ;
-import basic.zKernel.status.KernelSenderObjectStatusLocalMessageZZZ;
 
-public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithStatusZZZ implements IProgramZZZ, IModuleUserZZZ, IEventBrokerStatusLocalMessageUserZZZ {
-	private static final long serialVersionUID = -3184969965157735065L;
+public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends AbstractObjectWithStatusOnStatusListeningZZZ implements IProgramZZZ, IModuleUserZZZ {
+	private static final long serialVersionUID = 8381960801083154549L;
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;
 	protected volatile String sModuleName = null;
-		
+	
 	/**Z.B. Wg. Reflection immer den Standardkonstruktor zur Verfügung stellen.
 	 * 
 	 * 31.01.2021, 12:15:10, Fritz Lindhauer
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractProgramWithStatusZZZ() throws ExceptionZZZ {
+	public AbstractProgramWithStatusOnStatusListeningZZZ() throws ExceptionZZZ {
 		super();
 		AbstractProgramNew_();
 	}
 	
-	public AbstractProgramWithStatusZZZ(String[]saFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusOnStatusListeningZZZ(String[]saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		AbstractProgramNew_();
 	}
 	
-	public AbstractProgramWithStatusZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractProgramWithStatusOnStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);
 		AbstractProgramNew_();
 	}
@@ -45,8 +41,6 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 				
 		return true;
 	}
-	
-	
 	
 	//### Aus IProgramZZZ
 	@Override
@@ -68,7 +62,22 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 	public void resetProgramUsed() {
 		this.sProgramName = null;
 	}
+
+	@Override
+	public boolean reset() throws ExceptionZZZ {
+		this.resetProgramUsed();
+		this.resetModuleUsed();
+		this.resetFlags();
+		return true;
+	}
 	
+	@Override
+	public abstract boolean start() throws ExceptionZZZ;
+
+
+	//###########################################
+	//### FLAGZ I
+	//###########################################
 	@Override
 	public boolean getFlag(IProgramZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
@@ -105,8 +114,44 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 
-
+	//###########################################
+	//### FLAGZ II
+	//###########################################
+	@Override
+	public boolean getFlag(IModuleUserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
 	
+	@Override
+	public boolean[] setFlag(IModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IModuleUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
 	
 	//### Aus IKernelModuleUserZZZ	
 	@Override
@@ -149,58 +194,4 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 	public void setModule(IModuleZZZ objModule) {
 		this.objModule = objModule;
 	}
-	
-	
-	//#############################################
-	//### FLAGZ
-	//#############################################
-	@Override
-	public boolean getFlag(IModuleUserZZZ.FLAGZ objEnumFlag) {
-		return this.getFlag(objEnumFlag.name());
-	}
-	@Override
-	public boolean setFlag(IModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		return this.setFlag(objEnumFlag.name(), bFlagValue);
-	}
-	
-	@Override
-	public boolean[] setFlag(IModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		boolean[] baReturn=null;
-		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-				baReturn = new boolean[objaEnumFlag.length];
-				int iCounter=-1;
-				for(IModuleUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-					iCounter++;
-					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-					baReturn[iCounter]=bReturn;
-				}
-			}
-		}//end main:
-		return baReturn;
-	}
-	
-	@Override
-	public boolean proofFlagExists(IModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-			return this.proofFlagExists(objEnumFlag.name());
-	}
-	
-	@Override
-	public boolean proofFlagSetBefore(IModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objEnumFlag.name());
-	}
-			
-	//### Methoden
-	@Override
-	public boolean reset() throws ExceptionZZZ {
-		this.resetProgramUsed();
-		this.resetModuleUsed();
-		this.resetFlags();
-		return true;
-	}
-	
-	@Override
-	public abstract boolean start() throws ExceptionZZZ;
-	
-		
 }

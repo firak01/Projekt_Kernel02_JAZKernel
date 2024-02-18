@@ -31,5 +31,8 @@ public interface IObjectWithStatusZZZ extends IObjectZZZ {
 		
 	//KONVENTION, speichere alle jemals gesetzten StatusLocal-Werte in der Hashmap: 	
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
-	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);	
+	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);
+	
+	//zum Ueberpruefen, ob sich ein Status geaendert hat
+	public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
 }

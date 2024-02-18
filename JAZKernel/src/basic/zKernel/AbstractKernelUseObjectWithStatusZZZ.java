@@ -209,14 +209,17 @@ public abstract class AbstractKernelUseObjectWithStatusZZZ extends AbstractObjec
 	* lindhaueradmin; 13.07.2006 08:38:51
 	 * @throws ExceptionZZZ 
 	 */	
+	/* (non-Javadoc)
+	 * @see basic.zBasic.AbstractObjectZZZ#logProtocolString(java.lang.String)
+	 */
 	@Override
-	public void logProtocolString(String sProtocol) throws ExceptionZZZ{
+	public void logProtocolString(String sLog) throws ExceptionZZZ{
 		
-		if(sProtocol!=null){
+		if(sLog!=null){
 			LogZZZ objLog = this.getLogObject();
-			objLog.WriteLineDate(sProtocol);
+			objLog.WriteLineDate(sLog);
 		}else {
-			this.logLineDate(sProtocol);	
+			this.logLineDate(sLog);	
 		}		
 	}
 

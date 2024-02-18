@@ -10,29 +10,30 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.IMonitorObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
 import basic.zKernel.status.StatusBooleanZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
-public abstract class AbstractObjectWithStatusListeningZZZ <T> extends AbstractObjectWithStatusZZZ implements IListenerObjectStatusLocalZZZ, IStatusLocalMapForMonitoringStatusLocalUserZZZ{
+public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ implements IMonitorObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;
 	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSet = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
-	public AbstractObjectWithStatusListeningZZZ() {	
+	public AbstractObjectWithStatusMonitoringZZZ() {	
 		super();
 	}
-	public AbstractObjectWithStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractObjectWithStatusMonitoringZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
-	public AbstractObjectWithStatusListeningZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractObjectWithStatusMonitoringZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 	}
-	public AbstractObjectWithStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
+	public AbstractObjectWithStatusMonitoringZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
 	}
 	
@@ -42,7 +43,7 @@ public abstract class AbstractObjectWithStatusListeningZZZ <T> extends AbstractO
 	abstract public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ objEnumStatusIn) throws ExceptionZZZ;
 
 
-	//### aus IListenerObjectStatusLocalMapForEventUserZZZ	
+	//### aus IStatusLocalMapForMonitoringStatusMessageUserZZZ	
 	@Override
 	public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> getHashMapEnumSetForCascadingStatusLocal() {
 		if(this.hmEnumSet==null) {
@@ -50,7 +51,7 @@ public abstract class AbstractObjectWithStatusListeningZZZ <T> extends AbstractO
 		}
 		return this.hmEnumSet;
 	}
-
+	
 	@Override
 	public void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet) {
 		this.hmEnumSet = hmEnumSet;

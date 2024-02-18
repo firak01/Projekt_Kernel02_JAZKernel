@@ -20,17 +20,17 @@ public interface IProgramRunnableMonitorZZZ {
 	
 	
 	//#############################################################
-		//### FLAGZ
-		//#############################################################
-		public enum FLAGZ{
-			DUMMY,END_ON_CONNECTION,USE_LOGFILE_WATCHRUNNER
-		}
+	//### FLAGZ
+	//#############################################################
+	public enum FLAGZ{
+		DUMMY,END_ON_CONNECTION,USE_LOGFILE_WATCHRUNNER
+	}
 		
-		boolean getFlag(FLAGZ objEnumFlag);
-		boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-		boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-		boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
-		boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	boolean getFlag(FLAGZ objEnumFlag);
+	boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;
 		
 		//#######################################################################################
 		// STATUS	
@@ -106,7 +106,7 @@ public interface IProgramRunnableMonitorZZZ {
 				Class<STATUSLOCAL> enumClass = STATUSLOCAL.class;
 				EnumSet<STATUSLOCAL> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 				
-				for(Object obj : AbstractProgramRunnableMonitorZZZ.class.getEnumConstants()){
+				for(Object obj : AbstractProgramMonitoRunnablerZZZ.class.getEnumConstants()){
 					//System.out.println(obj + "; "+obj.getClass().getName());
 					set.add((STATUSLOCAL) obj);
 				}

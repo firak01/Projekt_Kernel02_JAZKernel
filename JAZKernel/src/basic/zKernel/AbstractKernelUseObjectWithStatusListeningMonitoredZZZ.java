@@ -19,7 +19,7 @@ import basic.zKernel.status.IEventObjectStatusLocalMessageReactZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalMessageReactZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -30,7 +30,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalMessageReactZZZ, IStatusLocalMapForMonitoringStatusLocalUserZZZ {
+public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalMessageReactZZZ, IStatusLocalMapForMonitoringStatusMessageUserZZZ {
 	//Wie in AbstractObjectWithStatusListeningZZZ
 	
 	//Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
@@ -170,6 +170,7 @@ public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ ext
 			}//end main:
 			if(bReturn) {
 				String sLog = ReflectCodeZZZ.getPositionCurrent()+ ": Status changed to '"+sStatusString+"', Value="+bStatusValue;
+				this.logProtocolString(sLog);
 				System.out.println(sLog);
 			    this.getLogObject().WriteLineDate(sLog);			
 			}else {

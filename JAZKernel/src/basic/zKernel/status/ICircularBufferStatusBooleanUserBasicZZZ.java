@@ -3,6 +3,7 @@ package basic.zKernel.status;
 import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.CircularBufferZZZ;
 
 public interface ICircularBufferStatusBooleanUserBasicZZZ{
 	public abstract void debugCircularBufferStatusLocal() throws ExceptionZZZ;
@@ -26,5 +27,5 @@ public interface ICircularBufferStatusBooleanUserBasicZZZ{
 	public abstract ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupPrevious(boolean bWithInterruption) throws ExceptionZZZ;
 	public abstract ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupById(int iStatusLocalGroupId) throws ExceptionZZZ;
 	public abstract ArrayList<IStatusBooleanZZZ> searchStatusLocalGroupById(int iStatusLocalGroupId, boolean bWithInterruption) throws ExceptionZZZ;
-
+	
 }
