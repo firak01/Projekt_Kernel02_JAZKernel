@@ -33,7 +33,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	@Override
 	public void run() {		
 		try {
-			this.startCustom();
+			this.start();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());

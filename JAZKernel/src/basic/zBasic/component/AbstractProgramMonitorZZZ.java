@@ -3,6 +3,7 @@ package basic.zBasic.component;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import basic.zBasic.AbstractObjectWithStatusMonitoringZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -12,11 +13,14 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
-public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatusOnStatusListeningZZZ implements IProgramMonitorZZZ{
-	private static final long serialVersionUID = 6586079955658760005L;		
+public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatusMonitoringZZZ implements IProgramMonitorZZZ{
+	private static final long serialVersionUID = 6586079955658760005L;	
+	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
+	protected volatile String sProgramName = null;
+	protected volatile String sModuleName = null;
+	
 	protected volatile ArrayList<IProgramRunnableZZZ> listaRunnable = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
 			
 	public AbstractProgramMonitorZZZ() throws ExceptionZZZ {
@@ -76,7 +80,12 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatu
 	}
 	
 	
-	//#### METHODEN		
+	//#### METHODEN	
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
+	
 	@Override
 	public boolean startProgramRunnableAll() throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -95,6 +104,156 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatu
 	
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
+	
+	//### Aus IProgramZZZ
+		@Override
+		public String getProgramName(){
+			if(StringZZZ.isEmpty(this.sProgramName)) {
+				if(this.getFlag(IProgramZZZ.FLAGZ.ISPROGRAM.name())) {
+					this.sProgramName = this.getClass().getName();
+				}
+			}
+			return this.sProgramName;
+		}
+		
+		@Override
+		public String getProgramAlias() throws ExceptionZZZ {		
+			return null;
+		}
+			
+		@Override
+		public void resetProgramUsed() {
+			this.sProgramName = null;
+		}
+
+		@Override
+		public boolean reset() throws ExceptionZZZ {
+			this.resetProgramUsed();
+			this.resetModuleUsed();
+			this.resetFlags();
+			return true;
+		}
+		
+
+		//###########################################
+		//### FLAGZ IProgramZZZ
+		//###########################################
+		@Override
+		public boolean getFlag(IProgramZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		@Override
+		public boolean setFlag(IProgramZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(IProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IProgramZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(IProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagExists(objEnumFlag.name());
+			}
+		
+		@Override
+		public boolean proofFlagSetBefore(IProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}	
+
+		//###########################################
+		//### FLAGZ IModuleUserZZZ
+		//###########################################
+		@Override
+		public boolean getFlag(IModuleUserZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		@Override
+		public boolean setFlag(IModuleUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(IModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IModuleUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(IModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagExists(objEnumFlag.name());
+		}
+		
+		@Override
+		public boolean proofFlagSetBefore(IModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}
+		
+		//### Aus IKernelModuleUserZZZ	
+		@Override
+		public String readModuleName() throws ExceptionZZZ {
+			String sReturn = null;
+			main:{
+				IModuleZZZ objModule = this.getModule();
+				if(objModule!=null) {
+					sReturn = objModule.getModuleName();
+				}
+			}//end main:
+			return sReturn;
+		}
+		
+		@Override
+		public String getModuleName() throws ExceptionZZZ{
+			if(StringZZZ.isEmpty(this.sModuleName)) {
+				this.sModuleName = this.readModuleName();
+			}
+			return this.sModuleName;
+		}
+		
+		@Override
+		public void setModuleName(String sModuleName){
+			this.sModuleName=sModuleName;
+		}
+		
+		@Override
+		public void resetModuleUsed() {
+			this.objModule = null;
+			this.sModuleName = null;
+		}
+		
+		@Override
+		public IModuleZZZ getModule() {
+			return this.objModule;
+		}
+		
+		@Override
+		public void setModule(IModuleZZZ objModule) {
+			this.objModule = objModule;
+		}
 	
 	
 	//###################################################
@@ -142,48 +301,48 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatu
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
+		
+	//############################
+	//### STATUS
+	//############################
+	@Override
+	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(objEnumStatusIn==null) {
+				break main;
+			}
+			
+			//Merke: Bei einer anderen Klasse, die dieses DesingPattern nutzt, befindet sich der STATUSLOCAL in einer anderen Klasse
+			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) objEnumStatusIn;
+			String sStatusName = enumStatus.name();
+			if(StringZZZ.isEmpty(sStatusName)) break main;
+										
+			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
+			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
+			}
+							
+		}	// end main:
+		
+		return bFunction;	
+	}
 	
-	//#########################################################
-	//### aus ISenderObjectStatusLocalMessageSetUserZZZ
-//	@Override
-//	public ISenderObjectStatusLocalMessageSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
-//		if(this.objEventStatusLocalBroker==null) {
-//			//++++++++++++++++++++++++++++++
-//			//Nun geht es darum den Sender/Broker fuer Aenderungen am Status zu erstellen, der dann registrierte Objekte ueber Aenderung des Status zu informiert
-//			ISenderObjectStatusLocalMessageSetZZZ objSenderStatusLocal = new KernelSenderObjectStatusLocalMessageSetZZZ();			
-//			this.objEventStatusLocalBroker = objSenderStatusLocal;
-//		}		
-//		return this.objEventStatusLocalBroker;
-//	}
-//
-//	@Override
-//	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalMessageSetZZZ objEventSender) {
-//		this.objEventStatusLocalBroker = objEventSender;
-//	}
-//
-//	@Override
-//	public void registerForStatusLocalEvent(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ {
-//		this.getSenderStatusLocalUsed().addListenerObject(objEventListener);
-//	}
-//
-//	@Override	
-//	public void unregisterForStatusLocalEvent(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ {
-//		this.getSenderStatusLocalUsed().removeListenerObject(objEventListener);
-//	}
-//	
-//	//####### aus IListenerObjectStatusBasicZZZ
-//	public abstract boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-	
+
+	@Override
+	public boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	/* (non-Javadoc)
 	 * @see basic.zBasic.AbstractObjectWithStatusZZZ#offerStatusLocal(int, java.lang.Enum, java.lang.String, boolean)
 	 */
 	@Override
-	public boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) {
@@ -192,12 +351,12 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatu
 			
 			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 			
-			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, sStatusMessage, bStatusValue);				
+			bFunction = this.offerStatusLocal_(enumStatus, sStatusMessage, bStatusValue);				
 		}//end main;
 		return bFunction;
 	}
 	
-	private boolean offerStatusLocal_(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+	private boolean offerStatusLocal_(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) break main;
@@ -290,101 +449,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatu
 	return bFunction;
 	}
 	
-	//#######################################
-	@Override
-	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocal(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sMessage, boolean bStatusValue)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue)
-			throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped,
-			boolean bStatusValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage,
-			boolean bStatusValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
-	//#########################################################
-	
-	@Override
-	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	//##########################################################
 
-	@Override
-	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	//#########################################################
-	
-	@Override
-	abstract public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
-
-	@Override
-	abstract public boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal)throws ExceptionZZZ;
-
-	@Override
-	abstract public boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet)throws ExceptionZZZ;
-
-	@Override
-	abstract public boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet)throws ExceptionZZZ;
-
-	@Override
-	abstract public boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet)throws ExceptionZZZ;
-
-	@Override
-	abstract public boolean isEventRelevant(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
-
-	
 }

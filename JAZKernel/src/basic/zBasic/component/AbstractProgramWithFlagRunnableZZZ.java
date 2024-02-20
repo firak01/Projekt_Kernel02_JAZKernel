@@ -24,7 +24,7 @@ public abstract class AbstractProgramWithFlagRunnableZZZ extends AbstractProgram
 	@Override
 	public void run() {		
 		try {
-			this.startCustom();
+			this.start();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());

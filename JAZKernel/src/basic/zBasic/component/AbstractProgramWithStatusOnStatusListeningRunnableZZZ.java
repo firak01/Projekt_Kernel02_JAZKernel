@@ -53,7 +53,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 	@Override
 	public void run() {		
 		try {
-			this.startCustom();
+			this.start();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
@@ -74,7 +74,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 		}//end main:
 		return bReturn;
 	}
-	
+		
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
 	

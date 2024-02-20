@@ -71,6 +71,11 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 		return true;
 	}
 	
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
+	
 
 	//###########################################
 	//### FLAGZ I

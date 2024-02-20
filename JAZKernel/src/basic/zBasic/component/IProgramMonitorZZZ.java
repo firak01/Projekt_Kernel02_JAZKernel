@@ -2,12 +2,14 @@ package basic.zBasic.component;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
 
-public interface IProgramMonitorZZZ {
+public interface IProgramMonitorZZZ extends IProgramZZZ, IModuleUserZZZ {
 	public ArrayList<IProgramRunnableZZZ> getProgramRunnableList();
 	public void setProgramRunnableList(ArrayList<IProgramRunnableZZZ> listaRunnables);
 	

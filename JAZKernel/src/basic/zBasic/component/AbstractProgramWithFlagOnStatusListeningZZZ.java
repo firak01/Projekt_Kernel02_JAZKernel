@@ -75,6 +75,10 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return true;
 	}
 	
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
 	
 	//###########################################
 	//### FLAGZ IProgramZZZ

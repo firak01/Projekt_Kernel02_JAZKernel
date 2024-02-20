@@ -162,24 +162,8 @@ public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ ext
 			return bReturn;
 		}
 				
-		@Override
-		public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ{
-			boolean bReturn = false;
-			main:{	
-				bReturn = this.proofStatusLocalValueChanged(sStatusString, bStatusValue);	
-			}//end main:
-			if(bReturn) {
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+ ": Status changed to '"+sStatusString+"', Value="+bStatusValue;
-				this.logProtocolString(sLog);
-				System.out.println(sLog);
-			    this.getLogObject().WriteLineDate(sLog);			
-			}else {
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+ ": Status remains '"+sStatusString+"', Value="+bStatusValue;
-				System.out.println(sLog);
-			    this.getLogObject().WriteLineDate(sLog);
-			}
-			return bReturn;
-		}
+
+		
 		
 		//### aus IStatusLocalMapForCascadingStatusLocalUserZZZ	
 		@Override

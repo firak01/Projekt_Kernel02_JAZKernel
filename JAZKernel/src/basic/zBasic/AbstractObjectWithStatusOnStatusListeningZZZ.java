@@ -3,15 +3,13 @@ package basic.zBasic;
 import java.util.HashMap;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
 
-public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends AbstractObjectWithStatusZZZ implements IListenerObjectStatusLocalZZZ{
+public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends AbstractObjectWithStatusZZZ<Object> implements IListenerObjectStatusLocalZZZ {
 	private static final long serialVersionUID = 1L;
-	
+		
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
 	public AbstractObjectWithStatusOnStatusListeningZZZ() {	
@@ -26,9 +24,10 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 	public AbstractObjectWithStatusOnStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
 	}
+		
 	
 	//######################################################################
-	//### FLAGZ: aus IListenerObjectStatusLocalZZZ                 ##########################
+	//### FLAGZ: aus IListenerObjectStatusLocalZZZ                 #########
 	//######################################################################
 	@Override
 	public boolean getFlag(IListenerObjectStatusLocalZZZ.FLAGZ objEnumFlag) {
@@ -70,31 +69,36 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 	
-	
-	//### aus IStatusLocalUserZZZ
+		
+	//####################### 
+	//### STATUS
 	@Override
-	abstract public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ objEnumStatusIn) throws ExceptionZZZ;
-
-	///### aus IListenerObjectStatusLocalZZZ
-	@Override
-	abstract public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
-	
-	@Override
-	abstract public boolean isEventRelevant(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
-	
-	@Override
-	abstract public boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
-	
-	@Override
-	abstract public boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
+	public boolean isEventRelevant(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			
+			bReturn = this.isEventRelevant2ChangeStatusLocal(eventStatusLocal);
+			if(bReturn) break main;
+									
+		}//end main:
+		return bReturn;
+	}
 	
 	@Override
-	abstract public boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
-	
-	@Override
-	abstract public boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
-	
-	
-	
-	
+	public boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			
+			bReturn = this.isEventRelevantByClass2ChangeStatusLocal(eventStatusLocal);
+			if(bReturn) break main;
+			
+			bReturn = this.isEventRelevantByStatusLocal2ChangeStatusLocal(eventStatusLocal);
+			if(bReturn) break main;
+			
+			bReturn = this.isEventRelevantByStatusLocalValue2ChangeStatusLocal(eventStatusLocal);
+			if(bReturn) break main;
+			
+		}//end main:
+		return bReturn;
+	}
 }

@@ -56,7 +56,7 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 	@Override
 	public void run() {		
 		try {
-			this.startCustom();
+			this.start();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
@@ -166,38 +166,4 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 
-
-	//##########################
-	//### STATUS HANDLING 
-	//##########################
-	
-	@Override
-	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-
-//	@Override
-//	public abstract boolean setStatusLocal(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-
-//	@Override
-//	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
-
-	
-	@Override
-	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
-	
-//	@Override
-//	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
-
-
-	//### aus IStatusLocalUserBasicZZZ
-	@Override
-	abstract public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ objEnumStatusIn) throws ExceptionZZZ;
-
-	@Override
-	public abstract boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ;
 }

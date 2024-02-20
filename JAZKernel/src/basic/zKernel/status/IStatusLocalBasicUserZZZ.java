@@ -34,8 +34,7 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	public abstract boolean getStatusLocal(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean getStatusLocal(String sStatusName) throws ExceptionZZZ;
 		
-	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;		
+	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;		
 	public abstract boolean setStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.	
 	
 	public abstract boolean[] setStatusLocal(Enum[] enumaStatusIn, boolean bStatusValue) throws ExceptionZZZ;
@@ -44,29 +43,26 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 
 	//+++ Verwende IEnumSetMappedStatus. Da kann man viel mehr Informationen unterbringen
-	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;	
 	public abstract boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ enumStatusIn) throws ExceptionZZZ;
 	
 	//++++ Aendere mit einem Aufruf mehrere Statuseintraege ab, ohne Berücksichtigung einer GroupId
 	public abstract boolean switchStatusLocalAllGroupTo(Enum enumStatusIn) throws ExceptionZZZ; //setze den uebergebenen Status auf true. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf false..
 	public abstract boolean switchStatusLocalAllGroupTo(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ; //setze den uebergebenen Status auf den uebergebenen Wert. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den entsprechend nicht uebergebenen Wert.. 
 	public abstract boolean switchStatusLocalAllGroupTo(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //setze den uebergebenen Status auf den uebergebenen Wert. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den entsprechend nicht uebergebenen Wert..
-	public abstract boolean switchStatusLocalAllGroupTo(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalAllGroupTo(Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	
 	//+++ Aendere mit einem Aufruf mehrere Statuseintraege ab... FUER DIE ANGEGEBENE GRUPPE
-	//Merke: iIndex muss immer als Argument uebergeben werden. Nur dann wird es mit der iGroupId nicht verwechselt.
-	public abstract boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus) throws ExceptionZZZ;
-	public abstract boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalForGroupTo(int iGroupId, Enum enumStatus) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalForGroupTo(int iGroupId, Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalForGroupTo(int iGroupId, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	
 	
 	//+++ Aendere mit einem Aufruf mehrere Statuseintraege ab... FUER DIE ANGEGEBENE GRUPPE
 	//    Merke: In IEnumSetMappedStatusZZZ ist die StatusGroupId vorhanden.
 	public abstract boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped) throws ExceptionZZZ;
-	public abstract boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
-	public abstract boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;	
+	public abstract boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 
 	//++++ Schaue in der Klasse nach dem enum STATUSLOCAL
 	public String[] getStatusLocalAll() throws ExceptionZZZ; 

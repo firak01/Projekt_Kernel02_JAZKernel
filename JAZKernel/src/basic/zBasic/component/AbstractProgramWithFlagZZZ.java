@@ -181,7 +181,7 @@ public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZ
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 			
-	//### Methoden
+	//### aus IProgramZZZ
 	@Override
 	public boolean reset() throws ExceptionZZZ {
 		this.resetProgramUsed();
@@ -190,4 +190,8 @@ public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZ
 		return true;
 	}
 		
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
 }

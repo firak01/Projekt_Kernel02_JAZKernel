@@ -15,6 +15,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalMessageUserZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalMessageZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
@@ -103,7 +104,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 
 	
 	//###############################
-	//### Flags
+	//### Flags IObjectWithStatusZZZ
 	//###############################
 	
 	//### Aus IObjectWithStatusZZZ
@@ -146,12 +147,80 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public boolean proofFlagSetBefore(IObjectWithStatusZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
+	
+	
+	//###############################
+	//### Flags IStatusLocalMessageUserZZZ
+	//###############################
+	
+	@Override
+	public boolean getFlag(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IStatusLocalMessageUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}	
+	
+	
+	//#########################
+	//### STATUS MAPPING aus 
+	//#########################
+	
 
 	//##########################
 	//### STATUS HANDLING 
 	//##########################
 	//Analog zu AbstractProgramRunnableWithStatusZZZ
 	//aus IStatusLocalUserMessageZZZ
+	
+	@Override
+	public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{	
+			bReturn = this.proofStatusLocalValueChanged(sStatusString, bStatusValue);	
+		}//end main:
+		if(bReturn) {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+ ": Status changed to '"+sStatusString+"', Value="+bStatusValue;
+			this.logProtocolString(sLog);			
+		    this.logProtocolString(sLog);			
+		}else {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+ ": Status remains '"+sStatusString+"', Value="+bStatusValue;			
+		    this.logProtocolString(sLog);
+		}
+		return bReturn;
+	}
 
 	/* (non-Javadoc)
 	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#resetStatusLocalError()
@@ -338,12 +407,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	//### aus IStatusLocalUserZZZ
-	@Override
-	abstract public boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ objEnumStatusIn) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ;
-	
 	@Override
 	public boolean getStatusLocal(String sStatusName) throws ExceptionZZZ {
 		boolean bFunction = false;
@@ -798,14 +861,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		
 	}	
 	
-	//++++++++++++
-	@Override
-	public abstract boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-	
-	
 	/* (non-Javadoc)
 	 * @see basic.zKernel.status.IStatusLocalMessageUserZZZ#offerStatusLocal(java.lang.String, java.lang.String, boolean)
 	 */
@@ -830,7 +885,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+	public boolean offerStatusLocal( Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) {
@@ -839,27 +894,12 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			
 			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 			
-			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, "", bStatusValue);				
+			bFunction = this.offerStatusLocal_(enumStatus, "", bStatusValue);				
 		}//end main;
 		return bFunction;
 	}
-	
-	@Override
-	public boolean offerStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(enumStatusIn==null) {
-				break main;
-			}
-			
-			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
-			
-			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, sStatusMessage, bStatusValue);				
-		}//end main;
-		return bFunction;
-	}
-	
-	private boolean offerStatusLocal_(int iIndexOfProcess, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		
+	private boolean offerStatusLocal_(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
 		main:{
 			if(enumStatusIn==null) break main;
@@ -989,32 +1029,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public abstract boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-
-	@Override
-	public abstract boolean setStatusLocal(Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
-
-	@Override
-	public abstract boolean setStatusLocal(int iIndexOfProcess, Enum enumStatusIn, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
-
-	
-	@Override
-	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;
-
-	@Override
-	public abstract boolean setStatusLocalEnum(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sMessage, boolean bStatusValue) throws ExceptionZZZ;
-
-	
-	@Override
 	public boolean switchStatusLocalAllGroupTo(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
@@ -1036,86 +1050,78 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	@Override
 	public boolean switchStatusLocalAllGroupTo(Enum enumStatus) throws ExceptionZZZ{
-		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, null, true);
+		return this.switchStatusLocalAsGroupTo_(enumStatus, null, true);
 	}
 	
 	@Override
 	public boolean switchStatusLocalAllGroupTo(Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ{
-		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, null, bStatusValue);
+		return this.switchStatusLocalAsGroupTo_(enumStatus, null, bStatusValue);
 	}
 	
 	@Override
 	public boolean switchStatusLocalAsGroupTo(Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
-		return this.switchStatusLocalAsGroupTo_(-1, enumStatus, sStatusMessage, bStatusValue);	
+		return this.switchStatusLocalAsGroupTo_(enumStatus, sStatusMessage, bStatusValue);	
 	}
 	
 	@Override
-	public boolean switchStatusLocalAllGroupTo(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		return this.switchStatusLocalAsGroupTo_(iIndex, enumStatus, sStatusMessage, bStatusValue);
+	public boolean switchStatusLocalAllGroupTo(Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.switchStatusLocalAsGroupTo_(enumStatus, sStatusMessage, bStatusValue);
 	}
 	
-	private boolean switchStatusLocalAsGroupTo_(int iIndex, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
-		return this.switchStatusLocalForGroupTo_(iIndex, -1, enumStatus, sStatusMessage, bStatusValue);
+	private boolean switchStatusLocalAsGroupTo_(Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		return this.switchStatusLocalForGroupTo_(-1, enumStatus, sStatusMessage, bStatusValue);
 	}
 	
 	@Override
 	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped) throws ExceptionZZZ{
 		int iGroupId = enumStatusMapped.getStatusGroupId();
 		Enum enumStatus = (Enum)enumStatusMapped;
-		return this.switchStatusLocalForGroupTo_(-1, iGroupId, enumStatus, null, true);
+		return this.switchStatusLocalForGroupTo_(iGroupId, enumStatus, null, true);
 	}
 	
 	@Override
 	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ{
 		int iGroupId = enumStatusMapped.getStatusGroupId();
 		Enum enumStatus = (Enum)enumStatusMapped;
-		return this.switchStatusLocalForGroupTo_(-1, iGroupId, enumStatus, null, bStatusValue);
+		return this.switchStatusLocalForGroupTo_( iGroupId, enumStatus, null, bStatusValue);
 	}
 	
 	@Override
-	public boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus) throws ExceptionZZZ{
-		return this.switchStatusLocalForGroupTo_(iIndex, iGroupId, enumStatus, null, true);
+	public boolean switchStatusLocalForGroupTo(int iGroupId, Enum enumStatus) throws ExceptionZZZ{
+		return this.switchStatusLocalForGroupTo_(iGroupId, enumStatus, null, true);
 	}
 	
 	@Override
-	public boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ{
-		return this.switchStatusLocalForGroupTo_(iIndex, iGroupId, enumStatus, null, bStatusValue);
+	public boolean switchStatusLocalForGroupTo(int iGroupId, Enum enumStatus, boolean bStatusValue) throws ExceptionZZZ{
+		return this.switchStatusLocalForGroupTo_(iGroupId, enumStatus, null, bStatusValue);
 	}
-		
+			
 	@Override
-	public boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ{
+	public boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			int iGroupId = enumStatusMapped.getStatusGroupId();
 			Enum enumStatus = (Enum) enumStatusMapped;
-			bReturn = this.switchStatusLocalForGroupTo(iIndexOfProcess, iGroupId, enumStatus, null, bStatusValue);
+			bReturn = this.switchStatusLocalForGroupTo(iGroupId, enumStatus, sStatusMessage, bStatusValue);
 		}//end main:
 		return bReturn;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IStatusLocalBasicUserZZZ#switchStatusLocalForGroupTo(int, int, java.lang.Enum, java.lang.String, boolean)
+	 */
 	@Override
-	public boolean switchStatusLocalForGroupTo(int iIndexOfProcess, IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
-		boolean bReturn = false;
-		main:{
-			int iGroupId = enumStatusMapped.getStatusGroupId();
-			Enum enumStatus = (Enum) enumStatusMapped;
-			bReturn = this.switchStatusLocalForGroupTo(iIndexOfProcess, iGroupId, enumStatus, sStatusMessage, bStatusValue);
-		}//end main:
-		return bReturn;
+	public boolean switchStatusLocalForGroupTo(int iGroupId, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.switchStatusLocalForGroupTo_(iGroupId, enumStatus, sStatusMessage, bStatusValue);
 	}
 	
-	@Override
-	public boolean switchStatusLocalForGroupTo(int iIndex, int iGroupId, Enum enumStatus, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		return this.switchStatusLocalForGroupTo_(iIndex, iGroupId, enumStatus, sStatusMessage, bStatusValue);
-	}
-	
-	private boolean switchStatusLocalForGroupTo_(int iIndex, int iGroupId, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+	private boolean switchStatusLocalForGroupTo_(int iGroupId, Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{			
 			if(enumStatusIn==null) break main;
 			String sStatusName = enumStatusIn.name().toUpperCase();
 			
-			bReturn = this.offerStatusLocal(iIndex, enumStatusIn, sStatusMessage, bStatusValue);
+			bReturn = this.offerStatusLocal(enumStatusIn, sStatusMessage, bStatusValue);
 			if(!bReturn)break main;
 			
 			//Hole die StatusNamen der angegebenen Gruppe
@@ -1143,7 +1149,31 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		}//end main:
 		return bReturn;		
 	}
-	
+
+	@Override
+	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.offerStatusLocal(enumStatusIn.name(), sStatusMessage, bStatusValue);
+	}
+
+	@Override
+	public boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.setStatusLocal(enumStatusIn.name(), sStatusMessage, bStatusValue);
+	}
+
+	@Override
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		return this.setStatusLocal(enumStatusMapped.getName(), sStatusMessage, bStatusValue);
+	}
+
+	@Override
+	public boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		return this.setStatusLocal(enumStatusIn.name(),bStatusValue);
+	}
+
+	@Override
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ {
+		return this.setStatusLocal(enumStatusMapped.getName(), bStatusValue);
+	}
 		
 	@Override
 	public boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {

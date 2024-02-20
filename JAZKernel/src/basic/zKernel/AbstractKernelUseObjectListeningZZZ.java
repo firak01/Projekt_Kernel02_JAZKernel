@@ -147,10 +147,6 @@ public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractKernel
 	}
 	
 	
-	@Override
-	public boolean isEventRelevant(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 }//end class
 
