@@ -3,8 +3,7 @@ package basic.zBasic.component;
 import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
-public interface IProgramZZZ extends IModuleUserZZZ, IFlagZUserZZZ{
-	public boolean startAsThread() throws ExceptionZZZ;      //hier wird ein eigener Thread erzeugt.
+public interface IProgramZZZ extends IModuleUserZZZ, IFlagZUserZZZ{	
 	public boolean startCustom() throws ExceptionZZZ;//das was ggfs. in run() aufgerufen wird. Merke: run() wird ja beim Thread-Start ausgeführt.
 	public boolean reset() throws ExceptionZZZ;
 	

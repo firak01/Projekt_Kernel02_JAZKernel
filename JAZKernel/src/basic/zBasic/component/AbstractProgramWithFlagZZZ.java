@@ -189,9 +189,5 @@ public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZ
 		this.resetFlags();
 		return true;
 	}
-	
-	@Override
-	public abstract boolean startAsThread() throws ExceptionZZZ;
-	
 		
 }

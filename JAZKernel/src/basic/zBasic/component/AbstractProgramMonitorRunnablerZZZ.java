@@ -105,21 +105,7 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
 	
-	@Override
-	public boolean startProgramRunnableAll() throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-			ArrayList<IProgramRunnableZZZ> listaProgram = this.getProgramRunnableList();
-			if(listaProgram.isEmpty())break main;
-			
-			for(IProgramRunnableZZZ objProgram : listaProgram) {
-				boolean bValue = objProgram.startAsThread();
-				if(!bValue)break main;
-			}
-		}//end main:
-		return bReturn;
-	}
-	
+		
 	//###################################################
 	//### FLAGS #########################################
 	//###################################################

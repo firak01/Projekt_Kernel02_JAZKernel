@@ -4,8 +4,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 public interface IProgramRunnableZZZ extends IProgramZZZ, Runnable{ 		
-	//Merke: StartCutom() und startThread89 gibt es in IProgramZZZ, hier geht es darum, dass dieses Program in einer Endlsoscheife laufen darf.
-	
+	//Merke: StartCutom() gibt es in IProgramZZZ, hier geht es darum, dass dieses Program in einer Endlsoscheife laufen darf.
+	public boolean startAsThread() throws ExceptionZZZ;      //hier wird ein eigener Thread erzeugt.
 
 	//#############################################################
 	//### FLAGZ

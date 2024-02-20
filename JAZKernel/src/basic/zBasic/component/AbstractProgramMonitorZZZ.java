@@ -76,18 +76,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatu
 	}
 	
 	
-	//#### METHODEN	
-	@Override
-	public boolean startAsThread() throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-				//Das dies selbst keine runnable Klasse ist, werden nur die hier hinzugefügten Programme gestartet.
-				bReturn = this.startProgramRunnableAll();
-			
-		}//end main:
-		return bReturn;
-	}
-	
+	//#### METHODEN		
 	@Override
 	public boolean startProgramRunnableAll() throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -103,8 +92,13 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatu
 		return bReturn;
 	}
 	
+	
+	@Override
+	abstract public boolean startCustom() throws ExceptionZZZ;
+	
+	
 	//###################################################
-	//### FLAGS #########################################
+	//### FLAGS IProgramMonitorZZZ ######################
 	//###################################################
 	
 	@Override

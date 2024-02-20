@@ -75,10 +75,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return true;
 	}
 	
-	@Override
-	public abstract boolean startAsThread() throws ExceptionZZZ;
-
-
+	
 	//###########################################
 	//### FLAGZ IProgramZZZ
 	//###########################################
