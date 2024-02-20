@@ -45,8 +45,37 @@ public abstract class AbstractProgramWithStatusOnStatusListeningMonitoredRunnabl
 	}
 
 	//#### GETTER / SETTER
+	
+	
+	
+	//#### METHODEN
 	@Override
-	public abstract boolean start() throws ExceptionZZZ;
+	public void run() {		
+		try {
+			this.startCustom();
+		} catch (ExceptionZZZ ez) {
+			try {
+				this.logProtocolString(ez.getDetailAllLast());
+			} catch (ExceptionZZZ e) {				
+				e.printStackTrace();
+			}
+		}
+	}//END run
+	
+	@Override
+	public boolean startAsThread() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+				Thread objThreadMonitor = new Thread(this);
+				objThreadMonitor.start();//Damit wird run() aufgerufen, was wiederum start_() als private Methode aufruft
+				
+				bReturn = true;								
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	abstract public boolean startCustom() throws ExceptionZZZ;
 	
 	//###################################################
 	//### FLAGS #########################################

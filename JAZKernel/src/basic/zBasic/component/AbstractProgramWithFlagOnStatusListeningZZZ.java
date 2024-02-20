@@ -45,6 +45,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return true;
 	}
 	
+	//################################################################################
 	//### Aus IProgramZZZ
 	@Override
 	public String getProgramName(){
@@ -75,11 +76,11 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	}
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ;
+	public abstract boolean startAsThread() throws ExceptionZZZ;
 
 
 	//###########################################
-	//### FLAGZ I
+	//### FLAGZ IProgramZZZ
 	//###########################################
 	@Override
 	public boolean getFlag(IProgramZZZ.FLAGZ objEnumFlag) {
@@ -118,7 +119,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	}	
 
 	//###########################################
-	//### FLAGZ II
+	//### FLAGZ IModuleUserZZZ
 	//###########################################
 	@Override
 	public boolean getFlag(IModuleUserZZZ.FLAGZ objEnumFlag) {
@@ -156,6 +157,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 	
+	//####################################################################
 	//### Aus IKernelModuleUserZZZ	
 	@Override
 	public String readModuleName() throws ExceptionZZZ {

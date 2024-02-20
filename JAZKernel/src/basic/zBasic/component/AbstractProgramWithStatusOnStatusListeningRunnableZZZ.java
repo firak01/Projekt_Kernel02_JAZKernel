@@ -48,12 +48,12 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 		return bReturn;
 	}
 	
-	
+	//#### METHODEN
 	//### aus IProgramRunnableZZZ
 	@Override
 	public void run() {		
 		try {
-			this.start();
+			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
@@ -62,9 +62,21 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 			}
 		}
 	}//END run
-
+	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ;
+	public boolean startAsThread() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+				Thread objThread = new Thread(this);
+				objThread.start();//Damit wird run() aufgerufen, was wiederum start_() als private Methode aufruft
+				
+				bReturn = true;								
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	abstract public boolean startCustom() throws ExceptionZZZ;
 	
 	//##########################################
 	//### FLAG HANDLING IProgramRunnableZZZ

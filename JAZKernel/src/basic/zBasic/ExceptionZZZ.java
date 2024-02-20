@@ -145,6 +145,28 @@ public class ExceptionZZZ extends Exception implements IConstantZZZ{
 	 	ExceptionNew_(sMessage, iErrorCode, null, sClassName, sFunctionCurrent, null);
  }
  
+ public ExceptionZZZ(String sMessage, int iErrorCode, Object objCurrent){
+	 	super(sMessage);
+	 	String sFunctionCurrent=null;
+		try {
+			sFunctionCurrent = ReflectCodeZZZ.getClassMethodCallingString();
+		} catch (ExceptionZZZ e1) {		
+			e1.printStackTrace();
+		}
+
+		String sClassName = null;
+		if(objCurrent==null) {
+			try {
+				sClassName = ReflectCodeZZZ.getClassCallingName();
+			} catch (ExceptionZZZ e1) {		
+				e1.printStackTrace();
+			}
+		}else {
+			sClassName = objCurrent.getClass().getName();
+		}
+	 	ExceptionNew_(sMessage, iErrorCode, null, sClassName, sFunctionCurrent, null);
+}
+ 
  /**
   * @param Errormessage
   * 

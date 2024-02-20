@@ -51,21 +51,35 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 		super(hmFlag);		
 	}
 	
-	//###
-	public void run() {
+	//#### METHODEN
+	//### aus IProgramRunnableZZZ
+	@Override
+	public void run() {		
 		try {
-			this.start();
+			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
-			} catch (ExceptionZZZ e1) {
-				e1.printStackTrace();
-			}	
-		} 
+			} catch (ExceptionZZZ e) {				
+				e.printStackTrace();
+			}
+		}
+	}//END run
+	
+	@Override
+	public boolean startAsThread() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+				Thread objThreadMonitor = new Thread(this);
+				objThreadMonitor.start();//Damit wird run() aufgerufen, was wiederum start_() als private Methode aufruft
+				
+				bReturn = true;								
+		}//end main:
+		return bReturn;
 	}
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ;
+	abstract public boolean startCustom() throws ExceptionZZZ;
 		
 	//##########################################
 	//### FLAG HANDLING IProgramRunnableZZZ

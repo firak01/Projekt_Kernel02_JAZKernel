@@ -40,7 +40,7 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 	}
 	
 	
-	public static boolean proofStatusLocalExists(Class cls, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofStatusLocalExists(Class cls, String sStatusName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(cls==null) {
@@ -48,8 +48,8 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 				 throw ez;
 			}
 			
-			if(StringZZZ.isEmpty(sFlagName)) {
-				ExceptionZZZ ez = new ExceptionZZZ( "FlagString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			if(StringZZZ.isEmpty(sStatusName)) {
+				ExceptionZZZ ez = new ExceptionZZZ( "StatusString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 				 throw ez;
 			}
 			
@@ -65,7 +65,7 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 			//Die Klasse selbst und alle Elternklassen, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
 			String[] saFlagAvailable = StatusLocalHelperZZZ.getStatusLocalInheritedAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
 			if(saFlagAvailable!=null) {
-				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sFlagName)) {
+				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sStatusName)) {
 					bReturn = true;	
 					break main;
 				}

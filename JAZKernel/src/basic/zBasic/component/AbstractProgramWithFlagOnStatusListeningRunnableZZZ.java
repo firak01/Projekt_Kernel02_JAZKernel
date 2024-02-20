@@ -13,11 +13,8 @@ import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalReactZZZ;
 import basic.zKernel.status.KernelSenderObjectStatusLocalReactZZZ;
 
-public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extends AbstractObjectWithFlagOnStatusListeningZZZ implements IProgramRunnableZZZ{
+public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extends AbstractProgramWithFlagOnStatusListeningZZZ implements IProgramRunnableZZZ{
 	private static final long serialVersionUID = 202987237863158494L;
-	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
-	protected volatile String sProgramName = null;
-	protected volatile String sModuleName = null;
 	
 	public AbstractProgramWithFlagOnStatusListeningRunnableZZZ() throws ExceptionZZZ {
 		super();		
@@ -36,7 +33,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	@Override
 	public void run() {		
 		try {
-			this.start();
+			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
@@ -47,7 +44,16 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	}//END run
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ;
+	public boolean startAsThread() throws ExceptionZZZ{
+		
+		Thread objThread = new Thread(this);
+		objThread.start();//Damit wird run() aufgerufen, was wiederum start_() als private Methode aufruft
+		
+		return true;
+	}
+	
+	@Override
+	public abstract boolean startCustom() throws ExceptionZZZ;
 	
 	
 	//############################

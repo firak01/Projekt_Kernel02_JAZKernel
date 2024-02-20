@@ -200,7 +200,7 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 	}
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ;
+	public abstract boolean startAsThread() throws ExceptionZZZ;
 	
 		
 }

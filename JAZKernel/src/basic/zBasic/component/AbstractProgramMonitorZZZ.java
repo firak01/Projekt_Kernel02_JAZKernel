@@ -13,16 +13,17 @@ import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
-public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ implements IProgramRunnableMonitorZZZ{
+public abstract class AbstractProgramMonitorZZZ extends AbstractProgramWithStatusOnStatusListeningZZZ implements IProgramMonitorZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;		
-	protected volatile ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> listaRunnableWithStatusMessage = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
+	protected volatile ArrayList<IProgramRunnableZZZ> listaRunnable = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
 			
-	public AbstractProgramMonitoRunnablerZZZ() throws ExceptionZZZ {
+	public AbstractProgramMonitorZZZ() throws ExceptionZZZ {
 		super();		
 	}
 
-	public AbstractProgramMonitoRunnablerZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractProgramMonitorZZZ(String[] saFlag) throws ExceptionZZZ {
 		super();	
 		AbstractProgramRunnableMonitorNew_(saFlag);
 	}
@@ -51,51 +52,38 @@ public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramW
 
 	//#### GETTER / SETTER
 	@Override
-	public void setProgramRunnableList(ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> listaRunnables) {
-		this.listaRunnableWithStatusMessage = listaRunnables;
+	public void setProgramRunnableList(ArrayList<IProgramRunnableZZZ> listaRunnables) {
+		this.listaRunnable = listaRunnables;
 	}
 	
 	@Override
-	public ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> getProgramRunnableList() {
-		if(this.listaRunnableWithStatusMessage==null) {
-			ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> listaRunnables = new ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> ();
-			this.listaRunnableWithStatusMessage = listaRunnables;
+	public ArrayList<IProgramRunnableZZZ> getProgramRunnableList() {
+		if(this.listaRunnable==null) {
+			ArrayList<IProgramRunnableZZZ> listaRunnables = new ArrayList<IProgramRunnableZZZ> ();
+			this.listaRunnable = listaRunnables;
 		}
-		return this.listaRunnableWithStatusMessage;
+		return this.listaRunnable;
 	}
 	
 	@Override
-	public void addProgramRunnable(IListenerObjectStatusLocalMessageReactRunnableZZZ objProgramRunnable) throws ExceptionZZZ {
+	public void addProgramRunnable(IProgramRunnableZZZ objProgramRunnable) throws ExceptionZZZ {
 		this.getProgramRunnableList().add(objProgramRunnable);
 		
-		//Registriere diesen Monitor sofort an dem Event werfenden Program
-		this.registerForStatusLocalEvent(objProgramRunnable);
-		
+		//Registriere diesen Monitor sofort an dem Event werfenden Program, aber nur wenn das Interface passt.
+		if(objProgramRunnable instanceof IListenerObjectStatusLocalZZZ) {
+			this.registerForStatusLocalEvent((IListenerObjectStatusLocalZZZ) objProgramRunnable);
+		}
 	}
 	
 	
-	//#### METHODEN
+	//#### METHODEN	
 	@Override
-	public void run() {		
-		try {
-			this.start();
-		} catch (ExceptionZZZ ez) {
-			try {
-				this.logProtocolString(ez.getDetailAllLast());
-			} catch (ExceptionZZZ e) {				
-				e.printStackTrace();
-			}
-		}
-	}//END run
-	
-	@Override
-	public boolean start() throws ExceptionZZZ {
+	public boolean startAsThread() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-				Thread objThreadMonitor = new Thread(this);
-				objThreadMonitor.start();//Damit wird run() aufgerufen, was wiederum start_() als private Methode aufruft
-				
-				bReturn = true;								
+				//Das dies selbst keine runnable Klasse ist, werden nur die hier hinzugefügten Programme gestartet.
+				bReturn = this.startProgramRunnableAll();
+			
 		}//end main:
 		return bReturn;
 	}
@@ -104,11 +92,11 @@ public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramW
 	public boolean startProgramRunnableAll() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			ArrayList<IListenerObjectStatusLocalMessageReactRunnableZZZ> listaProgram = this.getProgramRunnableList();
+			ArrayList<IProgramRunnableZZZ> listaProgram = this.getProgramRunnableList();
 			if(listaProgram.isEmpty())break main;
 			
-			for(IListenerObjectStatusLocalMessageReactRunnableZZZ objProgram : listaProgram) {
-				boolean bValue = objProgram.start();
+			for(IProgramRunnableZZZ objProgram : listaProgram) {
+				boolean bValue = objProgram.startAsThread();
 				if(!bValue)break main;
 			}
 		}//end main:
@@ -120,23 +108,23 @@ public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramW
 	//###################################################
 	
 	@Override
-	public boolean getFlag(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IProgramMonitorZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	
 	@Override
-	public boolean setFlag(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IProgramMonitorZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IProgramRunnableMonitorZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IProgramMonitorZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IProgramMonitorZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -151,12 +139,12 @@ public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramW
 	}
 
 	@Override
-	public boolean proofFlagExists(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IProgramMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 
 	@Override
-	public boolean proofFlagSetBefore(IProgramRunnableMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IProgramMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
@@ -208,7 +196,7 @@ public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramW
 				break main;
 			}
 			
-			IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 			
 			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, sStatusMessage, bStatusValue);				
 		}//end main;
@@ -222,7 +210,7 @@ public abstract class AbstractProgramMonitoRunnablerZZZ extends AbstractProgramW
 			
 		
 	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-		IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+		IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 		String sStatusName = enumStatus.name();
 		bFunction = this.proofStatusLocalExists(sStatusName);															
 		if(!bFunction) {

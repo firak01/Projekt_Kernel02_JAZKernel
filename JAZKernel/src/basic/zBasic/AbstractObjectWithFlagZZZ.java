@@ -701,26 +701,4 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 	}
 	
 	//++++++++++++++++++++++++
-
-	/* (non-Javadoc)
-	 * @see zzzKernel.basic.KernelAssetObjectZZZ#getExceptionObject()
-	 */
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	}
-	/* (non-Javadoc)
-	 * @see zzzKernel.basic.KernelAssetObjectZZZ#setExceptionObject(zzzKernel.custom.ExceptionZZZ)
-	 */
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
-	
-	
-	@Override
-	public void logLineDate(String sLog) throws ExceptionZZZ {
-		String sTemp = KernelLogZZZ.computeLineDate(sLog);
-		System.out.println(sTemp);		
-	}
 }

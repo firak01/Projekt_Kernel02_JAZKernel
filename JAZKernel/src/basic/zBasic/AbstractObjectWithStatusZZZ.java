@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import basic.zBasic.component.IProgramRunnableMonitorZZZ;
+import basic.zBasic.component.IProgramMonitorZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
@@ -837,7 +837,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				break main;
 			}
 			
-			IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 			
 			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, "", bStatusValue);				
 		}//end main;
@@ -852,7 +852,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				break main;
 			}
 			
-			IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 			
 			bFunction = this.offerStatusLocal_(iIndexOfProcess, enumStatus, sStatusMessage, bStatusValue);				
 		}//end main;
@@ -866,7 +866,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			
 		
 	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-		IProgramRunnableMonitorZZZ.STATUSLOCAL enumStatus = (IProgramRunnableMonitorZZZ.STATUSLOCAL) enumStatusIn;
+		IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 		String sStatusName = enumStatus.name();
 		bFunction = this.proofStatusLocalExists(sStatusName);															
 		if(!bFunction) {
@@ -1186,6 +1186,21 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 
 	@Override
 	public boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName))break main;
+			bReturn = StatusLocalHelperZZZ.proofStatusLocalExists(this.getClass(), sStatusName);				
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean proofStatusLocalDirectExists(Enum objEnumStatus) throws ExceptionZZZ {
+		return this.proofStatusLocalDirectExists(objEnumStatus.name());
+	}
+	
+	@Override
+	public boolean proofStatusLocalDirectExists(String sStatusName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;

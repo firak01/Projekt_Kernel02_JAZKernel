@@ -2,7 +2,7 @@ package basic.zKernel.status;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.component.IProgramRunnableMonitorZZZ.FLAGZ;
+import basic.zBasic.component.IProgramMonitorZZZ.FLAGZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 

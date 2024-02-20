@@ -72,6 +72,8 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	public String[] getStatusLocalAll() throws ExceptionZZZ; 
 	public abstract boolean proofStatusLocalExists(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalDirectExists(Enum enumStatusIn) throws ExceptionZZZ;
+	public abstract boolean proofStatusLocalDirectExists(String sStatusName) throws ExceptionZZZ;
 	
 	//... diese Methoden werden durch FLAGZ-Eintraege per default aktiviert, können aber auch deaktivert werden.
 	public abstract boolean proofStatusLocalValue(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;

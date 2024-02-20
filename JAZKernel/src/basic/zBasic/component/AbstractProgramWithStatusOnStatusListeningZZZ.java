@@ -72,7 +72,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 	}
 	
 	@Override
-	public abstract boolean start() throws ExceptionZZZ;
+	public abstract boolean startAsThread() throws ExceptionZZZ;
 
 
 	//###########################################
