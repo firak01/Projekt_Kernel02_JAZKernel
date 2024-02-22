@@ -6,12 +6,11 @@ import basic.zBasic.AbstractObjectWithStatusZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.status.IEventBrokerStatusLocalMessageUserZZZ;
+import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zKernel.status.ISenderObjectStatusLocalMessageZZZ;
 import basic.zKernel.status.KernelSenderObjectStatusLocalMessageZZZ;
 
-public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithStatusZZZ implements IProgramZZZ, IModuleUserZZZ, IEventBrokerStatusLocalMessageUserZZZ {
+public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithStatusZZZ implements IProgramZZZ, IModuleUserZZZ, IEventBrokerStatusLocalUserZZZ {
 	private static final long serialVersionUID = -3184969965157735065L;
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;

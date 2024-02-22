@@ -12,12 +12,11 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
 public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ implements IProgramMonitorZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;		
-	protected volatile ArrayList<IProgramRunnableZZZ> listaRunnable = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
+	protected volatile ArrayList<IProgramZZZ> listaProgram = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
 			
 	public AbstractProgramMonitorRunnablerZZZ() throws ExceptionZZZ {
 		super();		
@@ -52,26 +51,26 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 
 	//#### GETTER / SETTER
 	@Override
-	public void setProgramRunnableList(ArrayList<IProgramRunnableZZZ> listaRunnables) {
-		this.listaRunnable = listaRunnables;
+	public void setProgramList(ArrayList<IProgramZZZ> listaProgram) {
+		this.listaProgram = listaProgram;
 	}
 	
 	@Override
-	public ArrayList<IProgramRunnableZZZ> getProgramRunnableList() {
-		if(this.listaRunnable==null) {
-			ArrayList<IProgramRunnableZZZ> listaRunnables = new ArrayList<IProgramRunnableZZZ> ();
-			this.listaRunnable = listaRunnables;
+	public ArrayList<IProgramZZZ> getProgramList() {
+		if(this.listaProgram==null) {
+			ArrayList<IProgramZZZ> listaRunnables = new ArrayList<IProgramZZZ> ();
+			this.listaProgram = listaProgram;
 		}
-		return this.listaRunnable;
+		return this.listaProgram;
 	}
 	
 	@Override
-	public void addProgramRunnable(IProgramRunnableZZZ objProgramRunnable) throws ExceptionZZZ {
-		this.getProgramRunnableList().add(objProgramRunnable);
+	public void addProgram(IProgramZZZ objProgram) throws ExceptionZZZ {
+		this.getProgramList().add(objProgram);
 		
 		//Registriere diesen Monitor sofort an dem Event werfenden Program, aber nur wenn das Interface passt.
-		if(objProgramRunnable instanceof IListenerObjectStatusLocalZZZ) {
-			this.registerForStatusLocalEvent((IListenerObjectStatusLocalZZZ) objProgramRunnable);
+		if(objProgram instanceof IListenerObjectStatusLocalZZZ) {
+			this.registerForStatusLocalEvent((IListenerObjectStatusLocalZZZ) objProgram);
 		}
 	}
 	
@@ -150,43 +149,7 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 	public boolean proofFlagSetBefore(IProgramMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
-	
-	
-	//#########################################################
-	//### aus ISenderObjectStatusLocalMessageSetUserZZZ
-//	@Override
-//	public ISenderObjectStatusLocalMessageSetZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
-//		if(this.objEventStatusLocalBroker==null) {
-//			//++++++++++++++++++++++++++++++
-//			//Nun geht es darum den Sender/Broker fuer Aenderungen am Status zu erstellen, der dann registrierte Objekte ueber Aenderung des Status zu informiert
-//			ISenderObjectStatusLocalMessageSetZZZ objSenderStatusLocal = new KernelSenderObjectStatusLocalMessageSetZZZ();			
-//			this.objEventStatusLocalBroker = objSenderStatusLocal;
-//		}		
-//		return this.objEventStatusLocalBroker;
-//	}
-//
-//	@Override
-//	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalMessageSetZZZ objEventSender) {
-//		this.objEventStatusLocalBroker = objEventSender;
-//	}
-//
-//	@Override
-//	public void registerForStatusLocalEvent(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ {
-//		this.getSenderStatusLocalUsed().addListenerObject(objEventListener);
-//	}
-//
-//	@Override	
-//	public void unregisterForStatusLocalEvent(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ {
-//		this.getSenderStatusLocalUsed().removeListenerObject(objEventListener);
-//	}
-//	
-//	//####### aus IListenerObjectStatusBasicZZZ
-//	public abstract boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-//	public abstract boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusBasicZZZ eventStatusLocalSet) throws ExceptionZZZ;
-	
+
 	
 	/* (non-Javadoc)
 	 * @see basic.zBasic.AbstractObjectWithStatusZZZ#offerStatusLocal(int, java.lang.Enum, java.lang.String, boolean)

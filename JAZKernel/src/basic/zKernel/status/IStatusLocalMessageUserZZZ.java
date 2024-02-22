@@ -1,7 +1,7 @@
 package basic.zKernel.status;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ.FLAGZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */

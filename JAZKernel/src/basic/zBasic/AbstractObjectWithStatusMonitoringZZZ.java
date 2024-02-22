@@ -13,7 +13,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.IMonitorObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
 import basic.zKernel.status.StatusBooleanZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
@@ -63,22 +63,22 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	//### FLAGZ: aus IStatusLocalMapForMonitoringStatusMessageUserZZZ   ####
 	//######################################################################
 	@Override
-	public boolean getFlag(IStatusLocalMapForMonitoringStatusMessageUserZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
 	@Override
-	public boolean setFlag(IStatusLocalMapForMonitoringStatusMessageUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IStatusLocalMapForMonitoringStatusMessageUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IStatusLocalMapForMonitoringStatusMessageUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -93,12 +93,12 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	}
 	
 	@Override
-	public boolean proofFlagExists(IStatusLocalMapForMonitoringStatusMessageUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}	
 	
 	@Override
-	public boolean proofFlagSetBefore(IStatusLocalMapForMonitoringStatusMessageUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 	

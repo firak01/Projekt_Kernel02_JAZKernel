@@ -1,8 +1,10 @@
 package basic.zKernel.status;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.component.IModuleUserZZZ;
+import basic.zBasic.component.IProgramZZZ;
 
-public interface IMonitorObjectStatusLocalZZZ extends IStatusLocalMapForMonitoringStatusLocalUserZZZ {
+public interface IListenerProgramStatusLocalZZZ extends IListenerObjectStatusLocalZZZ, IProgramZZZ, IModuleUserZZZ{
 	
 	//#############################################################
 	//### FLAGZ

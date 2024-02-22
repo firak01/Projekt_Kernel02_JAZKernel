@@ -21,7 +21,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 	protected volatile String sProgramName = null;
 	protected volatile String sModuleName = null;
 	
-	protected volatile ArrayList<IProgramRunnableZZZ> listaRunnable = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
+	protected volatile ArrayList<IProgramZZZ> listaProgram = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
 			
 	public AbstractProgramMonitorZZZ() throws ExceptionZZZ {
 		super();		
@@ -56,26 +56,26 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 
 	//#### GETTER / SETTER
 	@Override
-	public void setProgramRunnableList(ArrayList<IProgramRunnableZZZ> listaRunnables) {
-		this.listaRunnable = listaRunnables;
+	public void setProgramList(ArrayList<IProgramZZZ> listaProgram) {
+		this.listaProgram = listaProgram;
 	}
 	
 	@Override
-	public ArrayList<IProgramRunnableZZZ> getProgramRunnableList() {
-		if(this.listaRunnable==null) {
-			ArrayList<IProgramRunnableZZZ> listaRunnables = new ArrayList<IProgramRunnableZZZ> ();
-			this.listaRunnable = listaRunnables;
+	public ArrayList<IProgramZZZ> getProgramList() {
+		if(this.listaProgram==null) {
+			ArrayList<IProgramZZZ> listaProgram = new ArrayList<IProgramZZZ> ();
+			this.listaProgram = listaProgram;
 		}
-		return this.listaRunnable;
+		return this.listaProgram;
 	}
 	
 	@Override
-	public void addProgramRunnable(IProgramRunnableZZZ objProgramRunnable) throws ExceptionZZZ {
-		this.getProgramRunnableList().add(objProgramRunnable);
+	public void addProgram(IProgramZZZ objProgram) throws ExceptionZZZ {
+		this.getProgramList().add(objProgram);
 		
 		//Registriere diesen Monitor sofort an dem Event werfenden Program, aber nur wenn das Interface passt.
-		if(objProgramRunnable instanceof IListenerObjectStatusLocalZZZ) {
-			this.registerForStatusLocalEvent((IListenerObjectStatusLocalZZZ) objProgramRunnable);
+		if(objProgram instanceof IListenerObjectStatusLocalZZZ) {
+			this.registerForStatusLocalEvent((IListenerObjectStatusLocalZZZ) objProgram);
 		}
 	}
 	
@@ -87,14 +87,14 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 	}
 	
 	@Override
-	public boolean startProgramRunnableAll() throws ExceptionZZZ {
+	public boolean startProgramAll() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			ArrayList<IProgramRunnableZZZ> listaProgram = this.getProgramRunnableList();
+			ArrayList<IProgramZZZ> listaProgram = this.getProgramList();
 			if(listaProgram.isEmpty())break main;
 			
-			for(IProgramRunnableZZZ objProgram : listaProgram) {
-				boolean bValue = objProgram.startAsThread();
+			for(IProgramZZZ objProgram : listaProgram) {				
+				boolean bValue = objProgram.start();
 				if(!bValue)break main;
 			}
 		}//end main:
@@ -334,8 +334,17 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 
 	@Override
 	public boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
+		boolean bFunction = false;
+		main:{
+			if(enumStatusIn==null) {
+				break main;
+			}
+			
+			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
+			
+			bFunction = this.offerStatusLocal_(enumStatus, "", bStatusValue);				
+		}//end main;
+		return bFunction;
 	}
 	
 	/* (non-Javadoc)
@@ -367,7 +376,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 		String sStatusName = enumStatus.name();
 		bFunction = this.proofStatusLocalExists(sStatusName);															
 		if(!bFunction) {
-			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process would like to fire event, but this status is not available: '" + sStatusName + "'";
+			String sLog = ReflectCodeZZZ.getPositionCurrent() + " LogFileMonitor would like to fire event, but this status is not available: '" + sStatusName + "'";
 			System.out.println(sLog);
 			this.logProtocolString(sLog);			
 			break main;
@@ -375,7 +384,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 			
 		bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
 		if(!bFunction) {
-			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor would like to fire event, but this status has not changed: '" + sStatusName + "'";
+			String sLog = ReflectCodeZZZ.getPositionCurrent() + " LogfileMonitor would like to fire event, but this status has not changed: '" + sStatusName + "'";
 			System.out.println(sLog);
 			this.logProtocolString(sLog);
 			break main;
@@ -400,13 +409,13 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 			sStatusMessageToSet = sStatusMessage;
 		}
 		
-		String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerMain verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
+		String sLog = ReflectCodeZZZ.getPositionCurrent() + " LogfileMonitor verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
 		System.out.println(sLog);
 		this.logProtocolString(sLog);
 
 		//Falls eine Message extra uebergeben worden ist, ueberschreibe...
 		if(sStatusMessageToSet!=null) {
-			sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerMain setze sStatusMessageToSet='" + sStatusMessageToSet + "'";
+			sLog = ReflectCodeZZZ.getPositionCurrent() + " LogfileMonitor setze sStatusMessageToSet='" + sStatusMessageToSet + "'";
 			System.out.println(sLog);
 			this.logProtocolString(sLog);
 		}
@@ -418,7 +427,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 		//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 		//Dann erzeuge den Event und feuer ihn ab.	
 		if(this.getSenderStatusLocalUsed()==null) {
-			sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process would like to fire event '" + enumStatus.getAbbreviation() + "', but no objEventStatusLocalBroker available, any registered?";
+			sLog = ReflectCodeZZZ.getPositionCurrent() + " LogfileMonitor would like to fire event '" + enumStatus.getAbbreviation() + "', but no objEventStatusLocalBroker available, any registered?";
 			System.out.println(sLog);
 			this.logProtocolString(sLog);		
 			break main;
@@ -439,7 +448,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 //			event.setServerConfigStarterObjectUsed(this.getMainObject().getServerConfigStarterList().get(iIndexOfProcess));
 //		}		
 		
-		sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process fires event '" + enumStatus.getAbbreviation() + "'";
+		sLog = ReflectCodeZZZ.getPositionCurrent() + " LogFileMonitor for Process fires event '" + enumStatus.getAbbreviation() + "'";
 		System.out.println(sLog);
 		this.logProtocolString(sLog);
 		this.getSenderStatusLocalUsed().fireEvent(event);
@@ -451,5 +460,4 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 	
 	
 	//##########################################################
-
 }

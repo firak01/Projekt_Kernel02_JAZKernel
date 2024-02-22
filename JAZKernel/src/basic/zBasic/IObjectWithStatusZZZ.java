@@ -34,5 +34,8 @@ public interface IObjectWithStatusZZZ extends IObjectZZZ {
 	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);
 	
 	//zum Ueberpruefen, ob sich ein Status geaendert hat
-	public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
+	public abstract boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
+	
+	//zum Ueberpruefen, ob ein Status ueberhaupt mal gesetzt worden ist.
+	public abstract boolean isStatusSetBefore(String sStatusString) throws ExceptionZZZ;
 }

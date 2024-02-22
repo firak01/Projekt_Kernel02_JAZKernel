@@ -1,18 +1,10 @@
 package basic.zBasic.component;
 
-import java.util.HashMap;
-
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.status.IEventBrokerStatusLocalMessageUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zKernel.status.ISenderObjectStatusLocalMessageZZZ;
-import basic.zKernel.status.KernelSenderObjectStatusLocalMessageZZZ;
 
 public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ extends AbstractProgramWithStatusOnStatusListeningZZZ implements IProgramRunnableZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;		
@@ -116,26 +108,4 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 	public boolean proofFlagSetBefore(IProgramRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
-
-	
-	
-	//###########################################################
-	//### STATUS
-	//###########################################################
-	
-	//####### aus IListenerObjectStatusLocalZZZ
-	@Override
-	public abstract boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean isEventRelevantByClass2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean isEventRelevantByStatusLocal2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;
-	
-	@Override
-	public abstract boolean isEventRelevantByStatusLocalValue2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ;
-	
-	
-	
 }

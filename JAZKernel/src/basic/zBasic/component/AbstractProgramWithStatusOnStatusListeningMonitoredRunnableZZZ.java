@@ -7,9 +7,9 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
-public abstract class AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ extends AbstractProgramWithStatusOnStatusListeningRunnableZZZ implements IStatusLocalMapForMonitoringStatusMessageUserZZZ {
+public abstract class AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ extends AbstractProgramWithStatusOnStatusListeningRunnableZZZ implements IStatusLocalMapForMonitoringStatusLocalUserZZZ {
 	private static final long serialVersionUID = -1445384815158662362L;
 	protected volatile HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet =null;
 	

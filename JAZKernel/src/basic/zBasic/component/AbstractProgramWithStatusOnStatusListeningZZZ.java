@@ -6,8 +6,9 @@ import basic.zBasic.AbstractObjectWithStatusOnStatusListeningZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.status.IListenerProgramStatusLocalZZZ;
 
-public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends AbstractObjectWithStatusOnStatusListeningZZZ implements IProgramZZZ, IModuleUserZZZ {
+public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends AbstractObjectWithStatusOnStatusListeningZZZ implements IListenerProgramStatusLocalZZZ {
 	private static final long serialVersionUID = 8381960801083154549L;
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;
@@ -78,7 +79,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 	
 
 	//###########################################
-	//### FLAGZ I
+	//### FLAGZ IProgramZZZ
 	//###########################################
 	@Override
 	public boolean getFlag(IProgramZZZ.FLAGZ objEnumFlag) {
@@ -117,7 +118,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 	}	
 
 	//###########################################
-	//### FLAGZ II
+	//### FLAGZ IModuleUserZZZ
 	//###########################################
 	@Override
 	public boolean getFlag(IModuleUserZZZ.FLAGZ objEnumFlag) {
@@ -152,6 +153,45 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 	
 	@Override
 	public boolean proofFlagSetBefore(IModuleUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	//###########################################
+	//### FLAGZ IListenerProgramStatusLocalZZZ
+	//###########################################
+	@Override
+	public boolean getFlag(IListenerProgramStatusLocalZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(IListenerProgramStatusLocalZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(IListenerProgramStatusLocalZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IListenerProgramStatusLocalZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IListenerProgramStatusLocalZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+	}
+	
+	@Override
+	public boolean proofFlagSetBefore(IListenerProgramStatusLocalZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 	

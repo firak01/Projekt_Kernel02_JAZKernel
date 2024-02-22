@@ -52,6 +52,41 @@ public class IoUtil {                      // zaehlt die Buchstaben
     else
       return false;
   }    
+  static public int JaNeinAbbrechen() {
+	  int iReturn = 1;
+		 main:{
+		    try { EingabeZeile = Eingabe.readLine(); }
+		    catch(IOException e) { System.out.println("Fehler bei der Eingabe!"); }
+		    if (EingabeZeile.equals("J")||EingabeZeile.equals("j")) 
+		      iReturn = -1;
+		    else if(EingabeZeile.equals("N")||EingabeZeile.equals("n")) {
+		    	iReturn = 0;
+		    }
+		  }//end main:
+	  	return iReturn;
+	  } 
+  static public boolean isAbbrechen(int iValue) {
+	  if(iValue==1) {
+		  return true;
+	  }else {
+		  return false;
+	  }
+  }
+  static public boolean isNein(int iValue) {
+	  if(iValue==0) {
+		  return true;
+	  }else {
+		  return false;
+	  }
+  }
+  static public boolean isJa(int iValue) {
+	  if(iValue==-1) {
+		  return true;
+	  }else {
+		  return false;
+	  }
+  }
+  
   static public void printChar(byte zeichen) { 
      int z=(int)zeichen;
      if (z<0) z+=256;

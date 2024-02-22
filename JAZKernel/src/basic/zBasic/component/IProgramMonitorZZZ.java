@@ -6,19 +6,18 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalMessageReactRunnableZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
 public interface IProgramMonitorZZZ extends IProgramZZZ, IModuleUserZZZ {
-	public ArrayList<IProgramRunnableZZZ> getProgramRunnableList();
-	public void setProgramRunnableList(ArrayList<IProgramRunnableZZZ> listaRunnables);
+	public ArrayList<IProgramZZZ> getProgramList();
+	public void setProgramList(ArrayList<IProgramZZZ> listaRunnables);
 	
-	//Die lauffähigen Programme in die ArrayList der Programme aufnehmen. 
+	//Die Programme /runnable oder einfache) in die ArrayList der Programme aufnehmen. 
 	//Merke: Dabei werden sie auch sofort am Monitor registriert, d.h. wenn der Monitor einen Event wirft, dann koennen auch "seine" Programme darauf reagieren.
-	public void addProgramRunnable(IProgramRunnableZZZ objProgramRunnable) throws ExceptionZZZ;
+	public void addProgram(IProgramZZZ objProgram) throws ExceptionZZZ;
 	
 	//Die lauffähigen Programme aus der ArrayList starten.
-	public boolean startProgramRunnableAll() throws ExceptionZZZ;
+	public boolean startProgramAll() throws ExceptionZZZ;
 	
 	
 	//#############################################################

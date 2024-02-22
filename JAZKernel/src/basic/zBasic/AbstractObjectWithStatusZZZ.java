@@ -13,15 +13,17 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
-import basic.zKernel.status.IEventBrokerStatusLocalMessageUserZZZ;
+import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
+import basic.zKernel.status.IListenerObjectStatusBasicZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zKernel.status.ISenderObjectStatusLocalMessageZZZ;
+import basic.zKernel.status.ISenderObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
 import basic.zKernel.status.IStatusLocalMessageUserZZZ;
 import basic.zKernel.status.KernelSenderObjectStatusLocalMessageZZZ;
+import basic.zKernel.status.KernelSenderObjectStatusLocalZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusLocalHelperZZZ;
 
@@ -32,7 +34,7 @@ import basic.zKernel.status.StatusLocalHelperZZZ;
  * @author Fritz Lindhauer, 20.01.2024, 17:04:43
  * 
  */
-public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ, IEventBrokerStatusLocalMessageUserZZZ{
+public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ, IEventBrokerStatusLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	
@@ -44,8 +46,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	//Diese Meldung ist flexibel und nicht in irgendeinem EnumSet hinterlegt.
 	protected volatile String sStatusLocalError=null;
 	
-	//fuer ISenderObjectStatusLocalMessageUserZZZ
-	protected volatile ISenderObjectStatusLocalMessageZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich AUCH ANDERE Objekte registrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
+	//fuer ISenderObjectStatusLocalUserZZZ
+	protected volatile ISenderObjectStatusLocalZZZ objEventStatusLocalBroker=null;//Das Broker Objekt, an dem sich AUCH ANDERE Objekte registrieren können, um ueber Aenderung eines StatusLocal per Event informiert zu werden.
 	
 	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
@@ -77,18 +79,18 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	//#########################################################
 	//### aus ISenderObjectStatusLocalMessageSetUserZZZ
 	@Override
-	public ISenderObjectStatusLocalMessageZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
+	public ISenderObjectStatusLocalZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
 		if(this.objEventStatusLocalBroker==null) {
 			//++++++++++++++++++++++++++++++
 			//Nun geht es darum den Sender/Broker fuer Aenderungen am Status zu erstellen, der dann registrierte Objekte ueber Aenderung des Status zu informiert
-			ISenderObjectStatusLocalMessageZZZ objSenderStatusLocal = new KernelSenderObjectStatusLocalMessageZZZ();			
+			ISenderObjectStatusLocalZZZ objSenderStatusLocal = new KernelSenderObjectStatusLocalZZZ();			
 			this.objEventStatusLocalBroker = objSenderStatusLocal;
 		}		
 		return this.objEventStatusLocalBroker;
 	}
 
 	@Override
-	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalMessageZZZ objEventSender) {
+	public void setSenderStatusLocalUsed(ISenderObjectStatusLocalZZZ objEventSender) {
 		this.objEventStatusLocalBroker = objEventSender;
 	}
 
@@ -100,8 +102,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	@Override	
 	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
 		this.getSenderStatusLocalUsed().removeListenerObject(objEventListener);
-	}
-
+	}	
 	
 	//###############################
 	//### Flags IObjectWithStatusZZZ
@@ -204,6 +205,33 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	//##########################
 	//Analog zu AbstractProgramRunnableWithStatusZZZ
 	//aus IStatusLocalUserMessageZZZ
+		
+	/**
+	 * @param sStatusString
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 23.10.2023, 11:48:47
+	 */
+	@Override
+	public boolean isStatusSetBefore(String sStatusString) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(sStatusString == null) {
+				bReturn = this.getStatusLocalAbbreviation()==null;
+				break main;
+			}
+			
+			if(!sStatusString.equals(this.getStatusLocalAbbreviation())) {
+				bReturn = true;
+			}
+		}//end main:
+		if(bReturn) {
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+ ": Status changed to '"+sStatusString+"'";
+		    this.logProtocolString(sLog);			
+		}
+		return bReturn;
+	}
+	
 	
 	@Override
 	public boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ{

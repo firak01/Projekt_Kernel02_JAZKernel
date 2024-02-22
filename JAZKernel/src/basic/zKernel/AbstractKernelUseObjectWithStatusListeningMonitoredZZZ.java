@@ -15,11 +15,9 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
-import basic.zKernel.status.IEventObjectStatusLocalMessageReactZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalMessageReactZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
-import basic.zKernel.status.IStatusLocalMapForMonitoringStatusMessageUserZZZ;
+import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 import custom.zKernel.LogZZZ;
 
 /**
@@ -30,7 +28,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalMessageReactZZZ, IStatusLocalMapForMonitoringStatusMessageUserZZZ {
+public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ extends AbstractKernelUseObjectWithStatusZZZ implements IKernelUserZZZ, IKernelContextUserZZZ, IListenerObjectStatusLocalZZZ, IStatusLocalMapForMonitoringStatusLocalUserZZZ {
 	//Wie in AbstractObjectWithStatusListeningZZZ
 	
 	//Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
@@ -141,9 +139,8 @@ public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ ext
 				
 				IEnumSetMappedStatusZZZ objEnum = hmEnum.get(enumStatus);							
 				if(objEnum==null) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen gemappten Status für en Status aus dem Event-Objekt erhalten. Breche ab";
-					System.out.println(sLog);
-					this.logLineDate(sLog);
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen gemappten Status für en Status aus dem Event-Objekt erhalten. Breche ab";					
+					this.logProtocolString(sLog);
 					break main;
 				}
 				
@@ -151,11 +148,14 @@ public abstract class AbstractKernelUseObjectWithStatusListeningMonitoredZZZ ext
 				
 				//Nur so als Beispiel, muss ueberschrieben werden:
 				//Lies den Status (geworfen vom Backend aus)
-				if(eventStatusLocalSet instanceof IEventObjectStatusLocalMessageReactZZZ) {
-					IEventObjectStatusLocalMessageReactZZZ eventStatusLocalReact = (IEventObjectStatusLocalMessageReactZZZ) eventStatusLocalSet;					
+				if(eventStatusLocalSet instanceof IEventObjectStatusLocalZZZ) {
+					IEventObjectStatusLocalZZZ eventStatusLocalReact = (IEventObjectStatusLocalZZZ) eventStatusLocalSet;					
 					String sStatus = eventStatusLocalReact.getStatusMessage();
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Methode muss ueberschrieben werden.");
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sStatus='"+sStatus+"'");
+				}else {
+					sLog = ReflectCodeZZZ.getPositionCurrent()+": Event ist kein instanceof IEventObjectStatusLocalZZZ. Breche ab.";					
+					this.logProtocolString(sLog);
 				}
 				
 			}//end main:

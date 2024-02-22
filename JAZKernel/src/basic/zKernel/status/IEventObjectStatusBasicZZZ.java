@@ -7,4 +7,5 @@ public interface IEventObjectStatusBasicZZZ extends IObjectZZZ{
 	public Enum getStatusEnum();
 	public String getStatusText(); //Das ist normalerweise der Wert des Enum
 	public boolean getStatusValue();
+	public void setStatusValue(boolean bValue);
 }

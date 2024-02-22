@@ -44,8 +44,7 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 
 	//+++ Verwende IEnumSetMappedStatus. Da kann man viel mehr Informationen unterbringen
 	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;	
-	public abstract boolean isStatusLocalRelevant(IEnumSetMappedStatusZZZ enumStatusIn) throws ExceptionZZZ;
-	
+		
 	//++++ Aendere mit einem Aufruf mehrere Statuseintraege ab, ohne Berücksichtigung einer GroupId
 	public abstract boolean switchStatusLocalAllGroupTo(Enum enumStatusIn) throws ExceptionZZZ; //setze den uebergebenen Status auf true. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf false..
 	public abstract boolean switchStatusLocalAllGroupTo(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ; //setze den uebergebenen Status auf den uebergebenen Wert. UND FUER ALLE BEKANNTEN STATUSEINTRAEGE auf den entsprechend nicht uebergebenen Wert.. 
