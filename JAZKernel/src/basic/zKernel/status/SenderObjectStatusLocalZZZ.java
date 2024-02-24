@@ -17,16 +17,16 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectStatusLocalReactZZZ extends AbstractKernelSenderObjectStatusLocalBasicZZZ{
+public class SenderObjectStatusLocalZZZ extends AbstractSenderObjectStatusLocalBasicZZZ {
 	private static final long serialVersionUID = 8999783685575147532L;	
 	
-	public KernelSenderObjectStatusLocalReactZZZ() throws ExceptionZZZ{
+		public SenderObjectStatusLocalZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
 																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
 //	@Override                                                                                     //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
-//	//public void fireEvent(IEventObjectStatusLocalMessageReactZZZ event){	
+//	//public void fireEvent(IEventObjectStatusLocalSetZZZ event){	
 //	public void fireEvent(IEventObjectStatusBasicZZZ event){
 //		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
 //		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
@@ -51,17 +51,17 @@ public class KernelSenderObjectStatusLocalReactZZZ extends AbstractKernelSenderO
 //			
 //			try {
 //				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//					IListenerObjectStatusLocalMessageReactZZZ l = (IListenerObjectStatusLocalMessageReactZZZ) this.getListenerRegisteredAll().get(i);				
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalReactMessageZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+//					IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 //					try {
-//						//boolean bStatusLocalChanged = l.changeStatusLocal(event);
-//						boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
-//						if(bStatusLocalReacted) {
-//							//Das ist das Problem, wenn das alles basicZZZ ist: System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
+//						boolean bStatusLocalChanged = l.reactOnStatusLocalEvent(event);
+//						//boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
+//						if(bStatusLocalChanged) {
+//							//das ist das Problem wenn alles basicZZZ ist: System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
 //						}					
 //					} catch (ExceptionZZZ ez) {
 //						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
 //					}
 //				}
 //			} catch (ExceptionZZZ e) {
@@ -73,7 +73,7 @@ public class KernelSenderObjectStatusLocalReactZZZ extends AbstractKernelSenderO
 //	}
 //	
 //	@Override
-//	public void fireEvent(IEventObjectStatusLocalMessageReactZZZ event) {
+//	public void fireEvent(IEventObjectStatusLocalSetZZZ event) {
 //		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
 //		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
 //		if(event.getSource() instanceof ISenderSelectionResetZZZ){
@@ -97,17 +97,17 @@ public class KernelSenderObjectStatusLocalReactZZZ extends AbstractKernelSenderO
 //			
 //			try {
 //				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//					IListenerObjectStatusLocalMessageReactZZZ l = (IListenerObjectStatusLocalMessageReactZZZ) this.getListenerRegisteredAll().get(i);				
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalReactMessageZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+//					IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
+//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 //					try {
-//						//boolean bStatusLocalChanged = l.changeStatusLocal(event);
-//						boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
-//						if(bStatusLocalReacted) {
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
+//						boolean bStatusLocalChanged = l.reactOnStatusLocalEvent(event);
+//						//boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
+//						if(bStatusLocalChanged) {
+//							//das ist das Problem wenn alles basicZZZ ist: System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
 //						}					
 //					} catch (ExceptionZZZ ez) {
 //						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
 //					}
 //				}
 //			} catch (ExceptionZZZ e) {
@@ -119,25 +119,23 @@ public class KernelSenderObjectStatusLocalReactZZZ extends AbstractKernelSenderO
 //	}	
 //	
 //	@Override
-//	//public IEventObjectStatusLocalMessageReactZZZ getEventPrevious() {
+//	//public IEventObjectStatusLocalSetZZZ getEventPrevious() {
 //	public IEventObjectStatusBasicZZZ getEventPrevious() {
 //		return this.eventPrevious;
 //	}
-//	
 //	@Override
-//	//public void setEventPrevious(IEventObjectStatusLocalMessageReactZZZ event) {
+//	//public void setEventPrevious(IEventObjectStatusLocalSetZZZ event) {
 //	public void setEventPrevious(IEventObjectStatusBasicZZZ event) {
 //		this.eventPrevious = event;
 //	}
-//	
 //	@Override
-//	//public void removeListenerObjectStatusLocalReact(IListenerObjectStatusLocalMessageReactZZZ objEventListener) throws ExceptionZZZ {
-//	public void removeListenerObject(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ {		
+//	//public void removeListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {
+//	public void removeListenerObject(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ {
 //		this.getListenerRegisteredAll().remove(objEventListener);
 //	}
 //	
 //	@Override
-//	//public void addListenerObjectStatusLocalReact(IListenerObjectStatusLocalMessageReactZZZ objEventListener) throws ExceptionZZZ {	
+//	//public void addListenerObjectStatusLocalSet(IListenerObjectStatusLocalSetZZZ objEventListener) throws ExceptionZZZ {	
 //	public void addListenerObject(IListenerObjectStatusBasicZZZ objEventListener) throws ExceptionZZZ {
 //		this.getListenerRegisteredAll().add(objEventListener);
 //	}
@@ -146,7 +144,7 @@ public class KernelSenderObjectStatusLocalReactZZZ extends AbstractKernelSenderO
 //	 * @see basic.zKernel.status.ISenderObjectStatusLocalSetZZZ#getListenerRegisteredAll()
 //	 */
 //	@Override
-//	//public ArrayList<IListenerObjectStatusLocalMessageReactZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
+//	//public ArrayList<IListenerObjectStatusLocalSetZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
 //	public ArrayList<IListenerObjectStatusBasicZZZ> getListenerRegisteredAll() throws ExceptionZZZ {
 //		return listaLISTENER_REGISTERED;
 //	}

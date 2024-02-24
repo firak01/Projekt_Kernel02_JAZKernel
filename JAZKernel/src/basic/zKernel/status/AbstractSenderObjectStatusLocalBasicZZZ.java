@@ -4,6 +4,7 @@ package basic.zKernel.status;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
@@ -17,12 +18,12 @@ import basic.zBasic.ReflectCodeZZZ;
  * @author lindhaueradmin
  *
  */
-public abstract class AbstractKernelSenderObjectStatusLocalBasicZZZ implements  ISenderObjectStatusLocalZZZ, Serializable{
+public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractObjectZZZ implements  ISenderObjectStatusLocalZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
 	protected ArrayList<IListenerObjectStatusBasicZZZ> listaLISTENER_REGISTERED = new ArrayList<IListenerObjectStatusBasicZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
 	protected IEventObjectStatusBasicZZZ eventPrevious=null;
 
-	public AbstractKernelSenderObjectStatusLocalBasicZZZ() throws ExceptionZZZ{
+	public AbstractSenderObjectStatusLocalBasicZZZ() throws ExceptionZZZ{
 		super();
 	}
 																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
@@ -59,8 +60,9 @@ public abstract class AbstractKernelSenderObjectStatusLocalBasicZZZ implements  
 						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
 						lused.reactOnStatusLocalEvent(eventUsed);
-					}else {						
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# type is not used yet: '" + l.getClass().getName() + "'");
+					}else {					
+						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# type is not used yet: '" + l.getClass().getName() + "'";
+						this.logProtocolString(sLog);
 					}
 				}
 			} catch (ExceptionZZZ ez) {

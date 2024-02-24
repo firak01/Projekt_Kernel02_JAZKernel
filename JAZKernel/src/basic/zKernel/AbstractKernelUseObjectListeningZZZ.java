@@ -8,8 +8,10 @@ import java.util.Set;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
 import basic.zBasic.IObjectWithStatusZZZ;
+import basic.zBasic.AbstractObjectWithFlagOnStatusListeningZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.component.AbstractProgramWithFlagOnStatusListeningZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -28,18 +30,20 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractKernelUseObjectZZZ implements IListenerObjectFlagZsetZZZ, IListenerObjectStatusLocalZZZ, IStatusLocalMapForStatusLocalUserZZZ {
+public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractObjectWithFlagOnStatusListeningZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
 	private static final long serialVersionUID = 6048997985909418786L;
 	
-	//Merke: Das Objekt selbst hat keinen Status. Es nimmt aber Statusaenderungen vom Main-Objekt entgegen und mapped diese auf sein "Aussehen"
-	//       Wie in AbstractObjectWithStatusListeningZZZ wird für das Mappen des reinkommenden Status auf ein Enum eine Hashmap benötigt.
-	protected volatile HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ> hmEnumSet =null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
+	//Merke: Da es keine Mehrfachvererbung gibt, müssen die Objekte und Methoden aus AbstractKernelUseObjectZZZ hier auch vorkommen...
+	protected volatile IKernelZZZ objKernel=null;
+	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
+	protected volatile IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
 		
 	/** This Constructor is used as 'implicit super constructor' 
 	* Lindhauer; 10.05.2006 06:05:14
+	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectListeningZZZ(){		
-		//20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
+	public AbstractKernelUseObjectListeningZZZ() throws ExceptionZZZ{		
+		super();
 	}
 	
 	public AbstractKernelUseObjectListeningZZZ(String sFlag) throws ExceptionZZZ {
@@ -52,21 +56,21 @@ public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractKernel
 	 * @throws ExceptionZZZ 
 	 */
 	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
-		super(objKernel);
-		KernelUseObjectListeningNew_();		
+		super();
+		KernelUseObjectListeningNew_(objKernel, null, null);		
 	}
 	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
-		super(objKernel, sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectListeningNew_();
+		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		KernelUseObjectListeningNew_(objKernel, null, null);
 	}
 	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel, saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
-		KernelUseObjectListeningNew_();
+		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
+		KernelUseObjectListeningNew_(objKernel, null, null);
 	}
 	
 	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
-		super(objKernel, hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectListeningNew_();				
+		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		KernelUseObjectListeningNew_(objKernel, null, null);				
 	}
 	
 	
@@ -77,71 +81,93 @@ public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractKernel
 	 * @throws ExceptionZZZ 
 	 */
 	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
-		super(objKernel, objKernelContext);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectListeningNew_();						
+		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+		KernelUseObjectListeningNew_(objKernel, null, objKernelContext);						
 	}
 	
 	public AbstractKernelUseObjectListeningZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
-		super(objKernelUsing);
-		KernelUseObjectListeningNew_();
+		super();
+		KernelUseObjectListeningNew_(null, objKernelUsing, null);
 	}
 	
 	public AbstractKernelUseObjectListeningZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
-		super(objKernelUsing,saFlag);
-		KernelUseObjectListeningNew_();
+		super(saFlag);
+		KernelUseObjectListeningNew_(null, objKernelUsing, null);
 	}
 	
-	private boolean KernelUseObjectListeningNew_() throws ExceptionZZZ {
+	private boolean KernelUseObjectListeningNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{						
-							
+			boolean btemp; String sLog;	
+								
+			//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
+			
+			if(this.getFlag("INIT")==true){
+				bReturn = true;
+				break main; 
+			}	
+			
+			IKernelZZZ objKernelUsed = null;
+			if(objKernel==null) {
+				if(objKernelUsing==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("KernelObject and KernelUsingObject missing",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;					
+				}
+				
+				objKernelUsed = objKernelUsing.getKernelObject();
+				if(objKernelUsed==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("KernelObject missing",iERROR_PARAMETER_MISSING, this,  ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+			}else {
+				objKernelUsed = objKernel;
+			}
+			
+			this.objKernel = objKernelUsed;
+			this.objLog = objKernelUsed.getLogObject();
+			
+			this.setContextUsed(objKernelContext);
+						
+			//++++++++++++++++++++++++++++++
+			//HIER geht es darum ggfs. die Flags zu übernehmen, die irgendwo gesetzt werden sollen und aus dem Kommandozeilenargument -z stammen.
+			//D.h. ggfs. stehen sie in dieser Klasse garnicht zur Verfügung
+			//Kommandozeilen-Argument soll alles übersteuern. Darum auch FALSE setzbar. Darum auch nach den "normalen" Flags verarbeiten.
+			if(this.getKernelObject()!=null) {
+				IKernelConfigZZZ objConfig = this.getKernelObject().getConfigObject();
+				if(objConfig!=null) {
+					//Übernimm die als Kommandozeilenargument gesetzten FlagZ... die können auch "false" sein.
+					Map<String,Boolean>hmFlagZpassed = objConfig.getHashMapFlagPassed();
+					if(hmFlagZpassed!=null) {
+						Set<String> setFlag = hmFlagZpassed.keySet();
+						Iterator<String> itFlag = setFlag.iterator();
+						while(itFlag.hasNext()) {
+							String sKey = itFlag.next();
+							 if(!StringZZZ.isEmpty(sKey)){
+								 Boolean booValue = hmFlagZpassed.get(sKey);
+								 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
+								 if(btemp==false){						 
+									 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+									 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+		//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
+		//							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
+		//							  throw ez;		 
+								  }
+							 }
+						}
+					}
+				}	
+			}			
+			//+++++++++++++++++++++++++++++++						
 			bReturn = true;
 		}//end main;
 		return bReturn;
 	}
 	
-	//+++ aus IStatusLocalMapForStatusLocalUserZZZ
 	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> getHashMapEnumSetForStatusLocal() {
-		if(this.hmEnumSet==null) {
-			this.hmEnumSet = this.createHashMapEnumSetForStatusLocalCustom();
-		}
-		return this.hmEnumSet;
-	}
-
-	@Override
-	public void setHashMapEnumSetForStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> hmEnumSet) {
-		this.hmEnumSet = hmEnumSet;
-	}
-	
-	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedZZZ> createHashMapEnumSetForStatusLocalCustom() {
-		HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ>hmReturn = new HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedZZZ>();
+	public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocalReactionCustom(){
+		HashMap<IEnumSetMappedStatusZZZ,String>hmReturn = new HashMap<IEnumSetMappedStatusZZZ,String>();
 		main:{
 			
-			//Beispiel:
-			//Reine Lokale Statuswerte kommen nicht aus einem Event und werden daher nicht gemapped. 
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISSTARTNEW, ServerTrayStatusTypeZZZ.NEW);
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISSTARTING, ServerTrayStatusTypeZZZ.STARTING);
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISSTARTED, ServerTrayStatusTypeZZZ.STARTED);
-//			
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISLISTENERSTARTNEW, ServerTrayStatusTypeZZZ.STARTED);
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISLISTENERSTARTING, ServerTrayStatusTypeZZZ.LISTENERSTARTING);
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISLISTENERSTARTED, ServerTrayStatusTypeZZZ.LISTENERSTARTED);
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISLISTENERSTARTNO, ServerTrayStatusTypeZZZ.PREVIOUSEVENTRTYPE);//Wieder einen Status im Menue zurueckgehen
-//			
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISLISTENERCONNECTED, ServerTrayStatusTypeZZZ.CONNECTED);
-//			hmReturn.put(IServerMainOVPN.STATUSLOCAL.ISLISTENERINTERRUPTED, ServerTrayStatusTypeZZZ.INTERRUPTED);
-//			
-//			
-//			//++++++++++++++++++++++++
-//			//Berechne den wirklichen Typen anschliessend, dynamisch. Es wird auf auf einen vorherigen Event zugegriffen durch eine zweite Abfrage
-//			hmReturn.put(IClientMainOVPN.STATUSLOCAL.ISPINGSTOPPED, ClientTrayStatusTypeZZZ.PREVIOUSEVENTRTYPE);
-//			
-//			//+++++++++++++++++++++++
-//			
-//			hmReturn.put(IClientMainOVPN.STATUSLOCAL.HASPINGERROR, ClientTrayStatusTypeZZZ.FAILED);
-//			hmReturn.put(IClientMainOVPN.STATUSLOCAL.HASERROR, ClientTrayStatusTypeZZZ.ERROR);
 		}//end main:
 		return hmReturn;
 	}

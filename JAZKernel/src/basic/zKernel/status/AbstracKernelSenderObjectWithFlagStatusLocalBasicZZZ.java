@@ -1,86 +1,93 @@
-package basic.zKernel;
+package basic.zKernel.status;
 
-import java.util.HashMap;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ILogZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigZZZ;
+import basic.zKernel.IKernelContextUserZZZ;
+import basic.zKernel.IKernelContextZZZ;
+import basic.zKernel.IKernelUserZZZ;
+import basic.zKernel.IKernelZZZ;
+import basic.zKernel.KernelLogZZZ;
 import custom.zKernel.LogZZZ;
 
-/**
- * @author 0823
+/** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
+ *  und auch von den Objekten, die hier registriert sind empfangen wird. Damit fungieren Objekte dieser Klasse als "EventBroker".
+ *   
+ *   Wichtig: Diese Klasse darf nicht final sein, damit sie von anderen Klassen geerbt werden kann.
+ *               Die Methoden dieser Klasse sind allerdings final.
+ *               
+ *   Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )            
+ * @author lindhaueradmin
  *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
-	private static final long serialVersionUID = 8229692064424314912L;
+public abstract class AbstracKernelSenderObjectWithFlagStatusLocalBasicZZZ extends AbstractSenderObjectWithFlagStatusLocalBasicZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+	private static final long serialVersionUID = 8999783685575147532L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	protected volatile IKernelContextZZZ objContext = null; //die Werte des aufrufenden Programms (bzw. sein Klassenname, etc.), Kann anders als beim Kernel selbst sein.
+	
+	public AbstracKernelSenderObjectWithFlagStatusLocalBasicZZZ() throws ExceptionZZZ{
+		super();
+		KernelUseObjectNew_(null,null,null);
+	}
+																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
+	@Override                                                                                     //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.	
+	public void fireEvent(IEventObjectStatusBasicZZZ event){
+		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
+		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
+		if(event.getSource() instanceof ISenderSelectionResetZZZ){
+			ISenderSelectionResetZZZ sender = (ISenderSelectionResetZZZ) event.getSource();
+			for(int i = 0 ; i < sender.getListenerRegisteredAll().size(); i++){
+				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) sender.getListenerRegisteredAll().get(i);
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + event.getSource().getClass().getName() + " fired: " + i);
+				l.doReset(event);
+			}
+		}else{
+			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
+				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) this.getListenerRegisteredAll().get(i);				
+				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+				l.doReset(event);
+			}
+		}
+		*/
 		
-	/** This Constructor is used as 'implicit super constructor' 
-	* Lindhauer; 10.05.2006 06:05:14
-	 */
-	public AbstractKernelUseObjectZZZ(){		
-		//20080422 wenn objekte diese klasse erweitern scheint dies immer ausgeführt zu werden. Darum hier nicht setzen !!! this.setFlag("init", true);
-	}
-	
-	public AbstractKernelUseObjectZZZ(String sFlag) throws ExceptionZZZ {
-		super(sFlag);
-	}
-	
-	/** This constructor declares the used Log-Object as the Kernel-LogObject.
-	* Lindhauer; 10.05.2006 06:06:00
-	 * @param objKernel
-	 * @throws ExceptionZZZ 
-	 */
-	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
-		super();
-		KernelUseObjectNew_(objKernel, null, null);		
-	}
-	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
-		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null, null);
-	}
-	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
-		KernelUseObjectNew_(objKernel, null, null);
-	}
-	
-	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
-		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null, null);				
-	}
-	
-	
-	/** Dieser Konstruktor kann fuer Objkete verwendet werden, die auf bestimmte Bereiche der Modulkonfiguration zurueckgreifen m�ssen UND bei denen diese Bereiche nicht dem eigenen Klassennamen entsprechen.
-	* lindhaueradmin; 12.04.2007 15:46:51
-	 * @param objKernel
-	 * @param objKernelSection
-	 * @throws ExceptionZZZ 
-	 */
-	public AbstractKernelUseObjectZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
-		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
-		KernelUseObjectNew_(objKernel, null, objKernelContext);						
-	}
-	
-	public AbstractKernelUseObjectZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
-		super();
-		KernelUseObjectNew_(null, objKernelUsing, null);
-	}
-	
-	public AbstractKernelUseObjectZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
-		super(saFlag);
-		KernelUseObjectNew_(null, objKernelUsing, null);
-	}
+		main:{
+			if(event==null)break main;
+			
+			try {
+				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
+					//Mit instanceof den Typ abfragen und dahingehend die passende Unterabfrage des Events aufrufen.
+					//Merke: Ohne das instanceof entstehen typcast-mapping-Fehler.
+					IListenerObjectStatusBasicZZZ l = this.getListenerRegisteredAll().get(i);
+					if(l instanceof IListenerObjectStatusLocalZZZ) {
+						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
+						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
+						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
+						lused.reactOnStatusLocalEvent(eventUsed);
+					}else {					
+						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# type is not used yet: '" + l.getClass().getName() + "'";
+						this.logProtocolString(sLog);
+					}
+				}
+			} catch (ExceptionZZZ ez) {
+				try {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# throws Exception " + ez.getDetailAllLast() );
+				} catch (ExceptionZZZ ez2) {				
+					ez2.printStackTrace();
+				}
+			}
+			
+		}//end main:
+	}	
 	
 	private boolean KernelUseObjectNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -209,5 +216,5 @@ public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectWithFlagZ
 			objLog.WriteLineDate(sLog);
 		}		
 	}
-}//end class
+}
 
