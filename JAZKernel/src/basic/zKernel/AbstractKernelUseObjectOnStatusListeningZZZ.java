@@ -30,7 +30,7 @@ import custom.zKernel.LogZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractObjectWithFlagOnStatusListeningZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+public abstract class AbstractKernelUseObjectOnStatusListeningZZZ extends AbstractObjectWithFlagOnStatusListeningZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
 	private static final long serialVersionUID = 6048997985909418786L;
 	
 	//Merke: Da es keine Mehrfachvererbung gibt, müssen die Objekte und Methoden aus AbstractKernelUseObjectZZZ hier auch vorkommen...
@@ -42,11 +42,11 @@ public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractObject
 	* Lindhauer; 10.05.2006 06:05:14
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectListeningZZZ() throws ExceptionZZZ{		
+	public AbstractKernelUseObjectOnStatusListeningZZZ() throws ExceptionZZZ{		
 		super();
 	}
 	
-	public AbstractKernelUseObjectListeningZZZ(String sFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
 	}
 	
@@ -55,20 +55,20 @@ public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractObject
 	 * @param objKernel
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusListeningZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super();
 		KernelUseObjectListeningNew_(objKernel, null, null);		
 	}
-	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusListeningZZZ(IKernelZZZ objKernel, String sFlag) throws ExceptionZZZ{
 		super(sFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectListeningNew_(objKernel, null, null);
 	}
-	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusListeningZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt		
 		KernelUseObjectListeningNew_(objKernel, null, null);
 	}
 	
-	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusListeningZZZ(IKernelZZZ objKernel, HashMap<String,Boolean> hmFlag) throws ExceptionZZZ {
 		super(hmFlag);//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectListeningNew_(objKernel, null, null);				
 	}
@@ -80,17 +80,17 @@ public abstract class AbstractKernelUseObjectListeningZZZ extends AbstractObject
 	 * @param objKernelSection
 	 * @throws ExceptionZZZ 
 	 */
-	public AbstractKernelUseObjectListeningZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
+	public AbstractKernelUseObjectOnStatusListeningZZZ(IKernelZZZ objKernel, IKernelContextZZZ objKernelContext) throws ExceptionZZZ{
 		super();//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 		KernelUseObjectListeningNew_(objKernel, null, objKernelContext);						
 	}
 	
-	public AbstractKernelUseObjectListeningZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusListeningZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super();
 		KernelUseObjectListeningNew_(null, objKernelUsing, null);
 	}
 	
-	public AbstractKernelUseObjectListeningZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+	public AbstractKernelUseObjectOnStatusListeningZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 		KernelUseObjectListeningNew_(null, objKernelUsing, null);
 	}
