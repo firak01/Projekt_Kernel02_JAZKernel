@@ -11,6 +11,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
+import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
@@ -72,11 +73,24 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 	@Override
 	public void addProgram(IProgramZZZ objProgram) throws ExceptionZZZ {
 		this.getProgramList().add(objProgram);
-		
-		//Registriere diesen Monitor sofort an dem Event werfenden Program, aber nur wenn das Interface passt.
+
+		//Registriere an die Events, sowohl in die eine als auch in die andere Richtung, aber nur wenn das Interface passt.
 		if(objProgram instanceof IListenerObjectStatusLocalZZZ) {
+			
+			//Registriere das Program an dem Monitor, so dass es von dort Ereignisse empfaengt			
 			this.registerForStatusLocalEvent((IListenerObjectStatusLocalZZZ) objProgram);
+
 		}
+		
+		if(objProgram instanceof IEventBrokerStatusLocalUserZZZ) {
+			
+			//Registriere diesen Monitor sofort an dem Event werfenden Program
+			IEventBrokerStatusLocalUserZZZ objProgramWithBroker = (IEventBrokerStatusLocalUserZZZ) objProgram;
+			objProgramWithBroker.registerForStatusLocalEvent(this);
+			
+		}
+		
+	
 	}
 	
 	
