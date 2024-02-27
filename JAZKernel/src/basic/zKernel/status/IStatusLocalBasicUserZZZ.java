@@ -78,7 +78,8 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 
 	//Halte den gesetzten Status als Enum fest, 
 	//Merke: Das offer kommt von der intern zum Speichern verwendeten CircularBuffer Klasse
-	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal);		
+	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal);	
+	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue);
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumCurrent();
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious();
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack);

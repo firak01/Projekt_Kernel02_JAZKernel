@@ -322,9 +322,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return objReturn;
 	}
 	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#offerStatusLocalEnum(basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ)
-	 */
 	@Override
 	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn) {
 		boolean bReturn = false;
@@ -335,6 +332,16 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	
+	@Override
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bValue) {
+		boolean bReturn = false;
+		main:{
+			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, bValue, "");
+		}//end main:
+		return bReturn;
+	}
+	
+
 	@Override
 	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bValue, String sMessage) {
 		boolean bReturn = false;

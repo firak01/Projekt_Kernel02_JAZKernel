@@ -181,8 +181,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 								
 			if(StringZZZ.isEmptyTrimmed(sActionAlias)) break main;
 			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())) break main;
-			
-			bReturn = false;
+
 		}//end main:			
 		return bReturn;
 	}
