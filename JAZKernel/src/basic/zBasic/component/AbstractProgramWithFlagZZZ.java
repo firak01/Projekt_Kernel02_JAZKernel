@@ -65,6 +65,22 @@ public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
+	public boolean reset() throws ExceptionZZZ {
+		this.resetProgramUsed();
+		this.resetModuleUsed();
+		this.resetFlags();
+		return true;
+	}
+		
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
+	
+	//############################################
+	//### FLAGZ IProgramZZZ
+	//##########################################
+	@Override
 	public boolean getFlag(IProgramZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
@@ -181,17 +197,5 @@ public abstract class AbstractProgramWithFlagZZZ extends AbstractObjectWithFlagZ
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 			
-	//### aus IProgramZZZ
-	@Override
-	public boolean reset() throws ExceptionZZZ {
-		this.resetProgramUsed();
-		this.resetModuleUsed();
-		this.resetFlags();
-		return true;
-	}
-		
-	@Override
-	public boolean start() throws ExceptionZZZ {
-		return this.startCustom();
-	}
+	
 }

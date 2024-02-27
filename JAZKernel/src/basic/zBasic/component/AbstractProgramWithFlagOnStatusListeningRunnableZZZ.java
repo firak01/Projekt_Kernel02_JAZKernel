@@ -27,7 +27,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	@Override
 	public void run() {		
 		try {
-			this.start();
+			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
@@ -37,6 +37,11 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 		}
 	}//END run
 	
+	@Override 
+	public boolean start() throws ExceptionZZZ {
+		return this.startAsThread(); //Merke: Anders als ein einfaches Program wird ein runnable Program in seinem eigenen Thread gestarted.
+	}
+		
 	@Override
 	public boolean startAsThread() throws ExceptionZZZ{
 		

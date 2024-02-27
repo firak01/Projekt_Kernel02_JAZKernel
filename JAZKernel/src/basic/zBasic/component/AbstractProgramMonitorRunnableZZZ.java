@@ -3,26 +3,26 @@ package basic.zBasic.component;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import basic.zBasic.AbstractObjectWithStatusMonitoringZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
-import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
-public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ implements IProgramMonitorZZZ{
-	private static final long serialVersionUID = 6586079955658760005L;		
+public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramMonitorZZZ implements IProgramMonitorRunnableZZZ{
+	private static final long serialVersionUID = 6586079955658760005L;
+		
 	protected volatile ArrayList<IProgramZZZ> listaProgram = null;//Die Liste der Runnable-Threadfaehigen Objekte, mit Status....
 			
-	public AbstractProgramMonitorRunnablerZZZ() throws ExceptionZZZ {
+	public AbstractProgramMonitorRunnableZZZ() throws ExceptionZZZ {
 		super();		
 	}
 
-	public AbstractProgramMonitorRunnablerZZZ(String[] saFlag) throws ExceptionZZZ {
+	public AbstractProgramMonitorRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
 		super();	
 		AbstractProgramRunnableMonitorNew_(saFlag);
 	}
@@ -48,38 +48,15 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 		}//end main:
 		return bReturn;
 	}
-
+	
 	//#### GETTER / SETTER
-	@Override
-	public void setProgramList(ArrayList<IProgramZZZ> listaProgram) {
-		this.listaProgram = listaProgram;
-	}
-	
-	@Override
-	public ArrayList<IProgramZZZ> getProgramList() {
-		if(this.listaProgram==null) {
-			ArrayList<IProgramZZZ> listaRunnables = new ArrayList<IProgramZZZ> ();
-			this.listaProgram = listaProgram;
-		}
-		return this.listaProgram;
-	}
-	
-	@Override
-	public void addProgram(IProgramZZZ objProgram) throws ExceptionZZZ {
-		this.getProgramList().add(objProgram);
-		
-		//Registriere diesen Monitor sofort an dem Event werfenden Program, aber nur wenn das Interface passt.
-		if(objProgram instanceof IListenerObjectStatusLocalZZZ) {
-			this.registerForStatusLocalEvent((IListenerObjectStatusLocalZZZ) objProgram);
-		}
-	}
-	
 	
 	//#### METHODEN
+	//### aus IProgramRunnableZZZ
 	@Override
 	public void run() {		
 		try {
-			this.start();
+			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
@@ -88,6 +65,11 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 			}
 		}
 	}//END run
+	
+	@Override 
+	public boolean start() throws ExceptionZZZ {
+		return this.startAsThread(); //Merke: Anders als ein einfaches Program wird ein runnable Program in seinem eigenen Thread gestarted.
+	}
 	
 	@Override
 	public boolean startAsThread() throws ExceptionZZZ {
@@ -104,52 +86,52 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
 	
-		
-	//###################################################
-	//### FLAGS #########################################
-	//###################################################
+	//###############################################
+	//### FLAGZ: IProgramMonitorRunnableZZZ
+	//###############################################
 	
 	@Override
-	public boolean getFlag(IProgramMonitorZZZ.FLAGZ objEnumFlag) {
+	public boolean getFlag(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}
-	
 	@Override
-	public boolean setFlag(IProgramMonitorZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
 	
 	@Override
-	public boolean[] setFlag(IProgramMonitorZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IProgramMonitorRunnableZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IProgramMonitorZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
 				}
-				
-				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
-				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
 			}
 		}//end main:
 		return baReturn;
 	}
-
+	
 	@Override
-	public boolean proofFlagExists(IProgramMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objEnumFlag.name());
-	}
-
+	public boolean proofFlagExists(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}
+	
 	@Override
-	public boolean proofFlagSetBefore(IProgramMonitorZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
-	}
-
+	}		
+	
+	
+	
+	
+	//############################################################
+	//### STATUS
+	//############################################################
 	
 	/* (non-Javadoc)
 	 * @see basic.zBasic.AbstractObjectWithStatusZZZ#offerStatusLocal(int, java.lang.Enum, java.lang.String, boolean)
@@ -181,7 +163,6 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 		bFunction = this.proofStatusLocalExists(sStatusName);															
 		if(!bFunction) {
 			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process would like to fire event, but this status is not available: '" + sStatusName + "'";
-			System.out.println(sLog);
 			this.logProtocolString(sLog);			
 			break main;
 		}
@@ -189,7 +170,6 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 		bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
 		if(!bFunction) {
 			String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor would like to fire event, but this status has not changed: '" + sStatusName + "'";
-			System.out.println(sLog);
 			this.logProtocolString(sLog);
 			break main;
 		}	
@@ -214,13 +194,11 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 		}
 		
 		String sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerMain verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
-		System.out.println(sLog);
 		this.logProtocolString(sLog);
 
 		//Falls eine Message extra uebergeben worden ist, ueberschreibe...
 		if(sStatusMessageToSet!=null) {
 			sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerMain setze sStatusMessageToSet='" + sStatusMessageToSet + "'";
-			System.out.println(sLog);
 			this.logProtocolString(sLog);
 		}
 		//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
@@ -232,14 +210,12 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 		//Dann erzeuge den Event und feuer ihn ab.	
 		if(this.getSenderStatusLocalUsed()==null) {
 			sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process would like to fire event '" + enumStatus.getAbbreviation() + "', but no objEventStatusLocalBroker available, any registered?";
-			System.out.println(sLog);
 			this.logProtocolString(sLog);		
 			break main;
 		}
 		
 		//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
-		sLog = ReflectCodeZZZ.getPositionCurrent() + ": Erzeuge Event fuer '" + sStatusName + "'";
-		System.out.println(sLog);
+		sLog = ReflectCodeZZZ.getPositionCurrent() + ": Erzeuge Event fuer '" + sStatusName + "', bValue='"+ bStatusValue + "', sMessage='"+sStatusMessage+"'";
 		this.logProtocolString(sLog);
 		IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, enumStatus, bStatusValue);			
 //		event.setApplicationObjectUsed(this.getMainObject().getApplicationObject());
@@ -253,7 +229,6 @@ public abstract class AbstractProgramMonitorRunnablerZZZ extends AbstractProgram
 //		}		
 		
 		sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process fires event '" + enumStatus.getAbbreviation() + "'";
-		System.out.println(sLog);
 		this.logProtocolString(sLog);
 		this.getSenderStatusLocalUsed().fireEvent(event);
 				

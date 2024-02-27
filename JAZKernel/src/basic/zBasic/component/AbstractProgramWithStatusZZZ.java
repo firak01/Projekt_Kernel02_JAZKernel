@@ -149,7 +149,7 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 	
 	
 	//#############################################
-	//### FLAGZ
+	//### FLAGZ IModuleUserZZZ
 	//#############################################
 	@Override
 	public boolean getFlag(IModuleUserZZZ.FLAGZ objEnumFlag) {

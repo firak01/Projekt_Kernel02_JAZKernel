@@ -94,11 +94,17 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 	}
 	
 	
-	//#### METHODEN	
-	@Override
+	//#### METHODEN
+	//Merke: Da dies kein runnable-Program ist, wird es nicht in einem eigenen Thread ausgeführt
+		//       Die Folge ist, dass ggfs. erst alle in start() aufgerufenen Runnable-Programme laufen
+		//       und das Ende von start() auch erst nach dem Beenden der aufgerufenen Runnable-Programme ausgeführt wird.
+	//Merke2: Wenn das Program runnable() ist, dann 
+	
+	@Override 
 	public boolean start() throws ExceptionZZZ {
-		return this.startCustom();
+		return startCustom();	
 	}
+
 	
 	@Override
 	public boolean startProgramAll() throws ExceptionZZZ {
@@ -448,7 +454,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 		}
 		
 		//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
-		sLog = ReflectCodeZZZ.getPositionCurrent() + ": Erzeuge Event fuer '" + sStatusName + "'";
+		sLog = ReflectCodeZZZ.getPositionCurrent() + ": Erzeuge Event fuer '" + sStatusName + "', bValue='"+ bStatusValue + "', sMessage='"+sStatusMessage+"'";
 		System.out.println(sLog);
 		this.logProtocolString(sLog);
 		IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, enumStatus, bStatusValue);			

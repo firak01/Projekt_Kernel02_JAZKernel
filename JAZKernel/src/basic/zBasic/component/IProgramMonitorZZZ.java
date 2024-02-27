@@ -105,7 +105,7 @@ public interface IProgramMonitorZZZ extends IProgramZZZ, IModuleUserZZZ {
 			Class<STATUSLOCAL> enumClass = STATUSLOCAL.class;
 			EnumSet<STATUSLOCAL> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 			
-			for(Object obj : AbstractProgramMonitorRunnablerZZZ.class.getEnumConstants()){
+			for(Object obj : AbstractProgramMonitorRunnableZZZ.class.getEnumConstants()){
 				//System.out.println(obj + "; "+obj.getClass().getName());
 				set.add((STATUSLOCAL) obj);
 			}

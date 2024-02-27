@@ -56,7 +56,7 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 	@Override
 	public void run() {		
 		try {
-			this.start();
+			this.startCustom();
 		} catch (ExceptionZZZ ez) {
 			try {
 				this.logProtocolString(ez.getDetailAllLast());
@@ -122,7 +122,7 @@ public abstract class AbstractProgramWithStatusRunnableZZZ extends AbstractProgr
 	
 	
 	//###############################
-	//### Flags II
+	//### Flags IObjectWithStatusZZZ
 	//###############################
 	
 	//### Aus IObjectWithStatusZZZ
