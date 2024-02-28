@@ -99,11 +99,14 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 
 		
 		@Override
-		public boolean isEventRelevant(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
+		public boolean isEventRelevantAny(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
 			boolean bReturn = false;
 			main:{
 				
 				bReturn = this.isEventRelevant2ChangeStatusLocal(eventStatusLocal);
+				if(bReturn) break main;
+				
+				bReturn = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
 				if(bReturn) break main;
 										
 			}//end main:
@@ -114,9 +117,8 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 		public boolean isEventRelevant2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
 			boolean bReturn = false;
 			main:{
-				if(!this.isEventRelevantByClass2ChangeStatusLocal(eventStatusLocal)) break main;
-				if(!this.isEventRelevantByReactionHashMap2ChangeStatusLocal(eventStatusLocal)) break main;
-				if(!this.isEventRelevantByStatusLocalValue2ChangeStatusLocal(eventStatusLocal)) break main;
+				if(!this.isEventRelevant2ChangeStatusLocalByClass(eventStatusLocal)) break main;
+				if(!this.isEventRelevant2ChangeStatusLocalByStatusLocalValue(eventStatusLocal)) break main;
 				
 				bReturn = true;
 			}//end main:
@@ -124,7 +126,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 		}
 		
 		@Override
-		public boolean isEventRelevantByReactionHashMap2ChangeStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalReact) throws ExceptionZZZ {
+		public boolean isEventRelevant4ReactionOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalReact) throws ExceptionZZZ {
 			boolean bReturn = true;
 			main:{
 				
