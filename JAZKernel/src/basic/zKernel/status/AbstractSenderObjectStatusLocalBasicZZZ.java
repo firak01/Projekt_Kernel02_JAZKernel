@@ -57,12 +57,12 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 					IListenerObjectStatusBasicZZZ l = this.getListenerRegisteredAll().get(i);
 					if(l instanceof IListenerObjectStatusLocalZZZ) {
 						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
-						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i;
+						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# " + i + ". IListenerObjectStatusLocalSetZZZ ("+l.getClass().getName()+") by broker object (" + this.getClass().getName() + " called: listener.reactOnStatusLocalEvent(event)";
 						this.logProtocolString(sLog);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
 						lused.reactOnStatusLocalEvent(eventUsed);
 					}else {					
-						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# type is not used yet: '" + l.getClass().getName() + "'";
+						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# instanceof type is not used yet: '" + l.getClass().getName() + "'";
 						this.logProtocolString(sLog);
 					}
 				}

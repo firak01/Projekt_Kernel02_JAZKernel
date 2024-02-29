@@ -55,11 +55,6 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	public abstract boolean startCustom() throws ExceptionZZZ;
 	
 	
-	//############################
-
-	@Override
-	public abstract boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ;
-	
 	//##########################################
 	//### FLAGZ IProgramRunnableZZZ
 	//##########################################

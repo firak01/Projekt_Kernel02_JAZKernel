@@ -164,7 +164,7 @@ public abstract class AbstractKernelUseObjectOnStatusListeningZZZ extends Abstra
 	}
 	
 	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocalReactionCustom(){
+	public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocal4ReactionCustom(){
 		HashMap<IEnumSetMappedStatusZZZ,String>hmReturn = new HashMap<IEnumSetMappedStatusZZZ,String>();
 		main:{
 			

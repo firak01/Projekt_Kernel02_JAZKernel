@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.IMonitorObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
@@ -54,10 +55,100 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 		this.hmEnumSet = hmEnumSet;
 	}
 	
+	//---------- der Monitor erweitert dies um reactOnStatusLocalEvent4Monitor ....
+	@Override
+	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{	
+		boolean bReturn;
+		
+		//1. Monitor: D.h. einen Status weiterleiten. Das muss zuerst passieren.
+		bReturn = this.reactOnStatusLocalEvent4Monitor(eventStatusLocal);
+		
+		//2. Eigene Action... das hat das Ziel, das dadurch ja ggfs. wieder neue Events geworfen werden können
+		bReturn = this.reactOnStatusLocalEvent4Action(eventStatusLocal);
+		
+		return bReturn;
+	}
+	
+	@Override
+	public boolean reactOnStatusLocalEvent4Monitor(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(eventStatusLocal==null) {
+				  ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject not provided", this.iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 						
+				  throw ez;
+			}
+			
+			//Falls nicht zuständig, setze keinen Status
+			boolean bProofStatus = this.isEventRelevant4MonitorOnStatusLocal(eventStatusLocal);
+			if(!bProofStatus) break main;
+			
+			
+			String sLog=null;
+			
+			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
+			IEnumSetMappedStatusZZZ enumStatusIn = eventStatusLocal.getStatusLocal();
+			if(enumStatusIn==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
+			HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>hmStatus=this.getHashMapEnumSetForCascadingStatusLocal();
+			IEnumSetMappedStatusZZZ enumStatusOut = hmStatus.get(enumStatusIn); 
+			if(enumStatusOut==null) {
+				sLog =  ReflectCodeZZZ.getPositionCurrent() + "KEINEN Gemappten Status gefunden. Setze also keinen eigenen Status.";
+				this.logProtocolString(sLog);
+				break main; //Wenn der Status nicht gemappt ist, wird auch nichts gesetzt.
+			}else {			
+				sLog =  ReflectCodeZZZ.getPositionCurrent() + "Gemappten Status gefunden... Setze dazu den passenden eigenen Status.";
+				this.logProtocolString(sLog);
+			}
+			
+			boolean bStatusValue = eventStatusLocal.getStatusValue();
+			this.setStatusLocalEnum(enumStatusOut, bStatusValue);
+		
+		}//end main:
+		return bReturn;
+	}
+	
+	public boolean isEventRelevant4MonitorOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(eventStatusLocal==null) {
+				  ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject not provided", this.iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 						
+				  throw ez;
+			}
+			
+			String sLog;
+			
+			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
+			IEnumSetMappedStatusZZZ enumStatusIn = eventStatusLocal.getStatusLocal();
+			if(enumStatusIn==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
+			HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>hmStatus=this.getHashMapEnumSetForCascadingStatusLocal();
+			IEnumSetMappedStatusZZZ enumStatusOut = hmStatus.get(enumStatusIn); 
+			if(enumStatusOut==null) {
+				sLog =  ReflectCodeZZZ.getPositionCurrent() + "KEINEN Gemappten Status gefunden. Also Event NICHT mit Monitor-Objekt weiter verarbeitbar.";
+				this.logProtocolString(sLog);
+				break main; //Wenn der Status nicht gemappt ist, wird auch nichts gesetzt.
+			}else {			
+				sLog =  ReflectCodeZZZ.getPositionCurrent() + "Gemappten Status gefunden. Also Event mit Monitor-Objekt weiter verarbeitbar.";
+				this.logProtocolString(sLog);				
+			}
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
 	@Override
 	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> createHashMapEnumSetForCascadingStatusLocalCustom();
 	
-
+	
 	
 	//######################################################################
 	//### FLAGZ: aus IStatusLocalMapForMonitoringStatusMessageUserZZZ   ####

@@ -11,7 +11,7 @@ public interface IProgramRunnableZZZ extends IProgramZZZ, Runnable{
 	//### FLAGZ
 	//#############################################################	
 	public enum FLAGZ{
-		REQUESTSTOP; 
+		REQUEST_STOP; 
 	}	
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()

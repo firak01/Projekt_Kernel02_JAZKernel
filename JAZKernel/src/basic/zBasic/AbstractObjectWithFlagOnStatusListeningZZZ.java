@@ -104,23 +104,20 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	//### STATUS
 	//####################
 	@Override
-	public HashMap<IEnumSetMappedStatusZZZ, String> getHashMapStatusLocalReaction() {
+	public HashMap<IEnumSetMappedStatusZZZ, String> getHashMapStatusLocal4Reaction() {
 		if(this.hmEnumSetForAction==null) {
-			HashMap<IEnumSetMappedStatusZZZ, String> hmEnumSetForAction = this.createHashMapStatusLocalReactionCustom();
+			HashMap<IEnumSetMappedStatusZZZ, String> hmEnumSetForAction = this.createHashMapStatusLocal4ReactionCustom();
 			this.hmEnumSetForAction = hmEnumSetForAction;
 		}
 		return this.hmEnumSetForAction;
 	}
 
 	@Override
-	public void setHashMapStatusLocalReaction(HashMap<IEnumSetMappedStatusZZZ, String> hmEnumSetForAction) {
+	public void setHashMapStatusLocal4Reaction(HashMap<IEnumSetMappedStatusZZZ, String> hmEnumSetForAction) {
 		this.hmEnumSetForAction = hmEnumSetForAction;
 	}
 	
-	@Override
-	abstract public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocalReactionCustom();
-
-	
+			
 	@Override
 	public boolean isEventRelevantAny(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -152,37 +149,44 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	public boolean isEventRelevant4ReactionOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalReact) throws ExceptionZZZ {
 		boolean bReturn = true;
 		main:{
+			String sLog;
 			
 			//1. Hole die HashMap für die Aktionen pro reinkommenden Status.
 			//   Gibt es sie nicht oder sie ist leer, wird jeder Event - unabhaengig von dem Status - weiter verfolgt.
-			HashMap<IEnumSetMappedStatusZZZ,String>hm= this.getHashMapStatusLocalReaction();
-			if(hm==null) break main;			
-			if(hm.isEmpty()) break main;
-			
-			/* muss man instanceof verwenden???		
-			IEnumSetMappedStatusZZZ objEnumMapped = eventStatusLocalReact.getStatusLocal();					
-			if(objEnumMapped instanceof IProgramMonitorZZZ.STATUSLOCAL) {
-				if(objEnumMapped.equals(IProgramMonitorZZZ.STATUSLOCAL.ISSTARTING)) {
-	
-				}
+			HashMap<IEnumSetMappedStatusZZZ,String>hm= this.getHashMapStatusLocal4Reaction();
+			if(hm==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap NULL => jeder Status ist relevant.";				
+				this.logProtocolString(sLog);
+				break main;			
 			}
-			*/
-			
+			if(hm.isEmpty()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap Empty => jeder Status ist relevant.";				
+				this.logProtocolString(sLog);
+				break main;	
+			}
+						
 			IEnumSetMappedStatusZZZ enumStatus = (IEnumSetMappedStatusZZZ) eventStatusLocalReact.getStatusEnum();			
 			String sActionAlias = hm.get(enumStatus);
+						
+			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist relevant.";				
+				this.logProtocolString(sLog);
+				break main;
+			}
 			
-			//Status nicht vorhanden oder ActionAlias NULL => NICHT relevant 
-			if(sActionAlias==null) {
+			//Status nicht gepflegt, wenn durchaus andere Statuseintraege vorhanden sind oder gepflegt und ActionAlias Leer => NICHT relevant 
+			if(StringZZZ.isEmptyTrimmed(sActionAlias)) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap hat Leerstring fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
+				this.logProtocolString(sLog);
 				bReturn = false;
 				break main;
 			}
 			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
+				this.logProtocolString(sLog);
 				bReturn = false;
 				break main;
-			}
-								
-			if(StringZZZ.isEmptyTrimmed(sActionAlias)) break main;
-			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())) break main;
+			}											
 
 		}//end main:			
 		return bReturn;
@@ -194,7 +198,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 		main:{
 			if(enumStatus==null)break main;
 						
-			HashMap<IEnumSetMappedStatusZZZ,String>hm= this.getHashMapStatusLocalReaction();
+			HashMap<IEnumSetMappedStatusZZZ,String>hm= this.getHashMapStatusLocal4Reaction();
 			if(hm==null) break main;			
 			if(hm.isEmpty()) break main;
 			
@@ -202,4 +206,56 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 		}//end main:
 		return sReturn;
 	}
+	
+	//-----------------------------------------
+	@Override
+	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+		return this.reactOnStatusLocalEvent4Action(eventStatusLocal);
+	}
+	
+	@Override
+	public boolean reactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			//Falls nicht zuständig, mache nix
+		    boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
+			if(!bProof) break main;
+			
+			String sLog=null;
+			
+			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
+			IEnumSetMappedStatusZZZ enumStatus = eventStatusLocal.getStatusLocal();
+			if(enumStatus==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
+			boolean bStatusValue = eventStatusLocal.getStatusValue();
+			String sStatusMessage = eventStatusLocal.getStatusMessage();
+			
+			//+++++++++++++++++++++
+			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
+			if(hmEnum==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+				System.out.println(sLog);
+				this.logLineDate(sLog);
+				break main;
+			}
+						
+			String sActionAlias = this.getActionAliasString(enumStatus);
+			
+			//+++++++++++++++++++++
+			bReturn = this.reactOnStatusLocalEventCustomAction(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
+		
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	abstract public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocal4ReactionCustom();
+
+	@Override
+	abstract public boolean reactOnStatusLocalEventCustomAction(String sAction, IEnumSetMappedStatusZZZ enumStatus,boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	
 }

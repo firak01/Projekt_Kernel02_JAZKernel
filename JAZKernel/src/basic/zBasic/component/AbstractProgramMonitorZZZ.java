@@ -89,8 +89,6 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 			objProgramWithBroker.registerForStatusLocalEvent(this);
 			
 		}
-		
-	
 	}
 	
 	

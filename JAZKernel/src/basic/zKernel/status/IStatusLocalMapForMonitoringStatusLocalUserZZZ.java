@@ -19,6 +19,8 @@ public interface IStatusLocalMapForMonitoringStatusLocalUserZZZ extends IListene
 	
 	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ>getHashMapEnumSetForCascadingStatusLocal();
 	public abstract void setHashMapEnumSetForCascadingStatusLocal(HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> hmEnumSet);	
+	public abstract boolean reactOnStatusLocalEvent4Monitor(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
+	public boolean isEventRelevant4MonitorOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
 	
 	//Map: ExternerWert aus Event, LokalerWert
 	public abstract HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>createHashMapEnumSetForCascadingStatusLocalCustom();
