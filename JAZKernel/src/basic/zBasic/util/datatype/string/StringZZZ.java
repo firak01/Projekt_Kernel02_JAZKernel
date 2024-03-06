@@ -3129,10 +3129,9 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	
-	
-	/* Trimme den String, schneide links und rechts jeweils ein Anf�hrungszeichen weg, trimme wieder, ...  schneide Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
+	/* Trimme den String, schneide links und rechts jeweils das Markierungszeichen weg, trimme wieder, ...  schneide Markierungszeichen weg, usw. bis es kein passendes Paar Markierungszeichen links und rechts mehr gibt.	 
 	 */
-	public static String trimQuotationMarked(String sString){
+	public static String trimMarked(String sString, String sMark){
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
@@ -3140,8 +3139,8 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			sReturn = sString.trim();
 			boolean bGoon = false;
 			while(!bGoon){
-				if(sReturn.startsWith("\"") && sReturn.endsWith("\"")){
-					sReturn = StringZZZ.midBounds(sReturn, 1, 1); //Schneide die Anführungszeichen links und rechts weg
+				if(sReturn.startsWith(sMark) && sReturn.endsWith(sMark)){
+					sReturn = StringZZZ.midBounds(sReturn, sMark.length(), sMark.length()); //Schneide die Markierungszeichen links und rechts weg
 					sReturn = sReturn.trim();
 				}else{
 					bGoon = true;
@@ -3149,6 +3148,63 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 			}
 		}//end main:
 		return sReturn;
+	}
+	
+	/* Trimme den String, schneide links und rechts jeweils ein einfaches/doppeltes Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches/doppeltes Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
+	 */
+	public static String trimAnyQuoteMarked(String sString){
+		String sReturn = null;		
+		main:{
+			sReturn = sString;
+			if(StringZZZ.isEmptyTrimmed(sString))break main;
+			
+			boolean bGoon = false;
+			while(!bGoon) {
+				String sCompare = sReturn;
+				sReturn = StringZZZ.trimSingleQuoteMarked(sReturn);
+				sReturn = StringZZZ.trimDoubleQuoteMarked(sReturn);
+				
+				if(sCompare.equals(sReturn)) bGoon=true;
+			}
+		}//end main:
+		return sReturn;
+	}
+
+	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anfuehrungszeichen weg, trimme wieder, ...  schneide einfaches Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
+	 */
+	public static String trimSingleQuoteMarked(String sString){
+		return StringZZZ.trimMarked(sString, "'");
+	}
+	
+	/* Trimme den String, schneide links und rechts jeweils ein doppeltes Anfuehrungszeichen weg, trimme wieder, ...  schneide doppeltes Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
+	 */
+	public static String trimDoubleQuoteMarked(String sString){
+		return StringZZZ.trimMarked(sString, "\"");
+	}
+	
+	
+	
+	/* Trimme den String, schneide links und rechts jeweils ein Anf�hrungszeichen weg, trimme wieder, ...  schneide Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
+	 */
+	public static String trimQuotationMarked(String sString){
+		return StringZZZ.trimDoubleQuoteMarked(sString);
+		
+//		String sReturn = sString;
+//		main:{
+//			if(StringZZZ.isEmpty(sString)) break main;
+//		
+//			sReturn = sString.trim();
+//			boolean bGoon = false;
+//			while(!bGoon){
+//				if(sReturn.startsWith("\"") && sReturn.endsWith("\"")){
+//					sReturn = StringZZZ.midBounds(sReturn, 1, 1); //Schneide die Anführungszeichen links und rechts weg
+//					sReturn = sReturn.trim();
+//				}else{
+//					bGoon = true;
+//				}
+//			}
+//		}//end main:
+//		return sReturn;
 	}
 	
 	public static String stripCharacters(String sString, char[]caToStrip) {
@@ -3173,23 +3229,56 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 		return sReturn;
 	}
 	
-	/* Anders als beim trimQuotationMarked werden hier Leerzeichen nicht getrimmt. 
+	/* Anders als beim trimMarked werden hier Leerzeichen nicht getrimmt. 
 	 */
-	public static String stripQuotationMarked(String sString){
+	public static String stripMarked(String sString, String sMark){
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-		
+
 			boolean bGoon = false;
 			while(!bGoon){
-				if(sString.startsWith("\"") && sString.endsWith("\"")){
-					sReturn = StringZZZ.midBounds(sString, 1, 1); //Schneide die Anführungszeichen links und rechts weg					
+				if(sReturn.startsWith(sMark) && sReturn.endsWith(sMark)){
+					sReturn = StringZZZ.midBounds(sReturn, sMark.length(), sMark.length()); //Schneide die Markierungszeichen links und rechts weg					
 				}else{
 					bGoon = true;
 				}
 			}
 		}//end main:
 		return sReturn;
+	}
+	
+	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anf�hrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
+	 */
+	public static String stripSingleQuoteMarked(String sString){
+		return StringZZZ.stripMarked(sString, "'");
+	}
+	
+	/* Trimme den String, schneide links und rechts jeweils ein einfaches Anf�hrungszeichen weg, trimme wieder, ...  schneide einfaches Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
+	 */
+	public static String stripDoubleQuoteMarked(String sString){
+		return StringZZZ.stripMarked(sString, "\"");
+	}
+	
+	/* Anders als beim trimQuotationMarked werden hier Leerzeichen nicht getrimmt. 
+	 */
+	public static String stripQuotationMarked(String sString){
+		return StringZZZ.stripDoubleQuoteMarked(sString);
+		
+//		String sReturn = sString;
+//		main:{
+//			if(StringZZZ.isEmpty(sString)) break main;
+//		
+//			boolean bGoon = false;
+//			while(!bGoon){
+//				if(sString.startsWith("\"") && sString.endsWith("\"")){
+//					sReturn = StringZZZ.midBounds(sString, 1, 1); //Schneide die Anführungszeichen links und rechts weg					
+//				}else{
+//					bGoon = true;
+//				}
+//			}
+//		}//end main:
+//		return sReturn;
 	}
 	
 	/** Entferne den String von links kommend, lasse mindestens 1 Zeichen übrig.
