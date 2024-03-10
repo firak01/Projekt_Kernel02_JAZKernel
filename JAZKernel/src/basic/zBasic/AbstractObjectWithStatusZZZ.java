@@ -920,7 +920,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		main:{
 			boolean bOffered = false;
 			
-			TODOGOON20240310;//IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln						
+			//TODOGOON20240310;//IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln						
 			IEnumSetMappedStatusZZZ objEnum = null;
 			
 			
@@ -977,7 +977,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//                   dito mit dem "vorherigen Status"... Das wird ueber einen CircularBuffer erledigt
 			//Setze nun das Enum, und damit auch die Default-StatusMessage
 			
-			TODOGOON20240310;//Aus dem enum ein IEnumSetMappedStatusZZZ-Objekt machen.....
+			//TODOGOON20240310;//Aus dem enum ein IEnumSetMappedStatusZZZ-Objekt machen.....
 			String sStatusMessageToSet = null;
 			if(StringZZZ.isEmpty(sStatusMessage)){
 				if(bStatusValue) {
