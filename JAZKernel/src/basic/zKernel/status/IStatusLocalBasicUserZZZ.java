@@ -71,15 +71,19 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	public abstract boolean proofStatusLocalDirectExists(String sStatusName) throws ExceptionZZZ;
 	
 	//... diese Methoden werden durch FLAGZ-Eintraege per default aktiviert, können aber auch deaktivert werden.
+	//    Geprüft wird der HashMap-Eintrag
 	public abstract boolean proofStatusLocalValue(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalValue(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalValueChanged(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalValueChanged(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
+	
+	//... wird auch durch FLAGZ-Eintrag aktiviert, schaut aber im Circular Buffer nach
+	public abstract boolean proofStatusLocalMessageChanged(String sMessage) throws ExceptionZZZ;
 
 	//Halte den gesetzten Status als Enum fest, 
 	//Merke: Das offer kommt von der intern zum Speichern verwendeten CircularBuffer Klasse
-	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal);	
-	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue);
+	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal) throws ExceptionZZZ;	
+	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue) throws ExceptionZZZ;
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumCurrent();
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious();
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack);

@@ -59,12 +59,63 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	public String getProgramAlias() throws ExceptionZZZ {		
 		return null;
 	}
-		
+			
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
+	
 	@Override
 	public void resetProgramUsed() {
 		this.sProgramName = null;
 	}
+	
+	
 
+	//####################################################################
+	//### Aus IKernelModuleUserZZZ
+	@Override
+	public String readModuleName() throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			IModuleZZZ objModule = this.getModule();
+			if(objModule!=null) {
+				sReturn = objModule.getModuleName();
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	@Override
+	public String getModuleName() throws ExceptionZZZ{
+		if(StringZZZ.isEmpty(this.sModuleName)) {
+			this.sModuleName = this.readModuleName();
+		}
+		return this.sModuleName;
+	}
+	
+	@Override
+	public void setModuleName(String sModuleName){
+		this.sModuleName=sModuleName;
+	}
+	
+	@Override
+	public void resetModuleUsed() {
+		this.objModule = null;
+		this.sModuleName = null;
+	}
+	
+	@Override
+	public IModuleZZZ getModule() {
+		return this.objModule;
+	}
+	
+	@Override
+	public void setModule(IModuleZZZ objModule) {
+		this.objModule = objModule;
+	}
+
+	//### Methoden
 	@Override
 	public boolean reset() throws ExceptionZZZ {
 		this.resetProgramUsed();
@@ -73,10 +124,6 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return true;
 	}
 	
-	@Override
-	public boolean start() throws ExceptionZZZ {
-		return this.startCustom();
-	}
 	
 	//###########################################
 	//### FLAGZ IProgramZZZ
@@ -116,7 +163,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	public boolean proofFlagSetBefore(IProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
-
+	
 	//###########################################
 	//### FLAGZ IModuleUserZZZ
 	//###########################################
@@ -194,48 +241,5 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 	@Override
 	public boolean proofFlagSetBefore(IListenerProgramStatusLocalZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
-	}
-	
-	//####################################################################
-	//### Aus IKernelModuleUserZZZ	
-	@Override
-	public String readModuleName() throws ExceptionZZZ {
-		String sReturn = null;
-		main:{
-			IModuleZZZ objModule = this.getModule();
-			if(objModule!=null) {
-				sReturn = objModule.getModuleName();
-			}
-		}//end main:
-		return sReturn;
-	}
-	
-	@Override
-	public String getModuleName() throws ExceptionZZZ{
-		if(StringZZZ.isEmpty(this.sModuleName)) {
-			this.sModuleName = this.readModuleName();
-		}
-		return this.sModuleName;
-	}
-	
-	@Override
-	public void setModuleName(String sModuleName){
-		this.sModuleName=sModuleName;
-	}
-	
-	@Override
-	public void resetModuleUsed() {
-		this.objModule = null;
-		this.sModuleName = null;
-	}
-	
-	@Override
-	public IModuleZZZ getModule() {
-		return this.objModule;
-	}
-	
-	@Override
-	public void setModule(IModuleZZZ objModule) {
-		this.objModule = objModule;
 	}
 }

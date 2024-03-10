@@ -41,9 +41,6 @@ public class EnumSetUtilZZZ extends AbstractObjectZZZ{
 		
 		EnumSet<?> enumSetUsed = this.getEnumSet(objClass);
 		this.setEnumSetCurrent(enumSetUsed);
-		
-	
-		
 	}
 	public EnumSetUtilZZZ(IEnumSetFactoryZZZ objEnumSetFactory, Class<?> objClass) throws ExceptionZZZ{
 		if(objEnumSetFactory==null){

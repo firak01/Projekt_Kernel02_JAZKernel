@@ -8,8 +8,12 @@ import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ.FLAGZ
 public interface IStatusLocalMessageUserZZZ extends IStatusLocalBasicUserZZZ, ICircularBufferStatusBooleanMessageUserZZZ{
 	public abstract IStatusBooleanMessageZZZ getStatusLocalObject();
 	public abstract boolean setStatusLocalObject(IStatusBooleanMessageZZZ objEnum);
+	public abstract boolean setStatusLocalObject(IStatusBooleanMessageZZZ objEnum, String sStatusMessage);
 	public abstract IStatusBooleanMessageZZZ getStatusLocalObjectPrevious();
 	public abstract IStatusBooleanMessageZZZ getStatusLocalObjectPrevious(int iIndexStepsBack);
+	
+	//... wird auch durch FLAGZ-Eintrag aktiviert, schaut aber im Circular Buffer nach
+	public abstract boolean proofStatusLocalMessageChanged(IStatusBooleanMessageZZZ objEnum) throws ExceptionZZZ;
 	
 	//Erweiterung von IStatusLocalUserZZZ... hier gibt es jetzt eine "Message" fuer den Status
 	public abstract boolean switchStatusLocalAsGroupTo(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
@@ -20,7 +24,7 @@ public interface IStatusLocalMessageUserZZZ extends IStatusLocalBasicUserZZZ, IC
 	public abstract boolean offerStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
 	public abstract boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
 	
-	public abstract boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue, String sMessage);//Merke: Das offer kommt vom dem intern verwendeten CircularBuffer Klasse
+	public abstract boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue, String sMessage) throws ExceptionZZZ;//Merke: Das offer kommt vom dem intern verwendeten CircularBuffer Klasse
 		
 	public abstract boolean setStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.
 	public abstract boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
