@@ -2,6 +2,7 @@ package basic.zKernel.status;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
@@ -540,6 +541,91 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 		}//end main:
 		return listaReturn;
 	}
+	
+	/** s. https://stackoverflow.com/questions/31104584/how-to-save-enum-class-in-a-hashmap
+	 * @param classToCheck
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+	 */
+	//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+	public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(Class<?> classToCheck) throws ExceptionZZZ {
+		HashMap<String, IStatusBooleanMessageZZZ> hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
+		main:{
+			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
+			String sEnumStatusLocalName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
+			
+			ArrayList<? extends Enum<?>> listae = new ArrayList();
+			for(Class objClass : listaClass) {
+				String sEnumClass = objClass.getName();				
+				if(sEnumClass.endsWith(sEnumStatusLocalName)) {
+					Object[] obja = objClass.getEnumConstants();
+									 }
+			}
+			TODOGOON;
+			//enumaReturn = ArrayListZZZ.toEnumArray(listae);
+		}
+		return hmReturn;
+	}
+	
+	
+	public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumList(Class cls) throws ExceptionZZZ {
+		ArrayList<Collection<? extends Enum<?>>> listasReturn = new ArrayList<Collection<? extends Enum<?>>>();
+		main:{
+		if(cls==null) {
+			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			 throw ez;
+		}
+	
+		//1. von der Classe selbst implementiert
+		ArrayList<String> listasDirect = StatusLocalHelperZZZ.getStatusLocalListDirectAvailable(cls);
+				
+		//2. allen Interfaces der Klasse, auch den erbenden implementiert
+		//ArrayList<String> listasInterface = new ArrayList<String>();
+		//kann nicht instanziiert werden... ArrayList<? extends Enum<?>> listasInterface = new ArrayList<? extends Enum<?>>();
+		ArrayList<Collection<? extends Enum<?>>> listasInterface = new ArrayList<Collection<? extends Enum<?>>>();
+		ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
+		ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
+		for(Class<?> objclsByInterface : listaClassInterface) {
+//			Enum[] enumaByInterface = getEnumStatusLocal(objclsByInterface);
+//			if(enumaByInterface!=null) {			
+//				for(Enum objEnum : enumaByInterface) {
+//					String sEnum = objEnum.name();
+//					if(!listasInterface.contains(sEnum)) {
+//						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+//						listasInterface.add(sEnum);
+//					}									
+//				}			
+//			}
+			
+			Enum[] enumaByInterface = getEnumStatusLocal(objclsByInterface);
+			for(Enum objEnum : enumaByInterface) {
+				listasInterface.add((Collection<? extends Enum<?>>) objEnum);
+			}
+		}
+		TODOGOON;
+		
+		
+		//3. von den Elternklassen der Klasse implementiert
+		ArrayList<String> listasParent = new ArrayList<String>();		
+		ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
+		for(Class objcls : listaobjClass) {
+			//Von dem Interface direkt implementiert. Reicht aber nicht um alle zu erfassen.
+			//ArrayList<String> listasTemp = FlagZHelperZZZ.getFlagsZListDirectAvailable(objcls);
+			
+			//Von der Vererbungshierarchie des Interface implementiert.
+			ArrayList<String> listasTemp = StatusLocalHelperZZZ.getStatusLocalListInheritedAvailable(objcls);
+			
+			listasParent.addAll(listasTemp);
+		}
+		
+		listasReturn.addAll(listasDirect);
+		listasReturn.addAll(listasParent);
+		listasReturn.addAll(listasInterface);
+		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);
+	}//end main:
+	return listasReturn;
+	}
+
 
 	public static String[] getStatusLocalForGroup(Class cls, int iGroupId) throws ExceptionZZZ{
 		String[] saReturn = null;
