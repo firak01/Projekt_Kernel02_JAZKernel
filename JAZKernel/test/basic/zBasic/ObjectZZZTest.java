@@ -16,13 +16,13 @@ import basic.zBasic.util.file.FileTextParserZZZ;
 
 public class ObjectZZZTest extends TestCase{
 	
-	private DummyTestObjectZZZ objObjectTest = null;
+	private DummyTestObjectWithFlagZZZ objObjectTest = null;
 
 	protected void setUp(){
 		//try {			
 			
 			//The main object used for testing
-			objObjectTest = new DummyTestObjectZZZ();
+			objObjectTest = new DummyTestObjectWithFlagZZZ();
 			
 		
 //		} catch (ExceptionZZZ e) {
@@ -35,7 +35,7 @@ public class ObjectZZZTest extends TestCase{
 		try{
 			//Init - Object
 			String[] saFlag = {"init"};
-			DummyTestObjectZZZ objObjectInit = new DummyTestObjectZZZ(saFlag);
+			DummyTestObjectWithFlagZZZ objObjectInit = new DummyTestObjectWithFlagZZZ(saFlag);
 			assertTrue(objObjectInit.getFlag("init")==true); 
 			
 			
@@ -50,7 +50,7 @@ public class ObjectZZZTest extends TestCase{
 		try{
 		//Init - Object
 		String[] saFlag = {"init"};
-		DummyTestObjectZZZ objObjectInit = new DummyTestObjectZZZ(saFlag);
+		DummyTestObjectWithFlagZZZ objObjectInit = new DummyTestObjectWithFlagZZZ(saFlag);
 		assertTrue(objObjectInit.getFlag("init")==true); 
 		
 		

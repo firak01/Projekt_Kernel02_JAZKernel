@@ -18,13 +18,13 @@ import basic.zBasic.util.file.FileTextParserZZZ;
 
 public class ReflectEnvironmentZZZTest extends TestCase{
 	
-	private DummyTestObjectZZZ objObjectTest = null;
+	private DummyTestObjectWithFlagZZZ objObjectTest = null;
 
 	protected void setUp(){
 		//try {			
 			
 			//The main object used for testing
-			objObjectTest = new DummyTestObjectZZZ();
+			objObjectTest = new DummyTestObjectWithFlagZZZ();
 			
 		
 //		} catch (ExceptionZZZ e) {
