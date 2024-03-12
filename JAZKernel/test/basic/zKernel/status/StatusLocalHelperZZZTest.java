@@ -19,7 +19,7 @@ public class StatusLocalHelperZZZTest  extends TestCase{
 	    protected void setUp(){
 	      
 	    	TODOGOON20240310;
-	    	objTestWithStatus = new DummyTestObectWithStatusZZZ();
+	    	objTestWithStatus = new DummyTestObjectWithStatusZZZ();
 	    	
 		//try {			
 		
