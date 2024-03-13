@@ -37,24 +37,14 @@ public interface IDummyTestObjectWithStatusZZZ{
 	//++++++++++++++++++++++++
 	//ALIAS(Gruppenid der Meldung, "Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
 	public enum STATUSLOCAL implements IEnumSetMappedStatusZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-		ISSTARTNEW(iSTATUSLOCAL_GROUPID,"isstartnew","ZZZ: LogFileWatchMonitor nicht gestartet",""),
-		ISSTARTING(iSTATUSLOCAL_GROUPID,"isstarting","ZZZ: LogFileWatchMonitor startet...",""),		
-		ISSTARTED(iSTATUSLOCAL_GROUPID,"isstarted","ZZZ: LogFileWatchMonitor gestartet",""),
-		ISSTARTNO(iSTATUSLOCAL_GROUPID,"isstartno","ZZZ: LogFileWatchMonitor nicht gestartet",""),
+		ISSTARTNEW(iSTATUSLOCAL_GROUPID,"isstartnew","ZZZ: DummyTestObjectWithStatusZZZ nicht gestartet",""),
+		ISSTARTING(iSTATUSLOCAL_GROUPID,"isstarting","ZZZ: DummyTestObjectWithStatusZZZ startet...",""),		
+		ISSTARTED(iSTATUSLOCAL_GROUPID,"isstarted","ZZZ: DummyTestObjectWithStatusZZZ gestartet",""),
+		ISSTARTNO(iSTATUSLOCAL_GROUPID,"isstartno","ZZZ: DummyTestObjectWithStatusZZZ nicht gestartet",""),
 
-		HASLOGFILEWATCHRUNNERSTARTNEW(iSTATUSLOCAL_GROUPID,"haslogfilewatchrunnerstartnew","ZZZ: LogFileWatchRunner nicht gestartet",""),
-		HASLOGFILEWATCHRUNNERSTARTING(iSTATUSLOCAL_GROUPID,"haslogfilewatchrunnerstarting","ZZZ: LogFileWatchRunner startet",""),
-		HASLOGFILEWATCHRUNNERSTARTED(iSTATUSLOCAL_GROUPID,"haslogfilewatchrunnerstarted","ZZZ: LogFileWatchRunner gestartet",""),
-		HASLOGFILEWATCHRUNNEROUTPUT(iSTATUSLOCAL_GROUPID,"haslogfilewatchrunneroutput","ZZZ: LogFileWatchRunner mit Ausgabe",""),
-		
-		HASLOGFILEWATCHRUNNERFILTERFOUND(iSTATUSLOCAL_GROUPID,"haslogfilewatchrunnerfilterfound","ZZZ: LogFileWatchRunner hat Filterwert gefunden",""),
-		
-		HASLOGFILEWATCHRUNNERERROR(iSTATUSLOCAL_GROUPID,"haslogfilewatchrunnererror","ZZZ: LogFileWatchRunner meldet Fehler",""),
-		HASLOGFILEWATCHRUNNERSTOPPED(iSTATUSLOCAL_GROUPID,"haslogfilewatchrunnerstopped","ZZZ: LogFileWatchRunner gestoppt",""),
-		
-		ISSTOPPED(iSTATUSLOCAL_GROUPID,"isstopped","OVPN: Monitor beendet",""),
+		ISSTOPPED(iSTATUSLOCAL_GROUPID,"isstopped","ZZZ: DummyTestObjectWithStatusZZZ beendet",""),
 				
-		HASERROR(iSTATUSLOCAL_GROUPID,"haserror","ZZZ: LogFileWatchMonitor meldet Fehler","");		
+		HASERROR(iSTATUSLOCAL_GROUPID,"haserror","ZZZ: DummyTestObjectWithStatusZZZ meldet Fehler","");		
 		
 		private int iStatusGroupId;
 		private String sAbbreviation,sStatusMessage,sDescription;
@@ -98,8 +88,9 @@ public interface IDummyTestObjectWithStatusZZZ{
 			//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
 			Class<STATUSLOCAL> enumClass = STATUSLOCAL.class;
 			EnumSet<STATUSLOCAL> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
-			
-			for(Object obj : AbstractProgramMonitorRunnableZZZ.class.getEnumConstants()){
+					
+			Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+			for(Object obj : objaEnum){
 				//System.out.println(obj + "; "+obj.getClass().getName());
 				set.add((STATUSLOCAL) obj);
 			}

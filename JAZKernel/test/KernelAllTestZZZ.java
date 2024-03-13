@@ -57,6 +57,7 @@ import basic.zKernel.file.ini.KernelJavaCallIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelJsonIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZTest;
+import basic.zKernel.status.StatusLocalHelperZZZTest;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZTest;
 import basic.zUtil.io.FileExpansionZZZTest;
 import basic.zUtil.io.FileZZZTest;
@@ -138,6 +139,8 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht		
 		objReturn.addTestSuite(FileIniZZZTest.class);
 		
+		objReturn.addTestSuite(StatusLocalHelperZZZTest.class);//Teste die Behandlung der Enumeration
+		
 		//Test für Filter auf jar/zip Dateien
 		objReturn.addTestSuite(JarInfoClassLoaderTest.class);
 		objReturn.addTestSuite(JarInfoFeaturesTest.class);
@@ -149,7 +152,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(KernelZZZTest.class);
 		objReturn.addTestSuite(KernelUseObjectZZZTest.class);
 		objReturn.addTestSuite(LogZZZTest.class);
-		objReturn.addTestSuite(EnumSetKernelConfigDefaultEntryUtilZZZTest.class);
+		objReturn.addTestSuite(EnumSetKernelConfigDefaultEntryUtilZZZTest.class);		
 		objReturn.addTestSuite(FileTextParserZZZTest.class);		
 		objReturn.addTestSuite(FileExpansionZZZTest.class);
 		objReturn.addTestSuite(FileZZZTest.class);

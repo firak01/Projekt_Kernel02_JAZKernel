@@ -13,6 +13,7 @@ import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -319,7 +320,8 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 				
 				
 				if(!StringZZZ.isEmpty(driver.name())){
-					if(StringZZZ.startsWithIgnoreCase(driver.name(),sToFind)){
+					String sName = driver.name();
+					if(StringZZZ.startsWithIgnoreCase(sName,sToFind)){
 					  bReturn = true;
 					  break;
 				  }
@@ -433,7 +435,17 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		    if (clazz==null || name==null || name.isEmpty()) {
 		        return null;
 		    }
-		    String sReturn = Enum.valueOf((Class<Enum>)clazz, name).toString();
+		    String sReturn = Enum.valueOf((Class<Enum>)clazz, name).toString();//ACHTUNG: Das ist der Name ggfs. mit einem Gleichheitszeichen darin z.B. meinstatus=
+		    sReturn = StringZZZ.left(sReturn+"=", "=");
+		    return sReturn;
+		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		public static String getEnumConstant_toString(Class<?> clazz, String name) {
+		    if (clazz==null || name==null || name.isEmpty()) {
+		        return null;
+		    }
+		    String sReturn = Enum.valueOf((Class<Enum>)clazz, name).toString();//ACHTUNG: Das ist der Name ggfs. mit einem Gleichheitszeichen darin z.B. meinstatus=
 		    return sReturn;
 		}
 		
@@ -474,31 +486,77 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			return sReturn;
 		}
 		
-				@SuppressWarnings({ "unchecked", "rawtypes" })
-				public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
-					String sReturn = null;
-					main:{
-				    if (clazz==null || name==null || name.isEmpty()) break main;
-				  
-				    
-				    IEnumSetMappedZZZ[] enumaSetMapped = clazz.getEnumConstants();
-					for(IEnumSetMappedZZZ driver : enumaSetMapped) {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			//public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {
+			public static String getEnumConstant_DescriptionValue(Class<IEnumSetMappedZZZ> clazz, String name) {				
+				String sReturn = null;
+				main:{
+			    if (clazz==null || name==null || name.isEmpty()) break main;
+			  
+			    
+			    IEnumSetMappedZZZ[] enumaSetMapped = clazz.getEnumConstants();
+				for(IEnumSetMappedZZZ driver : enumaSetMapped) {
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
-						
 					
-						if(!StringZZZ.isEmpty(driver.getDescription())){
-						  if(driver.name().equals(name)){
-							  sReturn = driver.getDescription();
-							  break main;
-						  }
-					  }
-				
-					}//end for
-					}//end main:
-					return sReturn;
-				}		
+				if(driver.name().equals(name)){						 
+					  sReturn = driver.getDescription();
+					  break main;
+				  }
+			
+				}//end for
+				}//end main:
+				return sReturn;
+			}		
+			
+			
+			@SuppressWarnings({ "unchecked", "rawtypes" })			
+			public static String getEnumConstant_StatusMessageValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
+				String sReturn = null;
+				main:{
+			    if (clazz==null || name==null || name.isEmpty()) break main;
+			  
+			    
+			    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
+				for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
+					
+				if(driver.name().equals(name)){						 
+					  sReturn = driver.getStatusMessage();
+					  break main;
+				  }
+			
+				}//end for
+				}//end main:
+				return sReturn;
+			}		
+			
+			
+			@SuppressWarnings({ "unchecked", "rawtypes" })			
+			public static int getEnumConstant_StatusGroupIdValue(Class<IEnumSetMappedStatusZZZ> clazz, String name) {				
+				int iReturn = -1;
+				main:{
+			    if (clazz==null || name==null || name.isEmpty()) break main;
+			  
+			    
+			    IEnumSetMappedStatusZZZ[] enumaSetMapped = clazz.getEnumConstants();
+				for(IEnumSetMappedStatusZZZ driver : enumaSetMapped) {
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver ALIAS  als driver.name() from Enumeration="+driver.name());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
+//					  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
+					
+				if(driver.name().equals(name)){						 
+					  iReturn = driver.getStatusGroupId();
+					  break main;
+				  }
+			
+				}//end for
+				}//end main:
+				return iReturn;
+			}		
 				
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public static Integer getEnumConstant_PositionValue(Class<IEnumSetMappedZZZ> clazz, String name) {

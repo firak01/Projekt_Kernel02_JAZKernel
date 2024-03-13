@@ -93,7 +93,8 @@ public static <E> EnumSet getEnumSet() {
 	Class<TypeZZZ> enumClass = TypeZZZ.class;
 	EnumSet<TypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
-	for(Object obj : TypeZZZ.class.getEnumConstants()){
+	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+	 for(Object obj : objaEnum){
 		//System.out.println(obj + "; "+obj.getClass().getName());
 		set.add((TypeZZZ) obj);
 	}

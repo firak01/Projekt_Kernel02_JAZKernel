@@ -163,7 +163,8 @@ public static <E> EnumSet getEnumSet() {
 	Class<JdbcDatabaseTypeZZZ> enumClass = JdbcDatabaseTypeZZZ.class;
 	EnumSet<JdbcDatabaseTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
-	for(Object obj : JdbcDatabaseTypeZZZ.class.getEnumConstants()){
+	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+	 for(Object obj : objaEnum){
 		//System.out.println(obj + "; "+obj.getClass().getName());
 		set.add((JdbcDatabaseTypeZZZ) obj);
 	}

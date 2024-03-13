@@ -125,7 +125,8 @@ public static <E> EnumSet getEnumSet() {
 	Class<CipherTypeZZZ> enumClass = CipherTypeZZZ.class;
 	EnumSet<CipherTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
-	for(Object obj : CipherTypeZZZ.class.getEnumConstants()){
+	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+	 for(Object obj : objaEnum){
 		//System.out.println(obj + "; "+obj.getClass().getName());
 		set.add((CipherTypeZZZ) obj);
 	}

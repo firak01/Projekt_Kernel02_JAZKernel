@@ -96,7 +96,8 @@ public class StreamZZZ extends Stream implements IStreamZZZ, Serializable{
 			Class<CharsetUsedZZZ> enumClass = CharsetUsedZZZ.class;
 			EnumSet<CharsetUsedZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 			
-			for(Object obj : CipherTypeZZZ.class.getEnumConstants()){
+			 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+			 for(Object obj : objaEnum){
 				//System.out.println(obj + "; "+obj.getClass().getName());
 				set.add((CharsetUsedZZZ) obj);
 			}

@@ -127,6 +127,7 @@ public EnumSet<?>getEnumSetUsed(){
 	return EnumSetMappedTestTypeZZZ.getEnumSet();
 }
 
+/* Die in dieser Methode verwendete Klasse für den ...TypeZZZ muss immer angepasst werden. */
 @SuppressWarnings("rawtypes")
 public static <E> EnumSet getEnumSet() {
 	
@@ -139,7 +140,8 @@ public static <E> EnumSet getEnumSet() {
 	Class<EnumSetMappedTestTypeZZZ> enumClass = EnumSetMappedTestTypeZZZ.class;
 	EnumSet<EnumSetMappedTestTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
-	for(Object obj : EnumSetMappedTestTypeZZZ.class.getEnumConstants()){
+	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+	 for(Object obj : objaEnum){
 		//System.out.println(obj + "; "+obj.getClass().getName());
 		set.add((EnumSetMappedTestTypeZZZ) obj);
 	}

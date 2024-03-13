@@ -163,7 +163,8 @@ public static <E> EnumSet getEnumSet() {
 	Class<JdbcDriverClassTypeZZZ> enumClass = JdbcDriverClassTypeZZZ.class;
 	EnumSet<JdbcDriverClassTypeZZZ> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 	
-	for(Object obj : JdbcDriverClassTypeZZZ.class.getEnumConstants()){
+	 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
+	 for(Object obj : objaEnum){
 		//System.out.println(obj + "; "+obj.getClass().getName());
 		set.add((JdbcDriverClassTypeZZZ) obj);
 	}

@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.Formatter;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IDummyTestObjectWithStatusZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -64,7 +65,10 @@ private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein,
 				//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 //				String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
 //				System.out.print(sInfo);
-	        	objEnumSetReturn= EnumSetMappedTestTypeZZZ.getEnumSet();    
+	        	objEnumSetReturn= EnumSetMappedTestTypeZZZ.getEnumSet(); 
+	        	
+			}else if(sClassNameEnum.equals("basic.zBasic.IDummyTestObjectWithStatusZZZ$STATUSLOCAL")) {
+				objEnumSetReturn= IDummyTestObjectWithStatusZZZ.STATUSLOCAL.getEnumSet();
 	        	
 //			}else if(sClassNameEnum.equals("basic.zBasic.util.abstractEnum.EnumSetDefaulttextTestTypeZZZ")){
 	        	//Beispiel für weiteren Enum-Typen im Projekt.
