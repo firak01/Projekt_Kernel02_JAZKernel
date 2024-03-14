@@ -1,18 +1,16 @@
 package basic.zKernel.status;
 
-import java.awt.List;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.ReflectInterfaceZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.enums.EnumHelperZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -608,7 +606,7 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 	return saReturn;
 	}
 	
-	
+	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls)  throws ExceptionZZZ {
 	public static String[] getStatusLocalInheritedAvailable(Class cls)  throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{
@@ -833,10 +831,17 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 	
 	
 	private static <E extends IEnumSetMappedStatusZZZ> E getEnumStatusLocalMapped(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, sEnumName, true);
+	}
+	
+	
+	private static <E extends IEnumSetMappedStatusZZZ> E getEnumStatusLocalMapped(Class<?> classToCheck, String sEnumName, boolean bScanInterface) throws ExceptionZZZ {
 		E enumReturn = null;
 		main:{
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
 			String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
+			
+			//+++++++++++++++++++++++++++++++++++
+			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);			
 			for(Class objClass : listaClass) {
 				String sEnumClass = objClass.getName();				
 				if(sEnumClass.endsWith(sEnumFlagZName)) {
@@ -847,100 +852,297 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 					}
 				 }
 			}
+			
+			//+++++++++++++++++++++++++++++++++++
+			if(bScanInterface) {
+				ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(classToCheck);			
+				for(Class objClass : listaInterface) {
+					String sEnumClass = objClass.getName();				
+					if(sEnumClass.endsWith(sEnumFlagZName)) {
+						IEnumSetMappedStatusZZZ e = EnumHelperZZZ.getEnumAsField(objClass, sEnumName);	
+						if(e!=null) {
+							enumReturn = (E) e;										
+							break main;
+						}
+					 }
+				}
+				
+			}
 		}//end main:
 		return enumReturn;
 	}
 	
-	private static <E extends IEnumSetMappedStatusZZZ> E[] getEnumStatusLocalMapped(Class<?> classToCheck) throws ExceptionZZZ {
+	public static <E extends IEnumSetMappedStatusZZZ> E[] getEnumStatusLocalMapped(Class<?> classToCheck) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, true);
+	}
+	
+	public static <E extends IEnumSetMappedStatusZZZ> E[] getEnumStatusLocalMapped(Class<?> classToCheck, boolean bScanInterface) throws ExceptionZZZ {
 		E[] enumaReturn = null;
 		main:{
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			String sEnumStatusLocalName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
+			//Suche nun nach einem Wert in den Eingebetteten Klassen, der per Innere Klasse eingebunden wird.			
+			String sEnumStatusLocalNameInner = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";			
 			
-			ArrayList<E> listae = new ArrayList<E>();
-			for(Class objClass : listaClass) {
-				String sEnumClass = objClass.getName();				
-				if(sEnumClass.endsWith(sEnumStatusLocalName)) {
-					Object[] obja = objClass.getEnumConstants();
-					for(Object obj : obja) {
-						IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) obj;
-						listae.add((E) e);
-					}
-				 }
+			//+++++++++++++++++++++++++++++++++
+			//Holle alle eingebetteten Klassen aus Klassen
+			E[] enumaReturnByClass = null;
+			//if(classToCheck.isInterface()) {
+			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				Object[] objEnum = classToCheck.getEnumConstants();
+				enumaReturnByClass = (E[])objEnum; 		    	
+			}else {
+				ArrayList<Class<?>> listaClassByClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
+								
+				ArrayList<E> listaeByClass = new ArrayList<E>();
+				for(Class objClass : listaClassByClass) {
+					String sEnumClass = objClass.getName();				
+					if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+						Object[] obja = objClass.getEnumConstants();
+						for(Object obj : obja) {
+							IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) obj;
+							listaeByClass.add((E) e);
+						}
+					 }
+				}
+				enumaReturnByClass = ArrayListZZZ.toEnumForGroupArray(listaeByClass);
 			}
-			enumaReturn = ArrayListZZZ.toEnumForGroupArray(listae);
+			
+			if(bScanInterface) {
+				//+++++++++++++++++++++++++++++++++
+				//Holle alle eingebetteten Klassen aus Interfaces	
+				//ArrayList<Class<?>> listaeClassByInterface = ReflectInterfaceZZZ.getEmbeddedClasses(classToCheck);								
+				ArrayList<Class<?>> listaInterfaceByClass = ReflectInterfaceZZZ.getInterfaces(classToCheck);
+				
+				E[] enumaReturnByInterface = null;
+				ArrayList<E> listaeByInterface = new ArrayList<E>();
+				for(Class objClassInterface : listaInterfaceByClass) {
+					
+					//Diese Interfaceklassen jetzt auch nach Embedded-Klassen scannen
+					ArrayList<Class<?>> listaClassByInterface = ReflectClassZZZ.getEmbeddedClasses(objClassInterface);
+					for(Class objClass : listaClassByInterface) {
+						String sEnumClass = objClass.getName();				
+						if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+							Object[] obja = objClass.getEnumConstants();
+							for(Object obj : obja) {
+								IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) obj;
+								listaeByInterface.add((E) e);
+							}
+						 }
+					}//end for												
+				}//end for
+				enumaReturnByInterface = ArrayListZZZ.toEnumForGroupArray(listaeByInterface);
+				
+				//Verbinde beides
+				enumaReturn = ArrayUtilZZZ.join(enumaReturnByClass, enumaReturnByInterface);
+			}else {
+				enumaReturn = enumaReturnByClass;
+			}
 		}
 		return enumaReturn;
 	}
-	
-	
-	
-		
-	//++++++++++++++++++++++++++++++						
+							
 	//++++++++++++++++++++++++++++++
 	private static <E extends Enum> E[] getEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getEnumStatusLocal(classToCheck, true);
+	}
+	
+	
+	private static <E extends Enum> E[] getEnumStatusLocal(Class<?> classToCheck, boolean bScanInterface) throws ExceptionZZZ {
 		E[] enumaReturn = null;
 		main:{
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			String sEnumStatusLocalName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
+			String sEnumStatusLocalNameInner = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
 			
-			ArrayList<E> listae = new ArrayList<E>();
-			for(Class objClass : listaClass) {
-				String sEnumClass = objClass.getName();				
-				if(sEnumClass.endsWith(sEnumStatusLocalName)) {
-					Object[] obja = objClass.getEnumConstants();
-					for(Object obj : obja) {
-						Enum e = (Enum) obj;
-						listae.add((E) e);
-					}
-				 }
+			//++++++++++++++++++++++++++++++
+			E[] enumaReturnByClass = null;
+			//if(classToCheck.isInterface()) {
+			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				Object[] objEnum = classToCheck.getEnumConstants();
+				enumaReturnByClass = (E[])objEnum; 		    	
+			}else {
+				ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
+				
+				ArrayList<E> listaeByClass = new ArrayList<E>();
+				for(Class objClass : listaClass) {
+					String sEnumClass = objClass.getName();				
+					if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+						Object[] obja = objClass.getEnumConstants();
+						for(Object obj : obja) {
+							Enum e = (Enum) obj;
+							listaeByClass.add((E) e);
+						}
+					 }
+				}
+				enumaReturnByClass = ArrayListZZZ.toEnumArray(listaeByClass);
 			}
-			enumaReturn = ArrayListZZZ.toEnumArray(listae);
-		}
+			
+			
+			
+			if(bScanInterface) {
+			//+++++++++++++++++++++++++++++++++
+			//Holle alle eingebetteten Klassen aus Interfaces	
+			//ArrayList<Class<?>> listaeClassByInterface = ReflectInterfaceZZZ.getEmbeddedClasses(classToCheck);
+				ArrayList<Class<?>> listaInterfaceByClass = ReflectInterfaceZZZ.getInterfaces(classToCheck);
+							
+				ArrayList<E> listaeByInterface = new ArrayList<E>();
+				for(Class objClassInterface : listaInterfaceByClass) {
+					
+					//Diese Interfaceklassen jetzt auch nach Embedded-Klassen scannen
+					ArrayList<Class<?>> listaClassByInterface = ReflectClassZZZ.getEmbeddedClasses(objClassInterface);
+					for(Class objClass : listaClassByInterface) {
+						String sEnumClass = objClass.getName();				
+						if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+							Object[] obja = objClass.getEnumConstants();
+							for(Object obj : obja) {
+								IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) obj;
+								listaeByInterface.add((E) e);
+							}
+						 }
+					}//end for												
+				}//end for
+				
+				E[] enumaReturnByInterface = ArrayListZZZ.toEnumArray(listaeByInterface);
+				
+				//Verbinde beides
+				enumaReturn = ArrayUtilZZZ.join(enumaReturnByClass, enumaReturnByInterface);
+				
+			}else {
+				enumaReturn = enumaReturnByClass;
+				
+			}//end if
+		}//end main:
 		return enumaReturn;
 	}
 	
+	//+++++++++++++++++++++++++++++++++	
 	private static <E extends Enum> E getEnumStatusLocal(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getEnumStatusLocal(classToCheck, sEnumName, true);
+	}
+	
+	private static <E extends Enum> E getEnumStatusLocal(Class<?> classToCheck, String sEnumName, boolean bScanInterface) throws ExceptionZZZ {
 		E enumReturn = null;
 		main:{
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
-			for(Class objClass : listaClass) {
-				String sEnumClass = objClass.getName();				
-				if(sEnumClass.endsWith(sEnumFlagZName)) {
-					Enum e = EnumHelperZZZ.getEnumAsField(objClass, sEnumName);	
-					if(e!=null) {
+			String sEnumStatusLocalNameInner = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
+						
+			//if(classToCheck.isInterface()) {
+			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				Object[] objaEnum = classToCheck.getEnumConstants();
+				for(Object objEnum : objaEnum) {
+					Enum e = (E) objEnum;
+					if(e.name().equals(sEnumName)) {
 						enumReturn = (E) e;										
 						break main;
-					}
-				 }
+					}					
+				} 	
+				
+			}else {
+				ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);			
+				for(Class objClass : listaClass) {
+					String sEnumClass = objClass.getName();				
+					if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+						Enum e = EnumHelperZZZ.getEnumAsField(objClass, sEnumName);	
+						if(e!=null) {
+							enumReturn = (E) e;										
+							break main;
+						}
+					 }
+				}
 			}
+			
+			//Falls noch nix gefunden wurde... ggfs. die Interfaces scannen
+			if(bScanInterface) {
+				//+++++++++++++++++++++++++++++++++
+				//Holle alle eingebetteten Klassen aus Interfaces	
+				//ArrayList<Class<?>> listaeClassByInterface = ReflectInterfaceZZZ.getEmbeddedClasses(classToCheck);
+				ArrayList<Class<?>> listaInterfaceByClass = ReflectInterfaceZZZ.getInterfaces(classToCheck);				
+				for(Class objClassInterface : listaInterfaceByClass) {
+					
+					//Diese Interfaceklassen jetzt auch nach Embedded-Klassen scannen
+					ArrayList<Class<?>> listaClassByInterface = ReflectClassZZZ.getEmbeddedClasses(objClassInterface);
+					for(Class objClass : listaClassByInterface) {
+						String sEnumClass = objClass.getName();				
+						if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+							Enum e = EnumHelperZZZ.getEnumAsField(objClass, sEnumName);	
+							if(e!=null) {
+								enumReturn = (E) e;										
+								break main;
+							}
+						 }
+					}//end for												
+				}//end for	
+			}//end if
 		}//end main:
 		return enumReturn;
 	}
 	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++
-	
 	private static <E extends Enum> ArrayList<E> getEnumListStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
-		ArrayList<E> listaReturn = new ArrayList<E>();
-		main:{
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			String sEnumStatusLocalName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
-						
-			for(Class objClass : listaClass) {
-				String sEnumClass = objClass.getName();				
-				if(sEnumClass.endsWith(sEnumStatusLocalName)) {
-					Object[] obja = objClass.getEnumConstants();
-					
-					for(Object obj : obja) {
-						Enum e = (Enum) obj;
-						listaReturn.add((E) e);
-					}
-				}
-			}				
-		}
-		return listaReturn;
+		return StatusLocalHelperZZZ.getEnumListStatusLocal(classToCheck,true);
 	}
 
+	private static <E extends Enum> ArrayList<E> getEnumListStatusLocal(Class<?> classToCheck, boolean bScanInterface) throws ExceptionZZZ {
+		ArrayList<E> listaReturn = new ArrayList<E>();
+		main:{
+			String sEnumStatusLocalNameInner = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
+			
+			ArrayList<E> listaeReturnByClass = new ArrayList<E>();
+			//if(classToCheck.isInterface()) {
+			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				Object[] objaEnum = classToCheck.getEnumConstants();
+				for(Object obj : objaEnum) {
+					Enum e = (Enum) obj;
+					listaeReturnByClass.add((E) e);
+				} 
+			}else {
+				ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
+								
+				for(Class objClass : listaClass) {
+					String sEnumClass = objClass.getName();				
+					if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+						Object[] obja = objClass.getEnumConstants();
+						
+						for(Object obj : obja) {
+							Enum e = (Enum) obj;
+							listaeReturnByClass.add((E) e);
+						}
+					}
+				}		
+			}
+			
+			
+			if(bScanInterface) {
+				//+++++++++++++++++++++++++++++++++
+				//Holle alle eingebetteten Klassen aus Interfaces	
+				//ArrayList<Class<?>> listaeClassByInterface = ReflectInterfaceZZZ.getEmbeddedClasses(classToCheck);
+				ArrayList<Class<?>> listaInterfaceByClass = ReflectInterfaceZZZ.getInterfaces(classToCheck);
+			
+				ArrayList<E> listaeReturnByInterface = new ArrayList<E>();
+				for(Class objClassInterface : listaInterfaceByClass) {
+					
+					//Diese Interfaceklassen jetzt auch nach Embedded-Klassen scannen
+					ArrayList<Class<?>> listaClassByInterface = ReflectClassZZZ.getEmbeddedClasses(objClassInterface);
+					for(Class objClass : listaClassByInterface) {
+						String sEnumClass = objClass.getName();				
+						if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
+							Object[] obja = objClass.getEnumConstants();
+							for(Object obj : obja) {
+								IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) obj;
+								listaeReturnByInterface.add((E) e);
+							}
+						 }
+					}//end for												
+				}//end for
+				
+				//E[] enumaReturnByInterface = ArrayListZZZ.toEnumArray(listaeReturnByInterface);
+			
+				//Verbinde beides
+				listaReturn = ArrayListZZZ.join(listaeReturnByClass, listaeReturnByInterface);
+				
+			}else {
+				listaReturn = listaeReturnByClass;
+				
+			}//end if
+			
+		}//end main:
+		return listaReturn;
+	}
 }

@@ -379,9 +379,9 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.toString() from Enumeration="+driver.toString());
 //			  System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Driver als driver.abbreviaton from Enumeration="+driver.getAbbreviation());
 				
-			
-				if(!StringZZZ.isEmpty(driver.getAbbreviation())){
-				  if(driver.getAbbreviation().startsWith(sToFind)){  //!!! hier auch die Groß-/Kleinschreibung unterscheiden.
+			String sAbbreviation = driver.getAbbreviation();
+				if(!StringZZZ.isEmpty(sAbbreviation)){
+				  if(sAbbreviation.startsWith(sToFind)){  //!!! hier auch die Groß-/Kleinschreibung unterscheiden.
 					  bReturn = true;
 					  break;
 				  }

@@ -6,7 +6,7 @@ import java.util.EnumSet;
 import java.util.Formatter;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IDummyTestObjectWithStatusZZZ;
+import basic.zBasic.IDummyTestObjectWithStatusByInterfaceZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -67,9 +67,13 @@ private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein,
 //				System.out.print(sInfo);
 	        	objEnumSetReturn= EnumSetMappedTestTypeZZZ.getEnumSet(); 
 	        	
+	        	                          
 			}else if(sClassNameEnum.equals("basic.zBasic.IDummyTestObjectWithStatusZZZ$STATUSLOCAL")) {
-				objEnumSetReturn= IDummyTestObjectWithStatusZZZ.STATUSLOCAL.getEnumSet();
+				objEnumSetReturn= IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.getEnumSet();
 	        	
+			}else if(sClassNameEnum.equals("basic.zBasic.IDummyTestObjectWithStatusByInterfaceZZZ$STATUSLOCAL")) {
+				objEnumSetReturn= IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.getEnumSet();
+//				
 //			}else if(sClassNameEnum.equals("basic.zBasic.util.abstractEnum.EnumSetDefaulttextTestTypeZZZ")){
 	        	//Beispiel für weiteren Enum-Typen im Projekt.
 	        	//Merke: Dieser Typ ist im THM-Projekt definiert. Das darf aber im Kernel nicht eingebunden werden, implementiert er doch IEnumSetTextTHM

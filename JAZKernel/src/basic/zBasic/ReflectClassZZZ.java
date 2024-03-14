@@ -14,7 +14,7 @@ import basic.javareflection.mopex.UQueue;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ReflectClassZZZ implements IConstantZZZ{
-	public static final String sINDICATOR_CLASSNAME_INNER= "$"; //Innere Klassen haben ien $ im ihrer; objClassInstance.getClass().getName()
+	public static final String sINDICATOR_CLASSNAME_INNER= "$"; //Innere Klassen haben ein $ in ihrem; objClassInstance.getClass().getName()
 
 	/**
 	     * Produces an array of all the fields in a class, each of which has all of the 
@@ -315,7 +315,6 @@ public class ReflectClassZZZ implements IConstantZZZ{
     			throw ez;
 			}
 			Class[] objaClass = objClass.getClasses();
-			
 			for(Class objClassTemp : objaClass){
 			
 				//System.out.println("Classname in array: " + objClass.getName());

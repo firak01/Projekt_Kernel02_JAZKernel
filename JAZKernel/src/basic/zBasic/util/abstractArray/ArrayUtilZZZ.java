@@ -1,5 +1,7 @@
 package basic.zBasic.util.abstractArray;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import base.util.abstractArray.ArrayUtil;
 
 /** Erweitere nach Bedarf:
@@ -72,5 +74,28 @@ public class ArrayUtilZZZ<T>{
 			}
 		}
 		return bReturn;
+	}
+	
+	public static <T> T[] join(T[] objArray1,T[] objArray2) {
+		T[] objaReturn=null;
+		main:{
+			boolean bEmptyArray1 = ArrayUtilZZZ.isEmpty(objArray1);
+			boolean bEmptyArray2 = ArrayUtilZZZ.isEmpty(objArray2);
+			if( bEmptyArray1 && bEmptyArray2) break main;
+			
+			if( bEmptyArray1 && !bEmptyArray2){
+				objaReturn = objArray2;
+				break main;
+			}
+			
+			if( !bEmptyArray1 && bEmptyArray2){
+				objaReturn = objArray1;
+				break main;
+			}
+			
+			//Aus Apache commons
+			objaReturn = (T[]) ArrayUtils.addAll(objArray1, objArray2);			
+		}//end main:
+		return objaReturn;
 	}
 }

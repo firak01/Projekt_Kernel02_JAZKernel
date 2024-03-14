@@ -11,7 +11,7 @@ import basic.zBasic.component.IProgramMonitorZZZ.STATUSLOCAL;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 
-public interface IDummyTestObjectWithStatusZZZ{
+public interface IDummyTestObjectWithStatusByInterfaceZZZ{
 	
 	
 	//#############################################################

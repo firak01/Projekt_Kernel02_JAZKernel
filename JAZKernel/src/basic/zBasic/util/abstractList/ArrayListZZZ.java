@@ -122,6 +122,10 @@ public static String implodeReversed(ArrayList<?>lista, String sDelimiterIn){
 	return sReturn;
 }
 	
+public static ArrayList join(ArrayList<?> lista1, ArrayList<?> lista2){
+	return ArrayListZZZ.join(lista1, lista2, false);
+}
+
 public static ArrayList join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique){
 	ArrayList listaReturn = null;
 	main:{
@@ -327,12 +331,6 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 			if(listae.size()==0) break main;
 			
 			enumaReturn = (E[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
-//			saReturn = lista.toArray(new String[lista.size()]);
-//			int iIndex = -1;
-//			for(Object obj : lista){
-//				iIndex++;
-//				saReturn[iIndex] = obj.toString();
-//			}
 		}//end main:
 		return enumaReturn;	
 	}
