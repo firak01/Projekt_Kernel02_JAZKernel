@@ -3,7 +3,7 @@ package basic.zKernel.status;
 import java.util.ArrayList;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.CircularBufferZZZ;
+import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 
 public interface ICircularBufferStatusBooleanUserBasicZZZ{
 	public abstract void debugCircularBufferStatusLocal() throws ExceptionZZZ;

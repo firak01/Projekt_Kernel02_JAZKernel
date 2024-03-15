@@ -324,6 +324,9 @@ public class StatusLocalHelperZZZTest  extends TestCase{
 	    
 	    public void testGetStatusLocalEnumListZZZ() {
 	    	try {
+	    		
+	    		TODOGOON20240310;//Mal nicht als HashMap, sondern als Liste...
+	    		
 		    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
 		    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
 		    	Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();	

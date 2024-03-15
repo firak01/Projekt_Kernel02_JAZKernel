@@ -33,6 +33,12 @@ public interface IObjectWithStatusZZZ extends IObjectZZZ {
 	public abstract HashMap<String, Boolean>getHashMapStatusLocal();
 	public abstract void setHashMapStatusLocal(HashMap<String, Boolean> hmStatusLocal);
 	
+	//KONVENTION, speichere alle jemals gesetzten StatusLocalMessage-Werte in der Hashmap. 
+	//            Diese Werte sind Meldungen, die vom definierten Standard im Enum abweichen.
+	public abstract HashMap<String, String>getHashMapStatusLocalMessage();
+	public abstract void setHashMapStatusLocalMessage(HashMap<String, String> hmStatusLocal);
+	
+	
 	//zum Ueberpruefen, ob sich ein Status geaendert hat
 	public abstract boolean isStatusLocalDifferent(String sStatusString, boolean bStatusValue) throws ExceptionZZZ;
 	

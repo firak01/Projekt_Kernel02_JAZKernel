@@ -8,7 +8,7 @@ import basic.zBasic.component.IProgramMonitorZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.CircularBufferZZZ;
+import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -35,15 +35,14 @@ import basic.zKernel.status.StatusLocalHelperZZZ;
 public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IStatusLocalMessageUserZZZ, IEventBrokerStatusLocalUserZZZ{
 	private static final long serialVersionUID = 1L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
-	
-	TODOGOON20240310;//Im Zuge der Arbeiten eingesehen, dass die Message als Extra HashMap gespeichert werden muss.
-	protected volatile HashMap<String, String>hmStatusLocalMessage = new HashMap<String, String>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
-	
-	//Der StatusMessageString. Als Extra Speicher. Kann daher zum Ueberschreiben des Default StatusMessage Werts aus dem Enum genutzt werden.
-	protected volatile CircularBufferZZZ<IStatusBooleanMessageZZZ> cbStatusLocal = new CircularBufferZZZ<IStatusBooleanMessageZZZ>(9);
-	
-	TODOGOON20240310;//Dann faellt der extra CircularBufferSpeicher auch weg. Die "abweichenden" Messages werden ja in IStatusBooleanMessage gespeichert.
+	protected volatile HashMap<String, String>hmStatusLocalMessage = new HashMap<String, String>();//20240310; Im Zuge der Arbeiten eingesehen, dass eine extra Message auch in eine extra HashMap gespeichert werden muss.
+	//Dann faellt der extra CircularBufferSpeicher auch weg. Die "abweichenden" Messages werden selbst auch in IStatusBooleanMessage gespeichert.
 	//protected volatile CircularBufferZZZ<String> cbStatusLocalMessage = new CircularBufferZZZ<String>(9);
+	
+	
+	//Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
+	//Der StatusMessageString. Als Extra Speicher. Kann daher zum Ueberschreiben des Default StatusMessage Werts aus dem Enum genutzt werden.
+	protected volatile CircularBufferForStatusBooleanMessageZZZ<IStatusBooleanMessageZZZ> cbStatusLocal = new CircularBufferForStatusBooleanMessageZZZ<IStatusBooleanMessageZZZ>(9);
 	
 	//Ein einmaliger Vorgang. Der quasi letzte gemeldete Fehler.
 	//Diese Meldung ist flexibel und nicht in irgendeinem EnumSet hinterlegt.
@@ -264,7 +263,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	@Override
 	public IStatusBooleanMessageZZZ getStatusLocalObject() {
-		return this.getCircularBufferStatusLocal().getLast();
+		return (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getLast();
 	}
 	
 	@Override
@@ -276,7 +275,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(!bReturn) break main;
 				
 			String sMessage = objEnum.getMessage();
-			bReturn = this.getCircularBufferStatusLocalMessage().replaceLastWith(sMessage);
+			bReturn = this.getCircularBufferStatusLocal().replaceLastWith(sMessage);
 			if(!bReturn) break main;
 			
 		}//end main
@@ -291,7 +290,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			bReturn = this.getCircularBufferStatusLocal().replaceLastWith(objEnum);
 			if(!bReturn) break main;
 				
-			bReturn = this.getCircularBufferStatusLocalMessage().replaceLastWith(sStatusMessage);
+			bReturn = this.getCircularBufferStatusLocal().replaceLastWith(sStatusMessage);
 			if(!bReturn) break main;
 			
 		}//end main
@@ -301,19 +300,19 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 
 	@Override
 	public IStatusBooleanMessageZZZ getStatusLocalObjectPrevious() {
-		return this.getCircularBufferStatusLocal().getPrevious();
+		return (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious();
 	}
 	
 	@Override
 	public IStatusBooleanMessageZZZ getStatusLocalObjectPrevious(int iIndexStepsBack) {
-		return this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
+		return (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
 	}
 	
 	@Override
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious() {
 		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
-			IStatusBooleanMessageZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious();
+			IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious();
 			if(objStatus==null) break main;
 				
 			objReturn = objStatus.getEnumObject();
@@ -325,7 +324,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public IEnumSetMappedStatusZZZ getStatusLocalEnumPrevious(int iIndexStepsBack) {
 		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
-			IStatusBooleanMessageZZZ objStatus = this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
+			IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
 			if(objStatus==null) break main;
 			
 			objReturn = objStatus.getEnumObject();
@@ -374,11 +373,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
 			if(!bReturn)break main;
-			
-			bReturn = this.getCircularBufferStatusLocalMessage().offer(sMessage);
-			if(!bReturn)break main;
-	
-			
+						
 			//#############################################
 			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 			//Dann erzeuge den Event und feuer ihn ab.	
@@ -463,24 +458,60 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	//### aus IStatusLocalUserMessageZZZ
+	
+	//Merke: Ohne Angabe eines Status, bleibt einem nur uebrig den letzten Wert aus dem CicularBuffer zu verwenden.
+	//       mit angabe eines Status holt man sich den Wert aus der HashMap.
 	@Override 
-	public String getStatusLocalMessage()	{
-		return this.getCircularBufferStatusLocalMessage().getLast();
+	public String getStatusLocalMessage(String sStatusName) throws ExceptionZZZ	{
+		String sReturn = null;
+		main:{
+			boolean bProof = this.proofStatusLocalExists(sStatusName);
+			if(!bProof) break main;
+			
+			HashMap<String,String>hmMessage = this.getHashMapStatusLocalMessage();
+			sReturn = hmMessage.get(sStatusName);
+		}
+		return sReturn;
 	}
 	
 	@Override
-	public boolean replaceStatusLocalMessage(String sStatusMessageIn) {
-		return this.getCircularBufferStatusLocalMessage().replaceLastWith(sStatusMessageIn);
+	public String getStatusLocalMessage(Enum enumStatusIn) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			boolean bProof = this.proofStatusLocalExists(enumStatusIn);
+			if(!bProof) break main;
+			
+			String sStatusName = enumStatusIn.name();
+			HashMap<String,String>hmMessage = this.getHashMapStatusLocalMessage();
+			sReturn = hmMessage.get(sStatusName);
+		}
+		return sReturn;
+	}
+	
+	
+	@Override 
+	public String getStatusLocalMessage()	{
+		IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getLast();
+		return objStatus.getMessage();
+	}
+	
+	@Override
+	public boolean replaceStatusLocalMessage(String sStatusMessage) {
+		IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getLast();
+		objStatus.setMessage(sStatusMessage);
+		return true;
 	}
 	
 	@Override
 	public String getStatusLocalMessagePrevious(){
-		return (String) this.getCircularBufferStatusLocalMessage().getPrevious();
+		IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious();
+		return objStatus.getMessage();
 	}
 	
 	@Override
 	public String getStatusLocalMessagePrevious(int iIndexStepsBack) {
-		return (String) this.getCircularBufferStatusLocalMessage().getPrevious(iIndexStepsBack);
+		IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) this.getCircularBufferStatusLocal().getPrevious(iIndexStepsBack);
+		return objStatus.getMessage();
 	}
 	
 	//### aus IStatusLocalUserZZZ
@@ -515,25 +546,25 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		this.hmStatusLocal = hmStatusLocal;
 	}
 	
+	@Override 
+	public HashMap<String, String> getHashMapStatusLocalMessage(){
+		return this.hmStatusLocalMessage;
+	}
+	
+	@Override
+	public void setHashMapStatusLocalMessage(HashMap<String, String> hmStatusLocalMessage) {
+		this.hmStatusLocalMessage = hmStatusLocalMessage;
+	}
+	
 	//### aus ICircularBufferStatusBooleanMessageUserZZZ
 	@Override
-	public CircularBufferZZZ<IStatusBooleanMessageZZZ> getCircularBufferStatusLocal(){		
+	public CircularBufferForStatusBooleanMessageZZZ<IStatusBooleanMessageZZZ> getCircularBufferStatusLocal(){		
 		return this.cbStatusLocal;
 	}
 	
 	@Override
-	public void setCircularBufferStatusLocal(CircularBufferZZZ<IStatusBooleanMessageZZZ> cb){
+	public void setCircularBufferStatusLocal(CircularBufferForStatusBooleanMessageZZZ<IStatusBooleanMessageZZZ> cb){
 		this.cbStatusLocal = cb;
-	}
-	
-	@Override
-	public CircularBufferZZZ<String> getCircularBufferStatusLocalMessage(){		
-		return this.cbStatusLocalMessage;
-	}
-	
-	@Override
-	public void setCircularBufferStatusLocalMessage(CircularBufferZZZ<String> cb){
-		this.cbStatusLocalMessage = cb;
 	}
 	
 	
@@ -545,6 +576,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		this.debugCircularBufferStatusLocal(iStepsMax);
 	}
 	
+	//### aus ICircularBufferStatusBooleanMessageUserZZZ
 	@Override
 	public void debugCircularBufferStatusLocal(int iStepsMax) throws ExceptionZZZ {		
 		String sLog="";
@@ -554,39 +586,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		do {	
 			iStepsToSearchBackwardsTEST = iStepsToSearchBackwardsTEST + 1; 
 			int iIndex = this.getCircularBufferStatusLocal().computeIndexForStepPrevious(iStepsToSearchBackwardsTEST);
-			sLog = ReflectCodeZZZ.getPositionCurrent()+"TEST: Vorheriger Status= " + iStepsToSearchBackwardsTEST + " | Verwendeter Index= " + iIndex;							
-			this.logProtocolString(sLog);
-			
-			objStatusLocalPreviousTEST = (IEnumSetMappedStatusZZZ) this.getStatusLocalEnumPrevious(iStepsToSearchBackwardsTEST);
-			if(objStatusLocalPreviousTEST==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"TEST: Kein weiterer entsprechend weit entfernter vorheriger Status vorhanden";									
-				this.logProtocolString(sLog);
-				bGoonTEST=true;
-			}else {				
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"TEST : Der " + iStepsToSearchBackwardsTEST + " Schritte vorherige Status im Main ist. GroupId/Abbreviation: " + objStatusLocalPreviousTEST.getStatusGroupId() + "/'" + objStatusLocalPreviousTEST.getAbbreviation()+"'.";					
-				this.logProtocolString(sLog);							
-			}
-			if(iStepsToSearchBackwardsTEST>=iStepsMax) bGoonTEST=true;											
-		}while(!bGoonTEST);						
-	}
-	
-	
-	@Override
-	public void debugCircularBufferStatusLocalMessage() throws ExceptionZZZ {
-		int iStepsMax = this.getCircularBufferStatusLocalMessage().getCapacity();
-		this.debugCircularBufferStatusLocalMessage(iStepsMax);
-	}
-	
-	//### aus ICircularBufferStatusBooleanMessageUserZZZ
-	@Override
-	public void debugCircularBufferStatusLocalMessage(int iStepsMax) throws ExceptionZZZ {		
-		String sLog="";
-		int iStepsToSearchBackwardsTEST=-1;
-		boolean bGoonTEST = false;
-		IEnumSetMappedStatusZZZ objStatusLocalPreviousTEST = null;
-		do {	
-			iStepsToSearchBackwardsTEST = iStepsToSearchBackwardsTEST + 1; 
-			int iIndex = this.getCircularBufferStatusLocalMessage().computeIndexForStepPrevious(iStepsToSearchBackwardsTEST);
 			sLog = ReflectCodeZZZ.getPositionCurrent()+"TEST: Vorheriger Status= " + iStepsToSearchBackwardsTEST + " | Verwendeter Index= " + iIndex;							
 			this.logProtocolString(sLog);
 			
@@ -924,16 +923,20 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			boolean bOffered = false;
+			String sLog;
 			
-			//TODOGOON20240310;//IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln						
-			IEnumSetMappedStatusZZZ objEnum = null;
-			
-			
+			//20240310: IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln	
+			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalHelperZZZ.getHashMapStatusBooleanMessageZZZ(this);
+			IStatusBooleanMessageZZZ objStatus = hmStatus.get(sStatusName);
+			if(objStatus==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "Der Status wurde nicht in der HashMap der Statusname gefunden. '" + sStatusName + "'";
+				this.logProtocolString(sLog);
+				break main;
+			}
+		
+			IEnumSetMappedStatusZZZ objEnum = objStatus.getEnumObject();						
 			IStatusBooleanMessageZZZ element = new StatusBooleanMessageZZZ(objEnum, bStatusValue, sStatusMessage);
 			bOffered = this.getCircularBufferStatusLocal().offer(element);
-			if(!bOffered)break main;
-			
-			bOffered = this.getCircularBufferStatusLocalMessage().offer(sStatusMessage);
 			if(!bOffered)break main;
 			
 			bReturn = true;
@@ -1343,8 +1346,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				break main;
 			}
 						
-			CircularBufferZZZ<String> cbStatusLocalMessage = this.getCircularBufferStatusLocalMessage();
-			String sMessageLast = cbStatusLocalMessage.getLast();
+			CircularBufferForStatusBooleanMessageZZZ<IStatusBooleanMessageZZZ> cbStatusLocalMessage = this.getCircularBufferStatusLocal();
+			IStatusBooleanMessageZZZ objStatus = (IStatusBooleanMessageZZZ) cbStatusLocalMessage.getLast(); 
+			String sMessageLast = objStatus.getMessage();
 						
 			bReturn = StringZZZ.equals(sMessage, sMessageLast); 
 			if(!bReturn) {

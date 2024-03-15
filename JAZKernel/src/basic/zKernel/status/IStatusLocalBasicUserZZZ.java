@@ -5,7 +5,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectWithStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.CircularBufferZZZ;
+import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */
@@ -42,6 +42,7 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 
+	
 	//+++ Verwende IEnumSetMappedStatus. Da kann man viel mehr Informationen unterbringen
 	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue) throws ExceptionZZZ;	
 		

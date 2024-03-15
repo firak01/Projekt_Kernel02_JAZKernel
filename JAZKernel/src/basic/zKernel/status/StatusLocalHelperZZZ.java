@@ -800,53 +800,54 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 	
 	
 	//+++++++++++++++++++++++++++++++++
-		//+++++++++++++++++++++++++++++++++
-			/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
-			 *  Merke: Die Werte der BooleanMessage stmmen aus dem Objekt selbst. 
-			 * @param classToCheck
-			 * @throws ExceptionZZZ
-			 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
-			 * @param E 
-			 */
-			//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
-			public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(IStatusLocalMessageUserZZZ objToCheck) throws ExceptionZZZ {
-				return StatusLocalHelperZZZ.getHashMapStatusBooleanMessageZZZ(objToCheck, true);
-			}
-		
+	//+++++++++++++++++++++++++++++++++
 		/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
-		 *  Merke: Die Werte der BooleanMessage stammen aus dem Objekt selbst.
+		 *  Merke1: Die Werte der BooleanMessage stmmen aus dem Objekt selbst.
+		 *  Merke2: Trotzdem sind das ALLE moeglichen/definierten Statuswerte. 
 		 * @param classToCheck
 		 * @throws ExceptionZZZ
 		 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
 		 * @param E 
 		 */
 		//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
-		public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(IStatusLocalMessageUserZZZ objToCheck, boolean bScanInterface) throws ExceptionZZZ {
-			HashMap<String, IStatusBooleanMessageZZZ> hmReturn = null;
-			main:{
-				if(objToCheck==null)break main;
-				
-				Class<?> objClassToCheck = objToCheck.getClass();
-				IEnumSetMappedStatusZZZ[] enumaMappedStatus= StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, bScanInterface);
-				if(enumaMappedStatus==null) break main;
-
-				hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
-				if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
-				
-				for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
-					String sEnum = objEnumMapped.getName();
-					
-					boolean bValue = objToCheck.getStatusLocal(sEnum);
-					
-					TODOGOON20240310;//Die "Besondere" Message aus der neu eingeführten HashMap holen.
-					String sMessage = objToCheck.getStatusLocalMessage(sEnum);
-					IStatusBooleanMessageZZZ objBooleanMessage = new StatusBooleanMessageZZZ(objEnumMapped,bValue,sMessage);
-					hmReturn.put(sEnum, objBooleanMessage);
-				}
-			}
-			return hmReturn;
+		public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(IStatusLocalMessageUserZZZ objToCheck) throws ExceptionZZZ {
+			return StatusLocalHelperZZZ.getHashMapStatusBooleanMessageZZZ(objToCheck, true);
 		}
-		
+	
+	/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
+	 *  Merke1: Die Werte der BooleanMessage stammen aus dem Objekt selbst.
+	 *  Merke2: Trotzdem sind das ALLE moeglichen/definierten Statuswerte.
+	 * @param classToCheck
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+	 * @param E 
+	 */
+	//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+	public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(IStatusLocalMessageUserZZZ objToCheck, boolean bScanInterface) throws ExceptionZZZ {
+		HashMap<String, IStatusBooleanMessageZZZ> hmReturn = null;
+		main:{
+			if(objToCheck==null)break main;
+			
+			Class<?> objClassToCheck = objToCheck.getClass();
+			IEnumSetMappedStatusZZZ[] enumaMappedStatus= StatusLocalHelperZZZ.getEnumStatusLocalMapped(objClassToCheck, bScanInterface);
+			if(enumaMappedStatus==null) break main;
+
+			hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
+			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+			
+			for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
+				String sEnum = objEnumMapped.getName();
+				
+				boolean bValue = objToCheck.getStatusLocal(sEnum);								
+				String sMessage = objToCheck.getStatusLocalMessage(sEnum); //Die "Besondere" Message aus der neu eingeführten HashMap holen.				
+				
+				IStatusBooleanMessageZZZ objBooleanMessage = new StatusBooleanMessageZZZ(objEnumMapped,bValue,sMessage);
+				hmReturn.put(sEnum, objBooleanMessage);
+			}
+		}
+		return hmReturn;
+	}
+	
 	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++

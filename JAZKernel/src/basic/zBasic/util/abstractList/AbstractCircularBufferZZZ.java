@@ -11,7 +11,7 @@ import basic.zBasic.AbstractObjectZZZ;
  * https://www.baeldung.com/java-ring-buffer
  * https://github.com/eugenp/tutorials/blob/master/data-structures/src/main/java/com/baeldung/circularbuffer/CircularBuffer.java
  */
-public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
+public abstract class AbstractCircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	private static final int DEFAULT_CAPACITY = 9;
 
     private final int capacity;
@@ -19,11 +19,16 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
     private volatile int writeSequence, readSequence;
 	
 	
-//	public CircularBufferZZZ() {
-//				
-//	}
+	public AbstractCircularBufferZZZ() {
+		super();	
+		
+		this.capacity = DEFAULT_CAPACITY;
+	    this.data = (E[]) new Object[this.capacity];
+	    this.readSequence = 0;
+	    this.writeSequence = -1;
+	}
 	
-	public CircularBufferZZZ(int capacity) {
+	public AbstractCircularBufferZZZ(int capacity) {
 		super();
 		
 	    this.capacity = (capacity < 1) ? DEFAULT_CAPACITY : capacity;
@@ -163,6 +168,8 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    	return this.get(iIndex);
 	    }
 	    
+	    
+	    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	    public boolean replaceLastWith(E element) {
 	    	boolean bReturn = false;
 	    	main:{
@@ -194,7 +201,8 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    	}//end main:
 	    	return bReturn;
 	    }
-	    
+	   
+	    //+++++++++++++++++++++++++++++++++
 	    public int computeIndexForStepPrevious(int iIndexStepsBack) {
 	    	int iReturn = -1;
 	    	main:{
@@ -214,11 +222,18 @@ public class CircularBufferZZZ<E>  extends AbstractObjectZZZ {
 	    	return iReturn;
 	    }
 	    
-//	    public int getWriteSequence() {
-//	    	return this.writeSequence;//Merke: Variable ist volatil, daher 
-//	    }
-//	    
-//	    public  int getReadSequence() {
-//	    	return this.readSequence;//Merke: Variable ist volatil
-//	    }
+	    //Wichtig: Hierfür extra kein Setter, da nicht an den Methoden vorbei der Wert geaendert werden soll.
+	    public int getWriteSequence() {
+	    	return this.writeSequence;//Merke: Variable ist volatil, daher 
+	    }
+
+	    //Wichtig: Hierfür extra kein Setter, da nicht an den Methoden vorbei der Wert geaendert werden soll.
+	    public  int getReadSequence() {
+	    	return this.readSequence;//Merke: Variable ist volatil
+	    }
+	    
+	    //Wichtig: Hierfür extra kein Setter, da nicht an den Methoden vorbei der Wert geaendert werden soll.
+	    public E[] getObjectArray() {
+	    	return this.data;
+	    }
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.abstractList.CircularBufferZZZ;
+import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 
 /**Dieses Interface stellt Methoden zur Verfügung um "lokale Status" Werte abzufragen.
  */

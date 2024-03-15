@@ -30,7 +30,10 @@ public interface IStatusLocalMessageUserZZZ extends IStatusLocalBasicUserZZZ, IC
 	public abstract boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	public abstract boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 	
-	public abstract String getStatusLocalMessage();
+	public abstract String getStatusLocalMessage(); //das ist dann der aktuellste Wert aus dem CircularBuffer
+	public abstract String getStatusLocalMessage(Enum enumStatusIn) throws ExceptionZZZ;  //Das ist der Wert aus der HashMap fuer Message
+	public abstract String getStatusLocalMessage(String sStatusName) throws ExceptionZZZ; //Das ist der Wert aus der HashMap fuer Message
+
 	public abstract String getStatusLocalMessagePrevious();
 	public abstract String getStatusLocalMessagePrevious(int iIndexStepsBack);
 	public abstract boolean replaceStatusLocalMessage(String sStatusMessage); //Merke: Das replace kommt von der intern verwendeten CircularBuffer Klasse
