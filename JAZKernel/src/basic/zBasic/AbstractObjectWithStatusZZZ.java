@@ -36,9 +36,14 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	private static final long serialVersionUID = 1L;
 	protected volatile HashMap<String, Boolean>hmStatusLocal = new HashMap<String, Boolean>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
 	
+	TODOGOON20240310;//Im Zuge der Arbeiten eingesehen, dass die Message als Extra HashMap gespeichert werden muss.
+	protected volatile HashMap<String, String>hmStatusLocalMessage = new HashMap<String, String>(); //Ziel: Das Frontend soll so Infos im laufende Prozess per Button-Click abrufen koennen.
+	
 	//Der StatusMessageString. Als Extra Speicher. Kann daher zum Ueberschreiben des Default StatusMessage Werts aus dem Enum genutzt werden.
-	protected volatile CircularBufferZZZ<IStatusBooleanMessageZZZ> cbStatusLocal = new CircularBufferZZZ<IStatusBooleanMessageZZZ>(9);	
-	protected volatile CircularBufferZZZ<String> cbStatusLocalMessage = new CircularBufferZZZ<String>(9);
+	protected volatile CircularBufferZZZ<IStatusBooleanMessageZZZ> cbStatusLocal = new CircularBufferZZZ<IStatusBooleanMessageZZZ>(9);
+	
+	TODOGOON20240310;//Dann faellt der extra CircularBufferSpeicher auch weg. Die "abweichenden" Messages werden ja in IStatusBooleanMessage gespeichert.
+	//protected volatile CircularBufferZZZ<String> cbStatusLocalMessage = new CircularBufferZZZ<String>(9);
 	
 	//Ein einmaliger Vorgang. Der quasi letzte gemeldete Fehler.
 	//Diese Meldung ist flexibel und nicht in irgendeinem EnumSet hinterlegt.

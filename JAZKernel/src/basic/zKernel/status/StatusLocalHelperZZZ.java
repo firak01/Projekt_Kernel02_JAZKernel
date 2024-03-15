@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.IDummyTestObjectWithStatusByInterfaceZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectInterfaceZZZ;
@@ -716,32 +717,145 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 		return listaReturn;
 	}
 	
-	/** s. https://stackoverflow.com/questions/31104584/how-to-save-enum-class-in-a-hashmap
+	//++++++++++++++++++++++++++++++++++++++++
+	/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IEnmSetMappdedStatusZZZ>. 
 	 * @param classToCheck
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+	 * @param E 
 	 */
 	//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
-	public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(Class<?> classToCheck) throws ExceptionZZZ {
-		HashMap<String, IStatusBooleanMessageZZZ> hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
+	public static HashMap<String, IEnumSetMappedStatusZZZ> getHashMapEnumStatusLocalMapped(Class<?> classToCheck) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getHashMapEnumStatusLocalMapped(classToCheck, true);
+	}
+		
+	/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IEnmSetMappdedStatusZZZ>. 
+	 * @param classToCheck
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+	 * @param E 
+	 */
+	//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+	public static HashMap<String, IEnumSetMappedStatusZZZ> getHashMapEnumStatusLocalMapped(Class<?> classToCheck, boolean bScanInterface) throws ExceptionZZZ {
+		HashMap<String, IEnumSetMappedStatusZZZ> hmReturn = null;
 		main:{
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			String sEnumStatusLocalName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
+			IEnumSetMappedStatusZZZ[] enumaMappedStatus= StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, bScanInterface);
+			if(enumaMappedStatus==null) break main;
 			
-			ArrayList<? extends Enum<?>> listae = new ArrayList();
-			for(Class objClass : listaClass) {
-				String sEnumClass = objClass.getName();				
-				if(sEnumClass.endsWith(sEnumStatusLocalName)) {
-					Object[] obja = objClass.getEnumConstants();
-									 }
+			hmReturn = new HashMap<String, IEnumSetMappedStatusZZZ>();
+			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+			
+			for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
+				String sEnum = objEnumMapped.getName();
+				hmReturn.put(sEnum, objEnumMapped);
+			}		
+		}//end main:
+		return hmReturn;
+	}
+	
+	
+	//+++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++
+		/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
+		 *  Merke: Da der Wert hier nicht ermittelt werden kann (schliessliche kommt nur eine Klasse hier als Eingabeparameter rein und kein konkretes Objekt)
+		 *         wird der Wert mit "false" initialisiert 
+		 * @param classToCheck
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+		 * @param E 
+		 */
+		//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+		public static HashMap<String, IStatusBooleanMessageZZZ> createHashMapStatusBooleanMessageZZZ(Class<?> classToCheck) throws ExceptionZZZ {
+			return StatusLocalHelperZZZ.createHashMapStatusBooleanMessageZZZ(classToCheck, true);
+		}
+	
+	/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
+	 *  Merke: Da der Wert hier nicht ermittelt werden kann (schliessliche kommt nur eine Klasse hier als Eingabeparameter rein und kein konkretes Objekt)
+	 *         wird der Wert mit "false" initialisiert.
+	 *         Dito kann eine Message auch nicht gesetzt werden. 
+	 * @param classToCheck
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+	 * @param E 
+	 */
+	//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+	public static HashMap<String, IStatusBooleanMessageZZZ> createHashMapStatusBooleanMessageZZZ(Class<?> classToCheck, boolean bScanInterface) throws ExceptionZZZ {
+		HashMap<String, IStatusBooleanMessageZZZ> hmReturn = null;
+		main:{
+			IEnumSetMappedStatusZZZ[] enumaMappedStatus= StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, bScanInterface);
+			if(enumaMappedStatus==null) break main;
+
+			hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
+			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+			
+			for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
+				String sEnum = objEnumMapped.getName();
+				
+				IStatusBooleanMessageZZZ objBooleanMessage = new StatusBooleanMessageZZZ(objEnumMapped,false);
+				hmReturn.put(sEnum, objBooleanMessage);
 			}
-			//TODOGOON20240310;
-			//enumaReturn = ArrayListZZZ.toEnumArray(listae);
 		}
 		return hmReturn;
 	}
 	
 	
+	//+++++++++++++++++++++++++++++++++
+		//+++++++++++++++++++++++++++++++++
+			/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
+			 *  Merke: Die Werte der BooleanMessage stmmen aus dem Objekt selbst. 
+			 * @param classToCheck
+			 * @throws ExceptionZZZ
+			 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+			 * @param E 
+			 */
+			//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+			public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(IStatusLocalMessageUserZZZ objToCheck) throws ExceptionZZZ {
+				return StatusLocalHelperZZZ.getHashMapStatusBooleanMessageZZZ(objToCheck, true);
+			}
+		
+		/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
+		 *  Merke: Die Werte der BooleanMessage stammen aus dem Objekt selbst.
+		 * @param classToCheck
+		 * @throws ExceptionZZZ
+		 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+		 * @param E 
+		 */
+		//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
+		public static HashMap<String, IStatusBooleanMessageZZZ> getHashMapStatusBooleanMessageZZZ(IStatusLocalMessageUserZZZ objToCheck, boolean bScanInterface) throws ExceptionZZZ {
+			HashMap<String, IStatusBooleanMessageZZZ> hmReturn = null;
+			main:{
+				if(objToCheck==null)break main;
+				
+				Class<?> objClassToCheck = objToCheck.getClass();
+				IEnumSetMappedStatusZZZ[] enumaMappedStatus= StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, bScanInterface);
+				if(enumaMappedStatus==null) break main;
+
+				hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
+				if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+				
+				for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
+					String sEnum = objEnumMapped.getName();
+					
+					boolean bValue = objToCheck.getStatusLocal(sEnum);
+					
+					TODOGOON20240310;//Die "Besondere" Message aus der neu eingeführten HashMap holen.
+					String sMessage = objToCheck.getStatusLocalMessage(sEnum);
+					IStatusBooleanMessageZZZ objBooleanMessage = new StatusBooleanMessageZZZ(objEnumMapped,bValue,sMessage);
+					hmReturn.put(sEnum, objBooleanMessage);
+				}
+			}
+			return hmReturn;
+		}
+		
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
+	/** s. https://stackoverflow.com/questions/31104584/how-to-save-enum-class-in-a-hashmap
+	 * @param classToCheck
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
+	 */
 	public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumList(Class cls) throws ExceptionZZZ {
 		ArrayList<Collection<? extends Enum<?>>> listasReturn = new ArrayList<Collection<? extends Enum<?>>>();
 		main:{
@@ -887,6 +1001,11 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 			E[] enumaReturnByClass = null;
 			//if(classToCheck.isInterface()) {
 			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				//z.B. das enum selbst gibt es so:
+				//Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;))
+		    	//Object[] objEnum = objClassFromInterface.getEnumConstants();
+		    	//IEnumSetMappedStatusZZZ[] enumaByInterface3 = (IEnumSetMappedStatusZZZ[])objEnum; 
+		  		
 				Object[] objEnum = classToCheck.getEnumConstants();
 				enumaReturnByClass = (E[])objEnum; 		    	
 			}else {
@@ -955,6 +1074,11 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 			E[] enumaReturnByClass = null;
 			//if(classToCheck.isInterface()) {
 			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				//z.B. das enum selbst gibt es so:
+				//Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;))
+		    	//Object[] objEnum = objClassFromInterface.getEnumConstants();
+		    	//IEnumSetMappedStatusZZZ[] enumaByInterface3 = (IEnumSetMappedStatusZZZ[])objEnum; 
+		  		
 				Object[] objEnum = classToCheck.getEnumConstants();
 				enumaReturnByClass = (E[])objEnum; 		    	
 			}else {
@@ -1024,6 +1148,11 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 						
 			//if(classToCheck.isInterface()) {
 			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				//z.B. das enum selbst gibt es so:
+				//Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;))
+		    	//Object[] objEnum = objClassFromInterface.getEnumConstants();
+		    	//IEnumSetMappedStatusZZZ[] enumaByInterface3 = (IEnumSetMappedStatusZZZ[])objEnum; 
+		  		
 				Object[] objaEnum = classToCheck.getEnumConstants();
 				for(Object objEnum : objaEnum) {
 					Enum e = (E) objEnum;
@@ -1087,6 +1216,11 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 			ArrayList<E> listaeReturnByClass = new ArrayList<E>();
 			//if(classToCheck.isInterface()) {
 			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
+				//z.B. das enum selbst gibt es so:
+				//Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;))
+		    	//Object[] objEnum = objClassFromInterface.getEnumConstants();
+		    	//IEnumSetMappedStatusZZZ[] enumaByInterface3 = (IEnumSetMappedStatusZZZ[])objEnum; 
+		  		    	 				
 				Object[] objaEnum = classToCheck.getEnumConstants();
 				for(Object obj : objaEnum) {
 					Enum e = (Enum) obj;
