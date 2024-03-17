@@ -19,13 +19,22 @@ public final class EventObjectStatusLocalZZZ extends AbstractEventObjectStatusLo
 	 * @param source
 	 * @param iID
 	 * @param sComponentItemText, z.B. fuer einen DirectoryJTree ist es der Pfad, fuer eine JCombobox der Name des ausgew�hlten Items 
+	 * @throws ExceptionZZZ 
 	 */
-	public EventObjectStatusLocalZZZ(Object source, String sStatusText, boolean bStatusValue) {
-		super(source,sStatusText,bStatusValue);	
+	public EventObjectStatusLocalZZZ(Object source, String sEnumName, boolean bStatusValue) throws ExceptionZZZ {
+		super(source, sEnumName, bStatusValue);	
 	}
 	
-	public EventObjectStatusLocalZZZ(Object source, Enum objFlagEnum, boolean bFlagValue) {
-		super(source, objFlagEnum, bFlagValue);
+	public EventObjectStatusLocalZZZ(Object source, String sEnumName, String sStatusText, boolean bStatusValue) throws ExceptionZZZ {
+		super(source, sEnumName, sStatusText,bStatusValue);	
+	}
+	
+	public EventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, String sStatusText, boolean bStatusValue) throws ExceptionZZZ {
+		super(source,objStatusEnum, sStatusText,bStatusValue);	
+	}
+	
+	public EventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, boolean bFlagValue) throws ExceptionZZZ {
+		super(source, objStatusEnum, bFlagValue);
 	}
 }
 

@@ -4,8 +4,10 @@ import java.util.EventObject;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IObjectZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 /** 
  * Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )  
  *        Dann erweitert die Event-Klasse aber EventObjekt.
@@ -25,30 +27,70 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 	 * @param iID
 	 * @param sComponentItemText, z.B. fuer einen DirectoryJTree ist es der Pfad, fuer eine JCombobox der Name des ausgew�hlten Items 
 	 */
-	public AbstractEventObjectStatusLocalZZZ(Object source, String sStatusMessage, boolean bStatusValue) {
+	public AbstractEventObjectStatusLocalZZZ(Object source, String sEnumName, boolean bStatusValue)  throws ExceptionZZZ {
 		super(source);		
-		this.setStatusMessage(sStatusMessage);		
-		this.setStatusValue(bStatusValue);
+		AbstractEventObjectStatusLocalNew_(source, sEnumName, null, null, bStatusValue);
 	}
 	
-	public AbstractEventObjectStatusLocalZZZ(Object source, Enum objStatusEnum,  boolean bStatusValue) {
+	public AbstractEventObjectStatusLocalZZZ(Object source, String sEnumName, String sStatusMessage, boolean bStatusValue)  throws ExceptionZZZ {
 		super(source);		
-		this.setStatusLocal(objStatusEnum);
-		this.setStatusValue(bStatusValue);
+		AbstractEventObjectStatusLocalNew_(source, sEnumName, null, sStatusMessage, bStatusValue);
 	}
+	
+	public AbstractEventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		super(source);		
+		AbstractEventObjectStatusLocalNew_(source, null, objStatusEnum, sStatusMessage, bStatusValue);
+	}
+	
+	public AbstractEventObjectStatusLocalZZZ(Object source, Enum objStatusEnum,  boolean bStatusValue) throws ExceptionZZZ {
+		super(source);		
+		AbstractEventObjectStatusLocalNew_(source, null, objStatusEnum, null, bStatusValue);
+	}
+	
+	private boolean AbstractEventObjectStatusLocalNew_(Object source, String sEnumName, Enum objStatusEnum, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+		if(objStatusEnum==null) {
+			if(StringZZZ.isEmpty(sEnumName)) {
+				ExceptionZZZ ez = new ExceptionZZZ( "StatusString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				throw ez;
+			}else {
+				//Ermittle das Enum aus dem Namen
+				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalHelperZZZ.getStatusLocalEnumMappedByName(source, sEnumName);
+				if(objEnumMapped==null) {
+					ExceptionZZZ ez = new ExceptionZZZ( "Status not available for object StatusString '"+ sEnumName + "' (Object-Class: '" + this.getClass() +"')", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					throw ez;
+				}
+				this.setStatusLocal(objEnumMapped);
+			}
+		}else {
+			this.setStatusLocal(objStatusEnum);
+		}
+		
+		this.setStatusMessage(sStatusMessage);		
+		this.setStatusValue(bStatusValue);
+		return true;
+	}
+	
 	
 	@Override
 	public String getStatusText(){
-		if(this.objStatusEnum==null) {
+		if(this.getStatusLocal()==null) {
 			return this.getStatusMessage();
 		}else {
-			return this.objStatusEnum.getName();
+			return this.getStatusLocal().getName();
 		}
 	}
 	
 	@Override
-	public String getStatusMessage(){		
-		return this.sStatusMessage;
+	public String getStatusMessage(){
+		if(StringZZZ.isEmpty(this.sStatusMessage)) {
+			if(this.getStatusLocal()==null) {
+				return null;
+			}else {
+				return this.getStatusLocal().getStatusMessage();
+			}
+		}else {
+			return this.sStatusMessage;
+		}		
 	}
 	
 	@Override 

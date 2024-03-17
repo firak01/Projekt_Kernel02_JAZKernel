@@ -1,5 +1,9 @@
 package basic.zBasic.util.abstractArray;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 
 import base.util.abstractArray.ArrayUtil;
@@ -97,5 +101,15 @@ public class ArrayUtilZZZ<T>{
 			objaReturn = (T[]) ArrayUtils.addAll(objArray1, objArray2);			
 		}//end main:
 		return objaReturn;
+	}
+	
+	/** s. https://sentry.io/answers/arraylist-from-array/
+	 * 
+	 * 
+	 * @author Fritz Lindhauer, 16.03.2024, 14:50:47
+	 */
+	public static <T> ArrayList<? extends T> toArrayList(T[] objArray) {
+		List<? extends T> listReturn = new ArrayList<T>(Arrays.asList(objArray));
+		return (ArrayList<? extends T>) listReturn;
 	}
 }

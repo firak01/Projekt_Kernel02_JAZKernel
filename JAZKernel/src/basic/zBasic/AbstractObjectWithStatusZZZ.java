@@ -915,18 +915,28 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		
 	}	
 	
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IStatusLocalMessageUserZZZ#offerStatusLocal(java.lang.String, java.lang.String, boolean)
-	 */
+	
+	//+++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++
+	
+	@Override
+	public boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
+		return this.offerStatusLocal_(sStatusName, "", bStatusValue);
+	}
+	
 	@Override
 	public boolean offerStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+		return this.offerStatusLocal_(sStatusName, sStatusMessage, bStatusValue);	
+	}
+
+	private boolean offerStatusLocal_(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			boolean bOffered = false;
 			String sLog;
 			
 			//20240310: IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln	
-			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalHelperZZZ.getHashMapStatusBooleanMessageZZZ(this);
+			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalHelperZZZ.getHashMapStatusBooleanMessage(this);
 			IStatusBooleanMessageZZZ objStatus = hmStatus.get(sStatusName);
 			if(objStatus==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "Der Status wurde nicht in der HashMap der Statusname gefunden. '" + sStatusName + "'";
@@ -943,12 +953,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		}//end main:
 		return bReturn;		
 	}
+
 	
-	@Override
-	public boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
-		return this.offerStatusLocal(sStatusName, "", bStatusValue);
-	}
 	
+	//+++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++
 	@Override
 	public boolean offerStatusLocal( Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bFunction = false;
