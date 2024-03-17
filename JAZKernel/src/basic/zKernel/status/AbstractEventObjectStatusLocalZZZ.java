@@ -8,6 +8,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.moduleExternal.log.watch.ILogFileWatchRunnerZZZ.STATUSLOCAL;
 /** 
  * Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )  
  *        Dann erweitert die Event-Klasse aber EventObjekt.
@@ -54,7 +55,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 				throw ez;
 			}else {
 				//Ermittle das Enum aus dem Namen
-				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalHelperZZZ.getStatusLocalEnumMappedByName(source, sEnumName);
+				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(source, sEnumName);
 				if(objEnumMapped==null) {
 					ExceptionZZZ ez = new ExceptionZZZ( "Status not available for object StatusString '"+ sEnumName + "' (Object-Class: '" + this.getClass() +"')", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 					throw ez;
@@ -77,6 +78,15 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 			return this.getStatusMessage();
 		}else {
 			return this.getStatusLocal().getName();
+		}
+	}
+
+	@Override
+	public String getStatusAbbreviation(){
+		if(this.getStatusLocal()==null) {
+			return this.getStatusText();
+		}else {
+			return this.getStatusLocal().getAbbreviation();
 		}
 	}
 	

@@ -208,12 +208,18 @@ public class StatusLocalHelperZZZTest  extends TestCase{
 			} 
 	    }
 	    
-	    public void testGetStatusLocalEnumMappedByName() {
+	    public void testGetStatusLocalEnumMappedAvailableByName() {
 	    	try {
+	    	    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
+	    	    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
+	    	    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();
+	    	    	
+	    	    	//Hole aus den verschiedenen Objekten die unterschiedlichen StatusMapped Objekte, per einfachem Namen
+	    	    	//Wird ggfs. verwendet in EventObjectStatusLocalZZZ, um nur per String dem Event eine passendes Enum-Objekt mitzugeben.
+	    	    	String sStatusToFind = "ISSTOPPED";
+	    	    	IEnumSetMappedStatusZZZ objEnum = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(objTestWithStatusByDirect, sStatusToFind);
+	    	    	assertNotNull("Einen Status '" + sStatusToFind + "' gibt es nicht", objEnum);
 	    		
-	    		//Hole aus den verschiedenen Objekten die unterschiedlichen StatusMapped Objekte, per einfachem Namen
-	    		//Wird ggfs. verwendet in EventObjectStatusLocalZZZ, um nur per String dem Event eine passendes Enum-Objekt mitzugeben.
-	    	
 	    	} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
@@ -330,7 +336,7 @@ public class StatusLocalHelperZZZTest  extends TestCase{
 	    }
 	    
 	   
-	    public void testCreateStatusLocalEnumListZZZ() {
+	    public void testCreateStatusLocalEnumMappedListZZZ() {
 	    	try {	    		
 		    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
 		    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
@@ -417,7 +423,7 @@ public class StatusLocalHelperZZZTest  extends TestCase{
 	    }
 	    
 	
-	    public void testGetStatusLocalEnumListZZZ() {
+	    public void testGetStatusLocalEnumMappedListZZZ() {
 	    	try {	    		
 		    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
 		    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
@@ -429,7 +435,7 @@ public class StatusLocalHelperZZZTest  extends TestCase{
 		    	//Class<?> objClassByDirect = objTestWithStatusByDirect.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ> listaeStatusByDirect = StatusLocalHelperZZZ.getStatusLocalEnumList(objTestWithStatusByDirect, false);
+		    	ArrayList<IEnumSetMappedStatusZZZ> listaeStatusByDirect = StatusLocalHelperZZZ.getStatusLocalEnumMappedList(objTestWithStatusByDirect, false);
 		    	assertNotNull("NULL sollte als ArrayList der IEnumSetMappedStatusZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", listaeStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByDirect.size()==6);
 		    	
