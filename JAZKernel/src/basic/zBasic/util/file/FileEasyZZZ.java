@@ -379,47 +379,47 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (0) Path is absolut. '" + sDirectoryIn + "'");
 				File objDirectoryNormed = FileEasyZZZ.searchDirectory(sDirectoryIn);
 				if(objDirectoryNormed==null){
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": (0) Directory does not exist. '" + sDirectoryIn + "'";
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+"(0) Directory does not exist. '" + sDirectoryIn + "'";
 					System.out.println(sLog);				
 					break main;
 				}else{
-					System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (0) Directory exists. '" + sDirectoryIn + "'");
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+"(0) Directory exists. '" + sDirectoryIn + "'");
 				}
 				
 				
 				//Versuch im Input-Pfad suchen (also unterhalb des Source - Folders, z.B. src.). Merke: Dort liegende Dateien sind dann auch per WebServer erreichbar, Aber NICHT gepackt in ein .jar File.
 				String sDirectoryNormed = objDirectoryNormed.getAbsolutePath();
-				System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (1) Normed Path for file is: '" + sDirectoryNormed+File.separator+sFileName + "'");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent()+"(1) Normed Path for file is: '" + sDirectoryNormed+File.separator+sFileName + "'");
 				objReturn = FileEasyZZZ.searchFile(sDirectoryNormed+File.separator+sFileName);
 				String sLog = null;
 				if(objReturn==null){
-					 sLog = ReflectCodeZZZ.getPositionCurrent()+": (1) File does not exist (=null). '" + sDirectoryNormed+File.separator+sFileName + "'";	
+					 sLog = ReflectCodeZZZ.getPositionCurrent()+"(1) File does not exist (=null). '" + sDirectoryNormed+File.separator+sFileName + "'";	
 					 System.out.println(sLog);				     
 				}else if(objReturn.exists()) {
-					 sLog = ReflectCodeZZZ.getPositionCurrent()+": (1) File exists. '" + sDirectoryNormed+File.separator+sFileName + "'";	
+					 sLog = ReflectCodeZZZ.getPositionCurrent()+"(1) File exists. '" + sDirectoryNormed+File.separator+sFileName + "'";	
 					 System.out.println(sLog);
 				     break main;
 				}else{
-				     sLog = ReflectCodeZZZ.getPositionCurrent()+": (1) File does not exist. '" + sDirectoryNormed+File.separator+sFileName + "'";
+				     sLog = ReflectCodeZZZ.getPositionCurrent()+"(1) File does not exist. '" + sDirectoryNormed+File.separator+sFileName + "'";
 				     System.out.println(sLog);
 				}
 			}//end if isAbsolut
 		}else{
 			//4. Bei NULL: Versuch den Projektordner verwenden
-			//System.out.println(ReflectCodeZZZ.getPositionCurrent()+": (2) Path is relativ. '" + sDirectoryIn + "'");
+			//System.out.println(ReflectCodeZZZ.getPositionCurrent()+"(2) Path is relativ. '" + sDirectoryIn + "'");
 			String sDirectory = null;
 			File objDirectory = FileEasyZZZ.searchDirectory(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT); 
 			String sLog = null;
 			if(objDirectory!=null){
 				sDirectory = objDirectory.getPath();
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (2) Directory-Root exist for '.'='"+sDirectory+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"(2) Directory-Root exist for '.'='"+sDirectory+"'";
 			    System.out.println(sLog);
 				objReturn = FileEasyZZZ.searchFile(sDirectory+File.separator+sFileName);
 				if(objReturn!=null){
 					if(objReturn.exists()) break main;
 				}
 			}else{
-			     sLog = ReflectCodeZZZ.getPositionCurrent()+": (2) Directory-Root does not exist for '.'";
+			     sLog = ReflectCodeZZZ.getPositionCurrent()+"(2) Directory-Root does not exist for '.'";
 			     System.out.println(sLog);
 			}
 			
@@ -435,7 +435,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 		}else{
 			sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectoryIn, sFileName);	
 		}
-		sLog = ReflectCodeZZZ.getPositionCurrent()+": (3) Searching for file '" + sFilePathTotal +"'";
+		sLog = ReflectCodeZZZ.getPositionCurrent()+"(3) Searching for file '" + sFilePathTotal +"'";
 	    System.out.println(sLog);
 		objReturn = FileEasyZZZ.searchFileObject(sFilePathTotal);
 		if(objReturn!=null){
@@ -450,7 +450,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 		}else{
 			sFilePathTotal = FileEasyZZZ.joinFilePathName(sRoot + File.separator + sDirectoryIn, sFileName);	
 		}
-		sLog = ReflectCodeZZZ.getPositionCurrent()+": (4) Searching for file '" + sFilePathTotal +"'";
+		sLog = ReflectCodeZZZ.getPositionCurrent()+"(4) Searching for file '" + sFilePathTotal +"'";
 	    System.out.println(sLog);
 		objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(sFilePathTotal);
 		if(objReturn!=null){
@@ -462,7 +462,7 @@ public static File searchFile(String sDirectoryIn, String sFileName, boolean bTe
 		//Ansatz, siehe: https://www.java-forum.org/thema/auf-dateien-im-war-zugreifen.157897/
 	    //1. Sie muss unterhalb des Source Ordners liegen
 	    //2. Über eine Ressource eine "Kopie" erzeugen....
-		sLog = ReflectCodeZZZ.getPositionCurrent()+": (5) creating temp file.";
+		sLog = ReflectCodeZZZ.getPositionCurrent()+"(5) creating temp file.";
 	    System.out.println(sLog);
 		 try {
 			 	String sDirectoryOnClasspath = sDirectoryIn;
@@ -550,7 +550,7 @@ public static File searchMakeDirectory(String sDirectoryPath) throws ExceptionZZ
 	main:{
 		File objDirectory = FileEasyZZZ.searchDirectory(sDirectoryPath);
 		String sDirectoryPathNormed = objDirectory.getAbsolutePath();
-		System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+		System.out.println(ReflectCodeZZZ.getPositionCurrent()+"Errechneter Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
 	
 		FileEasyZZZ.makeDirectory(sDirectoryPathNormed);
         
@@ -629,8 +629,8 @@ private static File splitFilePathName_(String sFilePath, ReferenceZZZ<String> st
 public static File searchDirectory(String sDirectoryPathIn) throws ExceptionZZZ{
 	File objReturn = null;
 	main:{
-		String sLog = ReflectCodeZZZ.getPositionCurrent() + ": Directory to search for= '" + sDirectoryPathIn + "'";
-		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+		String sLog = ReflectCodeZZZ.getPositionCurrent() + "Directory to search for= '" + sDirectoryPathIn + "'";
+		System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
 		objReturn = FileEasyZZZ.searchDirectory(sDirectoryPathIn, false);
 	}//end main:
 	return objReturn;
@@ -662,7 +662,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 				}
 			}
 		}else {
-			System.out.println(ReflectCodeZZZ.getPositionCurrent()+" sDirectory=null.");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent()+"sDirectory=null.");
 		}
 		
 		sDirectory = FileEasyZZZ.getFileUsedPath(sDirectoryIn);		
@@ -670,9 +670,9 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//Relative Pfadangabe....
 			//ACHTUNG ENDLOSSCHLEIFE WENN MAN HIER NICHT IN DEN ABSOLUTEN PFAD UMSCHWENKT...				
 			String sDirectoryRoot = FileEasyZZZ.getDirectoryOfExecutionAsString();
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": (2) sDirectoryRoot='" + sDirectoryRoot + "'");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "(2) sDirectoryRoot='" + sDirectoryRoot + "'");
 			String sDirectoryAbsolute = FileEasyZZZ.joinFilePathName(sDirectoryRoot, sDirectory);
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": (2) GEBAUTER ABSOLUTER PFAD sDirectoryAbsolute='" + sDirectoryAbsolute + "'");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "(2) GEBAUTER ABSOLUTER PFAD sDirectoryAbsolute='" + sDirectoryAbsolute + "'");
 			objReturn = FileEasyZZZ.searchDirectory(sDirectoryAbsolute, bSearchInJar); //Diesmal aber als absoluten Pfad...
 			if(objReturn!=null){
 				if(objReturn.exists()) {
@@ -692,7 +692,7 @@ public static File searchDirectory(String sDirectoryIn, boolean bSearchInJar)thr
 			//##################################################
 			//Suche nach dem Verzeichnis in der gleichen JAR DAtei:
 			//Merke: Verzeichnisse können nur zurückgegeben  werden, wenn Sie als Kopie irgendwo erstellt werden.
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": () SUCHE IN JAR mit searchResourceDirectoryFirst mit '" + sDirectory + "' und sTargetDirectoryPathRootIn=ZZZ");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "() SUCHE IN JAR mit searchResourceDirectoryFirst mit '" + sDirectory + "' und sTargetDirectoryPathRootIn=ZZZ");
 			objReturn = JarEasyInCurrentJarZZZ.searchResourceDirectoryFirst(sDirectory, "ZZZ");
 			if(objReturn!=null){
 				if(objReturn.exists()) {
@@ -971,17 +971,17 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 			}
 			
 			if(!objFileDirectory.exists()) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: VERZEICHNIS EXISTIERT NOCH NICHT '" + objFileDirectory.getAbsolutePath() + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"FALL: VERZEICHNIS EXISTIERT NOCH NICHT '" + objFileDirectory.getAbsolutePath() + "'";
 			   	System.out.println(sLog);
 			   	bReturn = FileEasyZZZ.createDirectory(objFileDirectory);
 			   	break main;
 			}
 			
-			sLog = ReflectCodeZZZ.getPositionCurrent()+": FALL: VERZEICHNIS EXISTIERT " + objFileDirectory.getAbsolutePath() + "'";
+			sLog = ReflectCodeZZZ.getPositionCurrent()+"FALL: VERZEICHNIS EXISTIERT " + objFileDirectory.getAbsolutePath() + "'";
 		   	System.out.println(sLog);
 		   	boolean bSuccess = FileEasyZZZ.removeDirectoryContent(objFileDirectory, true);	
 			if(!bSuccess) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (I) XXXXXXXXXXXXXX.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"(I) XXXXXXXXXXXXXX.";
 			   	System.out.println(sLog);
 			   	
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_RUNTIME + "Keine Operation mit dem Verzeichnis möglich '" + objFileDirectory.getAbsolutePath() + "'", iERROR_RUNTIME, ReflectCodeZZZ.getMethodCurrentName(), "");
@@ -1282,42 +1282,42 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 				bReturn = true;
 				break main;
 			}
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": (J) XXXXXXXXXXXXXX.";
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+"(J) XXXXXXXXXXXXXX.";
 		   	System.out.println(sLog);
 			
 			//Hole alle dateien und lösche diese ggfs.
 			File[] objaFile =  objFileDirectory.listFiles();
 			if(objaFile.length==1) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JA) XXXXXXXXXXXXXX.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"(JA) XXXXXXXXXXXXXX.";
 			   	System.out.println(sLog);
 			   	
 				//Es ist ggfs. nur die Ausgangsdatei vorhanden, also löschen
 				File objFileTemp = objaFile[0];
 				if(objFileTemp.isFile()) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JAA) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(JAA) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					bReturn = objFileTemp.delete();
 				}else {	
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JAB) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(JAB) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryContainingMoreFiles,bRemoveSubDirectories);			
 				} 
 				if(!bReturn) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (K) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(K) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object (a) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
 				}
 			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": (JB) XXXXXXXXXXXXXX.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"(JB) XXXXXXXXXXXXXX.";
 			   	System.out.println(sLog);
 			   	
 				//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
 				if(bEmptyDirectoryContainingMoreFiles) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBA) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(JBA) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					for(int icount = 0; icount <= objaFile.length - 1; icount++){
@@ -1325,7 +1325,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 						if(objFileTemp.isFile()) {
 							bReturn = objaFile[icount].delete();
 							if(!bReturn) {
-								sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBAA) XXXXXXXXXXXXXX.";
+								sLog = ReflectCodeZZZ.getPositionCurrent()+"(JBAA) XXXXXXXXXXXXXX.";
 							   	System.out.println(sLog);
 							   	
 								ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete File Object(b) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
@@ -1334,19 +1334,19 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 						}else {
 							bReturn = FileEasyZZZ.removeDirectoryContent(objFileTemp, bEmptyDirectoryContainingMoreFiles,bRemoveSubDirectories);
 							if(!bReturn) {
-								sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBAB) XXXXXXXXXXXXXX.";
+								sLog = ReflectCodeZZZ.getPositionCurrent()+"(JBAB) XXXXXXXXXXXXXX.";
 							   	System.out.println(sLog);
 							   	
 								ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete Content for Directory (c) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
 								throw ez;
 							}
 							if(bRemoveSubDirectories) {
-								sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBBB) XXXXXXXXXXXXXX.";
+								sLog = ReflectCodeZZZ.getPositionCurrent()+"(JBBB) XXXXXXXXXXXXXX.";
 							   	System.out.println(sLog);
 							   	
 								bReturn = FileEasyZZZ.removeDirectory(objFileTemp, false);
 								if(!bReturn) {
-									sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBBBA) XXXXXXXXXXXXXX.";
+									sLog = ReflectCodeZZZ.getPositionCurrent()+"(JBBBA) XXXXXXXXXXXXXX.";
 								   	System.out.println(sLog);
 								   	
 									ExceptionZZZ ez  = new ExceptionZZZ("Unable to delete Directory (d) '" +objFileTemp.getAbsolutePath() + "'", iERROR_RUNTIME, null, ReflectCodeZZZ.getMethodCurrentName());
@@ -1357,7 +1357,7 @@ public static boolean removeFile(File objFile) throws ExceptionZZZ{
 					}							
 					bReturn = true; //Merke: Das Verzeichnis selbst soll ja nicht gelöscht werden.
 				}else {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (JBB) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(JBB) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					//Das Verzeichnis wird nicht geleert, darf also nicht gelöscht werden.
@@ -1900,9 +1900,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 //			}
 		}
 		
-		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +": sFilePathPure='"+ sFilePathPure+"' -> wird NICHT benutzt");			 
-		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +": sRoot='"+ sRoot+"' -> wird NICHT benutzt");
-		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +": sFilePath as total='"+ sFilePath+"' -> wird benutzt!");
+		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"sFilePathPure='"+ sFilePathPure+"' -> wird NICHT benutzt");			 
+		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"sRoot='"+ sRoot+"' -> wird NICHT benutzt");
+		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"sFilePath as total='"+ sFilePath+"' -> wird benutzt!");
 		 
 		
 		if(StringZZZ.isEmpty(sFileName)){
@@ -2283,7 +2283,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					//ExceptionZZZ ez = new ExceptionZZZ("Fileobject existiert nicht: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					//throw ez;
 					
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Provided File Objekt does not exist = '" + objFile.getAbsolutePath() +"'";
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+"Provided File Objekt does not exist = '" + objFile.getAbsolutePath() +"'";
 					System.out.println(sLog);
 					break main;
 				}
@@ -2292,7 +2292,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					//ExceptionZZZ ez = new ExceptionZZZ("Fileobject ist keine Datei: '" + objFile.getAbsolutePath() + "'", iERROR_PARAMETER_MISSING, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 					//throw ez;
 					
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Provided File Objekt is no file = '" + objFile.getAbsolutePath() +"'";
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+"Provided File Objekt is no file = '" + objFile.getAbsolutePath() +"'";
 					System.out.println(sLog);
 					break main;
 				}
@@ -2302,7 +2302,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				try {
 					//Merke: Wenn es kein ZipFile ist, so wird ein Fehler (IOException) geworfen. Dieses vorher prüfen und so die Exception vermeiden. 
 					if(!FileEasyZZZ.isZip(objFile)) {
-						String sLog = ReflectCodeZZZ.getPositionCurrent()+": Provided File Objekt is no zip-file-Type = '" + objFile.getAbsolutePath() +"'";
+						String sLog = ReflectCodeZZZ.getPositionCurrent()+"Provided File Objekt is no zip-file-Type = '" + objFile.getAbsolutePath() +"'";
 						System.out.println(sLog);
 						break main;
 					}
@@ -2372,7 +2372,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					fileDirectory = fileDirectoryIn;
 				}else {
 					fileDirectory = fileDirectoryIn.getParentFile();
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Verwende Parent '" + fileDirectory.getAbsolutePath() +"'";
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+"Verwende Parent '" + fileDirectory.getAbsolutePath() +"'";
 					System.out.println(sLog);
 				}
 				
@@ -2404,7 +2404,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					fileDirectory = fileDirectoryIn;
 				}else {					
 					fileDirectory = fileDirectoryIn.getParentFile();
-					String sLog = ReflectCodeZZZ.getPositionCurrent()+": Verwende Parent '" + fileDirectory.getAbsolutePath() +"'";
+					String sLog = ReflectCodeZZZ.getPositionCurrent()+"Verwende Parent '" + fileDirectory.getAbsolutePath() +"'";
 					System.out.println(sLog);
 				}
 				
@@ -2465,7 +2465,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	public static File searchFileObjectInWorkspace(IKernelConfigZZZ objConfig, String sFile) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": Suche auf Projektebene im Workspace.";
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+"Suche auf Projektebene im Workspace.";
 		    System.out.println(sLog);
 		    
 		    if(objConfig==null) {
@@ -2493,13 +2493,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	public static File searchFileObjectInRunningExecutionProjectPath(String sFile) throws ExceptionZZZ{
 		File objReturn = null;
 		main:{
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+": Suche auf der Ebene des ausfuehrenden Projekts.";
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+"Suche auf der Ebene des ausfuehrenden Projekts.";
 		    System.out.println(sLog);
 		    
 			//Lösungsidee 3: Merke: "." holt doch tatsächlich den Ordner des aktuell ausgefuehrten Projekts!!!
 			if(sFile==null) {//Merke: NULL führt in der searchFileObjectByClassloader_ Methode zu einer Exception.				
 				sFile=FileEasyZZZ.getFileRootPath();
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": NULL in '" + sFile +"' umgeändert.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"NULL in '" + sFile +"' umgeändert.";
 			    System.out.println(sLog);
 			}
 			objReturn = searchFileObjectByClassloader_(sFile, true);
@@ -2643,13 +2643,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				//1. Versuch mit Classloader
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (B) Searching for file by classloader.getResource '" + sPath +"'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(B) Searching for file by classloader.getResource '" + sPath +"'";
 				    System.out.println(sLog);
 					String sPathInWorkspace = workspaceURL.getPath();
 					String[] saStringsToBeStripped ={File.separator};
 					String sPathNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped);					
 					if(workspaceURL!=null){
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (B) URL is not null'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(B) URL is not null'";
 					    System.out.println(sLog);
 						try {			
 							objReturn = new File(workspaceURL.toURI());
@@ -2659,7 +2659,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							if(FileEasyZZZ.exists(objReturn)) break main;
 						}
 					}else{
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (B) URL is null'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(B) URL is null'";
 					    System.out.println(sLog);
 					}
 				}
@@ -2673,7 +2673,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					String sParthNormed = StringZZZ.stripRight(sPathInWorkspace, saStringsToBeStripped2);
 					workspaceURL = classLoader.getResource(sParthNormed);
 					if(workspaceURL!=null){
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (C) URL is not null'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(C) URL is not null'";
 					    System.out.println(sLog);
 						try {			
 							objReturn = new File(workspaceURL.toURI());
@@ -2683,7 +2683,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							if(FileEasyZZZ.exists(objReturn)) break main;
 						}
 					}else{
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (C) URL is null'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(C) URL is null'";
 					    System.out.println(sLog);
 					}
 				}				
@@ -2779,18 +2779,18 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			try {		
 				workspaceURL = new File(sPath).toURI().toURL();
 				if(workspaceURL!=null){	
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (A) Searching for file by URI '" + sPath +"'";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(A) Searching for file by URI '" + sPath +"'";
 				    System.out.println(sLog);
 				    
 					String sWorkspaceURL = workspaceURL.getPath();					
 					sWorkspaceURL = StringZZZ.stripFileSeparators(sWorkspaceURL);
 					objReturn = new File(sWorkspaceURL);	
 					if(FileEasyZZZ.exists(objReturn)) {
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt gefunden '" + sPath + "'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(A1) FileObjekt gefunden '" + sPath + "'";
 					    System.out.println(sLog);
 						break main;
 					}else{
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (A1) FileObjekt nicht gefunden '" + sPath + "'";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(A1) FileObjekt nicht gefunden '" + sPath + "'";
 					    System.out.println(sLog);
 					}
 				}else{
@@ -2960,11 +2960,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			URL url= ClassLoader.getSystemResource(".");
 			if(url==null) {
 				String sLog = "unable to receive url object";
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}else {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": URL = '"+url.toExternalForm() + "'");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "URL = '"+url.toExternalForm() + "'");
 			}
 			sReturn = url.toExternalForm();
 		}//end main:
@@ -3084,7 +3084,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				//Falls ein Verzeichnispfad übergeben wird, wird dieser "flach" gemacht. Man kann als temp-Datei keine Verzeichnisse bauen.
 				String sFilePathNormedForTempFile = FileEasyZZZ.flattenFilePathToFileName(sFilePath);
 				
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+": (F) To FileName flattended Path: '" + sFilePathNormedForTempFile + "'";
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+"(F) To FileName flattended Path: '" + sFilePathNormedForTempFile + "'";
 				System.out.println(sLog);
 				
 				objReturn = File.createTempFile(sFilePathNormedForTempFile, null);
@@ -3154,7 +3154,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					throw ez;
 				}
 				
-				String sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA) XXXXXXXXXXXXXX.";
+				String sLog = ReflectCodeZZZ.getPositionCurrent()+"(KA) XXXXXXXXXXXXXX.";
 			   	System.out.println(sLog);
 				
 				//Merke: Wenn kein Verzeichnis übergeben wurde, dann wird das Verzeichnis eben geholt.
@@ -3164,21 +3164,21 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 					bFileStart = true;
 					objFileDirectory = objFileIn.getParentFile();
 					
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->X) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(KA->X) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 					if(objFileDirectory==null) break main;			
 				}else {
 					objFileDirectory = objFileIn;
 				}
 				if(objFileDirectory.exists()==false){
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->Y) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(KA->Y) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					bReturn = true;
 					break main;
 				}
 				if(FileEasyZZZ.isRoot(objFileDirectory)) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->Z) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(KA->Z) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 				   break main;
@@ -3186,14 +3186,14 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				
 				//REKURSION: Wenn Unterverzeichnisse gelöscht werden sollen. Diese hier holen.
 				if(bEmptyDirectoryBefore || bFileStart){
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAA) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(KAA) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 				   	
 					//Hole alle Dateien und Verzeichniss			
 					File[] objaFile =  objFileDirectory.listFiles();
 					if(objaFile.length==0) {
 						if(bRemoveSubDirectories) {
-							sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAAA) XXXXXXXXXXXXXX.";
+							sLog = ReflectCodeZZZ.getPositionCurrent()+"(KAAA) XXXXXXXXXXXXXX.";
 						   	System.out.println(sLog);
 						   	
 							bReturn = objFileDirectory.delete();//Lösche das aktuelle Verzeichnis, es sollte nun leer sein.
@@ -3202,7 +3202,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							bReturn = true;
 						}
 					}else {
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAAB) XXXXXXXXXXXXXX.";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(KAAB) XXXXXXXXXXXXXX.";
 					   	System.out.println(sLog);
 					   	
 						//Nur löschen, wenn explizit gesagt worden ist "alle Dateien" löschen
@@ -3216,7 +3216,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 									bReturn = objFileTemp.delete();
 								}else {
 									if(bRemoveSubDirectories) {
-										sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAABB) XXXXXXXXXXXXXX.";
+										sLog = ReflectCodeZZZ.getPositionCurrent()+"(KAABB) XXXXXXXXXXXXXX.";
 									   	System.out.println(sLog); 
 									   	
 										bReturn = FileEasyZZZ.removeDirectory(objFileTemp, bEmptyDirectoryBefore, bRemoveSubDirectories);
@@ -3225,7 +3225,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 							}//if(!bReturn).....
 						}		
 							
-						sLog = ReflectCodeZZZ.getPositionCurrent()+": (KAABC) XXXXXXXXXXXXXX.";
+						sLog = ReflectCodeZZZ.getPositionCurrent()+"(KAABC) XXXXXXXXXXXXXX.";
 						System.out.println(sLog); 
 						bReturn = objFileDirectory.delete(); //Das Verzeichnis sollte nun leer sein und kann dadurch gel�scht werden
 					}else {
@@ -3237,13 +3237,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 						}
 					}
 				}else{			
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->ZZ) XXXXXXXXXXXXXX.";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(KA->ZZ) XXXXXXXXXXXXXX.";
 				   	System.out.println(sLog);
 					
 					//Gibt false zurück, wenn z.B. das Directory nicht leer ist.
 					bReturn = objFileDirectory.delete();
 					
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": (KA->ZZ) bReturn = " + bReturn;
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"(KA->ZZ) bReturn = " + bReturn;
 				   	System.out.println(sLog);
 				}
 			}

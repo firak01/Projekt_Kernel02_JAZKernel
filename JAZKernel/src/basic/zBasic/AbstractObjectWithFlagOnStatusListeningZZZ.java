@@ -155,12 +155,12 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			//   Gibt es sie nicht oder sie ist leer, wird jeder Event - unabhaengig von dem Status - weiter verfolgt.
 			HashMap<IEnumSetMappedStatusZZZ,String>hm= this.getHashMapStatusLocal4Reaction();
 			if(hm==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap NULL => jeder Status ist relevant.";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap NULL => jeder Status ist relevant.";				
 				this.logProtocolString(sLog);
 				break main;			
 			}
 			if(hm.isEmpty()) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap Empty => jeder Status ist relevant.";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap Empty => jeder Status ist relevant.";				
 				this.logProtocolString(sLog);
 				break main;	
 			}
@@ -169,20 +169,20 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			String sActionAlias = hm.get(enumStatus);
 						
 			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist relevant.";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist relevant.";				
 				this.logProtocolString(sLog);
 				break main;
 			}
 			
 			//Status nicht gepflegt, wenn durchaus andere Statuseintraege vorhanden sind oder gepflegt und ActionAlias Leer => NICHT relevant 
 			if(StringZZZ.isEmptyTrimmed(sActionAlias)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap hat Leerstring fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat Leerstring fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
 				this.logProtocolString(sLog);
 				bReturn = false;
 				break main;
 			}
 			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
 				this.logProtocolString(sLog);
 				bReturn = false;
 				break main;
@@ -226,7 +226,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
 			IEnumSetMappedStatusZZZ enumStatus = eventStatusLocal.getStatusLocal();
 			if(enumStatus==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -237,7 +237,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			//+++++++++++++++++++++
 			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
 			if(hmEnum==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
 				System.out.println(sLog);
 				this.logLineDate(sLog);
 				break main;
