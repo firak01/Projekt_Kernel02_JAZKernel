@@ -1,11 +1,16 @@
 package basic.zKernel.status;
 
 import java.util.EventObject;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ILogZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.KernelLogZZZ;
 
 /** 
  * Merke: Der gleiche "Design Pattern" wird auch im UI - Bereich fuer Komponenten verwendet ( package basic.zKernelUI.component.model; )  
@@ -15,7 +20,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *  
  * @author Fritz Lindhauer, 02.04.2023, 12:00:33  
  */
-public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject implements IEventObjectStatusLocalZZZ, Comparable<IEventObjectStatusLocalZZZ>{
+public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject implements ILogZZZ, IEventObjectStatusLocalZZZ, Comparable<IEventObjectStatusLocalZZZ>{
 	//Merke: Das Interface comparable kann nicht mehrmals eingebunden werden. Daher in der Ausgangsklasse comparable nutzen und dort die Methoden erstellen.
 	protected IEnumSetMappedStatusZZZ objStatusEnum=null;
 	protected String sStatusMessage=null;
@@ -52,11 +57,45 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 				ExceptionZZZ ez = new ExceptionZZZ( "StatusString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 				throw ez;
 			}else {
+				String sLog;
+				
 				//Ermittle das Enum aus dem Namen
 				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(source, sEnumName, true);
 				if(objEnumMapped==null) {
-					ExceptionZZZ ez = new ExceptionZZZ( "Status not available for Source-Object ("+source.getClass().getName()+ ") - StatusString '"+ sEnumName + "' (Object-Class: '" + this.getClass() +"')", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-					throw ez;
+					
+					//20240319: Wenn es ein Monitor-Objekt ist, dann kann der Status auch aus der cascadedHashMap stammen.
+					if(source instanceof IStatusLocalMapForMonitoringStatusLocalUserZZZ) {
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "EventObject ("+this.getClass().getName()+") for SourceClass ("+source.getClass().getName() +"). Enum not found in normal Status: '" + sEnumName + "', this is a monitor Objekt therefore a search in the cascading Hashmap may will succeed. ";
+						this.logProtocolString(sLog);
+						
+						IStatusLocalMapForMonitoringStatusLocalUserZZZ sourceAsMonitor = (IStatusLocalMapForMonitoringStatusLocalUserZZZ) source;
+						HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmFromMonitor = sourceAsMonitor.getHashMapEnumSetForCascadingStatusLocal();
+						
+						Set<IEnumSetMappedStatusZZZ> setKeyFromMonitor = hmFromMonitor.keySet();
+						Iterator<IEnumSetMappedStatusZZZ> itKeyFromMonitor = setKeyFromMonitor.iterator();																
+						while(itKeyFromMonitor.hasNext()) {
+							IEnumSetMappedStatusZZZ objKey = (IEnumSetMappedStatusZZZ) itKeyFromMonitor.next();
+							if(objKey.getName().equalsIgnoreCase(sEnumName)) {
+								objEnumMapped = objKey;
+								sLog = ReflectCodeZZZ.getPositionCurrent() + "EventObject ("+this.getClass().getName()+") for SourceClass ("+source.getClass().getName() +"). Enum '" + sEnumName + "' found in the cascading Hashmap as Key. ";
+								this.logProtocolString(sLog);
+								break;
+							}
+							
+							IEnumSetMappedStatusZZZ objValue = (IEnumSetMappedStatusZZZ) hmFromMonitor.get(objKey);
+							if(objValue.getName().equalsIgnoreCase(sEnumName)) {
+								objEnumMapped = objValue;
+								sLog = ReflectCodeZZZ.getPositionCurrent() + "EventObject ("+this.getClass().getName()+") for SourceClass ("+source.getClass().getName() +"). Enum '" + sEnumName + "'  found in the cascading Hashmap as Value. ";
+								this.logProtocolString(sLog);
+								break;
+							}
+						}
+					}
+										
+					if(objEnumMapped==null) {
+						ExceptionZZZ ez = new ExceptionZZZ( "Status not available for Source-Object ("+source.getClass().getName()+ ") - StatusString '"+ sEnumName + "' (Object-Class: '" + this.getClass() +"')", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+						throw ez;
+					}
 				}
 				this.setStatusLocal(objEnumMapped);
 			}
@@ -188,6 +227,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 	   
 	   
 	   //#################################################################
+	   //### aus IObjectZZZ
 	   @Override
 		public ExceptionZZZ getExceptionObject() {
 			// TODO Auto-generated method stub
@@ -196,8 +236,20 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 
 		@Override
 		public void setExceptionObject(ExceptionZZZ objException) {
-			// TODO Auto-generated method stub
-			
+			// TODO Auto-generated method stub			
+		}
+		
+		
+		//### aus ILogZZZ
+		@Override
+		public void logLineDate(String sLog) throws ExceptionZZZ {
+			String sTemp = KernelLogZZZ.computeLineDate(sLog);
+			System.out.println(sTemp);		
+		}
+		
+		@Override
+		public void logProtocolString(String sLog) throws ExceptionZZZ{
+			this.logLineDate(sLog);
 		}
 
 	

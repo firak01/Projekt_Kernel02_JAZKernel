@@ -57,6 +57,9 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 					//Merke: Ohne das instanceof entstehen typcast-mapping-Fehler.
 					IListenerObjectStatusBasicZZZ l = this.getListenerRegisteredAll().get(i);
 					if(l instanceof IListenerObjectStatusLocalZZZ) {
+						
+						//Das Problem ist: Wenn ... Objekt den Status nicht hat wird eine Exception geworfen und komplett abgebrochen
+						
 						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
 						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' called: listener.reactOnStatusLocalEvent(event) # " + i + ". IListenerObjectStatusLocalSetZZZ ("+l.getClass().getName()+")";
 						this.logProtocolString(sLog);
@@ -69,7 +72,7 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 				}
 			} catch (ExceptionZZZ ez) {
 				try {
-					TODOGOON20240319;//Hier wird ein Fehler geworfen, objwohl der Status eigentlich vorhanden ist, aber ggfs. 
+					//TODOGOON20240319;//Hier wird ein Fehler geworfen, objwohl der Status eigentlich vorhanden ist, aber ggfs. 
 					//wird nicht in der cascadedHashMap nachgesehen
 					
 					/*

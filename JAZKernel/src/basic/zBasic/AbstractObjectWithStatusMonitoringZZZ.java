@@ -145,6 +145,9 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 		return bReturn;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ#createHashMapEnumSetForCascadingStatusLocalCustom()
+	 */
 	@Override
 	public abstract HashMap<IEnumSetMappedStatusZZZ, IEnumSetMappedStatusZZZ> createHashMapEnumSetForCascadingStatusLocalCustom();
 	
