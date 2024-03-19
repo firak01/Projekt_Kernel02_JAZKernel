@@ -53,9 +53,9 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 				throw ez;
 			}else {
 				//Ermittle das Enum aus dem Namen
-				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(source, sEnumName);
+				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(source, sEnumName, true);
 				if(objEnumMapped==null) {
-					ExceptionZZZ ez = new ExceptionZZZ( "Status not available for object StatusString '"+ sEnumName + "' (Object-Class: '" + this.getClass() +"')", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					ExceptionZZZ ez = new ExceptionZZZ( "Status not available for Source-Object ("+source.getClass().getName()+ ") - StatusString '"+ sEnumName + "' (Object-Class: '" + this.getClass() +"')", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 					throw ez;
 				}
 				this.setStatusLocal(objEnumMapped);

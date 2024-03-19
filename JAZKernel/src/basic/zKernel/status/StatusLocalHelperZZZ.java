@@ -3,6 +3,8 @@ package basic.zKernel.status;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.springframework.scripting.bsh.BshScriptUtils.BshExecutionException;
+
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectClassZZZ;
@@ -16,7 +18,16 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class StatusLocalHelperZZZ implements IConstantZZZ{	
+	
 	public static IEnumSetMappedStatusZZZ getStatusLocalEnumMappedAvailableByName(Object objForClass, String sStatusName) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName_(objForClass, sStatusName, true);
+	}
+
+	public static IEnumSetMappedStatusZZZ getStatusLocalEnumMappedAvailableByName(Object objForClass, String sStatusName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName_(objForClass, sStatusName, bScanInterfaceImmidiate);
+	}
+
+	private static IEnumSetMappedStatusZZZ getStatusLocalEnumMappedAvailableByName_(Object objForClass, String sStatusName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
 			if(objForClass==null) {
@@ -30,13 +41,23 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 			}
 			
 			Class objClass = objForClass.getClass();
-			objReturn = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(objClass, sStatusName);
+			objReturn = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(objClass, sStatusName, bScanInterfaceImmidiate);
 		
 		}//end main:
 		return objReturn;		
 	}
 	
+	//+++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++
 	public static IEnumSetMappedStatusZZZ getStatusLocalEnumMappedAvailableByName(Class objClass, String sStatusName) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName_(objClass, sStatusName, true);		
+	}
+	
+	public static IEnumSetMappedStatusZZZ getStatusLocalEnumMappedAvailableByName(Class objClass, String sStatusName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+		return StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName_(objClass, sStatusName, bScanInterfaceImmidiate);		
+	}
+	
+	private static IEnumSetMappedStatusZZZ getStatusLocalEnumMappedAvailableByName_(Class objClass, String sStatusName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 		IEnumSetMappedStatusZZZ objReturn = null;
 		main:{
 			if(objClass==null) {
@@ -49,7 +70,9 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 				 throw ez;
 			}
 			
-			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalHelperZZZ.createHashMapStatusBooleanMessageZZZ(objClass);
+			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalHelperZZZ.createHashMapStatusBooleanMessageZZZ(objClass, bScanInterfaceImmidiate);
+			if(hmStatus==null)break main;
+			
 			IStatusBooleanMessageZZZ objBooleanMessage = hmStatus.get(sStatusName);
 			if(objBooleanMessage==null) break main;
 			
@@ -1016,7 +1039,11 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 		 */
 		//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
 		public static HashMap<String, IStatusBooleanMessageZZZ> createHashMapStatusBooleanMessageZZZ(Class<?> classToCheck) throws ExceptionZZZ {
-			return StatusLocalHelperZZZ.createHashMapStatusBooleanMessageZZZ(classToCheck, true);
+			return StatusLocalHelperZZZ.createHashMapStatusBooleanMessageZZZ_(classToCheck, true);
+		}
+		
+		public static HashMap<String, IStatusBooleanMessageZZZ> createHashMapStatusBooleanMessageZZZ(Class<?> classToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+			return StatusLocalHelperZZZ.createHashMapStatusBooleanMessageZZZ_(classToCheck, bScanInterfaceImmidiate);
 		}
 	
 	/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IStatusBooleanMessageZZZ>.
@@ -1029,10 +1056,10 @@ public class StatusLocalHelperZZZ implements IConstantZZZ{
 	 * @param E 
 	 */
 	//public static HashMap<String,Collection<? extends Enum<?>>> getHashMapEnumStatusLocal(Class<?> classToCheck) throws ExceptionZZZ {
-	public static HashMap<String, IStatusBooleanMessageZZZ> createHashMapStatusBooleanMessageZZZ(Class<?> classToCheck, boolean bScanInterface) throws ExceptionZZZ {
+	private static HashMap<String, IStatusBooleanMessageZZZ> createHashMapStatusBooleanMessageZZZ_(Class<?> classToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 		HashMap<String, IStatusBooleanMessageZZZ> hmReturn = null;
 		main:{
-			IEnumSetMappedStatusZZZ[] enumaMappedStatus= StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, bScanInterface);
+			IEnumSetMappedStatusZZZ[] enumaMappedStatus= StatusLocalHelperZZZ.getEnumStatusLocalMapped(classToCheck, bScanInterfaceImmidiate);
 			if(enumaMappedStatus==null) break main;
 
 			hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();

@@ -202,7 +202,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
 			IEnumSetMappedStatusZZZ enumStatus = eventStatusLocal.getStatusLocal();
 			if(enumStatus==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusOnStatusListening ("+this.getClass().getName()+") hat KEINEN Status aus dem Event-Objekt erhalten. Breche ab";				
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -213,7 +213,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//+++++++++++++++++++++
 			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
 			if(hmEnum==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+": Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusOnStatusListening ("+this.getClass().getName()+") - Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
 				System.out.println(sLog);
 				this.logLineDate(sLog);
 				break main;

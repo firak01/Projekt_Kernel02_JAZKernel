@@ -98,7 +98,7 @@ public abstract class AbstractKernelUseObjectOnStatusListeningZZZ extends Abstra
 	private boolean KernelUseObjectListeningNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{						
-			boolean btemp; String sLog;	
+			boolean btemp;	
 								
 			//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 			
@@ -140,14 +140,15 @@ public abstract class AbstractKernelUseObjectOnStatusListeningZZZ extends Abstra
 					if(hmFlagZpassed!=null) {
 						Set<String> setFlag = hmFlagZpassed.keySet();
 						Iterator<String> itFlag = setFlag.iterator();
+						String sLog;
 						while(itFlag.hasNext()) {
 							String sKey = itFlag.next();
 							 if(!StringZZZ.isEmpty(sKey)){
 								 Boolean booValue = hmFlagZpassed.get(sKey);
 								 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
 								 if(btemp==false){						 
-									 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
-									 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+									 sLog = ReflectCodeZZZ.getPositionCurrent() + "The passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+									 this.logLineDate(sLog);
 		//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
 		//							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 		//							  throw ez;		 

@@ -146,8 +146,8 @@ public abstract class AbstractKernelUseObjectWithStatusOnStatusListeningZZZ exte
 								 Boolean booValue = hmFlagZpassed.get(sKey);
 								 btemp = setFlag(sKey, booValue.booleanValue());//setzen der "auf Verdacht" indirekt übergebenen Flags
 								 if(btemp==false){						 
-									 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
-									 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+									 sLog = ReflectCodeZZZ.getPositionCurrent() + "The passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+									 this.logLineDate(sLog);
 		//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!
 		//							  ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName()); 
 		//							  throw ez;		 

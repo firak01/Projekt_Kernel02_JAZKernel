@@ -36,11 +36,12 @@ public abstract class AbstractObjectReflectableZZZ <T> extends AbstractObjectZZZ
 			
 			 //Prüfe auf Korrektheit des Wertes
 			if(StringZZZ.isEmpty(sClassMethodCalling)){
-				ExceptionZZZ ez = new ExceptionZZZ("StrategyObject: String Classenname.Methodenname erwartet.", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				
+				ExceptionZZZ ez = new ExceptionZZZ("ObjectReflectable - String Classenname.Methodenname erwartet.", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			if(!StringZZZ.contains(sClassMethodCalling, ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR)){
-				ExceptionZZZ ez = new ExceptionZZZ("StrategyObject: String Classenname.Methodenname erwartet. Es fehlt der Punkt!", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("ObjectReflectable - String Classenname.Methodenname erwartet. Es fehlt der Punkt!", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}		
 			this.putClassMethodCallingHashMap(sClassMethodCalling);

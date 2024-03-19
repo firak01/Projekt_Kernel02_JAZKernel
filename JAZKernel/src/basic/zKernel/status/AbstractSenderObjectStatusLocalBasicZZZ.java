@@ -50,6 +50,7 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 		main:{
 			if(event==null)break main;
 			
+			String sLog;
 			try {
 				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
 					//Mit instanceof den Typ abfragen und dahingehend die passende Unterabfrage des Events aufrufen.
@@ -57,18 +58,30 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 					IListenerObjectStatusBasicZZZ l = this.getListenerRegisteredAll().get(i);
 					if(l instanceof IListenerObjectStatusLocalZZZ) {
 						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
-						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# " + i + ". IListenerObjectStatusLocalSetZZZ ("+l.getClass().getName()+") by broker object (" + this.getClass().getName() + " called: listener.reactOnStatusLocalEvent(event)";
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' called: listener.reactOnStatusLocalEvent(event) # " + i + ". IListenerObjectStatusLocalSetZZZ ("+l.getClass().getName()+")";
 						this.logProtocolString(sLog);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
 						lused.reactOnStatusLocalEvent(eventUsed);
 					}else {					
-						String sLog = ReflectCodeZZZ.getPositionCurrent() + "# instanceof type is not used yet: '" + l.getClass().getName() + "'";
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' instanceof type is not used yet # " + i + ". IListenerObjectStatusLocalSetZZZ ("+l.getClass().getName()+")";
 						this.logProtocolString(sLog);
 					}
 				}
 			} catch (ExceptionZZZ ez) {
 				try {
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# throws Exception " + ez.getDetailAllLast() );
+					TODOGOON20240319;//Hier wird ein Fehler geworfen, objwohl der Status eigentlich vorhanden ist, aber ggfs. 
+					//wird nicht in der cascadedHashMap nachgesehen
+					
+					/*
+					 
+					 2024-3-19_11_59: basic.zKernel.status.AbstractSenderObjectStatusLocalBasicZZZ.fireEvent - Line 72# Sender Broker Object 'basic.zKernel.status.SenderObjectStatusLocalZZZ' # throws Exception Status not available for Source-Object (basic.zBasic.util.moduleExternal.monitor.LogFileWatchMonitorRunnableZZZ) - StatusString 'HASLOGFILEWATCHRUNNERSTOPPED' (Object-Class: 'class basic.zKernel.status.EventObjectStatusLocalZZZ') # AbstractEventObjectStatusLocalNew_/
+
+					  
+					 */
+					
+					
+					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' # throws Exception: " + ez.getDetailAllLast();
+					this.logProtocolString(sLog);
 				} catch (ExceptionZZZ ez2) {				
 					ez2.printStackTrace();
 				}
@@ -76,176 +89,7 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 			
 		}//end main:
 	}
-	
-//	@Override
-//	public void fireEvent(IEventObjectStatusLocalMessageReactZZZ event) {
-//		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
-//		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
-//		if(event.getSource() instanceof ISenderSelectionResetZZZ){
-//			ISenderSelectionResetZZZ sender = (ISenderSelectionResetZZZ) event.getSource();
-//			for(int i = 0 ; i < sender.getListenerRegisteredAll().size(); i++){
-//				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) sender.getListenerRegisteredAll().get(i);
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + event.getSource().getClass().getName() + " fired: " + i);
-//				l.doReset(event);
-//			}
-//		}else{
-//			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) this.getListenerRegisteredAll().get(i);				
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-//				l.doReset(event);
-//			}
-//		}
-//		*/
-//		
-//		main:{
-//			if(event==null)break main;
-//			
-//			try {
-//				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//					IListenerObjectStatusLocalMessageReactZZZ l = (IListenerObjectStatusLocalMessageReactZZZ) this.getListenerRegisteredAll().get(i);				
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalReactMessageZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-//					try {
-//						//boolean bStatusLocalChanged = l.changeStatusLocal(event);
-//						boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
-//						if(bStatusLocalReacted) {
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
-//						}					
-//					} catch (ExceptionZZZ ez) {
-//						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
-//					}
-//				}
-//			} catch (ExceptionZZZ e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//		}//end main:
-//	}	
-	
-	
-	
-//	@Override
-//	public void fireEvent(IEventObjectStatusLocalSetZZZ event) {
-//		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
-//		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
-//		if(event.getSource() instanceof ISenderSelectionResetZZZ){
-//			ISenderSelectionResetZZZ sender = (ISenderSelectionResetZZZ) event.getSource();
-//			for(int i = 0 ; i < sender.getListenerRegisteredAll().size(); i++){
-//				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) sender.getListenerRegisteredAll().get(i);
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + event.getSource().getClass().getName() + " fired: " + i);
-//				l.doReset(event);
-//			}
-//		}else{
-//			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) this.getListenerRegisteredAll().get(i);				
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-//				l.doReset(event);
-//			}
-//		}
-//		*/
-//		
-//		main:{
-//			if(event==null)break main;
-//			
-//			try {
-//				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//					IListenerObjectStatusLocalSetZZZ l = (IListenerObjectStatusLocalSetZZZ) this.getListenerRegisteredAll().get(i);				
-//					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-//					try {
-//						boolean bStatusLocalChanged = l.reactOnStatusLocalEvent(event);
-//						//boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
-//						if(bStatusLocalChanged) {
-//							//das ist das Problem wenn alles basicZZZ ist: System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
-//						}					
-//					} catch (ExceptionZZZ ez) {
-//						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
-//					}
-//				}
-//			} catch (ExceptionZZZ e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//		}//end main:
-//	}	
-//	
-//	@Override
-//	public void fireEvent(IEventObjectStatusLocalMessageSetZZZ event) {
-//		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
-//		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)
-//		if(event.getSource() instanceof ISenderSelectionResetZZZ){
-//			ISenderSelectionResetZZZ sender = (ISenderSelectionResetZZZ) event.getSource();
-//			for(int i = 0 ; i < sender.getListenerRegisteredAll().size(); i++){
-//				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) sender.getListenerRegisteredAll().get(i);
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + event.getSource().getClass().getName() + " fired: " + i);
-//				l.doReset(event);
-//			}
-//		}else{
-//			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//				IListenerSelectionResetZZZ l = (IListenerSelectionResetZZZ) this.getListenerRegisteredAll().get(i);				
-//				System.out.println(ReflectCodeZZZ.getMethodCurrentName() + "# EventComponentSelectionResetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-//				l.doReset(event);
-//			}
-//		}
-//		*/
-//		
-//		main:{
-//			if(event==null)break main;
-//			
-//			try {
-//				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-//					//IListenerObjectStatusLocalMessageSetZZZ l = (IListenerObjectStatusLocalMessageSetZZZ) this.getListenerRegisteredAll().get(i);				
-//					IListenerObjectStatusBasicZZZ l =  this.getListenerRegisteredAll().get(i);
-//					//System.out.println(typeof l);
-//					//IDEE: Nun mit InstanceOf auf den konkreten CAST verteilen und damit auch die für das Event passende react-Funktion starten.
-//					System.out.println("TESTTESTTEST: " + l.getClass().getSimpleName());
-//					//z.B.: LogFileCreateMockRunnerZZZ, LogFileWatchListenerExampleZZZ
-//					//Merke: Wenn das nur so gestuert werden kann, muss KernelSenderObjectStatusLocalMessageSetZZZ eine abstracte Klasse werden
-//					//       und es muss einen daraus erbende Klasse verwendet werden.
-//					
-//					if(l.getClass().getSimpleName().equals("LogFileCreateMockRunnerZZZ")) {
-//						IListenerObjectStatusLocalMessageReactZZZ l2 = (IListenerObjectStatusLocalMessageReactZZZ) l;
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetMessageZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-//						try {
-//							boolean bStatusLocalChanged = l2.reactOnStatusLocalEvent(event);
-//							//boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
-//							if(bStatusLocalChanged) {
-//								System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
-//							}					
-//						} catch (ExceptionZZZ ez) {
-//							//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
-//						}
-//					}else if(l.getClass().getSimpleName().equals("LogFileWatchListenerExampleZZZ")) {
-//						IListenerObjectStatusLocalMessageReactZZZ l2 = (IListenerObjectStatusLocalMessageReactZZZ) l;
-//						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalSetMessageZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-//						try {
-//							boolean bStatusLocalChanged = l2.reactOnStatusLocalEvent(event);
-//							//boolean bStatusLocalReacted = l.reactOnStatusLocalEvent(event);
-//							if(bStatusLocalChanged) {
-//								System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " hat auf '" + event.getStatusText() + "' reagiert." );
-//							}					
-//						} catch (ExceptionZZZ ez) {
-//							//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-//							System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectStatusLocalMessageSetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
-//						}
-//					}
-//					
-//					
-//					
-//					
-//				}
-//			} catch (ExceptionZZZ e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//		}//end main:
-//	}	
-	
-	
+		
 	@Override
 	public IEventObjectStatusBasicZZZ getEventPrevious() {
 		return this.eventPrevious;

@@ -111,7 +111,7 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 				//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
 				IEnumSetMappedZZZ enumStatus = eventStatusLocalSet.getStatusLocal();
 				if(enumStatus==null) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen Status aus dem Event-Objekt erhalten. Breche ab";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Keinen Status aus dem Event-Objekt erhalten. Breche ab";
 					System.out.println(sLog);
 					this.logLineDate(sLog);
 					break main;
@@ -120,7 +120,7 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 				//+++++++++++++++++++++
 				HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>hmEnum = this.getHashMapEnumSetForCascadingStatusLocal();				
 				if(hmEnum==null) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+					sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
 					System.out.println(sLog);
 					this.logLineDate(sLog);
 					break main;
@@ -130,7 +130,7 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 				
 				IEnumSetMappedStatusZZZ objEnum = hmEnum.get(enumStatus);							
 				if(objEnum==null) {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": Keinen gemappten Status für en Status aus dem Event-Objekt erhalten. Breche ab";					
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Keinen gemappten Status für en Status aus dem Event-Objekt erhalten. Breche ab";					
 					this.logProtocolString(sLog);
 					break main;
 				}
@@ -142,10 +142,10 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 				if(eventStatusLocalSet instanceof IEventObjectStatusLocalZZZ) {
 					IEventObjectStatusLocalZZZ eventStatusLocalReact = (IEventObjectStatusLocalZZZ) eventStatusLocalSet;					
 					String sStatus = eventStatusLocalReact.getStatusMessage();
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": Methode muss ueberschrieben werden.");
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sStatus='"+sStatus+"'");
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Methode muss ueberschrieben werden.");
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - sStatus='"+sStatus+"'");
 				}else {
-					sLog = ReflectCodeZZZ.getPositionCurrent()+": Event ist kein instanceof IEventObjectStatusLocalZZZ. Breche ab.";					
+					sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Event ist kein instanceof IEventObjectStatusLocalZZZ. Breche ab.";					
 					this.logProtocolString(sLog);
 				}
 				

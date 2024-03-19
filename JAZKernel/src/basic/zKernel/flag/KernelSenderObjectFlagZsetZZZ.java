@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import basic.zKernel.IKernelZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
@@ -20,7 +23,7 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
  * @author lindhaueradmin
  *
  */
-public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, Serializable{
+public class KernelSenderObjectFlagZsetZZZ extends AbstractObjectZZZ implements ISenderObjectFlagZsetZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
 	private IEventObjectFlagZsetZZZ eventPrevious=null;
 	
@@ -55,6 +58,7 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 		main:{
 			if(event==null)break main;
 			
+			String sLog;
 			try {
 				
 			
@@ -66,16 +70,27 @@ public class KernelSenderObjectFlagZsetZZZ implements ISenderObjectFlagZsetZZZ, 
 			this.setEventPrevious(event);
 			
 			for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
-				IListenerObjectFlagZsetZZZ l = (IListenerObjectFlagZsetZZZ) this.getListenerRegisteredAll().get(i);				
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " - object (d.h. this - object) fired: " + i);
-				try {
-					boolean bFlagChanged = l.flagChanged(event);
-					if(bFlagChanged) {
-						System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt." );
-					}					
-				} catch (ExceptionZZZ ez) {
-					//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast() );					
+				IListenerObjectFlagZsetZZZ l = (IListenerObjectFlagZsetZZZ) this.getListenerRegisteredAll().get(i);
+				if(l instanceof IListenerObjectFlagZsetZZZ) {
+					IEventObjectFlagZsetZZZ eventUsed = (IEventObjectFlagZsetZZZ) event;
+					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() +") called: listener.flagChanged(event) # " + i + ". IListenerObjectFlagZsetZZZ ("+l.getClass().getName()+")";
+					this.logProtocolString(sLog);
+					IListenerObjectFlagZsetZZZ lused = (IListenerObjectFlagZsetZZZ) l;
+					
+					try {
+						boolean bFlagChanged = lused.flagChanged(eventUsed);
+						if(bFlagChanged) {
+							sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() + ") # " + i + ". IListenerObjectFlagZsetZZZ " + this.getClass().getName() + " hat Flag '" + event.getFlagText() + "' gesetzt.";
+							this.logProtocolString(sLog);
+						}
+					} catch (ExceptionZZZ ez) {
+						//Z.B. falls es das Flag hier nicht gibt, wird die ggfs. die Exception weitergeworfen.
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() + ")# IListenerObjectFlagZsetZZZ by " + this.getClass().getName() + " throws Exception " + ez.getDetailAllLast(); 
+						this.logProtocolString(sLog);
+					}
+				}else {					
+					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object ("+ this.getClass().getName() +") # " + i + ". IListenerObjectStatusLocalSetZZZ ("+l.getClass().getName()+") - instanceof type is not used yet";
+					this.logProtocolString(sLog);
 				}
 			}
 			

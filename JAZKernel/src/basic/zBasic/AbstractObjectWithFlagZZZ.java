@@ -50,10 +50,14 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 		super();
 		if(saFlag!=null){
 			if(saFlag.length>=1){
+				String sLog;
 				for(int icount =0; icount <= saFlag.length-1; icount++){
 					if(!StringZZZ.isEmpty(saFlag[icount])){						
 						boolean bFound = this.setFlag(saFlag[icount], true);
-						if(!bFound) System.out.println(ReflectCodeZZZ.getPositionCurrent()+" - Flag not available: '" + saFlag[icount] +"'");
+						if(!bFound) {
+							sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlag (" + this.getClass().getName() + ") - Flag not available: '" + saFlag[icount] +"'";
+							this.logProtocolString(sLog);							
+						}
 					}
 				}
 			}
