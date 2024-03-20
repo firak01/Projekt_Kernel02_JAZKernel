@@ -19,7 +19,7 @@ import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusLocalMapForStatusLocalUserZZZ;
-import basic.zKernel.status.StatusLocalHelperZZZ;
+import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
 import custom.zKernel.LogZZZ;
 
 /**

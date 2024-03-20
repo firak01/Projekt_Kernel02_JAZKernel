@@ -17,7 +17,7 @@ import basic.zKernel.status.IStatusBooleanZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
 import basic.zKernel.status.StatusBooleanZZZ;
-import basic.zKernel.status.StatusLocalHelperZZZ;
+import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
 
 public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ implements IMonitorObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;

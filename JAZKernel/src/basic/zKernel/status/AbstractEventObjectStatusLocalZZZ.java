@@ -60,7 +60,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 				String sLog;
 				
 				//Ermittle das Enum aus dem Namen
-				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalHelperZZZ.getStatusLocalEnumMappedAvailableByName(source, sEnumName, true);
+				IEnumSetMappedStatusZZZ objEnumMapped = StatusLocalAvailableHelperZZZ.getStatusLocalEnumMappedByName(source, sEnumName, true);
 				if(objEnumMapped==null) {
 					
 					//20240319: Wenn es ein Monitor-Objekt ist, dann kann der Status auch aus der cascadedHashMap stammen.

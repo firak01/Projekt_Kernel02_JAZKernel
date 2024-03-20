@@ -21,7 +21,7 @@ import basic.zKernel.status.IStatusLocalMessageUserZZZ;
 import basic.zKernel.status.IStatusLocalUserZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusBooleanZZZ;
-import basic.zKernel.status.StatusLocalHelperZZZ;
+import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
 
 /** Merke: Abstrakte Klasse, welche die Methoden aus AbstractObjectWithStatusZZZ
  *  extra implementieren muss (IStatusLocalUserMessageZZZ), da hier aus dem "Program"-Zweig geerbt wird und Mehrfach-Erben nicht moeglich ist.
