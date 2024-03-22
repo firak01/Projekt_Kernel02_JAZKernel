@@ -936,7 +936,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			String sLog;
 			
 			//20240310: IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln	
-			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.getHashMapStatusBooleanMessage(this);
+			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.getHashMapBooleanMessage(this);
 			IStatusBooleanMessageZZZ objStatus = hmStatus.get(sStatusName);
 			if(objStatus==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Der Status wurde nicht in der HashMap der Statusname gefunden. '" + sStatusName + "'";
@@ -1180,7 +1180,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 					if(!sKey.equals(sStatusName)) hmStatus.put(sKey, !bStatusValue); //Setze die anderen Werte, als der uebergebene Status
 				}			
 			}else {
-				String[] saStatusForGroup = StatusLocalAvailableHelperZZZ.getStatusLocalForGroup(this.getClass(), iGroupId);
+				String[] saStatusForGroup = StatusLocalAvailableHelperZZZ.getForGroup(this.getClass(), iGroupId);
 				if(saStatusForGroup==null) break main;
 				
 				//Setze den Status nun in die HashMap DIESER GUPPE
@@ -1267,7 +1267,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;
-			bReturn = StatusLocalAvailableHelperZZZ.proofStatusLocalExists(this.getClass(), sStatusName);				
+			bReturn = StatusLocalAvailableHelperZZZ.proofExists(this.getClass(), sStatusName);				
 		}//end main:
 		return bReturn;
 	}
@@ -1282,7 +1282,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;
-			bReturn = StatusLocalAvailableHelperZZZ.proofStatusLocalDirectExists(this.getClass(), sStatusName);				
+			bReturn = StatusLocalAvailableHelperZZZ.proofDirectExists(this.getClass(), sStatusName);				
 		}//end main:
 		return bReturn;
 	}
@@ -1333,7 +1333,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}
 						
 			HashMap<String,Boolean>hmStatusLocal = this.getHashMapStatusLocal();
-			bReturn = StatusLocalAvailableHelperZZZ.proofStatusLocalChanged(hmStatusLocal, sStatusName, bValue);
+			bReturn = StatusLocalAvailableHelperZZZ.proofOnChange(hmStatusLocal, sStatusName, bValue);
 			if(!bReturn) {
 				String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - This status has a value to be ignored: '" + sStatusName + "'";				
 				this.logProtocolString(sLog);
@@ -1401,7 +1401,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public String[] getStatusLocalAll() throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{	
-			saReturn = StatusLocalAvailableHelperZZZ.getStatusLocalDirect(this.getClass());				
+			saReturn = StatusLocalAvailableHelperZZZ.getDirect(this.getClass());				
 		}//end main:
 		return saReturn;
 	}
