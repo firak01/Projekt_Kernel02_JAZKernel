@@ -25,6 +25,7 @@ import basic.zBasic.util.counter.CounterByCharacterAscii_NumericZZZTest;
 import basic.zBasic.util.datatype.binary.BinaryTokenizerZZZTest;
 import basic.zBasic.util.datatype.character.AsciiZZZTest;
 import basic.zBasic.util.datatype.dateTime.DateTimeZZZTest;
+import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZTest;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerZZZTest;
@@ -139,6 +140,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(IniFileTest.class); //Merke: Diese Klasse ist nicht origin�r ZZZ, darum der Test auch nicht		
 		objReturn.addTestSuite(FileIniZZZTest.class);
 		
+		objReturn.addTestSuite(EnumAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
 		objReturn.addTestSuite(StatusLocalAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
 		
 		//Test für Filter auf jar/zip Dateien

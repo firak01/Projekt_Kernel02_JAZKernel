@@ -12,6 +12,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
 public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 private ArrayListZZZ() { } //static methods only
@@ -324,7 +325,7 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 		return enumaReturn;	
 	}
 	
-	public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumForGroupArray(ArrayList<E> listae){
+	public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumStatusMappedArray(ArrayList<E> listae){
 		E[] enumaReturn = null;
 		main:{
 			if(listae==null) break main;
@@ -335,6 +336,16 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 		return enumaReturn;	
 	}
 	
+	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
+		E[] enumaReturn = null;
+		main:{
+			if(listae==null) break main;
+			if(listae.size()==0) break main;
+			
+			enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+		}//end main:
+		return enumaReturn;	
+	}
 	
 
 	public static String[]toStringArray(ArrayList<?> lista){
