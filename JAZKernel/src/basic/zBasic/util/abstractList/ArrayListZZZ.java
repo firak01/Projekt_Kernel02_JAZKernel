@@ -13,6 +13,7 @@ import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
 public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 private ArrayListZZZ() { } //static methods only
@@ -315,6 +316,23 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 			if(listae.size()==0) break main;
 			
 			enumaReturn = (E[]) listae.toArray(new Enum[listae.size()]);
+		//	saReturn = lista.toArray(new String[lista.size()]);
+		//	int iIndex = -1;
+		//	for(Object obj : lista){
+		//		iIndex++;
+		//		saReturn[iIndex] = obj.toString();
+		//	}
+		}//end main:
+		return enumaReturn;	
+		}
+
+	public static <E extends Enum> E[] toEnumArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
+		E[] objaeReturn = null;
+		main:{
+			if(listae==null) break main;
+			if(listae.size()==0) break main;
+			
+			objaeReturn = (E[]) listae.toArray(new Enum[listae.size()]);
 //			saReturn = lista.toArray(new String[lista.size()]);
 //			int iIndex = -1;
 //			for(Object obj : lista){
@@ -322,30 +340,48 @@ public static void  sortReverseAlphabetOrder(ArrayList<String> lista) {
 //				saReturn[iIndex] = obj.toString();
 //			}
 		}//end main:
-		return enumaReturn;	
+		return objaeReturn;	
 	}
 	
-	public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumStatusMappedArray(ArrayList<E> listae){
-		E[] enumaReturn = null;
-		main:{
-			if(listae==null) break main;
-			if(listae.size()==0) break main;
-			
-			enumaReturn = (E[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
-		}//end main:
-		return enumaReturn;	
-	}
-	
-	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
+	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArrayByMapped(ArrayList<IEnumSetMappedZZZ> listae){
 		E[] enumaReturn = null;
 		main:{
 			if(listae==null) break main;
 			if(listae.size()==0) break main;
 			
 			enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+			//enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedArray((ArrayList<IEnumSetMappedZZZ>) listae);
+			
 		}//end main:
 		return enumaReturn;	
 	}
+	
+	public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArrayByMapped(ArrayList<IEnumSetMappedStatusZZZ> listae){
+		E[] enumaReturn = null;
+		main:{
+			if(listae==null) break main;
+			if(listae.size()==0) break main;
+			
+			enumaReturn = (E[]) listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
+			//enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedArray((ArrayList<IEnumSetMappedZZZ>) listae);
+			
+		}//end main:
+		return enumaReturn;	
+	}
+	
+		
+	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
+		E[] enumaReturn = null;
+		main:{
+			if(listae==null) break main;
+			if(listae.size()==0) break main;
+			
+			//enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+			enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+		}//end main:
+		return enumaReturn;	
+	}
+	
 	
 
 	public static String[]toStringArray(ArrayList<?> lista){

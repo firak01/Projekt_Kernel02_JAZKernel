@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -603,6 +606,113 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 			}//end main:
 			return intValue;
 		}
+		
+		public static ArrayList<Collection<? extends Enum<?>>> toEnum(ArrayList<IEnumSetMappedZZZ> listae){
+			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
+			main:{
+				if(ArrayListZZZ.isEmpty(listae)) break main;
+				
+				for(IEnumSetMappedZZZ objMapped : listae) {
+					if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
+					listaEnum.add((Collection<? extends Enum<?>>) objMapped);					
+				}				
+			}
+			return listaEnum;
+		}
+		
+		public static <E extends Enum> E[] toEnumArray(ArrayList<IEnumSetMappedZZZ> listae){
+			E[] objaeReturn = null;
+			main:{
+				if(ArrayListZZZ.isEmpty(listae)) break main;
+				
+				//1. Versuch: Direkt per Cast.
+				//Exception:  objaeReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+				
+				//2. Versuch:
+				//Exception: objaeReturn = (E[]) ArrayListZZZ.toEnumMappedArray(listae);
+				
+				
+				//3. Versuch: Per Mappen der Einzelwerte
+				//Das Klappt....IEnumSetMappedZZZ[] objaeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
+								
+				//EXCEPTION: ArrayList<Collection<? extends Enum<?>>> listaeTemp = new ArrayList<Collection<? extends Enum<?>>>();
+				ArrayList<E> listaeTemp = new ArrayList<E>();
+				
+				//for(IEnumSetMappedZZZ objMapped : objaeReturnTemp) {
+				for(IEnumSetMappedZZZ objMapped : listae) {
+					//if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
+					//3. aber Excepteion: listaeTemp.add((Collection<? extends Enum<?>>) objMapped);
+					listaeTemp.add((E) objMapped); 
+				}
+				
+				//3.
+				objaeReturn = ArrayListZZZ.toEnumArray(listaeTemp);
+			}
+			
+			return objaeReturn;
+		}
+		
+		public static IEnumSetMappedZZZ[] toEnumMapped(ArrayList<IEnumSetMappedZZZ> listae){
+			IEnumSetMappedZZZ[] objaReturn = null;
+			main:{
+				objaReturn = (IEnumSetMappedZZZ[]) ArrayListZZZ.toArray(listae);
+			}
+			return objaReturn;
+		}
+		
+//		public static <E extends IEnumSetMappedZZZ>E[] toEnumMappedArray(ArrayList<IEnumSetMappedZZZ> listae){
+//			IEnumSetMappedZZZ[] objaReturn = null;
+//			main:{
+//				objaReturn = (IEnumSetMappedZZZ[]) ArrayListZZZ.toArray(listae);
+//			}
+//			return (E[]) objaReturn;
+//		}
+		
+		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
+			E[] enumaReturn = null;
+			main:{
+				if(listae==null) break main;
+				if(listae.size()==0) break main;
+				
+				enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+			}//end main:
+			return enumaReturn;	
+		}
+		
+//		public static <E extends Enum> E[] toEnumArray(ArrayList<IEnumSetMappedZZZ> listae){
+//			//ArrayList<Collection<? extends Enum<?>>> listaEnumReturn = null;
+//			Enum[] objaEnumReturn = null;
+//			main:{
+//				if(ArrayListZZZ.isEmpty(listae)) break main;
+//				
+//				//ArrayList<Collection<? extends Enum<?>>> listaEnum = EnumSetMappedUtilZZZ.toEnum(listae);
+//				ArrayList<E> listaEnum = EnumSetMappedUtilZZZ.toEnumArray(listae);
+//				
+//				for(Enum objEnum : lista) {
+//					if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
+//					listaEnum.add((Collection<? extends Enum<?>>) objEnum);					
+//				}	
+//				
+//				ArrayListZZZ.toEnumArray(listaEnum);
+//			}
+//			return (E[]) objaEnumReturn;
+//		}
+		
+//		public static <E extends Enum> E[] toEnumArray(ArrayList<Collection<? extends Enum<?>>> listae){
+//			ArrayList<Collection<? extends Enum<?>>> listaEnum = null;
+//			main:{
+//				if(ArrayListZZZ.isEmpty(listae)) break main;
+//				
+//				ArrayList<Collection<? extends Enum<?>>> listaEnum = EnumSetMappedUtilZZZ.toEnum(listae);
+//				
+//				for(Enum objEnum : listae) {
+//					if(listaEnum==null) listaEnum = new ArrayList<Collection<? extends Enum<?>>>();
+//					listaEnum.add((Collection<? extends Enum<?>>) objEnum);					
+//				}				
+//			}
+//			return listaEnum;
+//		}
+		
 			
 		/* TODO GOON: Weitere Ideen für die Utitlity Klasse
 		 * hier kombineren von zwei Enumerations:

@@ -936,7 +936,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			String sLog;
 			
 			//20240310: IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln	
-			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.getHashMapBooleanMessage(this);
+			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.searchHashMapBooleanMessage(this);
 			IStatusBooleanMessageZZZ objStatus = hmStatus.get(sStatusName);
 			if(objStatus==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Der Status wurde nicht in der HashMap der Statusname gefunden. '" + sStatusName + "'";
@@ -1180,7 +1180,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 					if(!sKey.equals(sStatusName)) hmStatus.put(sKey, !bStatusValue); //Setze die anderen Werte, als der uebergebene Status
 				}			
 			}else {
-				String[] saStatusForGroup = StatusLocalAvailableHelperZZZ.getForGroup(this.getClass(), iGroupId);
+				String[] saStatusForGroup = StatusLocalAvailableHelperZZZ.searchForGroup(this.getClass(), iGroupId);
 				if(saStatusForGroup==null) break main;
 				
 				//Setze den Status nun in die HashMap DIESER GUPPE
@@ -1401,7 +1401,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public String[] getStatusLocalAll() throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{	
-			saReturn = StatusLocalAvailableHelperZZZ.getDirect(this.getClass());				
+			saReturn = StatusLocalAvailableHelperZZZ.searchDirect(this.getClass());				
 		}//end main:
 		return saReturn;
 	}
