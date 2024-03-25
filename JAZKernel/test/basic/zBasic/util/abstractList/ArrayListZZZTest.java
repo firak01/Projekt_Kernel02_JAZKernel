@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedIndexedZZZ;
 
@@ -38,8 +39,20 @@ public class ArrayListZZZTest extends TestCase{
 	   ArrayList listaEnum = listaEnumExtended.toArrayList();
 	   
 	   //Test: Aus der ArrayList ein Enum machen
-	   Object[] objaResult = ArrayListZZZ.toArray(listaEnum);
-	   assertNotNull(objaResult);
+	   Object[] objaResultToArray = ArrayListZZZ.toArray(listaEnum);
+	   assertNotNull(objaResultToArray);
+	   assertTrue(objaResultToArray.length==3);
+	   assertTrue(objaResultToArray[0] instanceof IEnumSetMappedZZZ);
+	   assertTrue(objaResultToArray[0] instanceof EnumSetMappedTestTypeZZZ);
+	   
+	   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	   
+	   Enum[]  objaResultToEnumArray = ArrayListZZZ.toEnumArray(listaEnum);
+	   assertNotNull(objaResultToArray);
+	   assertTrue(objaResultToArray.length==3);
+	   assertTrue(objaResultToArray[0] instanceof IEnumSetMappedZZZ);
+	   assertTrue(objaResultToArray[0] instanceof EnumSetMappedTestTypeZZZ);
+	   
 	   
 	   //EnumSetMappedTestTypeZZZ
 	   System.out.println("test");
