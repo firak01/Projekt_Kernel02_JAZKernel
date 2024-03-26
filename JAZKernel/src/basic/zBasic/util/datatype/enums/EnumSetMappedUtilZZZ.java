@@ -13,6 +13,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
@@ -668,13 +669,90 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 //			return (E[]) objaReturn;
 //		}
 		
+		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(Enum[] enuma){
+			E[] enumaReturn = null;
+			main:{
+				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				
+				ArrayList<IEnumSetMappedZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArrayList(enuma);
+				if(ArrayListZZZ.isEmpty(listeReturnTemp)) break main;
+				
+				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedZZZ[listeReturnTemp.size()]);
+			}//end main:
+			return enumaReturn;	
+		}
+		
 		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
 			E[] enumaReturn = null;
 			main:{
 				if(listae==null) break main;
 				if(listae.size()==0) break main;
-				
+											
 				enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
+			}//end main:
+			return enumaReturn;	
+		}
+		
+		public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(Enum[] enuma){
+			E[] enumaReturn = null;
+			main:{
+				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				
+				ArrayList<IEnumSetMappedStatusZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(enuma);
+				if(ArrayListZZZ.isEmpty(listeReturnTemp)) break main;
+				
+				enumaReturn = (E[]) listeReturnTemp.toArray(new IEnumSetMappedStatusZZZ[listeReturnTemp.size()]);
+			}//end main:
+			return enumaReturn;	
+		}
+						
+		public static ArrayList<IEnumSetMappedZZZ> toEnumMappedArrayList(Enum[] enuma){
+			ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
+			main:{
+				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				if(!(enuma instanceof IEnumSetMappedZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				
+				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
+				for(Enum objenum : enuma) {				
+					listaeReturn.add((IEnumSetMappedZZZ) objenum);
+				}				
+			}//end main:
+			return listaeReturn;	
+		}
+		
+		/**
+		 * @param enuma
+		 * @return
+		 */
+		public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayList(Enum[] enuma){
+			ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+			main:{
+				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				
+				listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+				for(Enum objenum : enuma) {				
+					listaeReturn.add((IEnumSetMappedStatusZZZ) objenum);
+				}				
+			}//end main:
+			return listaeReturn;	
+		}
+		
+		public static <E extends IEnumSetMappedStatusZZZ> IEnumSetMappedStatusZZZ[] toEnumMappedStatusArray(ArrayList<E> listae) throws ExceptionZZZ{
+			IEnumSetMappedStatusZZZ[] enumaReturn = null;
+			main:{
+				if(listae==null) break main;
+				if(listae.size()==0) break main;
+				
+				//das geht so nicht:
+				//s. https://stackoverflow.com/questions/10108122/how-to-instanceof-listmytype
+				//if(!(listae instanceof IEnumSetMappedStatusZZZ)) break main;
+				
+				//Also eigener, heuristischer Ansatz
+				boolean bInstanceOfMappedStatus = ArrayListZZZ.isInstanceOf(listae, IEnumSetMappedStatusZZZ.class);
+				if(!bInstanceOfMappedStatus)break main;
+				
+				enumaReturn = listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
 			}//end main:
 			return enumaReturn;	
 		}

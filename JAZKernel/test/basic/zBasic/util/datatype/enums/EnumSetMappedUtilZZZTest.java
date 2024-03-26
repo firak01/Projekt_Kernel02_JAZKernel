@@ -1,5 +1,6 @@
 package basic.zBasic.util.datatype.enums;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetTestFactoryZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
@@ -147,6 +149,55 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 	    	assertEquals("Prüfinteger solllte als Ergebnis dem ordinal - Wert entsprechen", intIndex.intValue(), intOrdinal.intValue());
 	    	assertEquals("Prüfinteger solllte als Ergebnis um 1 höher als der Index sein", intPosition.intValue(),intIndex.intValue()+1);	    	
 	    }
+	    
+	    
+	    public void testToEnumMappedArray() {	    		    	
+		       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+		  	   Object[] obja = objClass.getEnumConstants();
+		  	   
+		  	   Enum[] objaEnum = (Enum[]) obja;
+		  	   
+		  	   IEnumSetMappedZZZ[] enumaMapped = EnumSetMappedUtilZZZ.toEnumMappedArray(objaEnum);
+		  	   assertNotNull(enumaMapped);
+		  	   assertTrue(enumaMapped.length==3);
+			  		  	   
+			   assertFalse(enumaMapped[0] instanceof IEnumSetMappedStatusZZZ);
+			   assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);
+			  
+		  	   
+		    }
+	    
+	    public void testToEnumMappedArrayLists() {	    		    	
+		       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+		  	   Object[] obja = objClass.getEnumConstants();
+		  	   
+		  	   Enum[] objaEnum = (Enum[]) obja;
+		  	   
+		  	   ArrayList<IEnumSetMappedZZZ> listae = EnumSetMappedUtilZZZ.toEnumMappedArrayList(objaEnum);
+		  	   assertNotNull(listae);
+		  	   assertTrue(listae.size()==3);
+			   			   
+			   assertFalse(listae.get(0) instanceof IEnumSetMappedStatusZZZ);
+			   assertTrue(listae.get(0) instanceof IEnumSetMappedZZZ);
+			  
+		  	   
+		    }
+	    
+	    
+	    
+	    
+	    public void testToEnumMappedStatusArrayLists() {	    	    	
+		       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+		  	   Object[] obja = objClass.getEnumConstants();
+		  	   
+		  	   Enum[] objaEnum = (Enum[]) obja;
+		  	   
+		  	   ArrayList<IEnumSetMappedStatusZZZ> listae = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(objaEnum);
+		  	   assertNull(listae); //Da der Datentyp IEnumSetMappedZZZ /aus dem ...TestTypeZZZ-Objekt) nicht mit IEnumSetMappedStatusZZZ castfaehig ist.
+		  	   
+		    }
+	    
+	   
 	    
 	
 	}//end class
