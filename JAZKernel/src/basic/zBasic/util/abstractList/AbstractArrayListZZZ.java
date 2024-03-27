@@ -392,8 +392,8 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 	/**
 	 * @return ArrayList, internal ArrayList. E.g. this is the result-list aber an .addList-method.
 	 */
-	public ArrayList toArrayList() {
-		return (ArrayList)this;
+	public ArrayList<?> toArrayList() {
+		return (ArrayList<?>)this;
 	}	
 	
 	public String[] toStringArray() {

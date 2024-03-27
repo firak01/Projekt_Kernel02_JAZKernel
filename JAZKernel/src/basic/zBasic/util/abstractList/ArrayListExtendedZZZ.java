@@ -72,6 +72,16 @@ public class ArrayListExtendedZZZ<T> extends AbstractArrayListZZZ<T> implements 
 		}//end main
 	}
 	
+	public void addAllUnique(ArrayList<?> lista) throws ExceptionZZZ {
+		main:{
+			if(ArrayListZZZ.isEmpty(lista))break main;
+			
+			for(Object obj : lista) {
+				this.addUnique(obj);
+			}
+		}//end main		
+	}
+	
 	public HashMapExtendedIndexedZZZ getValueDupsIndexedByMethod(String sMethodName) throws ExceptionZZZ{
 		HashMapExtendedIndexedZZZ hmReturn = null;
 		main:{

@@ -1422,7 +1422,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 							}
 						 }
 					}
-					enumaReturnByClass = ArrayListZZZ.toEnumMappedArray(listaeByClass);
+					enumaReturnByClass = ArrayListZZZ.toEnumMappedStatusArray(listaeByClass);
 				}
 			}
 			
@@ -1454,7 +1454,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 						listaeByInterface.addAll(listaeByInterfaceTemp);
 					}
 				}//end for
-				enumaReturnByInterface = ArrayListZZZ.toEnumMappedArray(listaeByInterface);			
+				enumaReturnByInterface = ArrayListZZZ.toEnumMappedStatusArray(listaeByInterface);			
 			}
 			
 			//Verbinde beides

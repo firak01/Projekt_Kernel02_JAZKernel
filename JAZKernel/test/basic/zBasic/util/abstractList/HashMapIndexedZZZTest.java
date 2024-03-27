@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import basic.zBasic.DummyTestObjecWithDefaultValuesZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
@@ -18,17 +19,17 @@ public class HashMapIndexedZZZTest extends TestCase{
 			this.hmTest=new HashMapIndexedZZZ<Integer,Object>();
 			
 			//### Das spezielle Generics Testobjekt
-			DummyObjectZZZ objTest01 = new DummyObjectZZZ();
+			DummyTestObjecWithDefaultValuesZZZ objTest01 = new DummyTestObjecWithDefaultValuesZZZ();
 			objTest01.setFlag("init", true);
 			objTest01.setValue("1");
 			this.hmTest.put(objTest01);
 			
-			DummyObjectZZZ objTest02 = new DummyObjectZZZ();
+			DummyTestObjecWithDefaultValuesZZZ objTest02 = new DummyTestObjecWithDefaultValuesZZZ();
 			objTest02.setFlag("init", true);
 			objTest02.setValue("2");
 			this.hmTest.put(objTest02);
 			
-			DummyObjectZZZ objTest03 = new DummyObjectZZZ();
+			DummyTestObjecWithDefaultValuesZZZ objTest03 = new DummyTestObjecWithDefaultValuesZZZ();
 			objTest03.setFlag("init", true);
 			objTest03.setValue("3");
 			this.hmTest.put(objTest03);
@@ -42,32 +43,32 @@ public class HashMapIndexedZZZTest extends TestCase{
 	    
 	    public void testGetElement() {
 	    	try{
-				DummyObjectZZZ objTest01 = (DummyObjectZZZ) this.hmTest.getValueFirst();
+				DummyTestObjecWithDefaultValuesZZZ objTest01 = (DummyTestObjecWithDefaultValuesZZZ) this.hmTest.getValueFirst();
 				assertNotNull(objTest01);
 				assertTrue(objTest01.getValue().equals("1"));
 				
-				DummyObjectZZZ objTest03 = (DummyObjectZZZ) this.hmTest.getValueLast();
+				DummyTestObjecWithDefaultValuesZZZ objTest03 = (DummyTestObjecWithDefaultValuesZZZ) this.hmTest.getValueLast();
 				assertNotNull(objTest03);
 				assertTrue(objTest03.getValue().equals("3"));
 				
 				//#############################
-				DummyObjectZZZ objTestNULL = (DummyObjectZZZ) this.hmTest.getValueNext();
+				DummyTestObjecWithDefaultValuesZZZ objTestNULL = (DummyTestObjecWithDefaultValuesZZZ) this.hmTest.getValueNext();
 				assertNull(objTestNULL);
 				//#############################
 				
 				Integer intKey = new Integer(1);//Merke: Index beginnt mit 0, also ist das der zweite Wert.
-				DummyObjectZZZ objTest02 = (DummyObjectZZZ) this.hmTest.getValue(intKey);
+				DummyTestObjecWithDefaultValuesZZZ objTest02 = (DummyTestObjecWithDefaultValuesZZZ) this.hmTest.getValue(intKey);
 				assertNotNull(objTest02);
 				assertTrue(objTest02.getValue().equals("2"));
 				
-				DummyObjectZZZ objTestX = (DummyObjectZZZ) this.hmTest.getValueNext();
+				DummyTestObjecWithDefaultValuesZZZ objTestX = (DummyTestObjecWithDefaultValuesZZZ) this.hmTest.getValueNext();
 				assertNotNull(objTestX);
 				assertTrue(objTestX.equals(objTest03));
 				
-				DummyObjectZZZ objTestY = (DummyObjectZZZ) this.hmTest.getValueNext();
+				DummyTestObjecWithDefaultValuesZZZ objTestY = (DummyTestObjecWithDefaultValuesZZZ) this.hmTest.getValueNext();
 				assertNull(objTestY);
 				
-				DummyObjectZZZ objTestZ = (DummyObjectZZZ) this.hmTest.getValueNext();
+				DummyTestObjecWithDefaultValuesZZZ objTestZ = (DummyTestObjecWithDefaultValuesZZZ) this.hmTest.getValueNext();
 				assertNull(objTestZ);
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
@@ -78,7 +79,7 @@ public class HashMapIndexedZZZTest extends TestCase{
 	    		int iSumme = 0;
 				Iterator<Object>itObject=this.hmTest.iterator();
 				while(itObject.hasNext()) {
-					DummyObjectZZZ objDummyTemp = (DummyObjectZZZ) itObject.next();
+					DummyTestObjecWithDefaultValuesZZZ objDummyTemp = (DummyTestObjecWithDefaultValuesZZZ) itObject.next();
 					Integer intValue = new Integer(objDummyTemp.getValue());
 					iSumme = iSumme + intValue.intValue();
 					System.out.println("Summe bisher: " + iSumme);

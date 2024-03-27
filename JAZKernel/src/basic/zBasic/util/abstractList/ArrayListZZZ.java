@@ -125,6 +125,41 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 		return sReturn;
 	}
 	
+	
+	/* Gibt für die Elemente der Liste die instanceof - Werte zurück.
+	 * Also nicht instanceof der Liste selbst...
+	 * 
+	 * heuristischer Ansatz, mit Probleme. 
+	 * Gemäss: https://stackoverflow.com/questions/10108122/how-to-instanceof-listmytype
+	 * nicht sicher und man sollte statt dessen eine "GenericList" verwenden.
+	 * 
+	 * 
+	 * Aber: Man kann sowieso keine Klasse an diese statische Methode übergeben (Merke: Class<T> geht nicht )
+	 * Darum in einer Schleife alle durchgehen.
+	 * 
+	 * Hier: 
+	 * Damit nicht x - Mal (z.B. in einer Fallunterscheidung) isInstanceOf aufgerufen werden muss
+	 * Hier einmalig den Datentyp der Elemente bestimmen.
+	 * Ggfs. einen Fehler werfen, wenn er nicht eindeutig ist.
+	 */
+	public static ArrayList<Class<?>> getInstanceOfList(Object objAsList) throws ExceptionZZZ {
+		ArrayList<Class<?>>listaReturn=null;
+		main:{			
+			if(objAsList instanceof List){
+				if(ArrayListZZZ.isEmpty((ArrayList<?>) objAsList))break main;
+				
+				ArrayListExtendedZZZ<Class<?>> listaExtended = new ArrayListExtendedZZZ<Class<?>>();
+				for(Object obj : (List)objAsList) {					
+					ArrayList<Class<?>> listaClass = ReflectClassZZZ.getInstanceOfList(obj);
+					listaExtended.addAllUnique(listaClass);
+				}
+				listaReturn = (ArrayList<Class<?>>) listaExtended.toArrayList();
+			}
+			
+		}//end main:
+		return listaReturn;	
+	}
+		
 	/* heuristischer Ansatz, mit Probleme. 
 	 * Gemäss: https://stackoverflow.com/questions/10108122/how-to-instanceof-listmytype
 	 * nicht sicher und man sollte statt dessen eine "GenericList" verwenden.
@@ -144,7 +179,11 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 				//ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(objClass);												
 				for(Object obj : (List)objAsList) {
 					Class<? extends Object> classTemp = obj.getClass();//Das funktioniert aber nicht mit Interfaces
-					if(!classTemp.equals(objClass))	{					
+					
+					//also: Die idee ist, das man die Klasse selbst eher findet und auch eher angibt. Darum nicht erst alle instanceOfList - Objekte holen.
+					//      Statt hier getInstanceOfList() zu verwenden das hier ausprogrammieren
+					//      getInstanceOfList() sollte dann im Vorfeld aufgerufen werden um halt mehrere isInstanceOfList-Aufrufe zu vermeiden
+					if(!classTemp.equals(objClass))	{ 					
 						ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(obj.getClass());							
 						if(!listaInterface.contains(objClass)) break main; 
 					}
@@ -168,15 +207,13 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 		main:{			
 			if(objClass==null)break main;
 			if(ArrayListZZZ.isEmpty(lista))break main;
-			
-//			    if(((List)lista).size()>0 && (((List)lista).get(0) instanceof MeineTolleKlasse)){
-//			        // The object is of List<MyObject> and is not empty. Do something with it.
-//			    	bReturn = true;
-//			    }
-			
-			//ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(objClass);			
+		
 			for(Object obj : lista) {
 				Class<? extends Object> classTemp = obj.getClass();//Das funktioniert aber nicht mit Interfaces
+				
+				//also: Die idee ist, das man die Klasse selbst eher findet und auch eher angibt. Darum nicht erst alle instanceOfList - Objekte holen.
+				//      Statt hier getInstanceOfList() zu verwenden das hier ausprogrammieren.
+				//      getInstanceOfList() sollte dann im Vorfeld aufgerufen werden um halt mehrere isInstanceOfList-Aufrufe zu vermeiden 
 				if(!classTemp.equals(objClass))	{					
 					ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(obj.getClass());							
 					if(!listaInterface.contains(objClass)) break main; 
@@ -497,13 +534,21 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 			if(listae==null) break main;
 			if(listae.size()==0) break main;
 			
-			//enumaReturn = (E[]) listae.toArray(new IEnumSetMappedZZZ[listae.size()]);
 			enumaReturn = EnumSetMappedUtilZZZ.toEnumMappedArray(listae);
 		}//end main:
 		return enumaReturn;	
 	}
 	
-	
+	public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(ArrayList<E> listae) throws ExceptionZZZ{
+		E[] enumaReturn = null;
+		main:{
+			if(listae==null) break main;
+			if(listae.size()==0) break main;
+			
+			enumaReturn = (E[]) EnumSetMappedUtilZZZ.toEnumMappedStatusArray(listae);
+		}//end main:
+		return enumaReturn;	
+	}
 
 	
 	public static File[]toFileArray(ArrayList<File> lista){

@@ -3,6 +3,7 @@ package basic.zBasic.util.abstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import basic.zBasic.DummyTestObjecWithDefaultValuesZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedStatusTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
@@ -30,6 +31,19 @@ public class ArrayListZZZTest extends TestCase{
 	*/
 	
 }//END setup
+    
+    public void testGetInstanceOfList() {
+ 	   try {
+	 	   DummyTestObjecWithDefaultValuesZZZ obj = new DummyTestObjecWithDefaultValuesZZZ();	 	  
+	 	   ArrayList<Class<?>>listaInstance = ArrayListZZZ.getInstanceOfList(obj);
+	 	   assertNull(listaInstance); //Weil es keine Liste ist...
+	 	   
+
+	 	   System.out.println("test");
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+ 		}    
+    }
     
    public void testToArray() {
 	   //try {

@@ -3,13 +3,14 @@ package basic.zBasic.util.abstractList;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import basic.zBasic.DummyTestObjecWithDefaultValuesZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 
 public class HashMapExtendedZZZTest extends TestCase{
 	 private HashMapExtendedZZZ hmTest = null;
-	 private HashMapExtendedZZZ<String, DummyObjectZZZ> hmTestGenerics = null;
+	 private HashMapExtendedZZZ<String, DummyTestObjecWithDefaultValuesZZZ> hmTestGenerics = null;
 	 
 	    protected void setUp(){
 	      
@@ -20,12 +21,12 @@ public class HashMapExtendedZZZTest extends TestCase{
 			hmTest.put("Alias2", "Das ist der Gleichheits  Fall");
 			
 			//### Das spezielle Generics Testobjekt
-			DummyObjectZZZ objTest01 = new DummyObjectZZZ();
+			DummyTestObjecWithDefaultValuesZZZ objTest01 = new DummyTestObjecWithDefaultValuesZZZ();
 			objTest01.setFlag("init", true);
 			
-			DummyObjectZZZ objTest02 = new DummyObjectZZZ();
+			DummyTestObjecWithDefaultValuesZZZ objTest02 = new DummyTestObjecWithDefaultValuesZZZ();
 			
-			hmTestGenerics = new HashMapExtendedZZZ<String, DummyObjectZZZ>();
+			hmTestGenerics = new HashMapExtendedZZZ<String, DummyTestObjecWithDefaultValuesZZZ>();
 			hmTestGenerics.put("test01", objTest01);
 			hmTestGenerics.put("test02", objTest02);
 			
@@ -246,13 +247,13 @@ public class HashMapExtendedZZZTest extends TestCase{
 	
 	public void testGenerics(){
 		try{
-			DummyObjectZZZ objTestCompare = new DummyObjectZZZ();
+			DummyTestObjecWithDefaultValuesZZZ objTestCompare = new DummyTestObjecWithDefaultValuesZZZ();
 			objTestCompare.setFlag("init", true);
 			
 			boolean bAnyFound = false;
 			Set<String> setKey = hmTestGenerics.keySet();
 			for(String objKey : setKey){
-				DummyObjectZZZ objTemp = (DummyObjectZZZ)hmTestGenerics.get(objKey);
+				DummyTestObjecWithDefaultValuesZZZ objTemp = (DummyTestObjecWithDefaultValuesZZZ)hmTestGenerics.get(objKey);
 				bAnyFound = objTemp.getFlag("init") == objTestCompare.getFlag("init");
 				if(bAnyFound) break;
 			}
@@ -272,7 +273,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 			hmTest2.put("Alias2", "Das ist der Gleichheits  Fall");
 			hmTest2.put("Alias1","Das ist ein Test");  //Geliche Werte aber andere Reihenfolge
 			
-			DummyObjectZZZ objTestCompare = new DummyObjectZZZ();
+			DummyTestObjecWithDefaultValuesZZZ objTestCompare = new DummyTestObjecWithDefaultValuesZZZ();
 			objTestCompare.setFlag("init", true);
 			hmTest.clear();
 			hmTest.put("Alias1", objTestCompare);

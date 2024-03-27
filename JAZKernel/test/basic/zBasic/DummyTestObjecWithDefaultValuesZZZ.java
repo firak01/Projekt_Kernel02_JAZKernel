@@ -1,4 +1,4 @@
-package basic.zBasic.util.abstractList;
+package basic.zBasic;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 
@@ -7,10 +7,10 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
  * @author lindhaueradmin
  *
  */
-public class DummyObjectZZZ extends AbstractObjectWithFlagZZZ {
+public class DummyTestObjecWithDefaultValuesZZZ extends AbstractObjectWithFlagZZZ {
 		private String sValue=null;
 	
-		public DummyObjectZZZ() {
+		public DummyTestObjecWithDefaultValuesZZZ() {
 			super();
 		}
 		

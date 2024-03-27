@@ -7,10 +7,13 @@ import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
+import java.util.List;
 
 import debug.zBasic.MyPrivilegedAction;
 import basic.javareflection.mopex.Mopex;
 import basic.javareflection.mopex.UQueue;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 public class ReflectClassZZZ implements IConstantZZZ{
@@ -355,5 +358,26 @@ public class ReflectClassZZZ implements IConstantZZZ{
 				}													
 			}//end main:
 			return listaReturn;
+		}
+		
+		public static ArrayList<Class<?>> getInstanceOfList(Object objToCheck) throws ExceptionZZZ {
+			ArrayList<Class<?>>listaReturn=null;
+			main:{
+				if(objToCheck==null)break main;
+				
+				//Merke: Es gibt das auch bei ArrayListZZZ. Aber hier wird alles betrachte, nicht nur List-Objekte ...
+				//       if(objAsList instanceof List){
+				//	if(ArrayListZZZ.isEmpty((ArrayList<?>) objAsList))break main;
+					
+				ArrayListExtendedZZZ<Class<?>> listaExtended = new ArrayListExtendedZZZ<Class<?>>();
+				Class<? extends Object> classTemp = objToCheck.getClass();//Das funktioniert aber nicht mit Interfaces
+				listaExtended.addUnique(classTemp);
+					
+				ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(objToCheck.getClass());
+				listaExtended.addAllUnique(listaInterface);
+				
+				listaReturn = (ArrayList<Class<?>>) listaExtended.toArrayList();				
+			}//end main:
+			return listaReturn;	
 		}
 }

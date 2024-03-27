@@ -7,6 +7,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetTestFactoryZZZ;
+import basic.zBasic.util.abstractEnum.EnumSetMappedStatusTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
@@ -151,54 +152,185 @@ public class EnumSetMappedUtilZZZTest  extends TestCase{
 	    }
 	    
 	    
-	    public void testToEnumMappedArray() {	    		    	
-		       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
-		  	   Object[] obja = objClass.getEnumConstants();
-		  	   
-		  	   Enum[] objaEnum = (Enum[]) obja;
-		  	   
-		  	   IEnumSetMappedZZZ[] enumaMapped = EnumSetMappedUtilZZZ.toEnumMappedArray(objaEnum);
-		  	   assertNotNull(enumaMapped);
-		  	   assertTrue(enumaMapped.length==3);
-			  		  	   
-			   assertFalse(enumaMapped[0] instanceof IEnumSetMappedStatusZZZ);
-			   assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);
-			  
-		  	   
-		    }
-	    
-	    public void testToEnumMappedArrayLists() {	    		    	
-		       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
-		  	   Object[] obja = objClass.getEnumConstants();
-		  	   
-		  	   Enum[] objaEnum = (Enum[]) obja;
-		  	   
-		  	   ArrayList<IEnumSetMappedZZZ> listae = EnumSetMappedUtilZZZ.toEnumMappedArrayList(objaEnum);
-		  	   assertNotNull(listae);
-		  	   assertTrue(listae.size()==3);
-			   			   
-			   assertFalse(listae.get(0) instanceof IEnumSetMappedStatusZZZ);
-			   assertTrue(listae.get(0) instanceof IEnumSetMappedZZZ);
-			  
-		  	   
-		    }
-	    
-	    
-	    
-	    
-	    public void testToEnumMappedStatusArrayLists() {	    	    	
-		       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
-		  	   Object[] obja = objClass.getEnumConstants();
-		  	   
-		  	   Enum[] objaEnum = (Enum[]) obja;
-		  	   
-		  	   ArrayList<IEnumSetMappedStatusZZZ> listae = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(objaEnum);
-		  	   assertNull(listae); //Da der Datentyp IEnumSetMappedZZZ /aus dem ...TestTypeZZZ-Objekt) nicht mit IEnumSetMappedStatusZZZ castfaehig ist.
-		  	   
-		    }
-	    
-	   
-	    
+    public void testToEnumArray() {	    	
+		//Merke: Intern wird dann eine Fallunterscheidung nach dem in der Liste gespcicherten Datentyp gemacht.
+	    //       Aufgerufen wird dann ...Mapped..., bzw. ...MappedStatus..., etc.
 	
-	}//end class
+    	//###################################
+ 	   //### 0. Variante: Typ ist nicht vorhanden ...
+ 	   //####################################
+//    	try { 	        	  	   
+ 	  	   //Eine Dummy-Liste ohne Enum...
+ 	  	   ArrayList<String>listaDummy = new ArrayList<String>();
+ 	  	   listaDummy.add("One");
+ 	  	   listaDummy.add("Two");
+ 	  	   listaDummy.add("Three");
+ 	  	    	  	   
+ 	  	   //Der eigentliche Test, hier soll ein Fehler geworfen werden.
+ 	  	   try {
+ 	  		   Enum[] enumaMapped = EnumSetMappedUtilZZZ.toEnumArray(listaDummy);
+ 	  		   fail("Method should have thrown an exception.");
+	 	   } catch (ExceptionZZZ ez) {
+	 		   //Ein Fehler soll passieren....
+	 		   System.out.println("Expected Exception: " + ez.getDetailAllLast());;	  			
+	 	   } 
+ 	  	   
+ 	  	   		   
+// 	    } catch (ExceptionZZZ ez) {
+// 			fail("Method throws an exception." + ez.getMessageLast());
+// 		} 		
+     	
+    	
+    	
+	   //###################################
+	   //### 1. Variante: Ohne Status ...
+	   //####################################
+    	try {
+	       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+	  	   Object[] obja = objClass.getEnumConstants();
+	  	   
+	  	   Enum[] objaEnum = (Enum[]) obja;
+	  	   
+	  	   //Als Vorbereitung: Das Array in eine Listenform bringen.
+	  	   ArrayList<IEnumSetMappedZZZ>listaenumMapped = EnumSetMappedUtilZZZ.toEnumMappedArrayList(objaEnum);
+	  	   assertNotNull("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (null-Fall)",listaenumMapped);
+	  	   assertFalse("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (empty-Fall)",listaenumMapped.isEmpty());
+	  	   
+	  	   //Der eigentliche Test
+	  	   Enum[] enumaMapped = EnumSetMappedUtilZZZ.toEnumArray(listaenumMapped);
+	  	   assertNotNull(enumaMapped);
+	  	   assertTrue(enumaMapped.length==3);
+		  	
+	  	   assertFalse(enumaMapped instanceof IEnumSetMappedZZZ[]);//weil eben enum
+	  	   assertTrue(enumaMapped instanceof Enum[]); //bingo
+		   assertFalse(enumaMapped[0] instanceof IEnumSetMappedStatusZZZ);//weil EnumSetMappedTestType das IEnumSetMappdedZZZ implementiert und nicht IEnumSetMappdedStatusZZZ
+		   assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);
+		   
+	    } catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 		
+		   
+			   
+	   //###################################
+	   //### 2. Variante: Mit Status ...
+	   //####################################
+		try {
+			   Class<?> objClassStatus = EnumSetMappedStatusTestTypeZZZ.class;
+		  	   Object[] objaStatus = objClassStatus.getEnumConstants();
+		  	   
+		  	   Enum[] objaEnumStatus = (Enum[]) objaStatus;
+		  	   
+		  	   //Als Vorbereitung: Das Array in eine Listenform bringen.
+		  	   ArrayList<IEnumSetMappedStatusZZZ>listaenumMappedStatus = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(objaEnumStatus);
+		  	   assertNotNull("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (null-Fall)",listaenumMappedStatus);
+		  	   assertFalse("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (empty-Fall)",listaenumMappedStatus.isEmpty());
+		  	   
+		  	   //Der eigentliche Test
+		  	   //Enum[] enumaMappedStatus = EnumSetMappedUtilZZZ.toEnumArrayByMappedStatus(listaenumMappedStatus);
+		  	   Enum[] enumaMappedStatus = EnumSetMappedUtilZZZ.toEnumArray(listaenumMappedStatus);
+		  	   assertNotNull(enumaMappedStatus);
+		  	   assertTrue(enumaMappedStatus.length==3);
+			  	
+		  	   assertFalse(enumaMappedStatus instanceof IEnumSetMappedStatusZZZ[]);//weil eben enum
+		  	   assertTrue(enumaMappedStatus instanceof Enum[]); //bingo
+			   assertTrue(enumaMappedStatus[0] instanceof IEnumSetMappedZZZ);//weil EnumSetMappedStatusTestType das IEnumSetMappdedStatusZZZ implementiert dies wiederum aus IEnumSetMappdedZZZ erbt.
+			   assertTrue(enumaMappedStatus[0] instanceof IEnumSetMappedStatusZZZ);//weil EnumSetMappedStatusTestType das IEnumSetMappdedStatusZZZ implementiert und nicht IEnumSetMappdedZZZ  
+		
+			   
+	    } catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 			
+	 }
+	  
+    public void testToEnumArrayByMapped() {
+    	//###################################
+		//### 1. Variante: Ohne Status ...
+		//####################################
+	    Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+	  	Object[] obja = objClass.getEnumConstants();
+	  	   
+	  	Enum[] objaEnum = (Enum[]) obja;
+	  	   
+	  	//Als Vorbereitung: Das Array in eine Listenform bringen.
+	  	ArrayList<IEnumSetMappedZZZ>listaenumMapped = EnumSetMappedUtilZZZ.toEnumMappedArrayList(objaEnum);
+	  	assertNotNull("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (null-Fall)",listaenumMapped);
+	  	assertFalse("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (empty-Fall)",listaenumMapped.isEmpty());
+	  	   
+	  	//Der eigentliche Test
+	  	Enum[] enumaMapped = EnumSetMappedUtilZZZ.toEnumArrayByMapped(listaenumMapped);
+	  	assertNotNull(enumaMapped);
+	  	assertTrue(enumaMapped.length==3);
+		  	
+	  	assertFalse(enumaMapped instanceof IEnumSetMappedZZZ[]);//weil eben enum
+	  	assertTrue(enumaMapped instanceof Enum[]); //bingo
+		assertFalse(enumaMapped[0] instanceof IEnumSetMappedStatusZZZ);//weil EnumSetMappedTestType das IEnumSetMappdedZZZ implementiert und nicht IEnumSetMappdedStatusZZZ  
+		assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);		
+	}	   
+    
+    public void testToEnumArrayByMappedStatus() {	    		    	
+    	//###################################
+		//### 2. Variante: Mit Status ...
+		//####################################
+		Class<?> objClassStatus = EnumSetMappedStatusTestTypeZZZ.class;
+	  	Object[] objaStatus = objClassStatus.getEnumConstants();
+	  	  
+	  	Enum[] objaEnumStatus = (Enum[]) objaStatus;
+	  	   
+	  	//Als Vorbereitung: Das Array in eine Listenform bringen.
+	  	ArrayList<IEnumSetMappedStatusZZZ>listaenumMappedStatus = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(objaEnumStatus);
+	  	assertNotNull("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (null-Fall)",listaenumMappedStatus);
+	  	assertFalse("Fehler in der Vorbereitung - kann keine passende Arraylist erstellen (empty-Fall)",listaenumMappedStatus.isEmpty());
+	  	
+	  	//Der eigentliche Test
+	  	Enum[] enumaMappedStatus = EnumSetMappedUtilZZZ.toEnumArrayByMappedStatus(listaenumMappedStatus);
+	  	assertNotNull(enumaMappedStatus);
+	  	assertTrue(enumaMappedStatus.length==3);
+			
+	  	assertFalse(enumaMappedStatus instanceof IEnumSetMappedStatusZZZ[]);//weil eben enum
+	  	assertTrue(enumaMappedStatus instanceof Enum[]); //bingo
+		assertTrue(enumaMappedStatus[0] instanceof IEnumSetMappedZZZ);//weil EnumSetMappedStatusTestType das IEnumSetMappdedStatusZZZ implementiert dies wiederum aus IEnumSetMappdedZZZ erbt.
+		assertTrue(enumaMappedStatus[0] instanceof IEnumSetMappedStatusZZZ);//weil EnumSetMappedStatusTestType das IEnumSetMappdedStatusZZZ implementiert und nicht IEnumSetMappdedZZZ  	   
+    }
+    
+    public void testToEnumMappedArray() {	    		    	
+       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+  	   Object[] obja = objClass.getEnumConstants();
+  	   
+  	   Enum[] objaEnum = (Enum[]) obja;
+  	   
+  	   IEnumSetMappedZZZ[] enumaMapped = EnumSetMappedUtilZZZ.toEnumMappedArray(objaEnum);
+  	   assertNotNull(enumaMapped);
+  	   assertTrue(enumaMapped.length==3);
+	  		  	   
+	   assertFalse(enumaMapped[0] instanceof IEnumSetMappedStatusZZZ);
+	   assertTrue(enumaMapped[0] instanceof IEnumSetMappedZZZ);	  	  
+	}
+    
+    public void testToEnumMappedArrayLists() {	    		    	
+       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+  	   Object[] obja = objClass.getEnumConstants();
+  	   
+  	   Enum[] objaEnum = (Enum[]) obja;
+  	   
+  	   ArrayList<IEnumSetMappedZZZ> listae = EnumSetMappedUtilZZZ.toEnumMappedArrayList(objaEnum);
+  	   assertNotNull(listae);
+  	   assertTrue(listae.size()==3);
+	   			   
+	   assertFalse(listae.get(0) instanceof IEnumSetMappedStatusZZZ);
+	   assertTrue(listae.get(0) instanceof IEnumSetMappedZZZ);		  
+	}
+    
+	    
+	    
+	    
+    public void testToEnumMappedStatusArrayLists() {	    	    	
+       Class<?> objClass = EnumSetMappedTestTypeZZZ.class;
+  	   Object[] obja = objClass.getEnumConstants();
+  	   
+  	   Enum[] objaEnum = (Enum[]) obja;
+  	   
+  	   ArrayList<IEnumSetMappedStatusZZZ> listae = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(objaEnum);
+  	   assertNull(listae); //Da der Datentyp IEnumSetMappedZZZ /aus dem ...TestTypeZZZ-Objekt) nicht mit IEnumSetMappedStatusZZZ castfaehig ist.		  	   
+	}
+}//end class
 	
