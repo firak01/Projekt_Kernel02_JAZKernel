@@ -18,6 +18,12 @@ import basic.zKernel.status.IStatusLocalMessageUserZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
 import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
 
+/**Siehe auch StatuslLocalAvailableHelperZZZ
+ *  
+ * 
+ * @author Fritz Lindhauer, 27.03.2024, 19:44:32
+ * 
+ */
 public class EnumAvailableHelperZZZ implements IConstantZZZ{	
 		
 	public static IEnumSetMappedZZZ searchEnumMappedByName(Object objForClass, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
