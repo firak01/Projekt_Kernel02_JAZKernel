@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
@@ -159,15 +160,15 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			
 			//2. Static - Methode, die ueber alle Klassen gleich ist anwenden.
 			//   Log-String als CallByValue Ersatzloesung mit einem Referenz-Objekt
-			ReferenceZZZ<String>objReferenceLog = new ReferenceZZZ<String>();
+			ReferenceArrayZZZ<String>objReferenceLog = new ReferenceArrayZZZ<String>();
 			bReturn = StatusLocalEventHelperZZZ.isEventRelevant4ReactionOnStatusLocal(eventStatusLocalReact, hmStatusLocal4Reaction,objReferenceLog);
 			
-			sLog = objReferenceLog.get();
-			if(!StringZZZ.isEmpty(sLog)) {
-				sLog = sLog + " - ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ")";
+			String[] saLog = objReferenceLog.get();
+			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ")";
 				this.logProtocolString(sLog);
-			}
-			
+				this.logProtocolString(saLog);
+			}						
 		}//end main:			
 		return bReturn;
 	}
@@ -197,39 +198,54 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	public boolean reactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			TODOGOON20240330;//Dies als static Methode in StatusLocalEventHelperZZZ packen.
+			String sLog;
+
+			if(eventStatusLocal==null) {				 
+				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+				 throw ez;
+			}
 			
-			//Falls nicht zuständig, mache nix
-		    boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
-			if(!bProof) break main;
-			
-			String sLog=null;
-			
-			//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
-			IEnumSetMappedStatusZZZ enumStatus = eventStatusLocal.getStatusLocal();
+			IEnumSetMappedStatusZZZ enumStatus = (IEnumSetMappedStatusZZZ) eventStatusLocal.getStatusEnum();
 			if(enumStatus==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - Keinen Status aus dem Event-Objekt erhalten. Breche ab";				
+				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject has no EnumStatus", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+				 throw ez;
+			}
+			
+			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
+		    boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
+			if(!bProof) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening ("+this.getClass().getName()+") - Zum Reagieren: KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
 				this.logProtocolString(sLog);
 				break main;
 			}
 			
-			boolean bStatusValue = eventStatusLocal.getStatusValue();
-			String sStatusMessage = eventStatusLocal.getStatusMessage();
-			
-			//+++++++++++++++++++++
 			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
 			if(hmEnum==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
-				System.out.println(sLog);
-				this.logLineDate(sLog);
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening ("+this.getClass().getName()+") - Zum Reagieren: KEINE Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+				this.logProtocolString(sLog);
 				break main;
 			}
-						
-			String sActionAlias = this.getActionAliasString(enumStatus);
 			
-			//+++++++++++++++++++++
-			bReturn = this.reactOnStatusLocalEvent4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
-		
+			//Hole den ActionAlias
+			ReferenceArrayZZZ<String>objReturnReferenceLog = new ReferenceArrayZZZ<String>();
+			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReturnReferenceLog);
+			String []saLog = objReturnReferenceLog.get();
+			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+				sLog = "ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ")";
+				this.logProtocolString(sLog);
+				this.logProtocolString(saLog);
+			}
+			
+			if(StringZZZ.isEmpty(sActionAlias)) {
+				sLog = "=> Event ist NICHT relevant.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
+			//Mache die Reaktion
+			boolean bStatusValue = eventStatusLocal.getStatusValue();
+			String sStatusMessage = eventStatusLocal.getStatusMessage();
+			bReturn = this.reactOnStatusLocalEvent4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);			
 		}//end main:
 		return bReturn;
 	}

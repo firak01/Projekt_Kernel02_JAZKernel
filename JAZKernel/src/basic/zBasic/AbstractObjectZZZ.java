@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zKernel.KernelLogZZZ;
 
 public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ{
@@ -55,6 +56,17 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	@Override
 	public void logProtocolString(String sLog) throws ExceptionZZZ{
 		this.logLineDate(sLog);
+	}
+	
+	@Override
+	public void logProtocolString(String[] saLog) throws ExceptionZZZ{
+		main:{
+			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+			
+			for(String sLog : saLog) {
+				this.logLineDate(sLog);
+			}
+		}//end main:
 	}
 	
 }

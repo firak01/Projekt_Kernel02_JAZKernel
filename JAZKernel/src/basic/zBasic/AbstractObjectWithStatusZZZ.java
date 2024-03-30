@@ -17,6 +17,7 @@ import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.ISenderObjectStatusLocalUserZZZ;
 import basic.zKernel.status.ISenderObjectStatusLocalZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusBooleanZZZ;
@@ -79,7 +80,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	
 	//#########################################################
-	//### aus ISenderObjectStatusLocalMessageSetUserZZZ
+	//### aus ISenderObjectStatusLocalUserZZZ
 	@Override
 	public ISenderObjectStatusLocalZZZ getSenderStatusLocalUsed() throws ExceptionZZZ {
 		if(this.objEventStatusLocalBroker==null) {
@@ -196,6 +197,48 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 	
+	//###############################
+	//### Flags ISenderObjectStatusLocalUserZZZ
+	//###############################
+	@Override
+	public boolean getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}
+	@Override
+	public boolean setFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+	
+	@Override
+	public boolean[] setFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}		
 	
 	//#########################
 	//### STATUS MAPPING aus 
@@ -370,6 +413,10 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		main:{
 			String sLog;
 			
+			if(this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.SEND_ONLY_STATUSVALUE_TRUE)) {
+				if(!bValue) break main; //Also nur Events im TRUE Fall behandeln
+			}
+			
 			IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
 			if(!bReturn)break main;
@@ -384,8 +431,10 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}
 			
 			//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") erzeugt Event fuer '" + objStatus.getEnumObject().getName() + "', StatusValue='"+ objStatus.getValue() + "', StatusMessage='"+objStatus.getMessage()+"'";
-			this.logProtocolString(sLog);
+			if(objStatus.getValue()) { //!!! nur im TRUE Fall wird eine Logausgabe erzeugt... sonst wird das Log zu voll.
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") erzeugt Event fuer '" + objStatus.getEnumObject().getName() + "', StatusValue='"+ objStatus.getValue() + "', StatusMessage='"+objStatus.getMessage()+"'";
+				this.logProtocolString(sLog);
+			}
 			IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, objStatus.getEnumObject().getName(), sMessage, objStatus.getValue());			
 		
 			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") fires event for '" + objStatus.getEnumObject().getName() + "'";
@@ -1335,8 +1384,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			HashMap<String,Boolean>hmStatusLocal = this.getHashMapStatusLocal();
 			bReturn = StatusLocalAvailableHelperZZZ.proofOnChange(hmStatusLocal, sStatusName, bValue);
 			if(!bReturn) {
-				String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - This status has a value to be ignored: '" + sStatusName + "'";				
-				this.logProtocolString(sLog);
+				//Hier auch keinen Log Eintrag erzeugen, die blaehen das Log auf.
+				//String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - This status has a value to be ignored: '" + sStatusName + "'";				
+				//this.logProtocolString(sLog);
 				break main;
 			}
 			
@@ -1361,8 +1411,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 						
 			bReturn = StringZZZ.equals(sMessage, sMessageLast); 
 			if(!bReturn) {
-				String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - This Message has not changed: '" + sMessage + "'";				
-				this.logProtocolString(sLog);
+				//Hier auch keinen Log Eintrag erzeugen, die blaehen das Log auf.
+				//String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - This Message has not changed: '" + sMessage + "'";				
+				//this.logProtocolString(sLog);
 				break main;
 			}
 			

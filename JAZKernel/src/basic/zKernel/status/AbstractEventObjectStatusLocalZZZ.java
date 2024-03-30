@@ -8,6 +8,7 @@ import java.util.Set;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelLogZZZ;
@@ -251,7 +252,16 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 		public void logProtocolString(String sLog) throws ExceptionZZZ{
 			this.logLineDate(sLog);
 		}
-
-	
+		
+		@Override
+		public void logProtocolString(String[] saLog) throws ExceptionZZZ{
+			main:{
+				if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+				
+				for(String sLog : saLog) {
+					this.logLineDate(sLog);
+				}
+			}//end main:
+		}
 }
 

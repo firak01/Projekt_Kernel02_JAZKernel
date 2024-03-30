@@ -8,7 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
-public interface IProgramMonitorRunnableZZZ extends IProgramMonitorZZZ, Runnable {
+public interface IProgramMonitorRunnableZZZ extends IProgramMonitorZZZ, IProgramRunnableZZZ {
 	//Merke: StartCutom() gibt es in IProgramZZZ, hier geht es darum, dass dieses Program in einer Endlsoscheife laufen darf.
 	public boolean startAsThread() throws ExceptionZZZ;      //hier wird ein eigener Thread erzeugt.
 

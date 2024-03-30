@@ -3,6 +3,8 @@ package basic.zBasic.util.datatype.calling;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 
 /*
@@ -46,6 +48,17 @@ public class ReferenceArrayZZZ<T> {
        listaReferent.add(newVal);
     }
     
+    public void add(T[] newVal) {
+    	main:{
+    		if(ArrayUtilZZZ.isEmpty(newVal)) break main;
+
+    		for(T elementVal : newVal) {
+    			listaReferent.add(elementVal);
+    		}
+    	}
+     }
+   
+    
     public void set(T[] newArray) {
     	listaReferent.clear();
     	int iMax = Array.getLength(newArray)-1;
@@ -59,8 +72,17 @@ public class ReferenceArrayZZZ<T> {
     	this.listaReferent = listaReferent;
     }
 
-    public T[] get() {
-       return (T[]) ArrayListZZZ.toArray(listaReferent);//!!! GEFÄHRLICH !!! FRAGLICH !!! listaReferent.toArray(T);
+    public T[] get() throws ExceptionZZZ {
+    	//Wg. cannot Cast... Fehler hier ggfs. auf die InstanceOf mit meiner heuristischen Loesung prufen
+    	if(ArrayListZZZ.isInstanceOf(listaReferent, String.class)) {
+    		return this.getAsString();
+    	}else {
+    		return (T[]) ArrayListZZZ.toArray(listaReferent);//!!! GEFÄHRLICH !!! FRAGLICH !!! listaReferent.toArray(T);
+    	}
+    }
+    
+    public T[] getAsString() {
+    	return (T[]) ArrayListZZZ.toStringArray(listaReferent);
     }
     
     public ArrayList<T> getArrayList(){

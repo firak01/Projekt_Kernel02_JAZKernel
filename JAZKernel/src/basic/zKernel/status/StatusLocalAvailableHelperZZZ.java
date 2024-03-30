@@ -1143,7 +1143,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
 		main:{
 		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
 			 throw ez;
 		}
 	
@@ -1278,7 +1278,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		String[] saReturn = null;
 		main:{
 			if(cls==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
 				 throw ez;
 			}
 			if(iGroupId<=-1)break main;
@@ -1315,7 +1315,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		E enumReturn = null;
 		main:{
 			if(classToCheck==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
 				 throw ez;
 			}
 			
@@ -1401,7 +1401,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		E[] enumaReturn = null;
 		main:{
 			if(classToCheck==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
 				 throw ez;
 			}
 			
@@ -1577,7 +1577,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		ArrayList<E> listaReturn = null;
 		main:{
 			if(objToCheck==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 ExceptionZZZ ez = new ExceptionZZZ( "Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
 				 throw ez;
 			}
 		
@@ -1591,7 +1591,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		ArrayList<E> listaReturn = null;
 		main:{
 			if(objToCheck==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 ExceptionZZZ ez = new ExceptionZZZ( "Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
 				 throw ez;
 			}
 		

@@ -24,7 +24,7 @@ public interface IProgramMonitorZZZ extends IProgramZZZ, IModuleUserZZZ {
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY,END_ON_CONNECTION,USE_LOGFILE_WATCHRUNNER
+		DUMMY
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);
