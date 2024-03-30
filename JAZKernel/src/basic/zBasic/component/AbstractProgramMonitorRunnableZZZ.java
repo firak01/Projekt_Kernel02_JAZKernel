@@ -20,6 +20,7 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 			
 	public AbstractProgramMonitorRunnableZZZ() throws ExceptionZZZ {
 		super();		
+		AbstractProgramRunnableMonitorNew_(null);
 	}
 
 	public AbstractProgramMonitorRunnableZZZ(String[] saFlag) throws ExceptionZZZ {

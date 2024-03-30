@@ -384,9 +384,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}
 			
 			//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") erzeugt Event fuer '" + objStatus.getEnumObject().getName() + "', bValue='"+ objStatus.getValue() + "', sMessage='"+objStatus.getMessage()+"'";
+			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") erzeugt Event fuer '" + objStatus.getEnumObject().getName() + "', StatusValue='"+ objStatus.getValue() + "', StatusMessage='"+objStatus.getMessage()+"'";
 			this.logProtocolString(sLog);
-			IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, objStatus.getEnumObject().getName(), objStatus.getValue());			
+			IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, objStatus.getEnumObject().getName(), sMessage, objStatus.getValue());			
 		
 			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") fires event for '" + objStatus.getEnumObject().getName() + "'";
 			this.logProtocolString(sLog);
@@ -1048,7 +1048,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	@Override
-	public boolean setStatusLocal(String sStatusName, String sMessage, boolean bStatusValue) throws ExceptionZZZ{
+	public boolean setStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;			
@@ -1062,7 +1062,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			
 			boolean bProofMessage = true;
 			if(this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_MESSAGECHANGED)) {
-				bProofMessage = this.proofStatusLocalMessageChanged(sMessage);				
+				bProofMessage = this.proofStatusLocalMessageChanged(sStatusMessage);				
 			}
 			if(! (bProofValue | bProofMessage) ) break main;
 			
@@ -1071,7 +1071,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
 			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
 									
-			bReturn=this.offerStatusLocal(sStatusName, sMessage, bStatusValue);
+			bReturn=this.offerStatusLocal(sStatusName, sStatusMessage, bStatusValue);
 		}//end main:
 		return bReturn;		
 	}

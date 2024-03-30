@@ -30,12 +30,13 @@ public class KernelSenderObjectFlagZsetZZZ extends AbstractObjectZZZ implements 
 	public KernelSenderObjectFlagZsetZZZ() throws ExceptionZZZ{		
 	}
 	
-	/* (non-Javadoc)
-	 * @see use.via.client.module.export.ISenderEventComponentReset#fireEvent(basic.zKernelUI.component.model.KernelEventComponentSelectionResetZZZ)
-	 */
-	private ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ> listaLISTENER_REGISTERED = new ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden 
-																							  //wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht m�glich ist 
-	@Override                                                                                          //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
+	//Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
+	//Spezieller unique Datentyp, damit ein Objekt nicht mehrfach registriert wird. (Z.B. Monitor-Objekte, die sich im Konstruktor am Broker selbst registrieren, ... und im Elternojekt, ... und im weiteren Elternobjekt, etc.
+	//wichtig: Sie muss private sein und kann nicht im Interace global definiert werden, weil es sonst nicht moeglich ist
+	 //             mehrere Events, an verschiedenen Komponenten, unabhaengig voneinander zu verwalten.
+	private ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ> listaLISTENER_REGISTERED = new ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ>();  
+ 
+	@Override                                                                                         
 	public final void fireEvent(IEventObjectFlagZsetZZZ event){	
 		/* Die Abfrage nach getSource() funktioniert so mit dem Interface noch nicht....
 		 * Auszug aus: KernelSenderComponentSelectionResetZZZ.fireEvent(....)

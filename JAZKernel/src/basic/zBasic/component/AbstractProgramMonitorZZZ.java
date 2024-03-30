@@ -26,6 +26,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 			
 	public AbstractProgramMonitorZZZ() throws ExceptionZZZ {
 		super();		
+		AbstractProgramRunnableMonitorNew_(null);
 	}
 
 	public AbstractProgramMonitorZZZ(String[] saFlag) throws ExceptionZZZ {

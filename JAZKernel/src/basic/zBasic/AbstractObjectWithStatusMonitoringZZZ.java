@@ -63,8 +63,12 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 		//1. Monitor: D.h. einen Status weiterleiten. Das muss zuerst passieren.
 		bReturn = this.reactOnStatusLocalEvent4Monitor(eventStatusLocal);
 		
-		//2. Eigene Action... das hat das Ziel, das dadurch ja ggfs. wieder neue Events geworfen werden können
-		bReturn = this.reactOnStatusLocalEvent4Action(eventStatusLocal);
+		//falls ein Status weitergeleitet wurde, kann der Event ja nicht von der Monitor-Klasse selbst kommen.
+		//in dem Fall warten wir darauf, dass der Weitergeleitete Event (diesmal von der Monitor-Klasse selbst) hier eintrifft.
+		if(!bReturn) { 			
+			//	2. Eigene Action... das hat das Ziel, das dadurch ja ggfs. wieder neue Events geworfen werden können
+			bReturn = this.reactOnStatusLocalEvent4Action(eventStatusLocal);
+		}
 		
 		return bReturn;
 	}
@@ -78,9 +82,10 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 				  throw ez;
 			}
 			
+			//Merke: Das Nachsehen in der HashMap ist ja quasi eine Relevanzpruefung. Darum an dieser Stelle nicht noch extra pruefen.
 			//Falls nicht zuständig, setze keinen Status
-			boolean bProofStatus = this.isEventRelevant4MonitorOnStatusLocal(eventStatusLocal);
-			if(!bProofStatus) break main;
+			//boolean bProofStatus = this.isEventRelevant4MonitorOnStatusLocal(eventStatusLocal);
+			//if(!bProofStatus) break main;
 			
 			
 			String sLog=null;
@@ -105,8 +110,10 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 			}
 			
 			boolean bStatusValue = eventStatusLocal.getStatusValue();
-			this.setStatusLocalEnum(enumStatusOut, bStatusValue);
+			String sStatusMessage = eventStatusLocal.getStatusMessage();
+			this.setStatusLocalEnum(enumStatusOut, sStatusMessage, bStatusValue);
 		
+			bReturn = true;
 		}//end main:
 		return bReturn;
 	}

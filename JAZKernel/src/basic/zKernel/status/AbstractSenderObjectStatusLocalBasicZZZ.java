@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
  *  und auch von den Objekten, die hier registriert sind empfangen wird. Damit fungieren Objekte dieser Klasse als "EventBroker".
@@ -20,7 +21,10 @@ import basic.zBasic.ReflectCodeZZZ;
  */
 public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractObjectZZZ implements  ISenderObjectStatusLocalZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
-	protected ArrayList<IListenerObjectStatusBasicZZZ> listaLISTENER_REGISTERED = new ArrayList<IListenerObjectStatusBasicZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
+	
+	//Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
+	//Spezieller unique Datentyp, damit ein Objekt nicht mehrfach registriert wird. (Z.B. Monitor-Objekte, die sich im Konstruktor am Broker selbst registrieren, ... und im Elternojekt, ... und im weiteren Elternobjekt, etc.
+	protected ArrayListUniqueZZZ<IListenerObjectStatusBasicZZZ> listaLISTENER_REGISTERED = new ArrayListUniqueZZZ<IListenerObjectStatusBasicZZZ>(); 
 	protected IEventObjectStatusBasicZZZ eventPrevious=null;
 
 	public AbstractSenderObjectStatusLocalBasicZZZ() throws ExceptionZZZ{

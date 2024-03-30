@@ -4,11 +4,13 @@ import java.util.HashMap;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.StatusLocalEventHelperZZZ;
 
 public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IListenerObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;
@@ -153,41 +155,19 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			
 			//1. Hole die HashMap für die Aktionen pro reinkommenden Status.
 			//   Gibt es sie nicht oder sie ist leer, wird jeder Event - unabhaengig von dem Status - weiter verfolgt.
-			HashMap<IEnumSetMappedStatusZZZ,String>hm= this.getHashMapStatusLocal4Reaction();
-			if(hm==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - ReactionHashMap NULL => jeder Status ist relevant.";				
+			HashMap<IEnumSetMappedStatusZZZ,String>hmStatusLocal4Reaction= this.getHashMapStatusLocal4Reaction();
+			
+			//2. Static - Methode, die ueber alle Klassen gleich ist anwenden.
+			//   Log-String als CallByValue Ersatzloesung mit einem Referenz-Objekt
+			ReferenceZZZ<String>objReferenceLog = new ReferenceZZZ<String>();
+			bReturn = StatusLocalEventHelperZZZ.isEventRelevant4ReactionOnStatusLocal(eventStatusLocalReact, hmStatusLocal4Reaction,objReferenceLog);
+			
+			sLog = objReferenceLog.get();
+			if(!StringZZZ.isEmpty(sLog)) {
+				sLog = sLog + " - ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ")";
 				this.logProtocolString(sLog);
-				break main;			
-			}
-			if(hm.isEmpty()) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - ReactionHashMap Empty => jeder Status ist relevant.";				
-				this.logProtocolString(sLog);
-				break main;	
-			}
-						
-			IEnumSetMappedStatusZZZ enumStatus = (IEnumSetMappedStatusZZZ) eventStatusLocalReact.getStatusEnum();			
-			String sActionAlias = hm.get(enumStatus);
-						
-			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist relevant.";				
-				this.logProtocolString(sLog);
-				break main;
 			}
 			
-			//Status nicht gepflegt, wenn durchaus andere Statuseintraege vorhanden sind oder gepflegt und ActionAlias Leer => NICHT relevant 
-			if(StringZZZ.isEmptyTrimmed(sActionAlias)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - ReactionHashMap hat Leerstring fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
-				this.logProtocolString(sLog);
-				bReturn = false;
-				break main;
-			}
-			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - ReactionHashMap hat "+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + " fuer den Status '" + enumStatus.getName() + "'=> ist NICHT relevant.";				
-				this.logProtocolString(sLog);
-				bReturn = false;
-				break main;
-			}											
-
 		}//end main:			
 		return bReturn;
 	}
@@ -217,6 +197,8 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	public boolean reactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
+			TODOGOON20240330;//Dies als static Methode in StatusLocalEventHelperZZZ packen.
+			
 			//Falls nicht zuständig, mache nix
 		    boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
 			if(!bProof) break main;
@@ -246,7 +228,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			String sActionAlias = this.getActionAliasString(enumStatus);
 			
 			//+++++++++++++++++++++
-			bReturn = this.reactOnStatusLocalEventCustomAction(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
+			bReturn = this.reactOnStatusLocalEvent4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
 		
 		}//end main:
 		return bReturn;
@@ -256,6 +238,6 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	abstract public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocal4ReactionCustom();
 
 	@Override
-	abstract public boolean reactOnStatusLocalEventCustomAction(String sAction, IEnumSetMappedStatusZZZ enumStatus,boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	abstract public boolean reactOnStatusLocalEvent4ActionCustom(String sAction, IEnumSetMappedStatusZZZ enumStatus,boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
 	
 }

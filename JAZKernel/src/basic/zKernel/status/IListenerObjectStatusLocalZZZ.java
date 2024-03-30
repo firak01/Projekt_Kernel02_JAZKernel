@@ -16,13 +16,20 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 	//       KernelZFormulaIni_NullZZZ.getExpressionTagEmpty(), d.h. ist auf jeden Fall relevant, ohne spezielle Differenzierung. Wie "".
 	public HashMap<IEnumSetMappedStatusZZZ,String> getHashMapStatusLocal4Reaction(); 	
 	public void setHashMapStatusLocal4Reaction(HashMap<IEnumSetMappedStatusZZZ,String> hmEnumSetForReaction);	
+	
+	//Eine HashMap mit den StatusLocal-Enums und einem ActionAlias.
+	//Hier macht es nur Sinn StatusLocal-Enums aufzunehmen von Objekten, an denen das Objekt selbst als  Listener registriert ist.
+	//Die definierten ActionAliassse werden verwendet in der Methode: reactOnStatusLocalEvent4ActionCustom
 	public HashMap<IEnumSetMappedStatusZZZ,String> createHashMapStatusLocal4ReactionCustom();
 	
 	public String getActionAliasString(IEnumSetMappedStatusZZZ enumStatus);
 	
 	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
 	public boolean reactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
-	public boolean reactOnStatusLocalEventCustomAction(String sAction, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	
+	//Hierin werden die ActionAliasse aus der HashMap createHashMapStatusLocal4ReactionCustom
+	//in einer Fallunterscheidung zurm Aufruf der jeweiligen Methode verwendet.	
+	public boolean reactOnStatusLocalEvent4ActionCustom(String sAction, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
 	
 	public boolean isEventRelevantAny(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ; //also überhaupt entweder für den eingenen Statuswechsel relevant oder fuer eine Reaction
 	public boolean isEventRelevant4ReactionOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;

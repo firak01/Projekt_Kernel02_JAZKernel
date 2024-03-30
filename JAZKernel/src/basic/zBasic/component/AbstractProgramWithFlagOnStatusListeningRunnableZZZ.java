@@ -92,45 +92,5 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	@Override
 	public boolean proofFlagSetBefore(IProgramRunnableZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
-	}
-		
-	
-		
-//		@Override
-//		public boolean getFlag(IProgramZZZ.FLAGZ objEnumFlag) {
-//			return this.getFlag(objEnumFlag.name());
-//		}
-//		@Override
-//		public boolean setFlag(IProgramZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-//			return this.setFlag(objEnumFlag.name(), bFlagValue);
-//		}
-//		
-//		@Override
-//		public boolean[] setFlag(IProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-//			boolean[] baReturn=null;
-//			main:{
-//				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-//					baReturn = new boolean[objaEnumFlag.length];
-//					int iCounter=-1;
-//					for(IProgramZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-//						iCounter++;
-//						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-//						baReturn[iCounter]=bReturn;
-//					}
-//				}
-//			}//end main:
-//			return baReturn;
-//		}
-//		
-//		@Override
-//		public boolean proofFlagExists(IProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-//				return this.proofFlagExists(objEnumFlag.name());
-//			}
-//		
-//		@Override
-//		public boolean proofFlagSetBefore(IProgramZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-//			return this.proofFlagSetBefore(objEnumFlag.name());
-//		}	
-
-		
+	}		
 }

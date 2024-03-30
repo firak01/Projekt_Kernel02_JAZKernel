@@ -8,6 +8,7 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
@@ -22,7 +23,10 @@ import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
  */
 public abstract class AbstractSenderObjectWithFlagStatusLocalBasicZZZ extends AbstractObjectWithFlagZZZ implements  ISenderObjectStatusLocalZZZ, Serializable{
 	private static final long serialVersionUID = 8999783685575147532L;
-	protected ArrayList<IListenerObjectStatusBasicZZZ> listaLISTENER_REGISTERED = new ArrayList<IListenerObjectStatusBasicZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
+	
+	//Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
+	//Spezieller unique Datentyp, damit ein Objekt nicht mehrfach registriert wird. (Z.B. Monitor-Objekte, die sich im Konstruktor am Broker selbst registrieren, ... und im Elternojekt, ... und im weiteren Elternobjekt, etc.		
+	protected ArrayListUniqueZZZ<IListenerObjectStatusBasicZZZ> listaLISTENER_REGISTERED = new ArrayListUniqueZZZ<IListenerObjectStatusBasicZZZ>();  //Das ist die Arrayliste, in welche  die registrierten Komponenten eingetragen werden
 	protected IEventObjectStatusBasicZZZ eventPrevious=null;
 
 	public AbstractSenderObjectWithFlagStatusLocalBasicZZZ() throws ExceptionZZZ{
