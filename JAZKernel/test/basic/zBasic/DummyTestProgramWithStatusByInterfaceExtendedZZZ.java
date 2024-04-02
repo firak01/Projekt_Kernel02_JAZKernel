@@ -2,6 +2,7 @@ package basic.zBasic;
 
 import java.util.HashMap;
 
+import basic.zBasic.component.AbstractProgramWithStatusOnStatusListeningRunnableZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -9,19 +10,19 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
-public class DummyTestObjectWithStatusByInterfaceZZZ extends AbstractObjectWithStatusZZZ<Object> implements IDummyTestObjectWithStatusByInterfaceZZZ{
-	private static final long serialVersionUID = -6198648406028055601L;
+public class DummyTestProgramWithStatusByInterfaceExtendedZZZ extends AbstractDummyTestProgramWithStatusByInterfaceExtendedZZZ{
+	private static final long serialVersionUID = -4468952293339389490L;
 
-	public DummyTestObjectWithStatusByInterfaceZZZ(String[] saFlag) throws ExceptionZZZ {
+	public DummyTestProgramWithStatusByInterfaceExtendedZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 	}
 
-	public DummyTestObjectWithStatusByInterfaceZZZ() {
+	public DummyTestProgramWithStatusByInterfaceExtendedZZZ() throws ExceptionZZZ {
 		super();
 	}
 	
 	//###################################################
-	//### FLAGS #########################################
+	//### FLAG aus: IDummyTestObjectWithStatusByInterfaceZZZ
 	//###################################################
 		
 	@Override
@@ -65,7 +66,51 @@ public class DummyTestObjectWithStatusByInterfaceZZZ extends AbstractObjectWithS
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
-	
+	//###################################################
+	//### FLAG aus : IDummyTestObjectWithStatusByInterfaceExtendedZZZ
+	//###############################################
+			
+		@Override
+		public boolean getFlag(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}	
+		
+		@Override
+		public boolean setFlag(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+		public boolean[] setFlag(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+					
+					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+					//    Es wird entfernt.
+					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				}
+			}//end main:
+			return baReturn;
+		}
+
+		@Override
+		public boolean proofFlagExists(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}
+
+		@Override
+		public boolean proofFlagSetBefore(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
 	
 	//####################################
 		//### STATUS: ILogFileWatchMonitorZZZ
@@ -280,4 +325,37 @@ public class DummyTestObjectWithStatusByInterfaceZZZ extends AbstractObjectWithS
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+		@Override
+		public boolean isEventRelevant2ChangeStatusLocalByClass(IEventObjectStatusLocalZZZ eventStatusLocal)
+				throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean isEventRelevant2ChangeStatusLocalByStatusLocalValue(IEventObjectStatusLocalZZZ eventStatusLocal)
+				throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean startCustom() throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public HashMap createHashMapStatusLocal4ReactionCustom() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public boolean reactOnStatusLocalEvent4ActionCustom(String sAction, IEnumSetMappedStatusZZZ enumStatus,
+				boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return false;
+		}
 }

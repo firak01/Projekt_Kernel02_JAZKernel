@@ -855,7 +855,23 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 				enumaReturn = listae.toArray(new IEnumSetMappedStatusZZZ[listae.size()]);
 			}//end main:
 			return enumaReturn;	
-		}		
+		}	
+		
+		public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayList(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
+			ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+			main:{
+				if(listae==null) break main;
+				
+				listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+				if(listae.size()==0) break main;
+				
+				for(IEnumSetMappedZZZ obj : listae) {
+					IEnumSetMappedStatusZZZ objStatus = (IEnumSetMappedStatusZZZ) obj;
+					listaeReturn.add(objStatus);
+				}								
+			}//end main:
+			return listaeReturn;	
+		}	
 		
 			
 		/* TODO GOON: Weitere Ideen für die Utitlity Klasse

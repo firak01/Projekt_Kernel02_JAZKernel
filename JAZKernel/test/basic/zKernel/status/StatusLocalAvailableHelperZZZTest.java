@@ -8,7 +8,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 import basic.zBasic.DummyTestObjectWithStatusByDirectZZZ;
+import basic.zBasic.DummyTestObjectWithStatusByInterfaceExtendedZZZ;
 import basic.zBasic.DummyTestObjectWithStatusByInterfaceZZZ;
+import basic.zBasic.DummyTestProgramWithStatusByInterfaceExtendedZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IDummyTestObjectWithStatusByInterfaceZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetTestFactoryZZZ;
@@ -18,25 +20,27 @@ import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 
 public class StatusLocalAvailableHelperZZZTest  extends TestCase{
+	 private DummyTestObjectWithStatusByInterfaceExtendedZZZ objTestWithStatusByInterfaceExtended = null;
 	 private DummyTestObjectWithStatusByInterfaceZZZ objTestWithStatusByInterface = null;
 	 private DummyTestObjectWithStatusByDirectZZZ objTestWithStatusByDirect = null;
 	 
+	 private DummyTestProgramWithStatusByInterfaceExtendedZZZ objTestProgramWithStatusByInterfaceExtended = null;
+	 
 	    protected void setUp(){
-		//try {			
-		
-	    	objTestWithStatusByInterface = new DummyTestObjectWithStatusByInterfaceZZZ();
-	    	objTestWithStatusByDirect = new DummyTestObjectWithStatusByDirectZZZ();
-		
+	    	try {			
+		    	objTestWithStatusByInterfaceExtended = new DummyTestObjectWithStatusByInterfaceExtendedZZZ();
+		    	objTestWithStatusByInterface = new DummyTestObjectWithStatusByInterfaceZZZ();
+		    	objTestWithStatusByDirect = new DummyTestObjectWithStatusByDirectZZZ();
 			
-			/*
+		    	objTestProgramWithStatusByInterfaceExtended = new DummyTestProgramWithStatusByInterfaceExtendedZZZ();
+	    	
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
-			*/
-			
 		}//END setup
 	    
 	    public void testGetEnumSet(){
@@ -352,7 +356,7 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	//Dies liefert beim Hinzufuegen der Enums trotzdem einen TypeCast Fehler: ArrayList<Collection<? extends Enum<?>>> listaeStatusByDirect = StatusLocalHelperZZZ.getStatusLocalEnumList(objClassByDirect);
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ> listaeStatusByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedInheritedList(objClassByDirect, false);
+		    	ArrayList<IEnumSetMappedStatusZZZ> listaeStatusByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByDirect, false);
 		    	assertNotNull("NULL sollte als ArrayList der IEnumSetMappedStatusZZZ-Objekte NICHT zurueckkommen, da STATUSLOCAL direct eingebunden wird.", listaeStatusByDirect);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByDirect.size()==6);
 
@@ -364,12 +368,12 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ>listaeStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedInheritedList(objClassByInterface, false);
+		    	ArrayList<IEnumSetMappedStatusZZZ>listaeStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, false);
 		    	assertNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", listaeStatusByInterface);
 		    	
 		    	//Postivtest:
 		    	//Merke: True gibt an, dass Interfaces durchsucht werden sollen
-		    	listaeStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedInheritedList(objClassByInterface, true);
+		    	listaeStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, true);
 		    	assertNotNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> NICHT zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird und dies sollte gescannt werden.", listaeStatusByInterface);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listaeStatusByInterface.size()==6);
 		    
@@ -407,12 +411,12 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    	Class<?> objClassByInterface = objTestWithStatusByInterface.getClass();
 		    	
 		    	//Merke: False gibt an, dass keine Interfaces durchsucht werden sollen
-		    	ArrayList<IEnumSetMappedStatusZZZ>listasStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedInheritedList(objClassByInterface, false);
+		    	ArrayList<IEnumSetMappedStatusZZZ>listasStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, false);
 		    	assertNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", listasStatusByInterface);
 		    	
 		    	//Postivtest:
 		    	//Merke: True gibt an, dass Interfaces durchsucht werden sollen
-		    	listasStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedInheritedList(objClassByInterface, true);
+		    	listasStatusByInterface = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClassByInterface, true);
 		    	assertNotNull("NULL sollte als ArrayList<IEnumSetMappedStatusZZZ-Objekte> NICHT zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird und dies sollte gescannt werden.", listasStatusByInterface);
 		    	assertTrue("Es sollten 6 Elemente in dem Array der Status Enums sein.",listasStatusByInterface.size()==6);
 		    
@@ -442,6 +446,40 @@ public class StatusLocalAvailableHelperZZZTest  extends TestCase{
 		    } catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
 			} 
+	    }
+	    
+	    //############################################
+	    //############################################
+	    public void testSearchEnum() {
+	    	try {
+	    		//C)  Per Klasse, die aus einer Abstrakten Klasse erbt, die wiederum ein "Interface mit Status" implementiert, das aus ein "Interface mit Status" erbt. 
+		    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.
+		    	Class<?> objClassFromAbstractWithInterfaceExtended = objTestProgramWithStatusByInterfaceExtended.getClass();
+		    	
+		    	boolean bScanInterfaceImmidiateC = true;
+		    	boolean bScanSuperclassImmidiateC = true;
+		    	Enum[] enumaReturnTempC = (Enum[]) StatusLocalAvailableHelperZZZ.searchEnum(objClassFromAbstractWithInterfaceExtended, bScanInterfaceImmidiateC, bScanSuperclassImmidiateC);		    	
+		    	assertFalse(ArrayUtilZZZ.isEmpty(enumaReturnTempC));
+		    	assertTrue(enumaReturnTempC.length==8);
+		    	
+	    		
+	    		
+	    		
+		    	//A)  Per Klasse, mit einer Klasse mit nur "Interface mit Status". 
+		    	//    Dazu gibt es jetzt ueberall eine Fallunterscheidung auf den Inputtyp enum selbst.
+		    	Class<?> objClassFromInterface = objTestWithStatusByInterface.getClass();
+		    	
+		    	boolean bScanInterfaceImmidiateA = true;
+		    	boolean bScanSuperclassImmidiateA = true;
+		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnum(objClassFromInterface, "STATUSLOCAL", bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
+		    	assertFalse(ArrayUtilZZZ.isEmpty(enumaReturnTempA));
+		    	assertTrue(enumaReturnTempA.length==6);
+	    		
+		    	
+		    	
+		    } catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 	    		    	
 	    }
 
 	}//end class

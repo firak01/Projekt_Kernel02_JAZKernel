@@ -19,7 +19,7 @@ import basic.zKernel.flag.IFlagZLocalUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 public class FlagZHelperZZZ implements IConstantZZZ{
-	public static boolean proofFlagZLocalExists(Class cls, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZLocalExists(Class<?> cls, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(cls==null) {
@@ -74,7 +74,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean proofFlagZExists(Class cls, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZExists(Class<?> cls, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(cls==null) {
@@ -256,15 +256,15 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean proofFlagZDirectExists(Class cls, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZDirectExists(Class<?> cls, String sFlagName) throws ExceptionZZZ {
 		return proofFlagZDirectExists_(cls, sFlagName, false);
 	}
 	
-	public static boolean proofFlagZLocalDirectExists(Class cls, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZLocalDirectExists(Class<?> cls, String sFlagName) throws ExceptionZZZ {
 		return proofFlagZDirectExists_(cls, sFlagName, true);
 	}
 	
-	private static boolean proofFlagZDirectExists_(Class cls, String sFlagName, boolean bLocal) throws ExceptionZZZ {
+	private static boolean proofFlagZDirectExists_(Class<?> cls, String sFlagName, boolean bLocal) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(cls==null) {
@@ -294,7 +294,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static ArrayList<String> getFlagsZLocalListAvailable(Class cls)  throws ExceptionZZZ {
+	public static ArrayList<String> getFlagsZLocalListAvailable(Class<?> cls)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{
 		if(cls==null) {
@@ -344,15 +344,15 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	return listasReturn;
 	}
 	
-	public static ArrayList<String> getFlagsZListDirectAvailable(Class cls)  throws ExceptionZZZ {
+	public static ArrayList<String> getFlagsZListDirectAvailable(Class<?> cls)  throws ExceptionZZZ {
 		return getFlagsZListDirectAvailable_(cls, false);
 	}
 	
-	public static ArrayList<String> getFlagsZLocalListDirectAvailable(Class cls)  throws ExceptionZZZ {
+	public static ArrayList<String> getFlagsZLocalListDirectAvailable(Class<?> cls)  throws ExceptionZZZ {
 		return getFlagsZListDirectAvailable_(cls, true);
 	}
 	
-	private static ArrayList<String> getFlagsZListDirectAvailable_(Class cls, boolean bLocal)  throws ExceptionZZZ {
+	private static ArrayList<String> getFlagsZListDirectAvailable_(Class<?> cls, boolean bLocal)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{
 		if(cls==null) {
@@ -378,8 +378,8 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		}
 		
 		//2. von den Interfaces der Klasse DIREKT implementiert
-		Class[] objclsaByInterface = cls.getInterfaces();
-		for(Class objclsByInterface : objclsaByInterface) {
+		Class<?>[] objclsaByInterface = cls.getInterfaces();
+		for(Class<?> objclsByInterface : objclsaByInterface) {
 			Enum[] enumaByInterface = null;
 			if(bLocal) {
 				enumaByInterface = getEnumFlagZLocal(objclsByInterface);
@@ -403,15 +403,15 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	
 	
 	
-	public static ArrayList<String> getFlagsZListInheritedAvailable(Class cls)  throws ExceptionZZZ {
+	public static ArrayList<String> getFlagsZListInheritedAvailable(Class<?> cls)  throws ExceptionZZZ {
 		return getFlagsZListInheritedAvailable_(cls, false);
 	}
 	
-	public static ArrayList<String> getFlagsZLocalListInheritedAvailable(Class cls)  throws ExceptionZZZ {
+	public static ArrayList<String> getFlagsZLocalListInheritedAvailable(Class<?> cls)  throws ExceptionZZZ {
 		return getFlagsZListInheritedAvailable_(cls, true);
 	}
 	
-	private static ArrayList<String> getFlagsZListInheritedAvailable_(Class cls, boolean bLocal)  throws ExceptionZZZ {
+	private static ArrayList<String> getFlagsZListInheritedAvailable_(Class<?> cls, boolean bLocal)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{
 		if(cls==null) {

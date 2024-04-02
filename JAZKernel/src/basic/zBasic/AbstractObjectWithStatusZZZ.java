@@ -413,15 +413,20 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		main:{
 			String sLog;
 			
-			if(this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.SEND_ONLY_STATUSVALUE_TRUE)) {
-				if(!bValue) break main; //Also nur Events im TRUE Fall behandeln
-			}
-			
+			//Wenn ein Status verarbeitet wird, dann wird er auch gespeichert.			
 			IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
 			if(!bReturn)break main;
 						
 			//#############################################
+			
+			//Es ist nur die Frage, ob Status - Werte mit false versendet werden sollen
+			if(!bValue) {
+				if(!this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE)) {
+					break main; //Also im Normalfall nur Events mit TRUE Wert behandeln
+				}
+			}
+						
 			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 			//Dann erzeuge den Event und feuer ihn ab.	
 			if(this.getSenderStatusLocalUsed()==null) {
@@ -985,7 +990,19 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			String sLog;
 			
 			//20240310: IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln	
-			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.searchHashMapBooleanMessage(this);
+			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.searchHashMapBooleanMessage(this, true);
+			if(hmStatus==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Es war keine HashMap mit Statusname erstellbar.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+
+			if(hmStatus.isEmpty()) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - HashMap mit Statusnamen ist leer.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
 			IStatusBooleanMessageZZZ objStatus = hmStatus.get(sStatusName);
 			if(objStatus==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Der Status wurde nicht in der HashMap der Statusname gefunden. '" + sStatusName + "'";
@@ -993,11 +1010,17 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				break main;
 			}
 		
-			IEnumSetMappedStatusZZZ objEnum = objStatus.getEnumObject();						
-			IStatusBooleanMessageZZZ element = new StatusBooleanMessageZZZ(objEnum, bStatusValue, sStatusMessage);
-			bOffered = this.getCircularBufferStatusLocal().offer(element);
-			if(!bOffered)break main;
+			IEnumSetMappedStatusZZZ objEnum = objStatus.getEnumObject();
 			
+			//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
+			bOffered = this.offerStatusLocalEnum(objEnum, bStatusValue, sStatusMessage);
+			if(!bOffered) break main;
+		
+			
+//			IStatusBooleanMessageZZZ element = new StatusBooleanMessageZZZ(objEnum, bStatusValue, sStatusMessage);
+//			bOffered = this.getCircularBufferStatusLocal().offer(element);
+//			if(!bOffered)break main;
+//			
 			bReturn = true;
 		}//end main:
 		return bReturn;		
@@ -1350,6 +1373,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(!bFlag) {
 				bReturn = true;
 				break main;
+			}
+			
+			if(!bValue) { //Ggfs False Werte nicht weiter verarbeiten, also NUR True Werte
+				boolean bFlagTruer = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUETRUE);
+				if(bFlagTruer) break main;			
 			}
 			
 			bReturn = this.proofStatusLocalValueChanged(sStatusName, bValue);

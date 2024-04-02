@@ -10,7 +10,7 @@ public interface ISenderObjectStatusLocalUserZZZ extends ISenderObjectStatusBasi
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY,SEND_ONLY_STATUSVALUE_TRUE
+		DUMMY,STATUSLOCAL_SEND_VALUEFALSE
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);

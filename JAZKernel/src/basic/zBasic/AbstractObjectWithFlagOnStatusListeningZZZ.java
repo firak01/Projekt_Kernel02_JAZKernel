@@ -11,6 +11,7 @@ import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.ISenderObjectStatusLocalUserZZZ;
 import basic.zKernel.status.StatusLocalEventHelperZZZ;
 
 public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends AbstractObjectWithFlagZZZ<Object> implements IListenerObjectStatusLocalZZZ{
@@ -198,8 +199,6 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	public boolean reactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			String sLog;
-
 			if(eventStatusLocal==null) {				 
 				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				 throw ez;
@@ -210,6 +209,16 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject has no EnumStatus", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				 throw ez;
 			}
+			
+			//Im Normalfall auf FALSE Werte nicht reagieren
+			boolean bValue = eventStatusLocal.getStatusValue();
+			if(!bValue) {
+				if(!this.getFlag(IListenerObjectStatusLocalZZZ.FLAGZ.STATUSLOCAL_REACT_ON_VALUEFALSE)) {
+					break main; //Nur auf FALSE-Werte reagieren, wenn entsprechendes FLAG gesetzt ist					
+				}
+			}
+			
+			String sLog;
 			
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
 		    boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);

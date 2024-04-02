@@ -16,7 +16,7 @@ import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
  */
 public interface IObjectWithStatusZZZ extends IObjectZZZ {
 	public enum FLAGZ{
-		STATUSLOCAL_PROOF_VALUE, STATUSLOCAL_PROOF_VALUECHANGED, STATUSLOCAL_PROOF_MESSAGECHANGED ; 
+		STATUSLOCAL_PROOF_VALUE, STATUSLOCAL_PROOF_VALUETRUE, STATUSLOCAL_PROOF_VALUECHANGED, STATUSLOCAL_PROOF_MESSAGECHANGED ; 
 	}
 	
 	//damit muss man nicht mehr tippen hinter dem enum .name()

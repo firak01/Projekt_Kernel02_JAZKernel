@@ -9,6 +9,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
+import basic.zKernel.status.ISenderObjectStatusLocalUserZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
 
 /**
@@ -98,18 +99,25 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 		 * @see basic.zKernel.status.IListenerObjectStatusLocalSetZZZ#changeStatusLocal(basic.zKernel.status.IEventObjectStatusLocalSetZZZ)
 		 */
 		@Override
-		public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocalSet) throws ExceptionZZZ{
-			boolean bReturn = false;
-			
-			main:{
-				//Falls nicht zuständig, mache nix
-			    boolean bProof = this.isEventRelevant2ChangeStatusLocal(eventStatusLocalSet);
-				if(!bProof) break main;
+		public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+			boolean bReturn = false;			
+			main:{		
+				if(eventStatusLocal==null) {				 
+					 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
+					 throw ez;
+				}
+				
+				boolean bValue = eventStatusLocal.getStatusValue();
+				if(!bValue) {
+					if(!this.getFlag(IListenerObjectStatusLocalZZZ.FLAGZ.STATUSLOCAL_REACT_ON_VALUEFALSE)) {
+						break main; //Nur auf FALSE-Werte reagieren, wenn entsprechendes FLAG gesetzt ist					
+					}
+				}
 				
 				String sLog=null;
 				
-				//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
-				IEnumSetMappedZZZ enumStatus = eventStatusLocalSet.getStatusLocal();
+				IEnumSetMappedStatusZZZ enumStatus = (IEnumSetMappedStatusZZZ) eventStatusLocal.getStatusLocal();
+				//IEnumSetMappedZZZ enumStatus = eventStatusLocal.getStatusLocal();
 				if(enumStatus==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Keinen Status aus dem Event-Objekt erhalten. Breche ab";
 					System.out.println(sLog);
@@ -117,7 +125,12 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 					break main;
 				}
 				
-				//+++++++++++++++++++++
+				
+				//Falls nicht zuständig, mache nix
+			    boolean bProof = this.isEventRelevant2ChangeStatusLocal(eventStatusLocal);
+				if(!bProof) break main;
+								
+				//+++ Mappe nun die eingehenden Status-Enums auf die eigenen.
 				HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ>hmEnum = this.getHashMapEnumSetForCascadingStatusLocal();				
 				if(hmEnum==null) {
 					sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Keine Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
@@ -139,8 +152,8 @@ public abstract class AbstractKernelUseObjectWithStatusMonitoringZZZ extends Abs
 				
 				//Nur so als Beispiel, muss ueberschrieben werden:
 				//Lies den Status (geworfen vom Backend aus)
-				if(eventStatusLocalSet instanceof IEventObjectStatusLocalZZZ) {
-					IEventObjectStatusLocalZZZ eventStatusLocalReact = (IEventObjectStatusLocalZZZ) eventStatusLocalSet;					
+				if(eventStatusLocal instanceof IEventObjectStatusLocalZZZ) {
+					IEventObjectStatusLocalZZZ eventStatusLocalReact = (IEventObjectStatusLocalZZZ) eventStatusLocal;					
 					String sStatus = eventStatusLocalReact.getStatusMessage();
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - Methode muss ueberschrieben werden.");
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatusMonitoring ("+ this.getClass().getName()+" - sStatus='"+sStatus+"'");

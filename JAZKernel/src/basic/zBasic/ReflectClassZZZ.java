@@ -245,7 +245,6 @@ public class ReflectClassZZZ implements IConstantZZZ{
 		}
 		
 		public static void scanInterfacesSuper(Class<?>objClass, ArrayList<Class<?>> listaInterfaceSuper) {
-			
 			Class<?>[]objaInterfaceSuper = objClass.getInterfaces();
 			if(objaInterfaceSuper!=null){
 				for(Class<?>objInterfaceSuper:objaInterfaceSuper) {

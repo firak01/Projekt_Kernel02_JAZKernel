@@ -527,6 +527,20 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 		return enumaReturn;	
 	}
 	
+	
+	public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayListByMapped(ArrayList<IEnumSetMappedZZZ> listae) throws ExceptionZZZ{
+		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
+		main:{
+			if(listae==null) break main;
+			
+			listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+			if(listae.size()==0) break main;
+			
+			listaeReturn = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(listae);
+		}//end main:
+		return listaeReturn;	
+	}
+	
 		
 	public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(ArrayList<E> listae){
 		E[] enumaReturn = null;

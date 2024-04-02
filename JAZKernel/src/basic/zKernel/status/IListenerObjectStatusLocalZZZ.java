@@ -42,7 +42,7 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY
+		DUMMY,STATUSLOCAL_REACT_ON_VALUEFALSE
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);

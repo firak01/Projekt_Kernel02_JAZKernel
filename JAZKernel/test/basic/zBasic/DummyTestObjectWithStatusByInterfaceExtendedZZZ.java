@@ -9,19 +9,19 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
-public class DummyTestObjectWithStatusByInterfaceZZZ extends AbstractObjectWithStatusZZZ<Object> implements IDummyTestObjectWithStatusByInterfaceZZZ{
-	private static final long serialVersionUID = -6198648406028055601L;
+public class DummyTestObjectWithStatusByInterfaceExtendedZZZ extends AbstractObjectWithStatusZZZ<Object> implements IDummyTestObjectWithStatusByInterfaceExtendedZZZ{
+	private static final long serialVersionUID = -4468952293339389490L;
 
-	public DummyTestObjectWithStatusByInterfaceZZZ(String[] saFlag) throws ExceptionZZZ {
+	public DummyTestObjectWithStatusByInterfaceExtendedZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
 	}
 
-	public DummyTestObjectWithStatusByInterfaceZZZ() {
+	public DummyTestObjectWithStatusByInterfaceExtendedZZZ() {
 		super();
 	}
 	
 	//###################################################
-	//### FLAGS #########################################
+	//### FLAG aus: IDummyTestObjectWithStatusByInterfaceZZZ
 	//###################################################
 		
 	@Override
@@ -65,7 +65,51 @@ public class DummyTestObjectWithStatusByInterfaceZZZ extends AbstractObjectWithS
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 	
-	
+	//###################################################
+	//### FLAG aus : IDummyTestObjectWithStatusByInterfaceExtendedZZZ
+	//###############################################
+			
+		@Override
+		public boolean getFlag(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}	
+		
+		@Override
+		public boolean setFlag(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+
+		@Override
+		public boolean[] setFlag(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+					
+					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+					//    Es wird entfernt.
+					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				}
+			}//end main:
+			return baReturn;
+		}
+
+		@Override
+		public boolean proofFlagExists(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}
+
+		@Override
+		public boolean proofFlagSetBefore(IDummyTestObjectWithStatusByInterfaceExtendedZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}
+		
 	
 	//####################################
 		//### STATUS: ILogFileWatchMonitorZZZ

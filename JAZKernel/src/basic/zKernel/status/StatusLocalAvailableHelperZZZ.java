@@ -10,9 +10,11 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectInterfaceZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumHelperZZZ;
+import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
@@ -110,7 +112,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			}
 					
 			//Die Klasse selbst und alle Elternklassen, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
-			String[] saFlagAvailable = StatusLocalAvailableHelperZZZ.searchInherited(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
+			String[] saFlagAvailable = StatusLocalAvailableHelperZZZ.search(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
 			if(saFlagAvailable!=null) {
 				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sStatusName)) {
 					bReturn = true;	
@@ -150,176 +152,59 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	//++++++++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++
 	public static ArrayList<String> searchListDirect(Class cls)  throws ExceptionZZZ {
-		return searchListDirect_(cls, true);
+		return searchListDirect_(cls, true, true);
 	}
 	
 	public static ArrayList<String> searchListDirect(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchListDirect_(cls, bScanInterfaceImmidiate);
+		return searchListDirect_(cls, bScanInterfaceImmidiate, true);
 	}
 	
-	private static ArrayList<String> searchListDirect_(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		ArrayList<String> listasReturn = null;
-		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
-		
-		//1. von der Classe selbst implementiert
-		Enum[] enuma = searchEnum(cls, bScanInterfaceImmidiate);
-		
-		ArrayList<String>listasByDirect=null;
-		if(!ArrayUtilZZZ.isEmpty(enuma)) {				
-			listasByDirect = new ArrayList<String>();
-			for(Enum objEnum : enuma) {
-				String sEnum = objEnum.name();
-				if(!listasByDirect.contains(sEnum)) {
-					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-					listasByDirect.add(sEnum);
-				}
-			}			
-		}
-		
-		//2. von den Interfaces der Klasse DIREKT implementiert
-		ArrayList<String>listasByInterface=null;
-		if(bScanInterfaceImmidiate) {
-			Class[] objclsaByInterface = cls.getInterfaces();
-			if(!ArrayUtilZZZ.isEmpty(objclsaByInterface)){				
-				for(Class objclsByInterface : objclsaByInterface) {
-					Enum[] enumaByInterface = searchEnum_(objclsByInterface, false);//false, weil ja die Interfaces eh betrachtet werde sollen
-
-					ArrayList<String> listasByInterfaceTemp = null;
-					if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {	
-						listasByInterfaceTemp = new ArrayList<String>();
-						for(Enum objEnum : enumaByInterface) {
-							String sEnum = objEnum.name();
-							if(!listasByInterfaceTemp.contains(sEnum)) {
-								//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-								listasByInterfaceTemp.add(sEnum);
-							}
-						}	
-					}
-					if(!ArrayListZZZ.isEmpty(listasByInterfaceTemp)) {
-						if(ArrayListZZZ.isEmpty(listasByInterface)) listasByInterface = new ArrayList<String>();				
-						listasByInterface.addAll(listasByInterfaceTemp);
-					}
-				}								
-			}
-		}
-		
-		//3. von den Elternklassen der Klasse implementiert
-		//... eben nicht, da direct implementiert
-		
-		if(!ArrayListZZZ.isEmpty(listasByDirect)) {		
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByDirect);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listasByInterface)) {
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByInterface);
-		}
-//		
-//		if(!ArrayListZZZ.isEmpty(listasByClassSuper)) {
-//			if(listasReturn==null) listasReturn = new ArrayList<String>();
-//			listasReturn.addAll(listasByClassSuper);
-//		}
-		
-		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);
-	}//end main:
-	return listasReturn;
+	public static ArrayList<String> searchListDirect(Class cls, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+		return searchListDirect_(cls, bScanInterfaceImmidiate, bScanSuperclassImmediate);
 	}
 	
-	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListDirectAvailable(Class cls)  throws ExceptionZZZ {
+	private static ArrayList<String> searchListDirect_(Class cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+		ArrayList<String> listasReturn = EnumAvailableHelperZZZ.searchListDirect(cls, "STATUSLOCAL", bScanInterfaceImmediate,bScanSuperclassImmediate);
+		return listasReturn;
+	}
+	
+		
+	//++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++
 	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListDirect(Class cls)  throws ExceptionZZZ {
 		return searchEnumMappedListDirect_(cls, true);
 	}
 	
-	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListDirectAvailable(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListDirect(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchEnumMappedListDirect_(cls, bScanInterfaceImmidiate);
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListDirect(Class cls, boolean bScanInterfaceImmediate)  throws ExceptionZZZ {
+		return searchEnumMappedListDirect_(cls, bScanInterfaceImmediate);
 	}
 	
-	//private static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListDirectAvailable_(Class cls, boolean bLocal, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-	private static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListDirect_(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		//ArrayList<Collection<? extends Enum<?>>> listaeReturn = new ArrayList<Collection<? extends Enum<?>>>();
+	private static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListDirect_(Class cls, boolean bScanInterfaceImmediate)  throws ExceptionZZZ {
 		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
-
 		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
-		
-		//1. von der Classe selbst implementiert
-		Enum[] enuma = searchEnum_(cls, bScanInterfaceImmidiate);
-
-		ArrayList<IEnumSetMappedStatusZZZ> listaeClass = null;
-		if(!ArrayUtilZZZ.isEmpty(enuma)) {
-			listaeClass = new ArrayList<IEnumSetMappedStatusZZZ>();
+			ArrayList<IEnumSetMappedZZZ> listae = EnumAvailableHelperZZZ.searchEnumMappedListDirect(cls, "STATUSLOCAL", bScanInterfaceImmediate);
+			if(listae==null)break main;
 			
-//			for(Enum objEnum : enuma) {
-//				String sEnum = objEnum.name();
-//				if(!listasReturn.contains(sEnum)) {
-//					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-//					listasReturn.add(sEnum);
-//				}
-//			}	
-			
-			for(Enum objEnum : enuma) {
-				//TypeCastException: listasReturn.add((Collection<? extends Enum<?>>) objEnum);
-				IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) objEnum;
-				listaeClass.add(e);
-			}
-		}
-		
-		//2. von den Interfaces der Klasse DIREKT implementiert
-		ArrayList<IEnumSetMappedStatusZZZ> listaeInterface = new ArrayList<IEnumSetMappedStatusZZZ>();
-		if(bScanInterfaceImmidiate) {
-			Class[] objclsaByInterface = cls.getInterfaces();
-			if(!ArrayUtilZZZ.isEmpty(objclsaByInterface)) {
-				for(Class objclsByInterface : objclsaByInterface) {
-					Enum[] enumaByInterface = searchEnum_(objclsByInterface, bScanInterfaceImmidiate);
-
-					if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {
-						listaeInterface = new ArrayList<IEnumSetMappedStatusZZZ>();
-						
-		//				for(Enum objEnum : enumaByInterface) {
-		//					String sEnum = objEnum.name();
-		//					if(!listasReturn.contains(sEnum)) {
-		//						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-		//						listasReturn.add(sEnum);
-		//					}
-		//				}
-						
-						for(Enum objEnum : enumaByInterface) {
-							//listasReturn.add((Collection<? extends Enum<?>>) objEnum);
-							IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) objEnum;
-							listaeInterface.add(e);
-						}
-					}
-				}
-			}
-		}
-		
-		//...eben nicht die Elternklassen holen, wg: "directAvailable"
-//		//3. Hole die Elternklassen.
-//...................................	
-
-		listaeReturn = ArrayListZZZ.join(listaeClass, listaeInterface);
-	}//end main:
-	return listaeReturn;
+			listaeReturn = ArrayListZZZ.toEnumMappedStatusArrayListByMapped(listae);
+		}//end main:
+		return listaeReturn;
 	}
 	
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupListInherited(Class cls, int iGroupId)  throws ExceptionZZZ {
-		return searchForGroupListInherited_(cls, iGroupId, true);
+	//++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList(Class cls, int iGroupId)  throws ExceptionZZZ {
+		return searchForGroupList_(cls, iGroupId, true, true);
 	}
 	
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupListInherited(Class cls, int iGroupId, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchForGroupListInherited_(cls, iGroupId, bScanInterfaceImmidiate);
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList(Class cls, int iGroupId, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+		return searchForGroupList_(cls, iGroupId, bScanInterfaceImmidiate, true);
 	}
 	
-	private static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupListInherited_(Class cls, int iGroupId, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList(Class cls, int iGroupId, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+		return searchForGroupList_(cls, iGroupId, bScanInterfaceImmidiate, bScanSuperclassImmediate);
+	}
+	
+	private static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList_(Class cls, int iGroupId, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
 		main:{
 		if(cls==null) {
@@ -329,7 +214,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		if(iGroupId<=-1)break main;
 		
 		//1. von der Classe selbst implementiert		
-		IEnumSetMappedStatusZZZ[] enuma = searchEnumMapped(cls,bScanInterfaceImmidiate);
+		IEnumSetMappedStatusZZZ[] enuma = StatusLocalAvailableHelperZZZ.searchEnumMapped(cls,bScanInterfaceImmediate, false);
 
 		ArrayList<IEnumSetMappedStatusZZZ> listaeByDirect = null;
 		if(!ArrayUtilZZZ.isEmpty(enuma)) {					
@@ -350,13 +235,13 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		
 		//2. allen Interfaces der Klasse, auch den erbenden implementiert
 		ArrayList<IEnumSetMappedStatusZZZ> listaeByInterface = null;
-		if(bScanInterfaceImmidiate) {
+		if(bScanInterfaceImmediate) {
 			ArrayList<Class<?>> listaInterfaceSuper=new ArrayList<Class<?>>();
 			ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);			
 			for(Class<?> objclsByInterface : listaInterfaceSuper) {
 						
 				IEnumSetMappedStatusZZZ[] enumaByInterface = null;
-				enumaByInterface = searchEnumMapped(objclsByInterface, bScanInterfaceImmidiate);
+				enumaByInterface = searchEnumMapped(objclsByInterface, false, false);
 				
 				ArrayList<IEnumSetMappedStatusZZZ> listaeByInterfaceTemp = null;
 				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {
@@ -376,14 +261,17 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		}
 		
 		//3. Hole die Elternklassen.
-		ArrayList<Class<?>> listaClassSuper=ReflectClassZZZ.getSuperClasses(cls);
-		ArrayList<IEnumSetMappedStatusZZZ> listaeByClassSuper = null;		
-		for(Class<?> objclsSuper : listaClassSuper) {
-			
-			//!!!Rekursion
-			ArrayList<IEnumSetMappedStatusZZZ> listaeByClassSuperTemp=StatusLocalAvailableHelperZZZ.searchForGroupListInherited(objclsSuper, iGroupId, bScanInterfaceImmidiate);			
-			listaeByClassSuper = ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
-		}	
+		ArrayList<IEnumSetMappedStatusZZZ> listaeByClassSuper = null;	
+		if(bScanSuperclassImmediate) {
+			ArrayList<Class<?>> listaClassSuper=ReflectClassZZZ.getSuperClasses(cls);
+		
+			for(Class<?> objclsSuper : listaClassSuper) {
+				
+				//!!!Rekursion
+				ArrayList<IEnumSetMappedStatusZZZ> listaeByClassSuperTemp=StatusLocalAvailableHelperZZZ.searchForGroupList(objclsSuper, iGroupId, bScanInterfaceImmediate, bScanSuperclassImmediate);			
+				listaeByClassSuper = ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
+			}	
+		}
 		
 		if(!ArrayListZZZ.isEmpty(listaeByDirect)) {		
 			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
@@ -405,162 +293,52 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	return listaeReturn;
 	}
 	
-	public static ArrayList<String> searchListInherited(Class cls)  throws ExceptionZZZ {
-		return searchListInherited_(cls, true);
-	}
 	
-	public static ArrayList<String> searchListInherited(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchListInherited_(cls, bScanInterfaceImmidiate);
-	}
-	
-	private static ArrayList<String> searchListInherited_(Class cls, boolean bScanInterfaceImmiediate)  throws ExceptionZZZ {
-		ArrayList<String> listasReturn = null;
-		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
-		
-		//1. von der Classe selbst implementiert		
-		Enum[] enuma = searchEnum_(cls, bScanInterfaceImmiediate);
-		
-		ArrayList<String>listasByDirect = null;
-		if(!ArrayUtilZZZ.isEmpty(enuma)) {	
-			listasByDirect = new ArrayList<String>();
-			for(Enum objEnum : enuma) {
-				String sEnum = objEnum.name();
-				if(!listasByDirect.contains(sEnum)) {
-					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-					listasByDirect.add(sEnum);
-				}
-			}			
-		}
-				
-		//20210404: Die von der Klasse als Interface direkt implementierten reichen nicht.
-		//          Es fehlen hier die Interfaces extends Interface, usw.
-		
-		//2. allen Interfaces der Klasse, auch den erbenden implementiert
-		ArrayList<String>listasByInterface = null;
-		if(bScanInterfaceImmiediate) {
-			ArrayList<Class<?>> listaInterfaceSuper=new ArrayList<Class<?>>();
-			ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);
-			for(Class<?> objclsByInterface : listaInterfaceSuper) {
-				
-				Enum[] enumaByInterface = null;
-				enumaByInterface = searchEnum(objclsByInterface);
-								
-				ArrayList<String>listasByInterfaceTemp = null;
-				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {
-					listasByInterfaceTemp = new ArrayList<String>();
-					for(Enum objEnum : enumaByInterface) {
-						String sEnum = objEnum.name();
-						if(!listasByInterfaceTemp.contains(sEnum)) {
-							//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-							listasByInterfaceTemp.add(sEnum);
-						}
-					}			
-				}
-				if(!ArrayListZZZ.isEmpty(listasByInterfaceTemp)) {
-					if(ArrayListZZZ.isEmpty(listasByInterface)) listasByInterface = new ArrayList<String>();				
-					listasByInterface.addAll(listasByInterfaceTemp);
-				}
-			}
-		}
-		
-		//3. Hole die Elternklassen.
-		ArrayList<Class<?>> listaClassSuper=ReflectClassZZZ.getSuperClasses(cls);
-		ArrayList<String>listasByClassSuper=null;
-		for(Class<?> objclsSuper : listaClassSuper) {
-			//!!!Rekursion
-			ArrayList<String> listasByClassSuperTemp=StatusLocalAvailableHelperZZZ.searchListInherited(objclsSuper);
-			listasByClassSuper = ArrayListZZZ.join(listasByClassSuper, listasByClassSuperTemp);			
-		}			
-		
-		
-		if(!ArrayListZZZ.isEmpty(listasByDirect)) {		
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByDirect);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listasByInterface)) {
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByInterface);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listasByClassSuper)) {
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByClassSuper);
-		}
-		
-		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);
-	}//end main:
-	return listasReturn;
-	}
+	//#################################
+	//#################################
 	
 	
 	
-	//+++++++++++++++++++++++++++++++++++++++++
-	//+++++++++++++++++++++++++++++++++++++++++
-	public static IEnumSetMappedStatusZZZ[] searchEnumMappedInherited(IStatusLocalMessageUserZZZ objForClass)  throws ExceptionZZZ {
-		return searchEnumMappedInherited_(objForClass, true);
-	}
-	
-	public static IEnumSetMappedStatusZZZ[] searchEnumMappedInherited(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchEnumMappedInherited_(objForClass, bScanInterfaceImmidiate);
-	}
-	
-	private static IEnumSetMappedStatusZZZ[] searchEnumMappedInherited_(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {	
-		IEnumSetMappedStatusZZZ[] objaeReturn = null;
-		main:{
-			if(objForClass==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Object for Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-				 throw ez;
-			}
-			
-			Class objClass = objForClass.getClass();
-			objaeReturn = StatusLocalAvailableHelperZZZ.searchEnumMappedInherited(objClass);
-		
-		}//end main:
-	return objaeReturn;
-	}
-
 
 	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++
-	public static IEnumSetMappedStatusZZZ[] searchEnumMappedInherited(Class<?> cls)  throws ExceptionZZZ {
-		return searchEnumMappedInherited_(cls, true);
-	}
-	
-	public static IEnumSetMappedStatusZZZ[] searchEnumMappedInherited(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchEnumMappedInherited_(cls, bScanInterfaceImmidiate);
-	}
-		
-	private static IEnumSetMappedStatusZZZ[] searchEnumMappedInherited_(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {	
-		IEnumSetMappedStatusZZZ[] objaeReturn = null;
-		main:{
-		
-		ArrayList<IEnumSetMappedStatusZZZ>listaeReturn=StatusLocalAvailableHelperZZZ.searchEnumMappedListInherited(cls, bScanInterfaceImmidiate);
-		if(listaeReturn==null)break main;
-		
-		//IEnumSetMappedZZZ[] objae = EnumSetMappedUtilZZZ.toEnumMappedArray(listaeReturn);
-		objaeReturn = ArrayListZZZ.toEnumMappedStatusArrayByMapped(listaeReturn);
-	}//end main:
-	return objaeReturn;
-	}
+//	public static IEnumSetMappedStatusZZZ[] searchEnumMappedStatus(Class<?> cls)  throws ExceptionZZZ {
+//		return searchEnumMappedStatus_(cls, true);
+//	}
+//	
+//	public static IEnumSetMappedStatusZZZ[] searchEnumMappedStatus(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+//		return searchEnumMappedStatus_(cls, bScanInterfaceImmidiate);
+//	}
+//		
+//	private static IEnumSetMappedStatusZZZ[] searchEnumMappedStatus_(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {	
+//		IEnumSetMappedStatusZZZ[] objaeReturn = null;
+//		main:{
+//		
+//		ArrayList<IEnumSetMappedStatusZZZ>listaeReturn=StatusLocalAvailableHelperZZZ.searchEnumMappedListInherited(cls, bScanInterfaceImmidiate);
+//		if(listaeReturn==null)break main;
+//		
+//		//IEnumSetMappedZZZ[] objae = EnumSetMappedUtilZZZ.toEnumMappedArray(listaeReturn);
+//		objaeReturn = ArrayListZZZ.toEnumMappedStatusArrayByMapped(listaeReturn);
+//	}//end main:
+//	return objaeReturn;
+//	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++	
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListInherited(IStatusLocalMessageUserZZZ objForClass)  throws ExceptionZZZ {
-		return searchEnumMappedListInherited_(objForClass, true);
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedStatusList(IStatusLocalMessageUserZZZ objForClass)  throws ExceptionZZZ {
+		return searchEnumMappedStatusList_(objForClass, true, true);
 	}
 	
-	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListInherited(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchEnumMappedListInherited_(objForClass, bScanInterfaceImmidiate);
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedStatusList(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+		return searchEnumMappedStatusList_(objForClass, bScanInterfaceImmidiate, true);
 	}
 	
-	private static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListInherited_(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {		
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedStatusList(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+		return searchEnumMappedStatusList_(objForClass, bScanInterfaceImmidiate, bScanSuperclassImmediate);
+	}
+	
+	private static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedStatusList_(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {		
 		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
 		main:{
 			if(objForClass==null) {
@@ -569,7 +347,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			}
 			
 			Class objClass = objForClass.getClass();
-			listaeReturn = StatusLocalAvailableHelperZZZ.searchEnumMappedListInherited(objClass,bScanInterfaceImmidiate);
+			listaeReturn = StatusLocalAvailableHelperZZZ.searchEnumMappedList(objClass,bScanInterfaceImmediate, bScanSuperclassImmediate);
 		
 			}//end main:
 	return listaeReturn;
@@ -577,100 +355,25 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 
 	//+++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++
-	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls)  throws ExceptionZZZ {
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListInherited(Class<?> cls)  throws ExceptionZZZ {
-		return searchEnumMappedListInherited_(cls, true);
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedList(Class<?> cls)  throws ExceptionZZZ {
+		return searchEnumMappedList_(cls, true, true);
 	}
 	
-	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListInherited(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		return searchEnumMappedListInherited_(cls, bScanInterfaceImmidiate);
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedList(Class<?> cls, boolean bScanInterfaceImmediate)  throws ExceptionZZZ {
+		return searchEnumMappedList_(cls, bScanInterfaceImmediate, true);
 	}
 	
+	public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedList(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+		return searchEnumMappedList_(cls, bScanInterfaceImmediate, bScanSuperclassImmediate);
+	}
 	
-	//private static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable_(Class cls, boolean bLocal, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-	private static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedListInherited_(Class<?> cls, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-		//ArrayList<Collection<? extends Enum<?>>> listaeReturn = new ArrayList<Collection<? extends Enum<?>>>();
+	private static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedList_(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
 		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
-		
-		//1. von der Classe selbst implementiert		
-		Enum[] enuma = searchEnum_(cls,bScanInterfaceImmidiate);
-		
-		ArrayList<IEnumSetMappedStatusZZZ>listaeByDirect=null;
-		if(!ArrayUtilZZZ.isEmpty(enuma)) {	
-			listaeByDirect = new ArrayList<IEnumSetMappedStatusZZZ>();
-			for(Enum objEnum : enuma) {				
-				IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) objEnum;				
-				if(!listaeByDirect.contains(e)) {
-					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-					listaeByDirect.add(e);
-				}
-			}			
-		}
-		
-				
-		//20210404: Die von der Klasse als Interface direkt implementierten reichen nicht.
-		//          Es fehlen hier die Interfaces extends Interface, usw.
-		
-		//2. allen Interfaces der Klasse, auch den erbenden implementiert
-		ArrayList<IEnumSetMappedStatusZZZ>listaeByInterface=null;
-		if(bScanInterfaceImmidiate) {
-			ArrayList<Class<?>> listaInterfaceSuper=new ArrayList<Class<?>>();
-			ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);
-			for(Class<?> objclsByInterface : listaInterfaceSuper) {
-						
-				Enum[] enumaByInterface = searchEnum_(objclsByInterface,bScanInterfaceImmidiate);
-				
-				ArrayList<IEnumSetMappedStatusZZZ>listaeByInterfaceTemp=null; 
-				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {			
-					listaeByInterfaceTemp = new ArrayList<IEnumSetMappedStatusZZZ>();
-										
-					for(Enum objEnum : enumaByInterface) {						
-						IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) objEnum;
-						if(!listaeByInterfaceTemp.contains(e)) {
-							//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-							listaeByInterfaceTemp.add(e);
-						}
-					}
-				}
-				if(!ArrayListZZZ.isEmpty(listaeByInterfaceTemp)) {
-					if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();				
-					listaeByInterface = ArrayListZZZ.join(listaeByInterface, listaeByInterfaceTemp);
-				}
-			}
-		}
-		
-		//3. Hole die Elternklassen.
-		ArrayList<Class<?>> listaClassSuper=ReflectClassZZZ.getSuperClasses(cls);
-		ArrayList<IEnumSetMappedStatusZZZ>listaeByClassSuper=null;
-		for(Class<?> objclsSuper : listaClassSuper) {
-			//Rekursion durchfuehren !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//ArrayList<Collection<? extends Enum<?>>> listaStatusByClassSuper = new ArrayList<Collection<? extends Enum<?>>>();
-			ArrayList<IEnumSetMappedStatusZZZ> listaeByClassSuperTemp = StatusLocalAvailableHelperZZZ.searchEnumMappedListInherited(objclsSuper,bScanInterfaceImmidiate);
-			listaeByClassSuper = ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
-		}			
-		
-		if(!ArrayListZZZ.isEmpty(listaeByDirect)) {		
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-			listaeReturn.addAll(listaeByDirect);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-			listaeReturn.addAll(listaeByInterface);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listaeByClassSuper)) {
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-			listaeReturn.addAll(listaeByClassSuper);
-		}
-		
-		listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.unique(listaeReturn);
+			ArrayList<IEnumSetMappedZZZ>listae = EnumAvailableHelperZZZ.searchEnumMappedList(cls, "STATUSLOCAL", bScanInterfaceImmediate, bScanSuperclassImmediate);
+			if(listae==null)break main;
+			
+			listaeReturn = ArrayListZZZ.toEnumMappedStatusArrayListByMapped(listae);
 	}//end main:
 	return listaeReturn;
 	}
@@ -678,83 +381,37 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	//+++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++
 	public static ArrayList<String> searchList(Class<?> cls) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchList_(cls, true);
+		return StatusLocalAvailableHelperZZZ.searchList_(cls, true, true);
 	}
 	
 	public static ArrayList<String> searchList(Class<?> cls, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchList_(cls, bScanInterfaceImmidiate);
+		return StatusLocalAvailableHelperZZZ.searchList_(cls, bScanInterfaceImmidiate, true);
 	}
 	
-	private static ArrayList<String> searchList_(Class<?> cls, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		ArrayList<String> listasReturn = null;
-		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
-	
-		//1. von der Classe selbst implementiert
-		ArrayList<String> listasByDirect = StatusLocalAvailableHelperZZZ.searchListDirect(cls,bScanInterfaceImmidiate);
-				
-		//2. allen Interfaces der Klasse, auch den erbenden implementiert
-		ArrayList<String> listasByInterface = null;
-		if(bScanInterfaceImmidiate) {
-			ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
-			ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
-			for(Class<?> objclsByInterface : listaClassInterface) {
-				Enum[] enumaByInterface = searchEnum_(objclsByInterface, false);//false, weil ja die Interfaces eh betrachtet werde sollen
-				ArrayList<String>listasByInterfaceTemp=null;
-				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {	
-					listasByInterfaceTemp = new ArrayList<String>();
-					for(Enum objEnum : enumaByInterface) {
-						String sEnum = objEnum.name();
-						if(!listasByInterfaceTemp.contains(sEnum)) {
-							//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-							listasByInterfaceTemp.add(sEnum);
-						}
-					}			
-				}
-				if(!ArrayListZZZ.isEmpty(listasByInterfaceTemp)) {
-					if(ArrayListZZZ.isEmpty(listasByInterface)) listasByInterface = new ArrayList<String>();				
-					listasByInterface.addAll(listasByInterfaceTemp);
-				}
-			}
-		}
-		
-		//3. von den Elternklassen der Klasse implementiert
-		ArrayList<String> listasByParent = new ArrayList<String>();		
-		ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
-		for(Class objcls : listaobjClass) {
-			//Von dem Interface direkt implementiert. Reicht aber nicht um alle zu erfassen.
-			//Darum: Von der Vererbungshierarchie des Interface implementiert.
-			ArrayList<String> listasByParentTemp = StatusLocalAvailableHelperZZZ.searchListInherited(objcls, bScanInterfaceImmidiate);
-			if(!ArrayListZZZ.isEmpty(listasByParentTemp)) {
-				if(ArrayListZZZ.isEmpty(listasByParent)) listasByParent = new ArrayList<String>();				
-				listasByParent.addAll(listasByParentTemp);
-			}			
-		}
-				
-		if(!ArrayListZZZ.isEmpty(listasByDirect)) {
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByDirect);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listasByInterface)) {
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByInterface);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listasByParent)) {
-			if(listasReturn==null) listasReturn = new ArrayList<String>();
-			listasReturn.addAll(listasByParent);
-		}
-		
-		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);
-	}//end main:
-	return listasReturn;
+	public static ArrayList<String> searchList(Class<?> cls, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchList_(cls, bScanInterfaceImmidiate, bScanSuperclassImmediate);
 	}
 	
+	private static ArrayList<String> searchList_(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		ArrayList<String> listasReturn = EnumAvailableHelperZZZ.searchList(cls, "STATUSLOCAL", bScanInterfaceImmediate, bScanSuperclassImmediate);
+		return listasReturn;
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++
 	public static String[] search(Class<?> cls) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.search_(cls, true, true);	
+	}
+	
+	public static String[] search(Class<?> cls, boolean bScanInterfaceImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.search_(cls, bScanInterfaceImmediate, true);	
+	}
+	
+	public static String[] search(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.search_(cls, bScanInterfaceImmediate, bScanSuperclassImmediate);	
+	}
+	
+	private static String[] search_(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{
 		if(cls==null) {
@@ -762,13 +419,24 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			 throw ez;
 		}
 
-		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchList(cls);
+		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchList(cls,bScanInterfaceImmediate, bScanSuperclassImmediate);
 		saReturn = ArrayListZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
 	
-	public static String[] searchDirect(Class<?> cls)  throws ExceptionZZZ {
+	//+++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++
+
+	public static String[] searchDirect(Class<?> cls) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchDirect_(cls, true);	
+	}
+	
+	public static String[] searchDirect(Class<?> cls, boolean bScanInterfaceImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchDirect_(cls, bScanInterfaceImmediate);	
+	}
+		
+	private static String[] searchDirect_(Class<?> cls, boolean bScanInterfaceImmediate)  throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{
 		if(cls==null) {
@@ -776,40 +444,34 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			 throw ez;
 		}
 		
-		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchListDirect(cls);			
+		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchListDirect(cls, bScanInterfaceImmediate);			
 		saReturn = ArrayListZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
 	}
 	
-	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumListInheritedAvailable(Class cls)  throws ExceptionZZZ {
-	public static String[] searchInherited(Class<?> cls)  throws ExceptionZZZ {
-		String[] saReturn = null;
-		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
-		
-		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchListInherited(cls);					
-		saReturn = ArrayListZZZ.toStringArray(listas);
-	}//end main:
-	return saReturn;
-	}
-	
-	public static String[] searchEnumInherited(Class<?> cls)  throws ExceptionZZZ {
-		String[] saReturn = null;
-		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
-		
-		ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchListInherited(cls);					
-		saReturn = ArrayListZZZ.toStringArray(listas);
-	}//end main:
-	return saReturn;
-	}
+	//++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++
+//	public static String[] searchInherited(Class<?> cls) throws ExceptionZZZ {
+//		return StatusLocalAvailableHelperZZZ.searchInherited_(cls, true, true);	
+//	}
+//
+//	public static String[] searchInherited(Class<?> cls, boolean bScanInterfaceImmediate) throws ExceptionZZZ {
+//		return StatusLocalAvailableHelperZZZ.searchInherited_(cls, bScanInterfaceImmediate, true);	
+//	}
+//
+//	public static String[] searchInherited(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+//		return StatusLocalAvailableHelperZZZ.searchInherited_(cls, bScanInterfaceImmediate, bScanSuperclassImmediate);	
+//	}
+//	
+//	private static String[] searchInherited_(Class<?> cls, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+//		String[] saReturn = null;
+//		main:{		
+//			ArrayList<String> listas = StatusLocalAvailableHelperZZZ.searchList(cls, bScanInterfaceImmediate, bScanSuperclassImmediate);					
+//			saReturn = ArrayListZZZ.toStringArray(listas);
+//		}//end main:
+//		return saReturn;
+//	}
 	
 	//+++++++++++++++++++++++++++++
 	//+++ Hole die Status-Strings fuer eine bestimmte StatusGroupId
@@ -899,81 +561,81 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	
 	//+++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList(Class<?> cls, int iGroupId) throws ExceptionZZZ{
-		return StatusLocalAvailableHelperZZZ.searchForGroupList_(cls, iGroupId, true);
-	}
-	
-	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList(Class<?> cls, int iGroupId, boolean bScanInterfaceImmidiate) throws ExceptionZZZ{
-		return StatusLocalAvailableHelperZZZ.searchForGroupList_(cls, iGroupId, bScanInterfaceImmidiate);
-	}
-	
-	private static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList_(Class<?> cls, int iGroupId, boolean bScanInterfaceImmidiate) throws ExceptionZZZ{
-		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-		main:{
-			if(iGroupId<=-1) break main;
-			
-			//1. von der Classe selbst implementiert
-			ArrayList<IEnumSetMappedStatusZZZ> listaeByDirect = StatusLocalAvailableHelperZZZ.searchForGroupListDirect(cls, iGroupId, bScanInterfaceImmidiate);
-					
-			//2. allen Interfaces der Klasse, auch den erbenden implementiert
-			ArrayList<IEnumSetMappedStatusZZZ> listaeByInterface = null;
-			if(bScanInterfaceImmidiate) {
-				ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
-				ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
-				for(Class<?> objclsByInterface : listaClassInterface) {
-					IEnumSetMappedStatusZZZ[] enumaByInterface = searchEnumMapped(objclsByInterface, false);//false, weil ja eh schon nach Interfaces-Klassen gesucht wird
-					if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {
-						ArrayList<IEnumSetMappedStatusZZZ> listaeByInterfaceTemp = new ArrayList<IEnumSetMappedStatusZZZ>();
-						for(IEnumSetMappedStatusZZZ objEnum : enumaByInterface) {
-							int iGroupIdByEnum = objEnum.getStatusGroupId();
-							if(iGroupIdByEnum == iGroupId) {
-								if(!listaeByInterfaceTemp.contains(objEnum)) {
-									//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-									listaeByInterfaceTemp.add(objEnum);
-								}
-							}
-						}
-						if(!ArrayListZZZ.isEmpty(listaeByInterfaceTemp)) {
-							if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();				
-							listaeByInterface.addAll(listaeByInterfaceTemp);
-						}
-					}
-				}
-			}
-			
-			//3. von den Elternklassen der Klasse implementiert
-			ArrayList<IEnumSetMappedStatusZZZ> listaeByParent = null;		
-			ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
-			for(Class objcls : listaobjClass) {
-				//Von dem Interface direkt implementiert. Reicht aber nicht um alle zu erfassen.				
-				//Darum: Von der Vererbungshierarchie des Interface implementiert.
-				ArrayList<IEnumSetMappedStatusZZZ> listaeByParentTemp = StatusLocalAvailableHelperZZZ.searchForGroupListInherited(objcls, iGroupId, bScanInterfaceImmidiate);
-				if(!ArrayListZZZ.isEmpty(listaeByParentTemp)) {
-					if(ArrayListZZZ.isEmpty(listaeByParent)) listaeByParent = new ArrayList<IEnumSetMappedStatusZZZ>();				
-					listaeByParent.addAll(listaeByParentTemp);
-				}
-			}
-						
-			if(!ArrayListZZZ.isEmpty(listaeByDirect)) {
-				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-				listaeReturn.addAll(listaeByDirect);
-			}
-			
-			if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
-				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-				listaeReturn.addAll(listaeByInterface);
-			}
-			
-			if(!ArrayListZZZ.isEmpty(listaeByParent)) {
-				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-				listaeReturn.addAll(listaeByParent);
-			}
-
-			//listasReturn = (ArrayList<Collection<? extends Enum<?>>>) ArrayListZZZ.unique(listasReturn);
-			listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.unique(listaeReturn);
-		}//end main:
-		return listaeReturn;
-	}
+//	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList(Class<?> cls, int iGroupId) throws ExceptionZZZ{
+//		return StatusLocalAvailableHelperZZZ.searchForGroupList_(cls, iGroupId, true);
+//	}
+//	
+//	public static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList(Class<?> cls, int iGroupId, boolean bScanInterfaceImmidiate) throws ExceptionZZZ{
+//		return StatusLocalAvailableHelperZZZ.searchForGroupList_(cls, iGroupId, bScanInterfaceImmidiate);
+//	}
+//	
+//	private static ArrayList<IEnumSetMappedStatusZZZ> searchForGroupList_(Class<?> cls, int iGroupId, boolean bScanInterfaceImmidiate) throws ExceptionZZZ{
+//		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+//		main:{
+//			if(iGroupId<=-1) break main;
+//			
+//			//1. von der Classe selbst implementiert
+//			ArrayList<IEnumSetMappedStatusZZZ> listaeByDirect = StatusLocalAvailableHelperZZZ.searchForGroupListDirect(cls, iGroupId, bScanInterfaceImmidiate);
+//					
+//			//2. allen Interfaces der Klasse, auch den erbenden implementiert
+//			ArrayList<IEnumSetMappedStatusZZZ> listaeByInterface = null;
+//			if(bScanInterfaceImmidiate) {
+//				ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
+//				ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
+//				for(Class<?> objclsByInterface : listaClassInterface) {
+//					IEnumSetMappedStatusZZZ[] enumaByInterface = searchEnumMapped(objclsByInterface, false);//false, weil ja eh schon nach Interfaces-Klassen gesucht wird
+//					if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {
+//						ArrayList<IEnumSetMappedStatusZZZ> listaeByInterfaceTemp = new ArrayList<IEnumSetMappedStatusZZZ>();
+//						for(IEnumSetMappedStatusZZZ objEnum : enumaByInterface) {
+//							int iGroupIdByEnum = objEnum.getStatusGroupId();
+//							if(iGroupIdByEnum == iGroupId) {
+//								if(!listaeByInterfaceTemp.contains(objEnum)) {
+//									//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
+//									listaeByInterfaceTemp.add(objEnum);
+//								}
+//							}
+//						}
+//						if(!ArrayListZZZ.isEmpty(listaeByInterfaceTemp)) {
+//							if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();				
+//							listaeByInterface.addAll(listaeByInterfaceTemp);
+//						}
+//					}
+//				}
+//			}
+//			
+//			//3. von den Elternklassen der Klasse implementiert
+//			ArrayList<IEnumSetMappedStatusZZZ> listaeByParent = null;		
+//			ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
+//			for(Class objcls : listaobjClass) {
+//				//Von dem Interface direkt implementiert. Reicht aber nicht um alle zu erfassen.				
+//				//Darum: Von der Vererbungshierarchie des Interface implementiert.
+//				ArrayList<IEnumSetMappedStatusZZZ> listaeByParentTemp = StatusLocalAvailableHelperZZZ.searchForGroupListInherited(objcls, iGroupId, bScanInterfaceImmidiate);
+//				if(!ArrayListZZZ.isEmpty(listaeByParentTemp)) {
+//					if(ArrayListZZZ.isEmpty(listaeByParent)) listaeByParent = new ArrayList<IEnumSetMappedStatusZZZ>();				
+//					listaeByParent.addAll(listaeByParentTemp);
+//				}
+//			}
+//						
+//			if(!ArrayListZZZ.isEmpty(listaeByDirect)) {
+//				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+//				listaeReturn.addAll(listaeByDirect);
+//			}
+//			
+//			if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
+//				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+//				listaeReturn.addAll(listaeByInterface);
+//			}
+//			
+//			if(!ArrayListZZZ.isEmpty(listaeByParent)) {
+//				if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
+//				listaeReturn.addAll(listaeByParent);
+//			}
+//
+//			//listasReturn = (ArrayList<Collection<? extends Enum<?>>>) ArrayListZZZ.unique(listasReturn);
+//			listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.unique(listaeReturn);
+//		}//end main:
+//		return listaeReturn;
+//	}
 	
 	//++++++++++++++++++++++++++++++++++++++++
 	/** Rueckgabewert ist eine HashMap in Form <"String des EnumNamens", IEnmSetMappdedStatusZZZ>. 
@@ -1051,7 +713,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 
 
 			//Hier werden auch Vererbte Klassen und Interfaces betrachtet.
-			IEnumSetMappedStatusZZZ[] enumaMappedStatus = StatusLocalAvailableHelperZZZ.searchEnumMappedInherited(classToCheck, bScanInterfaceImmidiate);
+			IEnumSetMappedStatusZZZ[] enumaMappedStatus = StatusLocalAvailableHelperZZZ.searchEnumMapped(classToCheck, bScanInterfaceImmidiate);
 			if(enumaMappedStatus==null) break main;			
 			
 			hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
@@ -1117,103 +779,9 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		return hmReturn;
 	}
 	
-	//+++++++++++++++++++++++++++++++++++++++++++++++++
-	//+++++++++++++++++++++++++++++++++++++++++++++++++
-	 public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedInheritedList(Class<?> cls) throws ExceptionZZZ {
-		 return StatusLocalAvailableHelperZZZ.searchEnumMappedInheritedList_(cls, true);
-	 }
-	 
-	 public static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedInheritedList(Class<?> cls, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		 return StatusLocalAvailableHelperZZZ.searchEnumMappedInheritedList_(cls,bScanInterfaceImmidiate);
-	 }
-
-	
-	
-	/** s. https://stackoverflow.com/questions/31104584/how-to-save-enum-class-in-a-hashmap
-	 * aber wenn ich ArrayList<Collection<? extends Enum<?>>> verwende, 
-	 * kommt es beim Hinzufügen des Enum - Objekts trotzdem zu einem TypeCast Fehler
-	 * Darum alles auf IEnumSetMappedStatusZZZ umgestellt.
-	 * @param classToCheck
-	 * @throws ExceptionZZZ
-	 * @author Fritz Lindhauer, 10.03.2024, 17:38:09
-	 */
-	//public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumList(Class cls) throws ExceptionZZZ {
-	private static ArrayList<IEnumSetMappedStatusZZZ> searchEnumMappedInheritedList_(Class<?> cls, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		//ArrayList<Collection<? extends Enum<?>>> listasReturn = new ArrayList<Collection<? extends Enum<?>>>();
-		ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
-		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
-			 throw ez;
-		}
-	
-		//1. von der Classe selbst implementiert
-		//ArrayList<String> listasDirect = StatusLocalHelperZZZ.getStatusLocalListDirectAvailable(cls);
-		//ArrayList<Collection<? extends Enum<?>>> listaeDirect = StatusLocalHelperZZZ.getStatusLocalEnumListDirectAvailable(cls);
-		ArrayList<IEnumSetMappedStatusZZZ> listaeByDirect = StatusLocalAvailableHelperZZZ.searchEnumMappedListDirect(cls, bScanInterfaceImmidiate);
-		
-		ArrayList<IEnumSetMappedStatusZZZ> listaeByInterface = null;
-		if(bScanInterfaceImmidiate) {
-			//2. allen Interfaces der Klasse, auch den erbenden implementiert
-			//ArrayList<String> listasInterface = new ArrayList<String>();
-			//kann nicht instanziiert werden... ArrayList<? extends Enum<?>> listasInterface = new ArrayList<? extends Enum<?>>();
-			//ArrayList<Collection<? extends Enum<?>>> listasInterface = new ArrayList<Collection<? extends Enum<?>>>();			
-			ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
-			ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
-			for(Class<?> objclsByInterface : listaClassInterface) {			
-				Enum[] enumaByInterface = searchEnum_(objclsByInterface, bScanInterfaceImmidiate);
-				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)){
-					for(Enum objEnum : enumaByInterface) {
-						if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedStatusZZZ>();
-						IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) objEnum;
-						listaeByInterface.add(e);
-					}
-				}
-			}
-		}
-			
-		//3. von den Elternklassen der Klasse implementiert
-		//ArrayList<Collection<? extends Enum<?>>> listaeParent = new ArrayList<Collection<? extends Enum<?>>>();
-		ArrayList<IEnumSetMappedStatusZZZ> listaeByParent = null;
-		ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
-		for(Class objcls : listaobjClass) {
-			//Rekursion der interited Klassen und Interfaces einleiten !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!		
-			ArrayList<IEnumSetMappedStatusZZZ> listaeTemp = StatusLocalAvailableHelperZZZ.searchEnumMappedListInherited(objcls,bScanInterfaceImmidiate);
-			if(!ArrayListZZZ.isEmpty(listaeTemp)) {
-				for(IEnumSetMappedStatusZZZ objEnum : listaeTemp) {
-					if(ArrayListZZZ.isEmpty(listaeByParent)) listaeByParent = new ArrayList<IEnumSetMappedStatusZZZ>();
-					listaeByParent.add(objEnum);
-				}
-			}
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listaeByDirect)) {
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-			listaeReturn.addAll(listaeByDirect);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listaeByInterface)) {
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-			listaeReturn.addAll(listaeByInterface);
-		}
-		
-		if(!ArrayListZZZ.isEmpty(listaeByParent)) {
-			if(listaeReturn==null) listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
-			listaeReturn.addAll(listaeByParent);
-		}
-
-		//listasReturn = (ArrayList<Collection<? extends Enum<?>>>) ArrayListZZZ.unique(listasReturn);
-		listaeReturn = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.unique(listaeReturn);
-	}//end main:
-	return listaeReturn;
-	}
-	
-	
-
-	
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++
-		//+++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
 	/** Rueckgabewert ist eine ArrayList in Form <IStatusBooleanMessageZZZ>.
 	 *  Merke1: Die Werte der BooleanMessage stammen aus dem Objekt selbst.
 	 *  Merke2: Trotzdem sind das ALLE moeglichen/definierten Statuswerte.
@@ -1303,67 +871,62 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	
 	//+++++++++++++++++++++++++
 	//+++++++++++++++++++++++++
-	public static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumName, true);
+	public static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped(Class<?> classToCheck, String sEnumPropertyName) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumPropertyName, true, true);
 	}
 	
-	public static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumName, bScanInterfaceImmidiate);
+	public static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped(Class<?> classToCheck, String sEnumPropertyName, boolean bScanInterfaceImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumPropertyName, bScanInterfaceImmediate, true);
+	}
+
+	public static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped(Class<?> classToCheck, String sEnumPropertyName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, sEnumPropertyName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 	}
 	
-	private static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+	private static <E extends IEnumSetMappedStatusZZZ> E searchEnumMapped_(Class<?> classToCheck, String sEnumPropertyName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
 		E enumReturn = null;
 		main:{
-			if(classToCheck==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
-				 throw ez;
-			}
-			
-			String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
-			
-			//+++++++++++++++++++++++++++++++++++
-			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			if(!ArrayListZZZ.isEmpty(listaClass)) {				
-				for(Class objClass : listaClass) {
-					String sEnumClass = objClass.getName();				
-					if(sEnumClass.endsWith(sEnumFlagZName)) {
-						IEnumSetMappedStatusZZZ e = EnumHelperZZZ.getEnumAsField(objClass, sEnumName);	
-						if(e!=null) {
-							enumReturn = (E) e;										
-							break main;
-						}
-					 }
-				}
-			}
-			
-			//+++++++++++++++++++++++++++++++++++
-			if(bScanInterfaceImmidiate) {
-				ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(classToCheck);			
-				for(Class objClass : listaInterface) {
-					String sEnumClass = objClass.getName();				
-					if(sEnumClass.endsWith(sEnumFlagZName)) {
-						IEnumSetMappedStatusZZZ e = EnumHelperZZZ.getEnumAsField(objClass, sEnumName);	
-						if(e!=null) {
-							enumReturn = (E) e;										
-							break main;
-						}
-					 }
-				}
-				
-			}
+			IEnumSetMappedZZZ enumReturnTemp = EnumAvailableHelperZZZ.searchEnumMapped(classToCheck, "STATUSLOCAL", sEnumPropertyName, bScanInterfaceImmediate, bScanSuperclassImmediate);
+			enumReturn = (E) enumReturnTemp;
+		}//end main:
+		return enumReturn;
+	}
+
+	//+++++++++++++++++++++++++
+	//+++++++++++++++++++++++++
+	public static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMapped(Class<?> classToCheck) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, true, true);
+	}
+	
+	public static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMapped(Class<?> classToCheck, boolean bScanInterfaceImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, bScanInterfaceImmediate, true);
+	}
+
+	public static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMapped(Class<?> classToCheck, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, bScanInterfaceImmediate, bScanSuperclassImmediate);
+	}
+	
+	private static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMapped_(Class<?> classToCheck, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		E[] enumReturn = null;
+		main:{
+			IEnumSetMappedZZZ[] enumReturnTemp = EnumAvailableHelperZZZ.searchEnumMapped(classToCheck, "STATUSLOCAL", bScanInterfaceImmediate, bScanSuperclassImmediate);
+			enumReturn = EnumSetMappedStatusUtilZZZ.toEnumSetMappedStatusArray(enumReturnTemp);
 		}//end main:
 		return enumReturn;
 	}
 	
-	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++++
 	public static IEnumSetMappedStatusZZZ[] searchEnumMapped(IStatusLocalMessageUserZZZ objToCheck) throws ExceptionZZZ {
-		 return StatusLocalAvailableHelperZZZ.searchEnumMapped_(objToCheck, true);
+		 return StatusLocalAvailableHelperZZZ.searchEnumMapped_(objToCheck, true, true);
 	 }
 
 	public static IEnumSetMappedStatusZZZ[] searchEnumMapped(IStatusLocalMessageUserZZZ objToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		 return StatusLocalAvailableHelperZZZ.searchEnumMapped_(objToCheck, bScanInterfaceImmidiate);
+		 return StatusLocalAvailableHelperZZZ.searchEnumMapped_(objToCheck, bScanInterfaceImmidiate, true);
+	 }
+	
+	public static IEnumSetMappedStatusZZZ[] searchEnumMapped(IStatusLocalMessageUserZZZ objToCheck, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		 return StatusLocalAvailableHelperZZZ.searchEnumMapped_(objToCheck, bScanInterfaceImmidiate, bScanSuperclassImmediate);
 	 }
 	
 	 /** Rueckgabewert ist eine ArrayList in Form <IStatusBooleanMessageZZZ>.
@@ -1375,121 +938,90 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 	 * @param E 
 	 */
 	 //public static ArrayList<Collection<? extends Enum<?>>> getStatusLocalEnumList(Class cls) throws ExceptionZZZ {
-	private static IEnumSetMappedStatusZZZ[] searchEnumMapped_(IStatusLocalMessageUserZZZ objToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		IEnumSetMappedStatusZZZ[] objaReturn = null;
+	private static IEnumSetMappedStatusZZZ[] searchEnumMapped_(IStatusLocalMessageUserZZZ objToCheck, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		IEnumSetMappedStatusZZZ[] objaeReturn = null;
 		main:{
 			if(objToCheck==null)break main;
 			
 			//Irgendwie ein Problem der Namensgebung für die Methoden wenn nur eine anders benannte Methode aufgerufen wird
 			Class<?> objClassToCheck = objToCheck.getClass();
-			objaReturn = StatusLocalAvailableHelperZZZ.searchEnumMapped(objClassToCheck, bScanInterfaceImmidiate);
+			objaeReturn = StatusLocalAvailableHelperZZZ.searchEnumMapped(objClassToCheck, bScanInterfaceImmediate, bScanSuperclassImmediate);
 		}
-		return objaReturn;
+		return objaeReturn;
 	}
 
 	//++++++++++++++++++++++++
 	//++++++++++++++++++++++++
-	public static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMapped(Class<?> classToCheck) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, true);
+	public static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMappedDirect(Class<?> classToCheck) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMappedDirect_(classToCheck, true);
 	}
 	
-	public static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMapped(Class<?> classToCheck, boolean bScannInterfaceImmidiate) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchEnumMapped_(classToCheck, bScannInterfaceImmidiate);
+	public static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMappedDirect(Class<?> classToCheck, boolean bScannInterfaceImmidiate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnumMappedDirect_(classToCheck, bScannInterfaceImmidiate);
 	}
 	
-	private static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMapped_(Class<?> classToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+	private static <E extends IEnumSetMappedStatusZZZ> E[] searchEnumMappedDirect_(Class<?> classToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
 		E[] enumaReturn = null;
 		main:{
-			if(classToCheck==null) {
-				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
-				 throw ez;
-			}
 			
-			//Suche nun nach einem Wert in den Eingebetteten Klassen, der per Innere Klasse eingebunden wird.			
-			String sEnumStatusLocalNameInner = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";			
+			//IEnumSetMappedZZZ[] enumaReturnTemp = StatusLocalAvailableHelperZZZ.searchEnumMapped(classToCheck, bScanInterfaceImmidiate, false);
+			enumaReturn = StatusLocalAvailableHelperZZZ.searchEnumMapped(classToCheck, bScanInterfaceImmidiate, false);
 			
-			//+++++++++++++++++++++++++++++++++
-			//Holle alle eingebetteten Klassen aus Klassen
-			E[] enumaReturnByClass = null;
-			//if(classToCheck.isInterface()) {
-			if(classToCheck.isEnum()) { //Auch wenn das Enum direkt angegben wird.
-				//z.B. das enum selbst gibt es so:
-				//Class<?> objClassFromInterface = IDummyTestObjectWithStatusByInterfaceZZZ.STATUSLOCAL.class;))
-		    	//Object[] objEnum = objClassFromInterface.getEnumConstants();
-		    	//IEnumSetMappedStatusZZZ[] enumaByInterface3 = (IEnumSetMappedStatusZZZ[])objEnum; 
-		  		
-				Object[] objEnum = classToCheck.getEnumConstants();
-				enumaReturnByClass = (E[])objEnum; 		    	
-			}else {
-				ArrayList<Class<?>> listaClassByClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-				if(!ArrayListZZZ.isEmpty(listaClassByClass)) {				
-					ArrayList<E> listaeByClass = new ArrayList<E>();
-					for(Class objClass : listaClassByClass) {
-						String sEnumClass = objClass.getName();				
-						if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
-							Object[] obja = objClass.getEnumConstants();
-							for(Object obj : obja) {
-								IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) obj;
-								listaeByClass.add((E) e);
-							}
-						 }
-					}
-					enumaReturnByClass = ArrayListZZZ.toEnumMappedStatusArray(listaeByClass);
-				}
-			}
+			//Merke: Ein einfaches Casten fuehrt zu einer CAST Exception
+			//enumaReturn = (E[]) enumaReturnTemp;
 			
-			E[] enumaReturnByInterface = null;
-			if(bScanInterfaceImmidiate) {
-				//+++++++++++++++++++++++++++++++++
-				//Holle alle eingebetteten Klassen aus Interfaces	
-				//ArrayList<Class<?>> listaeClassByInterface = ReflectInterfaceZZZ.getEmbeddedClasses(classToCheck);								
-				ArrayList<Class<?>> listaInterfaceByClass = ReflectInterfaceZZZ.getInterfaces(classToCheck);
-				
-				ArrayList<E> listaeByInterface = null;
-				for(Class objClassInterface : listaInterfaceByClass) {
-					ArrayList<E> listaeByInterfaceTemp = new ArrayList<E>();
-					
-					//Diese Interfaceklassen jetzt auch nach Embedded-Klassen scannen
-					ArrayList<Class<?>> listaClassByInterface = ReflectClassZZZ.getEmbeddedClasses(objClassInterface);
-					for(Class objClass : listaClassByInterface) {
-						String sEnumClass = objClass.getName();				
-						if(sEnumClass.endsWith(sEnumStatusLocalNameInner)) {
-							Object[] obja = objClass.getEnumConstants();
-							for(Object obj : obja) {
-								IEnumSetMappedStatusZZZ e = (IEnumSetMappedStatusZZZ) obj;
-								listaeByInterfaceTemp.add((E) e);
-							}
-						 }
-					}//end for		
-					if(!ArrayListZZZ.isEmpty(listaeByInterfaceTemp)) {
-						if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<E>();				
-						listaeByInterface.addAll(listaeByInterfaceTemp);
-					}
-				}//end for
-				enumaReturnByInterface = ArrayListZZZ.toEnumMappedStatusArray(listaeByInterface);			
-			}
-			
-			//Verbinde beides
-			enumaReturn = ArrayUtilZZZ.join(enumaReturnByClass, enumaReturnByInterface);
+			//Darum in einer Schleife die Einzelwerte casten
+			//enumaReturn = EnumSetMappedStatusUtilZZZ.toEnumSetMappedStatusArray(enumaReturnTemp);
 		}
 		return enumaReturn;
 	}
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++
+//	public static IEnumSetMappedStatusZZZ[] searchEnumMapped(IStatusLocalMessageUserZZZ objForClass)  throws ExceptionZZZ {
+//		return searchEnumMapped_(objForClass, true);
+//	}
+//	
+//	public static IEnumSetMappedStatusZZZ[] searchEnumMapped(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
+//		return searchEnumMapped_(objForClass, bScanInterfaceImmidiate);
+//	}
+	
+//	private static IEnumSetMappedStatusZZZ[] searchEnumMapped_(IStatusLocalMessageUserZZZ objForClass, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {	
+//		IEnumSetMappedStatusZZZ[] objaeReturn = null;
+//		main:{
+//			if(objForClass==null) {
+//				 ExceptionZZZ ez = new ExceptionZZZ( "Object for Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+//				 throw ez;
+//			}
+//			
+//			Class objClass = objForClass.getClass();
+//			objaeReturn = StatusLocalAvailableHelperZZZ.searchEnumMapped(objClass);
+//		
+//		}//end main:
+//	return objaeReturn;
+//	}
+
 							
 	//++++++++++++++++++++++++++++++
 	public static <E extends Enum> E[] searchEnum(Class<?> classToCheck) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchEnum_(classToCheck, true);
+		return StatusLocalAvailableHelperZZZ.searchEnum_(classToCheck, true, true);
 	}
-	
+
 	public static <E extends Enum> E[] searchEnum(Class<?> classToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
-		return StatusLocalAvailableHelperZZZ.searchEnum_(classToCheck, bScanInterfaceImmidiate);
+		return StatusLocalAvailableHelperZZZ.searchEnum_(classToCheck, bScanInterfaceImmidiate, true);
+	}
+
+	public static <E extends Enum> E[] searchEnum(Class<?> classToCheck, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
+		return StatusLocalAvailableHelperZZZ.searchEnum_(classToCheck, bScanInterfaceImmidiate, bScanSuperclassImmediate);
 	}
 	
-	private static <E extends Enum> E[] searchEnum_(Class<?> classToCheck, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+	private static <E extends Enum> E[] searchEnum_(Class<?> classToCheck, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate) throws ExceptionZZZ {
 		E[] enumaReturn = null;
 		main:{
 			//String sEnumStatusLocalNameInner = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + "STATUSLOCAL";
 			String sEnumName = StatusLocalAvailableHelperZZZ.sENUM_NAME;
-			enumaReturn = EnumAvailableHelperZZZ.searchEnum(classToCheck, sEnumName, bScanInterfaceImmidiate);
+			enumaReturn = EnumAvailableHelperZZZ.searchEnum(classToCheck, sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate );
 		}//end main:
 		return enumaReturn;
 	}
@@ -1504,7 +1036,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		return StatusLocalAvailableHelperZZZ.searchEnum_(classToCheck, sEnumName, bScanInterfaceImmidiate);
 	}
 	
-	private static <E extends Enum> E searchEnum_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {
+	private static <E extends Enum> E searchEnum_(Class<?> classToCheck, String sEnumName, boolean bScanInterfaceImmidiate) throws ExceptionZZZ {		
 		E enumReturn = null;
 		main:{
 			if(classToCheck==null) {
