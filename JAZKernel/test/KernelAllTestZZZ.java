@@ -60,6 +60,7 @@ import basic.zKernel.file.ini.KernelJavaCallIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelJsonIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZTest;
+import basic.zKernel.flag.FlagZHelperZZZTest;
 import basic.zKernel.status.StatusLocalAvailableHelperZZZTest;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZTest;
 import basic.zUtil.io.FileExpansionZZZTest;
@@ -145,6 +146,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(FileIniZZZTest.class);
 		
 		objReturn.addTestSuite(EnumAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
+		objReturn.addTestSuite(FlagZHelperZZZTest.class);//Teste die Behandlung der Enumeration
 		objReturn.addTestSuite(StatusLocalAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
 		
 		//Test für Filter auf jar/zip Dateien

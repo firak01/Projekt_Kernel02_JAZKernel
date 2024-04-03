@@ -13,7 +13,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.flag.json.FlagZHelperZZZ;
+import basic.zKernel.flag.FlagZHelperZZZ;
 import basic.zKernel.status.IStatusBooleanMessageZZZ;
 import basic.zKernel.status.IStatusLocalMessageUserZZZ;
 import basic.zKernel.status.StatusBooleanMessageZZZ;
@@ -231,34 +231,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		ArrayList<IEnumSetMappedZZZ> listaeReturn = EnumAvailableHelperZZZ.searchEnumMappedList(cls,sEnumName,bScanInterfaceImmidiate, false); 
 		return listaeReturn;
 	}
-	
-	//+++++++++++++++++++++++++++++++++++++++++
-	//+++++++++++++++++++++++++++++++++++++++++
-//	public static IEnumSetMappedZZZ[] searchEnumMappedInherited(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
-//		return searchEnumMappedInherited_(cls, sEnumName, true, true);
-//	}
-//	
-//	public static IEnumSetMappedZZZ[] searchEnumMappedInherited(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate)  throws ExceptionZZZ {
-//		return searchEnumMappedInherited_(cls, sEnumName, bScanInterfaceImmidiate, true);
-//	}
-//
-//	public static IEnumSetMappedZZZ[] searchEnumMappedInherited(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImidiate)  throws ExceptionZZZ {
-//		return searchEnumMappedInherited_(cls, sEnumName, bScanInterfaceImmidiate, bScanSuperclassImidiate);
-//	}
-//	
-//	private static IEnumSetMappedZZZ[] searchEnumMappedInherited_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmidiate, boolean bScanSuperclassImidiate)  throws ExceptionZZZ {	
-//		IEnumSetMappedZZZ[] objaeReturn = null;
-//		main:{
-//		
-//		ArrayList<IEnumSetMappedZZZ>listaeReturn=EnumAvailableHelperZZZ.searchEnumMappedListInherited(cls, sEnumName, bScanInterfaceImmidiate, bScanSuperclassImidiate);
-//		if(listaeReturn==null)break main;
-//		
-//		objaeReturn = ArrayListZZZ.toEnumMappedArray(listaeReturn);
-//		
-//	}//end main:
-//	return objaeReturn;
-//	}
-//			
+			
 	//+++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++
 	public static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
@@ -304,6 +277,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		//          Es fehlen hier die Interfaces extends Interface, usw.
 		
 		//2. allen Interfaces der Klasse, auch den "Elterninerfaces"
+		//In der scanInterfacesSuper-Methode meiner ReflectClass-Klasse wird folgendes beachtet.https://stackoverflow.com/questions/24020413/get-parent-interface-of-interface-in-java
 		ArrayList<IEnumSetMappedZZZ>listaeByInterface=null;
 		if(bScanInterfaceImmediate) {
 			ArrayList<Class<?>> listaInterfaceSuper=new ArrayList<Class<?>>();
@@ -390,7 +364,9 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		}
 	
 		//1. von der Classe selbst implementiert
-		ArrayList<String> listasByDirect = EnumAvailableHelperZZZ.searchListDirect(cls,sEnumName,bScanInterfaceImmidiate);
+		//ArrayList<String> listasByDirect = EnumAvailableHelperZZZ.searchListDirect(cls,sEnumName,bScanInterfaceImmidiate);
+		//false, damit nicht sofort die Interfaces geholt werden. Doppelte Schleifen sparen!!!
+		ArrayList<String> listasByDirect = EnumAvailableHelperZZZ.searchListDirect(cls,sEnumName,false); 
 				
 		//2. allen Interfaces der Klasse, auch den erbenden implementiert
 		ArrayList<String> listasByInterface = null;
@@ -399,9 +375,10 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 			//ArrayList<Class<?>> listaInterface = ReflectClassZZZ.getInterfaces(classToCheck);
 			
 			ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
-			ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
+			ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);			
 			for(Class<?> objclsByInterface : listaClassInterface) {
-				Enum[] enumaByInterface = searchEnum(objclsByInterface, sEnumName, false, false);//false, weil ja die Interfaces eh betrachtet werde sollen
+				//false, weil ja die Interfaces eh betrachtet werde sollen
+				Enum[] enumaByInterface = searchEnum(objclsByInterface, sEnumName, false, false);
 				ArrayList<String>listasByInterfaceTemp=null;
 				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {	
 					listasByInterfaceTemp = new ArrayList<String>();
@@ -853,6 +830,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				//Achtung: Das holt alles sonstigen Interfaces, nicht die Interfaces, aus denen geerbt wird.
 				//ArrayList<Class<?>> listaInterfaceByClass = ReflectInterfaceZZZ.getInterfaces(classToCheck);
 				
+				//In der scanInterfacesSuper-Methode meiner ReflectClass-Klasse wird folgendes beachtet.https://stackoverflow.com/questions/24020413/get-parent-interface-of-interface-in-java
 				ArrayList<Class<?>> listaInterfaceByClass=new ArrayList<Class<?>>();
 				ReflectClassZZZ.scanInterfacesSuper(classToCheck, listaInterfaceByClass);
 				
@@ -979,8 +957,9 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 									Object[] obja = objClass.getEnumConstants();
 									for(Object obj : obja) {
 										if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<E>();
-										IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) obj;
-										listaeByInterface.add((E) e);
+										//20240403, warum wird hier gemappt? IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) obj;
+										//                                   listaeByInterface.add((E) e);
+										listaeByInterface.add((E) obj);
 									}
 								 }
 							}//end for	

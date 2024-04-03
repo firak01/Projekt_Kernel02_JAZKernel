@@ -16,7 +16,7 @@ import basic.zBasic.ReflectClassZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.data.DataFieldZZZ;
 import basic.zBasic.util.file.txt.TxtReaderZZZ;
-import basic.zKernel.flag.json.FlagZHelperZZZ;
+import basic.zKernel.flag.FlagZHelperZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class DebugReflectClass03ZZZ extends AbstractObjectWithFlagZZZ{

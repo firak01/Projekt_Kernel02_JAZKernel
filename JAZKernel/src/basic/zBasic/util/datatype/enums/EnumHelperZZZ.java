@@ -20,16 +20,16 @@ public class EnumHelperZZZ implements IConstantZZZ{
 	//++++++++++++++++++++++++++++++
 	/** Beispiele für einen Namen "FLAGZ" oder "STATUSLOCAL"
 	 * @param classToCheck
-	 * @param sName
+	 * @param sEnumName
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 31.07.2023, 19:09:43
 	 */
-	public static <E extends Enum> E[] getEnumByName(Class<?> classToCheck, String sName) throws ExceptionZZZ {
+	public static <E extends Enum> E[] getEnumByName(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
 		E[] enumaReturn = null;
 		main:{
 			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
-			String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + sName;
+			String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + sEnumName;
 			
 			ArrayList<E> listae = new ArrayList<E>();
 			for(Class objClass : listaClass) {
@@ -45,6 +45,27 @@ public class EnumHelperZZZ implements IConstantZZZ{
 			enumaReturn = ArrayListZZZ.toEnumArray(listae);
 		}
 		return enumaReturn;
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++
+	public static <E extends Enum> E getEnumByName(Class<?> classToCheck, String sEnumName, String sEnumPropety) throws ExceptionZZZ{
+		E enumReturn = null;
+		main:{
+			ArrayList<Class<?>> listaClass = ReflectClassZZZ.getEmbeddedClasses(classToCheck);
+			String sEnumFlagZName = ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER + sEnumName;
+			
+			for(Class objClass : listaClass) {
+				String sEnumClass = objClass.getName();				
+				if(sEnumClass.endsWith(sEnumFlagZName)) {
+					Enum e = EnumHelperZZZ.getEnumAsField(objClass, sEnumName);	
+					if(e!=null) {
+						enumReturn = (E) e;										
+						break main;
+					}
+				 }
+			}
+		}//end main:
+		return enumReturn;
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++

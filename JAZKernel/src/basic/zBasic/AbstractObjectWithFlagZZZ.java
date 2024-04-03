@@ -9,15 +9,15 @@ import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelLogZZZ;
-import basic.zKernel.flag.EventObjectFlagZsetZZZ;
-import basic.zKernel.flag.IEventBrokerFlagZsetUserZZZ;
-import basic.zKernel.flag.IEventObjectFlagZsetZZZ;
+import basic.zKernel.flag.FlagZHelperZZZ;
 import basic.zKernel.flag.IFlagZLocalUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.flag.IListenerObjectFlagZsetZZZ;
-import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
-import basic.zKernel.flag.KernelSenderObjectFlagZsetZZZ;
-import basic.zKernel.flag.json.FlagZHelperZZZ;
+import basic.zKernel.flag.event.EventObjectFlagZsetZZZ;
+import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
+import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
+import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
+import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
+import basic.zKernel.flag.event.KernelSenderObjectFlagZsetZZZ;
 
 public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Object> implements IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{
 	private static final long serialVersionUID = 1L;

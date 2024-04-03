@@ -18,7 +18,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
-import basic.zKernel.flag.ISenderObjectFlagZsetZZZ;
+import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
 import custom.zKernel.LogZZZ;

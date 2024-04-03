@@ -1,4 +1,4 @@
-package basic.zKernel.flag;
+package basic.zKernel.flag.event;
 
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 

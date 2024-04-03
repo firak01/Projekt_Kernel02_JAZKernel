@@ -21,7 +21,7 @@ public class FlagZFassadeZZZ implements IConstantZZZ{
 			}
 			
 			String[] saFlagSource = objSource.getFlagZ_passable(true, objTarget);//Aber darin sind ja auch DEBUG, INIT, etc.
-			String[] saFlagIrrelevant = {"INIT","DEBUG"};
+			String[] saFlagIrrelevant = {"DUMMY","DEBUG","INIT"};
 			
 			saReturn = StringArrayZZZ.remove(saFlagSource, saFlagIrrelevant, true);
 			
@@ -67,7 +67,7 @@ public class FlagZFassadeZZZ implements IConstantZZZ{
 			}
 			
 			String[] saFlagSource = objSource.getFlagZ_passable(bValueToSearchFor, true, objTarget);//Aber darin sind ja auch DEBUG, INIT, etc.
-			String[] saFlagIrrelevant = {"INIT","DEBUG"};
+			String[] saFlagIrrelevant = {"DUMMY","DEBUG","INIT"};
 			
 			saReturn = StringArrayZZZ.remove(saFlagSource, saFlagIrrelevant, true);
 			
