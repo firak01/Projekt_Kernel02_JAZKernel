@@ -1,10 +1,7 @@
 package basic.zBasic;
 
-import basic.zBasic.IDummyTestObjectWithFlagZZZ.FLAGZ;
-import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-
-public class DummyTestObjectWithFlagByDirectZZZ extends AbstractObjectWithFlagZZZ implements IDummyTestObjectWithFlagByDirectZZZ{
+public class DummyTestObjectWithFlagByDirectZZZ extends AbstractObjectWithFlagZZZ<Object> implements IDummyTestObjectWithFlagByDirectZZZ{
+	private static final long serialVersionUID = 9214280301056845842L;
 
 	public DummyTestObjectWithFlagByDirectZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
@@ -18,7 +15,14 @@ public class DummyTestObjectWithFlagByDirectZZZ extends AbstractObjectWithFlagZZ
 	//### FLAGZ, hier direkt eingebunden
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY01DIREKT,DUMMY02DIRECT
+		DUMMYF01DIREKT,DUMMY02DIRECT
+	}
+	
+	//#############################################################
+	//### FLAGZLOCAL, hier direkt eingebunden
+	//#############################################################
+	public enum FLAGZLOCAL{
+		DUMMY01LOCALDIREKT,DUMMY02LOCALDIRECT
 	}
 		
 	//###################################################

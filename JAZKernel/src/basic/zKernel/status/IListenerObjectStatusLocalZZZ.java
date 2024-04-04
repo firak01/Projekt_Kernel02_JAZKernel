@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
-import basic.zKernel.status.IStatusLocalMessageUserZZZ.FLAGZ;
 
 public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasicZZZ{
 	//Hier wird ggfs. der empfangene Status mit einem Alias gemappt. 

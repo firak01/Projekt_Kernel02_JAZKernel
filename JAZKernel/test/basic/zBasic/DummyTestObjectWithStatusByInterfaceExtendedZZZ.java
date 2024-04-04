@@ -314,14 +314,4 @@ public class DummyTestObjectWithStatusByInterfaceExtendedZZZ extends AbstractObj
 		}				
 				
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
-
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IEventBrokerStatusLocalUserZZZ#reactOnStatusLocalEvent(basic.zKernel.status.IEventObjectStatusLocalZZZ)
-	 */
-	@Override
-	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

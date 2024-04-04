@@ -3,7 +3,8 @@ package basic.zBasic;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
-public class DummyTestObjectWithFlagZZZ extends AbstractObjectWithFlagZZZ implements IDummyTestObjectWithFlagZZZ{
+public class DummyTestObjectWithFlagZZZ extends AbstractObjectWithFlagZZZ<Object> implements IDummyTestObjectWithFlagZZZ{
+	private static final long serialVersionUID = 2089503406657203691L;
 
 	public DummyTestObjectWithFlagZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);

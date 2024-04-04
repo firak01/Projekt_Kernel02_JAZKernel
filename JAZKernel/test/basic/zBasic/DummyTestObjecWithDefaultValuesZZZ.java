@@ -7,7 +7,8 @@ import basic.zBasic.AbstractObjectWithFlagZZZ;
  * @author lindhaueradmin
  *
  */
-public class DummyTestObjecWithDefaultValuesZZZ extends AbstractObjectWithFlagZZZ {
+public class DummyTestObjecWithDefaultValuesZZZ extends AbstractObjectWithFlagZZZ<Object> {
+	private static final long serialVersionUID = 5419180949291043750L;
 		private String sValue=null;
 	
 		public DummyTestObjecWithDefaultValuesZZZ() {

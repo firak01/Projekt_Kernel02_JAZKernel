@@ -1,6 +1,5 @@
 package basic.zBasic;
 
-import java.io.File;
 import java.util.EnumSet;
 import java.util.HashMap;
 
@@ -11,7 +10,8 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 
-public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStatusZZZ implements IDummyTestObjectWithStatusByDirectZZZ{
+public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStatusZZZ<Object> implements IDummyTestObjectWithStatusByDirectZZZ{
+	private static final long serialVersionUID = -3077811336052403537L;
 
 	public DummyTestObjectWithStatusByDirectZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
@@ -397,14 +397,5 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 		}				
 				
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
 
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IEventBrokerStatusLocalUserZZZ#reactOnStatusLocalEvent(basic.zKernel.status.IEventObjectStatusLocalZZZ)
-	 */
-	@Override
-	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

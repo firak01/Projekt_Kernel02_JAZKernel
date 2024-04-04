@@ -1,12 +1,13 @@
 package basic.zBasic;
 
-public interface IDummyTestObjectWithFlagZZZ{
+public interface IDummyTestObjectWithFlagByInterfaceExtendedZZZ extends IDummyTestObjectWithFlagByInterfaceZZZ{
 		
+
 	//#############################################################
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY
+		DUMMY01INTERFACEExtended,DUMMY02INTERFACEExtended
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);
@@ -14,6 +15,7 @@ public interface IDummyTestObjectWithFlagZZZ{
 	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	
 	
 	//#######################################################################################
 	// STATUS	

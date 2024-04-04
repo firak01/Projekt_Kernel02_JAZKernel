@@ -44,7 +44,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 //			}
 			
 			//Die Klasse selbst und alle Elternklassen, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
-			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZLocalInheritedAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
+			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZLocalAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
 			if(saFlagAvailable!=null) {
 				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sFlagName)) {
 					bReturn = true;	
@@ -90,7 +90,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 			}
 			
 			//Die Klasse selbst und alle Elternklassen, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
-			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZInheritedAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
+			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
 			if(saFlagAvailable!=null) {
 				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sFlagName)) {
 					bReturn = true;	
@@ -295,57 +295,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		}//end main:
 		return bReturn;
 	}
-	
-	public static ArrayList<String> getFlagsZLocalListAvailable(Class<?> cls)  throws ExceptionZZZ {
-		ArrayList<String> listasReturn = new ArrayList<String>();
-		main:{
-		if(cls==null) {
-			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-			 throw ez;
-		}
 		
-		//1. von der Classe selbst implementiert
-		ArrayList<String> listasDirect = FlagZHelperZZZ.getFlagsZLocalListDirectAvailable(cls);
-				
-		//2. allen Interfaces der Klasse, auch den erbenden implementiert
-//		ArrayList<String> listasInterface = new ArrayList<String>();
-//		ArrayList<Class<?>> listaClassInterface=new ArrayList<Class<?>>();
-//		ReflectClassZZZ.scanInterfacesSuper(cls, listaClassInterface);
-//		for(Class<?> objclsByInterface : listaClassInterface) {
-//			Enum[] enumaByInterface = getEnumFlagZLocal(objclsByInterface);
-//			if(enumaByInterface!=null) {			
-//				for(Enum objEnum : enumaByInterface) {
-//					String sEnum = objEnum.name();
-//					if(!listasInterface.contains(sEnum)) {
-//						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-//						listasInterface.add(sEnum);
-//					}
-//				}			
-//			}
-//		}
-//		
-//		//3. von den Elternklassen der Klasse implementiert
-//		ArrayList<String> listasParent = new ArrayList<String>();		
-//		ArrayList<Class<?>> listaobjClass = ReflectClassZZZ.getSuperClasses(cls);
-//		for(Class objcls : listaobjClass) {
-//			//Von dem Interface direkt implementiert. Reicht aber nicht um alle zu erfassen.
-//			//ArrayList<String> listasTemp = FlagZHelperZZZ.getFlagsZListDirectAvailable(objcls);
-//			
-//			//Von der Vererbungshierarchie des Interface implementiert.
-//			ArrayList<String> listasTemp = FlagZHelperZZZ.getFlagsZLocalListInheritedAvailable(objcls);
-//			
-//			listasParent.addAll(listasTemp);
-//		}
-		
-		listasReturn.addAll(listasDirect);
-//		listasReturn.addAll(listasParent);
-//		listasReturn.addAll(listasInterface);
-		listasReturn = (ArrayList<String>) ArrayListZZZ.unique(listasReturn);							
-		
-	}//end main:
-	return listasReturn;
-	}
-	
 	public static ArrayList<String> getFlagsZListDirectAvailable(Class<?> cls)  throws ExceptionZZZ {
 		return getFlagsZListDirectAvailable_(cls, false);
 	}
@@ -405,90 +355,23 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	
 	
 	
-	public static ArrayList<String> getFlagsZListInheritedAvailable(Class<?> cls)  throws ExceptionZZZ {
-		return getFlagsZListInheritedAvailable_(cls, false);
+	public static ArrayList<String> getFlagsZListAvailable(Class<?> cls)  throws ExceptionZZZ {
+		return getFlagsZListAvailable_(cls, false);
 	}
 	
-	public static ArrayList<String> getFlagsZLocalListInheritedAvailable(Class<?> cls)  throws ExceptionZZZ {
-		return getFlagsZListInheritedAvailable_(cls, true);
+	public static ArrayList<String> getFlagsZLocalListAvailable(Class<?> cls)  throws ExceptionZZZ {
+		return getFlagsZListAvailable_(cls, true);
 	}
 	
-	private static ArrayList<String> getFlagsZListInheritedAvailable_(Class<?> cls, boolean bLocal)  throws ExceptionZZZ {
+	private static ArrayList<String> getFlagsZListAvailable_(Class<?> cls, boolean bLocal)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{			
-		//20240403: Ersetze alles durch eine zentralere Enum-Klassen-Utility
+			//20240403: Ersetze alles durch eine zentralere Enum-Klassen-Utility
 			if(bLocal) {
 				listasReturn = EnumAvailableHelperZZZ.searchList(cls, "FLAGZLOCAL");
 			}else {
 				listasReturn = EnumAvailableHelperZZZ.searchList(cls, "FLAGZ");
 			}
- 
-			
-		//#### 20240403: Ersetzt durch obiges ########################
-//		if(cls==null) {
-//			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-//			 throw ez;
-//		}
-//						
-//		//1. von der Classe selbst implementiert
-//		Enum[] enuma = null;
-//		if(bLocal) {
-//			enuma = getEnumFlagZLocal(cls);
-//		}else {
-//			enuma = getEnumFlagZ(cls);
-//		}
-//		if(enuma!=null) {			
-//			for(Enum objEnum : enuma) {
-//				String sEnum = objEnum.name();
-//				if(!listasReturn.contains(sEnum)) {
-//					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-//					listasReturn.add(sEnum);
-//				}
-//			}			
-//		}
-//				
-//		//20210404: Die von der Klasse als Interface direkt implementierten reichen nicht.
-//		//          Es fehlen hier die Interfaces extends Interface, usw.
-//		
-//		//2. allen Interfaces der Klasse, auch den erbenden implementiert
-//		//In der scanInterfacesSuper-Methode meiner ReflectClass-Klasse wird folgendes beachtet.https://stackoverflow.com/questions/24020413/get-parent-interface-of-interface-in-java
-//		ArrayList<Class<?>> listaInterfaceSuper=new ArrayList<Class<?>>();
-//		ReflectClassZZZ.scanInterfacesSuper(cls, listaInterfaceSuper);
-//		for(Class<?> objclsByInterface : listaInterfaceSuper) {
-//					
-//			Enum[] enumaByInterface = null;
-//			if(bLocal) {
-//				enumaByInterface = getEnumFlagZLocal(objclsByInterface);
-//			}else {
-//				enumaByInterface = getEnumFlagZ(objclsByInterface);
-//			}
-//			if(enumaByInterface!=null) {			
-//				for(Enum objEnum : enumaByInterface) {
-//					String sEnum = objEnum.name();
-//					if(!listasReturn.contains(sEnum)) {
-//						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-//						listasReturn.add(sEnum);
-//					}
-//				}			
-//			}
-//		}
-//		
-//		//3. Hole die Elternklassen.
-//		ArrayList<Class<?>> listaClassSuper=ReflectClassZZZ.getSuperClasses(cls);
-//		for(Class<?> objclsSuper : listaClassSuper) {
-//			//!!!Rekursion
-//			ArrayList<String> listaFlagByClassSuper = null;
-//			if(bLocal) {
-//				listaFlagByClassSuper=FlagZHelperZZZ.getFlagsZLocalListInheritedAvailable(objclsSuper);
-//			}else {
-//				listaFlagByClassSuper=FlagZHelperZZZ.getFlagsZListInheritedAvailable(objclsSuper);
-//			}
-//			for(String sEnum : listaFlagByClassSuper) {
-//				if(!listasReturn.contains(sEnum)) {
-//					listasReturn.add(sEnum);
-//				}
-//			}
-//		}				
 	}//end main:
 	return listasReturn;
 	}
@@ -616,7 +499,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	return saReturn;
 	}
 		
-		public static String[] getFlagsZInheritedAvailable(Class cls)  throws ExceptionZZZ {
+		public static String[] getFlagsZAvailable(Class cls)  throws ExceptionZZZ {
 			String[] saReturn = null;
 			main:{
 			if(cls==null) {
@@ -624,13 +507,13 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 				 throw ez;
 			}
 			
-			ArrayList<String> listas = FlagZHelperZZZ.getFlagsZListInheritedAvailable(cls);					
+			ArrayList<String> listas = FlagZHelperZZZ.getFlagsZListAvailable(cls);					
 			saReturn = ArrayListZZZ.toStringArray(listas);
 		}//end main:
 		return saReturn;
 		}
 		
-		public static String[] getFlagsZLocalInheritedAvailable(Class cls)  throws ExceptionZZZ {
+		public static String[] getFlagsZLocalAvailable(Class cls)  throws ExceptionZZZ {
 			String[] saReturn = null;
 			main:{
 			if(cls==null) {
@@ -638,7 +521,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 				 throw ez;
 			}
 			
-			ArrayList<String> listas = FlagZHelperZZZ.getFlagsZLocalListInheritedAvailable(cls);					
+			ArrayList<String> listas = FlagZHelperZZZ.getFlagsZLocalListAvailable(cls);					
 			saReturn = ArrayListZZZ.toStringArray(listas);
 		}//end main:
 		return saReturn;
@@ -664,7 +547,4 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return EnumHelperZZZ.getEnumByName(classToCheck, FlagZHelperZZZ.sENUM_NAME, sEnumProperty);
 	}
 	//+++++++++++++++++++++++++++++++++++++++++++
-	
-
-
 }

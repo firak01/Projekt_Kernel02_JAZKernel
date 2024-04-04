@@ -1,18 +1,6 @@
 package basic.zBasic;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.apache.regexp.RE;
-import org.apache.regexp.RESyntaxException;
-
 import junit.framework.TestCase;
-import basic.javagently.Stream;
-import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zBasic.util.file.FileTextParserZZZ;
 
 public class ObjectZZZTest extends TestCase{
 	

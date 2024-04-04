@@ -194,5 +194,11 @@ public abstract class AbstractProgramWithStatusZZZ extends AbstractObjectWithSta
 		this.resetModuleUsed();
 		this.resetFlags();
 		return true;
-	}		
+	}	
+	
+	@Override
+	public boolean start() throws ExceptionZZZ {
+		return this.startCustom();
+	}
+
 }

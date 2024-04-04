@@ -78,7 +78,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		this.sStatusLocalError = sError;
 	}
 	
-	
 	//#########################################################
 	//### aus ISenderObjectStatusLocalUserZZZ
 	@Override
@@ -97,6 +96,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		this.objEventStatusLocalBroker = objEventSender;
 	}
 
+	
 	@Override
 	public void registerForStatusLocalEvent(IListenerObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
 		this.getSenderStatusLocalUsed().addListenerObject(objEventListener);
@@ -106,6 +106,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public void unregisterForStatusLocalEvent(IListenerObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
 		this.getSenderStatusLocalUsed().removeListenerObject(objEventListener);
 	}	
+		
+	
+	
 	
 	//###############################
 	//### Flags IObjectWithStatusZZZ
@@ -197,48 +200,51 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}	
 	
-	//###############################
-	//### Flags ISenderObjectStatusLocalUserZZZ
-	//###############################
-	@Override
-	public boolean getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) {
-		return this.getFlag(objEnumFlag.name());
-	}
-	@Override
-	public boolean setFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		return this.setFlag(objEnumFlag.name(), bFlagValue);
-	}
 	
-	@Override
-	public boolean[] setFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
-		boolean[] baReturn=null;
-		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
-				baReturn = new boolean[objaEnumFlag.length];
-				int iCounter=-1;
-				for(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
-					iCounter++;
-					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
-					baReturn[iCounter]=bReturn;
+	//###############################
+		//### Flags ISenderObjectStatusLocalUserZZZ
+		//###############################
+		@Override
+		public boolean getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		@Override
+		public boolean setFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+					
+					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+					//    Es wird entfernt.
+					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
 				}
-				
-				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
-				//    Es wird entfernt.
-				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
-			}
-		}//end main:
-		return baReturn;
-	}
+			}//end main:
+			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}	
+		
+		@Override
+		public boolean proofFlagSetBefore(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}			
+		
 	
-	@Override
-	public boolean proofFlagExists(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagExists(objEnumFlag.name());
-	}	
-	
-	@Override
-	public boolean proofFlagSetBefore(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
-		return this.proofFlagSetBefore(objEnumFlag.name());
-	}		
 	
 	//#########################
 	//### STATUS MAPPING aus 
@@ -419,6 +425,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(!bReturn)break main;
 						
 			//#############################################
+
 			
 			//Es ist nur die Frage, ob Status - Werte mit false versendet werden sollen
 			if(!bValue) {
