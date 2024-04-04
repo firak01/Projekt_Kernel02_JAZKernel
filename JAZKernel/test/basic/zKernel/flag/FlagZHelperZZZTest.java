@@ -16,7 +16,10 @@ import basic.zBasic.DummyTestObjectWithStatusByInterfaceZZZ;
 import basic.zBasic.DummyTestProgramWithFlagByInterfaceExtendedZZZ;
 import basic.zBasic.DummyTestProgramWithStatusByInterfaceExtendedZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IDummyTestObjectWithFlagByInterfaceExtendedZZZ;
+import basic.zBasic.IDummyTestObjectWithFlagByInterfaceZZZ;
 import basic.zBasic.IDummyTestObjectWithStatusByInterfaceZZZ;
+import basic.zBasic.component.IProgramRunnableZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetTestFactoryZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.EnumSetMappedTestTypeZZZ;
@@ -33,18 +36,18 @@ public class FlagZHelperZZZTest  extends TestCase{
 	private DummyTestObjectWithFlagByInterfaceExtendedZZZ objTestWithFlagByInterfaceExtended = null;
 	private DummyTestProgramWithFlagByInterfaceExtendedZZZ objTestProgramWithFlagByInterfaceExtended = null;
 	 
-	    protected void setUp(){
-	    	try {
-	    		objTestWithFlagByDirect = new DummyTestObjectWithFlagByDirectZZZ();
-	    		objTestWithFlagByInterface = new DummyTestObjectWithFlagByInterfaceZZZ();
-	    		objTestWithFlagByInterfaceExtended = new DummyTestObjectWithFlagByInterfaceExtendedZZZ();	    					
-		    	objTestProgramWithFlagByInterfaceExtended = new DummyTestProgramWithFlagByInterfaceExtendedZZZ();
-	    	
-			} catch (ExceptionZZZ ez) {
-				fail("Method throws an exception." + ez.getMessageLast());
-			} 
-		}//END setup
-	    
+    protected void setUp(){
+    	try {
+    		objTestWithFlagByDirect = new DummyTestObjectWithFlagByDirectZZZ();
+    		objTestWithFlagByInterface = new DummyTestObjectWithFlagByInterfaceZZZ();
+    		objTestWithFlagByInterfaceExtended = new DummyTestObjectWithFlagByInterfaceExtendedZZZ();	    					
+	    	objTestProgramWithFlagByInterfaceExtended = new DummyTestProgramWithFlagByInterfaceExtendedZZZ();
+    	
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+	}//END setup
+    
 
 	    
 	    
@@ -106,6 +109,38 @@ public class FlagZHelperZZZTest  extends TestCase{
 			} 
 	    }
 	    
-	    
-	}//end class
+    public void testProofFlagZExists() {
+    	try {
+	    	//Arbeiten mit Enum direkt in der Klasse
+    		
+	    	//Merke: Dieser Test bezieht sich auf eine konkrete Klasse und nicht nur auf das Verarbeiten der Enums an sich.
+	    	//       Darum ein konkretes Objekt und dessen Klasse verwenden.
+	    	Class<?> objClassByDirect = objTestWithFlagByDirect.getClass();
+    		String sName01 = IFlagZUserZZZ.FLAGZ.INIT.name(); 	
+	    	boolean bProof01 = FlagZHelperZZZ.proofFlagZDirectExists(objClassByDirect,sName01);		    			    
+	    	assertTrue("Das "+ IFlagZUserZZZ.FLAGZ.INIT.name() + " Flag sollte vorhanden sein, egal ob gesetzt oder nicht",bProof01);
+    	
+	    	//ByInterfaceObjekte
+	    	Class<?> objClassByInterface = objTestWithFlagByInterface.getClass();
+	    	String sName02 = IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ.DUMMY02INTERFACE.name();	    
+	    	boolean bProof02 = FlagZHelperZZZ.proofFlagZDirectExists(objClassByInterface, sName02);		    			    
+	    	assertTrue("Das "+ sName02 + " Flag sollte vorhanden sein, egal ob gesetzt oder nicht",bProof02);
+    	
+	    	//ByInterfaceObjekteExtended
+	    	Class<?> objClassByInterfaceExtended = objTestWithFlagByInterfaceExtended.getClass();	
+	    	String sName03 = IDummyTestObjectWithFlagByInterfaceExtendedZZZ.FLAGZ.DUMMY02INTERFACEExtended.name();	    
+	    	boolean bProof03 = FlagZHelperZZZ.proofFlagZDirectExists(objClassByInterfaceExtended, sName03);		    			    
+	    	assertTrue("Das "+ sName03 + " Flag sollte vorhanden sein, egal ob gesetzt oder nicht",bProof03);
+    	
+	    	//ProgramByInterfaceObjekteExtended
+	    	Class<?> objClassFromProgramByInterfaceExtended = objTestProgramWithFlagByInterfaceExtended.getClass();	
+	    	String sName04 = IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name();	    
+	    	boolean bProof04 = FlagZHelperZZZ.proofFlagZDirectExists(objClassFromProgramByInterfaceExtended, sName04);		    			    
+	    	assertTrue("Das "+ sName04 + " Flag sollte vorhanden sein, egal ob gesetzt oder nicht",bProof04);
+    	
+	    } catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		} 
+    }	       
+}//end class
 	
