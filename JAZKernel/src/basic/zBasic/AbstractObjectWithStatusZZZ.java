@@ -1045,9 +1045,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				break main;
 			}
 			
-			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
+			//IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
 			
-			bFunction = this.offerStatusLocal_(enumStatus, "", bStatusValue);				
+			bFunction = this.offerStatusLocal_(enumStatusIn, "", bStatusValue);				
 		}//end main;
 		return bFunction;
 	}
