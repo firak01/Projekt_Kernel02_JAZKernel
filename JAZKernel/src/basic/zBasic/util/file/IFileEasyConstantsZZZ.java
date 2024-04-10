@@ -36,6 +36,7 @@ public interface IFileEasyConstantsZZZ {
 	String sFILE_ABSOLUT_REGEX="^[A-Za-z]:[\\\\/]"; //Merke: Um 1 Backslash auszukommentieren 4 verwenden zum ausmaskieren.
 	String sFILE_VALID_WINDOWS_REGEX="^(?>[a-z]:)?(?>\\|/)?([^\\/?%*:|\"<>\r\n]+(?>\\|/)?)+$";
 	String sDIRECTORY_CONFIG_SOURCEFOLDER="src";//Dient zur Unterscheidung, ob die Applikation auf deinem Server oder lokal läuft. Der Ordner ist auf dem Server nicht vorhanden (Voraussetzung)!!!
+	String sDIRECTORY_CONFIG_EXECUTIONFOLDER_JAVA="bin";//Dient zum Ausführen von Java-Klassen, die ggfs. per Batch gestartet werden sollen.
 	String sDIRECTORY_CONFIG_TESTFOLDER="test";//FÜR DIE AUSFÜHRUNG VON TESTKLASSEN
 	String sDIRECTORY_CONFIG_TRYOUTFOLDER="tryout";//FÜR DIE DEBUG und TRYOUTKLASSEN
 
