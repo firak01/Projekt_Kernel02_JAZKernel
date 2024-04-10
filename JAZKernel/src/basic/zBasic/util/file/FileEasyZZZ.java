@@ -198,6 +198,12 @@ public static String getDirectoryNameFirst(String sFilePathTotal) throws Excepti
 	return sReturn;	
 }
 
+/**
+ * @param sDirectoryStart, ein Teil im Gesamtpfad
+ * @param sFilePathTotal, der Gesamtpfad
+ * @return                Rueckgabewert: Alles was hinter dem Teil des Gesamtpfads kommt
+ * @throws ExceptionZZZ
+ */
 public static String getDirectoryPathFollowing(String sDirectoryStart, String sFilePathTotal) throws ExceptionZZZ{
 	String sReturn = sFilePathTotal;
 	main:{
@@ -2839,6 +2845,47 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		return sReturn;
 	}
 	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++++++
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Root-Pfad zurück, der fuer die Ausfuehrung von "weiteren" JAVA-Klassen benoetigt wird.
+	 *  Dabei ist der Ausgangspunkt der Projektpfad der gerade ausgeführten Java-Klasse.
+	 *  Ist allerdings nur ein relativer Pfad.
+	 * @return
+	 */
+	public static String getFileRootPathForExecutionJava(){
+		String sReturn = "";
+		main:{
+			if(isOnServer()){
+				sReturn = "";
+			}else{
+				sReturn = IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_EXECUTIONFOLDER_JAVA;
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Root-Pfad zurück.
+	 *  Ist der absolute Pfad.
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	public static String getFileRootPathAbsoluteForExecutionJava() throws ExceptionZZZ {
+		String sReturn = "";
+		main:{
+			String sDirParent = FileEasyZZZ.getDirectoryOfExecutionAsString();
+			String sDirRoot = FileEasyZZZ.getFileRootPathForExecutionJava();
+			
+			sReturn = FileEasyZZZ.joinFilePathName(sDirParent, sDirRoot);	
+		}//end main:
+		return sReturn;
+	}
+	
+	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++
+	
 	/** Gibt für Workspace oder WebServer Anwendungen den korrekten Pfad zurück, nach Möglichkeit "relativ", ggfs. aber auch "absolut"
 	 * @param sFilePathRaw
 	 * @return
@@ -2858,59 +2905,18 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	}
 	
 	private static String getFileUsedPath_(String sFilePathRaw, boolean bAsAbsolute) throws ExceptionZZZ{
-		String sReturn=null; //String sReturn1 =null;
+		String sReturn=null;
 		main:{
 			//20230716 auch auf die Nutzung von FileEasyConverterZZZ umstellen.
 			IFileEasyPathObjectZZZ objPath = FileEasyConstantConverterZZZ.convertFilePath(sFilePathRaw,!bAsAbsolute);
-			sReturn = objPath.getFilePathTotal();
-			
-//			if(sFilePathRaw==null){
-//				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
-//				sReturn = objReturn.getAbsolutePath();
-//				
-//				
-//			}else if(sFilePathRaw.equals(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){
-//				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
-//				sReturn = objReturn.getAbsolutePath();
-//				
-//				
-//			}else if(sFilePathRaw.equals(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty()) || sFilePathRaw.equals("")){
-//				if(bAsAbsolute) {				
-//					sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
-//				}else {
-//					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
-//				}																
-//			}else if(sFilePathRaw.equals(IFileEasyConstantsZZZ.sDIRECTORY_CURRENT)){
-//				if(bAsAbsolute) {
-//					sReturn = FileEasyZZZ.getFileRootPathAbsolute();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
-//				}else {
-//					sReturn = FileEasyZZZ.getFileRootPath();		//Merke: Damit soll es sowohl auf einem WebServer als auch als Standalone Applikation funtkionieren.
-//				}
-//			}else if (sFilePathRaw.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TESTFOLDER)){
-//				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
-//				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
-//				
-//			
-//			}else if (sFilePathRaw.equals(IFileEasyConstantsZZZ.sDIRECTORY_CONFIG_TRYOUTFOLDER)){
-//				File objReturn = FileEasyZZZ.searchFileObjectInRunningExecutionProjectPath(null);
-//				sReturn = objReturn.getAbsolutePath() + File.separator + sFilePathRaw;
-//				
-//				
-//			}else{
-//				if(FileEasyZZZ.isPathRelative(sFilePathRaw)){
-//					if(bAsAbsolute) {
-//						sReturn = FileEasyZZZ.getFileRootPathAbsolute() +  File.separator + sFilePathRaw;
-//					}else {
-//						sReturn = FileEasyZZZ.getFileRootPath() +  File.separator + sFilePathRaw;
-//					}
-//				}else{
-//					sReturn = sFilePathRaw;
-//				}
-//			}			
+			sReturn = objPath.getFilePathTotal();	
 		}//end main
-//		System.out.println(ReflectCodeZZZ.getPositionCurrent()+"\nalt: " + sReturn + "\nneu: "+ sReturn1);
 		return sReturn;		
 	}
+	
+	
+	//++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++
 	
 	/** Returns the root-string of a file.
 	 *   if the file-object does not have a path, then null will be returned.
@@ -2954,6 +2960,23 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 	}
 	
 	
+	public static String getDirectoryOfSystemClassloaderAsExternalString() throws ExceptionZZZ {
+		String sReturn = "";
+		main:{						
+			URL url= ClassLoader.getSystemResource(".");
+			if(url==null) {
+				String sLog = "unable to receive url object";
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
+				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}else {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "URL = '"+url.toExternalForm() + "'");				
+			}
+			sReturn = url.toExternalForm();
+		}//end main:
+		return sReturn;
+	}
+	
 	public static String getDirectoryOfSystemClassloaderAsString() throws ExceptionZZZ {
 		String sReturn = "";
 		main:{						
@@ -2964,9 +2987,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				ExceptionZZZ ez = new ExceptionZZZ(sLog, iERROR_RUNTIME, FileEasyZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}else {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "URL = '"+url.toExternalForm() + "'");
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "URL = '"+url.toString() + "'");				
 			}
-			sReturn = url.toExternalForm();
+			sReturn = url.toString();
 		}//end main:
 		return sReturn;
 	}
