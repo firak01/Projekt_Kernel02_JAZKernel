@@ -1906,9 +1906,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 //			}
 		}
 		
-		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"sFilePathPure='"+ sFilePathPure+"' -> wird NICHT benutzt");			 
-		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"sRoot='"+ sRoot+"' -> wird NICHT benutzt");
-		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"sFilePath as total='"+ sFilePath+"' -> wird benutzt!");
+		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'");			 
+		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"wird NICHT benutzt sRoot='"+ sRoot + "'");
+		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"wird benutzt! sFilePath as total='"+ sFilePath+"'");
 		 
 		
 		if(StringZZZ.isEmpty(sFileName)){
