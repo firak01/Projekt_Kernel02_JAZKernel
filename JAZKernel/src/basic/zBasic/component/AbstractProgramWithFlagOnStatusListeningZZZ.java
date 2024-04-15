@@ -43,6 +43,9 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 		return true;
 	}
 	
+	@Override
+	public abstract boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ;
+	
 	//################################################################################
 	//### Aus IProgramZZZ
 	@Override

@@ -3,6 +3,7 @@ package basic.zBasic.component;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
@@ -53,6 +54,23 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	
 	@Override
 	public abstract boolean startCustom() throws ExceptionZZZ;
+	
+	@Override
+	public boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ {
+		boolean bReturn = false;
+		String sLog;
+		main:{
+			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
+			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+						
+			bReturn = true;
+		}//emd main:
+		return bReturn;
+	}
 	
 	
 	//##########################################

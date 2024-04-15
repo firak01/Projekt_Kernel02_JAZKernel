@@ -66,6 +66,8 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 
 	//++++ Schaue in der Klasse nach dem enum STATUSLOCAL
 	public String[] getStatusLocalAll() throws ExceptionZZZ; 
+	public abstract boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ;//Dies wird in offerStatus abgefrag. Mit dieser Methode können z.B. beendete Programme verhindern, weiter Statusmeldungen zu versenden.
+	
 	public abstract boolean proofStatusLocalExists(Enum enumStatusIn) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalExists(String sStatusName) throws ExceptionZZZ;
 	public abstract boolean proofStatusLocalDirectExists(Enum enumStatusIn) throws ExceptionZZZ;

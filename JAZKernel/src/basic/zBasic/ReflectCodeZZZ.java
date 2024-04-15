@@ -359,9 +359,13 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 						//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 						///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
 
+						//!!! Ergaenze diese Zeile um die ThreadId. Das ist wichtig, damit man bei mehreren Threads die Ausgabe passend zuordnen kann.
+						long lngID = Thread.currentThread().getId();
+						String sThread = "[Thread: "+lngID+"] ";
+					  
 					  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 					  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
-						String sLineTotal = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
+						String sLineTotal = sThread + ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
 				
 						sReturn = sLineTotal;
 					}else{

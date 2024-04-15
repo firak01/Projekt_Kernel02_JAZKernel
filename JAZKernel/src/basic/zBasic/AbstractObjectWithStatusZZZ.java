@@ -419,6 +419,24 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		main:{
 			String sLog;
 			
+			
+			
+			String sStatusName = enumStatusLocalIn.getName();
+			boolean bQuery = this.proofStatusLocalQueryOfferCustom();
+			if(!bQuery) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
+				this.logProtocolString(sLog);			
+				break main;
+			}
+		
+			
+			boolean bExists = this.proofStatusLocalExists(sStatusName);															
+			if(!bExists) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event, but this status is not available: '" + sStatusName + "'";
+				this.logProtocolString(sLog);			
+				break main;
+			}
+			
 			//Wenn ein Status verarbeitet wird, dann wird er auch gespeichert.			
 			IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
@@ -576,6 +594,32 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 	//### aus IStatusLocalUserZZZ
+	@Override
+	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(objEnumStatusIn==null) {
+				break main;
+			}
+						
+			String sStatusName = objEnumStatusIn.name();
+			if(StringZZZ.isEmpty(sStatusName)) break main;
+										
+			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
+			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
+			}
+							
+		}	// end main:
+		
+		return bFunction;	
+	}
+
+	
+	
 	@Override
 	public boolean getStatusLocal(String sStatusName) throws ExceptionZZZ {
 		boolean bFunction = false;
@@ -1058,10 +1102,15 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(enumStatusIn==null) break main;
 			
 			String sLog;
+			String sStatusName = enumStatusIn.name();
+			
+			boolean bQuery = this.proofStatusLocalQueryOfferCustom();
+			if(!bQuery) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
+				this.logProtocolString(sLog);			
+				break main;
+			}
 		
-		    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
-			String sStatusName = enumStatus.name();
 			boolean bExists = this.proofStatusLocalExists(sStatusName);															
 			if(!bExists) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event, but this status is not available: '" + sStatusName + "'";
@@ -1074,6 +1123,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//Setze nun das Enum, und damit auch die Default-StatusMessage
 			
 			//TODOGOON20240310;//Aus dem enum ein IEnumSetMappedStatusZZZ-Objekt machen.....
+			
+			//Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
+			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;			
 			String sStatusMessageToSet = null;
 			if(StringZZZ.isEmpty(sStatusMessage)){
 				if(bStatusValue) {
@@ -1337,6 +1389,12 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 
 	@Override
+	public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ{
+		return true;		
+	}
+	
+	
+	@Override
 	public boolean proofStatusLocalExists(Enum objEnumStatus) throws ExceptionZZZ {
 		return this.proofStatusLocalExists(objEnumStatus.name());
 	}
@@ -1478,6 +1536,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return this.getStatusLocal_(bStatusValueToSearchFor, false);
 	}
 
+	
+	
+	
 	@Override
 	public String[] getStatusLocal(boolean bStatusValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ {
 		return this.getStatusLocal_(bStatusValueToSearchFor, bLookupExplizitInHashMap);

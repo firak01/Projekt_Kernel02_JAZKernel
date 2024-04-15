@@ -19,27 +19,17 @@ public abstract class AbstractProgramWithStatusOnStatusListeningMonitoredRunnabl
 	}
 
 	public AbstractProgramWithStatusOnStatusListeningMonitoredRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
-		super();	
-		AbstractProgramRunnableWithStatusListeningCascadedNew_(saFlag);
+		super(saFlag);	
+		AbstractProgramRunnableWithStatusListeningCascadedNew_();
 	}
 	
-	private boolean AbstractProgramRunnableWithStatusListeningCascadedNew_(String[] saFlagControl) throws ExceptionZZZ {
+	private boolean AbstractProgramRunnableWithStatusListeningCascadedNew_() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
-			if(saFlagControl != null){
-				String stemp; boolean btemp;
-				for(int iCount = 0;iCount<=saFlagControl.length-1;iCount++){
-					stemp = saFlagControl[iCount];
-					btemp = setFlag(stemp, true);
-					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 						
-						   throw ez;		 
-					}
-				}
-				if(this.getFlag("init")) break main;
-			}
-						
 			
+			if(this.getFlag("init")) break main;
+			
+			bReturn = true;						
 		}//end main:
 		return bReturn;
 	}

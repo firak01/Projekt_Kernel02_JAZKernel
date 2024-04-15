@@ -11,6 +11,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
 public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramMonitorZZZ implements IProgramMonitorRunnableZZZ{
@@ -20,30 +21,19 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 			
 	public AbstractProgramMonitorRunnableZZZ() throws ExceptionZZZ {
 		super();		
-		AbstractProgramRunnableMonitorNew_(null);
+		AbstractProgramRunnableMonitorNew_();
 	}
 
 	public AbstractProgramMonitorRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
-		super();	
-		AbstractProgramRunnableMonitorNew_(saFlag);
+		super(saFlag);	
+		AbstractProgramRunnableMonitorNew_();
 	}
 	
-	private boolean AbstractProgramRunnableMonitorNew_(String[] saFlagControl) throws ExceptionZZZ {
+	private boolean AbstractProgramRunnableMonitorNew_() throws ExceptionZZZ {
 		boolean bReturn = false;
-		main:{			
-			if(saFlagControl != null){
-				String stemp; boolean btemp;
-				for(int iCount = 0;iCount<=saFlagControl.length-1;iCount++){
-					stemp = saFlagControl[iCount];
-					btemp = setFlag(stemp, true);
-					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 						
-						   throw ez;		 
-					}
-				}
-				if(this.getFlag("init")) break main;
-			}
-						
+		main:{						
+			if(this.getFlag("init")) break main;
+								
 			//Das Programm sollte sich auf jeden Fall am eigenen ObjectBroker registrieren
 			this.getSenderStatusLocalUsed().addListenerObject(this);
 		}//end main:
@@ -86,6 +76,24 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 	
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
+	
+	@Override
+	public boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ {
+		boolean bReturn=false;
+		String sLog;
+		main:{
+			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
+			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+						
+			bReturn = true;
+		}//end main
+		return bReturn;
+	}
+
 	
 	//###############################################
 	//### FLAGZ: IProgramMonitorRunnableZZZ

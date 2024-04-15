@@ -55,6 +55,8 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 			if(event==null)break main;
 			
 			String sLog;
+			long lngThreadId = Thread.currentThread().getId();
+			String sThreadId = "[Thread: " + lngThreadId + "]";
 			try {
 				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
 					//Mit instanceof den Typ abfragen und dahingehend die passende Unterabfrage des Events aufrufen.
@@ -65,18 +67,18 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 						//Das Problem ist: Wenn ... Objekt den Status nicht hat wird eine Exception geworfen und komplett abgebrochen
 						//Damit das bei einem Monitor-Objekt nicht passiert, wird dort auch in das Mapping der eigenen zu den fremden Statuswerten geguckt.						
 						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
-						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' called: listener.reactOnStatusLocalEvent(event) # " + i + ". " + l.getClass().getSimpleName() + " durch IListenerObjectStatusLocalSetZZZ (Package: "+l.getClass().getPackage()+")";
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' called: listener.reactOnStatusLocalEvent(event) " + sThreadId +" # " + i + ". " + l.getClass().getSimpleName() + " durch IListenerObjectStatusLocalSetZZZ (Package: "+l.getClass().getPackage()+")";
 						this.logProtocolString(sLog);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
 						lused.reactOnStatusLocalEvent(eventUsed);
 					}else {					
-						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' instanceof type is not used yet # " + i + ". " + l.getClass().getSimpleName() + " durch IListenerObjectStatusLocalSetZZZ (Package: "+l.getClass().getPackage()+")";
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' instanceof type is not used yet " + sThreadId +" # " + i + ". " + l.getClass().getSimpleName() + " durch IListenerObjectStatusLocalSetZZZ (Package: "+l.getClass().getPackage()+")";
 						this.logProtocolString(sLog);
 					}
 				}
 			} catch (ExceptionZZZ ez) {
 				try {
-					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' # throws Exception: " + ez.getDetailAllLast();
+					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' " + sThreadId +" # throws Exception: " + ez.getDetailAllLast();
 					this.logProtocolString(sLog);
 				} catch (ExceptionZZZ ez2) {				
 					ez2.printStackTrace();

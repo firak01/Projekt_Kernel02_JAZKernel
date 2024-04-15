@@ -36,11 +36,16 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 	
 		
 	private boolean AbstractProgramNew_() throws ExceptionZZZ {
-		
-		//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!
-	    this.setFlag(IProgramZZZ.FLAGZ.ISPROGRAM.name(), true);	
-				
-		return true;
+		boolean bReturn = false;
+		main:{
+			//Da dies ein KernelProgram ist automatisch das FLAG IKERNELPROGRAM Setzen!!!
+			this.setFlag(IProgramZZZ.FLAGZ.ISPROGRAM.name(), true);
+			
+			if(this.getFlag("init")) break main;
+			
+			bReturn = true;
+		}//end main	
+		return bReturn;
 	}
 	
 	//### Aus IProgramZZZ

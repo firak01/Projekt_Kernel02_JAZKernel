@@ -16,7 +16,7 @@ public interface IProgramMonitorRunnableZZZ extends IProgramMonitorZZZ, IProgram
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY,REQUEST_STOP
+		DUMMY
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);

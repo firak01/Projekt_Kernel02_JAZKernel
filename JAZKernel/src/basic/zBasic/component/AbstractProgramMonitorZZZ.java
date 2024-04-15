@@ -26,32 +26,23 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 			
 	public AbstractProgramMonitorZZZ() throws ExceptionZZZ {
 		super();		
-		AbstractProgramRunnableMonitorNew_(null);
+		AbstractProgramRunnableMonitorNew_();
 	}
 
 	public AbstractProgramMonitorZZZ(String[] saFlag) throws ExceptionZZZ {
-		super();	
-		AbstractProgramRunnableMonitorNew_(saFlag);
+		super(saFlag);	
+		AbstractProgramRunnableMonitorNew_();
 	}
 	
-	private boolean AbstractProgramRunnableMonitorNew_(String[] saFlagControl) throws ExceptionZZZ {
+	private boolean AbstractProgramRunnableMonitorNew_() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
-			if(saFlagControl != null){
-				String stemp; boolean btemp;
-				for(int iCount = 0;iCount<=saFlagControl.length-1;iCount++){
-					stemp = saFlagControl[iCount];
-					btemp = setFlag(stemp, true);
-					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 						
-						   throw ez;		 
-					}
-				}
-				if(this.getFlag("init")) break main;
-			}
+			if(this.getFlag("init")) break main;
 						
 			//Das Programm sollte sich auf jeden Fall am eigenen ObjectBroker registrieren
 			this.getSenderStatusLocalUsed().addListenerObject(this);
+			
+			bReturn =true;
 		}//end main:
 		return bReturn;
 	}
@@ -123,7 +114,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 	
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
-	
+			
 	//### Aus IProgramZZZ
 		@Override
 		public String getProgramName(){
@@ -324,159 +315,158 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 	//############################
 	//### STATUS
 	//############################
-	@Override
-	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(objEnumStatusIn==null) {
-				break main;
-			}
-			
-			//Merke: Bei einer anderen Klasse, die dieses DesingPattern nutzt, befindet sich der STATUSLOCAL in einer anderen Klasse
-			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) objEnumStatusIn;
-			String sStatusName = enumStatus.name();
-			if(StringZZZ.isEmpty(sStatusName)) break main;
-										
-			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
-			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
-			if(objBoolean==null){
-				bFunction = false;
-			}else{
-				bFunction = objBoolean.booleanValue();
-			}
-							
-		}	// end main:
-		
-		return bFunction;	
-	}
-	
-
-	@Override
-	public boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(enumStatusIn==null) {
-				break main;
-			}
-			
-			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
-			
-			bFunction = this.offerStatusLocal_(enumStatus, "", bStatusValue);				
-		}//end main;
-		return bFunction;
-	}
-	
-	/* (non-Javadoc)
-	 * @see basic.zBasic.AbstractObjectWithStatusZZZ#offerStatusLocal(int, java.lang.Enum, java.lang.String, boolean)
-	 */
-	@Override
-	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(enumStatusIn==null) {
-				break main;
-			}
-			
-			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
-			
-			bFunction = this.offerStatusLocal_(enumStatus, sStatusMessage, bStatusValue);				
-		}//end main;
-		return bFunction;
-	}
-	
-	private boolean offerStatusLocal_(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(enumStatusIn==null) break main;
-			
-		
-	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-		IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
-		String sStatusName = enumStatus.name();
-		bFunction = this.proofStatusLocalExists(sStatusName);															
-		if(!bFunction) {
-			String sLog = ReflectCodeZZZ.getPositionCurrent() + " Would like to fire event, but this status is not available: '" + sStatusName + "'";
-			System.out.println(sLog);
-			this.logProtocolString(sLog);			
-			break main;
-		}
-			
-		bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
-		if(!bFunction) {
-			String sLog = ReflectCodeZZZ.getPositionCurrent() + " Would like to fire event, but this status has not changed: '" + sStatusName + "'";
-			System.out.println(sLog);
-			this.logProtocolString(sLog);
-			break main;
-		}	
-		
-		//++++++++++++++++++++	
-		//Setze den Status nun in die HashMap
-		HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
-		hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
-		
-		//Den enumStatus als currentStatus im Objekt speichern...
-		//                   dito mit dem "vorherigen Status"
-		//Setze nun das Enum, und damit auch die Default-StatusMessage
-		String sStatusMessageToSet = null;
-		if(StringZZZ.isEmpty(sStatusMessage)){
-			if(bStatusValue) {
-				sStatusMessageToSet = enumStatus.getStatusMessage();
-			}else {
-				sStatusMessageToSet = "NICHT " + enumStatus.getStatusMessage();
-			}			
-		}else {
-			sStatusMessageToSet = sStatusMessage;
-		}
-		
-		String sLog = ReflectCodeZZZ.getPositionCurrent() + " Verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
-		System.out.println(sLog);
-		this.logProtocolString(sLog);
-
-		//Falls eine Message extra uebergeben worden ist, ueberschreibe...
-		if(sStatusMessageToSet!=null) {
-			sLog = ReflectCodeZZZ.getPositionCurrent() + " Setze sStatusMessageToSet='" + sStatusMessageToSet + "'";
-			System.out.println(sLog);
-			this.logProtocolString(sLog);
-		}
-		//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
-		this.offerStatusLocalEnum(enumStatus, bStatusValue, sStatusMessageToSet);
-		
-		
-		
-		//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
-		//Dann erzeuge den Event und feuer ihn ab.	
-		if(this.getSenderStatusLocalUsed()==null) {
-			sLog = ReflectCodeZZZ.getPositionCurrent() + " Would like to fire event '" + enumStatus.getAbbreviation() + "', but no objEventStatusLocalBroker available, any registered?";
-			System.out.println(sLog);
-			this.logProtocolString(sLog);		
-			break main;
-		}
-		
-		//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
-		sLog = ReflectCodeZZZ.getPositionCurrent() + ": Erzeuge Event fuer '" + sStatusName + "', bValue='"+ bStatusValue + "', sMessage='"+sStatusMessage+"'";
-		System.out.println(sLog);
-		this.logProtocolString(sLog);
-		IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, enumStatus, bStatusValue);			
-//		event.setApplicationObjectUsed(this.getMainObject().getApplicationObject());
-					
-		//das ClientStarterObjekt nun auch noch dem Event hinzufuegen
-//		sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process iIndex= '" + iIndexOfProcess + "'";
+//	@Override
+//	public boolean getStatusLocal(Enum objEnumStatusIn) throws ExceptionZZZ {
+//		boolean bFunction = false;
+//		main:{
+//			if(objEnumStatusIn==null) {
+//				break main;
+//			}
+//			
+//			//Merke: Bei einer anderen Klasse, die dieses DesingPattern nutzt, befindet sich der STATUSLOCAL in einer anderen Klasse
+//			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) objEnumStatusIn;
+//			String sStatusName = enumStatus.name();
+//			if(StringZZZ.isEmpty(sStatusName)) break main;
+//										
+//			HashMap<String, Boolean> hmFlag = this.getHashMapStatusLocal();
+//			Boolean objBoolean = hmFlag.get(sStatusName.toUpperCase());
+//			if(objBoolean==null){
+//				bFunction = false;
+//			}else{
+//				bFunction = objBoolean.booleanValue();
+//			}
+//							
+//		}	// end main:
+//		
+//		return bFunction;	
+//	}
+//	
+//
+//	@Override
+//	public boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+//		boolean bFunction = false;
+//		main:{
+//			if(enumStatusIn==null) {
+//				break main;
+//			}
+//			
+//			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
+//			
+//			bFunction = this.offerStatusLocal_(enumStatus, "", bStatusValue);				
+//		}//end main;
+//		return bFunction;
+//	}
+//	
+//	/* (non-Javadoc)
+//	 * @see basic.zBasic.AbstractObjectWithStatusZZZ#offerStatusLocal(int, java.lang.Enum, java.lang.String, boolean)
+//	 */
+//	@Override
+//	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+//		boolean bFunction = false;
+//		main:{
+//			if(enumStatusIn==null) {
+//				break main;
+//			}
+//			
+//			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
+//			
+//			bFunction = this.offerStatusLocal_(enumStatus, sStatusMessage, bStatusValue);				
+//		}//end main;
+//		return bFunction;
+//	}
+//	
+//	private boolean offerStatusLocal_(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+//		boolean bFunction = false;
+//		main:{
+//			if(enumStatusIn==null) break main;
+//			
+//		
+//	    //Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
+//		IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
+//		String sStatusName = enumStatus.name();
+//		bFunction = this.proofStatusLocalExists(sStatusName);															
+//		if(!bFunction) {
+//			String sLog = ReflectCodeZZZ.getPositionCurrent() + " Would like to fire event, but this status is not available: '" + sStatusName + "'";
+//			System.out.println(sLog);
+//			this.logProtocolString(sLog);			
+//			break main;
+//		}
+//			
+//		bFunction = this.proofStatusLocalValueChanged(sStatusName, bStatusValue);
+//		if(!bFunction) {
+//			String sLog = ReflectCodeZZZ.getPositionCurrent() + " Would like to fire event, but this status has not changed: '" + sStatusName + "'";
+//			System.out.println(sLog);
+//			this.logProtocolString(sLog);
+//			break main;
+//		}	
+//		
+//		//++++++++++++++++++++	
+//		//Setze den Status nun in die HashMap
+//		HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
+//		hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
+//		
+//		//Den enumStatus als currentStatus im Objekt speichern...
+//		//                   dito mit dem "vorherigen Status"
+//		//Setze nun das Enum, und damit auch die Default-StatusMessage
+//		String sStatusMessageToSet = null;
+//		if(StringZZZ.isEmpty(sStatusMessage)){
+//			if(bStatusValue) {
+//				sStatusMessageToSet = enumStatus.getStatusMessage();
+//			}else {
+//				sStatusMessageToSet = "NICHT " + enumStatus.getStatusMessage();
+//			}			
+//		}else {
+//			sStatusMessageToSet = sStatusMessage;
+//		}
+//		
+//		String sLog = ReflectCodeZZZ.getPositionCurrent() + " Verarbeite sStatusMessageToSet='" + sStatusMessageToSet + "'";
 //		System.out.println(sLog);
 //		this.logProtocolString(sLog);
-//		if(iIndexOfProcess>=0) {
-//			event.setServerConfigStarterObjectUsed(this.getMainObject().getServerConfigStarterList().get(iIndexOfProcess));
-//		}		
-		
-		sLog = ReflectCodeZZZ.getPositionCurrent() + " Fires event '" + enumStatus.getAbbreviation() + "'";
-		System.out.println(sLog);
-		this.logProtocolString(sLog);
-		this.getSenderStatusLocalUsed().fireEvent(event);
-				
-		bFunction = true;				
-	}	// end main:
-	return bFunction;
-	}
-	
-	
+//
+//		//Falls eine Message extra uebergeben worden ist, ueberschreibe...
+//		if(sStatusMessageToSet!=null) {
+//			sLog = ReflectCodeZZZ.getPositionCurrent() + " Setze sStatusMessageToSet='" + sStatusMessageToSet + "'";
+//			System.out.println(sLog);
+//			this.logProtocolString(sLog);
+//		}
+//		//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
+//		this.offerStatusLocalEnum(enumStatus, bStatusValue, sStatusMessageToSet);
+//		
+//		
+//		
+//		//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+//		//Dann erzeuge den Event und feuer ihn ab.	
+//		if(this.getSenderStatusLocalUsed()==null) {
+//			sLog = ReflectCodeZZZ.getPositionCurrent() + " Would like to fire event '" + enumStatus.getAbbreviation() + "', but no objEventStatusLocalBroker available, any registered?";
+//			System.out.println(sLog);
+//			this.logProtocolString(sLog);		
+//			break main;
+//		}
+//		
+//		//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
+//		sLog = ReflectCodeZZZ.getPositionCurrent() + ": Erzeuge Event fuer '" + sStatusName + "', bValue='"+ bStatusValue + "', sMessage='"+sStatusMessage+"'";
+//		System.out.println(sLog);
+//		this.logProtocolString(sLog);
+//		IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, enumStatus, bStatusValue);			
+////		event.setApplicationObjectUsed(this.getMainObject().getApplicationObject());
+//					
+//		//das ClientStarterObjekt nun auch noch dem Event hinzufuegen
+////		sLog = ReflectCodeZZZ.getPositionCurrent() + " ServerThreadProcessWatchMonitor for Process iIndex= '" + iIndexOfProcess + "'";
+////		System.out.println(sLog);
+////		this.logProtocolString(sLog);
+////		if(iIndexOfProcess>=0) {
+////			event.setServerConfigStarterObjectUsed(this.getMainObject().getServerConfigStarterList().get(iIndexOfProcess));
+////		}		
+//		
+//		sLog = ReflectCodeZZZ.getPositionCurrent() + " Fires event '" + enumStatus.getAbbreviation() + "'";
+//		System.out.println(sLog);
+//		this.logProtocolString(sLog);
+//		this.getSenderStatusLocalUsed().fireEvent(event);
+//				
+//		bFunction = true;				
+//	}	// end main:
+//	return bFunction;
+//	}
+//	
 	//##########################################################
 }

@@ -178,6 +178,8 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 		main:{
 			String sLog;
 
+			
+			
 			if(eventStatusLocal==null) {				 
 				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				 throw ez;
@@ -215,9 +217,12 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			}
 			
 			if(StringZZZ.isEmpty(sActionAlias)) {
-				sLog = "=> Event ist NICHT relevant.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusOnStatusListening ("+this.getClass().getName()+") - => Event ist NICHT relevant.";
 				this.logProtocolString(sLog);
 				break main;
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusOnStatusListening ("+this.getClass().getName()+") - => Event ist relevant (ActionAlias = " + sActionAlias + ").";
+				this.logProtocolString(sLog);
 			}
 			
 			//Mache die Reaktion

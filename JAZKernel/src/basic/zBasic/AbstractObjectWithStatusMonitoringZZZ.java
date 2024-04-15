@@ -65,10 +65,15 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 		
 		//falls ein Status weitergeleitet wurde, kann der Event ja nicht von der Monitor-Klasse selbst kommen.
 		//in dem Fall warten wir darauf, dass der Weitergeleitete Event (diesmal von der Monitor-Klasse selbst) hier eintrifft.
-		if(!bReturn) { 			
+		//WICHTIG: TROTZDEM DIE REACTION AUSFÜHREN .... if(!bReturn) {
+		//MERKE:   Da der Monitor sich immer an sich selbst registriert, kann man dann hier auch die neu geworfenen STATUS hinzufuegen.
+		
+			String sLog =  ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatusMonitoring (" + this.getClass().getName() + ") - Ohne gemappten Status: Rufe CustomReaktionsmethode auf (reactOnStatusLocalEvent4Action)";
+			this.logProtocolString(sLog);
+			
 			//	2. Eigene Action... das hat das Ziel, das dadurch ja ggfs. wieder neue Events geworfen werden können
 			bReturn = this.reactOnStatusLocalEvent4Action(eventStatusLocal);
-		}
+		//}
 		
 		return bReturn;
 	}

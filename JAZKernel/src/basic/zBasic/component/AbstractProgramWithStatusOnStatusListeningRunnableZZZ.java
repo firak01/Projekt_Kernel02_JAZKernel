@@ -14,25 +14,14 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 	}
 
 	public AbstractProgramWithStatusOnStatusListeningRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
-		super();	
-		AbstractProgramRunnableWithStatusListeningNew_(saFlag);
+		super(saFlag);	
+		AbstractProgramRunnableWithStatusListeningNew_();
 	}
 	
-	private boolean AbstractProgramRunnableWithStatusListeningNew_(String[] saFlagControl) throws ExceptionZZZ {
+	private boolean AbstractProgramRunnableWithStatusListeningNew_() throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
-			if(saFlagControl != null){
-				String stemp; boolean btemp;
-				for(int iCount = 0;iCount<=saFlagControl.length-1;iCount++){
-					stemp = saFlagControl[iCount];
-					btemp = setFlag(stemp, true);
-					if(btemp==false){ 								   
-						   ExceptionZZZ ez = new ExceptionZZZ( stemp, IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 						
-						   throw ez;		 
-					}
-				}
-				if(this.getFlag("init")) break main;
-			}
+			if(this.getFlag("init")) break main;
 						
 			//Das Programm sollte sich auf jeden Fall am eigenen ObjectBroker registrieren
 			this.getSenderStatusLocalUsed().addListenerObject(this);
@@ -74,6 +63,42 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 		
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
+			
+	@Override
+	public boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ{
+		boolean bReturn=false;
+		String sLog;
+		main:{
+			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
+			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+						
+			bReturn = true;
+		}//end main
+		return bReturn;
+	}
+	
+	@Override
+	public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ{
+		//Diese Methode wird vor dem ...offerStatusLocal... aufgerufen.
+		//Dadurch kann alsow verhindert werden, dass weitere Events geworfen werden.
+		boolean bReturn=false;
+		String sLog;
+		main:{
+			//Falls das REQUEST_STOP Flag gesetzt ist, keine weiteren Statusmeldunen absetzen...
+			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Kein weiteres Absetzen von Statusmeldungen. Breche ab.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
+			bReturn = true;
+		}//end main
+		return bReturn;
+	}
 	
 	//##########################################
 	//### FLAG HANDLING IProgramRunnableZZZ
