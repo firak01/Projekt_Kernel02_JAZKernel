@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.apache.xmlbeans.impl.store.Query;
+
 import basic.zBasic.component.IProgramMonitorZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
@@ -419,8 +421,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		main:{
 			String sLog;
 			
-			
-			
+			TODOGOON20240416; //Hier nur die "String MEthode mit dem Statusnamen aufrufen.
+				                   
 			String sStatusName = enumStatusLocalIn.getName();
 			boolean bQuery = this.proofStatusLocalQueryOfferCustom();
 			if(!bQuery) {
@@ -1039,6 +1041,21 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		main:{
 			boolean bOffered = false;
 			String sLog;
+						
+			TODOGOON20240416;//Alles auf diese String-Methode umstellen. Also darf die String Methode dies nicht mehr aufrufen.
+			/*Dann in der String Methode:
+				1. den enumStatusLocalIn holen, um die StatusBoolean Message zu erzeugen
+				2. am Anfang proofStatusLocalQueryOffer aufrufen.
+				                   Darin wird die Existenz des Status geprüft.				                   
+				                   Dann wird die ...proof..OfferCustom aufgerufen.
+				3. in Abstracten Runner Methoden wird super.proof aufgerufen.
+				                   dann noch auf das Flag "Nicht mehr offer wenn REQUEST_STOP" geprüft.								
+				                   Dann wird auf den Status REQUEST_STOP geprüft und ggfs. ein False 
+			
+            Genauso muss das beim proof..QuryReact passieren.
+            
+            Dann muss alles umbenannt werden, so dass query voransteht im Methodennamen.*/
+			
 			
 			//20240310: IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln	
 			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.searchHashMapBooleanMessage(this, true);
@@ -1388,10 +1405,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return baReturn;
 	}
 
+	/* (non-Javadoc)
+	 * @see basic.zKernel.status.IStatusLocalBasicUserZZZ#proofStatusLocalQueryOfferCustom()
+	 */
 	@Override
-	public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ{
-		return true;		
-	}
+	public abstract boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ;
 	
 	
 	@Override

@@ -34,7 +34,7 @@
 	<classpathentry kind="lib" path="/ZKernelFileCollection/commons-beanutils-1.9.3/commons-beanutils-1.9.3.jar"/>
 	<classpathentry kind="lib" path="/ZKernelFileCollection/aspectj/aspectjtools-1.8.7.jar"/>
 	<classpathentry kind="lib" path="/ZKernelFileCollection/log4j/log4j-1.2.14.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre8">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
