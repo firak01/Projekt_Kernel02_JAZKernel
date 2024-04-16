@@ -330,15 +330,22 @@ public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZ
 		return hmOuter.remove((HashMap) arg0);
 	}
 	
-	public Object remove(Object sAliasOuter, Object sAliasInner){		
-		HashMap hmInner = this.getInnerHashMap(sAliasOuter);
-		Object objReturn = hmInner.remove(sAliasInner);
-		
-		if(hmInner.size()==0){
-			hmOuter.remove(sAliasOuter);
-		}
-		
-		return objReturn;
+	public boolean remove(Object sAliasOuter, Object sAliasInner){	
+		boolean bReturn = false;
+		main:{
+			HashMap hmInner = this.getInnerHashMap(sAliasOuter);
+			if(hmInner==null) break main;
+			
+			
+			Object objReturn = hmInner.remove(sAliasInner);
+			if(objReturn!=null) bReturn = true;
+			
+			//Wenn nun die Innere HashMap "weg" ist, dann as Objekt in der äußern HashMap auch eintfernen.
+			if(hmInner.size()==0){
+				hmOuter.remove(sAliasOuter);
+			}
+		}//end main:
+		return bReturn;
 	}
 			
 		
