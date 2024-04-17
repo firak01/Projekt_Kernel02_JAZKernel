@@ -36,7 +36,7 @@ public class DummyTestProgramWithStatusByInterfaceExtendedZZZ extends AbstractDu
 		}
 
 		@Override
-		public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ {
+		public boolean queryOfferStatusLocalCustom() throws ExceptionZZZ {
 			return true;
 		}
 

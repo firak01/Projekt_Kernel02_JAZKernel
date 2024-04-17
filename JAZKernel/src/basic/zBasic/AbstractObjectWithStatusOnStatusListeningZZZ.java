@@ -166,10 +166,61 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 		return sReturn;
 	}
 	
+	
+	
+	
 	//-----------------------------------------
 	@Override
+	public boolean queryReactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+		//siehe AbstractObjectWithFlagOnStatusListening
+		boolean bReturn = false;		
+		main:{
+			String sLog;
+			
+			//+++ Pruefe, ob der ActionAlias (anhand von IEnumSetMappedStatusZZZ) in der reactionHashmapCustom vorhanden ist.
+			boolean bProof = this.queryReactOnStatusLocalEventCustom(eventStatusLocal);
+			if(!bProof) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening ("+this.getClass().getName()+") - Zum Reagieren: QueryReactCustom ergibt false ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
+				this.logProtocolString(sLog);
+				break main;
+			}
+		
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+
+		
+	@Override
+	public boolean queryReactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+		//siehe AbstractObjectWithFlagOnStatusListening
+		boolean bReturn = false;		
+		main:{
+			String sLog;
+			
+			//+++ Pruefe, ob der ActionAlias (anhand von IEnumSetMappedStatusZZZ) in der reactionHashmapCustom vorhanden ist.
+			boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
+			if(!bProof) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening ("+this.getClass().getName()+") - Zum Reagieren: KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
+				this.logProtocolString(sLog);
+				break main;
+			}
+
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
 	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
-		return this.reactOnStatusLocalEvent4Action(eventStatusLocal);
+		boolean bReturn = false;
+		main:{
+			boolean bQueryOnReact = this.queryReactOnStatusLocalEvent(eventStatusLocal);
+			if(!bQueryOnReact) break main;
+			
+			bReturn = this.reactOnStatusLocalEvent4Action(eventStatusLocal);
+		}
+		return bReturn;
 	}
 	
 	@Override
@@ -178,8 +229,6 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 		main:{
 			String sLog;
 
-			
-			
 			if(eventStatusLocal==null) {				 
 				 ExceptionZZZ ez = new ExceptionZZZ( "EventStatusObject", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 				 throw ez;
@@ -191,14 +240,11 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 				 throw ez;
 			}
 			
-			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
-		    boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
-			if(!bProof) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusOnStatusListening ("+this.getClass().getName()+") - Zum Reagieren: KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
-				this.logProtocolString(sLog);
-				break main;
-			}
+			boolean bQueryOnStatusLocal4Action = this.queryReactOnStatusLocalEvent4Action(eventStatusLocal);
+			if(!bQueryOnStatusLocal4Action)break main;
 			
+			
+			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
 			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
 			if(hmEnum==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithStatusOnStatusListening ("+this.getClass().getName()+") - Zum Reagieren: KEINE Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";

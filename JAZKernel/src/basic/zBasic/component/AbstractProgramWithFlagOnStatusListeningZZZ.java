@@ -6,6 +6,7 @@ import basic.zBasic.AbstractObjectWithFlagOnStatusListeningZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerProgramStatusLocalZZZ;
 
 public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends AbstractObjectWithFlagOnStatusListeningZZZ implements IListenerProgramStatusLocalZZZ{
@@ -42,9 +43,6 @@ public abstract class AbstractProgramWithFlagOnStatusListeningZZZ extends Abstra
 				
 		return true;
 	}
-	
-	@Override
-	public abstract boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ;
 	
 	//################################################################################
 	//### Aus IProgramZZZ

@@ -56,10 +56,14 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	public abstract boolean startCustom() throws ExceptionZZZ;
 	
 	@Override
-	public boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ {
+	public boolean queryReactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
 		boolean bReturn = false;
-		String sLog;
 		main:{
+			boolean bQueryReactOn = super.queryReactOnStatusLocalEvent(eventStatusLocal);
+			if(!bQueryReactOn)break main;
+
+			String sLog;
+			
 			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
 			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";

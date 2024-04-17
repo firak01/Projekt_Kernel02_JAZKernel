@@ -78,8 +78,6 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 		}
 	}
 	
-		
-	
 	//### Aus IFlagUserZZZ ##########################
 	@Override
 	public boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag) {

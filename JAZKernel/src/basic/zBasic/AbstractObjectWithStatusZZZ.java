@@ -1360,11 +1360,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return baReturn;
 	}
 
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IStatusLocalBasicUserZZZ#proofStatusLocalQueryOfferCustom()
-	 */
 	@Override
-	public abstract boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ;
+	public abstract boolean queryOfferStatusLocalCustom() throws ExceptionZZZ;
 	
 	
 	@Override
@@ -1534,7 +1531,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				}
 			}			
 			
-			boolean bQuery = this.proofStatusLocalQueryOfferCustom();
+			boolean bQuery = this.queryOfferStatusLocalCustom();
 			if(!bQuery) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
 				this.logProtocolString(sLog);			

@@ -3,7 +3,6 @@ package basic.zBasic.component;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import basic.zBasic.AbstractObjectWithStatusMonitoringZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -12,7 +11,6 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventObjectStatusBasicZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
 public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramMonitorZZZ implements IProgramMonitorRunnableZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;
@@ -77,24 +75,26 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 	@Override
 	abstract public boolean startCustom() throws ExceptionZZZ;
 	
-	@Override
-	public boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ {
-		boolean bReturn=false;
-		String sLog;
+	public boolean queryReactOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ {
+		boolean bReturn=false;		
 		main:{
+			boolean bQueryReactOn = super.queryReactOnStatusLocalEvent(eventStatusLocal);
+			if(!bQueryReactOn) break main;
+			
+			String sLog;
+			
 			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
 			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";
 				this.logProtocolString(sLog);
 				break main;
 			}
-						
+			
 			bReturn = true;
 		}//end main
 		return bReturn;
 	}
-
-	
+		
 	//###############################################
 	//### FLAGZ: IProgramMonitorRunnableZZZ
 	//###############################################

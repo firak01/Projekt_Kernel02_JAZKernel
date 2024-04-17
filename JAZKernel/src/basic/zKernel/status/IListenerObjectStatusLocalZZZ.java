@@ -22,8 +22,12 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 	
 	public String getActionAliasString(IEnumSetMappedStatusZZZ enumStatus);
 	
-	public boolean proofStatusLocalQueryReactCustom()throws ExceptionZZZ; //Darueber wird abgeprueft, ob eine Reaktion auf ein Event erfolgen soll. Z.B. beendete Programme koennen so eine Reaktion unterbinden.	
+	public boolean queryReactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
+	public boolean queryReactOnStatusLocalEventCustom(IEventObjectStatusLocalZZZ eventStatusLocal)throws ExceptionZZZ; //Darueber wird abgeprueft, ob eine Reaktion auf ein Event erfolgen soll. Z.B. beendete Programme koennen so eine Reaktion unterbinden.
 	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
+	
+	
+	public boolean queryReactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;	
 	public boolean reactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
 	
 	//Hierin werden die ActionAliasse aus der HashMap createHashMapStatusLocal4ReactionCustom

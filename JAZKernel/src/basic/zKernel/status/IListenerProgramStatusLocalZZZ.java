@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.component.IModuleUserZZZ;
 import basic.zBasic.component.IProgramZZZ;
 
-public interface IListenerProgramStatusLocalZZZ extends IListenerObjectStatusLocalZZZ, IProgramZZZ, IModuleUserZZZ{
+public interface IListenerProgramStatusLocalZZZ extends IProgramZZZ{ //IListenerObjectStatusLocalZZZ, IProgramZZZ, IModuleUserZZZ{
 	
 	//#############################################################
 	//### FLAGZ

@@ -1,25 +1,15 @@
 package basic.zBasic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 import basic.zKernel.status.IMonitorObjectStatusLocalZZZ;
-import basic.zKernel.status.IStatusBooleanZZZ;
 import basic.zKernel.status.IStatusLocalMapForMonitoringStatusLocalUserZZZ;
-import basic.zKernel.status.IStatusLocalUserZZZ;
-import basic.zKernel.status.StatusBooleanZZZ;
-import basic.zKernel.status.StatusLocalAvailableHelperZZZ;
 
-public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ implements IMonitorObjectStatusLocalZZZ{
+public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends AbstractObjectWithStatusOnStatusListeningZZZ<Object> implements IMonitorObjectStatusLocalZZZ{
 	private static final long serialVersionUID = 1L;
 	protected HashMap<IEnumSetMappedStatusZZZ,IEnumSetMappedStatusZZZ> hmEnumSet = null; //Hier wird ggfs. der Eigene Status mit dem Status einer anderen Klasse (definiert durch das Interface) gemappt.
 

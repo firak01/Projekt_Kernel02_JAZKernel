@@ -270,7 +270,7 @@ public class DummyTestObjectWithStatusByInterfaceZZZ extends AbstractObjectWithS
 		}
 
 		@Override
-		public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ {
+		public boolean queryOfferStatusLocalCustom() throws ExceptionZZZ {
 			return true;
 		}				
 				

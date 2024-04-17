@@ -13,6 +13,10 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 		super();		
 	}
 
+	public AbstractProgramWithStatusOnStatusListeningRunnableZZZ(String sFlag) throws ExceptionZZZ {
+		super(sFlag);		
+	}
+	
 	public AbstractProgramWithStatusOnStatusListeningRunnableZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);	
 		AbstractProgramRunnableWithStatusListeningNew_();
@@ -62,27 +66,10 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 	}
 		
 	@Override
-	abstract public boolean startCustom() throws ExceptionZZZ;
-			
-	@Override
-	public boolean proofStatusLocalQueryReactCustom() throws ExceptionZZZ{
-		boolean bReturn=false;
-		String sLog;
-		main:{
-			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
-			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";
-				this.logProtocolString(sLog);
-				break main;
-			}
-						
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
+	abstract public boolean startCustom() throws ExceptionZZZ;	
 	
 	@Override
-	public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ{
+	public boolean queryOfferStatusLocalCustom() throws ExceptionZZZ{
 		//Diese Methode wird vor dem ...offerStatusLocal... aufgerufen.
 		//Dadurch kann alsow verhindert werden, dass weitere Events geworfen werden.
 		boolean bReturn=false;
@@ -97,6 +84,26 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 			
 			bReturn = true;
 		}//end main
+		return bReturn;
+	}
+	
+	@Override
+	public boolean queryReactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			boolean bQueryOnStatusLocalEvent = super.queryReactOnStatusLocalEvent(eventStatusLocal);
+			if(!bQueryOnStatusLocalEvent)break main;
+			
+			String sLog;
+		
+			//Falls das REQUEST_STOP Flag gesetzt ist, nicht weiter reagieren...
+			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Keine weitere Verarbeitung von Events. Breche ab.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
+		}//end main:
 		return bReturn;
 	}
 	

@@ -6,9 +6,10 @@ import basic.zBasic.AbstractObjectWithStatusOnStatusListeningZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerProgramStatusLocalZZZ;
 
-public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends AbstractObjectWithStatusOnStatusListeningZZZ implements IListenerProgramStatusLocalZZZ {
+public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends AbstractObjectWithStatusOnStatusListeningZZZ<Object> implements IListenerProgramStatusLocalZZZ {
 	private static final long serialVersionUID = 8381960801083154549L;
 	protected volatile IModuleZZZ objModule=null; //Das Modul, in der KernelUI - Variante wäre das die Dialogbox aus der das Program gestartet wird.	
 	protected volatile String sProgramName = null;
@@ -21,6 +22,11 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 	 */
 	public AbstractProgramWithStatusOnStatusListeningZZZ() throws ExceptionZZZ {
 		super();
+		AbstractProgramNew_();
+	}
+	
+	public AbstractProgramWithStatusOnStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
+		super(sFlag);
 		AbstractProgramNew_();
 	}
 	
@@ -82,7 +88,6 @@ public abstract class AbstractProgramWithStatusOnStatusListeningZZZ extends Abst
 		return this.startCustom();
 	}
 	
-
 	//###########################################
 	//### FLAGZ IProgramZZZ
 	//###########################################

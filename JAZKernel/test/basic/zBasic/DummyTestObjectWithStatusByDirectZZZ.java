@@ -397,7 +397,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 		}
 
 		@Override
-		public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ {
+		public boolean queryOfferStatusLocalCustom() throws ExceptionZZZ {
 			return true;
 		}				
 				
