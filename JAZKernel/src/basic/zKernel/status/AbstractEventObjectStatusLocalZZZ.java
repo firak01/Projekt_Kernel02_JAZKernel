@@ -34,25 +34,25 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 	 */
 	public AbstractEventObjectStatusLocalZZZ(Object source, String sEnumName, boolean bStatusValue)  throws ExceptionZZZ {
 		super(source);		
-		AbstractEventObjectStatusLocalNew_(source, sEnumName, null, null, bStatusValue);
+		AbstractEventObjectStatusLocalNew_(source, sEnumName, null, bStatusValue, null);
 	}
 	
-	public AbstractEventObjectStatusLocalZZZ(Object source, String sEnumName, String sStatusMessage, boolean bStatusValue)  throws ExceptionZZZ {
+	public AbstractEventObjectStatusLocalZZZ(Object source, String sEnumName, boolean bStatusValue, String sStatusMessage)  throws ExceptionZZZ {
 		super(source);		
-		AbstractEventObjectStatusLocalNew_(source, sEnumName, null, sStatusMessage, bStatusValue);
+		AbstractEventObjectStatusLocalNew_(source, sEnumName, null, bStatusValue, sStatusMessage);
 	}
 	
-	public AbstractEventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+	public AbstractEventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		super(source);		
-		AbstractEventObjectStatusLocalNew_(source, null, objStatusEnum, sStatusMessage, bStatusValue);
+		AbstractEventObjectStatusLocalNew_(source, null, objStatusEnum, bStatusValue, sStatusMessage);
 	}
 	
 	public AbstractEventObjectStatusLocalZZZ(Object source, Enum objStatusEnum,  boolean bStatusValue) throws ExceptionZZZ {
 		super(source);		
-		AbstractEventObjectStatusLocalNew_(source, null, objStatusEnum, null, bStatusValue);
+		AbstractEventObjectStatusLocalNew_(source, null, objStatusEnum, bStatusValue, null);
 	}
 	
-	private boolean AbstractEventObjectStatusLocalNew_(Object source, String sEnumName, Enum objStatusEnum, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
+	private boolean AbstractEventObjectStatusLocalNew_(Object source, String sEnumName, Enum objStatusEnum, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		if(objStatusEnum==null) {
 			if(StringZZZ.isEmpty(sEnumName)) {
 				ExceptionZZZ ez = new ExceptionZZZ( "StatusString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 

@@ -35,5 +35,10 @@ public class DummyTestProgramWithStatusByInterfaceExtendedZZZ extends AbstractDu
 			return false;
 		}
 
+		@Override
+		public boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ {
+			return true;
+		}
+
 		
 }

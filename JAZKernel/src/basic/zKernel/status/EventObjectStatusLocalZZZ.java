@@ -25,12 +25,12 @@ public final class EventObjectStatusLocalZZZ extends AbstractEventObjectStatusLo
 		super(source, sEnumName, bStatusValue);	
 	}
 	
-	public EventObjectStatusLocalZZZ(Object source, String sEnumName, String sStatusText, boolean bStatusValue) throws ExceptionZZZ {
-		super(source, sEnumName, sStatusText,bStatusValue);	
+	public EventObjectStatusLocalZZZ(Object source, String sEnumName, boolean bStatusValue, String sStatusText) throws ExceptionZZZ {
+		super(source, sEnumName, bStatusValue,sStatusText);	
 	}
 	
-	public EventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, String sStatusText, boolean bStatusValue) throws ExceptionZZZ {
-		super(source,objStatusEnum, sStatusText,bStatusValue);	
+	public EventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, boolean bStatusValue, String sStatusText) throws ExceptionZZZ {
+		super(source,objStatusEnum, bStatusValue,sStatusText);	
 	}
 	
 	public EventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, boolean bFlagValue) throws ExceptionZZZ {

@@ -116,7 +116,7 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 			
 			boolean bStatusValue = eventStatusLocal.getStatusValue();
 			String sStatusMessage = eventStatusLocal.getStatusMessage();
-			this.setStatusLocalEnum(enumStatusOut, sStatusMessage, bStatusValue);
+			this.setStatusLocalEnum(enumStatusOut, bStatusValue, sStatusMessage);
 		
 			bReturn = true;
 		}//end main:

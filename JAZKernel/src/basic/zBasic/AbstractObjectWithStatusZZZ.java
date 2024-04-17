@@ -14,6 +14,7 @@ import basic.zBasic.util.abstractList.CircularBufferForStatusBooleanMessageZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
@@ -399,81 +400,53 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, true, "");
+			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, true, null);
 		}//end main:
 		return bReturn;
 	}
 	
 	
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bValue) throws ExceptionZZZ {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, bValue, "");
+			bReturn = this.offerStatusLocalEnum(enumStatusLocalIn, bStatusValue, null);
 		}//end main:
 		return bReturn;
 	}
 	
 
 	@Override
-	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn, boolean bValue, String sMessage) throws ExceptionZZZ {
+	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
-			String sLog;
+			String sLog; 
 			
-			TODOGOON20240416; //Hier nur die "String MEthode mit dem Statusnamen aufrufen.
-				                   
-			String sStatusName = enumStatusLocalIn.getName();
-			boolean bQuery = this.proofStatusLocalQueryOfferCustom();
-			if(!bQuery) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
-				this.logProtocolString(sLog);			
-				break main;
-			}
-		
-			
-			boolean bExists = this.proofStatusLocalExists(sStatusName);															
-			if(!bExists) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event, but this status is not available: '" + sStatusName + "'";
-				this.logProtocolString(sLog);			
-				break main;
+			if(enumStatusLocal == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedStatusZZZ Objekct", iERROR_PARAMETER_MISSING,   this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}
 			
-			//Wenn ein Status verarbeitet wird, dann wird er auch gespeichert.			
-			IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
-			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
-			if(!bReturn)break main;
-						
-			//#############################################
-
+			String sStatusName = enumStatusLocal.getName();
 			
-			//Es ist nur die Frage, ob Status - Werte mit false versendet werden sollen
-			if(!bValue) {
-				if(!this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE)) {
-					break main; //Also im Normalfall nur Events mit TRUE Wert behandeln
+			String sStatusMessageToSet = null;
+			if(sStatusMessage==null){//also wenn absichtlich ein Leerstring übergeben wird, dann soll das so sein.
+				if(bStatusValue) {
+					sStatusMessageToSet = enumStatusLocal.getStatusMessage();
+				}else {
+					sStatusMessageToSet = "NICHT " + enumStatusLocal.getStatusMessage();
+				}	
+				
+				if(sStatusMessageToSet!=null) {
+					sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") setzt sStatusMessageToSet='" + sStatusMessageToSet + "'";
+					this.logProtocolString(sLog);
 				}
-			}
-						
-			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
-			//Dann erzeuge den Event und feuer ihn ab.	
-			if(this.getSenderStatusLocalUsed()==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event '" + objStatus.getEnumObject().getName() + "', but no objEventStatusLocalBroker available, any registered?";
-				this.logProtocolString(sLog);		
-				break main;
+			}else {
+				sStatusMessageToSet = sStatusMessage;
 			}
 			
-			//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
-			if(objStatus.getValue()) { //!!! nur im TRUE Fall wird eine Logausgabe erzeugt... sonst wird das Log zu voll.
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") erzeugt Event fuer '" + objStatus.getEnumObject().getName() + "', StatusValue='"+ objStatus.getValue() + "', StatusMessage='"+objStatus.getMessage()+"'";
-				this.logProtocolString(sLog);
-			}
-			IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, objStatus.getEnumObject().getName(), sMessage, objStatus.getValue());			
-		
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") fires event for '" + objStatus.getEnumObject().getName() + "'";
-			this.logProtocolString(sLog);
-			this.getSenderStatusLocalUsed().fireEvent(event);
 			
-			bReturn = true;
+			bReturn = this.offerStatusLocal(sStatusName, bStatusValue, sStatusMessageToSet);			
 		}//end main:
 		return bReturn;
 	}
@@ -1028,21 +1001,20 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	@Override
 	public boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
-		return this.offerStatusLocal_(sStatusName, "", bStatusValue);
+		return this.offerStatusLocal_(sStatusName, bStatusValue, null);
 	}
 	
 	@Override
-	public boolean offerStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
-		return this.offerStatusLocal_(sStatusName, sStatusMessage, bStatusValue);	
+	public boolean offerStatusLocal(String sStatusName, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ{
+		return this.offerStatusLocal_(sStatusName, bStatusValue, sStatusMessage);	
 	}
 
-	private boolean offerStatusLocal_(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+	private boolean offerStatusLocal_(String sStatusName, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
-			boolean bOffered = false;
 			String sLog;
-						
-			TODOGOON20240416;//Alles auf diese String-Methode umstellen. Also darf die String Methode dies nicht mehr aufrufen.
+			
+			//20240416;//Alles auf diese String-Methode umstellen. Also darf die String Methode dies selbst nicht mehr aufrufen.
 			/*Dann in der String Methode:
 				1. den enumStatusLocalIn holen, um die StatusBoolean Message zu erzeugen
 				2. am Anfang proofStatusLocalQueryOffer aufrufen.
@@ -1057,7 +1029,45 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
             Dann muss alles umbenannt werden, so dass query voransteht im Methodennamen.*/
 			
 			
+			if(StringZZZ.isEmpty(sStatusName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("StatusName", iERROR_PARAMETER_MISSING,   this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			boolean bQuery = this.queryOfferStatusLocal(sStatusName, bStatusValue);
+			if(!bQuery) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - offer darf nicht ausgefuehrt werden. queryOffer gibt '" + bQuery + "' zurueck.";
+				this.logProtocolString(sLog);
+				break main;
+			}
+			
+			
+			boolean bOffered = false;
+			
+			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
+			//Dann erzeuge den Event und feuer ihn ab.	
+			if(this.getSenderStatusLocalUsed()==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event '" + sStatusName + "', but no objEventStatusLocalBroker available, any registered?";
+				this.logProtocolString(sLog);		
+				break main;
+			}
+			
+			//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
+			if(bStatusValue) { //!!! nur im TRUE Fall wird eine Logausgabe erzeugt... sonst wird das Log zu voll.
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") erzeugt Event fuer '" + sStatusName + "', StatusValue='"+ bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				this.logProtocolString(sLog);
+			}
+			IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, sStatusName, bStatusValue, sStatusMessage);			
+		
+			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") fires event for '" + sStatusName + "'";
+			this.logProtocolString(sLog);
+			this.getSenderStatusLocalUsed().fireEvent(event);
+						
+			//########################################################################################
+			//Wenn ein Status verarbeitet wird, dann wird er auch "historisch" gespeichert.
+			
 			//20240310: IEnumsetMappedStatusZZZ aus dem String-Namen ermitteln	
+			//IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.searchHashMapBooleanMessage(this, true);
 			if(hmStatus==null) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Es war keine HashMap mit Statusname erstellbar.";
@@ -1077,18 +1087,15 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				this.logProtocolString(sLog);
 				break main;
 			}
-		
-			IEnumSetMappedStatusZZZ objEnum = objStatus.getEnumObject();
 			
-			//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
-			bOffered = this.offerStatusLocalEnum(objEnum, bStatusValue, sStatusMessage);
-			if(!bOffered) break main;
-		
+			//Übernimm dieses Statusobjekct in den Ringspeicher						
+			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
+			if(!bReturn) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Der Status wurde nicht erfolgreich im CircularBuffer abgelegt. '" + sStatusName + "'";
+				this.logProtocolString(sLog);				
+				break main;
+			}
 			
-//			IStatusBooleanMessageZZZ element = new StatusBooleanMessageZZZ(objEnum, bStatusValue, sStatusMessage);
-//			bOffered = this.getCircularBufferStatusLocal().offer(element);
-//			if(!bOffered)break main;
-//			
 			bReturn = true;
 		}//end main:
 		return bReturn;		
@@ -1100,75 +1107,23 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	//+++++++++++++++++++++++++++++++++++
 	@Override
 	public boolean offerStatusLocal( Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
-		main:{
-			if(enumStatusIn==null) {
-				break main;
-			}
-			
-			//IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;
-			
-			bFunction = this.offerStatusLocal_(enumStatusIn, "", bStatusValue);				
-		}//end main;
-		return bFunction;
-	}
-		
-	private boolean offerStatusLocal_(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bFunction = false;
+		boolean bReturn = false;
 		main:{
 			if(enumStatusIn==null) break main;
-			
-			String sLog;
+			bReturn = this.offerStatusLocal_(enumStatusIn, bStatusValue, null);				
+		}//end main;
+		return bReturn;
+	}
+		
+	private boolean offerStatusLocal_(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(enumStatusIn==null) break main;
+
 			String sStatusName = enumStatusIn.name();
-			
-			boolean bQuery = this.proofStatusLocalQueryOfferCustom();
-			if(!bQuery) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
-				this.logProtocolString(sLog);			
-				break main;
-			}
-		
-			boolean bExists = this.proofStatusLocalExists(sStatusName);															
-			if(!bExists) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event, but this status is not available: '" + sStatusName + "'";
-				this.logProtocolString(sLog);			
-				break main;
-			}
-				
-			//Den enumStatus als currentStatus im Objekt speichern...
-			//                   dito mit dem "vorherigen Status"... Das wird ueber einen CircularBuffer erledigt
-			//Setze nun das Enum, und damit auch die Default-StatusMessage
-			
-			//TODOGOON20240310;//Aus dem enum ein IEnumSetMappedStatusZZZ-Objekt machen.....
-			
-			//Merke: In anderen Klassen, die dieses Design-Pattern anwenden ist das eine andere Klasse fuer das Enum
-			IProgramMonitorZZZ.STATUSLOCAL enumStatus = (IProgramMonitorZZZ.STATUSLOCAL) enumStatusIn;			
-			String sStatusMessageToSet = null;
-			if(StringZZZ.isEmpty(sStatusMessage)){
-				if(bStatusValue) {
-					sStatusMessageToSet = enumStatus.getStatusMessage();
-				}else {
-					sStatusMessageToSet = "NICHT " + enumStatus.getStatusMessage();
-				}			
-			}else {
-				sStatusMessageToSet = sStatusMessage;
-			}
-			
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") verarbeitet sStatusMessageToSet='" + sStatusMessageToSet + "'";
-			this.logProtocolString(sLog);
-	
-			//Falls eine Message extra uebergeben worden ist, ueberschreibe...
-			if(sStatusMessageToSet!=null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") setzt sStatusMessageToSet='" + sStatusMessageToSet + "'";
-				this.logProtocolString(sLog);
-			}
-			//Merke: Dabei wird die uebergebene Message in den speziellen "Ringspeicher" geschrieben, auch NULL Werte...
-			boolean bOffered = this.offerStatusLocalEnum(enumStatus, bStatusValue, sStatusMessageToSet);
-			if(!bOffered) break main;
-		
-			bFunction = true;				
+			bReturn  = this.offerStatusLocal(sStatusName, bStatusValue, sStatusMessage);				
 		}	// end main:
-	return bFunction;
+		return bReturn;
 	}
 	
 	
@@ -1190,13 +1145,13 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
 			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
 									
-			bReturn=this.offerStatusLocal(sStatusName, null, bStatusValue);
+			bReturn=this.offerStatusLocal(sStatusName, bStatusValue, null);
 		}//end main:
 		return bReturn;		
 	}
 	
 	@Override
-	public boolean setStatusLocal(String sStatusName, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ{
+	public boolean setStatusLocal(String sStatusName, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sStatusName))break main;			
@@ -1219,7 +1174,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			HashMap<String, Boolean> hmStatus = this.getHashMapStatusLocal();
 			hmStatus.put(sStatusName.toUpperCase(), bStatusValue);
 									
-			bReturn=this.offerStatusLocal(sStatusName, sStatusMessage, bStatusValue);
+			bReturn=this.offerStatusLocal(sStatusName, bStatusValue, sStatusMessage);
 		}//end main:
 		return bReturn;		
 	}
@@ -1317,7 +1272,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(enumStatusIn==null) break main;
 			String sStatusName = enumStatusIn.name().toUpperCase();
 			
-			bReturn = this.offerStatusLocal(enumStatusIn, sStatusMessage, bStatusValue);
+			bReturn = this.offerStatusLocal(enumStatusIn, bStatusValue, sStatusMessage);
 			if(!bReturn)break main;
 			
 			//Hole die StatusNamen der angegebenen Gruppe
@@ -1347,18 +1302,18 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 
 	@Override
-	public boolean offerStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		return this.offerStatusLocal(enumStatusIn.name(), sStatusMessage, bStatusValue);
+	public boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		return this.offerStatusLocal(enumStatusIn.name(), bStatusValue, sStatusMessage);
 	}
 
 	@Override
-	public boolean setStatusLocal(Enum enumStatusIn, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		return this.setStatusLocal(enumStatusIn.name(), sStatusMessage, bStatusValue);
+	public boolean setStatusLocal(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		return this.setStatusLocal(enumStatusIn.name(), bStatusValue, sStatusMessage);
 	}
 
 	@Override
-	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ {
-		return this.setStatusLocal(enumStatusMapped.getName(), sStatusMessage, bStatusValue);
+	public boolean setStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusMapped, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		return this.setStatusLocal(enumStatusMapped.getName(), bStatusValue, sStatusMessage);
 	}
 
 	@Override
@@ -1546,6 +1501,48 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			String sMessage = objStatusWithMessage.getMessage();
 			bReturn = this.proofStatusLocalMessageChanged(sMessage);
 		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean queryOfferStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
+		boolean bReturn = false;		
+		main:{
+			String sLog;
+			
+			if(StringZZZ.isEmpty(sStatusName)) {
+				ExceptionZZZ ez = new ExceptionZZZ("StatusName", iERROR_PARAMETER_MISSING,   this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			boolean bExists = this.proofStatusLocalExists(sStatusName);															
+			if(!bExists) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event, but this status is not available: '" + sStatusName + "'";
+				this.logProtocolString(sLog);			
+				break main;
+			}
+			
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Aus iSenderObjectStatusLocalUserZZZ
+			//Es ist nur die Frage, ob Status - Werte mit false versendet werden sollen
+			if(!bStatusValue) {
+				if(!this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE)) {
+					//Diese Ausgabe blaeht das Log unnoetig auf.
+					//sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but 'false-values' should not be send (Flag: "+ ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE.name() +")";
+					//this.logProtocolString(sLog);
+					break main; //Also im Normalfall nur Events mit TRUE Wert behandeln
+				}
+			}			
+			
+			boolean bQuery = this.proofStatusLocalQueryOfferCustom();
+			if(!bQuery) {
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
+				this.logProtocolString(sLog);			
+				break main;
+			}
+			
+			bReturn = true;
+		}
 		return bReturn;
 	}
 

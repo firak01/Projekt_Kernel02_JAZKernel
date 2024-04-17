@@ -1,10 +1,6 @@
 package basic.zBasic;
 
-import java.io.Serializable;
 import java.util.HashMap;
-
-import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
 
 /**
  * @author 0823
@@ -44,4 +40,5 @@ public interface IObjectWithStatusZZZ extends IObjectZZZ {
 	
 	//zum Ueberpruefen, ob ein Status ueberhaupt mal gesetzt worden ist.
 	public abstract boolean isStatusSetBefore(String sStatusString) throws ExceptionZZZ;
+	boolean offerStatusLocal(String sStatusName, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
 }

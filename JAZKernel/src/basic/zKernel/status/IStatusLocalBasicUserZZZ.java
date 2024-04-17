@@ -65,8 +65,7 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	public abstract boolean switchStatusLocalForGroupTo(IEnumSetMappedStatusZZZ enumStatusMapped, String sStatusMessage, boolean bStatusValue) throws ExceptionZZZ;
 
 	//++++ Schaue in der Klasse nach dem enum STATUSLOCAL
-	public String[] getStatusLocalAll() throws ExceptionZZZ; 
-	public abstract boolean proofStatusLocalQueryOffer();
+	public String[] getStatusLocalAll() throws ExceptionZZZ; 	
 	public abstract boolean proofStatusLocalQueryOfferCustom() throws ExceptionZZZ;//Dies wird in offerStatus abgefrag. Mit dieser Methode können z.B. beendete Programme verhindern, weiter Statusmeldungen zu versenden.
 	
 	public abstract boolean proofStatusLocalExists(Enum enumStatusIn) throws ExceptionZZZ;
@@ -84,6 +83,11 @@ public interface IStatusLocalBasicUserZZZ extends IObjectWithStatusZZZ{
 	//... wird auch durch FLAGZ-Eintrag aktiviert, schaut aber im Circular Buffer nach
 	public abstract boolean proofStatusLocalMessageChanged(String sMessage) throws ExceptionZZZ;
 
+	//... diese Methode bündelt alle proof, und query...custom Methoden.
+	public abstract boolean queryOfferStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ;
+	
+	
+	
 	//Halte den gesetzten Status als Enum fest, 
 	//Merke: Das offer kommt von der intern zum Speichern verwendeten CircularBuffer Klasse
 	boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocal) throws ExceptionZZZ;	
