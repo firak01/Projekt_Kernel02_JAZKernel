@@ -21,7 +21,7 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 	public HashMap<IEnumSetMappedStatusZZZ,String> createHashMapStatusLocal4ReactionCustom();
 	
 	public String getActionAliasString(IEnumSetMappedStatusZZZ enumStatus);
-	
+		
 	public boolean queryReactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
 	public boolean queryReactOnStatusLocalEventCustom(IEventObjectStatusLocalZZZ eventStatusLocal)throws ExceptionZZZ; //Darueber wird abgeprueft, ob eine Reaktion auf ein Event erfolgen soll. Z.B. beendete Programme koennen so eine Reaktion unterbinden.
 	public boolean reactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
@@ -31,8 +31,11 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 	public boolean reactOnStatusLocalEvent4Action(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;
 	
 	//Hierin werden die ActionAliasse aus der HashMap createHashMapStatusLocal4ReactionCustom
-	//in einer Fallunterscheidung zurm Aufruf der jeweiligen Methode verwendet.	
-	public boolean reactOnStatusLocalEvent4ActionCustom(String sAction, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	//in einer Fallunterscheidung zurm Aufruf der jeweiligen Methode verwendet.
+	public boolean queryReactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	public boolean queryReactOnStatusLocal4ActionCustom(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	public boolean reactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	public boolean reactOnStatusLocal4ActionCustom(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
 	
 	public boolean isEventRelevantAny(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ; //also überhaupt entweder für den eingenen Statuswechsel relevant oder fuer eine Reaction
 	public boolean isEventRelevant4ReactionOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ;

@@ -69,23 +69,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 	abstract public boolean startCustom() throws ExceptionZZZ;	
 	
 	@Override
-	public boolean queryOfferStatusLocalCustom() throws ExceptionZZZ{
-		//Diese Methode wird vor dem ...offerStatusLocal... aufgerufen.
-		//Dadurch kann alsow verhindert werden, dass weitere Events geworfen werden.
-		boolean bReturn=false;
-		String sLog;
-		main:{
-			//Falls das REQUEST_STOP Flag gesetzt ist, keine weiteren Statusmeldunen absetzen...
-			if(this.getFlag(IProgramRunnableZZZ.FLAGZ.REQUEST_STOP)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "Flag '" + IProgramRunnableZZZ.FLAGZ.REQUEST_STOP.name() + "' gesetzt. Kein weiteres Absetzen von Statusmeldungen. Breche ab.";
-				this.logProtocolString(sLog);
-				break main;
-			}
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
+	abstract public boolean queryOfferStatusLocalCustom() throws ExceptionZZZ;
 	
 	@Override
 	public boolean queryReactOnStatusLocalEvent(IEventObjectStatusLocalZZZ eventStatusLocal) throws ExceptionZZZ{

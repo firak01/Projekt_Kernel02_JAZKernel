@@ -1,6 +1,8 @@
 package basic.zKernel.status;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -9,6 +11,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 
 public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
@@ -56,11 +59,15 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 	}
 	
 	public static String getActionAliasString4Reaction(IEnumSetMappedStatusZZZ enumStatus, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog) throws ExceptionZZZ{
+		return StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReturnReferenceLog, true);
+	
+	}
+	public static String getActionAliasString4Reaction(IEnumSetMappedStatusZZZ enumStatus, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog, boolean bConvertImmediate) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 		
 			if(enumStatus==null) {				 
-				 ExceptionZZZ ez = new ExceptionZZZ( "EnumStatusObject", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
+				 ExceptionZZZ ez = new ExceptionZZZ( "EnumStatus-Object", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
 				 throw ez;
 			}
 				
@@ -77,19 +84,101 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 //				objReturnReferenceLog.add(sLog);
 				break main;
 			}
-			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
-//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
-//				objReturnReferenceLog.add(sLog);				
-				break main;
-			}		
-			if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
-//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
-//				objReturnReferenceLog.add(sLog);
-				break main;
-			}	
+			if(bConvertImmediate) {
+				if(KernelConfigEntryUtilZZZ.isConvertable(sActionAlias)){
+					
+					//TODOGOON20240418;//Nutze einen KernelExpressionIniSolverZZZ, den es erst noch zu schreiben gilt.
+					//                   Der ohne IniFile nur fuer eine Zeile gilt.
+					//                   s. KernelJavaCallIniSolverZZZ
+					if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
+		//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
+		//				objReturnReferenceLog.add(sLog);				
+						break main;
+					}		
+					if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
+		//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
+		//				objReturnReferenceLog.add(sLog);
+						break main;
+					}				
+				}
+			}
 			
 			sReturn = sActionAlias;
 		}//end main:
 		return sReturn;
 	}	
+	
+	
+	public static String getActionAliasString4Reaction(String sStatusName, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReferenceLog) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+		
+			if(StringZZZ.isEmpty(sStatusName)) {				 
+				 ExceptionZZZ ez = new ExceptionZZZ( "EnumStatus-String", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
+				 throw ez;
+			}
+				
+			if(hmEnum==null) {
+				 ExceptionZZZ ez = new ExceptionZZZ("HashMapEnum", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				 throw ez;
+			}
+			
+			String sLog=null;
+
+			//#######################################################################################
+			//Fuer die Weiterverarbeitung fehlt noch das IEnumSetMappedStatusZZZ Objekt 
+			ReferenceArrayZZZ<String>objReferenceLog02 = new ReferenceArrayZZZ<String>();
+			IEnumSetMappedStatusZZZ enumStatus = StatusLocalEventHelperZZZ.getEnumStatusMapped(sStatusName, hmEnum, objReferenceLog02);
+			String[] saLog02 = objReferenceLog02.get();
+			if(!ArrayUtilZZZ.isEmpty(saLog02)) {
+				objReturnReferenceLog.add(saLog02);				
+			}
+			if(enumStatus==null) {
+				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat kein IEnumSetMappedStatusZZZ-Objekt als Schluessel fuer den Status '" + sStatusName + "'";
+				objReturnReferenceLog.add(sLog);
+				break main;
+			}
+			
+			//Mit dem IEnumSetMappedStatusZZZ als Key kann man nun den Action Alias suchen.
+			ReferenceArrayZZZ<String>objReferenceLog = new ReferenceArrayZZZ<String>();
+			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReferenceLog);
+			String[] saLog = objReferenceLog.get();
+			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+				objReturnReferenceLog.add(saLog);				
+			}
+			
+			sReturn = sActionAlias;
+		}//end main:
+		return sReturn;
+	}	
+
+	public static IEnumSetMappedStatusZZZ getEnumStatusMapped(String sStatusName, HashMap<IEnumSetMappedStatusZZZ,String>hmEnum, ReferenceArrayZZZ<String>objReturnReference) throws ExceptionZZZ {
+		IEnumSetMappedStatusZZZ objReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sStatusName)) {				 
+				 ExceptionZZZ ez = new ExceptionZZZ( "EnumStatus-String", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName()); 
+				 throw ez;
+			}
+			
+			if(hmEnum==null) {
+				 ExceptionZZZ ez = new ExceptionZZZ("HashMapEnum", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getClassCallingName(), ReflectCodeZZZ.getMethodCallingName());
+				 throw ez;				
+			}
+			
+				
+			//Gehe das KeySet der HashMap durch.
+			Set<IEnumSetMappedStatusZZZ> setEnumMapped = hmEnum.keySet();
+			Iterator<IEnumSetMappedStatusZZZ> itEnumMapped = setEnumMapped.iterator();
+			while(itEnumMapped.hasNext()) {
+				IEnumSetMappedStatusZZZ objEnumMapped = itEnumMapped.next();
+				String sEnumMapped = objEnumMapped.getName();
+				if(sStatusName.equals(sEnumMapped)) {
+					objReturn = objEnumMapped;
+					break main;
+				}				
+			}						
+		}//end main:
+		return objReturn;
+	}
+	
 }

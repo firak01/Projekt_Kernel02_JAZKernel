@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.xmlbeans.impl.store.Query;
 
 import basic.zBasic.component.IProgramMonitorZZZ;
+import basic.zBasic.component.IProgramRunnableZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
@@ -396,6 +397,9 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		return objReturn;
 	}
 	
+	
+	//++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public boolean offerStatusLocalEnum(IEnumSetMappedStatusZZZ enumStatusLocalIn) throws ExceptionZZZ {
 		boolean bReturn = false;
@@ -452,10 +456,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	
 
-			
-	/* (non-Javadoc)
-	 * @see basic.zKernel.status.IStatusLocalUserBasicZZZ#getStatusLocalString()
-	 */
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public String getStatusLocalAbbreviation(){
 		String sReturn = null;
@@ -998,6 +1000,41 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	//+++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++
+	@Override
+	public boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(enumStatusIn==null) break main;
+			bReturn = this.offerStatusLocal_(enumStatusIn, bStatusValue, sStatusMessage);				
+		}//end main;
+		return bReturn;
+	}
+	
+	@Override
+	public boolean offerStatusLocal( Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(enumStatusIn==null) break main;
+			bReturn = this.offerStatusLocal_(enumStatusIn, bStatusValue, null);				
+		}//end main;
+		return bReturn;
+	}
+		
+	private boolean offerStatusLocal_(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(enumStatusIn==null) break main;
+
+			String sStatusName = enumStatusIn.name();
+			if(sStatusMessage==null) {
+				bReturn  = this.offerStatusLocal(sStatusName, bStatusValue);
+			}else {
+				bReturn  = this.offerStatusLocal(sStatusName, bStatusValue, sStatusMessage);
+			}
+		}	// end main:
+		return bReturn;
+	}
+
 	
 	@Override
 	public boolean offerStatusLocal(String sStatusName, boolean bStatusValue) throws ExceptionZZZ{
@@ -1035,14 +1072,13 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}
 			
 			boolean bQuery = this.queryOfferStatusLocal(sStatusName, bStatusValue);
+			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - queryOffer gibt '" + bQuery + "' zurueck.";
 			if(!bQuery) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - offer darf nicht ausgefuehrt werden. queryOffer gibt '" + bQuery + "' zurueck.";
-				this.logProtocolString(sLog);
+//				this.logProtocolString(sLog);
 				break main;
+			}else {
+				this.logProtocolString(sLog);
 			}
-			
-			
-			boolean bOffered = false;
 			
 			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 			//Dann erzeuge den Event und feuer ihn ab.	
@@ -1057,7 +1093,12 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") erzeugt Event fuer '" + sStatusName + "', StatusValue='"+ bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);
 			}
-			IEventObjectStatusBasicZZZ event = new EventObjectStatusLocalZZZ(this, sStatusName, bStatusValue, sStatusMessage);			
+			IEventObjectStatusBasicZZZ event;
+			if(sStatusMessage==null) {
+				event = new EventObjectStatusLocalZZZ(this, sStatusName, bStatusValue);
+			}else{
+				event = new EventObjectStatusLocalZZZ(this, sStatusName, bStatusValue, sStatusMessage);			
+			}
 		
 			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") fires event for '" + sStatusName + "'";
 			this.logProtocolString(sLog);
@@ -1095,8 +1136,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				this.logProtocolString(sLog);				
 				break main;
 			}
-			
-			bReturn = true;
 		}//end main:
 		return bReturn;		
 	}
@@ -1105,27 +1144,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	
 	//+++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++
-	@Override
-	public boolean offerStatusLocal( Enum enumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-			if(enumStatusIn==null) break main;
-			bReturn = this.offerStatusLocal_(enumStatusIn, bStatusValue, null);				
-		}//end main;
-		return bReturn;
-	}
 		
-	private boolean offerStatusLocal_(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
-		boolean bReturn = false;
-		main:{
-			if(enumStatusIn==null) break main;
-
-			String sStatusName = enumStatusIn.name();
-			bReturn  = this.offerStatusLocal(sStatusName, bStatusValue, sStatusMessage);				
-		}	// end main:
-		return bReturn;
-	}
-	
 	
 	
 	@Override
@@ -1299,11 +1318,6 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}															
 		}//end main:
 		return bReturn;		
-	}
-
-	@Override
-	public boolean offerStatusLocal(Enum enumStatusIn, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
-		return this.offerStatusLocal(enumStatusIn.name(), bStatusValue, sStatusMessage);
 	}
 
 	@Override
@@ -1522,6 +1536,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Aus iSenderObjectStatusLocalUserZZZ
 			//Es ist nur die Frage, ob Status - Werte mit false versendet werden sollen
+			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") queryOfferStatusLocal for: '" + sStatusName + "' with value '" + bStatusValue + "'";
 			if(!bStatusValue) {
 				if(!this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE)) {
 					//Diese Ausgabe blaeht das Log unnoetig auf.
@@ -1529,13 +1544,21 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 					//this.logProtocolString(sLog);
 					break main; //Also im Normalfall nur Events mit TRUE Wert behandeln
 				}
-			}			
+			}else {
+				//true fall. Jetzt kann man einen Breakpoint setzen
+				this.logProtocolString(sLog);
+			}
 			
+			
+
+			//++++++++++++++++++++++++++++++++++++++++++++++
 			boolean bQuery = this.queryOfferStatusLocalCustom();
 			if(!bQuery) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
 				this.logProtocolString(sLog);			
 				break main;
+			}else {
+				
 			}
 			
 			bReturn = true;

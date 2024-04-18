@@ -306,15 +306,37 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			//Mache die Reaktion
 			boolean bStatusValue = eventStatusLocal.getStatusValue();
 			String sStatusMessage = eventStatusLocal.getStatusMessage();
-			bReturn = this.reactOnStatusLocalEvent4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);			
+			bReturn = this.reactOnStatusLocal4Action(sActionAlias, enumStatus, bStatusValue, sStatusMessage);			
 		}//end main:
 		return bReturn;
 	}
 	
 	@Override
+	public boolean queryReactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			bReturn = this.queryReactOnStatusLocal4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean reactOnStatusLocal4Action(String sActionAlias, IEnumSetMappedStatusZZZ enumStatus, boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			boolean bProof = this.queryReactOnStatusLocal4Action(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
+			if(!bProof) break main;
+			
+			bReturn = this.reactOnStatusLocal4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	@Override
 	abstract public HashMap<IEnumSetMappedStatusZZZ, String> createHashMapStatusLocal4ReactionCustom();
 
 	@Override
-	abstract public boolean reactOnStatusLocalEvent4ActionCustom(String sAction, IEnumSetMappedStatusZZZ enumStatus,boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
+	abstract public boolean reactOnStatusLocal4ActionCustom(String sAction, IEnumSetMappedStatusZZZ enumStatus,boolean bStatusValue, String sStatusMessage) throws ExceptionZZZ;
 	
 }

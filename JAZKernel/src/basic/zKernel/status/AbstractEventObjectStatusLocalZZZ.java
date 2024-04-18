@@ -130,14 +130,14 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 	
 	@Override
 	public String getStatusMessage(){
-		if(StringZZZ.isEmpty(this.sStatusMessage)) {
+		if(this.sStatusMessage==null) { //Wenn NULL als Meldung eingeht, dann gib den Standardwert zurueck.
 			if(this.getStatusLocal()==null) {
 				return null;
 			}else {
 				return this.getStatusLocal().getStatusMessage();
 			}
 		}else {
-			return this.sStatusMessage;
+			return this.sStatusMessage; //Merke: Ein Leerstring waere damit ein erlaubter Meldungstext
 		}		
 	}
 	
