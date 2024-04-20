@@ -1439,8 +1439,8 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}
 			
 			if(!bValue) { //Ggfs False Werte nicht weiter verarbeiten, also NUR True Werte
-				boolean bFlagTruer = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUETRUE);
-				if(bFlagTruer) break main;			
+				boolean bFlagTrue = this.getFlag(IObjectWithStatusZZZ.FLAGZ.STATUSLOCAL_PROOF_VALUETRUE);
+				if(bFlagTrue) break main;			
 			}
 			
 			bReturn = this.proofStatusLocalValueChanged(sStatusName, bValue);

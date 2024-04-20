@@ -11,6 +11,9 @@ import java.util.HashMap;
  * Window>Preferences>Java>Code Generation.
  */
 public interface IObjectWithStatusZZZ extends IObjectZZZ {
+	//STATUSLOCAL_PROOF_VALUE     = Ueberpruefe die Werte in der Methode .proofStatusLocalValue(String sStatusName, boolean bValue) throws ExceptionZZZ {
+	//STATUSLOCAL_PROOF_VALUETRUE = Nur "true" Werte werden weiterverarbeitet, false Werte also ignieriert.
+	
 	public enum FLAGZ{
 		STATUSLOCAL_PROOF_VALUE, STATUSLOCAL_PROOF_VALUETRUE, STATUSLOCAL_PROOF_VALUECHANGED, STATUSLOCAL_PROOF_MESSAGECHANGED ; 
 	}
