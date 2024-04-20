@@ -1,5 +1,6 @@
 package basic.zKernel.flag.event;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 
 
@@ -16,11 +17,10 @@ public interface ISenderObjectFlagZsetZZZ {
 	public abstract IEventObjectFlagZsetZZZ getEventPrevious();
 	public void setEventPrevious(IEventObjectFlagZsetZZZ event);
 	
-	public abstract void removeListenerObjectFlagZset(IListenerObjectFlagZsetZZZ objEventListener);
-
-	public abstract void addListenerObjectFlagZset(IListenerObjectFlagZsetZZZ objEventListener);
+	public abstract void removeListenerObjectFlagZset(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ;
+	public abstract void addListenerObjectFlagZset(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ;
 	
 	//Damit soll sichergestellt werden, dass jedes Objekt sich nur 1x registriert. 
 	//Merke: Wenn ein Objekt mehrmals registriert wird, kann es sein, das beim 2ten feuern des gleichen Events an das gleich Objekt unerwuenschte Nebeneffekte auftreten.
-	public abstract ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ> getListenerRegisteredAll();
+	public abstract ArrayListUniqueZZZ<IListenerObjectFlagZsetZZZ> getListenerRegisteredAll() throws ExceptionZZZ;
 }

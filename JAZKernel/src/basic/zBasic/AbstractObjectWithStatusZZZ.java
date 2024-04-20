@@ -64,12 +64,25 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	}
 	public AbstractObjectWithStatusZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
+		AbstractObjectWithStatusNew_();
 	}
 	public AbstractObjectWithStatusZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
+		AbstractObjectWithStatusNew_();
 	}
 	public AbstractObjectWithStatusZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
+		AbstractObjectWithStatusNew_();
+	}
+	
+	private boolean AbstractObjectWithStatusNew_() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(this.getFlag("init"))break main;
+			
+			bReturn =true;
+		}//end main:
+		return bReturn;
 	}
 	
 	@Override
@@ -1050,6 +1063,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;
 		main:{
 			String sLog;
+			long lngThreadID = Thread.currentThread().getId();
 			
 			//20240416;//Alles auf diese String-Methode umstellen. Also darf die String Methode dies selbst nicht mehr aufrufen.
 			/*Dann in der String Methode:
@@ -1100,7 +1114,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				event = new EventObjectStatusLocalZZZ(this, sStatusName, bStatusValue, sStatusMessage);			
 			}
 		
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") fires event for '" + sStatusName + "'";
+			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: " +  lngThreadID + "] fires event for '" + sStatusName + "'";
 			this.logProtocolString(sLog);
 			this.getSenderStatusLocalUsed().fireEvent(event);
 						
@@ -1111,20 +1125,20 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.searchHashMapBooleanMessage(this, true);
 			if(hmStatus==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Es war keine HashMap mit Statusname erstellbar.";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: " +  lngThreadID + "] Es war keine HashMap mit Statusname erstellbar.";
 				this.logProtocolString(sLog);
 				break main;
 			}
 
 			if(hmStatus.isEmpty()) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - HashMap mit Statusnamen ist leer.";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: " +  lngThreadID + "] HashMap mit Statusnamen ist leer.";
 				this.logProtocolString(sLog);
 				break main;
 			}
 			
 			IStatusBooleanMessageZZZ objStatus = hmStatus.get(sStatusName);
 			if(objStatus==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Der Status wurde nicht in der HashMap der Statusname gefunden. '" + sStatusName + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: " +  lngThreadID + "] Der Status wurde nicht in der HashMap der Statusname gefunden. '" + sStatusName + "'";
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -1132,7 +1146,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//Übernimm dieses Statusobjekct in den Ringspeicher						
 			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
 			if(!bReturn) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - Der Status wurde nicht erfolgreich im CircularBuffer abgelegt. '" + sStatusName + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: " +  lngThreadID + "] Der Status wurde nicht erfolgreich im CircularBuffer abgelegt. '" + sStatusName + "'";
 				this.logProtocolString(sLog);				
 				break main;
 			}
@@ -1520,7 +1534,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		boolean bReturn = false;		
 		main:{
 			String sLog;
-			
+			long lngThreadID = Thread.currentThread().getId();
 			if(StringZZZ.isEmpty(sStatusName)) {
 				ExceptionZZZ ez = new ExceptionZZZ("StatusName", iERROR_PARAMETER_MISSING,   this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -1528,7 +1542,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			
 			boolean bExists = this.proofStatusLocalExists(sStatusName);															
 			if(!bExists) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event, but this status is not available: '" + sStatusName + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: "+lngThreadID + "] would like to fire event, but this status is not available: '" + sStatusName + "'";
 				this.logProtocolString(sLog);			
 				break main;
 			}
@@ -1536,7 +1550,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Aus iSenderObjectStatusLocalUserZZZ
 			//Es ist nur die Frage, ob Status - Werte mit false versendet werden sollen
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") queryOfferStatusLocal for: '" + sStatusName + "' with value '" + bStatusValue + "'";
+			sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: "+lngThreadID + "] queryOfferStatusLocal for: '" + sStatusName + "' with value '" + bStatusValue + "'";
 			if(!bStatusValue) {
 				if(!this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE)) {
 					//Diese Ausgabe blaeht das Log unnoetig auf.
@@ -1554,7 +1568,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//++++++++++++++++++++++++++++++++++++++++++++++
 			boolean bQuery = this.queryOfferStatusLocalCustom();
 			if(!bQuery) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") [Thread: "+lngThreadID + "] would like to fire event for status '" + sStatusName + "', but custom query returned '" + bQuery + "'";
 				this.logProtocolString(sLog);			
 				break main;
 			}else {

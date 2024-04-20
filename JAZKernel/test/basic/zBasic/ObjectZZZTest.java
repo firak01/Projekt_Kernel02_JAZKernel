@@ -1,17 +1,19 @@
 package basic.zBasic;
 
+import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import junit.framework.TestCase;
 
 public class ObjectZZZTest extends TestCase{
 	
 	private DummyTestObjectWithFlagZZZ objObjectTest = null;
+	private DummyTestObjectWithFlagOnFlagListeningZZZ objObjectTestListening = null;
 
 	protected void setUp(){
 		//try {			
 			
 			//The main object used for testing
 			objObjectTest = new DummyTestObjectWithFlagZZZ();
-			
+			objObjectTestListening = new DummyTestObjectWithFlagOnFlagListeningZZZ();
 		
 //		} catch (ExceptionZZZ e) {
 //			fail("Method throws an exception." + e.getMessageLast());
@@ -77,6 +79,63 @@ public class ObjectZZZTest extends TestCase{
 	}
 		
 	}
+	
+	
+	public void testSetFlagZ_listening(){
+		try{
+			//Init - Object
+			String[] saFlag = {"init"};
+			DummyTestObjectWithFlagZZZ objObjectInit = new DummyTestObjectWithFlagZZZ();
+			DummyTestObjectWithFlagOnFlagListeningZZZ objObjectInitListening = new DummyTestObjectWithFlagOnFlagListeningZZZ();
+			
+			//Das Objekt mit der "Faehigkeit" Listing am Objekt mit Flag registrieren.
+			//Merke: Jedes Objekt mit Flag hat automatisch ein eingebauts SenderObjekt
+			objObjectInit.registerForFlagEvent(objObjectInitListening);
+			
+			
+			//1. +++ Reagieren auf einen fremden Wert
+			//!!! Wichtig nun ein Flag Setzen
+			objObjectInit.setFlag(IDummyTestObjectWithFlagZZZ.FLAGZ.FOR_TEST, true);
+			
+			//Merke: das DummyTestObjekt hat eine Eigenschaft, die nur nach dem "erfolgreichen hoeren" gesetzt ist.
+			String sValue = objObjectInitListening.getValueDummyByFlagEvent();
+			assertNotNull("Ein Wert sollte in dem flagChanged() Event gesetzt worden sein", sValue);
+			
+
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+"Per Event empfangener Wert aus dem setFlag='"+sValue+"'";
+			System.out.println(sLog);
+			assertEquals(IDummyTestObjectWithFlagZZZ.FLAGZ.FOR_TEST.name(), sValue);
+			
+			objObjectInit.unregisterForFlagEvent(objObjectInitListening);
+			
+			//########################################################################
+			//2. +++ Reagieren auf einen eigenen Wert
+			objObjectInitListening.setValueDummyByFlagEvent(null);
+			objObjectInitListening.setFlag(IListenerObjectFlagZsetZZZ.FLAGZ.REGISTER_SELF_FOR_EVENT, true);
+			
+			 //Ein anderes Objekt wird registriert. Aber wg. dem Flag wird das eigene Objekt auch registriert und hört das Objekt auf sich selbst auch!!!
+			objObjectInitListening.registerForFlagEvent(objObjectTestListening);
+
+			String sValue02 = objObjectInitListening.getValueDummyByFlagEvent();
+			assertNull("Noch sollte kein Wert in dem flagChanged() Event gesetzt worden sein", sValue02);
+			
+			
+			objObjectInitListening.setFlag(IDummyTestObjectWithFlagZZZ.FLAGZ.FOR_TEST, true);
+			sValue02 = objObjectTestListening.getValueDummyByFlagEvent();
+			assertNotNull("Jetzt sollte ein Wert in dem flagChanged() Event gesetzt worden sein", sValue02);
+			
+			String sLog02 = ReflectCodeZZZ.getPositionCurrent()+"Per Event empfangener Wert aus dem EIGENEN setFlag='"+sValue02+"'";
+			System.out.println(sLog02);
+			assertEquals(IDummyTestObjectWithFlagZZZ.FLAGZ.FOR_TEST.name(), sValue02);
+			
+			
+			
+		}catch(ExceptionZZZ ez){
+			fail("An exception happend testing: " + ez.getDetailAllLast());
+		}
+		
+	}
+
 	
 
 }//END Class

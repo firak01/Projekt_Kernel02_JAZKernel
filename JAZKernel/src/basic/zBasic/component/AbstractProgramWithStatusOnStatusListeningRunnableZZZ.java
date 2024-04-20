@@ -5,6 +5,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
+import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
 public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ extends AbstractProgramWithStatusOnStatusListeningZZZ implements IProgramRunnableZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;		
@@ -27,8 +28,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 		main:{			
 			if(this.getFlag("init")) break main;
 						
-			//Das Programm sollte sich auf jeden Fall am eigenen ObjectBroker registrieren
-			this.getSenderStatusLocalUsed().addListenerObject(this);
+			
 		}//end main:
 		return bReturn;
 	}

@@ -1,19 +1,13 @@
 package basic.zBasic.component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import basic.zBasic.AbstractObjectWithStatusMonitoringZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
-import basic.zKernel.status.EventObjectStatusLocalZZZ;
 import basic.zKernel.status.IEventBrokerStatusLocalUserZZZ;
-import basic.zKernel.status.IEventObjectStatusBasicZZZ;
-import basic.zKernel.status.IEventObjectStatusLocalZZZ;
 import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
 public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatusMonitoringZZZ implements IProgramMonitorZZZ{
@@ -40,7 +34,7 @@ public abstract class AbstractProgramMonitorZZZ extends AbstractObjectWithStatus
 			if(this.getFlag("init")) break main;
 						
 			//Das Programm sollte sich auf jeden Fall am eigenen ObjectBroker registrieren
-			this.getSenderStatusLocalUsed().addListenerObject(this);
+			//20240420: Pruefen, ob das notwenig ist, wenn die reaction4Action eingestellt ist... this.getSenderStatusLocalUsed().addListenerObject(this);
 			
 			bReturn =true;
 		}//end main:

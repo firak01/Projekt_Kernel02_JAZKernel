@@ -22,14 +22,46 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 	}
 	public AbstractObjectWithStatusOnStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
+		AbstractObjectWithStatusOnStatusListeningNew_();
 	}
 	public AbstractObjectWithStatusOnStatusListeningZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
+		AbstractObjectWithStatusOnStatusListeningNew_();
 	}
 	public AbstractObjectWithStatusOnStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
+		AbstractObjectWithStatusOnStatusListeningNew_();
 	}
 		
+	private boolean AbstractObjectWithStatusOnStatusListeningNew_() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(this.getFlag("init")) break main;
+			
+			//Das Programm sollte sich ggfs. am eigenen ObjectBroker registrieren.
+			//Ansonsten bleibt nur die reaction4Action-Methode.
+			if(this.getFlag(IListenerObjectStatusLocalZZZ.FLAGZ.REGISTER_SELF_FOR_EVENT)) {
+				this.getSenderStatusLocalUsed().addListenerObject(this);
+			}
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public void registerForStatusLocalEvent(IListenerObjectStatusLocalZZZ objEventListener) throws ExceptionZZZ {
+		
+		//Das Programm sollte sich ggfs. am eigenen ObjectBroker registrieren.
+		//Ansonsten bleibt nur die reaction4Action-Methode.
+		if(this.getFlag(IListenerObjectStatusLocalZZZ.FLAGZ.REGISTER_SELF_FOR_EVENT)) {
+			this.getSenderStatusLocalUsed().addListenerObject(this);
+		}
+		
+		//this.getSenderStatusLocalUsed().addListenerObject(objEventListener);
+		super.registerForStatusLocalEvent(objEventListener);
+	}
+	
 	
 	//######################################################################
 	//### FLAGZ: aus IListenerObjectStatusLocalZZZ                 #########

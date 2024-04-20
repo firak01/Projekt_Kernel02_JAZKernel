@@ -15,11 +15,8 @@ import basic.zBasic.ExceptionZZZ;
  * @author lindhaueradmin
  *
  */
-public interface IEventBrokerFlagZsetUserZZZ extends ISenderObjectFlagZsetUserZZZ{
-	public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ;
-	public void unregisterForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ;
-	
-	//20230730 Besonderheit: Setze ein Flag per beliebiges Enum. Damit wird das Enum an den Event weitergegeben und es können noch weitere Informationen des Enum ubergeben werden.
-	boolean setFlag(Enum enumFlag, boolean bFlagValue) throws ExceptionZZZ;
+public interface ISenderObjectFlagZsetUserZZZ {
+	public abstract ISenderObjectFlagZsetZZZ getSenderFlagUsed() throws ExceptionZZZ;
+	public abstract void setSenderFlagUsed(ISenderObjectFlagZsetZZZ objEventSender);
 }
 

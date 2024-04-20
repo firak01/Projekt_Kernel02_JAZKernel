@@ -22,12 +22,25 @@ public abstract class AbstractObjectWithStatusMonitoringZZZ <T> extends Abstract
 	}
 	public AbstractObjectWithStatusMonitoringZZZ(String sFlag) throws ExceptionZZZ {
 		super(sFlag);
+		AbstractObjectWithStatusMonitoringNew_();
 	}
 	public AbstractObjectWithStatusMonitoringZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);
+		AbstractObjectWithStatusMonitoringNew_();
 	}
 	public AbstractObjectWithStatusMonitoringZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super(hmFlag);
+		AbstractObjectWithStatusMonitoringNew_();
+	}
+	
+	private boolean AbstractObjectWithStatusMonitoringNew_() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{						
+			if(this.getFlag("init")) break main;
+								
+			bReturn = true;
+		}//end main:
+		return bReturn;
 	}
 	
 	

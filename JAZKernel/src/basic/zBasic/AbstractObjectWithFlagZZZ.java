@@ -643,7 +643,7 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 	 * @see basic.zKernel.flag.IEventBrokerFlagZsetUserZZZ#registerForFlagEvent(basic.zKernel.flag.IListenerObjectFlagZsetZZZ)
 	 */
 	@Override
-	public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {
+	public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {		
 		this.getSenderFlagUsed().addListenerObjectFlagZset(objEventListener);
 	}
 	

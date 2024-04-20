@@ -1,12 +1,14 @@
 package basic.zBasic;
 
-public interface IDummyTestObjectWithFlagZZZ{
-		
+public interface IDummyTestObjectWithFlagOnFlagListeningZZZ extends IDummyTestObjectWithFlagZZZ{		
+	public String getValueDummyByFlagEvent();
+	public void setValueDummyByFlagEvent(String sValue);
+	
 	//#############################################################
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY,FOR_TEST
+		DUMMY
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);

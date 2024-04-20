@@ -360,8 +360,8 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 						///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
 
 						//!!! Ergaenze diese Zeile um die ThreadId. Das ist wichtig, damit man bei mehreren Threads die Ausgabe passend zuordnen kann.
-						long lngID = Thread.currentThread().getId();
-						String sThread = "[Thread: "+lngID+"] ";
+						long lngThreadID = Thread.currentThread().getId();
+						String sThread = "[Thread: "+lngThreadID+"] ";
 					  
 					  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 					  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );

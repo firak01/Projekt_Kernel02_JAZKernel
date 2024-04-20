@@ -26,25 +26,30 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 		super();		
 	}
 	public AbstractObjectWithFlagOnStatusListeningZZZ(String sFlag) throws ExceptionZZZ {
-		super();
-		if(!StringZZZ.isEmpty(sFlag)) this.setFlag(sFlag, true);
+		super(sFlag);
+		AbstractObjectWithFlagOnStatusListeningNew_();
 	}
 	public AbstractObjectWithFlagOnStatusListeningZZZ(String[] saFlag) throws ExceptionZZZ {
-		super();
-		if(saFlag!=null){
-			if(saFlag.length>=1){
-				String sLog;
-				for(int icount =0; icount <= saFlag.length-1; icount++){
-					if(!StringZZZ.isEmpty(saFlag[icount])){						
-						boolean bFound = this.setFlag(saFlag[icount], true);						
-						if(!bFound) {
-							sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ") - Flag not available: '" + saFlag[icount] +"'";
-							this.logProtocolString(sLog);
-						}
-					}
-				}
-			}
+		super(saFlag);
+		AbstractObjectWithFlagOnStatusListeningNew_();
+	}
+	
+	
+	private boolean AbstractObjectWithFlagOnStatusListeningNew_() throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(this.getFlag("init")) break main;
+			
+			//Merke: Das ist nicht moeglich, da ohne einen eigenen STATUS kein BrokerObjekt!!!
+			//Das Programm sollte sich ggfs. am eigenen ObjectBroker registrieren.
+			//Ansonsten bleibt nur die reaction4Action-Methode.
+			//if(this.getFlag(IListenerObjectStatusLocalZZZ.FLAGZ.REGISTER_SELF_FOR_EVENT)) {
+			//	this.getSenderStatusLocalUsed().addListenerObject(this);
+			//}
+			
+			bReturn = true;
 		}
+		return bReturn;
 	}
 	public AbstractObjectWithFlagOnStatusListeningZZZ(HashMap<String,Boolean> hmFlag) throws ExceptionZZZ{
 		super();

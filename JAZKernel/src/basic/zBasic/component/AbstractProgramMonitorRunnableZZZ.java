@@ -32,8 +32,7 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 		main:{						
 			if(this.getFlag("init")) break main;
 								
-			//Das Programm sollte sich auf jeden Fall am eigenen ObjectBroker registrieren
-			this.getSenderStatusLocalUsed().addListenerObject(this);
+			bReturn = true;
 		}//end main:
 		return bReturn;
 	}

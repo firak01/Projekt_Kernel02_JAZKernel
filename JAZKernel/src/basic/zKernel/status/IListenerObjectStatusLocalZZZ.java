@@ -47,8 +47,10 @@ public interface IListenerObjectStatusLocalZZZ extends IListenerObjectStatusBasi
 	//#############################################################
 	//### FLAGZ
 	//#############################################################
+	//Merke: REGISTER_ON_SELF_FOR_EVENT bewirkt, dass der geworfenen Event vom Objekt selbst empfangen wird. 
+	//                                           Dadurch ist die Reaktion ggfs. schneller und VOR allen anderen registrierten Objekten. 
 	public enum FLAGZ{
-		DUMMY,STATUSLOCAL_REACT_ON_VALUEFALSE
+		DUMMY,REGISTER_SELF_FOR_EVENT, STATUSLOCAL_REACT_ON_VALUEFALSE
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);

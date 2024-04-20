@@ -41,6 +41,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.event.EventObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
@@ -1825,25 +1826,49 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			}//end main:
 			return bReturn;
 		}
-	
-	//aus IKernelExpressionIniConverterUserZZZ
-	//Damit eine aufrufende Methode mitbekommt, ob ein Converter den Wert verändert hat.
-//	public boolean isValueConverted(){
-//		return this.bValueConverted;
-//	}
-//	public void isValueConverted(boolean bStatus){
-//		this.bValueConverted=bStatus;
-//	}
-//	public String getValueRaw(){
-//		return this.sValueRaw;
-//	}
-//	public void setValueRaw(String sValueRaw){
-//		this.sValueRaw = sValueRaw;
-//		if(this.sValueRaw!=null){
-//			this.isValueConverted(true);
-//		}else{
-//			this.isValueConverted(false);
-//		}
-//	}
-	
+
+		//###################################################
+		//### FLAG: IListenerObjectFlagZsetZZZ
+		//###################################################
+		
+		@Override
+		public boolean getFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) {
+			return this.getFlag(objEnumFlag.name());
+		}
+		@Override
+		public boolean setFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnumFlag.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(IListenerObjectFlagZsetZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					baReturn = new boolean[objaEnumFlag.length];
+					int iCounter=-1;
+					for(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+					
+					//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+					//    Es wird entfernt.
+					this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+				}
+			}//end main:
+			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnumFlag.name());
+		}	
+		
+		@Override
+		public boolean proofFlagSetBefore(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+			return this.proofFlagSetBefore(objEnumFlag.name());
+		}		
+
 }
