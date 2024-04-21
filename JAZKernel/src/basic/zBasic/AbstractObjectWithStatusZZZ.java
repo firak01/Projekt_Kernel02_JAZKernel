@@ -1090,7 +1090,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			if(!bQuery) {
 //				this.logProtocolString(sLog);
 				break main;
-			}else {
+			}else {				
 				this.logProtocolString(sLog);
 			}
 			

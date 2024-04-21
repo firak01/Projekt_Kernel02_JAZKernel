@@ -1,5 +1,6 @@
 package basic.zBasic.util.math;
 
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 
 /**
@@ -165,5 +166,17 @@ public abstract class MathZZZ {
 	}
 	public static double squareX(int iValue, int iX){
 		return Math.sqrt(iValue^1/iX);
+	}
+	
+	public static int sum(int[] ia) {
+		int iReturn=0;
+		main:{
+			if(ArrayUtilZZZ.isEmpty(ia))break main;
+			
+			for(int i : ia) {
+				iReturn = iReturn+i;
+			}
+		}//end main:
+		return iReturn;
 	}
 }//end class

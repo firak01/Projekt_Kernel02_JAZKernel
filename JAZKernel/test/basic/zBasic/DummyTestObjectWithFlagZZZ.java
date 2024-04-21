@@ -16,7 +16,7 @@ public class DummyTestObjectWithFlagZZZ extends AbstractObjectWithFlagZZZ<Object
 
 	
 	//###################################################
-	//### FLAGS #########################################
+	//### FLAG: IDummyTestObjectWithFlagZZZ
 	//###################################################
 		
 	@Override
