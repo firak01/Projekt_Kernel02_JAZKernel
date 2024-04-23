@@ -2,7 +2,9 @@ package basic.zBasic.util.log;
 
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
@@ -14,9 +16,85 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	protected int[]iaFormat=null;
 	
 	@Override
-	public String compute(String sLog) {
-		// TODO Auto-generated method stub
-		return null;
+	public String compute(Object obj, String sLog) throws ExceptionZZZ {
+				String[] saLog = new String[1];
+				saLog[0] = sLog;
+				return this.compute(obj, saLog);
+	}
+	
+	@Override
+	public String compute(Object obj, String[] saLog) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(obj==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING,   AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			//Der zu verwendende Logteil
+			String sLogUsed;
+			
+			//Anzahl der geschriebenen sLogs aus saLog
+			int iLogIndexNext=0;
+			
+			
+			//Ermittle in einer Schleife den auszugebenden Teil
+			int[] iaFormat = this.getFormatPositions();
+			for(int iFormat : iaFormat){
+				sLogUsed=null; //wieder zuruecksetzen. Ordnung muss sein.
+				
+				
+				switch(iFormat) {
+				case ILogStringZZZ.iCLASSNAME:
+					if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
+					}else {
+						sLogUsed = "(" + obj.getClass().getName() + ")";
+						
+					}
+					break;
+					
+				case ILogStringZZZ.iTHREAD:
+					if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD)) {
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe der ThreaId per gesetztem Flag unterbunden.");
+					}else {
+						long lngThreadID = Thread.currentThread().getId();
+						sLogUsed = "[Thread: " + lngThreadID + "]";
+					}				
+					break;
+					
+				case ILogStringZZZ.iARGNEXT:
+					if(ArrayUtilZZZ.isEmpty(saLog)) {
+						//mach nix
+					}else {
+						if(saLog.length<=iLogIndexNext) {
+							sLogUsed = saLog[iLogIndexNext];
+							iLogIndexNext++;
+						}
+					}
+					break;
+					
+				default:
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+"Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFormat="+iFormat);
+					break;					
+				}				
+				
+				
+				if(sLogUsed!=null) { 
+					if(sReturn==null) {
+						sReturn = sLogUsed;
+					}else {
+						//Die einzelnen Bestandteile noch mit Leerstring voneinander trennen.
+						sReturn = sReturn + " " + sLogUsed;
+					}					
+				}
+				
+			}//end for
+					
+			
+		}//end main:
+		return sReturn;
 	}
 
 	@Override
@@ -34,7 +112,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public int computeFormatPositionsNumber() {
-		//FGL 20240421 - experimentell und nicht notwendig, solange ich den Weg der Rückumwandlung noch nicht kenne.
+		//FGL 20240421 - experimentell und nicht notwendig, solange ich den Weg der Rueckumwandlung noch nicht kann.
 		int iReturn = 0;
 		main:{
 			int[]ia = this.getFormatPositions();

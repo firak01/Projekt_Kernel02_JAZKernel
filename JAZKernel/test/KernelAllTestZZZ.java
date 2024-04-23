@@ -44,6 +44,7 @@ import basic.zBasic.util.file.jar.JarInfoTest;
 import basic.zBasic.util.file.jar.JarResourcesReadingTest;
 import basic.zBasic.util.file.txt.TxtReaderZZZTest;
 import basic.zBasic.util.file.txt.TxtWriterZZZTest;
+import basic.zBasic.util.log.LogStringZZZTest;
 import basic.zBasic.util.stream.StreamZZZTest;
 import basic.zKernel.GetOptZZZTest;
 import basic.zKernel.KernelPropertyZZZTest;
@@ -73,18 +74,21 @@ public class KernelAllTestZZZ {
 		//Merke: Die Tests bilden in ihrer Reihenfolge in etwa die Hierarchie im Framework ab. 
 		//            Dies beim Einfügen weiterer Tests bitte beachten.         
 		
-		//Tests für Reflection
+		//Tests fuer Reflection
 		objReturn.addTestSuite(ReflectEnvironmentZZZTest.class);
 		objReturn.addTestSuite(ReflectTHECodeZZZTest.class);
 		objReturn.addTestSuite(ReflectTHECodeKernelZZZTest.class);
 		objReturn.addTestSuite(ReflectUtilZZZTest.class);
 		objReturn.addTestSuite(ReflectClassZZZTest.class);
 		
-		//Tests für Enum
+		//Tests fuer das bauen eines FORMATIERTEN LogStrings
+		objReturn.addTestSuite(LogStringZZZTest.class);
+		
+		//Tests fuer Enum
 		objReturn.addTestSuite(EnumSetMappedUtilZZZTest.class);
 		objReturn.addTestSuite(EnumSetMappedZZZTest.class);
 		
-		//Tests für Datentypen etc.
+		//Tests fuer Datentypen etc.
 		objReturn.addTestSuite(ArrayListExtendedZZZTest.class);
 		objReturn.addTestSuite(ArrayListZZZTest.class);	
 		objReturn.addTestSuite(AsciiZZZTest.class);		
@@ -149,7 +153,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(FlagZHelperZZZTest.class);//Teste die Behandlung der Enumeration
 		objReturn.addTestSuite(StatusLocalAvailableHelperZZZTest.class);//Teste die Behandlung der Enumeration
 		
-		//Test für Filter auf jar/zip Dateien
+		//Test fuer Filter auf jar/zip Dateien
 		objReturn.addTestSuite(JarInfoClassLoaderTest.class);
 		objReturn.addTestSuite(JarInfoFeaturesTest.class);
 		objReturn.addTestSuite(JarInfoTest.class);

@@ -7,7 +7,9 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 import basic.javagently.Stream;
+import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zBasic.util.file.txt.TxtWriterZZZ;
@@ -33,8 +35,8 @@ public class LogStringZZZTest  extends TestCase{
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			LogStringZZZ obj = LogStringZZZ.getInstance();
-			boolean btemp = obj.setFlag(ILogStringZZZ.FLAGZ.INCLUDE_THREAD, true);
+			LogStringZZZ obLogStringj = LogStringZZZ.getInstance();
+			boolean btemp = obLogStringj.setFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD, true);
 			assertTrue(btemp);
 			
 		} catch (ExceptionZZZ ez) {
@@ -44,8 +46,8 @@ public class LogStringZZZTest  extends TestCase{
 	
 	public void testComupteN() {
 		try {
-			LogStringZZZ obj = LogStringZZZ.getInstance();			
-			int iNumber = obj.computeFormatPositionsNumber();
+			LogStringZZZ objLogString = LogStringZZZ.getInstance();			
+			int iNumber = objLogString.computeFormatPositionsNumber();
 			assertTrue(iNumber>0);//Verwende die custom-FormatPosition
 
 			int[]iatest = PrimeFactorizationZZZ.primeFactorsAsIntArray(iNumber);
@@ -59,12 +61,15 @@ public class LogStringZZZTest  extends TestCase{
 	}
 	
 	public void testCompute(){
-//		try{
-//			
-//		
-//		} catch (ExceptionZZZ ez) {
-//			fail("Method throws an exception." + ez.getMessageLast());
-//		}
+		try{
+						
+			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
+			String sLog = LogStringZZZ.getInstance().compute(objDummy, "der erste Logeintrag");
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
+		
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
 	} 
 	
 }//end class

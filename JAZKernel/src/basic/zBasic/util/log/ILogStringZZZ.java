@@ -10,7 +10,8 @@ public interface ILogStringZZZ{
 	public static int iCLASSNAME=2;
 	public static int iTHREAD=3; 
 	
-	public String compute(String sLog);
+	public String compute(Object obj, String sLog) throws ExceptionZZZ;
+	public String compute(Object obj, String[] saLog) throws ExceptionZZZ;
 	public int computeFormatPositionsNumber();
 	
 	
@@ -33,7 +34,7 @@ public interface ILogStringZZZ{
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY,INCLUDE_THREAD, INCLUDE_CLASSNAME
+		DUMMY,EXCLUDE_THREAD, EXCLUDE_CLASSNAME
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag);
