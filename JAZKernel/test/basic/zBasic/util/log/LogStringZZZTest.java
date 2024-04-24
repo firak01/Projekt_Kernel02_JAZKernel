@@ -10,6 +10,7 @@ import basic.javagently.Stream;
 import basic.zBasic.DummyTestObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zBasic.util.file.txt.TxtWriterZZZ;
@@ -39,6 +40,8 @@ public class LogStringZZZTest  extends TestCase{
 			boolean btemp = obLogStringj.setFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD, true);
 			assertTrue(btemp);
 			
+			
+			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}		
@@ -46,6 +49,8 @@ public class LogStringZZZTest  extends TestCase{
 	
 	public void testComupteN() {
 		try {
+			//20240423:
+			//MErke: Diese Primfaktorenzerlegung, etc. wird noch niergendwo verwendet
 			LogStringZZZ objLogString = LogStringZZZ.getInstance();			
 			int iNumber = objLogString.computeFormatPositionsNumber();
 			assertTrue(iNumber>0);//Verwende die custom-FormatPosition
@@ -60,13 +65,47 @@ public class LogStringZZZTest  extends TestCase{
 		}	
 	}
 	
-	public void testCompute(){
+	public void testCompute_FormatDefault() {
+		try{
+			
+			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
+			String sLog = LogStringZZZ.getInstance().compute(objDummy, "der erste Logeintrag");
+			assertNotNull(sLog);
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
+			
+			assertTrue(StringZZZ.contains(sLog, "der erste Logeintrag"));
+			assertTrue(StringZZZ.count(sLog, "der erste Logeintrag")==1);
+										
+			assertTrue(StringZZZ.count(sLog,"[Thread:")==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
+			assertTrue(StringZZZ.count(sLog,"(")==0);
+						
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testCompute_FormatDefined(){
 		try{
 						
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
+			int[] iaFormat= {
+							ILogStringZZZ.iCLASSNAME,						
+							ILogStringZZZ.iARGNEXT01,
+							ILogStringZZZ.iTHREAD,				
+							ILogStringZZZ.iARGNEXT02,
+							ILogStringZZZ.iARGNEXT01,							
+							};
+			LogStringZZZ.getInstance().setFormatPositions(iaFormat);
+			
 			String sLog = LogStringZZZ.getInstance().compute(objDummy, "der erste Logeintrag");
-			System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
-		
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Hier erst geht der Logeintrag los...:" + sLog);			
+			
+			assertTrue(StringZZZ.contains(sLog, "der erste Logeintrag"));
+			assertTrue(StringZZZ.count(sLog, "der erste Logeintrag")==1);
+										
+			assertTrue(StringZZZ.count(sLog,"THREAD")==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
+			assertTrue(StringZZZ.count(sLog,"(")==1);
+			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}

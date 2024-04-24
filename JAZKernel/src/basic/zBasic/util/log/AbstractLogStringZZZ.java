@@ -1,5 +1,7 @@
 package basic.zBasic.util.log;
 
+import java.util.HashMap;
+
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -10,7 +12,8 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 
 public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ implements ILogStringZZZ{
 	private static final long serialVersionUID = 432992680546312138L;
-	protected static ILogStringZZZ objLogStringSingleton; //muss als Singleton static sein	
+	protected static ILogStringZZZ objLogStringSingleton; //muss als Singleton static sein
+	protected HashMap<Integer,String>hmFormatPositionString=null;
 	
 	//Das Fomat
 	protected int[]iaFormat=null;
@@ -23,12 +26,25 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	@Override
+	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ {
+				String[] saLog = new String[2];
+				saLog[0] = sLog01;
+				saLog[1] = sLog02;
+				return this.compute(obj, saLog);
+	}
+	
+	@Override
 	public String compute(Object obj, String[] saLog) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(obj==null) {
 				ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING,   AbstractLogStringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
+			}
+			
+			if(ArrayUtilZZZ.isEmpty(saLog)) {
+				//mach nix
+				break main;
 			}
 			
 			
@@ -50,8 +66,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 					}else {
-						sLogUsed = "(" + obj.getClass().getName() + ")";
-						
+						String sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iCLASSNAME));
+						sLogUsed = String.format(sFormat, obj.getClass().getName());						
 					}
 					break;
 					
@@ -59,20 +75,29 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD)) {
 						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe der ThreaId per gesetztem Flag unterbunden.");
 					}else {
+						String sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iTHREAD));
+						
 						long lngThreadID = Thread.currentThread().getId();
-						sLogUsed = "[Thread: " + lngThreadID + "]";
+						sLogUsed = String.format(sFormat, lngThreadID);
 					}				
 					break;
 					
-				case ILogStringZZZ.iARGNEXT:
-					if(ArrayUtilZZZ.isEmpty(saLog)) {
-						//mach nix
-					}else {
-						if(saLog.length<=iLogIndexNext) {
-							sLogUsed = saLog[iLogIndexNext];
-							iLogIndexNext++;
-						}
-					}
+				case ILogStringZZZ.iARGNEXT01:					
+					if(saLog.length>iLogIndexNext) {
+						String sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iARGNEXT01));
+						
+						sLogUsed = String.format(sFormat, saLog[iLogIndexNext]);
+						iLogIndexNext++;
+					}					
+					break;
+					
+				case ILogStringZZZ.iARGNEXT02:					
+					if(saLog.length>iLogIndexNext) {
+						String sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iARGNEXT02));
+						
+						sLogUsed = String.format(sFormat, saLog[iLogIndexNext]);
+						iLogIndexNext++;
+					}					
 					break;
 					
 				default:
@@ -96,19 +121,89 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		}//end main:
 		return sReturn;
 	}
-
-	@Override
-	public int[] getFormatPositions() {
-		if(ArrayUtilZZZ.isEmpty(this.iaFormat)) {
-			iaFormat = this.getFormatPostitionsCustom(); 
-		}
-		return iaFormat;
-	}
 	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void setFormatPositions(int[] iaFormat) {
 		this.iaFormat=iaFormat;
 	}
+
+	@Override
+	public int[] getFormatPositions() {
+		if(ArrayUtilZZZ.isEmpty(this.iaFormat)) {
+			this.iaFormat = this.getFormatPositionsCustom();
+			
+			//Wenn im custom nix drin ist, default nehmen
+			if(ArrayUtilZZZ.isEmpty(iaFormat)) {
+				this.iaFormat = this.getFormatPositionsDefault();
+			}
+		}
+		return this.iaFormat;
+	}
+	
+	
+	@Override
+	public int[] getFormatPositionsDefault() {
+		//Merke: Verwendet wird z.B. ein LogString in dieser Form, den es abzubilden gilt:
+		//       In getPositionCurrent() wird schon die ThreadID zum ersten Mal gesetzt. Damit das Log lesbarer wird soll vor dem Status noch der Thread gesetzt werden.
+		//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
+		
+		//Also Classname und Thread z.B. raus. Das 1. iARGNext ist für getPositionCurrent(), das 2. ARGNext für den Text ab "Status...", das 3. ARGNext als Reserve.
+		int[] iaReturn = {
+
+			//ILogStringZZZ.iCLASSNAME,
+			//ILogStringZZZ.iTHREAD,
+			ILogStringZZZ.iARGNEXT01,  //ggfs. getPostionCurrent()
+			ILogStringZZZ.iTHREAD,	 			
+			ILogStringZZZ.iARGNEXT02,  //Der LogString
+			ILogStringZZZ.iARGNEXT01,  //... zur Reserve
+			
+		};
+		return iaReturn;
+	}
+	
+	@Override
+	public abstract int[] getFormatPositionsCustom();
+	
+	//+++++++++++++++++++++++++++++++++++++++++++
+	@Override
+	public void setHashMapFormatPositionString(HashMap<Integer, String> hmFormatPostionString) {
+		this.hmFormatPositionString = hmFormatPostionString;
+	}
+	
+	@Override
+	public HashMap<Integer,String>getHashMapFormatPositionString(){
+		if(this.hmFormatPositionString==null) {
+			this.hmFormatPositionString = this.getHashMapFormatPositionStringCustom();
+		}else if(this.hmFormatPositionString.isEmpty()) {
+			this.hmFormatPositionString = this.getHashMapFormatPositionStringCustom();			
+		}
+		
+		//Wenn im custom nix drin ist, default nehmen
+		if(this.hmFormatPositionString==null) {
+			this.hmFormatPositionString = this.getHashMapFormatPositionStringDefault();
+		}else if(this.hmFormatPositionString.isEmpty()) {
+			this.hmFormatPositionString = this.getHashMapFormatPositionStringDefault();
+		}
+		return this.hmFormatPositionString;
+	}
+	
+	@Override
+	public HashMap<Integer, String> getHashMapFormatPositionStringDefault() {
+		HashMap<Integer, String> hmReturn = new HashMap<Integer,String>();
+		hmReturn.put(new Integer(ILogStringZZZ.iARGNEXT01), ILogStringZZZ.sARGNEXT01);
+		hmReturn.put(new Integer(ILogStringZZZ.iARGNEXT02), ILogStringZZZ.sARGNEXT02);
+		hmReturn.put(new Integer(ILogStringZZZ.iCLASSNAME),ILogStringZZZ.sCLASSNAME);
+		hmReturn.put(new Integer(ILogStringZZZ.iTHREAD), ILogStringZZZ.sTHREAD);
+		return hmReturn;
+	}
+	
+	@Override 
+	public abstract HashMap<Integer,String>getHashMapFormatPositionStringCustom();
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
 	
 	@Override
 	public int computeFormatPositionsNumber() {
@@ -127,9 +222,8 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		return iReturn;
 	}
 
-	@Override
-	public abstract int[] getFormatPostitionsCustom();
-		
+	
+			
 
 	//###################################################
 	//### FLAG: ILogStringZZZ

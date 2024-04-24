@@ -1,16 +1,33 @@
 package basic.zBasic.util.log;
 
+import java.util.HashMap;
+
 import basic.zBasic.ExceptionZZZ;
 
 public interface ILogStringZZZ{
-	//Merke: Ziel ist es das Custom-Format in einer einzigen Zahl zu definieren.
+	//Merke: Es soll folgendes abgebildet werden, z.B. 
+	//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
+	
+	//Das zu wird das Format als Anweisung in ein Array abgelegt, in dem dann die einzelnen Teilkomponenten ausgerechnet werden.
+	
+	//Merke: TODO Idee ist es das Custom-Format in einer einzigen Zahl zu definieren.
 	//Merke: Jedes dieser Argumente ist als Primzahl zu defnieren.
 	//       Es gilt Positionswert = Position * Primzahl
-	public static int iARGNEXT=1;       //Argumente der compute Methode (sofern vorhanden und != null)
-	public static int iCLASSNAME=2;
-	public static int iTHREAD=3; 
+	
+	//Argumente der compute Methode (sofern vorhanden und != null)
+	public static int iARGNEXT01=1;
+	public static int iARGNEXT02=2;     //2 verschiedene Varianten fuer Argnext 
+	public static int iCLASSNAME=3;
+	public static int iTHREAD=5; 
+	
+	//Formatstring für die Postion eines möglichen Texts (%s) in dem Teilstring
+	public static String sARGNEXT01="%s";
+	public static String sARGNEXT02="'%s'";  //Merke: Zweite Argnext Variante ist in Hochkommata
+	public static String sCLASSNAME="(%s)";
+	public static String sTHREAD="[Thread: %s ]";
 	
 	public String compute(Object obj, String sLog) throws ExceptionZZZ;
+	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
 	public String compute(Object obj, String[] saLog) throws ExceptionZZZ;
 	public int computeFormatPositionsNumber();
 	
@@ -27,7 +44,13 @@ public interface ILogStringZZZ{
 	 */
 	public void setFormatPositions(int[]iaFormat);
 	public int[] getFormatPositions();
-	public int[] getFormatPostitionsCustom();
+	public int[] getFormatPositionsCustom();
+	public int[] getFormatPositionsDefault();
+	
+	public void setHashMapFormatPositionString(HashMap<Integer,String>hmFormatPostionString);
+	public HashMap<Integer,String>getHashMapFormatPositionString();
+	public HashMap<Integer,String>getHashMapFormatPositionStringCustom();
+	public HashMap<Integer,String>getHashMapFormatPositionStringDefault();
 	
 	
 	//#############################################################
