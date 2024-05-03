@@ -11,6 +11,8 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringZZZ;
+import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.KernelLogZZZ;
 
 /** 
@@ -262,6 +264,35 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 					this.logLineDate(sLog);
 				}
 			}//end main:
+		}
+		
+		@Override
+		public void logProtocolString(String sLog, IEnumSetMappedLogStringZZZ ienumMappedLogString)
+				throws ExceptionZZZ {
+			String sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+			System.out.println(sLogUsed);
+		}
+
+		@Override
+		public void logProtocolString(String[] saLog, IEnumSetMappedLogStringZZZ[] ienumaMappedLogString)
+				throws ExceptionZZZ {
+			main:{
+			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+			if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
+				this.logProtocolString(saLog);
+				break main;
+			}
+			
+			int iIndex=0;
+			for(String sLog : saLog) {
+				if(ienumaMappedLogString.length>iIndex) {
+					this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
+					iIndex++;
+				}else {
+					this.logProtocolString(saLog);
+				}
+			}
+		}//end main:
 		}
 }
 

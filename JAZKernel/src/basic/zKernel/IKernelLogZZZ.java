@@ -21,8 +21,8 @@ public interface IKernelLogZZZ extends IFileExpansionUserZZZ{
 	
 	public FileTextWriterZZZ getFileTextWriterObject() throws ExceptionZZZ;
 	
-	public boolean Write(String sLog);//wird dann als Synchronized implementiert.
-	public boolean WriteLine(String sLog);//wird dann als Synchronized implementiert.
-	public boolean WriteLineDate(String sLog);//wird dann als Synchronized implementiert.
+	public boolean Write(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean WriteLine(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean WriteLineDate(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
 	
 }

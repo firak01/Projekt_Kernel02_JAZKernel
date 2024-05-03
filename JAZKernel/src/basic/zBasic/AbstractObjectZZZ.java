@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringZZZ;
+import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.KernelLogZZZ;
 
 public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ{
@@ -49,14 +51,16 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	//### aus ILogZZZ
 	@Override
 	public void logLineDate(String sLog) throws ExceptionZZZ {
-		String sTemp = KernelLogZZZ.computeLineDate(sLog);
+		String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
 		System.out.println(sTemp);		
 	}
 	
 	@Override
 	public void logProtocolString(String sLog) throws ExceptionZZZ{
-		this.logLineDate(sLog);
+		String sLogUsed = LogStringZZZ.getInstance().compute(this, sLog);
+		System.out.println(sLogUsed);
 	}
+	
 	
 	@Override
 	public void logProtocolString(String[] saLog) throws ExceptionZZZ{
@@ -64,9 +68,39 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
 			
 			for(String sLog : saLog) {
-				this.logLineDate(sLog);
+				this.logProtocolString(sLog);
 			}
 		}//end main:
 	}
 	
+
+
+	@Override
+	public void logProtocolString(String sLog, IEnumSetMappedLogStringZZZ ienumMappedLogString)
+			throws ExceptionZZZ {
+		String sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+		System.out.println(sLogUsed);
+	}
+
+	@Override
+	public void logProtocolString(String[] saLog, IEnumSetMappedLogStringZZZ[] ienumaMappedLogString)
+			throws ExceptionZZZ {
+		main:{
+		if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+		if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
+			this.logProtocolString(saLog);
+			break main;
+		}
+		
+		int iIndex=0;
+		for(String sLog : saLog) {
+			if(ienumaMappedLogString.length>iIndex) {
+				this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
+				iIndex++;
+			}else {
+				this.logProtocolString(saLog);
+			}
+		}
+	}//end main:
+	}
 }

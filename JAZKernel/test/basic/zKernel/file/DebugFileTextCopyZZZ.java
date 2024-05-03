@@ -73,7 +73,12 @@ public class DebugFileTextCopyZZZ {
 			if(objLog==null){
 				objLog = new LogZZZ();
 			}
-			objLog.WriteLineDate(e.getDetailAllLast());
+			try {
+				objLog.WriteLineDate(e.getDetailAllLast());
+			} catch (ExceptionZZZ e1) {				
+				e1.printStackTrace();
+				System.out.println(e1.getDetailAllLast());
+			}
 		}
 		
 	}//end main

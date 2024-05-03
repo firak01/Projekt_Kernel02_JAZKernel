@@ -88,14 +88,13 @@ public class LogStringZZZTest  extends TestCase{
 		try{
 						
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
-			int[] iaFormat= {
-							ILogStringZZZ.iCLASSNAME,						
-							ILogStringZZZ.iARGNEXT01,
-							ILogStringZZZ.iTHREAD,				
-							ILogStringZZZ.iARGNEXT02,
-							ILogStringZZZ.iARGNEXT01,							
+			IEnumSetMappedLogStringZZZ[] ienumaFormat= {
+							ILogStringZZZ.LOGSTRING.CLASSNAME,						
+							ILogStringZZZ.LOGSTRING.ARGNEXT01,
+							ILogStringZZZ.LOGSTRING.THREADID,				
+							ILogStringZZZ.LOGSTRING.ARGNEXT02,												
 							};
-			LogStringZZZ.getInstance().setFormatPositions(iaFormat);
+			LogStringZZZ.getInstance().setFormatPositionsMapped(ienumaFormat);
 			
 			String sLog = LogStringZZZ.getInstance().compute(objDummy, "der erste Logeintrag");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Hier erst geht der Logeintrag los...:" + sLog);			

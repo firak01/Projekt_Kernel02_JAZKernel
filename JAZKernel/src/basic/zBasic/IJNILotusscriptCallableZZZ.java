@@ -6,6 +6,6 @@ package basic.zBasic;
  */
 public interface IJNILotusscriptCallableZZZ {
 	
-	public abstract boolean lsimain(String[] argv);
+	public abstract boolean lsimain(String[] argv) throws ExceptionZZZ;
 	
 }

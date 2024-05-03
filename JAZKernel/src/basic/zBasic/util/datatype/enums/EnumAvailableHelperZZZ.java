@@ -692,6 +692,11 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 	
 	//++++++++++++++++++++++++
 	//++++++++++++++++++++++++
+	public static <E extends IEnumSetMappedZZZ> E[] searchEnumMapped(Object objForClass, String sEnumName) throws ExceptionZZZ {
+		Class<?> classToCheck = objForClass.getClass();
+		return EnumAvailableHelperZZZ.searchEnumMapped_(classToCheck,sEnumName, true, true);
+	}
+	
 	public static <E extends IEnumSetMappedZZZ> E[] searchEnumMapped(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
 		return EnumAvailableHelperZZZ.searchEnumMapped_(classToCheck,sEnumName, true, true);
 	}
@@ -743,6 +748,12 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		
 	//+++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++
+	public static <E extends Enum> E[] searchEnum(Object objForClass, String sEnumName)  throws ExceptionZZZ {
+		Class<?> cls = objForClass.getClass();
+		E[] enumaReturn = searchEnum_(cls,sEnumName, false, false);
+		return enumaReturn;
+	}
+	 
 	public static <E extends Enum> E[] searchEnum(Class<?> cls, String sEnumName)  throws ExceptionZZZ {
 		E[] enumaReturn = searchEnum_(cls,sEnumName, false, false);
 		return enumaReturn;
@@ -775,6 +786,11 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 	
 	//+++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++	
+	public static <E extends Enum> E searchEnum(Object objForClass, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
+		Class<?> classToCheck = objForClass.getClass(); 
+		return EnumAvailableHelperZZZ.searchEnum_(classToCheck, sEnumName, sEnumPropertyName, true, true);
+	}
+	
 	public static <E extends Enum> E searchEnum(Class<?> classToCheck, String sEnumName, String sEnumPropertyName) throws ExceptionZZZ {
 		return EnumAvailableHelperZZZ.searchEnum_(classToCheck, sEnumName, sEnumPropertyName, true, true);
 	}
@@ -870,6 +886,11 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 	
 	//+++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++
+	public static <E extends Enum> ArrayList<E> searchEnumListDirect(Object objForClass, String sEnumName) throws ExceptionZZZ {
+		Class<?> classToCheck = objForClass.getClass();
+		return EnumAvailableHelperZZZ.searchEnumListDirect_(classToCheck,sEnumName,true);
+	}
+
 	public static <E extends Enum> ArrayList<E> searchEnumListDirect(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
 		return EnumAvailableHelperZZZ.searchEnumListDirect_(classToCheck,sEnumName,true);
 	}
@@ -885,6 +906,11 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 	
 	//+++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++
+	public static <E extends Enum> ArrayList<E> searchEnumList(Object objForClass, String sEnumName) throws ExceptionZZZ {
+		Class<?> classToCheck = objForClass.getClass();
+		return EnumAvailableHelperZZZ.searchEnumList_(classToCheck,sEnumName,true,true);
+	}
+	
 	public static <E extends Enum> ArrayList<E> searchEnumList(Class<?> classToCheck, String sEnumName) throws ExceptionZZZ {
 		return EnumAvailableHelperZZZ.searchEnumList_(classToCheck,sEnumName,true,true);
 	}

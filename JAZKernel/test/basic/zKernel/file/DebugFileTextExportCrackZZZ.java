@@ -37,7 +37,12 @@ public class DebugFileTextExportCrackZZZ {
 					objCrack.crackCustom();
 				
 					} catch (ExceptionZZZ e) {
-						objLog.WriteLineDate(e.getDetailAllLast());
+						try {
+							objLog.WriteLineDate(e.getDetailAllLast());
+						} catch (ExceptionZZZ e1) {				
+							e1.printStackTrace();
+							System.out.println(e1.getDetailAllLast());
+						}
 					}
 	}//end main
 				System.out.println("Ende Debugging von 'FileTextCrackZZZ'");

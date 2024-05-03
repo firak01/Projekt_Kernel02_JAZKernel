@@ -49,7 +49,12 @@ public class DebugFileTransformCsv2IniZZZ {
 			objCrack.startIt();
 			
 			} catch (ExceptionZZZ e) {
-				objLog.WriteLineDate(e.getDetailAllLast());
+				try {
+					objLog.WriteLineDate(e.getDetailAllLast());
+				} catch (ExceptionZZZ e1) {				
+					e1.printStackTrace();
+					System.out.println(e1.getDetailAllLast());
+				}
 			}
 		
 		

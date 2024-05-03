@@ -9,6 +9,9 @@ import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringZZZ;
+import basic.zBasic.util.log.ILogStringZZZ;
+import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zUtil.io.IFileExpansionUserZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
@@ -160,139 +163,152 @@ public synchronized boolean WriteLine(String stemp){
 	return bReturn;
 	}
 
-public synchronized static String computeLineDate(String stemp) {	
-	GregorianCalendar d = new GregorianCalendar();
-	 Integer iDateYear = new Integer(d.get(Calendar.YEAR));
-	 Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-	 Integer iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-	 Integer iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-	 Integer iTimeMinute = new Integer(d.get(Calendar.MINUTE)); 			
-	 String sDate =new String( iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
-	 + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString()); 
-	
-	String sReturn = new String(sDate + ": " + stemp);
-	return sReturn;
-}
-synchronized public boolean WriteLineDate(String stemp){
-	boolean bReturn = false;	
-	
-	String sLine = KernelLogZZZ.computeLineDate(stemp);
-	bReturn = WriteLine(sLine);
-	
-	return bReturn;
-}
-public void setFileObject(FileZZZ objFile){
-	this.objFileZZZ = objFile;
-}
-public FileZZZ getFileObject() throws ExceptionZZZ{
-	if(this.objFileZZZ == null) {
-		String sDirectoryPathNormed = this.getDirectory();
-		String sLogFile = this.getFilename();
+	public synchronized static String computeLineDate(String stemp) throws ExceptionZZZ {	
 		
-		IFileExpansionZZZ objFileExpansion = this.getFileExpansionObject();				
-		FileZZZ objFile = new FileZZZ(sDirectoryPathNormed, sLogFile, objFileExpansion, null);
-		this.setFileObject(objFile);
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+		 };
+		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
 	}
-	return this.objFileZZZ;
-}
-
-
-
-public String getFilenameExpanded() throws ExceptionZZZ{
-	return this.objFileZZZ.getNameExpandedCurrent();
-}
-
-public String getFilename(){
-	//früher  return this.objFileZZZ.getName();
-	return this.sLogFilename;
-}
+	public synchronized static String computeLineDate(Object obj, String stemp) throws ExceptionZZZ {	
+		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+		 };
+		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
+	}
+	synchronized public boolean WriteLineDate(String stemp) throws ExceptionZZZ{
+		boolean bReturn = false;	
+		
+		String sLine = KernelLogZZZ.computeLineDate(stemp);
+		bReturn = WriteLine(sLine);
+		
+		return bReturn;
+	}
+	synchronized public boolean WriteLineDate(Object obj, String stemp) throws ExceptionZZZ{
+		boolean bReturn = false;	
+		
+		String sLine = KernelLogZZZ.computeLineDate(obj, stemp);
+		bReturn = WriteLine(sLine);
+		
+		return bReturn;
+	}
+	
+	public void setFileObject(FileZZZ objFile){
+		this.objFileZZZ = objFile;
+	}
+	public FileZZZ getFileObject() throws ExceptionZZZ{
+		if(this.objFileZZZ == null) {
+			String sDirectoryPathNormed = this.getDirectory();
+			String sLogFile = this.getFilename();
+			
+			IFileExpansionZZZ objFileExpansion = this.getFileExpansionObject();				
+			FileZZZ objFile = new FileZZZ(sDirectoryPathNormed, sLogFile, objFileExpansion, null);
+			this.setFileObject(objFile);
+		}
+		return this.objFileZZZ;
+	}
+	
+	public String getFilenameExpanded() throws ExceptionZZZ{
+		return this.objFileZZZ.getNameExpandedCurrent();
+	}
+	
+	public String getFilename(){
+		//früher  return this.objFileZZZ.getName();
+		return this.sLogFilename;
+	}
 		
 
-/* (non-Javadoc)
- * @see basic.zKernel.IKernelLogZZZ#Write(java.lang.String)
- */
-public synchronized boolean Write(String stemp){
-	boolean bReturn = false;
-	FileTextWriterZZZ objFileWriter;
-	try {
-		objFileWriter = this.getFileTextWriterObject();
-		bReturn = objFileWriter.write(stemp);
-	} catch (ExceptionZZZ e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}	
-	return bReturn;
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelLogZZZ#Write(java.lang.String)
+	 */
+	public synchronized boolean Write(String stemp){
+		boolean bReturn = false;
+		FileTextWriterZZZ objFileWriter;
+		try {
+			objFileWriter = this.getFileTextWriterObject();
+			bReturn = objFileWriter.write(stemp);
+		} catch (ExceptionZZZ e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return bReturn;
 	}
 
 
 
-//############################################
-//### Functions implemented by interface
-//.....
-public void setFilename(String sLogFilename) {
-	this.sLogFilename = sLogFilename;
-	
-	//File Objekte wieder zurücksetzen
-	this.objFileZZZ = null;
-	this.objFileTextWriter = null;
-}
-
-public void setDirectory(String sLogDirectorypath) throws ExceptionZZZ {
-	
-	//20190116: Suche nach dem Pfad. Er ist ggfs. als Serverapplication ohne den "src"-Ordner.
-	File objDirectory = FileEasyZZZ.searchDirectory(sLogDirectorypath);
-	if(objDirectory==null) {
-		String sError = "Verzeichnis für das KernelLog  ='" + sLogDirectorypath +"' existiert nicht.";
-		System.out.println(ReflectCodeZZZ.getPositionCurrent()+": " + sError);
-		ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, KernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
-		throw ez;					
-	}	
-	String sDirectoryPathNormed = objDirectory.getAbsolutePath();
-	System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter existierender Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
-	this.sLogDirectorypath = sDirectoryPathNormed; 
-	
-	//File Objekte wieder zurücksetzen
-	this.objFileZZZ = null;
-	this.objFileTextWriter = null;
-}
-public String getDirectory() {
-	return this.sLogDirectorypath;
-	//früher... return this.objFileZZZ.getPathDirectory();    //.getPath();
-}
-
-
-public IFileExpansionZZZ getFileExpansionObject(){	
-	if(this.getFlag(IKernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
-		if(this.objFileExpansion==null) {
-			String sDir = this.getDirectory();			
-			String sName = this.getFilename();
-			FileZZZ objFileBase;
-			try {
-				objFileBase = new FileZZZ(sDir,sName);
-				this.objFileExpansion=new KernelFileExpansionZZZ(objFileBase);
-			} catch (ExceptionZZZ e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-		}
-		return this.objFileExpansion;
-	}else {
-		return null;
+	//############################################
+	//### Functions implemented by interface
+	//.....
+	public void setFilename(String sLogFilename) {
+		this.sLogFilename = sLogFilename;
+		
+		//File Objekte wieder zurücksetzen
+		this.objFileZZZ = null;
+		this.objFileTextWriter = null;
 	}
-}
-public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion){
-	this.objFileExpansion = objFileExpansion;
 	
-	//File Objekt aktualisieren
-	FileZZZ objFile;
-	try {
-		objFile = this.getFileObject();
-		if(objFile!=null) {
-			objFile.setFileExpansionObject(objFileExpansion);
+	public void setDirectory(String sLogDirectorypath) throws ExceptionZZZ {
+		
+		//20190116: Suche nach dem Pfad. Er ist ggfs. als Serverapplication ohne den "src"-Ordner.
+		File objDirectory = FileEasyZZZ.searchDirectory(sLogDirectorypath);
+		if(objDirectory==null) {
+			String sError = "Verzeichnis für das KernelLog  ='" + sLogDirectorypath +"' existiert nicht.";
+			System.out.println(ReflectCodeZZZ.getPositionCurrent()+": " + sError);
+			ExceptionZZZ ez = new ExceptionZZZ(sError, iERROR_PARAMETER_VALUE, KernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;					
+		}	
+		String sDirectoryPathNormed = objDirectory.getAbsolutePath();
+		System.out.println(ReflectCodeZZZ.getPositionCurrent()+": Errechneter existierender Pfad für das KernelLog='" + sDirectoryPathNormed +"'");
+		this.sLogDirectorypath = sDirectoryPathNormed; 
+		
+		//File Objekte wieder zurücksetzen
+		this.objFileZZZ = null;
+		this.objFileTextWriter = null;
+	}
+	public String getDirectory() {
+		return this.sLogDirectorypath;
+		//früher... return this.objFileZZZ.getPathDirectory();    //.getPath();
+	}
+	
+	
+	public IFileExpansionZZZ getFileExpansionObject(){	
+		if(this.getFlag(IKernelLogZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+			if(this.objFileExpansion==null) {
+				String sDir = this.getDirectory();			
+				String sName = this.getFilename();
+				FileZZZ objFileBase;
+				try {
+					objFileBase = new FileZZZ(sDir,sName);
+					this.objFileExpansion=new KernelFileExpansionZZZ(objFileBase);
+				} catch (ExceptionZZZ e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
+			}
+			return this.objFileExpansion;
+		}else {
+			return null;
 		}
-	} catch (ExceptionZZZ e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}	
-}
+	}
+	public void setFileExpansionObject(IFileExpansionZZZ objFileExpansion){
+		this.objFileExpansion = objFileExpansion;
+		
+		//File Objekt aktualisieren
+		FileZZZ objFile;
+		try {
+			objFile = this.getFileObject();
+			if(objFile!=null) {
+				objFile.setFileExpansionObject(objFileExpansion);
+			}
+		} catch (ExceptionZZZ e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
 }//end class

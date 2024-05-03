@@ -36,7 +36,5 @@ public final class EventObjectStatusLocalZZZ extends AbstractEventObjectStatusLo
 	public EventObjectStatusLocalZZZ(Object source, Enum objStatusEnum, boolean bFlagValue) throws ExceptionZZZ {
 		super(source, objStatusEnum, bFlagValue);
 	}
-
-
 }
 

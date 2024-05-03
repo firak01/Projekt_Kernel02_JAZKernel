@@ -18,33 +18,29 @@ public class LogStringZZZ extends AbstractLogStringZZZ{
 			}
 			return (LogStringZZZ) objLogStringSingleton;	
 		}
-
+		
 		@Override
-		public int[] getFormatPositionsCustom() {
-			//Merke: Verwendet wird z.B. ein LogString in dieser Form, den es abzubilden gilt:
-			//       In getPositionCurrent() wird schon die ThreadID zum ersten Mal gesetzt. Damit das Log lesbarer wird soll vor dem Status noch der Thread gesetzt werden.
-			//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
-			
-			//Also Classname und Thread z.B. raus. Das 1. iARGNext ist für getPositionCurrent(), das 2. ARGNext für den Text ab "Status...", das 3. ARGNext als Reserve.
-			int[] iaReturn = {
-
-				//ILogStringZZZ.iCLASSNAME,
-				//ILogStringZZZ.iTHREAD,
-				ILogStringZZZ.iARGNEXT01,
-				ILogStringZZZ.iTHREAD,				
-				ILogStringZZZ.iARGNEXT02,
-				ILogStringZZZ.iARGNEXT01,
-				
+		public IEnumSetMappedLogStringZZZ[] getFormatPositionsMappedCustom() {
+			//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
+			//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
+			IEnumSetMappedLogStringZZZ[] iaenumReturn = {
+					ILogStringZZZ.LOGSTRING.DATE,
+					ILogStringZZZ.LOGSTRING.THREADID,
+					ILogStringZZZ.LOGSTRING.CLASSSIMPLENAME,
+					ILogStringZZZ.LOGSTRING.ARGNEXT01,					
+					ILogStringZZZ.LOGSTRING.ARGNEXT02,
+					ILogStringZZZ.LOGSTRING.CLASSMETHOD,
 			};
-			return iaReturn;
+			return iaenumReturn;
 		}
 
 		@Override
-		public HashMap<Integer, String> getHashMapFormatPositionStringCustom() {
+		public HashMap<Integer, String> getHashMapFormatPositionStringCustom() throws ExceptionZZZ {
 			HashMap<Integer,String>hmReturn=super.getHashMapFormatPositionStringDefault();
 			
 			//Hier mögliche Abweichende Strings angeben, z.B. in einfache Hochkommata packen			
-			hmReturn.put(new Integer(ILogStringZZZ.iCLASSNAME),"'" + ILogStringZZZ.sCLASSNAME + "'");
+			//hmReturn.put(new Integer(ILogStringZZZ.iFACTOR_CLASSNAME),"'" + ILogStringZZZ.LOGSTRING.CLASSNAME.getFormat() + "'");
+			
 			//und das ist nicht notwendig, dar argnext02 schon einfache hochkommata enthaelt: hmReturn.put(new Integer(ILogStringZZZ.iARGNEXT01), "'" + ILogStringZZZ.sARGNEXT01 + "'");
 			//und das bleibt unveraendert hmReturn.put(new Integer(ILogStringZZZ.iTHREAD), ILogStringZZZ.sTHREAD);
 			
@@ -53,5 +49,4 @@ public class LogStringZZZ extends AbstractLogStringZZZ{
 		}
 
 		
-
 }

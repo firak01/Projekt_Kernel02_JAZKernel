@@ -27,6 +27,72 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	public static final String sCLASS_METHOD_SEPERATOR = ".";
 	public static final String sPACKAGE_SEPERATOR = ".";
 	
+	
+	//+++ Fuer den Namen der .java - Datei
+	public static String getMethodCurrentFileName(){
+		return getMethodCurrentFileName(1);
+	}
+	
+	/**
+	 * use this method for the constructor of exceptionZZZ when throwing an exceptionZZZ, in an environment < JDK1.4
+	 * in an enviroment >= JDK 1.4 use the constructor passing exception as a parameter !!!
+	   * @return Return the name of the routine that called getCurrentMethodName
+	   */
+	  public static String getMethodCurrentFileName(int iOffset) {		  
+			String method = null;
+			 
+			if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+				//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+				///Siehe Artikel 'The surprisingly simple stack trace Element'");
+				final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();				
+//				if(stackTrace.length>=3){
+//					int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
+//					StackTraceElement element = stackTrace[iPositionInStacktrace];
+//					method = element.getMethodName();
+//				}
+				
+				if(stackTrace.length>=4){
+					StackTraceElement element = stackTrace[ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset];
+					method = element.getFileName();
+				}
+								
+			}else{
+				
+				//Verarbeitung vor Java 1.4
+			    method = getMethodCurrentName(iOffset);
+			}//End if : Verarbeitung vor Java 1.4
+			  return method;
+	  }
+	  
+	
+	/**
+	 * @return Name des JavaFiles, welche die aktuelle Methode aufgerufen hat.
+	 * lindhaueradmin, 27.04.2024
+	 */
+	public static String getMethodCallingFileName(int iOffset) {
+		String method = null;
+		
+		if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+			//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+			///System.out.println("HIER WEITERARBEITEN, gemäß Artikel 'The surprisingly simple stack trace Element'");
+			final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			if(stackTrace.length>=4){
+				int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iOffset;
+				StackTraceElement element = stackTrace[iPositionInStacktrace];
+				method = element.getFileName();
+			}
+	
+		}else{
+			
+			//Verarbeitung vor Java 1.4
+			method = ReflectCodeZZZ.getMethodCallingName(iOffset);
+			
+		}//end if java version
+		return method;
+	}
+	
+	
+	//++++++++++++++++++++++ Für den Namen der Klasse und Mthode, ohne den Dateinamen
 	public static String getMethodCurrentName(){
 		return getMethodCurrentName(1);
 	}
@@ -180,7 +246,14 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  return getMethodCallingName(1);
 		  }
 		  
-	  /**
+		  public static String getMethodCallingFileName() {
+			  return getMethodCallingFileName(1);
+		  }
+		  
+		  
+  
+		  
+	 /**
 	 * @return Name der Methode, welche die aktuelle Methode aufgerufen hat.
 	 * lindhaueradmin, 23.07.2013
 	 */
@@ -252,7 +325,17 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	
 	 public static String formatMethodCallingLine(int iLine){
 		 //Merke: Nach der Zeilenangabe ist # besser. Z.B der Doppelpunkt wird in Vielen Logstrings selbst benutzt
+		 //Merke20240427: Aber für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
+		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.
 		 return " - Line " + iLine + "# ";
+		 
+	 }
+	 
+	 public static String formatFileCallingLine(int iLine){
+		 //Merke: Nach der Zeilenangabe ist # besser. Z.B der Doppelpunkt wird in Vielen Logstrings selbst benutzt
+		 //Merke20240427: Aber für die Eclipse Konosole ist ein xyz.java:iLine besser, dann ist die Codezeile anspringbar.
+		 //               Aber dazu muss eh die aufrufende Methode eine Java-Datei verwenden und nicht nur den Klassennamen.
+		 return ":" + iLine; // + " # "; //hinter der Zeilenummer muss ein Leerzeichen sein, sonst erkennt die Eclipse Konsole das nicht
 		 
 	 }
 	 
@@ -351,7 +434,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			  return sReturn;
 		  }
 		
-		public static String  getPositionCurrent() throws ExceptionZZZ{
+		public static String  getPositionCurrentInObject(String sObjectWithMethod, int iLine) throws ExceptionZZZ{
 			String sReturn = null;
 			  main:{
 				  
@@ -360,12 +443,13 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 						///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
 
 						//!!! Ergaenze diese Zeile um die ThreadId. Das ist wichtig, damit man bei mehreren Threads die Ausgabe passend zuordnen kann.
-						long lngThreadID = Thread.currentThread().getId();
-						String sThread = "[Thread: "+lngThreadID+"] ";
+					    //20240427: Das wird nun beim Aufruf der Log-Methode ueber die konfigurierbare LogStringZZZ Klasse gemacht.
+						//long lngThreadID = Thread.currentThread().getId();
+						//String sThread = "[Thread: "+lngThreadID+"] ";
+					    //String sLineTotal = sThread + ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
 					  
-					  	int iLine = ReflectCodeZZZ.getMethodCallingLine();
 					  	String sLine = ReflectCodeZZZ.formatMethodCallingLine(iLine );
-						String sLineTotal = sThread + ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
+					  	String sLineTotal =  sObjectWithMethod + sLine;
 				
 						sReturn = sLineTotal;
 					}else{
@@ -376,6 +460,64 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 					}//end Java Version
 			  }//end main:
 			  return sReturn;
+		}
+		
+		public static String  getPositionCurrentInFile(String sFile, int iLine) throws ExceptionZZZ{
+			String sReturn = null;
+			  main:{
+				  
+				  if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
+						//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
+						///System.out.println("HIER WEITERARBEITEN, gem�� Artikel 'The surprisingly simple stack trace Element'");
+
+						//!!! Ergaenze diese Zeile um die ThreadId. Das ist wichtig, damit man bei mehreren Threads die Ausgabe passend zuordnen kann.
+					    //20240427: Das wird nun beim Aufruf der Log-Methode ueber die konfigurierbare LogStringZZZ Klasse gemacht.
+						//long lngThreadID = Thread.currentThread().getId();
+						//String sThread = "[Thread: "+lngThreadID+"] ";
+					    //String sLineTotal = sThread + ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + ReflectCodeZZZ.getMethodCallingName()  + sLine;
+					  
+					    //Merke: Die Postion in der Datei muss in Klammern stehen und es darf hinter der Zeilennummer nix anderes sein.
+					    //       Zudem darf vor der ersten Klammer auch nix sein ausser ein Leerzeichen.
+					    //       Nur dann erkennt die Eclipse Konsole dies als Dateiposition in einem Java-File.
+					  	String sLine = ReflectCodeZZZ.formatFileCallingLine(iLine);
+					  	String sLineTotal = " (" + sFile + sLine + ") ";
+				
+						sReturn = sLineTotal;
+					}else{
+						
+							//Verarbeitung vor Java 1.4
+						ExceptionZZZ ez = new ExceptionZZZ("Verarbeitung vor Java 1.4 steht (noch) nicht zur Vefügung. '", iERROR_RUNTIME, ReflectCodeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;	   
+					}//end Java Version
+			  }//end main:
+			  return sReturn;
+		}
+		
+		public static String  getPositionCurrent() throws ExceptionZZZ{
+			String sReturn = null;
+			main:{
+				//Wichtig:
+				//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
+				//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
+				//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.				
+				int iLine = ReflectCodeZZZ.getMethodCallingLine();
+				String sFile = ReflectCodeZZZ.getMethodCallingFileName();
+				String sMethod = ReflectCodeZZZ.getMethodCallingName();
+				
+				//a) Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.
+				String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
+				
+				//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung in den String einbauen.
+				//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.
+				//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Form man gerne haette... file oder object zentriert.
+
+				//b) Variante mit Objektname und dahinter iLine
+				//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
+				//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
+				
+				sReturn = sMethod + sPositionInFile + "#";
+			}//end main:
+			return sReturn;
 		}
 	  
 	  /** String, use this method for receiving the path to the current package. This will return a string containg File.seperator-character.

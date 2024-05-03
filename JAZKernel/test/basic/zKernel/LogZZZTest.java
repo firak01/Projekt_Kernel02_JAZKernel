@@ -55,7 +55,11 @@ public class LogZZZTest extends TestCase{
 	
 	
 	public void testWriteLineDate(){
-		assertTrue(objLogTest.WriteLineDate(strTEST_ENTRY_DEFAULT));
+		try {
+			assertTrue(objLogTest.WriteLineDate(strTEST_ENTRY_DEFAULT));
+		} catch (ExceptionZZZ e) {
+			fail("Method throws an exception." + e.getMessageLast());
+		}
 	}
 	
 	
