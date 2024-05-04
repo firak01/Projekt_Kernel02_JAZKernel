@@ -20,10 +20,10 @@ public class LogStringZZZ extends AbstractLogStringZZZ{
 		}
 		
 		@Override
-		public IEnumSetMappedLogStringZZZ[] getFormatPositionsMappedCustom() {
+		public IEnumSetMappedLogStringFormatZZZ[] getFormatPositionsMappedCustom() {
 			//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
 			//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
-			IEnumSetMappedLogStringZZZ[] iaenumReturn = {
+			IEnumSetMappedLogStringFormatZZZ[] iaenumReturn = {
 					ILogStringZZZ.LOGSTRING.DATE,
 					ILogStringZZZ.LOGSTRING.THREADID,
 					ILogStringZZZ.LOGSTRING.CLASSSIMPLENAME,

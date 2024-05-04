@@ -51,7 +51,7 @@ public interface ILogStringZZZ{
 	//Merke: Methoden und Zeilennummern können nicht aus dem aktuellen Objekt ermittelt werden, daher sind sie von einem uebergebenen String abhaengig.
 	
 	//ALIAS("Uniquename",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")
-	public enum LOGSTRING implements IEnumSetMappedLogStringZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
+	public enum LOGSTRING implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
 		ARGNEXT01("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT01, "", "%s",ILogStringZZZ.iARG_STRING, " ", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		ARGNEXT02("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT02, "", "%s",ILogStringZZZ.iARG_STRING, " ", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		
@@ -196,19 +196,19 @@ public interface ILogStringZZZ{
 	
 	
 	//ohne ein intern gespeichertes Format oder einen LogString zu verwenden.
-	public String compute(IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String compute(Object obj, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
 	
 	//ohne ein intern gespeichertes Format zu verwenden
-	public String compute(String sLog, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String compute(String sLog, IEnumSetMappedLogStringZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
-	public String compute(Object obj, String sLog, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String compute(Object obj, String sLog, IEnumSetMappedLogStringZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
-	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringZZZ[] ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
+	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
+	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString) throws ExceptionZZZ;
 
-	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
-	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringZZZ[] ienumaFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent()
+	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
+	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent()
 		
 	//das ganze auch mit dem intern gespeicherten Format
 	public String compute(String sLog) throws ExceptionZZZ;
@@ -230,10 +230,10 @@ public interface ILogStringZZZ{
 			
 			Also zuerst die Threadangabe, danach der Wert des 1. Arguments der compute-Methode, dann der Klassenname, danach der Wert des 2. Arguments der compute-Methode
 	 */
-	public void setFormatPositionsMapped(IEnumSetMappedLogStringZZZ[]ienumaMappedFormat);
-	public IEnumSetMappedLogStringZZZ[]getFormatPositionsMapped() throws ExceptionZZZ;
-	public IEnumSetMappedLogStringZZZ[]getFormatPositionsMappedDefault() throws ExceptionZZZ;
-	public IEnumSetMappedLogStringZZZ[]getFormatPositionsMappedCustom() throws ExceptionZZZ;
+	public void setFormatPositionsMapped(IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat);
+	public IEnumSetMappedLogStringFormatZZZ[]getFormatPositionsMapped() throws ExceptionZZZ;
+	public IEnumSetMappedLogStringFormatZZZ[]getFormatPositionsMappedDefault() throws ExceptionZZZ;
+	public IEnumSetMappedLogStringFormatZZZ[]getFormatPositionsMappedCustom() throws ExceptionZZZ;
 	
 	public void setHashMapFormatPositionString(HashMap<Integer,String>hmFormatPostionString);
 	public HashMap<Integer,String>getHashMapFormatPositionString() throws ExceptionZZZ;

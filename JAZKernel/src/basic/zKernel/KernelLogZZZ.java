@@ -5,11 +5,12 @@ import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.ILogStringZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -126,31 +127,141 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 	}
 
+	//#### static Methoden #########################################
+	public synchronized static String computeLineDate(String stemp) throws ExceptionZZZ {	
 		
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+		 };
+		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
+	}
+	public synchronized static String computeLineDate(Object obj, String stemp) throws ExceptionZZZ {	
 		
-		//##############################################################
-private FileTextWriterZZZ createFileTextWriterInternal(String sFilepath) {
-	FileTextWriterZZZ objReturn = null;
-	main:{
-		if(StringZZZ.isEmpty(sFilepath))break main;
+		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
+		 IEnumSetMappedLogStringFormatZZZ[]iaFormat= {
+				 ILogStringZZZ.LOGSTRING.DATE,
+				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
+				 ILogStringZZZ.LOGSTRING.ARGNEXT01
+		 };
+		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
+	}
 	
-		objReturn = new FileTextWriterZZZ(sFilepath);
+	//+++++++++++++++++++++++++++++++++++++++++++++++
+	//+++ Biete die Log-Methoden auch static an, siehe ILogZZZ, bzw. AbstractObjectZZZ fuer den Code
+	//+++++++++++++++++++++++++++++++++++++++++++++++
+	public synchronized static void logProtocolStringStatic(String[] saLog) throws ExceptionZZZ{
+		KernelLogZZZ.logProtocolStringStatic(null, saLog);
 	}
-	return objReturn;
-}
+	
+	public synchronized static void logProtocolStringStatic(String sLog) throws ExceptionZZZ{
+		KernelLogZZZ.logProtocolStringStatic(null, sLog);
+	}
+	
+	public synchronized static void logProtocolStringStatic(Object obj, String[] saLog) throws ExceptionZZZ{
+		main:{
+			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+			
+			if(obj==null) {
+				for(String sLog : saLog) {
+					KernelLogZZZ.logProtocolStringStatic(sLog);
+				}
+			}else {
+				for(String sLog : saLog) {
+					KernelLogZZZ.logProtocolStringStatic(obj, sLog);
+				}	
+			}
+			
+		}//end main:
+	}
 		
-public FileTextWriterZZZ getFileTextWriterObject() throws ExceptionZZZ{
-	if(this.objFileTextWriter==null) {
-		FileZZZ objFile = this.getFileObject();
-		String sFilename = objFile.PathNameTotalExpandedNextCompute();
-		this.objFileTextWriter = createFileTextWriterInternal(sFilename);		
+	public synchronized static void logProtocolStringStatic(Object obj, String sLog) throws ExceptionZZZ{
+		String sLogUsed;
+		if(obj==null) {
+			sLogUsed = LogStringZZZ.getInstance().compute(sLog);
+		}else {
+			sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);
+		}
+		System.out.println(sLogUsed);
 	}
-	return this.objFileTextWriter;
-}
-/* (non-Javadoc)
- * @see basic.zKernel.IKernelLogZZZ#WriteLine(String)
- */
-public synchronized boolean WriteLine(String stemp){
+	
+	//++++++++++++++++++++++++++++++++++	
+	public synchronized static void logProtocolStringStatic(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+		KernelLogZZZ.logProtocolStringStatic(null, saLog, ienumaMappedLogString);
+	}
+	
+	public synchronized static void logProtocolStringStatic(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+		KernelLogZZZ.logProtocolStringStatic(null, sLog, ienumMappedLogString);
+	}
+		
+	public synchronized static void logProtocolStringStatic(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+		main:{
+		if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+		if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
+			KernelLogZZZ.logProtocolStringStatic(saLog);
+			break main;
+		}
+		
+		int iIndex=0;
+		if(obj==null) {			
+			for(String sLog : saLog) {
+				if(ienumaMappedLogString.length>iIndex) {
+					KernelLogZZZ.logProtocolStringStatic(sLog,ienumaMappedLogString[iIndex]);
+					iIndex++;
+				}else {
+					KernelLogZZZ.logProtocolStringStatic(saLog);
+				}
+			}
+		}else {
+			for(String sLog : saLog) {
+				if(ienumaMappedLogString.length>iIndex) {
+					KernelLogZZZ.logProtocolStringStatic(obj, sLog,ienumaMappedLogString[iIndex]);
+					iIndex++;
+				}else {
+					KernelLogZZZ.logProtocolStringStatic(saLog);
+				}
+			}			
+		}
+	}//end main:
+	}
+	
+	public synchronized static void logProtocolStringStatic(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+		String sLogUsed;
+		if(obj==null) {
+			sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+		}else {
+			sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+		}
+		System.out.println(sLogUsed);
+	}
+	
+	
+	
+		
+	//##############################################################
+	private FileTextWriterZZZ createFileTextWriterInternal(String sFilepath) {
+		FileTextWriterZZZ objReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sFilepath))break main;
+		
+			objReturn = new FileTextWriterZZZ(sFilepath);
+		}
+		return objReturn;
+	}
+			
+	public FileTextWriterZZZ getFileTextWriterObject() throws ExceptionZZZ{
+		if(this.objFileTextWriter==null) {
+			FileZZZ objFile = this.getFileObject();
+			String sFilename = objFile.PathNameTotalExpandedNextCompute();
+			this.objFileTextWriter = createFileTextWriterInternal(sFilename);		
+		}
+		return this.objFileTextWriter;
+	}
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelLogZZZ#WriteLine(String)
+	 */
+	public synchronized boolean WriteLine(String stemp){
 	boolean bReturn = false;
 	FileTextWriterZZZ objFileWriter;
 	try {
@@ -163,25 +274,6 @@ public synchronized boolean WriteLine(String stemp){
 	return bReturn;
 	}
 
-	public synchronized static String computeLineDate(String stemp) throws ExceptionZZZ {	
-		
-		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01
-		 };
-		 return LogStringZZZ.getInstance().compute(stemp, iaFormat);
-	}
-	public synchronized static String computeLineDate(Object obj, String stemp) throws ExceptionZZZ {	
-		
-		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedLogStringZZZ[]iaFormat= {
-				 ILogStringZZZ.LOGSTRING.DATE,
-				 ILogStringZZZ.LOGSTRING.CLASSFILENAME,
-				 ILogStringZZZ.LOGSTRING.ARGNEXT01
-		 };
-		 return LogStringZZZ.getInstance().compute(obj, stemp, iaFormat);
-	}
 	synchronized public boolean WriteLineDate(String stemp) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		

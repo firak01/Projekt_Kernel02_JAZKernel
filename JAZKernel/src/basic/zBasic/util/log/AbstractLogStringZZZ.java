@@ -22,9 +22,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	protected HashMap<Integer,String>hmFormatPositionString=null;
 	
 	//Das Fomat
-	protected IEnumSetMappedLogStringZZZ[]ienumaMappedFormat=null;
+	protected IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat=null;
 	
-	public static boolean isFormatUsingLogString(IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public static boolean isFormatUsingLogString(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(ienumFormatLogString==null) break main;
@@ -45,7 +45,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	
-	public static boolean isFormatUsingObject(IEnumSetMappedLogStringZZZ ienumFormatLogString) {
+	public static boolean isFormatUsingObject(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) {
 		boolean bReturn = false;
 		main:{
 			if(ienumFormatLogString==null) break main;
@@ -69,7 +69,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		
 
 		@Override
-		public String compute(Object obj, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ{
+		public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ{
 			String sReturn = null;
 			main:{
 				if(isFormatUsingLogString(ienumFormatLogString)) break main;
@@ -149,17 +149,17 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public String compute(IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public String compute(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		return this.compute(null, ienumFormatLogString);
 	}
 		
 	@Override
-	public String compute(String sLog, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		return this.compute(null, sLog, ienumFormatLogString);
 	}
 
 	@Override
-	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringZZZ[] ienumFormatLogString) throws ExceptionZZZ {
+	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString) throws ExceptionZZZ {
 		ArrayList<String>listas = new ArrayList<String>();
 		if(sLog01!=null) {
 			listas.add(sLog01);
@@ -175,7 +175,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	@Override
-	public String compute(Object obj, String sLog, IEnumSetMappedLogStringZZZ ienumFormatLogString) throws ExceptionZZZ {
+	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(!isFormatUsingLogString(ienumFormatLogString)) break main;
@@ -236,19 +236,19 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	@Override
-	public String compute(String sLog, IEnumSetMappedLogStringZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
 		return this.compute(null, sLog, ienumaFormatLogString);
 	}
 
 	@Override
-	public String compute(Object obj, String sLog, IEnumSetMappedLogStringZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
+	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ {
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
 		return this.compute(obj, saLog, ienumaFormatLogString);
 	}
 
 	@Override
-	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringZZZ ienumaFormatLogString) throws ExceptionZZZ {
+	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ ienumaFormatLogString) throws ExceptionZZZ {
 		ArrayList<String> listas = new ArrayList<String>();
 		if(sLog01!=null) {
 			listas.add(sLog01);
@@ -260,14 +260,14 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				
 		String[]saLog = ArrayListZZZ.toStringArray(listas);
 		
-		IEnumSetMappedLogStringZZZ[]iaFormat=new IEnumSetMappedLogStringZZZ[1];
+		IEnumSetMappedLogStringFormatZZZ[]iaFormat=new IEnumSetMappedLogStringFormatZZZ[1];
 		iaFormat[0] = ienumaFormatLogString;
 		return this.compute(obj, saLog, iaFormat);
 	}
 	
 	@Override
-	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringZZZ ienumFormatLogString)	throws ExceptionZZZ {
-		IEnumSetMappedLogStringZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringZZZ[1];
+	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString)	throws ExceptionZZZ {
+		IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString = new IEnumSetMappedLogStringFormatZZZ[1];
 		if(ienumFormatLogString!=null) {
 			ienumaFormatLogString[0] = ienumFormatLogString;
 		}
@@ -275,7 +275,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	@Override
-	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
+	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Man soll auch ohne Object einen String berechnen dürfen
@@ -301,7 +301,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			
 			
 			//Ermittle in einer Schleife den auszugebenden Teil
-			for(IEnumSetMappedLogStringZZZ ienumMappedFormat : ienumaFormatLogString){
+			for(IEnumSetMappedLogStringFormatZZZ ienumMappedFormat : ienumaFormatLogString){
 				sLogUsed=null;
 			
 				if(isFormatUsingLogString(ienumMappedFormat)) {
@@ -356,14 +356,14 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	public String compute(String sLog) throws ExceptionZZZ {
 				String[] saLog = new String[1];
 				saLog[0] = sLog;
-				return this.compute(null, saLog, (IEnumSetMappedLogStringZZZ[])null);
+				return this.compute(null, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
 	public String compute(Object obj, String sLog) throws ExceptionZZZ {
 				String[] saLog = new String[1];
 				saLog[0] = sLog;
-				return this.compute(obj, saLog, (IEnumSetMappedLogStringZZZ[])null);
+				return this.compute(obj, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
@@ -371,23 +371,23 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				String[] saLog = new String[2];
 				saLog[0] = sLog01;
 				saLog[1] = sLog02;
-				return this.compute(obj, saLog, (IEnumSetMappedLogStringZZZ[])null);
+				return this.compute(obj, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
 	public String compute(Object obj, String[] saLog) throws ExceptionZZZ {
-		return this.compute(obj, saLog, (IEnumSetMappedLogStringZZZ[])null);
+		return this.compute(obj, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public void setFormatPositionsMapped(IEnumSetMappedLogStringZZZ[] ienumaMappedFormat) {
+	public void setFormatPositionsMapped(IEnumSetMappedLogStringFormatZZZ[] ienumaMappedFormat) {
 		this.ienumaMappedFormat=ienumaMappedFormat;
 	}
 
 	@Override
-	public IEnumSetMappedLogStringZZZ[] getFormatPositionsMapped() throws ExceptionZZZ {
+	public IEnumSetMappedLogStringFormatZZZ[] getFormatPositionsMapped() throws ExceptionZZZ {
 		if(ArrayUtilZZZ.isEmpty(this.ienumaMappedFormat)) {
 			this.ienumaMappedFormat = this.getFormatPositionsMappedCustom();
 			
@@ -404,7 +404,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	
 	@Override
-	public IEnumSetMappedLogStringZZZ[] getFormatPositionsMappedDefault() throws ExceptionZZZ {
+	public IEnumSetMappedLogStringFormatZZZ[] getFormatPositionsMappedDefault() throws ExceptionZZZ {
 		
 		//Merke: Verwendet wird z.B. ein LogString in dieser Form, den es abzubilden gilt:
 		//       In getPositionCurrent() wird schon die ThreadID zum ersten Mal gesetzt. Damit das Log lesbarer wird soll vor dem Status noch der Thread gesetzt werden.
@@ -415,12 +415,12 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		//Also Classname und Thread z.B. raus. Das 1. iARGNext ist für getPositionCurrent(), das 2. ARGNext für den Text ab "Status...", das 3. ARGNext als Reserve.
 
 		//Array automatisch aus dem Enum errechnen.
-		IEnumSetMappedLogStringZZZ[] ienumaReturn = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringZZZ.sENUMNAME);
+		IEnumSetMappedLogStringFormatZZZ[] ienumaReturn = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringZZZ.sENUMNAME);
 		return ienumaReturn;
 	}
 	
 	@Override
-	public abstract IEnumSetMappedLogStringZZZ[] getFormatPositionsMappedCustom();
+	public abstract IEnumSetMappedLogStringFormatZZZ[] getFormatPositionsMappedCustom();
 	
 	//+++++++++++++++++++++++++++++++++++++++++++
 	@Override
@@ -452,7 +452,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		//HashMap automatisch aus dem Enum errechnen.
 		IEnumSetMappedZZZ[] ienuma = EnumAvailableHelperZZZ.searchEnumMapped(this, ILogStringZZZ.sENUMNAME);
 		for(IEnumSetMappedZZZ ienum : ienuma) {
-			IEnumSetMappedLogStringZZZ ienumLogString = (IEnumSetMappedLogStringZZZ) ienum;
+			IEnumSetMappedLogStringFormatZZZ ienumLogString = (IEnumSetMappedLogStringFormatZZZ) ienum;
 			hmReturn.put(new Integer(ienumLogString.getFactor()), ienumLogString.getFormat());
 		}
 		
@@ -483,11 +483,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		//FGL 20240421 - experimentell und nicht notwendig, solange ich den Weg der Rueckumwandlung noch nicht kann.
 		int iReturn = 0;
 		main:{
-			IEnumSetMappedLogStringZZZ[]ienumaMappedFormat = this.getFormatPositionsMapped();
+			IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat = this.getFormatPositionsMapped();
 			if(ArrayUtilZZZ.isEmpty(ienumaMappedFormat))break main;
 			
 			int iPosition=0;
-			for(IEnumSetMappedLogStringZZZ ienumMappedFormat : ienumaMappedFormat) {
+			for(IEnumSetMappedLogStringFormatZZZ ienumMappedFormat : ienumaMappedFormat) {
 				iPosition++;
 				iReturn = iReturn + PrimeNumberZZZ.primePosition(ienumMappedFormat.getFactor(), iPosition);
 			}

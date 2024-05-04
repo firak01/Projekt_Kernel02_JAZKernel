@@ -11,7 +11,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.log.IEnumSetMappedLogStringZZZ;
+import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.KernelLogZZZ;
 
@@ -242,40 +242,79 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 			// TODO Auto-generated method stub			
 		}
 		
-		
+		//#################################################################
 		//### aus ILogZZZ
 		@Override
 		public void logLineDate(String sLog) throws ExceptionZZZ {
-			String sTemp = KernelLogZZZ.computeLineDate(sLog);
+			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
 			System.out.println(sTemp);		
 		}
 		
+		//++++++++++++++++++++++++++++++++++++++++++++++++
 		@Override
 		public void logProtocolString(String sLog) throws ExceptionZZZ{
-			this.logLineDate(sLog);
+			this.logProtocolString(null, sLog);
 		}
 		
 		@Override
 		public void logProtocolString(String[] saLog) throws ExceptionZZZ{
-			main:{
-				if(ArrayUtilZZZ.isEmpty(saLog)) break main;
-				
-				for(String sLog : saLog) {
-					this.logLineDate(sLog);
-				}
-			}//end main:
+			this.logProtocolString(null, saLog);
 		}
 		
 		@Override
-		public void logProtocolString(String sLog, IEnumSetMappedLogStringZZZ ienumMappedLogString)
-				throws ExceptionZZZ {
-			String sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+		public void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
+			String sLogUsed;
+			if(obj==null) {
+				sLogUsed = LogStringZZZ.getInstance().compute(sLog);			
+			}else {
+				sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog);			
+			}
 			System.out.println(sLogUsed);
 		}
 
 		@Override
-		public void logProtocolString(String[] saLog, IEnumSetMappedLogStringZZZ[] ienumaMappedLogString)
-				throws ExceptionZZZ {
+		public void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
+			main:{
+				if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+				
+				if(obj==null) {
+					for(String sLog : saLog) {
+						this.logProtocolString(sLog);
+					}
+				}else {
+					for(String sLog : saLog) {
+						this.logProtocolString(obj, sLog);
+					}	
+				}
+				
+			}//end main:
+		}
+		
+
+		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		@Override
+		public void logProtocolString(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+			this.logProtocolString(null, sLog, ienumMappedLogString);
+		}
+		
+		@Override
+		public void logProtocolString(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+			this.logProtocolString(null, saLog, ienumaMappedLogString);
+		}
+		
+		@Override
+		public void logProtocolString(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+			String sLogUsed;
+			if(obj==null) {
+				sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
+			}else {
+				sLogUsed = LogStringZZZ.getInstance().compute(obj, sLog, ienumMappedLogString);
+			}
+			System.out.println(sLogUsed);
+		}
+		
+		@Override
+		public void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
 			main:{
 			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
 			if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
@@ -284,13 +323,24 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 			}
 			
 			int iIndex=0;
-			for(String sLog : saLog) {
-				if(ienumaMappedLogString.length>iIndex) {
-					this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
-					iIndex++;
-				}else {
-					this.logProtocolString(saLog);
+			if(obj==null) {			
+				for(String sLog : saLog) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
+						iIndex++;
+					}else {
+						this.logProtocolString(saLog);
+					}
 				}
+			}else {
+				for(String sLog : saLog) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocolString(obj, sLog,ienumaMappedLogString[iIndex]);
+						iIndex++;
+					}else {
+						this.logProtocolString(saLog);
+					}
+				}			
 			}
 		}//end main:
 		}

@@ -2,7 +2,7 @@ package basic.zBasic.util.log;
 
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
-public interface IEnumSetMappedLogStringZZZ extends IEnumSetMappedZZZ{
+public interface IEnumSetMappedLogStringFormatZZZ extends IEnumSetMappedZZZ{
 		
 	//weitere Erweiterungen, speziell für LogString
 	public int getFactor();
