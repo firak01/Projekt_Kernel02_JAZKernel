@@ -9,7 +9,8 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 
 public interface ILogStringZZZ{
 	public static String sENUMNAME="LOGSTRING";
-	
+	public static String sSEPARATOR_PREFIX_DEFAULT=" ";
+	public static String sSEPARATOR_POSTFIX_DEFAULT=" ";
 	
 	//Merke: Es soll folgendes abgebildet werden, z.B. 
 	//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
@@ -52,8 +53,8 @@ public interface ILogStringZZZ{
 	
 	//ALIAS("Uniquename",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")
 	public enum LOGSTRING implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-		ARGNEXT01("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT01, "", "%s",ILogStringZZZ.iARG_STRING, " ", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		ARGNEXT02("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT02, "", "%s",ILogStringZZZ.iARG_STRING, " ", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		ARGNEXT01("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT01, "", "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		ARGNEXT02("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT02, "", "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		
 		CLASSNAME("classname",ILogStringZZZ.iFACTOR_CLASSNAME, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den Klassennamen mit Package in diesem Format aus."),
 		CLASSSIMPLENAME("classsimplename",ILogStringZZZ.iFACTOR_CLASSSIMPLENAME, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den einfachen Klassennamen in diesem Format aus."),
@@ -239,6 +240,22 @@ public interface ILogStringZZZ{
 	public HashMap<Integer,String>getHashMapFormatPositionString() throws ExceptionZZZ;
 	public HashMap<Integer,String>getHashMapFormatPositionStringCustom() throws ExceptionZZZ;
 	public HashMap<Integer,String>getHashMapFormatPositionStringDefault() throws ExceptionZZZ;
+	
+	//###########################
+	//Methoden, mit denen versucht wird die Uebersichtlichkeit der Ausgaben noch weiter zu erhöhen.
+	//Nach jeder Logausgabe wird zwischen dem Positionsteil und dem Informationsteil unterscheiden.
+	//Mit \t wird dann gearbeitet um die Ausgaben des Informationsteils möglichst bündig untereinander zu bekommen.
+	public String getPositionSeparatorDefault();
+	public String getPositionSeparator();
+	public void setPositionSeparator(String sPositionSeparator);
+
+	public int getInfoPartBoundLeftBehindCurrent();
+	public void setInfoPartBoundLeftBehindCurrent(int iIndex);
+	public int indexOfInfoPartBoundLeft(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
+	public int indexOfInfoPartBoundLeftBehind(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
+	public int getInfoPartBoundLeftBehind2use(String sLog);     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.
+
+	public String justifyInfoPart(String sLog) throws ExceptionZZZ; //versuche den Log-InfoPart ueber alle Zeilen buendig zu machen. Teile auf und verwende zusätzliche \t
 	
 	
 	//#############################################################

@@ -132,7 +132,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			//Merke: Irgendwelche Indexbetrachtungen koennen nicht funktionieren. Die Reihenfolge der Argumente ist naemlich beliebig. 
 			//Es muss vielmehr das Steuerungszeichen davor ermittelt werden. Damit kann dann das Argumentenarray untersucht werden: Folgt dem Steuerungszeichen immer ein anderer Wert
 			String[] saDelim = {":"};
-			Integer[] intaIndex = StringZZZ.allIndexOf(sPattern, saDelim);
+			Integer[] intaIndex = StringZZZ.indexOfAll(sPattern, saDelim);
 			
 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 			//          Das ist gescheitert, da zuviel zu ändern ist.
@@ -576,7 +576,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			
 			//+++ 3. Nach einem Doppelpunkt darf kein zweiter Doppelpunkt sofort folgen
 			String[] saDelim = {":"};
-			Integer[] intaIndex = StringZZZ.allIndexOf(sPattern, saDelim);
+			Integer[] intaIndex = StringZZZ.indexOfAll(sPattern, saDelim);
 			
 			//Nun muss das Zeichen jeweils 1 Zeichen vor dem Indexwert geholt werden, 
 			//dann hat man die STEUERZEICHEN, die ein ARGUMENT ERWARTEN	

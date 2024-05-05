@@ -522,7 +522,7 @@ public void testFindSorted(){
 	String sTest = "eins  zwei  drei  eins  zwei  vier  acht sechzehn";
 	String[] saPattern = {"drei", "zwei"};
 	
-	ArrayList listaString = StringZZZ.findSorted(sTest, saPattern);
+	ArrayList<String>listaString = StringZZZ.findSorted(sTest, saPattern);
 	assertNotNull(listaString);
 	assertEquals(listaString.size(), 3);
 	assertEquals(listaString.get(0), "zwei");
@@ -534,7 +534,7 @@ public void testFindSorted(){
 public void testVecMid(){
 	try{
 		String sTest = "<Z><Z:Call><Z:Java><Z:Class><Z>[ArgumentSection for testCallComputed]JavaClass</Z></Z:Class><Z:Method><Z>[ArgumentSection for testCallComputed]JavaMethod</Z></Z:Method></Z:Java></Z:Call></Z>";
-		Vector vec = StringZZZ.vecMid(sTest, "<Z>", "</Z>", false);
+		Vector<String> vec = StringZZZ.vecMid(sTest, "<Z>", "</Z>", false);
 		assertEquals(vec.size(), 3);
 		
 		String sFormula0 = (String) vec.get(0);
@@ -566,7 +566,7 @@ public void testVecMid(){
 		//+++++++ Nun Randwerte Testen: links 
 		String sTestB = "<Z>[Section a]Number</Z> Test";
 		
-		Vector vecB = StringZZZ.vecMid(sTestB, "<Z>", "</Z>", false);
+		Vector<String> vecB = StringZZZ.vecMid(sTestB, "<Z>", "</Z>", false);
 		assertEquals(vecB.size(), 3);
 		
 		String sFormulaB0 = (String) vecB.get(0);
@@ -582,7 +582,7 @@ public void testVecMid(){
 //		+++++++ Nun Randwerte Testen: rechts		
 		String sTestC = "<Z>[Section a]Number</Z>";
 		
-		Vector vecC = StringZZZ.vecMid(sTestC, "<Z>", "</Z>", false);
+		Vector<String> vecC = StringZZZ.vecMid(sTestC, "<Z>", "</Z>", false);
 		assertEquals(vecB.size(), 3);
 		
 		String sFormulaC0 = (String) vecC.get(0);
@@ -948,10 +948,10 @@ public void testVecMidFirst(){
 		}
 	}
 	
-	public void testAllIndexOf(){
+	public void testIndexOfAll(){
 		String sTest = "das:ist:ein:Test:";
 		String [] saToFind = {":"};
-		Integer[] intaIndex = StringZZZ.allIndexOf(sTest, saToFind);
+		Integer[] intaIndex = StringZZZ.indexOfAll(sTest, saToFind);
 		assertNotNull(intaIndex);
 		assertEquals(4,intaIndex.length);
 		assertEquals(3,intaIndex[0].intValue());
@@ -962,7 +962,7 @@ public void testVecMidFirst(){
 		
 		//++++++++++++ Das Ergebnis ist nicht sortiert
 		String[] saToFind2 = {":", "s"};
-		intaIndex = StringZZZ.allIndexOf(sTest, saToFind2);
+		intaIndex = StringZZZ.indexOfAll(sTest, saToFind2);
 		assertNotNull(intaIndex);
 		assertEquals(7,intaIndex.length);
 		assertEquals(3,intaIndex[0].intValue());

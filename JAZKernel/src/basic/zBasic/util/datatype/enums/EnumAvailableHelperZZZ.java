@@ -300,7 +300,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				}
 				if(!ArrayListZZZ.isEmpty(listaeByInterfaceTemp)) {
 					if(ArrayListZZZ.isEmpty(listaeByInterface)) listaeByInterface = new ArrayList<IEnumSetMappedZZZ>();				
-					listaeByInterface = ArrayListZZZ.join(listaeByInterface, listaeByInterfaceTemp);
+					listaeByInterface = (ArrayList<IEnumSetMappedZZZ>) ArrayListZZZ.join(listaeByInterface, listaeByInterfaceTemp);
 				}
 			}
 			
@@ -317,7 +317,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				//Rekursion durchfuehren !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				//ArrayList<Collection<? extends Enum<?>>> listaStatusByClassSuper = new ArrayList<Collection<? extends Enum<?>>>();
 				ArrayList<IEnumSetMappedZZZ> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
-				listaeByClassSuper = ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
+				listaeByClassSuper = (ArrayList<IEnumSetMappedZZZ>) ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
 			}
 		}
 		
@@ -1003,7 +1003,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				for(Class<?> objclsSuper : listaClassSuper) {
 					//!!!Rekursion
 					ArrayList<E> listaeBySuperclassTemp=EnumAvailableHelperZZZ.searchEnumList(objclsSuper, sEnumName,bScanInterfaceImidiate,bScanSuperclassImidiate);
-					listaeBySuperclass = ArrayListZZZ.join(listaeBySuperclass, listaeBySuperclassTemp);			
+					listaeBySuperclass = (ArrayList<E>) ArrayListZZZ.join(listaeBySuperclass, listaeBySuperclassTemp);			
 				}			
 			}
 			

@@ -269,7 +269,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 				
 				//!!!Rekursion
 				ArrayList<IEnumSetMappedStatusZZZ> listaeByClassSuperTemp=StatusLocalAvailableHelperZZZ.searchForGroupList(objclsSuper, iGroupId, bScanInterfaceImmediate, bScanSuperclassImmediate);			
-				listaeByClassSuper = ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
+				listaeByClassSuper = (ArrayList<IEnumSetMappedStatusZZZ>) ArrayListZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
 			}	
 		}
 		
@@ -1213,7 +1213,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			}//end if
 			
 			//Verbinde beides
-			listaReturn = ArrayListZZZ.join(listaeReturnByClass, listaeReturnByInterface);
+			listaReturn = (ArrayList<E>) ArrayListZZZ.join(listaeReturnByClass, listaeReturnByInterface);
 			
 		}//end main:
 		return listaReturn;

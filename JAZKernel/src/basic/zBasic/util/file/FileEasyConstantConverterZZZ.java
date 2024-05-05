@@ -98,8 +98,8 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 						}	
 					}else {
 						sReturnRoot = FileEasyZZZ.getFileRootPath();
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": sReturnRoot='"+sReturnRoot+"'");
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+": sFilePath='"+sFilePath+"'");
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"sReturnRoot='"+sReturnRoot+"'");
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"sFilePath='"+sFilePath+"'");
 						if(!StringZZZ.isEmpty(sReturnRoot)) {
 							sReturnFilePath=StringZZZ.rightback(sFilePath, sReturnRoot+sDirectorySeparator);
 						}else {

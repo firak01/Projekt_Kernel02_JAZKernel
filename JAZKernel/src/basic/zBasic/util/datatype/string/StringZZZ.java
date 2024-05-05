@@ -32,6 +32,7 @@ import com.google.gson.JsonParser;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
@@ -1133,11 +1134,10 @@ public class StringZZZ implements IConstantZZZ{
 		String[] saReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(saDelimiter==null) break main;
-			if(saDelimiter.length==0) break main;
+			if(ArrayUtilZZZ.isEmpty(saDelimiter)) break main;
 			
 			//Eine ArrayList aus den Delimitern machen
-			ArrayList listaDelim = StringArrayZZZ.toArrayList(saDelimiter);
+			ArrayList<String> listaDelim = StringArrayZZZ.toArrayList(saDelimiter);
 			
 			//Zerlegen mit dem ersten Delimiter
 			String sDelimiter = (String) listaDelim.get(0);
@@ -1151,7 +1151,7 @@ public class StringZZZ implements IConstantZZZ{
 				break main;
 			}
 			
-			ArrayList listaStringFound = new ArrayList();//StringArrayZZZ.toArrayList(saTemp);
+			ArrayList<String> listaStringFound = new ArrayList<String>();//StringArrayZZZ.toArrayList(saTemp);
 			for(int icount=0; icount <= saTemp.length-1; icount++){
 				String sStringTemp = saTemp[icount];				
 				//-1 korrekt ? 
@@ -1159,10 +1159,10 @@ public class StringZZZ implements IConstantZZZ{
 				saDelimTemp = (String[]) listaDelim.toArray(saDelimTemp);
 								
 				String[] saTemp2 = StringZZZ.explode(sStringTemp, saDelimTemp);
-				ArrayList listaTemp = StringArrayZZZ.toArrayList(saTemp2);
+				ArrayList<String> listaTemp = StringArrayZZZ.toArrayList(saTemp2);
 				
-				//Nun das Ergebnis zu dem bisherigen hinzuf�gen
-				listaStringFound = ArrayListZZZ.join(listaStringFound, listaTemp, false);
+				//Nun das Ergebnis zu dem bisherigen hinzufuegen
+				listaStringFound = (ArrayList<String>) ArrayListZZZ.join(listaStringFound, listaTemp, false);
 			}		
 			saReturn = new String[listaStringFound.size()-1];
 			saReturn = (String[]) listaStringFound.toArray(saReturn);
@@ -2674,20 +2674,19 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	* 
 	* lindhauer; 30.06.2007 11:43:38
 	 */
-	public static Integer[] allIndexOf(String sSource, String[] saString2Find ){
-		ArrayList listaReturn = new ArrayList();
+	public static Integer[] indexOfAll(String sSource, String[] saString2Find ){
+		Integer[] intaReturn=null;
 		main:{
 			if(isEmpty(sSource)) break main;
-			if(saString2Find==null)break main;
-			if(saString2Find.length<=0) break main;
+			if(ArrayUtilZZZ.isEmpty(saString2Find)) break main;
 			
+			ArrayList<Integer> listaReturn = new ArrayList<Integer>();
 			for(int icount=0; icount < saString2Find.length; icount ++){
 				String sCurrent = sSource;
 				int iIndex=-1;
 				int iIndexAdded = 0;
 				int iLengthOld = 0;
 				do{
-					//iIndex = StringZZZ.firstIndexOf(sCurrent, saString2Find);
 					iIndex = sCurrent.indexOf(saString2Find[icount]);
 					if(iIndex >= 0){
 						iIndexAdded += iIndex+iLengthOld;
@@ -2700,15 +2699,14 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 					}
 				}while(iIndex >= 0 & isEmpty(sCurrent)==false);
 			}//END for
+			
+			if(listaReturn.size()>=1){
+				intaReturn = new Integer[listaReturn.size()];
+				intaReturn = listaReturn.toArray(intaReturn);
+			}
 		}//END main:
 		
-		if(listaReturn.size()>=1){
-			Integer[] intaReturn = new Integer[listaReturn.size()];
-			intaReturn = (Integer[]) listaReturn.toArray(intaReturn);
-			return intaReturn;
-		}else{
-			return null;
-		}
+		return intaReturn;
 	}
 	
 	/** Haenge an den String den anderen String an, aber nur die Zeichen, die in dem vorherigen String noch fehlen!
@@ -2740,21 +2738,53 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		return sReturn;
 	}
 
+	/** wie indexOf, allerdings wird die Laenge des Strings daraufgerechnet.
+	 *  Der index ist also der Anfang des dahinterliegenden Teils
+	 *  
+	 * @param sSource
+	 * @param sString2Find
+	 * @return
+	 * @author Fritz Lindhauer, 05.05.2024, 08:53:59
+	 */
+	public static int indexOfFirstBehind(String sSource, String sString2Find) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			int itemp = sSource.indexOf(sString2Find);
+			if(itemp==-1)break main;
+			
+			iReturn = itemp + sString2Find.length();
+		}//end main:
+		return iReturn;
+	}
+	
+	
+	public static int indexOfFirst(String sSource, String sString2Find) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sSource)) break main;
+			if(StringZZZ.isEmpty(sString2Find)) break main;
+			
+			iReturn = sSource.indexOf(sString2Find);
+
+		}//end main:
+		return iReturn;
+	}
 
 
-
-	/** int, Gibt den ersten index wert zur�ck, der existiert. Falls keiner der zu suchenden Strings existiert, wird -1 zur�ckgegeben.
+	/** int, Gibt den ersten index wert zurueck, der existiert. Falls keiner der zu suchenden Strings existiert, wird -1 zur�ckgegeben.
 	* Lindhauer; 13.05.2006 09:22:14
 	 * @param sSource, der String, der durchsucht wird.
 	 * @param saString2Find, das Array der Strings, die gesucht werden. D.h. man kann also nach mehreren Strings suchen.
 	 * @return
 	 */
-	public static int firstIndexOf(String sSource, String[] saString2Find){
+	public static int indexOfFirst(String sSource, String[] saString2Find){
 		int iReturn=-1; //Merke: -1 wird auch zur�ckgegeben, falls der Teilstring nicht im String enthalten ist.
 		main:{
 				if(isEmpty(sSource))break main;
-				if(saString2Find==null)break main;
-				if(saString2Find.length<=0) break main;
+				if(ArrayUtilZZZ.isEmpty(saString2Find)) break main;
 			
 		int iEndCur=sSource.length() + 1;
 		for(int icount=0; icount < saString2Find.length; icount ++){
@@ -2795,12 +2825,11 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 	* 
 	* lindhaueradmin; 19.03.2007 12:57:39
 	 */
-	public static ArrayList findSorted(String sString, String[] saPattern){
-		ArrayList listaString = new ArrayList();
+	public static ArrayList<String> findSorted(String sString, String[] saPattern){
+		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
 			if(isEmpty(sString)) break main;
-			if(saPattern==null) break main;
-			if(saPattern.length==0) break main;
+			if(ArrayUtilZZZ.isEmpty(saPattern)) break main;
 			
 			
 			//Idee: In einer Schleife auf Vorhandenheit des Strings des Pattern-Arrays pr�fen  (von links nach rechts).

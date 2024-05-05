@@ -58,12 +58,12 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	//++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void logProtocolString(String[] saLog) throws ExceptionZZZ{
-		this.logProtocolString(null, saLog);
+		this.logProtocolString(this, saLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
 	}
 	
 	@Override
 	public void logProtocolString(String sLog) throws ExceptionZZZ{
-		this.logProtocolString(null, sLog);
+		this.logProtocolString(this, sLog); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
 	}
 	
 	@Override
@@ -98,12 +98,12 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void logProtocolString(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
-		this.logProtocolString(null, saLog, ienumaMappedLogString);
+		this.logProtocolString(this, saLog, ienumaMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
 	}
 	
 	@Override
 	public void logProtocolString(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-		this.logProtocolString(null, sLog, ienumMappedLogString);
+		this.logProtocolString(this, sLog, ienumMappedLogString); //Merke: In der aehnlichen Methode von KerneleLosgZZZ (also static) "null" statt this
 	}
 	
 	@Override

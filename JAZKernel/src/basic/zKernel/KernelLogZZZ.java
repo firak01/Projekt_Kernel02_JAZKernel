@@ -152,11 +152,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	//+++ Biete die Log-Methoden auch static an, siehe ILogZZZ, bzw. AbstractObjectZZZ fuer den Code
 	//+++++++++++++++++++++++++++++++++++++++++++++++
 	public synchronized static void logProtocolStringStatic(String[] saLog) throws ExceptionZZZ{
-		KernelLogZZZ.logProtocolStringStatic(null, saLog);
+		KernelLogZZZ.logProtocolStringStatic(null, saLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 	
 	public synchronized static void logProtocolStringStatic(String sLog) throws ExceptionZZZ{
-		KernelLogZZZ.logProtocolStringStatic(null, sLog);
+		KernelLogZZZ.logProtocolStringStatic(null, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 	
 	public synchronized static void logProtocolStringStatic(Object obj, String[] saLog) throws ExceptionZZZ{
@@ -188,11 +188,11 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	
 	//++++++++++++++++++++++++++++++++++	
 	public synchronized static void logProtocolStringStatic(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
-		KernelLogZZZ.logProtocolStringStatic(null, saLog, ienumaMappedLogString);
+		KernelLogZZZ.logProtocolStringStatic(null, saLog, ienumaMappedLogString);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 	
 	public synchronized static void logProtocolStringStatic(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
-		KernelLogZZZ.logProtocolStringStatic(null, sLog, ienumMappedLogString);
+		KernelLogZZZ.logProtocolStringStatic(null, sLog, ienumMappedLogString);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
 	}
 		
 	public synchronized static void logProtocolStringStatic(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {

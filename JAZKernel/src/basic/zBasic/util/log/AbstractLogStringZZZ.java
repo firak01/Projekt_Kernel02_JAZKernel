@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -19,11 +20,146 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ implements ILogStringZZZ{
 	private static final long serialVersionUID = 432992680546312138L;
 	protected static ILogStringZZZ objLogStringSingleton; //muss als Singleton static sein
-	protected HashMap<Integer,String>hmFormatPositionString=null;
+	
+	//MERKE: Alles volatile, damit es über mehrere Threads gleich bleibt.
+	protected volatile HashMap<Integer,String>hmFormatPositionString=null;
 	
 	//Das Fomat
-	protected IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat=null;
+	protected volatile IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat=null;
 	
+	//Zum Buendig machen
+	protected volatile String sPositionSeparator = null;	  //Ggfs. individuelle Positions-Trenner Zeichen.
+	protected volatile int iInfoPartBoundLeft=-1; //Die aktuelle linke Grenze, an der der InfoPart beginnt.
+	
+	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
+	@Override
+	public String getPositionSeparatorDefault() {
+		return ReflectCodeZZZ.sPOSITION_SEPARATOR;
+	}
+	
+	@Override
+	public String getPositionSeparator() {
+		if(this.sPositionSeparator==null) {
+			this.sPositionSeparator = this.getPositionSeparatorDefault();
+		}
+		return this.sPositionSeparator;
+	}
+	
+	@Override
+	public void setPositionSeparator(String sPositionSeparator) {
+		this.sPositionSeparator = sPositionSeparator;
+	}
+	
+	@Override
+	public int getInfoPartBoundLeftBehindCurrent() {
+		return this.iInfoPartBoundLeft;
+	}
+	
+	@Override
+	public void setInfoPartBoundLeftBehindCurrent(int iIndex) {
+		this.iInfoPartBoundLeft = iIndex;
+	}
+	
+	public static int indexOfInfoPartBoundLeftStatic(String sLog, String sPositionSeparator) {
+		return StringZZZ.indexOfFirst(sLog, sPositionSeparator);				
+	}
+	
+	public static int indexOfInfoPartBoundLeftBehindStatic(String sLog, String sPositionSeparator) {
+		return StringZZZ.indexOfFirstBehind(sLog, sPositionSeparator);				
+	}
+	
+	@Override 
+	public int indexOfInfoPartBoundLeftBehind(String sLog) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sLog)) break main;
+			
+			String sPositionSeparator = this.getPositionSeparator();
+			iReturn = AbstractLogStringZZZ.indexOfInfoPartBoundLeftBehindStatic(sLog, sPositionSeparator);			
+		}//end main:
+		return iReturn;
+	}
+	
+	@Override 
+	public int indexOfInfoPartBoundLeft(String sLog) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sLog)) break main;
+			
+			String sPositionSeparator = this.getPositionSeparator();
+			iReturn = AbstractLogStringZZZ.indexOfInfoPartBoundLeftStatic(sLog, sPositionSeparator);			
+		}//end main:
+		return iReturn;
+	}
+	
+	@Override
+	public int getInfoPartBoundLeftBehind2use(String sLog) {
+		int iReturn = -1;
+		main:{
+			if(StringZZZ.isEmpty(sLog)) break main;
+			
+			int itemp = this.indexOfInfoPartBoundLeftBehind(sLog);
+			iReturn = this.getInfoPartBoundLeftBehindCurrent(); 
+			if(itemp>iReturn) {
+				//nein, nicht setzen. Das justify überlassen this.setInfoPartBoundLeftCurrent(itemp);
+				iReturn = itemp;
+			}			
+		}//end main:
+		return iReturn;
+	}
+	
+	@Override
+	public synchronized String justifyInfoPart(String sLog) throws ExceptionZZZ {
+		String sReturn = sLog;
+		main:{
+			if(StringZZZ.isEmpty(sLog)) break main;
+			
+			//hole die bisherige, aktuelle Grenze
+			int iBoundLeftBehindCurrent = this.getInfoPartBoundLeftBehindCurrent();
+						
+			//ermittle die Grenze aus dem Logstring
+			//int iBoundLeft2use = this.getInfoPartBoundLeft2use(sLog);
+			int iBoundLeftBehind = this.indexOfInfoPartBoundLeftBehind(sLog);
+			
+			//Differenz vorhanden
+			if(iBoundLeftBehind>iBoundLeftBehindCurrent) {
+				this.setInfoPartBoundLeftBehindCurrent(iBoundLeftBehind);
+				sReturn = sReturn  + "-DEBUG01: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+			}
+			if(iBoundLeftBehind==iBoundLeftBehindCurrent) {				
+				sReturn = sReturn  + "-DEBUG02: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+			}
+			if(iBoundLeftBehind<iBoundLeftBehindCurrent) {
+				//aufsplitten und auffuellen
+				//... aber vor dem \t aufsplitten
+				int iBoundLeft = this.indexOfInfoPartBoundLeft(sLog);
+	
+				//falls ja: Berechne die Anzahl er Tabs aus der Differenz				
+				int iDifference = iBoundLeftBehindCurrent - iBoundLeftBehind;
+				int iTabs = iDifference / 7;//7 Leerzeichen entsprechen 1 Tab???
+				
+				if(iTabs>=1) {
+					String sLeft = StringZZZ.left(sLog, iBoundLeft);
+					String sRight = StringZZZ.rightback(sLog, iBoundLeft);
+								
+					//String sMid = StringZZZ.repeat("\t", iTabs); //Die Anzahl der Tabs selbst auszugeben, macht es schwierig.
+					//Daher nur die Anzahl der Zeichen als Leerzeichen.
+					String sMid = StringZZZ.repeat(" ", iDifference);
+								
+					//wieder zusamensetzen
+					sReturn = sLeft + sMid + sRight + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+				}
+			}
+		
+			//falls nein. einfach weiter
+		}//end main:
+		return sReturn;
+	}
+		
+	
+	
+	
+	//############################################################
 	public static boolean isFormatUsingLogString(IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -180,8 +316,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		main:{
 			if(!isFormatUsingLogString(ienumFormatLogString)) break main;
 		    if(sLog==null) break main;
-		    
-		    
+		   
 			String sFormat=null;
 		
 			switch(ienumFormatLogString.getFactor()) {
@@ -231,6 +366,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				break;					
 			}				
 			
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //ABER: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			//sReturn = this.justifyInfoPart(sReturn);
+						
 		}//end main:
 		return sReturn;		
 	}
@@ -299,7 +439,6 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			//Anzahl der geschriebenen sLogs aus saLog
 			int iLogIndexNext=0;
 			
-			
 			//Ermittle in einer Schleife den auszugebenden Teil
 			for(IEnumSetMappedLogStringFormatZZZ ienumMappedFormat : ienumaFormatLogString){
 				sLogUsed=null;
@@ -338,10 +477,15 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 						sReturn = sLogUsed;
 					}else {
 						//Die einzelnen Bestandteile noch mit Leerstring voneinander trennen.
-						sReturn = sReturn + " " + sLogUsed;
+						sReturn = sReturn + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sLogUsed;
 					}					
 				}
 			}
+			
+			
+			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
+		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
+			sReturn = this.justifyInfoPart(sReturn);
 			
 		}//end main:
 		return sReturn;

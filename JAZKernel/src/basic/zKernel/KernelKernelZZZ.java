@@ -6061,7 +6061,7 @@ MeinTestParameter=blablaErgebnis
 		String stemp = sIn.substring(iLen);
 			
 		String[] sa2Find = {"_", "."};
-		int iEnd = StringZZZ.firstIndexOf(stemp,sa2Find);
+		int iEnd = StringZZZ.indexOfFirst(stemp,sa2Find);
 		if(iEnd<=-1) break main;
 		
 		sReturn = stemp.substring(0, iEnd);

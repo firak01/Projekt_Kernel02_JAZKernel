@@ -227,38 +227,37 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 	
 	
 		
-	public static ArrayList join(ArrayList<?> lista1, ArrayList<?> lista2){
+	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2){
 		return ArrayListZZZ.join(lista1, lista2, false);
 	}
 	
-	public static ArrayList join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique){
+	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique){
 		ArrayList listaReturn = null;
 		main:{
-			check:{
-				if(lista1==null && lista2 ==null) break main;
-			}//END check:
-		
-		if(bFlagUnique==false){
-			//Wenn nicht ''uniqued' werden soll, dann kann man sofort in der Return-liste joinen
-			listaReturn = new ArrayList();
-			if(lista1!=null){
-				for(int icount=0; icount < lista1.size(); icount++){
-					listaReturn.add(lista1.get(icount));
-				}
-			}//lista1!=null
-			if(lista2!=null){
-				for(int icount=0; icount < lista2.size(); icount ++){
-					listaReturn.add(lista2.get(icount));
-				}
-			}		
-			break main;
+			if(lista1==null && lista2 ==null) break main;
 			
-		}else{
-			//Wenn 'uniqued' werden soll, dann ist "keepFirst" die default-Strategie
-			listaReturn = ArrayListZZZ.joinKeepFirst(lista1,lista2);		
-			break main;
-		}//End if (bFlagUnique ....
-		
+			
+			if(bFlagUnique==false){
+				//Wenn nicht ''uniqued' werden soll, dann kann man sofort in der Return-liste joinen
+				listaReturn = new ArrayList();
+				if(lista1!=null){
+					for(int icount=0; icount < lista1.size(); icount++){
+						listaReturn.add(lista1.get(icount));
+					}
+				}//lista1!=null
+				if(lista2!=null){
+					for(int icount=0; icount < lista2.size(); icount ++){
+						listaReturn.add(lista2.get(icount));
+					}
+				}		
+				break main;
+				
+			}else{
+				//Wenn 'uniqued' werden soll, dann ist "keepFirst" die default-Strategie
+				listaReturn = ArrayListZZZ.joinKeepFirst(lista1,lista2);		
+				break main;
+			}//End if (bFlagUnique ....
+			
 		}//END main:
 		return listaReturn;
 	}
@@ -266,11 +265,8 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 	public static ArrayList<?> joinKeepFirst(ArrayList<?> lista1, ArrayList<?> lista2){
 		ArrayList<?> listaReturn = null;
 		main:{
-			check:{
-				if(lista1==null && lista2 ==null) break main;
-			}//END check:
-		
-		
+			if(lista1==null && lista2 ==null) break main;
+			
 			//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
 			ArrayList listaTemp = new ArrayList();
 			if(lista1!=null){
@@ -289,14 +285,11 @@ public class ArrayListZZZ<T> extends AbstractObjectZZZ {
 		return listaReturn;
 	}
 	
-	public static ArrayList joinKeepLast(ArrayList<?> lista1, ArrayList<?> lista2){
+	public static ArrayList<?> joinKeepLast(ArrayList<?> lista1, ArrayList<?> lista2){
 		ArrayList listaReturn = null;
 		main:{
-			check:{
-				if(lista1==null && lista2 ==null) break main;
-			}//END check:
-		
-		
+			if(lista1==null && lista2 ==null) break main;
+					
 			//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
 			ArrayList listaTemp = new ArrayList();
 			if(lista1!=null){
