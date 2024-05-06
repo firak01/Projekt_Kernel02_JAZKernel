@@ -36,10 +36,21 @@ public class LogStringZZZTest  extends TestCase{
 	public void testContructor() {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
-			LogStringZZZ obLogStringj = LogStringZZZ.getInstance();
-			boolean btemp = obLogStringj.setFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD, true);
-			assertTrue(btemp);
+			LogStringZZZ objLogStringj = LogStringZZZ.getInstance();
+			boolean btemp1a = objLogStringj.setFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD, true);
+			assertTrue(btemp1a);
 			
+			boolean btemp1b = objLogStringj.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD);
+			assertTrue(btemp1b);
+						
+			LogStringZZZ.destroyInstance();
+			
+			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			//Nun mal eine neue Version holen. Das Flag sollte fehlen.
+			LogStringZZZ objLogStringj2 = LogStringZZZ.getInstance();
+			
+			boolean btemp2a = objLogStringj2.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_THREAD);
+			assertFalse(btemp2a);
 			
 			
 		} catch (ExceptionZZZ ez) {
@@ -51,7 +62,7 @@ public class LogStringZZZTest  extends TestCase{
 		try {
 			//20240423:
 			//MErke: Diese Primfaktorenzerlegung, etc. wird noch niergendwo verwendet
-			LogStringZZZ objLogString = LogStringZZZ.getInstance();			
+			LogStringZZZ objLogString = LogStringZZZ.getNewInstance();			
 			int iNumber = objLogString.computeFormatPositionsNumber();
 			assertTrue(iNumber>0);//Verwende die custom-FormatPosition
 
@@ -69,7 +80,7 @@ public class LogStringZZZTest  extends TestCase{
 		try{
 			
 			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
-			String sLog = LogStringZZZ.getInstance().compute(objDummy, "der erste Logeintrag");
+			String sLog = LogStringZZZ.getNewInstance().compute(objDummy, "der erste Logeintrag");
 			assertNotNull(sLog);
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + sLog);
 			
@@ -77,7 +88,7 @@ public class LogStringZZZTest  extends TestCase{
 			assertTrue(StringZZZ.count(sLog, "der erste Logeintrag")==1);
 										
 			assertTrue(StringZZZ.count(sLog,"[Thread:")==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
-			assertTrue(StringZZZ.count(sLog,"(")==0);
+			assertTrue(StringZZZ.count(sLog,objDummy.getClass().getSimpleName()+":")==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
 						
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -94,7 +105,7 @@ public class LogStringZZZTest  extends TestCase{
 							ILogStringZZZ.LOGSTRING.THREADID,				
 							ILogStringZZZ.LOGSTRING.ARGNEXT02,												
 							};
-			LogStringZZZ.getInstance().setFormatPositionsMapped(ienumaFormat);
+			LogStringZZZ.getNewInstance().setFormatPositionsMapped(ienumaFormat);
 			
 			String sLog = LogStringZZZ.getInstance().compute(objDummy, "der erste Logeintrag");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Hier erst geht der Logeintrag los...:" + sLog);			
@@ -102,8 +113,9 @@ public class LogStringZZZTest  extends TestCase{
 			assertTrue(StringZZZ.contains(sLog, "der erste Logeintrag"));
 			assertTrue(StringZZZ.count(sLog, "der erste Logeintrag")==1);
 										
-			assertTrue(StringZZZ.count(sLog,"THREAD")==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
-			assertTrue(StringZZZ.count(sLog,"(")==1);
+			assertTrue(StringZZZ.count(sLog,"[Thread:")==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
+			assertTrue(StringZZZ.count(sLog,objDummy.getClass().getSimpleName()+":")==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
+			
 			
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());

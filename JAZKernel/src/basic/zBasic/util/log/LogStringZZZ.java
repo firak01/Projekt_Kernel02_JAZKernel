@@ -14,9 +14,28 @@ public class LogStringZZZ extends AbstractLogStringZZZ{
 		
 		public static LogStringZZZ getInstance() throws ExceptionZZZ{
 			if(objLogStringSingleton==null){
-				objLogStringSingleton = new LogStringZZZ();
+				
+				//siehe: https://www.digitalocean.com/community/tutorials/java-singleton-design-pattern-best-practices-examples
+				//Threadsafe sicherstellen, dass nur 1 Instanz geholt wird. Hier doppelter Check mit synchronized, was performanter sein soll als die ganze Methode synchronized zu machen.
+				synchronized(LogStringZZZ.class) {
+					if(objLogStringSingleton == null) {
+						objLogStringSingleton = getNewInstance();
+					}
+				}
+				
 			}
-			return (LogStringZZZ) objLogStringSingleton;	
+			return (LogStringZZZ) objLogStringSingleton;
+		}
+		
+		public static LogStringZZZ getNewInstance() throws ExceptionZZZ{
+			//Damit wird garantiert einen neue, frische Instanz geholt.
+			//Z.B. bei JUnit Tests ist das notwendig, denn in Folgetests wird mit .getInstance() doch tatsächlich mit dem Objekt des vorherigen Tests gearbeitet.
+			objLogStringSingleton = new LogStringZZZ();
+			return (LogStringZZZ)objLogStringSingleton;
+		}
+		
+		public static void destroyInstance() throws ExceptionZZZ{
+			objLogStringSingleton = null;
 		}
 		
 		@Override
