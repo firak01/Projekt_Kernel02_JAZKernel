@@ -134,11 +134,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				//... aber vor dem \t aufsplitten
 				int iBoundLeft = this.indexOfInfoPartBoundLeft(sLog);
 	
-				//falls ja: Berechne die Anzahl er Tabs aus der Differenz				
+
 				int iDifference = iBoundLeftBehindCurrent - iBoundLeftBehind;
-				int iTabs = iDifference / 7;//7 Leerzeichen entsprechen 1 Tab???
 				
-				if(iTabs>=1) {
+				//Nicht mehr auf Tabs konzentrieren, sondern nur noch die echten Zeichen
+				if(iDifference>=1) {
 					String sLeft = StringZZZ.left(sLog, iBoundLeft);
 					String sRight = StringZZZ.rightback(sLog, iBoundLeft);
 								
@@ -148,7 +148,25 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 								
 					//wieder zusamensetzen
 					sReturn = sLeft + sMid + sRight + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+				}else {
+					sReturn = sReturn + "-DEBUG04: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 				}
+				
+				//Es werden keine TABS mehr verwendet, sondern nur noch die wirklichen Zeichen. Auffuellzeichen ist " ".
+//				//falls ja: Berechne die Anzahl er Tabs aus der Differenz				
+//				int iTabs = iDifference / 7;//7 Leerzeichen entsprechen 1 Tab???
+//				
+//				if(iTabs>=1) {
+//					String sLeft = StringZZZ.left(sLog, iBoundLeft);
+//					String sRight = StringZZZ.rightback(sLog, iBoundLeft);
+//								
+//					//String sMid = StringZZZ.repeat("\t", iTabs); //Die Anzahl der Tabs selbst auszugeben, macht es schwierig.
+//					//Daher nur die Anzahl der Zeichen als Leerzeichen.
+//					String sMid = StringZZZ.repeat(" ", iDifference);
+//								
+//					//wieder zusamensetzen
+//					sReturn = sLeft + sMid + sRight + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+//				}
 			}
 		
 			//falls nein. einfach weiter
