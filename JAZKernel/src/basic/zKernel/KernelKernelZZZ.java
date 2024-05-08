@@ -593,7 +593,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(objConfigIni, sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
-			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
+			listasModuleSection = (ArrayList<String>) ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
 			
 			IniFile objIni = objConfigIni.getFileIniObject();
 			objReturn = this.KernelSearchFileConfigDirectLookup_(objIni, sModule, listasModuleSection);
@@ -641,7 +641,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			
 			ArrayList<String> listasModuleSection = KernelKernelZZZ.computeSystemSectionNamesForModule(objConfigIni, sModule, sApplicationKey, sSystemNumber);			
 			ArrayList<String> listasSystemSection = KernelKernelZZZ.computeSystemSectionNames(sApplicationKey, sSystemNumber);
-			listasModuleSection = ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
+			listasModuleSection = (ArrayList<String>) ArrayListZZZ.joinKeepLast(listasModuleSection, listasSystemSection);
 			
 			IniFile objIni = objConfigIni.getFileIniObject();
 			objReturn = this.KernelSearchFileConfigDirectLookupInWorkspace_(objConfig, objIni, sModule, listasModuleSection);
@@ -866,19 +866,19 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			String sModuleAlias = KernelKernelZZZ.searchAliasForModule(objFileIniConfig, sModule, sApplicationOrModule, sSystemNumber);
 			ArrayList<String> alsModuleAlias = KernelKernelZZZ.computeSystemSectionNames(sModuleAlias, sSystemNumber);
 			if(alsModuleAlias!=null) {
-            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
+            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
             }
 			
 			//2. Dann Systemkeys mit dem Modulnamen
 			ArrayList<String> alsModule = KernelKernelZZZ.computeSystemSectionNames(sModule, sSystemNumber);
             if(alsModule!=null) {
-            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
+            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
             }
             
         	//3. Applicationkeys
 			ArrayList<String> alsApplication = KernelKernelZZZ.computeSystemSectionNames(sApplicationOrModule, sSystemNumber);
 			if(alsApplication!=null) {
-				alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplication);
+				alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsApplication);
 			}
           
 		}//end main:
@@ -988,7 +988,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				if(!StringZZZ.isEmpty(sModuleAlias)) {
 					ArrayList<String> alsModuleAliasProgramAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sModuleAlias, sSystemNumberUsed);
 		            if(alsModuleAliasProgramAlias!=null) {
-		            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAliasProgramAlias);
+		            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAliasProgramAlias);
 		            }
 				}else {
 					//die Suche nach dem Modulnamen ist nicht eine Alternative, sondern eine Ergänzung...				
@@ -997,14 +997,14 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				//b) Modulname
 				ArrayList<String> alsModuleProgramAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sModuleUsed, sSystemNumberUsed);
 	            if(alsModuleProgramAlias!=null) {
-	            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleProgramAlias);
+	            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleProgramAlias);
 	            }
 	            
 	            
 	          //2. Danach auf Applikationsebene	            
 	          ArrayList<String> alsApplicationProgramAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramAlias, sApplicationAliasIn, sSystemNumberUsed);
 	          if(alsApplicationProgramAlias!=null) {
-	        	  alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgramAlias);
+	        	  alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgramAlias);
 	          }	          	            
 			}//end if !isempty(sProgramAlias)
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1014,7 +1014,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			if(!StringZZZ.isEmpty(sModuleAlias)) {
 				ArrayList<String> alsModuleAlias = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sModuleAlias, sSystemNumberUsed);
 	            if(alsModuleAlias!=null) {
-	            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
+	            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModuleAlias);
 	            }
 			}else {
 				//die Suche nach dem Modulnamen ist nicht eine Alternative, sondern eine Ergänzung...				
@@ -1023,13 +1023,13 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 			//b) Modulname
 			ArrayList<String> alsModule = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sModuleUsed, sSystemNumberUsed);
             if(alsModule!=null) {
-            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
+            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsModule);
             }
             
             //2. auf Applikationsebene mit dem Programnamen
             ArrayList<String> alsApplicationProgram = KernelKernelZZZ.computeSystemSectionNamesForProgram_(objFileConfigIni, sProgramUsed, sApplicationAliasIn, sSystemNumberUsed);
             if(alsApplicationProgram!=null) {
-            	alsReturn = ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgram);
+            	alsReturn = (ArrayList<String>) ArrayListZZZ.joinKeepLast(alsReturn, alsApplicationProgram);
             }
             
             //#############

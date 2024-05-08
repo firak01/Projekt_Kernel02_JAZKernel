@@ -49,19 +49,23 @@ public class ReflectEnvironmentZZZTest extends TestCase{
 			switch (sVersionString){//äh, switch mit String ist erst ab Java ... verfügbar
 			case ReflectEnvironmentZZZ.sJAVA4:
 				btemp = ReflectEnvironmentZZZ.isJava4();
-				assertTrue("Version ist nicht Java 4", btemp);
+				assertTrue("Version ist nicht wie erwartet Java 4", btemp);
 				break;
 			case ReflectEnvironmentZZZ.sJAVA5:
 				btemp = ReflectEnvironmentZZZ.isJava5();
-				assertTrue("Version ist nicht Java 5", btemp);
+				assertTrue("Version ist nicht wie erwartet Java 5", btemp);
 				break;
 			case ReflectEnvironmentZZZ.sJAVA6:
 				btemp = ReflectEnvironmentZZZ.isJava6();
-				assertTrue("Version ist nicht Java 6", btemp);
+				assertTrue("Version ist nicht wie erwartet Java 6", btemp);
 				break;
 			case ReflectEnvironmentZZZ.sJAVA7:
 				btemp = ReflectEnvironmentZZZ.isJava7();
-				assertTrue("Version ist nicht Java 7", btemp);
+				assertTrue("Version ist nicht wie erwartet Java 7", btemp);
+				break;
+			case ReflectEnvironmentZZZ.sJAVA8:
+				btemp = ReflectEnvironmentZZZ.isJava8();
+				assertTrue("Version ist nicht wie erwartet Java 8", btemp);
 				break;
 			default:
 				fail("Java Version " + stemp + " wird noch nicht behandelt.");			

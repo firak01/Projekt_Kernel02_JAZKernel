@@ -5,6 +5,7 @@ public class ReflectEnvironmentZZZ {
 	public static final String sJAVA5 = "1.5";
 	public static final String sJAVA6 = "1.6";
 	public static final String sJAVA7 = "1.7";
+	public static final String sJAVA8 = "1.8";
 	public static String getJavaVersionCurrent(){
 		    return System.getProperty("java.runtime.version");
 	}
@@ -47,6 +48,16 @@ public class ReflectEnvironmentZZZ {
 		}else{
 			return false;
 		}			
+	}
+	
+	public static boolean isJava8() {
+		String sVersionString = ReflectEnvironmentZZZ.getJavaVersionCurrent();
+		String sVersionMain = ReflectEnvironmentZZZ.getJavaVersionMain(sVersionString);
+		if(sVersionMain.equals(ReflectEnvironmentZZZ.sJAVA8)){
+			return true;
+		}else{
+			return false;
+		}	
 	}
 	
 	public static boolean isJavaVersionMainCurrentEqualOrNewerThan(String sVersionString){

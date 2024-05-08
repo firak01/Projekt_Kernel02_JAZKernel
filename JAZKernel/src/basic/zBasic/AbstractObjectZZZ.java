@@ -55,6 +55,11 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 		System.out.println(sTemp);		
 	}
 	
+	@Override
+	public void logLine(String sLog) throws ExceptionZZZ{
+		System.out.println(sLog);
+	}
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++
 	@Override
 	public void logProtocolString(String[] saLog) throws ExceptionZZZ{

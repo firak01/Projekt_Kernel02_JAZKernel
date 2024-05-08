@@ -214,9 +214,9 @@ public interface ILogStringZZZ{
 	//das ganze auch mit dem intern gespeicherten Format
 	public String compute(String sLog) throws ExceptionZZZ;
 	public String compute(Object obj, String sLog) throws ExceptionZZZ;
-	public String compute(Object obj, String[] saLog) throws ExceptionZZZ;
-	
-	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
+	public String compute(Object obj, String[] saLog) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
+		
+	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
 	
 	public int computeFormatPositionsNumber() throws ExceptionZZZ;
 	

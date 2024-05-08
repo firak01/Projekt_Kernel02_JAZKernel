@@ -121,15 +121,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			//int iBoundLeft2use = this.getInfoPartBoundLeft2use(sLog);
 			int iBoundLeftBehind = this.indexOfInfoPartBoundLeftBehind(sLog);
 			
-			//Differenz vorhanden
-			if(iBoundLeftBehind>iBoundLeftBehindCurrent) {
-				this.setInfoPartBoundLeftBehindCurrent(iBoundLeftBehind);
+			//Differenz vorhanden			
+			if(iBoundLeftBehind == iBoundLeftBehindCurrent) {				
 				sReturn = sReturn  + "-DEBUG01: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 			}
-			if(iBoundLeftBehind==iBoundLeftBehindCurrent) {				
-				sReturn = sReturn  + "-DEBUG02: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
-			}
-			if(iBoundLeftBehind<iBoundLeftBehindCurrent) {
+			if(iBoundLeftBehind < iBoundLeftBehindCurrent) {
 				//aufsplitten und auffuellen
 				//... aber vor dem \t aufsplitten
 				int iBoundLeft = this.indexOfInfoPartBoundLeft(sLog);
@@ -147,9 +143,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					String sMid = StringZZZ.repeat(" ", iDifference);
 								
 					//wieder zusamensetzen
-					sReturn = sLeft + sMid + sRight + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+					sReturn = sLeft + sMid + sRight + "-DEBUG02a: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 				}else {
-					sReturn = sReturn + "-DEBUG04: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+					sReturn = sReturn + "-DEBUG02b: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 				}
 				
 				//Es werden keine TABS mehr verwendet, sondern nur noch die wirklichen Zeichen. Auffuellzeichen ist " ".
@@ -167,9 +163,16 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 //					//wieder zusamensetzen
 //					sReturn = sLeft + sMid + sRight + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 //				}
-			}
-		
-			//falls nein. einfach weiter
+				
+				
+				
+			}//end if(iBoundLeftBehind < iBoundLeftBehindCurrent) {
+			
+			//Merke diesen Fall zum Schluss, da hier iBoundLeftBehind neu gesetzt wird
+			if(iBoundLeftBehind > iBoundLeftBehindCurrent) { 
+				this.setInfoPartBoundLeftBehindCurrent(iBoundLeftBehind);
+				sReturn = sReturn  + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+			}		
 		}//end main:
 		return sReturn;
 	}

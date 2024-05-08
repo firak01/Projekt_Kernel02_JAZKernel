@@ -245,6 +245,11 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 		//#################################################################
 		//### aus ILogZZZ
 		@Override
+		public void logLine(String sLog) throws ExceptionZZZ{
+			System.out.println(sLog);
+		}
+		
+		@Override
 		public void logLineDate(String sLog) throws ExceptionZZZ {
 			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
 			System.out.println(sTemp);		
