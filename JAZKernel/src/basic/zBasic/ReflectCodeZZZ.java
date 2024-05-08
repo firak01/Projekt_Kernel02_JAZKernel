@@ -21,8 +21,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.KernelZZZ;
 
 public class ReflectCodeZZZ  implements IConstantZZZ{
-	public static  final int iPOSITION_STACKTRACE_CURRENT = 3;
-	public static  final int iPOSITION_STACKTRACE_CALLING = 4;
+	public static  final int iPOSITION_STACKTRACE_CURRENT = 2;
+	public static  final int iPOSITION_STACKTRACE_CALLING = 3;
 	
 	public static final String sCLASS_METHOD_SEPERATOR = ".";
 	public static final String sPACKAGE_SEPERATOR = ".";
@@ -192,9 +192,9 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 				if(ReflectEnvironmentZZZ.isJavaVersionMainCurrentEqualOrNewerThan(ReflectEnvironmentZZZ.sJAVA4)){
 					//Verarbeitung ab Java 1.4: Hier gibt es das "StackTrace Element"
 					//int iPositionInStacktrace = ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iOffset;
-					method = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset);
+					method = ReflectCodeZZZ.getMethodCurrentName(iStacktraceOffset+1);
 					
-					int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset, iLineOffset); //Berechne die gewünschte Zeile					
+					int iLine = ReflectCodeZZZ.getMethodCurrentLine(iStacktraceOffset+1, iLineOffset); //Berechne die gewünschte Zeile					
 					method +=ReflectCodeZZZ.formatMethodCallingLine(iLine); //Berechne den String  für die Zeilenausgabe.
 										
 				}else{
