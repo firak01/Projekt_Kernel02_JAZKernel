@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -189,13 +190,29 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 
 	@Override
-	public void setSection(String sSection) {
+	public void setSection(String sSection) throws ExceptionZZZ {
+		//TODOGOON: in dem Entry-Object eine HashMap Unique Pflegen... hm(Section,bSectionExists)
+		//          Das soll beim Debuggen helfen.
+		
+		
 		//if(sSection!=null){
 			this.sSection=sSection;
+			
+			//!!! wg. folgender Codezeile bedenken, dass erst der Section-Name gesetzt werden muss
+			//    und dann erst der bSectionExists Wert. Sonst wird dieser naemlich wieder ueberschrieben.
 			this.sectionExists(false);//es ist noch nicht bewiesen, dass es diese Section ueberhaupt gibt!!!
+			
 		//}else{
 		//	this.sectionExists(false);
 		//}
+	}
+	
+	@Override
+	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ{
+		if(sSection!=null) {
+			this.setSection(sSection); //Beachte die Reihenfolge... erst Section setzen, dann ggfs. den true Wert
+			this.sectionExists(bExists);
+		}
 	}
 
 	@Override
@@ -454,7 +471,12 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 
 	@Override
-	public void sectionExists(boolean bSectionExists) {
+	public void sectionExists(boolean bSectionExists) throws ExceptionZZZ {
+//      TODOGOON20240509: Eine der Stellen, an denen ein LogLevel=Debug sinnvoll waere.
+		//                Ggfs. einbauen wenn dies alles auf die Verwendung von LogStringZZZ umgestellt wird.
+//		if(bSectionExists) {
+//			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Section Exists");
+//		}
 		this.bSectionExists = bSectionExists;
 		this.hasAnySectionExists(bSectionExists);
 	}

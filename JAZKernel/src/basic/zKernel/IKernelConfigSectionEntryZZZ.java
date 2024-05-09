@@ -3,6 +3,7 @@ package basic.zKernel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 
@@ -21,7 +22,8 @@ import basic.zKernel.cache.ICachableObjectZZZ;
  */
 public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICryptUserZZZ, Cloneable{
 	public String getSection();
-	public void setSection(String sSection);
+	public void setSection(String sSection) throws ExceptionZZZ; //WICHTIG: Darin wird wieder SectionExists auf false gesetzt... ALSO unbedingt VOR dem setzten von sectionExists(true) verwenden!!!
+	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
 	
 	public String getProperty();
 	public void setProperty(String sProperty);
@@ -143,7 +145,7 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	
 	//Suchpfaddetail	
 	public boolean sectionExists();
-	abstract void sectionExists(boolean bSectionExists);
+	abstract void sectionExists(boolean bSectionExists) throws ExceptionZZZ;
 	
 	public boolean hasAnySectionExists(); //existierte auf dem Suchpfad nach einer Property ueberhaupt einmal eine Section?
 	//soll nur private eingesetzt werden. abstract void hasAnySectionExists(boolean bValue);

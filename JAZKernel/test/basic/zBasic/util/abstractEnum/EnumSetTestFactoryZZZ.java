@@ -10,6 +10,7 @@ import basic.zBasic.IDummyTestObjectWithStatusByInterfaceZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigConstantZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
 
@@ -84,7 +85,9 @@ private static EnumSetTestFactoryZZZ objEnumFactory = null;  //muss static sein,
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen
 //	        	String sInfo = String.format("%1$s # als sClassNameEnum wird hier gefunden: %2$s", sClassNameEnum,ReflectCodeZZZ.getPositionCurrent());
 //				System.out.print(sInfo);	        	
-	        	objEnumSetReturn= KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ.getEnumSet();    	        		        
+	        	objEnumSetReturn= KernelConfigDefaultEntryZZZ.EnumConfigDefaultEntryZZZ.getEnumSet();   
+	        }else if (sClassNameEnum.equals("basic.zKernel.IKernelConfigConstantZZZ$EnumConfigDefaultEntryZZZ")) {
+	        	objEnumSetReturn= IKernelConfigConstantZZZ.EnumConfigDefaultEntryZZZ.getEnumSet();
 			}else{
 	        	//Wenn es die Klasse nicht gibt. Keinen Fehler werfen, da ggfs. über einen Vererbungsmechanismus ja zuerst in der Superklasse nachgesehen wurde und dann ggfs. weiter in Kindklassen gesucht wird.
 	        	//Auf ObjectZZZ Ebene gibt es noch keine Logging-Klassen

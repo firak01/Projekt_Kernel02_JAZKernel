@@ -3953,13 +3953,12 @@ MeinTestParameter=blablaErgebnis
 		main:{
 			String sReturn = KernelKernelZZZ.KernelGetParameterString_DirectLookup_(objFileIni, sSection, sProperty);						
 			if(!StringZZZ.isEmpty(sReturn)){
-				objReturn.sectionExists(true);
+				objReturn.setSection(sSection, true);
 				objReturn.setRaw(sReturn);
 				objReturn.setValue(sReturn);
 			}else{									
-				objReturn.sectionExists(false);
+				objReturn.setSection(sSection, false);
 			}
-			objReturn.setSection(sSection);
 			objReturn.setProperty(sProperty);
 			
 		}//End main:
@@ -4021,9 +4020,9 @@ MeinTestParameter=blablaErgebnis
 			    boolean bSectionExists = objFileIniConfig.proofSectionExistsDirectLookup(sSection);
 				if(bSectionExists==true){						
 					objReturn = objFileIniConfig.getPropertyValue(sSection, sProperty);					
-					objReturn.sectionExists(true);
+					objReturn.setSection(sSection,true);
 				}else{						
-					objReturn.sectionExists(false);
+					objReturn.setSection(sSection,false);
 				}				
 			}
 		}//End main:

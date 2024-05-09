@@ -542,8 +542,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			boolean bSectionExists = this.proofSectionExistsDirectLookup(sSection);
 			if(bSectionExists) {
 				String sReturnRaw=null;
-				objReturn.sectionExists(true);	
-				objReturn.setSection(sSection);
+				objReturn.setSection(sSection, true);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 				sReturnRaw = this.objFileIni.getValue(sSection, sProperty);
 				if(sReturnRaw!=null) {											
@@ -551,7 +550,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 					objReturn.setValue(sReturnRaw);						
 				}
 			}else {
-				objReturn.sectionExists(false);
+				objReturn.setSection(sSection , false);
 			}
 		}//end main:
 		objReturnReference.set(objReturn);
@@ -580,7 +579,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			boolean bSectionExists = this.proofSectionExistsDirectLookup(sSectionUsed);
 			if(bSectionExists) {
 				String sReturnRaw=null;
-				objReturn.sectionExists(true);
+				objReturn.setSection(sSectionUsed, true);
 				System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Hole Wert für Section= '" + sSection + "' und Property = '" + sProperty +"'");
 				sReturnRaw = this.objFileIni.getValue(sSectionUsed, sProperty);
 				if(sReturnRaw!=null) {											

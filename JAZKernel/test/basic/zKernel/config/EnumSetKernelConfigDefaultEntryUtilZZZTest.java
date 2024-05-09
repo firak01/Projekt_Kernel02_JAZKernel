@@ -42,8 +42,6 @@ public class EnumSetKernelConfigDefaultEntryUtilZZZTest  extends TestCase{
 	}//END setup
 	    public void testGetEnumSet(){
 			try{
-				boolean btemp;
-				
 				//Static Zugriff
 				//EnumSet soll von der EnumerationZZZ-Klasse schon "generisch/per Reflektion" erzeugt und mitgebracht werden.
 				EnumSet setEnumGenerated = EnumConfigDefaultEntryZZZ.getEnumSet();		

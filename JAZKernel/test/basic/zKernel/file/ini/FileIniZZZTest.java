@@ -352,9 +352,9 @@ public class FileIniZZZTest extends TestCase {
 			
 			//nun den Wert testen, wie er im setup definiert wurde
 			objEntry = objFileIniTest.getPropertyValue("Section A", "Testentry1");
-			assertNotNull("Es soll ein Entry-Object zurueckgeliefert werden.", objEntry);
+			assertNotNull("Es soll ein Entry-Object zurueckgeliefert werden.", objEntry);			
+			assertTrue("Zumindest eine Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.hasAnySectionExists());
 			assertTrue("Die Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.sectionExists());
-			assertTrue("Zumindest eine Section sollte existent geflagt sein, auch wenn die zuletzt geprüfte Section ggfs. nicht existiert.",objEntry.hasAnySectionExists());			
 			assertEquals("Testvalue1", objEntry.getValue());
 			
 			//auch wenn es die Section überhaupt nicht gibt, darf kein Fehler entstehen
