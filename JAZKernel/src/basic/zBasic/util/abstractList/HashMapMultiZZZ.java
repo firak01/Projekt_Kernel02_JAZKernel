@@ -65,7 +65,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  }
  */
 public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZZ, Map{
-	private HashMap hmOuter=new HashMap();
+	protected HashMap hmOuter=new HashMap();
 	
 	public HashMapMultiZZZ(){		
 	}
@@ -307,6 +307,7 @@ public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZ
 		Object objReturn = null;
 		main:{
 			if(arg0==null) break main;
+			
 			if(arg1==null){
 				objReturn = hmOuter.put(arg0, null);
 				break main;
@@ -314,13 +315,14 @@ public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZ
 			
 			
 			//20080219 Testen auf Klasse von arg1
-			Class cl = arg1.getClass();		
-			if(cl.getName().equals("java.lang.String")){
-				objReturn = hmOuter.put(arg0, arg1);				
+			Class<?> cl = arg1.getClass();		
+			//if(cl.getName().equals("java.lang.String")){
+			if(cl.getName().equals(HashMap.class.getName())){
+				objReturn = hmOuter.put(arg0, (HashMap) arg1);				
 			}else if(cl.getName().equals(HashMapMultiZZZ.class.getName())){
 				objReturn =  hmOuter.put(arg0, (HashMapMultiZZZ) arg1);				
 			}else{
-				objReturn =  hmOuter.put(arg0, (HashMap) arg1);
+				objReturn =  hmOuter.put(arg0, arg1);
 			}
 		}//End main
 		return objReturn;

@@ -1086,6 +1086,8 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 				throw ez;
 			}
 			
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+			HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
 			
 			String sSection2use=null;						
 			String sSystemNumberUsed = "";
@@ -1127,6 +1129,11 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 
 			//Suche nach dem Alias
 			IKernelConfigSectionEntryZZZ objEntry = KernelKernelZZZ.searchProgramAliasFor(objFileConfigIni, sProgramUsed, sModuleOrApplicationAliasUsed, sSystemNumberUsed, null);
+			
+			//20240509: Rette die Suchschritte
+			HashMapMultiIndexedZZZ hmSearchedTemp = objEntry.getSectionsSearchedHashMap();
+			hmSearched.add(hmSearchedTemp);
+			
 			if(objEntry.hasAnyValue()) {
 				sProgramAliasUsed = objEntry.getValue();							
 				
@@ -5093,6 +5100,9 @@ MeinTestParameter=blablaErgebnis
 	public String[] getParameterArrayStringByModuleAlias(String sModule, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+			HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
+			
 			//String sFileName = this.getParameterByModuleAlias(sModule, sProperty).getValue();			
 			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterByModuleAliasAsArray(sModule, sProperty);
 			if(objaEntry!=null){
@@ -5101,6 +5111,11 @@ MeinTestParameter=blablaErgebnis
 				ArrayList<String> listasEntry = new ArrayList<String>();
 				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
+					
+					//20240509: Rette die Suchschritte
+					HashMapMultiIndexedZZZ hmSearchedTemp = objEntry.getSectionsSearchedHashMap();
+					hmSearched.add(hmSearchedTemp);
+					
 					String sEntry = objEntry.getValue();					
 					listasEntry.add(sEntry);
 				}
@@ -5148,6 +5163,9 @@ MeinTestParameter=blablaErgebnis
 	public String[] getParameterArrayWithStringByProgramAlias(String sModule, String sSectionOrProgram, String sProperty) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+			HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
+			
 			//String sFileName = this.getParameterByProgramAlias(sModule, sSectionOrProgram, sProperty).getValue();
 			IKernelConfigSectionEntryZZZ[] objaEntry = this.getParameterArrayWithEntryByProgramAlias(sModule, sSectionOrProgram, sProperty);
 			if(objaEntry!=null){
@@ -5156,6 +5174,11 @@ MeinTestParameter=blablaErgebnis
 				ArrayList<String> listasEntry = new ArrayList<String>();
 				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
+					
+					//20240509: Rette die Suchschritte
+					HashMapMultiIndexedZZZ hmSearchedTemp = objEntry.getSectionsSearchedHashMap();
+					hmSearched.add(hmSearchedTemp);
+					
 					String sEntry = objEntry.getValue();					
 					listasEntry.add(sEntry);
 				}
@@ -5172,8 +5195,16 @@ MeinTestParameter=blablaErgebnis
 	public Boolean getParameterBooleanByProgramAlias(String sModule, String sProgramOrSection, String sProperty) throws ExceptionZZZ{
 		Boolean objReturn = null;		
 		main:{
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+			HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
+			
 			IKernelConfigSectionEntryZZZ objEntry = this.getParameterByProgramAlias(sModule, sProgramOrSection, sProperty);
-			if(objEntry.hasAnyValue()) {
+			
+			//20240509: Rette die Suchschritte
+			HashMapMultiIndexedZZZ hmSearchedTemp = objEntry.getSectionsSearchedHashMap();
+			hmSearched.add(hmSearchedTemp);
+			
+			if(objEntry.hasAnyValue()) {								
 				String sValue = objEntry.getValue();
 				boolean bValue = BooleanZZZ.stringToBoolean(sValue);
 				objReturn = new Boolean(bValue);
@@ -5287,6 +5318,9 @@ MeinTestParameter=blablaErgebnis
 			
 			hmDebug.put("+++ HashMapMethod calling SectionEntry-Method. Input: " + sModuleAlias + "," + sProgramOrSection ,sProperty);
 			
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+			HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
+			
 			//Erst einmal das Array holen. 
 			//Merke: Die Werte im Array sind geclont 
 			//und es soll bei einer HashMap entsprechende Flags und Werte (z.B. speziell für HashMap ein Aliaswert) gesetzt sein.
@@ -5297,6 +5331,11 @@ MeinTestParameter=blablaErgebnis
 				hmReturn = new HashMapIndexedZZZ<Integer,IKernelConfigSectionEntryZZZ>();
 				for(int iCounter=0; iCounter <= objaEntry.length-1;iCounter++) {
 					IKernelConfigSectionEntryZZZ objEntry = objaEntry[iCounter];
+					
+					//20240509: Rette die Suchschritte
+					HashMapMultiIndexedZZZ hmSearchedTemp = objEntry.getSectionsSearchedHashMap();
+					hmSearched.add(hmSearchedTemp);
+					
 					int iIndex = objEntry.getIndex();
 					Integer intIndex = new Integer(iIndex);
 					hmReturn.put(intIndex, objEntry);
@@ -5556,7 +5595,9 @@ MeinTestParameter=blablaErgebnis
 			IKernelConfigSectionEntryZZZ objEntry = null;
 			String sProgramAliasUsed=null; boolean bSectionExists= false;
 			String sPropertyUsed=null;String sDebugKey = null;
-											
+						
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+		    HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
 			
 			//WICHTIG:
 			//WENN DIESER PROGRAMNAME NICHT GEFUNDEN WURDE, DANN IST DAFUER GGFS EIN ALIAS DEFINIERT.
@@ -5574,6 +5615,11 @@ MeinTestParameter=blablaErgebnis
 				if(bSectionExists==true){
 					//Nun in der Section nach dem Wert für das Programm suchen.
 					objEntry = objFileIniConfig.getPropertyValue(sSectionUsed, sPropertyUsed); 
+
+					//20240509: Rette die Suchschritte
+					HashMapMultiIndexedZZZ hmSearchedTemp = objEntry.getSectionsSearchedHashMap();
+					hmSearched.add(hmSearchedTemp);
+					
 					if(objEntry.hasAnyValue()){
 						sProgramAliasUsed = objEntry.getValue();
 						//System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0)+ ": Programaliasermittlung (a.a) - in der Section als Grundlage '" + sSection + "' Wert für '" + sProgramNameUsed + "' gefunden = '" + sProgramAliasUsed +"'.");
@@ -5626,6 +5672,9 @@ MeinTestParameter=blablaErgebnis
 			}//end check:										
 				
 
+		    //20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+		    HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
+		    
 				
 			//###############################################
 			//0. Suche nach dem Modul in den Systemkeys	
@@ -5634,7 +5683,13 @@ MeinTestParameter=blablaErgebnis
 				if(hmDebug!=null) hmDebug.put("Im SystemKey: " + sSystemKey, sModule);					
 							
 				//Zuerst den im SystemKey definierten Modulnamen finden.
+				//20240509 Merke: Dadurch, das hier der "Entry" jedes Mal neu geholt wird, sind vorherige Suchen (gespeichert in der SearchedHashMap) immer weg.
 				IKernelConfigSectionEntryZZZ objEntrySectionModuleByApplicationKey = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileIniConfig, sSystemKey, sModule);
+				
+				//20240509: Rette die Suchschritte
+				HashMapMultiIndexedZZZ hmSearchedTemp = objEntrySectionModuleByApplicationKey.getSectionsSearchedHashMap();
+				hmSearched.add(hmSearchedTemp);
+				
 				if(objEntrySectionModuleByApplicationKey.hasAnyValue()) {
 					String sModuleAlias = objEntrySectionModuleByApplicationKey.getValue();
 					System.out.println("ModulAlias: '"+ sModuleAlias + "' gefunden im Systemkey '" + sSystemKey + "'");										
@@ -5646,6 +5701,9 @@ MeinTestParameter=blablaErgebnis
 						
 						if(bExists) {																									
 							objReturn = objEntrySectionModuleByApplicationKey;
+							
+							//20240509: Bewahre den Suchpfad
+							objReturn.setSectionsSearchedHashMap(hmSearched);
 							break main;					
 						}else {
 							System.out.println("Module '" + sModuleSection + "' exisiert nicht im SystemKey '" + sSystemKey + "'.");
@@ -5662,6 +5720,12 @@ MeinTestParameter=blablaErgebnis
 						
 			//Zuerst den im SystemKey definierten Modulnamen finden.
 			IKernelConfigSectionEntryZZZ objEntrySectionModuleByModuleKey = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileIniConfig, sModuleKey, sModule);
+			
+			//20240509: Rette die Suchschritte
+			HashMapMultiIndexedZZZ hmSearchedTemp = objEntrySectionModuleByModuleKey.getSectionsSearchedHashMap();
+			hmSearched.add(hmSearchedTemp);
+
+			
 			if(objEntrySectionModuleByModuleKey.hasAnyValue()) {
 				String sModuleAlias = objEntrySectionModuleByModuleKey.getValue();
 				System.out.println("ModulAlias: '"+ sModuleAlias + "' gefunden im Systemkey '" + sModuleKey + "'");										
@@ -5675,6 +5739,9 @@ MeinTestParameter=blablaErgebnis
 					
 					if(bExists) {																									
 						objReturn = objEntrySectionModuleByModuleKey;
+						
+						//20240509: Bewahre den Suchpfad
+						objReturn.setSectionsSearchedHashMap(hmSearched);
 						break main;					
 					}else {
 						System.out.println("Module '" + sModuleSection + "' exisiert nicht in der Section in der Datei: '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'.");
@@ -5683,7 +5750,8 @@ MeinTestParameter=blablaErgebnis
 			}
 		}//end for		
 		
-		
+		//20240509: Bewahre den Suchpfad
+		objReturn.setSectionsSearchedHashMap(hmSearched);
 		
 		}//end main:
 		return objReturn;
@@ -5714,7 +5782,9 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//end check:										
 				
-
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+		    HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
+		    
 				
 			//###############################################
 			//0. Suche nach dem Program in den Systemkeys	
@@ -5725,15 +5795,21 @@ MeinTestParameter=blablaErgebnis
 				if(hmDebug!=null) hmDebug.put("Im SystemKey: " + sSystemKey, sProgram);					
 				objReturn.setSection(sSystemKey);
 				
-				
-				
 				//Zuerst den im SystemKey definierten Programnamen finden.
 				IKernelConfigSectionEntryZZZ objEntrySectionProgram = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileIniConfig, sSystemKey, sProgram);
+				
+				//20240509: Rette die Suchschritte
+				HashMapMultiIndexedZZZ hmSearchedTemp = objEntrySectionProgram.getSectionsSearchedHashMap();
+				hmSearched.add(hmSearchedTemp);
+				
 				if(objEntrySectionProgram.hasAnyValue()) {
 					String sProgramAlias = objEntrySectionProgram.getValue();
 					System.out.println("ProgramName: '"+ sProgramAlias + "' gefunden im Systemkey '" + sSystemKey + "'");
 					
 					objReturn = objEntrySectionProgram;
+					
+					//20240509: Bewahre den Suchpfad
+					objReturn.setSectionsSearchedHashMap(hmSearched);					
 					break main;
 					
 					//Prüfe nun, ob die Section auch existiert....	
@@ -5755,8 +5831,12 @@ MeinTestParameter=blablaErgebnis
 					
 					
 				}
-			}//end for										
-		}
+			}//end for		
+			
+			//20240509: Bewahre den Suchpfad
+			objReturn.setSectionsSearchedHashMap(hmSearched);
+			
+		}//end main:
 		return objReturn;
 	}
 	
@@ -5786,7 +5866,9 @@ MeinTestParameter=blablaErgebnis
 				}	
 			}//end check:										
 				
-
+			//20240509: Versuch die bisherigen Suchschritte zu speichern und "nach oben" weiterzugeben.
+	    	HashMapMultiIndexedZZZ hmSearched = new HashMapMultiIndexedZZZ();
+	    
 				
 			//###############################################
 			//0. Suche nach dem Program in den Systemkeys	
@@ -5796,6 +5878,11 @@ MeinTestParameter=blablaErgebnis
 							
 				//Zuerst den im SystemKey definierten Programnamen finden.
 				IKernelConfigSectionEntryZZZ objEntrySectionProgram = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileIni, sSystemKey, sProgram);
+				
+				//20240509: Rette die Suchschritte
+				HashMapMultiIndexedZZZ hmSearchedTemp = objEntrySectionProgram.getSectionsSearchedHashMap();
+				hmSearched.add(hmSearchedTemp);
+				
 				if(objEntrySectionProgram.hasAnyValue()) {
 					String sProgramName = objEntrySectionProgram.getValue();
 					System.out.println("ProgramName: '"+ sProgramName + "' gefunden im Systemkey '" + sSystemKey + "'");										
@@ -5813,8 +5900,11 @@ MeinTestParameter=blablaErgebnis
 						}
 					}//end for
 				}
-			}//end for										
-		}
+			}//end for	
+			
+			//20240509: Bewahre den Suchpfad
+			objReturn.setSectionsSearchedHashMap(hmSearched);						
+		}//end main:
 		return objReturn;
 	}
 	
@@ -5849,7 +5939,6 @@ MeinTestParameter=blablaErgebnis
 				sProgramNameUsed = sProgramOrAlias;
 			}
 				
-			IKernelConfigSectionEntryZZZ objEntry = null;
 			String sProgramAliasUsed=null; boolean bSectionExists= false;
 			String sSectionUsed=null; String sPropertyUsed=null;String sDebugKey = null;
 								

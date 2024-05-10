@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -18,6 +19,7 @@ import basic.zKernel.cache.ICacheFilterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 
 public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
+	private HashMapMultiIndexedZZZ<Integer,String,Boolean>hmSectionsSearched = new HashMapMultiIndexedZZZ<Integer,String,Boolean>();
 	private String sSection = null;
 	private String sProperty = null;
 	private String sSystemNumber = null;
@@ -185,6 +187,16 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	
 	//#############################
 	@Override
+	public HashMapMultiIndexedZZZ<Integer,String,Boolean> getSectionsSearchedHashMap(){
+		return this.hmSectionsSearched;
+	}
+	
+	@Override 
+	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<Integer,String,Boolean> hmSectionsSearched) {
+		this.hmSectionsSearched = hmSectionsSearched;
+	}
+	
+	@Override
 	public String getSection() {
 		return this.sSection;
 	}
@@ -212,6 +224,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		if(sSection!=null) {
 			this.setSection(sSection); //Beachte die Reihenfolge... erst Section setzen, dann ggfs. den true Wert
 			this.sectionExists(bExists);
+			this.getSectionsSearchedHashMap().putAsLast(sSection, bExists);
 		}
 	}
 

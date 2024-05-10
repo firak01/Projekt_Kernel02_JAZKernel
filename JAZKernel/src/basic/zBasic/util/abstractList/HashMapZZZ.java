@@ -1,23 +1,149 @@
 package basic.zBasic.util.abstractList;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.ExceptionZZZ;
 
 public class HashMapZZZ<T,X> extends AbstractObjectZZZ {
 	
 	private HashMapZZZ(){
 	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.
+	 * @param map
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
+	 */
+	public static Object getKeyByIndex(Map<?,?> map, int iIndex) {
+		Object objReturn = null;
+		main:{					
+			if(map==null)break main;
+			
+			Set<?> setKey = map.keySet();
+			objReturn = SetZZZ.getByIndex(setKey, iIndex);
+		}
+		return objReturn;
+	}
+	
+	/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.
+	 * @param map
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> Object getEntryByIndex(Map<K, V> map, int iIndex) {
+		Object objReturn = null;
+		main:{					
+			if(map==null)break main;
+			if(iIndex < 0)break main;
+			
+			Set<Map.Entry<K, V>> setEntry = map.entrySet();
+		    ////Nein, das wuerde eben StringKey=StringWert zurueckgeben   objReturn = SetZZZ.getByIndex(setEntry, iIndex);
+			//Statt dessen: (siehe: https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
+			int iCount = 0;			
+			for(Map.Entry<K, V> entry : setEntry) {
+				if(iCount == iIndex) {
+					objReturn = entry.getValue();
+					break;
+				}
+			}
+			
+		}
+		return objReturn;
+	}
+	
+	
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.
+	 * @param map
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
+	 */
+	public static Object getKeyFirst(Map<?,?> map) {
+		Object objReturn = null;
+		main:{					
+			if(map==null)break main;
+			
+			Set<?> setKey = map.keySet();
+			objReturn = SetZZZ.getFirst(setKey);
+		}
+		return objReturn;
+	}
+	
+	/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.
+	 * @param map
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
+	 */
+	public static Object getKeyLast(Map<?,?> map) {
+		Object objReturn = null;
+		main:{					
+			if(map==null)break main;
+			
+			Set<?> setKey = map.keySet();
+			objReturn = SetZZZ.getLast(setKey);
+		}
+		return objReturn;
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++
+	/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.
+	 * @param map
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> Object getEntryFirst(Map<K, V> map) {
+		Object objReturn = null;
+		main:{					
+			if(map==null)break main;
+			
+			Set<Map.Entry<K, V>> setEntry = map.entrySet();
+			////Nein, das wuerde eben StringKey=StringWert zurueckgeben objReturn = SetZZZ.getLast(setEntry); objReturn = SetZZZ.getFirst(setEntry);
+			//Statt dessen: (siehe: https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
+			for(Map.Entry<K, V> entry : setEntry) {
+				objReturn = entry.getKey();
+			}
+
+			
+		}
+		return objReturn;
+	}
+	
+	/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.
+	 * @param map
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:15:46
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> Object getEntryLast(Map<K,V> map) {
+		Object objReturn = null;
+		main:{					
+			if(map==null)break main;
+			
+			Set<Map.Entry<K, V>> setEntry = map.entrySet();//!!! Also z.B. StringKey=StringWert
+			//Nein, das wuerde eben StringKey=StringWert zurueckgeben objReturn = SetZZZ.getLast(setEntry);
+			//Statt dessen: (siehe: https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
+			for(Map.Entry<K, V> entry : setEntry) {
+				objReturn = entry.getValue();
+			}
+		}
+		return objReturn;
+	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++
 		
 	/**
 	 * Merke: Eine normale HashMap ist NIE sortierbar.

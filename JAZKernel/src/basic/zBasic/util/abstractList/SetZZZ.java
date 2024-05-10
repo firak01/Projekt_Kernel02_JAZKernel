@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
@@ -13,6 +16,92 @@ import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 public class SetZZZ extends AbstractObjectZZZ implements ICollectionConstantZZZ{
+	private static final long serialVersionUID = 4127464724750442138L;
+
+	
+	/** Gehe den Iterator des Sets durch und gib den abgezaehlten Wert zurueck.
+	 * @param setToBeSearched
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:09:13
+	 */	
+	public static Object getByIndex(Set<?> setToBeSearched, int iIndex) {
+		Object objReturn = null;
+		main:{
+			if(setToBeSearched==null)break main;
+			if(iIndex < 0)break main;
+			
+			Iterator<?> it = setToBeSearched.iterator();
+			int iCount = 0;
+			while(it.hasNext()) {
+				objReturn = it.next();
+				if(iIndex==iCount) {
+					break;
+				}					
+				iCount++;				
+			}
+		}
+		return objReturn;
+	}
+	
+	/** Gehe den Iterator des Sets durch und gib den letzten Wert zurueck.
+	 * @param setToBeSearched
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:09:13
+	 */
+	public static Object getLast(Set<?> setToBeSearched) {
+		Object objReturn = null;
+		main:{
+			if(setToBeSearched==null)break main;
+			
+			Iterator<?> it = setToBeSearched.iterator();
+			while(it.hasNext()) {
+				objReturn = it.next();
+			}
+		}
+		return objReturn;
+	}
+	
+	
+//	/**Im Map.getEntrySet() sind die Werte mit "=" vorhanden. z.B. so vorhanden StringKey = WertKey
+//	 * Das Set ist halt ein besonderes, naemlich Map.Entry
+//	 * @param setToBeSearched
+//	 * @return
+//	 * @author Fritz Lindhauer, 10.05.2024, 11:03:09
+//	 */
+//	public static <K, V> Object getLastEntry(Set<Map.Entry<K, V>> setToBeSearched) {
+//		Object objReturn = null;
+//		main:{
+//			if(setToBeSearched==null)break main;
+//			
+//			Iterator<?> it = setToBeSearched.iterator();
+//			while(it.hasNext()) {
+//				Map.Entry<K, V> entry = (Entry<K, V>) it.next();
+//			}
+//			objReturn = 
+//		}
+//		return objReturn;
+//	}
+	
+	/** Gehe den Iterator des Sets durch und gib den letzten Wert zurueck.
+	 * @param setToBeSearched
+	 * @return
+	 * @author Fritz Lindhauer, 10.05.2024, 09:09:13
+	 */
+	public static Object getFirst(Set<?> setToBeSearched) {
+		Object objReturn = null;
+		main:{
+			if(setToBeSearched==null)break main;
+			
+			Iterator<?> it = setToBeSearched.iterator();
+			while(it.hasNext()) {
+				objReturn = it.next();
+				break;
+			}
+			
+		}
+		return objReturn;
+	}
+	
 	
 	/**Grund: Die Sortierung ist im Set nicht sichergestellt. Darum explizit sortieren.
 	 * Nur so kann man z.B. das KeySet einer HashMap sortiert durchgehen.
