@@ -6,6 +6,7 @@ import java.util.HashMap;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IDummyTestObjectWithStatusByInterfaceExtendedZZZ.STATUSLOCAL;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
+import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 
 public interface ILogStringZZZ{
 	public static String sENUMNAME="LOGSTRING";
@@ -244,18 +245,9 @@ public interface ILogStringZZZ{
 	//###########################
 	//Methoden, mit denen versucht wird die Uebersichtlichkeit der Ausgaben noch weiter zu erhöhen.
 	//Nach jeder Logausgabe wird zwischen dem Positionsteil und dem Informationsteil unterscheiden.
-	//Mit \t wird dann gearbeitet um die Ausgaben des Informationsteils möglichst bündig untereinander zu bekommen.
-	public String getPositionSeparatorDefault();
-	public String getPositionSeparator();
-	public void setPositionSeparator(String sPositionSeparator);
-
-	public int getInfoPartBoundLeftBehindCurrent();
-	public void setInfoPartBoundLeftBehindCurrent(int iIndex);
-	public int indexOfInfoPartBoundLeft(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
-	public int indexOfInfoPartBoundLeftBehind(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
-	public int getInfoPartBoundLeftBehind2use(String sLog);     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.
-
-	public String justifyInfoPart(String sLog) throws ExceptionZZZ; //versuche den Log-InfoPart ueber alle Zeilen buendig zu machen. Teile auf und verwende zusätzliche \t
+	//Mit Leerzeichen wird dann gearbeitet um die Ausgaben des Informationsteils möglichst buendig untereinander zu bekommen.
+    public StringJustifierZZZ getStringJustifier() throws ExceptionZZZ;
+    public void setStringJustifier(StringJustifierZZZ objStringJustifier);
 	
 	
 	//#############################################################

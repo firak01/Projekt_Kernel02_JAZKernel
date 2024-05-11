@@ -539,8 +539,6 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			if(StringZZZ.isEmpty(sProperty)) break main;						
 			objReturn.setProperty(sProperty);
 			
-			
-			
 			boolean bSectionExists = this.proofSectionExistsDirectLookup(sSection);
 			if(bSectionExists) {
 				String sReturnRaw=null;
