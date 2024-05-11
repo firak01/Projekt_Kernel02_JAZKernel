@@ -114,34 +114,26 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 			int iBoundLeftBehindCurrent = this.getInfoPartBoundLeftBehindCurrent();
 						
 			//ermittle die Grenze aus dem Logstring
-			//int iBoundLeft2use = this.getInfoPartBoundLeft2use(sLog);
 			int iBoundLeftBehind = this.indexOfInfoPartBoundLeftBehind(sLog);
 			
 			//Differenz vorhanden			
 			if(iBoundLeftBehind == iBoundLeftBehindCurrent) {				
-				sReturn = sReturn  + "-DEBUG01: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+				sReturn = sReturn;//  + "-DEBUG01: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 			}
 			if(iBoundLeftBehind < iBoundLeftBehindCurrent) {
 				//aufsplitten und auffuellen
-				//... aber vor dem \t aufsplitten
 				int iBoundLeft = this.indexOfInfoPartBoundLeft(sLog);
-	
-
 				int iDifference = iBoundLeftBehindCurrent - iBoundLeftBehind;
 				
-				//Nicht mehr auf Tabs konzentrieren, sondern nur noch die echten Zeichen
 				if(iDifference>=1) {
 					String sLeft = StringZZZ.left(sLog, iBoundLeft);
 					String sRight = StringZZZ.rightback(sLog, iBoundLeft);
-								
-					//String sMid = StringZZZ.repeat("\t", iTabs); //Die Anzahl der Tabs selbst auszugeben, macht es schwierig.
-					//Daher nur die Anzahl der Zeichen als Leerzeichen.
 					String sMid = StringZZZ.repeat(" ", iDifference);
 								
 					//wieder zusamensetzen
-					sReturn = sLeft + sMid + sRight + "-DEBUG02a: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+					sReturn = sLeft + sMid + sRight;// + "-DEBUG02a: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 				}else {
-					sReturn = sReturn + "-DEBUG02b: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+					sReturn = sReturn;// + "-DEBUG02b: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 				}
 				
 				//Es werden keine TABS mehr verwendet, sondern nur noch die wirklichen Zeichen. Auffuellzeichen ist " ".
@@ -167,7 +159,7 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 			//Merke diesen Fall zum Schluss, da hier iBoundLeftBehind neu gesetzt wird
 			if(iBoundLeftBehind > iBoundLeftBehindCurrent) { 
 				this.setInfoPartBoundLeftBehindCurrent(iBoundLeftBehind);
-				sReturn = sReturn  + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
+				sReturn = sReturn;//  + "-DEBUG03: [" + ReflectCodeZZZ.getPositionCurrent() + "] getInfoPartBoundLeftBehindCurrent="+ iBoundLeftBehindCurrent ;
 			}		
 		}//end main:
 		return sReturn;
