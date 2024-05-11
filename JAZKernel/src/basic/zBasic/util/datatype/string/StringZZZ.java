@@ -2786,24 +2786,24 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 				if(isEmpty(sSource))break main;
 				if(ArrayUtilZZZ.isEmpty(saString2Find)) break main;
 			
-		int iEndCur=sSource.length() + 1;
-		for(int icount=0; icount < saString2Find.length; icount ++){
-			int iEnd = sSource.indexOf(saString2Find[icount]);
-			if (iEnd >= 0){
-				//Nur Strings, die auch vorkommen, "spielen mit"
-				if(iEnd==0){
-					//Falls man den ersten Index erreicht hat, dann ist schon vorzeitig schluss.
-					iReturn = 0;
-					break main;
-				}else{
-					if(iEnd<iEndCur)	iEndCur = iEnd;					
-				}						
-			}
-		}//END for
-		
-		//Falls die Laenge von iEndCur unver�ndert geblieben ist, dann wurde nix gefunden. Es wird -1 zurueckgegeben
-		if(iEndCur==sSource.length()+1) break main;
-		iReturn = iEndCur;
+			int iEndCur=sSource.length() + 1;
+			for(int icount=0; icount < saString2Find.length; icount ++){
+				int iEnd = sSource.indexOf(saString2Find[icount]);
+				if (iEnd >= 0){
+					//Nur Strings, die auch vorkommen, "spielen mit"
+					if(iEnd==0){
+						//Falls man den ersten Index erreicht hat, dann ist schon vorzeitig schluss.
+						iReturn = 0;
+						break main;
+					}else{
+						if(iEnd<iEndCur)	iEndCur = iEnd;					
+					}						
+				}
+			}//END for
+			
+			//Falls die Laenge von iEndCur unveraendert geblieben ist, dann wurde nix gefunden. Es wird -1 zurueckgegeben
+			if(iEndCur==sSource.length()+1) break main;
+			iReturn = iEndCur;
 		
 		}//END main:
 		return iReturn;

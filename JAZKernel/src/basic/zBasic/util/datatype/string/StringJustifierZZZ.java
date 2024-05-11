@@ -6,13 +6,14 @@ import basic.zBasic.ReflectCodeZZZ;
 
 public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJustifierZZZ {
 	private static final long serialVersionUID = 1931006668388552859L;
+	
 	//Zum Buendig machen
 	protected volatile String sPositionSeparator = null;	  //Ggfs. individuelle Positions-Trenner Zeichen.
+	protected volatile String sPositionIdentifier = null;     //Merke: Identifier und Separator sind voneinander abhaengig.
 	protected volatile int iInfoPartBoundLeft=-1;             //Die aktuelle linke Grenze, an der der InfoPart beginnt.
 	
 	public StringJustifierZZZ() {			
 	}
-	
 	
 	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
 	@Override
@@ -33,6 +34,26 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 		this.sPositionSeparator = sPositionSeparator;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++++++
+	@Override
+	public String getPositionIdentifierDefault() {
+		return ReflectCodeZZZ.sPOSITION_IDENTIFIER;
+	}
+	
+	@Override
+	public String getPositionIdentifier() {
+		if(this.sPositionIdentifier==null) {
+			this.sPositionIdentifier = this.getPositionIdentifierDefault();
+		}
+		return this.sPositionIdentifier;
+	}
+	
+	@Override
+	public void setPositionIdentifier(String sPositionIdentifier) {
+		this.sPositionIdentifier = sPositionIdentifier;
+	}
+    //+++++++++++++++++++++++++++++++++
+	
 	@Override
 	public int getInfoPartBoundLeftBehindCurrent() {
 		return this.iInfoPartBoundLeft;
@@ -49,7 +70,7 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
 			
-			String sPositionSeparator = this.getPositionSeparator();
+			String sPositionSeparator = this.getPositionIdentifier();
 			iReturn = StringJustifierZZZ.indexOfInfoPartBoundLeftBehindStatic(sLog, sPositionSeparator);			
 		}//end main:
 		return iReturn;
@@ -61,7 +82,7 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
 			
-			String sPositionSeparator = this.getPositionSeparator();
+			String sPositionSeparator = this.getPositionIdentifier();
 			iReturn = StringJustifierZZZ.indexOfInfoPartBoundLeftStatic(sLog, sPositionSeparator);			
 		}//end main:
 		return iReturn;
@@ -161,5 +182,7 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 	public static int indexOfInfoPartBoundLeftBehindStatic(String sLog, String sPositionSeparator) {
 		return StringZZZ.indexOfFirstBehind(sLog, sPositionSeparator);				
 	}
+
+	
 		
 }

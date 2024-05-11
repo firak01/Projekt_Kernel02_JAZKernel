@@ -114,33 +114,33 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	@Override
 	public void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
 		main:{
-		if(ArrayUtilZZZ.isEmpty(saLog)) break main;
-		if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
-			this.logProtocolString(saLog);
-			break main;
-		}
-		
-		int iIndex=0;
-		if(obj==null) {			
-			for(String sLog : saLog) {
-				if(ienumaMappedLogString.length>iIndex) {
-					this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
-					iIndex++;
-				}else {
-					this.logProtocolString(saLog);
-				}
+			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+			if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
+				this.logProtocolString(saLog);
+				break main;
 			}
-		}else {
-			for(String sLog : saLog) {
-				if(ienumaMappedLogString.length>iIndex) {
-					this.logProtocolString(obj, sLog,ienumaMappedLogString[iIndex]);
-					iIndex++;
-				}else {
-					this.logProtocolString(saLog);
+			
+			int iIndex=0;
+			if(obj==null) {			
+				for(String sLog : saLog) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocolString(sLog,ienumaMappedLogString[iIndex]);
+						iIndex++;
+					}else {
+						this.logProtocolString(saLog);
+					}
 				}
-			}			
-		}
-	}//end main:
+			}else {
+				for(String sLog : saLog) {
+					if(ienumaMappedLogString.length>iIndex) {
+						this.logProtocolString(obj, sLog,ienumaMappedLogString[iIndex]);
+						iIndex++;
+					}else {
+						this.logProtocolString(saLog);
+					}
+				}			
+			}
+		}//end main:
 	}
 	
 	@Override

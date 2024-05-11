@@ -12,6 +12,10 @@ public interface IStringJustifierZZZ {
 	public String getPositionSeparator();
 	public void setPositionSeparator(String sPositionSeparator);
 
+	public String getPositionIdentifierDefault();
+	public String getPositionIdentifier();
+	public void setPositionIdentifier(String sPositionIdentifier);
+
 	public int getInfoPartBoundLeftBehindCurrent();
 	public void setInfoPartBoundLeftBehindCurrent(int iIndex);
 	public int indexOfInfoPartBoundLeft(String sLog); //Rechne fuer den konkreten Log String die Postion aus.
