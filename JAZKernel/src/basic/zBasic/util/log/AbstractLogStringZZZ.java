@@ -20,7 +20,13 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 
 public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ implements ILogStringZZZ{
 	private static final long serialVersionUID = 432992680546312138L;
-	protected static ILogStringZZZ objLogStringSingleton; //muss als Singleton static sein
+	
+	//muss als Singleton static sein.
+	protected static ILogStringZZZ objLogStringSingleton;
+	
+	//Merke: Wenn das aber als Singleton gebraucht wird, dann gilt wg. proteceted:
+	//in der entsprechenden Klasse ein eigenes Objekt definieren. Alsod folgendes nutzen und verwenden:
+	//protected static ILogStringZZZ objLogStringSingletonHERE; //muss als Singleton static sein, und HERE weil das Objekt in AbstractLogString vom Typ LogStringZZZ ist, gibt es dann eine TypeCastException.
 	
 	//MERKE: Alles volatile, damit es über mehrere Threads gleich bleibt.
 	protected volatile HashMap<Integer,String>hmFormatPositionString=null;
@@ -103,14 +109,14 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				
 				String sFormat=null;
 				switch(ienumFormatLogString.getFactor()) {
-				case ILogStringZZZ.iFACTOR_CLASSSIMPLENAME:
+				case ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE:
 					if(obj==null) {
 							
 					}else {
 						if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
 							System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens per gesetztem Flag unterbunden.");
 						}else {
-							sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSSIMPLENAME));
+							sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE));
 							sReturn= String.format(sFormat, obj.getClass().getSimpleName());
 						}
 					}
@@ -388,30 +394,30 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//ohne explizite Formatangabe
 	@Override
-	public String compute(String sLog) throws ExceptionZZZ {
-				String[] saLog = new String[1];
-				saLog[0] = sLog;
-				return this.compute(null, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
+	public String compute(String sMessage) throws ExceptionZZZ {
+				String[] saMessage = new String[1];
+				saMessage[0] = sMessage;
+				return this.compute(null, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
-	public String compute(Object obj, String sLog) throws ExceptionZZZ {
-				String[] saLog = new String[1];
-				saLog[0] = sLog;
-				return this.compute(obj, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
+	public String compute(Object obj, String sMessage) throws ExceptionZZZ {
+				String[] saMessage = new String[1];
+				saMessage[0] = sMessage;
+				return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
-	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ {
-				String[] saLog = new String[2];
-				saLog[0] = sLog01;
-				saLog[1] = sLog02;
-				return this.compute(obj, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
+	public String compute(Object obj, String sMessage01, String sMessage02) throws ExceptionZZZ {
+				String[] saMessage = new String[2];
+				saMessage[0] = sMessage01;
+				saMessage[1] = sMessage02;
+				return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 	
 	@Override
-	public String compute(Object obj, String[] saLog) throws ExceptionZZZ {
-		return this.compute(obj, saLog, (IEnumSetMappedLogStringFormatZZZ[])null);
+	public String compute(Object obj, String[] saMessage) throws ExceptionZZZ {
+		return this.compute(obj, saMessage, (IEnumSetMappedLogStringFormatZZZ[])null);
 	}
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

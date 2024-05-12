@@ -55,7 +55,7 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 					if(!StringZZZ.isEmpty(saFlag[icount])){						
 						boolean bFound = this.setFlag(saFlag[icount], true);
 						if(!bFound) {
-							sLog = ReflectCodeZZZ.getPositionCurrent()+"ObjectWithFlag (" + this.getClass().getName() + ") - Flag not available: '" + saFlag[icount] +"'";
+							sLog = ReflectCodeZZZ.getPositionCurrent()+"Flag not available: '" + saFlag[icount] +"'";
 							this.logProtocolString(sLog);							
 						}
 					}

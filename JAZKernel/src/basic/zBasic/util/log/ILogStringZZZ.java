@@ -33,7 +33,7 @@ public interface ILogStringZZZ{
 	public static int iFACTOR_ARGNEXT01=1;
 	public static int iFACTOR_ARGNEXT02=2;     //2 verschiedene Varianten fuer Argnext 
 	public static int iFACTOR_CLASSNAME=3;
-	public static int iFACTOR_CLASSSIMPLENAME=5;
+	public static int iFACTOR_CLASSNAMESIMPLE=5;
 	public static int iFACTOR_CLASSMETHOD=7;
 	public static int iFACTOR_CLASSFILENAME=11;
 	public static int iFACTOR_CLASSPOSITION=13;       //mit der Zeilenummer dahinter
@@ -58,7 +58,7 @@ public interface ILogStringZZZ{
 		ARGNEXT02("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT02, "", "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 		
 		CLASSNAME("classname",ILogStringZZZ.iFACTOR_CLASSNAME, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den Klassennamen mit Package in diesem Format aus."),
-		CLASSSIMPLENAME("classsimplename",ILogStringZZZ.iFACTOR_CLASSSIMPLENAME, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den einfachen Klassennamen in diesem Format aus."),
+		CLASSNAMESIMPLE("classnamesimple",ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den einfachen Klassennamen in diesem Format aus."),
 		CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, "", "[Method: %s]",ILogStringZZZ.iARG_STRING, "", "Gib den Methodennamen in diesem Format aus."),
 		CLASSPOSITION("classposition",ILogStringZZZ.iFACTOR_CLASSPOSITION, "", "[Class: %s]",ILogStringZZZ.iARG_STRING, "", "Gib die errechnete Position in der Java-Klasse in diesem Format aus."),
 		
@@ -202,22 +202,22 @@ public interface ILogStringZZZ{
 	public String compute(Object obj, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
 	
 	//ohne ein intern gespeichertes Format zu verwenden
-	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String compute(String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
-	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
-	public String compute(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
+	public String compute(String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
+	public String compute(Object obj, String sMessage, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
+	public String compute(Object obj, String sMessage, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ;
 	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ;
 	public String compute(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumFormatLogString) throws ExceptionZZZ;
 
-	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
-	public String compute(Object obj, String sLog01, String sLog02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent()
+	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
+	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent()
 		
 	//das ganze auch mit dem intern gespeicherten Format
-	public String compute(String sLog) throws ExceptionZZZ;
-	public String compute(Object obj, String sLog) throws ExceptionZZZ;
-	public String compute(Object obj, String[] saLog) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
+	public String compute(String sMessage) throws ExceptionZZZ;
+	public String compute(Object obj, String sMessage) throws ExceptionZZZ;
+	public String compute(Object obj, String[] saMessage) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
 		
-	public String compute(Object obj, String sLog01, String sLog02) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
+	public String compute(Object obj, String sMessage01, String sMessage02) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
 	
 	public int computeFormatPositionsNumber() throws ExceptionZZZ;
 	

@@ -8,6 +8,7 @@ import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
+import basic.zBasic.util.log.LogStringZZZ;
 
 /** Diese Klasse implementiert alles, was benoetigt wird, damit die eigenen Events "Flag hat sich geaendert" abgefeuert werden kann
  *  und auch von den Objekten, die hier registriert sind empfangen wird. Damit fungieren Objekte dieser Klasse als "EventBroker".
@@ -67,18 +68,24 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 						//Das Problem ist: Wenn ... Objekt den Status nicht hat wird eine Exception geworfen und komplett abgebrochen
 						//Damit das bei einem Monitor-Objekt nicht passiert, wird dort auch in das Mapping der eigenen zu den fremden Statuswerten geguckt.						
 						IEventObjectStatusLocalZZZ eventUsed = (IEventObjectStatusLocalZZZ) event;
-						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' called: listener.reactOnStatusLocalEvent(event) " + sThreadId +" # " + i + ". " + l.getClass().getSimpleName() + " durch IListenerObjectStatusLocalSetZZZ (Package: "+l.getClass().getPackage()+")";
+						
+						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT						
+						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, "");											
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "Called for IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
 						this.logProtocolString(sLog);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
 						lused.reactOnStatusLocalEvent(eventUsed);
 					}else {					
-						sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' instanceof type is not used yet " + sThreadId +" # " + i + ". " + l.getClass().getSimpleName() + " durch IListenerObjectStatusLocalSetZZZ (Package: "+l.getClass().getPackage()+")";
+						
+						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT
+						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, " - nothing will be executed.");
+						sLog = ReflectCodeZZZ.getPositionCurrent() + "Instanceof type is not used yet: " + sLogUsedAdditional;
 						this.logProtocolString(sLog);
 					}
 				}
 			} catch (ExceptionZZZ ez) {
 				try {
-					sLog = ReflectCodeZZZ.getPositionCurrent() + "Sender Broker Object '"+ this.getClass().getName() +"' " + sThreadId +" # throws Exception: " + ez.getDetailAllLast();
+					sLog = ReflectCodeZZZ.getPositionCurrent() + "throws Exception: " + ez.getDetailAllLast();
 					this.logProtocolString(sLog);
 				} catch (ExceptionZZZ ez2) {				
 					ez2.printStackTrace();

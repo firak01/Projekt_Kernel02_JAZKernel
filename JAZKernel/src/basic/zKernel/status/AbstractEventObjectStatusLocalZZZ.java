@@ -245,29 +245,29 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 		//#################################################################
 		//### aus ILogZZZ
 		@Override
-		public void logLine(String sLog) throws ExceptionZZZ{
+		public synchronized void logLine(String sLog) throws ExceptionZZZ{
 			System.out.println(sLog);
 		}
 		
 		@Override
-		public void logLineDate(String sLog) throws ExceptionZZZ {
+		public synchronized void logLineDate(String sLog) throws ExceptionZZZ {
 			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
 			System.out.println(sTemp);		
 		}
 		
 		//++++++++++++++++++++++++++++++++++++++++++++++++
 		@Override
-		public void logProtocolString(String sLog) throws ExceptionZZZ{
+		public synchronized void logProtocolString(String sLog) throws ExceptionZZZ{
 			this.logProtocolString(null, sLog);
 		}
 		
 		@Override
-		public void logProtocolString(String[] saLog) throws ExceptionZZZ{
+		public synchronized void logProtocolString(String[] saLog) throws ExceptionZZZ{
 			this.logProtocolString(null, saLog);
 		}
 		
 		@Override
-		public void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
+		public synchronized void logProtocolString(Object obj, String sLog) throws ExceptionZZZ{
 			String sLogUsed;
 			if(obj==null) {
 				sLogUsed = LogStringZZZ.getInstance().compute(sLog);			
@@ -278,7 +278,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 		}
 
 		@Override
-		public void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
+		public synchronized void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
 			main:{
 				if(ArrayUtilZZZ.isEmpty(saLog)) break main;
 				
@@ -298,17 +298,17 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		@Override
-		public void logProtocolString(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+		public synchronized void logProtocolString(String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
 			this.logProtocolString(null, sLog, ienumMappedLogString);
 		}
 		
 		@Override
-		public void logProtocolString(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+		public synchronized void logProtocolString(String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
 			this.logProtocolString(null, saLog, ienumaMappedLogString);
 		}
 		
 		@Override
-		public void logProtocolString(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
+		public synchronized void logProtocolString(Object obj, String sLog, IEnumSetMappedLogStringFormatZZZ ienumMappedLogString) throws ExceptionZZZ {
 			String sLogUsed;
 			if(obj==null) {
 				sLogUsed = LogStringZZZ.getInstance().compute(sLog, ienumMappedLogString);
@@ -319,7 +319,7 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 		}
 		
 		@Override
-		public void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
+		public synchronized void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
 			main:{
 			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
 			if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){

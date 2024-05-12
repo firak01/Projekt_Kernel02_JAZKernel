@@ -3,6 +3,7 @@ package basic.zBasic;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 
 public interface ILogZZZ {
+	//!!! Merke 20240512: Mache in den (abstrakten) Klassen, die diese Methoden implementieren die Methoden "synchronized"
 	public void logLine(String sLog) throws ExceptionZZZ;     //Einfache Ausgabe des Strings - ohne weitere Berechnung.
 	public void logLineDate(String sLog) throws ExceptionZZZ; //Nutzt intern KernelLogZZZ-statische Methode;
 	
