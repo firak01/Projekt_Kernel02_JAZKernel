@@ -1,0 +1,1905 @@
+package base.invariants;
+//package de.his.core.base.invariants;
+import java.io.File;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+
+import org.apache.commons.lang.StringUtils;
+
+/*
+import static de.his.core.base.invariants.ViolationCheck.illegalStateException;
+import static de.his.core.base.invariants.ViolationCheck.message;
+import static de.his.core.base.invariants.ViolationCheck.supply;
+import static de.his.core.base.invariants.ViolationCheck.supplyIgnoringArgument;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier; //FGL: AB JAVA 8
+import java.util.stream.Collectors; //FGL: AB JAVA 8
+
+import org.apache.commons.lang.StringUtils;
+import org.mockito.internal.util.MockUtil;
+import org.mockito.mock.MockCreationSettings;
+import org.springframework.aop.support.AopUtils;
+*/
+
+/**
+ * <p>Class which ensures application state.</p>
+ *
+ * <p>If the state is not as expected an {@code IllegalStateException} will be thrown.<p>
+ *
+ * @author mweyland
+ * @version $Revision: 1.7 $
+ */
+public final class EnsureStateWohlAbJava5_mitImportStatic {
+
+    private static final String ENSURE_STATE_IS_FALSE_FAILED = "EnsureState.isFalse() failed";
+    private static final String ENSURE_STATE_IS_NULL_FAILED = "EnsureState.isNull() failed";
+    private static final String ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED = "EnsureState.isNullOrEmpty() failed";
+    private static final String ENSURE_STATE_IS_TRUE_FAILED = "EnsureState.isTrue() failed";
+    private static final String ENSURE_STATE_NOT_BLANK_FAILED = "EnsureState.notBlank() failed";
+    private static final String ENSURE_STATE_NOT_EMPTY_FAILED = "EnsureState.notEmpty() failed";
+    private static final String ENSURE_STATE_NOT_NULL_FAILED = "EnsureState.notNull() failed";
+    private static final String CLASS_ARGUMENT_FOR_TESTING_RUNTIME_TYPE_MUST_NOT_BE_NULL = "class argument for testing runtime type must not be null";
+    private static final String ARGUMENT_IS_NULL = ", argument is null";
+    private static final String SHOULD_NOT_BE_REACHABLE = "should not be reachable";
+    private static final String COLON = ": ";
+    
+    private EnsureStateWohlAbJava5_mitImportStatic() {
+        // prevent instantiation
+    }
+
+    /**
+     * Ensure that the argument is true,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param value    the object checked to be true
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isTrue(final boolean value) {
+        if (!value) {
+            throw new IllegalStateException(ENSURE_STATE_IS_TRUE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is true,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param value    the value checked to be true
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isTrue(final boolean value, final String message) {
+        if (!value) {
+            throw illegalStateException(message, ENSURE_STATE_IS_TRUE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is true,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param value            the value checked to be true
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isTrue(final boolean value, final Supplier<String> messageSupplier) {
+        if (!value) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_TRUE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is true,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be true
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isTrue(final Boolean object) {
+        notNull(object, () -> "EnsureState.isTrue() failed, argument is null");
+        if (!Boolean.TRUE.equals(object)) {
+            throw new IllegalStateException(ENSURE_STATE_IS_TRUE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is true,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be true
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isTrue(final Boolean object, final String message) {
+        if (!Boolean.TRUE.equals(object)) {
+            throw illegalStateException(message, ENSURE_STATE_IS_TRUE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is true,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object           the object checked to be true
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isTrue(final Boolean object, final Supplier<String> messageSupplier) {
+        if (!Boolean.TRUE.equals(object)) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_TRUE_FAILED);
+        }
+    }
+
+    /**
+     * Validate an argument, throwing {@code illegalStateException} if the test result is false and using a
+     * custom message if the constraint has been violated.
+     *
+     * @param expression    the expression to be checked
+     * @param message       the custom message to be used in case of a violation
+     * @param value         the offending value
+     */
+    public static void isTrue(final boolean expression, final String message, final double value) {
+        if (!expression) {
+            throw new IllegalStateException(message(message, ENSURE_STATE_IS_TRUE_FAILED) + COLON + value);
+        }
+    }
+
+    /**
+     * Validate an argument, throwing {@code illegalStateException} if the test result is false and using a
+     * custom message if the constraint has been violated.
+     *
+     * @param expression       the expression to be checked
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @param value            the offending value
+     */
+    public static void isTrue(final boolean expression, final Supplier<String> messageSupplier, final double value) {
+        if (!expression) {
+            throw new IllegalStateException(message(messageSupplier, ENSURE_STATE_IS_TRUE_FAILED) + COLON + value);
+        }
+    }
+
+    /**
+     * Validate an argument, throwing {@code illegalStateException} if the test result is false and using a
+     * custom message if the constraint has been violated.
+     *
+     * @param expression    the expression to be checked
+     * @param message       the custom message to be used in case of a violation
+     * @param value         the offending value
+     */
+    public static void isTrue(final boolean expression, final String message, final long value) {
+        if (!expression) {
+            throw new IllegalStateException(message(message, ENSURE_STATE_IS_TRUE_FAILED) + COLON + value);
+        }
+    }
+
+    /**
+     * Validate an argument, throwing {@code illegalStateException} if the test result is false and using a
+     * custom message if the constraint has been violated.
+     *
+     * @param expression       the expression to be checked
+     * @param messageSupplier  the custom suplier to be used to get the message in case of a violation
+     * @param value            the offending value
+     */
+    public static void isTrue(final boolean expression, final Supplier<String> messageSupplier, final long value) {
+        if (!expression) {
+            throw new IllegalStateException(message(messageSupplier, ENSURE_STATE_IS_TRUE_FAILED) + COLON + value);
+        }
+    }
+
+    /**
+     * Validate an argument, throwing {@code illegalStateException} if the test result is false and using a
+     * custom message if the constraint has been violated.
+     *
+     * @param expression    the expression to be checked
+     * @param message       the custom message to be used in case of a violation
+     * @param value         the offending object
+     */
+    public static void isTrue(final boolean expression, final String message, final Object value) {
+        if (!expression) {
+            throw new IllegalStateException(message(message, ENSURE_STATE_IS_TRUE_FAILED) + COLON + value);
+        }
+    }
+
+    /**
+     * Validate an argument, throwing {@code illegalStateException} if the test result is false and using a
+     * custom message if the constraint has been violated.
+     *
+     * @param expression       the expression to be checked
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @param value            the offending object
+     */
+    public static void isTrue(final boolean expression, final Supplier<String> messageSupplier, final Object value) {
+        if (!expression) {
+            throw new IllegalStateException(message(messageSupplier, ENSURE_STATE_IS_TRUE_FAILED) + COLON + value);
+        }
+    }
+
+    /**
+     * Ensure that the argument is false,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param value    the value checked to be false
+     * @throws IllegalStateException in case of violation when {@code value != false}
+     */
+    public static void isFalse(final boolean value) {
+        if (value) {
+            throw new IllegalStateException(ENSURE_STATE_IS_FALSE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is false,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param value    the value checked to be false
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isFalse(final boolean value, final String message) {
+        if (value) {
+            throw illegalStateException(message, ENSURE_STATE_IS_FALSE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is false,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param value    the value checked to be false
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isFalse(final boolean value, final Supplier<String> messageSupplier) {
+        if (value) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_FALSE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is False,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be False
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isFalse(final Boolean object) {
+        notNull(object, ENSURE_STATE_IS_FALSE_FAILED + ARGUMENT_IS_NULL);
+        if (!Boolean.FALSE.equals(object)) {
+            throw new IllegalStateException(ENSURE_STATE_IS_FALSE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is False,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be False
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isFalse(final Boolean object, final String message) {
+        isFalse(object, supply(message));
+    }
+
+    /**
+     * Ensure that the argument is False,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object           the object checked to be False
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isFalse(final Boolean object, final Supplier<String> messageSupplier) {
+        if (!Boolean.FALSE.equals(object)) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_FALSE_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object      the object checked to be an instance of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be an instance of
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static void isOfType(final Object object, final Class<?> typeToCheck) {
+        ofType(object, typeToCheck, true, (Supplier<String>)null, true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object      the object checked to be an instance of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be an instance of
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static void isOfType(final Object object, final Class<?> typeToCheck, final String message) {
+        ofType(object, typeToCheck, true, supply(message), true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object           the object checked to be an instance of the given type
+     * @param typeToCheck      the class instance of the type that the object is checked to be an instance of
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static void isOfType(final Object object, final Class<?> typeToCheck, final Supplier<String> messageSupplier) {
+        ofType(object, typeToCheck, true, messageSupplier, true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the object is checked to be an instance of
+     *
+     * @param object the object checked to be an instance of the given type
+     *
+     * @returns the object guaranteed to be an instance of the expected type, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static <T> T ofType(final Object object) {
+        return ofType(object, null, false, (Supplier<String>)null, true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the object is checked to be an instance of
+     *
+     * @param object      the object checked to be an instance of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be an instance of
+     *
+     * @returns the object guaranteed to be an instance of the expected type, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static <T> T ofType(final Object object, final Class<T> typeToCheck) {
+        return ofType(object, typeToCheck, true, (Supplier<String>)null, true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the object is checked to be an instance of
+     *
+     * @param object      the object checked to be an instance of the given type
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @returns the object guaranteed to be an instance of the expected type, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static <T> T ofType(final Object object, final String message) {
+        return ofType(object, null, false, supply(message), true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the object is checked to be an instance of
+     *
+     * @param object      the object checked to be an instance of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be an instance of
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @returns the object guaranteed to be an instance of the expected type, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static <T> T ofType(final Object object, final Class<T> typeToCheck, final String message) {
+        return ofType(object, typeToCheck, true, supply(message), true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the object is checked to be an instance of
+     *
+     * @param object          the object checked to be an instance of the given type
+     * @param messageSupplier the custom supplier to be used to get the message in case of a violation
+     *
+     * @returns the object guaranteed to be an instance of the expected type, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static <T> T ofType(final Object object, final Supplier<String> messageSupplier) {
+        return ofType(object, null, false, messageSupplier, true);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the object is checked to be an instance of
+     *
+     * @param object          the object checked to be an instance of the given type
+     * @param typeToCheck     the class instance of the type that the object is checked to be an instance of
+     * @param messageSupplier the custom supplier to be used to get the message in case of a violation
+     *
+     * @returns the object guaranteed to be an instance of the expected type, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of the expected type
+     */
+    public static <T> T ofType(final Object object, final Class<T> typeToCheck, final Supplier<String> messageSupplier) {
+        return ofType(object, typeToCheck, true, messageSupplier, true);
+    }
+
+    /**
+     * Ensure that the argument is <b>not</b> an instance of a given type,
+     * throwing an {@linkplain IllegalStateException} if it does.
+     *
+     * @param object      the object checked to be <b>not</b> an instance of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be <b>not</b> an instance of
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object <b>is</b> an instance of the given type
+     */
+    public static void notOfType(final Object object, final Class<?> typeToCheck) {
+        ofType(object, typeToCheck, true, (Supplier<String>)null, false);
+    }
+
+    /**
+     * Ensure that the argument is <b>not</b> an instance of a given type,
+     * throwing an {@linkplain IllegalStateException} if it does.
+     *
+     * @param object      the object checked to be <b>not</b> an instance of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be <b>not</b> an instance of
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object <b>is</b> an instance of the given type
+     */
+    public static void notOfType(final Object object, final Class<?> typeToCheck, final String message) {
+        ofType(object, typeToCheck, true, supply(message), false);
+    }
+
+    /**
+     * Ensure that the argument is <b>not</b> an instance of a given type,
+     * throwing an {@linkplain IllegalStateException} if it does.
+     *
+     * @param object      the object checked to be <b>not</b> an instance of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be <b>not</b> an instance of
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object <b>is</b> an instance of the given type
+     */
+    public static void notOfType(final Object object, final Class<?> typeToCheck, final Supplier<String> messageSupplier) {
+        ofType(object, typeToCheck, true, messageSupplier, false);
+    }
+
+    /**
+     * Depending on the given {@code assertInstance} flag this method ensures
+     * that the argument <b>is</b> or is <b>not</b> an instance of expected type,
+     * throwing an {@linkplain IllegalStateException} if the condition ist not met.
+     *
+     * @param <T> the type that the object is checked to be (or <b>not</b> to be) an instance of
+     *
+     * @param object          the object whose type is checked to the given type
+     * @param typeToCheck     the class instance of the type that is checked to the object's type
+     * @param nonNullType     wether to check the given type must be a non-{@code null} value
+     * @param messageSupplier the custom supplier to be used to get the message in case of a violation
+     * @param assertInstance  whether to check the given object is an instance of the expected type or not
+     *
+     * @returns the object guaranteed to be an instance of the expected type, or {@code null} if the object is
+     *          {@code null} (or if the {@code assertInstance} flag is {@code false})
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null} but it is expected to be non-null
+     * @throws IllegalStateException if the condition for the object's type checking is not met
+     */
+    private static <T> T ofType(final Object object, 
+                                final Class<T> typeToCheck, 
+                                final boolean nonNullType,
+                                final Supplier<String> messageSupplier,
+                                final boolean assertInstance) {
+        if (nonNullType) {
+            EnsureArgument.notNull(typeToCheck, CLASS_ARGUMENT_FOR_TESTING_RUNTIME_TYPE_MUST_NOT_BE_NULL);
+        }
+        if (object == null) {
+            return null;
+        }
+        T result = null;
+        ClassCastException caughtClassCastException = null;
+        
+        try {
+            @SuppressWarnings("unchecked")
+            final T castedObject = (typeToCheck != null ? typeToCheck.cast(object) : (T)object);
+            
+            result = castedObject;
+        }
+        catch (final ClassCastException ex) {
+            try {
+                // letzter Versuch, ein eventuell vorliegendes Proxy-Objekt (Spring-AOP, Mockito) aufzulösen
+                result = getTargetObject(object, typeToCheck);
+            }
+            catch (final ClassCastException proxyCastEx) {
+                // fall through
+                caughtClassCastException = proxyCastEx;
+            }
+            catch (final Throwable proxyEx) {
+                throw illegalStateException(messageSupplier, () -> {
+                    if (typeToCheck != null) {
+                        return "EnsureState.ofType() failed: object is " + getTargetClass(object).getSimpleName() + " (expected " + typeToCheck.getSimpleName() + ")";
+                    } else {
+                        return "EnsureState.ofType() failed: object is " + getTargetClass(object).getSimpleName();
+                    }
+                }, proxyEx);
+            }
+        }
+
+        // es wird erwartet, dass das Objekt einen bestimmten Typ hat, aber der Cast ist fehlgeschlagen
+        if (assertInstance && result == null) {
+            throw illegalStateException(messageSupplier, () -> {
+                if (typeToCheck != null) {
+                    return "EnsureState.ofType() failed: object is " + getTargetClass(object).getSimpleName() + " (expected " + typeToCheck.getSimpleName() + ")";
+                } else {
+                    return "EnsureState.ofType() failed: object is " + getTargetClass(object).getSimpleName();
+                }
+            }, caughtClassCastException);
+        }
+        // es wird erwartet, dass das Objekt den bestimmten Typ *nicht* hat, aber der Cast war erfolgreich
+        else if (!assertInstance && result != null) {
+            throw illegalStateException(messageSupplier, () -> {
+                if (typeToCheck != null) {
+                    return "EnsureState.ofType() failed: object is not expected to be an instance of " + typeToCheck.getSimpleName() + "; object is " + getTargetClass(object).getSimpleName();
+                } else {            
+                    return "EnsureState.ofType() failed: object is not expected to be an instance of requested type; object is " + getTargetClass(object).getSimpleName();
+                }
+            });
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Prüft, ob das angegebene Objekt eine <i>Proxy</i>-Instanz aus bekannter Quelle ist, wie z.B. ein 
+     * {@linkplain org.mockito.Mockito <i>Mockito</i>}-Objekt oder eine
+     * {@linkplain AopUtils#isAopProxy <i>Spring-Bean</i>}-Referenz, und liefert das dahinter liegende
+     * <i>Target</i>-Objekt.
+     * 
+     * @param <T> der erwartete Typ des <i>Target</i>-Objektes
+     * 
+     * @param object       das zu prüfende Objekt
+     * @param typeToCheck
+     * 
+     * @return das <i>Target</i>-Objekt, falls das angegebene Objekt eine <i>Proxy</i>-Instanz ist; sonst das angegebene
+     *         Objekt selbst
+     */
+    static <T> T getTargetObject(final Object object, final Class<T> typeToCheck) {
+        if (MockUtil.isMock(object)) {
+            final MockCreationSettings<?> mockSettings = MockUtil.getMockSettings(object);
+            final Object spiedObject = mockSettings.getSpiedInstance();
+            
+            @SuppressWarnings("unchecked")
+            final T result = (typeToCheck != null ? typeToCheck.cast(spiedObject) : (T)spiedObject);
+            
+            return result;
+        } else {
+            return org.springframework.test.util.AopTestUtils.getUltimateTargetObject(object);
+        }
+    }
+    
+    /**
+     * Prüft, ob das angegebene Objekt eine <i>Proxy</i>-Instanz aus bekannter Quelle ist, wie z.B. ein 
+     * {@linkplain org.mockito.Mockito <i>Mockito</i>}-Objekt oder eine
+     * {@linkplain AopUtils#isAopProxy <i>Spring-Bean</i>}-Referenz, und liefert die Klasse des dahinter liegenden
+     * <i>Target</i>-Objekts.
+     * 
+     * @param object das zu prüfende Objekt
+     * 
+     * @return die Klasse des <i>Target</i>-Objekts, falls das angegebene Objekt eine <i>Proxy</i>-Instanz ist; sonst
+     *         die Klasse des angegebenen Objekts selbst
+     */
+    static Class<?> getTargetClass(final Object object) {
+        Class<?> result = null;
+        if (MockUtil.isMock(object)) {
+            final MockCreationSettings<?> mockSettings = MockUtil.getMockSettings(object);
+            result = mockSettings.getTypeToMock();
+        } else {
+            result = org.springframework.aop.framework.AopProxyUtils.ultimateTargetClass(object);
+        }
+        return result;
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz       the class checked to be a subclass of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be a subclass of
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static void isOfType(final Class<?> clazz, final Class<?> typeToCheck) {
+        ofType(clazz, typeToCheck, true, (Supplier<String>)null, true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz       the class checked to be a subclass of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be a subclass of
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static void isOfType(final Class<?> clazz, final Class<?> typeToCheck, final String message) {
+        ofType(clazz, typeToCheck, true, supply(message), true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz            the class checked to be a subclass of the given type
+     * @param typeToCheck      the class instance of the type that the object is checked to be a subclass of
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static void isOfType(final Class<?> clazz, final Class<?> typeToCheck, final Supplier<String> messageSupplier) {
+        ofType(clazz, typeToCheck, true, messageSupplier, true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is <b>not</b> a subclass of given type,
+     * throwing an {@linkplain IllegalStateException} if it is.
+     *
+     * @param clazz       the class checked to be <b>not</b> a subclass of the given type
+     * @param typeToCheck the class instance of the type that the class object is checked to be <b>not</b> a subclass of
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class <b>is<b> a subclass of the given type
+     */
+    public static void notOfType(final Class<?> clazz, final Class<?> typeToCheck) {
+        ofType(clazz, typeToCheck, true, (Supplier<String>)null, false);
+    }
+
+    /**
+     * Ensure that the argument is a class that is <b>not</b> a subclass of given type,
+     * throwing an {@linkplain IllegalStateException} if it is.
+     *
+     * @param clazz       the class checked to be <b>not</b> a subclass of the given type
+     * @param typeToCheck the class instance of the type that the class object is checked to be <b>not</b> a subclass of
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class <b>is<b> a subclass of the given type
+     */
+    public static void notOfType(final Class<?> clazz, final Class<?> typeToCheck, final String message) {
+        ofType(clazz, typeToCheck, true, supply(message), false);
+    }
+
+    /**
+     * Ensure that the argument is a class that is <b>not</b> a subclass of given type,
+     * throwing an {@linkplain IllegalStateException} if it is.
+     *
+     * @param clazz       the class checked to be <b>not</b> a subclass of the given type
+     * @param typeToCheck the class instance of the type that the class object is checked to be <b>not</b> a subclass of
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class <b>is<b> a subclass of the given type
+     */
+    public static void notOfType(final Class<?> clazz, final Class<?> typeToCheck, final Supplier<String> messageSupplier) {
+        ofType(clazz, typeToCheck, true, messageSupplier, false);
+    }
+    
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the class is checked to be a subclass of
+     *
+     * @param clazz the class checked to be a subclass of the given type
+     *
+     * @returns the class guaranteed to be a subclass of the expected type, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static <T> Class<T> ofType(final Class<?> clazz) {
+        return ofType(clazz, null, false, (Supplier<String>)null, true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the class is checked to be a subclass of
+     *
+     * @param clazz       the class checked to be a subclass of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be a subclass of
+     *
+     * @returns the class guaranteed to be a subclass of the expected type, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static <T> Class<T> ofType(final Class<?> clazz, final Class<T> typeToCheck) {
+        return ofType(clazz, typeToCheck, true, (Supplier<String>)null, true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the class is checked to be a subclass of
+     *
+     * @param clazz       the class checked to be a subclass of the given type
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @returns the class guaranteed to be a subclass of the expected type, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static <T> Class<T> ofType(final Class<?> clazz, final String message) {
+        return ofType(clazz, null, false, supply(message), true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the class is checked to be a subclass of
+     *
+     * @param clazz       the class checked to be a subclass of the given type
+     * @param typeToCheck the class instance of the type that the object is checked to be a subclass of
+     * @param message     the custom message to be used in case of a violation
+     *
+     * @returns the class guaranteed to be a subclass of the expected type, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static <T> Class<T> ofType(final Class<?> clazz, final Class<T> typeToCheck, final String message) {
+        return ofType(clazz, typeToCheck, true, supply(message), true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the class is checked to be a subclass of
+     *
+     * @param clazz            the class checked to be a subclass of the given type
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @returns the class guaranteed to be a subclass of the expected type, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static <T> Class<T> ofType(final Class<?> clazz, final Supplier<String> messageSupplier) {
+        return ofType(clazz, null, false, messageSupplier, true);
+    }
+
+    /**
+     * Ensure that the argument is a class that is a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param <T> the type that the class is checked to be a subclass of
+     *
+     * @param clazz            the class checked to be a subclass of the given type
+     * @param typeToCheck      the class instance of the type that the object is checked to be a subclass of
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @returns the class guaranteed to be a subclass of the expected type, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not a subclass of the expected type
+     */
+    public static <T> Class<T> ofType(final Class<?> clazz, final Class<T> typeToCheck, final Supplier<String> messageSupplier) {
+        return ofType(clazz, typeToCheck, true, messageSupplier, true);
+    }
+
+    /**
+     * Depending on the given {@code assertAssignability} flag this method ensures that
+     * the argument is a class that <b>is</b> or is <b>not</b> a subclass of expected type,
+     * throwing an {@linkplain IllegalStateException} if the condition ist not met.
+     *
+     * @param <T> the type that the class is checked to be (or <b>not</b> to be) a subclass of
+     *
+     * @param clazz               the class to check to the given type
+     * @param typeToCheck         the class instance of the type that is checked against the {@code clazz} argument
+     * @param nonNullType         wether to check the given type must be a non-{@code null} value
+     * @param messageSupplier     the custom supplier to be used to get the message in case of a violation
+     * @param assertAssignability whether to check the given class is a subclass of the expected type or not
+     *
+     * @returns the class guaranteed to be a subclass of the expected type, or {@code null} if the class is {@code null}
+     *          (or if the {@code assertAssignability} flag is {@code false})
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null} but it is expected to be a subclass of the
+     *                                  non-{@code null} type to check
+     * @throws IllegalArgumentException if the type to check is {@code null} but it is expected to be non-{@code null}
+     * @throws IllegalStateException if the condition for the class type checking is not met
+     */
+    private static <T> Class<T> ofType(final Class<?> clazz, 
+                                       final Class<T> typeToCheck, 
+                                       final boolean nonNullType,
+                                       final Supplier<String> messageSupplier,
+                                       final boolean assertAssignability) {
+        if (nonNullType) {
+            EnsureArgument.notNull(typeToCheck, CLASS_ARGUMENT_FOR_TESTING_RUNTIME_TYPE_MUST_NOT_BE_NULL);
+        }
+        if (typeToCheck != null || assertAssignability) {
+            EnsureArgument.notNull(clazz, CLASS_ARGUMENT_FOR_TESTING_RUNTIME_TYPE_MUST_NOT_BE_NULL);
+        }
+        if (clazz == null) {
+            return null;
+        }
+        Class<T> result = null;
+        ClassCastException caughtClassCastException = null;
+     
+        try {
+            @SuppressWarnings("unchecked")
+            final Class<T> castedClass = (Class<T>)(typeToCheck != null ? clazz.asSubclass(typeToCheck) : clazz);
+            
+            result = castedClass;
+        }
+        catch (final ClassCastException ex) {
+            // fall through
+            caughtClassCastException = ex;
+        }
+
+        // es wird erwartet, dass die Klasse einen bestimmten Typ hat, aber der Cast ist fehlgeschlagen
+        if (assertAssignability && result == null) {
+            throw illegalStateException(messageSupplier, () -> {
+                if (typeToCheck != null) {
+                    return "EnsureState.ofType() failed: class is " + clazz.getSimpleName() + " (expected " + typeToCheck.getSimpleName() + ")";
+                } else {
+                    return "EnsureState.ofType() failed: class is " + clazz.getSimpleName();                        
+                }
+            }, caughtClassCastException);
+        }
+        // es wird erwartet, dass die Klasse den bestimmten Typ *nicht* hat, aber der Cast war erfolgreich
+        else if (!assertAssignability && result != null) {
+            throw illegalStateException(messageSupplier, () -> {
+                if (typeToCheck != null) {
+                    return "EnsureState.ofType() failed: class is not expected to be a subclass of " + typeToCheck.getSimpleName() + "; class is " + clazz.getSimpleName();
+                } else {            
+                    return "EnsureState.ofType() failed: class is not expected to be a subclass of requested type; class is " + clazz.getSimpleName();
+                }
+            });
+        }
+        
+        return result;
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static void isOfTypes(final Object object, final Class<?> typeToCheck, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(object, typeToCheck, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param message           the custom message to be used in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static void isOfTypes(final Object object, final Class<?> typeToCheck, final String message, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(object, typeToCheck, message, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static void isOfTypes(final Object object, final Class<?> typeToCheck, final Supplier<String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(object, typeToCheck, messageSupplier, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static void isOfTypes(final Object object, final Class<?> typeToCheck, final Function<Class<?>,String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(object, typeToCheck, messageSupplier, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @returns the object guaranteed to be an instance of all of the expected interfaces, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static <T> T ofTypes(final Object object, final Class<T> typeToCheck, final Class<?>... additionalInterfacesToCheck) {
+        final Function<Class<?>, String> messageSupplier = (interfaceToCheck) -> "EnsureState.ofTypes() failed: object is " + object.getClass().getSimpleName() + " (expected "
+                        + interfaceToCheck.getSimpleName() + ")";
+        
+        return ofTypes(object, typeToCheck, messageSupplier, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param message           the custom message to be used in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @returns the object guaranteed to be an instance of all of the expected interfaces, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static <T> T ofTypes(final Object object, final Class<T> typeToCheck, final String message, final Class<?>... additionalInterfacesToCheck) {
+        return ofTypes(object, typeToCheck, supplyIgnoringArgument(message), additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @returns the object guaranteed to be an instance of all of the expected interfaces, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static <T> T ofTypes(final Object object, final Class<T> typeToCheck, final Supplier<String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        return ofTypes(object, typeToCheck, supplyIgnoringArgument(messageSupplier), additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is an instance of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param object            the object checked to be an instance of the given type
+     * @param typeToCheck       the class instance of the type that is checked to the object's type
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the object is checked to be an instance of
+     *
+     * @returns the object guaranteed to be an instance of all of the expected interfaces, or {@code null} if the object is {@code null}
+     *
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the object is not an instance of all of the expected types
+     */
+    public static <T> T ofTypes(final Object object, final Class<T> typeToCheck, final Function<Class<?>, String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        final Supplier<String> _messageSupplier = () -> {
+            return "EnsureState.ofTypes() failed: object is " + getTargetClass(object).getSimpleName() + " (expected " + typeToCheck.getSimpleName() + ")";
+        };
+        
+        final T result = ofType(object, typeToCheck, true, _messageSupplier, true);
+        
+        if (object != null && additionalInterfacesToCheck != null && additionalInterfacesToCheck.length > 0) {
+            for (final Class<?> additionalInterfaceToCheck : additionalInterfacesToCheck) {
+                if (additionalInterfaceToCheck != null && !additionalInterfaceToCheck.isInstance(object)) {
+                    String message = (messageSupplier == null ? null : StringUtils.stripToNull(messageSupplier.apply(additionalInterfaceToCheck)));
+                    if (message == null) {
+                        final String namesOfExpectedTypes = Arrays.stream(additionalInterfacesToCheck).map(t -> t.getSimpleName()).collect(Collectors.joining(" & "));
+
+                        message = "EnsureState.ofTypes() failed: object is " + getTargetClass(object).getSimpleName() + " (expected " + namesOfExpectedTypes + ")";
+                    }
+                    throw new IllegalStateException(message);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static void isOfTypes(final Class<?> clazz, final Class<?> typeToCheck, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(clazz, typeToCheck, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param message           the custom message to be used in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static void isOfTypes(final Class<?> clazz, final Class<?> typeToCheck, final String message, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(clazz, typeToCheck, message, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static void isOfTypes(final Class<?> clazz, final Class<?> typeToCheck, final Supplier<String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(clazz, typeToCheck, messageSupplier, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static void isOfTypes(final Class<?> clazz, final Class<?> typeToCheck, final Function<Class<?>,String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        ofTypes(clazz, typeToCheck, messageSupplier, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @returns the class guaranteed to be an implementor of the expected interfaces, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static <T> Class<T> ofTypes(final Class<?> clazz, final Class<T> typeToCheck, final Class<?>... additionalInterfacesToCheck) {
+        final Function<Class<?>, String> messageSupplier = (interfaceToCheck) -> "EnsureState.ofTypes() failed: class is " + clazz.getSimpleName() + " (expected "
+                        + interfaceToCheck.getSimpleName() + ")";
+        
+        return ofTypes(clazz, typeToCheck, messageSupplier, additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param message           the custom message to be used in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @returns the class guaranteed to be an implementor of the expected interfaces, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static <T> Class<T> ofTypes(final Class<?> clazz, final Class<T> typeToCheck, final String message, final Class<?>... additionalInterfacesToCheck) {
+        return ofTypes(clazz, typeToCheck, supplyIgnoringArgument(message), additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @returns the class guaranteed to be an implementor of the expected interfaces, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null}
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static <T> Class<T> ofTypes(final Class<?> clazz, final Class<T> typeToCheck, final Supplier<String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        return ofTypes(clazz, typeToCheck, supplyIgnoringArgument(messageSupplier), additionalInterfacesToCheck);
+    }
+
+    /**
+     * Ensure that the argument is a class that is an implementor of expected interfaces,
+     * throwing an {@linkplain IllegalStateException} if not.
+     *
+     * @param clazz             the class checked to be a subclass of the given type
+     * @param typeToCheck       the class instance of the type that the object is checked to be a subclass of
+     * @param messageSupplier   the custom supplier to be used to get the message in case of a violation
+     * @param additionalInterfacesToCheck the (optional) additional class instances of the interfaces that the class is checked to be an implementor of
+     *
+     * @returns the class guaranteed to be an implementor of the expected interfaces, or {@code null} if the class is {@code null}
+     *
+     * @throws IllegalArgumentException if the class to check is {@code null} but it is expected to be an implementor of
+     *                                  the non-{@code null} class instances of the interfaces to check
+     * @throws IllegalArgumentException if the type to check is {@code null}
+     * @throws IllegalStateException if the class is not an implementor of all of the expected types
+     */
+    public static <T> Class<T> ofTypes(final Class<?> clazz, final Class<T> typeToCheck, final Function<Class<?>, String> messageSupplier, final Class<?>... additionalInterfacesToCheck) {
+        final Supplier<String> _messageSupplier = () -> {
+            return "EnsureState.ofTypes() failed: class is " + clazz.getSimpleName() + " (expected " + typeToCheck.getSimpleName() + ")";
+        };
+        
+        final Class<T> result = ofType(clazz, typeToCheck, true, _messageSupplier, true);
+        
+        if (clazz != null && additionalInterfacesToCheck != null && additionalInterfacesToCheck.length > 0) {
+            for (final Class<?> additionalInterfaceToCheck : additionalInterfacesToCheck) {
+                if (additionalInterfaceToCheck != null && !additionalInterfaceToCheck.isAssignableFrom(clazz)) {
+                    String message = (messageSupplier == null ? null : StringUtils.stripToNull(messageSupplier.apply(additionalInterfaceToCheck)));
+                    if (message == null) {
+                        final String namesOfExpectedTypes = Arrays.stream(additionalInterfacesToCheck).map(t -> t.getSimpleName()).collect(Collectors.joining(" & "));
+
+                        message = "EnsureState.ofTypes() failed: class is " + clazz.getSimpleName() + " (expected " + namesOfExpectedTypes + ")";
+                    }
+                    throw new IllegalArgumentException(message);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Ensure that the argument is not null,
+     * returning the non-null object if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be non-null
+     * @throws IllegalStateException in case of violation
+     * @returns the object guaranteed to be non-null
+     */
+    public static <T> T notNull(final T object) {
+        if (object == null) {
+            throw new IllegalStateException(ENSURE_STATE_NOT_NULL_FAILED);
+        }
+        return object;
+    }
+
+    /**
+     * Ensure that the argument is not null,
+     * returning the non-null object if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be non-null
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @returns the object guaranteed to be non-null
+     */
+    public static <T> T notNull(final T object, String message) {
+        if (object == null) {
+            throw illegalStateException(message, ENSURE_STATE_NOT_NULL_FAILED);
+        }
+        return object;
+    }
+
+    /**
+     * Ensure that the argument is not null,
+     * returning the non-null object if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object           the object checked to be non-null
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @returns the object guaranteed to be non-null
+     */
+    public static <T> T notNull(final T object, Supplier<String> messageSupplier) {
+        if (object == null) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_NOT_NULL_FAILED);
+        }
+        return object;
+    }
+
+    /**
+     * Ensure that the argument is null,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be null
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isNull(final Object object) {
+        if (object != null) {
+            throw new IllegalStateException(ENSURE_STATE_IS_NULL_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that the argument is null,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object    the object checked to be non-null
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isNull(final Object object, final String message) {
+        if (object != null) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+    /**
+     * Ensure that the argument is null,
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param object           the object checked to be non-null
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isNull(final Object object, final Supplier<String> messageSupplier) {
+        if (object != null) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_NULL_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that two objects are equal, according to
+     * their implementation of equals()
+     *
+     * @param a the first object
+     * @param b the first object
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isEqual(Object a, Object b) {
+        if (!Objects.equals(a, b)) {
+            throw new IllegalStateException("EnsureState.isEqual() failed: " + a + " does not equal " + b);
+        }
+    }
+
+    /**
+     * Ensure that two values are equal
+     *
+     * @param a the first value
+     * @param b the first value
+     * @throws IllegalStateException in case of violation
+     */
+    public static void isEqual(int a, int b) {
+        if (a != b) {
+            throw new IllegalStateException("EnsureState.isEqual() failed: " + a + " == " + b + " does not hold");
+        }
+    }
+
+    /**
+     * Ensure that the string is not empty,
+     * returning the non-empty string if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param string    the string checked to be non-empty
+     * @throws IllegalStateException in case of violation
+     * @return the string guaranteed to be non-empty
+     */
+    public static String notEmpty(String string) {
+        notNull(string, () -> ENSURE_STATE_NOT_EMPTY_FAILED + ARGUMENT_IS_NULL);
+        if (string.isEmpty()) {
+            throw new IllegalStateException(ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return string;
+    }
+
+    /**
+     * Ensure that the string is not empty,
+     * returning the non-empty string if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param string    the string checked to be non-empty
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the string guaranteed to be non-empty
+     */
+    public static String notEmpty(String string, String message) {
+        return notEmpty(string, supply(message));
+    }
+
+    /**
+     * Ensure that the string is not empty,
+     * returning the non-empty string if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param string           the string checked to be non-empty
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the string guaranteed to be non-empty
+     */
+    public static String notEmpty(String string, Supplier<String> messageSupplier) {
+        notNull(string, messageSupplier);
+        if (string.isEmpty()) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return string;
+    }
+
+    /**
+     * Ensure that the string is not blank,
+     * returning the non-blank string if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param string    the string checked to be non-blank
+     * @throws IllegalStateException in case of violation
+     * @return the string guaranteed to be non-empty
+     */
+    public static String notBlank(String string) {
+        notNull(string, () -> ENSURE_STATE_NOT_BLANK_FAILED + ARGUMENT_IS_NULL);
+        if (StringUtils.isBlank(string)) {
+            throw new IllegalStateException(ENSURE_STATE_NOT_BLANK_FAILED);
+        }
+        return string;
+    }
+
+    /**
+     * Ensure that the string is not blank,
+     * returning the non-blank string if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param string    the string checked to be non-blank
+     * @param message   the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the string guaranteed to be non-empty
+     */
+    public static String notBlank(String string, String message) {
+        return notBlank(string, supply(message));
+    }
+
+    /**
+     * Ensure that the string is not blank,
+     * returning the non-blank string if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param string    the string checked to be non-blank
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the string guaranteed to be non-empty
+     */
+    public static String notBlank(String string, Supplier<String> messageSupplier) {
+        notNull(string, messageSupplier);
+        if (StringUtils.isBlank(string)) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_NOT_BLANK_FAILED);
+        }
+        return string;
+    }
+
+    /**
+     * Ensure that the collection is not empty,
+     * returning the non-empty collection if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param collection the collection checked to be non-empty
+     * @throws IllegalStateException in case of violation
+     * @return the collection guaranteed to be non-empty
+     */
+    public static <T extends Collection<?>> T notEmpty(T collection) {
+        notNull(collection, () -> ENSURE_STATE_NOT_EMPTY_FAILED + ARGUMENT_IS_NULL);
+        if (collection.isEmpty()) {
+            throw new IllegalStateException(ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return collection;
+    }
+
+    /**
+     * Ensure that the collection is not empty,
+     * returning the non-empty collection if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param collection the collection checked to be non-empty
+     * @param message    the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the collection guaranteed to be non-empty
+     */
+    public static <T extends Collection<?>> T notEmpty(T collection, String message) {
+        return notEmpty(collection, supply(message));
+    }
+
+    /**
+     * Ensure that the collection is not empty,
+     * returning the non-empty collection if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param collection the collection checked to be non-empty
+     * @param messageSupplier  the custom supplier to be used to getthe message in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the collection guaranteed to be non-empty
+     */
+    public static <T extends Collection<?>> T notEmpty(T collection, Supplier<String> messageSupplier) {
+        notNull(collection, messageSupplier);
+        if (collection.isEmpty()) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return collection;
+    }
+
+    /**
+     * Ensure that the map is not empty,
+     * returning the non-empty map if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param map the map checked to be non-empty
+     * @throws IllegalStateException in case of violation
+     * @return the map guaranteed to be non-empty
+     */
+    public static <T extends Map<?, ?>> T notEmpty(T map) {
+        notNull(map, () -> ENSURE_STATE_NOT_EMPTY_FAILED + ARGUMENT_IS_NULL);
+        if (map.isEmpty()) {
+            throw new IllegalStateException(ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return map;
+    }
+
+    /**
+     * Ensure that the map is not empty,
+     * returning the non-empty map if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param map the map checked to be non-empty
+     * @param message    the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the map guaranteed to be non-empty
+     */
+    public static <T extends Map<?, ?>> T notEmpty(T map, String message) {
+        return notEmpty(map, supply(message));
+    }
+
+    /**
+     * Ensure that the map is not empty,
+     * returning the non-empty map if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param map              the map checked to be non-empty
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the map guaranteed to be non-empty
+     */
+    public static <T extends Map<?, ?>> T notEmpty(T map, Supplier<String> messageSupplier) {
+        notNull(map, messageSupplier);
+        if (map.isEmpty()) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return map;
+    }
+
+    /**
+     * Ensure that the array is not empty,
+     * returning the non-empty array if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param array the array checked to be non-empty
+     * @throws IllegalStateException in case of violation
+     * @return the array guaranteed to be non-empty
+     */
+
+    public static <T> T[] notEmpty(T[] array) {
+        notNull(array, () -> ENSURE_STATE_NOT_EMPTY_FAILED + ", array argument is null");
+        if (array.length == 0) {
+            throw new IllegalStateException(ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return array;
+    }
+
+    /**
+     * Ensure that the array is not empty,
+     * returning the non-empty array if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param array the array checked to be non-empty
+     * @param message    the custom message to be used in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the array guaranteed to be non-empty
+     */
+    public static <T> T[] notEmpty(T[] array, String message) {
+        return notEmpty(array, supply(message));
+    }
+
+    /**
+     * Ensure that the array is not empty,
+     * returning the non-empty array if so, and
+     * throwing {@code IllegalStateException} if not
+     *
+     * @param array            the array checked to be non-empty
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     * @throws IllegalStateException in case of violation
+     * @return the array guaranteed to be non-empty
+     */
+    public static <T> T[] notEmpty(T[] array, Supplier<String> messageSupplier) {
+        notNull(array, messageSupplier);
+        if (array.length == 0) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_NOT_EMPTY_FAILED);
+        }
+        return array;
+    }
+
+    /**
+     * Ensure that a given collection is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param collection the collection checked to be {@code null} or empty
+     *
+     * @throws IllegalStateException if the given collection contains any element
+     */
+    public static void isNullOrEmpty(final Collection<?> collection) {
+        if (collection != null && !collection.isEmpty()) {
+            throw new IllegalStateException(ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given collection is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param collection the collection checked to be {@code null} or empty
+     * @param message    the custom message to be used in case of a violation
+     *
+     * @throws IllegalStateException if the given collection contains any element
+     */
+    public static void isNullOrEmpty(final Collection<?> collection, final String message) {
+        if (collection != null && !collection.isEmpty()) {
+            throw illegalStateException(message, ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given collection is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param collection the collection checked to be {@code null} or empty
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @throws IllegalStateException if the given collection contains any element
+     */
+    public static void isNullOrEmpty(final Collection<?> collection, final Supplier<String> messageSupplier) {
+        if (collection != null && !collection.isEmpty()) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given map is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param map the map checked to be {@code null} or empty
+     *
+     * @throws IllegalStateException if the given map contains any element
+     */
+    public static void isNullOrEmpty(final Map<?, ?> map) {
+        if (map != null && !map.isEmpty()) {
+            throw new IllegalStateException(ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given map is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param map     the map checked to be {@code null} or empty
+     * @param message the custom message to be used in case of a violation
+     *
+     * @throws IllegalStateException if the given map contains any element
+     */
+    public static void isNullOrEmpty(final Map<?, ?> map, final String message) {
+        if (map != null && !map.isEmpty()) {
+            throw illegalStateException(message, ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given map is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param map              the map checked to be {@code null} or empty
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @throws IllegalStateException if the given map contains any element
+     */
+    public static void isNullOrEmpty(final Map<?, ?> map, final Supplier<String> messageSupplier) {
+        if (map != null && !map.isEmpty()) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given array is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param array the array checked to be {@code null} or empty
+     *
+     * @throws IllegalStateException if the given array contains any element
+     */
+    public static void isNullOrEmpty(final Object[] array) {
+        if (array != null && array.length > 0) {
+            throw new IllegalStateException(ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given array is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param array   the array checked to be {@code null} or empty
+     * @param message the custom message to be used in case of a violation
+     *
+     * @throws IllegalStateException if the given array contains any element
+     */
+    public static void isNullOrEmpty(final Object[] array, final String message) {
+        if (array != null && array.length > 0) {
+            throw illegalStateException(message, ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    /**
+     * Ensure that a given array is {@code null} or empty, and
+     * throwing an {@link IllegalStateException} if not.
+     *
+     * @param array   the array checked to be {@code null} or empty
+     * @param messageSupplier  the custom supplier to be used to get the message in case of a violation
+     *
+     * @throws IllegalStateException if the given array contains any element
+     */
+    public static void isNullOrEmpty(final Object[] array, final Supplier<String> messageSupplier) {
+        if (array != null && array.length > 0) {
+            throw illegalStateException(messageSupplier, ENSURE_STATE_IS_NULL_OR_EMPTY_FAILED);
+        }
+    }
+
+    public static void fileExists(final File file) {
+        if (!file.exists()) {
+            throw new IllegalStateException("File " + file.getName() + " exists not.");
+        }
+    }
+    
+    // the Unreachable functions are not needed in EnsureArgument
+
+    public static void isUnreachable() {
+        isUnreachable(SHOULD_NOT_BE_REACHABLE);
+    }
+
+    public static void isUnreachable(final Throwable cause) {
+        isUnreachable(SHOULD_NOT_BE_REACHABLE, cause);
+    }
+
+    public static void isUnreachable(final String message) {
+        throw new IllegalStateException(message);
+    }
+
+    public static void isUnreachable(final String message, final Throwable cause) {
+        throw new IllegalStateException(message, cause);
+    }
+
+    public static <T> T isUnreachableWithResult() {
+        isUnreachable(SHOULD_NOT_BE_REACHABLE);
+        // should never be reached ...
+        return null;
+    }
+
+    public static <T> T isUnreachableWithResult(final Throwable cause) {
+        isUnreachable(SHOULD_NOT_BE_REACHABLE, cause);
+        // should never be reached ...
+        return null;
+    }
+
+    public static <T> T isUnreachableWithResult(final String message) {
+        isUnreachable(message);
+        // should never be reached ...
+        return null;
+    }
+
+    public static <T> T isUnreachableWithResult(final String message, final Throwable cause) {
+        isUnreachable(message, cause);
+        // should never be reached ...
+        return null;
+    }
+
+    public static boolean isUnreachableWithBooleanResult() {
+        return ((Boolean) isUnreachableWithResult()).booleanValue();
+    }
+
+    public static boolean isUnreachableWithBooleanResult(final Throwable cause) {
+        return ((Boolean) isUnreachableWithResult(cause)).booleanValue();
+    }
+
+    public static boolean isUnreachableWithBooleanResult(final String message) {
+        return ((Boolean) isUnreachableWithResult(message)).booleanValue();
+    }
+
+    public static boolean isUnreachableWithBooleanResult(final String message, final Throwable cause) {
+        return ((Boolean) isUnreachableWithResult(message, cause)).booleanValue();
+    }
+
+    public static byte isUnreachableWithByteResult() {
+        return ((Byte) isUnreachableWithResult()).byteValue();
+    }
+
+    public static byte isUnreachableWithByteResult(final Throwable cause) {
+        return ((Byte) isUnreachableWithResult(cause)).byteValue();
+    }
+
+    public static byte isUnreachableWithByteResult(final String message) {
+        return ((Byte) isUnreachableWithResult(message)).byteValue();
+    }
+
+    public static byte isUnreachableWithByteResult(final String message, final Throwable cause) {
+        return ((Byte) isUnreachableWithResult(message, cause)).byteValue();
+    }
+
+    public static char isUnreachableWithCharResult() {
+        return ((Character) isUnreachableWithResult()).charValue();
+    }
+
+    public static char isUnreachableWithCharResult(final Throwable cause) {
+        return ((Character) isUnreachableWithResult(cause)).charValue();
+    }
+
+    public static char isUnreachableWithCharResult(final String message) {
+        return ((Character) isUnreachableWithResult(message)).charValue();
+    }
+
+    public static char isUnreachableWithCharResult(final String message, final Throwable cause) {
+        return ((Character) isUnreachableWithResult(message, cause)).charValue();
+    }
+
+    public static double isUnreachableWithDoubleResult() {
+        return ((Double) isUnreachableWithResult()).doubleValue();
+    }
+
+    public static double isUnreachableWithDoubleResult(final Throwable cause) {
+        return ((Double) isUnreachableWithResult(cause)).doubleValue();
+    }
+
+    public static double isUnreachableWithDoubleResult(final String message) {
+        return ((Double) isUnreachableWithResult(message)).doubleValue();
+    }
+
+    public static double isUnreachableWithDoubleResult(final String message, final Throwable cause) {
+        return ((Double) isUnreachableWithResult(message, cause)).doubleValue();
+    }
+
+    public static float isUnreachableWithFloatResult() {
+        return ((Float) isUnreachableWithResult()).floatValue();
+    }
+
+    public static float isUnreachableWithFloatResult(final Throwable cause) {
+        return ((Float) isUnreachableWithResult(cause)).floatValue();
+    }
+
+    public static float isUnreachableWithFloatResult(final String message) {
+        return ((Float) isUnreachableWithResult(message)).floatValue();
+    }
+
+    public static float isUnreachableWithFloatResult(final String message, final Throwable cause) {
+        return ((Float) isUnreachableWithResult(message, cause)).floatValue();
+    }
+
+    public static int isUnreachableWithIntResult() {
+        return ((Integer) isUnreachableWithResult()).intValue();
+    }
+
+    public static int isUnreachableWithIntResult(final Throwable cause) {
+        return ((Integer) isUnreachableWithResult(cause)).intValue();
+    }
+
+    public static int isUnreachableWithIntResult(final String message) {
+        return ((Integer) isUnreachableWithResult(message)).intValue();
+    }
+
+    public static int isUnreachableWithIntResult(final String message, final Throwable cause) {
+        return ((Integer) isUnreachableWithResult(message, cause)).intValue();
+    }
+
+    public static long isUnreachableWithLongResult() {
+        return ((Long) isUnreachableWithResult()).longValue();
+    }
+
+    public static long isUnreachableWithLongResult(final Throwable cause) {
+        return ((Long) isUnreachableWithResult(cause)).longValue();
+    }
+
+    public static long isUnreachableWithLongResult(final String message) {
+        return ((Long) isUnreachableWithResult(message)).longValue();
+    }
+
+    public static long isUnreachableWithLongResult(final String message, final Throwable cause) {
+        return ((Long) isUnreachableWithResult(message, cause)).longValue();
+    }
+
+    public static short isUnreachableWithShortResult() {
+        return ((Short) isUnreachableWithResult()).shortValue();
+    }
+
+    public static short isUnreachableWithShortResult(final Throwable cause) {
+        return ((Short) isUnreachableWithResult(cause)).shortValue();
+    }
+
+    public static short isUnreachableWithShortResult(final String message) {
+        return ((Short) isUnreachableWithResult(message)).shortValue();
+    }
+
+    public static short isUnreachableWithShortResult(final String message, final Throwable cause) {
+        return ((Short) isUnreachableWithResult(message, cause)).shortValue();
+    }
+}

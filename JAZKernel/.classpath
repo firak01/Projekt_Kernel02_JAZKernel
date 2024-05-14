@@ -12,13 +12,13 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="tryout"/>
 	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="test">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="tryout"/>
 	<classpathentry exported="true" kind="lib" path="/ZKernelFileCollection/commons.lang.2/commons-lang2-2.6/commons-lang-2.6.jar" sourcepath="/ZKernelFileCollection/commons.lang.2/commons-lang2-2.6/commons-lang-2.6-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/ZKernelFileCollection/commons.lang.2/commons-lang2-2.6/commons-lang-2.6-javadoc.jar!/"/>

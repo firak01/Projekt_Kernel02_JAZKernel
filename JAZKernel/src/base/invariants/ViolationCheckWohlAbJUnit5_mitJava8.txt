@@ -1,0 +1,258 @@
+package base.invariants;
+//package de.his.core.base.invariants;
+
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang.StringUtils;
+import org.junit.jupiter.api.Assertions;
+
+/**
+ * Package local helper class for supporting the both classes for ensuring invariants:
+ * <ul>
+ * <li>{@link EnsureArgument}</li>
+ * <li>{@link EnsureState}</li>
+ * </ul>
+ */
+public class ViolationCheckWohlAbJUnit5_mitJava8 {
+
+    private static final String EXPECTED_FALSE = "expected: <false> but was: <true>";
+
+    static String buildPrefix(String message) {
+        return (StringUtils.isNotBlank(message) ? message + " ==> " : "");
+    }
+
+    static String message(Supplier<String> messageSupplier) {
+        return (messageSupplier != null ? StringUtils.stripToNull(messageSupplier.get()) : null);
+    }
+
+    static String message(String message, String defaultMessage) {
+        String _message = StringUtils.stripToNull(message);
+        return (_message != null ? _message : (defaultMessage != null ? StringUtils.stripToNull(defaultMessage) : null));
+    }
+
+    static String message(String message, Supplier<String> defaultMessageSupplier) {
+        String _message = StringUtils.stripToNull(message);
+        return (_message != null ? _message : message(defaultMessageSupplier));
+    }
+
+    static String message(Supplier<String> messageSupplier, String defaultMessage) {
+        String message = message(messageSupplier);
+        return (message != null ? message : StringUtils.stripToNull(defaultMessage));
+    }
+
+    static String message(Supplier<String> messageSupplier, Supplier<String> defaultMessageSupplier) {
+        String message = message(messageSupplier);
+        return (message != null ? message : message(defaultMessageSupplier));
+    }
+    
+    private ViolationCheckWohlAbJUnit5_mitJava8() {
+        // prevent instantiation
+    }
+    
+    public static <V> V assertFalse(boolean condition) {
+        return assertFalse(condition, (String) null);
+    }
+    
+    public static <V> V assertFalse(boolean condition, String message) {
+        if (condition) {
+            return fail(buildPrefix(message) + EXPECTED_FALSE);
+        }
+        return null;
+    }
+
+    public static <V> V assertFalse(boolean condition, Supplier<String> messageSupplier) {
+        if (condition) {
+            return fail(buildPrefix(message(messageSupplier)) + EXPECTED_FALSE);
+        }
+        return null;
+    }
+    
+    public static <V> V assertFalse(boolean condition, Supplier<String> messageSupplier, Supplier<String> defaultMessageSupplier) {
+        if (condition) {
+            return fail(buildPrefix(message(messageSupplier,defaultMessageSupplier)) + EXPECTED_FALSE);            
+        }
+        return null;
+    }
+    
+    public static <V> V fail(String message) {
+        final String _message = StringUtils.stripToNull(message);
+        return (_message == null ? Assertions.fail() : Assertions.fail(_message));
+    }
+    
+    public static <V> V fail(String message, Supplier<String> defaultMessageSupplier) {
+        return fail(message(message,defaultMessageSupplier));
+    }
+    
+    public static <V> V fail(Supplier<String> messageSupplier, Supplier<String> defaultMessageSupplier) {
+        return fail(message(messageSupplier,defaultMessageSupplier));
+    }
+    
+    public static <V> V fail(String message, Throwable cause) {
+        final String _message = StringUtils.stripToNull(message);
+        return (_message == null ? Assertions.fail(cause) : Assertions.fail(_message, cause));
+    }
+    
+    public static <V> V fail(Supplier<String> messageSupplier, Throwable cause) {
+        return fail(message(messageSupplier), cause);
+    }
+    
+    public static <V> V fail(String message, Throwable cause, Supplier<String> defaultMessageSupplier) {
+        return fail(message(message, defaultMessageSupplier), cause);
+    }
+    
+    public static <V> V fail(Supplier<String> messageSupplier, Throwable cause, Supplier<String> defaultMessageSupplier) {
+        return fail(message(messageSupplier, defaultMessageSupplier), cause);
+    }
+    
+    public static <V> V fail(Throwable cause) {
+        return (cause == null ? Assertions.fail() : Assertions.fail(cause));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(String message) {
+        final String _message = StringUtils.stripToNull(message);
+        return (_message == null ? new IllegalArgumentException() : new IllegalArgumentException(_message));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(Throwable cause) {
+        return (cause == null ? new IllegalArgumentException() : new IllegalArgumentException(cause));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(String message, Throwable cause) {
+        if (cause == null) {
+            return illegalArgumentException(message);
+        }
+        final String exMsg = StringUtils.stripToNull(cause.getLocalizedMessage());
+        String _message = StringUtils.stripToNull(message);
+
+        if (exMsg != null) {
+            _message = (_message == null ? exMsg : _message + ": " + exMsg);
+        }
+        return (_message == null ? new IllegalArgumentException(cause) : new IllegalArgumentException(_message, cause));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(String message, String defaultMessage) {
+        final String _message = message(message, defaultMessage);
+        return (_message == null ? new IllegalArgumentException() : new IllegalArgumentException(_message));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(String message, String defaultMessage, Throwable cause) {
+        if (cause == null) {
+            return illegalArgumentException(message, defaultMessage);
+        }
+        final String _message = message(message, defaultMessage);
+        return (_message == null ? new IllegalArgumentException(cause) : new IllegalArgumentException(_message, cause));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(Supplier<String> messageSupplier) {
+        return illegalArgumentException(message(messageSupplier));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(Supplier<String> messageSupplier, Throwable cause) {
+        return illegalArgumentException(message(messageSupplier), cause);
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(String message, Supplier<String> defaultMessageSupplier) {
+        return illegalArgumentException(message(message, defaultMessageSupplier));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(String message, Supplier<String> defaultMessageSupplier, Throwable cause) {
+        return illegalArgumentException(message(message, defaultMessageSupplier), cause);
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(Supplier<String> messageSupplier, String defaultMessage) {
+        return illegalArgumentException(message(messageSupplier, defaultMessage));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(Supplier<String> messageSupplier, String defaultMessage, Throwable cause) {
+        return illegalArgumentException(message(messageSupplier, defaultMessage), cause);
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(Supplier<String> messageSupplier, Supplier<String> defaultMessageSupplier) {
+        return illegalArgumentException(message(messageSupplier, defaultMessageSupplier));
+    }
+    
+    public static IllegalArgumentException illegalArgumentException(Supplier<String> messageSupplier, Supplier<String> defaultMessageSupplier, Throwable cause) {
+        return illegalArgumentException(message(messageSupplier, defaultMessageSupplier), cause);
+    }
+    
+    public static IllegalStateException illegalStateException(String message) {
+        final String _message = StringUtils.stripToNull(message);
+        return (_message == null ? new IllegalStateException() : new IllegalStateException(_message));
+    }
+    
+    public static IllegalStateException illegalStateException(Throwable cause) {
+        return (cause == null ? new IllegalStateException() : new IllegalStateException(cause));
+    }
+    
+    public static IllegalStateException illegalStateException(String message, Throwable cause) {
+        if (cause == null) {
+            return illegalStateException(message);
+        }
+        final String exMsg = StringUtils.stripToNull(cause.getLocalizedMessage());
+        String _message = StringUtils.stripToNull(message);
+
+        if (exMsg != null) {
+            _message = (_message == null ? exMsg : _message + ": " + exMsg);
+        }
+        return (_message == null ? new IllegalStateException(cause) : new IllegalStateException(_message, cause));
+    }
+    
+    public static IllegalStateException illegalStateException(String message, String defaultMessage) {
+        final String _message = message(message, defaultMessage);
+        return (_message == null ? new IllegalStateException() : new IllegalStateException(_message));
+    }
+    
+    public static IllegalStateException illegalStateException(String message, String defaultMessage, Throwable cause) {
+        if (cause == null) {
+            return illegalStateException(message, defaultMessage);
+        }
+        final String _message = message(message, defaultMessage);
+        return (_message == null ? new IllegalStateException(cause) : new IllegalStateException(_message, cause));
+    }
+    
+    public static IllegalStateException illegalStateException(Supplier<String> messageSupplier) {
+        return illegalStateException(message(messageSupplier));
+    }
+    
+    public static IllegalStateException illegalStateException(Supplier<String> messageSupplier, Throwable cause) {
+        return illegalStateException(message(messageSupplier), cause);
+    }
+    
+    public static IllegalStateException illegalStateException(String message, Supplier<String> defaultMessageSupplier) {
+        return illegalStateException(message(message, defaultMessageSupplier));
+    }
+    
+    public static IllegalStateException illegalStateException(String message, Supplier<String> defaultMessageSupplier, Throwable cause) {
+        return illegalStateException(message(message, defaultMessageSupplier), cause);
+    }
+    
+    public static IllegalStateException illegalStateException(Supplier<String> messageSupplier, String defaultMessage) {
+        return illegalStateException(message(messageSupplier, defaultMessage));
+    }
+    
+    public static IllegalStateException illegalStateException(Supplier<String> messageSupplier, String defaultMessage, Throwable cause) {
+        return illegalStateException(message(messageSupplier, defaultMessage), cause);
+    }
+    
+    public static IllegalStateException illegalStateException(Supplier<String> messageSupplier, Supplier<String> defaultMessageSupplier) {
+        return illegalStateException(message(messageSupplier, defaultMessageSupplier));
+    }
+    
+    public static IllegalStateException illegalStateException(Supplier<String> messageSupplier, Supplier<String> defaultMessageSupplier, Throwable cause) {
+        return illegalStateException(message(messageSupplier, defaultMessageSupplier), cause);
+    }
+    
+    public static <T> Supplier<T> supply(final T object) {
+        return object == null ? null : () -> {return object;};
+    }
+    
+    public static <A,T> Function<A,T> supplyIgnoringArgument(final T object) {
+        return object == null ? null : (A a) -> {return object;};
+    }
+    
+    public static <A,T> Function<A,T> supplyIgnoringArgument(final Supplier<T> supplier) {
+        return supplier == null ? null : (A a) -> {return supplier.get();};
+    }
+}
