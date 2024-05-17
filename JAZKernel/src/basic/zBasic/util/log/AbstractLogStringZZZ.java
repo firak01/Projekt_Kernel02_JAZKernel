@@ -214,8 +214,9 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			if(!isFormatUsingLogString(ienumFormatLogString)) break main;
 		    if(sLog==null) break main;
 		   
-			String sFormat=null;
-		
+			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sLogUsed = null;
+			
 			switch(ienumFormatLogString.getFactor()) {
 			case ILogStringZZZ.iFACTOR_CLASSPOSITION:
 				if(obj==null) {
@@ -231,31 +232,82 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			 break;
 			
 			case ILogStringZZZ.iFACTOR_CLASSFILEPOSITION:
-				if(obj==null) {
-					
+				if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
+					System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens (also auch der Dateiposition) per gesetztem Flag unterbunden.");
 				}else {
-					if(this.getFlag(ILogStringZZZ.FLAGZ.EXCLUDE_CLASSNAME)) {
-						System.out.println(ReflectCodeZZZ.getPositionCurrent()+"In diesem Format ist die Ausgabe des Klassennamens (also auch der Dateiposition) per gesetztem Flag unterbunden.");
-					}else {
-						sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSPOSITION));
-						sReturn = String.format(sFormat, sLog);//Merke: Da wir hier nicht die Postion erraten können, gehen wir davon aus, dass sie im naechsten Argument steckt.
-					}
+					sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSFILEPOSITION));
+					//sReturn = String.format(sFormat, sLog);//Merke: Da wir hier nicht die Postion erraten können, gehen wir davon aus, dass sie im naechsten Argument steckt.
+					
+					//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+					//Merke: Der Position steht im Logstring immer am Anfang
+					//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+					//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+					
+					//Auseinanderbauen
+					sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_IDENTIFIER, true);
+					sMid = StringZZZ.midLeftRight(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+					sRight = StringZZZ.rightback(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+					
+					//Die Postionsangabe weglassen
+					sLogUsed = StringZZZ.stripLeft(sMid, ReflectCodeZZZ.sPOSITION_IDENTIFIER);
+					sReturn = String.format(sFormat, sLogUsed);						
+					break;
 				}
 			 break;
 			
 			case ILogStringZZZ.iFACTOR_ARGNEXT01:
-				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT01));					
-				sReturn = String.format(sFormat, sLog);						
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT01));
+				
+				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+				//Merke: Der Position steht im Logstring immer am Anfang
+				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				
+				//Auseinanderbauen
+				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_IDENTIFIER, true);
+				sMid = StringZZZ.midLeftRight(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+				sRight = StringZZZ.rightback(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+				
+				//Die Postionsangabe weglassen
+				sLogUsed = ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sRight;
+				sReturn = String.format(sFormat, sLogUsed);						
 				break;
 				
 			case ILogStringZZZ.iFACTOR_ARGNEXT02:	
 				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT02));
-				sReturn = String.format(sFormat, sLog);
+				
+				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+				//Merke: Der Position steht im Logstring immer am Anfang
+				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				
+				//Auseinanderbauen
+				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_IDENTIFIER, true);
+				sMid = StringZZZ.midLeftRight(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+				sRight = StringZZZ.rightback(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+				
+				//Die Postionsangabe weglassen
+				sLogUsed = sLeft + ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sRight;
+				sReturn = String.format(sFormat, sLogUsed);						
 				break;
 				
 			case ILogStringZZZ.iFACTOR_CLASSMETHOD:
 				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_CLASSMETHOD));
-				sReturn = String.format(sFormat, sLog);
+				
+				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+				//Merke: Der Position steht im Logstring immer am Anfang
+				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				
+				//Auseinanderbauen
+				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_IDENTIFIER, true);
+				sMid = StringZZZ.midLeftRight(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+				sRight = StringZZZ.rightback(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+				
+				//Nur die Methodenangabe
+				sLogUsed = sLeft;
+				
+				sReturn = String.format(sFormat, sLogUsed);
 				break;
 				
 			default:
@@ -331,20 +383,32 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			
 			
 			//Der zu verwendende Logteil
-			String sLogUsed;
+			String sLogUsed=null; String sLog=null;
 			
 			//Anzahl der geschriebenen sLogs aus saLog
-			int iLogIndexNext=0;
+			int iLogIndexNext=0;//wird weitergeschoben durch iARG_NEXT
+			int iLogIndexCurrent=0;
 			
 			//Ermittle in einer Schleife den auszugebenden Teil
 			for(IEnumSetMappedLogStringFormatZZZ ienumMappedFormat : ienumaFormatLogString){
 				sLogUsed=null;
 			
 				if(isFormatUsingLogString(ienumMappedFormat)) {
-					if(saLog.length>iLogIndexNext) {
-						String sLog = saLog[iLogIndexNext];
-						sLogUsed = this.compute(obj, sLog, ienumMappedFormat);
-						iLogIndexNext++;
+					if(saLog.length>iLogIndexCurrent) {					
+						if(ienumMappedFormat.getName().startsWith("ARGNEXT")) {
+							if(saLog.length>iLogIndexNext) {
+								sLog = saLog[iLogIndexNext];						
+								sLogUsed = this.compute(obj, sLog, ienumMappedFormat);
+								iLogIndexNext++; //Also nur wenn das naechste Argument verarbeitet wurde, den Index weiterschieben.
+								if(saLog.length>iLogIndexNext) {
+									iLogIndexCurrent = iLogIndexNext; //Also den Current Index nur weiterschieben, wenn noch nicht das ende erreicht ist.
+									//Hintergrund: Nur so kann z.B. eine FILEPOSITION aus einem String herausgerechnet werden, falls die FILEPOSITION ans Ende kommen soll, nachdem das ARGNEXT verarbeitet worden ist.
+								}
+							}
+						}else {
+							sLog = saLog[iLogIndexCurrent];
+							sLogUsed = this.compute(obj, sLog, ienumMappedFormat);
+						}
 					};
 				}else {
 					sLogUsed = this.compute(obj, ienumMappedFormat);
@@ -364,9 +428,13 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//Wenn jetzt noch Text vorhanden ist, diesen mit dem Standardformat ausgeben.
-			while(saLog.length<iLogIndexNext) {
-				String sLog = saLog[iLogIndexNext];
-				sLogUsed = this.compute(obj, sLog, ILogStringZZZ.LOGSTRING.ARGNEXT01);
+			while(saLog.length>iLogIndexNext) {
+				sLog = saLog[iLogIndexNext];
+				if(iLogIndexNext==0) {
+					sLogUsed = this.compute(obj, sLog, ILogStringZZZ.LOGSTRING.ARGNEXT01);
+				}else if(iLogIndexNext>=1) {
+					sLogUsed = this.compute(obj, sLog, ILogStringZZZ.LOGSTRING.ARGNEXT02);
+				}
 				iLogIndexNext++;
 				
 				if(sLogUsed!=null) { 

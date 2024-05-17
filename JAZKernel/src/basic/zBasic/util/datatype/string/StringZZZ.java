@@ -301,56 +301,73 @@ public class StringZZZ implements IConstantZZZ{
 }
 
 	public static boolean contains(String sString, String sMatch){
+//		boolean bReturn = false;
+//		main:{
+//			if(StringZZZ.isEmpty(sString)) break main;
+//			if(StringZZZ.isEmpty(sMatch)) break main;
+//			
+//			//Merke: sString.contains(CharSequence) gibt es erst seit Java 1.5
+//			//CharSequence sequence = sMatch.subSequence(1, sString.length());
+//			//if(sString.contains(sequence)  .......
+//			
+//			String sSub;
+//			int iMatchLength=sMatch.length();
+//			int iProof = sString.length()-iMatchLength;
+//			for(int icount=0; icount <= iProof; icount++){
+//				sSub = sString.substring(icount, iMatchLength+icount);
+//				if(sSub.equals(sMatch)){
+//					bReturn = true;
+//					break main;
+//				}
+//			}					
+//		} //end main:		
+//		return bReturn;
+			
+		return StringZZZ.contains(sString, sMatch, true);	
+	}
+	
+	/**
+	 * //Merke: sString.contains(CharSequence) gibt es erst seit Java 1.5
+			//CharSequence sequence = sMatch.subSequence(1, sString.length());
+			//if(sString.contains(sequence)  .......
+			
+	 * @param sString
+	 * @param sMatch
+	 * @param bExactMatch
+	 * @return
+	 * @author Fritz Lindhauer, 17.05.2024, 17:09:30
+	 */
+	public static boolean contains(String sString, String sMatch, boolean bExactMatch){
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
 			if(StringZZZ.isEmpty(sMatch)) break main;
 			
-			//Merke: sString.contains(CharSequence) gibt es erst seit Java 1.5
-			//CharSequence sequence = sMatch.subSequence(1, sString.length());
-			//if(sString.contains(sequence)  .......
-			
 			String sSub;
 			int iMatchLength=sMatch.length();
-			int iProof = sString.length()-iMatchLength;
-			for(int icount=0; icount <= iProof; icount++){
-				sSub = sString.substring(icount, iMatchLength+icount);
-				if(sSub.equals(sMatch)){
-					bReturn = true;
-					break main;
-				}
-			}					
-		} //end main:		
-		return bReturn;
-	}
-	
-	public static boolean contains(String sString, String sMatch, boolean bExactMatch){
-		boolean bReturn = false;
-		main:{
-			check:{
+			int iProof = sString.length()-iMatchLength;			
 			if(bExactMatch){
-				bReturn = StringZZZ.contains(sString, sMatch);
-			}
-			
-			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sMatch)) break main;			
-			}
-			//Merke: sString.contains(CharSequence) gibt es erst seit Java 1.5
-			//CharSequence sequence = sMatch.subSequence(1, sString.length());
-			//if(sString.contains(sequence)  .......
-			
-			String sSub;
-			int iMatchLength=sMatch.length();
-			int iProof = sString.length()-iMatchLength;
-			String sStringLcased = sString.toLowerCase();
-			String sMatchLcased = sMatch.toLowerCase();
-			for(int icount=0; icount <= iProof; icount++){
-				sSub = sStringLcased.substring(icount, iMatchLength+icount);
-				if(sSub.equals(sMatchLcased)){
-					bReturn = true;
-					break main;
+				for(int icount=0; icount <= iProof; icount++){
+					sSub = sString.substring(icount, iMatchLength+icount);
+					if(sSub.equals(sMatch)){
+						bReturn = true;
+						break main;
+					}
 				}
-			}					
+				
+			}else {
+			
+				String sStringLcased = sString.toLowerCase();
+				String sMatchLcased = sMatch.toLowerCase();
+				
+				for(int icount=0; icount <= iProof; icount++){
+					sSub = sStringLcased.substring(icount, iMatchLength+icount);
+					if(sSub.equals(sMatchLcased)){
+						bReturn = true;
+						break main;
+					}
+				}
+			}																
 		} //end main:		
 		return bReturn;
 	}
@@ -865,21 +882,23 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, String sToFind){
-		String sReturn=sString;
-		main:{
-			check:{
-				if (StringZZZ.isEmpty(sString)) break main;				
-			}
+//		String sReturn=sString;
+//		main:{
+//			check:{
+//				if (StringZZZ.isEmpty(sString)) break main;				
+//			}
+//		
+//			sReturn = "";
+//			int iIndex = sString.indexOf(sToFind);
+//			if(iIndex<= -1) break main;
+//			if(iIndex-1<= -1) break main;
+//			
+//			sReturn = sString.substring(0, iIndex);
+//			
+//		}//END main:
+//		return sReturn;
 		
-			sReturn = "";
-			int iIndex = sString.indexOf(sToFind);
-			if(iIndex<= -1) break main;
-			if(iIndex-1<= -1) break main;
-			
-			sReturn = sString.substring(0, iIndex);
-			
-		}//END main:
-		return sReturn;
+		return StringZZZ.left(sString, sToFind, true);
 	}
 	
 	/** String, analog to LotusScript, returns the substring left from the first occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
@@ -891,17 +910,16 @@ public class StringZZZ implements IConstantZZZ{
 	public static String left(String sString, String sToFind, boolean bExactMatch){
 		String sReturn=sString;
 		main:{
-			if(bExactMatch){
-				sReturn = StringZZZ.left(sString, sToFind);
-				break main;
-			}
-			
-			check:{
-				if (StringZZZ.isEmpty(sString)) break main;				
-			}
-			
+			if (StringZZZ.isEmpty(sString)) break main;
 			sReturn = "";
-			int iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase()); //Hier wird ignoreCase realisiert.
+			
+			int iIndex;
+			if(bExactMatch){
+				iIndex = sString.indexOf(sToFind);				
+			}else {
+				iIndex = sString.toLowerCase().indexOf(sToFind.toLowerCase()); //Hier wird ignoreCase realisiert.							
+			}
+			
 			if(iIndex<= -1) break main;
 			if(iIndex-1<= -1) break main;
 			
@@ -957,18 +975,7 @@ public class StringZZZ implements IConstantZZZ{
 	* lindhaueradmin; 04.04.2009 13:15:27
 	 */
 	public static String leftback(String sString, String sToFind){
-		String sReturn = sString;
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-			
-			sReturn = "";
-			if(StringZZZ.isEmpty(sToFind)) break main;			
-			int iPosition = sString.lastIndexOf(sToFind);
-			if (iPosition == -1) break main;
-		
-			sReturn = sString.substring(0, iPosition);				
-		}
-		return sReturn;
+		return StringZZZ.leftback(sString, sToFind, true);
 	}
 	
 	/** This example returns Lennard. 
@@ -1060,25 +1067,26 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, String sToFind){
-		String sReturn=sString;
-		main:{
-			check:{
-				if (StringZZZ.isEmpty(sString)) break main;
-				
-				sReturn = "";
-				if(StringZZZ.isEmpty(sToFind)) break main;	
-			}
-					
-			int iIndex = sString.lastIndexOf(sToFind);
-			if(iIndex<= -1) break main;
-			
-			//die Länge des Strings aufaddieren
-			iIndex = iIndex + sToFind.length();
-					
-			sReturn = sString.substring(iIndex);
-
-		}//END main:
-		return sReturn;
+//		String sReturn=sString;
+//		main:{
+//			check:{
+//				if (StringZZZ.isEmpty(sString)) break main;
+//				
+//				sReturn = "";
+//				if(StringZZZ.isEmpty(sToFind)) break main;	
+//			}
+//					
+//			int iIndex = sString.lastIndexOf(sToFind);
+//			if(iIndex<= -1) break main;
+//			
+//			//die Länge des Strings aufaddieren
+//			iIndex = iIndex + sToFind.length();
+//					
+//			sReturn = sString.substring(iIndex);
+//
+//		}//END main:
+//		return sReturn;
+		return StringZZZ.right(sString, sToFind, true);
 	}
 	
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
@@ -1093,28 +1101,28 @@ public class StringZZZ implements IConstantZZZ{
 	public static String right(String sString, String sToFind, boolean bExactMatch){
 		String sReturn=sString;
 		main:{
-			check:{
-				if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sString)) break main;
 				
-				sReturn = "";
-				if(StringZZZ.isEmpty(sToFind)) break main;	
-			 }
+			sReturn = "";
+			if(StringZZZ.isEmpty(sToFind)) break main;	
+			
 		
-				if(bExactMatch){
-					sReturn = StringZZZ.right(sString, sToFind);
-					break main;
-				}
+			int iIndex;
+			if(bExactMatch){
+				iIndex = sString.lastIndexOf(sToFind);				
+			}else {
 
 				String sStringLCase = sString.toLowerCase();
 				String sToFindLCase = sToFind.toLowerCase();
 				
-				int iIndex = sStringLCase.lastIndexOf(sToFindLCase);
-				if(iIndex<= -1) break main;
+				iIndex = sStringLCase.lastIndexOf(sToFindLCase);
+			}
+			if(iIndex<= -1) break main;
 			
-				//die Länge des Strings aufaddieren
-				iIndex = iIndex + sToFind.length();
-					
-				sReturn = sString.substring(iIndex);						
+			//die Länge des Strings aufaddieren
+			iIndex = iIndex + sToFind.length();
+				
+			sReturn = sString.substring(iIndex);						
 		}//END main:
 		return sReturn;
 	}
@@ -2257,17 +2265,19 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 */
 	public static String rightback(String sString, String sToFind){
-		String sReturn = "";
-		main:{
-			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sToFind)) break main;
-			
-			int iPosition = sString.indexOf(sToFind);
-			if (iPosition == -1) break main;
-			
-			sReturn = sString.substring(iPosition+ sToFind.length(), sString.length());
-		}
-		return sReturn;
+//		String sReturn = "";
+//		main:{
+//			if(StringZZZ.isEmpty(sString)) break main;
+//			if(StringZZZ.isEmpty(sToFind)) break main;
+//			
+//			int iPosition = sString.indexOf(sToFind);
+//			if (iPosition == -1) break main;
+//			
+//			sReturn = sString.substring(iPosition+ sToFind.length(), sString.length());
+//		}
+//		return sReturn;
+		
+		return StringZZZ.rightback(sString, sToFind, true);
 	}
 	
 	/**Gibt den String rechts von dem Suchstring zurück.
@@ -2280,19 +2290,21 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 */
 	public static String rightback(String sString, String sToFind, boolean bExactMatch){
 		String sReturn = "";
-		main:{					
-			if(bExactMatch) {
-				sReturn = StringZZZ.rightback(sString, sToFind);
-				break main;
-			}
+		main:{
 			
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(StringZZZ.isEmpty(sToFind)) break main;			
+			if(StringZZZ.isEmpty(sToFind)) break main;
 			
-			String sStringLCase = sString.toLowerCase();
-			String sToFindLCase = sToFind.toLowerCase();
+			int iIndex;
+			if(bExactMatch) {
+				iIndex = sString.indexOf(sToFind);				
+			}else {
 			
-			int iIndex = sStringLCase.indexOf(sToFindLCase);
+				String sStringLCase = sString.toLowerCase();
+				String sToFindLCase = sToFind.toLowerCase();
+			
+				iIndex = sStringLCase.indexOf(sToFindLCase);
+			}
 			if(iIndex<= -1) break main;
 		
 			//die Länge des Strings aufaddieren
@@ -2362,23 +2374,35 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* lindhauer; 19.08.2008 09:42:33
 	 */
 	public static String midLeftRight(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRight(sString, sLeft, sRight, true);
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRight(String sString, String sLeft, String sRight, boolean bExactMatch){
 		String sReturn = sString;
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
 			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
 			
 			if (StringZZZ.isEmpty(sLeft)){
-				sReturn = StringZZZ.left(sString, sRight);
+				sReturn = StringZZZ.left(sString, sRight, bExactMatch);
 				break main;
 			}
 			
 			if(StringZZZ.isEmpty(sRight)){
-				sReturn = StringZZZ.rightback(sString, sLeft);
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
 				break main;
 			}
 			
-			sReturn = StringZZZ.rightback(sString, sLeft);
-			sReturn = StringZZZ.left(sReturn, sRight);
+			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+			sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
 		
 		}
 		return sReturn;

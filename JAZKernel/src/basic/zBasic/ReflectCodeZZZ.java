@@ -27,9 +27,12 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	public static final String sCLASS_METHOD_SEPERATOR = ".";
 	public static final String sPACKAGE_SEPERATOR = ".";
 	
-	public static final String sPOSITION_SEPARATOR = "# "; //Merke: Damit kein unnoetiges Leerzeichen entsteht 2 Variablen. Einmal Separator und einmal Idetntifier.
-	public static final String sPOSITION_IDENTIFIER = " " +ReflectCodeZZZ.sPOSITION_SEPARATOR;    //Dieser String wird hinter der Ermittelten Position ausgegeben.
+	public static final String sPOSITION_MESSAGE_SEPARATOR = "# "; //Merke: Damit kein unnoetiges Leerzeichen entsteht 2 Variablen. Einmal Separator und einmal Idetntifier.
+	public static final String sPOSITION_MESSAGE_IDENTIFIER = " " +ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;    //Dieser String wird hinter der Ermittelten Position ausgegeben.
 															   //Merke: Mit der neuen "justify"-Methode in LogStringZZZ wird das eh buendig gemacht. Darum keine Tabs mehr notwendig
+	
+	public static final String sPOSITION_SEPARATOR = " ~";    //Merke: Damit wird eine ggfs. errechnete Psotion im Code abgegrenzt.
+	public static final String sPOSITION_IDENTIFIER = ReflectCodeZZZ.sPOSITION_SEPARATOR + " ";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so.
 	
 	//+++ Fuer den Namen der .java - Datei
 	public static String getMethodCurrentFileName(){
@@ -520,7 +523,7 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
 			
-			sReturn = sMethod + sPositionInFile + ReflectCodeZZZ.sPOSITION_SEPARATOR;
+			sReturn = sMethod + ReflectCodeZZZ.sPOSITION_SEPARATOR + sPositionInFile + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 		}//end main:
 		return sReturn;
 	}

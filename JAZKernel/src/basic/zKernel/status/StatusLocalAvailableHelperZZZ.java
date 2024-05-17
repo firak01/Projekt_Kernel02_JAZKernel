@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.HashMapKeepFirstZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedUtilZZZ;
@@ -716,15 +717,27 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			IEnumSetMappedStatusZZZ[] enumaMappedStatus = StatusLocalAvailableHelperZZZ.searchEnumMapped(classToCheck, bScanInterfaceImmidiate);
 			if(enumaMappedStatus==null) break main;			
 			
-			hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
+			HashMapKeepFirstZZZ<String, IStatusBooleanMessageZZZ> hmFirst = new HashMapKeepFirstZZZ<String, IStatusBooleanMessageZZZ>();
 			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
 			
 			for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
 				String sEnum = objEnumMapped.getName();
 				
+				//20240517:
+				//Problem: Wenn die sEnum-Werte gleich sind, dann wird wird der letzte gefundende Wert die Stelle einnehmen.
+				//         Aber: Das ist zwangslaeufig ein Wert aus einer tieferen Abstrakten Interfaceklasse.
+				//         Z.B. "HASFILTERFOUND" gibt es in IProcessWatchRunnerZZZ, aber auch in IWatchRunnerZZZ.
+				//         In die HashMap kommt nun der Wert von IWatchRunner.
+				//         Aber: In der Monitorklasse ist IProcessWatchRunner als ein gemappter Status fuer "HASFILTERFOUND" vorgesehen.
+				//               Das ist auch gut so, weil viel konkreter.
+				//         Also: Da es schwer ist die "Durchsuchen" nach den Enums umzustellen:
+				//               Verwende eine spezielle HashMap, in der nur der erste Wert "Bleibt"...
+				//         
+				
 				IStatusBooleanMessageZZZ objBooleanMessage = new StatusBooleanMessageZZZ(objEnumMapped,false);
-				hmReturn.put(sEnum, objBooleanMessage);
+				hmFirst.put(sEnum, objBooleanMessage);
 			}
+			hmReturn = hmFirst;
 		}
 		return hmReturn;
 	}

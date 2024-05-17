@@ -18,7 +18,7 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 	//### Hilfsmethoden zum Buendig machen des Informationsteils im Log ueber meherer Zeilen ########################
 	@Override
 	public String getPositionSeparatorDefault() {
-		return ReflectCodeZZZ.sPOSITION_SEPARATOR;
+		return ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class StringJustifierZZZ extends AbstractObjectZZZ implements IStringJust
 	//+++++++++++++++++++++++++++++++++++++++
 	@Override
 	public String getPositionIdentifierDefault() {
-		return ReflectCodeZZZ.sPOSITION_IDENTIFIER;
+		return ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
 	}
 	
 	@Override

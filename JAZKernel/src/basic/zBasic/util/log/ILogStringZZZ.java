@@ -59,7 +59,7 @@ public interface ILogStringZZZ{
 		
 		CLASSNAME("classname",ILogStringZZZ.iFACTOR_CLASSNAME, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den Klassennamen mit Package in diesem Format aus."),
 		CLASSNAMESIMPLE("classnamesimple",ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den einfachen Klassennamen in diesem Format aus."),
-		CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, "", "[Method: %s]",ILogStringZZZ.iARG_STRING, "", "Gib den Methodennamen in diesem Format aus."),
+		CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, "", "%s",ILogStringZZZ.iARG_STRING, "", "Gib den Methodennamen in diesem Format aus."),
 		CLASSPOSITION("classposition",ILogStringZZZ.iFACTOR_CLASSPOSITION, "", "[Class: %s]",ILogStringZZZ.iARG_STRING, "", "Gib die errechnete Position in der Java-Klasse in diesem Format aus."),
 		
 		CLASSFILENAME("classfilename",ILogStringZZZ.iFACTOR_CLASSFILENAME, "", "[File: %s]",ILogStringZZZ.iARG_OBJECT, "", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),

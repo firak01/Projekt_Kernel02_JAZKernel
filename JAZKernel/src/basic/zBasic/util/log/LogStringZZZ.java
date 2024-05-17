@@ -47,9 +47,11 @@ public class LogStringZZZ extends AbstractLogStringZZZ{
 				ILogStringZZZ.LOGSTRING.DATE,
 				ILogStringZZZ.LOGSTRING.THREADID,
 				ILogStringZZZ.LOGSTRING.CLASSNAMESIMPLE,
+				ILogStringZZZ.LOGSTRING.CLASSMETHOD,
 				ILogStringZZZ.LOGSTRING.ARGNEXT01,					
 				ILogStringZZZ.LOGSTRING.ARGNEXT02,
-				ILogStringZZZ.LOGSTRING.CLASSMETHOD,
+				ILogStringZZZ.LOGSTRING.CLASSFILEPOSITION,
+				
 		};
 		return iaenumReturn;
 	}
