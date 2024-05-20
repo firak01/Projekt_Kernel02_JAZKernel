@@ -7,6 +7,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ILogZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
@@ -245,14 +246,9 @@ public abstract class AbstractEventObjectStatusLocalZZZ extends EventObject impl
 		//#################################################################
 		//### aus ILogZZZ
 		@Override
-		public synchronized void logLine(String sLog) throws ExceptionZZZ{
-			System.out.println(sLog);
-		}
-		
-		@Override
 		public synchronized void logLineDate(String sLog) throws ExceptionZZZ {
 			String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
-			System.out.println(sTemp);		
+			ObjectZZZ.logLine(sTemp);		
 		}
 		
 		//++++++++++++++++++++++++++++++++++++++++++++++++

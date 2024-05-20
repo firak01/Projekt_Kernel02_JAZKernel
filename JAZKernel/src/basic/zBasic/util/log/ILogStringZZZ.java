@@ -1,5 +1,17 @@
 package basic.zBasic.util.log;
 
+
+import static basic.zBasic.IReflectCodeZZZ.sPACKAGE_SEPERATOR;
+import static basic.zBasic.IReflectCodeZZZ.sCLASS_METHOD_SEPERATOR;
+
+import static basic.zBasic.IReflectCodeZZZ.sPOSITION_METHOD_IDENTIFIER;
+import static basic.zBasic.IReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
+import static basic.zBasic.IReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER;
+import static basic.zBasic.IReflectCodeZZZ.sPOSITION_FILE_SEPARATOR;
+import static basic.zBasic.IReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER;
+import static basic.zBasic.IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+
+
 import java.util.EnumSet;
 import java.util.HashMap;
 
@@ -10,8 +22,8 @@ import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 
 public interface ILogStringZZZ{
 	public static String sENUMNAME="LOGSTRING";
-	public static String sSEPARATOR_PREFIX_DEFAULT=" ";
-	public static String sSEPARATOR_POSTFIX_DEFAULT=" ";
+	public static String sSEPARATOR_PREFIX_DEFAULT="";
+	public static String sSEPARATOR_POSTFIX_DEFAULT="";
 	
 	//Merke: Es soll folgendes abgebildet werden, z.B. 
 	//       String sLog = ReflectCodeZZZ.getPositionCurrent() + "[Thread: "+lngThreadID + "] Status='"+enumStatus.getName() +"', StatusValue="+bStatusValue+", StatusMessage='" + sStatusMessage +"'";
@@ -29,17 +41,20 @@ public interface ILogStringZZZ{
 	
 	//Argumente der compute Methode (sofern vorhanden und != null)
 	//TODO IDEE: Wenn man eine Zahl angibt, soll die Zusammenstellung des Formats definiert sein.
-	//           Darum sind das alles Primzahlen...
+	//           Darum sind das alles Primzahlen...	
 	public static int iFACTOR_ARGNEXT01=1;
-	public static int iFACTOR_ARGNEXT02=2;     //2 verschiedene Varianten fuer Argnext 
-	public static int iFACTOR_CLASSNAME=3;
-	public static int iFACTOR_CLASSNAMESIMPLE=5;
-	public static int iFACTOR_CLASSMETHOD=7;
-	public static int iFACTOR_CLASSFILENAME=11;
-	public static int iFACTOR_CLASSPOSITION=13;       //mit der Zeilenummer dahinter
-	public static int iFACTOR_CLASSFILEPOSITION=17;  //mit der Zeilenummer dahinter
-	public static int iFACTOR_THREADID=19;
-	public static int iFACTOR_DATE=23; 
+	public static int iFACTOR_ARGNEXT02=2;     //3 verschiedene Varianten fuer Argnext
+	public static int iFACTOR_ARGNEXT03=3;
+	public static int iFACTOR_ARGNEXT05=5;
+	public static int iFACTOR_CLASSNAME=7;
+	public static int iFACTOR_CLASSNAMESIMPLE=11;
+	public static int iFACTOR_CLASSMETHOD=13;
+	public static int iFACTOR_CLASSFILENAME=17;
+	public static int iFACTOR_CLASSPOSITION=19;       //mit der Zeilenummer dahinter
+	public static int iFACTOR_CLASSFILEPOSITION=23;  //mit der Zeilenummer dahinter
+	public static int iFACTOR_THREADID=29;
+	public static int iFACTOR_DATE=31;
+	
 
 	//Merke:
 	//Statt mehrere Strukturen zu pflegen, lieber eine enum, mit den Konfigurationswerten.
@@ -53,20 +68,22 @@ public interface ILogStringZZZ{
 	//Merke: Methoden und Zeilennummern können nicht aus dem aktuellen Objekt ermittelt werden, daher sind sie von einem uebergebenen String abhaengig.
 	
 	//ALIAS("Uniquename",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")
-	public enum LOGSTRING implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-		ARGNEXT01("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT01, "", "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-		ARGNEXT02("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT02, "", "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+	public enum LOGSTRING implements IEnumSetMappedLogStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
+		ARGNEXT01("argnext01",ILogStringZZZ.iFACTOR_ARGNEXT01, "[A01]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + sPOSITION_MESSAGE_SEPARATOR, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A01]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		ARGNEXT02("argnext02",ILogStringZZZ.iFACTOR_ARGNEXT02, "[A02]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A02]", "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		ARGNEXT03("argnext03",ILogStringZZZ.iFACTOR_ARGNEXT03, "[A03]" + ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT, "%s",ILogStringZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/A03]" , "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
+		ARGNEXT05("argnext05",ILogStringZZZ.iFACTOR_ARGNEXT05, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "", "Scheibe zum naechsten ARGUMENT String, ohne Ausgabe des aktuellen LogString. Damit kann gesteuert werden, dass auch ohne ARGNEXT weitergegangen wird. Z.B. wenn die Filepostion (ist immer String, aber nicht argnext) vorher uebergeben worden ist."),
 		
-		CLASSNAME("classname",ILogStringZZZ.iFACTOR_CLASSNAME, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den Klassennamen mit Package in diesem Format aus."),
-		CLASSNAMESIMPLE("classnamesimple",ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE, "", "%s:",ILogStringZZZ.iARG_OBJECT, "", "Gib den einfachen Klassennamen in diesem Format aus."),
-		CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, "", "%s",ILogStringZZZ.iARG_STRING, "", "Gib den Methodennamen in diesem Format aus."),
-		CLASSPOSITION("classposition",ILogStringZZZ.iFACTOR_CLASSPOSITION, "", "[Class: %s]",ILogStringZZZ.iARG_STRING, "", "Gib die errechnete Position in der Java-Klasse in diesem Format aus."),
+		CLASSNAME("classname",ILogStringZZZ.iFACTOR_CLASSNAME, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[C]", "%s:",ILogStringZZZ.iARG_OBJECT, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT +  "[/C]", "Gib den Klassennamen mit Package in diesem Format aus."),
+		CLASSNAMESIMPLE("classnamesimple",ILogStringZZZ.iFACTOR_CLASSNAMESIMPLE, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CS]", "%s:",ILogStringZZZ.iARG_OBJECT, ":" + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CS]", "Gib den einfachen Klassennamen in diesem Format aus."),
+		CLASSMETHOD("classmethod",ILogStringZZZ.iFACTOR_CLASSMETHOD, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CM]", "%s",ILogStringZZZ.iARG_STRING, sPOSITION_METHOD_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CM]", "Gib den Methodennamen in diesem Format aus."),
+		CLASSPOSITION("classposition",ILogStringZZZ.iFACTOR_CLASSPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CP]", "[Class: %s]",ILogStringZZZ.iARG_STRING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CP]", "Gib die errechnete Position in der Java-Klasse in diesem Format aus."),
 		
-		CLASSFILENAME("classfilename",ILogStringZZZ.iFACTOR_CLASSFILENAME, "", "[File: %s]",ILogStringZZZ.iARG_OBJECT, "", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
-		CLASSFILEPOSITION("classfileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION, "", "[File: %s]",ILogStringZZZ.iARG_STRING, "", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
+		CLASSFILENAME("classfilename",ILogStringZZZ.iFACTOR_CLASSFILENAME, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CF]", "[File:%s]",ILogStringZZZ.iARG_OBJECT, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CF]", "Gib den Dateinamen der Java-Klasse in diesem Format aus."),
+		CLASSFILEPOSITION("classfileposition",ILogStringZZZ.iFACTOR_CLASSFILEPOSITION, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[CFP]", "[File:%s]",ILogStringZZZ.iARG_STRING, sPOSITION_FILE_SEPARATOR + ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/CFP]", "Gib die errechnete Position in der Java-Datei in diesem Format aus."),
 		
-		THREADID("threadid",ILogStringZZZ.iFACTOR_THREADID, "", "[Thread: %s]",ILogStringZZZ.iARG_NOTHING, "", "Gib die ID des Threads in diesem Format aus."),
-		DATE("date",ILogStringZZZ.iFACTOR_DATE,"", "[%s]",ILogStringZZZ.iARG_NOTHING, "", "Gib das errechnete Datum in diesem Format aus.")
+		THREADID("threadid",ILogStringZZZ.iFACTOR_THREADID, ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[T]", "[Thread: %s]",ILogStringZZZ.iARG_NOTHING, "", "Gib die ID des Threads in diesem Format aus."),
+		DATE("date",ILogStringZZZ.iFACTOR_DATE,ILogStringZZZ.sSEPARATOR_PREFIX_DEFAULT + "[D]", "[%s]",ILogStringZZZ.iARG_NOTHING, ILogStringZZZ.sSEPARATOR_POSTFIX_DEFAULT + "[/D]", "Gib das errechnete Datum in diesem Format aus.")
 		;		
 		
 		int iFactor, iArgumentType;
@@ -212,8 +229,13 @@ public interface ILogStringZZZ{
 	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent();
 	public String compute(Object obj, String sMessage01, String sMessage02, IEnumSetMappedLogStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ; //Zwei Log String sind normal log01 wäre z.B. ReflectCodeZZZ.getPositionCurrent()
 		
+	
 	//das ganze auch mit dem intern gespeicherten Format
 	public String compute(String sMessage) throws ExceptionZZZ;
+	public String compute(String sMessage01, String sMessage02) throws ExceptionZZZ;
+	public String compute(String[] saMessage) throws ExceptionZZZ;
+	
+	//... mit Objekt
 	public String compute(Object obj, String sMessage) throws ExceptionZZZ;
 	public String compute(Object obj, String[] saMessage) throws ExceptionZZZ; //ACHTUNG: Hier werden beide Strings in einer Zeile zusammengefasst. Der 2. sollte dann mit dem zweiten argnext formatiert sein
 		

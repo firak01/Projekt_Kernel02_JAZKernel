@@ -53,15 +53,18 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 		    this.sStatusMessage = sStatusMessage;
 		    this.sDescription = sDescription;
 		}
-	
+		
+		@Override
 		public int getStatusGroupId() {
 			return this.iStatusGroupId;
 		}
 		
+		@Override
 		public String getAbbreviation() {
 		 return this.sAbbreviation;
 		}
 		
+		@Override
 		public String getStatusMessage() {
 			 return this.sStatusMessage;
 		}

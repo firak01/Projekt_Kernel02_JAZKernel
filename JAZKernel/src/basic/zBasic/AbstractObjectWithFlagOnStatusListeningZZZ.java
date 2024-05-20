@@ -251,7 +251,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			//+++ Pruefe, ob der ActionAlias (anhand von IEnumSetMappedStatusZZZ) in der reactionHashmapCustom vorhanden ist.
 			boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
 			if(!bProof) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+"=> KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -287,7 +287,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
 			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
 			if(hmEnum==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: KEINE Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+"=> KEINE Hashmap StatusLocal4Reaction vorhanden. Breche ab";
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -297,13 +297,13 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReturnReferenceLog);
 			String []saLog = objReturnReferenceLog.get();
 			if(!ArrayUtilZZZ.isEmpty(saLog)) {
-				sLog = "ObjectWithFlagOnStatusListening (" + this.getClass().getName() + ")";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+ "Log aus der Ermittlung des ActionAlias folgt...)";
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);
 			}
 			
 			if(StringZZZ.isEmpty(sActionAlias)) {
-				sLog = "=> Event ist NICHT relevant.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+"=> sActionAlias ist leer. Event ist NICHT relevant. Breche ab.";
 				this.logProtocolString(sLog);
 				break main;
 			}

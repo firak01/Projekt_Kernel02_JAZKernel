@@ -80,6 +80,21 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 	
 	//### Aus IFlagUserZZZ ##########################
 	@Override
+	public boolean getFlag(Enum enumFlag) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(enumFlag==null) {
+				break main;
+			}
+			
+			String sFlagName = enumFlag.name();
+			bFunction = this.getFlag(sFlagName);							
+		}	// end main:
+		
+		return bFunction;
+	}
+	
+	@Override
 	public boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag) {
 		return this.getFlag(objEnumFlag.name());
 	}

@@ -295,7 +295,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}
 		}//end main:
 		if(bReturn) {
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatus ("+this.getClass().getName()+ ") - Status changed to '"+sStatusString+"'";
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatus ("+this.getClass().getSimpleName()+ ") - Status changed to '"+sStatusString+"'";
 		    this.logProtocolString(sLog);			
 		}
 		return bReturn;
@@ -309,11 +309,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			bReturn = this.proofStatusLocalValueChanged(sStatusString, bStatusValue);	
 		}//end main:
 		if(bReturn) {
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatus ("+this.getClass().getName()+ ") - Status changed to '"+sStatusString+"', Value="+bStatusValue;
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatus ("+this.getClass().getSimpleName()+ ") - Status changed to '"+sStatusString+"', Value="+bStatusValue;
 			this.logProtocolString(sLog);			
 		    this.logProtocolString(sLog);			
 		}else {
-			String sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatus ("+this.getClass().getName()+ ") - Status remains '"+sStatusString+"', Value="+bStatusValue;			
+			String sLog = ReflectCodeZZZ.getPositionCurrent()+ "ObjectWithStatus ("+this.getClass().getSimpleName()+ ") - Status remains '"+sStatusString+"', Value="+bStatusValue;			
 		    this.logProtocolString(sLog);
 		}
 		return bReturn;
@@ -1086,7 +1086,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			}
 			
 			boolean bQuery = this.queryOfferStatusLocal(sStatusName, bStatusValue);			
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "queryOffer returns '" + bQuery + "' for '" + sStatusName + "' and StatusValue '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+			sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> queryOffer returns '" + bQuery + "' for '" + sStatusName + "' and StatusValue '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 			if(!bQuery) {
 //				this.logProtocolString(sLog);
 				break main;
@@ -1097,14 +1097,14 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//Falls irgendwann ein Objekt sich fuer die Eventbenachrichtigung registriert hat, gibt es den EventBroker.
 			//Dann erzeuge den Event und feuer ihn ab.	
 			if(this.getSenderStatusLocalUsed()==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "Would like to fire event but no objEventStatusLocalBroker available, any registered? For '" + sStatusName + "' and StatusValue '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent() +  this.getClass().getSimpleName()+"=> Would like to fire event but no objEventStatusLocalBroker available, any registered? For '" + sStatusName + "' and StatusValue '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);		
 				break main;
 			}
 			
 			//Erzeuge fuer das Enum einen eigenen Event. Die daran registrierten Klassen koennen in einer HashMap definieren, ob der Event fuer sie interessant ist.		
 			if(bStatusValue) { //!!! nur im TRUE Fall wird eine Logausgabe erzeugt... sonst wird das Log zu voll.			
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "Creates event for '" + sStatusName + "' and StatusValue '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName()+"=> Creates event for '" + sStatusName + "' and StatusValue '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);
 			}
 			IEventObjectStatusBasicZZZ event;
@@ -1114,7 +1114,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 				event = new EventObjectStatusLocalZZZ(this, sStatusName, bStatusValue, sStatusMessage);			
 			}
 					
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "Fires event for '" + sStatusName + "' and value '" + bStatusValue + "'";
+			sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName()+"=> Fires event for '" + sStatusName + "' and value '" + bStatusValue + "'";
 			this.logProtocolString(sLog);
 			this.getSenderStatusLocalUsed().fireEvent(event);
 						
@@ -1125,20 +1125,23 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//IStatusBooleanMessageZZZ objStatus = new StatusBooleanMessageZZZ(enumStatusLocalIn, bValue, sMessage);
 			HashMap<String,IStatusBooleanMessageZZZ> hmStatus = StatusLocalAvailableHelperZZZ.searchHashMapBooleanMessage(this, true);
 			if(hmStatus==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "Es war keine HashMap mit Statusname erstellbar, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> Es war keine HashMap mit Statusname erstellbar, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);
 				break main;
 			}
 
 			if(hmStatus.isEmpty()) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "HashMap mit Statusnamen ist leer, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> HashMap mit Statusnamen ist leer, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);
 				break main;
+			}else {
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> HashMap mit Statusnamen erstellt, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				this.logProtocolString(sLog);				
 			}
 			
 			IStatusBooleanMessageZZZ objStatus = hmStatus.get(sStatusName);
 			if(objStatus==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "Der Status wurde nicht in der HashMap der Statusname gefunden, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> Der Status wurde nicht in der HashMap der Statusname gefunden, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -1146,7 +1149,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//Übernimm dieses Statusobjekct in den Ringspeicher						
 			bReturn = this.getCircularBufferStatusLocal().offer(objStatus);
 			if(!bReturn) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "Der Status wurde nicht erfolgreich im CircularBuffer abgelegt, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> Der Status wurde nicht erfolgreich im CircularBuffer abgelegt, fuer: '" + sStatusName + "' and value '" + bStatusValue + "', StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);				
 				break main;
 			}
@@ -1476,7 +1479,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			bReturn = StatusLocalAvailableHelperZZZ.proofOnChange(hmStatusLocal, sStatusName, bStatusValue);
 			if(!bReturn) {
 				//Hier auch keinen Log Eintrag erzeugen, die blaehen das Log auf.
-				//String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - This status has a value to be ignored: '" + sStatusName + "'";				
+				//String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getSimpleName()+") - This status has a value to be ignored: '" + sStatusName + "'";				
 				//this.logProtocolString(sLog);
 				break main;
 			}
@@ -1503,7 +1506,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			bReturn = StringZZZ.equals(sStatusMessage, sStatusMessageLast); 
 			if(!bReturn) {
 				//Hier auch keinen Log Eintrag erzeugen, die blaehen das Log auf.
-				//String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") - This Message has not changed: '" + sMessage + "'";				
+				//String sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getSimpleName()+") - This Message has not changed: '" + sMessage + "'";				
 				//this.logProtocolString(sLog);
 				break main;
 			}
@@ -1541,7 +1544,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			
 			boolean bExists = this.proofStatusLocalExists(sStatusName);															
 			if(!bExists) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "queryOfferStatusLocal would like to fire event, but this status is not available. For: '" + sStatusName + "' and value '" + bStatusValue + "'"; //, StatusMessage='"+sStatusMessage+"'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> queryOfferStatusLocal would like to fire event, but this status is not available. For: '" + sStatusName + "' and value '" + bStatusValue + "'"; //, StatusMessage='"+sStatusMessage+"'";
 				this.logProtocolString(sLog);			
 				break main;
 			}
@@ -1550,11 +1553,11 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//Aus iSenderObjectStatusLocalUserZZZ
 			//Es ist nur die Frage, ob Status - Werte mit false versendet werden sollen
 			
-			sLog = ReflectCodeZZZ.getPositionCurrent() + "queryOfferStatusLocal for: '" + sStatusName + "' and value '" + bStatusValue + "'"; //, StatusMessage='\"+sStatusMessage+\"'\";);
+			sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> queryOfferStatusLocal for: '" + sStatusName + "' and value '" + bStatusValue + "'"; //, StatusMessage='\"+sStatusMessage+\"'\";);
 			if(!bStatusValue) {
 				if(!this.getFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE)) {
 					//Diese Ausgabe blaeht das Log unnoetig auf.
-					//sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getName()+") would like to fire event for status '" + sStatusName + "', but 'false-values' should not be send (Flag: "+ ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE.name() +")";
+					//sLog = ReflectCodeZZZ.getPositionCurrent() + "ObjectWithStatus ("+this.getClass().getSimpleName()+") would like to fire event for status '" + sStatusName + "', but 'false-values' should not be send (Flag: "+ ISenderObjectStatusLocalUserZZZ.FLAGZ.STATUSLOCAL_SEND_VALUEFALSE.name() +")";
 					//this.logProtocolString(sLog);
 					break main; //Also im Normalfall nur Events mit TRUE Wert behandeln
 				}
@@ -1568,7 +1571,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 			//++++++++++++++++++++++++++++++++++++++++++++++
 			boolean bQuery = this.queryOfferStatusLocalCustom();
 			if(!bQuery) { 			
-				sLog = ReflectCodeZZZ.getPositionCurrent() +"queryOfferStatusLocal would like to fire event but custom query returned '" + bQuery + "', for: '" + sStatusName + "' and value '" + bStatusValue + "'"; //, StatusMessage='\\\"+sStatusMessage+\\\"'\\\";);
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> queryOfferStatusLocal would like to fire event but custom query returned '" + bQuery + "', for: '" + sStatusName + "' and value '" + bStatusValue + "'"; //, StatusMessage='\\\"+sStatusMessage+\\\"'\\\";);
 				this.logProtocolString(sLog);			
 				break main;
 			}else {

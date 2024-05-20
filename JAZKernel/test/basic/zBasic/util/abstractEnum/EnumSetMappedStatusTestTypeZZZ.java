@@ -1,14 +1,6 @@
 package basic.zBasic.util.abstractEnum;
 
-import static java.lang.System.out;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.EnumSet;
-
-import basic.zBasic.ReflectClassZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 
 /*
 Properties that are database specific are:
@@ -115,6 +107,7 @@ public int getIndex() {
 }
 
 // the identifierMethod ---> Going in DB
+@Override
 public String getAbbreviation() {
     return this.abbr;
 }

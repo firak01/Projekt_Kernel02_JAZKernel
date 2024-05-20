@@ -169,7 +169,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			
 			String[] saLog = objReferenceLog.get();
 			if(!ArrayUtilZZZ.isEmpty(saLog)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "From referenced Log";
+				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> From referenced Log";
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);
 			}
@@ -252,7 +252,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 				bReturn = super.offerStatusLocal(sStatusName, bStatusValue, sStatusMessage);
 			}
 			if(bReturn) {
-				sLog = ReflectCodeZZZ.getPositionCurrent() + "offerStatusLocal  der Superclass gibt '" + bReturn + "' zurueck.";
+				sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName()+"=> Status '" + sStatusName + "', Wert '" + bStatusValue + "'... offerStatusLocal  der Superclass gibt '" + bReturn + "' zurueck.";
 				this.logProtocolString(sLog);
 			}
 
@@ -267,27 +267,29 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
 			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
 			if(hmEnum==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: KEINE Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Es ist KEINE Mapping Hashmap StatusLocal4Reaction vorhanden. Breche ab";
 				this.logProtocolString(sLog);
 				break main;
 			}
 			
 			//Hole den ActionAlias
 			ReferenceArrayZZZ<String>objReturnReferenceLog = new ReferenceArrayZZZ<String>();
+			
+			//TODOGOON20240518 hier ist was im argen. ProcessWatchRunner bekommt nie den Event vom Monitor, der den passenden actionAlias triggert.
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(sStatusName, hmEnum, objReturnReferenceLog);
 			String[] saLog = objReturnReferenceLog.get();
 			if(!ArrayUtilZZZ.isEmpty(saLog)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: KEINE gemappte Reaktion für den Status ("+ sStatusName + ") . Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' dazu ActionAlias geholt sActionAlias='" + sActionAlias + "'";				
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);
 			}
 			
 			if(StringZZZ.isEmpty(sActionAlias)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"=> Status '" + sStatusName + "' ist NICHT relevant zum Reagieren mit einer eigenen Aktion.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' ist NICHT relevant zum Reagieren mit einer eigenen Aktion.";
 				this.logProtocolString(sLog);
 				break main;
 			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"=> Status '" + sStatusName + "' ist relevant zum Reagieren mit einer eigenen Aktion (ActionAlias = " + sActionAlias + ").";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' ist relevant zum Reagieren mit einer eigenen Aktion (ActionAlias = " + sActionAlias + ").";
 				this.logProtocolString(sLog);
 			}
 			
@@ -296,16 +298,19 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			IEnumSetMappedStatusZZZ enumStatus = StatusLocalEventHelperZZZ.getEnumStatusMapped(sStatusName, hmEnum, objReferenceLog02);
 			String[] saLog02 = objReferenceLog02.get();
 			if(!ArrayUtilZZZ.isEmpty(saLog02)) {
-				objReturnReferenceLog.add(saLog);				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' EnumStatusMapped geholt.";				
+				this.logProtocolString(sLog);
+				this.logProtocolString(saLog);								
 			}
 			
 			if(enumStatus!=null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"=> gemappten Status gefunden. '" + enumStatus.getName() + "' passt das zum  Suchstatus = " + sStatusName + ") ? (bStatusValue="+bStatusValue + " sStatusMessage='" + sStatusMessage + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' EnumStatusMapped gefunden. '" + enumStatus.getName() + "' passt. (bStatusValue="+bStatusValue + " sStatusMessage='" + sStatusMessage + "'";
 				this.logProtocolString(sLog);
 			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"=> KEINEN gemappten Status gefunden fuer den Status = " + sStatusName + ") (bStatusValue="+bStatusValue + " sStatusMessage='" + sStatusMessage + "'";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' KEINEN gemappten Status gefunden. (bStatusValue="+bStatusValue + " sStatusMessage='" + sStatusMessage + "'";
 				this.logProtocolString(sLog);
 			}
+			
 			//Mache die Rection
 			bReturn = this.reactOnStatusLocal4Action(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
 			
@@ -325,7 +330,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//+++ Pruefe, ob der ActionAlias (anhand von IEnumSetMappedStatusZZZ) in der reactionHashmapCustom vorhanden ist.
 			boolean bProof = this.queryReactOnStatusLocalEventCustom(eventStatusLocal);
 			if(!bProof) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: QueryReactCustom ergibt false ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName()+"=> Zum Reagieren: QueryReactCustom ergibt false ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -346,7 +351,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//+++ Pruefe, ob der ActionAlias (anhand von IEnumSetMappedStatusZZZ) in der reactionHashmapCustom vorhanden ist.
 			boolean bProof = this.isEventRelevant4ReactionOnStatusLocal(eventStatusLocal);
 			if(!bProof) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName()+"=> Zum Reagieren: KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -366,7 +371,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//+++ Pruefe, ob der ActionAlias (anhand von IEnumSetMappedStatusZZZ) in der reactionHashmapCustom vorhanden ist.
 			boolean bProof = this.queryReactOnStatusLocal4ActionCustom(sActionAlias, enumStatus, bStatusValue, sStatusMessage);
 			if(!bProof) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: QueryReact4ActionCustom ergibt false ("+ enumStatus.getName() + ") . Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getName()+"=> Zum Reagieren: QueryReact4ActionCustom ergibt false ("+ enumStatus.getName() + ") . Breche ab";				
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -425,7 +430,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//+++ Mappe nun die eingehenden Status-Enums auf die eigene Reaction.
 			HashMap<IEnumSetMappedStatusZZZ,String>hmEnum = this.getHashMapStatusLocal4Reaction();				
 			if(hmEnum==null) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: KEINE Mapping Hashmap fuer das StatusMapping vorhanden. Breche ab";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+ "=> KEINE Hashmap StatusLocal4Reaction vorhanden. Breche ab";
 				this.logProtocolString(sLog);
 				break main;
 			}
@@ -435,17 +440,17 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReturnReferenceLog);
 			String[] saLog = objReturnReferenceLog.get();
 			if(!ArrayUtilZZZ.isEmpty(saLog)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"Zum Reagieren: KEINE gemappte Reaktion für den Status aus dem Event-Objekt ("+ eventStatusLocal.getStatusEnum().name() + ") . Breche ab";				
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+ "=> Event ("+ eventStatusLocal.getStatusEnum().name() + ") Referenziertes Log von der Suche nach dem ActionAlias. (ActionAlias = '" + sActionAlias + "') Breche ab";				
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);
 			}
 			
 			if(StringZZZ.isEmpty(sActionAlias)) {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"=> Event ist NICHT relevant.";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+"=> Event  ("+ eventStatusLocal.getStatusEnum().name() + ") ist NICHT relevant. (ActionAlias = '" + sActionAlias + "'";
 				this.logProtocolString(sLog);
 				break main;
 			}else {
-				sLog = ReflectCodeZZZ.getPositionCurrent()+"=> Event ist relevant (ActionAlias = " + sActionAlias + ").";
+				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+"=> Event ("+ eventStatusLocal.getStatusEnum().name() + ") ist relevant. (ActionAlias = " + sActionAlias + ").";
 				this.logProtocolString(sLog);
 			}
 			

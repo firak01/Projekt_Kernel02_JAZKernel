@@ -18,22 +18,14 @@ import base.collections.CollectionUtil;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.log.LogString4ReflectCodeZZZ;
+import basic.zBasic.xml.ITagZZZ;
+import basic.zBasic.xml.TagFactoryZZZ;
+import basic.zBasic.xml.TagZZZ;
 import basic.zKernel.KernelZZZ;
 
-public class ReflectCodeZZZ  implements IConstantZZZ{
-	public static  final int iPOSITION_STACKTRACE_CURRENT = 2;
-	public static  final int iPOSITION_STACKTRACE_CALLING = 3;
-	
-	public static final String sCLASS_METHOD_SEPERATOR = ".";
-	public static final String sPACKAGE_SEPERATOR = ".";
-	
-	public static final String sPOSITION_MESSAGE_SEPARATOR = "# "; //Merke: Damit kein unnoetiges Leerzeichen entsteht 2 Variablen. Einmal Separator und einmal Idetntifier.
-	public static final String sPOSITION_MESSAGE_IDENTIFIER = " " +ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;    //Dieser String wird hinter der Ermittelten Position ausgegeben.
-															   //Merke: Mit der neuen "justify"-Methode in LogStringZZZ wird das eh buendig gemacht. Darum keine Tabs mehr notwendig
-	
-	public static final String sPOSITION_SEPARATOR = " ~";    //Merke: Damit wird eine ggfs. errechnete Psotion im Code abgegrenzt.
-	public static final String sPOSITION_IDENTIFIER = ReflectCodeZZZ.sPOSITION_SEPARATOR + " ";    //Merke: Falls dies wieder z.B. Buendig gemacht werden soll, oder so.
-	
+public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
+
 	//+++ Fuer den Namen der .java - Datei
 	public static String getMethodCurrentFileName(){
 		return getMethodCurrentFileName(1);
@@ -502,28 +494,111 @@ public class ReflectCodeZZZ  implements IConstantZZZ{
 	}
 		
 	public static String  getPositionCurrent() throws ExceptionZZZ{
+		//return ReflectCodeZZZ.getPositionCurrentSeparated(0);
+		return ReflectCodeZZZ.getPositionCurrentXml(0);
+	}
+	
+	public static String  getPositionCalling() throws ExceptionZZZ{
+		//return ReflectCodeZZZ.getPositionCurrentSeparated(1);
+		return ReflectCodeZZZ.getPositionCurrentXml(1);
+	}
+	
+	public static String getPositionCurrentSeparated(int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			//Wichtig:
 			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
 			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
 			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
+			int iLevelUsed = iLevel+1;
 			
 			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
 			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
-			int iLine = ReflectCodeZZZ.getMethodCallingLine();
-			String sFile = ReflectCodeZZZ.getMethodCallingFileName();
-			String sMethod = ReflectCodeZZZ.getMethodCallingName();
+			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
+			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
 
-			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Form man gerne haette... file oder object zentriert.
-			//a) Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.
+			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Variante man gerne haette... file oder object zentriert.
+			//a) Variante mit dem Dateinamen
 			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
 			
 			//b) Variante mit Objektname und dahinter iLine
 			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
 			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
+
+			//Erweitere um Separatoren
+			sMethod = sMethod + ReflectCodeZZZ.sPOSITION_METHOD_SEPARATOR;
 			
-			sReturn = sMethod + ReflectCodeZZZ.sPOSITION_SEPARATOR + sPositionInFile + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+			//Ohne die Method
+			sPositionInFile = sPositionInFile + ReflectCodeZZZ.sPOSITION_FILE_SEPARATOR;
+			
+			//Mit LosgString-Klasse
+			String[]saParts = new String[2];
+			saParts[0] = sMethod;
+			saParts[1] = sPositionInFile;
+			
+			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(saParts);
+			
+			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
+			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
+		}//end main:
+		return sReturn;
+	}
+	
+	/**Umgib die einzelen Elemente mit XML-Tags.
+	 * Ganz einfach gehalten, weil grundliegende Klasse in zBasic-Bibliothek
+	 * Im JAZLanguageMarkup-Projekt gibt es dafuer Komplexeres.
+	 * 
+	 * @return
+	 * @author Fritz Lindhauer, 19.05.2024, 14:59:04
+	 * @throws ExceptionZZZ 
+	 */
+	public static String getPositionCurrentXml(int iLevel) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			//Wichtig:
+			//Rufe die Methoden zur "Positionsbestimmung" hier in der obersten Funktion auf.
+			//in den Funtionen darunter muesste ja alles wieder um 1 Ebene tiefer definiert werden.
+			//Das gilt sowohl für die Zeile als auch für den Dateinamen oder die Methode.
+			int iLevelUsed = iLevel+1;
+						
+			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
+			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
+			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
+			ITagZZZ objTagLine = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.LINENUMBER, iLine);
+			
+			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
+			ITagZZZ objTagFile = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.FILENAME, sFile);
+			
+			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
+			ITagZZZ objTagMethod = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.METHOD, sMethod);
+			String sMethodTag = objTagMethod.getElementString();
+			
+			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Form man gerne haette... file oder object zentriert.
+			//a) Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.
+			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
+			ITagZZZ objTagPosition = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sPositionInFile);
+			String sPositionInFileTag = objTagPosition.getElementString();
+			
+			//b) Variante mit Objektname und dahinter iLine
+			//String sObjectWithMethod = ReflectCodeZZZ.getClassCallingName() + ReflectCodeZZZ.sCLASS_METHOD_SEPERATOR  + sMethod;
+			//String sPositionInObject =  getPositionCurrentInObject(sObjectWithMethod, iLine);
+			
+			//Mit Method voran
+			//sReturn = sMethod + ReflectCodeZZZ.sPOSITION_SEPARATOR + sPositionInFile + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+			
+			//Ohne die Method
+			//sReturn = ReflectCodeZZZ.sPOSITION_SEPARATOR + sPositionInFile + ReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR;
+			
+			//Mit LogString-Klasse
+			String[]saParts = new String[2];
+			saParts[0] = sMethodTag;
+			saParts[1] = sPositionInFileTag;
+			
+			sReturn = LogString4ReflectCodeZZZ.getInstance().compute(saParts);
+			
+			//Damit hiervon ggfs. folgende Kommentare abgegrenzt werden koennen
+			sReturn = sReturn  + sPOSITION_MESSAGE_SEPARATOR;
 		}//end main:
 		return sReturn;
 	}

@@ -56,8 +56,8 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 			if(event==null)break main;
 			
 			String sLog;
-			long lngThreadId = Thread.currentThread().getId();
-			String sThreadId = "[Thread: " + lngThreadId + "]";
+			boolean bReacted;
+			
 			try {
 				for(int i = 0 ; i < this.getListenerRegisteredAll().size(); i++){
 					//Mit instanceof den Typ abfragen und dahingehend die passende Unterabfrage des Events aufrufen.
@@ -71,15 +71,24 @@ public abstract class AbstractSenderObjectStatusLocalBasicZZZ extends AbstractOb
 						
 						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT						
 						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, "");											
-						sLog = ReflectCodeZZZ.getPositionCurrent() + "Called for IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
+						sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Called for IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
 						this.logProtocolString(sLog);
 						IListenerObjectStatusLocalZZZ lused = (IListenerObjectStatusLocalZZZ) l;
-						lused.reactOnStatusLocalEvent(eventUsed);
+						bReacted = lused.reactOnStatusLocalEvent(eventUsed);
+						if(!bReacted) {
+							sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> NICHT reagiert hat IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
+							this.logProtocolString(sLog);
+						}else{
+							sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Reagiert hat IListenerObjectStatusLocalSetZZZ implementing Object: " + sLogUsedAdditional;
+							this.logProtocolString(sLog);
+						}
+						
+						
 					}else {					
 						
 						//20240511: Verwende für den String HINTER dem "called": ... "durch IListenerObjectStatusLocalZZZ" und dahinter noch einen LogString-"Generator" mit: THREAD, OBJEKTKLASSENNAME(einfach), ARGNEXT
 						String sLogUsedAdditional = LogString4SenderZZZ.getInstance().compute(l, " - nothing will be executed.");
-						sLog = ReflectCodeZZZ.getPositionCurrent() + "Instanceof type is not used yet: " + sLogUsedAdditional;
+						sLog = ReflectCodeZZZ.getPositionCurrent() + this.getClass().getSimpleName() + "=> Instanceof type is not used yet: " + sLogUsedAdditional;
 						this.logProtocolString(sLog);
 					}
 				}

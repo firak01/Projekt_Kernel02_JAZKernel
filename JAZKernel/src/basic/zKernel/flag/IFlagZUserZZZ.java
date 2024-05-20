@@ -24,12 +24,14 @@ public interface IFlagZUserZZZ{
 	public abstract boolean proofFlagExists(String sFlag) throws ExceptionZZZ; //Wird per METHOD.INVOKE(...) aufgerufen, muss darum in jeder Klasse - per Vererbung - vorhanden sein.
 	public abstract boolean proofFlagSetBefore(String sFlag) throws ExceptionZZZ; //Prueft auf die Existenz des Flags in der HashMap.
 	
+	
 	//damit muss man nicht mehr tippen hinter dem enum .name()
 	public abstract boolean getFlag(IFlagZUserZZZ.FLAGZ objEnumFlag);
 	public abstract boolean setFlag(IFlagZUserZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	public abstract boolean[] setFlag(IFlagZUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
 	//20230730 Merke: In IEventBrokerFlagZsetUserZZZ gibt es noch diese Besonderheit, mit der Enum - Werte gesetzt werden können. Die werden dann an Events uebergeben und koennen weitere Informationen enthalten.
 	//boolean setFlag(Enum enumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	//public abstract boolean getFlag(Enum a) throws ExceptionZZZ;
 	
 	public abstract boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
 	public abstract boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ; //Prueft auf die Existenz des Flags in der HashMap.

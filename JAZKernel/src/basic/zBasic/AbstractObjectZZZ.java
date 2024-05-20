@@ -48,16 +48,10 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	}
 	
 	
-	//### aus ILogZZZ
+	//### aus ILogZZZ	
 	@Override
-	public synchronized void logLineDate(String sLog) throws ExceptionZZZ {
-		String sTemp = KernelLogZZZ.computeLineDate(this, sLog);
-		System.out.println(sTemp);		
-	}
-	
-	@Override
-	public synchronized void logLine(String sLog) throws ExceptionZZZ{
-		System.out.println(sLog);
+	public void logLineDate(String sLog) throws ExceptionZZZ {
+		ObjectZZZ.logLineDate(this, sLog);
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++

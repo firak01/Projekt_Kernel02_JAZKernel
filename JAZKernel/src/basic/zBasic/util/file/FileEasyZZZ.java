@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IPath;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
+import basic.zBasic.ObjectZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -1906,7 +1907,11 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 //			}
 		}
 		
-		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'");			 
+		// System.out.println(ReflectCodeZZZ.getPositionCurrent() +"wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'");
+		String sLog = "wird NICHT benutzt sFilePathPure='"+ sFilePathPure + "'";
+		ObjectZZZ.logLineWithDate( sLog );
+		
+		
 		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"wird NICHT benutzt sRoot='"+ sRoot + "'");
 		 System.out.println(ReflectCodeZZZ.getPositionCurrent() +"wird benutzt! sFilePath as total='"+ sFilePath+"'");
 		 

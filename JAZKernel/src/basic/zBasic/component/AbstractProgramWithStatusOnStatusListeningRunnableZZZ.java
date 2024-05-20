@@ -87,6 +87,7 @@ public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ exte
 				break main;
 			}
 			
+			bReturn = true;
 		}//end main:
 		return bReturn;
 	}

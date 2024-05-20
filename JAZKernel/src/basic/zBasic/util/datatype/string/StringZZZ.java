@@ -83,11 +83,11 @@ public class StringZZZ implements IConstantZZZ{
 	}
 	
 		
-	/** Pr�ft die Zeichen des Strings gegen die Zeichen des �bergebenen Pattern
+	/** Prueft die Zeichen des Strings gegen die Zeichen des uebergebenen Pattern
 	 *   Zur Steuerung dient iFlag:
-	 *   = -1  => der String enth�lt nur Zeichen, die im Pattern  enthalten sind
-	 *   = 0  => der String enth�lt keine Zeichen, die im Pattern enthalten sind.
-	 *   = 1  => das �bergebene Pattern wird als RegEx angesehen und auch so behandelt
+	 *   = -1  => der String enthaelt nur Zeichen, die im Pattern  enthalten sind
+	 *   = 0  => der String enthaelt keine Zeichen, die im Pattern enthalten sind.
+	 *   = 1  => das uebergebene Pattern wird als RegEx angesehen und auch so behandelt
 	 *    
 	 *    
 	 *    
@@ -301,28 +301,6 @@ public class StringZZZ implements IConstantZZZ{
 }
 
 	public static boolean contains(String sString, String sMatch){
-//		boolean bReturn = false;
-//		main:{
-//			if(StringZZZ.isEmpty(sString)) break main;
-//			if(StringZZZ.isEmpty(sMatch)) break main;
-//			
-//			//Merke: sString.contains(CharSequence) gibt es erst seit Java 1.5
-//			//CharSequence sequence = sMatch.subSequence(1, sString.length());
-//			//if(sString.contains(sequence)  .......
-//			
-//			String sSub;
-//			int iMatchLength=sMatch.length();
-//			int iProof = sString.length()-iMatchLength;
-//			for(int icount=0; icount <= iProof; icount++){
-//				sSub = sString.substring(icount, iMatchLength+icount);
-//				if(sSub.equals(sMatch)){
-//					bReturn = true;
-//					break main;
-//				}
-//			}					
-//		} //end main:		
-//		return bReturn;
-			
 		return StringZZZ.contains(sString, sMatch, true);	
 	}
 	
@@ -882,22 +860,6 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String left(String sString, String sToFind){
-//		String sReturn=sString;
-//		main:{
-//			check:{
-//				if (StringZZZ.isEmpty(sString)) break main;				
-//			}
-//		
-//			sReturn = "";
-//			int iIndex = sString.indexOf(sToFind);
-//			if(iIndex<= -1) break main;
-//			if(iIndex-1<= -1) break main;
-//			
-//			sReturn = sString.substring(0, iIndex);
-//			
-//		}//END main:
-//		return sReturn;
-		
 		return StringZZZ.left(sString, sToFind, true);
 	}
 	
@@ -1067,25 +1029,6 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return String
 	 */
 	public static String right(String sString, String sToFind){
-//		String sReturn=sString;
-//		main:{
-//			check:{
-//				if (StringZZZ.isEmpty(sString)) break main;
-//				
-//				sReturn = "";
-//				if(StringZZZ.isEmpty(sToFind)) break main;	
-//			}
-//					
-//			int iIndex = sString.lastIndexOf(sToFind);
-//			if(iIndex<= -1) break main;
-//			
-//			//die Länge des Strings aufaddieren
-//			iIndex = iIndex + sToFind.length();
-//					
-//			sReturn = sString.substring(iIndex);
-//
-//		}//END main:
-//		return sReturn;
 		return StringZZZ.right(sString, sToFind, true);
 	}
 	
@@ -2265,18 +2208,6 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	 * @return
 	 */
 	public static String rightback(String sString, String sToFind){
-//		String sReturn = "";
-//		main:{
-//			if(StringZZZ.isEmpty(sString)) break main;
-//			if(StringZZZ.isEmpty(sToFind)) break main;
-//			
-//			int iPosition = sString.indexOf(sToFind);
-//			if (iPosition == -1) break main;
-//			
-//			sReturn = sString.substring(iPosition+ sToFind.length(), sString.length());
-//		}
-//		return sReturn;
-		
 		return StringZZZ.rightback(sString, sToFind, true);
 	}
 	
@@ -3237,27 +3168,10 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	
 	
 	
-	/* Trimme den String, schneide links und rechts jeweils ein Anf�hrungszeichen weg, trimme wieder, ...  schneide Anf�hrungszeichen weg, usw. bis es kein passendes Paar Anf�hrungszeichen links und rechts mehr gibt.	 
+	/* Trimme den String, schneide links und rechts jeweils ein Anfuehrungszeichen weg, trimme wieder, ...  schneide Anfuehrungszeichen weg, usw. bis es kein passendes Paar Anfuehrungszeichen links und rechts mehr gibt.	 
 	 */
 	public static String trimQuotationMarked(String sString){
-		return StringZZZ.trimDoubleQuoteMarked(sString);
-		
-//		String sReturn = sString;
-//		main:{
-//			if(StringZZZ.isEmpty(sString)) break main;
-//		
-//			sReturn = sString.trim();
-//			boolean bGoon = false;
-//			while(!bGoon){
-//				if(sReturn.startsWith("\"") && sReturn.endsWith("\"")){
-//					sReturn = StringZZZ.midBounds(sReturn, 1, 1); //Schneide die Anführungszeichen links und rechts weg
-//					sReturn = sReturn.trim();
-//				}else{
-//					bGoon = true;
-//				}
-//			}
-//		}//end main:
-//		return sReturn;
+		return StringZZZ.trimDoubleQuoteMarked(sString);		
 	}
 	
 	public static String stripCharacters(String sString, char[]caToStrip) {
@@ -3316,22 +3230,7 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	/* Anders als beim trimQuotationMarked werden hier Leerzeichen nicht getrimmt. 
 	 */
 	public static String stripQuotationMarked(String sString){
-		return StringZZZ.stripDoubleQuoteMarked(sString);
-		
-//		String sReturn = sString;
-//		main:{
-//			if(StringZZZ.isEmpty(sString)) break main;
-//		
-//			boolean bGoon = false;
-//			while(!bGoon){
-//				if(sString.startsWith("\"") && sString.endsWith("\"")){
-//					sReturn = StringZZZ.midBounds(sString, 1, 1); //Schneide die Anführungszeichen links und rechts weg					
-//				}else{
-//					bGoon = true;
-//				}
-//			}
-//		}//end main:
-//		return sReturn;
+		return StringZZZ.stripDoubleQuoteMarked(sString);		
 	}
 	
 	/** Entferne den String von links kommend, lasse mindestens 1 Zeichen übrig.
