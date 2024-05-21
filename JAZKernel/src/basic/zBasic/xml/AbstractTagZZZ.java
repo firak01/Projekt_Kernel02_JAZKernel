@@ -1,5 +1,7 @@
 package basic.zBasic.xml;
 
+import java.util.Vector;
+
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -9,6 +11,7 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 	private static final long serialVersionUID = -3411751655174978836L;
 	protected ITagTypeZZZ objTagType = null;
 	protected String sValue = null;
+	protected Vector<ITagZZZ>vecChildTags = null;
 	
 	public AbstractTagZZZ() throws ExceptionZZZ{
 		super();
@@ -41,15 +44,27 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 	}
 		
 	//######## Getter / Setter ##################
+	@Override
+	public Vector<ITagZZZ> getChildTags(){
+		return this.vecChildTags;
+	}
+	
+	@Override
+	public void setChildTags(Vector<ITagZZZ>vecTags) {
+		this.vecChildTags = vecTags;
+	}
+	
 	@Override	
-	public String getValue() throws ExceptionZZZ{
+	public String getValue(){
 		return this.sValue;
 	}
 
 	@Override
-	public void setValue(String sValue) throws ExceptionZZZ{
+	public void setValue(String sValue){
 		this.sValue = sValue;
 	}
+	
+	
 	
 	@Override 
 	public String getElementString() throws ExceptionZZZ{

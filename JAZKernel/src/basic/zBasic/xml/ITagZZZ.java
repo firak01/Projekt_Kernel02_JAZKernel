@@ -1,5 +1,7 @@
 package basic.zBasic.xml;
 
+import java.util.Vector;
+
 import basic.zBasic.ExceptionZZZ;
 
 /**This interface provides methods for reading every type of attribute, which is allowed (or is necessary to be read) in a html-tag.
@@ -7,9 +9,11 @@ import basic.zBasic.ExceptionZZZ;
  *
  */
 public interface ITagZZZ {
-	public String getValue() throws ExceptionZZZ;
-	public void setValue(String sValuel) throws ExceptionZZZ;
+	public String getValue();
+	public void setValue(String sValuel);
 	
+	public Vector<ITagZZZ> getChildTags(); //Also: Damit soll ohne eine Document-Klasse einen Struktur von Tags möglich werden.
+	public void setChildTags(Vector<ITagZZZ> vecTags);
 	
 	//Kein Setter, da ein Tag nicht im Laufenden Program seinen Typ aendern kann.
 	public ITagTypeZZZ getTagType();
