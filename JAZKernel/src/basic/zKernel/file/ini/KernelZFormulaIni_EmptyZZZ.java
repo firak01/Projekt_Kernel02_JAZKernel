@@ -5,18 +5,16 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelZFormulaIni_EmptyZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZFormulaIniZZZ{	
+	private static final long serialVersionUID = 7203160369729097L;
 	public static String sTAG_NAME = "z:Empty";
 	private FileIniZZZ objFileIni=null;
 		
@@ -118,7 +116,7 @@ public class KernelZFormulaIni_EmptyZZZ  extends AbstractKernelUseObjectZZZ impl
 						
 						if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
 						if(!StringZZZ.isEmpty(sRest)){							
-							vecReturn.add(2, sRest); //Fallls vorhanden einen Restwert eintragen.
+							vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
 						}else{
 							vecReturn.add(2,"");
 						}		

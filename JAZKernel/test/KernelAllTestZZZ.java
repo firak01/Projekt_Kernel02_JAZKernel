@@ -33,6 +33,7 @@ import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZTest;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZTest;
 import basic.zBasic.util.file.FileEasyConstantConverterZZZTest;
 import basic.zBasic.util.file.FileEasyZZZTest;
 import basic.zBasic.util.file.FileTextParserZZZTest;
@@ -55,7 +56,7 @@ import basic.zKernel.config.EnumSetKernelConfigDefaultEntryUtilZZZTest;
 import basic.zKernel.file.ini.FileIniZZZTest;
 import basic.zKernel.file.ini.KernelCallIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZTest;
-import basic.zKernel.file.ini.KernelExpressionIniConverterZZZTest;
+import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZTest;
 import basic.zKernel.file.ini.KernelExpressionIniHandlerZZZTest;
 import basic.zKernel.file.ini.KernelJavaCallIniSolverZZZTest;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZTest;
@@ -119,6 +120,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(IntegerArrayZZZTest.class);
 		objReturn.addTestSuite(StringArrayZZZTest.class);
 		objReturn.addTestSuite(StringZZZTest.class);
+		objReturn.addTestSuite(XmlUtilZZZTest.class);
 		
 		//Stream - Tests
 		objReturn.addTestSuite(StreamZZZTest.class);
@@ -135,7 +137,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(KernelZFormulaIniSolverZZZTest.class);
 		
 		objReturn.addTestSuite(KernelEncryptionIniSolverZZZTest.class);
-		objReturn.addTestSuite(KernelExpressionIniConverterZZZTest.class);
+		objReturn.addTestSuite(KernelZFormulaIniConverterZZZTest.class);
 				
 		objReturn.addTestSuite(KernelJavaCallIniSolverZZZTest.class);
 		objReturn.addTestSuite(KernelCallIniSolverZZZTest.class);

@@ -20,10 +20,10 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 	//################### ENUM ALLER "EINFACHEN" KERNEL-TAG-TYPEN ##############
 	//ALIAS("Uniquename","Statusmeldung","Beschreibung, wird nicht genutzt....",)
 	public enum TAGTYPE implements IEnumSetMappedTagTypeZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-		LINENUMBER("linenumber","linenr", "Zeilennummer im Quellcode"),
-		FILENAME("filename","filename","Name der (Java) Datei"),
-		METHOD("method","method","Name der aufgerufenen Methode"),
-		POSITION_IN_FILE("position_in_file","fileposition","Postion, mit Angabe von Dateinamne und Zeilennummer - Format ist so, das dies in Eclipse Console ein clickbarer Link ist.");
+		LINENUMBER("linenumber",TagTypeLineNumberZZZ.sTAGNAME, "Zeilennummer im Quellcode"),
+		FILENAME("filename",TagTypeFileNameZZZ.sTAGNAME,"Name der (Java) Datei"),
+		METHOD("method",TagTypeMethodZZZ.sTAGNAME,"Name der aufgerufenen Methode"),
+		POSITION_IN_FILE("position_in_file",TagTypeFilePositionZZZ.sTAGNAME,"Postion, mit Angabe von Dateinamne und Zeilennummer - Format ist so, das dies in Eclipse Console ein clickbarer Link ist.");
 		
 		private String sAbbreviation,sTag,sDescription;
 	
@@ -165,16 +165,16 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 			
 			String sTagNameUsed = sTagName.toLowerCase();
 			switch (sTagNameUsed) {
-			case "linenr":
+			case TagTypeLineNumberZZZ.sTAGNAME:
 				objReturn = new TagTypeLineNumberZZZ();
 				break;	
-			case "filename":
+			case TagTypeFileNameZZZ.sTAGNAME:
 				objReturn = new TagTypeFileNameZZZ();
 				break;
-			case "method":
+			case TagTypeMethodZZZ.sTAGNAME:
 				objReturn = new TagTypeMethodZZZ();
 				break;
-			case "fileposition":
+			case TagTypeFilePositionZZZ.sTAGNAME:
 				objReturn = new TagTypeFilePositionZZZ();
 				break;
 			default:
@@ -184,6 +184,7 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 		
 		}//end main
 		return objReturn;
+		
 	}
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++

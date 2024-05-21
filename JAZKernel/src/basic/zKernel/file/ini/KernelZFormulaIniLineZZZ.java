@@ -25,7 +25,7 @@ import basic.zBasic.util.crypt.code.ICharacterPoolUserConstantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.IROTUserConstantZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.util.datatype.xml.XmlDocumentUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 /**Klasse, in der die Zeile mit einer Z-Formula behandelt wird.
@@ -91,13 +91,13 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 			//Merke: Aus KernelZFormulaIniSolverTest. Dort wird im setup die Datei aufgebaut und eine Zeile hat z.B. folgende Struktur:
 			//objStreamFile.println("WertCencrypted=<Z><Z:Encrypted><Z:Cipher>ROTnn</Z:Cipher><z:KeyNumber>"+iKeyNumber+"</z:KeyNumber><z:CharacterPool>"+sCharacterPool+"</z:CharacterPool><z:FlagControl>"+sFlagUppercase+"</Z:FlagControl><Z:Code>"+sEncrypted+"</Z:Code></Z:Encrypted></Z>");
 			//bzw:     //TestGetParameter_Encrypted=<Z><Z:Encrypted><Z:Cipher>VigenereNn</Z:Cipher><z:KeyString>Hundi</z:KeyString><z:CharacterPool> abcdefghijklmnopqrstuvwxyz</z:CharacterPool><z:CharacterPoolAdditional>!</z:CharacterPoolAdditional><z:FlagControl>USEUPPERCASE,USENUMERIC,USELOWERCASE,USEADDITIONALCHARACTER</Z:FlagControl><Z:Code>pzGxiMMtsuOMsmlPt</Z:Code></Z:Encrypted></Z>
-			Document objDocument = XmlUtilZZZ.createDocumentWithRootTag("Z");
+			Document objDocument = XmlDocumentUtilZZZ.createDocumentWithRootTag("Z");
 			org.jdom.Element objRoot = objDocument.getRootElement();
 									
-			String stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryptionIniSolverZZZ.sTAG_NAME);
+			String stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryptionIniSolverZZZ.sTAG_NAME);
 			Element objElementZEncryption = new Element(stemp);
 			
-			stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CipherZZZ.sTAG_NAME);
+			stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryption_CipherZZZ.sTAG_NAME);
 			Element objElementZCipher = new Element(stemp);
 			
 			//z:Cipher
@@ -109,7 +109,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 			objElementZEncryption.addContent(objElementZCipher);
 			
 			//z:code
-			stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CodeZZZ.sTAG_NAME);
+			stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryption_CodeZZZ.sTAG_NAME);
 			Element objElementZCode = new Element(stemp);	
 			String sCode = sValue;
 			objElementZCode.addContent(sCode);
@@ -119,7 +119,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 			//z:KeyNumber
 			int iKeyNumber = objCrypt.getCryptNumber();
 			if(iKeyNumber>-1) {				
-				stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_KeyNumberZZZ.sTAG_NAME);
+				stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryption_KeyNumberZZZ.sTAG_NAME);
 				Element objElementZKeyNumber = new Element(stemp);
 				String sKeyNumber = Integer.toString(iKeyNumber);
 				objElementZKeyNumber.addContent(sKeyNumber);
@@ -129,7 +129,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 			//z:KeyString
 			String sKeyString = objCrypt.getCryptKey();
 			if(!StringZZZ.isEmpty(sKeyString)) {
-				stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_KeyStringZZZ.sTAG_NAME);
+				stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryption_KeyStringZZZ.sTAG_NAME);
 				Element objElementZKeyString = new Element(stemp);				
 				objElementZKeyString.addContent(sKeyString);
 				objElementZEncryption.addContent(objElementZKeyString);
@@ -139,7 +139,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 			if(CryptAlgorithmUtilZZZ.isUsingCharacterPoolBase(objCrypt)){
 				String sCharacterPool = objCrypt.getCharacterPoolBase();
 				if(!StringZZZ.isEmpty(sCharacterPool)) {
-					stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CharacterPoolZZZ.sTAG_NAME);
+					stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryption_CharacterPoolZZZ.sTAG_NAME);
 					Element objElementZCharacterPoolString = new Element(stemp);				
 					objElementZCharacterPoolString.addContent(sCharacterPool);
 					objElementZEncryption.addContent(objElementZCharacterPoolString);
@@ -148,7 +148,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 				//z:CharacterPoolAdditional
 				String sCharacterPoolAdditional = objCrypt.getCharacterPoolAdditional();
 				if(!StringZZZ.isEmpty(sCharacterPoolAdditional)) {
-					stemp = XmlUtilZZZ.replaceColonInXmlTag(KernelEncryption_CharacterPoolAdditionalZZZ.sTAG_NAME);
+					stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryption_CharacterPoolAdditionalZZZ.sTAG_NAME);
 					Element objElementZCharacterPoolString = new Element(stemp);				
 					objElementZCharacterPoolString.addContent(sCharacterPoolAdditional);
 					objElementZEncryption.addContent(objElementZCharacterPoolString);
@@ -192,7 +192,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 				//XML-Element setzen
 				String sFlag = objBuilderFlag.toString();												
 				if(!StringZZZ.isEmpty(sFlag)) {
-					stemp = XmlUtilZZZ.replaceColonInXmlTag(Kernel_FlagControlZZZ.sTAG_NAME);
+					stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(Kernel_FlagControlZZZ.sTAG_NAME);
 					Element objElementZFlagControl = new Element(stemp);				
 					objElementZFlagControl.addContent(sFlag);
 					objElementZEncryption.addContent(objElementZFlagControl);
@@ -201,10 +201,10 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 					
 			XMLUtil.addContent(objRoot, objElementZEncryption);			
 			objDocument.setRootElement(objRoot);
-			String sXmlReplaced = XmlUtilZZZ.documentToString(objDocument);
+			String sXmlReplaced = XmlDocumentUtilZZZ.documentToString(objDocument);
 
 			//Aus diesem String die "validen" Tags wieder durch Tags mit : ersetzten, was dann der ZExpression entspricht
-			sReturn = XmlUtilZZZ.placeColonInZExpression(sXmlReplaced);
+			sReturn = XmlDocumentUtilZZZ.placeColonInZExpression(sXmlReplaced);
 		}//end main
 		return sReturn;
 	}

@@ -6,8 +6,8 @@ import basic.zBasic.xml.TagFactoryZZZ;
 
 public class TagTypeLineNumberZZZ extends AbstractTagTypeZZZ {
 	private static final long serialVersionUID = 1162924189948537555L;
-	public static final String sTAGNAME = TagFactoryZZZ.TAGTYPE.LINENUMBER.getTag();
-	
+	public static final String sTAGNAME = "linenr"; //Das geht nicht, das diese Konstante genau in der Enum verwendet wird.  TagFactoryZZZ.TAGTYPE.LINENUMBER.getTag();
+		
 	public TagTypeLineNumberZZZ() throws ExceptionZZZ {
 		super(sTAGNAME);		
 	}	

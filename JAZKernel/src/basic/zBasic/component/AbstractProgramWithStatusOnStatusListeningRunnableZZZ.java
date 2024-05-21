@@ -3,9 +3,7 @@ package basic.zBasic.component;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.status.IEventObjectStatusLocalZZZ;
-import basic.zKernel.status.IListenerObjectStatusLocalZZZ;
 
 public abstract class AbstractProgramWithStatusOnStatusListeningRunnableZZZ extends AbstractProgramWithStatusOnStatusListeningZZZ implements IProgramRunnableZZZ{
 	private static final long serialVersionUID = 6586079955658760005L;		

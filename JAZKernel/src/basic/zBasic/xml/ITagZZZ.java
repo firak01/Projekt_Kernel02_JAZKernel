@@ -6,15 +6,17 @@ import basic.zBasic.ExceptionZZZ;
  * @author 0823
  *
  */
-public interface ITagZZZ {	
-	public ITagTypeZZZ getTagType();
-	
+public interface ITagZZZ {
 	public String getValue() throws ExceptionZZZ;
 	public void setValue(String sValuel) throws ExceptionZZZ;
 	
-	public String getName() throws ExceptionZZZ;
-	//Kein Setter, da über Konstante in der Tag-Klasse definiert
+	
+	//Kein Setter, da ein Tag nicht im Laufenden Program seinen Typ aendern kann.
+	public ITagTypeZZZ getTagType();
 
+	//Kein Setter, da über Konstante in der TagType-Klasse definiert
+	public String getName() throws ExceptionZZZ;
+	
 	//Berechne wie ein einfaches Tag (also ohne Attribute) aussieht, fuer diesen Namen
 	String getStarting() throws ExceptionZZZ;
 	String getClosing() throws ExceptionZZZ;

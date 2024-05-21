@@ -20,7 +20,7 @@ import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelExpressionIniConverterZZZTest extends TestCase {
+public class KernelZFormulaIniConverterZZZTest extends TestCase {
 	//TODO GOON: Dies Klasse ist bisher nur eine Kopie. Passe komplett an.
 	//TODO GOON 20190128: Pfad auf spezielle ini - Datei, sollte relativ sein
 	

@@ -69,6 +69,20 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ Details aus TagType +++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	//#### Aus Interfacace
+	//s. Analog zu z.B. KernelZFormulaIni_NullZZZ, dort aber als Static Methoden.
+	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
+
+	@Override
+	public ITagTypeZZZ getTagType(){
+		return this.objTagType;
+	}
+	protected void  setTagType(ITagTypeZZZ objTagType){
+		this.objTagType = objTagType;
+	}
+	
+	
 	@Override
 	public String getName() throws ExceptionZZZ{
 		ITagTypeZZZ objType = this.getTagType();
@@ -77,48 +91,35 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 		}else {
 			return "";
 		}
-	}
+	}	
 	
 	@Override
-	public ITagTypeZZZ getTagType(){
-		return this.objTagType;
-	}
-
-	protected void  setTagType(ITagTypeZZZ objTagType){
-		this.objTagType = objTagType;
-	}
-			
-	//#### Aus Interfacace
-	//s. Analog zu z.B. KernelZFormulaIni_NullZZZ, dort aber als Static Methoden.
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
-		
-	@Override
 	public String getStarting() throws ExceptionZZZ{
-		String sTag = this.getName();
-		if(StringZZZ.isEmpty(sTag)) {
-			return "";
+		ITagTypeZZZ objType = this.getTagType();
+		if(objType!=null) {
+			return objType.getTagPartStarting();
 		}else {
-			return "<" + sTag + ">"; 
+			return "";
 		}
 	}
 	
 	@Override
 	public String getClosing() throws ExceptionZZZ{				
-		String sTag = this.getName();
-		if(StringZZZ.isEmpty(sTag)) {
-			return "";
+		ITagTypeZZZ objType = this.getTagType();
+		if(objType!=null) {
+			return objType.getTagPartClosing();
 		}else {
-			return "<" + sTag + ">"; 
+			return "";
 		}
 	}	
 	
 	@Override
 	public String getEmpty() throws ExceptionZZZ{
-		String sTag = this.getName();
-		if(StringZZZ.isEmpty(sTag)) {
-			return "";
+		ITagTypeZZZ objType = this.getTagType();
+		if(objType!=null) {
+			return objType.getTagPartEmpty();
 		}else {
-			return "<" + sTag + "/>"; 
+			return "";
 		}
 	}
 		
