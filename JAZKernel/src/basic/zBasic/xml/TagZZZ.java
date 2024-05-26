@@ -1,9 +1,9 @@
 package basic.zBasic.xml;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 
 public class TagZZZ extends AbstractTagZZZ implements ITagZZZ{
+	private static final long serialVersionUID = 8817015233202583461L;
 
 	public TagZZZ() throws ExceptionZZZ{
 		super();

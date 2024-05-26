@@ -6,10 +6,12 @@ import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	protected ITagTypeZZZ objTagType = null;
+	protected String sName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.
 	protected String sValue = null;
 	protected Vector<ITagZZZ>vecChildTags = null;
 	
@@ -104,7 +106,7 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 		if(objType!=null) {
 			return objType.getTagName();
 		}else {
-			return "";
+			return this.sName;
 		}
 	}	
 	
@@ -114,7 +116,7 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 		if(objType!=null) {
 			return objType.getTagPartStarting();
 		}else {
-			return "";
+			return XmlUtilZZZ.computeTagPartStarting(this.sName);
 		}
 	}
 	
@@ -124,7 +126,7 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 		if(objType!=null) {
 			return objType.getTagPartClosing();
 		}else {
-			return "";
+			return XmlUtilZZZ.computeTagPartClosing(this.sName);
 		}
 	}	
 	

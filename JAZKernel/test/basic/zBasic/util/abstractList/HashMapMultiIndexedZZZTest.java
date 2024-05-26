@@ -47,7 +47,7 @@ public void testValueSetGet(){
 		
 				
 		//Nun den Wert wieder auslesen
-		String stemp = (String)hmTest.getEntry(intTest, "Alias1a");
+		String stemp = (String)hmTest.getEntryByAlias(intTest, "Alias1a");
 		assertEquals("Das ist ein Test", stemp);
 		
 		//Neue Werte hinzunehmen
@@ -64,7 +64,7 @@ public void testValueSetGet(){
 		
 		//Nun den Wert wieder auslesen
 		intTest = new Integer(iIndexHigh);
-		stemp = (String)hmTest.getEntry(intTest, "Alias2c");
+		stemp = (String)hmTest.getEntryByAlias(intTest, "Alias2c");
 		assertEquals("5. Zeile", stemp);
 	
 	} catch (ExceptionZZZ ez) {
@@ -167,7 +167,7 @@ public void testGetOuterKeySet(){
 			String s = (String) hmTest.getEntryHigh("nicht da");
 			assertNull(s);
 			
-			String s2 = (String) hmTest.getEntryLast("nicht da");
+			String s2 = (String) hmTest.getEntry("nicht da");
 			assertNull(s2);
 			
 			//#######################
@@ -222,11 +222,11 @@ public void testGetOuterKeySet(){
 			int iHighNew = hmTest.getIndexHigh();
 			assertTrue(iHigh+2==iHighNew);
 			
-			String sValue = (String) hmTest.getEntry("NeuerAlias1a");
+			String sValue = (String) hmTest.getEntryByAlias("NeuerAlias1a");
 			assertNull(sValue); //WEIL kein Index fuer die aeussere Schleife angegeben wurde UND dann im Letzten Eintrag geguckt wird. Da ist der Schlüsselwert halt nicht.
 			
 			Integer intIndex = new Integer(iHigh+1);
-			sValue = (String) hmTest.getEntry(intIndex, "NeuerAlias1a");
+			sValue = (String) hmTest.getEntryByAlias(intIndex, "NeuerAlias1a");
 			assertEquals("6. Zeile", sValue);
 			
 			String sValueLastNew = (String) hmTest.getEntryLast();

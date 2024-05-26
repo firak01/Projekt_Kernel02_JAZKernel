@@ -1,13 +1,10 @@
 package basic.zBasic.util.abstractList;
 
-import java.awt.BorderLayout;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.Box;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
@@ -64,8 +61,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	 }		    	 		    	
  }
  */
-public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZZ, Map{
-	protected HashMap hmOuter=new HashMap();
+public class HashMapMultiZZZ <X,Z> implements IConstantZZZ, IHashMapExtendedZZZ, Map{
+	protected HashMap<String,Object> hmOuter=new HashMap<String,Object>();
 	
 	public HashMapMultiZZZ(){		
 	}
@@ -247,9 +244,9 @@ public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZ
 	/* (non-Javadoc)
 	 * @see java.util.Map#get(java.lang.Object)
 	 * 
-	 * Merke: Es wird immer das zuletzt hinzugef�gte Dokument zur�ckgegeben !!!
-	 */
-	public Object get(Object arg0) {	
+	 * Merke: Es wird immer das zuletzt hinzugefuegte Object zurueckgegeben !!!
+	 */	
+	public Object get(Object arg0){	
 		return hmOuter.get(arg0);
 	}
 	
@@ -309,7 +306,7 @@ public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZ
 			if(arg0==null) break main;
 			
 			if(arg1==null){
-				objReturn = hmOuter.put(arg0, null);
+				objReturn = hmOuter.put((String) arg0, null);
 				break main;
 			}
 			
@@ -318,11 +315,11 @@ public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZ
 			Class<?> cl = arg1.getClass();		
 			//if(cl.getName().equals("java.lang.String")){
 			if(cl.getName().equals(HashMap.class.getName())){
-				objReturn = hmOuter.put(arg0, (HashMap) arg1);				
+				objReturn = hmOuter.put((String) arg0, (HashMap) arg1);				
 			}else if(cl.getName().equals(HashMapMultiZZZ.class.getName())){
-				objReturn =  hmOuter.put(arg0, (HashMapMultiZZZ) arg1);				
+				objReturn =  hmOuter.put((String) arg0, (HashMapMultiZZZ) arg1);				
 			}else{
-				objReturn =  hmOuter.put(arg0, arg1);
+				objReturn =  hmOuter.put((String) arg0, arg1);
 			}
 		}//End main
 		return objReturn;
@@ -372,14 +369,14 @@ public class HashMapMultiZZZ <T,X,Z> implements IConstantZZZ, IHashMapExtendedZZ
 		
 	}
 	
-	public HashMap getHashMap(){
+	public HashMap<String, Object> getHashMap(){
 		return this.hmOuter;
 	}
 	
 	/* Damit das anwndungsfreundlicher wird zwischen Outer und Inner Maps ggfs. unterscheiden.
 	 * 
 	 */
-	public HashMap getOuterHashMap(){
+	public HashMap<String, Object> getOuterHashMap(){
 		return this.hmOuter;
 	}
 	

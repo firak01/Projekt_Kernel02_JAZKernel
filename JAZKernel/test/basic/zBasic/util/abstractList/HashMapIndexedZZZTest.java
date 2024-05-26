@@ -1,6 +1,8 @@
 package basic.zBasic.util.abstractList;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -78,8 +80,9 @@ public class HashMapIndexedZZZTest extends TestCase{
 //			try{
 	    		int iSumme = 0;
 				Iterator<Object>itObject=this.hmTest.iterator();
-				while(itObject.hasNext()) {
+				while(itObject.hasNext()) {					
 					DummyTestObjecWithDefaultValuesZZZ objDummyTemp = (DummyTestObjecWithDefaultValuesZZZ) itObject.next();
+					 
 					Integer intValue = new Integer(objDummyTemp.getValue());
 					iSumme = iSumme + intValue.intValue();
 					System.out.println("Summe bisher: " + iSumme);

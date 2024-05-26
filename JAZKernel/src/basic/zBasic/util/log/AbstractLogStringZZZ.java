@@ -290,8 +290,10 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 			case ILogStringZZZ.iFACTOR_ARGNEXT01:
 				sFormat = this.getHashMapFormatPositionString().get(new Integer(ILogStringZZZ.iFACTOR_ARGNEXT01));
 				
+				/*
 				TODOGOON: An dieser Stelle nur in einer HashMap nach den Platzhaltern schauen
 				          und diese ggfs. einfügen..als XML
+				*/
 				
 				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
 				//Merke: Der Position steht im Logstring immer am Anfang
@@ -453,13 +455,16 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 			}
 			
-			
+			/*
 			TODO: Die übergebenen LogStrings nach XML Elementen Parsen.
 			      Diese sind vorgegeben, s. TagFactoryZZZ
 			      Dann eine HashMap mit den Platzhaltern füllen
 			      hm(TAGNAME, TAGWERT)
 			      
-			      DIES Mehrstufig tun, bis alle Platzhalter der HashMap keinen Tagwert mit einem TagFactoryZZZ XML Elemente mehr haben.
+			      DIES Mehrstufig tun, bis alle Platzhalter der HashMap keinen Tag mehr besitzten.
+			      - A) Tagwert mit einem "freien" XML Element
+			      - B) Tagwert mit einem TagFactoryZZZ XML Element
+*/
 			      
 			      
 			

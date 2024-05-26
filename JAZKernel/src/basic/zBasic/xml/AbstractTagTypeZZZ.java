@@ -3,6 +3,7 @@ package basic.zBasic.xml;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 public abstract class AbstractTagTypeZZZ extends AbstractObjectZZZ implements ITagTypeZZZ{
 	protected String sTagName="";
@@ -41,31 +42,19 @@ public abstract class AbstractTagTypeZZZ extends AbstractObjectZZZ implements IT
 		
 	@Override
 	public String getTagPartStarting() throws ExceptionZZZ{
-		String sTag = this.getTagName();
-		if(StringZZZ.isEmpty(sTag)) {
-			return "";
-		}else {
-			return "<" + sTag + ">"; 
-		}
+		String sTagName = this.getTagName();
+		return XmlUtilZZZ.computeTagPartStarting(sTagName);
 	}
 	
 	@Override
 	public String getTagPartClosing() throws ExceptionZZZ{				
-		String sTag = this.getTagName();
-		if(StringZZZ.isEmpty(sTag)) {
-			return "";
-		}else {
-			return "</" + sTag + ">"; 
-		}
+		String sTagName = this.getTagName();
+		return XmlUtilZZZ.computeTagPartClosing(sTagName);
 	}	
 	
 	@Override
 	public String getTagPartEmpty() throws ExceptionZZZ{
-		String sTag = this.getTagName();
-		if(StringZZZ.isEmpty(sTag)) {
-			return "";
-		}else {
-			return "<" + sTag + "/>"; 
-		}
+		String sTagName = this.getTagName();
+		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
 	}
 }

@@ -47,6 +47,8 @@ import basic.zBasic.util.file.txt.TxtReaderZZZTest;
 import basic.zBasic.util.file.txt.TxtWriterZZZTest;
 import basic.zBasic.util.log.LogStringZZZTest;
 import basic.zBasic.util.stream.StreamZZZTest;
+import basic.zBasic.util.xml.XmlParserZZZTest;
+import basic.zBasic.util.xml.XmlTagMatcherZZZTest;
 import basic.zKernel.GetOptZZZTest;
 import basic.zKernel.KernelPropertyZZZTest;
 import basic.zKernel.KernelUseObjectZZZTest;
@@ -120,6 +122,8 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(IntegerArrayZZZTest.class);
 		objReturn.addTestSuite(StringArrayZZZTest.class);
 		objReturn.addTestSuite(StringZZZTest.class);
+		objReturn.addTestSuite(XmlTagMatcherZZZTest.class);
+		objReturn.addTestSuite(XmlParserZZZTest.class);		
 		objReturn.addTestSuite(XmlUtilZZZTest.class);
 		
 		//Stream - Tests

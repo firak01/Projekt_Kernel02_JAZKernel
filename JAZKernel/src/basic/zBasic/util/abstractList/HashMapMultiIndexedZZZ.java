@@ -8,7 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
+public class HashMapMultiIndexedZZZ<K,V> extends HashMapMultiZZZ<K,V>{
 	protected int iIndexLast = -1;
 	protected int iIndexHigh = -1;
 	
@@ -77,8 +77,8 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 		//Merke: Wenn ich das nicht ueberschreibe, wird die Methode von HashMapMultiZZZ genommen und alle Einträge werden in die äussere HashMap geschriben.
 		Object objReturn = null;
 		main:{
-			int iIndexLast = this.increaseIndexLast();
-			Integer intKey = new Integer(iIndexLast);
+			int iIndexHigh = this.increaseIndexHigh();
+			Integer intKey = new Integer(iIndexHigh);
 			try {
 				return this.put(intKey, objKey, objValue);
 			} catch (ExceptionZZZ e) {
@@ -90,8 +90,8 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	}
 	
 	public Object put(String sKey, String sValue) throws ExceptionZZZ{
-		int iIndexLast = this.increaseIndexLast();
-		Integer intKey = new Integer(iIndexLast);
+		int iIndexHigh = this.increaseIndexHigh();
+		Integer intKey = new Integer(iIndexHigh);
 		return this.put(intKey, sKey, sValue);				
 	}
 	
@@ -117,13 +117,22 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 		if(objToSet!=null){
 			//Nun die Innere, gespeicherte HashMap holen				
 			if(hmOuter.containsKey(intAliasOuter)){
-			 hmInner = (HashMap) hmOuter.get(intAliasOuter); 
+				hmInner = (HashMap) hmOuter.get(intAliasOuter); 
+				this.setIndexLast(intAliasOuter.intValue());
+				
 			}else{
+				
+				int iIndexPassed = intAliasOuter.intValue();
+				if(iIndexPassed>this.getIndexHigh()+1) {
+					ExceptionZZZ ez = new ExceptionZZZ("intAliasOuter is higher than IndexHigh+1", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
 				hmInner = new HashMap();
 				hmOuter.put(intAliasOuter, hmInner);
 				
 				//indexspezifisch
-				this.setIndexLast(intAliasOuter.intValue());
+				this.setIndexHigh(intAliasOuter.intValue());
 			}
 		}else{
 //			Merke: Objekt == null bedeutet, es zu entfernen
@@ -252,26 +261,98 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 		return this.getLast();//!!! Konvention
 	}
 	
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public HashMap get(int iIndex) throws ExceptionZZZ{
+		//Muss auch ueberschrieben werden, sonst wird automatisch die Methode von HashMapMultiZZZ verwendet.
+		//wir wollen aber von der inner HashMap was holen und nicht von der outer HashMap.
+		if(iIndex<0) return null;
+		
+		Integer intIndexOuterUsed = new Integer(iIndex);
+		return this.getInnerHashMap(iIndex);		
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ HIER DIREKT AUS DER INNEREN HASHMAP (letzer / hoechster Index der aeussern HashMap) etwas holen ++++++++++++++++++++++++++++++++
+	//Merke: "Entry" Methoden holen immer Werte aus der inneren HashMap.
+	//       Der Name bezieh sich dann auch auf die HashMap...
+	//       also getEntry...Last... ist in der in der inneren HashMap der letzte Eintrag (vom innern index)
+	//       Fuer den auesseren Index wird der gespeicherte verwendet: iIndexLast
+	//
+	//       also getEntryHigh ist in der aeussesten HashMap dann der Eintrag mit dem hoechsten Indexwert.
+	//       intern wird dann iIndexLast wieder auf iIndexHigh gesetzt.
+	//       
+	//       dito getEntryLow ist in der aeussersten HashMap der Eintrag mit dem niedrigesten Indexwert.
+	//       intern wird daruf dann der iIndexLast gesetzt
+	//
+	//       dito getEntryNext ist in der aeussersten Hashmap der Eintrag mit iIndexLast+1
+	//
+	//Dito verhaelt es sich mit den Methoden "..Key...";
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public Object getEntry() throws ExceptionZZZ{
 		return this.getEntryLast();//!!! Konvention
 	}
 	
-	public Object getEntry(String sAliasInner) throws ExceptionZZZ{
-		return this.getEntryLast(sAliasInner); //!!! Konvention
+	/**Hole den letzte Eintrag der outerHashmap 
+	 * und davon das Objekt mit dem passenden Key.
+	 * @param objInnerKey
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 26.05.2024, 07:00:26
+	 */
+	public Object getEntryByAlias(Object objInnerKey) throws ExceptionZZZ{
+		Object objReturn = null;
+		main:{
+			if(objInnerKey==null)break main;
+			
+			//wir wollen aber von der inner HashMap was holen und nicht von der outer HashMap.
+			int iOuterIndexUsed = this.getIndexLast();
+			objReturn = this.getEntryByAlias(iOuterIndexUsed, objInnerKey); //sObj ist damit der innere Key.
+		}//end main:
+		return objReturn;
 	}
 	
-	public Object getEntryWithIndex(int iIndex) throws ExceptionZZZ{
-		return this.getEntryLastWithIndex(iIndex); //!!! Konvention
+	public Object getEntryByAlias(String sAliasInner) throws ExceptionZZZ{
+		return this.getEntry(sAliasInner); //!!! Konvention
+	}
+	
+	public Object getEntryFirst() throws ExceptionZZZ{
+		Object objReturn = null;
+		main:{
+			int iOuterIndexUsed = this.getIndexLast();
+			
+			HashMap hmInner = this.get(iOuterIndexUsed);
+			objReturn = HashMapZZZ.getEntryFirst(hmInner);			
+		}//end main:
+		return objReturn;
+
+	}
+	
+	public Object getEntry(int iInnerIndex) throws ExceptionZZZ{
+		int iIndexUsed = this.getIndexLast(); //!!! Konvention
+		return this.getEntry(iIndexUsed, iInnerIndex); 
+	}
+	
+	public Object getEntryForward(int iInnerIndex) throws ExceptionZZZ{
+		int iOuterIndexUsed = this.increaseIndexLast();
+		return this.getEntry(iOuterIndexUsed, iInnerIndex); 
+	}
+	
+	public Object getEntryBefore(int iInnerIndex) throws ExceptionZZZ{
+		int iOuterIndexUsed = this.decreaseIndexLast();
+		return this.getEntry(iOuterIndexUsed, iInnerIndex); 
 	}
 	
 	//++++++++++
 	public Object getEntryLast() throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
-			int iIndexUsed = this.getIndexLast();
-			objReturn = this.getEntryLast(iIndexUsed);			
+			//Merke: Per Default in der aeussern HashMap immer den Letzten Wert holen. 
+			//       Aber darauf bezieht sich der Namensteil der Methode nicht.
+			int iOuterIndexUsed = this.getIndexLast();
+			
+			HashMap hmInner = this.get(iOuterIndexUsed);
+			
+			//Merke: Auf dieses EntryLast bezieht sich der Namensteil der Methode
+			objReturn = HashMapZZZ.getEntryLast(hmInner);			
 		}//end main:
 		return objReturn;
 	}
@@ -284,18 +365,19 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 10.05.2024, 08:15:11
 	 */
-	public Object getEntryLast(String sAliasInner) throws ExceptionZZZ{
-		int iIndexUsed = this.getIndexLast();
-		return this.getEntry(iIndexUsed, sAliasInner);
+	public Object getEntry(String sAliasInner) throws ExceptionZZZ{
+		int iOuterIndexUsed = this.getIndexLast();
+		return this.getEntryByAlias(iOuterIndexUsed, sAliasInner);
 	}
 	
-	public Object getEntryLastWithIndex(int iIndex) throws ExceptionZZZ{
+	public Object getEntryByAlias(int iAliasInner) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
-			if(iIndex < 0 ) break main;
+			if(iAliasInner < 0 ) break main;
 			
-			int iHmIndexUsed = this.getIndexLast();
-			return this.getEntry(iHmIndexUsed, iIndex);
+			int iOuterIndexUsed = this.getIndexLast();
+			Integer intOuterIndexUsed = new Integer(iOuterIndexUsed);
+			return this.getEntryByAlias(intOuterIndexUsed, iAliasInner);
 		}//end main:
 		return objReturn;
 	}
@@ -318,17 +400,17 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	 */
 	public Object getEntryHigh(String sAliasInner) throws ExceptionZZZ{
 		int iIndexUsed = this.getIndexHigh();
-		return this.getEntry(iIndexUsed, sAliasInner);
+		return this.getEntryByAlias(iIndexUsed, sAliasInner);
 	}
 
-	public Object getEntryHighWithIndex(int iIndex) throws ExceptionZZZ{
+	public Object getEntryHigh(int iInnerIndex) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
-			if(iIndex < 0 ) break main;
+			if(iInnerIndex < 0 ) break main;
 			
 			int iHmIndexUsed = this.getIndexHigh();
 			Integer intHmIndexUsed = new Integer(iHmIndexUsed);
-			objReturn = this.getEntry(intHmIndexUsed, iIndex);
+			objReturn = this.getEntry(intHmIndexUsed, iInnerIndex);
 		}//end main:
 		return objReturn;
 	}
@@ -336,24 +418,24 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	public Object getEntryHighLast() throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
-			int iHmIndexUsed = this.getIndexHigh();
-			Integer intHmIndexUsed = new Integer(iHmIndexUsed);
-			objReturn = this.getEntryLast(intHmIndexUsed);
+			int iOuterIndexUsed = this.getIndexHigh();
+			Integer intOuterIndexUsed = new Integer(iOuterIndexUsed);
+			objReturn = this.getEntryLast(intOuterIndexUsed);
 		}//end main:
 		return objReturn;
 	}
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++ HIER AUS DER AEUSSERN HASHMAP ETWAS HOLEN UND DANN IN DIE INNERE HASHMAP
-	public Object getEntry(Integer intIndex, String sAliasInner) throws ExceptionZZZ{
+	public Object getEntryByAlias(Integer intOuterIndex, String sAliasInner) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 	//		Guard Klauseln
-			if(intIndex==null){
+			if(intOuterIndex==null){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}			
-			if(intIndex.intValue()<=-1){
+			if(intOuterIndex.intValue()<=-1){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
@@ -363,9 +445,9 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 				throw ez;
 			}
 			HashMap hmOuter = this.getOuterHashMap();
-			if(!hmOuter.containsKey(intIndex)) break main;
+			if(!hmOuter.containsKey(intOuterIndex)) break main;
 			
-			HashMap hmInner = (HashMap) hmOuter.get(intIndex);
+			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
 			if(!hmInner.containsKey(sAliasInner)) break main;
 			
 			objReturn = hmInner.get(sAliasInner);
@@ -375,49 +457,105 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 		
 	}
 	
-	public Object getEntry(Integer intIndex, int iIndex) throws ExceptionZZZ{
+	public Object getEntryByAlias(Integer intOuterIndex, Object objAliasInner) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 	//		Guard Klauseln
-			if(intIndex==null){
+			if(intOuterIndex==null){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}			
-			if(intIndex.intValue()<=-1){
+			if(intOuterIndex.intValue()<=-1){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
-			if(iIndex<0) break main;
-			
+			if(objAliasInner==null){
+				ExceptionZZZ ez = new ExceptionZZZ("objAliasInner", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
 			HashMap hmOuter = this.getOuterHashMap();
-			if(!hmOuter.containsKey(intIndex)) break main;
+			if(!hmOuter.containsKey(intOuterIndex)) break main;
 			
-			HashMap hmInner = (HashMap) hmOuter.get(intIndex);
-			objReturn = HashMapZZZ.getEntryByIndex(hmInner, iIndex);
+			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
+			if(!hmInner.containsKey(objAliasInner)) break main;
+			
+			objReturn = hmInner.get(objAliasInner);
 		
 		}//END main:
 		return objReturn;
 		
 	}
 	
-	public Object getEntryLast(Integer intIndex) throws ExceptionZZZ{
+	public Object getEntryByAlias(Integer intOuterIndex, int iAliasInner) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 	//		Guard Klauseln
-			if(intIndex==null){
+			if(intOuterIndex==null){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}			
-			if(intIndex.intValue()<=-1){
+			if(intOuterIndex.intValue()<=-1){
+				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			HashMap hmOuter = this.getOuterHashMap();
+			if(!hmOuter.containsKey(intOuterIndex)) break main;
+			
+			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
+			if(!hmInner.containsKey(iAliasInner)) break main;
+			
+			objReturn = hmInner.get(iAliasInner);
+		
+		}//END main:
+		return objReturn;
+		
+	}
+	
+	public Object getEntry(Integer intOuterIndex, int iInnerIndex) throws ExceptionZZZ{
+		Object objReturn = null;
+		main:{
+	//		Guard Klauseln
+			if(intOuterIndex==null){
+				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+			if(intOuterIndex.intValue()<=-1){
+				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			if(iInnerIndex<0) break main;
+			
+			HashMap hmOuter = this.getOuterHashMap();
+			if(!hmOuter.containsKey(intOuterIndex)) break main;
+			
+			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
+			objReturn = HashMapZZZ.getEntryByIndex(hmInner, iInnerIndex);
+		
+		}//END main:
+		return objReturn;
+		
+	}
+	
+	public Object getEntryLast(Integer intOuterIndex) throws ExceptionZZZ{
+		Object objReturn = null;
+		main:{
+	//		Guard Klauseln
+			if(intOuterIndex==null){
+				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}			
+			if(intOuterIndex.intValue()<=-1){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 
 			HashMap hmOuter = this.getOuterHashMap();
-			if(!hmOuter.containsKey(intIndex)) break main;
+			if(!hmOuter.containsKey(intOuterIndex)) break main;
 			
-			HashMap hmInner = (HashMap) hmOuter.get(intIndex);
+			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
 			objReturn = HashMapZZZ.getEntryLast(hmInner);
 		
 		}//END main:
@@ -425,23 +563,23 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 		
 	}
 	
-	public Object getKeyLast(Integer intIndex) throws ExceptionZZZ{
+	public Object getKeyLast(Integer intOuterIndex) throws ExceptionZZZ{
 		Object objReturn = null;
 		main:{
 	//		Guard Klauseln
-			if(intIndex==null){
+			if(intOuterIndex==null){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}			
-			if(intIndex.intValue()<=-1){
+			if(intOuterIndex.intValue()<=-1){
 				ExceptionZZZ ez = new ExceptionZZZ("intIndex", iERROR_PARAMETER_VALUE, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 
 			HashMap hmOuter = this.getOuterHashMap();
-			if(!hmOuter.containsKey(intIndex)) break main;
+			if(!hmOuter.containsKey(intOuterIndex)) break main;
 			
-			HashMap hmInner = (HashMap) hmOuter.get(intIndex);
+			HashMap hmInner = (HashMap) hmOuter.get(intOuterIndex);
 			objReturn = HashMapZZZ.getKeyLast(hmInner);
 		
 		}//END main:
@@ -493,30 +631,45 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	}
 	
 	private int increaseIndexHigh() {
-		int iIndexHigh=this.getIndexHigh() + 1;
-		this.setIndexHigh(iIndexHigh);
+		int iIndexHighNew=this.getIndexHigh() + 1;
+		this.setIndexHigh(iIndexHighNew);
 		return this.getIndexHigh();
 	}
 	
 	private int increaseIndexLast(){
-		this.iIndexLast=this.iIndexLast + 1 ;
-		if(this.iIndexHigh<this.iIndexLast){
-			this.setIndexHigh(this.iIndexLast);
+		int iIndexLastNew =this.iIndexLast + 1 ;
+		if(iIndexLastNew>=this.iIndexHigh + 1) {
+			return this.iIndexHigh + 1;
+		}else {
+			this.setIndexLast(iIndexLastNew);
+			return this.getIndexLast();
 		}
-		return this.iIndexLast;
+	}
+	
+	private int decreaseIndexLast(){
+		int iIndexLastNew =this.iIndexLast - 1 ;
+		if(iIndexLastNew<=-2) {
+			return -1;
+		}else {
+			this.setIndexLast(iIndexLastNew);
+			return this.getIndexLast();
+		}
 	}
 	
 	public int getIndexLast(){
 		return this.iIndexLast;
 	}
+	
 	private void setIndexLast(int iIndex){
 		if (iIndex <= -2){
 			iIndex = -1;
 		}
-		if(iIndex>this.getIndexHigh()){
-			this.setIndexHigh(iIndex);
+		if(iIndex>this.getIndexHigh()+1){
+			this.iIndexLast = this.getIndexHigh()+1;						
+		}else {
+			this.iIndexLast = iIndex;
 		}
-		this.iIndexLast = iIndex;
+		
 	}
 	
 	
@@ -525,6 +678,7 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	}
 	private void setIndexHigh(int iIndex){
 		this.iIndexHigh = iIndex;
+		this.setIndexLast(this.iIndexHigh);
 	}
 	
 	/** eine passende HashMap wird hintenangehaengt
@@ -532,7 +686,7 @@ public class HashMapMultiIndexedZZZ<T,X,Z> extends HashMapMultiZZZ<T,X,Z>{
 	 * @author Fritz Lindhauer, 10.05.2024, 15:30:13
 	 * @throws ExceptionZZZ 
 	 */
-	public void add(HashMapMultiIndexedZZZ<T,X,Z> hmToAdd) throws ExceptionZZZ {
+	public void add(HashMapMultiIndexedZZZ<K,V> hmToAdd) throws ExceptionZZZ {
 		main:{
 			if(hmToAdd==null)break main;
 			

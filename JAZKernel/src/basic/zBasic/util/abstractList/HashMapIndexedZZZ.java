@@ -18,9 +18,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 /**Klasse dient dazu eine bestehende HashMap zu verwenden, aber das Ergebnis garantiert über eine eindeutigen Schlüsselindex zurückzubekommen.
  * Die Klasse erweitert nicht HashMap, weil sonst alle Methoden auf einen Schlag überschrieben werden müssten.
  * @author Lindhauer
+ * @param <T>
  *
  */
-public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterable<T>,Serializable{	
+public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterable<Object>,Serializable{	
 	private HashMap<Integer,Object> hmIndexed=null;
 	private VectorExtendedZZZ<Integer> vecIndex=null;	
 	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
@@ -94,6 +95,10 @@ public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterab
 //			objReturn=null;
 //		}
 		return objReturn;
+	}
+	
+	public Object get(Integer intKey) {
+		return this.hmIndexed.get(intKey);
 	}
 	
 	/** Object, Den Key des letzten Objekts zurückgeben. (Das ist das letzte Objekt des inneren Vektors.)
@@ -199,7 +204,7 @@ public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterab
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtable f�r den letzten Key (gem�� der Sortierung) zur�ck.
+	/** Object, Gibt den Wert der Hashmap fuer den letzten Key (gemaess der Sortierung) zurueck.
 	* Lindhauer; 27.04.2006 11:30:25
 	 * @return Object
 	 * @throws ExceptionZZZ 
@@ -216,7 +221,7 @@ public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterab
 		return objReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtalbe für den nächsten Key (gemäß der Sortierung) zurück und schiebt den Index-Wert um 1 weiter.
+	/** Object, Gibt den Wert der Hashmap für den nächsten Key (gemaess der Sortierung) zurueck und schiebt den Index-Wert um 1 weiter.
 	* Lindhauer; 27.04.2006 12:39:15
 	 * @return Object
 	 * @throws ExceptionZZZ 
@@ -442,8 +447,8 @@ public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterab
 //	}
 	
 	@Override
-    public Iterator<T> iterator() {
-        Iterator<T> it = new Iterator<T>() {
+    public Iterator<Object> iterator() {
+        Iterator<Object> it = new Iterator<Object>() {
         	private int iIndexIterator=-1; //Der Index des gerade verarbeiteten Keys im Iterator
         	private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
         	
@@ -468,8 +473,8 @@ public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterab
 
             @SuppressWarnings("unchecked")
 			@Override
-            public T next() {
-                T objReturn = null;
+            public Object next() {
+                Object objReturn = null;
                 main:{
                 	VectorExtendedZZZ<Integer> vec = getVectorIndex();
 	            	if(vec==null)break main;
@@ -486,7 +491,7 @@ public class HashMapIndexedZZZ<X,T>  extends AbstractObjectZZZ implements Iterab
 	            	boolean bReturn = iIndexCur <= intLast.intValue() && getHashMap().get(iIndexCur) != null;	 
 	            	if(bReturn) {
 	            		this.iIndexIterator = iIndexCur;
-	            		objReturn = (T) getHashMap().get(iIndexCur);
+	            		objReturn = (Object) getHashMap().get(iIndexCur);
 	            	}
                 }//end main:
             	return objReturn;
