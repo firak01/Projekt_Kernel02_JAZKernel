@@ -8,13 +8,28 @@ import junit.framework.TestCase;
 
 public class XmlTagMatcherZZZTest extends TestCase{
 	
+	HashMap<String,String> hmXmlTests;
 	 protected void setUp(){
 		    	
 		//The main object used for testing
 		//Momentan werden nur statische Methoden angeboten
 		//objMatcherTest = new XmlTagMatcherZZZ();
-			
-			
+		 
+		 
+//Ich entscheid mich fuer den alternativen Ansatz mit einer Enum		 
+		//Mit dieser HashMap werden die als Test zur Verfuegung stehenden Xmls an dieser zentralen Stelle gepflegt.
+		//HashMap in der Form hm(TestAlias, TestXml)
+//		hmXmlTests = new HashMap<String,String>();
+//		
+//		XmlTestStringContainerZZZ objXmlContainer = new XmlTestStringContainerZZZ();
+//		String saTestValue = {"",0,0};
+//		objXmlContainer.fill(saTestValue);
+//		
+//		hmXmlTests.put("neg00", "");
+//		hmXmlTests.put("neg01", "Kein Xml Tag da");
+//			
+		
+		
 	}//END setup
 	 
 	 public void testParseElementsAsVector(){
@@ -22,12 +37,17 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String sTest;
 			 Vector<String> vecTag=null;
 			 
+			 TODOGOON20240528: Und nun in einer Schleife die TESTVALUE Enum durchgehen
+			                   Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
+			 
 			//a) Negativtests
-			sTest = "";
+			//sTest = hmXmlTests.get("neg00");
+			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg00.getXml();
 			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
 			assertNull(vecTag);
 			 
-			sTest = "Kein Xml Tag da";
+			//sTest = hmXmlTests.get("neg01");
+			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg01.getXml();
 			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
 			assertNotNull(vecTag);
 			assertFalse(vecTag.isEmpty());
