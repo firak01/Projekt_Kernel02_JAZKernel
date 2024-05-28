@@ -23,7 +23,7 @@ public class XmlTagMatcherZZZ {
 	public static Vector<String> parseElementsAsVector(String sXml) throws ExceptionZZZ {
 		return XmlTagMatcherZZZ.parseElementsAsVector(sXml, true);
 	}
-	public static Vector<String> parseElementsAsVector(String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
+	public static Vector<String> parseElementsAsVector(String sXml, boolean bWithText) throws ExceptionZZZ {
 		Vector<String> vecReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sXml)) break main;
@@ -44,7 +44,7 @@ public class XmlTagMatcherZZZ {
 			    System.out.println("sLeft:\t\t" + sLeft);//so etwas ohne Tag muss in ein Tag vom ITagTypeZZZ "Text"
 			    System.out.println("sTag:\t\t"  + sTag);
 			    
-			    if(bWithAnyValue){			    	
+			    if(bWithText){			    	
 			    	if(!StringZZZ.isEmpty(sLeft)) {
 			    		vecReturn.add(sLeft);
 			    	}
@@ -67,7 +67,7 @@ public class XmlTagMatcherZZZ {
 			}
 				
 			//Den Rest hinzufuegen
-			if(bWithAnyValue) {
+			if(bWithText) {
 				if(!StringZZZ.isEmpty(sXmlRemain)) {
 					vecReturn.add(sXmlRemain);
 				}
@@ -120,13 +120,13 @@ public class XmlTagMatcherZZZ {
 	 * 
 	 * 
 	 * @param sXml
-	 * @param bWithAnyValue
+	 * @param bWithText
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 25.05.2024, 09:08:35
 	 */
-	public static HashMapMultiIndexedZZZ<String,String> parseElementsAsMap(String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
-		return parseElementsAsMap_(null, sXml, bWithAnyValue);
+	public static HashMapMultiIndexedZZZ<String,String> parseElementsAsMap(String sXml, boolean bWithText) throws ExceptionZZZ {
+		return parseElementsAsMap_(null, sXml, bWithText);
 	}
 	
 	public static HashMapMultiIndexedZZZ<String,String> parseElementsAsMap(HashMapMultiIndexedZZZ<String,String> hmReturnIn, String sXml, boolean bWithAnyValue) throws ExceptionZZZ {

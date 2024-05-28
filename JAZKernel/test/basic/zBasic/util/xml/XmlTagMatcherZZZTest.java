@@ -1,9 +1,12 @@
 package basic.zBasic.util.xml;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import junit.framework.TestCase;
 
 public class XmlTagMatcherZZZTest extends TestCase{
@@ -37,72 +40,93 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String sTest;
 			 Vector<String> vecTag=null;
 			 
-			 TODOGOON20240528: Und nun in einer Schleife die TESTVALUE Enum durchgehen
-			                   Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
+//			 TODOGOON20240528: Und nun in einer Schleife die TESTVALUE Enum durchgehen
+//			                   Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
 			 
 			//a) Negativtests
-			//sTest = hmXmlTests.get("neg00");
-			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg00.getXml();
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
-			assertNull(vecTag);
-			 
-			//sTest = hmXmlTests.get("neg01");
-			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg01.getXml();
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==1);
-			assertEquals(sTest, vecTag.get(0));
+//			//sTest = hmXmlTests.get("neg00");
+//			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg00.getXml();
+//			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
+//			assertNull(vecTag);
+//			 
+//			//sTest = hmXmlTests.get("neg01");
+//			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg01.getXml();
+//			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
+//			assertNotNull(vecTag);
+//			assertFalse(vecTag.isEmpty());
+//			assertTrue(vecTag.size()==1);
+//			assertEquals(sTest, vecTag.get(0));
 			
+
+			 //Hole die XML Strings aus dem Enum
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
 			 
-			//b) Positivtests
-			//###############################################
-			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
+			 
+			 
+			//Teste alle XML Strings hinsichtlich der Anzahl der gefundenen Knoten
+			//A) bWithAnyValue=false  //also nur reine XML Knoten und den Rest weglassen.
+			 int iCount=0;
+			 boolean bWithText = false;
+			 String sMessage = null;
+			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
+				 	iCount++;
+				 	sMessage = iCount + ". Teststring wird fehlerhaft ausgewertet (bWithText="+bWithText+").";
+				 	
+					IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+					sTest= objEnumTestType.getXml();
+					vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
+					
+					int iElementsWithoutText = objEnumTestType.getExpectedElementsWithoutText();
+				    int iElementsWithText = objEnumTestType.getExpectedElementsWithText();
+					if(iElementsWithoutText==0 && iElementsWithText==0) {
+						assertNull(sMessage,vecTag);
+					}else {
+						assertNotNull(sMessage, vecTag);
+						assertEquals(sMessage, vecTag.size(), iElementsWithoutText);
 						
-			//+++ Nur die Tags
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, false);
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==4);
-			
-			//+++ Auch alle Werte
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, true);
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==9);
+						if(iElementsWithoutText==0) {
+							assertTrue(sMessage, vecTag.isEmpty());
+						}else {
+							assertFalse(sMessage, vecTag.isEmpty());							
+						}
+				}
+			 }//end for
+			 
 			
 			
-			//############################
-			sTest="<DataElements><EmpStatus>2.0</EmpStatus><Expenditure>95465.00</Expenditure><StaffType>11.A</StaffType><Industry>13</Industry></DataElements>               <InteractionElements><TargetCenter>92f4-MPA</TargetCenter><Trace>7.19879</Trace></InteractionElements>";
-			
-			//+++ Nur die Tags
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, false); //Weder Leerstring noch Werte in den Tags
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==16);
-			
-			//+++ auch alle Werte			
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, true); //Nimm also den Leerstring mit auf...
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==23);
-			
-			
-			//### tiefer verschachtelt #####################
-			sTest = "Wert vor abc<abc>wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert nach bc</b>wert nach b</abc>wert nach abc";
-			
-			//+++ Nur die Tags
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, false);
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==6);
-		 
-			//+++ Auch alle Werte		
-			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, true);
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==13);
-			
+			//B) 
+			 iCount=0;
+			bWithText=true;						
+			for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
+				iCount++;
+			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgewertet (bWithAnyValue="+bWithText+").";
+						 	
+				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+				sTest= objEnumTestType.getXml();
+				vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
+				
+				int iElementsWithoutText = objEnumTestType.getExpectedElementsWithoutText();
+			    int iElementsWithText = objEnumTestType.getExpectedElementsWithText();
+				if(iElementsWithoutText==0 && iElementsWithText==0) {
+					assertNull(sMessage, vecTag);
+				}else {
+					assertNotNull(sMessage, vecTag);
+					assertFalse(sMessage, vecTag.isEmpty());
+					assertEquals(sMessage, vecTag.size(), iElementsWithText);
+					
+					//Merke: Nur bei 1 (nicht XML) Wert kann man das automatisiert prüfen.
+					if(iElementsWithText==0) {
+						
+					}else if(iElementsWithText==1) {
+						assertEquals(sMessage, sTest, vecTag.get(0));
+					}
+				}
+			}//end for
+			 
+				
+			//Merke: Nun stichpunktartig die Werte der Knoten prüfen.
+			//..............
+		
 			
 		 }catch(ExceptionZZZ ez){
 				fail("Method throws an exception." + ez.getMessageLast());
