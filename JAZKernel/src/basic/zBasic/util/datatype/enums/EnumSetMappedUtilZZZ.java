@@ -772,7 +772,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static <E extends IEnumSetMappedZZZ> E[] toEnumMappedArray(Enum[] enuma){
 			E[] enumaReturn = null;
 			main:{
-				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				if(ArrayUtilZZZ.isNull(enuma)) break main;
 				
 				ArrayList<IEnumSetMappedZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedArrayList(enuma);
 				if(ArrayListZZZ.isEmpty(listeReturnTemp)) break main;
@@ -796,7 +796,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static ArrayList<IEnumSetMappedZZZ> toEnumMappedArrayList(Enum[] enuma){
 			ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
 			main:{
-				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				if(ArrayUtilZZZ.isNull(enuma)) break main;
 				if(!(enuma instanceof IEnumSetMappedZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
 				
 				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
@@ -814,7 +814,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static ArrayList<IEnumSetMappedStatusZZZ> toEnumMappedStatusArrayList(Enum[] enuma){
 			ArrayList<IEnumSetMappedStatusZZZ> listaeReturn = null;
 			main:{
-				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				if(ArrayUtilZZZ.isNull(enuma)) break main;
 				if(!(enuma instanceof IEnumSetMappedStatusZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
 				
 				listaeReturn = new ArrayList<IEnumSetMappedStatusZZZ>();
@@ -828,7 +828,7 @@ public class EnumSetMappedUtilZZZ extends EnumSetUtilZZZ{
 		public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(Enum[] enuma){
 			E[] enumaReturn = null;
 			main:{
-				if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+				if(ArrayUtilZZZ.isNull(enuma)) break main;
 				
 				ArrayList<IEnumSetMappedStatusZZZ> listeReturnTemp = EnumSetMappedUtilZZZ.toEnumMappedStatusArrayList(enuma);
 				if(ArrayListZZZ.isEmpty(listeReturnTemp)) break main;

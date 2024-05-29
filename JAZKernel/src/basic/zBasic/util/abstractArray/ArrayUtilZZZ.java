@@ -18,7 +18,71 @@ import base.util.abstractArray.ArrayUtil;
  */
 public class ArrayUtilZZZ<T>{
 	private ArrayUtilZZZ() {}//static methods only
+	
 	public static <T> boolean isEmpty(T[] objArray) {
+		boolean bReturn = false;
+		main:{
+			bReturn = ArrayUtilZZZ.isNull(objArray);
+			if(bReturn) break main;
+			
+			for(int i = 0; i<=objArray.length-1;i++) {
+				if(objArray[i]!=null) {
+					break main;					
+				}
+			}
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	public static boolean isEmpty(boolean[] ba) {
+		boolean bReturn = false;
+		main:{
+			bReturn = ArrayUtilZZZ.isNull(ba);
+			if(bReturn) break main;
+			
+			for(int i = 0; i<=ba.length-1;i++) {
+				if(Boolean.valueOf(ba[i])!=null) {
+					break main;					
+				}
+			}
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean isEmpty(int[] ia) {
+		boolean bReturn = false;
+		main:{
+			bReturn = ArrayUtilZZZ.isNull(ia);
+			if(bReturn) break main;
+			
+			for(int i = 0; i<=ia.length-1;i++) {
+				if(Integer.valueOf(ia[i])!=null) {
+					break main;					
+				}
+			}
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	public static boolean isEmpty(char[] ca) {
+		boolean bReturn = false;
+		main:{
+			bReturn = ArrayUtilZZZ.isNull(ca);
+			if(bReturn) break main;
+			
+			for(int i = 0; i<=ca.length-1;i++) {
+				if(Character.valueOf(ca[i])!=null) {
+					break main;					
+				}
+			}
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static <T> boolean isNull(T[] objArray) {
 		boolean bReturn = false;
 		main:{
 			if(objArray == null) {
@@ -33,7 +97,7 @@ public class ArrayUtilZZZ<T>{
 		}
 		return bReturn;
 	}
-	public static boolean isEmpty(boolean[] ba) {
+	public static boolean isNull(boolean[] ba) {
 		boolean bReturn = false;
 		main:{
 			if(ba == null) {
@@ -49,7 +113,7 @@ public class ArrayUtilZZZ<T>{
 		return bReturn;
 	}
 	
-	public static boolean isEmpty(int[] ia) {
+	public static boolean isNull(int[] ia) {
 		boolean bReturn = false;
 		main:{
 			if(ia == null) {
@@ -64,7 +128,7 @@ public class ArrayUtilZZZ<T>{
 		}
 		return bReturn;
 	}
-	public static boolean isEmpty(char[] ca) {
+	public static boolean isNull(char[] ca) {
 		boolean bReturn = false;
 		main:{
 			if(ca == null) {
@@ -83,8 +147,8 @@ public class ArrayUtilZZZ<T>{
 	public static <T> T[] join(T[] objArray1,T[] objArray2) {
 		T[] objaReturn=null;
 		main:{
-			boolean bEmptyArray1 = ArrayUtilZZZ.isEmpty(objArray1);
-			boolean bEmptyArray2 = ArrayUtilZZZ.isEmpty(objArray2);
+			boolean bEmptyArray1 = ArrayUtilZZZ.isNull(objArray1);
+			boolean bEmptyArray2 = ArrayUtilZZZ.isNull(objArray2);
 			if( bEmptyArray1 && bEmptyArray2) break main;
 			
 			if( bEmptyArray1 && !bEmptyArray2){

@@ -171,7 +171,7 @@ public abstract class MathZZZ {
 	public static int sum(int[] ia) {
 		int iReturn=0;
 		main:{
-			if(ArrayUtilZZZ.isEmpty(ia))break main;
+			if(ArrayUtilZZZ.isNull(ia))break main;
 			
 			for(int i : ia) {
 				iReturn = iReturn+i;

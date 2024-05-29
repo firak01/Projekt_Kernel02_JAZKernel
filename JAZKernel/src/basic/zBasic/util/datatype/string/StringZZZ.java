@@ -1085,7 +1085,7 @@ public class StringZZZ implements IConstantZZZ{
 		String[] saReturn=null;
 		main:{
 			if(StringZZZ.isEmpty(sString)) break main;
-			if(ArrayUtilZZZ.isEmpty(saDelimiter)) break main;
+			if(ArrayUtilZZZ.isNull(saDelimiter)) break main;
 			
 			//Eine ArrayList aus den Delimitern machen
 			ArrayList<String> listaDelim = StringArrayZZZ.toArrayList(saDelimiter);
@@ -2480,7 +2480,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		Integer[] intaReturn=null;
 		main:{
 			if(isEmpty(sSource)) break main;
-			if(ArrayUtilZZZ.isEmpty(saString2Find)) break main;
+			if(ArrayUtilZZZ.isNull(saString2Find)) break main;
 			
 			ArrayList<Integer> listaReturn = new ArrayList<Integer>();
 			for(int icount=0; icount < saString2Find.length; icount ++){
@@ -2586,7 +2586,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		int iReturn=-1; //Merke: -1 wird auch zur�ckgegeben, falls der Teilstring nicht im String enthalten ist.
 		main:{
 				if(isEmpty(sSource))break main;
-				if(ArrayUtilZZZ.isEmpty(saString2Find)) break main;
+				if(ArrayUtilZZZ.isNull(saString2Find)) break main;
 			
 			int iEndCur=sSource.length() + 1;
 			for(int icount=0; icount < saString2Find.length; icount ++){
@@ -2631,7 +2631,7 @@ StringUtils.abbreviate("abcdefg", 3) = IllegalArgumentException
 		ArrayList<String> listaString = new ArrayList<String>();
 		main:{
 			if(isEmpty(sString)) break main;
-			if(ArrayUtilZZZ.isEmpty(saPattern)) break main;
+			if(ArrayUtilZZZ.isNull(saPattern)) break main;
 			
 			
 			//Idee: In einer Schleife auf Vorhandenheit des Strings des Pattern-Arrays pr�fen  (von links nach rechts).

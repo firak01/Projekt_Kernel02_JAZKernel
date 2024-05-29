@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
@@ -16,22 +17,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		    	
 		//The main object used for testing
 		//Momentan werden nur statische Methoden angeboten
-		//objMatcherTest = new XmlTagMatcherZZZ();
-		 
-		 
-//Ich entscheid mich fuer den alternativen Ansatz mit einer Enum		 
-		//Mit dieser HashMap werden die als Test zur Verfuegung stehenden Xmls an dieser zentralen Stelle gepflegt.
-		//HashMap in der Form hm(TestAlias, TestXml)
-//		hmXmlTests = new HashMap<String,String>();
-//		
-//		XmlTestStringContainerZZZ objXmlContainer = new XmlTestStringContainerZZZ();
-//		String saTestValue = {"",0,0};
-//		objXmlContainer.fill(saTestValue);
-//		
-//		hmXmlTests.put("neg00", "");
-//		hmXmlTests.put("neg01", "Kein Xml Tag da");
-//			
-		
+		//objMatcherTest = new XmlTagMatcherZZZ();		
 		
 	}//END setup
 	 
@@ -40,29 +26,12 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String sTest;
 			 Vector<String> vecTag=null;
 			 
-//			 TODOGOON20240528: Und nun in einer Schleife die TESTVALUE Enum durchgehen
-//			                   Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
-			 
-			//a) Negativtests
-//			//sTest = hmXmlTests.get("neg00");
-//			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg00.getXml();
-//			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
-//			assertNull(vecTag);
-//			 
-//			//sTest = hmXmlTests.get("neg01");
-//			sTest = XmlTestStringContainerZZZ.TESTVALUE.neg01.getXml();
-//			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
-//			assertNotNull(vecTag);
-//			assertFalse(vecTag.isEmpty());
-//			assertTrue(vecTag.size()==1);
-//			assertEquals(sTest, vecTag.get(0));
-			
-
+//			 Und nun in einer Schleife die TESTVALUE Enum durchgehen
+//			 Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
+	
 			 //Hole die XML Strings aus dem Enum
 			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
-			 
-			 
-			 
+			 		 
 			//Teste alle XML Strings hinsichtlich der Anzahl der gefundenen Knoten
 			//A) bWithAnyValue=false  //also nur reine XML Knoten und den Rest weglassen.
 			 int iCount=0;
@@ -82,7 +51,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 						assertNull(sMessage,vecTag);
 					}else {
 						assertNotNull(sMessage, vecTag);
-						assertEquals(sMessage, vecTag.size(), iElementsWithoutText);
+						assertEquals(sMessage, iElementsWithoutText, vecTag.size());
 						
 						if(iElementsWithoutText==0) {
 							assertTrue(sMessage, vecTag.isEmpty());
@@ -99,6 +68,9 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			bWithText=true;						
 			for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				iCount++;
+				if(iCount==6) {
+					System.out.println("Breakpoint Pause zum debuggen");					
+				}
 			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgewertet (bWithAnyValue="+bWithText+").";
 						 	
 				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
@@ -112,7 +84,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				}else {
 					assertNotNull(sMessage, vecTag);
 					assertFalse(sMessage, vecTag.isEmpty());
-					assertEquals(sMessage, vecTag.size(), iElementsWithText);
+					assertEquals(sMessage, iElementsWithText, vecTag.size());
 					
 					//Merke: Nur bei 1 (nicht XML) Wert kann man das automatisiert prüfen.
 					if(iElementsWithText==0) {
@@ -138,7 +110,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		 try{
 			 String sTest;
 			 Vector<String> vecTag=null;
-			 
+			 			 
 			//a) Negativtests
 			sTest = "";
 			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest,"abc");
@@ -151,27 +123,98 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "abc");
 			assertNotNull(vecTag);
 			assertTrue(vecTag.isEmpty());
-			
 			 
+			
 			//b) Positivtests
-			//###############################################
-						
-			//+++ Tag kommt nur 1x vor
-			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
+			//Merke: Nun stichpunktartig die Werte der Knoten prüfen.
+			//..............
+					
+//			 Und nun in einer Schleife die TESTVALUE Enum durchgehen
+//			 Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
+	
+			 //Hole die XML Strings aus dem Enum
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
+			 		 
+			//Teste alle XML Strings hinsichtlich des Wert in dem Knoten
+			//A) //+++ Tag kommt nur 1x vor
+			 int iCount=0;
+			 String sMessage = null;
+			 String[]saTagForValue=null; String sTagForValue;
+			 String[][]saValue=null;String sValue;
+			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
+			 	iCount++;
+			 	if(iCount==6) {
+					System.out.println("Breakpoint Pause zum debuggen");					
+				}
+			 	
+			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgewertet.";
+			 	
+				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+				sTest= objEnumTestType.getXml();
+				saTagForValue=objEnumTestType.getTagsForExpectedValue();
+				if(saTagForValue!=null) {
+					if(!ArrayUtilZZZ.isNull(saTagForValue)) {
+						saValue=objEnumTestType.getExpectedValues();
+						if(saValue!=null) {
+							for(int i=0;i<=saTagForValue.length-1;i++) {
+								sTagForValue = saTagForValue[i];
+								vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, sTagForValue);
+								
+								assertNotNull(sMessage, vecTag);
+								if(ArrayUtilZZZ.isEmpty(saValue[i])) {
+									assertTrue(sMessage, vecTag.isEmpty());
+								}else {
+									assertFalse(sMessage, vecTag.isEmpty());
+									
+									assertEquals(sMessage, saValue[i].length, vecTag.size());
+									for(int j=0;j<=saValue[i].length-1;j++) {
+										assertEquals(sMessage, saValue[i][j],vecTag.get(j));//Merke: vecTag wird in jeder schleife neu ausgerechnet.									
+									}
+								}													
+							}//end for
+						}else {
+							//!!! Wenn keine Beispielwerte angegeben wurden, trotzdem testen....
+							for(int i=0;i<=saTagForValue.length-1;i++) {
+								sTagForValue = saTagForValue[i];
+								vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, sTagForValue);
+								
+								assertNotNull(sMessage, vecTag);
+								assertFalse(sMessage, vecTag.isEmpty());
+							}//end for
+						}
+					}
+				}else {
+					
+					//!!! Wenn kein Beispieltag angegeben wurde, normalterweise trotzdem testen....
+					//... aber hier geht es ja wirklich explizit um die Ermittlung der Tags.
+					
+					
+				}
+			 }//end for
+			 
 			
-			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "abc");
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==1);
 			
-			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "b");
-			assertNotNull(vecTag);
-			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==1);
-			assertEquals("Wert in b",vecTag.get(0)); 
-			
-			
-			//+++ Tag kommt mehrmals vor
+
+//			 
+//			//b) Positivtests
+//			//###############################################
+//						
+//			
+//			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
+//			
+//			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "abc");
+//			assertNotNull(vecTag);
+//			assertFalse(vecTag.isEmpty());
+//			assertTrue(vecTag.size()==1);
+//			
+//			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "b");
+//			assertNotNull(vecTag);
+//			assertFalse(vecTag.isEmpty());
+//			assertTrue(vecTag.size()==1);
+//			assertEquals("Wert in b",vecTag.get(0)); 
+//			
+//			
+			//B) //+++ Tag kommt mehrmals vor
 			sTest = "Wert vor dem 1. abc<abc><a>1. Wert in a</a>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach dem 1. abc<abc><a>2. Wert in a</a></abc>";
 						
 			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "a");

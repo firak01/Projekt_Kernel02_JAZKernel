@@ -115,7 +115,7 @@ public abstract class AbstractKernelModuleZZZ  extends AbstractKernelUseObjectZZ
 	public boolean[] setFlag(IKernelModuleZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelModuleZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

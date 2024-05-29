@@ -10,7 +10,7 @@ public class EnumUtilZZZ {
 	public static String[] toString(Enum[] enuma) {
 		String[] saReturn = null;
 		main:{
-			if(ArrayUtilZZZ.isEmpty(enuma)) break main;
+			if(ArrayUtilZZZ.isNull(enuma)) break main;
 			
 			ArrayList<String>listasReturn = new ArrayList<String>();
 			for(Enum e : enuma) {
@@ -26,7 +26,7 @@ public class EnumUtilZZZ {
 	public static ArrayList<IEnumSetMappedZZZ> toArrayListMapped(Enum[] enuma) {
 		ArrayList<IEnumSetMappedZZZ> listaeReturn = null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(enuma)) {	
+			if(!ArrayUtilZZZ.isNull(enuma)) {	
 				listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
 				for(Enum objEnum : enuma) {				
 					IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) objEnum;				

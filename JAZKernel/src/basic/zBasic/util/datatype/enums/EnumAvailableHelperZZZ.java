@@ -208,7 +208,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		ArrayList<String>listasReturn = null;
 		main:{
 			Enum[]enuma = EnumAvailableHelperZZZ.searchEnum(cls, sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
-			if(ArrayUtilZZZ.isEmpty(enuma))break main;
+			if(ArrayUtilZZZ.isNull(enuma))break main;
 			
 			String[] saReturn = EnumUtilZZZ.toString(enuma);
 			listasReturn = StringArrayZZZ.toArrayList(saReturn);
@@ -261,7 +261,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		listaeReturn = EnumUtilZZZ.toArrayListMapped(enuma);
 		
 		ArrayList<IEnumSetMappedZZZ>listaeByDirect=null;
-		if(!ArrayUtilZZZ.isEmpty(enuma)) {	
+		if(!ArrayUtilZZZ.isNull(enuma)) {	
 			listaeReturn = new ArrayList<IEnumSetMappedZZZ>();
 			for(Enum objEnum : enuma) {				
 				IEnumSetMappedZZZ e = (IEnumSetMappedZZZ) objEnum;				
@@ -287,7 +287,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				Enum[] enumaByInterface = searchEnum(objclsByInterface, sEnumName,bScanInterfaceImmediate, false);
 				
 				ArrayList<IEnumSetMappedZZZ>listaeByInterfaceTemp=null; 
-				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {			
+				if(!ArrayUtilZZZ.isNull(enumaByInterface)) {			
 					listaeByInterfaceTemp = new ArrayList<IEnumSetMappedZZZ>();
 										
 					for(Enum objEnum : enumaByInterface) {						
@@ -380,7 +380,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 				//false, weil ja die Interfaces eh betrachtet werde sollen
 				Enum[] enumaByInterface = searchEnum(objclsByInterface, sEnumName, false, false);
 				ArrayList<String>listasByInterfaceTemp=null;
-				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {	
+				if(!ArrayUtilZZZ.isNull(enumaByInterface)) {	
 					listasByInterfaceTemp = new ArrayList<String>();
 					for(Enum objEnum : enumaByInterface) {
 						String sEnum = objEnum.name();
@@ -502,7 +502,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 			if(enumaMappedStatus==null) break main;
 			
 			hmReturn = new HashMap<String, IEnumSetMappedZZZ>();
-			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+			if(ArrayUtilZZZ.isNull(enumaMappedStatus)) break main;
 			
 			for(IEnumSetMappedZZZ objEnumMapped : enumaMappedStatus) {
 				String sEnum = objEnumMapped.getName();
@@ -936,7 +936,7 @@ public class EnumAvailableHelperZZZ implements IConstantZZZ{
 		    	//IEnumSetMappedZZZ[] enumaByInterface3 = (IEnumSetMappedZZZ[])objEnum; 
 		  		    	 				
 				Object[] objaEnum = classToCheck.getEnumConstants();
-				if(!ArrayUtilZZZ.isEmpty(objaEnum)) {
+				if(!ArrayUtilZZZ.isNull(objaEnum)) {
 					listaeByClass = new ArrayList<E>();
 					for(Object obj : objaEnum) {
 						Enum e = (Enum) obj;

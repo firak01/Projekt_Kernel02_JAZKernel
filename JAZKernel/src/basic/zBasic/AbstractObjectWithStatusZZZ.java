@@ -146,7 +146,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public boolean[] setFlag(IObjectWithStatusZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IObjectWithStatusZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -191,7 +191,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public boolean[] setFlag(IStatusLocalMessageUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IStatusLocalMessageUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -235,7 +235,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 		public boolean[] setFlag(ISenderObjectStatusLocalUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 					baReturn = new boolean[objaEnumFlag.length];
 					int iCounter=-1;
 					for(ISenderObjectStatusLocalUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -1361,7 +1361,7 @@ public abstract class AbstractObjectWithStatusZZZ <T> extends AbstractObjectWith
 	public boolean[] setStatusLocal(Enum[] objaEnumStatusIn, boolean bStatusValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumStatusIn)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumStatusIn)) {
 				baReturn = new boolean[objaEnumStatusIn.length];
 				int iCounter=-1;
 				for(Enum objEnumStatus:objaEnumStatusIn) {

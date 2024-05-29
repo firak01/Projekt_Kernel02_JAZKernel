@@ -363,7 +363,7 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 			public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 						baReturn = new boolean[objaEnumFlag.length];
 						int iCounter=-1;
 						for(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -402,7 +402,7 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
 					baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
 					int iCounter=-1;
 					for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {

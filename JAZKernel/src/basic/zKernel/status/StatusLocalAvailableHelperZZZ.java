@@ -218,7 +218,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		IEnumSetMappedStatusZZZ[] enuma = StatusLocalAvailableHelperZZZ.searchEnumMapped(cls,bScanInterfaceImmediate, false);
 
 		ArrayList<IEnumSetMappedStatusZZZ> listaeByDirect = null;
-		if(!ArrayUtilZZZ.isEmpty(enuma)) {					
+		if(!ArrayUtilZZZ.isNull(enuma)) {					
 			for(IEnumSetMappedStatusZZZ objEnum : enuma) {
 				int iGroupIdByEnum = objEnum.getStatusGroupId();
 				if(iGroupIdByEnum == iGroupId) {
@@ -245,7 +245,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 				enumaByInterface = searchEnumMapped(objclsByInterface, false, false);
 				
 				ArrayList<IEnumSetMappedStatusZZZ> listaeByInterfaceTemp = null;
-				if(!ArrayUtilZZZ.isEmpty(enumaByInterface)) {
+				if(!ArrayUtilZZZ.isNull(enumaByInterface)) {
 					listaeByInterfaceTemp = new ArrayList<IEnumSetMappedStatusZZZ>();
 					for(IEnumSetMappedStatusZZZ objEnum : enumaByInterface) {					
 						if(!listaeByInterfaceTemp.contains(objEnum)) {
@@ -500,7 +500,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 					
 			
 			ArrayList<IEnumSetMappedStatusZZZ> listaeByDirect = null;
-			if(!ArrayUtilZZZ.isEmpty(enuma)) {
+			if(!ArrayUtilZZZ.isNull(enuma)) {
 				for(IEnumSetMappedStatusZZZ objEnum : enuma) {					
 					int iEnumGroupId = objEnum.getStatusGroupId();
 					if(iEnumGroupId==iGroupId) {
@@ -664,7 +664,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			if(enumaMappedStatus==null) break main;
 			
 			hmReturn = new HashMap<String, IEnumSetMappedStatusZZZ>();
-			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+			if(ArrayUtilZZZ.isNull(enumaMappedStatus)) break main;
 			
 			for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
 				String sEnum = objEnumMapped.getName();
@@ -718,7 +718,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			if(enumaMappedStatus==null) break main;			
 			
 			HashMapKeepFirstZZZ<String, IStatusBooleanMessageZZZ> hmFirst = new HashMapKeepFirstZZZ<String, IStatusBooleanMessageZZZ>();
-			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+			if(ArrayUtilZZZ.isNull(enumaMappedStatus)) break main;
 			
 			for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
 				String sEnum = objEnumMapped.getName();
@@ -777,7 +777,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 			if(enumaMappedStatus==null) break main;
 
 			hmReturn = new HashMap<String, IStatusBooleanMessageZZZ>();
-			if(ArrayUtilZZZ.isEmpty(enumaMappedStatus)) break main;
+			if(ArrayUtilZZZ.isNull(enumaMappedStatus)) break main;
 			
 			for(IEnumSetMappedStatusZZZ objEnumMapped : enumaMappedStatus) {
 				String sEnum = objEnumMapped.getName();
@@ -1170,7 +1170,7 @@ public class StatusLocalAvailableHelperZZZ implements IConstantZZZ{
 		    	//IEnumSetMappedStatusZZZ[] enumaByInterface3 = (IEnumSetMappedStatusZZZ[])objEnum; 
 		  		    	 				
 				Object[] objaEnum = classToCheck.getEnumConstants();
-				if(!ArrayUtilZZZ.isEmpty(objaEnum)) {
+				if(!ArrayUtilZZZ.isNull(objaEnum)) {
 					listaeReturnByClass = new ArrayList<E>();
 					for(Object obj : objaEnum) {
 						Enum e = (Enum) obj;

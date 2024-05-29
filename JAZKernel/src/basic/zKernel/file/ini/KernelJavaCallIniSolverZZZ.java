@@ -246,7 +246,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 		public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelCallIniSolverZZZ)) {
+				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelCallIniSolverZZZ)) {
 					baReturn = new boolean[objaEnum_IKernelCallIniSolverZZZ.length];
 					int iCounter=-1;
 					for(IKernelCallIniSolverZZZ.FLAGZ objEnum_IKernelCallIniSolverZZZ:objaEnum_IKernelCallIniSolverZZZ) {
@@ -280,7 +280,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
 					baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
 					int iCounter=-1;
 					for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {

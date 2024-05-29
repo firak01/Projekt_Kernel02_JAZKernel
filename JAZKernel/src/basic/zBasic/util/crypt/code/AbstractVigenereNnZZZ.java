@@ -128,7 +128,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public int[]encrypt(int[]iaText) throws ExceptionZZZ{		
 		int[]iaReturn=null;
 		main:{
-			if(ArrayUtilZZZ.isEmpty(iaText))break main;
+			if(ArrayUtilZZZ.isNull(iaText))break main;
 			
 			String sKeyWord = this.getCryptKey();
 			if(StringZZZ.isEmpty(sKeyWord)) {
@@ -215,8 +215,8 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public static int[] encryptAsPositionInPool(int[] iaText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
-			if(ArrayUtilZZZ.isEmpty(iaText)) break main;
-			if(ArrayUtilZZZ.isEmpty(iaSchluesselwort)) {
+			if(ArrayUtilZZZ.isNull(iaText)) break main;
+			if(ArrayUtilZZZ.isNull(iaSchluesselwort)) {
 				iaReturn = iaText;
 				break main;
 			}
@@ -345,8 +345,8 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
-			if(ArrayUtilZZZ.isEmpty(iaEncryptedText)) break main;
-			if(ArrayUtilZZZ.isEmpty(iaSchluesselwort)) {
+			if(ArrayUtilZZZ.isNull(iaEncryptedText)) break main;
+			if(ArrayUtilZZZ.isNull(iaSchluesselwort)) {
 				iaReturn = iaEncryptedText;
 				break main;
 			}
@@ -402,8 +402,8 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public static int[] decryptAsPositionInPool(int[] iaEncryptedText, ArrayListExtendedZZZ<CharacterExtendedZZZ> listasCharacterPool, int[] iaSchluesselwort, CharacterExtendedZZZ objCharMissingReplacement) throws IllegalArgumentException, ExceptionZZZ {
 		int[] iaReturn = null;
 		main:{			
-			if(ArrayUtilZZZ.isEmpty(iaEncryptedText)) break main;
-			if(ArrayUtilZZZ.isEmpty(iaSchluesselwort)) {
+			if(ArrayUtilZZZ.isNull(iaEncryptedText)) break main;
+			if(ArrayUtilZZZ.isNull(iaSchluesselwort)) {
 				iaReturn = iaEncryptedText;
 				break main;
 			}
@@ -483,7 +483,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public int[] decrypt(int[]iaEncryptedText) throws ExceptionZZZ {
 		int[]iaReturn=null;
 		main:{
-			if(ArrayUtilZZZ.isEmpty(iaEncryptedText)) break main;
+			if(ArrayUtilZZZ.isNull(iaEncryptedText)) break main;
 			
 			String sKeyWord = this.getCryptKey();
 			int[] iaSchluesselwort=null;
@@ -762,7 +762,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public boolean[] setFlag(IROTUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IROTUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -795,7 +795,7 @@ public abstract class AbstractVigenereNnZZZ extends AbstractVigenereZZZ implemen
 	public boolean[] setFlag(ICharacterPoolUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(ICharacterPoolUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

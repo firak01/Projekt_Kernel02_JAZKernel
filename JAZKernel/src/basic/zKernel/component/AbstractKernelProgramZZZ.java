@@ -88,7 +88,7 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	public boolean[] setFlag(IKernelProgramZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelProgramZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -170,7 +170,7 @@ public abstract class AbstractKernelProgramZZZ  extends AbstractKernelUseObjectZ
 	public boolean[] setFlag(IKernelModuleUserZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelModuleUserZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

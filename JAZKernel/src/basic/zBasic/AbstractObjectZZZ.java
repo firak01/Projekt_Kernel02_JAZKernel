@@ -68,7 +68,7 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	@Override
 	public synchronized void logProtocolString(Object obj, String[] saLog) throws ExceptionZZZ{
 		main:{
-			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+			if(ArrayUtilZZZ.isNull(saLog)) break main;
 			
 			if(obj==null) {
 				for(String sLog : saLog) {
@@ -108,8 +108,8 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	@Override
 	public synchronized void logProtocolString(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
 		main:{
-			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
-			if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
+			if(ArrayUtilZZZ.isNull(saLog)) break main;
+			if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
 				this.logProtocolString(saLog);
 				break main;
 			}

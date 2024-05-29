@@ -133,7 +133,7 @@ public class CharacterExtendedZZZ extends AbstractObjectZZZ implements ICharacte
 	public static String computeStringFromCharacterPoolPosition(int[] iaPosition, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			if(ArrayUtilZZZ.isEmpty(iaPosition))break main;
+			if(ArrayUtilZZZ.isNull(iaPosition))break main;
 			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 
@@ -156,7 +156,7 @@ public class CharacterExtendedZZZ extends AbstractObjectZZZ implements ICharacte
 	public static String computeStringFromCharacterPoolPosition(int[] iaPosition, ArrayListExtendedZZZ<CharacterExtendedZZZ>listasCharacterPool, CharacterExtendedZZZ objCharMissingReplacementIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
-			if(ArrayUtilZZZ.isEmpty(iaPosition))break main;
+			if(ArrayUtilZZZ.isNull(iaPosition))break main;
 			if(ArrayListZZZ.isEmpty(listasCharacterPool)) {
 				String sLog = "Character pool not provided.";
 				 //this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);								 

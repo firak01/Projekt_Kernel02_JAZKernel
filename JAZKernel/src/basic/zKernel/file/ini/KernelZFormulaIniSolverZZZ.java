@@ -266,7 +266,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnum_IKernelZFormulaIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelZFormulaIniSolverZZZ)) {
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelZFormulaIniSolverZZZ)) {
 				baReturn = new boolean[objaEnum_IKernelZFormulaIniSolverZZZ.length];
 				int iCounter=-1;
 				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnum_IKernelZFormulaIniSolverZZZ:objaEnum_IKernelZFormulaIniSolverZZZ) {

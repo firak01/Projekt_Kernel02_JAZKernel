@@ -450,7 +450,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 		public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 					baReturn = new boolean[objaEnumFlag.length];
 					int iCounter=-1;
 					for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -483,7 +483,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -516,7 +516,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -549,7 +549,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 	public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -582,7 +582,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 		public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 					baReturn = new boolean[objaEnumFlag.length];
 					int iCounter=-1;
 					for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -615,7 +615,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 			public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 						baReturn = new boolean[objaEnumFlag.length];
 						int iCounter=-1;
 						for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -648,7 +648,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 			public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 						baReturn = new boolean[objaEnumFlag.length];
 						int iCounter=-1;
 						for(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -686,7 +686,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 		public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
 					baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
 					int iCounter=-1;
 					for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {

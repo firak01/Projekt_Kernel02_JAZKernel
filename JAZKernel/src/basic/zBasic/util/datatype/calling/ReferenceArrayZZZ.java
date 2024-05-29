@@ -50,7 +50,7 @@ public class ReferenceArrayZZZ<T> {
     
     public void add(T[] newVal) {
     	main:{
-    		if(ArrayUtilZZZ.isEmpty(newVal)) break main;
+    		if(ArrayUtilZZZ.isNull(newVal)) break main;
 
     		for(T elementVal : newVal) {
     			listaReferent.add(elementVal);

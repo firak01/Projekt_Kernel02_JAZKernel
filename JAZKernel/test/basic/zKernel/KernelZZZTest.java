@@ -1530,7 +1530,7 @@ public void testGetModuleAliasAll(){
 			
 			String[]sa = objKernelFGL.getParameterArrayWithStringByProgramAlias("Test", "testGetParameterArrayByProgramAlias", "testValue01");
 			assertNotNull(sa);
-			assertFalse(ArrayUtilZZZ.isEmpty(sa));											
+			assertFalse(ArrayUtilZZZ.isNull(sa));											
 		}catch(ExceptionZZZ ez){
 			fail("An exception happend testing: " + ez.getDetailAllLast());
 		}

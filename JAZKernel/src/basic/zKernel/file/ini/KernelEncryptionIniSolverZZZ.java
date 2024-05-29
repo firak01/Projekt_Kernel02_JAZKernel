@@ -148,7 +148,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 						 if(objFlagControl.isExpression(sExpression)){					
 							String[] saControl = objFlagControl.computeAsArray(sExpression,",");						
 							boolean[] baFound = objAlgorithm.setFlag(saControl, true);
-							if(!ArrayUtilZZZ.isEmpty(baFound)) {
+							if(!ArrayUtilZZZ.isNull(baFound)) {
 								int iCounter = -1;
 								for(boolean bFound:baFound) {
 									iCounter++;
@@ -220,7 +220,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 	public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelEncryptionIniSolverZZZ)) {
+			if(!ArrayUtilZZZ.isNull(objaEnum_IKernelEncryptionIniSolverZZZ)) {
 				baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
 				int iCounter=-1;
 				for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {

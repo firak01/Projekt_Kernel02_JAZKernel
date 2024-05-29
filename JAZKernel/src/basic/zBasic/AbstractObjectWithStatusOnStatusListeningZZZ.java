@@ -79,7 +79,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 	public boolean[] setFlag(IListenerObjectStatusLocalZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IListenerObjectStatusLocalZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -168,7 +168,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			bReturn = StatusLocalEventHelperZZZ.isEventRelevant4ReactionOnStatusLocal(eventStatusLocalReact, hmStatusLocal4Reaction,objReferenceLog);
 			
 			String[] saLog = objReferenceLog.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+			if(!ArrayUtilZZZ.isNull(saLog)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()  + this.getClass().getSimpleName()+"=> From referenced Log";
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);
@@ -278,7 +278,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			//TODOGOON20240518 hier ist was im argen. ProcessWatchRunner bekommt nie den Event vom Monitor, der den passenden actionAlias triggert.
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(sStatusName, hmEnum, objReturnReferenceLog);
 			String[] saLog = objReturnReferenceLog.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+			if(!ArrayUtilZZZ.isNull(saLog)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' dazu ActionAlias geholt sActionAlias='" + sActionAlias + "'";				
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);
@@ -297,7 +297,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			ReferenceArrayZZZ<String>objReferenceLog02 = new ReferenceArrayZZZ<String>();			
 			IEnumSetMappedStatusZZZ enumStatus = StatusLocalEventHelperZZZ.getEnumStatusMapped(sStatusName, hmEnum, objReferenceLog02);
 			String[] saLog02 = objReferenceLog02.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog02)) {
+			if(!ArrayUtilZZZ.isNull(saLog02)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName() + "=> Status '" + sStatusName + "' EnumStatusMapped geholt.";				
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);								
@@ -439,7 +439,7 @@ public abstract class AbstractObjectWithStatusOnStatusListeningZZZ <T> extends A
 			ReferenceArrayZZZ<String>objReturnReferenceLog = new ReferenceArrayZZZ<String>();
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReturnReferenceLog);
 			String[] saLog = objReturnReferenceLog.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+			if(!ArrayUtilZZZ.isNull(saLog)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+ "=> Event ("+ eventStatusLocal.getStatusEnum().name() + ") Referenziertes Log von der Suche nach dem ActionAlias. (ActionAlias = '" + sActionAlias + "') Breche ab";				
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);

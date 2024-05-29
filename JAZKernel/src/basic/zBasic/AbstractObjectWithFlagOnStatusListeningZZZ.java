@@ -82,7 +82,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 	public boolean[] setFlag(IListenerObjectStatusLocalZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IListenerObjectStatusLocalZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -170,7 +170,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			bReturn = StatusLocalEventHelperZZZ.isEventRelevant4ReactionOnStatusLocal(eventStatusLocalReact, hmStatusLocal4Reaction,objReferenceLog);
 			
 			String[] saLog = objReferenceLog.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+			if(!ArrayUtilZZZ.isNull(saLog)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent() + "From referenced Log:";
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);
@@ -296,7 +296,7 @@ public abstract class AbstractObjectWithFlagOnStatusListeningZZZ <T> extends Abs
 			ReferenceArrayZZZ<String>objReturnReferenceLog = new ReferenceArrayZZZ<String>();
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReturnReferenceLog);
 			String []saLog = objReturnReferenceLog.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+			if(!ArrayUtilZZZ.isNull(saLog)) {
 				sLog = ReflectCodeZZZ.getPositionCurrent()+this.getClass().getSimpleName()+ "Log aus der Ermittlung des ActionAlias folgt...)";
 				this.logProtocolString(sLog);
 				this.logProtocolString(saLog);

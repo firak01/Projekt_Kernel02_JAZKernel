@@ -170,7 +170,7 @@ public class DummyTestObjectWithStatusByDirectZZZ extends AbstractObjectWithStat
 	public boolean[] setFlag(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IDummyTestObjectWithStatusByDirectZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

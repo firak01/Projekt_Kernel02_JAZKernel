@@ -7425,7 +7425,7 @@ MeinTestParameter=blablaErgebnis
 	public boolean[] setFlag(IKernelZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -7458,7 +7458,7 @@ MeinTestParameter=blablaErgebnis
 	public boolean[] setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelZFormulaIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -7491,7 +7491,7 @@ MeinTestParameter=blablaErgebnis
 	public boolean[] setFlag(IKernelExpressionIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IKernelExpressionIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -7524,7 +7524,7 @@ MeinTestParameter=blablaErgebnis
 		public boolean[] setFlag(IKernelEncryptionIniSolverZZZ.FLAGZ[] objaEnum_IKernelEncryptionIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelEncryptionIniSolverZZZ)) {
+				if(!ArrayUtilZZZ.isNull(objaEnum_IKernelEncryptionIniSolverZZZ)) {
 					baReturn = new boolean[objaEnum_IKernelEncryptionIniSolverZZZ.length];
 					int iCounter=-1;
 					for(IKernelEncryptionIniSolverZZZ.FLAGZ objEnum_IKernelEncryptionIniSolverZZZ:objaEnum_IKernelEncryptionIniSolverZZZ) {
@@ -7582,7 +7582,7 @@ MeinTestParameter=blablaErgebnis
 			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnum_IKernelJsonIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJsonIniSolverZZZ)) {
+					if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJsonIniSolverZZZ)) {
 						baReturn = new boolean[objaEnum_IKernelJsonIniSolverZZZ.length];
 						int iCounter=-1;
 						for(IKernelJsonIniSolverZZZ.FLAGZ objEnum_IKernelJsonIniSolverZZZ:objaEnum_IKernelJsonIniSolverZZZ) {
@@ -7616,7 +7616,7 @@ MeinTestParameter=blablaErgebnis
 			public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 						baReturn = new boolean[objaEnumFlag.length];
 						int iCounter=-1;
 						for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -7649,7 +7649,7 @@ MeinTestParameter=blablaErgebnis
 				public boolean[] setFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 					boolean[] baReturn=null;
 					main:{
-						if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+						if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 							baReturn = new boolean[objaEnumFlag.length];
 							int iCounter=-1;
 							for(IKernelJsonArrayIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -7682,7 +7682,7 @@ MeinTestParameter=blablaErgebnis
 				public boolean[] setFlag(IKernelCallIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 					boolean[] baReturn=null;
 					main:{
-						if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+						if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 							baReturn = new boolean[objaEnumFlag.length];
 							int iCounter=-1;
 							for(IKernelCallIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -7720,7 +7720,7 @@ MeinTestParameter=blablaErgebnis
 			public boolean[] setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ[] objaEnum_IKernelJavaCallIniSolverZZZ, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnum_IKernelJavaCallIniSolverZZZ)) {
+					if(!ArrayUtilZZZ.isNull(objaEnum_IKernelJavaCallIniSolverZZZ)) {
 						baReturn = new boolean[objaEnum_IKernelJavaCallIniSolverZZZ.length];
 						int iCounter=-1;
 						for(IKernelJavaCallIniSolverZZZ.FLAGZ objEnum_IKernelJavaCallIniSolverZZZ:objaEnum_IKernelJavaCallIniSolverZZZ) {

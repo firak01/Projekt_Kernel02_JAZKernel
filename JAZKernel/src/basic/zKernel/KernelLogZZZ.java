@@ -161,7 +161,7 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 	
 	public synchronized static void logProtocolStringStatic(Object obj, String[] saLog) throws ExceptionZZZ{
 		main:{
-			if(ArrayUtilZZZ.isEmpty(saLog)) break main;
+			if(ArrayUtilZZZ.isNull(saLog)) break main;
 			
 			if(obj==null) {
 				for(String sLog : saLog) {
@@ -197,8 +197,8 @@ public abstract class KernelLogZZZ extends AbstractObjectWithFlagZZZ implements 
 		
 	public synchronized static void logProtocolStringStatic(Object obj, String[] saLog, IEnumSetMappedLogStringFormatZZZ[] ienumaMappedLogString) throws ExceptionZZZ {
 		main:{
-		if(ArrayUtilZZZ.isEmpty(saLog)) break main;
-		if(ArrayUtilZZZ.isEmpty(ienumaMappedLogString)){
+		if(ArrayUtilZZZ.isNull(saLog)) break main;
+		if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
 			KernelLogZZZ.logProtocolStringStatic(saLog);
 			break main;
 		}

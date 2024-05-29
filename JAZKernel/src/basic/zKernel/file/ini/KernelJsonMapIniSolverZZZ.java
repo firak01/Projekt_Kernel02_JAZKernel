@@ -270,7 +270,7 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 			public boolean[] setFlag(IKernelJsonMapIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 						baReturn = new boolean[objaEnumFlag.length];
 						int iCounter=-1;
 						for(IKernelJsonMapIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -303,7 +303,7 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 			public boolean[] setFlag(IKernelJsonIniSolverZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 				boolean[] baReturn=null;
 				main:{
-					if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+					if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 						baReturn = new boolean[objaEnumFlag.length];
 						int iCounter=-1;
 						for(IKernelJsonIniSolverZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

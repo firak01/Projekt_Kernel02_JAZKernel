@@ -33,7 +33,7 @@ public abstract class AbstractDummyTestProgramWithFlagByInterfaceExtendedZZZ ext
 	public boolean[] setFlag(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IDummyTestObjectWithFlagByInterfaceZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -78,7 +78,7 @@ public abstract class AbstractDummyTestProgramWithFlagByInterfaceExtendedZZZ ext
 	public boolean[] setFlag(IDummyTestObjectWithFlagByInterfaceExtendedZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IDummyTestObjectWithFlagByInterfaceExtendedZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

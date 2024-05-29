@@ -30,7 +30,7 @@ public class CharArrayZZZ {
 	
 	public static void convert(int[] array, char[] array1) {
 		main:{
-			if(ArrayUtilZZZ.isEmpty(array))break main;
+			if(ArrayUtilZZZ.isNull(array))break main;
 			//Merke: "call by reference" Problem: Wenn array1 neu dimensioniert wird, geht die Referenz verloren. D.h. in der aufrufenden Methode ist array1 leer.
 			//       Lösungsansatz ware eine neue Methode mit Übergabeparameter: ReferenceArrayZZZ<Integer>objReturn=new ReferenceArrayZZZ<Integer>(0);
 			
@@ -44,7 +44,7 @@ public class CharArrayZZZ {
 	
 	public static void convert(char[] array, int[] array1 ) {
 		main:{
-			if(ArrayUtilZZZ.isEmpty(array))break main;
+			if(ArrayUtilZZZ.isNull(array))break main;
 			
 			//Merke: "call by reference" Problem: Wenn array1 neu dimensioniert wird, geht die Referenz verloren. D.h. in der aufrufenden Methode ist array1 leer.
 			//       Lösungsansatz ware eine neue Methode mit Übergabeparameter: ReferenceArrayZZZ<Integer>objReturn=new ReferenceArrayZZZ<Integer>(0);

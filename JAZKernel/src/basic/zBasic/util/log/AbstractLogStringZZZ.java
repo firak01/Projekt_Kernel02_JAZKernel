@@ -447,11 +447,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 //				throw ez;
 //			}
 		
-			if(ArrayUtilZZZ.isEmpty(saLog)) {
+			if(ArrayUtilZZZ.isNull(saLog)) {
 				break main;
 			}
 		
-			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {
+			if(ArrayUtilZZZ.isNull(ienumaFormatLogString)) {
 				ienumaFormatLogString = this.getFormatPositionsMapped();
 			}
 			
@@ -597,11 +597,11 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 
 	@Override
 	public IEnumSetMappedLogStringFormatZZZ[] getFormatPositionsMapped() throws ExceptionZZZ {
-		if(ArrayUtilZZZ.isEmpty(this.ienumaMappedFormat)) {
+		if(ArrayUtilZZZ.isNull(this.ienumaMappedFormat)) {
 			this.ienumaMappedFormat = this.getFormatPositionsMappedCustom();
 			
 			//Wenn im custom nix drin ist, default nehmen
-			if(ArrayUtilZZZ.isEmpty(this.ienumaMappedFormat)) {
+			if(ArrayUtilZZZ.isNull(this.ienumaMappedFormat)) {
 				this.ienumaMappedFormat = this.getFormatPositionsMappedDefault();
 			}
 			
@@ -693,7 +693,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 		int iReturn = 0;
 		main:{
 			IEnumSetMappedLogStringFormatZZZ[]ienumaMappedFormat = this.getFormatPositionsMapped();
-			if(ArrayUtilZZZ.isEmpty(ienumaMappedFormat))break main;
+			if(ArrayUtilZZZ.isNull(ienumaMappedFormat))break main;
 			
 			int iPosition=0;
 			for(IEnumSetMappedLogStringFormatZZZ ienumMappedFormat : ienumaMappedFormat) {
@@ -721,7 +721,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 	public boolean[] setFlag(ILogStringZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(ILogStringZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

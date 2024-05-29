@@ -222,7 +222,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	boolean bScanInterfaceImmidiateC = true;
 		    	boolean bScanSuperclassImmidiateC = true;
 		    	Enum[] enumaReturnTempC = EnumAvailableHelperZZZ.searchEnum(objClassFromAbstractWithInterfaceExtended, "STATUSLOCAL", bScanInterfaceImmidiateC, bScanSuperclassImmidiateC);		    	
-		    	assertFalse(ArrayUtilZZZ.isEmpty(enumaReturnTempC));
+		    	assertFalse(ArrayUtilZZZ.isNull(enumaReturnTempC));
 		    	assertTrue(enumaReturnTempC.length==8);
 		    	
 	    		
@@ -235,7 +235,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 		    	boolean bScanInterfaceImmidiateA = true;
 		    	boolean bScanSuperclassImmidiateA = true;
 		    	Enum[] enumaReturnTempA = EnumAvailableHelperZZZ.searchEnum(objClassFromInterface, "STATUSLOCAL", bScanInterfaceImmidiateA, bScanSuperclassImmidiateA);		    	
-		    	assertFalse(ArrayUtilZZZ.isEmpty(enumaReturnTempA));
+		    	assertFalse(ArrayUtilZZZ.isNull(enumaReturnTempA));
 		    	assertTrue(enumaReturnTempA.length==6);
 	    		
 		    	
@@ -255,7 +255,7 @@ public class EnumAvailableHelperZZZTest  extends TestCase{
 	    	IEnumSetMappedZZZ[] enumaByInterface = EnumAvailableHelperZZZ.searchEnumMapped(objClassByInterface, "STATUSLOCAL", false);
 	    	assertNull("NULL sollte als Array der IEnumSetMappedStatzsZZZ-Objekte zurueckkommen, da STATUSLOCAL ueber Interface eingebunden wird.", enumaByInterface);
 	    	
-	    	boolean bIsEmpty = ArrayUtilZZZ.isEmpty(enumaByInterface);
+	    	boolean bIsEmpty = ArrayUtilZZZ.isNull(enumaByInterface);
 	    	assertTrue("Es sollte kein STATUSLOCAL gefunden werden, da dieser ueber das Interface eingebunden wird", bIsEmpty);
 	    	
 	    	

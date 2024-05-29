@@ -111,7 +111,7 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 	public boolean[] setFlag(IProgramMonitorRunnableZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IProgramMonitorRunnableZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -150,7 +150,7 @@ public abstract class AbstractProgramMonitorRunnableZZZ extends AbstractProgramM
 		public boolean[] setFlag(IProgramRunnableZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
-				if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+				if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 					baReturn = new boolean[objaEnumFlag.length];
 					int iCounter=-1;
 					for(IProgramRunnableZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

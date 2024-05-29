@@ -77,7 +77,7 @@ public class DummyTestObjectWithFlagOnFlagListeningZZZ extends AbstractObjectWit
 	public boolean[] setFlag(IDummyTestObjectWithFlagZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IDummyTestObjectWithFlagZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
@@ -123,7 +123,7 @@ public class DummyTestObjectWithFlagOnFlagListeningZZZ extends AbstractObjectWit
 	public boolean[] setFlag(IDummyTestObjectWithFlagOnFlagListeningZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IDummyTestObjectWithFlagOnFlagListeningZZZ.FLAGZ objEnumFlag:objaEnumFlag) {

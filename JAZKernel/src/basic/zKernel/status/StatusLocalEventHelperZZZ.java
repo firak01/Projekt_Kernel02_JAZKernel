@@ -40,7 +40,7 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 			ReferenceArrayZZZ<String> objReturnReferenceTemp = new ReferenceArrayZZZ<String>();
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmStatusLocal4Reaction, objReturnReferenceTemp);
 			String[] saLog = objReturnReferenceTemp.get(); 
-			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+			if(!ArrayUtilZZZ.isNull(saLog)) {
 				objReturnReference.add(saLog);//also Temp weiter nach aussen geben...
 			}
 			
@@ -130,7 +130,7 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 			ReferenceArrayZZZ<String>objReferenceLog02 = new ReferenceArrayZZZ<String>();
 			IEnumSetMappedStatusZZZ enumStatus = StatusLocalEventHelperZZZ.getEnumStatusMapped(sStatusName, hmEnum, objReferenceLog02);
 			String[] saLog02 = objReferenceLog02.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog02)) {
+			if(!ArrayUtilZZZ.isNull(saLog02)) {
 				objReturnReferenceLog.add(saLog02);				
 			}
 			if(enumStatus==null) {
@@ -143,7 +143,7 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 			ReferenceArrayZZZ<String>objReferenceLog = new ReferenceArrayZZZ<String>();
 			String sActionAlias = StatusLocalEventHelperZZZ.getActionAliasString4Reaction(enumStatus, hmEnum, objReferenceLog);
 			String[] saLog = objReferenceLog.get();
-			if(!ArrayUtilZZZ.isEmpty(saLog)) {
+			if(!ArrayUtilZZZ.isNull(saLog)) {
 				objReturnReferenceLog.add(saLog);				
 			}
 			

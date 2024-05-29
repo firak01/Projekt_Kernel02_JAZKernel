@@ -93,7 +93,7 @@ public abstract class AbstractProgramWithFlagOnStatusListeningRunnableZZZ extend
 	public boolean[] setFlag(IProgramRunnableZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
-			if(!ArrayUtilZZZ.isEmpty(objaEnumFlag)) {
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
 				for(IProgramRunnableZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
