@@ -3,7 +3,7 @@ package basic.zBasic.util.xml;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.xml.ITagZZZ;
+import basic.zBasic.xml.tagtype.ITagZZZ;
 
 public interface IParserXmlZZZ {
 

@@ -1,4 +1,4 @@
-package basic.zBasic.xml;
+package basic.zBasic.xml.tagtype;
 
 import java.util.Vector;
 
@@ -7,24 +7,23 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.util.xml.tagsimple.AbstractTagBasicsZZZ;
 
-public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZZ{			
+public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicsZZZ implements ITagByTypeZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
-	protected ITagTypeZZZ objTagType = null;
-	protected String sName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.
-	protected String sValue = null;
-	protected Vector<ITagZZZ>vecChildTags = null;
+	protected ITagTypeZZZ objTagType = null;		
+	protected Vector<ITagByTypeZZZ>vecChildTags = null;
 	
-	public AbstractTagZZZ() throws ExceptionZZZ{
+	public AbstractTagByTypeZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
-	public AbstractTagZZZ(ITagTypeZZZ objType) throws ExceptionZZZ{
+	public AbstractTagByTypeZZZ(ITagTypeZZZ objType) throws ExceptionZZZ{
 		super();
 		AbstractTagNew_(objType, "");
 	}
 	
-	public AbstractTagZZZ(ITagTypeZZZ objType, String sValue) throws ExceptionZZZ{
+	public AbstractTagByTypeZZZ(ITagTypeZZZ objType, String sValue) throws ExceptionZZZ{
 		super();
 		AbstractTagNew_(objType, sValue);
 	}
@@ -47,42 +46,15 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 		
 	//######## Getter / Setter ##################
 	@Override
-	public Vector<ITagZZZ> getChildTags(){
+	public Vector<ITagByTypeZZZ> getChildTags(){
 		return this.vecChildTags;
 	}
 	
 	@Override
-	public void setChildTags(Vector<ITagZZZ>vecTags) {
+	public void setChildTags(Vector<ITagByTypeZZZ>vecTags) {
 		this.vecChildTags = vecTags;
 	}
-	
-	@Override	
-	public String getValue(){
-		return this.sValue;
-	}
-
-	@Override
-	public void setValue(String sValue){
-		this.sValue = sValue;
-	}
-	
-	
-	
-	@Override 
-	public String getElementString() throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			String sValue = this.getValue();
-			if(sValue==null) {
-				sReturn = this.getEmpty();
-				break main;
-			}
-			
-			sReturn = this.getStarting() + sValue + this.getClosing();
-		}
-		return sReturn;
-	}
-	
+		
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ Details aus TagType +++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -106,27 +78,28 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 		if(objType!=null) {
 			return objType.getTagName();
 		}else {
-			return this.sName;
+			return "";
 		}
 	}	
-	
+
+	//+++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public String getStarting() throws ExceptionZZZ{
+	public String getTagPartStarting() throws ExceptionZZZ{
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
 			return objType.getTagPartStarting();
 		}else {
-			return XmlUtilZZZ.computeTagPartStarting(this.sName);
+			return "";
 		}
 	}
 	
 	@Override
-	public String getClosing() throws ExceptionZZZ{				
+	public String getTagPartClosing() throws ExceptionZZZ{				
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
 			return objType.getTagPartClosing();
 		}else {
-			return XmlUtilZZZ.computeTagPartClosing(this.sName);
+			return "";
 		}
 	}	
 	
@@ -138,6 +111,5 @@ public abstract class AbstractTagZZZ extends AbstractObjectZZZ implements ITagZZ
 		}else {
 			return "";
 		}
-	}
-		
+	}	
 }

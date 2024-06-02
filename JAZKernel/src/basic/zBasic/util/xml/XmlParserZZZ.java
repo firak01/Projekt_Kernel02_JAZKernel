@@ -5,7 +5,7 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.xml.ITagZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 
 /** Einfacher Parser um einen String in seine XML Bestandteile zu zerlegen.
  *  Einfach deshalb, weil kein (JDOM) XML Dokument benoetigt wird.
@@ -30,11 +30,11 @@ public class XmlParserZZZ extends AbstractObjectZZZ implements IParserXmlZZZ{
 	 * @see basic.zBasic.util.xml.IParserXmlZZZ#parse(java.lang.String)
 	 */
 	@Override
-	public Vector<ITagZZZ> parse(String sText) throws ExceptionZZZ{
-		Vector<ITagZZZ> vecReturn = new Vector<ITagZZZ>();
+	public Vector<ITagByTypeZZZ> parse(String sText) throws ExceptionZZZ{
+		Vector<ITagByTypeZZZ> vecReturn = new Vector<ITagByTypeZZZ>();
 		main:{
 			//TODOGOON20240523;
-			ITagZZZ objTag = XmlUtilZZZ.getTagNext(sText);
+			ITagByTypeZZZ objTag = XmlUtilZZZ.getTagNext(sText);
 			if(objTag==null) break main;
 			System.out.println("test");
 			

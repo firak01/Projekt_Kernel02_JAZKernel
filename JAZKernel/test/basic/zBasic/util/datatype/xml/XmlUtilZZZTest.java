@@ -6,7 +6,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.xml.ITagTypeZZZ;
+import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import junit.framework.TestCase;
 
 public class XmlUtilZZZTest extends TestCase{

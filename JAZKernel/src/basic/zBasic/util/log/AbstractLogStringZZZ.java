@@ -18,8 +18,8 @@ import basic.zBasic.util.datatype.string.StringJustifierZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
-import basic.zBasic.xml.ITagZZZ;
-import basic.zBasic.xml.TagFactoryZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ implements ILogStringZZZ{
@@ -281,7 +281,7 @@ public abstract class AbstractLogStringZZZ extends AbstractObjectWithFlagZZZ imp
 					sLogUsed = String.format(sFormat, sLogUsed);
 					sReturn = sPrefixSeparator + sLogUsed + sPostfixSeparator;
 					
-					ITagZZZ objTagFilePosition = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sReturn);
+					ITagByTypeZZZ objTagFilePosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sReturn);
 					sReturn = objTagFilePosition.getElementString();
 					break;
 				}

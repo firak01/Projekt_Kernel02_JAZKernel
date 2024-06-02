@@ -6,9 +6,9 @@ import basic.zBasic.reflection.position.TagTypeFileNameZZZ;
 import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
 import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
 import basic.zBasic.reflection.position.TagTypeMethodZZZ;
-import basic.zBasic.xml.IEnumSetMappedTagTypeZZZ;
-import basic.zBasic.xml.TagFactoryZZZ;
-import basic.zBasic.xml.TagFactoryZZZ.TAGTYPE;
+import basic.zBasic.xml.tagtype.IEnumSetMappedTagTypeZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ.TAGTYPE;
 
 public class XmlTestStringContainerZZZ {
 	public static String sENUMNAME="TESTVALUE";
@@ -40,11 +40,11 @@ public class XmlTestStringContainerZZZ {
 			neg00("neg00",null,null,0,0,"","Negativtest, Leerstring"),
 			neg01("neg01",null,null,0,1,"Kein Xml Tag da","Negativtest, ohne einen XML Tag"),
 			
-			pos01("pos01",new String[]{"b"},new String[][]{{"Wert in b"}},4,9,"Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc","Positivtest, mit XMLTags und Werten vor den Tags"),
+			pos01("pos01",new String[]{"b"},new String[][]{{"Wert in b"}},4,9,"Wert vor abc<abc>wert vor b<b>Wert in b</b>wert hinter b</abc>wert hinter abc","Positivtest, mit XMLTags und Werten vor den Tags"),
 			pos02("pos02",new String[]{"EmpStatus","StaffType"},new String[][]{{"2.0"},{"11.A"}},16,23,"<DataElements><EmpStatus>2.0</EmpStatus><Expenditure>95465.00</Expenditure><StaffType>11.A</StaffType><Industry>13</Industry></DataElements>               <InteractionElements><TargetCenter>92f4-MPA</TargetCenter><Trace>7.19879</Trace></InteractionElements>","Positivtest, mit XMLTags und Werten vor den Tags"),
-			pos03("pos03",new String[]{"bc"},new String[][]{{"Wert in bc"}},6,13,"Wert vor abc<abc>wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert nach bc</b>wert nach b</abc>wert nach abc","Positivtest, mit XMLTags und Werten vor den Tags"),
-			pos04("pos04",new String[]{"bc","a"},new String[][]{{null},{"1. Wert in a","2. Wert in a"}},10,17,"Wert vor dem 1. abc<abc><a>1. Wert in a</a>wert vor b<b>wert in b</b>wert nach b</abc>wert nach dem 1. abc<abc><a>2. Wert in a</a></abc>","Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor"),
-			pos05("pos05",new String[]{"bc","a"},new String[][]{{"Wert in bc"},{"1. Wert in a","2. Wert in a"}},12,20,"Wert vor dem 1. abc<abc><a>1. Wert in a</a>wert vor b<b>Wert vor bc<bc>Wert in bc</bc></b>wert nach b</abc>wert nach dem 1. abc<abc><a>2. Wert in a</a></abc>","Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor - tiefer verschachtelt")	
+			pos03("pos03",new String[]{"bc"},new String[][]{{"Wert in bc"}},6,13,"Wert vor abc<abc>wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>wert hinter b</abc>wert hinter abc","Positivtest, mit XMLTags und Werten vor den Tags"),
+			pos04("pos04",new String[]{"bc","a"},new String[][]{{null},{"1. Wert in a","2. Wert in a"}},10,17,"Wert vor dem 1. abc<abc><a>1. Wert in a</a>wert vor b<b>wert in b</b>wert hinter b</abc>wert hinter dem 1. abc<abc><a>2. Wert in a</a></abc>","Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT"),
+			pos05("pos05",new String[]{"bc","a"},new String[][]{{"Wert in bc"},{"1. Wert in a","2. Wert in a"}},12,20,"Wert vor dem 1. abc<abc><a>1. Wert in a</a>wert vor b<b>Wert vor bc<bc>Wert in bc</bc></b>wert hinter b</abc>wert hinter dem 1. abc<abc><a>2. Wert in a</a></abc>","Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt")	
 			;
 						
 			private String sAbbreviation,sXml,sDescription;

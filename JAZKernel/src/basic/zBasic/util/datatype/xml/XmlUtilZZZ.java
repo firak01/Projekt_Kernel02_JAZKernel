@@ -8,8 +8,8 @@ import javax.measure.spi.SystemOfUnits;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.xml.ITagTypeZZZ;
-import basic.zBasic.xml.ITagZZZ;
+import basic.zBasic.xml.tagtype.ITagTypeZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 
 /**Einfache Klasse, in der ohne ein XML-Dokument zu haben
@@ -52,8 +52,8 @@ public class XmlUtilZZZ {
 		}
 	}
 	
-	public static ITagZZZ getTagNext(String sXml) throws ExceptionZZZ {
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ getTagNext(String sXml) throws ExceptionZZZ {
+		ITagByTypeZZZ objReturn = null;
 		main:{
 			//StringZZZ.left(sXml, XmlUtilZZZ.sTagClosing )
 			

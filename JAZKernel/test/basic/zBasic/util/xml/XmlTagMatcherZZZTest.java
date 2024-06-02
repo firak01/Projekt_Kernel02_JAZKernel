@@ -1,6 +1,7 @@
 package basic.zBasic.util.xml;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
@@ -8,6 +9,8 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import junit.framework.TestCase;
 
 public class XmlTagMatcherZZZTest extends TestCase{
@@ -39,11 +42,11 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String sMessage = null;
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				 	iCount++;
-				 	sMessage = iCount + ". Teststring wird fehlerhaft ausgewertet (bWithText="+bWithText+").";
+				 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet (bWithText="+bWithText+").";
 				 	
 					IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 					sTest= objEnumTestType.getXml();
-					vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
+					vecTag = XmlTagMatcherZZZ.parseAnyElementsAsVector(sTest, bWithText);
 					
 					int iElementsWithoutText = objEnumTestType.getExpectedElementsWithoutText();
 				    int iElementsWithText = objEnumTestType.getExpectedElementsWithText();
@@ -71,11 +74,11 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				if(iCount==6) {
 					System.out.println("Breakpoint Pause zum debuggen");					
 				}
-			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgewertet (bWithAnyValue="+bWithText+").";
+			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet (bWithAnyValue="+bWithText+").";
 						 	
 				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 				sTest= objEnumTestType.getXml();
-				vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
+				vecTag = XmlTagMatcherZZZ.parseAnyElementsAsVector(sTest, bWithText);
 				
 				int iElementsWithoutText = objEnumTestType.getExpectedElementsWithoutText();
 			    int iElementsWithText = objEnumTestType.getExpectedElementsWithText();
@@ -147,7 +150,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 					System.out.println("Breakpoint Pause zum debuggen");					
 				}
 			 	
-			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgewertet.";
+			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet.";
 			 	
 				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 				sTest= objEnumTestType.getXml();
@@ -173,7 +176,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 								}													
 							}//end for
 						}else {
-							//!!! Wenn keine Beispielwerte angegeben wurden, trotzdem testen....
+							//!!! Wenn keine BeispielWerte angegeben wurden, trotzdem testen....
 							for(int i=0;i<=saTagForValue.length-1;i++) {
 								sTagForValue = saTagForValue[i];
 								vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, sTagForValue);
@@ -200,7 +203,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 //			//###############################################
 //						
 //			
-//			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
+//			sTest = "Wert vor abc<abc>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter abc";
 //			
 //			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "abc");
 //			assertNotNull(vecTag);
@@ -215,8 +218,9 @@ public class XmlTagMatcherZZZTest extends TestCase{
 //			
 //			
 			//B) //+++ Tag kommt mehrmals vor
-			sTest = "Wert vor dem 1. abc<abc><a>1. Wert in a</a>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach dem 1. abc<abc><a>2. Wert in a</a></abc>";
+			sTest = "Wert vor dem 1. abc<abc><a>1. Wert in a</a>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter dem 1. abc<abc><a>2. Wert in a</a></abc>";
 						
+			//!!! unterschiedliche Zweige werden nicht beruecksichtigt
 			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "a");
 			assertNotNull(vecTag);
 			assertFalse(vecTag.isEmpty());
@@ -227,7 +231,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			
 			
 			//### tiefer verschachtelt #####################
-			sTest = "Wert vor abc<abc>wert vor b<b>Wert vor bc<bc>1. Wert in bc</bc>Wert nach 1. bc<bc>2. Wert in bc</bc></b>wert nach b</abc>wert nach abc";
+			sTest = "Wert vor abc<abc>Wert vor b<b>Wert vor bc<bc>1. Wert in bc</bc>Wert hinter 1. bc<bc>2. Wert in bc</bc></b>Wert hinter b</abc>Wert hinter abc";
 			
 			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "bc");
 			assertNotNull(vecTag);
@@ -271,7 +275,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			//b) Positivtests
 			//###############################################
 			hmTag = null;
-			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
+			sTest = "Wert vor abc<abc>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter abc";
 						
 			//+++ Nur die Tags
 			hmTag = XmlTagMatcherZZZ.parseElementsAsMap(sTest, false);
@@ -289,7 +293,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			assertTrue(hmTag.size()==6);
 			
 			String sTemp4 = (String) hmTag.getEntryLast();
-			assertEquals("wert nach abc", sTemp4);
+			assertEquals("Wert hinter abc", sTemp4);
 			
 			//TODOGOON20240525;
 			//KANN MAN MIT DER HASHMAPINDEXED auch so getFirst, getNext machen?
@@ -312,7 +316,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			
 			
 			//### tiefer verschachtelt #####################
-			sTest = "Wert vor abc<abc>wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert nach bc</b>wert nach b</abc>wert nach abc";
+			sTest = "Wert vor abc<abc>Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b</abc>Wert hinter abc";
 			
 			//+++ Nur die Tags
 			hmTag = XmlTagMatcherZZZ.parseElementsAsMap(sTest, false);
@@ -327,6 +331,276 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			assertTrue(hmTag.size()==9);
 			
 			
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
+	 public void testParseElementsAsTree(){
+		 try{
+			 String sTest; String sTagTemp; String sValueTemp;
+			 ITagSimpleZZZ objTagTemp;
+			 
+			 TreeNodeZZZ<ITagSimpleZZZ> objNode = null;
+			 TreeNodeZZZ<ITagSimpleZZZ> objNodeTemp=null;
+			 
+			 List<TreeNodeZZZ<ITagSimpleZZZ>> listTag=null;
+			  
+			//a) Negativtests
+			sTest = "";
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest);
+			assertNull(objNode);
+
+			
+			sTest = "Kein Xml Tag da";
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest);
+			assertNotNull(objNode);
+			assertTrue(objNode.children.isEmpty()); //Der ITagZZZ ist im Knoten selbst definiert
+			assertFalse(objNode.sibling.isEmpty());
+			
+			objTagTemp = objNode.data;
+			sTagTemp = objTagTemp.getName();
+			assertEquals("text", sTagTemp);
+			
+			sValueTemp = objTagTemp.getValue();
+			assertEquals(sTest, sValueTemp);
+			
+					
+			//b) Positivtests
+			//###############################################
+			objNode = null;
+			sTest = "Wert vor abc<abc>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter abc";
+			
+			//+++ Nur die Tags
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
+			assertNotNull(objNode);
+			assertFalse(objNode.children.isEmpty());
+			assertTrue(objNode.children.size()==1); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertFalse(objNode.sibling.isEmpty());
+			assertTrue(objNode.sibling.size()==1); //Ein ITagZZZ ist im Knoten selbst definiert			
+			
+			listTag = objNode.children;			
+			objNodeTemp = listTag.get(0);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+		    sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert in b", sValueTemp);
+		
+				
+			/* Merke es gilt als wichtiger Punkt
+Wert vor abc
+<abc>
+	Wert vor b   ------------------------ DARF KEIN SIBLING SEIN FÜR ROOT, Sondern muss CHILD sein.
+	<b>Wert in b</b>
+	Wert hinter b
+</abc>
+Wert hinter abc
+			 */
+			
+			//+++ Auch alle Werte
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
+			assertNotNull(objNode);
+			assertFalse(objNode.children.isEmpty());
+			assertTrue(objNode.children.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertFalse(objNode.sibling.isEmpty());
+			assertTrue(objNode.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert			
+				
+			
+			objTagTemp = objNode.data;
+		    sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor b<b>Wert in b</b>Wert hinter b", sValueTemp);
+			
+			objNodeTemp = objNode.children.get(0);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor b", sValueTemp);
+			
+			objNodeTemp = objNode.children.get(1);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert in b", sValueTemp);
+			
+			
+			objNodeTemp = objNode.children.get(2);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert hinter b", sValueTemp);
+			
+			
+			//################################################
+			//### Postivtest mit komplexerem String
+			//### - Mehrer Childelemente auf einer Ebene
+			//### - Ein Leerstringteil zwischen den beiden Root Elementen
+			/*
+			<DataElements>
+				<EmpStatus>2.0</EmpStatus>
+				<Expenditure>95465.00</Expenditure>
+				<StaffType>11.A</StaffType>
+				<Industry>13</Industry>
+			</DataElements>
+			               
+			<InteractionElements>
+				<TargetCenter>92f4-MPA</TargetCenter>
+				<Trace>7.19879</Trace>
+			</InteractionElements>
+			 */
+			//################################################
+			sTest="<DataElements><EmpStatus>2.0</EmpStatus><Expenditure>95465.00</Expenditure><StaffType>11.A</StaffType><Industry>13</Industry></DataElements>               <InteractionElements><TargetCenter>92f4-MPA</TargetCenter><Trace>7.19879</Trace></InteractionElements>";
+
+			//+++ Nur die Tags
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
+			assertNotNull(objNode);
+			assertFalse(objNode.children.isEmpty());
+			assertTrue(objNode.children.size()==4); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertFalse(objNode.sibling.isEmpty());
+			assertTrue(objNode.sibling.size()==2); //Ein ITagZZZ ist im Knoten selbst definiert			
+			
+			listTag = objNode.children;			
+			objNodeTemp = listTag.get(0);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+		    sValueTemp = objTagTemp.getValue();
+			assertEquals("2.0", sValueTemp);
+			
+			
+			//+++ Auch alle Werte
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
+			assertNotNull(objNode);
+			assertFalse(objNode.children.isEmpty());
+			assertTrue(objNode.children.size()==4); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertFalse(objNode.sibling.isEmpty());
+			assertTrue(objNode.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert			
+				
+			
+			objTagTemp = objNode.data;
+		    sValueTemp = objTagTemp.getValue();
+			assertEquals("<EmpStatus>2.0</EmpStatus><Expenditure>95465.00</Expenditure><StaffType>11.A</StaffType><Industry>13</Industry>", sValueTemp);
+			
+			objNodeTemp = objNode.children.get(0);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("2.0", sValueTemp);
+			
+			objNodeTemp = objNode.children.get(1);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("95465.00", sValueTemp);
+			
+			
+			objNodeTemp = objNode.children.get(2);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("11.A", sValueTemp);
+			
+					
+			//################################################
+			//### Postivtest mit komplexerem String
+			//### - tiefer verschachtelt
+			/*
+			 	Wert vor abc
+				<abc>
+					Wert vor b
+					<b>
+						Wert vor bc
+						<bc>Wert in bc</bc>
+						Wert hinter bc
+					</b>
+					Wert hinter b
+				</abc>
+				Wert hinter abc
+			*/
+			//##############################################
+			
+			sTest = "Wert vor abc<abc>Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b</abc>Wert hinter abc";
+			
+			//+++ Nur die Tags
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
+			assertNotNull(objNode);
+			assertFalse(objNode.children.isEmpty());
+			assertTrue(objNode.children.size()==1); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertFalse(objNode.sibling.isEmpty());
+			assertTrue(objNode.sibling.size()==1); //Ein ITagZZZ ist im Knoten selbst definiert			
+			
+			objTagTemp = objNode.data;
+		    sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b", sValueTemp);
+			
+			listTag = objNode.children;			
+			objNodeTemp = listTag.get(0);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+		    sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor bc<bc>Wert in bc</bc>Wert hinter bc", sValueTemp);
+			
+			assertEquals(1,objNode.children.size() );
+			
+			
+			//+++ Auch alle Werte
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
+			assertNotNull(objNode);
+			assertFalse(objNode.children.isEmpty());
+			assertTrue(objNode.children.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertFalse(objNode.sibling.isEmpty());
+			assertTrue(objNode.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert			
+				
+			
+			objTagTemp = objNode.data;
+		    sValueTemp = objTagTemp.getValue();
+		    assertEquals("Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b", sValueTemp);
+			
+		    assertEquals(3,objNode.children.size() );			
+		    
+		    //++		    
+		    
+		    objNodeTemp = objNode.children.get(0);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor b", sValueTemp);
+			
+			
+			objNodeTemp = objNode.children.get(1);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor bc<bc>Wert in bc</bc>Wert hinter bc", sValueTemp);
+		    			
+			//+eine kindebene tiefer: objNodetemp
+			objNodeTemp = objNodeTemp.children.get(2);
+			assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert hinter bc", sValueTemp);
+		    			
+			//++und wieder auf einer kindebene hoeher: objNode
+			objNodeTemp = objNode.children.get(2);
+		    assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert hinter b", sValueTemp);
+		    
+			
+			
+			//++
+			objNodeTemp = objNode.children.get(1);
+			assertNotNull(objNodeTemp);
+			assertEquals(3, objNodeTemp.children.size());
+			
+			objNodeTemp = objNodeTemp.children.get(0);
+			assertNotNull(objNodeTemp);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor bc", sValueTemp);
+			
+			
+			
+				
 		 }catch(ExceptionZZZ ez){
 				fail("Method throws an exception." + ez.getMessageLast());
 		}

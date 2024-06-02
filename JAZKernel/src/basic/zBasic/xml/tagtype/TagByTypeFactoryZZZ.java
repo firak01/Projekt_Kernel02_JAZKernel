@@ -1,4 +1,4 @@
-package basic.zBasic.xml;
+package basic.zBasic.xml.tagtype;
 
 import java.util.EnumSet;
 
@@ -12,7 +12,7 @@ import basic.zBasic.reflection.position.TagTypeMethodZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class TagFactoryZZZ extends AbstractObjectZZZ{
+public class TagByTypeFactoryZZZ extends AbstractObjectZZZ{
 	private static final long serialVersionUID = -8672998939542120263L;
 
 
@@ -67,7 +67,7 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 			//ArrayList<Class<?>> listEmbedded = ReflectClassZZZ.getEmbeddedClasses(this.getClass(), sFilterName);
 			
 			//Erstelle nun ein EnumSet, speziell für diese Klasse, basierend auf  allen Enumrations  dieser Klasse.
-			Class<TAGTYPE> enumClass = TagFactoryZZZ.TAGTYPE.class;
+			Class<TAGTYPE> enumClass = TagByTypeFactoryZZZ.TAGTYPE.class;
 			EnumSet<TAGTYPE> set = EnumSet.noneOf(enumClass);//Erstelle ein leeres EnumSet
 			
 			 Enum[]objaEnum = (Enum[]) enumClass.getEnumConstants();
@@ -137,7 +137,7 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 			if(objEnumMappedTagType==null)break main;
 			
 			String sTagName = objEnumMappedTagType.getTag();
-			objReturn = TagFactoryZZZ.createTagTypeByName(sTagName);
+			objReturn = TagByTypeFactoryZZZ.createTagTypeByName(sTagName);
 										
 		}//end main
 		return objReturn;
@@ -152,7 +152,7 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 
 			}else {
 				IEnumSetMappedTagTypeZZZ objEnumMappedTagType = (IEnumSetMappedTagTypeZZZ)objEnumMapped;
-				TagFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
+				TagByTypeFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
 			}							
 		}//end main
 		return objReturn;
@@ -189,22 +189,22 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++++++
-	public static ITagZZZ createTagByName(IEnumSetMappedTagTypeZZZ objEnumMappedTagType) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(IEnumSetMappedTagTypeZZZ objEnumMappedTagType) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{			
 			if(objEnumMappedTagType==null)break main;
 			
 			String sTagName = objEnumMappedTagType.getTag();
-			ITagTypeZZZ objTagType = TagFactoryZZZ.createTagTypeByName(sTagName);
+			ITagTypeZZZ objTagType = TagByTypeFactoryZZZ.createTagTypeByName(sTagName);
 			if(objTagType==null)break main;
 			
-			objReturn = TagFactoryZZZ.createTagByName(objTagType.getTagName());							
+			objReturn = TagByTypeFactoryZZZ.createTagByName(objTagType.getTagName());							
 		}//end main
 		return objReturn;
 	}
 	
-	public static ITagZZZ createTagByName(IEnumSetMappedZZZ objEnumMapped) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(IEnumSetMappedZZZ objEnumMapped) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{			
 			if(objEnumMapped==null)break main;
 			if(!(objEnumMapped instanceof IEnumSetMappedTagTypeZZZ)) {
@@ -212,43 +212,43 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 
 			}else {
 				IEnumSetMappedTagTypeZZZ objEnumMappedTagType = (IEnumSetMappedTagTypeZZZ)objEnumMapped;
-				ITagTypeZZZ objTagType = TagFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
+				ITagTypeZZZ objTagType = TagByTypeFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
 				if(objTagType==null)break main;
 				
-				objReturn = TagFactoryZZZ.createTagByName(objTagType.getTagName());
+				objReturn = TagByTypeFactoryZZZ.createTagByName(objTagType.getTagName());
 			}							
 		}//end main
 		return objReturn;
 	}
 	
-	public static ITagZZZ createTagByName(String sTagName) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(String sTagName) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{ 
 			if(StringZZZ.isEmpty(sTagName))break main;
 			
-			ITagTypeZZZ objType = TagFactoryZZZ.createTagTypeByName(sTagName);
+			ITagTypeZZZ objType = TagByTypeFactoryZZZ.createTagTypeByName(sTagName);
 			if(objType==null) {
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+" unable to create tag for name '"+ sTagName +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
 			}
 			
-			objReturn = new TagZZZ(objType);
+			objReturn = new TagByTypeZZZ(objType);
 		}//END main
 		return objReturn;
 	}
 	
 	//++++ Mit Wert erstellen +++++++++++++++++++++++++
 	//A) INTEGER
-	public static ITagZZZ createTagByName(IEnumSetMappedTagTypeZZZ objEnumMappedTagType, int iValue) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(IEnumSetMappedTagTypeZZZ objEnumMappedTagType, int iValue) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{			
 			if(objEnumMappedTagType==null)break main;
 			
 			String sTagName = objEnumMappedTagType.getTag();
-			ITagTypeZZZ objTagType = TagFactoryZZZ.createTagTypeByName(sTagName);
+			ITagTypeZZZ objTagType = TagByTypeFactoryZZZ.createTagTypeByName(sTagName);
 			if(objTagType==null)break main;
 			
-			objReturn = TagFactoryZZZ.createTagByName(objTagType.getTagName());
+			objReturn = TagByTypeFactoryZZZ.createTagByName(objTagType.getTagName());
 			if(objReturn==null)break main;
 			
 			String sValue = Integer.toString(iValue);
@@ -257,8 +257,8 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 		return objReturn;
 	}
 	
-	public static ITagZZZ createTagByName(IEnumSetMappedZZZ objEnumMapped, int iValue) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(IEnumSetMappedZZZ objEnumMapped, int iValue) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{			
 			if(objEnumMapped==null)break main;
 			if(!(objEnumMapped instanceof IEnumSetMappedTagTypeZZZ)) {
@@ -266,10 +266,10 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 
 			}else {
 				IEnumSetMappedTagTypeZZZ objEnumMappedTagType = (IEnumSetMappedTagTypeZZZ)objEnumMapped;
-				ITagTypeZZZ objTagType = TagFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
+				ITagTypeZZZ objTagType = TagByTypeFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
 				if(objTagType==null)break main;
 				
-				objReturn = TagFactoryZZZ.createTagByName(objTagType.getTagName());
+				objReturn = TagByTypeFactoryZZZ.createTagByName(objTagType.getTagName());
 				if(objReturn==null)break main;
 				
 				String sValue = Integer.toString(iValue);
@@ -279,18 +279,18 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 		return objReturn;
 	}
 	
-	public static ITagZZZ createTagByName(String sTagName, int iValue) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(String sTagName, int iValue) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{ 
 			if(StringZZZ.isEmpty(sTagName))break main;
 			
-			ITagTypeZZZ objType = TagFactoryZZZ.createTagTypeByName(sTagName);
+			ITagTypeZZZ objType = TagByTypeFactoryZZZ.createTagTypeByName(sTagName);
 			if(objType==null) {
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+" unable to create tag for name '"+ sTagName +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
 			}
 			
-			objReturn = new TagZZZ(objType);
+			objReturn = new TagByTypeZZZ(objType);
 			
 			String sValue = Integer.toString(iValue);
 			objReturn.setValue(sValue);
@@ -300,16 +300,16 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//B) STRING
-	public static ITagZZZ createTagByName(IEnumSetMappedTagTypeZZZ objEnumMappedTagType, String sValue) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(IEnumSetMappedTagTypeZZZ objEnumMappedTagType, String sValue) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{			
 			if(objEnumMappedTagType==null)break main;
 			
 			String sTagName = objEnumMappedTagType.getTag();
-			ITagTypeZZZ objTagType = TagFactoryZZZ.createTagTypeByName(sTagName);
+			ITagTypeZZZ objTagType = TagByTypeFactoryZZZ.createTagTypeByName(sTagName);
 			if(objTagType==null)break main;
 			
-			objReturn = TagFactoryZZZ.createTagByName(objTagType.getTagName());
+			objReturn = TagByTypeFactoryZZZ.createTagByName(objTagType.getTagName());
 			if(objReturn==null)break main;
 			
 			objReturn.setValue(sValue);
@@ -317,8 +317,8 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 		return objReturn;
 	}
 	
-	public static ITagZZZ createTagByName(IEnumSetMappedZZZ objEnumMapped, String sValue) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(IEnumSetMappedZZZ objEnumMapped, String sValue) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{			
 			if(objEnumMapped==null)break main;
 			if(!(objEnumMapped instanceof IEnumSetMappedTagTypeZZZ)) {
@@ -326,10 +326,10 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 
 			}else {
 				IEnumSetMappedTagTypeZZZ objEnumMappedTagType = (IEnumSetMappedTagTypeZZZ)objEnumMapped;
-				ITagTypeZZZ objTagType = TagFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
+				ITagTypeZZZ objTagType = TagByTypeFactoryZZZ.createTagTypeByName(objEnumMappedTagType);
 				if(objTagType==null)break main;
 				
-				objReturn = TagFactoryZZZ.createTagByName(objTagType.getTagName());
+				objReturn = TagByTypeFactoryZZZ.createTagByName(objTagType.getTagName());
 				if(objReturn==null)break main;
 				
 				objReturn.setValue(sValue);
@@ -338,18 +338,18 @@ public class TagFactoryZZZ extends AbstractObjectZZZ{
 		return objReturn;
 	}
 	
-	public static ITagZZZ createTagByName(String sTagName, String sValue) throws ExceptionZZZ{
-		ITagZZZ objReturn = null;
+	public static ITagByTypeZZZ createTagByName(String sTagName, String sValue) throws ExceptionZZZ{
+		ITagByTypeZZZ objReturn = null;
 		main:{ 
 			if(StringZZZ.isEmpty(sTagName))break main;
 			
-			ITagTypeZZZ objType = TagFactoryZZZ.createTagTypeByName(sTagName);
+			ITagTypeZZZ objType = TagByTypeFactoryZZZ.createTagTypeByName(sTagName);
 			if(objType==null) {
 				ExceptionZZZ ez = new ExceptionZZZ(sERROR_PARAMETER_VALUE+" unable to create tag for name '"+ sTagName +"'", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), "");
 				throw ez;
 			}
 			
-			objReturn = new TagZZZ(objType);			
+			objReturn = new TagByTypeZZZ(objType);			
 			objReturn.setValue(sValue);
 		}//END main
 		return objReturn;

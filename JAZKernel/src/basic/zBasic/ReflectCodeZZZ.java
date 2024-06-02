@@ -19,9 +19,9 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.counter.CounterByCharacterAscii_AlphanumericSignificantZZZTest;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.log.LogString4ReflectCodeZZZ;
-import basic.zBasic.xml.ITagZZZ;
-import basic.zBasic.xml.TagFactoryZZZ;
-import basic.zBasic.xml.TagZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
+import basic.zBasic.xml.tagtype.TagByTypeZZZ;
 import basic.zKernel.KernelZZZ;
 
 public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
@@ -565,19 +565,19 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 			//Merke: Das reine, aktuelle Objekt kann man auch ueber die Formatierungsanweisung irgendwann in den String einbauen.
 			//       Nur die Zeilennummer muss AN DIESER STELLE (!) so errechnet werden.			
 			int iLine = ReflectCodeZZZ.getMethodCallingLine(iLevelUsed);
-			ITagZZZ objTagLine = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.LINENUMBER, iLine);
+			ITagByTypeZZZ objTagLine = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.LINENUMBER, iLine);
 			
 			String sFile = ReflectCodeZZZ.getMethodCallingFileName(iLevelUsed);
-			ITagZZZ objTagFile = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.FILENAME, sFile);
+			ITagByTypeZZZ objTagFile = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.FILENAME, sFile);
 			
 			String sMethod = ReflectCodeZZZ.getMethodCallingName(iLevelUsed);
-			ITagZZZ objTagMethod = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.METHOD, sMethod);
+			ITagByTypeZZZ objTagMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.METHOD, sMethod);
 			String sMethodTag = objTagMethod.getElementString();
 			
 			//TODOGOON20240503: Irgendwie eine ENUM anbieten welche Form man gerne haette... file oder object zentriert.
 			//a) Variante mit ,,, abc.java:iLine --- Merke: Damit wird die Position in der Eclipse Konsole clickbar.
 			String sPositionInFile = getPositionCurrentInFile(sFile, iLine);
-			ITagZZZ objTagPosition = TagFactoryZZZ.createTagByName(TagFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sPositionInFile);
+			ITagByTypeZZZ objTagPosition = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sPositionInFile);
 			String sPositionInFileTag = objTagPosition.getElementString();
 			
 			//b) Variante mit Objektname und dahinter iLine

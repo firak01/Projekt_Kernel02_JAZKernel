@@ -8,8 +8,8 @@ import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileTextParserZZZ;
-import basic.zBasic.xml.ITagTypeZZZ;
-import basic.zBasic.xml.ITagZZZ;
+import basic.zBasic.xml.tagtype.ITagTypeZZZ;
+import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import junit.framework.TestCase;
 
 public class XmlParserZZZTest extends TestCase{
@@ -27,7 +27,7 @@ public class XmlParserZZZTest extends TestCase{
 	 public void testParse(){
 		 try{
 			 String sTest;
-			 Vector<ITagZZZ> vecTag=null;
+			 Vector<ITagByTypeZZZ> vecTag=null;
 			 
 			//a) Negativtest
 //			String sTest = "Nix da";
