@@ -121,6 +121,9 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 		this.children.add(childNode);
 		this.registerChildForSearch(childNode);
 		return childNode;
+		
+		TODOGOON20240602; //In dem neuen Child nun alle siblings hinzufügen
+		                  //und in allen Siblings dieses Child als weiteren Sibling hinzufuegen.
 	}
 
 	public int getLevel() {
