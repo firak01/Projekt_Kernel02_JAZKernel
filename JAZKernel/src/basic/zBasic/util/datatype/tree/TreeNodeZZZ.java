@@ -35,26 +35,30 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	private List<TreeNodeZZZ<T>> elementsIndex;
 	
 	public TreeNodeZZZ(T data) {
-		this.data = data;
-		if(this.children ==null) {
-			this.children = new LinkedList<TreeNodeZZZ<T>>();
-		}
-		
-		//!!! nur im Root den Index aller Elemente haben
-		if(this.isRoot()) {		//Merke: Da Parent erst spaeter definiert wird, ist zu diesem Zeitpunkt jedes Element ROOT	
+		main:{
+			if(data==null)break main;
+			
+			this.data = data;
+			if(this.children ==null) {
+				this.children = new LinkedList<TreeNodeZZZ<T>>();
+			}
+			
 			if(this.sibling==null) {
 				this.sibling = new LinkedList<TreeNodeZZZ<T>>();
 			}
 			this.sibling.add(this);
-		
-			if(this.elementsIndex==null) {
-				this.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();				
-			}
-			this.elementsIndex.add(this);
-		} else {
-			TreeNodeZZZ<T> objRootNode = this.searchRoot();
-			objRootNode.elementsIndex.add(this);
-		}		
+			
+			//!!! nur im Root den Index aller Elemente halten
+			if(this.isRoot()) {		//Merke: Da Parent erst spaeter definiert wird, ist zu diesem Zeitpunkt jedes Element ROOT					
+				if(this.elementsIndex==null) {
+					this.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();				
+				}
+				this.elementsIndex.add(this);
+			} else {
+				TreeNodeZZZ<T> objRootNode = this.searchRoot();
+				objRootNode.elementsIndex.add(this);
+			}		
+		}//end main:
 	}
 
 	/** Ergaenzung zu der Loesung aus dem Web
@@ -63,10 +67,13 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	 * @author Fritz Lindhauer, 01.06.2024, 15:36:00
 	 */
 	public TreeNodeZZZ<T> addSibling(T sibling) {
+		if(sibling==null) return null;
+		
 		TreeNodeZZZ<T> siblingNode = new TreeNodeZZZ<T>(sibling);
 		siblingNode.parent = this.parent;
 		if(this.parent!=null) {
 			this.parent.children.add(siblingNode);
+			this.sibling = this.parent.children;
 		}else {
 			//ROOT!
 			if(this.sibling==null) {
@@ -76,6 +83,20 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 		}
 				
 		this.registerSiblingForSearch(siblingNode);
+		
+		//In dem neuen sibling nun alle anderen siblings hinzufuegen
+		//und in allen siblings diesen neuen sibling als weiteren sibling hinzufuegen.
+		for(TreeNodeZZZ<T> siblingNodeTemp : this.sibling) {
+			if(siblingNodeTemp.sibling==null) {
+				siblingNodeTemp.sibling = new LinkedList<TreeNodeZZZ<T>>();
+				siblingNodeTemp.sibling.add(siblingNode);
+			}else {
+				if(!(siblingNodeTemp.sibling.contains(siblingNode) || siblingNodeTemp.equals(siblingNode) || siblingNodeTemp.equals(this))) {
+					siblingNodeTemp.sibling.add(siblingNode);
+				}
+			}
+		}
+		
 		return siblingNode;		
 	}
 	
@@ -94,20 +115,38 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	 * @author Fritz Lindhauer, 01.06.2024, 15:36:00
 	 */
 	public TreeNodeZZZ<T> addSibling(int iIndex, T sibling) {
+		if(sibling==null) return null;
+		
 		TreeNodeZZZ<T> siblingNode = new TreeNodeZZZ<T>(sibling);
 		siblingNode.parent = this.parent;
 		if(this.parent!=null) {
 			//NICHT MEHR ROOT!
 			this.parent.children.add(iIndex, siblingNode); //Gefahr, wird jetzt Text for einem 2ten Knoten auf der Ebene ganz nach vorne gesetzt?
+			this.sibling = this.parent.children;
 		}else {
 			//ROOT!
 			if(this.sibling==null) {
 				this.sibling = new LinkedList<TreeNodeZZZ<T>>();
-			} 
-		}
-		this.sibling.add(iIndex, siblingNode);
-				
+				this.sibling.add(siblingNode);
+			}else {
+				this.sibling.add(iIndex, siblingNode);
+			}
+		}					
 		this.registerSiblingForSearch(siblingNode);
+		
+		//In dem neuen sibling nun alle anderen siblings hinzufuegen
+		//und in allen siblings diesen neuen sibling als weiteren sibling hinzufuegen.
+		for(TreeNodeZZZ<T> siblingNodeTemp : this.sibling) {
+			if(siblingNodeTemp.sibling==null) {
+				siblingNodeTemp.sibling = new LinkedList<TreeNodeZZZ<T>>();
+				siblingNodeTemp.sibling.add(siblingNode);
+			}else {
+				if(!(siblingNodeTemp.sibling.contains(siblingNode) || siblingNodeTemp.equals(siblingNode) || siblingNodeTemp.equals(this))) {
+					siblingNodeTemp.sibling.add(iIndex, siblingNode);
+				}
+			}
+		}
+		
 		return siblingNode;		
 	}
 	
@@ -116,14 +155,31 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	
 	
 	public TreeNodeZZZ<T> addChild(T child) {
+		if(child==null) return null;
+		
 		TreeNodeZZZ<T> childNode = new TreeNodeZZZ<T>(child);
 		childNode.parent = this;
 		this.children.add(childNode);
 		this.registerChildForSearch(childNode);
-		return childNode;
 		
-		TODOGOON20240602; //In dem neuen Child nun alle siblings hinzufügen
-		                  //und in allen Siblings dieses Child als weiteren Sibling hinzufuegen.
+		childNode.sibling = this.children;
+		
+		//In dem neuen Child nun alle siblings hinzufuegen
+		//und in allen Siblings dieses Child als weiteren Sibling hinzufuegen.
+		for(TreeNodeZZZ<T> siblingNode : this.children) {
+			if(siblingNode.sibling==null) {
+				siblingNode.sibling = new LinkedList<TreeNodeZZZ<T>>();
+				siblingNode.sibling.add(childNode);
+			}else {
+				if(!(siblingNode.sibling.contains(childNode)||siblingNode.equals(childNode)||siblingNode.equals(this))) {
+					siblingNode.sibling.add(childNode);
+				}
+			}
+		}
+		
+		
+	
+		return childNode;
 	}
 
 	public int getLevel() {
