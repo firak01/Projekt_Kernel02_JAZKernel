@@ -81,11 +81,14 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 			}
 			this.sibling.add(siblingNode);
 		}
-				
+		
+		//Die Geschwister dem neuen Knoten hinzufuegen
+		siblingNode.sibling=this.sibling;
+		
+		//Den neuen Konten dem Suchindex hinzufuegen
 		this.registerSiblingForSearch(siblingNode);
 		
-		//In dem neuen sibling nun alle anderen siblings hinzufuegen
-		//und in allen siblings diesen neuen sibling als weiteren sibling hinzufuegen.
+		//In andern siblings nun den neuen Konten hinzufuegen
 		for(TreeNodeZZZ<T> siblingNodeTemp : this.sibling) {
 			if(siblingNodeTemp.sibling==null) {
 				siblingNodeTemp.sibling = new LinkedList<TreeNodeZZZ<T>>();
@@ -117,9 +120,10 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	public TreeNodeZZZ<T> addSibling(int iIndex, T sibling) {
 		if(sibling==null) return null;
 		
-		TreeNodeZZZ<T> siblingNode = new TreeNodeZZZ<T>(sibling);
-		siblingNode.parent = this.parent;
+		TreeNodeZZZ<T> siblingNode = new TreeNodeZZZ<T>(sibling);		
 		if(this.parent!=null) {
+			siblingNode.parent = this.parent;
+			
 			//NICHT MEHR ROOT!
 			this.parent.children.add(iIndex, siblingNode); //Gefahr, wird jetzt Text for einem 2ten Knoten auf der Ebene ganz nach vorne gesetzt?
 			this.sibling = this.parent.children;
@@ -131,11 +135,15 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 			}else {
 				this.sibling.add(iIndex, siblingNode);
 			}
-		}					
+		}
+		 //Die Geschwister dem neuen Knoten hinzufuegen
+		siblingNode.sibling=this.sibling;
+		
+		//Den neuen Knoten dem Suchindex hinzufuegen
 		this.registerSiblingForSearch(siblingNode);
 		
-		//In dem neuen sibling nun alle anderen siblings hinzufuegen
-		//und in allen siblings diesen neuen sibling als weiteren sibling hinzufuegen.
+		
+		//Den neuen sibling nun alle anderen siblings hinzufuegen
 		for(TreeNodeZZZ<T> siblingNodeTemp : this.sibling) {
 			if(siblingNodeTemp.sibling==null) {
 				siblingNodeTemp.sibling = new LinkedList<TreeNodeZZZ<T>>();
@@ -161,18 +169,16 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 		childNode.parent = this;
 		this.children.add(childNode);
 		this.registerChildForSearch(childNode);
-		
-		childNode.sibling = this.children;
-		
+					
 		//In dem neuen Child nun alle siblings hinzufuegen
 		//und in allen Siblings dieses Child als weiteren Sibling hinzufuegen.
 		for(TreeNodeZZZ<T> siblingNode : this.children) {
-			if(siblingNode.sibling==null) {
-				siblingNode.sibling = new LinkedList<TreeNodeZZZ<T>>();
-				siblingNode.sibling.add(childNode);
+			if(childNode.sibling==null) {
+				childNode.sibling = new LinkedList<TreeNodeZZZ<T>>();
+				childNode.sibling.add(siblingNode);
 			}else {
-				if(!(siblingNode.sibling.contains(childNode)||siblingNode.equals(childNode)||siblingNode.equals(this))) {
-					siblingNode.sibling.add(childNode);
+				if(!(childNode.sibling.contains(siblingNode)||childNode.equals(siblingNode)||childNode.equals(this))) {
+					childNode.sibling.add(siblingNode);
 				}
 			}
 		}

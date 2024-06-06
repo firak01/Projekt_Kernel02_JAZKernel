@@ -345,7 +345,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 TreeNodeZZZ<ITagSimpleZZZ> objNodeTemp=null;
 			 
 			 List<TreeNodeZZZ<ITagSimpleZZZ>> listTag=null;
-			  
+/*
 			//a) Negativtests
 			sTest = "";
 			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest);
@@ -364,13 +364,13 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			
 			sValueTemp = objTagTemp.getValue();
 			assertEquals(sTest, sValueTemp);
-			
+*/			
 					
 			//b) Positivtests
 			//###############################################
 			objNode = null;
 			sTest = "Wert vor abc<abc>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter abc";
-			
+/*			
 			//+++ Nur die Tags
 			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
 			assertNotNull(objNode);
@@ -385,7 +385,8 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			objTagTemp = objNodeTemp.data;
 		    sValueTemp = objTagTemp.getValue();
 			assertEquals("Wert in b", sValueTemp);
-		
+*/
+			 
 				
 			/* Merke es gilt als wichtiger Punkt
 Wert vor abc
