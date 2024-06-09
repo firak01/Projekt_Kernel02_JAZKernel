@@ -23,7 +23,30 @@ import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
  */
 public class XmlUtilZZZ {
     
-	//
+	
+	public static String computeTag(String sTagName, String sTagValue) {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sTagName)) break main;
+			
+			
+			if(sTagValue==null) {
+				sReturn = XmlUtilZZZ.computeTagEmpty(sTagName);
+				break main;
+			}
+			
+			String sTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName); 
+			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+			sReturn = sTagStarting + sTagValue + sTagClosing;
+		}
+		return sReturn;
+	}
+	
+	public static String computeTagEmpty(String sTagName) {
+		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
+	}
+	
+	//++++++++++++++++++++++
 	public static String computeTagPartStarting(String sTagName) {
 		if(StringZZZ.isEmpty(sTagName)) {
 			return "";
@@ -40,10 +63,6 @@ public class XmlUtilZZZ {
 		}
 	}
 	
-	public static String computeTagEmpty(String sTagName) {
-		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
-	}
-	
 	public static String computeTagPartClosing(String sTagName) {
 		if(StringZZZ.isEmpty(sTagName)) {
 			return "";		
@@ -52,14 +71,26 @@ public class XmlUtilZZZ {
 		}
 	}
 	
-	public static ITagByTypeZZZ getTagNext(String sXml) throws ExceptionZZZ {
+	
+	//+++++++++++++++++++++++++++++
+	/**FGL: Der intern verwendete RegEx funktioniert nur, wenn man den ersten Tag kennt, beim Namen
+	 * @param sXml
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 09.06.2024, 11:17:35
+	 */
+	public static ITagByTypeZZZ getTagNext(String sTagName, String sXml) throws ExceptionZZZ {
 		ITagByTypeZZZ objReturn = null;
 		main:{
-			//StringZZZ.left(sXml, XmlUtilZZZ.sTagClosing )
+			if(StringZZZ.isEmpty(sTagName)) break main;
+			if(StringZZZ.isEmpty(sXml)) break main;
 			
-			//FGL: Das scheint nur zu funktionieren, wenn man den ersten Tag kennt, beim Namen
+			//StringZZZ.left(sXml, XmlUtilZZZ.sTagClosing )		
 			//Pattern regex = Pattern.compile("<DataElements>(.*?)</DataElements>", Pattern.DOTALL);
-			Pattern regex = Pattern.compile("<abc>(.*?)</abc>", Pattern.DOTALL);
+			String sTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName); 
+			String sTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName);
+						
+			Pattern regex = Pattern.compile(sTagStarting + "(.*?)" + sTagClosing, Pattern.DOTALL);
 			Matcher matcher = regex.matcher(sXml);
 			Pattern regex2 = Pattern.compile("<([^<>]+)>([^<>]+)</\\1>");
 			if (matcher.find()) {
@@ -80,7 +111,7 @@ public class XmlUtilZZZ {
 	
 
 	
-	
+	//+++++++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression

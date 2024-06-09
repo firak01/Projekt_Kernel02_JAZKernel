@@ -3,9 +3,9 @@
 // TYPE			: Java class                                                //
 //                                                                          //
 // NAME			: ExtendedVector.java                                       //
-//                                                                          //
-// AUTOR		: Stephan Mecking, CoCoNet GmbH                             //
-//				: Peter K�hn, CoCoNet GmbH                                  //
+//                          //
+// FIRST VERSION AUTOR		: Stephan Mecking, CoCoNet GmbH                             //
+//				            : Peter Kuehn, CoCoNet GmbH                                  //
 //                                                                          //
 // COMPONENT    : MULTIWEB client -> some different components              //
 //                                                                          //
@@ -16,7 +16,8 @@
 // HISTORY		                                                            //
 //                                                                          //
 // Date       | Changes                                        | Who        //
-// 04.08.1997 | first version                                  | SM, PK     //
+// 04.08.1997 | first version                                  | SM, PK
+// till now   | extended version ZZZ                           | FGL
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -36,15 +37,12 @@ import basic.zBasic.ReflectCodeZZZ;
  *                    TODO: Hier Methoden ggfs. "TypeCast sicher überschreiben
  *                    
  *  20200219: Die Methoden aus der alten klasse in die neue Klasse übernommen
- *                    */
+ */
 @SuppressWarnings("rawtypes")
 public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, ICollectionConstantZZZ{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-	@SuppressWarnings("unchecked")
+	protected int iIndexUsedLast=-1;
+	
 	public VectorExtendedZZZ(Vector initVector) {
 		for (int i=0; i<initVector.size(); i++)
 			this.addElement(initVector.elementAt(i));
@@ -52,6 +50,57 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 
 	public VectorExtendedZZZ() {
 	}
+	
+	
+	//### Ueberschriebene Originalmethoden, um noch weitere Funktionen zu bieten
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addElement(Object obj) {
+		super.addElement(obj);
+		this.iIndexUsedLast = this.size()-1;		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean add(Object obj) {
+		boolean bReturn = super.add(obj);		
+		this.iIndexUsedLast = this.size()-1;
+		return bReturn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void add(int iIndex, Object obj) {
+		super.add(iIndex, obj);
+		this.iIndexUsedLast = iIndex;		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean addAll(Collection col) {
+		boolean bReturn = super.addAll(col);
+		this.iIndexUsedLast = this.size()-1;
+		return bReturn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean addAll(int iIndex, Collection col) {
+		boolean bReturn = super.addAll(iIndex, col);
+		this.iIndexUsedLast = this.size()-1;		
+		return bReturn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void insertElementAt(Object obj, int iIndex) {
+		super.insertElementAt(obj, iIndex);
+		this.iIndexUsedLast = iIndex;
+	}
+	
+	
+	
+	
 	
 	
 	//##################
@@ -80,6 +129,24 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 		return tempIndex;
 	}
 	
+	public int getIndexUsedLast() {
+		if(this.iIndexUsedLast==-1) {
+			return this.size()-1;
+		}else {
+			return this.iIndexUsedLast;
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public T getEntryLast() {
+		int iIndexUsed = this.getIndexUsedLast();
+		return (T) this.get(iIndexUsed);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T getEntryHigh() {
+		int iIndexUsed = this.size()-1;
+		return (T) this.get(iIndexUsed);
+	}
 	
 	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Eintr�ge rechts von dem Suchstring zur�ck. 
 	 *   Dabei wird von links gesucht.

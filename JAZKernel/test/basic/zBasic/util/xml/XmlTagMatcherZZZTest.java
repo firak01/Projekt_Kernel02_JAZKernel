@@ -8,8 +8,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import junit.framework.TestCase;
 
@@ -24,12 +26,12 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		
 	}//END setup
 	 
-	 public void testParseElementsAsVector(){
+	 public void testParseAnyElementsAsVector(){
 		 try{
 			 String sTest;
 			 Vector<String> vecTag=null;
 			 
-//			 Und nun in einer Schleife die TESTVALUE Enum durchgehen
+//			 In einer Schleife die TESTVALUE Enum durchgehen
 //			 Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
 	
 			 //Hole die XML Strings aus dem Enum
@@ -42,6 +44,9 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String sMessage = null;
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				 	iCount++;
+				 	if(iCount==9) {
+						System.out.println("Breakpoint Pause zum debuggen");					
+					}
 				 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet (bWithText="+bWithText+").";
 				 	
 					IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
@@ -67,14 +72,14 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			
 			
 			//B) 
-			 iCount=0;
+			iCount=0;
 			bWithText=true;						
 			for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				iCount++;
-				if(iCount==6) {
+				if(iCount==9) {
 					System.out.println("Breakpoint Pause zum debuggen");					
 				}
-			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet (bWithAnyValue="+bWithText+").";
+			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet (bWithText="+bWithText+").";
 						 	
 				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 				sTest= objEnumTestType.getXml();
@@ -113,6 +118,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		 try{
 			 String sTest;
 			 Vector<String> vecTag=null;
+			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
 			 			 
 			//a) Negativtests
 			sTest = "";
@@ -146,13 +152,13 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String[][]saValue=null;String sValue;
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 			 	iCount++;
-			 	if(iCount==6) {
+			 	if(iCount==9) {
 					System.out.println("Breakpoint Pause zum debuggen");					
 				}
 			 	
 			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet.";
 			 	
-				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+				objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 				sTest= objEnumTestType.getXml();
 				saTagForValue=objEnumTestType.getTagsForExpectedValue();
 				if(saTagForValue!=null) {
@@ -195,50 +201,89 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				}
 			 }//end for
 			 
-			
-			
 
-//			 
-//			//b) Positivtests
-//			//###############################################
-//						
-//			
-//			sTest = "Wert vor abc<abc>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter abc";
-//			
-//			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "abc");
-//			assertNotNull(vecTag);
-//			assertFalse(vecTag.isEmpty());
-//			assertTrue(vecTag.size()==1);
-//			
-//			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "b");
-//			assertNotNull(vecTag);
-//			assertFalse(vecTag.isEmpty());
-//			assertTrue(vecTag.size()==1);
-//			assertEquals("Wert in b",vecTag.get(0)); 
-//			
-//			
-			//B) //+++ Tag kommt mehrmals vor
-			sTest = "Wert vor dem 1. abc<abc><a>1. Wert in a</a>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter dem 1. abc<abc><a>2. Wert in a</a></abc>";
+			
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
+	 public void testParseElementsAsVector() {
+		 try{
+			 String sTest;
+			 VectorExtendedZZZ<String> vecTag=null;
+			 
+			//a) Negativtests
+			sTest = "";
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
+			assertNull(vecTag);
+			 
+			sTest = "Kein Xml Tag da";
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
+			assertNotNull(vecTag);
+			assertFalse(vecTag.isEmpty());
+			assertTrue(vecTag.size()==1);
+			
+			String sTemp = (String) vecTag.get(0);			
+			assertEquals(XmlUtilZZZ.computeTag("text",sTest), sTemp);
+						 
+			//b) Positivtests
+			//###############################################
+			vecTag = null;
+			sTest = "Wert vor abc<abc>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter abc";
 						
-			//!!! unterschiedliche Zweige werden nicht beruecksichtigt
-			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "a");
+			//+++ Nur die Tags
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, false);
 			assertNotNull(vecTag);
 			assertFalse(vecTag.isEmpty());
 			assertTrue(vecTag.size()==2);
-			assertEquals("1. Wert in a",vecTag.get(0)); 
-			assertEquals("2. Wert in a",vecTag.get(1)); 
 			
+			String sTemp3 = (String) vecTag.getEntryLast();
+			assertEquals(XmlUtilZZZ.computeTag("b","Wert in b"), sTemp3);
+			
+			//+++ Auch alle Werte
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, true);
+			assertNotNull(vecTag);
+			assertFalse(vecTag.isEmpty());
+			assertTrue(vecTag.size()==6);
+			
+			String sTemp4 = (String) vecTag.getEntryLast();
+			assertEquals(XmlUtilZZZ.computeTag("text","Wert hinter abc"), sTemp4);
+			
+			//TODOGOON20240525;
+			//KANN MAN MIT DER HASHMAPINDEXED auch so getFirst, getNext machen?
+			
+			
+			//############################
+			sTest="<DataElements><EmpStatus>2.0</EmpStatus><Expenditure>95465.00</Expenditure><StaffType>11.A</StaffType><Industry>13</Industry></DataElements>               <InteractionElements><TargetCenter>92f4-MPA</TargetCenter><Trace>7.19879</Trace></InteractionElements>";
+
+			//+++ Nur die Tags
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, false); //Weder Leerstring noch Werte in den Tags
+			assertNotNull(vecTag);
+			assertFalse(vecTag.isEmpty());
+			assertTrue(vecTag.size()==8);
+			
+			//+++ auch alle Werte			
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, true); //Nimm also den Leerstring mit auf...
+			assertNotNull(vecTag);
+			assertFalse(vecTag.isEmpty());
+			assertTrue(vecTag.size()==9);
 			
 			
 			//### tiefer verschachtelt #####################
-			sTest = "Wert vor abc<abc>Wert vor b<b>Wert vor bc<bc>1. Wert in bc</bc>Wert hinter 1. bc<bc>2. Wert in bc</bc></b>Wert hinter b</abc>Wert hinter abc";
+			sTest = "Wert vor abc<abc>Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b</abc>Wert hinter abc";
 			
-			vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, "bc");
+			//+++ Nur die Tags
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, false);
 			assertNotNull(vecTag);
 			assertFalse(vecTag.isEmpty());
-			assertTrue(vecTag.size()==2);
-			assertEquals("1. Wert in bc",vecTag.get(0)); 
-			assertEquals("2. Wert in bc",vecTag.get(1));
+			assertTrue(vecTag.size()==3);
+		 
+			//+++ Auch alle Werte		
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, true);
+			assertNotNull(vecTag);
+			assertFalse(vecTag.isEmpty());
+			assertTrue(vecTag.size()==9);
 			
 			
 		 }catch(ExceptionZZZ ez){
