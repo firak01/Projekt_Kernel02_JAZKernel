@@ -8,8 +8,10 @@ public interface IEnumSetMappedTestXmlTypeZZZ extends IEnumSetMappedTestContaine
 	public String getXml() ;
 	
 	public int getExpectedElementsWithoutText();
-
 	public int getExpectedElementsWithText();
+	
+	public int[]getIndexInVectorOfExpectedTagsWithoutText();
+	public int[]getIndexInVectorOfExpectedTagsWithText();
 	
 	public String[]getTagsForExpectedValue();
 	public String[][]getExpectedValues(); //Merke "Array von Array", weil es ja fuer ein Tag ggfs. Array Wert gibt.

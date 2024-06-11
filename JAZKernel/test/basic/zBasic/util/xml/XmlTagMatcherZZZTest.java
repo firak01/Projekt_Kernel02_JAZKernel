@@ -39,6 +39,8 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 		 
 			//Teste alle XML Strings hinsichtlich der ANZAHL der gefundenen Knoten
 			//A) nur reine XML Knoten und den Rest weglassen
+			 String[]saTagForValue=null; String sTagForValue; String sTagValue; int[] iaTagIndex; int iTagIndex;
+			 String[][]saValue=null;
 			 int iCount=0;
 			 boolean bWithText = false;
 			 String sMessage = null;
@@ -94,7 +96,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 					assertNotNull(sMessage, vecTag);
 					assertFalse(sMessage, vecTag.isEmpty());
 					assertEquals(sMessage, iElementsWithText, vecTag.size());
-					
+												
 					//Merke: Nur bei 1 (nicht XML) Wert kann man das automatisiert prüfen.
 					if(iElementsWithText==0) {
 						assertTrue(sMessage, vecTag.isEmpty());
@@ -150,7 +152,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			//A) //+++ Tag kommt nur 1x vor
 			 int iCount=0;
 			 String sMessage = null;
-			 String[]saTagForValue=null; String sTagForValue;
+			 String[]saTagForValue=null; String sTagForValue;			 
 			 String[][]saValue=null;
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 			 	iCount++;
@@ -229,6 +231,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 int iCount=0;
 			 String sMessage = null;
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
+			 int[]iaTagIndex; int iTagIndex;
 			 String[][]saValue=null;
 			 boolean bWithText=false;	
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
@@ -252,15 +255,36 @@ public class XmlTagMatcherZZZTest extends TestCase{
 									
 									assertNotNull(sMessage, vecTag);
 									if(ArrayUtilZZZ.isEmpty(saValue[i])) {
-										assertTrue(sMessage, vecTag.isEmpty());
+										//assertTrue(sMessage, vecTag.isEmpty());
+										assertNull(sMessage, vecTag);
 									}else {
-										assertFalse(sMessage, vecTag.isEmpty());
+										//assertFalse(sMessage, vecTag.isEmpty());
+										assertNotNull(sMessage, vecTag);
+										
+										saTagForValue=objEnumTestType.getTagsForExpectedValue();
+										if(saTagForValue!=null) {
+											if(!ArrayUtilZZZ.isNull(saTagForValue)) {
+												saValue=objEnumTestType.getExpectedValues();
+												if(saValue!=null) {
+													
+													iaTagIndex = objEnumTestType.getIndexInVectorOfExpectedTagsWithoutText();
+													for(int j=0; j<=saTagForValue.length-1;j++) {
+														sTagForValue = saTagForValue[j];
+														sTagValue = saValue[i][j];
+														iTagIndex = iaTagIndex[j];
+														assertEquals(sMessage, sTagValue, vecTag.get(iTagIndex)); 
+													}
+												}
+											}
+										}
+										
+										
 										
 										GENERELLES PROBLEM: 
-										WIR MÜSSEN DEN KNOTEN ABZAHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
+										WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
 										DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
 										
-										assertEquals(sMessage, saValue[i].length, vecTag.size());
+										//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
 										for(int j=0;j<=saValue[i].length-1;j++) {
 											sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
 											

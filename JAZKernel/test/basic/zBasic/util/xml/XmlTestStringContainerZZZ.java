@@ -2,12 +2,6 @@ package basic.zBasic.util.xml;
 
 import java.util.EnumSet;
 
-import basic.zBasic.reflection.position.TagTypeFileNameZZZ;
-import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
-import basic.zBasic.reflection.position.TagTypeLineNumberZZZ;
-import basic.zBasic.reflection.position.TagTypeMethodZZZ;
-import basic.zBasic.xml.tagtype.IEnumSetMappedTagTypeZZZ;
-import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ.TAGTYPE;
 
 public class XmlTestStringContainerZZZ {
@@ -152,45 +146,53 @@ public class XmlTestStringContainerZZZ {
 	}//End internal Class
 	
 
-	//################### ENUM ALLER "EINFACHEN" KERNEL-TAG-TYPEN ##############
-		//ALIAS("Uniquename", int Anzahl der Tags (aufmachend, schliessend) ohne umgebende Texte,
-	    //                    int Anzahl der Tags (aufmachend, schliessend) mit umgebenden Texten,
-	    //                    {Beispieltags},{{Beispielwerte der Tags}},
-	    //                    "xml String",
+		//################### ENUM ALLER "EINFACHEN" KERNEL-TAG-TYPEN ##############
+		//ALIAS("Uniquename", "xml String",
+	    //                    int[] {indexposition des Tags im Vector ohne umgebende Texte},
+	    //                    int[] {indexposition des Tags im Vector mit umgebende Texte},
+	    //                    String[] {Beispieltags},
+	    //					  String[][] {{"Beispielwerte des Tags01","Beispielwerte des Tags01"}{"Beispielwerte des Tags02","Beispielwerte des Tags02"},
+		//					  int Anzahl der Tags (aufmachend, schliessend) ohne umgebende Texte,
+		//                    int Anzahl der Tags (aufmachend, schliessend) mit umgebenden Texten,
+		//                   
 	    //                    "Beschreibung, wird nicht genutzt....",)
 	    //Merke01: Es kann pro Tag ggfs. mehrere Werte geben. Darum sind die ExpectedValues "Array von Array"	
 	    //Merke02: ExpectedElementsWithText >= ExpectedElementsWithoutText.
 	    
 		public enum TEST implements IEnumSetMappedTestXmlTypeZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-			neg00("neg00",TESTVALUE.s0, null,null,0,0,"Negativtest, Leerstring"),
-			neg01("neg01",TESTVALUE.s1, null,null,0,1,"Negativtest, ohne einen XML Tag"),
+			neg00("neg00",TESTVALUE.s0, new int[] {-1}, new int[] {-1}, null,null,0,0,"Negativtest, Leerstring"),
+			neg01("neg01",TESTVALUE.s1, new int[] {-1}, new int[] {-1}, new String[] {"text"},new String[][] {{"Kein Xml Tag da"}},0,1,"Negativtest, ohne einen XML Tag"),
 			
-			pos01("pos01",TESTVALUE.s2, new String[]{"b"},new String[][]{{"Wert in b"}},2,5,"Positivtest, mit XMLTags und Werten vor den Tags"),
-			pos02("pos02",TESTVALUE.s3, new String[]{"abc"},new String[][]{{"Wert vor b<b>Wert in b</b>Wert hinter b"}},4,9,"Positivtest, mit XMLTags und Werten vor den Tags, nur 1 Ebene, keine weiteren Tags auf einer Ebene"),
-			pos03("pos03",TESTVALUE.s4, new String[]{"EmpStatus","StaffType"},new String[][]{{"2.0"},{"11.A"}},16,23,"Positivtest, mit XMLTags und Werten vor den Tags"),			
-			pos04("pos04",TESTVALUE.s5, new String[]{"bc"},new String[][]{{"Wert in bc"}},6,13,"Positivtest, mit XMLTags und Werten vor den Tags"),
-			pos05("pos05",TESTVALUE.s6, new String[]{"bc","a"},new String[][]{{null},{"1. Wert in a","2. Wert in a"}},10,17,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT"),
-			pos06("pos06",TESTVALUE.s7, new String[]{"bc","a"},new String[][]{{"Wert in bc"},{"1. Wert in a","2. Wert in a"}},12,20,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt"),	
-			pos07("pos07",TESTVALUE.s8, new String[]{"abc","bc"},new String[][]{{"Wert vor b<b>Wert vor dem 1. bc<bc>1. Wert in bc</bc>Wert hinter dem 1. bc/vor dem 2. bc<bc>2. Wert in bc</bc></b>Wert hinter b"},{"1. Wert in bc", "2. Wert in bc"}},8,16,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt")
+			pos01("pos01",TESTVALUE.s2, new int[] {0}, new int[] {1}, new String[]{"b"},new String[][]{{"Wert in b"}},2,5,"Positivtest, mit XMLTags und Werten vor den Tags"),
+			pos02("pos02",TESTVALUE.s3, new int[] {0}, new int[] {1}, new String[]{"abc"},new String[][]{{"Wert vor b<b>Wert in b</b>Wert hinter b"}},4,9,"Positivtest, mit XMLTags und Werten vor den Tags, nur 1 Ebene, keine weiteren Tags auf einer Ebene"),
+			pos03("pos03",TESTVALUE.s4, new int[] {0}, new int[] {1}, new String[]{"EmpStatus","StaffType"},new String[][]{{"2.0"},{"11.A"}},16,23,"Positivtest, mit XMLTags und Werten vor den Tags"),			
+			pos04("pos04",TESTVALUE.s5, new int[] {0}, new int[] {1}, new String[]{"bc"},new String[][]{{"Wert in bc"}},6,13,"Positivtest, mit XMLTags und Werten vor den Tags"),
+			pos05("pos05",TESTVALUE.s6, new int[] {0}, new int[] {1}, new String[]{"bc","a"},new String[][]{{null},{"1. Wert in a","2. Wert in a"}},10,17,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT"),
+			pos06("pos06",TESTVALUE.s7, new int[] {0}, new int[] {1}, new String[]{"bc","a"},new String[][]{{"Wert in bc"},{"1. Wert in a","2. Wert in a"}},12,20,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt"),	
+			pos07("pos07",TESTVALUE.s8, new int[] {0}, new int[] {1}, new String[]{"abc","bc"},new String[][]{{"Wert vor b<b>Wert vor dem 1. bc<bc>1. Wert in bc</bc>Wert hinter dem 1. bc/vor dem 2. bc<bc>2. Wert in bc</bc></b>Wert hinter b"},{"1. Wert in bc", "2. Wert in bc"}},8,16,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt")
 			;
 						
 			private String sAbbreviation,sDescription;			
 			private int iExpectedElementsWithoutText, iExpectedElementsWithText;
-			private String[]saExpectedTagExample; String[][]saExpectedValueExample;
+			private int[]iaExpectedExampleIndexInVectorWithoutText; private int[]iaExpectedExampleIndexInVectorWithText;
+			
+			private String[]saExpectedExampleTag; String[][]saExpectedExampleValue;
 			private IEnumSetMappedTestValueStringTypeZZZ enumMappedString;
 			
 			//#############################################
 			//#### Konstruktoren
 			//Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
 			//In der Util-Klasse habe ich aber einen Workaround gefunden.
-			TEST(String sAbbreviation, IEnumSetMappedTestValueStringTypeZZZ enumMappedString, String[] saExpectedTagExample, String[][] saExpectedValueExample, int iExpectedElementsWithoutText, int iExpectedElementsWithText, String sDescription) {
+			TEST(String sAbbreviation, IEnumSetMappedTestValueStringTypeZZZ enumMappedString, int[] iaExpectedExampleIndexWithoutText, int[] iaExpectedExampleIndexWithText, String[] saExpectedExampleTag, String[][] saExpectedExampleValue, int iExpectedElementsWithoutText, int iExpectedElementsWithText, String sDescription) {
 			    this.sAbbreviation = sAbbreviation;
 			    this.enumMappedString = enumMappedString;
 			    this.iExpectedElementsWithoutText = iExpectedElementsWithoutText;
 			    this.iExpectedElementsWithText = iExpectedElementsWithText;			    
 			    //Merke: Das wird nun aus dem String des enum TESTVALUE geholt   this.sXml = sXml;
-			    this.saExpectedTagExample = saExpectedTagExample;
-			    this.saExpectedValueExample = saExpectedValueExample;
+			    this.iaExpectedExampleIndexInVectorWithoutText = iaExpectedExampleIndexWithoutText;
+			    this.iaExpectedExampleIndexInVectorWithText = iaExpectedExampleIndexWithText;
+			    this.saExpectedExampleTag = saExpectedExampleTag;
+			    this.saExpectedExampleValue = saExpectedExampleValue;
 			    this.sDescription = sDescription;
 			}
 			
@@ -221,13 +223,23 @@ public class XmlTestStringContainerZZZ {
 			}
 			
 			@Override
+			public int[] getIndexInVectorOfExpectedTagsWithoutText() {
+				return this.iaExpectedExampleIndexInVectorWithoutText;
+			}
+			
+			@Override
+			public int[] getIndexInVectorOfExpectedTagsWithText() {
+				return this.iaExpectedExampleIndexInVectorWithText;
+			}
+			
+			@Override
 			public String[] getTagsForExpectedValue() {
-				return this.saExpectedTagExample;
+				return this.saExpectedExampleTag;
 			}
 
 			@Override
 			public String[][] getExpectedValues() {
-				return this.saExpectedValueExample;
+				return this.saExpectedExampleValue;
 			}	
 			
 			//+++++++++++++++++++++++++	
