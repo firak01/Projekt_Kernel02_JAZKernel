@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
@@ -120,6 +121,9 @@ public class XmlTagMatcherZZZTest extends TestCase{
 	 
 	 public void testParseAnyValueForTagAsVector(){
 		 try{
+			 
+			 TODOGOON20240612; //Jetzte wieder Fehler im 2. Teststring - Test
+			 
 			 String sTest;
 			 Vector<String> vecTag=null;
 			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
@@ -156,15 +160,15 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String[][]saValue=null;
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 			 	iCount++;
+			 	sMessage = iCount + ". Teststring wird ausgeWertet.";
 			 	if(iCount==9) {
 					System.out.println("Breakpoint Pause zum debuggen");					
 				}
 			 	
-			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet.";
-			 	
+			 				 	
 				objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 				sTest= objEnumTestType.getXml();
-				saTagForValue=objEnumTestType.getTagsForExpectedValue();
+				saTagForValue=objEnumTestType.getTagsForExpectedValues();
 				if(saTagForValue!=null) {
 					if(!ArrayUtilZZZ.isNull(saTagForValue)) {
 						saValue=objEnumTestType.getExpectedValues();
@@ -231,104 +235,84 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 int iCount=0;
 			 String sMessage = null;
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
-			 int[]iaTagIndex; int iTagIndex;
+			 int[]iaTagIndex; int iTagIndexInVector; int iTagValueIndex;
 			 String[][]saValue=null;
 			 boolean bWithText=false;	
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
-				 iCount++;
+				 	iCount++;
+				 	sMessage = iCount + ". Teststring wird ausgewertet.";				 	
 				 	if(iCount==9) {
 						System.out.println("Breakpoint Pause zum debuggen");					
 					}
 				 	
-				 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet.";
 				 	
 					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 					sTest= objEnumTestType.getXml();
-					saTagForValue=objEnumTestType.getTagsForExpectedValue();
-					if(saTagForValue!=null) {
-						if(!ArrayUtilZZZ.isNull(saTagForValue)) {
-							saValue=objEnumTestType.getExpectedValues();
-							if(saValue!=null) {
-								for(int i=0;i<=saTagForValue.length-1;i++) {
-									sTagForValue = saTagForValue[i];
-									vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
-									
-									assertNotNull(sMessage, vecTag);
-									if(ArrayUtilZZZ.isEmpty(saValue[i])) {
-										//assertTrue(sMessage, vecTag.isEmpty());
-										assertNull(sMessage, vecTag);
-									}else {
-										//assertFalse(sMessage, vecTag.isEmpty());
-										assertNotNull(sMessage, vecTag);
-										
-										saTagForValue=objEnumTestType.getTagsForExpectedValue();
-										if(saTagForValue!=null) {
-											if(!ArrayUtilZZZ.isNull(saTagForValue)) {
-												saValue=objEnumTestType.getExpectedValues();
-												if(saValue!=null) {
-													
-													iaTagIndex = objEnumTestType.getIndexInVectorOfExpectedTagsWithoutText();
-													for(int j=0; j<=saTagForValue.length-1;j++) {
-														sTagForValue = saTagForValue[j];
-														sTagValue = saValue[i][j];
-														iTagIndex = iaTagIndex[j];
-														assertEquals(sMessage, sTagValue, vecTag.get(iTagIndex)); 
-													}
-												}
-											}
-										}
-										
-										
-										
-										GENERELLES PROBLEM: 
-										WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
-										DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
-										
-										//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
-										for(int j=0;j<=saValue[i].length-1;j++) {
-											sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
-											
-											//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
-											assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
-										}
-									}													
-								}//end for
-							}else {
-								//!!! Wenn keine BeispielWerte angegeben wurden, trotzdem testen....
-								for(int i=0;i<=saTagForValue.length-1;i++) {
-									sTagForValue = saTagForValue[i];
-									vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
-									
-									assertNotNull(sMessage, vecTag);
-									assertFalse(sMessage, vecTag.isEmpty());
-								}//end for
-							}
-						}
+					
+					vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);								
+					
+					//Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
+					//Daher von den angegebenen Indexpositionen ausgehen
+					iaTagIndex = objEnumTestType.getIndexInVectorOfExpectedTagsWithoutText();
+					
+					//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
+					if(ArrayUtilZZZ.isNull(iaTagIndex)) {
+						//Das kann dann nur ein Leerstring sein
+						assertNull(sMessage,vecTag);						
 					}else {
+						assertNotNull(sMessage,vecTag);
 						
-						//!!! Wenn kein Beispieltag angegeben wurde, normalterweise trotzdem testen....
-						//... Dann geht es nur um die ANZAHL der Tags
-						vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
-												
-						int iElementsWithoutText = objEnumTestType.getExpectedElementsWithoutText();
-					    int iElementsWithText = objEnumTestType.getExpectedElementsWithText();
-						if(iElementsWithoutText==0 && iElementsWithText==0) {
-							assertNull(sMessage,vecTag);
-						}else {
-							assertNotNull(sMessage, vecTag);
-							assertEquals(sMessage, iElementsWithoutText, vecTag.size());
+						//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
+						//... sind Testtags gepfegt?
+						saTagForValue=objEnumTestType.getTagsForExpectedValues();
+						
+						//	... sind Testwerte gepflegt?
+						saValue=objEnumTestType.getExpectedValues();
+						
+						//Die Indexpositionen durchsehen
+						for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
+							iTagIndexInVector = iaTagIndex[iTestLauf];
 							
-							if(iElementsWithoutText==0) {
-								assertTrue(sMessage, vecTag.isEmpty());
+							//...aber nur fall auch gepflegt
+							if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+								
 							}else {
-								assertFalse(sMessage, vecTag.isEmpty());							
-							}
-						}
-						
+								if(iTagIndexInVector<=-1) {
+									//dann gaebe es keinerlei Wert																
+									assertTrue(vecTag.isEmpty());								
+								}else {
+									
+									for(int iTestLaufWert = 0; iTestLaufWert <= saValue[iTestLauf].length - 1; iTestLaufWert++) {
+										sTagValue = saValue[iTestLauf][iTestLaufWert];
+										sTagForValue = saTagForValue[iTestLauf];
+									
+										
+										//dann den Wert pruefen, mit reingerechentem Tag
+										String sValueInVector = XmlUtilZZZ.computeTag(sTagForValue, sTagValue);
+										assertEquals(sMessage, sValueInVector, vecTag.get(iTagIndexInVector));			
+										
+									}
+								}
+							}							
+						}						
 					}
-			 }//end for
+					
+																							
+//										GENERELLES PROBLEM: 
+//										WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
+//										DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
+//										
+										//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
+//										for(int j=0;j<=saValue[i].length-1;j++) {
+//											sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
+//											
+//											//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
+//											assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
+//										}												
+			}//end for IEnumSetMappedZZZ
+							
 			 
-			
+			TODOGOON20240612;
 			
 			//B) 
 			iCount=0;
@@ -343,7 +327,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				 	
 					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 					sTest= objEnumTestType.getXml();
-					saTagForValue=objEnumTestType.getTagsForExpectedValue();
+					saTagForValue=objEnumTestType.getTagsForExpectedValues();
 					if(saTagForValue!=null) {
 						if(!ArrayUtilZZZ.isNull(saTagForValue)) {
 							saValue=objEnumTestType.getExpectedValues();

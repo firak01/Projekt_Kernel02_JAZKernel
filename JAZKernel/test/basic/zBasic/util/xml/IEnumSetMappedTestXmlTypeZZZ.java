@@ -13,6 +13,6 @@ public interface IEnumSetMappedTestXmlTypeZZZ extends IEnumSetMappedTestContaine
 	public int[]getIndexInVectorOfExpectedTagsWithoutText();
 	public int[]getIndexInVectorOfExpectedTagsWithText();
 	
-	public String[]getTagsForExpectedValue();
+	public String[]getTagsForExpectedValues(); //Tag an der Indexposition
 	public String[][]getExpectedValues(); //Merke "Array von Array", weil es ja fuer ein Tag ggfs. Array Wert gibt.
 }

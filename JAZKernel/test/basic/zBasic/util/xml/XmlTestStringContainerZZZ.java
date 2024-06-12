@@ -148,28 +148,28 @@ public class XmlTestStringContainerZZZ {
 
 		//################### ENUM ALLER "EINFACHEN" KERNEL-TAG-TYPEN ##############
 		//ALIAS("Uniquename", "xml String",
-	    //                    int[] {indexposition des Tags im Vector ohne umgebende Texte},
-	    //                    int[] {indexposition des Tags im Vector mit umgebende Texte},
+	    //                    int[] {indexposition des Tags im Vector ohne umgebende Texte} !!! fuer testParseElementsAsVector,
+	    //                    int[] {indexposition des Tags im Vector mit umgebende Texte}  !!! fuer testParseElementsAsVector,,
 	    //                    String[] {Beispieltags},
 	    //					  String[][] {{"Beispielwerte des Tags01","Beispielwerte des Tags01"}{"Beispielwerte des Tags02","Beispielwerte des Tags02"},
-		//					  int Anzahl der Tags (aufmachend, schliessend) ohne umgebende Texte,
-		//                    int Anzahl der Tags (aufmachend, schliessend) mit umgebenden Texten,
+		//					  int Anzahl der Tags (aufmachend, schliessend) ohne umgebende Texte  !!! fuer testParseAny... ,
+		//                    int Anzahl der Tags (aufmachend, schliessend) mit umgebenden Texten !!! fuer testParseAny... ,
 		//                   
 	    //                    "Beschreibung, wird nicht genutzt....",)
 	    //Merke01: Es kann pro Tag ggfs. mehrere Werte geben. Darum sind die ExpectedValues "Array von Array"	
 	    //Merke02: ExpectedElementsWithText >= ExpectedElementsWithoutText.
 	    
 		public enum TEST implements IEnumSetMappedTestXmlTypeZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{
-			neg00("neg00",TESTVALUE.s0, new int[] {-1}, new int[] {-1}, null,null,0,0,"Negativtest, Leerstring"),
-			neg01("neg01",TESTVALUE.s1, new int[] {-1}, new int[] {-1}, new String[] {"text"},new String[][] {{"Kein Xml Tag da"}},0,1,"Negativtest, ohne einen XML Tag"),
+			neg00("neg00",TESTVALUE.s0, null, null, null,null,0,0,"Negativtest, Leerstring"),
+			neg01("neg01",TESTVALUE.s1, new int[] {-1}, new int[] {0}, new String[]{"text"},new String[][] {{"Kein Xml Tag da"}},0,1,"Negativtest, ohne einen XML Tag"),
 			
 			pos01("pos01",TESTVALUE.s2, new int[] {0}, new int[] {1}, new String[]{"b"},new String[][]{{"Wert in b"}},2,5,"Positivtest, mit XMLTags und Werten vor den Tags"),
-			pos02("pos02",TESTVALUE.s3, new int[] {0}, new int[] {1}, new String[]{"abc"},new String[][]{{"Wert vor b<b>Wert in b</b>Wert hinter b"}},4,9,"Positivtest, mit XMLTags und Werten vor den Tags, nur 1 Ebene, keine weiteren Tags auf einer Ebene"),
-			pos03("pos03",TESTVALUE.s4, new int[] {0}, new int[] {1}, new String[]{"EmpStatus","StaffType"},new String[][]{{"2.0"},{"11.A"}},16,23,"Positivtest, mit XMLTags und Werten vor den Tags"),			
-			pos04("pos04",TESTVALUE.s5, new int[] {0}, new int[] {1}, new String[]{"bc"},new String[][]{{"Wert in bc"}},6,13,"Positivtest, mit XMLTags und Werten vor den Tags"),
-			pos05("pos05",TESTVALUE.s6, new int[] {0}, new int[] {1}, new String[]{"bc","a"},new String[][]{{null},{"1. Wert in a","2. Wert in a"}},10,17,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT"),
-			pos06("pos06",TESTVALUE.s7, new int[] {0}, new int[] {1}, new String[]{"bc","a"},new String[][]{{"Wert in bc"},{"1. Wert in a","2. Wert in a"}},12,20,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt"),	
-			pos07("pos07",TESTVALUE.s8, new int[] {0}, new int[] {1}, new String[]{"abc","bc"},new String[][]{{"Wert vor b<b>Wert vor dem 1. bc<bc>1. Wert in bc</bc>Wert hinter dem 1. bc/vor dem 2. bc<bc>2. Wert in bc</bc></b>Wert hinter b"},{"1. Wert in bc", "2. Wert in bc"}},8,16,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt")
+			pos02("pos02",TESTVALUE.s3, new int[] {0,1}, new int[] {1}, new String[]{"abc","b"},new String[][]{{"Wert vor b<b>Wert in b</b>Wert hinter b"},{"Wert in b"}},4,9,"Positivtest, mit XMLTags und Werten vor den Tags, nur 1 Ebene, keine weiteren Tags auf einer Ebene"),
+			pos03("pos03",TESTVALUE.s4, new int[] {1,3}, new int[] {1}, new String[]{"EmpStatus","StaffType"},new String[][]{{"2.0"},{"11.A"}},16,23,"Positivtest, mit XMLTags und Werten vor den Tags"),			
+			pos04("pos04",TESTVALUE.s5, new int[] {2}, new int[] {1}, new String[]{"bc"},new String[][]{{"Wert in bc"}},6,13,"Positivtest, mit XMLTags und Werten vor den Tags"),
+			pos05("pos05",TESTVALUE.s6, new int[] {1,4}, new int[] {1}, new String[]{"a","a"},new String[][]{{"1. Wert in a"},{"2. Wert in a"}},10,17,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT"),
+			pos06("pos06",TESTVALUE.s7, new int[] {1,3,5}, new int[] {1}, new String[]{"a","bc","a"},new String[][]{{"1. Wert in a"},{"Wert in bc"},{"2. Wert in a"}},12,20,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt"),	
+			pos07("pos07",TESTVALUE.s8, new int[] {0,1}, new int[] {1}, new String[]{"abc","bc"},new String[][]{{"Wert vor b<b>Wert vor dem 1. bc<bc>1. Wert in bc</bc>Wert hinter dem 1. bc/vor dem 2. bc<bc>2. Wert in bc</bc></b>Wert hinter b"},{"1. Wert in bc"}},8,16,"Positivtest, mit XMLTags und Werten vor den Tags, +++ Tag kommt mehrmals vor, ABER UNTERSCHIEDE IM ZWEIG WERDEN NICHT BERUECKSICHTIGT - tiefer verschachtelt")
 			;
 						
 			private String sAbbreviation,sDescription;			
@@ -233,7 +233,7 @@ public class XmlTestStringContainerZZZ {
 			}
 			
 			@Override
-			public String[] getTagsForExpectedValue() {
+			public String[] getTagsForExpectedValues() {
 				return this.saExpectedExampleTag;
 			}
 
