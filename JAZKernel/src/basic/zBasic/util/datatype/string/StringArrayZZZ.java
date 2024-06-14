@@ -14,6 +14,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUniqueZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.math.MathZZZ;
@@ -26,6 +27,7 @@ import basic.zBasic.util.math.MathZZZ;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
+//Generisch ist nicht sinnvoll, bei den statischen Methoden  public class StringArrayZZZ<T> implements IConstantZZZ{
 public class StringArrayZZZ implements IConstantZZZ{
 	private String[] saIntern;
 	private boolean bIsString = false;
@@ -541,6 +543,45 @@ output:
 		return lFunction;
 	}//end IndexFirstGet
 	
+	public static int[] getIndexContains(String[] saSource, String sToFind) {
+		int[] iaReturn=null;
+		main:{
+			if(saSource==null) break main;
+			
+			ArrayList<Integer> listaint = new ArrayList<Integer>();
+			for(int iCounter = 0; iCounter <= saSource.length -1; iCounter++) {
+				String sTemp = saSource[iCounter];
+			 	// Erst ab Java 1.2   if (sTemp.compareToIgnoreCase(sToFind)== 0){
+			 	if (sTemp.compareTo(sToFind)== 0){
+			 		listaint.add(new Integer(iCounter));
+			 	}				
+			}
+			iaReturn = ArrayListZZZ.toIntArray(listaint);
+			
+		}//end main:				
+		return iaReturn;
+	}
+	//##################################################################
+	public static String[] get(String[] saSource, int[]iaIndex) {
+		String[]saReturn = null;
+		main:{
+			if(ArrayUtilZZZ.isEmpty(saSource)) break main;
+			if(ArrayUtilZZZ.isEmpty(iaIndex)) break main;
+			
+			ArrayList<String>listas=new ArrayList<String>();
+			for(int iCounter = 0; iCounter <= iaIndex.length -1; iCounter++) {
+				int iIndex = iaIndex[iCounter];
+				if(iIndex <= saSource.length-1 && iIndex >=0) {
+					String sTemp = saSource[iIndex];
+					listas.add(sTemp);
+				}
+			}//end for
+			saReturn = ArrayListZZZ.toStringArray(listas);						
+		}//end main:
+		return saReturn;
+	}
+	
+	//##################################################################
 	public static String getLast(Object[] saSource){
 		String sReturn = null;
 		main:{
@@ -579,6 +620,7 @@ output:
 		}// end main:
 		return sReturn;
 	}
+		
 	public static String getFirst(String[] saSource){
 		String sReturn = null;
 		main:{

@@ -1,6 +1,7 @@
 package basic.zBasic.util.xml;
 
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.xml.XmlTestStringContainerZZZ.TESTVALUE;
 
 public interface IEnumSetMappedTestXmlTypeZZZ extends IEnumSetMappedTestContainerTypeZZZ{
 	
@@ -14,5 +15,11 @@ public interface IEnumSetMappedTestXmlTypeZZZ extends IEnumSetMappedTestContaine
 	public int[]getIndexInVectorOfExpectedTagsWithText();
 	
 	public String[]getTagsForExpectedValues(); //Tag an der Indexposition
-	public String[][]getExpectedValues(); //Merke "Array von Array", weil es ja fuer ein Tag ggfs. Array Wert gibt.
+	
+	//Merke: "Array von Array" laesst sich auch mit einem enum darstellen
+	//       z.B. pos01("pos01",TESTVALUE.s2, new int[] {0}, new int[] {1}, new String[]{"b"},new String[][]{{"Wert in b"}},2,5,"Positivtest, mit XMLTags und Werten vor den Tags"),
+	//       Beachte die doppelte geschweifte Klammer.
+	//
+	//Merke: Ggfs. gibt es fuer einen Tag mehrere Werte, trotzdem kein "Array von Array".
+	public String[] getExpectedValues(); //Fuer einen Test mit mehrern Werten in einem Tag, muss dann extra ein Array aufgebaut werden.
 }

@@ -10,6 +10,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
@@ -50,7 +51,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				 	if(iCount==9) {
 						System.out.println("Breakpoint Pause zum debuggen");					
 					}
-				 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet (bWithText="+bWithText+").";
+				 	sMessage = iCount + ". Teststring wird ausgewertet (bWithText="+bWithText+").";
 				 	
 					IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 					sTest= objEnumTestType.getXml();
@@ -83,7 +84,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				if(iCount==9) {
 					System.out.println("Breakpoint Pause zum debuggen");					
 				}
-			 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet (bWithText="+bWithText+").";
+			 	sMessage = iCount + ". Teststring wird ausgewertet (bWithText="+bWithText+").";
 						 	
 				IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 				sTest= objEnumTestType.getXml();
@@ -121,9 +122,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 	 
 	 public void testParseAnyValueForTagAsVector(){
 		 try{
-			 
-			 TODOGOON20240612; //Jetzte wieder Fehler im 2. Teststring - Test
-			 
+			 			 
 			 String sTest;
 			 Vector<String> vecTag=null;
 			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
@@ -152,60 +151,72 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 //Hole die XML Strings aus dem Enum
 			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);
 			 		 
-			//Teste alle XML Strings hinsichtlich des Wert in dem Knoten
+			//Teste alle XML Strings hinsichtlich des Werts in dem Knoten
+			//Merke: Getestet wird auf den puren Eingabestring.
+			 //      Da also keine weiteren Knoten <text> hinzugeneriert werden,
+			 //      gilt die Position des Erwarteten Strings im Ergebnissektor für den "ohne umgebende texte" Fall. 
+			 
 			//A) //+++ Tag kommt nur 1x vor
 			 int iCount=0;
 			 String sMessage = null;
+			 int[] iaIndexForTag=null; int iIndexForTag; int iIndexUsedForTag;
 			 String[]saTagForValue=null; String sTagForValue;			 
-			 String[][]saValue=null;
+			 String[]saValue=null;String[]saValueUsed=null;//ggf. gibt es fuer ein Tag mehrere Werte, trotzdem keine "Array von Array". Statt dessen extra ein Array aufbauen.			 
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 			 	iCount++;
-			 	sMessage = iCount + ". Teststring wird ausgeWertet.";
-			 	if(iCount==9) {
+			 	sMessage = iCount + ". Teststring wird ausgewertet.";
+			 	if(iCount==4) {
 					System.out.println("Breakpoint Pause zum debuggen");					
 				}
-			 	
-			 				 	
+			 				 				 	
 				objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 				sTest= objEnumTestType.getXml();
-				saTagForValue=objEnumTestType.getTagsForExpectedValues();
-				if(saTagForValue!=null) {
-					if(!ArrayUtilZZZ.isNull(saTagForValue)) {
-						saValue=objEnumTestType.getExpectedValues();
-						if(saValue!=null) {
-							for(int i=0;i<=saTagForValue.length-1;i++) {
-								sTagForValue = saTagForValue[i];
-								vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, sTagForValue);
+				
+				iaIndexForTag = objEnumTestType.getIndexInVectorOfExpectedTagsWithoutText();
+				if(!ArrayUtilZZZ.isNull(iaIndexForTag)) {
+					saValue=objEnumTestType.getExpectedValues();
+					saTagForValue=objEnumTestType.getTagsForExpectedValues();
+					if(!(ArrayUtilZZZ.isNull(saValue)||ArrayUtilZZZ.isNull(saTagForValue))) {						
+						for(int i=0;i<=saTagForValue.length-1;i++) { //Alle definierten Testwerte durchgehen.
+							iIndexUsedForTag=0;
+							
+							
+							//Der IndexForTag ist in diesem Test nur ein Kennzeichen, ob ueberhaupt ein Tag erwartet wird.
+							//Hier wird nach einem konkreten Tag gesucht darum hat das Ergebnis immer 0 als Index im Vector.
+							iIndexForTag =iaIndexForTag[i];
+							if(iIndexForTag<=-1) {
 								
+							}else {
+								sTagForValue = saTagForValue[i];
+																														
+								//jetzt da wir den Tagnamen haben koennen wir dafuer den Wert holen
+								vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, sTagForValue);														
 								assertNotNull(sMessage, vecTag);
-								if(ArrayUtilZZZ.isEmpty(saValue[i])) {
+								
+								if(ArrayUtilZZZ.isEmpty(saValue)) {
 									assertTrue(sMessage, vecTag.isEmpty());
 								}else {
 									assertFalse(sMessage, vecTag.isEmpty());
+							
+									//Da es in diesem Test mehree Werte fuer einen Tagnamen geben kann, muessen die Werte in einem extra Array aufbereitet werden.
+									int[]iaIndex = StringArrayZZZ.getIndexContains(saTagForValue, sTagForValue);
+									saValueUsed = StringArrayZZZ.get(saValue, iaIndex);									
 									
-									assertEquals(sMessage, saValue[i].length, vecTag.size());
-									for(int j=0;j<=saValue[i].length-1;j++) {
-										assertEquals(sMessage, saValue[i][j],vecTag.get(j));//Merke: vecTag wird in jeder schleife neu ausgerechnet.									
+									//Nun die Einzelnen Werte durchgehen. Es gibt ggfs. fuer ein Tag mehrere Werte.
+									for(int j=0; j<=saValueUsed.length-1; j++) {
+										assertEquals(sMessage, saValueUsed[j],vecTag.get(iIndexUsedForTag));//Merke: vecTag wird in jeder schleife neu ausgerechnet.
+										iIndexUsedForTag++; //Falls es mehrer Tag-Werte gibt, dann sollten sie an der naechsten Vektor-Position stehen
 									}
-								}													
-							}//end for
-						}else {
-							//!!! Wenn keine BeispielWerte angegeben wurden, trotzdem testen....
-							for(int i=0;i<=saTagForValue.length-1;i++) {
-								sTagForValue = saTagForValue[i];
-								vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, sTagForValue);
-								
-								assertNotNull(sMessage, vecTag);
-								assertFalse(sMessage, vecTag.isEmpty());
-							}//end for
-						}
-					}
-				}else {
-					
-					//!!! Wenn kein Beispieltag angegeben wurde, normalterweise trotzdem testen....
-					//... aber hier geht es ja wirklich explizit um die Ermittlung der Tags.
-										
-				}
+																
+									
+								}								
+							}//iIndexForTag <= -1							
+						}//end for	
+							
+					}//isNull saValue || saTagForValue
+				}//isNull iaIndexForTag
+				
+				
 			 }//end for
 			 
 
@@ -236,7 +247,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String sMessage = null;
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
 			 int[]iaTagIndex; int iTagIndexInVector; int iTagValueIndex;
-			 String[][]saValue=null;
+			 String[]saValue=null;
 			 boolean bWithText=false;	
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				 	iCount++;
@@ -282,11 +293,10 @@ public class XmlTagMatcherZZZTest extends TestCase{
 									assertTrue(vecTag.isEmpty());								
 								}else {
 									
-									for(int iTestLaufWert = 0; iTestLaufWert <= saValue[iTestLauf].length - 1; iTestLaufWert++) {
-										sTagValue = saValue[iTestLauf][iTestLaufWert];
-										sTagForValue = saTagForValue[iTestLauf];
-									
-										
+									for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+										sTagValue = saValue[iTestLaufWert];
+										sTagForValue = saTagForValue[iTestLaufWert];
+																			
 										//dann den Wert pruefen, mit reingerechentem Tag
 										String sValueInVector = XmlUtilZZZ.computeTag(sTagForValue, sTagValue);
 										assertEquals(sMessage, sValueInVector, vecTag.get(iTagIndexInVector));			
@@ -337,19 +347,19 @@ public class XmlTagMatcherZZZTest extends TestCase{
 									vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
 									
 									assertNotNull(sMessage, vecTag);
-									if(ArrayUtilZZZ.isEmpty(saValue[i])) {
+									if(ArrayUtilZZZ.isEmpty(saValue)) {
 										assertTrue(sMessage, vecTag.isEmpty());
 									}else {
 										assertFalse(sMessage, vecTag.isEmpty());
 										
-										assertEquals(sMessage, saValue[i].length, vecTag.size());
-										for(int j=0;j<=saValue[i].length-1;j++) {
+										assertEquals(sMessage, saValue.length, vecTag.size());
+										for(int j=0;j<=saValue.length-1;j++) {
 											//assertEquals(sMessage, saValue[i][j],vecTag.get(j));//Merke: vecTag wird in jeder schleife neu ausgerechnet.
 											
 											sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
 											
 											//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
-											assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
+											assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
 										}
 									}													
 								}//end for
