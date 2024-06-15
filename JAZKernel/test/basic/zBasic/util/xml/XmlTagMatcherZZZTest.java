@@ -48,10 +48,11 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 String sMessage = null;
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				 	iCount++;
+				 	sMessage = iCount + ". Teststring wird ausgewertet (bWithText="+bWithText+").";
 				 	if(iCount==9) {
 						System.out.println("Breakpoint Pause zum debuggen");					
 					}
-				 	sMessage = iCount + ". Teststring wird ausgewertet (bWithText="+bWithText+").";
+				 	
 				 	
 					IEnumSetMappedTestXmlTypeZZZ objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
 					sTest= objEnumTestType.getXml();
@@ -230,180 +231,61 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		 try{
 			 String sTest;
 			 VectorExtendedZZZ<String> vecTag=null;
-			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
 			 
 //			 In einer Schleife die TESTVALUE Enum durchgehen
 //			 Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
-			 
-			 
+			 			 			
+			//#######################################################################
+			//### Dynamische Test mit einem EnumTestType
+			//### Prueft alle XML Strings hinsichtlich des Wert in dem Knoten
+			//#######################################################################
+			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
+				 
 			 //Hole die XML Strings aus dem Enum
 			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);			
-			 
-			//A) bWithAnyValue=false  //also nur reine XML Knoten und den Rest weglassen.
-						 
-			//Teste alle XML Strings hinsichtlich des Wert in dem Knoten
-			//A) //+++ Tag kommt nur 1x vor
+						
+			//A) bWithText=false
 			 int iCount=0;
-			 String sMessage = null;
-			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
-			 int[]iaTagIndex; int iTagIndexInVector; int iTagValueIndex;
-			 String[]saValue=null;
-			 boolean bWithText=false;	
+			 String sMessage = null;			 
+			 boolean bWithText=false;//also nur reine XML Knoten und den Rest weglassen.	
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				 	iCount++;
-				 	sMessage = iCount + ". Teststring wird ausgewertet.";				 	
-				 	if(iCount==9) {
+				 	sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";				 	
+				 	if(iCount==5) {
 						System.out.println("Breakpoint Pause zum debuggen");					
 					}
-				 	
-				 	
+				 					 	
 					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
-					sTest= objEnumTestType.getXml();
+					this.testParseElementsAsVectorByTestType_(objEnumTestType, bWithText, sMessage);
 					
-					vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);								
 					
-					//Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
-					//Daher von den angegebenen Indexpositionen ausgehen
-					iaTagIndex = objEnumTestType.getIndexInVectorOfExpectedTagsWithoutText();
-					
-					//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
-					if(ArrayUtilZZZ.isNull(iaTagIndex)) {
-						//Das kann dann nur ein Leerstring sein
-						assertNull(sMessage,vecTag);						
-					}else {
-						assertNotNull(sMessage,vecTag);
-						
-						//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
-						//... sind Testtags gepfegt?
-						saTagForValue=objEnumTestType.getTagsForExpectedValues();
-						
-						//	... sind Testwerte gepflegt?
-						saValue=objEnumTestType.getExpectedValues();
-						
-						//Die Indexpositionen durchsehen
-						for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
-							iTagIndexInVector = iaTagIndex[iTestLauf];
-							
-							//...aber nur fall auch gepflegt
-							if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
-								
-							}else {
-								if(iTagIndexInVector<=-1) {
-									//dann gaebe es keinerlei Wert																
-									assertTrue(vecTag.isEmpty());								
-								}else {
-									
-									for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
-										sTagValue = saValue[iTestLaufWert];
-										sTagForValue = saTagForValue[iTestLaufWert];
-																			
-										//dann den Wert pruefen, mit reingerechentem Tag
-										String sValueInVector = XmlUtilZZZ.computeTag(sTagForValue, sTagValue);
-										assertEquals(sMessage, sValueInVector, vecTag.get(iTagIndexInVector));			
-										
-									}
-								}
-							}							
-						}						
-					}
-					
-																							
-//										GENERELLES PROBLEM: 
-//										WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
-//										DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
-//										
-										//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
-//										for(int j=0;j<=saValue[i].length-1;j++) {
-//											sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
-//											
-//											//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
-//											assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
-//										}												
-			}//end for IEnumSetMappedZZZ
-							
-			 
-			TODOGOON20240612;
+																
+			}//end for ... teststringend aus IEnumSetMappedZZZ
 			
 			//B) 
 			iCount=0;
 			bWithText=true;						
 			for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
-				 iCount++;
-				 	if(iCount==9) {
-						System.out.println("Breakpoint Pause zum debuggen");					
-					}
-				 	
-				 	sMessage = iCount + ". Teststring wird fehlerhaft ausgeWertet.";
-				 	
-					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
-					sTest= objEnumTestType.getXml();
-					saTagForValue=objEnumTestType.getTagsForExpectedValues();
-					if(saTagForValue!=null) {
-						if(!ArrayUtilZZZ.isNull(saTagForValue)) {
-							saValue=objEnumTestType.getExpectedValues();
-							if(saValue!=null) {
-								for(int i=0;i<=saTagForValue.length-1;i++) {
-									sTagForValue = saTagForValue[i];
-									vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
-									
-									assertNotNull(sMessage, vecTag);
-									if(ArrayUtilZZZ.isEmpty(saValue)) {
-										assertTrue(sMessage, vecTag.isEmpty());
-									}else {
-										assertFalse(sMessage, vecTag.isEmpty());
-										
-										assertEquals(sMessage, saValue.length, vecTag.size());
-										for(int j=0;j<=saValue.length-1;j++) {
-											//assertEquals(sMessage, saValue[i][j],vecTag.get(j));//Merke: vecTag wird in jeder schleife neu ausgerechnet.
-											
-											sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
-											
-											//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
-											assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
-										}
-									}													
-								}//end for
-							}else {
-								//!!! Wenn keine BeispielWerte angegeben wurden, trotzdem testen....
-								for(int i=0;i<=saTagForValue.length-1;i++) {
-									sTagForValue = saTagForValue[i];
-									vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
-									
-									assertNotNull(sMessage, vecTag);
-									assertFalse(sMessage, vecTag.isEmpty());
-								}//end for
-							}
-						}
-					}else {
-						
-						//!!! Wenn kein Beispieltag angegeben wurde, normalterweise trotzdem testen....
-						//... dann geht es nur um die ANZAHL der Tags
-						
-						vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);
-						
-						int iElementsWithoutText = objEnumTestType.getExpectedElementsWithoutText();
-					    int iElementsWithText = objEnumTestType.getExpectedElementsWithText();
-						if(iElementsWithoutText==0 && iElementsWithText==0) {
-							assertNull(sMessage,vecTag);
-						}else {
-							assertNotNull(sMessage, vecTag);
-							assertEquals(sMessage, iElementsWithText, vecTag.size());
-							
-							if(iElementsWithText==0) {
-								assertTrue(sMessage, vecTag.isEmpty());
-							}else {
-								assertFalse(sMessage, vecTag.isEmpty());							
-							}
-						}
-						
-					}
+				iCount++;
+				sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";
+				if(iCount==5) {
+					System.out.println("Breakpoint Pause zum debuggen");					
+				}
+				
+				objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+				this.testParseElementsAsVectorByTestType_(objEnumTestType, bWithText, sMessage);
+					
 			}//end for
 			 
 				
 			//Merke: Nun stichpunktartig die Werte der Knoten prüfen.
 			//..............
 			 
-			
+			//#####################################################################
+			//### Statische Tests, die eigentlich durch obige Schleifenlösung und dem EnumTestType abgeloest werden sollen.			 
+			//### ABER: In den Statischen Tests wird auch die Anzahl der Elemente gezählt und sind somit eine gute Ergänzung
+			//#####################################################################
+						
 			//a) Negativtests
 			sTest = "";
 			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest);
@@ -482,12 +364,145 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		}
 	 }
 	 
+	 private void testParseElementsAsVectorByTestType_(IEnumSetMappedTestXmlTypeZZZ objEnumTestType, boolean bWithText, String sMessage) {
+		 try{
+			 String sTest;
+			 int[]iaTagIndex; int iTagIndexInVector; 
+			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
+ 			 String[]saValue=null;
+			 VectorExtendedZZZ<String> vecTag=null;
+			 
+			sTest= objEnumTestType.getXml();
+			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);								
+				
+			//Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
+			//Daher von den angegebenen Indexpositionen ausgehen
+			if(bWithText) {
+				iaTagIndex = objEnumTestType.getIndexInVectorOfExpectedTagsWithText();
+			}else {
+				iaTagIndex = objEnumTestType.getIndexInVectorOfExpectedTagsWithoutText();
+			}
+			
+			//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
+			if(ArrayUtilZZZ.isNull(iaTagIndex)) {
+				//Das kann dann nur ein Leerstring sein
+				assertNull(sMessage,vecTag);						
+			}else {
+				assertNotNull(sMessage,vecTag);
+					
+				//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
+				//... sind Testtags gepfegt?
+				saTagForValue=objEnumTestType.getTagsForExpectedValues();
+					
+				//	... sind Testwerte gepflegt?
+				saValue=objEnumTestType.getExpectedValues();
+				if(iaTagIndex.length!=saValue.length) {
+					fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
+				}
+					
+					
+				//Die Indexpositionen durchsehen
+				for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
+							
+					//Die Werte durchsehen	
+					for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+						iTagIndexInVector = iaTagIndex[iTestLaufWert];
+							
+						//...aber nur fall auch gepflegt
+						if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+								
+						}else {
+							if(iTagIndexInVector<=-1) {
+								//dann gibt es keinen zu pruefenden Wert. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
+																
+							}else {
+								assertFalse(sMessage, vecTag.isEmpty());
+								
+								sTagValue = saValue[iTestLaufWert];
+								sTagForValue = saTagForValue[iTestLaufWert];
+																		
+								//dann den Wert pruefen, mit reingerechentem Tag
+								String sValueInVector = XmlUtilZZZ.computeTag(sTagForValue, sTagValue);
+								assertEquals(sMessage, sValueInVector, vecTag.get(iTagIndexInVector));			
+							}
+						}
+					}//end for ...wert
+				}//end for ... lauf
+			}//end if isNull(iaTagIndex)							
+									
+		
+				
+																						
+//									GENERELLES PROBLEM: 
+//									WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
+//									DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
+//									
+									//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
+//									for(int j=0;j<=saValue[i].length-1;j++) {
+//										sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
+//										
+//										//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
+//										assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
+//									}	
+	 
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
 	 
 	 public void testParseElementsAsMap(){
 		 try{
 			 String sTest;
 			 HashMapMultiIndexedZZZ<String, String> hmTag=null;
 			 
+			//#######################################################################
+			//### Dynamische Test mit einem EnumTestType
+			//### Prueft alle XML Strings hinsichtlich des Wert in dem Knoten
+			//#######################################################################
+			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
+			 
+			 
+			 //Hole die XML Strings aus dem Enum
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);			
+			
+			 
+			//A) bWithText=false
+			 int iCount=0;
+			 String sMessage = null;			 
+			 boolean bWithText=false;//also nur reine XML Knoten und den Rest weglassen.	
+			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
+				 	iCount++;
+				 	sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";				 	
+				 	if(iCount==5) {
+						System.out.println("Breakpoint Pause zum debuggen");					
+					}
+				 					 	
+					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+					this.testParseElementsAsMapByTestType_(objEnumTestType, bWithText, sMessage);
+					
+			 }//end for
+			 
+			//B) bWithText=true
+			 iCount=0;
+			 sMessage = null;			 
+			 bWithText=true;//also nur reine XML Knoten und den Rest weglassen.	
+			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
+				 	iCount++;
+				 	sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";				 	
+				 	if(iCount==5) {
+						System.out.println("Breakpoint Pause zum debuggen");					
+					}
+				 					 	
+					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+					this.testParseElementsAsMapByTestType_(objEnumTestType, bWithText, sMessage);
+					
+			 }//end for
+			 
+			//#####################################################################
+			//### Statische Tests, die eigentlich durch obige Schleifenlösung und dem EnumTestType abgeloest werden sollen.			 
+			//### ABER: In den Statischen Tests wird auch die Anzahl der Elemente gezählt und sind somit eine gute Ergänzung
+			//#####################################################################
+			//+++++++++++++++++++++++++++
 			//a) Negativtests
 			sTest = "";
 			hmTag = XmlTagMatcherZZZ.parseElementsAsMap(sTest);
@@ -572,6 +587,94 @@ public class XmlTagMatcherZZZTest extends TestCase{
 		}
 	 }
 	 
+	 private void testParseElementsAsMapByTestType_(IEnumSetMappedTestXmlTypeZZZ objEnumTestType, boolean bWithText, String sMessage) {
+		 try{
+			 String sTest;
+			 int[]iaTagIndex; int iTagIndexInVector; 
+			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
+ 			 String[]saValue=null;
+ 			HashMapMultiIndexedZZZ<String, String> hmTag=null;
+			 
+			sTest= objEnumTestType.getXml();
+			hmTag = XmlTagMatcherZZZ.parseElementsAsMap(sTest, bWithText);								
+				
+			//Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
+			//Daher von den angegebenen Indexpositionen ausgehen
+			if(bWithText) {
+				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithText();
+			}else {
+				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithoutText();
+			}
+			
+			//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
+			if(ArrayUtilZZZ.isNull(iaTagIndex)) {
+				//Das kann dann nur ein Leerstring sein
+				assertNull(sMessage,hmTag);						
+			}else {
+				assertNotNull(sMessage,hmTag);
+					
+				//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
+				//... sind Testtags gepfegt?
+				saTagForValue=objEnumTestType.getTagsForExpectedValues();
+					
+				//	... sind Testwerte gepflegt?
+				saValue=objEnumTestType.getExpectedValues();
+				if(iaTagIndex.length!=saValue.length) {
+					fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
+				}
+					
+					
+				//Die Indexpositionen durchsehen
+				for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
+							
+					//Die Werte durchsehen	
+					for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+						iTagIndexInVector = iaTagIndex[iTestLaufWert];
+							
+						//...aber nur fall auch gepflegt
+						if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+								
+						}else {
+							if(iTagIndexInVector<=-1) {
+								//dann gibt es keinen zu pruefenden Wert. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
+																
+							}else {
+								assertFalse(sMessage, hmTag.isEmpty());
+								
+								sTagValue = saValue[iTestLaufWert];
+								sTagForValue = saTagForValue[iTestLaufWert];
+																		
+								//dann den Wert pruefen, mit reingerechentem Tag
+								String sValueInVector = XmlUtilZZZ.computeTagAsHashMapEntry(sTagForValue, sTagValue);
+								//also einfach mit Equals kann man den String mit dem HashMap-Inhalt nicht vergleichen: assertEquals(sMessage, sValueInVector, hmTag.get(iTagIndexInVector));
+								//darum erst in einen String umwandeln:
+								assertEquals(sMessage, sValueInVector, hmTag.get(iTagIndexInVector).toString());
+							}
+						}
+					}//end for ...wert
+				}//end for ... lauf
+			}//end if isNull(iaTagIndex)							
+									
+		
+				
+																						
+//									GENERELLES PROBLEM: 
+//									WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
+//									DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
+//									
+									//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
+//									for(int j=0;j<=saValue[i].length-1;j++) {
+//										sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
+//										
+//										//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
+//										assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
+//									}	
+	 
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
 	 public void testParseElementsAsTree(){
 		 try{
 			 String sTest; String sTagTemp; String sValueTemp;
@@ -581,6 +684,71 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 TreeNodeZZZ<ITagSimpleZZZ> objNodeTemp=null;
 			 
 			 List<TreeNodeZZZ<ITagSimpleZZZ>> listTag=null;
+			 
+			 
+			//#######################################################################
+			//### Dynamische Test mit einem EnumTestType
+			//### Prueft alle XML Strings hinsichtlich des Wert in dem Knoten
+			//#######################################################################
+			 IEnumSetMappedTestXmlTypeZZZ objEnumTestType=null;
+			 
+			 
+			 //Hole die XML Strings aus dem Enum
+			 ArrayList<IEnumSetMappedZZZ>listaEnumMapped = EnumAvailableHelperZZZ.searchEnumMappedList(XmlTestStringContainerZZZ.class,XmlTestStringContainerZZZ.sENUMNAME);			
+			
+			 
+			//A) bWithText=false
+			 int iCount=0;
+			 String sMessage = null;			 
+			 boolean bWithText=false;//also nur reine XML Knoten und den Rest weglassen.	
+			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
+				 	iCount++;
+				 	sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";				 	
+				 	if(iCount==5) {
+						System.out.println("Breakpoint Pause zum debuggen");					
+					}
+				 					 	
+					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+					this.testParseElementsAsTreeByTestType_(objEnumTestType, bWithText, sMessage);
+					
+			 }//end for
+			 
+			//B) bWithText=true
+			 iCount=0;
+			 sMessage = null;			 
+			 bWithText=true;//also nur reine XML Knoten und den Rest weglassen.	
+			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
+				 	iCount++;
+				 	sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";				 	
+				 	if(iCount==5) {
+						System.out.println("Breakpoint Pause zum debuggen");					
+					}
+				 					 	
+					objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+					this.testParseElementsAsTreeByTestType_(objEnumTestType, bWithText, sMessage);
+					
+			 }//end for
+			 
+			//#####################################################################
+			//### Statische Tests, die eigentlich durch obige Schleifenlösung und dem EnumTestType abgeloest werden sollen.			 
+			//### ABER: In den Statischen Tests wird auch die Anzahl der Elemente gezählt und sind somit eine gute Ergänzung
+			//#####################################################################
+			
+		 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
 /*
 			//a) Negativtests
 			sTest = "";
@@ -842,5 +1010,103 @@ Wert hinter abc
 				fail("Method throws an exception." + ez.getMessageLast());
 		}
 	 }
+	 
+	 
+	 private void testParseElementsAsTreeByTestType_(IEnumSetMappedTestXmlTypeZZZ objEnumTestType, boolean bWithText, String sMessage) {
+		 try{
+			 String sTest;
+			 int[]iaTagIndex; int iTagIndexInVector; 
+			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
+ 			 String[]saValue=null;
+ 			 //HashMapMultiIndexedZZZ<String, String> hmTag=null;
+ 			TreeNodeZZZ<ITagSimpleZZZ> objNode = null;
+			 
+			sTest= objEnumTestType.getXml();
+			//hmTag = XmlTagMatcherZZZ.parseElementsAsMap(sTest, bWithText);
+			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, bWithText);
+				
+			//Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
+			//Daher von den angegebenen Indexpositionen ausgehen
+			if(bWithText) {
+				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithText();
+			}else {
+				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithoutText();
+			}
+			
+			//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
+			if(ArrayUtilZZZ.isNull(iaTagIndex)) {
+				//Das kann dann nur ein Leerstring sein
+				assertNull(sMessage,objNode);						
+			}else {
+				assertNotNull(sMessage,objNode);
+					
+				//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
+				//... sind Testtags gepfegt?
+				saTagForValue=objEnumTestType.getTagsForExpectedValues();
+					
+				//	... sind Testwerte gepflegt?
+				saValue=objEnumTestType.getExpectedValues();
+				if(iaTagIndex.length!=saValue.length) {
+					fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
+				}
+					
+					
+				//Die Indexpositionen durchsehen
+				for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
+							
+					//Die Werte durchsehen	
+					for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+						iTagIndexInVector = iaTagIndex[iTestLaufWert];
+							
+						//...aber nur fall auch gepflegt
+						if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+								
+						}else {
+							if(iTagIndexInVector<=-1) {
+								//dann gibt es keinen zu pruefenden Wert. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
+																
+							}else {
+								assertFalse(sMessage, objNode.isEmpty());
+								
+								sTagValue = saValue[iTestLaufWert];
+								sTagForValue = saTagForValue[iTestLaufWert];
+									
+								//Merke: objNode ist der Root-Knoten.
+								//Das geht also mit dem Root Knoten, sprich nur 1 XML - Element
+								//Aber wir suche auch Kindelemente
+								//ITagSimpleZZZ objTag = objNode.data;
+								
+								TreeNodeZZZ<ITagSimpleZZZ> objNodeForTag = objNode.getElementByIndex(iTagIndexInVector);
+								assertNotNull(sMessage, objNodeForTag);
+
+								ITagSimpleZZZ objTag = objNodeForTag.data;
+								assertEquals(sMessage, sTagForValue, objTag.getName());
+								assertEquals(sMessage, sTagValue, objTag.getValue());
+							}
+						}
+					}//end for ...wert
+				}//end for ... lauf
+			}//end if isNull(iaTagIndex)							
+									
+		
+				
+																						
+//									GENERELLES PROBLEM: 
+//									WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
+//									DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
+//									
+									//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
+//									for(int j=0;j<=saValue[i].length-1;j++) {
+//										sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
+//										
+//										//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
+//										assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
+//									}	
+	 
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }
+	 
 	
 }//End class

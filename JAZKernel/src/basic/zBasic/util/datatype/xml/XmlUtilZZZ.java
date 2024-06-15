@@ -42,6 +42,22 @@ public class XmlUtilZZZ {
 		return sReturn;
 	}
 	
+	public static String computeTagAsHashMapEntry(String sTagName, String sTagValue) {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sTagName)) break main;
+			
+			
+//			if(sTagValue==null) {
+//				sReturn = XmlUtilZZZ.computeTagEmpty(sTagName);
+//				break main;
+//			}
+
+			sReturn = "{"+sTagName+"="+sTagValue + "}";
+		}
+		return sReturn;
+	}
+	
 	public static String computeTagEmpty(String sTagName) {
 		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
 	}

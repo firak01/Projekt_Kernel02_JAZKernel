@@ -17,23 +17,21 @@ import java.util.List;
  */
 public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 
-	public T data;
+	public T data=null;
 	public TreeNodeZZZ<T> parent;
 	public List<TreeNodeZZZ<T>> children;
 	
 	//FGL: Erweiterung, Tags auf gleicher Ebene, fuer ROOT
 	public List<TreeNodeZZZ<T>> sibling;
-
-	public boolean isRoot() {
-		return parent == null;
-	}
-
-	public boolean isLeaf() {
-		return children.size() == 0;
-	}
-
+	
 	private List<TreeNodeZZZ<T>> elementsIndex;
 	
+	public TreeNodeZZZ() {
+		//Damit man auch einen leeren Knoten erzeugen kann.
+		//Ggfs. als Root. 
+		//Damit soll das analog zu einem Vector oder einer HashMap sein.
+	}
+
 	public TreeNodeZZZ(T data) {
 		main:{
 			if(data==null)break main;
@@ -60,7 +58,7 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 			}		
 		}//end main:
 	}
-
+	
 	/** Ergaenzung zu der Loesung aus dem Web
 	 * @param sibling
 	 * @return
@@ -188,12 +186,39 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 		return childNode;
 	}
 
+	public TreeNodeZZZ<T> getElementByIndex(int iIndex){
+		TreeNodeZZZ<T> objReturn = null;
+		main:{
+			if(this.elementsIndex==null) break main;
+			if(iIndex<=-1)break main;
+			if(iIndex>this.elementsIndex.size()-1) break main;
+			
+			objReturn = this.elementsIndex.get(iIndex);
+			
+		}//end main:
+		return objReturn;
+	}
+	
 	public int getLevel() {
 		if (this.isRoot())
 			return 0;
 		else
 			return parent.getLevel() + 1;
 	}
+	
+	public boolean isRoot() {
+		return parent == null;
+	}
+
+	public boolean isLeaf() {
+		return children.size() == 0;
+	}
+	
+	//FGL: Erweiterung, Frage nach leerem Knoten.
+	public boolean isEmpty() {
+		return data==null;
+	}
+	
 	
 	public TreeNodeZZZ<T>searchRoot(){
 		if(this.isRoot()) {
@@ -214,19 +239,26 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	 */
 	private void registerSiblingForSearch(TreeNodeZZZ<T> node) {
 		TreeNodeZZZ rootNode = this.searchRoot();
+		if(rootNode.elementsIndex==null) {
+			rootNode.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();				
+		}
 		rootNode.elementsIndex.add(node);
 	}
 	
 	private void registerChildForSearch(TreeNodeZZZ<T> node) {
 		TreeNodeZZZ rootNode = this.searchRoot();
+		if(rootNode.elementsIndex==null) {
+			rootNode.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();				
+		}
 		rootNode.elementsIndex.add(node);
-		
-		elementsIndex.add(node);
+
 		if (parent != null)
 			parent.registerChildForSearch(node);
 	}
 
 	public TreeNodeZZZ<T> findTreeNode(Comparable<T> cmp) {
+		if(this.elementsIndex==null) return null;
+				
 		for (TreeNodeZZZ<T> element : this.elementsIndex) {
 			T elData = element.data;
 			if (cmp.compareTo(elData) == 0)

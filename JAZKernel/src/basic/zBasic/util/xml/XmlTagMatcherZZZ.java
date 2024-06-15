@@ -1,21 +1,16 @@
 package basic.zBasic.util.xml;
 
-import java.util.HashMap;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.HashMapIndexedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
-import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
-import basic.zBasic.xml.tagtype.TagByTypeZZZ;
 
 /**Loese XML-Tags per Regulaerem Ausdruck auf.
  * Hole hier nur die Tags, ohne Werte.
@@ -487,6 +482,8 @@ public class XmlTagMatcherZZZ {
 			}else{
 				bMapFilledBefore=false;
 				//ansonsten wird der Knoten erst im Bedarfsfall erzeugt.
+				//Nein: Wie bei Vektor und HashMap auch einen leeren Root-Knoten auf jeden Fall zurückgeben.
+				objReturn = new TreeNodeZZZ<ITagSimpleZZZ>();
 			}
 						
 			//siehe in den Tryouts die Loesungsschritte hierfuer:
@@ -567,8 +564,15 @@ public class XmlTagMatcherZZZ {
 					    		}else {
 					    			if(bMapFilledBefore==false) { //Es wurde also KEIN objReturn in diese Methode uebergeben.
 					    				//Auf Root Ebene als Sibling
+					    				//Aber: Wenn der Root leer ist, diesen damit fuellen
+					    				if(objReturn==null | objReturn.isEmpty()) {
+					    					objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(objTagValue);
+							    			objNodeCurrent = objReturn;
+							    			if(objNodeMain==null) objNodeMain = objNodeCurrent;
+					    				}else {
 					    				objNodeCurrent = objReturn.addSibling(objTagValue);
 					    				if(objNodeMain==null) objNodeMain = objNodeCurrent;
+					    				}
 					    			}else {
 					    				objNodeCurrent = objReturn.addChild(objTagValue);
 					    				if(objNodeMain==null) objNodeMain = objNodeCurrent;

@@ -1,8 +1,5 @@
 package basic.zBasic.util.xml;
 
-import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
-import basic.zBasic.util.xml.XmlTestStringContainerZZZ.TESTVALUE;
-
 public interface IEnumSetMappedTestXmlTypeZZZ extends IEnumSetMappedTestContainerTypeZZZ{
 	
 	//weitere Erweiterungen, speziell fuer die Xml - Tests
@@ -13,6 +10,10 @@ public interface IEnumSetMappedTestXmlTypeZZZ extends IEnumSetMappedTestContaine
 	
 	public int[]getIndexInVectorOfExpectedTagsWithoutText();
 	public int[]getIndexInVectorOfExpectedTagsWithText();
+	
+	public int[]getIndexInHashMapOfExpectedTagsWithoutText();
+	public int[]getIndexInHashMapOfExpectedTagsWithText();
+	
 	
 	public String[]getTagsForExpectedValues(); //Tag an der Indexposition
 	
