@@ -41,8 +41,6 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 		 
 			//Teste alle XML Strings hinsichtlich der ANZAHL der gefundenen Knoten
 			//A) nur reine XML Knoten und den Rest weglassen
-			 String[]saTagForValue=null; String sTagForValue; String sTagValue; int[] iaTagIndex; int iTagIndex;
-			 String[][]saValue=null;
 			 int iCount=0;
 			 boolean bWithText = false;
 			 String sMessage = null;
@@ -677,14 +675,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 	 
 	 public void testParseElementsAsTree(){
 		 try{
-			 String sTest; String sTagTemp; String sValueTemp;
-			 ITagSimpleZZZ objTagTemp;
-			 
-			 TreeNodeZZZ<ITagSimpleZZZ> objNode = null;
-			 TreeNodeZZZ<ITagSimpleZZZ> objNodeTemp=null;
-			 
-			 List<TreeNodeZZZ<ITagSimpleZZZ>> listTag=null;
-			 
+			
 			 
 			//#######################################################################
 			//### Dynamische Test mit einem EnumTestType
@@ -704,7 +695,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				 	iCount++;
 				 	sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";				 	
-				 	if(iCount==5) {
+				 	if(iCount==7) {
 						System.out.println("Breakpoint Pause zum debuggen");					
 					}
 				 					 	
@@ -720,7 +711,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
 				 	iCount++;
 				 	sMessage = iCount + ". Teststring wird ausgewertet. (bWithText="+bWithText+")";				 	
-				 	if(iCount==5) {
+				 	if(iCount==3) {
 						System.out.println("Breakpoint Pause zum debuggen");					
 					}
 				 					 	
@@ -735,20 +726,15 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			//#####################################################################
 			
 		 
+			 String sTest; String sTagTemp; String sValueTemp;
+			 ITagSimpleZZZ objTagTemp;
 			 
+			 TreeNodeZZZ<ITagSimpleZZZ> objNodeRoot = null;
+			 TreeNodeZZZ<ITagSimpleZZZ> objNodeCurrent = null;
+			 TreeNodeZZZ<ITagSimpleZZZ> objNodeTemp=null;
 			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
+			 List<TreeNodeZZZ<ITagSimpleZZZ>> listTag=null;
+						 
 /*
 			//a) Negativtests
 			sTest = "";
@@ -772,7 +758,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 					
 			//b) Positivtests
 			//###############################################
-			objNode = null;
+			objNodeRoot = null;
 			sTest = "Wert vor abc<abc>Wert vor b<b>Wert in b</b>Wert hinter b</abc>Wert hinter abc";
 /*			
 			//+++ Nur die Tags
@@ -802,37 +788,59 @@ Wert vor abc
 Wert hinter abc
 			 */
 			
+			//Merke: Der als Ergebnis des Parsens erhaltene Knoten ist das Root.
+			
 			//+++ Auch alle Werte
-			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
-			assertNotNull(objNode);
-			assertFalse(objNode.children.isEmpty());
-			assertTrue(objNode.children.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
-			assertFalse(objNode.sibling.isEmpty());
-			assertTrue(objNode.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert			
-				
+			objNodeRoot = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
+			assertNotNull(objNodeRoot); 
+			assertFalse(objNodeRoot.children.isEmpty());
+			assertTrue(objNodeRoot.children.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertNull(objNodeRoot.sibling);
+												
+			objTagTemp = objNodeRoot.data;
+			assertNull(objTagTemp);
 			
-			objTagTemp = objNode.data;
-		    sValueTemp = objTagTemp.getValue();
-			assertEquals("Wert vor b<b>Wert in b</b>Wert hinter b", sValueTemp);
-			
-			objNodeTemp = objNode.children.get(0);
+			objNodeTemp = objNodeRoot.children.get(0);
 		    assertNotNull(objNodeTemp);
 			objTagTemp = objNodeTemp.data;
 			sValueTemp = objTagTemp.getValue();
-			assertEquals("Wert vor b", sValueTemp);
+			assertEquals("Wert vor abc", sValueTemp);
 			
-			objNodeTemp = objNode.children.get(1);
+			//assertEquals("Wert vor b<b>Wert in b</b>Wert hinter b", sValueTemp);
+			
+			
+			objNodeCurrent = objNodeTemp; //text - Tag
+			assertNull(objNodeCurrent.children);
+			
+			objNodeCurrent = objNodeRoot.children.get(1);
+			assertNotNull(objNodeCurrent.children);
+			
+			objNodeTemp = objNodeCurrent.children.get(0);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor b", sValueTemp);			
+			assertFalse(objNodeTemp.sibling.isEmpty());
+			assertTrue(objNodeTemp.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
+			
+			
+			
+			objNodeTemp = objNodeCurrent.children.get(1);
 		    assertNotNull(objNodeTemp);
 			objTagTemp = objNodeTemp.data;
 			sValueTemp = objTagTemp.getValue();
 			assertEquals("Wert in b", sValueTemp);
+			assertFalse(objNodeTemp.sibling.isEmpty());
+			assertTrue(objNodeTemp.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
 			
 			
-			objNodeTemp = objNode.children.get(2);
+			objNodeTemp = objNodeCurrent.children.get(2);
 		    assertNotNull(objNodeTemp);
 			objTagTemp = objNodeTemp.data;
 			sValueTemp = objTagTemp.getValue();
 			assertEquals("Wert hinter b", sValueTemp);
+			assertFalse(objNodeTemp.sibling.isEmpty());
+			assertTrue(objNodeTemp.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
+			
 			
 			
 			//################################################
@@ -856,52 +864,43 @@ Wert hinter abc
 			sTest="<DataElements><EmpStatus>2.0</EmpStatus><Expenditure>95465.00</Expenditure><StaffType>11.A</StaffType><Industry>13</Industry></DataElements>               <InteractionElements><TargetCenter>92f4-MPA</TargetCenter><Trace>7.19879</Trace></InteractionElements>";
 
 			//+++ Nur die Tags
-			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
-			assertNotNull(objNode);
-			assertFalse(objNode.children.isEmpty());
-			assertTrue(objNode.children.size()==4); //Ein ITagZZZ ist im Knoten selbst definiert
-			assertFalse(objNode.sibling.isEmpty());
-			assertTrue(objNode.sibling.size()==2); //Ein ITagZZZ ist im Knoten selbst definiert			
-			
-			listTag = objNode.children;			
-			objNodeTemp = listTag.get(0);
+			objNodeRoot = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
+			assertNotNull(objNodeRoot);
+			assertFalse(objNodeRoot.children.isEmpty());
+			assertTrue(objNodeRoot.children.size()==2); //Ein ITagZZZ ist im Knoten selbst definiert
+			assertNull(objNodeRoot.sibling);
+						
+			objNodeTemp = objNodeRoot.children.get(0);
 		    assertNotNull(objNodeTemp);
 			objTagTemp = objNodeTemp.data;
-		    sValueTemp = objTagTemp.getValue();
-			assertEquals("2.0", sValueTemp);
-			
-			
-			//+++ Auch alle Werte
-			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
-			assertNotNull(objNode);
-			assertFalse(objNode.children.isEmpty());
-			assertTrue(objNode.children.size()==4); //Ein ITagZZZ ist im Knoten selbst definiert
-			assertFalse(objNode.sibling.isEmpty());
-			assertTrue(objNode.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert			
-				
-			
-			objTagTemp = objNode.data;
-		    sValueTemp = objTagTemp.getValue();
+			sValueTemp = objTagTemp.getValue();
 			assertEquals("<EmpStatus>2.0</EmpStatus><Expenditure>95465.00</Expenditure><StaffType>11.A</StaffType><Industry>13</Industry>", sValueTemp);
 			
-			objNodeTemp = objNode.children.get(0);
-		    assertNotNull(objNodeTemp);
+			
+			objNodeCurrent = objNodeTemp;
+			objNodeTemp = objNodeCurrent.children.get(0);
 			objTagTemp = objNodeTemp.data;
 			sValueTemp = objTagTemp.getValue();
 			assertEquals("2.0", sValueTemp);
 			
-			objNodeTemp = objNode.children.get(1);
-		    assertNotNull(objNodeTemp);
+			objNodeTemp = objNodeCurrent.children.get(1);
 			objTagTemp = objNodeTemp.data;
 			sValueTemp = objTagTemp.getValue();
 			assertEquals("95465.00", sValueTemp);
 			
-			
-			objNodeTemp = objNode.children.get(2);
+			//-+-+-+-+
+			objNodeTemp = objNodeRoot.children.get(1);
 		    assertNotNull(objNodeTemp);
 			objTagTemp = objNodeTemp.data;
 			sValueTemp = objTagTemp.getValue();
-			assertEquals("11.A", sValueTemp);
+			assertEquals("<TargetCenter>92f4-MPA</TargetCenter><Trace>7.19879</Trace>", sValueTemp);
+									
+			objNodeCurrent = objNodeTemp;
+			objNodeTemp = objNodeCurrent.children.get(0);
+			objTagTemp = objNodeTemp.data;
+			sValueTemp = objTagTemp.getValue();
+			assertEquals("92f4-MPA", sValueTemp);
+			
 			
 					
 			//################################################
@@ -925,75 +924,88 @@ Wert hinter abc
 			sTest = "Wert vor abc<abc>Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b</abc>Wert hinter abc";
 			
 			//+++ Nur die Tags
-			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
-			assertNotNull(objNode);
-			assertFalse(objNode.children.isEmpty());
-			assertTrue(objNode.children.size()==1); //Ein ITagZZZ ist im Knoten selbst definiert
-			assertFalse(objNode.sibling.isEmpty());
-			assertTrue(objNode.sibling.size()==1); //Ein ITagZZZ ist im Knoten selbst definiert			
+			objNodeRoot = XmlTagMatcherZZZ.parseElementsAsTree(sTest, false);
+			assertNotNull(objNodeRoot);
+			assertFalse(objNodeRoot.children.isEmpty());
+			assertEquals(1,objNodeRoot.children.size() );					    
+			assertNull(objNodeRoot.sibling);		
+			assertNull(objNodeRoot.data);
 			
-			objTagTemp = objNode.data;
-		    sValueTemp = objTagTemp.getValue();
+			
+			objNodeTemp = objNodeRoot.children.get(0);
+		    assertNotNull(objNodeTemp);
+		    objNodeCurrent = objNodeTemp;
+		    objTagTemp = objNodeCurrent.data;
+		    sValueTemp = objTagTemp.getValue();			
 			assertEquals("Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b", sValueTemp);
 			
-			listTag = objNode.children;			
-			objNodeTemp = listTag.get(0);
-		    assertNotNull(objNodeTemp);
-			objTagTemp = objNodeTemp.data;
+			//- eine Ebene tiefer
+			objNodeTemp = objNodeCurrent.children.get(0);
+			assertNotNull(objNodeTemp);
+			objNodeCurrent = objNodeTemp;	
+			assertEquals(1,objNodeCurrent.children.size() );
+			
+			objTagTemp = objNodeCurrent.data;
 		    sValueTemp = objTagTemp.getValue();
 			assertEquals("Wert vor bc<bc>Wert in bc</bc>Wert hinter bc", sValueTemp);
 			
-			assertEquals(1,objNode.children.size() );
 			
+			//+++ Auch alle Text-Werte
+			objNodeRoot = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
+			assertNotNull(objNodeRoot);
+			assertFalse(objNodeRoot.children.isEmpty());
+			assertEquals(3,objNodeRoot.children.size() );					    
+			assertNull(objNodeRoot.sibling);				
+			assertNull(objNodeRoot.data);
 			
-			//+++ Auch alle Werte
-			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, true);
-			assertNotNull(objNode);
-			assertFalse(objNode.children.isEmpty());
-			assertTrue(objNode.children.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert
-			assertFalse(objNode.sibling.isEmpty());
-			assertTrue(objNode.sibling.size()==3); //Ein ITagZZZ ist im Knoten selbst definiert			
-				
-			
-			objTagTemp = objNode.data;
+			//+- Kinder der Root untersuchen
+			objNodeTemp = objNodeRoot.children.get(0);
+			assertNotNull(objNodeTemp);
+			objNodeCurrent = objNodeTemp;
+			objTagTemp = objNodeCurrent.data;
+		    sValueTemp = objTagTemp.getValue();
+		    assertEquals("Wert vor abc", sValueTemp);
+					    		    	    		
+			objNodeTemp = objNodeRoot.children.get(1);
+		    assertNotNull(objNodeTemp);
+		    objNodeCurrent = objNodeTemp;
+			objTagTemp = objNodeCurrent.data;
 		    sValueTemp = objTagTemp.getValue();
 		    assertEquals("Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b", sValueTemp);
-			
-		    assertEquals(3,objNode.children.size() );			
 		    
-		    //++		    
+		    objNodeTemp = objNodeRoot.children.get(2);
+		    assertNotNull(objNodeTemp);
+		    objNodeCurrent = objNodeTemp;
+			objTagTemp = objNodeCurrent.data;
+		    sValueTemp = objTagTemp.getValue();
+		    assertEquals("Wert hinter abc", sValueTemp);
 		    
-		    objNodeTemp = objNode.children.get(0);
-		    assertNotNull(objNodeTemp);
-			objTagTemp = objNodeTemp.data;
-			sValueTemp = objTagTemp.getValue();
-			assertEquals("Wert vor b", sValueTemp);
-			
-			
-			objNodeTemp = objNode.children.get(1);
-		    assertNotNull(objNodeTemp);
-			objTagTemp = objNodeTemp.data;
-			sValueTemp = objTagTemp.getValue();
-			assertEquals("Wert vor bc<bc>Wert in bc</bc>Wert hinter bc", sValueTemp);
 		    			
 			//+eine kindebene tiefer: objNodetemp
-			objNodeTemp = objNodeTemp.children.get(2);
+		  //assertEquals("Wert vor bc<bc>Wert in bc</bc>Wert hinter bc", sValueTemp);
+		    
+			objNodeTemp = objNodeRoot.children.get(1);
 			assertNotNull(objNodeTemp);
-			objTagTemp = objNodeTemp.data;
-			sValueTemp = objTagTemp.getValue();
-			assertEquals("Wert hinter bc", sValueTemp);
+			objNodeCurrent = objNodeTemp;
+			assertEquals(3,objNodeCurrent.children.size());
+			
+			objNodeTemp = objNodeCurrent.children.get(1);
+			objTagTemp = objNodeCurrent.data;
+		    sValueTemp = objTagTemp.getValue();
+			assertEquals("Wert vor b<b>Wert vor bc<bc>Wert in bc</bc>Wert hinter bc</b>Wert hinter b", sValueTemp);
 		    			
 			//++und wieder auf einer kindebene hoeher: objNode
-			objNodeTemp = objNode.children.get(2);
+			objNodeTemp = objNodeCurrent.children.get(2);
 		    assertNotNull(objNodeTemp);
-			objTagTemp = objNodeTemp.data;
-			sValueTemp = objTagTemp.getValue();
+		    objNodeCurrent = objNodeTemp;
+		    objTagTemp = objNodeCurrent.data;
+		    sValueTemp = objTagTemp.getValue();
 			assertEquals("Wert hinter b", sValueTemp);
 		    
 			
 			
 			//++
-			objNodeTemp = objNode.children.get(1);
+			objNodeTemp = objNodeCurrent.parent.children.get(1);
 			assertNotNull(objNodeTemp);
 			assertEquals(3, objNodeTemp.children.size());
 			
@@ -1018,20 +1030,19 @@ Wert hinter abc
 			 int[]iaTagIndex; int iTagIndexInVector; 
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
  			 String[]saValue=null;
- 			 //HashMapMultiIndexedZZZ<String, String> hmTag=null;
- 			TreeNodeZZZ<ITagSimpleZZZ> objNode = null;
+ 			
+ 			 TreeNodeZZZ<ITagSimpleZZZ> objNode = null;
 			 
-			sTest= objEnumTestType.getXml();
-			//hmTag = XmlTagMatcherZZZ.parseElementsAsMap(sTest, bWithText);
-			objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, bWithText);
+ 			 sTest= objEnumTestType.getXml();
+ 			 objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, bWithText);
 				
-			//Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
-			//Daher von den angegebenen Indexpositionen ausgehen
-			if(bWithText) {
+ 			 //Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
+ 			 //Daher von den angegebenen Indexpositionen ausgehen
+ 			 if(bWithText) {
 				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithText();
-			}else {
+ 			 }else {
 				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithoutText();
-			}
+ 			 }
 			
 			//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
 			if(ArrayUtilZZZ.isNull(iaTagIndex)) {

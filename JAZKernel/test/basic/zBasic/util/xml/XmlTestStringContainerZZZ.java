@@ -188,7 +188,7 @@ public class XmlTestStringContainerZZZ {
 			
 			//#############################################
 			//#### Konstruktoren
-			//Merke: Enums haben keinen public Konstruktor, können also nicht intiantiiert werden, z.B. durch Java-Reflektion.
+			//Merke: Enums haben keinen public Konstruktor, können also nicht instiantiiert werden, z.B. durch Java-Reflektion.
 			//In der Util-Klasse habe ich aber einen Workaround gefunden.
 			TEST(String sAbbreviation, IEnumSetMappedTestValueStringTypeZZZ enumMappedString, int[] iaExpectedExampleIndexWithoutText, int[] iaExpectedExampleIndexWithText, String[] saExpectedExampleTag, String[]saExpectedExampleValue, int iExpectedElementsWithoutText, int iExpectedElementsWithText, String sDescription) {
 			    this.sAbbreviation = sAbbreviation;

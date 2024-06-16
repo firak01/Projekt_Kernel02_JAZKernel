@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -108,9 +109,6 @@ public class XmlTagMatcherZZZ {
 			vecReturn = new Vector<String>();
 			
 			String sXmlRemain = sXml;
-			
-			// sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sTag+">");
-			// System.out.println("sRemain:\t" + sXmlRemain);
 			  
 			//ACHTUNG: Damit werden alle Werte des gleich benannten Tags gefunden.
 			//         Es wird nicht beruecksichtigt, ob sie in unterschiedlichen Zweigen sind.
@@ -206,7 +204,6 @@ public class XmlTagMatcherZZZ {
 			    
 			    if(bParseNextTagOnThisLevel) {//alle "zwischentags des Werts wurden in Rekursion verarbeitet. Nun geht es zu neuen Werten.
 				    //Also den/einen abschliessenden Tag nicht betrachten
-				    //if(!StringZZZ.startsWith(sTag, sContinuingClosingTag)) {
 			    	  if(!StringZZZ.startsWith(sTag, "/")) {
 				    	
 				    	
@@ -234,7 +231,6 @@ public class XmlTagMatcherZZZ {
 						    	vecReturn = XmlTagMatcherZZZ.parseElementsAsVector(vecReturn, sValue, bWithText);
 						    	sContinuingClosingTag = "/"+sTag;
 						    	//Der naechste Tag ist in der While Schleife entweder ein Tag "dazwischen" oder der abschliessende Tag
-						    	//bParseNextTagOnThisLevel = true; //Solane bis der abschliesende Tag nicht kommt nix weitermachen.
 						    }else {
 						    	sValue = null; //Fazit: Leere Wertvektoren nicht übernehmen, das ist wichtig, sonst wird der Index der aeusseren HashMap auch noch um 1 erhoeht.
 						    }				    					    					    				    					    	
@@ -242,21 +238,14 @@ public class XmlTagMatcherZZZ {
 				    }else {
 				    	bClosingTag = true;	
 				    					    	
-				    	 //Text nach einem abschliessenden Text erfassen, bis zu einem anderen abschliessenden Tag			
-						  //Erst nach der Bestimmung des Werts sXmlRemain errechnen.
-						    if(sValue!=null) {
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sTag+">"+sValue);
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, sValue + "<"+sTag+">");
-						    	sXmlRemain = StringZZZ.rightback(sXmlRemain, sValue + "<"+sContinuingClosingTag+">");
-						    }else {
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sTag+">");
-						    	sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
-						    }
-						   //sXmlRemain = StringZZZ.rightback("<"+sContinuingClosingTag+">" + sXmlRemain, "<"+sContinuingClosingTag+">");
-						   System.out.println("sRemain:\t'" + sXmlRemain+"'");
-						   if(StringZZZ.isEmpty(sXmlRemain)) break main;
+				    	//Text nach einem abschliessenden Text erfassen, bis zu einem anderen abschliessenden Tag			
+				    	//Erst nach der Bestimmung des Werts sXmlRemain errechnen.			    
+				    	sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
+			   
+				    	System.out.println("sRemain:\t'" + sXmlRemain+"'");
+						if(StringZZZ.isEmpty(sXmlRemain)) break main;
 	
-						   sContinuingClosingTag=null;
+						sContinuingClosingTag=null;
 				    }//end if( Abschliessende Tags ausschliessen )
 			    
 			    }//end if (ParseNextTagOnThisLevel)
@@ -368,11 +357,8 @@ public class XmlTagMatcherZZZ {
 			    }
 			    
 			    if(bParseNextTagOnThisLevel) {//alle "zwischentags des Werts wurden in Rekursion verarbeitet. Nun geht es zu neuen Werten.
-				    //Also den/einen abschliessenden Tag nicht betrachten
-				    //if(!StringZZZ.startsWith(sTag, sContinuingClosingTag)) {
-			    	  if(!StringZZZ.startsWith(sTag, "/")) {
-				    	
-				    	
+				    //Also den/einen abschliessenden Tag nicht betrachten				    
+			    	if(!StringZZZ.startsWith(sTag, "/")) {				    					    
 					    if(bWithText){
 					    	//Nimm ggfs. existierende Texte VOR dem Tag auf.
 							sLeft = StringZZZ.left(sXmlRemain, "<" + sTag + ">");
@@ -397,7 +383,6 @@ public class XmlTagMatcherZZZ {
 						    	hmReturn = XmlTagMatcherZZZ.parseElementsAsMap(hmReturn, sValue, bWithText);
 						    	sContinuingClosingTag = "/"+sTag;
 						    	//Der naechste Tag ist in der While Schleife entweder ein Tag "dazwischen" oder der abschliessende Tag
-						    	//bParseNextTagOnThisLevel = true; //Solane bis der abschliesende Tag nicht kommt nix weitermachen.
 						    }else {
 						    	sValue = null; //Fazit: Leere Wertvektoren nicht übernehmen, das ist wichtig, sonst wird der Index der aeusseren HashMap auch noch um 1 erhoeht.
 						    }				    					    					    				    					    	
@@ -406,20 +391,13 @@ public class XmlTagMatcherZZZ {
 				    	bClosingTag = true;	
 				    					    	
 				    	 //Text nach einem abschliessenden Text erfassen, bis zu einem anderen abschliessenden Tag			
-						  //Erst nach der Bestimmung des Werts sXmlRemain errechnen.
-						    if(sValue!=null) {
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sTag+">"+sValue);
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, sValue + "<"+sTag+">");
-						    	sXmlRemain = StringZZZ.rightback(sXmlRemain, sValue + "<"+sContinuingClosingTag+">");
-						    }else {
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sTag+">");
-						    	sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
-						    }
-						   //sXmlRemain = StringZZZ.rightback("<"+sContinuingClosingTag+">" + sXmlRemain, "<"+sContinuingClosingTag+">");
-						   System.out.println("sRemain:\t'" + sXmlRemain+"'");
-						   if(StringZZZ.isEmpty(sXmlRemain)) break main;
+						 //Erst nach der Bestimmung des Werts sXmlRemain errechnen.
+						 sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
+						 
+						 System.out.println("sRemain:\t'" + sXmlRemain+"'");
+						 if(StringZZZ.isEmpty(sXmlRemain)) break main;
 	
-						   sContinuingClosingTag=null;
+						 sContinuingClosingTag=null;
 				    }//end if( Abschliessende Tags ausschliessen )
 			    
 			    }//end if (ParseNextTagOnThisLevel)
@@ -482,8 +460,9 @@ public class XmlTagMatcherZZZ {
 			}else{
 				bMapFilledBefore=false;
 				//ansonsten wird der Knoten erst im Bedarfsfall erzeugt.
-				//Nein: Wie bei Vektor und HashMap auch einen leeren Root-Knoten auf jeden Fall zurückgeben.
-				objReturn = new TreeNodeZZZ<ITagSimpleZZZ>();
+				//Nein: Wie bei Vektor und HashMap auch einen leeren Root-Knoten auf jeden Fall zurückgeben. 
+				//DAS IST AUCH DER ROOT ALLER KNOTEN UND ER VERWALTET DEN SUCHINDEX ohne selbst data zu haben!!!
+				objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(); //Wenn es noch einen wirklichen Knoten gibt, dann wird der zum objReturn!!!
 			}
 						
 			//siehe in den Tryouts die Loesungsschritte hierfuer:
@@ -521,9 +500,8 @@ public class XmlTagMatcherZZZ {
 			    }
 			    
 			    if(bParseNextTagOnThisLevel) {//alle "zwischentags des Werts wurden in Rekursion verarbeitet. Nun geht es zu neuen Werten.
-				    //Also den/einen abschliessenden Tag nicht betrachten
-				    //if(!StringZZZ.startsWith(sTag, sContinuingClosingTag)) {
-			    	  if(!StringZZZ.startsWith(sTag, "/")) {
+				    //Also den/einen abschliessenden Tag nicht betrachten				   
+			    	if(!StringZZZ.startsWith(sTag, "/")) {
 				    	
 			    		ITagSimpleZZZ objTagTextBefore=null;
 					    if(bWithAnyValue){
@@ -533,13 +511,12 @@ public class XmlTagMatcherZZZ {
 						    System.out.println("sTag:\t\t'"  + sTag+"'");
 						    
 					    	if(!StringZZZ.isEmpty(sLeft)) {
-					    		//hmReturn.put("text",sLeft);
 					    		
 					    		//Definiere den Tag VOR dem eigentlichen Tag.					    		
 					    		objTagTextBefore = new TagSimpleZZZ("text",sLeft); 
 					    		
 					    		//Definiere den neuen Knoten
-					    		//Das ist wohl extra nicht notwendig, sondern wird beim Hinzufuegen gemacht.
+					    		//Das ist aber nicht extra notwendig, sondern wird beim Hinzufuegen gemacht.
 					    		//TreeNodeZZZ<ITagSimpleZZZ> objNodeText = new TreeNodeZZZ<ITagSimpleZZZ>(objTagText);
 					    	}					    	
 					    }else {
@@ -551,35 +528,20 @@ public class XmlTagMatcherZZZ {
 						if(vecValue!=null) {
 						    if(!vecValue.isEmpty()) {
 						    	sValue = vecValue.get(0);
-						    	//hmReturn.put(sTag, sValue);
 						    	
 						    	//Definiere den Tag.					    		
 					    		ITagSimpleZZZ objTagValue = new TagSimpleZZZ(sTag,sValue); 
 					    		
 					    		//Haenge den neuen Knoten unter den aktuellen Konten
-					    		if(objReturn==null) {
-					    			objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(objTagValue);
-					    			objNodeCurrent = objReturn;
-					    			if(objNodeMain==null) objNodeMain = objNodeCurrent;
-					    		}else {
-					    			if(bMapFilledBefore==false) { //Es wurde also KEIN objReturn in diese Methode uebergeben.
-					    				//Auf Root Ebene als Sibling
-					    				//Aber: Wenn der Root leer ist, diesen damit fuellen
-					    				if(objReturn==null | objReturn.isEmpty()) {
-					    					objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(objTagValue);
-							    			objNodeCurrent = objReturn;
-							    			if(objNodeMain==null) objNodeMain = objNodeCurrent;
-					    				}else {
-					    				objNodeCurrent = objReturn.addSibling(objTagValue);
-					    				if(objNodeMain==null) objNodeMain = objNodeCurrent;
-					    				}
-					    			}else {
-					    				objNodeCurrent = objReturn.addChild(objTagValue);
-					    				if(objNodeMain==null) objNodeMain = objNodeCurrent;
-					    			}
+					    		if(bMapFilledBefore==false) { //Es wurde also KEIN objReturn in diese Methode uebergeben.
 					    			
+					    			//objReturn als Root ist aber immer existent
+					    			objNodeCurrent = objReturn.addChild(objTagValue);
+					    			
+					    		}else {
+					    			objNodeCurrent = objReturn.addChild(objTagValue);
 					    		}
-					    		
+					    						    		
 					    		//Haenge einen neuen Knoten mit dem TextBefore NEBEN den aktuellen Konten aber Vorne als erste Sibling
 					    		if(objTagTextBefore!=null) {
 					    			if(objNodeMain!=null) {
@@ -590,18 +552,11 @@ public class XmlTagMatcherZZZ {
 					    			objTagTextBefore = null; //Wieder auf null setzen, sonst wird der noch einmal verarbeitet
 								}					    		
 					    		
-						    	//TJA: und nun ggfs. in sValue vorhandene Tags per Rekursion aufloesen.....
-						    	//hmReturn = XmlTagMatcherZZZ.parseElementsAsMap(hmReturn, sValue, bWithAnyValue);
-					    		//TreeNodeZZZ<ITagSimpleZZZ>
-					    		
-					    		//Problem: Neu hinzugekommene Siblings werden zwar als Child in objReturn gepackt
-					    		//Aber nicht als Sibling in objNodeCurrent
 					    		//Wenn man objNodeCurrent übergibt, dann auf gar keinen objReturn neu ueberschreiben objReturn = XmlTagMatcherZZZ.parseElementsAsTree(objNodeMain, sValue, bWithAnyValue);
 					    		objNodeCurrent = XmlTagMatcherZZZ.parseElementsAsTree(objNodeCurrent, sValue, bWithAnyValue);
 					    		
 						    	sContinuingClosingTag = "/"+sTag;
 						    	//Der naechste Tag ist in der While Schleife entweder ein Tag "dazwischen" oder der abschliessende Tag
-						    	//bParseNextTagOnThisLevel = true; //Solane bis der abschliesende Tag nicht kommt nix weitermachen.
 						    }else {
 						    	sValue = null; //Fazit: Leere Wertvektoren nicht übernehmen, das ist wichtig, sonst wird der Index der aeusseren HashMap auch noch um 1 erhoeht.
 						    }				    					    					    				    					    	
@@ -613,10 +568,17 @@ public class XmlTagMatcherZZZ {
 				    		if(objReturn==null) {
 				    			objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(objTagTextBefore);
 				    		}else {
-				    			if(objNodeMain!=null) {
-				    				objNodeMain.addSiblingAsFirst(objTagTextBefore);
-				    			}else {
+				    			if(bMapFilledBefore==false) {
+				    				//Auf Root Ebene als Sibling
+				    				//ABER: Auf Root Ebene gibt es keine Siblings!!!
 				    				objReturn.addSiblingAsFirst(objTagTextBefore);
+				    				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Auf Root Ebene gibt es keine Sibling - Werte");
+				    			}else {
+					    			if(objNodeMain!=null) {
+					    				objNodeMain.addSiblingAsFirst(objTagTextBefore);
+					    			}else {
+					    				objReturn.addSiblingAsFirst(objTagTextBefore);
+					    			}
 				    			}
 				    		}
 						}
@@ -624,21 +586,14 @@ public class XmlTagMatcherZZZ {
 				    }else {
 				    	bClosingTag = true;	
 				    					    	
-				    	 //Text nach einem abschliessenden Text erfassen, bis zu einem anderen abschliessenden Tag			
-						  //Erst nach der Bestimmung des Werts sXmlRemain errechnen.
-						    if(sValue!=null) {
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sTag+">"+sValue);
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, sValue + "<"+sTag+">");
-						    	sXmlRemain = StringZZZ.rightback(sXmlRemain, sValue + "<"+sContinuingClosingTag+">");
-						    }else {
-						    	//sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sTag+">");
-						    	sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
-						    }
-						   //sXmlRemain = StringZZZ.rightback("<"+sContinuingClosingTag+">" + sXmlRemain, "<"+sContinuingClosingTag+">");
-						   System.out.println("sRemain:\t'" + sXmlRemain+"'");
-						   if(StringZZZ.isEmpty(sXmlRemain)) break main;
+				    	//Text nach einem abschliessenden Text erfassen, bis zu einem anderen abschliessenden Tag			
+				    	//Erst nach der Bestimmung des Werts sXmlRemain errechnen.
+				    	sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
+						
+				    	System.out.println("sRemain:\t'" + sXmlRemain+"'");
+						if(StringZZZ.isEmpty(sXmlRemain)) break main;
 	
-						   sContinuingClosingTag=null;
+						sContinuingClosingTag=null;
 				    }//end if( Abschliessende Tags ausschliessen )
 			    
 			    }//end if (ParseNextTagOnThisLevel)
@@ -656,7 +611,7 @@ public class XmlTagMatcherZZZ {
 			    		ITagSimpleZZZ objTagText = new TagSimpleZZZ("text",sLeft); 
 			    		
 			    		//Definiere den neuen Knoten
-			    		//Das ist wohl extra nicht notwendig, sondern wird beim Hinzufuegen gemacht.
+			    		//Das ist nicht extra notwendig, sondern wird beim Hinzufuegen gemacht.
 			    		//TreeNodeZZZ<ITagSimpleZZZ> objNodeText = new TreeNodeZZZ<ITagSimpleZZZ>(objTagText);
 			    		
 			    		//Haenge den neuen Knoten unter den aktuellen Konten
@@ -665,12 +620,19 @@ public class XmlTagMatcherZZZ {
 			    		}else {
 			    			if(bMapFilledBefore==false) {
 			    				//Auf Root Ebene als Sibling
-			    				objReturn.addSibling(objTagText);
+			    				//ABER: Auf Root Ebene gibt es keine Siblings!!!
+			    				//objReturn.addSibling(objTagText);
+			    				//System.out.println(ReflectCodeZZZ.getPositionCurrent() + "Auf Root Ebene gibt es keine Sibling - Werte");
+			    				objNodeCurrent.addSibling(objTagText);
 			    			}else {			    				
 			    				//In den Hauptknoten dieser Ebene als sibling
 			    				//Merke: Dann kommt automatisch das Unterelement als Child dessen Parent			    
-			    				//Merke: Das aktuelle Parent - Element wurde als objReturn übergeben.			    				
-			    				objNodeMain.addSibling(objTagText);
+			    				//Merke: Das aktuelle Parent - Element wurde als objReturn übergeben.
+			    				if(objNodeMain==null) {
+			    					objNodeCurrent.addSibling(objTagText);
+			    				}else {
+			    					objNodeMain.addSibling(objTagText);
+			    				}
 			    			}			    			
 			    		}
 				    					    	
@@ -692,18 +654,12 @@ public class XmlTagMatcherZZZ {
 			    		ITagSimpleZZZ objTagText = new TagSimpleZZZ("text",sXmlRemain); 
 			    		
 			    		//Definiere den neuen Knoten
-			    		//Das ist wohl extra nicht notwendig, sondern wird beim Hinzufuegen gemacht.
+			    		//Das ist nicht extr notwendig, sondern wird beim Hinzufuegen gemacht.
 			    		//TreeNodeZZZ<ITagSimpleZZZ> objNodeText = new TreeNodeZZZ<ITagSimpleZZZ>(objTagText);
 			    		
 			    		//Haenge den neuen Knoten auf geleiche Ebene wie den aktuellen Konten
-			    		if(objReturn==null) {
-			    			objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(objTagText);
-			    		}else {
-			    			//objReturn.addChild(objTagText);
-			    			objReturn.addSibling(objTagText); //Also Erweiterung: Auf gleicher Ebene einfuegen.
-			    		}
-						
-					}
+		    			objReturn.addSibling(objTagText); //Also Erweiterung: Auf gleicher Ebene einfuegen.
+		    		}									
 				}else if(!bMapFilledBefore) {
 					if(!StringZZZ.isEmpty(sXmlRemain)) {  //Das ist dann der Fall für nur einzelstehende Werte OHNE ein Tag.
 						//hmReturn.put("text", sXmlRemain);
@@ -715,12 +671,11 @@ public class XmlTagMatcherZZZ {
 			    		//Das ist wohl extra nicht notwendig, sondern wird beim Hinzufuegen gemacht.
 			    		//TreeNodeZZZ<ITagSimpleZZZ> objNodeText = new TreeNodeZZZ<ITagSimpleZZZ>(objTagText);
 			    		
-			    		//Haenge den neuen Knoten auf geleiche Ebene wie den aktuellen Konten
-			    		if(objReturn==null) {
-			    			objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(objTagText);
-			    		}else {
-			    			//objReturn.addChild(objTagText);
-			    			objReturn.addSibling(objTagText); //Also Erweiterung: Auf gleicher Ebene einfuegen.
+			    		//Haenge den neuen Knoten auf gleiche Ebene wie den aktuellen Konten
+		    			if(objReturn.isRoot()) {
+		    				objReturn.addChild(objTagText);
+		    			}else {
+		    				objReturn.addSibling(objTagText); //Also Erweiterung: Auf gleicher Ebene einfuegen.
 			    		}
 					}
 				}

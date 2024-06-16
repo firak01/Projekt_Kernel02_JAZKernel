@@ -21,15 +21,16 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	public TreeNodeZZZ<T> parent;
 	public List<TreeNodeZZZ<T>> children;
 	
-	//FGL: Erweiterung, Tags auf gleicher Ebene, fuer ROOT
-	public List<TreeNodeZZZ<T>> sibling;
+	//FGL: Erweiterung, Tags auf gleicher Ebene, fuer alle Knoten
+	public List<TreeNodeZZZ<T>> sibling;	
 	
-	private List<TreeNodeZZZ<T>> elementsIndex;
+	//Das ist der Suchindex, nur im Root gefuellt
+	protected List<TreeNodeZZZ<T>> elementsIndex;
 	
 	public TreeNodeZZZ() {
 		//Damit man auch einen leeren Knoten erzeugen kann.
 		//Ggfs. als Root. 
-		//Damit soll das analog zu einem Vector oder einer HashMap sein.
+		//Damit soll das analog zu einem Vector oder einer HashMap sein, naemlich auch ohne Werte als Objekt vorhanden.
 	}
 
 	public TreeNodeZZZ(T data) {
@@ -37,25 +38,13 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 			if(data==null)break main;
 			
 			this.data = data;
-			if(this.children ==null) {
-				this.children = new LinkedList<TreeNodeZZZ<T>>();
-			}
 			
 			if(this.sibling==null) {
 				this.sibling = new LinkedList<TreeNodeZZZ<T>>();
 			}
 			this.sibling.add(this);
 			
-			//!!! nur im Root den Index aller Elemente halten
-			if(this.isRoot()) {		//Merke: Da Parent erst spaeter definiert wird, ist zu diesem Zeitpunkt jedes Element ROOT					
-				if(this.elementsIndex==null) {
-					this.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();				
-				}
-				this.elementsIndex.add(this);
-			} else {
-				TreeNodeZZZ<T> objRootNode = this.searchRoot();
-				objRootNode.elementsIndex.add(this);
-			}		
+			//!!! Merke: Nur im Root den Index aller Elemente halten	
 		}//end main:
 	}
 	
@@ -119,26 +108,27 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 		if(sibling==null) return null;
 		
 		TreeNodeZZZ<T> siblingNode = new TreeNodeZZZ<T>(sibling);		
-		if(this.parent!=null) {
+		if(this.parent!=null) {			
+			//NICHT MEHR ROOT!			
 			siblingNode.parent = this.parent;
-			
-			//NICHT MEHR ROOT!
 			this.parent.children.add(iIndex, siblingNode); //Gefahr, wird jetzt Text for einem 2ten Knoten auf der Ebene ganz nach vorne gesetzt?
 			this.sibling = this.parent.children;
 		}else {
-			//ROOT!
-			if(this.sibling==null) {
-				this.sibling = new LinkedList<TreeNodeZZZ<T>>();
-				this.sibling.add(siblingNode);
-			}else {
-				this.sibling.add(iIndex, siblingNode);
-			}
+			//Merke: Der Root hat keine siblings, nur childs.
 		}
+		
 		 //Die Geschwister dem neuen Knoten hinzufuegen
 		siblingNode.sibling=this.sibling;
 		
 		//Den neuen Knoten dem Suchindex hinzufuegen
-		this.registerSiblingForSearch(siblingNode);
+		//ABER: entsprechend der Indexposition weiter nach vorne
+		//      Da aber iIndex auf die Sibblings bezogen ist:
+		//      Versuch den neuen Index in der Suchliste auszurechnen
+		TreeNodeZZZ<T>root = this.searchRoot();
+		int iSearchIndexSize = root.elementsIndex.size();
+		int iSearchIndexOffset = (this.sibling.size() -1) - iIndex;
+		int iIndexForSearch = iSearchIndexSize - iSearchIndexOffset; 
+		this.registerSiblingForSearch(iIndexForSearch, siblingNode);
 		
 		
 		//Den neuen sibling nun alle anderen siblings hinzufuegen
@@ -165,6 +155,9 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 		
 		TreeNodeZZZ<T> childNode = new TreeNodeZZZ<T>(child);
 		childNode.parent = this;
+		if(this.children==null) {
+			this.children = new LinkedList<TreeNodeZZZ<T>>();				
+		}
 		this.children.add(childNode);
 		this.registerChildForSearch(childNode);
 					
@@ -180,9 +173,6 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 				}
 			}
 		}
-		
-		
-	
 		return childNode;
 	}
 
@@ -207,7 +197,16 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	}
 	
 	public boolean isRoot() {
-		return parent == null;
+		//Merke: Im Konstruktor ist das ggfs. noch nicht eindeutig, also noch data hinzunehmen als Kriterium
+		boolean bReturn = false;
+		main:{
+			bReturn = parent == null;
+			if(!bReturn) break main;
+			
+			bReturn = data == null;
+			if(!bReturn) break main;
+		}//end main;
+		return bReturn;
 	}
 
 	public boolean isLeaf() {
@@ -215,8 +214,23 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	}
 	
 	//FGL: Erweiterung, Frage nach leerem Knoten.
-	public boolean isEmpty() {
+	public boolean isEmptyNode() {
 		return data==null;
+	}
+	
+	public boolean isEmpty() {
+		boolean bReturn = true;
+		main:{
+			bReturn = this.isEmptyNode();
+			if(!bReturn) break main;
+			
+			//aber ggfs. gibt es noch Kindelemente
+			if(this.children!=null) {
+				bReturn = this.children.isEmpty();
+				if(!bReturn) break main;
+			}
+		}//end main:
+		return bReturn;
 	}
 	
 	
@@ -224,6 +238,7 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 		if(this.isRoot()) {
 			return this;
 		}else {
+			if(this.parent==null) return null;
 			return parent.searchRoot();
 		}
 	}
@@ -238,22 +253,39 @@ public class TreeNodeZZZ<T> implements Iterable<TreeNodeZZZ<T>> {
 	 * @author Fritz Lindhauer, 01.06.2024, 15:43:58
 	 */
 	private void registerSiblingForSearch(TreeNodeZZZ<T> node) {
-		TreeNodeZZZ rootNode = this.searchRoot();
+		TreeNodeZZZ<T>rootNode = this.searchRoot();
 		if(rootNode.elementsIndex==null) {
 			rootNode.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();				
 		}
 		rootNode.elementsIndex.add(node);
 	}
 	
+	/*Das Index hinzufuegen wird z.B. bei einem <text> Tag gemacht, der vor dem Node steht
+	 */
+	private void registerSiblingForSearch(int iIndex, TreeNodeZZZ<T> node) {		
+		main:{
+			TreeNodeZZZ<T>rootNode = this.searchRoot();
+			if(rootNode.elementsIndex==null) {
+				rootNode.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();
+				rootNode.elementsIndex.add(node);
+			}else {
+				if(iIndex<=-1)break main;
+				if(iIndex>rootNode.elementsIndex.size()-1) {
+					rootNode.elementsIndex.add(node);
+				}else {
+					rootNode.elementsIndex.add(iIndex, node);
+				}
+				
+			}		
+		}//end main:
+	}
+	
 	private void registerChildForSearch(TreeNodeZZZ<T> node) {
-		TreeNodeZZZ rootNode = this.searchRoot();
+		TreeNodeZZZ<T>rootNode = this.searchRoot();
 		if(rootNode.elementsIndex==null) {
 			rootNode.elementsIndex = new LinkedList<TreeNodeZZZ<T>>();				
 		}
 		rootNode.elementsIndex.add(node);
-
-		if (parent != null)
-			parent.registerChildForSearch(node);
 	}
 
 	public TreeNodeZZZ<T> findTreeNode(Comparable<T> cmp) {
