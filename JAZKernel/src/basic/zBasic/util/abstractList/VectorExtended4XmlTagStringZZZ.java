@@ -1,6 +1,8 @@
 package basic.zBasic.util.abstractList;
 
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
 
 /** Funktionalität:
  *  Das Hinzugefuegte Object wird mit den angegebenen XML-Tags umgeben.
@@ -9,7 +11,7 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
  * @author Fritz Lindhauer, 09.06.2024, 09:19:40
  * 
  */
-public class VectorExtended4XmlZZZ<K,V> extends VectorExtendedZZZ<V> {
+public class VectorExtended4XmlTagStringZZZ<T> extends VectorExtendedZZZ<T> implements IVectorExtended4XmlZZZ {
 	private static final long serialVersionUID = -3251609755562628308L;
 
 	
@@ -18,14 +20,17 @@ public class VectorExtended4XmlZZZ<K,V> extends VectorExtendedZZZ<V> {
 	 * @param value
 	 * @return
 	 * @author Fritz Lindhauer, 09.06.2024, 09:30:26
+	 * @param <K>
 	 */
-	public V put(K key, V value) {
+	@Override
+	public Object put(Object key, Object value) throws ExceptionZZZ {
+		String sReturn=null;
 		main:{
 			if(key==null)break main;
 			
-			String sElement = XmlUtilZZZ.computeTag(key.toString(), value.toString());		
-			this.add(sElement);
+			sReturn = XmlUtilZZZ.computeTag(key.toString(), value.toString());		
+			this.add(sReturn);
 		}//end main:
-		return value;
+		return sReturn;
 	}
 }

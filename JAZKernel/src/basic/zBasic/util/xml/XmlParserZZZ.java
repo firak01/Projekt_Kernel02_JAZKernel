@@ -1,11 +1,15 @@
 package basic.zBasic.util.xml;
 
-import java.util.Vector;
-
-import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
+import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
+import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
+import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
 
 /** Einfacher Parser um einen String in seine XML Bestandteile zu zerlegen.
  *  Einfach deshalb, weil kein (JDOM) XML Dokument benoetigt wird.
@@ -19,33 +23,103 @@ import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
  * 
  * @author fl86kyvo
  */
-public class XmlParserZZZ extends AbstractObjectZZZ implements IParserXmlZZZ{
+public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXmlZZZ{
 	private static final long serialVersionUID = 1L;
 
 	public XmlParserZZZ() {
 		super();
+	}
+	
+	@Override
+	public IVectorExtended4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ {
+		IVectorExtended4XmlZZZ<?> vecReturn = new VectorExtended4XmlTagStringZZZ<String>();
+		main:{
+			
+			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			vecReturn = XmlTagMatcherZZZ.parseElementsAsVector((VectorExtended4XmlTagStringZZZ<String>) vecReturn, sText, !bWithoutText);
+			
+		}
+		return vecReturn;
 	}
 		
 	/* (non-Javadoc)
 	 * @see basic.zBasic.util.xml.IParserXmlZZZ#parse(java.lang.String)
 	 */
 	@Override
-	public Vector<ITagByTypeZZZ> parse(String sText) throws ExceptionZZZ{
-		Vector<ITagByTypeZZZ> vecReturn = new Vector<ITagByTypeZZZ>();
+	public IVectorExtended4XmlZZZ<?> parseToVectorTagSimple(String sText) throws ExceptionZZZ{
+		IVectorExtended4XmlZZZ<?> vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();
 		main:{
-			//TODOGOON20240523;
-			ITagByTypeZZZ objTag = XmlUtilZZZ.getTagNext(sText);
-			if(objTag==null) break main;
-			System.out.println("test");
 			
+			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			//vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple(vecReturn, sText, !bWithoutText);
+			vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple((VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>) vecReturn, sText, !bWithoutText);
 			
-			//Todo:  Erzeuge den TagZZZ 
-			//a) entweder per TagFactory
-			//TagFactoryZZZ.isRelevantTagName(sTagName)
-			//............
-			//b) oder direkt, nur mit dem Namen
-			//ITagZZZ objTag = new TagZZZ(sName);
 		}
 		return vecReturn;
 	}
+
+	@Override
+	public HashMapMultiIndexedZZZ<String, String> parseToMap(String sText) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TreeNodeZZZ<ITagSimpleZZZ> parseToTree(String sText) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	//###################################################
+	//### FLAGS #########################################
+	//###################################################
+	//Methoden hier, da im Interface eingebunden	
+	@Override
+	public boolean getFlag(IParserXmlZZZ.FLAGZ objEnumFlag) {
+		return this.getFlag(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean setFlag(IParserXmlZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+
+	@Override
+	public boolean[] setFlag(IParserXmlZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IParserXmlZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZUserZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+
+	@Override
+	public boolean proofFlagExists(IParserXmlZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}
+
+	@Override
+	public boolean proofFlagSetBefore(IParserXmlZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+	
+	
+	//#######################################################################################
+	// STATUS	
+    //............ hier erst einmal nicht .....................
+
 }

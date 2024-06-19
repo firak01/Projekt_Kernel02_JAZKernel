@@ -8,6 +8,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -228,7 +229,8 @@ public class XmlTagMatcherZZZTest extends TestCase{
 	 public void testParseElementsAsVector() {
 		 try{
 			 String sTest;
-			 VectorExtendedZZZ<String> vecTag=null;
+			 //VectorExtendedZZZ<String> vecTag=null;
+			 IVectorExtended4XmlZZZ<?> vecTag=null;
 			 
 //			 In einer Schleife die TESTVALUE Enum durchgehen
 //			 Dann muss man auch nicht den TESTVALUE-Namen immer raussuchen
@@ -295,8 +297,8 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			assertFalse(vecTag.isEmpty());
 			assertTrue(vecTag.size()==1);
 			
-			String sTemp = (String) vecTag.get(0);			
-			assertEquals(XmlUtilZZZ.computeTag("text",sTest), sTemp);
+			Object objTemp = vecTag.get(0);			
+			assertEquals(XmlUtilZZZ.computeTag("text",sTest), objTemp.toString());
 						 
 			//b) Positivtests
 			//###############################################
@@ -309,8 +311,8 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			assertFalse(vecTag.isEmpty());
 			assertTrue(vecTag.size()==2);
 			
-			String sTemp3 = (String) vecTag.getEntryLast();
-			assertEquals(XmlUtilZZZ.computeTag("b","Wert in b"), sTemp3);
+			Object objTemp3 = vecTag.getEntryLast();
+			assertEquals(XmlUtilZZZ.computeTag("b","Wert in b"), objTemp3.toString());
 			
 			//+++ Auch alle Werte
 			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, true);
@@ -318,8 +320,8 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			assertFalse(vecTag.isEmpty());
 			assertTrue(vecTag.size()==6);
 			
-			String sTemp4 = (String) vecTag.getEntryLast();
-			assertEquals(XmlUtilZZZ.computeTag("text","Wert hinter abc"), sTemp4);
+			Object objTemp4 = vecTag.getEntryLast();
+			assertEquals(XmlUtilZZZ.computeTag("text","Wert hinter abc"), objTemp4.toString());
 			
 			//TODOGOON20240525;
 			//KANN MAN MIT DER HASHMAPINDEXED auch so getFirst, getNext machen?
@@ -368,7 +370,8 @@ public class XmlTagMatcherZZZTest extends TestCase{
 			 int[]iaTagIndex; int iTagIndexInVector; 
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
  			 String[]saValue=null;
-			 VectorExtendedZZZ<String> vecTag=null;
+			 //VectorExtendedZZZ<String> vecTag=null;
+ 			IVectorExtended4XmlZZZ<?> vecTag=null;
 			 
 			sTest= objEnumTestType.getXml();
 			vecTag = XmlTagMatcherZZZ.parseElementsAsVector(sTest, bWithText);								
@@ -421,7 +424,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 																		
 								//dann den Wert pruefen, mit reingerechentem Tag
 								String sValueInVector = XmlUtilZZZ.computeTag(sTagForValue, sTagValue);
-								assertEquals(sMessage, sValueInVector, vecTag.get(iTagIndexInVector));			
+								assertEquals(sMessage, sValueInVector, (vecTag.get(iTagIndexInVector)).toString());			
 							}
 						}
 					}//end for ...wert

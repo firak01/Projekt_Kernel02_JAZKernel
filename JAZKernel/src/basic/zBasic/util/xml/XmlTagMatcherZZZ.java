@@ -7,7 +7,10 @@ import java.util.regex.Pattern;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
-import basic.zBasic.util.abstractList.VectorExtended4XmlZZZ;
+import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
+import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
+import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
@@ -137,19 +140,311 @@ public class XmlTagMatcherZZZ {
 	}
 	
 	//##################################################
-	public static VectorExtended4XmlZZZ<String, String> parseElementsAsVector(String sXml) throws ExceptionZZZ {
-		return XmlTagMatcherZZZ.parseElementsAsVector(sXml, true);
+	public static IVectorExtended4XmlZZZ<?> parseElementsAsVector(String sXml) throws ExceptionZZZ {
+		//return XmlTagMatcherZZZ.parseElementsAsVector_((VectorExtended4XmlTagStringZZZ<String>)null, sXml, true);
+		return parseElementsAsVector_((IVectorExtended4XmlZZZ<String>)null, sXml, true);
 	}
 	
-	public static VectorExtended4XmlZZZ<String, String> parseElementsAsVector(String sXml, boolean bWithText) throws ExceptionZZZ{
-		return parseElementsAsVector_(null, sXml, bWithText); 		
+	public static IVectorExtended4XmlZZZ<?> parseElementsAsVector(String sXml, boolean bWithText) throws ExceptionZZZ{
+		//return parseElementsAsVector_((VectorExtended4XmlTagStringZZZ<String>) null, sXml, bWithText); 		
+		return parseElementsAsVector_((IVectorExtended4XmlZZZ<String>)null, sXml, bWithText);
 	}
 	
-	public static VectorExtended4XmlZZZ<String, String> parseElementsAsVector(VectorExtended4XmlZZZ<String, String> vecReturnIn, String sXml, boolean bWithText) throws ExceptionZZZ{
-		return parseElementsAsVector_(vecReturnIn, sXml, bWithText); 		
+	public static IVectorExtended4XmlZZZ<?> parseElementsAsVector(VectorExtended4XmlTagStringZZZ<String> vec, String sXml, boolean bWithText) throws ExceptionZZZ{
+		//return parseElementsAsVector_(vec, sXml, bWithText);
+		return parseElementsAsVector_((IVectorExtended4XmlZZZ<String>)vec, sXml, bWithText);
 	}
 	
+//	/**Merke: Analog zu parseElementsAsMap_(...)
+//	 * @param vectorReturnIn
+//	 * @param sXml
+//	 * @param bWithText
+//	 * @return
+//	 * @throws ExceptionZZZ
+//	 * @author Fritz Lindhauer, 09.06.2024, 08:57:55
+//	 */
+//	private static VectorExtended4XmlTagStringZZZ<String> parseElementsAsVector_(VectorExtended4XmlTagStringZZZ<String> vecReturnIn, String sXml, boolean bWithText) throws ExceptionZZZ{
+//		VectorExtended4XmlTagStringZZZ<String> vecReturn = null;
+//		main:{
+//			boolean bVecFilledBefore;
+//			
+//			if(vecReturnIn!=null) {
+//				vecReturn = vecReturnIn;
+//				
+//				if(StringZZZ.isEmpty(sXml)) break main;
+//				
+//				bVecFilledBefore=true;//Falls jetzt nur noch der Wert vorhanden ist, kaeme sonst eind text-Tag drum.
+//                						//Das ist aber falsch, weil der Wert schon in dem XML-Wert vorhanden sein sollte.
+//			}else {
+//				if(StringZZZ.isEmpty(sXml)) break main;				
+//				vecReturn = new VectorExtended4XmlTagStringZZZ<String>();
+//				
+//				bVecFilledBefore=false; //Nimm nun einzelstehende Werte mit einen text-Tag auf.
+//			}
+//			
+//			//siehe in den Tryouts die Loesungsschritte hierfuer:
+//			String sXmlRemain = sXml;
+//			String sLeft;
+//			String sContinuingClosingTag = null;
+//			boolean bParseNextTagOnThisLevel=true;
+//			 
+//			//##################################
+//			String regex = "<(.*?)>";
+//			Pattern pattern = Pattern.compile(regex);
+//			Matcher matcher = pattern.matcher(sXml);	 	
+//			while (matcher.find()) {
+//				boolean bClosingTag = false;
+//			    String sValue = null;
+//			    String sTag = matcher.group(1);			    
+//			      	
+//			    if(sContinuingClosingTag!=null) {
+//			    	//Warte nun Darauf, dass der passende EndTag gefunden wird.
+//			    	if(sTag.equals(sContinuingClosingTag)) {
+//			    		bParseNextTagOnThisLevel=true;
+//			    	}else {
+//			    		bParseNextTagOnThisLevel=false;
+//			    	}
+//			    }else {
+//			    	bParseNextTagOnThisLevel=true;
+//			    }
+//			    
+//			    if(bParseNextTagOnThisLevel) {//alle "zwischentags des Werts wurden in Rekursion verarbeitet. Nun geht es zu neuen Werten.
+//				    //Also den/einen abschliessenden Tag nicht betrachten
+//			    	  if(!StringZZZ.startsWith(sTag, "/")) {
+//				    	
+//				    	
+//					    if(bWithText){
+//					    	//Nimm ggfs. existierende Texte VOR dem Tag auf.
+//							sLeft = StringZZZ.left(sXmlRemain, "<" + sTag + ">");
+//						    System.out.println("sLeft:\t\t'" + sLeft+"'");//so etwas ohne Tag muss in ein Tag vom ITagTypeZZZ "Text"
+//						    System.out.println("sTag:\t\t'"  + sTag+"'");
+//						    
+//					    	if(!StringZZZ.isEmpty(sLeft)) {
+//					    		vecReturn.put("text",sLeft);
+//					    	}
+//					    }else {
+//					    	
+//					    }
+//			    	
+//						//Ermittle die Werte fuer den Tag per RegEx und packe den Tag und den Wert in die Map
+//					    Vector<String>vecValue=XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sXmlRemain, sTag);
+//						if(vecValue!=null) {
+//						    if(!vecValue.isEmpty()) {
+//						    	sValue = vecValue.get(0);
+//						    	vecReturn.put(sTag, sValue);
+//						    	
+//						    	//TJA: und nun ggfs. in sValue vorhandene Tags per Rekursion aufloesen.....
+//						    	vecReturn = XmlTagMatcherZZZ.parseElementsAsVector(vecReturn, sValue, bWithText);
+//						    	sContinuingClosingTag = "/"+sTag;
+//						    	//Der naechste Tag ist in der While Schleife entweder ein Tag "dazwischen" oder der abschliessende Tag
+//						    }else {
+//						    	sValue = null; //Fazit: Leere Wertvektoren nicht übernehmen, das ist wichtig, sonst wird der Index der aeusseren HashMap auch noch um 1 erhoeht.
+//						    }				    					    					    				    					    	
+//					    }
+//				    }else {
+//				    	bClosingTag = true;	
+//				    					    	
+//				    	//Text nach einem abschliessenden Text erfassen, bis zu einem anderen abschliessenden Tag			
+//				    	//Erst nach der Bestimmung des Werts sXmlRemain errechnen.			    
+//				    	sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
+//			   
+//				    	System.out.println("sRemain:\t'" + sXmlRemain+"'");
+//						if(StringZZZ.isEmpty(sXmlRemain)) break main;
+//	
+//						sContinuingClosingTag=null;
+//				    }//end if( Abschliessende Tags ausschliessen )
+//			    
+//			    }//end if (ParseNextTagOnThisLevel)
+//			    
+//			   
+//			   if(bClosingTag && bWithText) {
+//
+//			    	sLeft = StringZZZ.left(sXmlRemain + "<", "<");
+//				    System.out.println("sRightClosing:\t'" + sLeft + "'");//so etwas ohne Tag muss in ein Tag vom ITagTypeZZZ "Text"
+//				   
+//				    if(!StringZZZ.isEmpty(sLeft)) {
+//				    	vecReturn.put("text",sLeft);
+//				    	sXmlRemain = StringZZZ.rightback(sXmlRemain, sLeft);
+//				    }else {
+//				    	
+//				    }
+//				   
+//			   }
+//			}//end while (matcher.find()) {
+//				
+//			//Den Rest hinzufuegen
+//			if(bWithText) {
+//				if(bVecFilledBefore && !sXml.equals(sXmlRemain)) { //Damit sollen einzelstehnde Werte zwar erfasst werden, aber nicht wenn sie schon in einem Tag vorhanden sind.
+//					if(!StringZZZ.isEmpty(sXmlRemain)) {
+//						vecReturn.put("text", sXmlRemain);
+//					}
+//				}else if(!bVecFilledBefore) {
+//					if(!StringZZZ.isEmpty(sXmlRemain)) {  //Das ist dann der Fall für nur einzelstehende Werte OHNE ein Tag.
+//						vecReturn.put("text", sXmlRemain);
+//					}
+//				}
+//			}
+//		}//end main:
+//		return vecReturn;
+//	}
+	
+	//############################################################################
+	
+	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagSimple(String sXml) throws ExceptionZZZ{
+	//public static VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> parseElementsAsVectorTagSimple(String sXml) throws ExceptionZZZ{
+		return parseElementsAsVector_((VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>)null, sXml, true); 		
+	}
+	
+	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagSimple(String sXml, boolean bWithText) throws ExceptionZZZ{
+	//public static VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> parseElementsAsVectorTagSimple(String sXml, boolean bWithText) throws ExceptionZZZ{
+		return parseElementsAsVector_((VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>)null, sXml, bWithText); 		
+	}
+	
+	public static IVectorExtended4XmlZZZ<?> parseElementsAsVectorTagSimple(VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> vec, String sXml, boolean bWithText) throws ExceptionZZZ{		
+	//public static VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> parseElementsAsVectorTagSimple(VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> vec, String sXml, boolean bWithText) throws ExceptionZZZ{
+		return parseElementsAsVector_(vec, sXml, bWithText); 		
+	}
+	
+//	/**Merke: Analog zu parseElementsAsMap_(...)
+//	 * @param vectorReturnIn
+//	 * @param sXml
+//	 * @param bWithText
+//	 * @return
+//	 * @throws ExceptionZZZ
+//	 * @author Fritz Lindhauer, 09.06.2024, 08:57:55
+//	 */
+//	private static VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> parseElementsAsVectorTagSimple_(VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> vecReturnIn, String sXml, boolean bWithText) throws ExceptionZZZ{
+//		VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> vecReturn = null;
+//		main:{
+//			boolean bVecFilledBefore;
+//			
+//			if(vecReturnIn!=null) {
+//				vecReturn = vecReturnIn;
+//				
+//				if(StringZZZ.isEmpty(sXml)) break main;
+//				
+//				bVecFilledBefore=true;//Falls jetzt nur noch der Wert vorhanden ist, kaeme sonst eind text-Tag drum.
+//                						//Das ist aber falsch, weil der Wert schon in dem XML-Wert vorhanden sein sollte.
+//			}else {
+//				if(StringZZZ.isEmpty(sXml)) break main;				
+//				vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();
+//				
+//				bVecFilledBefore=false; //Nimm nun einzelstehende Werte mit einen text-Tag auf.
+//			}
+//			
+//			//siehe in den Tryouts die Loesungsschritte hierfuer:
+//			String sXmlRemain = sXml;
+//			String sLeft;
+//			String sContinuingClosingTag = null;
+//			boolean bParseNextTagOnThisLevel=true;
+//			 
+//			//##################################
+//			String regex = "<(.*?)>";
+//			Pattern pattern = Pattern.compile(regex);
+//			Matcher matcher = pattern.matcher(sXml);	 	
+//			while (matcher.find()) {
+//				boolean bClosingTag = false;
+//			    String sValue = null;
+//			    String sTag = matcher.group(1);			    
+//			      	
+//			    if(sContinuingClosingTag!=null) {
+//			    	//Warte nun Darauf, dass der passende EndTag gefunden wird.
+//			    	if(sTag.equals(sContinuingClosingTag)) {
+//			    		bParseNextTagOnThisLevel=true;
+//			    	}else {
+//			    		bParseNextTagOnThisLevel=false;
+//			    	}
+//			    }else {
+//			    	bParseNextTagOnThisLevel=true;
+//			    }
+//			    
+//			    if(bParseNextTagOnThisLevel) {//alle "zwischentags des Werts wurden in Rekursion verarbeitet. Nun geht es zu neuen Werten.
+//				    //Also den/einen abschliessenden Tag nicht betrachten
+//			    	  if(!StringZZZ.startsWith(sTag, "/")) {
+//				    	
+//				    	
+//					    if(bWithText){
+//					    	//Nimm ggfs. existierende Texte VOR dem Tag auf.
+//							sLeft = StringZZZ.left(sXmlRemain, "<" + sTag + ">");
+//						    System.out.println("sLeft:\t\t'" + sLeft+"'");//so etwas ohne Tag muss in ein Tag vom ITagTypeZZZ "Text"
+//						    System.out.println("sTag:\t\t'"  + sTag+"'");
+//						    
+//					    	if(!StringZZZ.isEmpty(sLeft)) {
+//					    		vecReturn.put("text",sLeft);
+//					    	}
+//					    }else {
+//					    	
+//					    }
+//			    	
+//						//Ermittle die Werte fuer den Tag per RegEx und packe den Tag und den Wert in die Map
+//					    Vector<String>vecValue=XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sXmlRemain, sTag);
+//						if(vecValue!=null) {
+//						    if(!vecValue.isEmpty()) {
+//						    	sValue = vecValue.get(0);
+//						    	vecReturn.put(sTag, sValue);
+//						    	
+//						    	//TJA: und nun ggfs. in sValue vorhandene Tags per Rekursion aufloesen.....
+//						    	vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple(vecReturn, sValue, bWithText);
+//						    	sContinuingClosingTag = "/"+sTag;
+//						    	//Der naechste Tag ist in der While Schleife entweder ein Tag "dazwischen" oder der abschliessende Tag
+//						    }else {
+//						    	sValue = null; //Fazit: Leere Wertvektoren nicht übernehmen, das ist wichtig, sonst wird der Index der aeusseren HashMap auch noch um 1 erhoeht.
+//						    }				    					    					    				    					    	
+//					    }
+//				    }else {
+//				    	bClosingTag = true;	
+//				    					    	
+//				    	//Text nach einem abschliessenden Text erfassen, bis zu einem anderen abschliessenden Tag			
+//				    	//Erst nach der Bestimmung des Werts sXmlRemain errechnen.			    
+//				    	sXmlRemain = StringZZZ.rightback(sXmlRemain, "<"+sContinuingClosingTag+">");
+//			   
+//				    	System.out.println("sRemain:\t'" + sXmlRemain+"'");
+//						if(StringZZZ.isEmpty(sXmlRemain)) break main;
+//	
+//						sContinuingClosingTag=null;
+//				    }//end if( Abschliessende Tags ausschliessen )
+//			    
+//			    }//end if (ParseNextTagOnThisLevel)
+//			    
+//			   
+//			   if(bClosingTag && bWithText) {
+//
+//			    	sLeft = StringZZZ.left(sXmlRemain + "<", "<");
+//				    System.out.println("sRightClosing:\t'" + sLeft + "'");//so etwas ohne Tag muss in ein Tag vom ITagTypeZZZ "Text"
+//				   
+//				    if(!StringZZZ.isEmpty(sLeft)) {
+//				    	vecReturn.put("text",sLeft);
+//				    	sXmlRemain = StringZZZ.rightback(sXmlRemain, sLeft);
+//				    }else {
+//				    	
+//				    }
+//				   
+//			   }
+//			}//end while (matcher.find()) {
+//				
+//			//Den Rest hinzufuegen
+//			if(bWithText) {
+//				if(bVecFilledBefore && !sXml.equals(sXmlRemain)) { //Damit sollen einzelstehnde Werte zwar erfasst werden, aber nicht wenn sie schon in einem Tag vorhanden sind.
+//					if(!StringZZZ.isEmpty(sXmlRemain)) {
+//						vecReturn.put("text", sXmlRemain);
+//					}
+//				}else if(!bVecFilledBefore) {
+//					if(!StringZZZ.isEmpty(sXmlRemain)) {  //Das ist dann der Fall für nur einzelstehende Werte OHNE ein Tag.
+//						vecReturn.put("text", sXmlRemain);
+//					}
+//				}
+//			}
+//		}//end main:
+//		return vecReturn;
+//	}
+	
+	//+#+#+#+# Experiment
 	/**Merke: Analog zu parseElementsAsMap_(...)
+	 * 
+	 * Merke: Das ist ziemlich generisch, so dass diese Methode 
+	 *        a) Sowohl von VectorString als auch von VectorTagSimple aufgerufen werden kann
+	 *        b) Eine Rekursion moeglich ist. Wichtig: Die Rekursion findet aus sich selbst statt, da man jetzt nicht weiss welche "Ausgangsmethode" man aufrufen soll.  
+	 * 
 	 * @param vectorReturnIn
 	 * @param sXml
 	 * @param bWithText
@@ -157,8 +452,8 @@ public class XmlTagMatcherZZZ {
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 09.06.2024, 08:57:55
 	 */
-	private static VectorExtended4XmlZZZ<String, String> parseElementsAsVector_(VectorExtended4XmlZZZ<String, String> vecReturnIn, String sXml, boolean bWithText) throws ExceptionZZZ{
-		VectorExtended4XmlZZZ<String, String> vecReturn = null;
+	private static IVectorExtended4XmlZZZ<?> parseElementsAsVector_(IVectorExtended4XmlZZZ<?> vecReturnIn, String sXml, boolean bWithText) throws ExceptionZZZ{
+		IVectorExtended4XmlZZZ<?> vecReturn = null;
 		main:{
 			boolean bVecFilledBefore;
 			
@@ -171,8 +466,8 @@ public class XmlTagMatcherZZZ {
                 						//Das ist aber falsch, weil der Wert schon in dem XML-Wert vorhanden sein sollte.
 			}else {
 				if(StringZZZ.isEmpty(sXml)) break main;				
-				vecReturn = new VectorExtended4XmlZZZ<String, String>();
-				
+				vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();
+								
 				bVecFilledBefore=false; //Nimm nun einzelstehende Werte mit einen text-Tag auf.
 			}
 			
@@ -227,8 +522,8 @@ public class XmlTagMatcherZZZ {
 						    	sValue = vecValue.get(0);
 						    	vecReturn.put(sTag, sValue);
 						    	
-						    	//TJA: und nun ggfs. in sValue vorhandene Tags per Rekursion aufloesen.....
-						    	vecReturn = XmlTagMatcherZZZ.parseElementsAsVector(vecReturn, sValue, bWithText);
+						    	//TJA: und nun ggfs. in sValue vorhandene Tags per Rekursion "AUF SICH SELBST" aufloesen.....
+						    	vecReturn = XmlTagMatcherZZZ.parseElementsAsVector_(vecReturn, sValue, bWithText);
 						    	sContinuingClosingTag = "/"+sTag;
 						    	//Der naechste Tag ist in der While Schleife entweder ein Tag "dazwischen" oder der abschliessende Tag
 						    }else {

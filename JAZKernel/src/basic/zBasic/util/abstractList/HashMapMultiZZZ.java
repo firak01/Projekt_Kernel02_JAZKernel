@@ -61,7 +61,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	 }		    	 		    	
  }
  */
-public class HashMapMultiZZZ <X,Z> implements IConstantZZZ, IHashMapExtendedZZZ, Map{
+public class HashMapMultiZZZ <K,V> implements IConstantZZZ, IHashMapExtendedZZZ, Map{
 	protected HashMap<String,Object> hmOuter=new HashMap<String,Object>();
 	
 	public HashMapMultiZZZ(){		

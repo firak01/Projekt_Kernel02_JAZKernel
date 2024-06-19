@@ -3,6 +3,7 @@ package basic.zBasic.util.xml.tagsimple;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 public abstract class AbstractTagSimpleZZZ extends AbstractTagBasicsZZZ implements ITagSimpleZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
@@ -43,5 +44,10 @@ public abstract class AbstractTagSimpleZZZ extends AbstractTagBasicsZZZ implemen
 	@Override
 	public void setName(String sTagName) {
 		this.sName = sTagName;		
+	}
+	
+	@Override
+	public String toString() {
+		return XmlUtilZZZ.computeTag(this.getName(), this.getValue());
 	}
 }

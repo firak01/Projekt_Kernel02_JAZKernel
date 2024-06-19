@@ -8,6 +8,8 @@ import javax.measure.spi.SystemOfUnits;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
+import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
@@ -58,6 +60,13 @@ public class XmlUtilZZZ {
 		return sReturn;
 	}
 	
+	public static ITagSimpleZZZ computeAsTagSimple(String sTagName, String sTagValue) throws ExceptionZZZ {
+		ITagSimpleZZZ objReturn = new TagSimpleZZZ(sTagName, sTagValue);
+		return objReturn;
+	}
+	
+	
+	//++++++++++++++++++++++
 	public static String computeTagEmpty(String sTagName) {
 		return XmlUtilZZZ.computeTagPartEmpty(sTagName);
 	}

@@ -39,7 +39,7 @@ import basic.zBasic.ReflectCodeZZZ;
  *  20200219: Die Methoden aus der alten klasse in die neue Klasse übernommen
  */
 @SuppressWarnings("rawtypes")
-public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, ICollectionConstantZZZ{
+public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ{
 	private static final long serialVersionUID = 1L;
 	protected int iIndexUsedLast=-1;
 	
@@ -108,8 +108,8 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 	// getIndexOfString: search a string case-dependent or case-independent
 	//                   in a vector and return it's index or -1, if not found
 	//                   
-
-	int getIndexOfString(String string, boolean ignoreCase, int fromIndex) {
+	@Override
+	public int getIndexOfString(String string, boolean ignoreCase, int fromIndex) {
 		int tempIndex = -1;
 		for (int i=fromIndex;i<this.size();i++) {
 			if (this.elementAt(i) instanceof String) {
@@ -129,6 +129,7 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 		return tempIndex;
 	}
 	
+	@Override
 	public int getIndexUsedLast() {
 		if(this.iIndexUsedLast==-1) {
 			return this.size()-1;
@@ -136,13 +137,16 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 			return this.iIndexUsedLast;
 		}
 	}
+	
 	@SuppressWarnings("unchecked")
+	@Override
 	public T getEntryLast() {
 		int iIndexUsed = this.getIndexUsedLast();
 		return (T) this.get(iIndexUsed);
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Override
 	public T getEntryHigh() {
 		int iIndexUsed = this.size()-1;
 		return (T) this.get(iIndexUsed);
@@ -159,6 +163,7 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 	* lindhauer; 17.08.2012 10:46:20
 	 * @throws ExceptionZZZ 
 	 */
+	@Override
 	public Vector rightOfString(String string, boolean ignoreCase, int fromIndex) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();
 		main:{
@@ -199,21 +204,24 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 	//////////////////////////////////////////////////////////////////////////
 
 	// indexOf works case-independent by default
-
+    
+    @Override
 	public int indexOfString(String string) {
 		return getIndexOfString(string, true, 0);
 	}
 
+    @Override
 	public int indexOfString(String string, int fromIndex) {
 		return getIndexOfString(string, true, fromIndex);
 	}
 
 	// but index of can work case-dependent and case-independent
-
+    @Override
 	public int indexOfString(String string, boolean ignoreCase) {
 		return getIndexOfString(string, ignoreCase, 0);
 	}
 
+    @Override
 	public int indexOfString(String string, boolean ignoreCase, int fromIndex) {
 		return getIndexOfString(string, ignoreCase, fromIndex);
 	}
@@ -227,6 +235,7 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 	 * @return
 	 * @throws ExceptionZZZ
 	 */
+    @Override
 	public boolean addSorted(Integer intNew, int iSortDirectionAscDesc) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -261,6 +270,7 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 	//###################################
 	// CompareTo vereinfacht einsetzen
 	//###################################
+    @Override
 	public boolean hasAnyElement() {
 		boolean bReturn = false;
 		main:{
@@ -273,6 +283,8 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 		}//End main:
 		return bReturn;		
 	}
+    
+    @Override
 	public boolean isLastElementGreaterThan(Integer intToCompare) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
@@ -295,6 +307,7 @@ public class VectorExtendedZZZ<T> extends Vector implements IConstantZZZ, IColle
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 19.02.2020, 09:13:34
 	 */
+    @Override
 	public int compareToLastElement(Integer intToCompare) throws ExceptionZZZ{
 		int iReturn = 0;
 		main:{
