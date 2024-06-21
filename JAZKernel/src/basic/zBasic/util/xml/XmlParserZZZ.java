@@ -7,6 +7,8 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -32,9 +34,11 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	
 	@Override
 	public IVectorExtended4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ {
-		IVectorExtended4XmlZZZ<?> vecReturn = new VectorExtended4XmlTagStringZZZ<String>();
+		IVectorExtended4XmlZZZ<?> vecReturn = null;
 		main:{
+			if(StringZZZ.isEmpty(sText)) break main;
 			
+			vecReturn = new VectorExtended4XmlTagStringZZZ<String>();
 			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
 			vecReturn = XmlTagMatcherZZZ.parseElementsAsVector((VectorExtended4XmlTagStringZZZ<String>) vecReturn, sText, !bWithoutText);
 			
@@ -47,9 +51,11 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	 */
 	@Override
 	public IVectorExtended4XmlZZZ<?> parseToVectorTagSimple(String sText) throws ExceptionZZZ{
-		IVectorExtended4XmlZZZ<?> vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();
+		IVectorExtended4XmlZZZ<?> vecReturn = null; 
 		main:{
+			if(StringZZZ.isEmpty(sText)) break main;
 			
+			vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();			
 			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
 			//vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple(vecReturn, sText, !bWithoutText);
 			vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple((VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>) vecReturn, sText, !bWithoutText);
@@ -60,14 +66,26 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 
 	@Override
 	public HashMapMultiIndexedZZZ<String, String> parseToMap(String sText) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+		HashMapMultiIndexedZZZ<String,String> hmReturn = null;		
+		main:{
+			if(StringZZZ.isEmpty(sText)) break main;
+			
+			boolean bWithoutText =  this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			hmReturn = XmlTagMatcherZZZ.parseElementsAsMap(hmReturn, sText, !bWithoutText);
+		}//end main:
+		return hmReturn;
 	}
 
 	@Override
-	public TreeNodeZZZ<ITagSimpleZZZ> parseToTree(String sText) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
+	public ITreeNodeZZZ<ITagSimpleZZZ> parseToTree(String sText) throws ExceptionZZZ {
+		ITreeNodeZZZ<ITagSimpleZZZ> objReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sText)) break main;
+			
+			boolean bWithoutText =  this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			objReturn = XmlTagMatcherZZZ.parseElementsAsTree(sText, !bWithoutText);
+		}//end main:
+		return objReturn;
 	}
 
 

@@ -18,6 +18,7 @@ import basic.javareflection.mopex.Mopex;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
+import basic.zBasic.IOutputNormedZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadEncryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -28,9 +29,13 @@ import basic.zBasic.util.math.MathZZZ;
  * @author lindhaueradmin
  *
  */
-public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, IObjectZZZ, IHashMapExtendedZZZ{
+public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapExtendedZZZ{
 	private static final long serialVersionUID = -576703130885041379L;
-	private ExceptionZZZ objException;
+	protected volatile ExceptionZZZ objException;
+	
+	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
+	protected volatile String sDebugEntryDelimiterUsed = null;
+
 	
 	public HashMapExtendedZZZ(){
 	}
@@ -820,16 +825,50 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	     });
 	} 
 	
+	//### aus IOutputNormedZZ
+	@Override
+	public String getDebugEntryDelimiter() {
+		String sEntryDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
+		}
+		return sEntryDelimiter;
+	}
+	
+	@Override
+	public void setDebugEntryDelimiter(String sEntryDelimiter) {
+		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
+	}
+	
+	public String getDebugKeyDelimiter() {
+		String sKeyDelimiter;
+		if(this.sDebugKeyDelimiterUsed==null){
+			sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+		}else{
+			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
+		}
+		return sKeyDelimiter;
+	}
+	
+	@Override
+	public void setDebugKeyDelimiter(String sEntryDelimiter) {
+		this.sDebugKeyDelimiterUsed = sEntryDelimiter;
+	}
+	
 	/** Aufbereitete Ausgabe der Daten als String, mit Zeilenumbruch fuer jeden neuen Eintrag.
 	* @return
 	* 
 	* lindhauer; 08.08.2011 10:39:40
 	 */
-	public String debugString(){
+	public String computeDebugString(){
 		String sReturn = new String("");
 		main:{
 			
-			sReturn = HashMapExtendedZZZ.debugString(this);
+			String sEntryDelimiter = this.getDebugEntryDelimiter();
+			String sKeyDelimiter = this.getDebugEntryDelimiter();
+			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiter, sEntryDelimiter);
 			
 		}//end main
 		return sReturn;
@@ -844,27 +883,25 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 	 * @return
 	 * @author Fritz Lindhauer, 21.10.2022, 09:56:44
 	 */
-	public String debugString(String sKeyDelimiterIn, String sEntryDelimiterIn){
+	public String computeDebugString(String sKeyDelimiterIn, String sEntryDelimiterIn){
 		String sReturn = new String("");
 		main:{
 			
-			sReturn = HashMapExtendedZZZ.debugString(this, sKeyDelimiterIn, sEntryDelimiterIn);
+			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiterIn, sEntryDelimiterIn);
 			
 		}//end main
 		return sReturn;
 	}
 	
-	public static String debugString(HashMap hmDebug){
+	public static String computeDebugString(HashMap hmDebug){
 		String sReturn = new String("");
 		main:{		
-			String sEntryDelimiter = HashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-			String sKeyDelimiter = HashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
-			sReturn = HashMapExtendedZZZ.debugString(hmDebug, sKeyDelimiter, sEntryDelimiter);
+			sReturn = HashMapExtendedZZZ.computeDebugString(hmDebug, null, null);
 		}//end main
 		return sReturn;
 	}
 	
-	public static String debugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
+	public static String computeDebugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
 		String sReturn = new String("");
 		main:{
 			//HashMapOuter durchgehen
@@ -873,14 +910,14 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 			
 			String sEntryDelimiter;			
 			if(sEntryDelimiterIn==null){
-				sEntryDelimiter = HashMapExtendedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+				sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 			}else {
 				sEntryDelimiter = sEntryDelimiterIn;
 			}
 						
 			String sKeyDelimiter;
 			if(sKeyDelimiterIn==null){
-				sKeyDelimiter = HashMapExtendedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+				sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
 			}else{
 				sKeyDelimiter = sKeyDelimiterIn;
 			}
@@ -902,8 +939,11 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IConstantZZZ, I
 		return sReturn;
 	}
 	
-	/** Entferne aus der HashMap den Eintrag an der �bergebenen Indexposition.
-	 * Merke: Man kann nicht nach der beim Bef�llen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
+	//#######################################################################
+	
+	
+	/** Entferne aus der HashMap den Eintrag an der uebergebenen Indexposition.
+	 * Merke: Man kann nicht nach der beim Befuellen angegebenen Reihenfolge vorgehen, bzw. den gleichen Index erwarten, da die Indexposition in einer HashMap beliebig ist.
 	* @param iIndex; Der Index beginnt mit 0.
 	* 
 	* lindhauer; 05.09.2011 09:41:21

@@ -152,7 +152,7 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 			
 			HashMap<String,String> hmReturn = this.computeHashMap(sLineWithExpression);
 			if(hmReturn!=null) {
-				sReturn = HashMapExtendedZZZ.debugString(hmReturn);
+				sReturn = HashMapExtendedZZZ.computeDebugString(hmReturn);
 			}
 		}
 		return sReturn;

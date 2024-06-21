@@ -126,7 +126,7 @@ public class KernelJsonIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 			//2. Versuch als HashMap
 			HashMap<String,String>hm = this.computeHashMap(sLineWithExpression);
 			if(!hm.isEmpty()) {
-				sReturn = HashMapExtendedZZZ.debugString(hm);
+				sReturn = HashMapExtendedZZZ.computeDebugString(hm);
 				break main;
 			}
 										

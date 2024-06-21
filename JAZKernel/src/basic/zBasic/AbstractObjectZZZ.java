@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.KernelLogZZZ;
@@ -12,6 +13,9 @@ import basic.zKernel.KernelLogZZZ;
 public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ{
 	private static final long serialVersionUID = 1L;	
 	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
+	
+	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
+	protected volatile String sDebugEntryDelimiterUsed = null;
 
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
@@ -25,16 +29,6 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 		//super("init");		
 	}
 	
-	//### aus IObjectZZZ
-	@Override
-	public ExceptionZZZ getExceptionObject() {
-		return this.objException;
-	} 
-
-	@Override
-	public void setExceptionObject(ExceptionZZZ objException) {
-		this.objException = objException;
-	}
 	
 	/**Overwritten and using an object of jakarta.commons.lang
 	 * to create this string using reflection. 
@@ -47,6 +41,60 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 		return sReturn;
 	}
 	
+	
+	//### aus IObjectZZZ
+	@Override
+	public ExceptionZZZ getExceptionObject() {
+		return this.objException;
+	} 
+
+	@Override
+	public void setExceptionObject(ExceptionZZZ objException) {
+		this.objException = objException;
+	}
+	
+	
+	//### aus IOutputNormedZZZ
+	@Override
+	public String computeDebugString() throws ExceptionZZZ{
+		return this.toString();
+	}
+	
+	@Override
+	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
+		return this.computeDebugString();
+	}
+	
+	@Override
+	public String getDebugEntryDelimiter() {
+		String sEntryDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
+		}
+		return sEntryDelimiter;
+	}
+	
+	@Override
+	public void setDebugEntryDelimiter(String sEntryDelimiter) {
+		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
+	}
+	
+	public String getDebugKeyDelimiter() {
+		String sKeyDelimiter;
+		if(this.sDebugKeyDelimiterUsed==null){
+			sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+		}else{
+			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
+		}
+		return sKeyDelimiter;
+	}
+	
+	@Override
+	public void setDebugKeyDelimiter(String sEntryDelimiter) {
+		this.sDebugKeyDelimiterUsed = sEntryDelimiter;
+	}
 	
 	//### aus ILogZZZ	
 	@Override

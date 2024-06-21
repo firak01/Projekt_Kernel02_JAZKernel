@@ -183,7 +183,7 @@ public class HashMapExtendedZZZTest extends TestCase{
 			hmTest.put( "Alias2b", "4. Zeile");
 			
 		
-			String stemp = hmTest.debugString();
+			String stemp = hmTest.computeDebugString();
 			assertFalse(stemp==null);
 			assertFalse(stemp.equals(""));
 			

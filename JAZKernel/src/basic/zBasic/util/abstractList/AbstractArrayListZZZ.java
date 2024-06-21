@@ -324,7 +324,7 @@ public abstract class AbstractArrayListZZZ<T> extends ArrayList<T> implements  I
 		return bReturn;
 	}
 	
-	public String debugString(){
+	public String computeDebugString(){
 		String sReturn = new String("");
 		main:{		
 			String sEntryDelimiter = AbstractArrayListZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;			

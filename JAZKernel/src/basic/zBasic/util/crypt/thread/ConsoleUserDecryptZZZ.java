@@ -72,7 +72,7 @@ public class ConsoleUserDecryptZZZ extends AbstractConsoleUserCryptZZZ {
 
 			HashMapExtendedZZZ<String,Object>hmVariable=this.getConsole().getVariableHashMap();
 			if(hmVariable!=null) {
-				String sDebug = hmVariable.debugString("|","<BR>");
+				String sDebug = hmVariable.computeDebugString("|","<BR>");
 				System.out.println(sDebug);
 			}
 			

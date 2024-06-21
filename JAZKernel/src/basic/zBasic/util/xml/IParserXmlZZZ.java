@@ -8,6 +8,7 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
+import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 
@@ -18,7 +19,7 @@ public interface IParserXmlZZZ {
 	public IVectorExtended4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ;
 		
 	public HashMapMultiIndexedZZZ<String,String> parseToMap(String sText) throws ExceptionZZZ;
-	public TreeNodeZZZ<ITagSimpleZZZ> parseToTree(String sText) throws ExceptionZZZ;
+	public ITreeNodeZZZ<ITagSimpleZZZ> parseToTree(String sText) throws ExceptionZZZ;
 	
 
 	//Mit den Mapped EnumWerten der Tag-Factory hat man dann die Möglichkeit alle Tags - die es zu finden gibt - im String abzuprüfen.
@@ -27,20 +28,20 @@ public interface IParserXmlZZZ {
 	
 	
 	//#############################################################
-		//### FLAGZ
-		//#############################################################
-		public enum FLAGZ{
-			DUMMY01INTERFACE,DUMMY02INTERFACE,PARSE_WITHOUTTEXT
-		}
+	//### FLAGZ
+	//#############################################################
+	public enum FLAGZ{
+		PARSE_WITHOUTTEXT
+	}
 			
-		boolean getFlag(FLAGZ objEnumFlag);
-		boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-		boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
-		boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
-		boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	boolean getFlag(FLAGZ objEnumFlag);
+	boolean setFlag(FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	boolean[] setFlag(FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ;
+	boolean proofFlagExists(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	boolean proofFlagSetBefore(FLAGZ objEnumFlag) throws ExceptionZZZ;
+	
 		
-		
-		//#######################################################################################
-		// STATUS	
-	    //............ hier erst einmal nicht .....................
+	//#######################################################################################
+	// STATUS	
+    //............ hier erst einmal nicht .....................
 }

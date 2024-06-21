@@ -2010,19 +2010,19 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 //			}
 			
 			if(objFound==null) {
-				String stemp = "ENDE DIESER SUCHE NACH MODULALIAS OHNE ERFOLG (NULL) +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+				String stemp = "ENDE DIESER SUCHE NACH MODULALIAS OHNE ERFOLG (NULL) +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 			}else if(!objFound.hasAnyValue()){    			
-		    	String stemp = "ENDE DIESER SUCHE NACH MODULALIAS OHNE ERFOLG +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+		    	String stemp = "ENDE DIESER SUCHE NACH MODULALIAS OHNE ERFOLG +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 			}		   	
 		}//end main:
 		if(objFound!=null && objFound.hasAnyValue() ){
-			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH MODULALIAS +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH MODULALIAS +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
@@ -2081,19 +2081,19 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 			
 			objFound = KernelKernelZZZ.searchProgramAliasFor(objFileConfigIni, sProgram, sApplicationOrModule, sSystemNumber, hmDebug);		
 			if(objFound==null) {
-				String stemp = "ENDE DIESER SUCHE NACH PROGRAMALIAS OHNE ERFOLG (NULL) +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+				String stemp = "ENDE DIESER SUCHE NACH PROGRAMALIAS OHNE ERFOLG (NULL) +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 			}else if (!objFound.hasAnyValue()){    			
-		    	String stemp = "ENDE DIESER SUCHE NACH PROGRAMALIAS OHNE ERFOLG +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+		    	String stemp = "ENDE DIESER SUCHE NACH PROGRAMALIAS OHNE ERFOLG +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //				ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 			}		   	
 		}//end main:
 		if(objFound!=null && objFound.hasAnyValue() ){
-			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH PROGRAMALIAS +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH PROGRAMALIAS +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
  		
 			//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
@@ -2167,16 +2167,16 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 				}//end for	    				   					  
 		}//end main:	
 		if(!bExistsSection && objFound==null) {
-			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
 		}else if((!bExistsInCache && !bExistsSection) && objFound != null) {
-			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Section existiert nicht im gefundenen Konfigurationsfile. +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul OHNE ERFOLG. Section existiert nicht im gefundenen Konfigurationsfile. +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
 		}else {
-			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
@@ -2255,12 +2255,12 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 			
 		}//end main:	
 		if(objFound==null) {
-			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
 		}else {
-			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ  für das Modul im Project Excecution Pfad +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ  für das Modul im Project Excecution Pfad +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
@@ -2349,12 +2349,12 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 			
 		}//end main:	
 		if(objFound==null) {
-			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ENDE DIESER SUCHE NACH FileIniZZZ für das Modul im Project Excecution Pfad OHNE ERFOLG. Konfigurationsfile für das Modul nicht gefunden +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
 //			ExceptionZZZ ez = new ExceptionZZZ(stemp, iERROR_PARAMETER_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
 		}else {
-			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ  für das Modul im Project Excecution Pfad +++ Suchpfad: " + hmDebug.debugString(":", "\t|");
+			String stemp = "ERFOLGREICHES ENDE DIESER SUCHE NACH FileIniZZZ  für das Modul im Project Excecution Pfad +++ Suchpfad: " + hmDebug.computeDebugString(":", "\t|");
     		System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
     		
     		//Verwende die oben abgespeicherten Eingabewerte und nicht die Werte aus der Debug-Hashmap
@@ -2694,7 +2694,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 			}
 		}//end main:
 		
-		sDebug = hmDebug.debugString(":"," | ");
+		sDebug = hmDebug.computeDebugString(":"," | ");
 		if(objReturn.hasAnyValue()){
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug); 
 		}else{
@@ -3155,13 +3155,13 @@ MeinTestParameter=blablaErgebnis
 			    //#################################################
 			    
 			  //Abbruch der Parametersuche. Ohne diesen else-Zweig, gibt es ggfs. eine Endlosschleife.
-				sDebug = hmDebug.debugString(":"," | ");
+				sDebug = hmDebug.computeDebugString(":"," | ");
 				System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ABBRUCH DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug + " in der Datei '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'");
 //				ExceptionZZZ ez = new ExceptionZZZ(sDebug, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 				
 		}//END main:
-		sDebug = hmDebug.debugString(":"," | ");
+		sDebug = hmDebug.computeDebugString(":"," | ");
 		if(objFound!=null && objFound.hasAnyValue()) {
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sModuleAlias='" + sModuleAlias + "' | " + "' | for the property: '" + sProperty + "'.");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
@@ -4164,13 +4164,13 @@ MeinTestParameter=blablaErgebnis
 		    			
 		    //#################################################		    
 			//Abbruch der Parametersuche. Ohne diesen else-Zweig, gibt es ggfs. eine Endlosschleife.
-			sDebug = hmDebug.debugString(":"," | ");
+			sDebug = hmDebug.computeDebugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ABBRUCH DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug + " in der Datei '" + objFileIniConfig.getFileObject().getAbsolutePath() + "'");
 //			ExceptionZZZ ez = new ExceptionZZZ(sDebug, iERROR_CONFIGURATION_VALUE, this,  ReflectCodeZZZ.getMethodCurrentName());
 //			throw ez;
 		}//END main:
 			
-		sDebug = hmDebug.debugString(":"," | ");
+		sDebug = hmDebug.computeDebugString(":"," | ");
 		if(objFound!=null && objFound.hasAnyValue()) {
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": Wert gefunden fuer sMainSection='" + sMainSection + "'/sSectionUsed='"+sSectionUsed+"' | sProgramOrSection='" + sProgramOrSection + "' | for the property: '" + sProperty + "'.");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
@@ -4531,10 +4531,10 @@ MeinTestParameter=blablaErgebnis
 				hmDebug.put("FOUND... But not in CacheZZZ: Will not jet put an entry for " + sProgramOrSection, sProperty);				
 			}
 			
-			sDebug = hmDebug.debugString(":"," | ");
+			sDebug = hmDebug.computeDebugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICHES ENDE DIESER SUCHE +++ Suchreihenfolge (Section:Property): " + sDebug);
 		}else{
-			sDebug = hmDebug.debugString(":"," | ");
+			sDebug = hmDebug.computeDebugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ENDE DIESER SUCHE OHNE ERFOLG +++ Suchreihenfolge (Section:Property): " + sDebug);
 		}		
 		return bReturn;
@@ -4683,7 +4683,7 @@ MeinTestParameter=blablaErgebnis
 		objReturnReference.set(objReturn);
 		objFound = this.KernelSearchParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, true, objReturnReference);
 		
-		sDebug = hmDebug.debugString(":"," | ");
+		sDebug = hmDebug.computeDebugString(":"," | ");
 		if(objFound!=null && objFound.hasAnyValue()) {										
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ ArrayMethod calling StringMethod for search. Zerlege gefundenen Wert nun in Array" + sDebug);
 			
@@ -5297,7 +5297,7 @@ MeinTestParameter=blablaErgebnis
 			//       Darum nicht: System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling StringMethod for search. Zerlege gefundenen Wert nun in HahMap" + sDebug);
 				
 			
-			sDebug = hmDebug.debugString(":"," | ");			
+			sDebug = hmDebug.computeDebugString(":"," | ");			
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "+++ HashMapMethod calling StringMethod for search. Uebernehme gefundenen Wert " + sDebug);
 			objReturn.isJson(true);
 			objReturn.isJsonMap(true);
@@ -5345,7 +5345,7 @@ MeinTestParameter=blablaErgebnis
 				throw ez;
 			}
 		
-			sDebug = hmDebug.debugString(":"," | ");
+			sDebug = hmDebug.computeDebugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + "+++ HashMapMethod calling SectionEntry-Method. Uebernehme gefundenen Wert " + sDebug);
 		}
 		return hmReturn;
@@ -5638,7 +5638,7 @@ MeinTestParameter=blablaErgebnis
 		
 		
 		if(listasReturn.size()>=1){
-			String sDebug = hmDebug.debugString(":"," | ");
+			String sDebug = hmDebug.computeDebugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICH PROGRAMALIASSE GEFUNDEN +++ Suchreihenfolge (Section:Property): " + sDebug);
 		}else{
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEINE PROGRAMALIASSE GEFUNDEN");
@@ -6104,7 +6104,7 @@ MeinTestParameter=blablaErgebnis
 		
 		
 		if(listasReturn.size()>=1){
-			String sDebug = hmDebug.debugString(":"," | ");
+			String sDebug = hmDebug.computeDebugString(":"," | ");
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": ERFOLGREICH PROGRAMALIASSE GEFUNDEN +++ Suchreihenfolge (Section:Property): " + sDebug);
 		}else{
 			System.out.println(ReflectCodeZZZ.getMethodCurrentNameLined(0) + ": KEINE PROGRAMALIASSE GEFUNDEN");

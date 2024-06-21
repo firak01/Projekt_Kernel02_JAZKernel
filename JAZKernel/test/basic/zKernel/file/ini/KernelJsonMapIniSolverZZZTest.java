@@ -132,7 +132,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			HashMap<String,String>hm2 = objExpressionSolver.computeHashMap(sLineWithExpression);
 			assertTrue("Mit Auflösung des String soll die HashMap entsprechende Größe haben. ",hm2.size()==2);
 
-			String sValue = HashMapExtendedZZZ.debugString(hm2);	
+			String sValue = HashMapExtendedZZZ.computeDebugString(hm2);	
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 			
 		} catch (ExceptionZZZ ez) {

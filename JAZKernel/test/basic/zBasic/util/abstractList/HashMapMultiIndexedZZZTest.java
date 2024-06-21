@@ -82,7 +82,7 @@ public void testDebugString(){
 		hmTest.put("Alias2c", "5. Zeile");
 		
 	
-		String stemp = hmTest.debugString();
+		String stemp = hmTest.computeDebugString();
 		assertFalse(stemp==null);
 		assertFalse(stemp.equals(""));
 		

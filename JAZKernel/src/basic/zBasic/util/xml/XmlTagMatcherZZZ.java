@@ -12,6 +12,7 @@ import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
 import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
@@ -731,20 +732,20 @@ public class XmlTagMatcherZZZ {
 	
 	
 	//#################################################
-	public static TreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree(String sXml) throws ExceptionZZZ {
+	public static ITreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree(String sXml) throws ExceptionZZZ {
 		return parseElementsAsTree_(null, sXml, true);
 	}
 	
-	public static TreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree(String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
+	public static ITreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree(String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
 		return parseElementsAsTree_(null, sXml, bWithAnyValue);
 	}
 	
-	public static TreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree(TreeNodeZZZ<ITagSimpleZZZ> objParentNode, String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
+	public static ITreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree(ITreeNodeZZZ<ITagSimpleZZZ> objParentNode, String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
 		return parseElementsAsTree_(objParentNode, sXml, bWithAnyValue);
 	}
 	
-	private static TreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree_(TreeNodeZZZ<ITagSimpleZZZ> objParentNodeIn, String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
-		TreeNodeZZZ<ITagSimpleZZZ> objReturn = null;
+	private static ITreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree_(ITreeNodeZZZ<ITagSimpleZZZ> objParentNodeIn, String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
+		ITreeNodeZZZ<ITagSimpleZZZ> objReturn = null;
 		main:{	
 			if(StringZZZ.isEmpty(sXml)) break main;
 			
@@ -767,8 +768,8 @@ public class XmlTagMatcherZZZ {
 			boolean bParseNextTagOnThisLevel=false;
 			boolean bParseFirstTagOnThisLevel=false;
 			
-			TreeNodeZZZ<ITagSimpleZZZ> objNodeCurrent = null;
-			TreeNodeZZZ<ITagSimpleZZZ> objNodeMain = null;
+			ITreeNodeZZZ<ITagSimpleZZZ> objNodeCurrent = null;
+			ITreeNodeZZZ<ITagSimpleZZZ> objNodeMain = null;
 			
 			//##################################
 			String regex = "<(.*?)>";

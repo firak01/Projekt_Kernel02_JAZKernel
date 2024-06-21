@@ -1,5 +1,6 @@
 package basic.zBasic.util.abstractList;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -50,7 +51,7 @@ public void testDebugString(){
 		hmTest.put("Alias2", "Alias2c", "5. Zeile");
 		
 	
-		String stemp = hmTest.debugString();
+		String stemp = hmTest.computeDebugString();
 		assertFalse(stemp==null);
 		assertFalse(stemp.equals(""));
 		
@@ -97,7 +98,34 @@ public void testGetOuterKeySet(){
 		} catch (ExceptionZZZ ez) {
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
-}
+	}
+	
+	public void testToHashMap() {
+		try{
+			hmTest.clear();
+			hmTest.put("Alias1", "Alias1a", "Das ist ein Test");
+			hmTest.put("Alias1", "Alias1b", "2. Zeile");
+			hmTest.put("Alias2", "Alias2a", "3. Zeile");
+			hmTest.put("Alias2", "Alias2b", "4. Zeile");
+			hmTest.put("Alias2", "Alias2c", "5. Zeile");
+			
+			HashMap<String,String> hm01 = hmTest.toHashMapInnerKeyString(IHashMapMultiZZZ.FLAGZ.TO_HASHMAP_KEEPFIRST);
+			assertTrue(hm01.size()==5);
+			
+			hmTest.clear();
+			hmTest.put("Alias1", "Alias1a", "Das ist ein Test");
+			hmTest.put("Alias1", "Alias1a", "2. Zeile");
+			hmTest.put("Alias2", "Alias2a", "3. Zeile");
+			hmTest.put("Alias2", "Alias2a", "4. Zeile");
+			hmTest.put("Alias2", "Alias2a", "5. Zeile");
+			
+			HashMap<String,String> hm02 = hmTest.toHashMapInnerKeyString(IHashMapMultiZZZ.FLAGZ.TO_HASHMAP_KEEPFIRST);
+			assertTrue(hm02.size()==2);
+			
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
   
 }//END Class
 

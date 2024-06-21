@@ -282,7 +282,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 							objReturn.isJsonMap(true);
 							objReturn.isJson(true);
 							objReturn.isExpression(true);
-							objReturn.setValue(HashMapExtendedZZZ.debugString(objhmReturnValueJsonSolved.get()));
+							objReturn.setValue(HashMapExtendedZZZ.computeDebugString(objhmReturnValueJsonSolved.get()));
 							objReturn.setValue(objhmReturnValueJsonSolved.get());
 						}//Merke: Keinen Else-Zweig. Vielleicht war in einem vorherigen Schritt ja durchaus Json enthalten
 						

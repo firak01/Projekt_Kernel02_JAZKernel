@@ -28,6 +28,8 @@ import basic.zBasic.util.math.MathZZZ;
  *     wenn man einen weiteren Eintrag fuer den gleichen Schluessel hinzufuegt.
  *     (Daher wollte ich diese Klasse ggfs. auch nennen "HashMapDictionaryZZZ")
  *     
+ * - Merke: Klasse HashMapKeepLastZZZ gibt es nicht.
+ *          Jede HashMap ist de facto "keep last";
  * @author lindhaueradmin
  *
  */
@@ -70,23 +72,6 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 	}
 	
 	public static Object put(HashMap<Object, Object> hm, Object key, Object value) throws ExceptionZZZ{
-//		Object objReturn = null;
-//		main:{
-//			if(hm==null) break main;
-//			if(key==null) {				
-//				ExceptionZZZ ez = new ExceptionZZZ( "Key missing", iERROR_PARAMETER_MISSING, HashMapKeepFirstZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;
-//			}
-//			
-//			boolean bExists = hm.containsKey(key);
-//			if(!bExists) {
-//				hm.put(key, value);
-//				objReturn = value;				
-//			}else {
-//				objReturn = hm.get(key);
-//			}
-//		}//end main:		
-//		return objReturn;
 		return HashMapKeepFirstZZZ.putButKeep(hm, key, value);
 	}
 	

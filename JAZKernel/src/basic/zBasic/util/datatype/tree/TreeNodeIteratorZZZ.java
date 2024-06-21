@@ -2,7 +2,7 @@ package basic.zBasic.util.datatype.tree;
 
 import java.util.Iterator;
 
-public class TreeNodeIteratorZZZ<T> implements Iterator<TreeNodeZZZ<T>> {
+public class TreeNodeIteratorZZZ<T> implements Iterator<ITreeNodeZZZ<T>> {
 
 	enum ProcessStages {
 		ProcessParent, ProcessChildCurNode, ProcessChildSubNode
@@ -10,17 +10,19 @@ public class TreeNodeIteratorZZZ<T> implements Iterator<TreeNodeZZZ<T>> {
 
 	private TreeNodeZZZ<T> treeNode;
 
+	private ProcessStages doNext;
+	private ITreeNodeZZZ<T> next;
+	private Iterator<ITreeNodeZZZ<T>> childrenCurNodeIter;
+	private Iterator<ITreeNodeZZZ<T>> childrenSubNodeIter;
+
+	
 	public TreeNodeIteratorZZZ(TreeNodeZZZ<T> treeNode) {
 		this.treeNode = treeNode;
 		this.doNext = ProcessStages.ProcessParent;
-		this.childrenCurNodeIter = treeNode.children.iterator();
+		this.childrenCurNodeIter = treeNode.getChildren().iterator();
 	}
 
-	private ProcessStages doNext;
-	private TreeNodeZZZ<T> next;
-	private Iterator<TreeNodeZZZ<T>> childrenCurNodeIter;
-	private Iterator<TreeNodeZZZ<T>> childrenSubNodeIter;
-
+	
 	@Override
 	public boolean hasNext() {
 
@@ -32,7 +34,7 @@ public class TreeNodeIteratorZZZ<T> implements Iterator<TreeNodeZZZ<T>> {
 
 		if (this.doNext == ProcessStages.ProcessChildCurNode) {
 			if (childrenCurNodeIter.hasNext()) {
-				TreeNodeZZZ<T> childDirect = childrenCurNodeIter.next();
+				ITreeNodeZZZ<T> childDirect = childrenCurNodeIter.next();
 				childrenSubNodeIter = childDirect.iterator();
 				this.doNext = ProcessStages.ProcessChildSubNode;
 				return hasNext();
@@ -60,7 +62,7 @@ public class TreeNodeIteratorZZZ<T> implements Iterator<TreeNodeZZZ<T>> {
 	}
 
 	@Override
-	public TreeNodeZZZ<T> next() {
+	public ITreeNodeZZZ<T> next() {
 		return this.next;
 	}
 
