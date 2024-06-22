@@ -35,13 +35,9 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	@Override
 	public IVectorExtended4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ {
 		IVectorExtended4XmlZZZ<?> vecReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sText)) break main;
-			
-			vecReturn = new VectorExtended4XmlTagStringZZZ<String>();
-			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
-			vecReturn = XmlTagMatcherZZZ.parseElementsAsVector((VectorExtended4XmlTagStringZZZ<String>) vecReturn, sText, !bWithoutText);
-			
+		main:{			
+IP			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			vecReturn = XmlTagMatcherZZZ.parseElementsAsVector((VectorExtended4XmlTagStringZZZ<String>) vecReturn, sText, !bWithoutText);			
 		}
 		return vecReturn;
 	}
@@ -52,14 +48,9 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	@Override
 	public IVectorExtended4XmlZZZ<?> parseToVectorTagSimple(String sText) throws ExceptionZZZ{
 		IVectorExtended4XmlZZZ<?> vecReturn = null; 
-		main:{
-			if(StringZZZ.isEmpty(sText)) break main;
-			
-			vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();			
-			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
-			//vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple(vecReturn, sText, !bWithoutText);
-			vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple((VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>) vecReturn, sText, !bWithoutText);
-			
+		main:{								
+			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);			
+			vecReturn = XmlTagMatcherZZZ.parseElementsAsVectorTagSimple((VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>) vecReturn, sText, !bWithoutText);			
 		}
 		return vecReturn;
 	}
@@ -67,9 +58,7 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	@Override
 	public HashMapMultiIndexedZZZ<String, String> parseToMap(String sText) throws ExceptionZZZ {
 		HashMapMultiIndexedZZZ<String,String> hmReturn = null;		
-		main:{
-			if(StringZZZ.isEmpty(sText)) break main;
-			
+		main:{			
 			boolean bWithoutText =  this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
 			hmReturn = XmlTagMatcherZZZ.parseElementsAsMap(hmReturn, sText, !bWithoutText);
 		}//end main:
@@ -79,9 +68,7 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	@Override
 	public ITreeNodeZZZ<ITagSimpleZZZ> parseToTree(String sText) throws ExceptionZZZ {
 		ITreeNodeZZZ<ITagSimpleZZZ> objReturn = null;
-		main:{
-			if(StringZZZ.isEmpty(sText)) break main;
-			
+		main:{			
 			boolean bWithoutText =  this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
 			objReturn = XmlTagMatcherZZZ.parseElementsAsTree(sText, !bWithoutText);
 		}//end main:

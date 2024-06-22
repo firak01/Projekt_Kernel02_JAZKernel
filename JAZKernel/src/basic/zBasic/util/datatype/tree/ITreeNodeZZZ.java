@@ -18,6 +18,7 @@ public interface ITreeNodeZZZ<T> extends Iterable<ITreeNodeZZZ<T>>, IOutputNorme
 	public List<ITreeNodeZZZ<T>> getRootElementsIndex();
 	public void setRootElementsIndex(List<ITreeNodeZZZ<T>> listSibling);
 	
+	public ITreeNodeZZZ<T> getElementByIndex(int iIndex);
 	
 	
 	public ITreeNodeZZZ<T> addChild(T childNode);

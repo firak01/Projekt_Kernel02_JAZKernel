@@ -14,6 +14,8 @@ public interface IEnumSetMappedTestXmlTypeZZZ extends IEnumSetMappedTestContaine
 	public int[]getIndexInHashMapOfExpectedTagsWithoutText();
 	public int[]getIndexInHashMapOfExpectedTagsWithText();
 	
+	public int[]getIndexInTreeOfExpectedTagsWithoutText();
+	public int[]getIndexInTreeOfExpectedTagsWithText();
 	
 	public String[]getTagsForExpectedValues(); //Tag an der Indexposition
 	

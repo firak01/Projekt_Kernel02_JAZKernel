@@ -250,6 +250,17 @@ public class XmlTestStringContainerZZZ {
 			}
 			
 			@Override
+			public int[] getIndexInTreeOfExpectedTagsWithoutText() {
+				return this.getIndexInVectorOfExpectedTagsWithoutText();
+			}
+			
+			@Override
+			public int[] getIndexInTreeOfExpectedTagsWithText() {
+				return this.getIndexInVectorOfExpectedTagsWithText();
+			}
+
+			
+			@Override
 			public String[] getTagsForExpectedValues() {
 				return this.saExpectedExampleTag;
 			}

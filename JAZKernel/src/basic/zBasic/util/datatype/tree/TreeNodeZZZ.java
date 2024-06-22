@@ -132,7 +132,7 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 			parentNode.getChildren().add(siblingNode);
 			
 			//Die Geschwister dem neuen Knoten hinzufuegen
-			this.setSiblings(parentNode.getChildren());
+			siblingNode.setSiblings(parentNode.getChildren());
 			
 		}else {
 			//ROOT!
@@ -157,7 +157,7 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 				siblingNodeTemp.setSiblings(new LinkedList<ITreeNodeZZZ<T>>());
 				siblingNodeTemp.getSiblings().add(siblingNode);
 			}else {
-			if(!(siblingNodeTemp.getSiblings().contains(siblingNode) || siblingNodeTemp.equals(siblingNode) || siblingNodeTemp.equals(this))) {
+				if(!(siblingNodeTemp.getSiblings().contains(siblingNode) || siblingNodeTemp.equals(siblingNode) || siblingNodeTemp.equals(this))) {
 					siblingNodeTemp.getSiblings().add(siblingNode);
 				}
 			}

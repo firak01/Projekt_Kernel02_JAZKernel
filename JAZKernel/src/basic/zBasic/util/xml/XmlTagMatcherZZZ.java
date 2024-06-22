@@ -44,9 +44,10 @@ public class XmlTagMatcherZZZ {
 	public static Vector<String> parseAnyElementsAsVector(String sXml, boolean bWithText) throws ExceptionZZZ {
 		Vector<String> vecReturn = null;
 		main:{
-			if(StringZZZ.isEmpty(sXml)) break main;
+			if(sXml==null) break main;
 			
 			vecReturn = new Vector<String>();
+			if(sXml.equals("")) break main;
 			
 			//siehe in den Tryouts die Loesungsschritte hierfuer:
 			String sXmlRemain = sXml;
@@ -466,9 +467,11 @@ public class XmlTagMatcherZZZ {
 				bVecFilledBefore=true;//Falls jetzt nur noch der Wert vorhanden ist, kaeme sonst eind text-Tag drum.
                 						//Das ist aber falsch, weil der Wert schon in dem XML-Wert vorhanden sein sollte.
 			}else {
-				if(StringZZZ.isEmpty(sXml)) break main;				
+				if(sXml==null) break main;
+				
 				vecReturn = new VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ>();
-								
+				if(sXml.equals("")) break main;
+				
 				bVecFilledBefore=false; //Nimm nun einzelstehende Werte mit einen text-Tag auf.
 			}
 			
@@ -620,9 +623,10 @@ public class XmlTagMatcherZZZ {
 				bMapFilledBefore=true;//Falls jetzt nur noch der Wert vorhanden ist, kaeme sonst eind text-Tag drum.
 				                      //Das ist aber falsch, weil der Wert schon in dem XML-Wert vorhanden sein sollte.
 			}else {
-				if(StringZZZ.isEmpty(sXml)) break main;				
+				if(sXml==null) break main;				
 				hmReturn = new HashMapMultiIndexedZZZ<String,String>();
 				
+				if(sXml.equals("")) break main;
 				bMapFilledBefore=false; //Nimm nun einzelstehende Werte mit einen text-Tag auf.
 			}
 			
@@ -747,18 +751,23 @@ public class XmlTagMatcherZZZ {
 	private static ITreeNodeZZZ<ITagSimpleZZZ> parseElementsAsTree_(ITreeNodeZZZ<ITagSimpleZZZ> objParentNodeIn, String sXml, boolean bWithAnyValue) throws ExceptionZZZ {
 		ITreeNodeZZZ<ITagSimpleZZZ> objReturn = null;
 		main:{	
-			if(StringZZZ.isEmpty(sXml)) break main;
+			
 			
 			boolean bMapFilledBefore;
 			if(objParentNodeIn!=null) {
 				bMapFilledBefore=true;
 				objReturn = objParentNodeIn;
+				
+				if(StringZZZ.isEmpty(sXml)) break main;
 			}else{
+				if(sXml==null) break main;
+				
 				bMapFilledBefore=false;
-				//ansonsten wird der Knoten erst im Bedarfsfall erzeugt.
-				//Nein: Wie bei Vektor und HashMap auch einen leeren Root-Knoten auf jeden Fall zurückgeben. 
+				
+				//Wie bei Vektor und HashMap auch einen leeren Root-Knoten auf jeden Fall zurückgeben. 
 				//DAS IST AUCH DER ROOT ALLER KNOTEN UND ER VERWALTET DEN SUCHINDEX ohne selbst data zu haben!!!
 				objReturn = new TreeNodeZZZ<ITagSimpleZZZ>(); //Wenn es noch einen wirklichen Knoten gibt, dann wird der zum objReturn!!!
+				if(sXml.equals("")) break main;
 			}
 						
 			//siehe in den Tryouts die Loesungsschritte hierfuer:
@@ -953,7 +962,7 @@ public class XmlTagMatcherZZZ {
 			    		//Das ist nicht extr notwendig, sondern wird beim Hinzufuegen gemacht.
 			    		//TreeNodeZZZ<ITagSimpleZZZ> objNodeText = new TreeNodeZZZ<ITagSimpleZZZ>(objTagText);
 			    		
-			    		//Haenge den neuen Knoten auf geleiche Ebene wie den aktuellen Konten
+			    		//Haenge den neuen Knoten auf gleiche Ebene wie den aktuellen Konten
 		    			objReturn.addSibling(objTagText); //Also Erweiterung: Auf gleicher Ebene einfuegen.
 		    		}									
 				}else if(!bMapFilledBefore) {
