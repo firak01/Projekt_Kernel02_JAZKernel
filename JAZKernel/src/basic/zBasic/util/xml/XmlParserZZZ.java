@@ -36,7 +36,7 @@ public class XmlParserZZZ extends AbstractObjectWithFlagZZZ implements IParserXm
 	public IVectorExtended4XmlZZZ<?> parseToVectorTagString(String sText) throws ExceptionZZZ {
 		IVectorExtended4XmlZZZ<?> vecReturn = null;
 		main:{			
-IP			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			boolean bWithoutText = this.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
 			vecReturn = XmlTagMatcherZZZ.parseElementsAsVector((VectorExtended4XmlTagStringZZZ<String>) vecReturn, sText, !bWithoutText);			
 		}
 		return vecReturn;

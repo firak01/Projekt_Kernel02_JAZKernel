@@ -129,120 +129,58 @@ public class XmlParserZZZTest extends TestCase{
 			 //      gilt die Position des Erwarteten Strings im Ergebnissektor für den "ohne umgebende texte" Fall. 
 			 
 			//A) //+++ Tag kommt nur 1x vor
-			 int iCount=0;
+			 int iCount;
 			 String sMessage = null;
-			 int[] iaIndexForTag=null; int iIndexForTag; int iIndexUsedForTag;
+			 int[] iaTagIndex=null; int iTagIndex; int iTagIndexUsed;
 			 String[]saTagForValue=null; String sTagForValue;			 
 			 String[]saValue=null;String[]saValueUsed=null;//ggf. gibt es fuer ein Tag mehrere Werte, trotzdem keine "Array von Array". Statt dessen extra ein Array aufbauen.
+			 boolean bWithText;
 			 
 			 
-			 boolean bWithText = !objParserTest.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			 //Merke: Default ist "Mit Text"
+			 iCount = 0;			 
 			 for(IEnumSetMappedZZZ objEnumMapped : listaEnumMapped){
-			 	iCount++;
-			 	sMessage = iCount + ". Teststring wird ausgewertet.";
+			 	iCount++;			 	
+			 	objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
+			 	
+			 	System.out.println("### AS TreeNodeZZZ #########################");
+			 	
+			 	//#################################################################
+				//### OHNE TEXT			 	
+			 	objParserTest.setFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT, true);
+			 	bWithText = !objParserTest.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			 	sMessage = iCount + ". Teststring wird ausgewertet (bWithText="+bWithText+").";
+			 	System.out.println(sMessage);
 			 	if(iCount==4) {
 					System.out.println("Breakpoint Pause zum debuggen");					
-				}
-			 				 	
-			 	System.out.println("### AS TreeNodeZZZ#########################");
+				}			 	
+				testParseToTreeByTestType_(objEnumTestType, bWithText, sMessage);
+				
+			 	//#################################################################
+				//### MIT TEXT			 	
+			 	objParserTest.setFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT, false);
+			 	bWithText = !objParserTest.getFlag(IParserXmlZZZ.FLAGZ.PARSE_WITHOUTTEXT);
+			 	sMessage = iCount + ". Teststring wird ausgewertet (bWithText="+bWithText+").";
 			 	System.out.println(sMessage);
-			 	
-				objEnumTestType = (IEnumSetMappedTestXmlTypeZZZ) objEnumMapped;
-				sTest= objEnumTestType.getXml();
-				System.out.println("'" + sTest +"'");
-
-				objTree =  objParserTest.parseToTree(sTest);
-														
-				if(bWithText) {
-					iaIndexForTag = objEnumTestType.getIndexInTreeOfExpectedTagsWithText();
-				}else {
-					iaIndexForTag = objEnumTestType.getIndexInTreeOfExpectedTagsWithoutText();
-				}
+			 	if(iCount==4) {
+					System.out.println("Breakpoint Pause zum debuggen");					
+				}			 	
+				testParseToTreeByTestType_(objEnumTestType, bWithText, sMessage);
+					
+				System.out.println("###########################################");
+			 }//end for iEnumSet
 				
-				TODOGOON20240622;
-				if(ArrayUtilZZZ.isNull(iaIndexForTag)) {
-					
-				}else {
-					assertNotNull(sMessage, objTree);
-					assertTrue(sMessage, objTree.isEmpty());
-					
-					sDebug = objTree.computeDebugString();
-					System.out.println(sDebug);
-					
-					
-					saValue=objEnumTestType.getExpectedValues();
-					saTagForValue=objEnumTestType.getTagsForExpectedValues();
-					if(!(ArrayUtilZZZ.isNull(saValue)||ArrayUtilZZZ.isNull(saTagForValue))) {						
-						for(int i=0;i<=saTagForValue.length-1;i++) { //Alle definierten Testwerte durchgehen.
-							iIndexUsedForTag=0;
-							
-							
-							//Der IndexForTag ist in diesem Test nur ein Kennzeichen, ob ueberhaupt ein Tag erwartet wird.
-							//Hier wird nach einem konkreten Tag gesucht darum hat das Ergebnis immer 0 als Index im Vector.
-							iIndexForTag =iaIndexForTag[i];
-							if(iIndexForTag<=-1) {
-								
-							}else {
-								sTagForValue = saTagForValue[i];
-									
-								/* TODOGOON20240622 zur Analyse der einzelnen TagWerte spaeter....
-								//jetzt da wir den Tagnamen haben koennen wir dafuer den Wert holen
-								//vecTag = XmlTagMatcherZZZ.parseAnyValueForTagAsVector(sTest, sTagForValue);														
-								//assertNotNull(sMessage, vecTag);
-								
-								if(ArrayUtilZZZ.isEmpty(saValue)) {
-									assertTrue(sMessage, vecTag.isEmpty());
-								}else {
-									assertFalse(sMessage, vecTag.isEmpty());
-							
-									//Da es in diesem Test mehree Werte fuer einen Tagnamen geben kann, muessen die Werte in einem extra Array aufbereitet werden.
-									int[]iaIndex = StringArrayZZZ.getIndexContains(saTagForValue, sTagForValue);
-									saValueUsed = StringArrayZZZ.get(saValue, iaIndex);									
-									
-									//Nun die Einzelnen Werte durchgehen. Es gibt ggfs. fuer ein Tag mehrere Werte.
-									for(int j=0; j<=saValueUsed.length-1; j++) {
-										assertEquals(sMessage, saValueUsed[j],vecTag.get(iIndexUsedForTag));//Merke: vecTag wird in jeder schleife neu ausgerechnet.
-										iIndexUsedForTag++; //Falls es mehrer Tag-Werte gibt, dann sollten sie an der naechsten Vektor-Position stehen
-									}
-																
-									
-								}	
-								*/							
-							}//iIndexForTag <= -1							
-						}//end for	
-							
-					}//isNull saValue || saTagForValue
-				}//isNull iaIndexForTag
-				
-				System.out.println("###########################################");				
-			 }//end for
+			
+			 //###############################################################
+			 //#############################################################
 			 
-			 
-
-			//#############################################################
-			 
-			System.out.println("### AS TreeNodeZZZ#########################");
+			System.out.println("### AS TreeNodeZZZ #########################");
 			
 			sTest = "Wert vor abc<abc>wert vor b<b>Wert in b</b>wert nach b</abc>wert nach abc";
 			System.out.println("'" + sTest + "'");
 			
 			objTree =  objParserTest.parseToTree(sTest);
 			assertNotNull(objTree);
-			
-			iaIndexForTag = objEnumTestType.getIndexInVectorOfExpectedTagsWithoutText();
-			if(!ArrayUtilZZZ.isNull(iaIndexForTag)) {
-				assertFalse(objTree.isEmpty());
-				
-				
-				saValue=objEnumTestType.getExpectedValues();
-				saTagForValue=objEnumTestType.getTagsForExpectedValues();
-				if(!(ArrayUtilZZZ.isNull(saValue)||ArrayUtilZZZ.isNull(saTagForValue))) {						
-					for(int i=0;i<=saTagForValue.length-1;i++) { //Alle definierten Testwerte durchgehen.
-						iIndexUsedForTag=0;
-						
-					}//end for
-				}//end if .isNull( saValue );
-			}
 			
 			sDebug = objTree.computeDebugString();									
 			System.out.println(sDebug);
@@ -254,4 +192,97 @@ public class XmlParserZZZTest extends TestCase{
 				fail("Method throws an exception." + ez.getMessageLast());
 		}
 	 }
+	 
+	 private void testParseToTreeByTestType_(IEnumSetMappedTestXmlTypeZZZ objEnumTestType, boolean bWithText, String sMessage) {
+		 try{
+			String sTest; String sDebug;
+			int[]iaTagIndex; int iTagIndex; 
+			String[]saTagForValue=null; String sTagForValue; String sTagValue;
+ 			String[]saValue=null;
+ 						
+			sTest= objEnumTestType.getXml();
+			System.out.println("'" + sTest +"'");
+
+ 			ITreeNodeZZZ<ITagSimpleZZZ> objTree =  objParserTest.parseToTree(sTest);
+ 			sDebug = objTree.computeDebugString();									
+			System.out.println(sDebug);
+ 			
+ 			
+			 //Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
+			 //Daher von den angegebenen Indexpositionen ausgehen
+			if(bWithText) {
+				iaTagIndex = objEnumTestType.getIndexInTreeOfExpectedTagsWithText();
+			}else {
+				iaTagIndex = objEnumTestType.getIndexInTreeOfExpectedTagsWithoutText();
+			}
+			
+			//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
+			if(ArrayUtilZZZ.isNull(iaTagIndex)) {
+				if(sTest==null) {
+					assertNull(sMessage, objTree);
+				}else {
+					//Das kann dann nur ein Leerstring sein
+					assertNotNull(sMessage,objTree);
+					assertTrue(sMessage, objTree.isEmpty());					
+				}
+			}else {
+				assertNotNull(sMessage,objTree);
+				
+				//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
+				
+//				... sind Testwerte gepflegt?
+				saValue=objEnumTestType.getExpectedValues();
+				if(ArrayUtilZZZ.isEmpty(saValue)) {
+					
+				}else {
+					
+					if(iaTagIndex.length!=saValue.length) {
+						fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
+					}
+					
+					//... sind Testtags gepfegt?
+					saTagForValue=objEnumTestType.getTagsForExpectedValues();
+					
+					//Die Indexpositionen durchsehen
+					for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
+								
+						//Die Werte durchsehen	
+						for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+							iTagIndex = iaTagIndex[iTestLaufWert];
+								
+							//...aber nur falls auch gepflegt
+							if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+									
+							}else {
+								if(iTagIndex<=-1) {
+									//dann gibt es an dieser Stelle keinen zu pruefenden Wert aber andere Wete sind ggfs. vorhanden. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
+									
+								}else {
+									assertFalse(sMessage, objTree.isEmpty());
+									
+									sTagValue = saValue[iTestLaufWert];
+									sTagForValue = saTagForValue[iTestLaufWert];
+										
+									//Merke: objNode ist der Root-Knoten.
+									//Das geht also mit dem Root Knoten, sprich nur 1 XML - Element
+									//Aber wir suche auch Kindelemente
+									//ITagSimpleZZZ objTag = objNode.data;
+									
+									ITreeNodeZZZ<ITagSimpleZZZ> objNodeForTag = objTree.getElementByIndex(iTagIndex);
+									assertNotNull(sMessage, objNodeForTag);
+
+									ITagSimpleZZZ objTag = objNodeForTag.getData();
+									assertEquals(sMessage, sTagForValue, objTag.getName());
+									assertEquals(sMessage, sTagValue, objTag.getValue());
+								}//end if isEmpty(iTagIndex)
+							}//end if isEmpty(iaTagIndex)														
+						}//end if isEmpty(saValue)
+					}//end for ...wert																	
+				}//end for (Testlauf)													
+			}//end if isEmpty(iaTagIndex)
+		 }catch(ExceptionZZZ ez){
+				fail("Method throws an exception." + ez.getMessageLast());
+		}
+	 }//end testParseToTreeByTestType_
+		 
 }//End class

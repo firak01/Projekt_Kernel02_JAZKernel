@@ -384,7 +384,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 	 private void testParseElementsAsVectorByTestType_(IEnumSetMappedTestXmlTypeZZZ objEnumTestType, boolean bWithText, String sMessage) {
 		 try{
 			 String sTest;
-			 int[]iaTagIndex; int iTagIndexInVector; 
+			 int[]iaTagIndex; int iTagIndex; 
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
  			 String[]saValue=null;
 			 //VectorExtendedZZZ<String> vecTag=null;
@@ -414,43 +414,50 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				assertNotNull(sMessage,vecTag);
 					
 				//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
-				//... sind Testtags gepfegt?
-				saTagForValue=objEnumTestType.getTagsForExpectedValues();
 					
 				//	... sind Testwerte gepflegt?
 				saValue=objEnumTestType.getExpectedValues();
-				if(iaTagIndex.length!=saValue.length) {
-					fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
-				}
+				if(ArrayUtilZZZ.isEmpty(saValue)) {
+										
+				}else {
+					if(iaTagIndex.length!=saValue.length) {
+						fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
+					}
 					
 					
-				//Die Indexpositionen durchsehen
-				for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
-							
-					//Die Werte durchsehen	
-					for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
-						iTagIndexInVector = iaTagIndex[iTestLaufWert];
-							
-						//...aber nur fall auch gepflegt
-						if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+					//... sind Testtags gepfegt?
+					saTagForValue=objEnumTestType.getTagsForExpectedValues();
+					
+						
+					//Die Indexpositionen durchsehen
+					for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
 								
-						}else {
-							if(iTagIndexInVector<=-1) {
-								//dann gibt es keinen zu pruefenden Wert. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
-																
-							}else {
-								assertFalse(sMessage, vecTag.isEmpty());
+						//Die Werte durchsehen	
+						for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+							
+							//...aber nur fall auch gepflegt
+							if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+								assertTrue(sMessage, vecTag.isEmpty());
 								
-								sTagValue = saValue[iTestLaufWert];
-								sTagForValue = saTagForValue[iTestLaufWert];
-																		
-								//dann den Wert pruefen, mit reingerechentem Tag
-								String sValueInVector = XmlUtilZZZ.computeTag(sTagForValue, sTagValue);
-								assertEquals(sMessage, sValueInVector, (vecTag.get(iTagIndexInVector)).toString());			
-							}
-						}
-					}//end for ...wert
-				}//end for ... lauf
+							}else {								
+								iTagIndex = iaTagIndex[iTestLaufWert];																
+								if(iTagIndex<=-1) {
+									//dann gibt es keinen zu pruefenden Wert fuer diese Stelle, aber ggfs. sind andere Werte vorhanden also nicht leer. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
+																				
+								}else {
+									assertFalse(sMessage, vecTag.isEmpty());
+										
+									sTagValue = saValue[iTestLaufWert];
+									sTagForValue = saTagForValue[iTestLaufWert];
+																			
+									//dann den Wert pruefen, mit reingerechentem Tag
+									String sValueInVector = XmlUtilZZZ.computeTag(sTagForValue, sTagValue);
+									assertEquals(sMessage, sValueInVector, (vecTag.get(iTagIndex)).toString());			
+								}//end if(iTagIndex <= -1
+							}//end if isEmpty(iaTagIndex)
+						}//end for ...wert
+					}//end for ... lauf
+				}//end if isNull(saValue)
 			}//end if isNull(iaTagIndex)							
 									
 		
@@ -617,7 +624,7 @@ public class XmlTagMatcherZZZTest extends TestCase{
 	 private void testParseElementsAsMapByTestType_(IEnumSetMappedTestXmlTypeZZZ objEnumTestType, boolean bWithText, String sMessage) {
 		 try{
 			 String sTest;
-			 int[]iaTagIndex; int iTagIndexInVector; 
+			 int[]iaTagIndex; int iTagIndex; 
 			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
  			 String[]saValue=null;
  			HashMapMultiIndexedZZZ<String, String> hmTag=null;
@@ -646,45 +653,58 @@ public class XmlTagMatcherZZZTest extends TestCase{
 				assertNotNull(sMessage,hmTag);
 					
 				//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
-				//... sind Testtags gepfegt?
-				saTagForValue=objEnumTestType.getTagsForExpectedValues();
 					
 				//	... sind Testwerte gepflegt?
 				saValue=objEnumTestType.getExpectedValues();
-				if(iaTagIndex.length!=saValue.length) {
-					fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
-				}
+				if(ArrayUtilZZZ.isEmpty(saValue)) {
+					
+				}else {
+					if(iaTagIndex.length!=saValue.length) {
+						fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
+					}
+					
+					//... sind Testtags gepfegt?
+					saTagForValue=objEnumTestType.getTagsForExpectedValues();
 					
 					
-				//Die Indexpositionen durchsehen
-				for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
-							
-					//Die Werte durchsehen	
-					for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
-						iTagIndexInVector = iaTagIndex[iTestLaufWert];
-							
-						//...aber nur fall auch gepflegt
-						if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+					//Die Indexpositionen durchsehen
+					for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
 								
-						}else {
-							if(iTagIndexInVector<=-1) {
-								//dann gibt es keinen zu pruefenden Wert. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
-																
+						//Die Werte durchsehen	
+						for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+								
+							//...aber nur fall auch gepflegt
+							if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+								assertTrue(sMessage, hmTag.isEmpty());
+								
 							}else {
-								assertFalse(sMessage, hmTag.isEmpty());
+								iTagIndex = iaTagIndex[iTestLaufWert];
 								
-								sTagValue = saValue[iTestLaufWert];
-								sTagForValue = saTagForValue[iTestLaufWert];
-																		
-								//dann den Wert pruefen, mit reingerechentem Tag
-								String sValueInVector = XmlUtilZZZ.computeTagAsHashMapEntry(sTagForValue, sTagValue);
-								//also einfach mit Equals kann man den String mit dem HashMap-Inhalt nicht vergleichen: assertEquals(sMessage, sValueInVector, hmTag.get(iTagIndexInVector));
-								//darum erst in einen String umwandeln:
-								assertEquals(sMessage, sValueInVector, hmTag.get(iTagIndexInVector).toString());
-							}
-						}
-					}//end for ...wert
-				}//end for ... lauf
+								if(iTagIndex<=-1) {
+									//dann gibt es keinen zu pruefenden Wert an dieser Stelle, ggfs. aber sind andere Werte vorhanden. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
+																			
+								}else {																
+									if(ArrayUtilZZZ.isEmpty(saValue)) {
+										assertTrue(sMessage, hmTag.isEmpty());
+										
+									}else {
+										assertFalse(sMessage, hmTag.isEmpty());
+										
+										sTagForValue = saTagForValue[iTestLaufWert];
+										sTagValue = saValue[iTestLaufWert];
+										
+									
+										//dann den Wert pruefen, mit reingerechentem Tag
+										String sValueInVector = XmlUtilZZZ.computeTagAsHashMapEntry(sTagForValue, sTagValue);
+										//also einfach mit Equals kann man den String mit dem HashMap-Inhalt nicht vergleichen: assertEquals(sMessage, sValueInVector, hmTag.get(iTagIndexInVector));
+										//darum erst in einen String umwandeln:
+										assertEquals(sMessage, sValueInVector, hmTag.get(iTagIndex).toString());
+									}
+								}// end if(iTagIndex<=-1)
+							}//end if isEmpty(iaTagIndex)
+						}//end for ...wert
+					}//end for ... lauf
+				}//end isNull (saValue)
 			}//end if isNull(iaTagIndex)							
 									
 		
@@ -1060,24 +1080,22 @@ Wert hinter abc
 	 
 	 private void testParseElementsAsTreeByTestType_(IEnumSetMappedTestXmlTypeZZZ objEnumTestType, boolean bWithText, String sMessage) {
 		 try{
-			 String sTest;
-			 int[]iaTagIndex; int iTagIndexInVector; 
-			 String[]saTagForValue=null; String sTagForValue; String sTagValue;
- 			 String[]saValue=null;
- 			
- 			 ITreeNodeZZZ<ITagSimpleZZZ> objNode = null;
-			 
- 			 sTest= objEnumTestType.getXml();
- 			 objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, bWithText);
-				
- 			 //Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
- 			 //Daher von den angegebenen Indexpositionen ausgehen
- 			 if(bWithText) {
-				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithText();
- 			 }else {
+			String sTest;
+			int[]iaTagIndex; int iTagIndex; 
+			String[]saTagForValue=null; String sTagForValue; String sTagValue;
+	 		String[]saValue=null;
+	 			
+	 		sTest= objEnumTestType.getXml();
+	 		ITreeNodeZZZ<ITagSimpleZZZ> objNode = XmlTagMatcherZZZ.parseElementsAsTree(sTest, bWithText);
+					
+	 		//Ermittle in diesem Text nicht die Anzahl der Knoten, sondern konkrete Werte
+	 		//Daher von den angegebenen Indexpositionen ausgehen
+	 		if(bWithText) {
+	 			iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithText();
+	 		}else {
 				iaTagIndex = objEnumTestType.getIndexInHashMapOfExpectedTagsWithoutText();
- 			 }
-			
+	 		}
+				
 			//Ohne Indexpositionen also (wie bei iElementsWithoutText, ect) ueberhaupt kein Wert
 			if(ArrayUtilZZZ.isNull(iaTagIndex)) {
 				if(sTest==null) {
@@ -1089,74 +1107,61 @@ Wert hinter abc
 				}						
 			}else {
 				assertNotNull(sMessage,objNode);
-					
+						
 				//Nun auf Werte abpruefen, falls Testwerte gepflegt sind
-				//... sind Testtags gepfegt?
-				saTagForValue=objEnumTestType.getTagsForExpectedValues();
-					
+						
 				//	... sind Testwerte gepflegt?
 				saValue=objEnumTestType.getExpectedValues();
-				if(iaTagIndex.length!=saValue.length) {
-					fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
-				}
+				if(ArrayUtilZZZ.isEmpty(saValue)) {
 					
+				}else {
 					
-				//Die Indexpositionen durchsehen
-				for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
-							
-					//Die Werte durchsehen	
-					for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
-						iTagIndexInVector = iaTagIndex[iTestLaufWert];
-							
-						//...aber nur fall auch gepflegt
-						if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
+					if(iaTagIndex.length!=saValue.length) {
+						fail(sMessage+" ungleiche Anzahl an Testwerten und TestIndexwerten im Vektor");
+					}
+					
+					//... sind Testtags gepfegt?
+					saTagForValue=objEnumTestType.getTagsForExpectedValues();
+										
+					//Die Indexpositionen durchsehen
+					for(int iTestLauf = 0; iTestLauf <= iaTagIndex.length-1; iTestLauf++) {
 								
-						}else {
-							if(iTagIndexInVector<=-1) {
-								//dann gibt es keinen zu pruefenden Wert. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
-																
-							}else {
-								assertFalse(sMessage, objNode.isEmpty());
+						//Die Werte durchsehen	
+						for(int iTestLaufWert = 0; iTestLaufWert <= saValue.length - 1; iTestLaufWert++) {
+							iTagIndex = iaTagIndex[iTestLaufWert];
 								
-								sTagValue = saValue[iTestLaufWert];
-								sTagForValue = saTagForValue[iTestLaufWert];
+							//...aber nur falls auch gepflegt
+							if(ArrayUtilZZZ.isEmpty(iaTagIndex)) {
 									
-								//Merke: objNode ist der Root-Knoten.
-								//Das geht also mit dem Root Knoten, sprich nur 1 XML - Element
-								//Aber wir suche auch Kindelemente
-								//ITagSimpleZZZ objTag = objNode.data;
-								
-								ITreeNodeZZZ<ITagSimpleZZZ> objNodeForTag = objNode.getElementByIndex(iTagIndexInVector);
-								assertNotNull(sMessage, objNodeForTag);
-
-								ITagSimpleZZZ objTag = objNodeForTag.getData();
-								assertEquals(sMessage, sTagForValue, objTag.getName());
-								assertEquals(sMessage, sTagValue, objTag.getValue());
-							}
-						}
+							}else {
+								if(iTagIndex<=-1) {
+									//dann gibt es an dieser Stelle keinen zu pruefenden Wert aber andere Wete sind ggfs. vorhanden. Z.B. weil es ein Text ist, aber in diesem Lauf Texte ignoriert werden.																
+									
+								}else {
+									assertFalse(sMessage, objNode.isEmpty());
+									
+									sTagValue = saValue[iTestLaufWert];
+									sTagForValue = saTagForValue[iTestLaufWert];
+										
+									//Merke: objNode ist der Root-Knoten.
+									//Das geht also mit dem Root Knoten, sprich nur 1 XML - Element
+									//Aber wir suche auch Kindelemente
+									//ITagSimpleZZZ objTag = objNode.data;
+									
+									ITreeNodeZZZ<ITagSimpleZZZ> objNodeForTag = objNode.getElementByIndex(iTagIndex);
+									assertNotNull(sMessage, objNodeForTag);
+	
+									ITagSimpleZZZ objTag = objNodeForTag.getData();
+									assertEquals(sMessage, sTagForValue, objTag.getName());
+									assertEquals(sMessage, sTagValue, objTag.getValue());
+								}//end if isEmpty(iTagIndex)
+							}//end if isEmpty(iaTagIndex)			
+						}//end if isEmpty(saValue)
 					}//end for ...wert
 				}//end for ... lauf
-			}//end if isNull(iaTagIndex)							
-									
-		
-				
-																						
-//									GENERELLES PROBLEM: 
-//									WIR MÜSSEN DEN KNOTEN ABZAEHLEN UND KÖNNEN DANN DEN ERWARTETEN WERT angeben
-//									DAZU MUSS DIE POSITION IM TEST-CONTAINER angegeben werden.
-//									
-									//Bloedsinn, der Vektor ist immer viel größer als das Array mit den zu ueberpruefenden Werten   assertEquals(sMessage, saValue[i].length, vecTag.size());
-//									for(int j=0;j<=saValue[i].length-1;j++) {
-//										sTagValue = (String) vecTag.get(j); //XmlUtilZZZ.computeTag(sTagForValue, (String) vecTag.get(j));
-//										
-//										//Hier kommt der Tag in den gespeicherten Vector - String, darum errechnen und dann vergleichen.
-//										assertEquals(sMessage, XmlUtilZZZ.computeTag(sTagForValue, saValue[i][j]),sTagValue);//Merke: vecTag wird in jeder schleife neu ausgerechnet.
-//									}	
-	 
+			}//end if isNull(iaTagIndex)																
 		 }catch(ExceptionZZZ ez){
-				fail("Method throws an exception." + ez.getMessageLast());
-		}
-	 }
-	 
-	
+			fail("Method throws an exception." + ez.getMessageLast());
+	 	}
+	 }	//end testParseElementsAsTryByTestType_
 }//End class
