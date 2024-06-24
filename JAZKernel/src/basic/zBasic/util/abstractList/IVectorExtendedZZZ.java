@@ -3,9 +3,9 @@ package basic.zBasic.util.abstractList;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConstantZZZ;
+import basic.zBasic.IOutputNormedZZZ;
 
-public interface IVectorExtendedZZZ<T> extends IConstantZZZ, ICollectionConstantZZZ {
+public interface IVectorExtendedZZZ<T> extends IOutputNormedZZZ, ICollectionConstantZZZ {
 	
 	int getIndexOfString(String string, boolean ignoreCase, int fromIndex);
 	public T getEntryLast();
