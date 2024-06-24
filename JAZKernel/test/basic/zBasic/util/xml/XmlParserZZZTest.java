@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.reflection.position.TagTypeFilePositionZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
@@ -12,17 +11,9 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.IHashMapMultiZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorExtended4XmlTagStringZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.enums.EnumAvailableHelperZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.tree.ITreeNodeZZZ;
-import basic.zBasic.util.datatype.tree.TreeNodeZZZ;
-import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.util.file.FileTextParserZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
-import basic.zBasic.xml.tagtype.ITagTypeZZZ;
-import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import junit.framework.TestCase;
 
 public class XmlParserZZZTest extends TestCase{
