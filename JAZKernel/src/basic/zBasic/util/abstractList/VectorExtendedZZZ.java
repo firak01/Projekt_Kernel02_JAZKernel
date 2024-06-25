@@ -23,13 +23,16 @@
 
 package basic.zBasic.util.abstractList;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.NoSuchElementException;
+import java.util.Vector;
 
 import org.apache.commons.lang.ObjectUtils;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConstantZZZ;
-import basic.zBasic.IObjectZZZ;
+import basic.zBasic.IOutputDebugNormedZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 /** 20170725: Diese Klasse Generisch gemacht. Dabei den Klassennamen analog zur HashMapExtended gewählt. 
@@ -42,6 +45,8 @@ import basic.zBasic.ReflectCodeZZZ;
 public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ{
 	private static final long serialVersionUID = 1L;
 	protected int iIndexUsedLast=-1;
+	
+	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
 	
 	public VectorExtendedZZZ(Vector initVector) {
 		for (int i=0; i<initVector.size(); i++)
@@ -138,6 +143,11 @@ public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ{
 		}
 	}
 	
+	@Override
+	public Object getElementByIndex(int iIndex) {
+		return this.get(iIndex);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getEntryLast() {
@@ -151,6 +161,8 @@ public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ{
 		int iIndexUsed = this.size()-1;
 		return (T) this.get(iIndexUsed);
 	}
+	
+	
 	
 	/** Durchsucht den aktuellen String-Vector und  gibt alle Werte der Eintr�ge rechts von dem Suchstring zur�ck. 
 	 *   Dabei wird von links gesucht.
@@ -325,4 +337,47 @@ public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ{
 		}//end main
 		return iReturn;
 	}
+
+    //### aus IOutputDebugNormed
+	@Override
+	public String computeDebugString() throws ExceptionZZZ{		
+		String sEntryDelimiter = this.getDebugEntryDelimiter();
+		return this.computeDebugString(sEntryDelimiter);
+	}
+	
+	@Override
+	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			int iSize = this.size();
+			if(iSize==0) break main;
+			
+			for(int i=0; i<= iSize-1; i++ ) {
+				T obj = (T) this.get(i);
+				if(sReturn == null) {
+					sReturn = obj.toString();
+				}else {
+					sReturn = sReturn + sEntryDelimiter + obj.toString();
+				}
+			}
+			
+		}//end main:
+		return sReturn;
+	}
+		
+	@Override
+	public String getDebugEntryDelimiter() {
+		String sEntryDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
+		}
+		return sEntryDelimiter;
+	}
+	
+	@Override
+	public void setDebugEntryDelimiter(String sEntryDelimiter) {
+		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
+	}	
 }

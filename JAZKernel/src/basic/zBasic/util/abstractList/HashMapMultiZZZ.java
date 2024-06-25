@@ -7,10 +7,9 @@ import java.util.Map;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConstantZZZ;
-import basic.zBasic.IOutputNormedZZZ;
+import basic.zBasic.IOutputDebugNormedWithKeyZZZ;
+import basic.zBasic.IOutputDebugNormedZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Diese Klasse erlaubt das "direktere" Arbeiten mit einer HashMap, die in einer anderen HashMap gespeichert ist.
@@ -62,8 +61,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 	 }		    	 		    	
  }
  */
-public class HashMapMultiZZZ <K,V> implements IHashMapMultiZZZ{
-	protected volatile HashMap<String,Object> hmOuter=new HashMap<String,Object>();
+public class HashMapMultiZZZ<K,V> implements IHashMapMultiZZZ<K,V>{
+	protected volatile HashMapExtendedZZZ<String,Object> hmOuter=new HashMapExtendedZZZ<String,Object>();
 	
 	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
 	protected volatile String sDebugEntryDelimiterUsed = null;
@@ -156,17 +155,14 @@ public class HashMapMultiZZZ <K,V> implements IHashMapMultiZZZ{
 	* lindhauer; 08.08.2011 10:39:40
 	 * @throws ExceptionZZZ 
 	 */
+	@Override
 	public String computeDebugString() throws ExceptionZZZ{
-		String sReturn = new String("");
-		main:{
-			//HashMapOuter durchgehen
-			if(this.hmOuter.size()==0) break main;
-								
-			String sKeyDelimiter = this.getDebugKeyDelimiter();
-			String sEntryDelimiter = this.getDebugEntryDelimiter();
-			sReturn = this.debugString(this, sKeyDelimiter, sEntryDelimiter);		
-		}//end main:
-		return sReturn;
+		return HashMapUtilZZZ.debugString(this, null, null);
+	}
+	
+	@Override
+	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
+		return HashMapUtilZZZ.debugString(this, null, sEntryDelimiter);
 	}
 	
 	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
@@ -174,66 +170,18 @@ public class HashMapMultiZZZ <K,V> implements IHashMapMultiZZZ{
 	}
 	
 	public static String debugString(HashMapMultiZZZ hmDebug) throws ExceptionZZZ{
-		String sReturn = new String("");
-		main:{		
-			sReturn = HashMapMultiZZZ.debugString(hmDebug, null, null);
-		}//end main
-		return sReturn;
+		return HashMapUtilZZZ.debugString(hmDebug, null, null);
 	}
 	
 	public static String debugString(HashMapMultiZZZ hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ{
-		String sReturn = new String("");
-		main:{
-			//HashMapOuter durchgehen
-			if(hmDebug==null)break main;
-			if(hmDebug.size()==0) break main;
-			
-			String sEntryDelimiter;			
-			if(sEntryDelimiterIn==null){
-				sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-			}else {
-				sEntryDelimiter = sEntryDelimiterIn;
-			}
-						
-			String sKeyDelimiter;
-			if(sKeyDelimiterIn==null){
-				sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
-			}else{
-				sKeyDelimiter = sKeyDelimiterIn;
-			}
-		
-			String sKeyOuter = null;
-			Set setKeyOuter = hmDebug.keySet();
-			Iterator itOuter = setKeyOuter.iterator();
-			while(itOuter.hasNext()){
-				if(!StringZZZ.isEmpty(sReturn)){
-					sReturn = sReturn + sEntryDelimiter;
-				}
-				
-				Object objOuter = itOuter.next();
-				sKeyOuter = objOuter.toString();
-				
-				HashMap hmInner = (HashMap) hmDebug.get(objOuter);
-				
-				//20190801: HIER DEBUG FUNKTIONALITÄT VON HashMapExtendedZZZ verwenden.
-				String stemp = HashMapExtendedZZZ.computeDebugString(hmInner, sKeyDelimiter, sEntryDelimiter);
-				if(stemp!=null){
-					String[] saValue = StringZZZ.explode(stemp, sEntryDelimiter);
-					String[] saValueWithKey = StringArrayZZZ.plusString(saValue, sKeyOuter+sKeyDelimiter,"BEFORE");
-					sReturn = sReturn + StringArrayZZZ.implode(saValueWithKey,sEntryDelimiter);				
-				}else{
-					sReturn = sReturn + sKeyOuter;
-				}
-			}//end while itOuter.hasnext()
-		}//end main
-		return sReturn;
+		return HashMapUtilZZZ.debugString(hmDebug, sKeyDelimiterIn, sEntryDelimiterIn);
 	}
 	
 	@Override
 	public String getDebugEntryDelimiter() {
 		String sEntryDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
 		}
@@ -248,7 +196,7 @@ public class HashMapMultiZZZ <K,V> implements IHashMapMultiZZZ{
 	public String getDebugKeyDelimiter() {
 		String sKeyDelimiter;
 		if(this.sDebugKeyDelimiterUsed==null){
-			sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
 		}else{
 			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
 		}
@@ -285,6 +233,14 @@ public class HashMapMultiZZZ <K,V> implements IHashMapMultiZZZ{
 	 */	
 	public Object get(Object arg0){	
 		return hmOuter.get(arg0);
+	}
+	
+	//### Aus IHashMapMultiZZZ
+	@Override
+	public V getElementByIndex(int iIndex) {
+		K key = (K) this.hmOuter.getKeyByIndex(iIndex);
+		V obj = (V) this.hmOuter.get(key);		
+		return obj;
 	}
 	
 	public Set<?> getInnerKeySet(String sOuterKey){
@@ -430,7 +386,31 @@ public class HashMapMultiZZZ <K,V> implements IHashMapMultiZZZ{
 	//##########################################
 	//### Umwandlungen
 	public HashMap<String, Object> toHashMapInnerKeyString() throws ExceptionZZZ{
-		return this.toHashMapInnerKeyString(IHashMapMultiZZZ.FLAGZ.TO_HASHMAP_KEEPLAST);
+		//return this.toHashMapInnerKeyString(IHashMapMultiZZZ.FLAGZ.TO_HASHMAP_KEEPLAST);
+		HashMap<String, Object> hmReturn = null;
+		main:{
+			HashMapKeepFirstZZZ<String, Object> hm=new HashMapKeepFirstZZZ<String, Object>();
+			
+			Iterator<String> itOuter = this.getOuterKeySetIterator();
+			while(itOuter.hasNext()) {
+				Object objKeyOuter = (Object)itOuter.next();					
+				HashMap<String, Object> hmInner = this.getInnerHashMap(objKeyOuter);
+				if(hmInner!=null) {
+					
+					Set<String> setInner = hmInner.keySet();
+					Iterator<String> itInner = setInner.iterator();
+					while(itInner.hasNext()) {
+						Object objKeyInner = (Object)itInner.next();
+						String sAliasInner = objKeyInner.toString();
+						
+						Object objInner = hmInner.get(objKeyInner);							
+						hm.put(sAliasInner, objInner);
+					}						
+				}
+			}
+			hmReturn = hm;	
+		}//end main;
+		return hmReturn;
 	}
 	
 	public HashMap<String, Object> toHashMapInnerKeyString(Enum FLAGZ) throws ExceptionZZZ{
@@ -486,4 +466,6 @@ public class HashMapMultiZZZ <K,V> implements IHashMapMultiZZZ{
 		}//end main:
 		return hmReturn;
 	}
+
+	
 }

@@ -21,7 +21,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @param <T>
  *
  */
-public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterable<Object>,Serializable{	
+public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterable<K>,Serializable{	
 	private HashMap<Integer,Object> hmIndexed=null;
 	private VectorExtendedZZZ<Integer> vecIndex=null;	
 	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
@@ -447,8 +447,8 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 //	}
 	
 	@Override
-    public Iterator<Object> iterator() {
-        Iterator<Object> it = new Iterator<Object>() {
+    public Iterator<K> iterator() {
+        Iterator<K> it = new Iterator<K>() {
         	private int iIndexIterator=-1; //Der Index des gerade verarbeiteten Keys im Iterator
         	private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
         	
@@ -473,8 +473,8 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 
             @SuppressWarnings("unchecked")
 			@Override
-            public Object next() {
-                Object objReturn = null;
+            public K next() {
+                K objReturn = null;
                 main:{
                 	VectorExtendedZZZ<Integer> vec = getVectorIndex();
 	            	if(vec==null)break main;
@@ -491,7 +491,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	            	boolean bReturn = iIndexCur <= intLast.intValue() && getHashMap().get(iIndexCur) != null;	 
 	            	if(bReturn) {
 	            		this.iIndexIterator = iIndexCur;
-	            		objReturn = (Object) getHashMap().get(iIndexCur);
+	            		objReturn = (K) getHashMap().get(iIndexCur);
 	            	}
                 }//end main:
             	return objReturn;

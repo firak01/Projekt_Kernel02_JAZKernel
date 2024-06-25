@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IOutputNormedZZZ;
+import basic.zBasic.IOutputDebugNormedWithKeyZZZ;
+import basic.zBasic.IOutputDebugNormedZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -411,7 +412,7 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 	public String getDebugEntryDelimiter() {
 		String sEntryDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
 		}
@@ -426,7 +427,7 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 	public String getDebugKeyDelimiter() {
 		String sKeyDelimiter;
 		if(this.sDebugKeyDelimiterUsed==null){
-			sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
 		}else{
 			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
 		}
@@ -466,6 +467,12 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 	 * @author Fritz Lindhauer, 21.10.2022, 09:56:44
 	 * @throws ExceptionZZZ 
 	 */
+	@Override
+	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
+		String sKeyDelimiter = this.getDebugKeyDelimiter();
+		return this.computeDebugString(sKeyDelimiter, sEntryDelimiter);
+	}
+	
 	public String computeDebugString(String sKeyDelimiterIn, String sEntryDelimiterIn) throws ExceptionZZZ{
 		String sReturn = new String("");
 		main:{
@@ -494,14 +501,14 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 			
 			String sEntryDelimiter;			
 			if(sEntryDelimiterIn==null){
-				sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+				sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 			}else {
 				sEntryDelimiter = sEntryDelimiterIn;
 			}
 						
 			String sKeyDelimiter;
 			if(sKeyDelimiterIn==null){
-				sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+				sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
 			}else{
 				sKeyDelimiter = sKeyDelimiterIn;
 			}

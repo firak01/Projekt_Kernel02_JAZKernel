@@ -74,7 +74,7 @@ public class HashMapExtendedIndexedZZZTest extends TestCase{
 				
 				//Struktur g�ltig
 				btemp =HashMapExtendedIndexedZZZ.checkStructure(hmIndexed, false);
-				assertTrue("Testobjekt aus dem Setup sollte g�ltig strukturiert sein.", btemp);
+				assertTrue("Testobjekt aus dem Setup sollte gueltig strukturiert sein.", btemp);
 			
 			} catch (ExceptionZZZ ez) {
 				fail("Method throws an exception." + ez.getMessageLast());
@@ -138,7 +138,7 @@ public class HashMapExtendedIndexedZZZTest extends TestCase{
 				int itemp;
 				//########################################################################
                 //VERION A) HASHMAP			
-				//+++ PR�FOBJEKT 1)
+				//+++ PRUEFOBJEKT 1)
 				HashMap hmTest1 = (HashMap) hmTest.clone();
 				
 				//hmIndexed  jedesmal neu errechnen, da die Indexreihenfolge einem Internen Algorithmus entspricht und nicht so ist, wie notiert.

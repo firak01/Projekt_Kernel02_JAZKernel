@@ -18,6 +18,8 @@ import basic.javareflection.mopex.Mopex;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
+import basic.zBasic.IOutputDebugNormedWithKeyZZZ;
+import basic.zBasic.IOutputDebugNormedZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.crypt.thread.KeyPressThreadEncryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -35,7 +37,15 @@ import basic.zBasic.util.math.MathZZZ;
  */
 public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, IObjectZZZ, IHashMapKeepFirstZZZ{
 	private static final long serialVersionUID = -576703130885041379L;
+	
+	//fuer IObjectZZZ
 	private ExceptionZZZ objException;
+	
+	//fuer IOutputDebugNormedZZZ
+	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
+	
+	//fuer IOutputDebugNormedWithKeyZZZ
+	protected volatile String sDebugKeyDelimiterUsed = null; 
 	
 	public HashMapKeepFirstZZZ(){
 	}
@@ -122,12 +132,66 @@ public class HashMapKeepFirstZZZ<K,V> extends HashMap implements  IConstantZZZ, 
 
 	
 	//#### GETTER / SETTER
+	
+	//+++ aus IObjectZZZ
 	public ExceptionZZZ getExceptionObject() {
 		return this.objException;
 	}
 	public void setExceptionObject(ExceptionZZZ objException) {
 		this.objException = objException;
 	}
+
+	//#####################
+	@Override
+	public String computeDebugString() throws ExceptionZZZ{
+		return this.toString();
+	}
+	
+		
+	@Override
+	public String getDebugEntryDelimiter() {
+		String sEntryDelimiter;			
+		if(this.sDebugEntryDelimiterUsed==null){
+			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+		}else {
+			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
+		}
+		return sEntryDelimiter;
+	}
+	
+	@Override
+	public void setDebugEntryDelimiter(String sEntryDelimiter) {
+		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
+	}
+	
+	//### aus IOutputDebugNormedWithKeyZZZ
+	@Override
+	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
+		String sKeyDelimiter = this.getDebugKeyDelimiter();
+		return this.computeDebugString(sKeyDelimiter, sEntryDelimiter);
+	}
+	
+	@Override
+	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
+		return this.computeDebugString();
+	}
+	
+	public String getDebugKeyDelimiter() {
+		String sKeyDelimiter;
+		if(this.sDebugKeyDelimiterUsed==null){
+			sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+		}else{
+			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
+		}
+		return sKeyDelimiter;
+	}
+	
+	@Override
+	public void setDebugKeyDelimiter(String sKeyDelimiter) {
+		this.sDebugKeyDelimiterUsed = sKeyDelimiter;
+	}
+	
+	
 
 	
 }

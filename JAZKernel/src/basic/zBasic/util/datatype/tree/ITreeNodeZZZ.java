@@ -2,9 +2,9 @@ package basic.zBasic.util.datatype.tree;
 
 import java.util.List;
 
-import basic.zBasic.IOutputNormedZZZ;
+import basic.zBasic.IOutputDebugNormedWithKeyZZZ;
 
-public interface ITreeNodeZZZ<T> extends Iterable<ITreeNodeZZZ<T>>, IOutputNormedZZZ{
+public interface ITreeNodeZZZ<T> extends Iterable<ITreeNodeZZZ<T>>, IOutputDebugNormedWithKeyZZZ{
 	
 	public ITreeNodeZZZ<T> getParent();
 	public void setParent(ITreeNodeZZZ<T> parentNode);

@@ -19,7 +19,7 @@ import basic.zKernel.cache.ICacheFilterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 
 public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
-	private HashMapMultiIndexedZZZ<Integer,String,Boolean>hmSectionsSearched = new HashMapMultiIndexedZZZ<Integer,String,Boolean>();
+	private HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = new HashMapMultiIndexedZZZ<String,Boolean>();
 	private String sSection = null;
 	private String sProperty = null;
 	private String sSystemNumber = null;
@@ -187,12 +187,12 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	
 	//#############################
 	@Override
-	public HashMapMultiIndexedZZZ<Integer,String,Boolean> getSectionsSearchedHashMap(){
+	public HashMapMultiIndexedZZZ<String,Boolean> getSectionsSearchedHashMap(){
 		return this.hmSectionsSearched;
 	}
 	
 	@Override 
-	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<Integer,String,Boolean> hmSectionsSearched) {
+	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmSectionsSearched) {
 		this.hmSectionsSearched = hmSectionsSearched;
 	}
 	

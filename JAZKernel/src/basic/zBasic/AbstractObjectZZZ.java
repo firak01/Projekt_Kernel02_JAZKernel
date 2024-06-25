@@ -10,13 +10,16 @@ import basic.zBasic.util.log.IEnumSetMappedLogStringFormatZZZ;
 import basic.zBasic.util.log.LogStringZZZ;
 import basic.zKernel.KernelLogZZZ;
 
-public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ, ILogZZZ{
+public abstract class AbstractObjectZZZ <T> implements Serializable, IOutputDebugNormedZZZ, IObjectZZZ, ILogZZZ{
 	private static final long serialVersionUID = 1L;	
 	protected volatile ExceptionZZZ objException = null;    // diese Exception hat jedes Objekt
 	
-	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
-	protected volatile String sDebugEntryDelimiterUsed = null;
-
+	//fuer IOutputDebugNormedZZZ
+	protected volatile String sDebugEntryDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe
+	
+	//fuer IOutputDebugNormedWithKeyZZZ
+	//protected volatile String sDebugKeyDelimiterUsed = null; 
+	
 	//Default Konstruktor, wichtig um die Klasse per Reflection mit .newInstance() erzeugen zu können.
 	//Merke: Jede Unterklasse muss ihren eigenen Default Konstruktor haben.	
 	public AbstractObjectZZZ() {	
@@ -54,22 +57,22 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 	}
 	
 	
-	//### aus IOutputNormedZZZ
+	//### aus IOutputDebugNormedZZZ
 	@Override
 	public String computeDebugString() throws ExceptionZZZ{
 		return this.toString();
 	}
 	
 	@Override
-	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
-		return this.computeDebugString();
+	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
+		return this.computeDebugString() + sEntryDelimiter;
 	}
 	
 	@Override
 	public String getDebugEntryDelimiter() {
 		String sEntryDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
 		}
@@ -81,20 +84,32 @@ public abstract class AbstractObjectZZZ <T> implements Serializable, IObjectZZZ,
 		this.sDebugEntryDelimiterUsed = sEntryDelimiter;
 	}
 	
-	public String getDebugKeyDelimiter() {
-		String sKeyDelimiter;
-		if(this.sDebugKeyDelimiterUsed==null){
-			sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
-		}else{
-			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
-		}
-		return sKeyDelimiter;
-	}
+	//### aus IOutputDebugNormedWithKeyZZZ
+//	@Override
+//	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
+//		String sKeyDelimiter = this.getDebugKeyDelimiter();
+//		return this.computeDebugString(sKeyDelimiter, sEntryDelimiter);
+//	}
 	
-	@Override
-	public void setDebugKeyDelimiter(String sEntryDelimiter) {
-		this.sDebugKeyDelimiterUsed = sEntryDelimiter;
-	}
+//	@Override
+//	public String computeDebugString(String sKeyDelimiter,String sEntryDelimiter) throws ExceptionZZZ{
+//		return this.computeDebugString();
+//	}
+	
+//	public String getDebugKeyDelimiter() {
+//		String sKeyDelimiter;
+//		if(this.sDebugKeyDelimiterUsed==null){
+//			sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+//		}else{
+//			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
+//		}
+//		return sKeyDelimiter;
+//	}
+//	
+//	@Override
+//	public void setDebugKeyDelimiter(String sKeyDelimiter) {
+//		this.sDebugKeyDelimiterUsed = sKeyDelimiter;
+//	}
 	
 	//### aus ILogZZZ	
 	@Override

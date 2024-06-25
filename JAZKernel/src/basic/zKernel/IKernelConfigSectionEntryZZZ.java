@@ -25,8 +25,8 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public String getSection();
 	public void setSection(String sSection) throws ExceptionZZZ; //WICHTIG: Darin wird wieder SectionExists auf false gesetzt... ALSO unbedingt VOR dem setzten von sectionExists(true) verwenden!!!
 	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
-	public HashMapMultiIndexedZZZ<Integer,String,Boolean> getSectionsSearchedHashMap();
-	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<Integer,String,Boolean> hmSectionsSearched); //wenn für jeden Suchschritt ein neues EntrySection-Objekt geholt wird, geht ohne das neue Setzen der bisherigen Suche, der Suchpfad verloren. Darum ist das Setzen wichtig.
+	public HashMapMultiIndexedZZZ<String,Boolean> getSectionsSearchedHashMap();
+	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmSectionsSearched); //wenn für jeden Suchschritt ein neues EntrySection-Objekt geholt wird, geht ohne das neue Setzen der bisherigen Suche, der Suchpfad verloren. Darum ist das Setzen wichtig.
 	
 	public String getProperty();
 	public void setProperty(String sProperty);

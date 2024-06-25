@@ -12,15 +12,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import basic.javareflection.mopex.Mopex;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
-import basic.zBasic.IOutputNormedZZZ;
+import basic.zBasic.IOutputDebugNormedWithKeyZZZ;
+import basic.zBasic.IOutputDebugNormedZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.crypt.thread.KeyPressThreadEncryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.MathZZZ;
 
@@ -830,7 +828,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	public String getDebugEntryDelimiter() {
 		String sEntryDelimiter;			
 		if(this.sDebugEntryDelimiterUsed==null){
-			sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
+			sEntryDelimiter = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 		}else {
 			sEntryDelimiter = this.sDebugEntryDelimiterUsed;
 		}
@@ -845,7 +843,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	public String getDebugKeyDelimiter() {
 		String sKeyDelimiter;
 		if(this.sDebugKeyDelimiterUsed==null){
-			sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+			sKeyDelimiter = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
 		}else{
 			sKeyDelimiter = this.sDebugKeyDelimiterUsed;
 		}
@@ -865,10 +863,7 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	public String computeDebugString(){
 		String sReturn = new String("");
 		main:{
-			
-			String sEntryDelimiter = this.getDebugEntryDelimiter();
-			String sKeyDelimiter = this.getDebugEntryDelimiter();
-			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiter, sEntryDelimiter);
+			sReturn = this.computeDebugString(null, null);
 			
 		}//end main
 		return sReturn;
@@ -883,60 +878,47 @@ public class HashMapExtendedZZZ<T,X> extends HashMap implements  IObjectZZZ, IHa
 	 * @return
 	 * @author Fritz Lindhauer, 21.10.2022, 09:56:44
 	 */
+	@Override
+	public String computeDebugString(String sEntryDelimiter) throws ExceptionZZZ {
+		String sReturn = new String("");
+		main:{		
+			String sKeyDelimiter = this.getDebugKeyDelimiter();
+			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiter, sEntryDelimiter);
+		}//end main
+		return sReturn;
+	}
+	
 	public String computeDebugString(String sKeyDelimiterIn, String sEntryDelimiterIn){
 		String sReturn = new String("");
 		main:{
 			
-			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiterIn, sEntryDelimiterIn);
+			
+			String sKeyDelimiter;
+			if(sKeyDelimiterIn==null){
+				sKeyDelimiter = this.getDebugKeyDelimiter();
+			}else {
+				sKeyDelimiter = sKeyDelimiterIn;
+			}
+			
+			String sEntryDelimiter; 
+			if(sEntryDelimiterIn==null){
+				sEntryDelimiter = this.getDebugEntryDelimiter();
+			}else {
+				sEntryDelimiter = sEntryDelimiterIn;
+			}
+			
+			sReturn = HashMapExtendedZZZ.computeDebugString(this, sKeyDelimiter, sEntryDelimiter);
 			
 		}//end main
 		return sReturn;
 	}
 	
 	public static String computeDebugString(HashMap hmDebug){
-		String sReturn = new String("");
-		main:{		
-			sReturn = HashMapExtendedZZZ.computeDebugString(hmDebug, null, null);
-		}//end main
-		return sReturn;
+		return HashMapUtilZZZ.computeDebugString(hmDebug, null, null);
 	}
 	
 	public static String computeDebugString(HashMap hmDebug, String sKeyDelimiterIn, String sEntryDelimiterIn){
-		String sReturn = new String("");
-		main:{
-			//HashMapOuter durchgehen
-			if(hmDebug==null)break main;
-			if(hmDebug.size()==0) break main;
-			
-			String sEntryDelimiter;			
-			if(sEntryDelimiterIn==null){
-				sEntryDelimiter = IOutputNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-			}else {
-				sEntryDelimiter = sEntryDelimiterIn;
-			}
-						
-			String sKeyDelimiter;
-			if(sKeyDelimiterIn==null){
-				sKeyDelimiter = IOutputNormedZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
-			}else{
-				sKeyDelimiter = sKeyDelimiterIn;
-			}
-			
-			Set setKey = hmDebug.keySet();
-			Iterator it = setKey.iterator();
-			while(it.hasNext()){
-				if(!StringZZZ.isEmpty(sReturn)){
-					sReturn = sReturn + sEntryDelimiter;
-				}
-				
-				Object obj = it.next();
-				sReturn = sReturn + obj.toString();
-						
-				Object objValue = hmDebug.get(obj);
-				sReturn = sReturn + sKeyDelimiter + objValue.toString();				
-			}//end while itInner.hasnext()
-		}//end main
-		return sReturn;
+		return HashMapUtilZZZ.computeDebugString(hmDebug, sKeyDelimiterIn, sEntryDelimiterIn);
 	}
 	
 	//#######################################################################
