@@ -12,22 +12,22 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_VariableZZZ;
 
 public class KernelCacheZZZ extends AbstractKernelCacheZZZ{
-	private HashMapMultiZZZ<String, String, ICachableObjectZZZ>hmCache=null;
+	private HashMapMultiZZZ<String, ICachableObjectZZZ>hmCache=null;
 	
 	public KernelCacheZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
 	@Override
-	public HashMapMultiZZZ<String, String, ICachableObjectZZZ> getHashMapCache() {
+	public HashMapMultiZZZ<String, ICachableObjectZZZ> getHashMapCache() {
 		if(this.hmCache==null){
-			this.hmCache=new HashMapMultiZZZ<String,String,ICachableObjectZZZ>();
+			this.hmCache=new HashMapMultiZZZ<String,ICachableObjectZZZ>();
 		}
 		return this.hmCache;
 	}
 
 	@Override
-	public void setHashMapCache(HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache) {
+	public void setHashMapCache(HashMapMultiZZZ<String, ICachableObjectZZZ> hmCache) {
 		this.hmCache=hmCache;
 	}
 
@@ -35,7 +35,7 @@ public class KernelCacheZZZ extends AbstractKernelCacheZZZ{
 	public ICachableObjectZZZ getCacheEntry(String sSection, String sProperty) throws ExceptionZZZ {
 		ICachableObjectZZZ objReturn = null;
 		main:{
-			HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
+			HashMapMultiZZZ<String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
 			objReturn = (ICachableObjectZZZ) hmCache.get(sSection, sProperty);
 			if(objReturn!=null){
 				if(objReturn.isCacheSkipped()){ //d.h. es wurde erzwungen, dass der Eintrag neu gelesen werden muss.
@@ -48,7 +48,7 @@ public class KernelCacheZZZ extends AbstractKernelCacheZZZ{
 
 	@Override
 	public void setCacheEntry(String sSection, String sProperty, ICachableObjectZZZ objEntry) throws ExceptionZZZ {
-		HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
+		HashMapMultiZZZ<String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
 		hmCache.put(sSection, sProperty, objEntry);
 	}
 
@@ -107,7 +107,7 @@ Please note that it will not match “java” word in first example i.e. “Toda
 	public ArrayList<ICachableObjectZZZ> getCacheEntriesWithPropertiesByRegEx(String sRegEx) {
 		ArrayList<ICachableObjectZZZ>listaObjectReturn = new ArrayList<ICachableObjectZZZ>();
 		main:{
-			HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
+			HashMapMultiZZZ<String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
 			ICacheFilterZZZ objFilter = this.getFilterObject(sRegEx); //Das ist performanter, da das Pattern Objekt schon kompiliert ist und so besser mehrfach aufgerufen werden kann.
 			
 			//20190818 : Diese MultiHashmap durchgehen und die einzelenen Elemente filtern. 
@@ -160,7 +160,7 @@ Please note that it will not match “java” word in first example i.e. “Toda
 	public int clear() {
 		int iReturn = 0;
 		main:{
-			HashMapMultiZZZ<String, String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
+			HashMapMultiZZZ<String, ICachableObjectZZZ> hmCache = this.getHashMapCache();
 			iReturn = hmCache.size();
 			hmCache.clear();			
 		}//end main:

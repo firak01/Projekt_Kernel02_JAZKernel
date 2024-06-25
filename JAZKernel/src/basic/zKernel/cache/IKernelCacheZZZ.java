@@ -7,8 +7,8 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 
 public interface IKernelCacheZZZ {
-	public HashMapMultiZZZ<String,String,ICachableObjectZZZ> getHashMapCache();
-	public void setHashMapCache(HashMapMultiZZZ<String,String,ICachableObjectZZZ> hmMulti);
+	public HashMapMultiZZZ<String,ICachableObjectZZZ> getHashMapCache();
+	public void setHashMapCache(HashMapMultiZZZ<String,ICachableObjectZZZ> hmMulti);
 	
 	public ICachableObjectZZZ getCacheEntry(String sSection, String sProperty) throws ExceptionZZZ; //Merke: In dem Cache wird wie in der Konfiguratins-Ini-Datei von Section und Property als Schlüsselwerten gesprochen.
 	public void setCacheEntry(String sSection, String sProperty, ICachableObjectZZZ objEntry)throws ExceptionZZZ;
