@@ -151,13 +151,13 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractKernelIniTagSimpleZ
 					
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
 				if(!bIsError){
-				vecReturn.remove(0)	;
+				if(vecReturn.size()>=1) vecReturn.remove(0)	;
 				vecReturn.add(0,"");
 				
-				vecReturn.remove(1);
+				if(vecReturn.size()>=2) vecReturn.remove(1);
 				vecReturn.add(1, sExpression);
 				
-				vecReturn.remove(2);
+				if(vecReturn.size()>=3) vecReturn.remove(2);
 				vecReturn.add(2,"");
 				}					
 			}//end main:

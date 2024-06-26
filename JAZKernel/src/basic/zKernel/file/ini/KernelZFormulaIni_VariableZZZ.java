@@ -95,24 +95,14 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagSimpleZZ
 			}
 				
 				//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-//				if(!StringZZZ.isEmpty(sBefore)){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//					vecReturn.add(0, sBefore);
-//				}else{
-					vecReturn.add(0,vecSection.get(0));
-//				}
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+				vecReturn.add(0,vecSection.get(0));
 														
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 				vecReturn.add(1, sValue);
 				
-//				if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
-//				if(!StringZZZ.isEmpty(sRest)){							
-//					vecReturn.add(2, sRest); //Fallls vorhanden einen Restwert eintragen.
-//				}else{
-					vecReturn.add(2,vecSection.get(2));
-//				}		
-				
-	
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+				vecReturn.add(2,vecSection.get(2));	
 		}//end main:
 		return vecReturn;
 	}

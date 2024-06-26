@@ -77,11 +77,29 @@ public class HashMapIndexedZZZTest extends TestCase{
 			} 
 	    }
 	    public void testIterate(){
-//			try{
-	    		int iSumme = 0;
+			try{
+	    		int iSumme;
+	    		
+	    		//variante 1
+	    		iSumme = 0;
 				Iterator<Object>itObject=this.hmTest.iterator();
-				while(itObject.hasNext()) {					
-					DummyTestObjecWithDefaultValuesZZZ objDummyTemp = (DummyTestObjecWithDefaultValuesZZZ) itObject.next();
+				while(itObject.hasNext()) {		
+					Integer intIndex = hmTest.getKeyCurrent();
+					DummyTestObjecWithDefaultValuesZZZ objDummyTemp = (DummyTestObjecWithDefaultValuesZZZ) hmTest.get(intIndex);
+															
+					Integer intValue = new Integer(objDummyTemp.getValue());
+					iSumme = iSumme + intValue.intValue();
+					System.out.println("Summe bisher: " + iSumme);
+				}
+				assertTrue(iSumme == 6);
+				
+				//variante 2
+				iSumme = 0;
+				hmTest.resetIndex();
+				Iterator<Object>itObject02=this.hmTest.iterator();
+				while(itObject02.hasNext()) {		
+					
+					DummyTestObjecWithDefaultValuesZZZ objDummyTemp = (DummyTestObjecWithDefaultValuesZZZ) hmTest.getValueNext();
 					 
 					Integer intValue = new Integer(objDummyTemp.getValue());
 					iSumme = iSumme + intValue.intValue();
@@ -89,9 +107,24 @@ public class HashMapIndexedZZZTest extends TestCase{
 				}
 				assertTrue(iSumme == 6);
 				
-//			} catch (ExceptionZZZ ez) {
-//				fail("Method throws an exception." + ez.getMessageLast());
-//			} 
+				//variante 3, eigentlich die Variante warum extra ein Iterator implementiert wurde.
+				iSumme = 0;
+				hmTest.resetIndex();
+				Iterator<Object>itObject03=this.hmTest.iterator();
+				while(itObject03.hasNext()) {		
+					
+					DummyTestObjecWithDefaultValuesZZZ objDummyTemp = (DummyTestObjecWithDefaultValuesZZZ) itObject03.next();
+					 
+					Integer intValue = new Integer(objDummyTemp.getValue());
+					iSumme = iSumme + intValue.intValue();
+					System.out.println("Summe bisher: " + iSumme);
+				}
+				assertTrue(iSumme == 6);
+				
+				
+			} catch (ExceptionZZZ ez) {
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
 		}    
 	    	    	    	
 //	public void testRemoveByIndex(){

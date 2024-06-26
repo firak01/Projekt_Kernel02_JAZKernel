@@ -109,7 +109,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objStreamFile.println("Formula1=Der dynamische Wert ist '<Z><z:Math><Z:VAL>[Section for testComputeMathArguments FLOAT]WertA_float</Z:val><Z:oP>*</Z:op><Z:val>[Section for testComputeMathArguments FLOAT]WertB_float</Z:val></Z:math></Z>'. FGL rulez.");
 			
 			objStreamFile.println("[Section for testComputeMathVariable FLOAT]");
-			objStreamFile.println("WertB_float=<Z><z:Var>myTestVariableFloat</z:Var></z>");
+			objStreamFile.println("WertB_float=<Z><z:Var>myTestVariableFloat</z:Var></Z>");
 			
 			//Beachte Variablen können wie INI-Path auch außßerhalb einer MATH - Anweisung gelten.
 			objStreamFile.println("[Section for testPassVariable]");

@@ -118,7 +118,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 		main:{		
 			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
 			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), true, false);
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
 			
 			//Merke: Das ist zwar ein "Cascaded" Solver, aber hier die Tags wie beim einfachen Solver nehmen. Also "aufeinander folgend".
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naeste schliessende Tag...
@@ -132,7 +132,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;			
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);	// <Z> Tags entfernen	
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
 			String sExpression = (String) vecReturn.get(1);									
 			if(!StringZZZ.isEmpty(sExpression)){
 				
@@ -156,7 +156,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 				//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
 				if(sExpression!=null){
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
 					vecReturn.add(1, sExpression);
 				}
 				

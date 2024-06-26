@@ -1,19 +1,13 @@
 package basic.zBasic.util.abstractList;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.TreeMap;
 import java.util.Vector;
 
-import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
 
 /**Klasse dient dazu eine bestehende HashMap zu verwenden, aber das Ergebnis garantiert über eine eindeutigen Schlüsselindex zurückzubekommen.
  * Die Klasse erweitert nicht HashMap, weil sonst alle Methoden auf einen Schlag überschrieben werden müssten.
@@ -21,8 +15,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * @param <T>
  *
  */
-public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterable<K>,Serializable{	
-	private HashMap<Integer,Object> hmIndexed=null;
+
+//Merke: Wenn man hier <Integr,V> schreibt, defniert man sich sein eigenes Integer und nutzt nicht mehr die Java-Integer Klasse....
+public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterable<V>,Serializable{	
+	private HashMap<Integer,V> hmIndexed=null;
 	private VectorExtendedZZZ<Integer> vecIndex=null;	
 	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
 	
@@ -37,16 +33,16 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @throws ExceptionZZZ
 	 * 18.02.2020, 18:37:08, Fritz Lindhauer
 	 */
-	public HashMapIndexedZZZ(HashMap<Integer,Object> hmIndexed) throws ExceptionZZZ{
+	public HashMapIndexedZZZ(HashMap<Integer,V> hmIndexed) throws ExceptionZZZ{
 		HashMapIndexedNew_(hmIndexed);
 	}
 	
 		
 	
-	private boolean HashMapIndexedNew_(HashMap<Integer,Object> hmIndexedIn) throws ExceptionZZZ{
+	private boolean HashMapIndexedNew_(HashMap<Integer,V> hmIndexedIn) throws ExceptionZZZ{
 		boolean bReturn = true;
 		main:{
-			HashMap<Integer,Object>hmIndexed = null;
+			HashMap<Integer,V>hmIndexed = null;
 			check:{
 				if(hmIndexedIn!=null) {
 					this.setHashMap(hmIndexedIn);
@@ -76,15 +72,15 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getKeyFirst() throws ExceptionZZZ{
-		Object objReturn = null;
+	public Integer getKeyFirst() throws ExceptionZZZ{
+		Integer intReturn = null;
 //		try{
 			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();		
 			if(vecIndex!=null){
 				if(vecIndex.hasAnyElement()) {
 					Integer intIndex  =  (Integer) vecIndex.elementAt(0);			
 					this.setIndexCurrent(0); 
-					objReturn = intIndex;
+					intReturn = intIndex;
 					
 					//Das wäre der Wert und nicht der Key!!!
 //					HashMap<Integer,Object>hmIndexed = this.getHashMap();
@@ -94,7 +90,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 //		}catch(ExceptionZZZ ez){
 //			objReturn=null;
 //		}
-		return objReturn;
+		return intReturn;
 	}
 	
 	public Object get(Integer intKey) {
@@ -106,15 +102,15 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getKeyLast() throws ExceptionZZZ{
-		Object objReturn = null;
+	public Integer getKeyLast() throws ExceptionZZZ{
+		Integer intReturn = null;
 //		try{
 			VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
 			if(vecIndex!=null){
 				if(vecIndex.hasAnyElement()) {
 					Integer intIndex=(Integer) vecIndex.lastElement();
 					this.setIndexCurrent(vecIndex.size()-1);
-					objReturn = intIndex;
+					intReturn = intIndex;
 					
 					//Das wäre schon der Wert!!
 //					HashMap<Integer,Object>hmIndexed = this.getHashMap();
@@ -124,7 +120,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 //		}catch(ExceptionZZZ ez){
 //			objReturn=null;
 //		}
-		 return objReturn;
+		 return intReturn;
 	}
 	
 	/** Object, Den Key an der nächsten Indexposition holen. Dabei wird der Index im 1 erhöht.
@@ -132,8 +128,8 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getKeyNext() throws ExceptionZZZ{
-		Object objReturn = null;
+	public Integer getKeyNext() throws ExceptionZZZ{
+		Integer intReturn = null;
 		main:{
 			//try{
 				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
@@ -144,7 +140,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 				
 						Integer intIndex =  (Integer) vecIndex.elementAt(iIndexTest);			
 						this.setIndexCurrent(iIndexTest);
-						objReturn = intIndex; 
+						intReturn = intIndex; 
 								
 						//das wäre schon der Wert!!!
 //						HashMap<Integer,Object>hmIndexed = this.getHashMap();
@@ -155,7 +151,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 //				System.out.println(ez.getDetailAllLast());
 //			}
 		}
-		return objReturn;
+		return intReturn;
 	}
 	
 	/** Object, Den Key an der nächsten Indexposition holen. Dabei wird der Index im 1 erhöht.
@@ -163,8 +159,8 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getKeyCurrent() throws ExceptionZZZ{
-		Object objReturn = null;
+	public Integer getKeyCurrent() throws ExceptionZZZ{
+		Integer intReturn = null;
 		main:{
 //			try{
 				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
@@ -176,15 +172,18 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 						Integer intIndex =  (Integer) vecIndex.elementAt(iIndexTest);
 						this.setIndexCurrent(iIndexTest);
 						
-						HashMap<Integer,Object>hmIndexed = this.getHashMap();
-						objReturn = hmIndexed.get(intIndex);
+						intReturn = intIndex;
+						
+						//das wäre schon der Wert!!!
+						//HashMap<Integer,Object>hmIndexed = this.getHashMap();
+						//objReturn = hmIndexed.get(intIndex);												 
 					}
 				}
 //			}catch(ExceptionZZZ ez){
 //				System.out.println(ez.getDetailAllLast());
 //			}
 		}
-		return objReturn;
+		return intReturn;
 	}
 	
 	/** Object, Gibt den Wert der Hashtable f�r den ersten Key (gemaes der Sortierung) zurueck.
@@ -192,14 +191,14 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getValueFirst() throws ExceptionZZZ{
-		Object objReturn = null;
+	public V getValueFirst() throws ExceptionZZZ{
+		V objReturn = null;
 		main:{
-			Object objKey = this.getKeyFirst();
-			if(objKey==null) break main;
+			Integer intKey = this.getKeyFirst();
+			if(intKey==null) break main;
 					
-			HashMap<Integer,Object>hmIndexed = this.getHashMap();
-			objReturn = hmIndexed.get(objKey);
+			HashMap<Integer,V>hmIndexed = this.getHashMap();
+			objReturn = hmIndexed.get(intKey);
 		}//END main:
 		return objReturn;
 	}
@@ -209,14 +208,14 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getValueLast() throws ExceptionZZZ{
-		Object objReturn = null;
+	public V getValueLast() throws ExceptionZZZ{
+		V objReturn = null;
 		main:{
-			Object objKey = this.getKeyLast();
-			if(objKey==null) break main;
+			Integer intKey = this.getKeyLast();
+			if(intKey==null) break main;
 			
-			HashMap<Integer,Object>hmIndexed = this.getHashMap();
-			objReturn = hmIndexed.get(objKey);
+			HashMap<Integer,V>hmIndexed = this.getHashMap();
+			objReturn = hmIndexed.get(intKey);
 		}//END main:
 		return objReturn;
 	}
@@ -226,14 +225,14 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getValueNext() throws ExceptionZZZ{
-		Object objReturn = null;
+	public V getValueNext() throws ExceptionZZZ{
+		V objReturn = null;
 		main:{
-			Object objKeyNext = this.getKeyNext();
-			if(objKeyNext == null) break main;
+			Integer intKeyNext = this.getKeyNext();
+			if(intKeyNext == null) break main;
 			
-			HashMap<Integer,Object>hmIndexed = this.getHashMap();
-			objReturn = hmIndexed.get(objKeyNext);
+			HashMap<Integer,V>hmIndexed = this.getHashMap();
+			objReturn = hmIndexed.get(intKeyNext);
 		}//end main:
 		return objReturn;
 	}
@@ -244,25 +243,25 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	 * @return Object
 	 * @throws ExceptionZZZ 
 	 */
-	public Object getValue(Integer objKey) throws ExceptionZZZ{
-		Object objReturn = null;
+	public V getValue(Integer intKey) throws ExceptionZZZ{
+		V objReturn = null;
 		main:{
 			check:{
-				if(objKey==null) break main;
+				if(intKey==null) break main;
 				
 				//Das Key-Objekt muss ja im Vektor vorhanden sein
 				VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
 				if(vecIndex==null) break main;
 				if(!vecIndex.hasAnyElement()) break main;				
-				if(!vecIndex.contains(objKey)) break main;
+				if(!vecIndex.contains(intKey)) break main;
 				
 				//Nicht vergessen: Den aktuell verarbeiteten Index setzten
-				int iIndex = objKey.intValue();
+				int iIndex = intKey.intValue();
 				this.setIndexCurrent(iIndex);
 			}//END check:
 			
-			HashMap<Integer,Object>hmIndexed = this.getHashMap();
-			objReturn = hmIndexed.get(objKey);
+			HashMap<Integer,V>hmIndexed = this.getHashMap();
+			objReturn = hmIndexed.get(intKey);
 		}//END main:
 		return objReturn;
 	}
@@ -318,19 +317,27 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 		return this.iIndexCurrent4Vector;
 	}
 	
+	
+	/** Damit wird der Index wieder zurückgesetzt.
+	 *  (intern auf -1, aber das darf man mit dem setIndexCurrent nicht...
+	 */
+	public void resetIndex() {
+		this.iIndexCurrent4Vector = -1;
+	}
+	
 	/** HashMap, die Im Kontruktor übergebene HashMap, unver�ndert.
 	 * Merke: Es macht keine Sinn zu versuchen eine irgendwie sortierte Hashtable zurückzugeben,
 	 * 			da HashMap immer beliebig sortiert ist.
 	 * @return
 	 * @author Fritz Lindhauer, 27.02.2020, 17:19:53
 	 */
-	public HashMap<Integer,Object> getHashMap(){
+	public HashMap<Integer,V> getHashMap(){
 		if(this.hmIndexed==null) {
-			this.hmIndexed = new HashMap<Integer,Object>();
+			this.hmIndexed = new HashMap<Integer,V>();
 		}
 		return this.hmIndexed;		
 	}
-	private void setHashMap(HashMap<Integer,Object>hmIndexed) {
+	private void setHashMap(HashMap<Integer,V>hmIndexed) {
 		this.hmIndexed=hmIndexed;
 	}
 	
@@ -357,7 +364,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void put(Integer intIndex, Object objValue) throws ExceptionZZZ {		
+	public void put(Integer intIndex, V objValue) throws ExceptionZZZ {		
 		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
 		
 		boolean bExists = false;		
@@ -380,7 +387,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void put(Object objValue) throws ExceptionZZZ {		
+	public void put(V objValue) throws ExceptionZZZ {		
 		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
 		int iMax = -1;
 		
@@ -395,7 +402,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 		Integer intMaxNew = new Integer(iMax);
 		vecIndex.add(intMaxNew);//einfach anhängen.
 		
-		HashMap<Integer,Object>hmIndexed = this.getHashMap();
+		HashMap<Integer,V>hmIndexed = this.getHashMap();
 		hmIndexed.put(intMaxNew, objValue);		
 	}
 
@@ -423,7 +430,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	public String toString() {
 		String sReturn = null;
 		main:{
-			HashMap<Integer,Object>hm = this.getHashMap();
+			HashMap<Integer,V>hm = this.getHashMap();
 			sReturn = hm.toString();				
 		}//end main:
 		return sReturn;
@@ -446,9 +453,92 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 //		
 //	}
 	
+	
+	
+	//Hier nicht K , sondern V ueber das man iterieren moechte, aber K ist wohl vom Interface notwendig.
+	//Darum "Object" verwenden...
+//	@Override
+//    public Iterator<K> iterator() {
+//        Iterator<K> it = new Iterator<K>() {
+//        	private int iIndexIterator=-1; //Der Index des gerade verarbeiteten Keys im Iterator
+//        	private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
+//        	
+//        	
+//            @Override
+//            public boolean hasNext() {
+//            	boolean bReturn = false;
+//            	main:{
+//	            	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+//	            	if(vec==null)break main;
+//	            	if(!vec.hasAnyElement())break main;
+//	            	
+//	            	
+//	            	Integer intLast = (Integer) vec.lastElement();
+//	            		            
+//	            	iIndexWatched = iIndexWatched+1;//das nächste Element halt, ausgehend von -1
+//	            	Integer intNext = new Integer(iIndexWatched);
+//	            	bReturn = iIndexWatched <= intLast.intValue() && getHashMap().get(intNext) != null;	            	
+//            	}//end main:
+//            	return bReturn;
+//            }
+//
+//            @SuppressWarnings("unchecked")
+//			@Override
+//            public K next() {
+//                K objReturn = null;
+//                main:{
+//                	VectorExtendedZZZ<Integer> vec = getVectorIndex();
+//	            	if(vec==null)break main;
+//	            	if(!vec.hasAnyElement())break main;
+//	            	
+//                	int iIndexCur = this.iIndexIterator;
+//                	if(iIndexCur<this.iIndexWatched) {
+//                		iIndexCur = this.iIndexWatched;
+//                	}else {
+//                		iIndexCur = iIndexCur + 1;
+//                	}
+//                	
+//	            	Integer intLast = (Integer) vec.lastElement();
+//	            	boolean bReturn = iIndexCur <= intLast.intValue() && getHashMap().get(iIndexCur) != null;	 
+//	            	if(bReturn) {
+//	            		
+//	            		//Das geht eben nicht
+////	            		this.iIndexIterator = iIndexCur;
+////	            		objReturn = (K) getHashMap().get(iIndexCur);
+//	            		
+//	            		//Dann geht leider nur das 
+//	            		objReturn = (K) new Integer(iIndexCur);
+//	            	}
+//                }//end main:
+//            	return objReturn;
+//            }
+//
+//            @Override
+//            public void remove() {
+//                throw new UnsupportedOperationException();
+//            }
+//        };
+//        return it;
+//    }
+	
+	//### Interfaces ++++++++++++
+	
+	
+//	@Override
+//	public Iterator<T> iterator() {
+//		VectorExtendedZZZ<Integer> vecIndex = this.getVectorIndex();
+//				
+//		//Iterator<Integer> itIndex = vecIndex.iterator();
+//		//return (Iterator<T>) itIndex;
+//		
+//		//ABER: Man iteriert nicht über den Index, sondern über die Objekte der HashMap.
+//		
+//	}
+	
+	//Hier nicht K , sondern V ueber das man iterieren moechte, aber K ist wohl vom Interface notwendig.
 	@Override
-    public Iterator<K> iterator() {
-        Iterator<K> it = new Iterator<K>() {
+    public Iterator<V> iterator() {
+        Iterator<V> it = new Iterator<V>() {
         	private int iIndexIterator=-1; //Der Index des gerade verarbeiteten Keys im Iterator
         	private int iIndexWatched=-1;//Der Index des gerade mit hasNext() betrachteten Keys im Iterator
         	
@@ -473,8 +563,8 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 
             @SuppressWarnings("unchecked")
 			@Override
-            public K next() {
-                K objReturn = null;
+            public V next() {
+                V objReturn = null;
                 main:{
                 	VectorExtendedZZZ<Integer> vec = getVectorIndex();
 	            	if(vec==null)break main;
@@ -491,7 +581,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 	            	boolean bReturn = iIndexCur <= intLast.intValue() && getHashMap().get(iIndexCur) != null;	 
 	            	if(bReturn) {
 	            		this.iIndexIterator = iIndexCur;
-	            		objReturn = (K) getHashMap().get(iIndexCur);
+	            		objReturn = (V) getHashMap().get(iIndexCur);
 	            	}
                 }//end main:
             	return objReturn;
@@ -504,8 +594,6 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
         };
         return it;
     }
-	
-	
 	
 
 }//END Class

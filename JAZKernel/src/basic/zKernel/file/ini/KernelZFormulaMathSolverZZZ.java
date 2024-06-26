@@ -94,7 +94,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 				
 				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
 				if(sValue!=null){
-					vecReturn.removeElementAt(1);
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
 					vecReturn.add(1, sValue);
 				}		
 				

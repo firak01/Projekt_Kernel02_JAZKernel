@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import javax.measure.spi.SystemOfUnits;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
 import basic.zBasic.util.xml.tagsimple.TagSimpleZZZ;
@@ -48,14 +49,13 @@ public class XmlUtilZZZ {
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmpty(sTagName)) break main;
-			
-			
+						
 //			if(sTagValue==null) {
 //				sReturn = XmlUtilZZZ.computeTagEmpty(sTagName);
 //				break main;
 //			}
 
-			sReturn = "{"+sTagName+"="+sTagValue + "}";
+			sReturn = HashMapUtilZZZ.computeAsHashMapEntry(sTagName, sTagValue);
 		}
 		return sReturn;
 	}

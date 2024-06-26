@@ -187,8 +187,8 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements IC
 		return vecReturn;
 	}	
 	
-	public HashMap<Integer,Object> getHashMapIndex(){
-		HashMap<Integer,Object> hmReturn = null;
+	public HashMap<Integer,T> getHashMapIndex(){
+		HashMap<Integer,T> hmReturn = null;
 		main:{
 			HashMapIndexedZZZ<Integer,T> hmIndexed = this.getHashMapIndexedKey();		
 			if(hmIndexed!=null) {
@@ -223,7 +223,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements IC
 		            	Integer intNext = new Integer(iIndexWatched);
 		            	
 		            	Object objNext = null;
-		            	HashMap<Integer,Object> hmIndex = getHashMapIndex();
+		            	HashMap<Integer,T> hmIndex = getHashMapIndex();
 		            	if(hmIndex!=null) {
 		            		objNext = hmIndex.get(intNext);
 		            	}
@@ -251,7 +251,7 @@ public class HashMapIterableKeyZZZ<T,X>  extends AbstractObjectZZZ implements IC
 		            	Integer intIndexLast = (Integer) vec.lastElement();
 		            	
 		            	Object objLast = null;
-		            	HashMap<Integer,Object> hmIndex = getHashMapIndex();
+		            	HashMap<Integer,T> hmIndex = getHashMapIndex();
 		            	if(hmIndex!=null) {
 		            		objLast = hmIndex.get(intIndexLast);
 		            	}

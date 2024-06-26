@@ -444,10 +444,7 @@ public class XmlParserZZZTest extends TestCase{
 									Object obj = hmTag.getElementByIndex(iTagIndex);
 									assertNotNull(sMessage, obj);
 																		
-									String sValueToProof = XmlUtilZZZ.computeTagAsHashMapEntry(sTagForValue, sTagValue);
-									TODOGOON20240625: Methode in HashMapUtilZZZ.computeHashMapEntryAsString 
-									                  und diese dann in compute irgenwie verwenden
-									
+									String sValueToProof = XmlUtilZZZ.computeTagAsHashMapEntry(sTagForValue, sTagValue);									
 									assertEquals(sMessage, sValueToProof, obj.toString());
 								}//end if isEmpty(iTagIndex)
 							}//end if isEmpty(iaTagIndex)														

@@ -107,4 +107,14 @@ public class HashMapUtilZZZ {
 		}//end main
 		return sReturn;
 	}
+	
+	public static String computeAsHashMapEntry(String sKey, String sValue) {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sKey)) break main;
+			
+			sReturn = "{"+sKey+"="+sValue + "}";
+		}//end main:
+		return sReturn;
+	}
 }
