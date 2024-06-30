@@ -203,10 +203,13 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 		main:{			
 			boolean bUseCall = this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL);
 			if(bUseCall) {
-				objReturn = super.computeAsEntry(sLineWithExpression);
-				objReturn.setValueCallSolvedAsExpression(objReturn.getValueAsExpression());
+				objReturn = super.computeAsEntry(sLineWithExpression);	
+				
+				//Speichere nun das USECALL - Ergebnis auch ab.
+				objReturn.setValueCallSolvedAsExpression(objReturn.getValueAsExpression());				
 			}else {
 				objReturn.setValue(sLineWithExpression);
+				objReturn.setValueCallSolvedAsExpression(null);
 			}									
 		}//end main:
 		return objReturn;
@@ -242,7 +245,7 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
+					
 			String sExpression = null; boolean bAnyCall = false; boolean bAnyJavaCall = false; boolean bAnyJavaClass = false; boolean bAnyJavaMethod = false;
 						
 			//Fuer den abschliessenden Aufruf selbst.

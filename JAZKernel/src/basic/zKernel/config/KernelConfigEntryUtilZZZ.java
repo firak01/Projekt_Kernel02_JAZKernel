@@ -7,9 +7,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
@@ -17,11 +15,6 @@ import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
-import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -32,8 +25,12 @@ import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.KernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonArrayIniSolverZZZ;
-import basic.zKernel.file.ini.KernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
+import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
@@ -86,10 +83,9 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 			if(bExpressionSolved) {
 				objReturnReference.get().isExpression(true);
 				if(bUseFormula) objReturnReference.get().isFormula(true);
-				String sValueAsExpression = objsReturnValueExpressionSolved.get();					
-				objReturnReference.get().setValueAsExpression(sValueAsExpression);
-				
-				sRawExpressionSolved = sValueAsExpression;
+				String sValueSolved = objsReturnValueExpressionSolved.get();					
+				objReturnReference.get().setValueAsExpression(sValueSolved);				
+				sRawExpressionSolved = sValueSolved;
 				iReturn = iReturn + 1;
 			}else {
 				sRawExpressionSolved = sRaw;
@@ -514,7 +510,7 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 			if(StringZZZ.isEmpty(sTagStart)) break main;
 			if(StringZZZ.isEmpty(sTagEnd)) break main;
 			
-			Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, true);
+			Vector<String>vecReturn = StringZZZ.vecMidFirst(sValueExpression, sTagStart, sTagEnd, false);//Also ohne Tags holen
 			KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 
 			sReturn = VectorZZZ.implode(vecReturn);
@@ -596,4 +592,14 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 		}//end while
 		}//end main
 	}	
+	
+	public static String computeAsExpressionEnforced(String sValue) {
+		if(sValue.startsWith("<Z>") && sValue.endsWith("</Z>")) {
+			//dann ist hier schon eine Expression drin
+			return sValue;
+		}else {
+			//Merke: Das Problem ist: Wenn im String selbst vorher schon ein Z-Tag war und nicht nur am Anfang, dann wird hier trotzdem noch etwas drumgesetzt.
+			return "<Z>" + sValue + "</Z>";		
+		}
+	}
 }

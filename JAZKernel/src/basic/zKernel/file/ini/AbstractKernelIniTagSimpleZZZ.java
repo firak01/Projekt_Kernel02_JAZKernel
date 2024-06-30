@@ -7,6 +7,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -80,13 +81,40 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
+	//### aus IValueSolvedUserZZZ
+
+	@Override
+	public VectorExtendedDifferenceZZZ<String> getValueVector() {
+		return this.getEntry().getValueVector();
+	}
+
+	@Override
 	public String getValue() {
 		return this.getEntry().getValue();
 	}
 
+	@Override
 	public void setValue(String sValue) {
 		this.getEntry().setValue(sValue);
 	}
+
+	@Override
+	public VectorExtendedDifferenceZZZ<String> getRawVector() {
+		return this.getEntry().getRawVector();
+	}
+
+	@Override
+	public String getRaw() {
+		return this.getEntry().getRaw();
+	}
+
+	@Override
+	public void setRaw(String sRaw) {
+		this.getEntry().setValue(sRaw);
+	}
+	//##############################
+	
+	
 	
 	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
@@ -100,9 +128,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 		}
 		return vecReturn;
 	}
-	
-	
-	
+
 	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
 	* @param sLineWithExpression
 	* @return
@@ -115,6 +141,36 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+		}
+		return vecReturn;
+	}
+	
+	public Vector<String>computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+						
+			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
+			vecReturn = this.computeAsExpressionFirstVector(sLineWithExpression);			
+			
+		}
+		return vecReturn;
+	}
+	
+	
+	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	* @param sLineWithExpression
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:20:34
+	 * @throws ExceptionZZZ 
+	 */
+	public Vector<String>computeAsExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();		
+		main:{
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), true, false);
 		}
 		return vecReturn;
 	}

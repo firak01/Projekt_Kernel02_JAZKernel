@@ -36,13 +36,13 @@ import basic.zBasic.IOutputDebugNormedZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 
 /** 20170725: Diese Klasse Generisch gemacht. Dabei den Klassennamen analog zur HashMapExtended gewählt. 
- *                    Die alte Klasse beibehalten als nicht genrisch...
+ *                    Die alte Klasse beibehalten als nicht generisch...
  *                    TODO: Hier Methoden ggfs. "TypeCast sicher überschreiben
  *                    
  *  20200219: Die Methoden aus der alten klasse in die neue Klasse übernommen
  */
 @SuppressWarnings("rawtypes")
-public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ{
+public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ<T>{
 	private static final long serialVersionUID = 1L;
 	protected int iIndexUsedLast=-1;
 	
@@ -144,22 +144,59 @@ public class VectorExtendedZZZ<T> extends Vector implements IVectorExtendedZZZ{
 	}
 	
 	@Override
-	public Object getElementByIndex(int iIndex) {
-		return this.get(iIndex);
+	public int getIndexHigh() {
+		return this.size()-1;
+	}
+	
+	@Override 
+	public int getIndexNext() {
+		return this.getIndexHigh() + 1;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T getElementByIndex(int iIndex) {
+		if(iIndex<=-1) {
+			return null;
+		}else {
+			if(iIndex <= this.size()-1) {
+				return (T) this.get(iIndex);
+			}else {
+				return null;
+			}
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getEntryLast() {
 		int iIndexUsed = this.getIndexUsedLast();
-		return (T) this.get(iIndexUsed);
+		if(iIndexUsed <= -1) {
+			return null;
+		}else {
+			return (T) this.get(iIndexUsed);
+		}		
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getEntryHigh() {
 		int iIndexUsed = this.size()-1;
-		return (T) this.get(iIndexUsed);
+		if(iIndexUsed <= -1) {
+			return null;
+		}else {
+			return (T) this.get(iIndexUsed);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T getEntryLow() {
+		if(this.size()>=1) {
+			return (T) this.get(0);
+		}else {
+			return null;
+		}
 	}
 	
 	

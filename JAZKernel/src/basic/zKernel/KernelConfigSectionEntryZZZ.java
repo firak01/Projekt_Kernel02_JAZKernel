@@ -10,12 +10,15 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.cache.ICacheFilterZZZ;
+import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 
 public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
@@ -23,9 +26,9 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private String sSection = null;
 	private String sProperty = null;
 	private String sSystemNumber = null;
-	private String sRaw = null;
-	private String sValue = new String("");
-	private String sValueAsExpression = new String("");
+	private VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();
+	private VectorExtendedDifferenceZZZ<String> vecValue = new VectorExtendedDifferenceZZZ<String>();
+	private VectorExtendedDifferenceZZZ<String> vecValueAsExpression = new VectorExtendedDifferenceZZZ<String>();
 	
 	private HashMap<String,String> hmValue = new HashMap<String,String>();
 	private ArrayList<String> alValue = new ArrayList<String>();
@@ -36,11 +39,12 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private boolean bExpression = false;
 	private boolean bFormula = false;
 	private boolean bCrypt = false;
-	private String sValueFormulaSolvedAndConverted = null;
+	
+	private VectorExtendedDifferenceZZZ<String> vecValueFormulaSolvedAndConverted = new VectorExtendedDifferenceZZZ<String>();
 
 	private boolean bConversion = false;
 	private boolean bConverted = false;
-	private String sValueAsConversion = null;
+	private VectorExtendedDifferenceZZZ<String> vecValueAsConversion = new VectorExtendedDifferenceZZZ<String>();
 	
 	
 	
@@ -59,13 +63,13 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	
 	private boolean bEncrypted = false;
 	private boolean bRawEncrypted = false;
-	private String sRawEncrypted = null;
-	private String sValueEncrypted=new String("");
-	private String sValueDecrypted=new String("");
+	private VectorExtendedDifferenceZZZ<String> vecRawEncrypted = new VectorExtendedDifferenceZZZ<String>();
+	private VectorExtendedDifferenceZZZ<String> vecValueEncrypted = new VectorExtendedDifferenceZZZ<String>();
+	private VectorExtendedDifferenceZZZ<String> vecValueDecrypted = new VectorExtendedDifferenceZZZ<String>();
 	
 	private boolean bDecrypted = false;
 	private boolean bRawDecrypted = false;	
-	private String sRawDecrypted = null;
+	private VectorExtendedDifferenceZZZ<String> vecRawDecrypted = new VectorExtendedDifferenceZZZ<String>();
 	
 	private String sKey = null;
 	
@@ -248,37 +252,46 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		this.sSystemNumber = sSystemNumber;
 	}
 
+	//###############################
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getRawVector(){
+		return this.vecRaw;
+	}
+	
 	@Override
 	public String getRaw() {
-		return this.sRaw;
+		return this.getRawVector().getEntryLow();//anders als bei den anderen Strings und Vectoren hier den .Lows() zurueckgeben
 	}
 
 	@Override
 	public void setRaw(String sRaw) {
-		this.sRaw=sRaw;
+		this.getRawVector().add(sRaw);
 	}
 
+	//####################################
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getValueVector(){
+		return this.vecValue;
+	}
 	@Override
 	public String getValue() {
 		if(this.hasNullValue()){
 			return null;		
 		}else if (!this.hasAnyValue()){
-			//if(this.sectionExists()) {
 			if(this.hasAnySectionExists()) {
-				//return KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
 				return new String(""); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
 			}else {
 				return null; //wenn die Section nicht existiert, dann auch kein Wert.
 			}
 		}else {
-			return this.sValue;
+			return this.getValueVector().getEntryHigh();
 		}
 	}
 
 	@Override
 	public void setValue(String sValue) {
 		if(sValue!=null){
-			this.sValue = sValue;
+			this.getValueVector().add(sValue);
 			this.hasAnyValue(true);
 			this.hasNullValue(false);
 		}else{
@@ -293,46 +306,103 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		}
 	}
 	
+	//#################################
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getValueAsExpressionVector(){
+		return this.vecValueAsExpression;
+	}
+	
 	@Override
 	public String getValueAsExpression() {
-		return this.sValueAsExpression;
+		return this.getValueAsExpressionVector().getEntryHigh();
 	}
 	
 	@Override 
 	public void setValueAsExpression(String sValueAsExpression) {
-		this.sValueAsExpression = sValueAsExpression;
+		this.setValueAsExpression_(sValueAsExpression, true);
 	}
 	
 	@Override 
+	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce) {
+		this.setValueAsExpression_(sValueAsExpression, bEnforce);
+	}
+	
+	private void setValueAsExpression_(String sValueAsExpression, boolean bEnforce) {
+		if(bEnforce) {
+			String sValueAsExpressionNew = KernelConfigEntryUtilZZZ.computeAsExpressionEnforced(sValueAsExpression);
+			this.getValueAsExpressionVector().add(sValueAsExpressionNew);
+		}else {
+			this.getValueAsExpressionVector().add(sValueAsExpression);
+		}
+	}
+	
+	
+	//#####################################
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getValueAsConversionVector(){
+		return this.vecValueAsConversion;
+	}
+	
+	@Override
+	public void setValueAsConversion(String sValueConverted) {
+		this.getValueAsConversionVector().add(sValueConverted);
+	}
+	
+	@Override 
+	public String getValueAsConversion() {
+		return this.getValueAsExpressionVector().getEntryHigh();
+	}
+	
+	//###############################################
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector(){
+		return this.vecValueFormulaSolvedAndConverted;
+	}
+	
+	
+	@Override 
 	public String getValueFormulaSolvedAndConverted() {
-		return this.sValueFormulaSolvedAndConverted;
+		return this.getValueFormulaSolvedAndConvertedVector().getEntryHigh();
 	}
 	
 	@Override
 	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted) {
-		this.sValueFormulaSolvedAndConverted = sValueSolvedAndConverted;
+		this.getValueFormulaSolvedAndConvertedVector().add(sValueSolvedAndConverted);
+	}
+	
+	//################################################
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getValueEncryptedVector(){
+		return this.vecValueEncrypted;
 	}
 	
 	@Override
 	public String getValueEncrypted() {
-		return this.sValueEncrypted;
+		return this.getValueEncryptedVector().getEntryHigh();
 	}
 
 	@Override
 	public void setValueEncrypted(String sValueEncrypted) {
-		this.sValueEncrypted = sValueEncrypted;
+		this.getValueEncryptedVector().addElement(sValueEncrypted);
+	}
+	
+	//############################################
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getValueDecryptedVector(){
+		return this.vecValueDecrypted;
 	}
 	
 	@Override
 	public String getValueDecrypted() {
-		return this.sValueDecrypted;
+		return this.getValueEncryptedVector().getEntryHigh();
 	}
 
 	@Override
 	public void setValueDecrypted(String sValueDecrypted) {
-		this.sValueDecrypted = sValueDecrypted;
+		this.getValueDecryptedVector().add(sValueDecrypted);
 	}
 	
+	//###############################################
 	@Override
 	public HashMap<String, String> getValueHashMap() {		
 		return this.hmValue;
@@ -343,6 +413,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		this.hmValue = hmValue;
 	}
 
+	//###############################################
 
 	@Override
 	public ArrayList<String> getValueArrayList() {
@@ -355,6 +426,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		this.alValue = alValue;
 	}
 
+	//##############################################
 	@Override
 	public boolean hasAnyValue() {
 		return this.bAnyValue;
@@ -416,17 +488,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 		return this.bConverted; 
 	}
 	
-	@Override
-	public void setValueAsConversion(String sValueConverted) {
-		this.sValueAsConversion = sValueConverted;
-	}
-	
-	@Override 
-	public String getValueAsConversion() {
-		return this.sValueAsConversion;
-	}
-	
-	
+	//#####################################
 	
 	@Override
 	public boolean isJson(){
@@ -615,14 +677,20 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 	
 	@Override
+	public VectorExtendedDifferenceZZZ<String> getRawDecryptedVector(){
+		return this.vecRawDecrypted;
+	}
+	
+	
+	@Override
 	public String getRawDecrypted() {
-		return this.sRawDecrypted;
+		return this.getRawVector().getEntryHigh();
 	}
 
 
 	@Override
 	public void setRawDecrypted(String sRaw) {
-		this.sRawDecrypted = sRaw;
+		this.getRawVector().add(sRaw);
 	}
 
 
@@ -638,14 +706,22 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 
 	@Override
+	public VectorExtendedDifferenceZZZ<String> getRawEncryptedVector(){
+		return this.vecRawEncrypted;
+	}
+	
+	@Override
 	public String getRawEncrypted() {
-		return this.sRawEncrypted;
+		return this.getRawEncryptedVector().getEntryLow(); //!!! Das ist also der allererste RAW String, nicht ggfs. spaeter weiter aufgeloeste Strings.
 	}
 
 
 	@Override
 	public void setRawEncrypted(String sRaw) {
-		this.sRawEncrypted = sRaw;
+		if(this.getRawEncryptedVector().isEmpty()) {
+			this.getRawEncryptedVector().add(this.getRaw());
+		}
+		if(this.getRawEncryptedVector().add(sRaw));
 	}
 
 	
@@ -677,10 +753,23 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	
 	@Override
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression) {
-		this.sValueCallSolvedAsExpression = sValueCallSolvedAsExpression;
+		this.setValueCallSolvedAsExpression_(sValueCallSolvedAsExpression, false);
 	}
 	
-
+	@Override
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce) {
+		this.setValueCallSolvedAsExpression_(sValueCallSolvedAsExpression, bEnforce);
+	}
+	
+	private void setValueCallSolvedAsExpression_(String sValueCallSolvedAsExpression, boolean bEnforce) {
+		if(bEnforce) {
+			String sValueAsExpressionNew = KernelConfigEntryUtilZZZ.computeAsExpressionEnforced(sValueCallSolvedAsExpression);
+			this.sValueCallSolvedAsExpression = sValueAsExpressionNew;
+		}else {
+			this.sValueCallSolvedAsExpression = sValueCallSolvedAsExpression;
+		}
+	}
+	
 	//### Aus Interface ICryptZZZ
 	@Override
 	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {

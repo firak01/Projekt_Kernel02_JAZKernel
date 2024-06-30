@@ -1253,7 +1253,7 @@ private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZ
 		
 		//Testen der entschluesselten Werte
 		String sValueAsExpression = objEntryDecryptedOriginal.getValueAsExpression();
-		assertFalse(sRaw.equals(sValueAsExpression));      
+		assertFalse(sRaw.equals(sValueAsExpression));              //also der entschluesselte Werte darf nicht dem Raw Wert entsprechen
 		assertFalse(sValueAsExpression.equals(sDecryptedOriginal));//um den Expression String sollte Z-Tag drum sein.		
 		
 		//####################################

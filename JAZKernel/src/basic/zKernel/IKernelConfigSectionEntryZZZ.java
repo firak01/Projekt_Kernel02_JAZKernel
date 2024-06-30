@@ -5,8 +5,11 @@ import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
+import basic.zKernel.file.ini.IValueSolvedUserZZZ;
 
 /** Ein Objekt dieser Klasse enthält die Werte aus einer konfigurierten ini-Datei.
  *  Gefüllt wird dieses Objekt in den Kernel.getParameter.... oder ähnlich lautenden Klassen.
@@ -21,7 +24,7 @@ import basic.zKernel.cache.ICachableObjectZZZ;
  * @author Fritz Lindhauer, 17.07.2019, 09:27:00
  * 
  */
-public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICryptUserZZZ, Cloneable{
+public interface IKernelConfigSectionEntryZZZ extends IValueSolvedUserZZZ, ICachableObjectZZZ, ICryptUserZZZ, Cloneable{
 	public String getSection();
 	public void setSection(String sSection) throws ExceptionZZZ; //WICHTIG: Darin wird wieder SectionExists auf false gesetzt... ALSO unbedingt VOR dem setzten von sectionExists(true) verwenden!!!
 	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
@@ -34,14 +37,10 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public String getSystemNumber();
 	public void setSystemNumber(String sSystemNumber);
 	
-	public String getRaw();
-	public void setRaw(String sRaw);
-	
-	public String getValue();
-	public void setValue(String sValue);
-	
+	public VectorExtendedDifferenceZZZ<String> getValueAsExpressionVector();
 	public String getValueAsExpression();
 	public void setValueAsExpression(String sValueAsExpression);
+	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce);
 			
 	public HashMap<String,String> getValueHashMap();
 	public void setValue(HashMap<String,String> hmValue);
@@ -58,24 +57,26 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	public boolean isExpression();
 	abstract void isExpression(boolean bIsExpression);	
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public boolean isConversion();
 	abstract void isConversion(boolean bIsConversion);
 	
 	public boolean isConverted();
 	abstract void isConverted(boolean bIsConverted);
 	
+	public VectorExtendedDifferenceZZZ<String> getValueAsConversionVector();
+	public String getValueAsConversion();
+	public void setValueAsConversion(String sValueConverted);
+	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//Formula
 	public boolean isFormula();
 	abstract void isFormula(boolean bIsFormula);
-		
 	
-	public String getValueAsConversion();
-	public void setValueAsConversion(String sValueConverted);
-	
+	public VectorExtendedDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
 	public String getValueFormulaSolvedAndConverted(); 
 	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted);
-	
+	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce);
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//JSON
@@ -96,6 +97,8 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	//Falls ein Wert einen Verschlüsselungsalgorithmus enthielt und dieser zur Berechnung erfolgreich angewendet wurde
 	public boolean isDecrypted();
 	abstract void isDecrypted(boolean bIsDecrypted);
+	
+	public VectorExtendedDifferenceZZZ<String> getRawDecryptedVector();	
 	public String getRawDecrypted();
 	abstract void setRawDecrypted(String sRaw);
 	
@@ -107,10 +110,16 @@ public interface IKernelConfigSectionEntryZZZ extends ICachableObjectZZZ, ICrypt
 	
 	public boolean isRawEncrypted();
 	abstract void isRawEncrypted(boolean bIsRawEncrypted);
+	
+	public VectorExtendedDifferenceZZZ<String> getRawEncryptedVector();
 	public String getRawEncrypted();//Wert mit den Z-Tags drumherum
 	abstract void setRawEncrypted(String sRaw);
+	
+	public VectorExtendedDifferenceZZZ<String> getValueEncryptedVector(); 
 	public String getValueEncrypted(); 
 	public void setValueEncrypted(String sValueEncryptd);
+	
+	public VectorExtendedDifferenceZZZ<String> getValueDecryptedVector();
 	public String getValueDecrypted(); 
 	public void setValueDecrypted(String sValueEncryptd);
 		

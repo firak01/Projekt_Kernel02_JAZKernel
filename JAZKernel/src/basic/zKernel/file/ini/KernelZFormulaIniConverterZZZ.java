@@ -136,7 +136,8 @@ public class KernelZFormulaIniConverterZZZ extends AbstractKernelUseObjectZZZ{
 		main:{
 			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
 			IKernelZFormulaIniZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();
-			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
+			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){	
+				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
 				break main;
 			}

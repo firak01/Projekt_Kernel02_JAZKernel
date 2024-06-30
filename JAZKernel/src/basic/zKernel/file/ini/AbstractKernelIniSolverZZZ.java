@@ -81,7 +81,7 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
-	
+		
 	public String getValue() {
 		return this.getEntry().getValue();
 	}
@@ -89,6 +89,9 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 	public void setValue(String sValue) {
 		this.getEntry().setValue(sValue);
 	}
+	
+	
+	
 	
 	/**Methode muss vom konkreten "solver" ueberschrieben werden, wenn darin keine Pfade oder Variablen ersetzt werden sollen.
 	 * @param sLineWithExpression

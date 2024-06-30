@@ -114,16 +114,11 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 	 * @throws ExceptionZZZ 
 	 */
 	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String>vecReturn = new Vector();		
+		Vector<String>vecReturn = new Vector<String>();		
 		main:{		
 			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
 			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
 			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
-			
-			//Merke: Das ist zwar ein "Cascaded" Solver, aber hier die Tags wie beim einfachen Solver nehmen. Also "aufeinander folgend".
-			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naeste schliessende Tag...
-			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
-			
 		}
 		return vecReturn;
 	}
@@ -163,6 +158,67 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 
 			} //end if sExpression = ""					
 		}//end main:
+		return vecReturn;
+	}
+	
+	
+	public Vector<String> computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;	
+						
+			vecReturn = this.computeAsExpressionFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
+			String sExpression = (String) vecReturn.get(1);									
+			if(!StringZZZ.isEmpty(sExpression)){
+				
+				//ZUERST: Löse ggfs. übergebene Variablen auf.
+				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				while(objVariable.isExpression(sExpression)){
+					sExpression = objVariable.compute(sExpression);			
+				} //end while
+					
+								
+				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				String sExpressionOld = sExpression;
+				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
+						sExpression = objIniPath.compute(sExpression);//in computeAsExpression wäre Z-Tags
+						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
+						sExpressionOld = sExpression;
+				} //end while
+				
+				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
+				//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+				//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
+				if(sExpression!=null){
+					if(vecReturn.get(0).startsWith("<Z>") && vecReturn.get(2).endsWith("</Z>")){
+						//dann ist schon eine Expression drin
+						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+						vecReturn.add(1, sExpression);
+					}else {
+						if(sExpression.startsWith("<Z>") && sExpression.endsWith("</Z>")) {
+							//dann ist hier schon eine Expression drin
+							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+							vecReturn.add(1, sExpression);
+						}else {
+							sExpression = "<Z>" + sExpression + "</Z>";
+							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+							vecReturn.add(1, sExpression);						
+						}					
+					}
+				}
+			} //end if sExpression = ""					
+		}//end main:
+		return vecReturn;
+	}
+	
+	public Vector<String>computeAsExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();		
+		main:{		
+			//Merke: Wie beim "Cascaded" Solver die Tags "vorne und hinten abschneiden".
+			//ABER: Beim "Formelausrechen" die Z-Tags im Ergebnisvector mitgeben.
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), true, false); //asExpression, d.h. lass z-Tags drin.
+		}
 		return vecReturn;
 	}
 
@@ -215,9 +271,12 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			IKernelConfigSectionEntryZZZ objReturn = this.getEntry();
 			objReturn.setRaw(sLineWithExpression);
 			
-			Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
-			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat noch alle Z-Tags
-			objReturn.setValueAsExpression(sExpressionWithTags);
+			//Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			//String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat NICHT mehr alle Z-Tags
+			
+			Vector vecAll = this.computeAsExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat jetzt Z-Tags
+			objReturn.setValueAsExpression(sExpressionWithTags,false); //nicht noch andere Z-Tags rumsetzen
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float

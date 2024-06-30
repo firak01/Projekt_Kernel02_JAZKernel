@@ -237,7 +237,9 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", false); //Damit noch KEINE MATH FORMEL ausgerechnet wird
 			sExpression = objFileIniTest.getPropertyValue("Section for testComputeMath", "Formula1").getValue();
-			sValue="Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			//Merke: Das waere der String mit umgebenden <Z> - Tag. Der wird aber aufgeloest:
+			//     "Der dynamische Wert ist '<Z><Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math></Z>'. FGL rulez.";
+			sValue="Der dynamische Wert ist '<Z:math><Z:val>2</Z:val><Z:op>*</Z:op><Z:val>3</Z:val></Z:math>'. FGL rulez."; //Also Z-Tag weg aber der Wert ohne die z:math-Tags auszurechnen.
 			assertEquals(sValue, sExpression);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird

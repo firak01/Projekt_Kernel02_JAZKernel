@@ -11,8 +11,12 @@ public interface IVectorExtendedZZZ<T> extends IOutputDebugNormedZZZ, IConstantZ
 	int getIndexOfString(String string, boolean ignoreCase, int fromIndex);
 	public T getEntryLast();
 	public int getIndexUsedLast();
-	
+
+	public T getEntryLow();
 	public T getEntryHigh();
+	
+	public int getIndexHigh();
+	public int getIndexNext();
 	
 	public int indexOfString(String string);
 	public int indexOfString(String string, int fromIndex);

@@ -138,24 +138,25 @@ public abstract class AbstractKernelIniTagCascadedZZZ extends AbstractKernelIniT
 			String sExpressionWithTags = VectorZZZ.implode(vecAll);// Der String hat noch alle Z-Tags
 			objReturn = this.getEntry();
 
-			// Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den
-			// Expression Ausdruck mit Z-Tags
-			// Damit kann ggfs. weiter gearbeitet werden
-			objReturn.setValueAsExpression(sExpressionWithTags);
-
 			// An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			String sTagStart = this.getExpressionTagStarting();
 			String sTagEnd = this.getExpressionTagClosing();
-			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags,
-					sTagStart, sTagEnd);
+			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			
-			// Z-Tags entfernen.
+			
+			// Z-Tags entfernen ... wichtig.
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
 			String sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
-
+						
 			// Den gerade errechneten Wert setzen
 			objReturn.setValue(sValue);
+			
+			// Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den
+			// Expression Ausdruck mit Z-Tags
+			// Damit kann ggfs. weiter gearbeitet werden
+			objReturn.setValueAsExpression(sExpressionWithTags,false);//Da wir oben schon mit Tag-Expression haben, hier nicht weiter erzwingen.
+			
 		} // end main:
 		return objReturn;
 	}

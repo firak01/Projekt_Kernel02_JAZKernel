@@ -11,7 +11,7 @@ import basic.zBasic.util.xml.tagsimple.ITagSimpleZZZ;
  * @author Fritz Lindhauer, 09.06.2024, 09:19:40
  * 
  */
-public class VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> extends VectorExtendedZZZ<ITagSimpleZZZ> implements IVectorExtended4XmlZZZ {
+public class VectorExtended4XmlTagSimpleZZZ<ITagSimpleZZZ> extends VectorExtendedZZZ<ITagSimpleZZZ> implements IVectorExtended4XmlZZZ<ITagSimpleZZZ> {
 	private static final long serialVersionUID = -3251609755562628308L;
 
 	

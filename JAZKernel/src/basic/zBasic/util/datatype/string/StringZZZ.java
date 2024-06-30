@@ -1179,8 +1179,9 @@ public class StringZZZ implements IConstantZZZ{
 			
 			//nun gibt es einen Ausdruck			
 			//String sRight = StringZZZ.right(sRemainingTagged, sRemainingTagged.length()-sExpressionTagged.length()-sRightSep.length()); //Das wuerde bei verschachtelten XML Strings funktionieren
-			String sMid = StringZZZ.left(sRemainingTagged, sRightSep, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
-			String sRight = "";
+			//String sMid = StringZZZ.left(sRemainingTagged, sRightSep, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			String sMid = StringZZZ.leftback(sRemainingTagged, sRightSep, bExactMatch); //Das wirkt aber nicht bei verschachtelten XML Strings..., statt dessen wird tatsächlich der erste passende String geholt.
+			String sRight = new String("");
 			if(sMid==null) {
 				sMid = "";
 				sRight = sRemainingTagged;
@@ -1202,7 +1203,7 @@ public class StringZZZ implements IConstantZZZ{
 			vecReturn.add(1, sMid);			
 			
 			if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-			vecReturn.add(2, sRight);
+			vecReturn.add(2, sRight);			
 		}
 		return vecReturn;		
 	}

@@ -11,6 +11,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
@@ -662,8 +663,5 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 					}//end main:
 					return baReturn;
 				}
-
-				
-		
 		//### Sonstige Interfaces		
 }

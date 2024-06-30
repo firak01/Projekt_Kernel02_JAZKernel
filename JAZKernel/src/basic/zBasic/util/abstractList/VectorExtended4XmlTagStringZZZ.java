@@ -11,7 +11,7 @@ import basic.zBasic.util.abstractList.IVectorExtended4XmlZZZ;
  * @author Fritz Lindhauer, 09.06.2024, 09:19:40
  * 
  */
-public class VectorExtended4XmlTagStringZZZ<T> extends VectorExtendedZZZ<T> implements IVectorExtended4XmlZZZ {
+public class VectorExtended4XmlTagStringZZZ<T> extends VectorExtendedZZZ<T> implements IVectorExtended4XmlZZZ<T> {
 	private static final long serialVersionUID = -3251609755562628308L;
 
 	
