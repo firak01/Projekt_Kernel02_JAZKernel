@@ -19,12 +19,14 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
+import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCascadedZZZ implements IKernelZFormulaIniZZZ, IKernelZTagIniZZZ, IKernelIniSolverZZZ{	
+public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCascadedZZZ implements IKernelZFormulaIniZZZ, IValueSolverZTagIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
+	
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
@@ -88,6 +90,17 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 
 	public void setValue(String sValue) {
 		this.getEntry().setValue(sValue);
+	}
+	
+	//### aus IKernelConfigSectionEntryUserZZZ
+	public IKernelConfigSectionEntryZZZ getEntry() {
+		if(this.objEntry==null) {
+			this.objEntry = new KernelConfigSectionEntryZZZ();			
+		}
+		return this.objEntry;
+	}
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		this.objEntry = objEntry;
 	}
 	
 	

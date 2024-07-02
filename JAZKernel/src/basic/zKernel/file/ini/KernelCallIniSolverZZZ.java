@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
+import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -273,7 +274,7 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 				//++++++++++++++++++++++++++++++++++++++++++++				
 				sExpression = sLineWithExpression3;
 				String sExpressionOld = sExpression;
-				KernelJavaCall_ClassZZZ objClassname = new KernelJavaCall_ClassZZZ(this.getKernelObject());
+				KernelJavaCall_ClassZZZ objClassname = new KernelJavaCall_ClassZZZ();
 				while(objClassname.isExpression(sExpression)){
 						IKernelConfigSectionEntryZZZ objEntry = objClassname.computeAsEntry(sLineWithExpression2);	
 						sExpression = objEntry.getValue();
@@ -417,5 +418,4 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 			}//end main:
 			return baReturn;
 		}
-
 }//End class

@@ -1,4 +1,4 @@
-package basic.zKernel.file.ini;
+package basic.zBasic;
 
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 

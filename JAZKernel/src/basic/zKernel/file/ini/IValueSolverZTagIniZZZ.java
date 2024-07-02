@@ -3,10 +3,12 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IObjectWithFormulaZZZ;
+import basic.zBasic.IValueSolvedUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public interface IKernelZTagIniZZZ extends IValueSolvedUserZZZ, IKernelConfigSectionEntryUserZZZ{
+public interface IValueSolverZTagIniZZZ extends IObjectWithFormulaZZZ{
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 	//getExpressionTagName()
 	//getExpressionTagStarting()

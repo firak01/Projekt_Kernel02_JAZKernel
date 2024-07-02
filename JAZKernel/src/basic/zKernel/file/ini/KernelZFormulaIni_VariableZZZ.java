@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -15,25 +16,14 @@ import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_VariableZZZ  extends AbstractKernelIniTagSimpleZZZ{//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{ //Merke: Erst ab Java 8 können static Ausdrücke in ein interface:
+public class KernelZFormulaIni_VariableZZZ  extends AbstractIniTagSimpleZZZ{
 	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			
 	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{		
 		KernelExpressionIniVariableNew_(null, null);
 	}
-			
-	public KernelZFormulaIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniVariableNew_(hmVariableValue, null);
-	}
-	
-	public KernelZFormulaIni_VariableZZZ(IKernelZZZ objKernel, HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniVariableNew_(hmVariableValue, saFlag);
-	}
-	
-	
+		
 	private boolean KernelExpressionIniVariableNew_(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 String stemp; boolean btemp; 

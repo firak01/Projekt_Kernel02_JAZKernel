@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
@@ -13,28 +14,17 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelJavaCall_ClassZZZ  extends AbstractKernelIniTagSimpleZZZ{
+public class KernelJavaCall_ClassZZZ  extends AbstractIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:Class";
 	
 	public KernelJavaCall_ClassZZZ() throws ExceptionZZZ{
 		super();
 	}
-		
-	public KernelJavaCall_ClassZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
-		super(objKernel);
-		KernelJavaCallClassNew_(null);
-	}
-	
+			
 	public KernelJavaCall_ClassZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
 		KernelJavaCallClassNew_(saFlag);
 	}
-	
-	public KernelJavaCall_ClassZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel,saFlag);
-		KernelJavaCallClassNew_(saFlag);
-	}
-	
 	
 	private boolean KernelJavaCallClassNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;

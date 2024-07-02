@@ -7,6 +7,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
@@ -18,7 +19,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.file.ini.AbstractKernelIniTagSimpleZZZ;
 import basic.zKernel.file.ini.IKernelJsonArrayIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
@@ -470,10 +470,10 @@ public class KernelConfigEntryUtilZZZ implements IConstantZZZ{
 		main:{
 			//Merke: z:null und z:empty sind nicht Tagspezifische Ausdrücke, gelten als Conversion
 			
-			boolean btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
+			boolean btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, AbstractKernelIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
+			btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
 			if(btemp==false) break main;
 			
 			bReturn = true;

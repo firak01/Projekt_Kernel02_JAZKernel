@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IValueSolvedUserZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
-import basic.zKernel.file.ini.IValueSolvedUserZZZ;
 
 /** Ein Objekt dieser Klasse enthält die Werte aus einer konfigurierten ini-Datei.
  *  Gefüllt wird dieses Objekt in den Kernel.getParameter.... oder ähnlich lautenden Klassen.

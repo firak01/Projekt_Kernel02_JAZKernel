@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
@@ -13,7 +14,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelEncryption_CodeZZZ  extends AbstractKernelIniTagSimpleZZZ{
+public class KernelEncryption_CodeZZZ  extends AbstractIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:Code";
 	
 	public KernelEncryption_CodeZZZ() throws ExceptionZZZ{
@@ -24,12 +25,6 @@ public class KernelEncryption_CodeZZZ  extends AbstractKernelIniTagSimpleZZZ{
 		super(saFlag);
 		KernelEncryptionCodeNew_(saFlag);
 	}
-	
-	public KernelEncryption_CodeZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel,saFlag);
-		KernelEncryptionCodeNew_(saFlag);
-	}
-	
 	
 	private boolean KernelEncryptionCodeNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 //	 boolean bReturn = false;

@@ -1,7 +1,8 @@
-package basic.zKernel.file.ini;
+package basic.zBasic.formula;
 
 import java.util.Vector;
 
+import basic.zBasic.AbstractObjectWithFormulaZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -20,41 +21,20 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.file.ini.IValueSolverZTagIniZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZTagIniZZZ{
-	private IKernelConfigSectionEntryZZZ objEntry = null;
+public abstract class AbstractIniTagSimpleZZZ  extends AbstractObjectWithFormulaZZZ implements IValueSolverZTagIniZZZ{
 	
-	public AbstractKernelIniTagSimpleZZZ() throws ExceptionZZZ{
+	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		AbstractKernelIniTagNew_(saFlag);
 	}
 		
-	public AbstractKernelIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ{		
+	public AbstractIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ{		
 		AbstractKernelIniTagNew_(saFlag);
 	}
-	
-	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
-		super(objKernel);
-		AbstractKernelIniTagNew_(null);
-	}
-	
-	public AbstractKernelIniTagSimpleZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		AbstractKernelIniTagNew_(saFlag);
-	}
-	
-	public AbstractKernelIniTagSimpleZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
-		super(objKernelUsing);
-		AbstractKernelIniTagNew_(null);
-	}
-	
-	public AbstractKernelIniTagSimpleZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
-		super(objKernelUsing);
-		AbstractKernelIniTagNew_(saFlag);
-	}
-	
 	
 	private boolean AbstractKernelIniTagNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
@@ -80,42 +60,9 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
-	
-	//### aus IValueSolvedUserZZZ
+
 
 	@Override
-	public VectorExtendedDifferenceZZZ<String> getValueVector() {
-		return this.getEntry().getValueVector();
-	}
-
-	@Override
-	public String getValue() {
-		return this.getEntry().getValue();
-	}
-
-	@Override
-	public void setValue(String sValue) {
-		this.getEntry().setValue(sValue);
-	}
-
-	@Override
-	public VectorExtendedDifferenceZZZ<String> getRawVector() {
-		return this.getEntry().getRawVector();
-	}
-
-	@Override
-	public String getRaw() {
-		return this.getEntry().getRaw();
-	}
-
-	@Override
-	public void setRaw(String sRaw) {
-		this.getEntry().setValue(sRaw);
-	}
-	//##############################
-	
-	
-	
 	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
@@ -129,13 +76,15 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 		return vecReturn;
 	}
 
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
+	/**
+	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+	 * ist der Ausdruck NACH der ersten Expression.
+	 * 
+	 * @param sLineWithExpression
+	 * @throws ExceptionZZZ
 	 */
+	@Override
 	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
@@ -145,6 +94,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 		return vecReturn;
 	}
 	
+	@Override
 	public Vector<String>computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
@@ -183,18 +133,18 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 	public abstract String getExpressionTagName();
 	
 	public String getExpressionTagStarting() throws ExceptionZZZ{
-		return AbstractKernelIniTagSimpleZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
+		return AbstractIniTagSimpleZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
 	}
 	public String getExpressionTagClosing() throws ExceptionZZZ{
-		return AbstractKernelIniTagSimpleZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
+		return AbstractIniTagSimpleZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
 	}	
 	public String getExpressionTagEmpty()throws ExceptionZZZ{
-		return AbstractKernelIniTagSimpleZZZ.computeExpressionTagEmpty(this.getExpressionTagName());		
+		return AbstractIniTagSimpleZZZ.computeExpressionTagEmpty(this.getExpressionTagName());		
 	}
 	
 	public static String computeExpressionTagStarting(String sTagName) throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "<" + sTagName + ">";
@@ -202,7 +152,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 	
 	public static String computeExpressionTagClosing(String sTagName)throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "</" + sTagName + ">"; 
@@ -210,7 +160,7 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 	
 	public static String computeExpressionTagEmpty(String sTagName)throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractKernelIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractIniTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "<" + sTagName + "/>";
@@ -316,13 +266,5 @@ public abstract class AbstractKernelIniTagSimpleZZZ  extends AbstractKernelUseOb
 	return sReturn;
 	}	
 	
-	public IKernelConfigSectionEntryZZZ getEntry() {
-		if(this.objEntry==null) {
-			this.objEntry = new KernelConfigSectionEntryZZZ();			
-		}
-		return this.objEntry;
-	}
-	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-		this.objEntry = objEntry;
-	}
+	
 }//End class

@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
@@ -13,7 +14,7 @@ import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMath_ValueZZZ  extends AbstractKernelIniTagSimpleZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaMath_ValueZZZ  extends AbstractIniTagSimpleZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
 	public static String sTAG_NAME = "Z:val";
 	public KernelZFormulaMath_ValueZZZ() throws ExceptionZZZ{
 		super();
