@@ -10,7 +10,7 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -101,7 +101,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 				// Z-Tags entfernen.
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>";
-				KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
+				KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStartZ, sTagEndZ);
 			}
 		}
 		return vecReturn;

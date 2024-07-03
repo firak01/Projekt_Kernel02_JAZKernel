@@ -30,7 +30,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -146,7 +146,7 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 		try {
 			if(bUseExpression && bUseFormula) {	
 				FileIniZZZ objFileIniConfig = new FileIniZZZ();
-				int iConvertionType = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(objFileIniConfig, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objReturnReference);
+				int iConvertionType = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolvedAndConverted(objFileIniConfig, sDirectoryNameRead, bUseFormula, (HashMapCaseInsensitiveZZZ<String,String>) null, (String[]) null, objReturnReference);
 				sReturn = objReturnReference.get().getValue();
 			}else {
 				sReturn  = sDirectoryNameRead;

@@ -12,7 +12,7 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -139,7 +139,7 @@ public class KernelZFormulaIni_PathZZZ  extends AbstractKernelUseObjectZZZ imple
 					//Z-Tags "aus der Mitte entfernen"... Wichtig z.B. für Z:JavaCall Tags
 					String sTagStart="<Z>";
 					String sTagEnd="</Z>";
-					KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
+					KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(vecReturn, sTagStart, sTagEnd);
 					
 				}//end if sValue!=null
 		}//end main:

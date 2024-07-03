@@ -46,7 +46,7 @@ import basic.zKernel.cache.IKernelCacheUserZZZ;
 import basic.zKernel.cache.IKernelCacheZZZ;
 import basic.zKernel.cache.KernelCacheZZZ;
 import basic.zKernel.config.KernelConfigDefaultEntryZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelEncryptionIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelExpressionIniSolverZZZ;
@@ -5285,7 +5285,7 @@ MeinTestParameter=blablaErgebnis
 			}
 						
 			ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();			
-			boolean bSuccess = KernelConfigEntryUtilZZZ.getValueJsonMapSolved(objFileIniConfig, sRaw, true, null, objhmReturnValueJsonSolved);			
+			boolean bSuccess = KernelConfigSectionEntryUtilZZZ.getValueJsonMapSolved(objFileIniConfig, sRaw, true, null, objhmReturnValueJsonSolved);			
 			if(!bSuccess) {
 				hmDebug.put("No hashmap value found in '" + sRaw + "' for property", sProperty);
 				break main;

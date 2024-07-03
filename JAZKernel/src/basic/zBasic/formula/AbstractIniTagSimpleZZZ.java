@@ -20,7 +20,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.IValueSolverZTagIniZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -28,35 +28,39 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public abstract class AbstractIniTagSimpleZZZ  extends AbstractObjectWithFormulaZZZ implements IValueSolverZTagIniZZZ{
 	
 	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		AbstractKernelIniTagNew_(saFlag);
-	}
-		
-	public AbstractIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ{		
-		AbstractKernelIniTagNew_(saFlag);
+		super();
+		AbstractKernelIniTagNew_();
 	}
 	
-	private boolean AbstractKernelIniTagNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
+	public AbstractIniTagSimpleZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		AbstractKernelIniTagNew_();
+	}
+		
+	public AbstractIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
+		AbstractKernelIniTagNew_();
+	}
+	
+	private boolean AbstractKernelIniTagNew_() throws ExceptionZZZ {
+	 boolean bReturn = false;	
 	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der uebergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}			
+//	 		String stemp; boolean btemp; 	
+// 			//setzen der uebergebenen Flags	
+//			if(saFlagControlIn != null){
+//				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//					stemp = saFlagControlIn[iCount];
+//					btemp = setFlag(stemp, true);
+//					if(btemp==false){
+//						ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//						throw ez;		 
+//					}
+//				}
+				if(this.getFlag("init")==true){
+					bReturn = true;
+					break main;
+				}
+//			}			
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
@@ -126,7 +130,7 @@ public abstract class AbstractIniTagSimpleZZZ  extends AbstractObjectWithFormula
 	}
 	
 	public boolean isExpression(String sLine) throws ExceptionZZZ{
-		return KernelConfigEntryUtilZZZ.isExpression(sLine, this.getExpressionTagName());
+		return KernelConfigSectionEntryUtilZZZ.isExpression(sLine, this.getExpressionTagName());
 	}
 		
 	//###### Getter / Setter

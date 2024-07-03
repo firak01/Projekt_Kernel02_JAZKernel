@@ -24,16 +24,10 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractIniTagSimpleZZZ{ //
 		
 	public KernelZFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionMathSolverNew_(saFlag);
+		KernelExpressionMathSolverNew_();
 	}
-	
-	public KernelZFormulaMath_OperatorZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel, saFlag);
-		KernelExpressionMathSolverNew_(saFlag);
-	}
-	
-	
-	private boolean KernelExpressionMathSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+		
+	private boolean KernelExpressionMathSolverNew_() throws ExceptionZZZ {
 //	 boolean bReturn = false;
 //	 String stemp; boolean btemp; 
 //	 main:{

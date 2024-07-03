@@ -19,7 +19,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -27,34 +27,38 @@ public abstract class AbstractIniTagCascadedZZZ extends AbstractIniTagSimpleZZZ 
 	public AbstractIniTagCascadedZZZ() throws ExceptionZZZ {
 		super();
 	}
-
-	public AbstractIniTagCascadedZZZ(String[] saFlag) throws ExceptionZZZ {
-		AbstractKernelIniTagNew_(saFlag);
+	
+	public AbstractIniTagCascadedZZZ(String sFlag) throws ExceptionZZZ {
+		super(sFlag);
+		AbstractKernelIniTagNew_();
 	}
 
-	private boolean AbstractKernelIniTagNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-		boolean bReturn = false;
-		String stemp;
-		boolean btemp;
-		main: {
+	public AbstractIniTagCascadedZZZ(String[] saFlag) throws ExceptionZZZ {
+		super(saFlag);
+		AbstractKernelIniTagNew_();
+	}
 
-			// try{
-			// setzen der uebergebenen Flags
-			if (saFlagControlIn != null) {
-				for (int iCount = 0; iCount <= saFlagControlIn.length - 1; iCount++) {
-					stemp = saFlagControlIn[iCount];
-					btemp = setFlag(stemp, true);
-					if (btemp == false) {
-						ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.",
-								IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez;
-					}
-				}
-				if (this.getFlag("init") == true) {
-					bReturn = true;
-					break main;
-				}
-			}
+	private boolean AbstractKernelIniTagNew_() throws ExceptionZZZ {
+		boolean bReturn = false;		
+		main: {
+//			String stemp; boolean btemp;
+//			// setzen der uebergebenen Flags
+//			if (saFlagControlIn != null) {
+//				for (int iCount = 0; iCount <= saFlagControlIn.length - 1; iCount++) {
+//					stemp = saFlagControlIn[iCount];
+//					btemp = setFlag(stemp, true);
+//					if (btemp == false) {
+//						ExceptionZZZ ez = new ExceptionZZZ("the flag '" + stemp + "' is not available.",
+//								IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;
+//					}
+//				}
+//			}
+			
+			if (this.getFlag("init") == true) {
+				bReturn = true;
+				break main;
+			}			
 		} // end main:
 		return bReturn;
 	}// end function KernelExpressionMathSolverNew_
@@ -103,13 +107,13 @@ public abstract class AbstractIniTagCascadedZZZ extends AbstractIniTagSimpleZZZ 
 			// An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
 			String sTagStart = this.getExpressionTagStarting();
 			String sTagEnd = this.getExpressionTagClosing();
-			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			String sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			
 			
 			// Z-Tags entfernen ... wichtig.
 			String sTagStartZ = "<Z>";
 			String sTagEndZ = "</Z>";
-			String sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
+			String sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpression, sTagStartZ, sTagEndZ);
 						
 			// Den gerade errechneten Wert setzen
 			objReturn.setValue(sValue);
@@ -117,7 +121,8 @@ public abstract class AbstractIniTagCascadedZZZ extends AbstractIniTagSimpleZZZ 
 			// Bei verschachtelten (CASCADED) Tag Werten aber noch ergänzen um den
 			// Expression Ausdruck mit Z-Tags
 			// Damit kann ggfs. weiter gearbeitet werden
-			objReturn.setValueAsExpression(sExpressionWithTags,false);//Da wir oben schon mit Tag-Expression haben, hier nicht weiter erzwingen.
+			//objReturn.setValueAsExpression(sExpressionWithTags,false);//Da wir oben schon mit Tag-Expression haben, hier nicht weiter erzwingen.
+			objReturn.setValueAsExpression(sExpressionWithTags);
 			
 		} // end main:
 		return objReturn;

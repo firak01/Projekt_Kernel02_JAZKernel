@@ -493,10 +493,12 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			//... erste die Formelberechnung hinzunehmen ändert etwas
 			bFlagAvailable = objFileIniTest.setFlag(IKernelZFormulaIniSolverZZZ.FLAGZ.USEFORMULA,true);
 			assertTrue("Das Flag 'useformula' sollte zur Verfügung stehen.", bFlagAvailable);
-			String sExpressionFormulaComputed = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();			
-			String sExpressionFormulaComputedAsExpression = objFileIniTest.getEntry().getValueFormulaSolvedAndConverted();
-			assertEquals(sExpressionFormulaComputed,sExpressionFormulaComputedAsExpression);			
-			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT,sExpressionFormulaComputedAsExpression);
+			String sExpressionFormulaComputed = objFileIniTest.getPropertyValue("Section for testCall", "WertCalled").getValue();
+			String sFormulaSolvedAndConverted = objFileIniTest.getEntry().getValueFormulaSolvedAndConverted();
+			assertEquals(sExpressionFormulaComputed,sFormulaSolvedAndConverted);
+			
+			String sFormulaSolvedAndConvertedAsExpression = objFileIniTest.getEntry().getValueFormulaSolvedAndConvertedAsExpression();					
+			assertEquals(KernelCallIniSolverZZZTest.sEXPRESSION_CALL01COMPUTED_DEFAULT,sFormulaSolvedAndConvertedAsExpression);
 			objSectionEntry = objFileIniTest.getEntry();
 			assertNotNull(objSectionEntry);
 			assertTrue(objSectionEntry.isExpression());

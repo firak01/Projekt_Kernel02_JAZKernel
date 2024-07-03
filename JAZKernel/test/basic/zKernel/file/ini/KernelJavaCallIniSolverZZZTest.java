@@ -20,7 +20,7 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -173,13 +173,13 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				//Besonderheit: Weil noch ein Call-Solver drum ist, ist korrekterweise beim Ausfuehren des Z:JavaCall noch der Z:Call Tag drin. Zum Vergleichen also noch rausrechnen.
 				String sTagStart = KernelCallIniSolverZZZ.computeExpressionTagStarting(KernelCallIniSolverZZZ.sTAG_NAME);
 				String sTagEnd = KernelCallIniSolverZZZ.computeExpressionTagClosing(KernelCallIniSolverZZZ.sTAG_NAME);
-				sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sValue, sTagStart, sTagEnd);	
+				sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sValue, sTagStart, sTagEnd);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe6: '" + sValue + "'\n");
 				
 				//Besonderheit: Weil der Z:Call noch drin ist, bleiben die <Z>-Tags auch noch drin. Zum Vergleichen also noch rausrechnen.
 				String sTagStartZ = "<Z>";
 				String sTagEndZ = "</Z>"; 
-				sValue = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sValue, sTagStartZ, sTagEndZ);	
+				sValue = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sValue, sTagStartZ, sTagEndZ);	
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausgabe7: '" + sValue + "'\n");
 				
 				String sTest = EnvironmentZZZ.getHostName();

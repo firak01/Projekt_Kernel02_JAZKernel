@@ -25,7 +25,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -35,9 +35,13 @@ public abstract class AbstractKernelIniTagCascadedZZZ extends AbstractIniTagCasc
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	
 	public AbstractKernelIniTagCascadedZZZ() throws ExceptionZZZ {
-		super();
+		super("init");
 	}
 
+	public AbstractKernelIniTagCascadedZZZ(String sFlag) throws ExceptionZZZ {
+		super(sFlag);		
+	}
+	
 	public AbstractKernelIniTagCascadedZZZ(String[] saFlag) throws ExceptionZZZ {
 		super(saFlag);		
 	}
@@ -46,9 +50,19 @@ public abstract class AbstractKernelIniTagCascadedZZZ extends AbstractIniTagCasc
 		super();
 		AbstractKernelIniTagNew_(objKernel, null);
 	}
+	
+	public AbstractKernelIniTagCascadedZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ {
+		super(saFlag);
+		AbstractKernelIniTagNew_(objKernel, null);
+	}
 
 	public AbstractKernelIniTagCascadedZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		super();
+		AbstractKernelIniTagNew_(null, objKernelUsing);
+	}
+	
+	public AbstractKernelIniTagCascadedZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ {
+		super(saFlag);
 		AbstractKernelIniTagNew_(null, objKernelUsing);
 	}
 	

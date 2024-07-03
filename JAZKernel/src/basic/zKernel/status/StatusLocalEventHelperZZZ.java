@@ -11,7 +11,7 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
 
 public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
@@ -85,7 +85,7 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 				break main;
 			}
 			if(bConvertImmediate) {
-				if(KernelConfigEntryUtilZZZ.isConvertable(sActionAlias)){
+				if(KernelConfigSectionEntryUtilZZZ.isConvertable(sActionAlias)){
 					
 					//TODOGOON20240418;//Nutze einen KernelExpressionIniSolverZZZ, den es erst noch zu schreiben gilt.
 					//                   Der ohne IniFile nur fuer eine Zeile gilt.

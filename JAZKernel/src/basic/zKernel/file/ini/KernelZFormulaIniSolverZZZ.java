@@ -17,7 +17,7 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
@@ -30,77 +30,88 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
+	
+	
 	public KernelZFormulaIniSolverZZZ() throws ExceptionZZZ{
-		super();
-		KernelExpressionIniSolverNew_(null, null, null);
+		super("init");
+		KernelExpressionIniSolverNew_(null, null);
+	}
+	
+	public KernelZFormulaIniSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		KernelExpressionIniSolverNew_(null, null);
+	}
+	
+	public KernelZFormulaIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
+		KernelExpressionIniSolverNew_(null, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, null, null);
+		KernelExpressionIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
+		super(objFileIni.getKernelObject(), saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
+		super(objKernel, saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable, null);
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
+		super(objFileIni.getKernelObject(), saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelZFormulaIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
+		super(objKernel, saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	
-	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable, String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
-	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}					
+	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable) throws ExceptionZZZ {
+		boolean bReturn = false;		 
+		main:{
+	//		 String stemp; boolean btemp;	 	
+			//setzen der übergebenen Flags	
+	//		if(saFlagControlIn != null){
+	//			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+	//				stemp = saFlagControlIn[iCount];
+	//				btemp = setFlag(stemp, true);
+	//				if(btemp==false){
+	//					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+	//					throw ez;		 
+	//				}
+	//			}					
+	//		}
+			 
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+		
+			if(objFileIn==null ){
+				ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez; 
+			}else{
+				this.setFileIni(objFileIn);	
+				if(objFileIn.getHashMapVariable()!=null){
+					this.setHashMapVariable(objFileIn.getHashMapVariable());
 				}
-				if(this.getFlag("init")==true){
-					bReturn = true;
-					break main;
-				}
-			
-				if(objFileIn==null ){
-					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-					throw ez; 
-				}else{
-					this.setFileIni(objFileIn);	
-					if(objFileIn.getHashMapVariable()!=null){
-						this.setHashMapVariable(objFileIn.getHashMapVariable());
-					}
-				}
-				
-				if(hmVariable!=null){				
-						this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
-				}
+			}
+					
+			if(hmVariable!=null){				
+					this.setVariable(hmVariable);			//soll zu den Variablen aus derm Ini-File hinzuaddieren, bzw. ersetzen		
+			}
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionIniSolverNew_
@@ -132,7 +143,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			if(!StringZZZ.isEmpty(sExpression)){
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getHashMapVariable());
 				while(objVariable.isExpression(sExpression)){
 					sExpression = objVariable.compute(sExpression);			
 				} //end while
@@ -172,7 +183,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			if(!StringZZZ.isEmpty(sExpression)){
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getHashMapVariable());
 				while(objVariable.isExpression(sExpression)){
 					sExpression = objVariable.compute(sExpression);			
 				} //end while
@@ -196,15 +207,9 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
 						vecReturn.add(1, sExpression);
 					}else {
-						if(sExpression.startsWith("<Z>") && sExpression.endsWith("</Z>")) {
-							//dann ist hier schon eine Expression drin
-							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-							vecReturn.add(1, sExpression);
-						}else {
-							sExpression = "<Z>" + sExpression + "</Z>";
-							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-							vecReturn.add(1, sExpression);						
-						}					
+						sExpression = KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sExpression);
+						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+						vecReturn.add(1, sExpression);										
 					}
 				}
 			} //end if sExpression = ""					
@@ -276,7 +281,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			
 			Vector vecAll = this.computeAsExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat jetzt Z-Tags
-			objReturn.setValueAsExpression(sExpressionWithTags,false); //nicht noch andere Z-Tags rumsetzen
+			objReturn.setValueAsExpression(sExpressionWithTags); //nicht noch andere Z-Tags rumsetzen
 			
 			//20180714 Hole Ausdrücke mit <z:math>...</z:math>, wenn das entsprechende Flag gesetzt ist.
 			//Beispiel dafür: TileHexMap-Projekt: GuiLabelFontSize_Float
@@ -302,7 +307,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			//AUSSER: Die <Z>-Tags sind am Anfang/Ende UND(!) es sind noch andere Formel Z-Tags "<Z:... im String vorhanden 
 			String sTagStart = this.getExpressionTagStarting();
 			String sTagEnd = this.getExpressionTagClosing();
-			String sExpression = KernelConfigEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			String sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			objReturn.setValue(sExpression);
 			
 			sReturn = sExpression;			

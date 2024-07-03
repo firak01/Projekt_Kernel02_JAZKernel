@@ -333,7 +333,7 @@ public class KernelJsonMapIniSolverZZZ extends AbstractKernelIniSolverZZZ implem
 					if(!StringZZZ.isEmpty(sExpression)){
 						
 						//ZUERST: Löse ggfs. übergebene Variablen auf.
-						KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getKernelObject(), this.getHashMapVariable());
+						KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getHashMapVariable());
 						while(objVariable.isExpression(sExpression)){
 							sExpression = objVariable.compute(sExpression);			
 						} //end while

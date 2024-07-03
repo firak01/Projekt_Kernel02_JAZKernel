@@ -22,44 +22,42 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 	public static String sTAG_NAME = "Z:Encrypted";
 	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
-		super();
+		super("init");
 	}
 		
 	public KernelEncryptionIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelEncryptionIniSolverNew_(saFlag);
+		KernelEncryptionIniSolverNew_();
 	}
 	
 	public KernelEncryptionIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel,saFlag);
-		KernelEncryptionIniSolverNew_(saFlag);
+		KernelEncryptionIniSolverNew_();
 	}
 	
 	
-	private boolean KernelEncryptionIniSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-//	 boolean bReturn = false;
-//	 String stemp; boolean btemp; 
-//	 main:{
-//		 	
-//	 	//try{	 		
-//	 			//setzen der �bergebenen Flags	
-//				if(saFlagControlIn != null){
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//							throw ez;		 
-//						}
-//					}
-//					if(this.getFlag("init")==true){
-//						bReturn = true;
-//						break main;
-//					}
-//				}			
-//	 	}//end main:
-//		return bReturn;
-		return true;
+	private boolean KernelEncryptionIniSolverNew_() throws ExceptionZZZ {
+		 boolean bReturn = false;
+		 main:{
+//			 	    String stemp; boolean btemp;  		
+//		 			//setzen der uebergebenen Flags	
+//					if(saFlagControlIn != null){
+//						for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//							stemp = saFlagControlIn[iCount];
+//							btemp = setFlag(stemp, true);
+//							if(btemp==false){
+//								ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//								throw ez;		 
+//							}
+//						}			
+//					}	
+			
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+		}//end main:
+		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{		

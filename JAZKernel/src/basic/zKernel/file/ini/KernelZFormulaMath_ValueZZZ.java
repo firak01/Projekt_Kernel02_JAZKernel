@@ -22,16 +22,11 @@ public class KernelZFormulaMath_ValueZZZ  extends AbstractIniTagSimpleZZZ{ //Ker
 		
 	public KernelZFormulaMath_ValueZZZ(String[] saFlag) throws ExceptionZZZ{	
 		super(saFlag);
-		KernelExpressionMathValueNew_(saFlag);
+		KernelExpressionMathValueNew_();
 	}
 	
-	public KernelZFormulaMath_ValueZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{		
-		super(objKernel, saFlag);
-		KernelExpressionMathValueNew_(saFlag);
-	}
-	
-	
-	private boolean KernelExpressionMathValueNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+		
+	private boolean KernelExpressionMathValueNew_() throws ExceptionZZZ {
 //	 boolean bReturn = false;
 //	 String stemp; boolean btemp; 
 //	 main:{

@@ -74,7 +74,8 @@ public interface IKernelConfigSectionEntryZZZ extends IValueSolvedUserZZZ, ICach
 	abstract void isFormula(boolean bIsFormula);
 	
 	public VectorExtendedDifferenceZZZ<String> getValueFormulaSolvedAndConvertedVector();
-	public String getValueFormulaSolvedAndConverted(); 
+	public String getValueFormulaSolvedAndConverted();
+	public String getValueFormulaSolvedAndConvertedAsExpression(); 
 	public void setValueFormulaSolvedAndConverted(String sValueSolvedAndConverted);
 	public void setValueCallSolvedAsExpression(String sValueCallSolvedAsExpression, boolean bEnforce);
 	
@@ -113,14 +114,17 @@ public interface IKernelConfigSectionEntryZZZ extends IValueSolvedUserZZZ, ICach
 	
 	public VectorExtendedDifferenceZZZ<String> getRawEncryptedVector();
 	public String getRawEncrypted();//Wert mit den Z-Tags drumherum
+	public String getRawEncryptedAsExpression();
 	abstract void setRawEncrypted(String sRaw);
 	
 	public VectorExtendedDifferenceZZZ<String> getValueEncryptedVector(); 
-	public String getValueEncrypted(); 
+	public String getValueEncrypted();
+	public String getValueEncryptedAsExpression();
 	public void setValueEncrypted(String sValueEncryptd);
 	
 	public VectorExtendedDifferenceZZZ<String> getValueDecryptedVector();
-	public String getValueDecrypted(); 
+	public String getValueDecrypted();
+	public String getValueDecryptedAsExpression();
 	public void setValueDecrypted(String sValueEncryptd);
 		
 		

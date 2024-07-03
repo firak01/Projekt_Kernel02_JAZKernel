@@ -23,6 +23,14 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractIniTagSimpleZZZ{
 	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{		
 		KernelExpressionIniVariableNew_(null, null);
 	}
+	
+	public KernelZFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{		
+		KernelExpressionIniVariableNew_(hmVariableValue, null);
+	}
+	
+	public KernelZFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControl) throws ExceptionZZZ{		
+		KernelExpressionIniVariableNew_(hmVariableValue, saFlagControl);
+	}
 		
 	private boolean KernelExpressionIniVariableNew_(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;

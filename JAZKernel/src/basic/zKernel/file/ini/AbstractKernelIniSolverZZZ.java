@@ -21,7 +21,7 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -31,55 +31,58 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	public AbstractKernelIniSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		AbstractKernelIniSolverNew_(saFlag);
+		super();
+		AbstractKernelIniSolverNew_();
+	}
+	
+	public AbstractKernelIniSolverZZZ(String sFlag) throws ExceptionZZZ{
+		super(sFlag);
+		AbstractKernelIniSolverNew_();
 	}
 		
-	public AbstractKernelIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{		
-		AbstractKernelIniSolverNew_(saFlag);
+	public AbstractKernelIniSolverZZZ(String[] saFlag) throws ExceptionZZZ{
+		super(saFlag);
+		AbstractKernelIniSolverNew_();
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		AbstractKernelIniSolverNew_(null);
+		AbstractKernelIniSolverNew_();
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		AbstractKernelIniSolverNew_(saFlag);
+		super(objKernel, saFlag);
+		AbstractKernelIniSolverNew_();
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing) throws ExceptionZZZ{
 		super(objKernelUsing);
-		AbstractKernelIniSolverNew_(null);
+		AbstractKernelIniSolverNew_();
 	}
 	
 	public AbstractKernelIniSolverZZZ(IKernelUserZZZ objKernelUsing, String[] saFlag) throws ExceptionZZZ{
-		super(objKernelUsing);
-		AbstractKernelIniSolverNew_(saFlag);
+		super(objKernelUsing, saFlag);
+		AbstractKernelIniSolverNew_();
 	}
 	
-	private boolean AbstractKernelIniSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
+	private boolean AbstractKernelIniSolverNew_() throws ExceptionZZZ {
+	 boolean bReturn = false;	
 	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der uebergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}			
+//		 String stemp; boolean btemp; 
+//		//setzen der uebergebenen Flags	
+//		if(saFlagControlIn != null){
+//			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//				stemp = saFlagControlIn[iCount];
+//				btemp = setFlag(stemp, true);
+//				if(btemp==false){
+//					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//					throw ez;		 
+//				}
+//			}
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}		
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
@@ -212,7 +215,7 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 	 */
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
-		return KernelConfigEntryUtilZZZ.isConvertable(sStringToProof);
+		return KernelConfigSectionEntryUtilZZZ.isConvertable(sStringToProof);
 	}
 	
 	/* (non-Javadoc)

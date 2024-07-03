@@ -39,62 +39,66 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 	
 	
 	public KernelCallIniSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelCallIniSolverNew_(null, saFlag);
+		super("init");
+		KernelCallIniSolverNew_(null);
 	}
 	
 	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, String[]saFlag) throws ExceptionZZZ{		
 		super(objKernel,saFlag);
-		KernelCallIniSolverNew_(null, saFlag);
+		KernelCallIniSolverNew_(null);
 	}
 	
 	public KernelCallIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelCallIniSolverNew_(objFileIni, null);
+		KernelCallIniSolverNew_(objFileIni);
 	}
 	
 	public KernelCallIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelCallIniSolverNew_(objFileIni, saFlag);
+		super(objFileIni.getKernelObject(), saFlag);
+		KernelCallIniSolverNew_(objFileIni);
 	}
 	
 	public KernelCallIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
-		KernelCallIniSolverNew_(objFileIni, saFlag);
+		KernelCallIniSolverNew_(objFileIni);
 	}
 			
-	private boolean KernelCallIniSolverNew_(FileIniZZZ objFileIn, String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
-	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}
+	private boolean KernelCallIniSolverNew_(FileIniZZZ objFileIn) throws ExceptionZZZ {
+	 boolean bReturn = false;	
+	 main:{ 		
+//		 String stemp; boolean btemp; 
+//		//setzen der übergebenen Flags	
+//		if(saFlagControlIn != null){
+//			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//				stemp = saFlagControlIn[iCount];
+//				btemp = setFlag(stemp, true);
+//				if(btemp==false){
+//					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//					throw ez;		 
+//				}
+//			}
+//	 	}
+		 
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
 			
-				if(objFileIn==null ){
-//					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//					throw ez; 
-				}else{
-					this.setFileIni(objFileIn);	
-					if(objFileIn.getHashMapVariable()!=null){
-						this.setHashMapVariable(objFileIn.getHashMapVariable());
-					}
+			FileIniZZZ objFile=null;
+			if(objFileIn==null ){
+				objFile = this.getKernelObject().getFileConfigKernelIni();
+				if(objFile==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez; 
 				}
-
+			}else {
+				objFile = objFileIn;
+			}
+			
+			this.setFileIni(objFile);	
+			if(objFile.getHashMapVariable()!=null){
+				this.setHashMapVariable(objFile.getHashMapVariable());			
+			}
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelJsonIniSolverNew_
@@ -295,7 +299,7 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 				//++++++++++++++++++++++++++++++++++++++++++++++
 				sExpression = sLineWithExpression3;
 				String sExpressionOld = sExpression;
-				KernelJavaCall_MethodZZZ objMethodname = new KernelJavaCall_MethodZZZ(this.getKernelObject());
+				KernelJavaCall_MethodZZZ objMethodname = new KernelJavaCall_MethodZZZ();
 				while(objMethodname.isExpression(sExpression)){
 						IKernelConfigSectionEntryZZZ objEntry = objMethodname.computeAsEntry(sExpression);
 						sExpression = objEntry.getValue();

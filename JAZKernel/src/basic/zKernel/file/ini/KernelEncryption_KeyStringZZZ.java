@@ -18,20 +18,18 @@ public class KernelEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:KeyString";
 	
 	public KernelEncryption_KeyStringZZZ() throws ExceptionZZZ{
-		super();
+		super("init");
 	}
 		
 	public KernelEncryption_KeyStringZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelEncryptionKeyStringNew_(saFlag);
+		KernelEncryptionKeyStringNew_();
 	}
 	
-	private boolean KernelEncryptionKeyStringNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-//	 boolean bReturn = false;
-//	 String stemp; boolean btemp; 
-//	 main:{
-//		 	
-//	 	//try{	 		
+	private boolean KernelEncryptionKeyStringNew_() throws ExceptionZZZ {
+	 boolean bReturn = false;
+	 main:{
+//		 	    String stemp; boolean btemp;  		
 //	 			//setzen der uebergebenen Flags	
 //				if(saFlagControlIn != null){
 //					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
@@ -41,16 +39,15 @@ public class KernelEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
 //							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
 //							throw ez;		 
 //						}
-//					}
-//					if(this.getFlag("init")==true){
-//						bReturn = true;
-//						break main;
-//					}
-//				}			
-//	 	}//end main:
-//		return bReturn;
+//					}			
+//				}	
 		
-		return true;
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+	 	}//end main:
+		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 		
 	

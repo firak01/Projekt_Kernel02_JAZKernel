@@ -23,7 +23,7 @@ import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.config.KernelConfigEntryUtilZZZ;
+import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -44,62 +44,62 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 	IKernelConfigSectionEntryZZZ objEntry = null;
 	
 	public KernelExpressionIniHandlerZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelExpressionIniSolverNew_(null, null,saFlag);
+		super("init");
+		KernelExpressionIniSolverNew_(null, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni);
-		KernelExpressionIniSolverNew_(objFileIni, null, null);
+		KernelExpressionIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
+		super(objFileIni.getKernelObject(), saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniSolverNew_(objFileIni, null, saFlag);
+		super(objKernel, saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, null);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable) throws ExceptionZZZ{
 		super(objFileIni);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable, null);
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
+		super(objFileIni, saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	public KernelExpressionIniHandlerZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, HashMapCaseInsensitiveZZZ<String,String> hmVariable, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniSolverNew_(objFileIni, hmVariable, saFlag);
+		super(objKernel, saFlag);
+		KernelExpressionIniSolverNew_(objFileIni, hmVariable);
 	}
 	
 	
-	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionIniSolverNew_(FileIniZZZ objFileIn, HashMapCaseInsensitiveZZZ hmVariable) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
 		 	
 	 	//try{	 		
 	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					 String stemp; boolean btemp; String sLog;
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							 String sKey = stemp;
-							 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
-							 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-							//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!							
-							// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
-							// throw ez;		 
-						}
-					}					
-				}
+//				if(saFlagControlIn != null){
+//					 String stemp; boolean btemp; String sLog;
+//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//						stemp = saFlagControlIn[iCount];
+//						btemp = setFlag(stemp, true);
+//						if(btemp==false){
+//							 String sKey = stemp;
+//							 sLog = "the passed flag '" + sKey + "' is not available for class '" + this.getClass() + "'.";
+//							 this.logLineDate(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
+//							//							  Bei der "Übergabe auf Verdacht" keinen Fehler werfen!!!							
+//							// ExceptionZZZ ez = new ExceptionZZZ(stemp, IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 							
+//							// throw ez;		 
+//						}
+//					}					
+//				}
 				if(this.getFlag("init")==true){
 					bReturn = true;
 					break main;
@@ -222,12 +222,12 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 						//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
 						//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
 						//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
-						KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ();
+						KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ("init");
 						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaDummy, true);
 						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 						
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
-						int iReturnExpression = KernelConfigEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
+						int iReturnExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
 						if(iReturnExpression>=1){	
 							bAnyFormula = true;
 							iReturn = iReturn + iReturnExpression;
@@ -249,7 +249,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 						
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 						boolean bForFurtherProcessing = false; 
-						bAnyCall = KernelConfigEntryUtilZZZ.getValueCallSolved(this.getFileIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+						bAnyCall = KernelConfigSectionEntryUtilZZZ.getValueCallSolved(this.getFileIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyCall) {
 							objReturn = objReturnReference.get();
 							objReturn.isCall(true);																						
@@ -267,7 +267,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 						ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
 						ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
-						iReturnJson = KernelConfigEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
+						iReturnJson = KernelConfigSectionEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
 						if(iReturnJson==5) {
 							objReturn = objReturnReference.get();
 							objReturn.isJsonArray(true);
@@ -296,7 +296,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 						
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 						boolean bForFurtherProcessing = false; 
-						bAnyEncryption = KernelConfigEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+						bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyEncryption) {
 							objReturn.isRawEncrypted(true);
 							String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						

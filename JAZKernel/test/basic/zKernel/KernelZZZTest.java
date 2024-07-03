@@ -1242,14 +1242,13 @@ private String testSetParameterByProgramAlias_Encrypted_ChangeValue_A_(IKernelZZ
 		assertEquals("testwert4decrypted local 4 program",sDecryptedOriginal);
 
 		//Sichern des "RAW" Werts
-		String sRawEncrypted = objEntryDecryptedOriginal.getRawEncrypted();
+		String sRawEncrypted = objEntryDecryptedOriginal.getRawEncryptedAsExpression();
 		String sRaw =  objEntryDecryptedOriginal.getRaw();
-		
+		assertEquals(sRaw,sRawEncrypted);//Vor der Entschluesselung wird der RAW String hier noch "archiviert".
+				
 		//Im RAW String wird der oben verwendete CIPHER-String erwartet.
 		boolean btemp = StringZZZ.contains(sRaw, CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation());
 		assertTrue("Der CIPHER String wird in der verschluesselten ini-Zeile erwartet: '"+ CryptAlgorithmMappedValueZZZ.CipherTypeZZZ.ROT13.getAbbreviation() +"'",btemp);
-
-		assertTrue(sRaw.equals(sRawEncrypted));//Vor der Entschluesselung wird der RAW String hier noch "archiviert".
 		
 		//Testen der entschluesselten Werte
 		String sValueAsExpression = objEntryDecryptedOriginal.getValueAsExpression();

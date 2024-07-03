@@ -18,39 +18,36 @@ public class KernelEncryption_CodeZZZ  extends AbstractIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:Code";
 	
 	public KernelEncryption_CodeZZZ() throws ExceptionZZZ{
-		super();
+		super("init");
 	}
 		
 	public KernelEncryption_CodeZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelEncryptionCodeNew_(saFlag);
+		KernelEncryptionCodeNew_();
 	}
 	
-	private boolean KernelEncryptionCodeNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-//	 boolean bReturn = false;
-//	 String stemp; boolean btemp; 
-//	 main:{
-//		 	
-//	 	//try{	 		
-//	 			//setzen der uebergebenen Flags	
-//				if(saFlagControlIn != null){
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//							throw ez;		 
-//						}
-//					}
-//					if(this.getFlag("init")==true){
-//						bReturn = true;
-//						break main;
-//					}
-//				}			
-//	 	}//end main:
-//		return bReturn;
-		
-		return true;
+	private boolean KernelEncryptionCodeNew_() throws ExceptionZZZ {
+		 boolean bReturn = false;
+		 main:{
+//			 	    String stemp; boolean btemp;  		
+//		 			//setzen der uebergebenen Flags	
+//					if(saFlagControlIn != null){
+//						for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//							stemp = saFlagControlIn[iCount];
+//							btemp = setFlag(stemp, true);
+//							if(btemp==false){
+//								ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//								throw ez;		 
+//							}
+//						}			
+//					}	
+			
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+		}//end main:
+		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 		
 	
