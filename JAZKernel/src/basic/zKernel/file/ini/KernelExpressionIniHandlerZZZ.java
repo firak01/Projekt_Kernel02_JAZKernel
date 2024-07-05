@@ -11,8 +11,6 @@ import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
@@ -20,11 +18,8 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -36,6 +31,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * 
  */
 public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ implements IKernelExpressionIniSolverZZZ{
+	private static final long serialVersionUID = -6430027792689200422L;
 	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
 	private ICryptZZZ objCrypt=null; //Das Verschlüsselungs-Algorithmus-Objekt, falls der Wert verschlüsselt ist.
@@ -664,4 +660,17 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 					return baReturn;
 				}
 		//### Sonstige Interfaces		
+
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {
+			return sLine; //Hier wird halt nix veraendert
+		}
+
+		/* (non-Javadoc)
+		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#isStringForComputeRelevant(java.lang.String)
+		 */
+		@Override
+		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+			return true;
+		}
 }

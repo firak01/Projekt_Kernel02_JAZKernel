@@ -14,9 +14,9 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniLineZZZ;
 
 /**Diese Klasse unterstuetzt die Arbeit mit JDOm-Objekten und dort vorhandenen Document-Objekten.
  * 
@@ -41,7 +41,7 @@ public class XmlDocumentUtilZZZ  extends AbstractObjectZZZ{
 		Document objReturn = new Document();
 		main:{
 			if(StringZZZ.isEmpty(sRootName)){
-				ExceptionZZZ ez = new ExceptionZZZ("RootName", iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("RootName", iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -84,7 +84,7 @@ public class XmlDocumentUtilZZZ  extends AbstractObjectZZZ{
 		String sReturn = null;
 		main:{									
 			if(StringZZZ.isEmpty(sTagName)){
-				ExceptionZZZ ez = new ExceptionZZZ("TagName", iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("TagName", iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -113,7 +113,7 @@ public class XmlDocumentUtilZZZ  extends AbstractObjectZZZ{
 		String sReturn = null;
 		main:{									
 			if(StringZZZ.isEmpty(sTagName)){
-				ExceptionZZZ ez = new ExceptionZZZ("TagName", iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("TagName", iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -131,12 +131,12 @@ public class XmlDocumentUtilZZZ  extends AbstractObjectZZZ{
 		boolean bReturn = false;
 		main:{
 			if(objDocument == null){
-				ExceptionZZZ ez = new ExceptionZZZ("XML Document", iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("XML Document", iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
 			if(objFile == null){
-				ExceptionZZZ ez = new ExceptionZZZ("Target File", iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Target File", iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -207,7 +207,7 @@ public class XmlDocumentUtilZZZ  extends AbstractObjectZZZ{
 		
 				objWriter.close();				
 			}catch(IOException ioe){
-				ExceptionZZZ ez = new ExceptionZZZ("IOException: " + ioe.getMessage(), iERROR_RUNTIME, KernelZFormulaIniLineZZZ.class,ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("IOException: " + ioe.getMessage(), iERROR_RUNTIME, ZFormulaIniLineZZZ.class,ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}						
 		}//end main

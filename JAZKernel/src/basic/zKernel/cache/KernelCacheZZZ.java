@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_VariableZZZ;
+import basic.zKernel.file.ini.ZTagFormulaIni_VariableZZZ;
 
 public class KernelCacheZZZ extends AbstractKernelCacheZZZ{
 	private HashMapMultiZZZ<String, ICachableObjectZZZ>hmCache=null;
@@ -91,7 +91,7 @@ Start index: 36 End index: 40 java
 Please note that it will not match “java” word in first example i.e. “Today, java is object oriented language” because “\\B” does not match start and end of a word.
 			 */
 			
-			KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ();
+			ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ();
 			String sRegEx=objVariable.getExpressionTagStarting() + sVariableName + objVariable.getExpressionTagClosing(); //Den Namen einer Variablen finden, über diesen RegEx-Ausdruck
 			sRegEx = "\\B"+sRegEx+"|"+sRegEx+"\\B";
 			ArrayList<ICachableObjectZZZ> listaCacheEntry = this.getCacheEntriesWithPropertiesByRegEx(sRegEx);

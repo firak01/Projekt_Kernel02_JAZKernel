@@ -18,6 +18,7 @@ import basic.zBasic.IResourceHandlingObjectZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
+import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
@@ -58,9 +59,8 @@ import basic.zKernel.file.ini.IKernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.IKernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelFileIniZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniLineZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
+import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.KernelSenderObjectFlagZsetZZZ;
@@ -477,7 +477,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						throw ez;
 					}			
 				}									
-		}else if(sDirectoryConfig==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sDirectoryConfig)){
+		}else if(sDirectoryConfig==null || ZTagFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sDirectoryConfig)){
 			
 			//Pfad relativ zum Eclipse Workspace
 			URL workspaceURL=null;;
@@ -4560,7 +4560,7 @@ MeinTestParameter=blablaErgebnis
 		String sDebug; String sSectionUsed; String sValue=new String(""); IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); //Wird ggfs. verwendet um zu sehen welcher Wert definiert ist. Diesen dann mit dem neuen Wert überschreiben.
 		main:{	
 			//1) Zuerst muss aus dem CryptAlgorithmus und dem schon verschluesseltem Wert der <Z> - Expression String erstellt werden.			
-			String sValueEncryptedAsExpression = KernelZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncryptedIn, objCrypt);
+			String sValueEncryptedAsExpression = ZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncryptedIn, objCrypt);
 						
 			//2) Nun diesen Wert normal setzen, wie ohne Verschluesselung
 			bReturn = this.KernelSetParameterByProgramAlias_(objFileIniConfigIn, sMainSection, sProgramOrSection, sProperty, sValueEncryptedAsExpression, bFlagSaveImmidiate);

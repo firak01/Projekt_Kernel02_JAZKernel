@@ -5,9 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ILogZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import custom.zKernel.LogZZZ;
@@ -19,8 +18,9 @@ import custom.zKernel.LogZZZ;
  * Window>Preferences>Java>Templates.
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
+ * @param <T>
  */
-public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectWithFlagZZZ implements IKernelUserZZZ, IKernelContextUserZZZ {
+public abstract class AbstractKernelUseObjectZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IKernelUserZZZ, IKernelContextUserZZZ {
 	private static final long serialVersionUID = 8229692064424314912L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
@@ -82,12 +82,21 @@ public abstract class AbstractKernelUseObjectZZZ extends AbstractObjectWithFlagZ
 		KernelUseObjectNew_(null, objKernelUsing, null);
 	}
 	
+	/**Wg. Interface IKernelUserZZZ 
+	 * muessen entsprechende Klassen diesen Code redundant uebernehmen
+	 * 
+	 * 
+	 * @param objKernel
+	 * @param objKernelUsing
+	 * @param objKernelContext
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.07.2024, 07:12:37
+	 */
 	private boolean KernelUseObjectNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing, IKernelContextZZZ objKernelContext) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{						
 			boolean btemp; String sLog;	
-								
-			//20210403: Das direkte Setzen der Flags wird nun in ObjectZZZ komplett erledigt
 			
 			if(this.getFlag("INIT")==true){
 				bReturn = true;

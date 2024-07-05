@@ -1,13 +1,11 @@
 package basic.zBasic;
 
-import java.util.Vector;
-
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 
-public abstract class AbstractObjectWithFormulaZZZ extends AbstractObjectWithFlagZZZ implements IObjectWithFormulaZZZ{
+public abstract class AbstractObjectWithFormulaZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IObjectWithFormulaZZZ{
+	private static final long serialVersionUID = 4049221887081114236L;
 	protected IKernelConfigSectionEntryZZZ objEntry = null; //Vereinfachung, ich speichere alles hier ab, hier werden auch die Statusergebnisse der Formelaufloesungsschritte verwaltet.
 	
 	

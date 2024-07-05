@@ -23,10 +23,10 @@ public class Kernel_FlagControlZZZ  extends AbstractIniTagSimpleZZZ{
 		
 	public Kernel_FlagControlZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelEncryptionKeyNumberNew_();
+		Kernel_FlagControlNew_();
 	}
 	
-	private boolean KernelEncryptionKeyNumberNew_() throws ExceptionZZZ {
+	private boolean Kernel_FlagControlNew_() throws ExceptionZZZ {
 		 boolean bReturn = false;
 		 main:{
 //			 	    String stemp; boolean btemp;  		
@@ -48,7 +48,7 @@ public class Kernel_FlagControlZZZ  extends AbstractIniTagSimpleZZZ{
 			}
 		}//end main:
 		return bReturn;
-	 }//end function KernelExpressionMathSolverNew_
+	 }//end function Kernel_FlagControlNew_
 		
 	
 	//###### Getter / Setter

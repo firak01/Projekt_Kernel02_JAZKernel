@@ -1,21 +1,22 @@
 package basic.zKernel.file.ini;
 
-import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Grundliegende Idee dahinter stammt aus den Converter-Klassen in JSF. 
  * 
  * 20190123
  * @author Fritz Lindhauer
+ * @param <T>
  *
  */
-public class KernelZFormulaIniConverterZZZ extends AbstractKernelUseObjectZZZ{
+public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ<T>{
+	private static final long serialVersionUID = -8982048164029456581L;
 	private FileIniZZZ objFileIni=null;
 	
 	//###########################################
@@ -91,7 +92,7 @@ public class KernelZFormulaIniConverterZZZ extends AbstractKernelUseObjectZZZ{
 			break main;
 		}
 		
-		objTemp = new KernelZFormulaIni_NullZZZ();
+		objTemp = new ZTagFormulaIni_NullZZZ();
 		if(objTemp.isStringForConvertRelevant(sToConvert)){
 			objReturn = objTemp;
 			break main;
@@ -120,7 +121,7 @@ public class KernelZFormulaIniConverterZZZ extends AbstractKernelUseObjectZZZ{
 				break main;
 			}
 			
-			objExpression = new KernelZFormulaIni_NullZZZ();
+			objExpression = new ZTagFormulaIni_NullZZZ();
 			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
 				break main;
@@ -142,7 +143,7 @@ public class KernelZFormulaIniConverterZZZ extends AbstractKernelUseObjectZZZ{
 				break main;
 			}
 			
-			objExpression = new KernelZFormulaIni_NullZZZ();
+			objExpression = new ZTagFormulaIni_NullZZZ();
 			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
 				break main;

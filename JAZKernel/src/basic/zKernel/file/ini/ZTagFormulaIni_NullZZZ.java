@@ -5,13 +5,11 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -21,31 +19,33 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *  a) Die Möglichkeit, dass ein "Unter"-System den Pfadeintrag der Hauptkonfigurationsdatei überschreiben kann.
  *  b) Den Performancegewinn, der dadurch erzielt wird, dass bei der Suche nach dem konfigurierten Parameter 
  *     auch ein NULL - Wert gefunden wird (halt der <z:Null/> Tag). Wenn etwas gefunden wird, dann wird auch diese Parametersuche beendet.   
+ * @param <T>
  */
-public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
+	private static final long serialVersionUID = -3773890882498236252L;
 	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
 		
-	public KernelZFormulaIni_NullZZZ() throws ExceptionZZZ{		
+	public ZTagFormulaIni_NullZZZ() throws ExceptionZZZ{		
 		KernelExpressionIniNullNew_(null, null);
 	}
 	
-	public KernelZFormulaIni_NullZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
+	public ZTagFormulaIni_NullZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniNullNew_(objFileIni, null);
 	}
 	
-	public KernelZFormulaIni_NullZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
+	public ZTagFormulaIni_NullZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
 		super(objFileIni.getKernelObject());
 		KernelExpressionIniNullNew_(objFileIni, saFlag);
 	}
 	
-	public KernelZFormulaIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
+	public ZTagFormulaIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniNullNew_(objFileIni, null);
 	}
 	
-	public KernelZFormulaIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
+	public ZTagFormulaIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel);
 		KernelExpressionIniNullNew_(objFileIni, saFlag);
 	}
@@ -91,7 +91,7 @@ public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ imple
 			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
 
 					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-					String sMathValueTag = KernelZFormulaMath_ValueZZZ.computeExpressionTagClosing(KernelZFormulaMath_ValueZZZ.sTAG_NAME);
+					String sMathValueTag = ZTagFormulaMath_ValueZZZ.computeExpressionTagClosing(ZTagFormulaMath_ValueZZZ.sTAG_NAME);
 					if(StringZZZ.contains(sProperty, sMathValueTag)){
 						sBefore = (String) vecSection.get(0);
 						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
@@ -146,7 +146,7 @@ public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ imple
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, KernelZFormulaIni_NullZZZ.getExpressionTagStarting(), KernelZFormulaIni_NullZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, ZTagFormulaIni_NullZZZ.getExpressionTagStarting(), ZTagFormulaIni_NullZZZ.getExpressionTagClosing(), false,false);
 		}
 		return vecReturn;
 	}
@@ -155,10 +155,10 @@ public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ imple
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_NullZZZ.getExpressionTagStarting(), false);
+			boolean btemp = StringZZZ.contains(sLine, ZTagFormulaIni_NullZZZ.getExpressionTagStarting(), false);
 			if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelZFormulaIni_NullZZZ.getExpressionTagClosing(), false);
+			btemp = StringZZZ.contains(sLine, ZTagFormulaIni_NullZZZ.getExpressionTagClosing(), false);
 			if(btemp==false) break main;
 			
 			bReturn = true;
@@ -170,16 +170,16 @@ public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ imple
 	//###### Getter / Setter
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
 	public static String getExpressionTagName(){
-		return KernelZFormulaIni_NullZZZ.sTAG_NAME;
+		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
 	}
 	public static String getExpressionTagStarting(){
-		return "<" + KernelZFormulaIni_NullZZZ.getExpressionTagName() + ">";
+		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">";
 	}
 	public static String getExpressionTagClosing(){
-		return "</" + KernelZFormulaIni_NullZZZ.getExpressionTagName() + ">"; 
+		return "</" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">"; 
 	}	
 	public static String getExpressionTagEmpty(){
-		return "<" + KernelZFormulaIni_NullZZZ.getExpressionTagName() + "/>";
+		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + "/>";
 	}
 	
 	public void setFileIni(FileIniZZZ objFileIni){
@@ -203,7 +203,7 @@ public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ imple
 		boolean bReturn=false;
 		main:{
 		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		if(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equalsIgnoreCase(sExpressionToProof)){
+		if(ZTagFormulaIni_NullZZZ.getExpressionTagEmpty().equalsIgnoreCase(sExpressionToProof)){
 			bReturn = true;
 			break main;
 		}
@@ -272,7 +272,7 @@ public class KernelZFormulaIni_NullZZZ  extends AbstractKernelUseObjectZZZ imple
 			if(!this.isStringForConvertRelevant(sLineWithoutExpression)) break main;
 			
 			//Hier einfach den Leeren-Tag zurückgeben
-			sReturn = KernelZFormulaIni_NullZZZ.getExpressionTagEmpty();
+			sReturn = ZTagFormulaIni_NullZZZ.getExpressionTagEmpty();
 						
 		}//end main
 		return sReturn;

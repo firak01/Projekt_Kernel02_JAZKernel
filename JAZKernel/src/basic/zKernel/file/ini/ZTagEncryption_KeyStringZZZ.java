@@ -1,27 +1,17 @@
 package basic.zKernel.file.ini;
 
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
-import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
+public class ZTagEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
+	private static final long serialVersionUID = -79235762837292434L;
 	public static String sTAG_NAME = "Z:KeyString";
 	
-	public KernelEncryption_KeyStringZZZ() throws ExceptionZZZ{
+	public ZTagEncryption_KeyStringZZZ() throws ExceptionZZZ{
 		super("init");
 	}
 		
-	public KernelEncryption_KeyStringZZZ(String[] saFlag) throws ExceptionZZZ{
+	public ZTagEncryption_KeyStringZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
 		KernelEncryptionKeyStringNew_();
 	}
@@ -53,6 +43,6 @@ public class KernelEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
 	
 	//###### Getter / Setter
 	public String getExpressionTagName(){
-		return KernelEncryption_KeyStringZZZ.sTAG_NAME;
+		return ZTagEncryption_KeyStringZZZ.sTAG_NAME;
 	}					
 }//End class

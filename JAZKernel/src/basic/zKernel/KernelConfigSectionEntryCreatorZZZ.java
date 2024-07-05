@@ -3,9 +3,9 @@ package basic.zKernel;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniLineZZZ;
 
 public class KernelConfigSectionEntryCreatorZZZ implements IConstantZZZ{
 	public static IKernelConfigSectionEntryZZZ createEntryEncrypted(String sValueEncrypted, ICryptZZZ objCrypt) throws ExceptionZZZ{
@@ -18,7 +18,7 @@ public class KernelConfigSectionEntryCreatorZZZ implements IConstantZZZ{
 			
 			
 			objReturn.setValue(sValueEncrypted);						
-			String sLine = KernelZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncrypted,objCrypt);
+			String sLine = ZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncrypted,objCrypt);
 			objReturn.setCryptAlgorithmType(objCrypt);
 			objReturn.isEncrypted(true);
 			objReturn.setValue(sLine);

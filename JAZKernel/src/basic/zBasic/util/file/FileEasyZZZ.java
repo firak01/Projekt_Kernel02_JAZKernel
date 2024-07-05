@@ -48,7 +48,7 @@ import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zKernel.IKernelConfigZZZ;
 import basic.zKernel.KernelKernelZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
+import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 
 /**Einfache Dateioperationen
  * @author lindhaueradmin
@@ -2586,9 +2586,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(bUseProjectBase) {
 				sPath = sPathIn;
 			}else {
-				if(sPathIn.startsWith(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){			
+				if(sPathIn.startsWith(ZTagFormulaIni_NullZZZ.getExpressionTagEmpty())){			
 					bUseProjectBase=true;
-					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty());
+					sPath = StringZZZ.stripLeft(sPathIn, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty());
 				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
 					bUseClasspathSource=true;
 					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
@@ -2721,9 +2721,9 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(bUseProjectBase) {
 				sPath = sPathIn;
 			}else {
-				if(sPathIn.startsWith(KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())){			
+				if(sPathIn.startsWith(ZTagFormulaIni_NullZZZ.getExpressionTagEmpty())){			
 					bUseProjectBase=true;
-					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty());
+					sPath = StringZZZ.stripLeft(sPathIn, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty());
 				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
 					bUseClasspathSource=true;
 					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());

@@ -4,7 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
+import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 
 public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 	public static IFileEasyPathObjectZZZ convertFilePath(String sFilePathIn) throws ExceptionZZZ {
@@ -29,7 +29,7 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 			String sReturnFilePathTotal="";
 			
 			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
-			if(sFilePath==null || KernelZFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePath)){
+			if(sFilePath==null || ZTagFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePath)){
 				String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
 				sReturnRoot = "";
 				sReturnFilePath = sWorkspace;				
@@ -44,10 +44,10 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 				sReturnFilePathTotal=sReturnRoot;
 			}else {				
 				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {			
-					boolean btemp = StringZZZ.startsWithIgnoreCase((sFilePath + sDirectorySeparator),KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + sDirectorySeparator);
+					boolean btemp = StringZZZ.startsWithIgnoreCase((sFilePath + sDirectorySeparator),ZTagFormulaIni_NullZZZ.getExpressionTagEmpty() + sDirectorySeparator);
 					if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && btemp ) {
 						sReturnRoot = FileEasyZZZ.getDirectoryOfExecutionAsString();
-						sReturnFilePath = StringZZZ.rightback(sFilePath, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty()+sDirectorySeparator,false);
+						sReturnFilePath = StringZZZ.rightback(sFilePath, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty()+sDirectorySeparator,false);
 						if(bReturnAsRelativePath) {
 							sReturnFilePathTotal = sReturnFilePath;
 						}else {

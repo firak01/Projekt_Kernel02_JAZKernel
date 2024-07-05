@@ -5,28 +5,18 @@ import java.util.Vector;
 import basic.zBasic.AbstractObjectWithFormulaZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.IKernelUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
-import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.IValueSolverZTagIniZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractIniTagSimpleZZZ  extends AbstractObjectWithFormulaZZZ implements IValueSolverZTagIniZZZ{
-	
+public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithFormulaZZZ<T> implements IValueSolverZTagIniZZZ{
+	private static final long serialVersionUID = -5785934791199206030L;
+
 	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
 		super();
 		AbstractKernelIniTagNew_();
@@ -236,7 +226,7 @@ public abstract class AbstractIniTagSimpleZZZ  extends AbstractObjectWithFormula
 				String[] saExpression = StringZZZ.explode(sExpressionTotal, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
 				
 				String sValue = null;
-				ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
+				ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>();
 				for(String sExpression : saExpression) {
 					
 					//Nur für den etwas komplizierteren Fall einer Verschachtelung ...
@@ -260,7 +250,7 @@ public abstract class AbstractIniTagSimpleZZZ  extends AbstractObjectWithFormula
 	main:{
 		if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 		
-		Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+		Vector<String> vecAll = this.computeExpressionAllVector(sLineWithExpression);
 		
 		//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
 		sReturn = VectorZZZ.implode(vecAll);

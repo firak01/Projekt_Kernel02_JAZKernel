@@ -16,6 +16,7 @@ import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.formula.ZFormulaIniLineZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
@@ -804,7 +805,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 					//TODOGOON20230314;
 					//2. Baue für den Wert und die Parameterwerte des Algorithmus einen Expression-Tag String
 					//Z.B.: <Z><Z:Encrypted><Z:Cipher>ROT13</Z:Cipher><Z:Code>grfgjreg4qrpelcgrq ybpny 4 cebtenz</Z:Code></Z:Encrypted></Z>					
-					sValue = KernelZFormulaIniLineZZZ.createLineFrom(objEntryWithCrypt);
+					sValue = ZFormulaIniLineZZZ.createLineFrom(objEntryWithCrypt);
 				}else {
 					//Merke: 20211130: Beim Einlesen in den "Eigenschafts Editor" DLGBox4Ini gab es das Problem, dass <z:Null> zum Leerstring wird " "!!!
 				       //          Das darf nicht sein, denn beim Zurückspeichern wird korrekterweise ein Leerstring " " zu <z:Empty>!!!

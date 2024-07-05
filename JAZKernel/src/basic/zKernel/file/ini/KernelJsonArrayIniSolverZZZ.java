@@ -271,7 +271,7 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 				if(!StringZZZ.isEmpty(sExpression)){
 					
 					//ZUERST: Löse ggfs. übergebene Variablen auf.
-					KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getHashMapVariable());
+					ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
 					while(objVariable.isExpression(sExpression)){
 						sExpression = objVariable.compute(sExpression);			
 					} //end while

@@ -10,15 +10,14 @@ import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.CryptEnumSetFactoryZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.KernelCryptAlgorithmFactoryZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
 public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  implements IKernelEncryptionIniSolverZZZ{
+	private static final long serialVersionUID = 5426925764480431586L;
 	public static String sTAG_NAME = "Z:Encrypted";
 	public ICryptZZZ objCryptAlgorithmLast = null;
 	public KernelEncryptionIniSolverZZZ() throws ExceptionZZZ{
@@ -60,8 +59,8 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{		
-			Vector vecReturn = new Vector();
+	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{		
+			Vector<String> vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
@@ -115,7 +114,7 @@ public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  i
 							}													
 						 }
 						 
-						 KernelEncryption_KeyStringZZZ objKeyString = new KernelEncryption_KeyStringZZZ();
+						 ZTagEncryption_KeyStringZZZ objKeyString = new ZTagEncryption_KeyStringZZZ();
 						 if(objKeyString.isExpression(sExpression)){					
 							String sKeyString = objKeyString.compute(sExpression);
 							if(!StringZZZ.isEmptyTrimmed(sKeyString)) {

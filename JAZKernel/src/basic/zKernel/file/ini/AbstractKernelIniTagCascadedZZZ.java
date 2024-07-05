@@ -3,34 +3,18 @@ package basic.zKernel.file.ini;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.AbstractIniTagCascadedZZZ;
-import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
-import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IniFile;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelConfigZZZ;
-import basic.zKernel.IKernelContextZZZ;
 import basic.zKernel.IKernelUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
-import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.LogZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelIniTagCascadedZZZ extends AbstractIniTagCascadedZZZ implements IKernelUserZZZ{
+	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
 	
@@ -66,6 +50,17 @@ public abstract class AbstractKernelIniTagCascadedZZZ extends AbstractIniTagCasc
 		AbstractKernelIniTagNew_(null, objKernelUsing);
 	}
 	
+	
+	/** Wg. Interface IKernelUserZZZ notwendige Redundanz zu 
+	 *  AbstractKernelUseObjectZZZ
+	 *  und dem dortigen Konstruktor
+	 *  
+	 * @param objKernel
+	 * @param objKernelUsing
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 05.07.2024, 07:10:15
+	 */
 	private boolean AbstractKernelIniTagNew_(IKernelZZZ objKernel, IKernelUserZZZ objKernelUsing) throws ExceptionZZZ {
 		boolean bReturn = false;		
 		main: {
@@ -75,7 +70,7 @@ public abstract class AbstractKernelIniTagCascadedZZZ extends AbstractIniTagCasc
 				break main; 
 			}	
 			
-			String stemp; boolean btemp;
+			boolean btemp;
 			String sLog = null;
 			IKernelZZZ objKernelUsed = null;
 			if(objKernel==null) {
@@ -153,21 +148,4 @@ public abstract class AbstractKernelIniTagCascadedZZZ extends AbstractIniTagCasc
 	public void setLogObject(LogZZZ objLog) throws ExceptionZZZ {
 		this.objLog = objLog;
 	}	
-	
-	
-	//### Aus Interface IKernelExpressionIniZZZ		
-	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithExpression;
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-			
-			Vector<String>vecAll = this.computeExpressionAllVector(sLineWithExpression);
-			
-			//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-			sReturn = VectorZZZ.implode(vecAll);
-			
-		}//end main:
-		return sReturn;
-	}
 }// End class

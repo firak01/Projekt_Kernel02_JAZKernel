@@ -1,25 +1,12 @@
-package basic.zKernel.file.ini;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
+package basic.zBasic.formula;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 import base.xml.XMLUtil;
-import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
+import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.crypt.code.CryptAlgorithmMaintypeZZZ;
-import basic.zBasic.util.crypt.code.CryptAlgorithmMappedValueZZZ;
 import basic.zBasic.util.crypt.code.CryptAlgorithmUtilZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserConstantZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
@@ -27,21 +14,30 @@ import basic.zBasic.util.crypt.code.IROTUserConstantZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlDocumentUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.file.ini.KernelEncryptionIniSolverZZZ;
+import basic.zKernel.file.ini.KernelEncryption_CharacterPoolAdditionalZZZ;
+import basic.zKernel.file.ini.KernelEncryption_CharacterPoolZZZ;
+import basic.zKernel.file.ini.KernelEncryption_CipherZZZ;
+import basic.zKernel.file.ini.KernelEncryption_CodeZZZ;
+import basic.zKernel.file.ini.KernelEncryption_KeyNumberZZZ;
+import basic.zKernel.file.ini.Kernel_FlagControlZZZ;
+import basic.zKernel.file.ini.ZTagEncryption_KeyStringZZZ;
 
 /**Klasse, in der die Zeile mit einer Z-Formula behandelt wird.
  * Z.B.: Erstelle eine Zeile aus einem übergebenen Objekt heraus (IKernelConfigSectionEntryZZZ)
  *   * 
  * @author Fritz Lindhauer, 20.03.2023, 12:21:15
+ * @param <T>
  * 
  */
-public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
+public class ZFormulaIniLineZZZ<T>  extends AbstractObjectWithFlagZZZ<T>{
 	private static final long serialVersionUID = 890064280935919576L;
 	
 	public static String createLineFrom(IKernelConfigSectionEntryZZZ objEntry) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(objEntry==null) {
-				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'KernelConfigSectionEntry Object'",iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'KernelConfigSectionEntry Object'",iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -52,9 +48,9 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 				if(objCrypt!=null) {
 					String sValue = objEntry.getValue();
 					if(objEntry.isEncrypted()) {
-						sReturn = KernelZFormulaIniLineZZZ.createLineFromEncrypted(sValue,objCrypt);
+						sReturn = ZFormulaIniLineZZZ.createLineFromEncrypted(sValue,objCrypt);
 					}else {
-						sReturn = KernelZFormulaIniLineZZZ.createLineFrom(sValue,objCrypt);
+						sReturn = ZFormulaIniLineZZZ.createLineFrom(sValue,objCrypt);
 					}
 				}							
 			}
@@ -66,7 +62,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 		String sReturn = null;
 		main:{
 			if(objCrypt==null) {
-				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'KernelConfigSectionEntry Object'",iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'KernelConfigSectionEntry Object'",iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			
@@ -74,7 +70,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 			String sValueEncrypted = objCrypt.encrypt(sValue);
 			
 			//2. Zeile erzeugen
-			sReturn = KernelZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncrypted, objCrypt);
+			sReturn = ZFormulaIniLineZZZ.createLineFromEncrypted(sValueEncrypted, objCrypt);
 			
 		}//end main
 		return sReturn;
@@ -84,7 +80,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 		String sReturn = null;
 		main:{
 			if(objCrypt==null) {
-				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'CryptAlgorithm Object'",iERROR_PARAMETER_MISSING, KernelZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
+				ExceptionZZZ ez = new ExceptionZZZ("Missing parameter: 'CryptAlgorithm Object'",iERROR_PARAMETER_MISSING, ZFormulaIniLineZZZ.class,  ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
 			}
 			              			
@@ -129,7 +125,7 @@ public class KernelZFormulaIniLineZZZ  extends AbstractObjectWithFlagZZZ{
 			//z:KeyString
 			String sKeyString = objCrypt.getCryptKey();
 			if(!StringZZZ.isEmpty(sKeyString)) {
-				stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(KernelEncryption_KeyStringZZZ.sTAG_NAME);
+				stemp = XmlDocumentUtilZZZ.replaceColonInXmlTag(ZTagEncryption_KeyStringZZZ.sTAG_NAME);
 				Element objElementZKeyString = new Element(stemp);				
 				objElementZKeyString.addContent(sKeyString);
 				objElementZEncryption.addContent(objElementZKeyString);

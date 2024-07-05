@@ -1,11 +1,8 @@
 package basic.zKernel.file.ini;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Set;
 import java.util.Vector;
 
-import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
@@ -13,12 +10,9 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
  *  Es kann dann in einem dieser Formeln z.B. auf den Property-Wert einer anderen Sektion zugegriffen werden. So entstehen 'dynamische' ini-Dateien.
@@ -26,6 +20,7 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  *
  */
 public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelZFormulaIniSolverZZZ{
+	private static final long serialVersionUID = 7989209806367224848L;
 	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
@@ -143,7 +138,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			if(!StringZZZ.isEmpty(sExpression)){
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getHashMapVariable());
+				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
 				while(objVariable.isExpression(sExpression)){
 					sExpression = objVariable.compute(sExpression);			
 				} //end while
@@ -183,7 +178,7 @@ public class KernelZFormulaIniSolverZZZ extends AbstractKernelIniSolverZZZ imple
 			if(!StringZZZ.isEmpty(sExpression)){
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
-				KernelZFormulaIni_VariableZZZ objVariable = new KernelZFormulaIni_VariableZZZ(this.getHashMapVariable());
+				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
 				while(objVariable.isExpression(sExpression)){
 					sExpression = objVariable.compute(sExpression);			
 				} //end while

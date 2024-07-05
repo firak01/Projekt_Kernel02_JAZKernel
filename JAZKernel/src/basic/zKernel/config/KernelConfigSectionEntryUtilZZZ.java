@@ -29,7 +29,7 @@ import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
+import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
@@ -492,7 +492,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				bReturn = true;
 				break main;
 			}
-			boolean bIsNullTag = StringZZZ.contains(sLine, KernelZFormulaIni_NullZZZ.getExpressionTagEmpty());
+			boolean bIsNullTag = StringZZZ.contains(sLine, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty());
 			if(bIsNullTag) {
 				bReturn = true;
 				break main;

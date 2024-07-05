@@ -3,18 +3,13 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
+	private static final long serialVersionUID = -6400035649490240580L;
+
 	public KernelZFormulaMathSolverZZZ() throws ExceptionZZZ{
 		super();
 	}
@@ -70,13 +65,13 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {//
 			if(!StringZZZ.isEmpty(sExpression)){
 					
 				//Nun den z:operator Tag suchen
-				KernelZFormulaMath_OperatorZZZ objOperator = new KernelZFormulaMath_OperatorZZZ();
+				ZTagFormulaMath_OperatorZZZ objOperator = new ZTagFormulaMath_OperatorZZZ();
 				if(objOperator.isExpression(sExpression)){
 					 sExpression = objOperator.compute(sExpression);					
 				}else{
 					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
-					KernelZFormulaMath_ValueZZZ objValue = new KernelZFormulaMath_ValueZZZ();
+					ZTagFormulaMath_ValueZZZ objValue = new ZTagFormulaMath_ValueZZZ();
 					
 					String sExpressionOld = sExpression; 
 					while(objValue.isExpression(sExpression)){

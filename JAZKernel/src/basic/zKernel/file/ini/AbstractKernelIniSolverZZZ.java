@@ -4,29 +4,22 @@ import java.util.Set;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCascadedZZZ implements IKernelZFormulaIniZZZ, IValueSolverZTagIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
-	
+	private static final long serialVersionUID = -4816468638381054061L;
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
@@ -217,23 +210,17 @@ public abstract class AbstractKernelIniSolverZZZ  extends AbstractKernelIniTagCa
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		return KernelConfigSectionEntryUtilZZZ.isConvertable(sStringToProof);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see basic.zKernel.IKernelZFormulaIniZZZ#convert(java.lang.String)
 	 */
 	@Override
-	public String convert(String sLine) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract String convert(String sLine) throws ExceptionZZZ;
 
 	/* (non-Javadoc)
 	 * @see basic.zKernel.IKernelZFormulaIniZZZ#isStringForComputeRelevant(java.lang.String)
 	 */
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
+	public abstract boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;
+
 }//End class

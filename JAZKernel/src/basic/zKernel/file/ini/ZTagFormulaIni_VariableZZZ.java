@@ -1,6 +1,5 @@
 package basic.zKernel.file.ini;
 
-import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
@@ -8,53 +7,53 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
-import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_VariableZZZ  extends AbstractIniTagSimpleZZZ{
+public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
+	private static final long serialVersionUID = 6370617551800139734L;
 	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			
-	public KernelZFormulaIni_VariableZZZ() throws ExceptionZZZ{		
+	public ZTagFormulaIni_VariableZZZ() throws ExceptionZZZ{
+		super("init");
 		KernelExpressionIniVariableNew_(null, null);
 	}
 	
-	public KernelZFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{		
+	public ZTagFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
+		super();
 		KernelExpressionIniVariableNew_(hmVariableValue, null);
 	}
 	
-	public KernelZFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControl) throws ExceptionZZZ{		
+	public ZTagFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControl) throws ExceptionZZZ{
+		super(saFlagControl);
 		KernelExpressionIniVariableNew_(hmVariableValue, saFlagControl);
 	}
 		
 	private boolean KernelExpressionIniVariableNew_(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
 	 main:{		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}														
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}										
-				}	
-				this.setHashMapVariable(hmVariableValue);
+//		 String stemp; boolean btemp; 
+//		//setzen der übergebenen Flags	
+//		if(saFlagControlIn != null){
+//			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
+//				stemp = saFlagControlIn[iCount];
+//				btemp = setFlag(stemp, true);
+//				if(btemp==false){
+//					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
+//					throw ez;		 
+//				}
+//			}	
+//	 }
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}										
+				
+			this.setHashMapVariable(hmVariableValue);
 	 	}//end main:
 		return bReturn;
-	 }//end function KernelExpressionMathSolverNew_
+	 }//end function KernelExpressionIniVariableNew_
 		
 	
 	/* (non-Javadoc)
@@ -62,13 +61,13 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractIniTagSimpleZZZ{
 	 * 
 	 * BESONERHEIT HIER: VARIABLENERSETZUNG!!!
 	 */
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
+	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();		
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
+			Vector<String> vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
 								
 			String sVariableName = (String) vecSection.get(1);
 		    String sValue = null;
@@ -108,7 +107,7 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractIniTagSimpleZZZ{
 	//###### Getter / Setter
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
 	public String getExpressionTagName(){
-		return KernelZFormulaIni_VariableZZZ.sTAG_NAME;
+		return ZTagFormulaIni_VariableZZZ.sTAG_NAME;
 	}
 		
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
@@ -154,21 +153,21 @@ public class KernelZFormulaIni_VariableZZZ  extends AbstractIniTagSimpleZZZ{
 		 * 
 		 * Besonderheit: Hier wird der Vector mit implode zusammengefasst.
 		 */
-		@Override
-		public String compute(String sLineWithExpression) throws ExceptionZZZ{
-			String sReturn = null;
-			main:{
-				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-				
-				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
-				
-//				sReturn = (String) vecAll.get(1);
-//				this.setValue(sReturn);
-				
-				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
-				sReturn = VectorZZZ.implode(vecAll);
-				
-			}//end main:
-			return sReturn;
-		}
+//		@Override
+//		public String compute(String sLineWithExpression) throws ExceptionZZZ{
+//			String sReturn = null;
+//			main:{
+//				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
+//				
+//				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);
+//				
+////				sReturn = (String) vecAll.get(1);
+////				this.setValue(sReturn);
+//				
+//				//Der Vector ist schon so aufbereiten, dass hier nur noch "zusammenaddiert" werden muss
+//				sReturn = VectorZZZ.implode(vecAll);
+//				
+//			}//end main:
+//			return sReturn;
+//		}
 }//End class

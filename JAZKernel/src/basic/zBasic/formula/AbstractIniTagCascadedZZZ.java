@@ -3,27 +3,15 @@ package basic.zBasic.formula;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
-import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.IKernelUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
-import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractIniTagCascadedZZZ extends AbstractIniTagSimpleZZZ {
+public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZZZ<T> {
+	private static final long serialVersionUID = 3041123191138631240L;
+
 	public AbstractIniTagCascadedZZZ() throws ExceptionZZZ {
 		super();
 	}

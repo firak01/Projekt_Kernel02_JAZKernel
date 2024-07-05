@@ -12,7 +12,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIni_NullZZZ;
+import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 
 public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 	public static boolean isEventRelevant4ReactionOnStatusLocal(IEventObjectStatusLocalZZZ eventStatusLocalReact, HashMap<IEnumSetMappedStatusZZZ,String>hmStatusLocal4Reaction, ReferenceArrayZZZ<String>objReturnReference) throws ExceptionZZZ{
@@ -90,12 +90,12 @@ public class StatusLocalEventHelperZZZ  implements IConstantZZZ{
 					//TODOGOON20240418;//Nutze einen KernelExpressionIniSolverZZZ, den es erst noch zu schreiben gilt.
 					//                   Der ohne IniFile nur fuer eine Zeile gilt.
 					//                   s. KernelJavaCallIniSolverZZZ
-					if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
+					if(StringZZZ.equalsIgnoreCase(sActionAlias,ZTagFormulaIni_NullZZZ.getExpressionTagEmpty())) {
 		//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_NullZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
 		//				objReturnReferenceLog.add(sLog);				
 						break main;
 					}		
-					if(StringZZZ.equalsIgnoreCase(sActionAlias,KernelZFormulaIni_NullZZZ.getExpressionTagEmpty())) {
+					if(StringZZZ.equalsIgnoreCase(sActionAlias,ZTagFormulaIni_NullZZZ.getExpressionTagEmpty())) {
 		//				sLog = ReflectCodeZZZ.getPositionCurrent()+"ReactionHashMap hat '"+ KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty() + "' fuer den Status '" + enumStatus.getName() + "'";
 		//				objReturnReferenceLog.add(sLog);
 						break main;

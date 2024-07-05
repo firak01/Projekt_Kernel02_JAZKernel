@@ -7,51 +7,32 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
-import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaMath_OperatorZZZ  extends AbstractIniTagSimpleZZZ{ //KernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
+	private static final long serialVersionUID = 3096748072633354679L;
 	public static String sTAG_NAME = "Z:op";
 	private String sOperator = null;
 		
-	public KernelZFormulaMath_OperatorZZZ() throws ExceptionZZZ{
+	public ZTagFormulaMath_OperatorZZZ() throws ExceptionZZZ{
 		super();
 	}
 		
-	public KernelZFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{
+	public ZTagFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
 		KernelExpressionMathSolverNew_();
 	}
 		
 	private boolean KernelExpressionMathSolverNew_() throws ExceptionZZZ {
-//	 boolean bReturn = false;
-//	 String stemp; boolean btemp; 
-//	 main:{
-//		 	
-//	 	//try{	 		
-//	 			//setzen der übergebenen Flags	
-//				if(saFlagControlIn != null){
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//							throw ez;		 
-//						}
-//					}
-//					if(this.getFlag("init")==true){
-//						bReturn = true;
-//						break main;
-//					}
-//				}			
-//	 	}//end main:
-//		return bReturn;
-		
-		return true;
+	 boolean bReturn = false;
+	 main:{
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+			
+			
+	 	}//end main:
+		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	
@@ -163,7 +144,7 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractIniTagSimpleZZZ{ //
 	
 	//###### Getter / Setter
 	public String getExpressionTagName(){
-		return KernelZFormulaMath_OperatorZZZ.sTAG_NAME;
+		return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
 	}
 	
 	
@@ -184,13 +165,13 @@ public class KernelZFormulaMath_OperatorZZZ  extends AbstractIniTagSimpleZZZ{ //
 				
 				
 				//links vom Operator
-				KernelZFormulaMath_ValueZZZ objValue01 = new KernelZFormulaMath_ValueZZZ();
+				ZTagFormulaMath_ValueZZZ objValue01 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue01.isExpression(sLineWithExpression)){
 					sLineWithExpression = objValue01.compute(sLineWithExpression);						
 				}	
 				
 				//rechts vom Operator
-				KernelZFormulaMath_ValueZZZ objValue02 = new KernelZFormulaMath_ValueZZZ();
+				ZTagFormulaMath_ValueZZZ objValue02 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue02.isExpression(sLineWithExpression)){
 					sLineWithExpression = objValue02.compute(sLineWithExpression);						
 				}	

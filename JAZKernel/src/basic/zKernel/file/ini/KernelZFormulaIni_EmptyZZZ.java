@@ -83,7 +83,7 @@ public class KernelZFormulaIni_EmptyZZZ  extends AbstractKernelUseObjectZZZ impl
 			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
 
 					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-					String sMathValueTag = KernelZFormulaMath_ValueZZZ.computeExpressionTagClosing(KernelZFormulaMath_ValueZZZ.sTAG_NAME);
+					String sMathValueTag = ZTagFormulaMath_ValueZZZ.computeExpressionTagClosing(ZTagFormulaMath_ValueZZZ.sTAG_NAME);
 					if(StringZZZ.contains(sProperty, sMathValueTag)){
 						sBefore = (String) vecSection.get(0);
 						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);

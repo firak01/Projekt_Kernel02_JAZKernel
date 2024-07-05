@@ -8,15 +8,15 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
+import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_PathZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
+	private static final long serialVersionUID = -6403139308573148654L;
 	public static String sTAG_NAME = ""; //Hier kein Tag 
 	private FileIniZZZ objFileIni=null;
 		
