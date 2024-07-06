@@ -18,62 +18,53 @@ public class KernelZFormulaIni_EmptyZZZ  extends AbstractKernelUseObjectZZZ impl
 	public static String sTAG_NAME = "z:Empty";
 	private FileIniZZZ objFileIni=null;
 		
-	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{		
-		KernelExpressionIniEmptyNew_(null, null);
+	public KernelZFormulaIni_EmptyZZZ() throws ExceptionZZZ{
+		super("init");
+		KernelExpressionIniEmptyNew_(null);
 	}
 	
 	public KernelZFormulaIni_EmptyZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniEmptyNew_(objFileIni, null);
+		KernelExpressionIniEmptyNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIni_EmptyZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
-		super(objFileIni.getKernelObject());
-		KernelExpressionIniEmptyNew_(objFileIni, saFlag);
+		super(objFileIni.getKernelObject(),saFlag);
+		KernelExpressionIniEmptyNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIni_EmptyZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionIniEmptyNew_(objFileIni, null);
+		KernelExpressionIniEmptyNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIni_EmptyZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniEmptyNew_(objFileIni, saFlag);
+		super(objKernel, saFlag);
+		KernelExpressionIniEmptyNew_(objFileIni);
 	}
 	
 	
-	private boolean KernelExpressionIniEmptyNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
+	private boolean KernelExpressionIniEmptyNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
+	 boolean bReturn = false; 
 	 main:{		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}														
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}										
-				}	
-				this.setFileIni(objFileIni);
+	 															
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}										
+				
+			this.setFileIni(objFileIni);
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 			
-	public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();
+	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 			
 			//Nun die Section suchen
-			Vector vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
+			Vector<String> vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
 								
 			String sSection = (String) vecSection.get(1);
 			String sProperty = (String) vecSection.get(2);
@@ -135,8 +126,8 @@ public class KernelZFormulaIni_EmptyZZZ  extends AbstractKernelUseObjectZZZ impl
 	* lindhaueradmin; 06.03.2007 11:20:34
 	 * @throws ExceptionZZZ 
 	 */
-	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector vecReturn = new Vector();		
+	public Vector<String> computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();		
 		main:{
 			vecReturn = StringZZZ.vecMid(sLineWithExpression, KernelZFormulaIni_EmptyZZZ.getExpressionTagStarting(), KernelZFormulaIni_EmptyZZZ.getExpressionTagClosing(), false,false);
 		}

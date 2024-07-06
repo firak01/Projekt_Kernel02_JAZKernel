@@ -30,7 +30,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @author Fritz Lindhauer, 02.05.2023, 19:55:30
  * 
  */
-public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ implements IKernelExpressionIniSolverZZZ{
+public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZZ<T> implements IKernelExpressionIniSolverZZZ{
 	private static final long serialVersionUID = -6430027792689200422L;
 	public static String sTAG_NAME = "Z";
 	private FileIniZZZ objFileIni=null;
@@ -218,7 +218,7 @@ public class KernelExpressionIniHandlerZZZ  extends AbstractKernelIniSolverZZZ i
 						//Merke: Die statischen Methoden leisten mehr als nur die ...Solver....
 						//       Durch den int Rückgabwert sorgen sie nämlich für die korrekte Befüllung von 
 						//       objReturn, also auch der darin verwendeten Flags bIsJson, bIsJsonMap, etc.
-						KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ("init");
+						KernelZFormulaIniSolverZZZ formulaDummy = new KernelZFormulaIniSolverZZZ();
 						String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, formulaDummy, true);
 						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 						

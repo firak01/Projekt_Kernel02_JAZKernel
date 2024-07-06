@@ -21,56 +21,43 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 	
 	//###########################################
 	public KernelZFormulaIniConverterZZZ() throws ExceptionZZZ{
-		String[]saFlagControl = {"init"};
-		KernelExpressionIniConverterNew_(null, saFlagControl);
+		super("init");
+		KernelExpressionIniConverterNew_(null);
 	}
 	
 	public KernelZFormulaIniConverterZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniConverterNew_(objFileIni, null);
+		KernelExpressionIniConverterNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIniConverterZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni.getKernelObject());
-		KernelExpressionIniConverterNew_(objFileIni, saFlag);
+		super(objFileIni.getKernelObject(),saFlag);
+		KernelExpressionIniConverterNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIniConverterZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniConverterNew_(objFileIni, saFlag);
+		super(objKernel,saFlag);
+		KernelExpressionIniConverterNew_(objFileIni);
 	}
 	
-	private boolean KernelExpressionIniConverterNew_(FileIniZZZ objFileIn, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionIniConverterNew_(FileIniZZZ objFileIn) throws ExceptionZZZ {
 		 boolean bReturn = false;
-		 String stemp; boolean btemp; 
 		 main:{
-			 	
-		 	//try{	 		
-		 			//setzen der übergebenen Flags	
-					if(saFlagControlIn != null){
-						for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-							stemp = saFlagControlIn[iCount];
-							btemp = setFlag(stemp, true);
-							if(btemp==false){
-								ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-								throw ez;		 
-							}
-						}
-						if(this.getFlag("init")==true){
-							bReturn = true;
-							break main;
-						}
-					}
+			 
+				if(this.getFlag("init")==true){
+					bReturn = true;
+					break main;
+				}
 				
-					if(objFileIn==null ){
-						ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-						throw ez; 
-					}else{
-						this.setFileIni(objFileIn);							
-					}										
+				if(objFileIn==null ){
+					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez; 
+				}else{
+					this.setFileIni(objFileIn);							
+				}										
 		 	}//end main:
 			return bReturn;
-		 }//end function KernelExpressionIniSolverNew_
+		 }//end function KernelExpressionIniConverterNew_
 		
 	//### GETTER / SETTER ########################
 	public void setFileIni(FileIniZZZ objFileIni){

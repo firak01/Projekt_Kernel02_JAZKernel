@@ -16,7 +16,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public class KernelEncryptionIniSolverZZZ  extends AbstractKernelIniSolverZZZ  implements IKernelEncryptionIniSolverZZZ{
+public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ<T>  implements IKernelEncryptionIniSolverZZZ{
 	private static final long serialVersionUID = 5426925764480431586L;
 	public static String sTAG_NAME = "Z:Encrypted";
 	public ICryptZZZ objCryptAlgorithmLast = null;

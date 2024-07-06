@@ -20,51 +20,42 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	public static String sTAG_NAME = ""; //Hier kein Tag 
 	private FileIniZZZ objFileIni=null;
 		
-	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{		
-		KernelExpressionIniPathNew_(null, null);
+	public KernelZFormulaIni_PathZZZ() throws ExceptionZZZ{
+		super("init");
+		KernelExpressionIniPathNew_(null);
 	}
 	
 	public KernelZFormulaIni_PathZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniPathNew_(objFileIni, null);
+		KernelExpressionIniPathNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIni_PathZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
-		super(objFileIni.getKernelObject());
-		KernelExpressionIniPathNew_(objFileIni, saFlag);
+		super(objFileIni.getKernelObject(), saFlag);
+		KernelExpressionIniPathNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIni_PathZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionIniPathNew_(objFileIni, null);
+		KernelExpressionIniPathNew_(objFileIni);
 	}
 	
 	public KernelZFormulaIni_PathZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniPathNew_(objFileIni, saFlag);
+		super(objKernel,saFlag);
+		KernelExpressionIniPathNew_(objFileIni);
 	}
 	
 	
-	private boolean KernelExpressionIniPathNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionIniPathNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
 	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
 	 main:{		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}														
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}										
-				}	
-				this.setFileIni(objFileIni);
+	 																
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}										
+					
+			this.setFileIni(objFileIni);
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_

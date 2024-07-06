@@ -124,11 +124,16 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithForm
 	}
 		
 	//###### Getter / Setter
+	/**
+	 * @return
+	 * @author Fritz Lindhauer, 06.07.2024, 10:50:01
+	 */
 	public abstract String getExpressionTagName();
 	
 	public String getExpressionTagStarting() throws ExceptionZZZ{
 		return AbstractIniTagSimpleZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
 	}
+
 	public String getExpressionTagClosing() throws ExceptionZZZ{
 		return AbstractIniTagSimpleZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
 	}	
@@ -176,7 +181,7 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithForm
 			//Bei einfachen Tags, den Wert zurückgeben
 			sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn);
-			
+			Fehler da ist CASCADED notwendig
 			//implode nur bei CASCADED Tags
 //			String sExpressionImploded = VectorZZZ.implode(vecAll);
 //			this.setValue(sExpressionImploded);

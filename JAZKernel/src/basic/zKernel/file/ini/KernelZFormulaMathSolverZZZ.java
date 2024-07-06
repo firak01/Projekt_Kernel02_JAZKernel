@@ -26,29 +26,15 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 	
 	
 	private boolean KernelExpressionMathSolverNew_(String[] saFlagControlIn) throws ExceptionZZZ {
-//	 boolean bReturn = false;
-//	 String stemp; boolean btemp; 
-//	 main:{
-//		 	
-//	 	//try{	 		
-//	 			//setzen der �bergebenen Flags	
-//				if(saFlagControlIn != null){
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//							throw ez;		 
-//						}
-//					}
-//					if(this.getFlag("init")==true){
-//						bReturn = true;
-//						break main;
-//					}
-//				}			
-//	 	}//end main:
-//		return bReturn;
-		return true;
+		 boolean bReturn = false; 
+		 main:{			 																
+				if(this.getFlag("init")==true){
+					bReturn = true;
+					break main;
+				}										
+					
+		 	}//end main:
+			return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
 	

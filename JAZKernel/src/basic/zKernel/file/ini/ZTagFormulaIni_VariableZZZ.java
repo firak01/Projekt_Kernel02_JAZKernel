@@ -33,18 +33,6 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private boolean KernelExpressionIniVariableNew_(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControlIn) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 main:{		
-//		 String stemp; boolean btemp; 
-//		//setzen der übergebenen Flags	
-//		if(saFlagControlIn != null){
-//			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//				stemp = saFlagControlIn[iCount];
-//				btemp = setFlag(stemp, true);
-//				if(btemp==false){
-//					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//					throw ez;		 
-//				}
-//			}	
-//	 }
 			if(this.getFlag("init")==true){
 				bReturn = true;
 				break main;

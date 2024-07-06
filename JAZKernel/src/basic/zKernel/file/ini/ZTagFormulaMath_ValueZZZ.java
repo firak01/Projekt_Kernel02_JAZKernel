@@ -28,7 +28,6 @@ public class ZTagFormulaMath_ValueZZZ<T>  extends AbstractIniTagCascadedZZZ<T>{
 			break main;
 		}
 		
-		
 		}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_

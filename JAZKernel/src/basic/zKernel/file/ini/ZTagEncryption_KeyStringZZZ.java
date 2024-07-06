@@ -19,19 +19,6 @@ public class ZTagEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
 	private boolean KernelEncryptionKeyStringNew_() throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 main:{
-//		 	    String stemp; boolean btemp;  		
-//	 			//setzen der uebergebenen Flags	
-//				if(saFlagControlIn != null){
-//					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//						stemp = saFlagControlIn[iCount];
-//						btemp = setFlag(stemp, true);
-//						if(btemp==false){
-//							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//							throw ez;		 
-//						}
-//					}			
-//				}	
-		
 			if(this.getFlag("init")==true){
 				bReturn = true;
 				break main;

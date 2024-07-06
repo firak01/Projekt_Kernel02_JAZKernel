@@ -26,51 +26,41 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> im
 	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
 		
-	public ZTagFormulaIni_NullZZZ() throws ExceptionZZZ{		
-		KernelExpressionIniNullNew_(null, null);
+	public ZTagFormulaIni_NullZZZ() throws ExceptionZZZ{	
+		super("init");
+		KernelExpressionIniNullNew_(null);
 	}
 	
 	public ZTagFormulaIni_NullZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{		
 		super(objFileIni.getKernelObject());
-		KernelExpressionIniNullNew_(objFileIni, null);
+		KernelExpressionIniNullNew_(objFileIni);
 	}
 	
 	public ZTagFormulaIni_NullZZZ(FileIniZZZ objFileIni,String[] saFlag) throws ExceptionZZZ{		
-		super(objFileIni.getKernelObject());
-		KernelExpressionIniNullNew_(objFileIni, saFlag);
+		super(objFileIni.getKernelObject(), saFlag);
+		KernelExpressionIniNullNew_(objFileIni);
 	}
 	
 	public ZTagFormulaIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objKernel);
-		KernelExpressionIniNullNew_(objFileIni, null);
+		KernelExpressionIniNullNew_(objFileIni);
 	}
 	
 	public ZTagFormulaIni_NullZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objKernel);
-		KernelExpressionIniNullNew_(objFileIni, saFlag);
+		super(objKernel, saFlag);
+		KernelExpressionIniNullNew_(objFileIni);
 	}
 	
 	
-	private boolean KernelExpressionIniNullNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
-	 main:{		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}														
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}										
-				}	
-				this.setFileIni(objFileIni);
+	private boolean KernelExpressionIniNullNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
+	 boolean bReturn = false; 
+	 main:{			 																
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}										
+				
+			this.setFileIni(objFileIni);
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_

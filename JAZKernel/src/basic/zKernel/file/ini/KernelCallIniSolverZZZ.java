@@ -1,14 +1,9 @@
 package basic.zKernel.file.ini;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.Vector;
 
-import custom.zKernel.LogZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectUtilZZZ;
@@ -19,20 +14,18 @@ import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
  *  Es kann dann in einem dieser Formeln z.B. auf den Property-Wert einer anderen Sektion zugegriffen werden. So entstehen 'dynamische' ini-Dateien.
  * @author lindhaueradmin
  *
  */
-public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
+public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelCallIniSolverZZZ, IKernelJavaCallIniSolverZZZ{
+	private static final long serialVersionUID = -8017698515311079738L;
 	public static String sTAG_NAME = "Z:Call";
 	private FileIniZZZ objFileIni=null;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
@@ -66,19 +59,6 @@ public class KernelCallIniSolverZZZ extends AbstractKernelIniSolverZZZ implement
 	private boolean KernelCallIniSolverNew_(FileIniZZZ objFileIn) throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{ 		
-//		 String stemp; boolean btemp; 
-//		//setzen der übergebenen Flags	
-//		if(saFlagControlIn != null){
-//			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//				stemp = saFlagControlIn[iCount];
-//				btemp = setFlag(stemp, true);
-//				if(btemp==false){
-//					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//					throw ez;		 
-//				}
-//			}
-//	 	}
-		 
 			if(this.getFlag("init")==true){
 				bReturn = true;
 				break main;

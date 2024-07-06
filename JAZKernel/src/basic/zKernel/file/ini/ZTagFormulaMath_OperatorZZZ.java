@@ -30,7 +30,6 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				break main;
 			}
 			
-			
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
