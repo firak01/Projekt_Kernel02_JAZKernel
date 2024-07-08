@@ -175,18 +175,18 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithForm
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
-						
+				
+			//Bei einfachen Tags den Ersten Vektor holen
 			Vector<String> vecAll = this.computeExpressionFirstVector(sLineWithExpression);
 			
 			//Bei einfachen Tags, den Wert zurückgeben
-			sReturn = (String) vecAll.get(1);
-			this.setValue(sReturn);
-			Fehler da ist CASCADED notwendig
-			//implode nur bei CASCADED Tags
-//			String sExpressionImploded = VectorZZZ.implode(vecAll);
-//			this.setValue(sExpressionImploded);
+//			sReturn = (String) vecAll.get(1);
+//			this.setValue(sReturn);
 			
-								
+			//implode NICHT nur bei CASCADED Tags
+			String sExpressionImploded = VectorZZZ.implode(vecAll);
+			sReturn = sExpressionImploded;
+			this.setValue(sReturn);
 		}//end main:
 		return sReturn;
 	}	

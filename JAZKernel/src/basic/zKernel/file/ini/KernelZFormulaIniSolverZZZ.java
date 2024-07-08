@@ -166,17 +166,28 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
 				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
-				while(objVariable.isExpression(sExpression)){
-					sExpression = objVariable.compute(sExpression);			
+				String sExpressionOld = sExpression;
+				while(objVariable.isExpression(sExpressionOld)){
+					sExpression = objVariable.compute(sExpressionOld);	
+					if(!StringZZZ.equals(sExpression,sExpressionOld)){
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-VARIABLE verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
+					}else {
+						break;
+					}
+					sExpressionOld=sExpression;//Sonst Endlosschleife.
 				} //end while
 					
 								
 				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
-				String sExpressionOld = sExpression;
+				sExpressionOld = sExpression;
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);//in computeAsExpression wäre Z-Tags
-						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
+						if(!sExpressionOld.equals(sExpression)) {
+							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
+						}else {
+							break;//Sonst Endlosschleife
+						}
 						sExpressionOld = sExpression;
 				} //end while
 				

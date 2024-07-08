@@ -1165,8 +1165,8 @@ public class StringZZZ implements IConstantZZZ{
 						
 			String sExpressionTagged = StringZZZ.leftback(sRemainingTagged, sRightSep, bExactMatch);
 			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.add(sStringToParse);
 				vecReturn.add("");
+				vecReturn.add(sStringToParse);
 				vecReturn.add("");
 				break main;
 			}
@@ -1193,17 +1193,20 @@ public class StringZZZ implements IConstantZZZ{
 			
 			
 			//Nun die Werte in den ErgebnisVector zusammenfassen
-			if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-			vecReturn.add(0, sLeft);
-
 			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-				sMid = sLeftSep + sMid + sRightSep;				
-			}
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-			vecReturn.add(1, sMid);			
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+				vecReturn.add(0, sLeftSep + sLeft);
+
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+				vecReturn.add(1, sMid);			
 			
-			if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-			vecReturn.add(2, sRight);			
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+				vecReturn.add(2, sRight + sRightSep);	
+			}else {
+				vecReturn.add("");
+				vecReturn.add(sStringToParse);
+				vecReturn.add("");
+			}
 		}
 		return vecReturn;		
 	}
@@ -1252,8 +1255,8 @@ public class StringZZZ implements IConstantZZZ{
 						
 			String sExpressionTagged = StringZZZ.left(sRemainingTagged, sRightSep, bExactMatch);//!!!nur left, wg. "First", anders als sonst leftback!!!
 			if(StringZZZ.isEmpty(sExpressionTagged)){
-				vecReturn.add(sStringToParse);
 				vecReturn.add("");
+				vecReturn.add(sStringToParse);
 				vecReturn.add("");
 				break main;
 			}
@@ -1271,17 +1274,27 @@ public class StringZZZ implements IConstantZZZ{
 			}
 						
 			//Nun die Werte in den ErgebnisVector zusammenfassen
-			if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-			vecReturn.add(0, sLeft);
-						
 			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
-				sMid = sLeftSep + sMid + sRightSep;				
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+				vecReturn.add(0, sLeftSep + sLeft);
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+				vecReturn.add(1, sMid);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+				vecReturn.add(2, sRight + sRightSep);
+			}else {
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+				vecReturn.add(0, sLeft);
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+				vecReturn.add(1, sMid);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+				vecReturn.add(2, sRight);
 			}
-			if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
-			vecReturn.add(1, sMid);
 			
-			if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-			vecReturn.add(2, sRight);
+			
 		}
 		return vecReturn;
 	}
