@@ -160,6 +160,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;	
 						
+			boolean bHasVariableProcessed=false; boolean bHasPathProcessed=false;
 			vecReturn = this.computeAsExpressionFirstVector(sLineWithExpression);	// <Z> Tags am Rand aussen entfernen	
 			String sExpression = (String) vecReturn.get(1);									
 			if(!StringZZZ.isEmpty(sExpression)){
@@ -194,7 +195,8 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					vecReturn.add(2, vecExpression.get(2) + s2);
 					
 					sExpression = VectorZZZ.implode(vecReturn);
-					sExpressionOld=sExpression;//Sonst Endlosschleife.					
+					sExpressionOld=sExpression;//Sonst Endlosschleife.
+					bHasVariableProcessed = true;
 				} //end while
 					
 								
@@ -238,18 +240,41 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					}
 					
 					//Die umgebenden Werte sichern
-					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-					vecReturn.add(0, vecExpression.get(0));
-					
-					String s1 = sExpression;
-					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-					vecReturn.add(1, s1);
-					
-					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
-					vecReturn.add(2, vecExpression.get(2));
-					
-					sExpression = VectorZZZ.implode(vecReturn);
-					sExpressionOld=sExpression;//Sonst Endlosschleife.							
+					if(bHasVariableProcessed || bHasPathProcessed) {
+						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln	
+						String s0 = vecExpression.get(0);
+						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+						vecReturn.add(0, s0);
+						
+						String s1 = vecExpression.get(1);
+						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+						vecReturn.add(1, s1);	
+						
+						String s2 = vecExpression.get(2);
+						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+						vecReturn.add(2, s2);
+						
+						sExpression = VectorZZZ.implode(vecReturn);
+						sExpressionOld=sExpression;//Sonst Endlosschleife.
+					}else {
+						//wenn der 0 Index und 2 Index des Vektors schon mal beruecksichtig wurde, dann wuerde man ihn immer verdoppeln
+						String s0 = vecReturn.get(0);
+						if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+						vecReturn.add(0, s0 + vecExpression.get(0));
+						
+						String s1 = sExpression;
+						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+						vecReturn.add(1, s1);
+						
+						String s2 = vecReturn.get(2);
+						if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+						vecReturn.add(2, vecExpression.get(2) + s2);
+						
+						sExpression = VectorZZZ.implode(vecReturn);
+						sExpressionOld=sExpression;//Sonst Endlosschleife.
+					}
+						
+					bHasPathProcessed = true;
 				} //end while
 			} //end if sExpression = ""					
 		}//end main:
@@ -318,7 +343,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			//Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			//String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat NICHT mehr alle Z-Tags
 			
-			Vector vecAll = this.computeAsExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
+			Vector<String> vecAll = this.computeAsExpressionAllVector(sLineWithExpression);//Hole hier erst einmal die Variablen-Anweisung und danach die IniPath-Anweisungen und ersetze sie durch Werte.
 			String sExpressionWithTags = VectorZZZ.implode(vecAll); //Der String hat jetzt Z-Tags
 			objReturn.setValueAsExpression(sExpressionWithTags); //nicht noch andere Z-Tags rumsetzen
 			
@@ -347,6 +372,9 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 			String sTagStart = this.getExpressionTagStarting();
 			String sTagEnd = this.getExpressionTagClosing();
 			String sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
+			
+			//TODOGOON; HIER vecAll wieder ins Spiel bringen????????????????
+			
 			objReturn.setValue(sExpression);
 			
 			sReturn = sExpression;			

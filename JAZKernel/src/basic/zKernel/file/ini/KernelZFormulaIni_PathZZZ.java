@@ -149,10 +149,15 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 		main:{
 			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false,false);
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
-			//den geklauten Anfangstag wieder hinzufuegen
+			
 			String sValue = vecReturn.get(2);
+			
+			if(!StringZZZ.isEmpty(sValue)) {
+				//den oben geklauten Anfangstag wieder hinzufuegen
+				sValue = "<" + sValue;
+			}
 			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);			
-			vecReturn.add(2, "<" + sValue);
+			vecReturn.add(2, sValue);
 			
 			
 			FileIniZZZ objFileIni = this.getFileIni();
@@ -167,8 +172,10 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 			//String sSystemNr = this.getKernelObject().getSystemNumber();					
 			//String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
 			
+			TODOGOON Hier eine gehärtete Variante einsezten, bei der man auf jeden Fall eine Section findet durch Verdoppeln der Tags!!!
+			
 			String sSectionTotal = vecReturn.get(1);
-			String sSection = StringZZZ.left(sSectionTotal + KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
+			String sSection = StringZZZ.midLeftRight(KernelZFormulaIni_PathZZZ.getExpressionTagStarting() + sSectionTotal + KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
 			String sProperty = StringZZZ.right(sSectionTotal, sSection + KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
 			
 			String sValuePathed =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();

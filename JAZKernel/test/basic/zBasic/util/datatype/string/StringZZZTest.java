@@ -55,6 +55,49 @@ public class StringZZZTest extends TestCase{
 		 stemp =StringZZZ.left("das ist ein Test", sDummy.length() - 1);
 		 assertEquals("das ist ein Tes", stemp);
 		 
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");		
+		 stemp =StringZZZ.left("das ist ein Test", " ");
+		 assertEquals("das", stemp);
+		 
+		 
+		 //System.out.println(stemp);
+	 }
+	
+	public void testLeftBack(){
+		 String stemp;
+		 
+		 //#######################################
+		 //Teste den linken Rand
+		 stemp = StringZZZ.leftback("das ist ein Test", 0);
+		 assertEquals("", stemp);
+		 
+		 stemp = StringZZZ.leftback("das ist ein Test", -1);
+		 assertEquals("", stemp);
+		 
+		 stemp = StringZZZ.leftback("das ist ein Test", 1);
+		 assertEquals("das ist ein Tes", stemp);
+		 
+		 
+		 //########################################'
+		 //Teste den rechten Rand
+		 String sDummy = new String("das ist ein Test");		
+		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length());
+		 assertEquals("", stemp);
+		 
+		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() + 1);
+		 assertEquals("", stemp);
+		 
+		 stemp =StringZZZ.leftback("das ist ein Test", sDummy.length() - 1);
+		 assertEquals("d", stemp);
+		 
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");		
+		 stemp =StringZZZ.leftback("das ist ein Test", " ");
+		 assertEquals("das ist ein",stemp);
+		 				 
 		 //System.out.println(stemp);
 	 }
 	
@@ -85,7 +128,69 @@ public class StringZZZTest extends TestCase{
 		 stemp =StringZZZ.right("das ist ein Test", sDummy.length() - 1);
 		 assertEquals("as ist ein Test", stemp); //!!! DAS D fehlt
 		 
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");		
+		 stemp =StringZZZ.right("das ist ein Test", " ");
+		 assertEquals("Test", stemp);
+		 
 		 //System.out.println(stemp);
+	}
+	
+	public void testRightback01(){
+		String stemp;
+		 
+		 //#######################################
+		 //Teste den linken Rand
+		 stemp = StringZZZ.rightback("das ist ein Test", 0);
+		 assertEquals("das ist ein Test", stemp);
+		 
+		 stemp = StringZZZ.rightback("das ist ein Test", -1);
+		 assertEquals("das ist ein Test", stemp);
+		 
+		 stemp = StringZZZ.rightback("das ist ein Test", 1);
+		 assertEquals("as ist ein Test", stemp);
+		 
+		 
+		 //########################################'
+		 //Teste den rechten Rand
+		 String sDummy = new String("das ist ein Test");		
+		 stemp =StringZZZ.rightback("das ist ein Test", sDummy.length());
+		 assertEquals("", stemp);
+		 
+		 stemp =StringZZZ.rightback("das ist ein Test", sDummy.length() + 1);
+		 assertEquals("", stemp);
+		 
+		 stemp =StringZZZ.rightback("das ist ein Test", sDummy.length() - 1);
+		 assertEquals("t", stemp); 
+		 
+		 //################### 
+		 //Teste auf String
+		 String sDummy2 = new String("das ist ein Test");		
+		 stemp =StringZZZ.rightback("das ist ein Test", " ");
+		 assertEquals("ist ein Test", stemp);
+		 
+		 //System.out.println(stemp);
+	}
+	
+	public void testRightback02(){
+		String stemp;
+		stemp = StringZZZ.rightback("123456789", 0);
+		assertEquals("123456789", stemp);
+		stemp = StringZZZ.rightback("123456789", -1);
+		assertEquals("123456789", stemp);
+		
+		stemp = StringZZZ.rightback("123456789", 1);
+		assertEquals("23456789", stemp);
+		
+		stemp = StringZZZ.rightback("123456789", 9);
+		assertEquals("", stemp);
+		
+		stemp = StringZZZ.rightback("123456789", 10);
+		assertEquals("", stemp);
+		
+		stemp = StringZZZ.rightback("123456789", 2);
+		assertEquals("3456789", stemp);	
 	}
 	
 	public void testMid(){
@@ -171,27 +276,7 @@ public class StringZZZTest extends TestCase{
 	}
 	
 	
-	public void testRightback(){
-		String stemp;
-		stemp = StringZZZ.rightback("123456789", 0);
-		assertEquals("123456789", stemp);
-		stemp = StringZZZ.rightback("123456789", -1);
-		assertEquals("123456789", stemp);
-		
-		stemp = StringZZZ.rightback("123456789", 1);
-		assertEquals("23456789", stemp);
-		
-		stemp = StringZZZ.rightback("123456789", 9);
-		assertEquals("", stemp);
-		
-		stemp = StringZZZ.rightback("123456789", 10);
-		assertEquals("", stemp);
-		
-		stemp = StringZZZ.rightback("123456789", 2);
-		assertEquals("3456789", stemp);
-		
-		
-	}
+	
 	
 	public void testStrLeft(){
 		 String stemp;
