@@ -1195,16 +1195,31 @@ public class StringZZZ implements IConstantZZZ{
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeftSep + sLeft);
+				vecReturn.add(0, sLeft + sLeftSep);
 
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
 				vecReturn.add(1, sMid);			
 			
 				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight + sRightSep);	
+				vecReturn.add(2, sRightSep + sRight);	
+			}else if(bReturnSeparators==false && !StringZZZ.isEmpty(sMid)){
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
+				vecReturn.add(sLeft);
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
+				vecReturn.add(sMid);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
+				vecReturn.add(sRight);
+				
 			}else {
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);
 				vecReturn.add("");
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);
 				vecReturn.add(sStringToParse);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);
 				vecReturn.add("");
 			}
 		}
@@ -1276,14 +1291,24 @@ public class StringZZZ implements IConstantZZZ{
 			//Nun die Werte in den ErgebnisVector zusammenfassen
 			if(bReturnSeparators ==true && !StringZZZ.isEmpty(sMid)){
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
-				vecReturn.add(0, sLeftSep + sLeft);
+				vecReturn.add(0, sLeft + sLeftSep);
 				
 				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
 				vecReturn.add(1, sMid);
 				
 				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
-				vecReturn.add(2, sRight + sRightSep);
-			}else {
+				vecReturn.add(2, sRightSep + sRight);
+			}else if(bReturnSeparators ==false && !StringZZZ.isEmpty(sMid)){
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+				vecReturn.add(0, sLeft);
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+				vecReturn.add(1, sMid);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+				vecReturn.add(2, sRight);
+			
+			} else {
 				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
 				vecReturn.add(0, sLeft);
 				

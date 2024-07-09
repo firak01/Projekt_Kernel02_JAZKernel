@@ -291,6 +291,15 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			assertTrue("Im Ergebnis wurde eine ausgerechnete 'myTestVariableString' erwartet.", StringZZZ.contains(sExpression, "myTestVariableString"));
 			assertEquals(sValue, sExpression);
 			 
+		} catch (ExceptionZZZ ez) {
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testCompute_VariablesCascaded() {
+		try {
+			objFileIniTest.setFlag(IKernelExpressionIniConverterUserZZZ.FLAGZ.USEEXPRESSION.name(),true);
+						
 			//Einbinden der Variablen in Math-Ausdrücke
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
 			objFileIniTest.setFlag("useformula_math", true); //Math ist keine Voraussetzung für Variablennersetzung, aber zum Rechnen.
@@ -299,8 +308,8 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			hmVariable.put("myTestVariableString","Test erfolgreich");
 			hmVariable.put("myTestVariableFloat","2.5");
 			objFileIniTest.setHashMapVariable(hmVariable);
-			sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula2").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
-			sValue="Der dynamische Wert ist '10.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
+			String sExpression = objFileIniTest.getPropertyValue("Section for testPassVariable", "Formula2").getValue(); //Wenn noch keine Formelvariable gesetzt ist...
+			String sValue="Der dynamische Wert ist '10.0'. FGL rulez."; //Also der Wert ohne die Math auszurechnen.
 			assertTrue("Im Ergebnis wurde eine ausgerechnete '10.0' erwartet.", StringZZZ.contains(sExpression, "10.0"));
 			assertEquals(sValue, sExpression);
 			

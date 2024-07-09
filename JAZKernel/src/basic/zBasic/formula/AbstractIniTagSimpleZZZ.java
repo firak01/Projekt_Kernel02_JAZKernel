@@ -180,13 +180,13 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithForm
 			Vector<String> vecAll = this.computeExpressionFirstVector(sLineWithExpression);
 			
 			//Bei einfachen Tags, den Wert zurückgeben
-//			sReturn = (String) vecAll.get(1);
-//			this.setValue(sReturn);
-			
-			//implode NICHT nur bei CASCADED Tags
-			String sExpressionImploded = VectorZZZ.implode(vecAll);
-			sReturn = sExpressionImploded;
+			sReturn = (String) vecAll.get(1);
 			this.setValue(sReturn);
+			
+			//implode NUR bei CASCADED Tags
+//			String sExpressionImploded = VectorZZZ.implode(vecAll);
+//			sReturn = sExpressionImploded;
+//			this.setValue(sReturn);
 		}//end main:
 		return sReturn;
 	}	

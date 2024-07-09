@@ -42,6 +42,60 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionIniVariableNew_
+	
+	
+	/**
+	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+	 * ist der Ausdruck NACH der ersten Expression.
+	 *
+	 * BESONERHEIT HIER: VARIABLENERSETZUNG!!!
+	 * 
+	 * @param sLineWithExpression
+	 * @throws ExceptionZZZ
+	 */
+	@Override
+	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();		
+		main:{
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+			Vector<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+			
+			String sVariableName = (String) vecSection.get(1);
+		    String sValue = null;
+			if(!(StringZZZ.isEmpty(sVariableName))){
+				sValue = this.getVariable(sVariableName);									
+//				HashMapCaseInsensitiveZZZ<String,String> hmVariableValue = this.getHashMapVariable();
+//					if(hmVariableValue==null){
+//						ExceptionZZZ ez = new ExceptionZZZ("HashMapCaseInsensitiveZZZ VariableValuei", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+//						throw ez;
+//					}
+//					
+//					//Nicht caseSensitive Variablen
+//					sReturn = (String) hmVariableValue.get(sVariableName);
+					
+			}//end if isempty(sVariableName)
+			
+			//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen						
+			//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
+			if(sValue==null){
+				//Setze den Variablennamen dort ein
+				sValue = sVariableName;
+			}
+				
+				//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+				vecReturn.add(0,vecSection.get(0));
+														
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+				vecReturn.add(1, sValue);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+				vecReturn.add(2,vecSection.get(2));	
+			
+		}
+		return vecReturn;
+	}
 		
 	
 	/* (non-Javadoc)
