@@ -147,7 +147,35 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	public Vector<String> computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();		
 		main:{
-			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false,false);
+			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
+			//den geklauten Anfangstag wieder hinzufuegen
+			String sValue = vecReturn.get(2);
+			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);			
+			vecReturn.add(2, "<" + sValue);
+			
+			
+			FileIniZZZ objFileIni = this.getFileIni();
+			if(objFileIni==null){
+				ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			//20080109: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
+			//20230316: Aber, jetzt ist es allgemeingültiger nicht eine konkrete SystemNumber vorzugeben. Darum null dafür.
+			//          Dann werden alle Sections durchsucht
+			//String sSystemNr = this.getKernelObject().getSystemNumber();					
+			//String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
+			
+			String sSectionTotal = vecReturn.get(1);
+			String sSection = StringZZZ.left(sSectionTotal + KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
+			String sProperty = StringZZZ.right(sSectionTotal, sSection + KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
+			
+			String sValuePathed =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();
+			if(!StringZZZ.isEmpty(sValuePathed)) {
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+				vecReturn.add(1, sValuePathed);			
+			}
 		}
 		return vecReturn;
 	}

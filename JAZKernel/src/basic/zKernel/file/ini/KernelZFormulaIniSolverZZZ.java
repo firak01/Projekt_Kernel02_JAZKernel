@@ -202,30 +202,54 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
 				sExpressionOld = sExpression;
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpressionOld)){
-						//Nein, dann werden ggfs. Werte vor und nach dem Ausdruck unterschlagen
-						TODOGOON20240709;//Verwende daher wie oben computeExpressionFirstVector(sExpressionOld);
-						sExpression = objIniPath.compute(sExpressionOld);//in computeAsExpression wäre Z-Tags
-						if(!sExpressionOld.equals(sExpression)) {
-							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
-						}else {
-							break;//Sonst Endlosschleife
-						}
-						sExpressionOld = sExpression;				
-				
-					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
-					//Den Wert ersetzen, wenn es was zu ersetzen gibt.
-					//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
-					if(sExpression!=null){
-						if(vecReturn.get(0).startsWith("<Z>") && vecReturn.get(2).endsWith("</Z>")){
-							//dann ist schon eine Expression drin
-							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-							vecReturn.add(1, sExpression);
-						}else {
-							sExpression = KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sExpression);
-							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
-							vecReturn.add(1, sExpression);										
-						}
+						//Nein, dann werden ggfs. Werte vor und nach dem Ausdruck unterschlagen		
+//					
+//						sExpression = objIniPath.compute(sExpressionOld);//in computeAsExpression wäre Z-Tags
+//						if(!sExpressionOld.equals(sExpression)) {
+//							System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
+//						}else {
+//							break;//Sonst Endlosschleife
+//						}
+//						sExpressionOld = sExpression;				
+//				
+//					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen										
+//					//Den Wert ersetzen, wenn es was zu ersetzen gibt.
+//					//MERKE: DER HAT Ggfs. NOCH Z-Tags drin in den "Before" und "Rest" Index-Werten
+//					if(sExpression!=null){
+//						if(vecReturn.get(0).startsWith("<Z>") && vecReturn.get(2).endsWith("</Z>")){
+//							//dann ist schon eine Expression drin
+//							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+//							vecReturn.add(1, sExpression);
+//						}else {
+//							sExpression = KernelConfigSectionEntryUtilZZZ.computeAsExpressionReflected(sExpression);
+//							if(vecReturn.size()>=2) vecReturn.removeElementAt(1);						
+//							vecReturn.add(1, sExpression);										
+//						}
+//					}					
+//					 
+					
+					//Verwende daher wie oben computeExpressionFirstVector(sExpressionOld);
+					Vector<String> vecExpression = objIniPath.computeExpressionFirstVector(sExpressionOld);//in computeAsExpression wäre Z-Tags
+					sExpression = vecExpression.get(1); //Die umgebenden Werte aber auch noch sichern fuer die Rueckgabe
+					if(!sExpressionOld.equals(sExpression)) {
+						System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch FormulaIniSolver-PATH verändert von '" + sExpressionOld + "' nach '" + sExpression +"'");
+					}else {
+						break;//Sonst Endlosschleife
 					}
+					
+					//Die umgebenden Werte sichern
+					if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+					vecReturn.add(0, vecExpression.get(0));
+					
+					String s1 = sExpression;
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+					vecReturn.add(1, s1);
+					
+					if(vecReturn.size()>=3) vecReturn.removeElementAt(2);
+					vecReturn.add(2, vecExpression.get(2));
+					
+					sExpression = VectorZZZ.implode(vecReturn);
+					sExpressionOld=sExpression;//Sonst Endlosschleife.							
 				} //end while
 			} //end if sExpression = ""					
 		}//end main:
