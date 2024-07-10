@@ -172,10 +172,9 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 			//String sSystemNr = this.getKernelObject().getSystemNumber();					
 			//String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
 			
-			TODOGOON Hier eine gehärtete Variante einsezten, bei der man auf jeden Fall eine Section findet durch Verdoppeln der Tags!!!
-			
+			//Hier eine gehärtete Variante einsezten, bei der man auf jeden Fall eine Section findet durch Verdoppeln der Tags!!!			
 			String sSectionTotal = vecReturn.get(1);
-			String sSection = StringZZZ.midLeftRight(KernelZFormulaIni_PathZZZ.getExpressionTagStarting() + sSectionTotal + KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
+			String sSection = StringZZZ.midLeftRightback(KernelZFormulaIni_PathZZZ.getExpressionTagStarting() + sSectionTotal + KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
 			String sProperty = StringZZZ.right(sSectionTotal, sSection + KernelZFormulaIni_PathZZZ.getExpressionTagClosing());
 			
 			String sValuePathed =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, null).getValue();

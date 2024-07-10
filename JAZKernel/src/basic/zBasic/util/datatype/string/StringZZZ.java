@@ -615,6 +615,43 @@ public class StringZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
+	
+	/** Hier muss man nicht auf NULL achten, wenn man die Strings miteinander vergleicht.
+	 * @param sString
+	 * @param sMatch
+	 * @return
+	 * @author lindhaueradmin, 12.02.2019, 19:43:08
+	 */
+	public static boolean equals(String sString, String sMatch, boolean bExactMatch){
+		boolean bReturn = false;
+		main:{
+			if(bExactMatch) {
+				bReturn = StringZZZ.equals(sString, sMatch);
+				break main;
+			}
+			
+			
+			if(sString==null && sMatch == null){
+				bReturn = true;
+				break main;
+			}
+			if(sString!=null && sMatch == null){
+				bReturn = false;
+				break main;				
+			}
+			if(sString==null && sMatch !=null){
+				bReturn = false;
+				break main;
+			}
+							
+			bReturn = sString.toLowerCase().equals(sMatch.toLowerCase());
+						
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	
 	/** Hier muss man nicht auf NULL achten, wenn man den String mit einem Character vergleicht.
 	 * @param sString
 	 * @param c
@@ -2216,6 +2253,54 @@ null will return false. An empty CharSequence (length()=0) will return false.
 	* 
 	* lindhauer; 19.08.2008 09:42:33
 	 */
+	public static String midLeftRightback(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRightback(sString, sLeft, sRight, true);
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightback(String sString, String sLeft, String sRight, boolean bExactMatch){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+			
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.left(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.equals(sLeft, sRight, bExactMatch)) {
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch); //dann also wie in midLeftRight(...)
+				sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			}else {
+				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+				sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+			}
+		
+		}
+		return sReturn;
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: [[test]]
+	* @param sLeft    e.g.: [
+	* @param sRight  e.g.: ]
+	* @return   ==>          test
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
 	public static String midLeftRight(String sString, String sLeft, String sRight){
 		return StringZZZ.midLeftRight(sString, sLeft, sRight, true);
 	}
@@ -2233,9 +2318,9 @@ null will return false. An empty CharSequence (length()=0) will return false.
 		main:{
 			if(StringZZZ.isEmpty(sString))break main;			
 			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
-			
+								
 			if (StringZZZ.isEmpty(sLeft)){
-				sReturn = StringZZZ.left(sString, sRight, bExactMatch);
+				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
 				break main;
 			}
 			
@@ -2244,8 +2329,71 @@ null will return false. An empty CharSequence (length()=0) will return false.
 				break main;
 			}
 			
+			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
+			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
+			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+
 			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
-			sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			
+
+		
+		}
+		return sReturn;
+	}
+	
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: [[test]]
+	* @param sLeft    e.g.: [
+	* @param sRight  e.g.: ]
+	* @return   ==>          test
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightIntersect(String sString, String sLeft, String sRight){
+		return StringZZZ.midLeftRightbackIntersect(sString, sLeft, sRight, true);
+	}
+	
+	/** returns the string cut on the left and on the right
+	* @param sString e.g.: abc~=~xyz
+	* @param sLeft    e.g.: ~
+	* @param sRight  e.g.: ~
+	* @return   ==>           =
+	* 
+	* lindhauer; 19.08.2008 09:42:33
+	 */
+	public static String midLeftRightbackIntersect(String sString, String sLeft, String sRight, boolean bExactMatch){
+		String sReturn = sString;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+			
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+				break main;
+			}
+			 
+			//Normalerweise wird aber das midLeftRightback Ergebnis erwartet.
+//			sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+//			sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			
+			//Merke: Nur nach links und rechts abzuprüfen ist nun logisch richtig. 
+			//       Um sie vom "erwarteten midLeftRighback Ergebnis abzugrenzen, bekommt diese Methode daher einen besonderen Namen "...Intersected(...)
+			
+			if(StringZZZ.equals(sLeft, sRight, bExactMatch)) {
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch); //dann also wie in midLeftRight(...)
+				sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			}else {
+				sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+				sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+			}
 		
 		}
 		return sReturn;

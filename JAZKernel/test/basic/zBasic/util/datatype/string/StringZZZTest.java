@@ -233,6 +233,84 @@ public class StringZZZTest extends TestCase{
 	}
 	
 	
+	public void testMidLeftRightback(){
+		String stemp;
+		String sTest = "abc~=~xyz";
+		//#######################################
+		
+		//Teste den linken Rand
+		stemp = StringZZZ.midLeftRightback(sTest, "", "~");
+		assertNotNull(stemp);
+		assertEquals("abc", stemp);
+		 
+		
+		//########################################'
+		//Teste den rechten Rand
+		stemp = StringZZZ.midLeftRightback(sTest, "~", "");
+		assertNotNull(stemp);
+		assertEquals("xyz",stemp);
+		 
+		//########################################
+		//Teste die Mitte
+		stemp =StringZZZ.midLeftRightback(sTest, "~", "~");
+		assertNotNull(stemp);
+		assertEquals("=", stemp);
+		
+		
+		//########################################
+		//Teste ueber die Raender hinaus
+		//a) ueber den rechten Rand
+		 stemp =StringZZZ.midLeftRightback(sTest, "x", "~");
+		 assertEquals("", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRightback(sTest, "y", "~");
+		 assertEquals("", stemp);
+		 
+		 //b) ueber den linken Rand
+		 stemp =StringZZZ.midLeftRightback(sTest, "~", "c");
+		 assertEquals("", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRightback(sTest, "~", "b");
+		 assertEquals("", stemp);
+		 
+		 //### mal was praktisches				
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.left(sTest, "c");
+		 assertEquals("ab", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.right(sTest, "c");
+		 assertEquals("de", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRightback(sTest, "c", "c");
+		 assertEquals("deab", stemp);//also wie bei .midLeftRight(...)
+		 
+		 //+++++++++++++++++++++++++++++++++
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRight(sTest, "b", "b"); //es gibt also keine gemeinsame Schnittmenge, aber wir betrachten hier nur Grenzen
+		 assertEquals("cdea", stemp);
+		 
+		 //Da sich hier alles ausschliessen wuerde einen anderen Teststring verwenden, in dem keine Zeichen doppelt vorkommen
+		 sTest = "abcdefghijk";
+		 stemp =StringZZZ.midLeftRight(sTest, "d", "h");
+		 assertEquals("efg", stemp);
+		 
+		 
+		 //++++++++++++++++++++		 		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRightback(sTest, "b", "");
+		 assertEquals("cde", stemp);
+		 				
+		 sTest = "x[test]y";
+		 stemp =StringZZZ.midLeftRightback(sTest, "x", "y");
+		 assertEquals("[test]", stemp);
+		 
+		 sTest = "[[test]]";
+		 stemp =StringZZZ.midLeftRightback(sTest, "[", "]");
+		 assertEquals("test", stemp);  //!!! Wg. diesem Ziel wurde die Methode ueberhaupt entwickelt!!! Es ist anders als bei midLeftRight(...)
+	}
+	
 	public void testMidLeftRight(){
 		String stemp;
 		 String sTest = "abc~=~xyz";
@@ -241,7 +319,7 @@ public class StringZZZTest extends TestCase{
 		 //Teste den linken Rand
 		 stemp = StringZZZ.midLeftRight(sTest, "", "~");
 		 assertNotNull(stemp);
-		 assertEquals("abc", stemp);
+		 assertEquals("abc~=", stemp);
 		 
 		
 		 //########################################'
@@ -250,10 +328,10 @@ public class StringZZZTest extends TestCase{
 		 assertNotNull(stemp);
 		 assertEquals("=~xyz",stemp);
 		 
-		 //########################################
-		 //Teste die Mitte
-		 stemp =StringZZZ.midLeftRight(sTest, "~", "~");
-		 assertNotNull(stemp);
+		//########################################
+		//Teste die Mitte (das sollte dann wie bei midLeftRightback(...) sein
+		stemp =StringZZZ.midLeftRight(sTest, "~", "~");
+		assertNotNull(stemp);
 		assertEquals("=", stemp);
 		
 		
@@ -272,10 +350,210 @@ public class StringZZZTest extends TestCase{
 		 		 
 		 stemp =StringZZZ.midLeftRight(sTest, "~", "b");
 		 assertEquals("", stemp);
+		 
+		 //ca) mal die Eingabeparameter Strings umgedreht
+		 stemp =StringZZZ.midLeftRight(sTest, "~", "x");
+		 assertEquals("=~", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRight(sTest, "~", "y");
+		 assertEquals("=~x", stemp);
+		 
+		 //cb) ...
+		 stemp =StringZZZ.midLeftRight(sTest, "c", "~");
+		 assertEquals("~=", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRight(sTest, "b", "~");
+		 assertEquals("c~=", stemp);
+		 
+		 
+		 
+		 //########################################
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.left(sTest, "c");
+		 assertEquals("ab", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.right(sTest, "c");
+		 assertEquals("de", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRight(sTest, "c", "c");
+		 assertEquals("deab", stemp); //!!! Das ist das gleiche Ergebnis wie bei midLeftRightBack(...), es wird halt so erwartet. Fuer Schnittmenge gibt es midLeftIntersected(...);
+		 		 		 
+		 //+++++++++++++++++++++++++++++
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.left(sTest, "b");
+		 assertEquals("a", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRight(sTest, "b", ""); //also rechts keine Grenze...
+		 assertEquals("cdeabcde", stemp); 
+		 		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.right(sTest, "b");
+		 assertEquals("cde", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRight(sTest, "", "b");//also links keine Grenze...
+		 assertEquals("abcdea", stemp);
+		 
+		 //+++++++++++++++++++++++++++++++++		 
+		 stemp =StringZZZ.midLeftRight(sTest, "b", "b"); //es gibt also keine gemeinsame Schnittmenge, aber wir betrachten hier nur Grenzen
+		 assertEquals("cdea", stemp);
+		 
+		 //Da sich hier alles ausschliessen wuerde einen anderen Teststring verwenden, in dem keine Zeichen doppelt vorkommen
+		 sTest = "abcdefghijk";
+		 stemp =StringZZZ.midLeftRight(sTest, "d", "h");
+		 assertEquals("efg", stemp);
+		  
+		 //++++++++++++++++++++
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.leftback(sTest, "c");
+		 assertEquals("abcdeab", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.rightback(sTest, "c");
+		 assertEquals("deabcde", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRight(sTest, "c", "c");
+		 assertEquals("deab", stemp);
+		 
+		 //### mal was praktisches
+		 sTest = "x[test]y";
+		 stemp =StringZZZ.midLeftRight(sTest, "[", "]");
+		 assertEquals("test", stemp);
+		 
+		 sTest = "[[test]]";
+		 stemp =StringZZZ.midLeftRight(sTest, "[", "]");
+		 assertEquals("[test]", stemp);  //!!!!! anders als bei midLeftRightback
+		 
 		
 	}
 	
-	
+	public void testMidLeftRightbackIntersect(){
+		String stemp;
+		 String sTest = "abc~=~xyz";
+		 //#######################################
+		
+		 //Teste den linken Rand
+		 stemp = StringZZZ.midLeftRightIntersect(sTest, "", "~");
+		 assertNotNull(stemp);
+		 assertEquals("abc~=", stemp);
+		 
+		
+		 //########################################'
+		 //Teste den rechten Rand
+		 stemp = StringZZZ.midLeftRightIntersect(sTest, "~", "");
+		 assertNotNull(stemp);
+		 assertEquals("=~xyz",stemp);
+		 
+		//########################################
+		//Teste die Mitte, da es von links und rechts keine ueberschneidung gibt, leer, aber da die Separatoren gleich sind, wird doch etwas gefunden. 
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "~");
+		assertNotNull(stemp);
+		assertEquals("=", stemp);
+		
+		
+		//########################################
+		//Teste ueber die Raender hinaus
+		//a) ueber den rechten Rand
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "x", "~");
+		 assertEquals("", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "y", "~");
+		 assertEquals("", stemp);
+		 
+		 //b) ueber den linken Rand
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "c");
+		 assertEquals("", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "b");
+		 assertEquals("", stemp);
+		 
+		 //ca) mal die Eingabeparameter Strings umgedreht
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "x");
+		 assertEquals("", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "~", "y");
+		 assertEquals("x", stemp);
+		 
+		 //cb) ...
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "c", "~");
+		 assertEquals("", stemp);
+		 		 
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "b", "~");
+		 assertEquals("c", stemp);
+		 
+		 
+		 
+		 //########################################
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.left(sTest, "c");
+		 assertEquals("ab", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.right(sTest, "c");
+		 assertEquals("de", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "c", "c");
+		 assertEquals("deab", stemp); //!!! Das ist das gleiche Ergebnis wie bei midLeftRightBack(...), es wird halt so erwartet. Fuer Schnittmenge gibt es midLeftIntersected(...);
+		 		 		 
+		 //+++++++++++++++++++++++++++++
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.left(sTest, "b");
+		 assertEquals("a", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "b", ""); //also rechts keine Grenze...
+		 assertEquals("cdeabcde", stemp); 
+		 		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.right(sTest, "b");
+		 assertEquals("cde", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "", "b");//also links keine Grenze...
+		 assertEquals("abcdea", stemp);
+		 
+		 //+++++++++++++++++++++++++++++++++		 
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "b", "b"); //es gibt also keine gemeinsame Schnittmenge, aber wir betrachten hier nur Grenzen
+		 assertEquals("cdea", stemp);
+		 
+		 //Da sich hier alles ausschliessen wuerde einen anderen Teststring verwenden, in dem keine Zeichen doppelt vorkommen
+		 sTest = "abcdefghijk";
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "d", "h");
+		 assertEquals("efg", stemp);
+		 
+		 //++++++++++++++++++++
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.leftback(sTest, "c");
+		 assertEquals("abcdeab", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.rightback(sTest, "c");
+		 assertEquals("deabcde", stemp);
+		 
+		 sTest = "abcdeabcde";
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "c", "c");
+		 assertEquals("deab", stemp);
+		 
+		 //### mal was praktisches
+		 sTest = "x[test]y";
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "[", "]");
+		 assertEquals("test", stemp);
+		 
+		 sTest = "[[test]]";
+		 stemp =StringZZZ.midLeftRightIntersect(sTest, "[", "]");
+		 assertEquals("test", stemp);  //!!!!! anders als bei midLeftRight(...) , wie bei midLeftRightback(...)
+		 
+		
+	}
 	
 	
 	public void testStrLeft(){
