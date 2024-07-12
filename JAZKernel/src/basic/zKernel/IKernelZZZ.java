@@ -15,7 +15,7 @@ import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public interface IKernelZZZ extends IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ{
+public interface IKernelZZZ extends IKernelFileIniUserZZZ, IKernelConfigParameterHandlerZZZ,IKernelCacheUserZZZ,IFlagZUserZZZ, IKernelExpressionIniSolverZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfigurations Ini Datei" gesetzt sein müssen.
 	public enum FLAGZ{
 		USEFORMULA, USEFORMULA_MATH;

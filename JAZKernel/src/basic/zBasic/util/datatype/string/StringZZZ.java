@@ -38,6 +38,7 @@ import basic.zBasic.util.datatype.character.CharArrayZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zBasic.util.datatype.json.JsonArrayZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
@@ -346,6 +347,75 @@ public class StringZZZ implements IConstantZZZ{
 					}
 				}
 			}																
+		} //end main:		
+		return bReturn;
+	}
+	
+	/** 
+	 * @param sString
+	 * @param sMatchTagStarting  , das ist ein ganzer Tag und nicht nur der TagName, muss aber kein xml-tag sein, sonder jede Kennzeichnung passt
+	 * @param sMatchTagClosing   , das ist ein ganzer Tag und nicht nur der TagName, muss aber kein xml-tag sein, sonder jede Kennzeichnung passt
+	 * @param bExactMatch
+	 * @return
+	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
+	 */
+	public static boolean containsAsTag(String sString, String sMatchTagStarting, String sMatchTagClosing){
+		return StringZZZ.containsAsTag(sString, sMatchTagStarting, sMatchTagClosing, true);
+	}
+	
+	/** 
+	 * @param sString
+	 * @param sMatchTagStarting  , das ist ein ganzer Tag und nicht nur der TagName
+	 * @param sMatchTagClosing   , das ist ein ganzer Tag und nicht nur der TagName
+	 * @param bExactMatch
+	 * @return
+	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
+	 */
+	public static boolean containsAsTag(String sString, String sMatchTagStarting, String sMatchTagClosing, boolean bExactMatch){
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sString)) break main;
+			if(StringZZZ.isEmpty(sMatchTagStarting)) break main;
+			
+			boolean bAsTagEmpty;
+			if(StringZZZ.isEmpty(sMatchTagClosing)) {				
+				bAsTagEmpty = XmlUtilZZZ.isTagEmpty(sMatchTagStarting);
+			}else {
+				bAsTagEmpty = false;
+			}
+			
+			if(bAsTagEmpty) {
+				//Einfach, dann wird es eine Contains
+				bReturn = StringZZZ.contains(sString, sMatchTagStarting, bExactMatch);
+				break main;
+			}
+			
+			//Merke auf Gleichheit der Tags nicht pruefen.
+			//Wenn gleiche Tags vorhanden sind als Eingangswert, dann wird durch die unterschiedlichen Indexwerte zumindest sichergestellt, 
+			//dass es zwei verschiedene Stellen sind.
+						
+			//Nun nicht einfach auf contains prüfen, da die Reihenfolge auch zu beachten ist.
+			//StartingTag ist immer VOR dem ClosingTag, auch egal ob Verschachtelt.
+			//Wegen verschachtelte Tags muss man dann aber von hinten aus prüfen.
+			int iStarting; int iClosing;
+			if(bExactMatch) {
+				iStarting = sString.indexOf(sMatchTagStarting);
+				if(iStarting<=-1)break main;
+				
+				iClosing = sString.lastIndexOf(sMatchTagClosing);
+				if(iClosing<=-1)break main;								
+			}else {
+				iStarting = sString.toLowerCase().indexOf(sMatchTagStarting.toLowerCase());
+				if(iStarting<=-1)break main;
+				
+				iClosing = sString.toLowerCase().lastIndexOf(sMatchTagClosing.toLowerCase());
+				if(iClosing<=-1)break main;								
+			}
+			
+			//Nun noch pruefen ob die Reihenfolge der Tags passt
+			if(iClosing <= iStarting) break main;
+					
+			bReturn = true;
 		} //end main:		
 		return bReturn;
 	}
@@ -2482,7 +2552,7 @@ null will return false. An empty CharSequence (length()=0) will return false.
 			sReplace = objReOe.subst(sReplace, "ö");
 			sReplace = objReAe.subst(sReplace, "ä");
 
-			//sReplace = objRe4.subst(sReplace, "ß"); /Ersetzt auch den zus�tzlichen Buchstaben VOR dem ss, da er in die RegEx mit aufgenommen worden ist.
+			//sReplace = objRe4.subst(sReplace, "ß"); /Ersetzt auch den zusaetzlichen Buchstaben VOR dem ss, da er in die RegEx mit aufgenommen worden ist.
 			boolean bMatch = objReSs.match(sReplace);
 			if(bMatch==true){
 				sReplace = StringZZZ.replace(sReplace, "ss", "ß");

@@ -35,40 +35,15 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithForm
 	private boolean AbstractKernelIniTagNew_() throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
-//	 		String stemp; boolean btemp; 	
-// 			//setzen der uebergebenen Flags	
-//			if(saFlagControlIn != null){
-//				for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//					stemp = saFlagControlIn[iCount];
-//					btemp = setFlag(stemp, true);
-//					if(btemp==false){
-//						ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//						throw ez;		 
-//					}
-//				}
-				if(this.getFlag("init")==true){
-					bReturn = true;
-					break main;
-				}
-//			}			
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}		
+			
+			
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
-
-
-	@Override
-	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();
-		main:{
-			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-						
-			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
-			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
-			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-			
-		}
-		return vecReturn;
-	}
 
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
@@ -88,6 +63,20 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithForm
 		return vecReturn;
 	}
 	
+	@Override
+	public Vector<String>computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+						
+			//Merke: Das ist der Fall, das ein Ausdruck NICHT verschachtelt ist
+			//       Für verschachtelte Tags muss hier extra was programmiert und diese Methode ueberschrieben werden.
+			vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+			
+		}
+		return vecReturn;
+	}
+
 	@Override
 	public Vector<String>computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();

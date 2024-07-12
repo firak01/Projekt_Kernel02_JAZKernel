@@ -1,97 +1,73 @@
 package basic.zKernel.file.ini;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 import java.util.Vector;
 
-import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
-
-import custom.zKernel.file.ini.FileIniZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.json.JsonEasyZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelUserZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 
 /**Diese Klasse verarbeitet ggf. Ausdruecke/Formeln in Ini-Dateien.
  *  Es kann dann in einem dieser Formeln z.B. auf den Property-Wert einer anderen Sektion zugegriffen werden. So entstehen 'dynamische' ini-Dateien.
  * @author lindhaueradmin
+ * @param <T>
  *
  */
-public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ implements IKernelJsonArrayIniSolverZZZ{
+public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelJsonArrayIniSolverZZZ{
+	private static final long serialVersionUID = 8458180798440285715L;
 	public static String sTAG_NAME = "JSON:ARRAY";
 			
 	public KernelJsonArrayIniSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelJsonArrayIniSolverNew_(null, saFlag);
+		super("init");
+		KernelJsonArrayIniSolverNew_(null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-		
-		String[] saFlag = {"init"};
-		KernelJsonArrayIniSolverNew_(null, saFlag);
+		KernelJsonArrayIniSolverNew_(null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni);
-		KernelJsonArrayIniSolverNew_(objFileIni, null);
+		KernelJsonArrayIniSolverNew_(objFileIni);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objFileIni);
-		KernelJsonArrayIniSolverNew_(objFileIni, saFlag);
+		KernelJsonArrayIniSolverNew_(objFileIni);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonArrayIniSolverNew_(null, saFlag);
+		KernelJsonArrayIniSolverNew_(null);
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonArrayIniSolverNew_(objFileIni, saFlag);
+		KernelJsonArrayIniSolverNew_(objFileIni);
 	}
 		
-	private boolean KernelJsonArrayIniSolverNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
+	private boolean KernelJsonArrayIniSolverNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
+	 boolean bReturn = false;	
 	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}
-				
-				this.setFileIni(objFileIni);
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
+					
+			if(objFileIni==null) {
+				//Kann ggfs. später aus dem Kernel-Objekt geholt werden.							
+			}else {
+				this.setFileConfigKernelIni(objFileIni);
 				if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
-							
+			}
+										
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelJsonMapIniSolverNew_
@@ -260,9 +236,9 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 		}
 
 		@Override
-		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
+		public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
              //Darin können also auch Variablen, etc. sein
-			Vector vecReturn = new Vector();
+			Vector<String> vecReturn = new Vector<String>();
 			main:{
 				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
 				
@@ -276,11 +252,11 @@ public class KernelJsonArrayIniSolverZZZ extends AbstractKernelIniSolverZZZ impl
 						sExpression = objVariable.compute(sExpression);			
 					} //end while
 						
-									
-					//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-					//Problem hier: [ ] ist auch der JSON Array-Ausdruck
+																					
+					//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy IN DEN VECTORSTRINGS ersetzen
+					//Problem hier: [ ]... ist auch ein JSON Array-Ausdruck. Der darf aber  nicht als Path-Analysiert werden, weil Property leer wäre.					
 					String sExpressionOld = sExpression;
-					KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+					KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
 					while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 							sExpression = objIniPath.computeAsExpression(sExpression);	
 							if(StringZZZ.isEmpty(sExpression)) {

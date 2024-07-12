@@ -74,7 +74,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 				}else{
-					this.setFileIni(objFileIn);	
+					this.setFileConifgKernelIni(objFileIn);	
 					if(objFileIn.getHashMapVariable()!=null){
 						this.setHashMapVariable(objFileIn.getHashMapVariable());
 					}
@@ -90,10 +90,10 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
 	}
 	
-	public void setFileIni(FileIniZZZ objFileIni){
+	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
 	}
-	public FileIniZZZ getFileIni(){
+	public FileIniZZZ getFileConfigKernelIni(){
 		return this.objFileIni;
 	}
 	
@@ -136,7 +136,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(this.getFlag(IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name())==true){				
 		
 			//Dann erzeuge neues KernelJsonMapSolverZZZ - Objekt.			
-			FileIniZZZ objFileIni = this.getFileIni();
+			FileIniZZZ objFileIni = this.getFileConfigKernelIni();
 				
 			KernelJsonMapIniSolverZZZ objJsonMapSolver = new KernelJsonMapIniSolverZZZ(objFileIni);
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonMapSolver, true);
@@ -155,7 +155,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			if(!this.getFlag(IKernelJsonArrayIniSolverZZZ.FLAGZ.USEJSON_ARRAY)) break main;				
 		
 			//Dann erzeuge neues KernelJsonArraySolverZZZ - Objekt.		
-			FileIniZZZ objFileIni = this.getFileIni();
+			FileIniZZZ objFileIni = this.getFileConfigKernelIni();
 			
 			KernelJsonArrayIniSolverZZZ objJsonArraySolver = new KernelJsonArrayIniSolverZZZ(objFileIni);
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objJsonArraySolver, true);

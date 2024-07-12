@@ -1,28 +1,9 @@
 package basic.zKernel;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import basic.zBasic.IObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListZZZ;
-import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.datatype.string.StringArrayZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
+import basic.zBasic.IObjectZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
-import basic.zBasic.util.file.ini.IniFile;
-import basic.zKernel.file.ini.KernelFileIniZZZ;
-import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 import custom.zKernel.ConfigZZZ;
-import custom.zKernel.FileFilterModuleZZZ;
-import custom.zKernel.LogZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
 
 /**
@@ -35,7 +16,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * Window>Preferences>Java>Code Generation.
  */
 @Deprecated
-public class KernelZZZ extends KernelKernelZZZ implements IObjectZZZ,IKernelContextUserZZZ{
+public class KernelZZZ extends AbstractKernelObjectZZZ implements IObjectZZZ,IKernelContextUserZZZ{
 	private static final long serialVersionUID = -2734877463371564724L;
 	
 	

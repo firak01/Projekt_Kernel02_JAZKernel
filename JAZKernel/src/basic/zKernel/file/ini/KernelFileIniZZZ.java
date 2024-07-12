@@ -36,7 +36,7 @@ import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryCreatorZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.KernelKernelZZZ;
+import basic.zKernel.AbstractKernelObjectZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
@@ -243,7 +243,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			boolean bUseSystemKey=false;
 			String sValueOld=null;
 			String sSectionUsed = null;
-			boolean bSystemKey = KernelKernelZZZ.isSystemSection(sSystemKeyAsSection);
+			boolean bSystemKey = AbstractKernelObjectZZZ.isSystemSection(sSystemKeyAsSection);
 			if(bSystemKey) {	
 				sSectionUsed = sSystemKeyAsSection;
 				
@@ -252,7 +252,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 				if(StringZZZ.isEmpty(sValueOld)) {
 					
 					//Wurde in der PARENTSECTION der Wert überhaupt gesetzt?
-					sSectionUsed = KernelKernelZZZ.computeSectionFromSystemSection(sSystemKeyAsSection);
+					sSectionUsed = AbstractKernelObjectZZZ.computeSectionFromSystemSection(sSystemKeyAsSection);
 					sValueOld = objKernelIniFile.getFileIniObject().getValue(sSectionUsed, sProperty);
 					if(StringZZZ.isEmpty(sValueOld)) {
 						bUseSystemKey=true; //also dort auch nicht gesetzt, dann nimm doch den Systemkey
@@ -267,7 +267,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			}else {
 				//B) Fange mit dem SystemKey an
 				String sSystemNumber = objKernelIniFile.getKernelObject().getSystemNumber();
-				sSectionUsed = KernelKernelZZZ.computeSystemSectionNameForSection(sSystemKeyAsSection, sSystemNumber);
+				sSectionUsed = AbstractKernelObjectZZZ.computeSystemSectionNameForSection(sSystemKeyAsSection, sSystemNumber);
 						
 				sValueOld = objKernelIniFile.getFileIniObject().getValue(sSectionUsed, sProperty);
 				if(StringZZZ.isEmpty(sValueOld)) {
@@ -289,9 +289,9 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			sSectionUsed=null;
 			if(bUseSystemKey) {
 				String sSystemNumber = objKernelIniFile.getKernelObject().getSystemNumber();
-				sReturn = KernelKernelZZZ.computeSystemSectionNameForSection(sSystemKeyAsSection, sSystemNumber);					
+				sReturn = AbstractKernelObjectZZZ.computeSystemSectionNameForSection(sSystemKeyAsSection, sSystemNumber);					
 			}else {
-				sReturn = KernelKernelZZZ.computeSectionFromSystemSection(sSystemKeyAsSection);
+				sReturn = AbstractKernelObjectZZZ.computeSectionFromSystemSection(sSystemKeyAsSection);
 			}
 		}
 		return sReturn;
@@ -476,7 +476,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 				objReturn.setSystemNumber(sSystemNumberUsed);
 				
 			}else {
-				sSystemNumberUsed = KernelKernelZZZ.extractSytemNumberFromSection(sSection);
+				sSystemNumberUsed = AbstractKernelObjectZZZ.extractSytemNumberFromSection(sSection);
 				objReturn.setSystemNumber(sSystemNumberUsed);
 				
 				//Zuerst direkt in der übergebenen Section nachsehen
@@ -486,7 +486,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			
 			if(!objReturn.hasAnyValue()) {
 				//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen UND das als Program behandeln.
-				ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(this, sSection, sApplicationKeyUsed, sSystemNumberUsed);
+				ArrayList<String>alsSection=AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram(this, sSection, sApplicationKeyUsed, sSystemNumberUsed);
 				for(String sSectionUsed:alsSection) {
 					objReturnReference.set(objReturn);
 					this.getPropertyValueDirectLookup_(sSectionUsed, sProperty, objReturnReference);
@@ -567,7 +567,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			String sSystemNumber=null;
 			if(StringZZZ.isEmpty(sSystemNumberIn)) {
 				//Versuch die SystemNumber aus der Section zu errechnen
-				sSystemNumber = KernelKernelZZZ.extractSytemNumberFromSection(sSection);				
+				sSystemNumber = AbstractKernelObjectZZZ.extractSytemNumberFromSection(sSection);				
 			}else {
 				sSystemNumber=sSystemNumberIn;				
 			}
@@ -576,7 +576,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 			if(StringZZZ.isEmpty(sProperty)) break main;						
 			objReturn.setProperty(sProperty);
 			
-			String sSectionUsed = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
+			String sSectionUsed = AbstractKernelObjectZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
 			boolean bSectionExists = this.proofSectionExistsDirectLookup(sSectionUsed);
 			if(bSectionExists) {
 				String sReturnRaw=null;
@@ -616,9 +616,9 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 				}else{
 					//Gibt es einen Programnamen im der Section?
 					//Wenn ja , dann das die ganze Section Vewrenenden.
-					String sProgram = KernelKernelZZZ.extractProgramFromSection(sSectionIn);
+					String sProgram = AbstractKernelObjectZZZ.extractProgramFromSection(sSectionIn);
 					if(StringZZZ.isEmpty(sProgram)){										
-						sSectionUsed = KernelKernelZZZ.extractModuleFromSection(sSectionIn);
+						sSectionUsed = AbstractKernelObjectZZZ.extractModuleFromSection(sSectionIn);
 						if(StringZZZ.isEmpty(sSectionUsed)){
 							ExceptionZZZ ez = new ExceptionZZZ( "not extractable parameter 'Section' from '"+sSectionIn + "'", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName()); 
 							throw ez;
@@ -630,7 +630,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 				objReturn.setSection(sSectionUsed);
 				
 				if(StringZZZ.isEmpty(sSystemNrIn)) {
-					sSystemNumberUsed = KernelKernelZZZ.extractSytemNumberFromSection(sSectionIn);
+					sSystemNumberUsed = AbstractKernelObjectZZZ.extractSytemNumberFromSection(sSectionIn);
 					//Falls leer, keine Exception, sondern die default verwenden
 					if(StringZZZ.isEmpty(sSystemNumberUsed)) {
 						sSystemNumberUsed = this.getKernelObject().getSystemNumber();
@@ -652,7 +652,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 				objReturnReference.set(objReturn);				
 				if(StringZZZ.isEmpty(sSystemNrIn)){
 					
-					String sSectionUsedFirst = KernelKernelZZZ.computeSystemSectionNameForSection(sSectionUsed, sSystemNumberUsed);
+					String sSectionUsedFirst = AbstractKernelObjectZZZ.computeSystemSectionNameForSection(sSectionUsed, sSystemNumberUsed);
 					
 					//Zuerst direkt in der übergebenen Section, mit allen Systemnr. nachsehen
 					this.getPropertyValue_(sSectionUsedFirst, sProperty, objReturnReference);				
@@ -662,7 +662,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 					String sApplicationKeyUsed = this.getKernelObject().getApplicationKey();
 						
 					//Wurde bisher nix gefunden: In allen möglichen Sections nachsehen UND das als Program behandeln.
-					ArrayList<String>alsSection=KernelKernelZZZ.computeSystemSectionNamesForProgram(this, sSectionUsed, sApplicationKeyUsed, sSystemNumberUsed);
+					ArrayList<String>alsSection=AbstractKernelObjectZZZ.computeSystemSectionNamesForProgram(this, sSectionUsed, sApplicationKeyUsed, sSystemNumberUsed);
 					for(String sSectionUsedTemp:alsSection) {
 						this.getPropertyValueDirectLookup_(sSectionUsedTemp, sProperty, objReturnReference);
 						objReturn = objReturnReference.get();
@@ -1320,7 +1320,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 		
 			//1. Suche nach sSection PLUS Systemnumber
 			String sSystemNumber = this.getKernelObject().getSystemNumber();
-			String sSectionSearch  = KernelKernelZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
+			String sSectionSearch  = AbstractKernelObjectZZZ.computeSystemSectionNameForSection(sSection, sSystemNumber);
 			bReturn = this.proofSectionExistsDirectLookup(sSectionSearch);
 			if(bReturn)break main;
 			

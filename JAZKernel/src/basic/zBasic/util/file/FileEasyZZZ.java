@@ -46,7 +46,7 @@ import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
 import basic.zKernel.IKernelConfigZZZ;
-import basic.zKernel.KernelKernelZZZ;
+import basic.zKernel.AbstractKernelObjectZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 

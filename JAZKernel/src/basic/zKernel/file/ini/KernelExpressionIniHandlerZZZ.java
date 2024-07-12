@@ -105,7 +105,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 				}else{
-					this.setFileIni(objFileIn);						
+					this.setFileConifgKernelIni(objFileIn);						
 				}
 				
 				if(hmVariable!=null){				
@@ -120,10 +120,10 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 	 }//end function KernelExpressionIniSolverNew_
 	
 	//### GETTER / SETTER
-			public void setFileIni(FileIniZZZ objFileIni){
+			public void setFileConifgKernelIni(FileIniZZZ objFileIni){
 				this.objFileIni = objFileIni;
 			}
-			public FileIniZZZ getFileIni(){
+			public FileIniZZZ getFileConfigKernelIni(){
 				return this.objFileIni;
 			}
 			
@@ -223,7 +223,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 						HashMapCaseInsensitiveZZZ<String,String>hmVariable = this.getHashMapVariable();
 						
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.													
-						int iReturnExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
+						int iReturnExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionSolvedAndConverted(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseFormula, hmVariable, saFlagZpassed, objReturnReference);			
 						if(iReturnExpression>=1){	
 							bAnyFormula = true;
 							iReturn = iReturn + iReturnExpression;
@@ -245,7 +245,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 						
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 						boolean bForFurtherProcessing = false; 
-						bAnyCall = KernelConfigSectionEntryUtilZZZ.getValueCallSolved(this.getFileIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+						bAnyCall = KernelConfigSectionEntryUtilZZZ.getValueCallSolved(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseCall, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyCall) {
 							objReturn = objReturnReference.get();
 							objReturn.isCall(true);																						
@@ -263,7 +263,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 						//Merke: objReturnValue ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 						ReferenceArrayZZZ<String>objalsReturnValueJsonSolved=new ReferenceArrayZZZ<String>();
 						ReferenceHashMapZZZ<String,String>objhmReturnValueJsonSolved=new ReferenceHashMapZZZ<String,String>();														
-						iReturnJson = KernelConfigSectionEntryUtilZZZ.getValueJsonSolved(this.getFileIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
+						iReturnJson = KernelConfigSectionEntryUtilZZZ.getValueJsonSolved(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseJson, saFlagZpassed, objalsReturnValueJsonSolved,objhmReturnValueJsonSolved);					
 						if(iReturnJson==5) {
 							objReturn = objReturnReference.get();
 							objReturn.isJsonArray(true);
@@ -292,7 +292,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 						
 						//Merke: objReturnReference ist ein Hilfsobjekt, mit dem CallByReference hinsichtlich der Werte realisiert wird.
 						boolean bForFurtherProcessing = false; 
-						bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getValueEncryptionSolved(this.getFileIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
+						bAnyEncryption = KernelConfigSectionEntryUtilZZZ.getValueEncryptionSolved(this.getFileConfigKernelIni(), sLineWithExpressionUsed, bUseEncryption, bForFurtherProcessing, saFlagZpassed, objReturnReference);
 						if(bAnyEncryption) {
 							objReturn.isRawEncrypted(true);
 							String sLineDecrypted = objReturnReference.get().getRawDecrypted();//Wert zur weiteren Verarbeitung weitergeben						

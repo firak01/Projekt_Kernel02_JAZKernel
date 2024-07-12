@@ -9,13 +9,20 @@ import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
+import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
+/** Merke: Der Path-Tag besteht aus [ oder ] ist damit kein normaler Tag 
+ *         und kann also nicht aus AbstractIniTagSimple oder AbstractIniCascadedZZZ erben.
+ * @param <T> 
+ * 
+ * @author Fritz Lindhauer, 12.07.2024, 09:26:56 
+ */
+public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -6403139308573148654L;
 	public static String sTAG_NAME = ""; //Hier kein Tag 
 	private FileIniZZZ objFileIni=null;
@@ -55,7 +62,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 				break main;
 			}										
 					
-			this.setFileIni(objFileIni);
+			this.setFileConfigKernelIni(objFileIni);
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
@@ -103,7 +110,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 //					//sProperty = StringZZZ.left(sProperty, sMathValueTag);												
 //				}
 									
-				FileIniZZZ objFileIni = this.getFileIni();
+				FileIniZZZ objFileIni = this.getFileConfigKernelIni();
 				if(objFileIni==null){
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez;
@@ -150,17 +157,17 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 			//vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false,false);
 			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), "<", false,false); //also bis zum nächsten Tag!!!
 			
-			String sValue = vecReturn.get(2);
-			
+			String sValue = vecReturn.get(2);			
 			if(!StringZZZ.isEmpty(sValue)) {
 				//den oben geklauten Anfangstag wieder hinzufuegen
 				sValue = "<" + sValue;
 			}
+			
 			if(vecReturn.size()>=3) vecReturn.removeElementAt(2);			
 			vecReturn.add(2, sValue);
 			
 			
-			FileIniZZZ objFileIni = this.getFileIni();
+			FileIniZZZ objFileIni = this.getFileConfigKernelIni();
 			if(objFileIni==null){
 				ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;
@@ -190,11 +197,23 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	public static boolean isExpression(String sLine){
 		boolean bReturn = false;
 		main:{
-			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
-			if(btemp==false) break main;
+			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.			
+			//boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), false);
+			//if(btemp==false) break main;
 		
-			btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
-			if(btemp==false) break main;
+			//btemp = StringZZZ.contains(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+			//if(btemp==false) break main;
+			
+			//!!! Wichtig: nur auf [ ] abzupruefen reicht nicht. Das koennte auch ein Array sein.
+			//Bei einem Path Ausdruck muss nach dem ClosingTag noch Text stehen.
+			//Also: 
+			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, KernelZFormulaIni_PathZZZ.getExpressionTagStarting(), KernelZFormulaIni_PathZZZ.getExpressionTagClosing(), false);
+			if(!bAsTagFound) break main;
+			
+			int iIndexClosing = sLine.toLowerCase().indexOf(KernelZFormulaIni_PathZZZ.getExpressionTagClosing().toLowerCase());
+			iIndexClosing=iIndexClosing+KernelZFormulaIni_PathZZZ.getExpressionTagClosing().length();
+			String sRest = sLine.substring(iIndexClosing);
+			if(StringZZZ.isEmpty(sRest)) break main; //dann kann das also keine PATH-Anweisung sein.
 			
 			bReturn = true;
 		}//end main
@@ -215,12 +234,25 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	public static String getExpressionTagEmpty(){
 		return "[/]";
 	}
-	
-	public void setFileIni(FileIniZZZ objFileIni){
+		
+	//### Aus Interface IKernelFileIniUserZZZ	
+	@Override
+	public void setFileConfigKernelIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
 	}
-	public FileIniZZZ getFileIni(){
-		return this.objFileIni;
+	
+	@Override
+	public FileIniZZZ getFileConfigKernelIni() throws ExceptionZZZ{
+		if(this.objFileIni==null) {
+			IKernelZZZ objKernel = this.getKernelObject();
+			if(objKernel==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("FileIni and KernelObject", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			return objKernel.getFileConfigKernelIni();						
+		}else {
+			return this.objFileIni;
+		}
 	}
 
 	//### Aus Interface IKernelExpressionIniZZZ

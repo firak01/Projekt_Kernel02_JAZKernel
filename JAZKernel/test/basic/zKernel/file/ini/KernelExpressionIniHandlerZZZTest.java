@@ -3,39 +3,26 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Vector;
 
-import junit.framework.TestCase;
-import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
-import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
-import basic.zBasic.util.crypt.code.IROTZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.code.ROTnumericZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharacterExtendedZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
-import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
+import junit.framework.TestCase;
 
 public class KernelExpressionIniHandlerZZZTest extends TestCase {	
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");
@@ -359,7 +346,7 @@ public class KernelExpressionIniHandlerZZZTest extends TestCase {
 			assertTrue("Das Flag 'usejson_map' sollte zur Verfügung stehen.", bFlagAvailable);
 			
 			//Diese Flags reichen aber noch nicht. Auch im Ini-Datei Objekt müssen die Flags gesetzt werden.
-			FileIniZZZ objFileIni = objExpressionHandler.getFileIni();
+			FileIniZZZ objFileIni = objExpressionHandler.getFileConfigKernelIni();
 			String[] saFlag = FlagZFassadeZZZ.seekFlagZrelevantForObject(objExpressionHandler, objFileIni,true);
 			objFileIni.setFlag(saFlag, true);
 			

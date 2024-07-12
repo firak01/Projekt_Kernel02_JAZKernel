@@ -85,7 +85,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez; 
 			}else{
-				this.setFileIni(objFileIn);	
+				this.setFileConifgKernelIni(objFileIn);	
 				if(objFileIn.getHashMapVariable()!=null){
 					this.setHashMapVariable(objFileIn.getHashMapVariable());
 				}
@@ -132,7 +132,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					
 								
 				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
 				String sExpressionOld = sExpression;
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 						sExpression = objIniPath.compute(sExpression);//in computeAsExpression wäre Z-Tags
@@ -201,7 +201,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 					
 								
 				//DANACH ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
 				sExpressionOld = sExpression;
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpressionOld)){
 						//Nein, dann werden ggfs. Werte vor und nach dem Ausdruck unterschlagen		
@@ -296,10 +296,10 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		return KernelZFormulaIniSolverZZZ.sTAG_NAME;
 	}
 	
-	public void setFileIni(FileIniZZZ objFileIni){
+	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
 	}
-	public FileIniZZZ getFileIni(){
+	public FileIniZZZ getFileConfigKernelIni(){
 		return this.objFileIni;
 	}
 	

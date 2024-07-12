@@ -80,7 +80,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 					}
 				}
 				
-				this.setFileIni(objFileIni);
+				this.setFileConifgKernelIni(objFileIni);
 				if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
 							
 	 	}//end main:
@@ -92,10 +92,10 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
 	}
 	
-	public void setFileIni(FileIniZZZ objFileIni){
+	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
 	}
-	public FileIniZZZ getFileIni(){
+	public FileIniZZZ getFileConfigKernelIni(){
 		return this.objFileIni;
 	}
 	
@@ -334,7 +334,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 						//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
 						//Problem hier: [ ] ist auch der JSON Array-Ausdruck
 						String sExpressionOld = sExpression;
-						KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileIni());
+						KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
 						while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
 								sExpression = objIniPath.computeAsExpression(sExpression);	
 								if(StringZZZ.isEmpty(sExpression)) {

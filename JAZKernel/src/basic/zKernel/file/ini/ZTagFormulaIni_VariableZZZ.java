@@ -17,20 +17,20 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 			
 	public ZTagFormulaIni_VariableZZZ() throws ExceptionZZZ{
 		super("init");
-		KernelExpressionIniVariableNew_(null, null);
+		KernelExpressionIniVariableNew_(null);
 	}
 	
 	public ZTagFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ{
 		super();
-		KernelExpressionIniVariableNew_(hmVariableValue, null);
+		KernelExpressionIniVariableNew_(hmVariableValue);
 	}
 	
 	public ZTagFormulaIni_VariableZZZ(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControl) throws ExceptionZZZ{
 		super(saFlagControl);
-		KernelExpressionIniVariableNew_(hmVariableValue, saFlagControl);
+		KernelExpressionIniVariableNew_(hmVariableValue);
 	}
 		
-	private boolean KernelExpressionIniVariableNew_(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue, String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelExpressionIniVariableNew_(HashMapCaseInsensitiveZZZ<String,String> hmVariableValue) throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 main:{		
 			if(this.getFlag("init")==true){

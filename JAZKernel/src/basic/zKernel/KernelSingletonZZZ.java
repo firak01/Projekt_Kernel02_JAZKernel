@@ -1,12 +1,9 @@
 package basic.zKernel;
 
-import basic.zKernel.ConfigZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.AbstractObjectWithFlagZZZ;
-import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
 
-public class KernelSingletonZZZ extends KernelKernelZZZ{
+public class KernelSingletonZZZ extends AbstractKernelObjectZZZ{
 	private static final long serialVersionUID = 1L;
 	private static KernelSingletonZZZ objKernelSingleton; //muss als Singleton static sein	
 	public static KernelSingletonZZZ getInstance() throws ExceptionZZZ{

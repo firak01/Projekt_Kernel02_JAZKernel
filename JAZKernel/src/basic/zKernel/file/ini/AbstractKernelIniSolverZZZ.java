@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
@@ -11,6 +12,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -18,13 +20,13 @@ import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelZFormulaIniZZZ, IValueSolverZTagIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
+public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T> implements IKernelFileIniUserZZZ, IKernelZFormulaIniZZZ, IValueSolverZTagIniZZZ, IKernelIniSolverZZZ, IKernelConfigSectionEntryUserZZZ{
 	private static final long serialVersionUID = -4816468638381054061L;
-	private FileIniZZZ objFileIni=null;
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
+	protected FileIniZZZ objFileIni=null;
+	protected HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 	
 	public AbstractKernelIniSolverZZZ() throws ExceptionZZZ{
-		super();
+		super("init");
 		AbstractKernelIniSolverNew_();
 	}
 	
@@ -61,24 +63,15 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	private boolean AbstractKernelIniSolverNew_() throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
-//		 String stemp; boolean btemp; 
-//		//setzen der uebergebenen Flags	
-//		if(saFlagControlIn != null){
-//			for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//				stemp = saFlagControlIn[iCount];
-//				btemp = setFlag(stemp, true);
-//				if(btemp==false){
-//					ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//					throw ez;		 
-//				}
-//			}
 			if(this.getFlag("init")==true){
 				bReturn = true;
 				break main;
-			}		
+			}	
+			
+			
 	 	}//end main:
 		return bReturn;
-	 }//end function KernelExpressionMathSolverNew_
+	 }//end function AbstractKernelIniSolverNew_
 		
 	public String getValue() {
 		return this.getEntry().getValue();
@@ -99,9 +92,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 		this.objEntry = objEntry;
 	}
 	
-	
-	
-	
 	/**Methode muss vom konkreten "solver" ueberschrieben werden, wenn darin keine Pfade oder Variablen ersetzt werden sollen.
 	 * @param sLineWithExpression
 	 * @param objEntryReference
@@ -109,14 +99,27 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
 	 */
-	public abstract Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
+	public abstract Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
 	
 	//###### Getter / Setter
-	public void setFileIni(FileIniZZZ objFileIni){
+	
+	//### Aus IKernelFileIniUserZZZ
+	@Override
+	public void setFileConfigKernelIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
 	}
-	public FileIniZZZ getFileIni(){
-		return this.objFileIni;
+	@Override
+	public FileIniZZZ getFileConfigKernelIni()throws ExceptionZZZ{
+		if(this.objFileIni==null) {
+			IKernelZZZ objKernel = this.getKernelObject();
+			if(objKernel==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("FileIni and KernelObject", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			return objKernel.getFileConfigKernelIni();						
+		}else {
+			return this.objFileIni;
+		}
 	}
 	
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){

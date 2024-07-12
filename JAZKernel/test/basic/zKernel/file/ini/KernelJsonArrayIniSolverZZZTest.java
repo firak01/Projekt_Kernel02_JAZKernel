@@ -1,33 +1,20 @@
 package basic.zKernel.file.ini;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Vector;
 
-import junit.framework.TestCase;
-import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
-import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
+import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
-import custom.zKernel.LogZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
+import junit.framework.TestCase;
 
 public class KernelJsonArrayIniSolverZZZTest extends TestCase {	
 	protected final static String sEXPRESSION_JSONARRAY01_DEFAULT = "<Z><JSON><JSON:ARRAY>[\"TESTWERT2DO2JSON01\",\"TESTWERT2DO2JSON02\"]</JSON:ARRAY></JSON></Z>";
 	
-	
-	private KernelZZZ objKernel;
+	private IKernelZZZ objKernel;
 	
 	/// +++ Die eigentlichen Test-Objekte	
 	private KernelJsonArrayIniSolverZZZ objExpressionSolver;

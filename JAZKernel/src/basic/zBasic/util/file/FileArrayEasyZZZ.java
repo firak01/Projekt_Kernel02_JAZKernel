@@ -43,7 +43,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
-import basic.zKernel.KernelKernelZZZ;
+import basic.zKernel.AbstractKernelObjectZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 

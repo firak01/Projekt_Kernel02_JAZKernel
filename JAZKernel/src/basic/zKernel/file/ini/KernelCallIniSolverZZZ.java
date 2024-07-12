@@ -75,7 +75,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				objFile = objFileIn;
 			}
 			
-			this.setFileIni(objFile);	
+			this.setFileConifgKernelIni(objFile);	
 			if(objFile.getHashMapVariable()!=null){
 				this.setHashMapVariable(objFile.getHashMapVariable());			
 			}
@@ -89,10 +89,10 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return KernelCallIniSolverZZZ.sTAG_NAME;
 	}
 	
-	public void setFileIni(FileIniZZZ objFileIni){
+	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
 	}
-	public FileIniZZZ getFileIni(){
+	public FileIniZZZ getFileConfigKernelIni(){
 		return this.objFileIni;
 	}
 	

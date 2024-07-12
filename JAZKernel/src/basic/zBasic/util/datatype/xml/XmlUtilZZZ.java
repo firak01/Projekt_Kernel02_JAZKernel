@@ -25,8 +25,6 @@ import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
  *
  */
 public class XmlUtilZZZ {
-    
-	
 	public static String computeTag(String sTagName, String sTagValue) {
 		String sReturn = null;
 		main:{
@@ -94,6 +92,52 @@ public class XmlUtilZZZ {
 		}else {
 			return "</" + sTagName + ">"; 
 		}
+	}
+	
+	
+	public static boolean isTagEmpty(String sTag) {
+		boolean bReturn = false;
+		main:{			
+			if(!StringZZZ.startsWith(sTag, "<")) break main;
+			if(!StringZZZ.endsWith(sTag, "/>")) break main;
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean isTagClosing(String sTag) {
+		boolean bReturn = false;
+		main:{			
+			if(!StringZZZ.startsWith(sTag, "</")) break main;
+			if(!StringZZZ.endsWith(sTag, ">")) break main;
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean isTag(String sTag) {
+		boolean bReturn = false;
+		main:{			
+			if(!StringZZZ.startsWith(sTag, "<")) break main;
+			if(!StringZZZ.endsWith(sTag, ">")) break main;
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
+	public static boolean isTagStarting(String sTag) {
+		boolean bReturn = false;
+		main:{			
+			if(!XmlUtilZZZ.isTag(sTag)) break main;			
+			if(!XmlUtilZZZ.isTagClosing(sTag)) break main;
+			if(!XmlUtilZZZ.isTagEmpty(sTag)) break main;
+			
+			bReturn = true;
+		}//end main:
+		return bReturn;
 	}
 	
 	
