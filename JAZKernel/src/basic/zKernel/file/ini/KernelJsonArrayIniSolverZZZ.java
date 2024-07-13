@@ -39,7 +39,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	}
 	
 	public KernelJsonArrayIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni);
+		super(objFileIni, saFlag);
 		KernelJsonArrayIniSolverNew_(objFileIni);
 	}
 	
@@ -130,7 +130,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 				//sReturn = VectorZZZ.implode(vecAll);
 			}
 			
-			//ANSCHnLIESSEND die ArrayList erstellen
+			//ANSCHLIESSEND die ArrayList erstellen
 			if(!JsonEasyZZZ.isJsonValid(sReturn)) break main;
 			
 			

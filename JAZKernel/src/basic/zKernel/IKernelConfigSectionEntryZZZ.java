@@ -42,9 +42,11 @@ public interface IKernelConfigSectionEntryZZZ extends IValueSolvedUserZZZ, ICach
 	public void setValueAsExpression(String sValueAsExpression);
 	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce);
 			
+	public VectorExtendedDifferenceZZZ<HashMap<String,String>> getValueHashMapVector();
 	public HashMap<String,String> getValueHashMap();
 	public void setValue(HashMap<String,String> hmValue);
 	
+	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector();
 	public ArrayList<String> getValueArrayList();
 	public void setValue(ArrayList<String> alValue);
 	

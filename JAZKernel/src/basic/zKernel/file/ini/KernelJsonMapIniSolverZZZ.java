@@ -23,65 +23,47 @@ import custom.zKernel.file.ini.FileIniZZZ;
  */
 public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelJsonMapIniSolverZZZ{
 	public static String sTAG_NAME = "JSON:MAP";
-	private FileIniZZZ objFileIni=null;
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
 		
 	public KernelJsonMapIniSolverZZZ() throws ExceptionZZZ{
-		String[] saFlag = {"init"};
-		KernelJsonMapIniSolverNew_(null, saFlag);
+		super("init");
+		KernelJsonMapIniSolverNew_(null);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel) throws ExceptionZZZ{
 		super(objKernel);
-				
-		String[] saFlag = {"init"};
-		KernelJsonMapIniSolverNew_(null, saFlag);
+		KernelJsonMapIniSolverNew_(null);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni) throws ExceptionZZZ{
 		super(objFileIni);
-		KernelJsonMapIniSolverNew_(objFileIni, null);
+		KernelJsonMapIniSolverNew_(objFileIni);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
-		super(objFileIni);
-		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
+		super(objFileIni, saFlag);
+		KernelJsonMapIniSolverNew_(objFileIni);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonMapIniSolverNew_(null, saFlag);
+		KernelJsonMapIniSolverNew_(null);
 	}
 	
 	public KernelJsonMapIniSolverZZZ(IKernelZZZ objKernel, FileIniZZZ objFileIni, String[] saFlag) throws ExceptionZZZ{
 		super(objKernel, saFlag);
-		KernelJsonMapIniSolverNew_(objFileIni, saFlag);
+		KernelJsonMapIniSolverNew_(objFileIni);
 	}
 		
-	private boolean KernelJsonMapIniSolverNew_(FileIniZZZ objFileIni, String[] saFlagControlIn) throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 String stemp; boolean btemp; 
+	private boolean KernelJsonMapIniSolverNew_(FileIniZZZ objFileIni) throws ExceptionZZZ {
+	 boolean bReturn = false; 
 	 main:{
-		 	
-	 	//try{	 		
-	 			//setzen der übergebenen Flags	
-				if(saFlagControlIn != null){
-					for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-						stemp = saFlagControlIn[iCount];
-						btemp = setFlag(stemp, true);
-						if(btemp==false){
-							ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-							throw ez;		 
-						}
-					}
-					if(this.getFlag("init")==true){
-						bReturn = true;
-						break main;
-					}
-				}
+			if(this.getFlag("init")==true){
+				bReturn = true;
+				break main;
+			}
 				
-				this.setFileConifgKernelIni(objFileIni);
-				if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
+			this.setFileConfigKernelIni(objFileIni);
+			if(this.getKernelObject()==null) this.setKernelObject(objFileIni.getKernelObject());
 							
 	 	}//end main:
 		return bReturn;
@@ -91,41 +73,7 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 	public String getExpressionTagName(){
 		return KernelJsonMapIniSolverZZZ.sTAG_NAME;
 	}
-	
-	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
-	public FileIniZZZ getFileConfigKernelIni(){
-		return this.objFileIni;
-	}
-	
-	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		this.hmVariable = hmVariable;
-	}
-	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
-		return this.hmVariable;
-	}
-	
-	public void setVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		if(this.hmVariable==null){
-			this.hmVariable = hmVariable;
-		}else{
-			if(hmVariable==null){
-				//nix....
-			}else{
-				//füge Werte hinzu.
-				Set<String> sSet =  this.hmVariable.keySet();
-				for(String sKey : sSet){
-					this.hmVariable.put(sKey, (String)hmVariable.get(sKey));
-				}
-			}
-		}
-	}
-	
-	public String getVariable(String sKey){
-		return (String) this.getHashMapVariable().get(sKey);
-	}
-	
+		
 	/**Eine HashMap wird zum String umgewandelt. 
 	 * Das ist momentan die DEBUG-Variante, z.B. für die Ausgabe auf der Konsole.
 	 * @param sLineWithExpression
@@ -313,44 +261,8 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 
-		@Override
-		public Vector computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {		
-	             //Darin können also auch Variablen, etc. sein
-				Vector vecReturn = new Vector();
-				main:{
-					if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-					
-					vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
-					String sExpression = (String) vecReturn.get(1);									
-					if(!StringZZZ.isEmpty(sExpression)){
-						
-						//ZUERST: Löse ggfs. übergebene Variablen auf.
-						ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
-						while(objVariable.isExpression(sExpression)){
-							sExpression = objVariable.compute(sExpression);			
-						} //end while
-							
-										
-						//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
-						//Problem hier: [ ] ist auch der JSON Array-Ausdruck
-						String sExpressionOld = sExpression;
-						KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
-						while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-								sExpression = objIniPath.computeAsExpression(sExpression);	
-								if(StringZZZ.isEmpty(sExpression)) {
-									sExpression = sExpressionOld;
-									break;
-								}else{
-									sExpressionOld = sExpression;							
-								}
-						} //end while
-											
-						//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
-						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-						vecReturn.add(1, sExpression);
-					
-					} //end if sExpression = ""					
-				}//end main:
-				return vecReturn;			
-		}
+		/* (non-Javadoc)
+		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeExpressionAllVector(java.lang.String)
+		 */
+		
 }//End class

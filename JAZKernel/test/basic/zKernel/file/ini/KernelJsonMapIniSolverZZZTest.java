@@ -1,25 +1,14 @@
 package basic.zKernel.file.ini;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Vector;
 
-import junit.framework.TestCase;
-import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.FileEasyZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
-import custom.zKernel.LogZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
+import junit.framework.TestCase;
 
 public class KernelJsonMapIniSolverZZZTest extends TestCase {	
 	protected final static String sEXPRESSION_JSONMAP01_DEFAULT = "<Z><JSON><JSON:MAP>{\"UIText01\":\"TESTWERT2DO2JSON01\",\"UIText02\":\"TESTWERT2DO2JSON02\"}</JSON:MAP></JSON></Z>";

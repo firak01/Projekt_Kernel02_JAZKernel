@@ -98,8 +98,47 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @return
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 27.04.2023, 15:28:40
-	 */
-	public abstract Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ;
+	 */	
+	@Override
+	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {		
+             //Darin können also auch Variablen, etc. sein
+			Vector<String> vecReturn = new Vector<String>();
+			main:{
+				if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+				
+				vecReturn = this.computeExpressionFirstVector(sLineWithExpression);			
+				String sExpression = (String) vecReturn.get(1);									
+				if(!StringZZZ.isEmpty(sExpression)){
+					
+					//ZUERST: Löse ggfs. übergebene Variablen auf.
+					ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
+					while(objVariable.isExpression(sExpression)){
+						sExpression = objVariable.compute(sExpression);			
+					} //end while
+						
+									
+					//DANACH: ALLE PATH-Ausdrücke, also [xxx]yyy ersetzen
+					//Problem hier: [ ] ist auch der JSON Array-Ausdruck
+					String sExpressionOld = sExpression;
+					KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
+					while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
+							sExpression = objIniPath.computeAsExpression(sExpression);	
+							if(StringZZZ.isEmpty(sExpression)) {
+								sExpression = sExpressionOld;
+								break;
+							}else{
+								sExpressionOld = sExpression;							
+							}
+					} //end while
+										
+					//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
+					if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+					vecReturn.add(1, sExpression);
+				
+				} //end if sExpression = ""					
+			}//end main:
+			return vecReturn;			
+	}
 	
 	//###### Getter / Setter
 	

@@ -24,8 +24,8 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private VectorExtendedDifferenceZZZ<String> vecValue = new VectorExtendedDifferenceZZZ<String>();
 	private VectorExtendedDifferenceZZZ<String> vecValueAsExpression = new VectorExtendedDifferenceZZZ<String>();
 	
-	private HashMap<String,String> hmValue = new HashMap<String,String>();
-	private ArrayList<String> alValue = new ArrayList<String>();
+	private VectorExtendedDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorExtendedDifferenceZZZ<HashMap<String,String>>();	
+	private VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
 	private boolean bSectionExists = false;
 	private boolean bAnySectionExists = false;
 	private boolean bAnyValue = false;
@@ -416,27 +416,57 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 	
 	//###############################################
+	@Override 
+	public VectorExtendedDifferenceZZZ<HashMap<String,String>> getValueHashMapVector(){
+		return this.vechmValue;
+	}
+	
 	@Override
 	public HashMap<String, String> getValueHashMap() {		
-		return this.hmValue;
+		if(this.hasNullValue()){
+			return null;		
+		}else if (!this.hasAnyValue()){
+			if(this.hasAnySectionExists()) {
+				return new HashMap<String,String>(); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
+			}else {
+				return null; //wenn die Section nicht existiert, dann auch kein Wert.
+			}
+		}else {
+			return this.getValueHashMapVector().getEntryHigh();
+		}
 	}
 
 	@Override
 	public void setValue(HashMap<String, String> hmValue) {
-		this.hmValue = hmValue;
+		this.getValueHashMapVector().add(hmValue);
 	}
 
 	//###############################################
-
+	@Override 
+	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector(){
+		return this.vecalValue;
+	}
+	
+	
 	@Override
-	public ArrayList<String> getValueArrayList() {
-		return this.alValue;
+	public ArrayList<String> getValueArrayList() {		
+		if(this.hasNullValue()){
+			return null;		
+		}else if (!this.hasAnyValue()){
+			if(this.hasAnySectionExists()) {
+				return new ArrayList<String>(); //also anders als beim definierten </NULL> -Objekt hier einen Leerstring zurückgeben. Ein Leerstring kann nämlich auch gewuenscht sein!				
+			}else {
+				return null; //wenn die Section nicht existiert, dann auch kein Wert.
+			}
+		}else {
+			return this.getValueArrayListVector().getEntryHigh();
+		}
 	}
 
 
 	@Override
 	public void setValue(ArrayList<String> alValue) {
-		this.alValue = alValue;
+		this.getValueArrayListVector().add(alValue);
 	}
 
 	//##############################################

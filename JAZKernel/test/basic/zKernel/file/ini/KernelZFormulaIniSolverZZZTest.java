@@ -3,16 +3,11 @@ package basic.zKernel.file.ini;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Hashtable;
 
-import junit.framework.TestCase;
-import basic.javagently.Stream;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolUserZZZ;
-import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.crypt.code.IROTUserZZZ;
-import basic.zBasic.util.crypt.code.IROTZZZ;
 import basic.zBasic.util.crypt.code.ROT13ZZZ;
 import basic.zBasic.util.crypt.code.ROTnnZZZ;
 import basic.zBasic.util.crypt.code.ROTnumericZZZ;
@@ -24,9 +19,8 @@ import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelExpressionIniConverterUserZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
-import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
+import junit.framework.TestCase;
 
 public class KernelZFormulaIniSolverZZZTest extends TestCase {
 	private final static String strFILE_DIRECTORY_DEFAULT = new String("c:\\fglKernel\\KernelTest");

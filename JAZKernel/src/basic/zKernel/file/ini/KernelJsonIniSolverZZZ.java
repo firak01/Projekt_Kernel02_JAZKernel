@@ -24,10 +24,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> implements IKernelJsonIniSolverZZZ, IKernelJsonMapIniSolverZZZ, IKernelJsonArrayIniSolverZZZ{
 	private static final long serialVersionUID = 6588176234400554782L;
 	public static String sTAG_NAME = "JSON";
-	private FileIniZZZ objFileIni=null;
-	private HashMapCaseInsensitiveZZZ<String,String> hmVariable =null;
-	
-	
+
 	public KernelJsonIniSolverZZZ() throws ExceptionZZZ{
 		String[] saFlag = {"init"};
 		KernelJsonIniSolverNew_(null, saFlag);
@@ -74,7 +71,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					ExceptionZZZ ez = new ExceptionZZZ("FileIni-Object", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 					throw ez; 
 				}else{
-					this.setFileConifgKernelIni(objFileIn);	
+					this.setFileConfigKernelIni(objFileIn);	
 					if(objFileIn.getHashMapVariable()!=null){
 						this.setHashMapVariable(objFileIn.getHashMapVariable());
 					}
@@ -88,20 +85,6 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	@Override
 	public String getExpressionTagName(){
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
-	}
-	
-	public void setFileConifgKernelIni(FileIniZZZ objFileIni){
-		this.objFileIni = objFileIni;
-	}
-	public FileIniZZZ getFileConfigKernelIni(){
-		return this.objFileIni;
-	}
-	
-	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
-		this.hmVariable = hmVariable;
-	}
-	public HashMapCaseInsensitiveZZZ<String,String> getHashMapVariable(){
-		return this.hmVariable;
 	}
 	
 	public String compute(String sLineWithExpression) throws ExceptionZZZ {

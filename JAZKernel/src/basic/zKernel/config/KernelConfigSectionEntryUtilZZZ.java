@@ -29,6 +29,7 @@ import basic.zKernel.file.ini.KernelJsonMapIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIniSolverZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
+import basic.zKernel.file.ini.KernelZFormulaIni_PathZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -406,8 +407,13 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				
 				ArrayList<String> alstemp = null;
 				if(KernelConfigSectionEntryUtilZZZ.isExpression(sRaw,KernelJsonArrayIniSolverZZZ.sTAG_NAME)){
-														
-					KernelJsonArrayIniSolverZZZ ex = new KernelJsonArrayIniSolverZZZ(objFileIni, saFlagZpassed);
+					
+					//Ohne diese "minimal notwendigen "Flags macht diese utility - Methode keinen Sinn.
+					//Dann noch die übergebenen Flags hinzunehmen.
+					String[]saFlagZ = {IKernelJsonIniSolverZZZ.FLAGZ.USEJSON.name() , IKernelJsonMapIniSolverZZZ.FLAGZ.USEJSON_MAP.name()};
+					saFlagZ =StringArrayZZZ.appendMissing(saFlagZ, saFlagZpassed, null);
+										
+					KernelJsonArrayIniSolverZZZ ex = new KernelJsonArrayIniSolverZZZ(objFileIni, saFlagZ);
 					alstemp = ex.computeArrayList(sRaw);
 					if(alstemp.isEmpty()) {				
 					}else{
@@ -470,12 +476,16 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 		main:{
 			//Merke: z:null und z:empty sind nicht Tagspezifische Ausdrücke, gelten als Conversion
 			
-			boolean btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
-			if(btemp==false) break main;
+			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.
+//			boolean btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
+//			if(btemp==false) break main;
+//		
+//			btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
+//			if(btemp==false) break main;
 			
+			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName), AbstractIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName), false);
+			if(!bAsTagFound) break main;
+		
 			bReturn = true;
 		}//end main
 		return bReturn;
