@@ -5,11 +5,13 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
@@ -57,5 +59,53 @@ public class KernelJavaCall_ClassZZZ  extends AbstractIniTagSimpleZZZ{
 	//###### Getter / Setter
 	public String getExpressionTagName(){
 		return KernelJavaCall_ClassZZZ.sTAG_NAME;
+	}
+
+	@Override
+	public VectorExtendedDifferenceZZZ<String> getValueVector() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setValue(String sValue) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public VectorExtendedDifferenceZZZ<String> getRawVector() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getRaw() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setRaw(String sRaw) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IKernelConfigSectionEntryZZZ getEntry() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		// TODO Auto-generated method stub
+		
 	}					
 }//End class

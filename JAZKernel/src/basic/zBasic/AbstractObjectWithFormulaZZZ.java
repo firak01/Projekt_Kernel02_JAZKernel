@@ -1,10 +1,11 @@
 package basic.zBasic;
 
+import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 
-public abstract class AbstractObjectWithFormulaZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IObjectWithFormulaZZZ{
+public abstract class AbstractObjectWithFormulaZZZ<T> extends AbstractIniTagSimpleZZZ<T> implements IObjectWithFormulaZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
 	protected IKernelConfigSectionEntryZZZ objEntry = null; //Vereinfachung, ich speichere alles hier ab, hier werden auch die Statusergebnisse der Formelaufloesungsschritte verwaltet.
 	
@@ -26,37 +27,29 @@ public abstract class AbstractObjectWithFormulaZZZ<T> extends AbstractObjectWith
 	
 	private boolean AbstractObjectWithFormulaNew_() throws ExceptionZZZ {
 		 boolean bReturn = false;
-		 main:{
-//			 String stemp; boolean btemp;
-		 	//try{	 		
-		 			//setzen der uebergebenen Flags	
-//					if(saFlagControlIn != null){
-//						for(int iCount = 0;iCount<=saFlagControlIn.length-1;iCount++){
-//							stemp = saFlagControlIn[iCount];
-//							btemp = setFlag(stemp, true);
-//							if(btemp==false){
-//								ExceptionZZZ ez = new ExceptionZZZ( "the flag '" + stemp + "' is not available.", IFlagZUserZZZ.iERROR_FLAG_UNAVAILABLE, this, ReflectCodeZZZ.getMethodCurrentName()); 
-//								throw ez;		 
-//							}
-//						}
-			 
-						if(this.getFlag("init")==true){
-							bReturn = true;
-							break main;
-						}
-//					}			
+		 main:{			 
+				if(this.getFlag("init")==true){
+					bReturn = true;
+					break main;
+				}
+				
+				
 		 	}//end main:
 			return bReturn;
-		 }//end function KernelExpressionMathSolverNew_
+		 }//end function AbstractObjectWithFormulaNew_
 
 	
 	//### aus IKernelConfigSectionEntryZZZ 
+	
+	@Override
 	public IKernelConfigSectionEntryZZZ getEntry() {
 		if(this.objEntry==null) {
 			this.objEntry = new KernelConfigSectionEntryZZZ();			
 		}
 		return this.objEntry;
 	}
+	
+	@Override
 	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
 		this.objEntry = objEntry;
 	}

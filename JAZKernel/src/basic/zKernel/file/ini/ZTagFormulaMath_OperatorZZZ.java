@@ -5,8 +5,10 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 3096748072633354679L;
@@ -19,10 +21,10 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		
 	public ZTagFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{
 		super(saFlag);
-		KernelExpressionMathSolverNew_();
+		ZTagFormulaMath_OperatorNew_();
 	}
 		
-	private boolean KernelExpressionMathSolverNew_() throws ExceptionZZZ {
+	private boolean ZTagFormulaMath_OperatorNew_() throws ExceptionZZZ {
 	 boolean bReturn = false;
 	 main:{
 			if(this.getFlag("init")==true){
@@ -32,7 +34,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 			
 	 	}//end main:
 		return bReturn;
-	 }//end function KernelExpressionMathSolverNew_
+	 }//end function ZTagFormulaMath_OperatorNew_
 	
 	
 	
@@ -183,5 +185,53 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				this.setValue(sReturn);
 			}//end main:
 			return sReturn;
+		}
+
+		@Override
+		public VectorExtendedDifferenceZZZ<String> getValueVector() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String getValue() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setValue(String sValue) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public VectorExtendedDifferenceZZZ<String> getRawVector() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String getRaw() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setRaw(String sRaw) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public IKernelConfigSectionEntryZZZ getEntry() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+			// TODO Auto-generated method stub
+			
 		}
 }//End class

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import basic.zBasic.AbstractObjectWithValueZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
@@ -15,21 +16,19 @@ import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
-public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
+public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
+	private static final long serialVersionUID = -6413574962232912980L;
 	private HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = new HashMapMultiIndexedZZZ<String,Boolean>();
 	private String sSection = null;
 	private String sProperty = null;
 	private String sSystemNumber = null;
-	private VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();
-	private VectorExtendedDifferenceZZZ<String> vecValue = new VectorExtendedDifferenceZZZ<String>();
+	private VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();	
 	private VectorExtendedDifferenceZZZ<String> vecValueAsExpression = new VectorExtendedDifferenceZZZ<String>();
 	
 	private VectorExtendedDifferenceZZZ<HashMap<String,String>> vechmValue = new VectorExtendedDifferenceZZZ<HashMap<String,String>>();	
 	private VectorExtendedDifferenceZZZ<ArrayList<String>> vecalValue = new VectorExtendedDifferenceZZZ<ArrayList<String>>();
 	private boolean bSectionExists = false;
 	private boolean bAnySectionExists = false;
-	private boolean bAnyValue = false;
-	private boolean bNullValue = false;
 	private boolean bExpression = false;
 	private boolean bFormula = false;
 	private boolean bCrypt = false;
@@ -72,6 +71,11 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	private int iIndex = 0;            //dito
 		
 	private boolean bSkipCache = false;
+	
+	//#### Konstruktor ##########################
+	public KernelConfigSectionEntryZZZ() {
+		super();
+	}
 	
 	//############################
 	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiterIn) throws CloneNotSupportedException {
@@ -264,10 +268,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 
 	//####################################
-	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueVector(){
-		return this.vecValue;
-	}
+	//Wg. Der Expression und Sectionbehandlung die einfachen getter/Setter überschreiben
 	@Override
 	public String getValue() {
 		if(this.hasNullValue()){
@@ -470,19 +471,6 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	}
 
 	//##############################################
-	@Override
-	public boolean hasAnyValue() {
-		return this.bAnyValue;
-	}	
-	
-	@Override
-	public boolean hasNullValue() {
-		return this.bNullValue;
-	}
-	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
-	private void hasNullValue(boolean bNullValue) {
-		this.bNullValue=bNullValue;
-	}
 	
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
 	//Wurde einmal true gesetzt, dann bleibt das auch so. Damit wird bei der nächsten Suche nach einer Section der Wert nicht verändet, auch wenn die neue Section nicht existiert!!!
@@ -603,11 +591,7 @@ public class KernelConfigSectionEntryZZZ implements IKernelConfigSectionEntryZZZ
 	public boolean hasAnySectionExists() {
 		return this.bAnySectionExists;
 	}
-	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
-	private void hasAnyValue(boolean bAnyValue) {
-		this.bAnyValue=bAnyValue;
-	}
-
+	
 	//Aus Interface IObjectCachableZZZ
 	@Override
 	public boolean isCacheSkipped() {
