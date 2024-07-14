@@ -28,6 +28,8 @@ public abstract class AbstractObjectWithFlagZZZ <T> extends AbstractObjectZZZ<Ob
 //	public enum FLAGZ{
 //		DEBUG, INIT; //Verschoben nach IFlagZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
 //	}
+	
+	//+++ fuer die Flags
 	protected volatile HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
 	protected volatile HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
 	protected volatile HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720

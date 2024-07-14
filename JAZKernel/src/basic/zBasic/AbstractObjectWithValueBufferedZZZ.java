@@ -11,7 +11,7 @@ public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObje
 		super();
 	}
 	
-	//### Aus IValueUserZZZ
+	//### Aus IValueBufferedUserZZZ
 	@Override 
 	public VectorExtendedDifferenceZZZ<String> getValueVector(){
 		return this.vecValue;

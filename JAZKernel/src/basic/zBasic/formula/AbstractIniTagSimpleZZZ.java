@@ -1,53 +1,44 @@
 package basic.zBasic.formula;
 
-import java.util.Vector;
-
-import basic.zBasic.AbstractObjectWithFlagZZZ;
+import basic.zBasic.AbstractObjectWithValueZZZ;
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IValueUserZZZ;
+import basic.zBasic.IValueBufferedUserZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IniFile;
-import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
-import basic.zKernel.file.ini.IValueSolverZTagIniZZZ;
 
-public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithFlagZZZ<T> implements IKernelConfigSectionEntryUserZZZ{
+public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithValueZZZ<T> implements IIniTagSimpleZZZ, IValueBufferedUserZZZ{
 	private static final long serialVersionUID = -5785934791199206030L;
-	
+	protected IKernelConfigSectionEntryZZZ objEntry = null;
 
 	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
 		super();
 		AbstractKernelIniTagNew_();
 	}
-	
-	public AbstractIniTagSimpleZZZ(String sFlag) throws ExceptionZZZ{
-		super(sFlag);
-		AbstractKernelIniTagNew_();
-	}
 		
-	public AbstractIniTagSimpleZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);
-		AbstractKernelIniTagNew_();
-	}
-	
 	private boolean AbstractKernelIniTagNew_() throws ExceptionZZZ {
 	 boolean bReturn = false;	
 	 main:{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}		
-			
-			
+		
 	 	}//end main:
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 
+	//### Aus IKernelConfigSectionEntryUserZZZ
+	public IKernelConfigSectionEntryZZZ getEntry() {
+		return this.objEntry;
+	}
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		this.objEntry = objEntry;
+	}
+	
+	//### Aus IValueBufferedUserZZZ
+	@Override 
+	public VectorExtendedDifferenceZZZ<String> getValueVector(){
+		return this.getEntry().getValueVector();
+	}
+	
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element

@@ -261,8 +261,6 @@ public class KernelJsonMapIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> 
 			return this.proofFlagExists(objaEnumFlag.name());
 		}
 
-		/* (non-Javadoc)
-		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#computeExpressionAllVector(java.lang.String)
-		 */
+		
 		
 }//End class

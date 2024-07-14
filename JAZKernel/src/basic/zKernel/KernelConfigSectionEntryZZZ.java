@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.AbstractObjectWithValueZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
@@ -16,7 +17,7 @@ import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
-public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
+public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
 	private static final long serialVersionUID = -6413574962232912980L;
 	private HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = new HashMapMultiIndexedZZZ<String,Boolean>();
 	private String sSection = null;

@@ -1,7 +1,5 @@
 package basic.zBasic;
 
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
-
 public interface IValueUserZZZ{
 
 	//Der bis dahin (ggfs. durch aufloesen einer Formel) ermittelte Wert

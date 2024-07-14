@@ -1,6 +1,8 @@
 package basic.zBasic;
 
-import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
+import basic.zKernel.flag.IFlagZLocalUserZZZ;
+import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 
-public interface IObjectWithFormulaZZZ extends IValueSolvedUserZZZ, IKernelConfigSectionEntryUserZZZ{	
+public interface IObjectWithFormulaZZZ extends IValueBufferedUserZZZ, IFlagZUserZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalUserZZZ{	
 }
