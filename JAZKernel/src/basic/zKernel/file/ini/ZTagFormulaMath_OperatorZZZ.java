@@ -234,4 +234,12 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 			// TODO Auto-generated method stub
 			
 		}
+
+		@Override
+		public String getName() throws ExceptionZZZ {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
 }//End class

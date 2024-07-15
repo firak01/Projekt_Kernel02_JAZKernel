@@ -1,6 +1,7 @@
 package basic.zBasic;
 
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public abstract class AbstractTagSimpleZZZ<T>  extends AbstractObjectWithValueZZZ<T> implements IValueInLineZZZ{
@@ -175,5 +176,8 @@ public abstract class AbstractTagSimpleZZZ<T>  extends AbstractObjectWithValueZZ
 //	return sReturn;
 //	}	
 	
-	
+	@Override
+	public String toString() {
+		return XmlUtilZZZ.computeTag(this.getName(), this.getValue());
+	}
 }//End class

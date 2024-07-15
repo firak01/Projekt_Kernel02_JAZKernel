@@ -2,7 +2,7 @@ package basic.zBasic;
 
 public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T> implements IValueUserZZZ{
 	private static final long serialVersionUID = -2430016737090603862L;
-	
+
 	protected String sValue = null;
 	protected boolean bAnyValue = false;
 	protected boolean bNullValue = false;

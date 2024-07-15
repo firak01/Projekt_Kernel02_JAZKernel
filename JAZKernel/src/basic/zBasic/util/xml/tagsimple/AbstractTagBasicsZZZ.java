@@ -2,6 +2,7 @@ package basic.zBasic.util.xml.tagsimple;
 
 import java.util.Vector;
 
+import basic.zBasic.AbstractObjectWithValueZZZ;
 import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -9,11 +10,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 
-public abstract class AbstractTagBasicsZZZ extends AbstractObjectZZZ implements ITagBasicsZZZ{			
+public abstract class AbstractTagBasicsZZZ extends AbstractObjectWithValueZZZ implements ITagBasicsZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
-	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
-	protected String sValue = null;
 	
+	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
+	protected String sName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
 	
 	public AbstractTagBasicsZZZ() throws ExceptionZZZ{
 		super();

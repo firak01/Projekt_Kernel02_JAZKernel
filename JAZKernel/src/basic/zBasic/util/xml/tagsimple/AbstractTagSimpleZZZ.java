@@ -7,7 +7,6 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
 public abstract class AbstractTagSimpleZZZ extends AbstractTagBasicsZZZ implements ITagSimpleZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
-	protected String sName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.
 	
 	public AbstractTagSimpleZZZ() throws ExceptionZZZ{
 		super();
@@ -46,8 +45,5 @@ public abstract class AbstractTagSimpleZZZ extends AbstractTagBasicsZZZ implemen
 		this.sName = sTagName;		
 	}
 	
-	@Override
-	public String toString() {
-		return XmlUtilZZZ.computeTag(this.getName(), this.getValue());
-	}
+	
 }

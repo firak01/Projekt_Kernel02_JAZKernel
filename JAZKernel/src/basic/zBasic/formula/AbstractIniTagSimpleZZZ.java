@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithValueZZZ<T> implements IIniTagSimpleZZZ, IValueBufferedUserZZZ{
+public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractTagSimpleZZZ<T> implements IIniTagSimpleZZZ, IValueBufferedUserZZZ{
 	private static final long serialVersionUID = -5785934791199206030L;
 	protected IKernelConfigSectionEntryZZZ objEntry = null;
 
@@ -249,6 +249,37 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractObjectWithValu
 //	}//end main:
 //	return sReturn;
 //	}	
+	
+	
+	@Override
+	public String getTagPartStarting() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTagPartClosing() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTagPartEmpty() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getEmpty() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getElementString() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }//End class
