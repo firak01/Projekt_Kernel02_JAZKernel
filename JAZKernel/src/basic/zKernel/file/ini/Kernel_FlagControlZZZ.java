@@ -1,7 +1,6 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 
 public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = -8540131780423723580L;

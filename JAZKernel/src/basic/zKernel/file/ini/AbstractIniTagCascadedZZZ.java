@@ -1,4 +1,4 @@
-package basic.zBasic.formula;
+package basic.zKernel.file.ini;
 
 import java.util.Vector;
 
@@ -63,10 +63,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractObjectWithFor
 
 	@Override
 	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ {
-		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); // Hier schon die Rückgabe
-																					// vorbereiten, falls eine weitere
-																					// Verarbeitung nicht konfiguriert
-																					// ist.
+		IKernelConfigSectionEntryZZZ objReturn = new KernelConfigSectionEntryZZZ(); // Hier schon die Rückgabe vorbereiten, falls eine weitere Verarbeitung nicht konfiguriert ist.
 		main: {
 			if (StringZZZ.isEmptyTrimmed(sLineWithExpression))
 				break main;
@@ -83,8 +80,8 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractObjectWithFor
 			objReturn = this.getEntry();
 
 			// An dieser Stelle die Tags vom akuellen "Solver" Rausnehmen
-			String sTagStart = this.getExpressionTagStarting();
-			String sTagEnd = this.getExpressionTagClosing();
+			String sTagStart = this.getTagStarting();
+			String sTagEnd = this.getTagClosing();
 			String sExpression = KernelConfigSectionEntryUtilZZZ.getValueExpressionTagSurroundingRemoved(sExpressionWithTags, sTagStart, sTagEnd);
 			
 			

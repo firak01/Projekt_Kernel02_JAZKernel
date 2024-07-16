@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -17,23 +16,19 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		
 	public ZTagFormulaMath_OperatorZZZ() throws ExceptionZZZ{
 		super();
-	}
-		
-	public ZTagFormulaMath_OperatorZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);
 		ZTagFormulaMath_OperatorNew_();
 	}
 		
 	private boolean ZTagFormulaMath_OperatorNew_() throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 main:{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}
-			
-	 	}//end main:
-		return bReturn;
+//	 boolean bReturn = false;
+//	 main:{
+//			if(this.getFlag("init")==true){
+//				bReturn = true;
+//				break main;
+//			}
+//			
+//	 	}//end main:
+		return true;
 	 }//end function ZTagFormulaMath_OperatorNew_
 	
 	
@@ -186,60 +181,4 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 			}//end main:
 			return sReturn;
 		}
-
-		@Override
-		public VectorExtendedDifferenceZZZ<String> getValueVector() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getValue() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setValue(String sValue) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public VectorExtendedDifferenceZZZ<String> getRawVector() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public String getRaw() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setRaw(String sRaw) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public IKernelConfigSectionEntryZZZ getEntry() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public String getName() throws ExceptionZZZ {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-
 }//End class

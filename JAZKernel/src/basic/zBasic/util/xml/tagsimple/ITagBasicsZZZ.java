@@ -5,13 +5,12 @@ import basic.zBasic.IValueUserZZZ;
 
 public interface ITagBasicsZZZ extends IValueUserZZZ {	
 	public abstract String getName() throws ExceptionZZZ;	
-	//Hier nicht definiert, da ggfs. in TagByType und TagSimple unterschiedlich
-	//public abstract void setName(String sTagName);
+	public abstract void setName(String sTagName) throws ExceptionZZZ;
 	
 	//Berechne wie ein einfaches Tag (also ohne Attribute) aussieht, fuer diesen Namen
-	String getTagPartStarting() throws ExceptionZZZ;
-	String getTagPartClosing() throws ExceptionZZZ;
-	String getTagPartEmpty() throws ExceptionZZZ;
+	String getTagStarting() throws ExceptionZZZ;
+	String getTagClosing() throws ExceptionZZZ;
+	String getTagEmpty() throws ExceptionZZZ;
 	String getEmpty() throws ExceptionZZZ;
 
 	//Berechne den Tag mit den enthaltenden Wert

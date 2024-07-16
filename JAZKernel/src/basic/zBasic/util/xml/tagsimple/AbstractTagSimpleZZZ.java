@@ -5,7 +5,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 
-public abstract class AbstractTagSimpleZZZ extends AbstractTagBasicsZZZ implements ITagSimpleZZZ{			
+public abstract class AbstractTagSimpleZZZ<T> extends AbstractTagBasicsZZZ<T> implements ITagSimpleZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	
 	public AbstractTagSimpleZZZ() throws ExceptionZZZ{
@@ -34,16 +34,5 @@ public abstract class AbstractTagSimpleZZZ extends AbstractTagBasicsZZZ implemen
 	}
 		
 	//######## Getter / Setter ##################
-	//#### Aus Interfacace
-	@Override
-	public String getName(){
-		return this.sName;
-	}	
-	
-	@Override
-	public void setName(String sTagName) {
-		this.sName = sTagName;		
-	}
-	
-	
+
 }

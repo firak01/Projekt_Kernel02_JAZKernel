@@ -2,14 +2,14 @@ package basic.zBasic;
 
 import java.util.HashMap;
 
-import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
+import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 
-//MUSS FLAGS FUER DIE FORMELVERARBEITUNG SETZEN
+//MUSS FLAGS FUER DIE FORMELVERARBEITUNG SETZEN KOENNEN
 public abstract class AbstractObjectWithFormulaZZZ<T> extends AbstractIniTagSimpleZZZ<T> implements IObjectWithFormulaZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
 	

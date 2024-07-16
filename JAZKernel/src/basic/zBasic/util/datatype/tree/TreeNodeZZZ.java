@@ -515,7 +515,7 @@ public class TreeNodeZZZ<T> implements ITreeNodeZZZ<T> {
 			
 			ITagSimpleZZZ objData = objTree.getData();
 			if(objData!=null) {//Null ist z.B. beim Root der Fall
-				String sData = objData.getTagPartStarting() + objData.getValue() + objData.getTagPartClosing();
+				String sData = objData.getTagStarting() + objData.getValue() + objData.getTagClosing();
 				String sOffset = StringZZZ.repeat(sKeyDelimiter, (objTree.getLevel()));
 				sReturn = sOffset + sData + sEntryDelimiter;
 			}else {

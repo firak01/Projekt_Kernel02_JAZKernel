@@ -1,4 +1,4 @@
-package basic.zBasic.formula;
+package basic.zKernel.file.ini;
 
 import basic.zBasic.AbstractObjectWithFormulaZZZ;
 import basic.zBasic.ExceptionZZZ;

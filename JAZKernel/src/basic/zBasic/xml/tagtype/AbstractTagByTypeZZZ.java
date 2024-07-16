@@ -71,20 +71,20 @@ public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicsZZZ implemen
 		this.objTagType = objTagType;
 	}
 	
-	
+	//Bemerkenswert, hier ueberschreiben weg TagType
 	@Override
 	public String getName() throws ExceptionZZZ{
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
 			return objType.getTagName();
 		}else {
-			return "";
+			return super.getName();
 		}
 	}	
 
 	//+++++++++++++++++++++++++++++++++++++++++++
 	@Override
-	public String getTagPartStarting() throws ExceptionZZZ{
+	public String getTagStarting() throws ExceptionZZZ{
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
 			return objType.getTagPartStarting();
@@ -94,7 +94,7 @@ public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicsZZZ implemen
 	}
 	
 	@Override
-	public String getTagPartClosing() throws ExceptionZZZ{				
+	public String getTagClosing() throws ExceptionZZZ{				
 		ITagTypeZZZ objType = this.getTagType();
 		if(objType!=null) {
 			return objType.getTagPartClosing();

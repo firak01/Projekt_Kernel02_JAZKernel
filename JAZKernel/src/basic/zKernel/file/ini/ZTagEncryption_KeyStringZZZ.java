@@ -1,7 +1,6 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.formula.AbstractIniTagSimpleZZZ;
 
 public class ZTagEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
 	private static final long serialVersionUID = -79235762837292434L;

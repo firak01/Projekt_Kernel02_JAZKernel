@@ -1,4 +1,4 @@
-package basic.zBasic.formula;
+package basic.zKernel.file.ini;
 
 import basic.zBasic.util.xml.tagsimple.ITagBasicsZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;

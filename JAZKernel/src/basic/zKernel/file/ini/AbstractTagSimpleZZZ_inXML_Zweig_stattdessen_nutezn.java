@@ -1,18 +1,22 @@
-package basic.zBasic;
+package basic.zKernel.file.ini;
 
+import basic.zBasic.AbstractObjectWithValueZZZ;
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IValueInLineZZZ;
+import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
-public abstract class AbstractTagSimpleZZZ<T>  extends AbstractObjectWithValueZZZ<T> implements IValueInLineZZZ{
+public abstract class AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn<T>  extends AbstractObjectWithValueZZZ<T> implements IValueInLineZZZ{
 	private static final long serialVersionUID = -5785934791199206030L;
 	
-	public AbstractTagSimpleZZZ() throws ExceptionZZZ{
+	public AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn() throws ExceptionZZZ{
 		super();
 		AbstractTagNew_(null);
 	}
 	
-	public AbstractTagSimpleZZZ(String sValue) throws ExceptionZZZ{
+	public AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn(String sValue) throws ExceptionZZZ{
 		super();
 		AbstractTagNew_(sValue);
 	}
@@ -42,19 +46,19 @@ public abstract class AbstractTagSimpleZZZ<T>  extends AbstractObjectWithValueZZ
 	public abstract String getExpressionTagName();
 	
 	public String getExpressionTagStarting() throws ExceptionZZZ{
-		return AbstractTagSimpleZZZ.computeExpressionTagStarting(this.getExpressionTagName());		
+		return AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn.computeExpressionTagStarting(this.getExpressionTagName());		
 	}
 
 	public String getExpressionTagClosing() throws ExceptionZZZ{
-		return AbstractTagSimpleZZZ.computeExpressionTagClosing(this.getExpressionTagName());		
+		return AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn.computeExpressionTagClosing(this.getExpressionTagName());		
 	}	
 	public String getExpressionTagEmpty()throws ExceptionZZZ{
-		return AbstractTagSimpleZZZ.computeExpressionTagEmpty(this.getExpressionTagName());		
+		return AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn.computeExpressionTagEmpty(this.getExpressionTagName());		
 	}
 	
 	public static String computeExpressionTagStarting(String sTagName) throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "<" + sTagName + ">";
@@ -62,7 +66,7 @@ public abstract class AbstractTagSimpleZZZ<T>  extends AbstractObjectWithValueZZ
 	
 	public static String computeExpressionTagClosing(String sTagName)throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "</" + sTagName + ">"; 
@@ -70,7 +74,7 @@ public abstract class AbstractTagSimpleZZZ<T>  extends AbstractObjectWithValueZZ
 	
 	public static String computeExpressionTagEmpty(String sTagName)throws ExceptionZZZ{
 		if(StringZZZ.isEmptyTrimmed(sTagName)) {
-			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractTagSimpleZZZ.class, ReflectCodeZZZ.getMethodCurrentName()); 
+			ExceptionZZZ ez = new ExceptionZZZ( "Missing TagName.", iERROR_PARAMETER_MISSING, AbstractTagSimpleZZZ_inXML_Zweig_stattdessen_nutezn.class, ReflectCodeZZZ.getMethodCurrentName()); 
 			throw ez;
 		}
 		return "<" + sTagName + "/>";

@@ -1,19 +1,21 @@
-package basic.zBasic.util.xml.tagsimple;
+package basic.zKernel.file.ini;
 
+import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
 import basic.zBasic.AbstractObjectWithValueZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagBasicsZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 
-public abstract class AbstractTagBasicsZZZ<T> extends AbstractObjectWithValueZZZ<T> implements ITagBasicsZZZ{			
+public abstract class AbstractIniTagBasicsZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements ITagBasicsZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
 	protected String sTagName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
 	
-	public AbstractTagBasicsZZZ() throws ExceptionZZZ{
+	public AbstractIniTagBasicsZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
