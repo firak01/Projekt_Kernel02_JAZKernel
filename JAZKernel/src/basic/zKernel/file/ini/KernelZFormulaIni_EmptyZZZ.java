@@ -65,23 +65,18 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		super();
 		KernelExpressionIniEmptyNew_();
 	}
-	
-	public KernelZFormulaIni_EmptyZZZ(String[] saFlag) throws ExceptionZZZ{		
-		super(saFlag);
-		KernelExpressionIniEmptyNew_();
-	}
-	
+		
 	private boolean KernelExpressionIniEmptyNew_() throws ExceptionZZZ {
-	 boolean bReturn = false; 
-	 main:{			 														
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}				
-			
-				
-	 	}//end main:
-		return bReturn;
+//	 boolean bReturn = false; 
+//	 main:{			 														
+//			if(this.getFlag("init")==true){
+//				bReturn = true;
+//				break main;
+//			}				
+//			
+//				
+//	 	}//end main:
+		return true;
 	 }//end function KernelExpressionMathSolverNew_
 			
 //	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
@@ -212,7 +207,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		boolean bReturn=false;
 		main:{
 		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		if(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty().equalsIgnoreCase(sExpressionToProof)){
+		if(KernelZFormulaIni_EmptyZZZ.getTagEmpty().equalsIgnoreCase(sExpressionToProof)){
 			bReturn = true;
 			break main;
 		}

@@ -4,6 +4,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IValueUserZZZ;
 
 public interface ITagBasicsZZZ extends IValueUserZZZ {	
+	public abstract String getNameDefault() throws ExceptionZZZ;
 	public abstract String getName() throws ExceptionZZZ;	
 	public abstract void setName(String sTagName) throws ExceptionZZZ;
 	

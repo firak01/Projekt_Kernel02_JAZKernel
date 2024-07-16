@@ -7,28 +7,25 @@ public class ZTagEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
 	public static String sTAG_NAME = "Z:KeyString";
 	
 	public ZTagEncryption_KeyStringZZZ() throws ExceptionZZZ{
-		super("init");
-	}
-		
-	public ZTagEncryption_KeyStringZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);
+		super();
 		KernelEncryptionKeyStringNew_();
 	}
-	
+			
 	private boolean KernelEncryptionKeyStringNew_() throws ExceptionZZZ {
-	 boolean bReturn = false;
-	 main:{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}
-	 	}//end main:
-		return bReturn;
-	 }//end function KernelExpressionMathSolverNew_
+//	 boolean bReturn = false;
+//	 main:{
+//			if(this.getFlag("init")==true){
+//				bReturn = true;
+//				break main;
+//			}
+//	 	}//end main:
+		return true;
+	 }//end function KernelEncryptionKeyStringNew_
 		
 	
 	//###### Getter / Setter
-	public String getExpressionTagName(){
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagEncryption_KeyStringZZZ.sTAG_NAME;
 	}					
 }//End class

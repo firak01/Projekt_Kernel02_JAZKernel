@@ -18,14 +18,11 @@ public class KernelJavaCall_MethodZZZ  extends AbstractIniTagSimpleZZZ{
 	
 	public KernelJavaCall_MethodZZZ() throws ExceptionZZZ{
 		super();
+		KernelJavaCallMethodNew_();
 	}
 	
-	public KernelJavaCall_MethodZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);
-		KernelJavaCallMethodNew_(saFlag);
-	}
-	
-	private boolean KernelJavaCallMethodNew_(String[] saFlagControlIn) throws ExceptionZZZ {
+	private boolean KernelJavaCallMethodNew_() throws ExceptionZZZ {
+//	private boolean KernelJavaCallMethodNew_(String[] saFlagControlIn) throws ExceptionZZZ {
 //	 boolean bReturn = false;
 //	 String stemp; boolean btemp; 
 //	 main:{
@@ -54,7 +51,8 @@ public class KernelJavaCall_MethodZZZ  extends AbstractIniTagSimpleZZZ{
 		
 	
 	//###### Getter / Setter
-	public String getExpressionTagName(){
+	@Override
+	public String getNameDefault() throws ExceptionZZZ{
 		return KernelJavaCall_MethodZZZ.sTAG_NAME;
 	}					
 }//End class

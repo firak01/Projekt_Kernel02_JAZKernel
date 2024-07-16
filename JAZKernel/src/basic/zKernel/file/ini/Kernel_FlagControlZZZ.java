@@ -7,30 +7,28 @@ public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	public static String sTAG_NAME = "Z:FlagControl";
 	
 	public Kernel_FlagControlZZZ() throws ExceptionZZZ{
-		super("init");
-	}
-		
-	public Kernel_FlagControlZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);
+		super();
 		Kernel_FlagControlNew_();
 	}
+		
 	
 	private boolean Kernel_FlagControlNew_() throws ExceptionZZZ {
-		 boolean bReturn = false;
-		 main:{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}
-			
-			
-		}//end main:
-		return bReturn;
+//		 boolean bReturn = false;
+//		 main:{
+//			if(this.getFlag("init")==true){
+//				bReturn = true;
+//				break main;
+//			}
+//			
+//			
+//		}//end main:
+		return true;
 	 }//end function Kernel_FlagControlNew_
 		
 	
 	//###### Getter / Setter
-	public String getExpressionTagName(){
+	@Override
+	public String getNameDefault() throws ExceptionZZZ{
 		return Kernel_FlagControlZZZ.sTAG_NAME;
 	}				
 }//End class

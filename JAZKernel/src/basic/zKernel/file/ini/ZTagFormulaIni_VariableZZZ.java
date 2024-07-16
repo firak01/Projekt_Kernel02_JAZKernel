@@ -1,5 +1,6 @@
 package basic.zKernel.file.ini;
 
+import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
@@ -8,14 +9,22 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
+import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
+import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 
-public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
+/**Merke: Weil hier noch eine HashMap der Variablen verwaltet wird, 
+ *       kann es keine TagSimple-Klasse sein.
+ * @author fl86kyvo
+ *
+ * @param <T>
+ */
+public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagCascadedZZZ<T>{
 	private static final long serialVersionUID = 6370617551800139734L;
 	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
 			
 	public ZTagFormulaIni_VariableZZZ() throws ExceptionZZZ{
-		super("init");
+		super();
 		KernelExpressionIniVariableNew_(null);
 	}
 	
@@ -145,12 +154,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return vecReturn;
 	}
 	
-	//###### Getter / Setter
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
-	public String getExpressionTagName(){
-		return ZTagFormulaIni_VariableZZZ.sTAG_NAME;
-	}
-		
+	//###### Getter / Setter	
 	public void setHashMapVariable(HashMapCaseInsensitiveZZZ<String,String> hmVariable){
 		this.hmVariable = hmVariable;
 	}
@@ -187,6 +191,12 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return sReturn;
 	}
 
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return ZTagFormulaIni_VariableZZZ.sTAG_NAME;
+	}
+
+	
 	//### Aus Interface IKernelExpressionIniZZZ
 		
 		/* (non-Javadoc)

@@ -25,7 +25,7 @@ public class ZTagFormulaMath_ValueZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	
 	//###### Getter / Setter
 	@Override
-	public String getName(){
+	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagFormulaMath_ValueZZZ.sTAG_NAME;
 	}
 }//End class

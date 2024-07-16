@@ -181,4 +181,9 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 			}//end main:
 			return sReturn;
 		}
+
+		@Override
+		public String getNameDefault() throws ExceptionZZZ {
+			return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
+		}
 }//End class

@@ -81,7 +81,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> im
 			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
 
 					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-					String sMathValueTag = ZTagFormulaMath_ValueZZZ.computeExpressionTagClosing(ZTagFormulaMath_ValueZZZ.sTAG_NAME);
+					String sMathValueTag = this.getTputeTagClosing(ZTagFormulaMath_ValueZZZ.sTAG_NAME);
 					if(StringZZZ.contains(sProperty, sMathValueTag)){
 						sBefore = (String) vecSection.get(0);
 						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);

@@ -8,14 +8,17 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelConfigZZZ;
+import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import custom.zKernel.LogZZZ;
+import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractIniTagCascadedZZZ<T> implements IKernelUserZZZ{
+public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractIniTagCascadedZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
+	protected volatile FileIniZZZ objFileIni = null; //Kann anders als beim Kernel selbst sein.
 	
 	public AbstractKernelIniTagCascadedZZZ() throws ExceptionZZZ {
 		super("init");
@@ -147,4 +150,23 @@ public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractIniTagC
 	public void setLogObject(LogZZZ objLog) throws ExceptionZZZ {
 		this.objLog = objLog;
 	}	
+	
+	//### aus IKernelFileIniuserZZZ
+		@Override
+		public void setFileConfigKernelIni(FileIniZZZ objFileIni){
+			this.objFileIni = objFileIni;
+		}
+		@Override
+		public FileIniZZZ getFileConfigKernelIni()throws ExceptionZZZ{
+			if(this.objFileIni==null) {
+				IKernelZZZ objKernel = this.getKernelObject();
+				if(objKernel==null) {
+					ExceptionZZZ ez = new ExceptionZZZ("FileIni and KernelObject", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				return objKernel.getFileConfigKernelIni();						
+			}else {
+				return this.objFileIni;
+			}
+		}
 }// End class

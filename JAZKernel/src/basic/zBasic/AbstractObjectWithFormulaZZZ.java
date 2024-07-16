@@ -104,4 +104,8 @@ public abstract class AbstractObjectWithFormulaZZZ<T> extends AbstractIniTagSimp
 	}
 	//##############################
 	
+	//### Aus IFlagUserZZZ #########
+	
+	TODOGOON20240716;
+	
 }

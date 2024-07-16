@@ -56,8 +56,17 @@ public abstract class AbstractIniTagBasicsZZZ<T> extends AbstractObjectWithValue
 	//Merke: Der Name wird auf unterschiedliche Arten geholt. Z.B. aus dem TagTypeZZZ, darum diese Methode dann ueberschreiben.
 	@Override
 	public String getName() throws ExceptionZZZ{
-		return this.sTagName;
+		if(this.sTagName==null) {
+			return this.getNameDefault();
+		}else {
+			return this.sTagName;
+		}
 	}	
+	
+	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
+	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
+	@Override
+	public abstract String getNameDefault() throws ExceptionZZZ; 
 	
 	@Override
 	public void setName(String sTagName) throws ExceptionZZZ{

@@ -17,30 +17,27 @@ public class KernelEncryption_KeyNumberZZZ<T>  extends AbstractIniTagSimpleZZZ<T
 	public static String sTAG_NAME = "Z:KeyNumber";
 	
 	public KernelEncryption_KeyNumberZZZ() throws ExceptionZZZ{
-		super("init");
-	}
-		
-	public KernelEncryption_KeyNumberZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);
+		super();
 		KernelEncryptionKeyNumberNew_();
 	}
-	
+		
 	private boolean KernelEncryptionKeyNumberNew_() throws ExceptionZZZ {
-		 boolean bReturn = false;
-		 main:{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}
-			
-			
-		}//end main:
-		return bReturn;
-	 }//end function KernelExpressionMathSolverNew_
+//		 boolean bReturn = false;
+//		 main:{
+//			if(this.getFlag("init")==true){
+//				bReturn = true;
+//				break main;
+//			}
+//			
+//			
+//		}//end main:
+		return true;
+	 }//end function KernelEncryptionKeyNumberNew_
 		
 	
 	//###### Getter / Setter
-	public String getExpressionTagName(){
+	@Override
+	public String getNameDefault() throws ExceptionZZZ{
 		return KernelEncryption_KeyNumberZZZ.sTAG_NAME;
 	}				
 }//End class

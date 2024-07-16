@@ -7,30 +7,29 @@ public class KernelEncryption_CharacterPoolAdditionalZZZ<T>  extends AbstractIni
 	public static String sTAG_NAME = "Z:CharacterPoolAdditional";
 	
 	public KernelEncryption_CharacterPoolAdditionalZZZ() throws ExceptionZZZ{
-		super("init");
-	}
-		
-	public KernelEncryption_CharacterPoolAdditionalZZZ(String[] saFlag) throws ExceptionZZZ{
-		super(saFlag);
+		super();
 		KernelEncryptionKeyNumberNew_();
 	}
+		
+	
 	
 	private boolean KernelEncryptionKeyNumberNew_() throws ExceptionZZZ {
-		 boolean bReturn = false;
-		 main:{
-			if(this.getFlag("init")==true){
-				bReturn = true;
-				break main;
-			}
-			
-			
-		}//end main:
-		return bReturn;
+//		 boolean bReturn = false;
+//		 main:{
+//			if(this.getFlag("init")==true){
+//				bReturn = true;
+//				break main;
+//			}
+//			
+//			
+//		}//end main:
+		return true;
 	 }//end function KernelExpressionMathSolverNew_
 		
 	
 	//###### Getter / Setter
-	public String getExpressionTagName(){
+	@Override
+	public String getNameDefault() throws ExceptionZZZ{
 		return KernelEncryption_CharacterPoolAdditionalZZZ.sTAG_NAME;
 	}			
 }//End class
