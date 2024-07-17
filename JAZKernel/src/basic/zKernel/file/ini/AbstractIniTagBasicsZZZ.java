@@ -9,7 +9,7 @@ import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.xml.tagsimple.ITagBasicsZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 
-public abstract class AbstractIniTagBasicsZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements ITagBasicsZZZ{			
+public abstract class AbstractIniTagBasicsZZZ<T> extends AbstractObjectWithValueZZZ<T> implements ITagBasicsZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.

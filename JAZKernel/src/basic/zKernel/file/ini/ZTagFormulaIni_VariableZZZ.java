@@ -67,7 +67,7 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagCascadedZZZ<T>
 		Vector<String>vecReturn = new Vector<String>();		
 		main:{
 			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
-			Vector<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getExpressionTagStarting(), this.getExpressionTagClosing(), false, false);
+			Vector<String> vecSection = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
 			
 			String sVariableName = (String) vecSection.get(1);
 		    String sValue = null;
@@ -194,6 +194,56 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagCascadedZZZ<T>
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagFormulaIni_VariableZZZ.sTAG_NAME;
+	}
+
+	
+	
+	@Override
+	public Vector<String> computeAsExpressionFirstVector(String sExpression) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<String> computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getElementString() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String compute() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeAsExpression() throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String computeAsExpression(String sExpression) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isExpression(String sExpression) throws ExceptionZZZ {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

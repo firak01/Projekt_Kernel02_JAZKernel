@@ -12,4 +12,9 @@ public class TagSimpleZZZ extends AbstractTagSimpleZZZ{
 	public TagSimpleZZZ(String sTagName, String sTagValue) throws ExceptionZZZ{
 		super(sTagName, sTagValue);
 	}
+
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {		
+		return null;
+	}
 }

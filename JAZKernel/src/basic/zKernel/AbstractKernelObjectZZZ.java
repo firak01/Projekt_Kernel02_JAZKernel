@@ -38,6 +38,7 @@ import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.IFileEasyConstantsZZZ;
 import basic.zBasic.util.file.JarEasyUtilZZZ;
@@ -444,8 +445,9 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 		boolean bDirectoryFound = false;
 		if(StringZZZ.isEmpty(sDirectoryConfig)){
 			IKernelConfigZZZ objConfig = this.getConfigObject();
-			sDirectoryConfig=objConfig.getConfigDirectoryNameDefault();
-			if(sDirectoryConfig.equals("")||KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty().equals(sDirectoryConfig)){
+			sDirectoryConfig=objConfig.getConfigDirectoryNameDefault();			
+			//if(sDirectoryConfig.equals("")||KernelZFormulaIni_EmptyZZZ.getTagEmpty().equals(sDirectoryConfig)){
+			if(sDirectoryConfig.equals("")||XmlUtilZZZ.computeTagPartEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME).equals(sDirectoryConfig)){
 				String sDirConfigTemp = AbstractKernelObjectZZZ.sDIRECTORY_CONFIG_DEFAULT; 
 				objDir = new File(sDirConfigTemp);
 				if(objDir.exists()){
@@ -476,7 +478,7 @@ KernelConfigFileImport=ZKernelConfigImport_default.ini
 						throw ez;
 					}			
 				}									
-		}else if(sDirectoryConfig==null || ZTagFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sDirectoryConfig)){
+		}else if(sDirectoryConfig==null || XmlUtilZZZ.computeTagPartEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME).equals(sDirectoryConfig)){
 			
 			//Pfad relativ zum Eclipse Workspace
 			URL workspaceURL=null;;

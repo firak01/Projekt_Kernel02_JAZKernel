@@ -15,6 +15,7 @@ import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -483,7 +484,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 //			btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
 //			if(btemp==false) break main;
 			
-			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName), AbstractIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName), false);
+			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, XmlUtilZZZ.computeTagPartStarting(sExpressionTagName), XmlUtilZZZ.computeTagPartClosing(sExpressionTagName), false);
 			if(!bAsTagFound) break main;
 		
 			bReturn = true;
@@ -497,12 +498,12 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			
 			//Anders als Tags sind NULL und EMPTY Werte Conversions. 
 			//Sie entstehen sogar, wenn nur der Leerstring konfiguriert wird
-			boolean bIsEmptyTag = StringZZZ.contains(sLine, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
+			boolean bIsEmptyTag = StringZZZ.contains(sLine, XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME));
 			if(bIsEmptyTag) {
 				bReturn = true;
 				break main;
 			}
-			boolean bIsNullTag = StringZZZ.contains(sLine, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty());
+			boolean bIsNullTag = StringZZZ.contains(sLine, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME));
 			if(bIsNullTag) {
 				bReturn = true;
 				break main;

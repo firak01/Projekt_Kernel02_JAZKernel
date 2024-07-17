@@ -14,7 +14,7 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicsZZZ<T> implements IIniTagSimpleZZZ{
 	private static final long serialVersionUID = -5785934791199206030L;
-	protected IKernelConfigSectionEntryZZZ objEntry = null;
+	protected volatile IKernelConfigSectionEntryZZZ objEntry = null;
 
 	public AbstractIniTagSimpleZZZ() throws ExceptionZZZ{
 		super();
@@ -50,10 +50,10 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicsZZ
 	
 	
 	//### Aus IValueBufferedUserZZZ
-	@Override 
-	public VectorExtendedDifferenceZZZ<String> getValueVector(){
-		return this.getEntry().getValueVector();
-	}
+//	@Override 
+//	public VectorExtendedDifferenceZZZ<String> getValueVector(){
+//		return this.getEntry().getValueVector();
+//	}
 	
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der

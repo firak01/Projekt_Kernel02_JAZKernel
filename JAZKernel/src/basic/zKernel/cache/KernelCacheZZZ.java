@@ -92,7 +92,7 @@ Please note that it will not match “java” word in first example i.e. “Toda
 			 */
 			
 			ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ();
-			String sRegEx=objVariable.getExpressionTagStarting() + sVariableName + objVariable.getExpressionTagClosing(); //Den Namen einer Variablen finden, über diesen RegEx-Ausdruck
+			String sRegEx=objVariable.getTagStarting() + sVariableName + objVariable.getTagClosing(); //Den Namen einer Variablen finden, über diesen RegEx-Ausdruck
 			sRegEx = "\\B"+sRegEx+"|"+sRegEx+"\\B";
 			ArrayList<ICachableObjectZZZ> listaCacheEntry = this.getCacheEntriesWithPropertiesByRegEx(sRegEx);
 			for(ICachableObjectZZZ objCacheEntry: listaCacheEntry){				

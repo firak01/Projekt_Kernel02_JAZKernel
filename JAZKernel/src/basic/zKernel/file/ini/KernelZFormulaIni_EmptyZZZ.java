@@ -207,7 +207,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		boolean bReturn=false;
 		main:{
 		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		if(KernelZFormulaIni_EmptyZZZ.getTagEmpty().equalsIgnoreCase(sExpressionToProof)){
+		if(this.getTagEmpty().equalsIgnoreCase(sExpressionToProof)){
 			bReturn = true;
 			break main;
 		}
@@ -276,9 +276,14 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 			if(!this.isStringForConvertRelevant(sLineWithoutExpression)) break main;
 			
 			//Hier einfach den Leeren-Tag zurückgeben
-			sReturn = KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
+			sReturn = this.getTagEmpty();
 						
 		}//end main
 		return sReturn;
+	}
+
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return KernelZFormulaIni_EmptyZZZ.sTAG_NAME;
 	}
 }//End class

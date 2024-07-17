@@ -12,4 +12,9 @@ public class TagByTypeZZZ extends AbstractTagByTypeZZZ implements ITagByTypeZZZ{
 	public TagByTypeZZZ(ITagTypeZZZ objType) throws ExceptionZZZ {
 		super(objType);
 	}
+
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return this.getTagType().getTagName();
+	}
 }

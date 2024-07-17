@@ -5,7 +5,9 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
@@ -21,7 +23,8 @@ import custom.zKernel.file.ini.FileIniZZZ;
  *     auch ein NULL - Wert gefunden wird (halt der <z:Null/> Tag). Wenn etwas gefunden wird, dann wird auch diese Parametersuche beendet.   
  * @param <T>
  */
-public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
+//public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
+public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T>{ // implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -3773890882498236252L;
 	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
@@ -81,7 +84,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> im
 			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
 
 					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-					String sMathValueTag = this.getTputeTagClosing(ZTagFormulaMath_ValueZZZ.sTAG_NAME);
+					String sMathValueTag = XmlUtilZZZ.computeTagPartClosing(ZTagFormulaMath_ValueZZZ.sTAG_NAME);
 					if(StringZZZ.contains(sProperty, sMathValueTag)){
 						sBefore = (String) vecSection.get(0);
 						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
@@ -136,41 +139,25 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> im
 	public Vector computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector vecReturn = new Vector();		
 		main:{
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, ZTagFormulaIni_NullZZZ.getExpressionTagStarting(), ZTagFormulaIni_NullZZZ.getExpressionTagClosing(), false,false);
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, XmlUtilZZZ.computeTagPartStarting(ZTagFormulaIni_NullZZZ.sTAG_NAME), XmlUtilZZZ.computeTagPartClosing(ZTagFormulaIni_NullZZZ.sTAG_NAME), false,false);
 		}
 		return vecReturn;
 	}
 	
-	
-	public static boolean isExpression(String sLine){
-		boolean bReturn = false;
-		main:{
-			boolean btemp = StringZZZ.contains(sLine, ZTagFormulaIni_NullZZZ.getExpressionTagStarting(), false);
-			if(btemp==false) break main;
-		
-			btemp = StringZZZ.contains(sLine, ZTagFormulaIni_NullZZZ.getExpressionTagClosing(), false);
-			if(btemp==false) break main;
-			
-			bReturn = true;
-		}//end main
-		return bReturn;
-	}
-	
-	
 	//###### Getter / Setter
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
-	public static String getExpressionTagName(){
-		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
-	}
-	public static String getExpressionTagStarting(){
-		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">";
-	}
-	public static String getExpressionTagClosing(){
-		return "</" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">"; 
-	}	
-	public static String getExpressionTagEmpty(){
-		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + "/>";
-	}
+//	public static String getExpressionTagName(){
+//		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
+//	}
+//	public static String getExpressionTagStarting(){
+//		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">";
+//	}
+//	public static String getExpressionTagClosing(){
+//		return "</" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + ">"; 
+//	}	
+//	public static String getExpressionTagEmpty(){
+//		return "<" + ZTagFormulaIni_NullZZZ.getExpressionTagName() + "/>";
+//	}
 	
 	public void setFileIni(FileIniZZZ objFileIni){
 		this.objFileIni = objFileIni;
@@ -266,5 +253,11 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> im
 						
 		}//end main
 		return sReturn;
+	}
+
+
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return ZTagFormulaIni_NullZZZ.sTAG_NAME;
 	}
 }//End class

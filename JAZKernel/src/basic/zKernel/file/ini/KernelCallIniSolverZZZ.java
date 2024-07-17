@@ -13,6 +13,7 @@ import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.HashMapExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -85,7 +86,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 					
 	//###### Getter / Setter
 	@Override
-	public String getExpressionTagName(){
+	public String getNameDefault(){
 		return KernelCallIniSolverZZZ.sTAG_NAME;
 	}
 	
@@ -308,7 +309,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 				if(objValue!=null) {
 					sExpression = objValue.toString();					
 				}else {
-					sExpression = KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
+					sExpression = XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME);
 				}
 								
 				//NUN DEN INNERHALB DER EXPRESSION BERECHUNG ERSTELLTEN WERT in den Return-Vector übernehmen
