@@ -7,9 +7,10 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.util.xml.tagsimple.AbstractTagBasicsZZZ;
+import basic.zBasic.util.xml.tagsimple.AbstractTagBasicZZZ;
 
-public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicsZZZ implements ITagByTypeZZZ{			
+
+public abstract class AbstractTagByTypeZZZ extends AbstractTagBasicZZZ implements ITagByTypeZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	protected ITagTypeZZZ objTagType = null;		
 	protected Vector<ITagByTypeZZZ>vecChildTags = null;

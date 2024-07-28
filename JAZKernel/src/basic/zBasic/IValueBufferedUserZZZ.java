@@ -6,5 +6,5 @@ public interface IValueBufferedUserZZZ extends IValueUserZZZ{
 
 	//Der bis dahin (ggfs. durch aufloesen einer Formel) ermittelte Wert hier ablegen, quasi als historischen Wert.
 	//Merke: Ein CicularBuffer waere auch gut.
-	public VectorExtendedDifferenceZZZ<String> getValueVector();
+	public VectorExtendedDifferenceZZZ<String> getValueVector() throws ExceptionZZZ;
 }

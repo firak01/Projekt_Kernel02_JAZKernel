@@ -359,6 +359,30 @@ public class StringZZZ implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
 	 */
+	public static boolean containsAsTagXml(String sString, String sMatchTagName)throws ExceptionZZZ{
+		return StringZZZ.containsAsTagXml(sString, sMatchTagName, true);
+	}
+	
+	/** 
+	 * @param sString
+	 * @param sMatchTagStarting  , das ist ein ganzer Tag und nicht nur der TagName, muss aber kein xml-tag sein, sonder jede Kennzeichnung passt
+	 * @param sMatchTagClosing   , das ist ein ganzer Tag und nicht nur der TagName, muss aber kein xml-tag sein, sonder jede Kennzeichnung passt
+	 * @param bExactMatch
+	 * @return
+	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
+	 */
+	public static boolean containsAsTagXml(String sString, String sMatchTagName, boolean bExactMatch)throws ExceptionZZZ{
+		return XmlUtilZZZ.containsTag(sString, sMatchTagName, bExactMatch);
+	}
+	
+	/** 
+	 * @param sString
+	 * @param sMatchTagStarting  , das ist ein ganzer Tag und nicht nur der TagName, muss aber kein xml-tag sein, sonder jede Kennzeichnung passt
+	 * @param sMatchTagClosing   , das ist ein ganzer Tag und nicht nur der TagName, muss aber kein xml-tag sein, sonder jede Kennzeichnung passt
+	 * @param bExactMatch
+	 * @return
+	 * @author Fritz Lindhauer, 12.07.2024, 10:54:09
+	 */
 	public static boolean containsAsTag(String sString, String sMatchTagStarting, String sMatchTagClosing){
 		return StringZZZ.containsAsTag(sString, sMatchTagStarting, sMatchTagClosing, true);
 	}
@@ -1331,6 +1355,71 @@ public class StringZZZ implements IConstantZZZ{
 			}
 		}
 		return vecReturn;		
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls der Trenner selbst zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Diese Methode dient z.B. dazu einen leeren Tag zu bearbeiten.
+	 *        Ansonsten sind 2 Trenner notwendig.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector<String> vecMidFirst(String sStringToParse, String sMidSep, boolean bReturnSeparators) throws ExceptionZZZ{
+		return StringZZZ.vecMidFirst(sStringToParse, sMidSep, bReturnSeparators, true);
+	}
+	
+	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls der Trenner selbst zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.
+	 * Merke: Diese Methode dient z.B. dazu einen leeren Tag zu bearbeiten.
+	 *        Ansonsten sind 2 Trenner notwendig.
+	* @param sStringToParse
+	* @param sLeftSep
+	* @param sRightSep
+	* @param bReturnSeperators
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:56:33
+	 */
+	public static Vector<String>vecMidFirst(String sStringToParse, String sMidSep, boolean bReturnSeparators, boolean bExactMatch) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
+		main:{			
+			if(StringZZZ.isEmpty(sStringToParse)) break main;
+			if(StringZZZ.isEmpty(sMidSep)){
+				ExceptionZZZ ez = new ExceptionZZZ("Left separator string", iERROR_PARAMETER_MISSING, StringZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			String sLeft = StringZZZ.left(sStringToParse, sMidSep,bExactMatch);
+			if(sLeft==null) sLeft="";
+						
+			String sRemainingTagged = StringZZZ.right(sStringToParse, sStringToParse.length()-sLeft.length()-sMidSep.length());
+			String sRight = sRemainingTagged;
+									
+			//Nun die Werte in den ErgebnisVector zusammenfassen
+			if(bReturnSeparators ==true){
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+				vecReturn.add(0, sLeft);
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+				vecReturn.add(1, sMidSep);
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+				vecReturn.add(2, sRight);
+			}else if(bReturnSeparators ==false){
+				if(vecReturn.size()>=1) vecReturn.removeElementAt(1);						
+				vecReturn.add(0, sLeft);
+				
+				if(vecReturn.size()>=2) vecReturn.removeElementAt(2);						
+				vecReturn.add(1, "");  //Also ein Leerstring
+				
+				if(vecReturn.size()>=3) vecReturn.removeElementAt(3);						
+				vecReturn.add(2, sRight);
+			}
+		}
+		return vecReturn;
 	}
 	
 	/** Gibt einen Vector mit 3 String-Bestandteilen zurück. Links, Mitte, Rechts. Falls die Trenner zurückgegeben werden sollen, die sonst im Mitte-String sind, muss bReturnSeparators auf true stehen.

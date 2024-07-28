@@ -185,7 +185,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			//Berechne die erste Formel
 			objExpressionSolver.setFlag("usejson", true);
 			objExpressionSolver.setFlag("usejson_map", true);
-			String sValue = objExpressionSolver.compute(sExpression);//compute gibt nur einen DebugString zurück
+			String sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertFalse(sValue.equals(KernelJsonMapIniSolverZZZTest.sEXPRESSION_JSONMAP01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
 			
@@ -226,7 +226,7 @@ public class KernelJsonIniSolverZZZTest extends TestCase {
 			//Berechne die erste Formel
 			objExpressionSolver.setFlag("usejson", true);
 			objExpressionSolver.setFlag("usejson_array", true);
-			String sValue = objExpressionSolver.compute(sExpression);//compute gibt nur einen DebugString zurück
+			String sValue = objExpressionSolver.parse(sExpression);//compute gibt nur einen DebugString zurück
 			assertNotNull(sValue);
 			assertFalse(sValue.equals(KernelJsonArrayIniSolverZZZTest.sEXPRESSION_JSONARRAY01_DEFAULT));//Auch wenn es nur ein Debug-String ist, so ist er immer verändert.
 			

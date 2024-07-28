@@ -7,7 +7,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IniFile;
+import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
@@ -268,7 +268,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	}
 	
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof)
+	public boolean isParseRelevant(String sExpressionToProof)
 			throws ExceptionZZZ {
 		// TODO Auto-generated method stub
 		return false;
@@ -278,7 +278,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	 * @see basic.zKernel.IKernelZFormulaIniZZZ#compute(java.lang.String)
 	 */
 	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
@@ -293,14 +293,14 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 	}
 	
 	@Override
-	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(!this.isParseRelevant(sLineWithExpression)) break main;
 						
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
 			}else {
 				sDelimiter = sDelimiterIn;
 			}
@@ -311,7 +311,7 @@ public class KernelZFormulaIni_PathZZZ<T>  extends AbstractKernelUseObjectZZZ<T>
 			String sValue = null;
 			ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
 			for(String sExpression : saExpression) {
-				sValue = this.compute(sExpression);
+				sValue = this.parse(sExpression);
 				listasValue.add(sValue);
 			}
 			saReturn = listasValue.toStringArray();

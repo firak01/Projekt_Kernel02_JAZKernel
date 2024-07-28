@@ -9,7 +9,7 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IniFile;
+import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelFileIniUserZZZ;
@@ -113,7 +113,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					//ZUERST: Löse ggfs. übergebene Variablen auf.
 					ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
 					while(objVariable.isExpression(sExpression)){
-						sExpression = objVariable.compute(sExpression);			
+						sExpression = objVariable.parse(sExpression);			
 					} //end while
 						
 									
@@ -190,19 +190,19 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	//#########################################	
 	
 	@Override
-	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
 		String[] saReturn = null; //new String[];//sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
 			}else {
 				sDelimiter = sDelimiterIn;
 			}
 				   
-			String sExpressionTotal = this.compute(sLineWithExpression); //Hole erst einmal den Kernel-Tag-Wert.
+			String sExpressionTotal = this.parse(sLineWithExpression); //Hole erst einmal den Kernel-Tag-Wert.
 			if(!StringZZZ.isEmpty(sExpressionTotal)) {
 				String[] saExpression = StringZZZ.explode(sExpressionTotal, sDelimiter); //Dann löse Ihn als Mehrfachwert auf.
 				
@@ -212,7 +212,7 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 					
 					//Nur für den etwas komplizierteren Fall einer Verschachtelung ...
 					if(this.isExpression(sExpression)){
-						sValue = this.compute(sExpression);
+						sValue = this.parse(sExpression);
 					}else {
 						sValue = sExpression;
 					}
@@ -263,6 +263,6 @@ public abstract class AbstractKernelIniSolverZZZ<T>  extends AbstractKernelIniTa
 	 * @see basic.zKernel.IKernelZFormulaIniZZZ#isStringForComputeRelevant(java.lang.String)
 	 */
 	@Override
-	public abstract boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;
+	public abstract boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ;
 
 }//End class

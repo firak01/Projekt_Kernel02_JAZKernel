@@ -13,15 +13,16 @@ import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IniFile;
+import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
+import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import basic.zKernel.file.ini.IIniTagSimpleZZZ;
 
 public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
 	private static final long serialVersionUID = -6413574962232912980L;
 	private HashMapMultiIndexedZZZ<String,Boolean>hmSectionsSearched = new HashMapMultiIndexedZZZ<String,Boolean>();
-	private String sSection = null;
-	private String sProperty = null;
+	private IIniStructurePositionZZZ objIniPosition = null;
 	private String sSystemNumber = null;
 	private VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();	
 	private VectorExtendedDifferenceZZZ<String> vecValueAsExpression = new VectorExtendedDifferenceZZZ<String>();
@@ -68,18 +69,38 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	
 	private String sKey = null;
 	
+	private boolean bArrayValue = false; //Falls eine ArrayList gesetzt wurde.
 	private boolean bExploded = false; //Falls es das Ergebnis einer Zerlegung eines Arrays ist
 	private int iIndex = 0;            //dito
 		
 	private boolean bSkipCache = false;
 	
 	//#### Konstruktor ##########################
-	public KernelConfigSectionEntryZZZ() {
+	public KernelConfigSectionEntryZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
+	public KernelConfigSectionEntryZZZ(IIniTagSimpleZZZ objTag) throws ExceptionZZZ{
+		super();
+		KernelConfigSectionEntryNew_(objTag);
+	}
+	
+	private boolean KernelConfigSectionEntryNew_(IIniTagSimpleZZZ objTag) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			//Kopiere die Werte aus objTag hierher
+			if(objTag==null) break main;
+			
+			this.setValue(objTag.getValue());
+			this.setValue(objTag.getValueArrayList());
+					
+			bReturn = true;
+		}//end main:
+		return bReturn;
+	}
+	
 	//############################
-	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiterIn) throws CloneNotSupportedException {
+	public static IKernelConfigSectionEntryZZZ[] explode(IKernelConfigSectionEntryZZZ objEntry, String sDelimiterIn) throws CloneNotSupportedException, ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ[] objaReturn = null;
 		main:{
 			if(objEntry==null) break main;
@@ -89,7 +110,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 			}else {
 				String sDelimiter;
 				if(StringZZZ.isEmpty(sDelimiterIn)) {
-					sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR;
+					sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR;
 				}else {
 					sDelimiter = sDelimiterIn;
 				}
@@ -112,7 +133,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 	
 	
-	public static IKernelConfigSectionEntryZZZ[] explodeJsonArray(IKernelConfigSectionEntryZZZ objEntry) throws CloneNotSupportedException {
+	public static IKernelConfigSectionEntryZZZ[] explodeJsonArray(IKernelConfigSectionEntryZZZ objEntry) throws CloneNotSupportedException, ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ[] objaReturn = {};//Mit diesem Trick wird ein leeres Array initialisiert, statt null;
 		main:{
 			if(objEntry==null) break main;
@@ -151,7 +172,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		return objaReturn;
 	}
 	
-	public static IKernelConfigSectionEntryZZZ[] explodeJsonMap(IKernelConfigSectionEntryZZZ objEntry) throws CloneNotSupportedException {
+	public static IKernelConfigSectionEntryZZZ[] explodeJsonMap(IKernelConfigSectionEntryZZZ objEntry) throws CloneNotSupportedException, ExceptionZZZ {
 		IKernelConfigSectionEntryZZZ[] objaReturn = {};//Mit diesem Trick wird ein leeres Array initialisiert, statt null;
 		main:{
 			if(objEntry==null) break main;
@@ -200,48 +221,10 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		this.hmSectionsSearched = hmSectionsSearched;
 	}
 	
-	@Override
-	public String getSection() {
-		return this.sSection;
-	}
-
-	@Override
-	public void setSection(String sSection) throws ExceptionZZZ {
-		//TODOGOON: in dem Entry-Object eine HashMap Unique Pflegen... hm(Section,bSectionExists)
-		//          Das soll beim Debuggen helfen.
-		
-		
-		//if(sSection!=null){
-			this.sSection=sSection;
-			
-			//!!! wg. folgender Codezeile bedenken, dass erst der Section-Name gesetzt werden muss
-			//    und dann erst der bSectionExists Wert. Sonst wird dieser naemlich wieder ueberschrieben.
-			this.sectionExists(false);//es ist noch nicht bewiesen, dass es diese Section ueberhaupt gibt!!!
-			
-		//}else{
-		//	this.sectionExists(false);
-		//}
-	}
 	
-	@Override
-	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ{
-		if(sSection!=null) {
-			this.setSection(sSection); //Beachte die Reihenfolge... erst Section setzen, dann ggfs. den true Wert
-			this.sectionExists(bExists);
-			this.getSectionsSearchedHashMap().putAsLast(sSection, bExists);
-		}
-	}
-
-	@Override
-	public String getProperty() {
-		return this.sProperty;		
-	}
-
-	@Override
-	public void setProperty(String sProperty) {
-		this.sProperty=sProperty;
-	}
 	
+	
+	//###########################################
 	@Override
 	public String getSystemNumber() {
 		return this.sSystemNumber;
@@ -444,6 +427,7 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	}
 
 	//###############################################
+	//### aus IValueArrayUserZZZ
 	@Override 
 	public VectorExtendedDifferenceZZZ<ArrayList<String>> getValueArrayListVector(){
 		return this.vecalValue;
@@ -469,13 +453,24 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	@Override
 	public void setValue(ArrayList<String> alValue) {
 		this.getValueArrayListVector().add(alValue);
+		this.isArrayValue(true);
+	}
+	
+	@Override
+	public boolean isArrayValue() {
+		return this.bArrayValue;
+	}
+	
+	@Override 
+	public void isArrayValue(boolean bIsArrayValue) {
+		this.bArrayValue = bIsArrayValue;
 	}
 
 	//##############################################
 	
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar.
 	//Wurde einmal true gesetzt, dann bleibt das auch so. Damit wird bei der nächsten Suche nach einer Section der Wert nicht verändet, auch wenn die neue Section nicht existiert!!!
-	private void hasAnySectionExists(boolean bAnySectionExists) {
+	public void hasAnySectionExists(boolean bAnySectionExists) {
 		if(!this.bAnySectionExists) this.bAnySectionExists=bAnySectionExists;
 	}
 		
@@ -630,6 +625,8 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	    }
 
 
+	
+	 
 	@Override
 	public boolean isExploded() {
 		return this.bExploded;
@@ -812,4 +809,50 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
 		this.objCrypt = objCrypt;
 	}
+
+	//### aus IIniStructurePositionUserZZZ
+	@Override
+	public IIniStructurePositionZZZ getIniStructurePosition() throws ExceptionZZZ {
+		return this.objIniPosition;
+	}
+
+	@Override
+	public void setIniStructurePostion(IIniStructurePositionZZZ objIniStructurePosition) throws ExceptionZZZ {
+		this.objIniPosition = objIniStructurePosition;
+	}
+	
+	//### aus IIniStructurePositionUserZZZ
+		@Override
+		public String getSection() throws ExceptionZZZ {
+			return this.getIniStructurePosition().getSection();
+		}
+
+		@Override
+		//WICHTIG: Darin wird wieder SectionExists auf false gesetzt... ALSO unbedingt VOR dem setzten von sectionExists(true) verwenden!!!
+		public void setSection(String sSection) throws ExceptionZZZ {
+				this.getIniStructurePosition().setSection(sSection);
+				
+				//!!! wg. folgender Codezeile bedenken, dass erst der Section-Name gesetzt werden muss
+				//    und dann erst der bSectionExists Wert. Sonst wird dieser naemlich wieder ueberschrieben.
+				this.sectionExists(false);//es ist noch nicht bewiesen, dass es diese Section ueberhaupt gibt!!!
+		}
+		
+		@Override
+		public void setSection(String sSection, boolean bExists) throws ExceptionZZZ{
+			if(sSection!=null) {
+				this.setSection(sSection); //Beachte die Reihenfolge... erst Section setzen, dann ggfs. den true Wert
+				this.sectionExists(bExists);
+				this.getSectionsSearchedHashMap().putAsLast(sSection, bExists);
+			}
+		}
+
+		@Override
+		public String getProperty() throws ExceptionZZZ{
+			return this.getIniStructurePosition().getProperty();		
+		}
+
+		@Override
+		public void setProperty(String sProperty) throws ExceptionZZZ{
+			this.getIniStructurePosition().setProperty(sProperty);
+		}
 }

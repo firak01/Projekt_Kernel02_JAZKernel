@@ -1,11 +1,10 @@
 package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IComputableZZZ;
+import basic.zBasic.util.xml.tagsimple.IParseEnabledZZZ;
 
-public interface IComputableExpressionZZZ extends IComputableZZZ{
+public interface IExpressionCascadedUserZZZ extends IExpressionUserZZZ{
+		
 	public String computeAsExpression() throws ExceptionZZZ;
 	public String computeAsExpression(String sExpression) throws ExceptionZZZ;
-	
-	public boolean isExpression(String sExpression) throws ExceptionZZZ;
 }

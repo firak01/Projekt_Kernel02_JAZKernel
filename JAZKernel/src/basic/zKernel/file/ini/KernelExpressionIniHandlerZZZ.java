@@ -491,7 +491,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#getExpressionTagName()
 		 */
 		@Override
-		public String getExpressionTagName() {
+		public String getName() {
 			return KernelExpressionIniHandlerZZZ.sTAG_NAME;
 		}
 		
@@ -670,7 +670,7 @@ public class KernelExpressionIniHandlerZZZ<T>  extends AbstractKernelIniSolverZZ
 		 * @see basic.zKernel.file.ini.AbstractKernelIniSolverZZZ#isStringForComputeRelevant(java.lang.String)
 		 */
 		@Override
-		public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+		public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
 			return true;
 		}
 }

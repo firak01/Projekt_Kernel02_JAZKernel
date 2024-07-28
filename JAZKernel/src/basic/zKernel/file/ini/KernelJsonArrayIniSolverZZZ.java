@@ -84,7 +84,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	 * @throws ExceptionZZZ
 	 * @author Fritz Lindhauer, 17.07.2021, 09:06:10
 	 */
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{			
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -124,7 +124,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 				//Sollte das nicht für mehrerer Werte in einen Vector gepackt werden und dann immer weiter mit vec.get(1) ausgerechnet werden?
 				while(objMathSolver.isExpression(sReturn)){
-					String sValueMath = objMathSolver.compute(sReturn);
+					String sValueMath = objMathSolver.parse(sReturn);
 					sReturn=sValueMath;				
 				}	
 				//sReturn = VectorZZZ.implode(vecAll);
@@ -165,7 +165,7 @@ public class KernelJsonArrayIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {			
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	

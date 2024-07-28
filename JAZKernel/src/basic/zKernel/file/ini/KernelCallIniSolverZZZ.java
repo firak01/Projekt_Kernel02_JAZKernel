@@ -104,7 +104,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return this.hmVariable;
 	}
 	
-	public String compute(String sLineWithExpression) throws ExceptionZZZ {
+	public String parse(String sLineWithExpression) throws ExceptionZZZ {
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -137,7 +137,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 			
 			//Dann erzeuge neues KernelJavaCallSolverZZZ - Objekt.				
 			KernelJavaCallIniSolverZZZ objJavaCallSolver = new KernelJavaCallIniSolverZZZ(objKernel, saFlagZpassed); 
-			sReturn=objJavaCallSolver.compute(sLineWithExpression);		
+			sReturn=objJavaCallSolver.parse(sLineWithExpression);		
 										
 		}
 		return sReturn;
@@ -333,7 +333,7 @@ public class KernelCallIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {			
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	

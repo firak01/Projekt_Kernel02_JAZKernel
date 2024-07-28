@@ -3,17 +3,18 @@ package basic.zKernel.file.ini;
 import java.io.File;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ.FLAGZ;
 
 public interface IKernelFileIniZZZ extends IKernelUserZZZ{		
 	//Verwendete Konstanten stammen aus IniFile
-	public static final String sINI_COMMENT = IniFile.sINI_COMMENT;
-	public static final String sINI_SUBJECT_START = IniFile.sINI_SUBJECT_START;
-	public static final String sINI_SUBJECT_END = IniFile.sINI_SUBJECT_END;
-	public static final String sINI_PROPERTY_SEPERATOR= IniFile.sINI_PROPERTY_SEPERATOR;
-	public static final String sINI_MULTIVALUE_SEPARATOR= IniFile.sINI_MULTIVALUE_SEPARATOR;
+	public static final String sINI_COMMENT = IIniStructureConstantZZZ.sINI_COMMENT;
+	public static final String sINI_SUBJECT_START = IIniStructureConstantZZZ.sINI_SUBJECT_START;
+	public static final String sINI_SUBJECT_END = IIniStructureConstantZZZ.sINI_SUBJECT_END;
+	public static final String sINI_PROPERTY_SEPERATOR= IIniStructureConstantZZZ.sINI_PROPERTY_SEPERATOR;
+	public static final String sINI_MULTIVALUE_SEPARATOR= IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR;
 	
 	//Weitere Konstanten sind Kernelspezifisch
 	public static final String sINI_SUBJECT_SEPARATOR_SYSTEMNUMBER = "!";

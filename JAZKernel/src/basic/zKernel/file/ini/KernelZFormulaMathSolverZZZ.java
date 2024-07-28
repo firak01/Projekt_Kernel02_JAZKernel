@@ -9,7 +9,8 @@ import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 	private static final long serialVersionUID = -6400035649490240580L;
-
+	public static String sTAG_NAME = "Z:math";
+	
 	public KernelZFormulaMathSolverZZZ() throws ExceptionZZZ{
 		super();
 	}
@@ -53,7 +54,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 				//Nun den z:operator Tag suchen
 				ZTagFormulaMath_OperatorZZZ objOperator = new ZTagFormulaMath_OperatorZZZ();
 				if(objOperator.isExpression(sExpression)){
-					 sExpression = objOperator.compute(sExpression);					
+					 sExpression = objOperator.parse(sExpression);					
 				}else{
 					//Da gibt es wohl nix weiter auszurechen....	also die Werte als String nebeneinander setzen....
 					//Nun die z:value-of Einträge suchen, Diese werden jeweils zu eine String.
@@ -61,7 +62,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 					
 					String sExpressionOld = sExpression; 
 					while(objValue.isExpression(sExpression)){
-						sExpression = objValue.compute(sExpression);
+						sExpression = objValue.parse(sExpression);
 //						String sDebug = (String) vecValue.get(1);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //						System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
@@ -89,8 +90,9 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 	}
 	
 	//###### Getter / Setter
-	public String getExpressionTagName(){
-		return "Z:math";
+	@Override
+	public String getNameDefault() throws ExceptionZZZ {
+		return KernelZFormulaMathSolverZZZ.sTAG_NAME;
 	}
 
 	//### Andere Interfaces
@@ -100,7 +102,7 @@ public class KernelZFormulaMathSolverZZZ  extends AbstractKernelIniSolverZZZ {
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
 		return false;
 	}
 

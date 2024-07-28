@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.IValueArrayUserZZZ;
 import basic.zBasic.IValueComputedBufferedUserZZZ;
+import basic.zBasic.IValueUserZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedZZZ;
 import basic.zBasic.util.crypt.code.ICryptUserZZZ;
+import basic.zBasic.util.file.ini.IIniStructurePositionUserZZZ;
+import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 
 /** Ein Objekt dieser Klasse enthält die Werte aus einer konfigurierten ini-Datei.
@@ -24,15 +27,10 @@ import basic.zKernel.cache.ICachableObjectZZZ;
  * @author Fritz Lindhauer, 17.07.2019, 09:27:00
  * 
  */
-public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUserZZZ, ICachableObjectZZZ, ICryptUserZZZ, Cloneable{
-	public String getSection();
-	public void setSection(String sSection) throws ExceptionZZZ; //WICHTIG: Darin wird wieder SectionExists auf false gesetzt... ALSO unbedingt VOR dem setzten von sectionExists(true) verwenden!!!
+public interface IKernelConfigSectionEntryZZZ extends IValueComputedBufferedUserZZZ, IValueUserZZZ, IValueArrayUserZZZ, ICachableObjectZZZ, ICryptUserZZZ, IIniStructurePositionZZZ, IIniStructurePositionUserZZZ, Cloneable{		
 	public void setSection(String sSection, boolean bExists) throws ExceptionZZZ; //Wenn die Section gesetzt wird, wird zuerst der Wert bSectionExists auf false gesetzt. Darum ist die Reihenfolge erst Section-Name, dann Section-Wert wichtig. Diese Methode beruecksichtigt dies. 
 	public HashMapMultiIndexedZZZ<String,Boolean> getSectionsSearchedHashMap();
 	public void setSectionsSearchedHashMap(HashMapMultiIndexedZZZ<String,Boolean> hmSectionsSearched); //wenn für jeden Suchschritt ein neues EntrySection-Objekt geholt wird, geht ohne das neue Setzen der bisherigen Suche, der Suchpfad verloren. Darum ist das Setzen wichtig.
-	
-	public String getProperty();
-	public void setProperty(String sProperty);
 	
 	public String getSystemNumber();
 	public void setSystemNumber(String sSystemNumber);

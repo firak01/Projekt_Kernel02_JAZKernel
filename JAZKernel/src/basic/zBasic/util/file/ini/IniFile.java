@@ -52,6 +52,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ExtendedVectorZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.UtfEasyZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 
@@ -69,15 +70,8 @@ import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 */
 
 
-public class IniFile extends Object
+public class IniFile extends Object implements IIniStructureConstantZZZ
 {
-	public static final String sINI_COMMENT = ";";
-	public static final String sINI_SUBJECT_START = "[";
-	public static final String sINI_SUBJECT_END = "]";
-	public static final String sINI_PROPERTY_SEPERATOR="=";
-	public static final String sINI_MULTIVALUE_SEPARATOR="|";
-	
-
 	/*
 	Java does not handle BOM properly. In fact Java handles a BOM like every other char.
 	Found this:
@@ -271,7 +265,7 @@ public class IniFile extends Object
          currentLine = (String)lines.elementAt(i); 
          if (isaSubject(currentLine)) //if line is a subject, set currentSubject
          {
-        	int iIndexOfEnd = currentLine.indexOf(IniFile.sINI_SUBJECT_END);//FGL 2019-12-18: Damit kann man Kommentare (hinter einem Semikolon) hinzufügen und Leerzeichen sind auch egal
+        	int iIndexOfEnd = currentLine.indexOf(IIniStructureConstantZZZ.sINI_SUBJECT_END);//FGL 2019-12-18: Damit kann man Kommentare (hinter einem Semikolon) hinzufügen und Leerzeichen sind auch egal
             currentSubject = currentLine.substring(1,iIndexOfEnd);
             
             //FGL 2008-02-19: !!! Ohne nachstehende Erweiterung werden leere Sections nicht als Section erfasst !!! Sections wurden sonst nur erstellt, wenn sie auch Inhalt hatten !!!
@@ -408,12 +402,12 @@ protected boolean addSection(String sSection){
    */
    protected boolean isaSubject(String line)
    {
-	   if(line.startsWith(IniFile.sINI_SUBJECT_START)) {
+	   if(line.startsWith(IIniStructureConstantZZZ.sINI_SUBJECT_START)) {
 		   //FGL: 20191218: Versehentlich war ein Semikolon hinter dem Subject gelandet. Es wurde daraufhin nicht erkannt.
 		   //               Idee: Kommentare und Leerzeichen hinter dem Subject erlauben.
-		   String sLineNormed = StringZZZ.left(line+IniFile.sINI_COMMENT, IniFile.sINI_COMMENT);
+		   String sLineNormed = StringZZZ.left(line+IIniStructureConstantZZZ.sINI_COMMENT, IIniStructureConstantZZZ.sINI_COMMENT);
 		   sLineNormed = sLineNormed.trim();
-		   return (sLineNormed.startsWith(IniFile.sINI_SUBJECT_START) && sLineNormed.endsWith(IniFile.sINI_SUBJECT_END));
+		   return (sLineNormed.startsWith(IIniStructureConstantZZZ.sINI_SUBJECT_START) && sLineNormed.endsWith(IIniStructureConstantZZZ.sINI_SUBJECT_END));
 	   }else {
 		   return false;
 	   }
@@ -476,7 +470,7 @@ protected boolean addSection(String sSection){
       for (int i=start;i<end;i++)
       {
 		  // toLowerCase() was inserted because of treading variables case-independent. See history for details.
-		  if (((String)lines.elementAt(i)).toLowerCase().startsWith(variable.toLowerCase()+IniFile.sINI_PROPERTY_SEPERATOR))
+		  if (((String)lines.elementAt(i)).toLowerCase().startsWith(variable.toLowerCase()+IIniStructureConstantZZZ.sINI_PROPERTY_SEPERATOR))
             return i;
       }
       return -1;
@@ -499,15 +493,15 @@ protected boolean addSection(String sSection){
    protected int findSubjectLine(String subject)
    {
       String line;
-      String formattedSubject = IniFile.sINI_SUBJECT_START+subject+IniFile.sINI_SUBJECT_END;
+      String formattedSubject = IIniStructureConstantZZZ.sINI_SUBJECT_START+subject+IIniStructureConstantZZZ.sINI_SUBJECT_END;
       for (int i=0;i<lines.size();i++)
       {
          line = (String)lines.elementAt(i);
          //FGL: 20211128: Seitdem es moeglich ist Kommentare hinter das Subject zu schreiben ist das ueberholt if (formattedSubject.equalsIgnoreCase(line))  return i;         
-  	   if(line.startsWith(IniFile.sINI_SUBJECT_START)) {
+  	   if(line.startsWith(IIniStructureConstantZZZ.sINI_SUBJECT_START)) {
 		   //FGL: 20191218: Versehentlich war ein Semikolon hinter dem Subject gelandet. Es wurde daraufhin nicht erkannt.
 		   //               Idee: Kommentare und Leerzeichen hinter dem Subject erlauben.
-		   String sLineNormed = StringZZZ.left(line+IniFile.sINI_COMMENT, IniFile.sINI_COMMENT);
+		   String sLineNormed = StringZZZ.left(line+IIniStructureConstantZZZ.sINI_COMMENT, IIniStructureConstantZZZ.sINI_COMMENT);
 		   sLineNormed = sLineNormed.trim();
 		   
 		   if (formattedSubject.equals(sLineNormed)) return i;	        
@@ -545,7 +539,7 @@ protected boolean addSection(String sSection){
    */
    protected boolean isanAssignment(String line)
    {
-      if ((line.indexOf("=")!=-1) && (!line.startsWith(IniFile.sINI_COMMENT) && ((!line.startsWith(IniFile.sINI_SUBJECT_START)))))
+      if ((line.indexOf("=")!=-1) && (!line.startsWith(IIniStructureConstantZZZ.sINI_COMMENT) && ((!line.startsWith(IIniStructureConstantZZZ.sINI_SUBJECT_START)))))
          return true;
       else
          return false;
@@ -649,8 +643,7 @@ protected boolean addSection(String sSection){
 	         sReturn = (String)(valVector.elementAt(valueIndex));
 	         if(StringZZZ.isEmpty(sReturn)) {
 	        	//FGL 20191218: Wenn der Wert Konfiguriert wurde, aber ein Leerstring enthalten soll, dann kann man ihn nur mit diesem "Formelausdruck" erkennen.
-		    	sReturn = KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty();
-	         }	    	 
+		    	sReturn = XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME);        }	    	 
 	      }
 	   }//end main:
       return sReturn;
@@ -675,7 +668,7 @@ public String[] getValueAsArray(String subject, String variable, String sSeparat
 	   main:{
 		   String sSeparator;
 		   if(StringZZZ.isEmpty(sSeparatorIn)) {
-			   sSeparator = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+			   sSeparator = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
 		   }else {
 			   sSeparator = sSeparatorIn;
 		   }

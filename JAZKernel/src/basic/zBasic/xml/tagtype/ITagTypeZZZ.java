@@ -1,7 +1,7 @@
 package basic.zBasic.xml.tagtype;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.xml.tagsimple.ITagBasicsZZZ;
+import basic.zBasic.util.xml.tagsimple.ITagBasicZZZ;
 
 //Merke: Der ITagType ist keine Erweiterung von ITagBasics 
 public interface ITagTypeZZZ{	

@@ -94,7 +94,7 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		main:{
 			if(objExpression==null) break main;
 			
-			sReturn = objExpression.compute(sLineWithExpression);
+			sReturn = objExpression.parse(sLineWithExpression);
 		}
 		return sReturn;
 	}
@@ -103,13 +103,13 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		main:{
 			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
 			IKernelZFormulaIniZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();
-			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
+			if(objExpression.isParseRelevant(sLineWithExpression)){				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
 				break main;
 			}
 			
 			objExpression = new ZTagFormulaIni_NullZZZ();
-			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
+			if(objExpression.isParseRelevant(sLineWithExpression)){				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsString(objExpression, sLineWithExpression);
 				break main;
 			}
@@ -124,14 +124,14 @@ public class KernelZFormulaIniConverterZZZ<T> extends AbstractKernelUseObjectZZZ
 		main:{
 			//Erstelle nun alle möglichen KernelExpressionIni-Klassen und prüfe, ob sie mit dem Ausdruck etwas anfangen können.			
 			IKernelZFormulaIniZZZ objExpression = new KernelZFormulaIni_EmptyZZZ();
-			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){	
+			if(objExpression.isParseRelevant(sLineWithExpression)){	
 				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
 				break main;
 			}
 			
 			objExpression = new ZTagFormulaIni_NullZZZ();
-			if(objExpression.isStringForComputeRelevant(sLineWithExpression)){				
+			if(objExpression.isParseRelevant(sLineWithExpression)){				
 				sReturn = KernelZFormulaIniConverterZZZ.getAsExpression(objExpression, sLineWithExpression);
 				break main;
 			}

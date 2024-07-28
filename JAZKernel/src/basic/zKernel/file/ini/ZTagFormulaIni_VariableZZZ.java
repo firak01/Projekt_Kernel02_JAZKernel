@@ -198,53 +198,6 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagCascadedZZZ<T>
 
 	
 	
-	@Override
-	public Vector<String> computeAsExpressionFirstVector(String sExpression) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Vector<String> computeAsExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getElementString() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String compute() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String computeAsExpression() throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String computeAsExpression(String sExpression) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isExpression(String sExpression) throws ExceptionZZZ {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	
 	//### Aus Interface IKernelExpressionIniZZZ

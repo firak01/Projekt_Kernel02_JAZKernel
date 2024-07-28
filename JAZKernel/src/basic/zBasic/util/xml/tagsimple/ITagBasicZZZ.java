@@ -3,9 +3,9 @@ package basic.zBasic.util.xml.tagsimple;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IValueUserZZZ;
 
-public interface ITagBasicsZZZ extends IValueUserZZZ {	
+public interface ITagBasicZZZ extends IValueUserZZZ {	
 	public abstract String getNameDefault() throws ExceptionZZZ;
-	public abstract String getName() throws ExceptionZZZ;	
+	public abstract String getName() throws ExceptionZZZ;	//Unterscheidet sich ggfs. in verschiedenen Klassen. Z.B. wg Vewendung TagByTypeZZZ
 	public abstract void setName(String sTagName) throws ExceptionZZZ;
 	
 	//Berechne wie ein einfaches Tag (also ohne Attribute) aussieht, fuer diesen Namen

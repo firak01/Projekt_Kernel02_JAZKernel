@@ -127,7 +127,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				//ZUERST: Löse ggfs. übergebene Variablen auf.
 				ZTagFormulaIni_VariableZZZ objVariable = new ZTagFormulaIni_VariableZZZ(this.getHashMapVariable());
 				while(objVariable.isExpression(sExpression)){
-					sExpression = objVariable.compute(sExpression);			
+					sExpression = objVariable.parse(sExpression);			
 				} //end while
 					
 								
@@ -135,7 +135,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				KernelZFormulaIni_PathZZZ objIniPath = new KernelZFormulaIni_PathZZZ(this.getKernelObject(), this.getFileConfigKernelIni());
 				String sExpressionOld = sExpression;
 				while(KernelZFormulaIni_PathZZZ.isExpression(sExpression)){
-						sExpression = objIniPath.compute(sExpression);//in computeAsExpression wäre Z-Tags
+						sExpression = objIniPath.parse(sExpression);//in computeAsExpression wäre Z-Tags
 						if(sExpressionOld.equals(sExpression)) break;//Sonst Endlosschleife
 						sExpressionOld = sExpression;
 				} //end while
@@ -305,7 +305,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 		return (String) this.getHashMapVariable().get(sKey);
 	}
 	
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -333,7 +333,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 				//2. Ist in dem String math?	Danach den Math-Teil herausholen und in einen neuen vec packen.
 				String sExpressionWithTagsOld = sExpressionWithTags;
 				while(objMathSolver.isExpression(sExpressionWithTags)){
-					String sValueMath = objMathSolver.compute(sExpressionWithTags);
+					String sValueMath = objMathSolver.parse(sExpressionWithTags);
 					sExpressionWithTags=sValueMath;				
 					
 					if(sExpressionWithTagsOld.equals(sExpressionWithTags)) break; //Sicherheitsmassnahme gegen Endlosschleife
@@ -402,7 +402,7 @@ public class KernelZFormulaIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T>
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
 		return false;
 	}
 }//End class

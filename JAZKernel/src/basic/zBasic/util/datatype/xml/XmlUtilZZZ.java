@@ -94,7 +94,30 @@ public class XmlUtilZZZ {
 		}
 	}
 	
+	//################################
+	public static boolean containsTag(String sExpression, String sTagName) {
+		return XmlUtilZZZ.containsTag(sExpression, sTagName, true);
+	}
+
+		
+	public static boolean containsTag(String sExpression, String sTagName, boolean bExactMatch) {
+		boolean bReturn = false;
+		main:{
+			String sMatchTagStarting = XmlUtilZZZ.computeTagPartStarting(sTagName);
+			String sMatchTagClosing = XmlUtilZZZ.computeTagPartClosing(sTagName); 
+			bReturn=StringZZZ.containsAsTag(sExpression, sMatchTagStarting, sMatchTagClosing, bExactMatch);
+			if(bReturn) break main;
+			
+			String sMatchTagEmpty = XmlUtilZZZ.computeTagEmpty(sTagName);
+			bReturn=StringZZZ.containsAsTag(sExpression, sMatchTagEmpty, "", bExactMatch);
+			if(bReturn) break main;
+			
+		}//end main
+		return bReturn;
+	}
 	
+	
+	//################################
 	public static boolean isTagEmpty(String sTag) {
 		boolean bReturn = false;
 		main:{			

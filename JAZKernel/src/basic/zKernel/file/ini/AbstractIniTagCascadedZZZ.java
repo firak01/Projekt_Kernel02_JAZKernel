@@ -2,7 +2,7 @@ package basic.zKernel.file.ini;
 
 import java.util.Vector;
 
-import basic.zBasic.AbstractObjectWithFormulaZZZ;
+import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
@@ -12,7 +12,7 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
-public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagComputableZZZ<T> {
+public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> {
 	private static final long serialVersionUID = 3041123191138631240L;
 
 	public AbstractIniTagCascadedZZZ() throws ExceptionZZZ {
@@ -48,7 +48,7 @@ public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagComputa
 		
 	//### Aus Interface IKernelExpressionIniZZZ		
 	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;

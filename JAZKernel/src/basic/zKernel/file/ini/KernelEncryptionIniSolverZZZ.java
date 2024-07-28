@@ -75,7 +75,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 					//Nun den z:cipher Tag suchen				
 					KernelEncryption_CipherZZZ objCipher = new KernelEncryption_CipherZZZ();
 					if(objCipher.isExpression(sExpression)){					
-						String sCipher = objCipher.compute(sExpression);	
+						String sCipher = objCipher.parse(sExpression);	
 						 
 						 //START: TODOGOON: WAS BRINGT NUN DIE ENUMERATION? +++++++++++++++++++
 						 EnumSet<?> objEnumSet = CryptEnumSetFactoryZZZ.getInstance().getEnumSet(sCipher);
@@ -105,7 +105,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 												
 						 KernelEncryption_KeyNumberZZZ objKeyNumber = new KernelEncryption_KeyNumberZZZ();
 						 if(objKeyNumber.isExpression(sExpression)){					
-							String sKeyNumber = objKeyNumber.compute(sExpression);
+							String sKeyNumber = objKeyNumber.parse(sExpression);
 							if(!StringZZZ.isEmptyTrimmed(sKeyNumber)) {
 								if(StringZZZ.isNumeric(sKeyNumber)) {
 									int iKeyNumber = StringZZZ.toInteger(sKeyNumber);
@@ -116,7 +116,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						 
 						 ZTagEncryption_KeyStringZZZ objKeyString = new ZTagEncryption_KeyStringZZZ();
 						 if(objKeyString.isExpression(sExpression)){					
-							String sKeyString = objKeyString.compute(sExpression);
+							String sKeyString = objKeyString.parse(sExpression);
 							if(!StringZZZ.isEmptyTrimmed(sKeyString)) {
 									objAlgorithm.setCryptKey(sKeyString);											
 							}													
@@ -125,7 +125,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						 					
 						 KernelEncryption_CharacterPoolZZZ objCharacterPool = new KernelEncryption_CharacterPoolZZZ();
 						 if(objCharacterPool.isExpression(sExpression)){					
-						 	String sCharacterPool = objCharacterPool.compute(sExpression);
+						 	String sCharacterPool = objCharacterPool.parse(sExpression);
 							if(!StringZZZ.isEmpty(sCharacterPool)) {//Merke: Leerzeichen wäre erlaubt								
 								objAlgorithm.setCharacterPoolBase(sCharacterPool);
 							}																											
@@ -133,7 +133,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						 
 						 KernelEncryption_CharacterPoolAdditionalZZZ objCharacterPoolAdditional = new KernelEncryption_CharacterPoolAdditionalZZZ();
 						 if(objCharacterPoolAdditional.isExpression(sExpression)){					
-						 	String sCharacterPoolAdditional = objCharacterPoolAdditional.compute(sExpression);
+						 	String sCharacterPoolAdditional = objCharacterPoolAdditional.parse(sExpression);
 							if(!StringZZZ.isEmpty(sCharacterPoolAdditional)) {							
 								objAlgorithm.setCharacterPoolAdditional(sCharacterPoolAdditional);
 							}																											
@@ -143,7 +143,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						 String sFlagControl="";
 						 Kernel_FlagControlZZZ objFlagControl = new Kernel_FlagControlZZZ();
 						 if(objFlagControl.isExpression(sExpression)){					
-							String[] saControl = objFlagControl.computeAsArray(sExpression,",");						
+							String[] saControl = objFlagControl.parseAsArray(sExpression,",");						
 							boolean[] baFound = objAlgorithm.setFlag(saControl, true);
 							if(!ArrayUtilZZZ.isNull(baFound)) {
 								int iCounter = -1;
@@ -159,7 +159,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						 KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
 						 if(objValue.isExpression(sExpression)){
 							this.getEntry().setValueEncrypted(sExpression);	//Zwischenstand festhalten
-							sCode = objValue.compute(sExpression);
+							sCode = objValue.parse(sExpression);
 //							String sDebug = (String) vecValue.get(1);
 //							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Value01=" + sDebug);
 //							System.out.println(ReflectCodeZZZ.getMethodCurrentName() + ": Gesamt-Reststring soweit=" + sExpression);
@@ -178,7 +178,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						KernelEncryption_CodeZZZ objValue = new KernelEncryption_CodeZZZ();
 						if(objValue.isExpression(sExpression)){						
 							this.getEntry().setValueEncrypted(sExpression);//Zwischenstand festhalten
-							sCode = objValue.compute(sExpression);
+							sCode = objValue.parse(sExpression);
 						}						
 						this.getEntry().setValueDecrypted(sCode);//Zwischenstand festhalten
 						sValue = sCode;						
@@ -237,12 +237,12 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 		
 	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{			
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
-				sReturn = super.compute(sLineWithExpression);
+				sReturn = super.parse(sLineWithExpression);
 			}else {
 				sReturn = sLineWithExpression;
 			}									
@@ -251,12 +251,12 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 		
 	@Override
-	public String[] computeAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
+	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
 			boolean bUseEncryption = this.getFlag(IKernelEncryptionIniSolverZZZ.FLAGZ.USEENCRYPTION);
 			if(bUseEncryption) {
-				saReturn = super.computeAsArray(sLineWithExpression, sDelimiter);
+				saReturn = super.parseAsArray(sLineWithExpression, sDelimiter);
 			}else {
 				saReturn = StringZZZ.explode(sLineWithExpression, sDelimiter);
 			}		
@@ -287,7 +287,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
 		return false;
 	}
 

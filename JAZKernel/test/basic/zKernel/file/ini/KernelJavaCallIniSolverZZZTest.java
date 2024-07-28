@@ -84,13 +84,13 @@ public class KernelJavaCallIniSolverZZZTest  extends TestCase {
 				
 				
 				//### Nun die Gesamtberechnung durchführen
-				String sValue = objExpressionJavaCallSolver.compute(sLineWithExpression);
+				String sValue = objExpressionJavaCallSolver.parse(sLineWithExpression);
 				assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 			
 				//Anwenden der ersten Formel		
 				objExpressionJavaCallSolver.setFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL, true); //Damit der Wert sofort ausgerechnet wird
 				objExpressionJavaCallSolver.setFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA, true); //Damit der Wert sofort ausgerechnet wird			
-				sValue = objExpressionJavaCallSolver.compute(sLineWithExpression);			
+				sValue = objExpressionJavaCallSolver.parse(sLineWithExpression);			
 				assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe: '" + sValue + "'\n");
 				

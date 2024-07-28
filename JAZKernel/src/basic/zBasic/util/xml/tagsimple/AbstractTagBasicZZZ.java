@@ -7,45 +7,34 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 
-public abstract class AbstractTagBasicsZZZ<T> extends AbstractObjectWithValueZZZ<T> implements ITagBasicsZZZ{			
+public abstract class AbstractTagBasicZZZ<T> extends AbstractObjectWithValueZZZ<T> implements ITagBasicZZZ{			
 	private static final long serialVersionUID = -3411751655174978836L;
 	
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
 	protected String sTagName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
 	
-	public AbstractTagBasicsZZZ() throws ExceptionZZZ{
+	public AbstractTagBasicZZZ() throws ExceptionZZZ{
 		super();
 	}
 	
+	public AbstractTagBasicZZZ(String sName, String sValue) throws ExceptionZZZ{
+		super(sValue);
+		AbstractTagBasicNew_(sName);
+	}
+	
+	private void AbstractTagBasicNew_(String sName) throws ExceptionZZZ{
+		main:{
+			if(StringZZZ.isEmpty(sName)){
+				ExceptionZZZ ez = new ExceptionZZZ("TagName", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+
+			this.setName(sName);			
+		}//End main
+	}
 			
 	//######## Getter / Setter ##################
-	@Override	
-	public String getValue(){
-		return this.sValue;
-	}
 
-	@Override
-	public void setValue(String sValue){
-		this.sValue = sValue;
-	}
-	
-	
-	
-	@Override 
-	public String getElementString() throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			String sValue = this.getValue();
-			if(sValue==null) {
-				sReturn = this.getEmpty();
-				break main;
-			}
-			
-			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
-		}
-		return sReturn;
-	}
-	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ Details aus ITagBasicsZZZ +++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -54,8 +43,17 @@ public abstract class AbstractTagBasicsZZZ<T> extends AbstractObjectWithValueZZZ
 	//Merke: Der Name wird auf unterschiedliche Arten geholt. Z.B. aus dem TagTypeZZZ, darum diese Methode dann ueberschreiben.
 	@Override
 	public String getName() throws ExceptionZZZ{
-		return this.sTagName;
+		if(this.sTagName==null) {
+			return this.getNameDefault();
+		}else {
+			return this.sTagName;
+		}
 	}	
+	
+	//Merke: Der Default-Tagname wird in einer Konstanten in der konkreten Klasse verwaltet.
+	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface	
+	@Override
+	public abstract String getNameDefault() throws ExceptionZZZ; 	
 	
 	@Override
 	public void setName(String sTagName) throws ExceptionZZZ{
@@ -100,4 +98,19 @@ public abstract class AbstractTagBasicsZZZ<T> extends AbstractObjectWithValueZZZ
 	public String getEmpty() throws ExceptionZZZ{
 		return this.getTagEmpty();
 	}	
+	
+	@Override 
+	public String getElementString() throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sValue = this.getValue();
+			if(sValue==null) {
+				sReturn = this.getEmpty();
+				break main;
+			}
+			
+			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
+		}
+		return sReturn;
+	}
 }

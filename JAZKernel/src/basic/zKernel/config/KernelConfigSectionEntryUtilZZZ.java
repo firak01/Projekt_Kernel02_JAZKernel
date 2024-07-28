@@ -7,6 +7,7 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.HashMapCaseInsensitiveZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.crypt.code.ICryptZZZ;
@@ -16,6 +17,7 @@ import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
+import basic.zBasic.util.file.ini.IniFile;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
@@ -133,7 +135,7 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 				bAnyFormula = true;
 									
 				KernelZFormulaIniSolverZZZ ex = new KernelZFormulaIniSolverZZZ(objFileIni, hmVariable, saFlagZpassed);
-				String stemp = ex.compute(sRaw);
+				String stemp = ex.parse(sRaw);
 				if(!StringZZZ.equals(stemp,sRaw)){
 					System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Value durch ExpressionIniSolver verändert von '" + sRaw + "' nach '" + stemp +"'");
 				}else {
@@ -478,15 +480,9 @@ public class KernelConfigSectionEntryUtilZZZ implements IConstantZZZ{
 			//Merke: z:null und z:empty sind nicht Tagspezifische Ausdrücke, gelten als Conversion
 			
 			//Merke: Contains reicht nicht. Die Positionen sind auch wichtig.
-//			boolean btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagStarting(sExpressionTagName),false);
-//			if(btemp==false) break main;
-//		
-//			btemp = StringZZZ.contains(sLine, AbstractIniTagSimpleZZZ.computeExpressionTagClosing(sExpressionTagName),false);
-//			if(btemp==false) break main;
-			
-			boolean bAsTagFound = StringZZZ.containsAsTag(sLine, XmlUtilZZZ.computeTagPartStarting(sExpressionTagName), XmlUtilZZZ.computeTagPartClosing(sExpressionTagName), false);
+			boolean bAsTagFound = XmlUtilZZZ.containsTag(sLine, sExpressionTagName, false);
 			if(!bAsTagFound) break main;
-		
+
 			bReturn = true;
 		}//end main
 		return bReturn;

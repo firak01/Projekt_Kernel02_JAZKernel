@@ -1,6 +1,9 @@
 package basic.zKernel.file.ini;
 
+import java.util.Vector;
+
 import basic.zBasic.ExceptionZZZ;
+import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
 public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = -8540131780423723580L;
@@ -30,5 +33,11 @@ public class Kernel_FlagControlZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	@Override
 	public String getNameDefault() throws ExceptionZZZ{
 		return Kernel_FlagControlZZZ.sTAG_NAME;
-	}				
+	}
+
+
+	
+
+
+	
 }//End class

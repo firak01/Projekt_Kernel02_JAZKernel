@@ -87,7 +87,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 		return KernelJsonIniSolverZZZ.sTAG_NAME;
 	}
 	
-	public String compute(String sLineWithExpression) throws ExceptionZZZ {
+	public String parse(String sLineWithExpression) throws ExceptionZZZ {
 		String sReturn = new String("");
 		main:{
 			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
@@ -169,7 +169,7 @@ public class KernelJsonIniSolverZZZ<T> extends AbstractKernelIniSolverZZZ<T> imp
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {			
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {			
 		return false;
 	}
 	

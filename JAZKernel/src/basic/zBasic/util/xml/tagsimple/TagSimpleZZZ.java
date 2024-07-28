@@ -2,7 +2,7 @@ package basic.zBasic.util.xml.tagsimple;
 
 import basic.zBasic.ExceptionZZZ;
 
-public class TagSimpleZZZ extends AbstractTagSimpleZZZ{
+public class TagSimpleZZZ<T> extends AbstractTagBasicZZZ<T> implements ITagSimpleZZZ{
 	private static final long serialVersionUID = 4140817328884049290L;
 
 	public TagSimpleZZZ() throws ExceptionZZZ {

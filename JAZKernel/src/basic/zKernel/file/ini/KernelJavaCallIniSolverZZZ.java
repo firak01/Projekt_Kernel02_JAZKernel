@@ -84,7 +84,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 					//Nun den z:class Tag suchen				
 					KernelJavaCall_ClassZZZ objJavaCallClass = new KernelJavaCall_ClassZZZ();
 					if(objJavaCallClass.isExpression(sExpression)){					
-						sJavaCallClass = objJavaCallClass.compute(sExpression);	
+						sJavaCallClass = objJavaCallClass.parse(sExpression);	
 						if(StringZZZ.isEmpty(sJavaCallClass)) break main;
 						
 						this.getEntry().setCallingClassname(sJavaCallClass);
@@ -106,7 +106,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 					//Nun den z:method Tag suchen
 					KernelJavaCall_MethodZZZ objJavaCallMethod = new KernelJavaCall_MethodZZZ();
 					if(objJavaCallMethod.isExpression(sExpression)){					
-						sJavaCallMethod = objJavaCallMethod.compute(sExpression);	
+						sJavaCallMethod = objJavaCallMethod.parse(sExpression);	
 						if(StringZZZ.isEmpty(sJavaCallMethod)) break main;
 						
 						this.getEntry().setCallingMethodname(sJavaCallMethod);
@@ -149,26 +149,26 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	}
 		
 	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{	
 			
 			if(!this.getFlag(IKernelCallIniSolverZZZ.FLAGZ.USECALL)) break main;
 			if(!this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA)) break main;
 			
-			sReturn = super.compute(sLineWithExpression);
+			sReturn = super.parse(sLineWithExpression);
 			
 		}//end main:
 		return sReturn;
 	}
 		
 	@Override
-	public String[] computeAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
+	public String[] parseAsArray(String sLineWithExpression, String sDelimiter) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{			
 			boolean bUse = this.getFlag(IKernelJavaCallIniSolverZZZ.FLAGZ.USECALL_JAVA);
 			if(bUse) {
-				saReturn = super.computeAsArray(sLineWithExpression, sDelimiter);
+				saReturn = super.parseAsArray(sLineWithExpression, sDelimiter);
 			}else {
 				saReturn = StringZZZ.explode(sLineWithExpression, sDelimiter);
 			}		
@@ -199,7 +199,7 @@ public class KernelJavaCallIniSolverZZZ  extends AbstractKernelIniSolverZZZ  imp
 	}
 
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {		
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {		
 		return false;
 	}
 

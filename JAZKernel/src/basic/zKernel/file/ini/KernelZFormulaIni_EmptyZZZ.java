@@ -5,8 +5,9 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
+import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IniFile;
+import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.IFlagZUserZZZ;
@@ -154,89 +155,67 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 //		}
 //		return vecReturn;
 //	}
+		
 	
-	
-//	public static boolean isExpression(String sLine){
-//		boolean bReturn = false;
-//		main:{
-//			boolean btemp = StringZZZ.contains(sLine, KernelZFormulaIni_EmptyZZZ.getExpressionTagStarting(), false);
-//			if(btemp==false) break main;
-//		
-//			btemp = StringZZZ.contains(sLine, KernelZFormulaIni_EmptyZZZ.getExpressionTagClosing(), false);
-//			if(btemp==false) break main;
-//			
-//			bReturn = true;
-//		}//end main
-//		return bReturn;
-//	}
-	
-	
-	//###### Getter / Setter
-	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface
-//	public static String getExpressionTagName(){
-//		return KernelZFormulaIni_EmptyZZZ.sTAG_NAME;
-//	}
-//	public static String getExpressionTagStarting(){
-//		return "<" + KernelZFormulaIni_EmptyZZZ.getExpressionTagName() + ">";
-//	}
-//	public static String getExpressionTagClosing(){
-//		return "</" + KernelZFormulaIni_EmptyZZZ.getExpressionTagName() + ">"; 
-//	}	
-//	public static String getExpressionTagEmpty(){
-//		return "<" + KernelZFormulaIni_EmptyZZZ.getExpressionTagName() + "/>";
-//	}
-	
-//	public void setFileIni(FileIniZZZ objFileIni){
-//		this.objFileIni = objFileIni;
-//	}
-//	public FileIniZZZ getFileIni(){
-//		return this.objFileIni;
-//	}
-
-	
-	//### Aus Interface IKernelExpressionIniZZZ
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
 		if(StringZZZ.isEmptyTrimmed(sStringToProof)) bReturn = true;
 		return bReturn;
 	}
-	
+
+	//### Aus Interface IKernelExpressionIniZZZ
+	/**
+	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+	 * ist der Ausdruck NACH der ersten Expression.
+	 * 
+	 * @param sLineWithExpression
+	 * @throws ExceptionZZZ
+	 */
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
-		boolean bReturn=false;
+	public Vector<String>computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();		
 		main:{
-		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		if(this.getTagEmpty().equalsIgnoreCase(sExpressionToProof)){
-			bReturn = true;
-			break main;
+			//Bei dem einfachen Tag wird die naechste Tag genommen und dann auch das naechste schliessende Tag...
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagEmpty(), false, false);
 		}
-	}//end main
-		return bReturn;
+		return vecReturn;
 	}
 	
 	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
 			
-			//Hier einfach das Leerzeichen zurückgeben
-			sReturn = "";
+			//... also bei Empty Tag genauso verfahren wie bei anderen Tags???
+			//Das halte ich fuer nicht korrekt, mal debuggen. Falls das klappt diese Methode hier löschen
+			//und nur Elternklassenmethode nutzen
 			
+			//Bei einfachen Tags den Ersten Vektor holen
+			Vector<String> vecAll = this.computeExpressionFirstVector(sLineWithExpression);
+			
+			//Bei einfachen Tags, den Wert zurückgeben
+			sReturn = (String) vecAll.get(1);
+			this.setValue(sReturn);
+			
+			//implode NUR bei CASCADED Tags, NEIN: Es koennen ja einfache String vor- bzw. nachstehend sein.
+			String sExpressionImploded = VectorZZZ.implode(vecAll);
+			sReturn = sExpressionImploded;  //Merke: Der eigentliche Wert des Tags unterscheidet sich also vom Gesamt-compute
 		}//end main:
 		return sReturn;
-	}
+	}	
 	
 	@Override
-	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(!this.isParseRelevant(sLineWithExpression)) break main;
 						
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
 			}else {
 				sDelimiter = sDelimiterIn;
 			}
@@ -245,9 +224,9 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 			
 			//Hier einfach das Leerzeichen zurückgeben
 			String sValue = null;
-			ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
+			ArrayListExtendedZZZ<String> listasValue = new ArrayListExtendedZZZ<String>();
 			for(String sExpression : saExpression) {
-				sValue = this.compute(sExpression);
+				sValue = this.parse(sExpression);
 				listasValue.add(sValue);
 			}
 			saReturn = listasValue.toStringArray();
@@ -260,7 +239,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(!this.isParseRelevant(sLineWithExpression)) break main;
 			
 			//Hier einfach eine leere Expression zurückgeben
 			sReturn = "<Z/>";

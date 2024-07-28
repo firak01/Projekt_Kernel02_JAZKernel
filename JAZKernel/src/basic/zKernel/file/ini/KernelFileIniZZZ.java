@@ -55,7 +55,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 
 @author 0823 ,date 05.10.2004
 */
-public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
+public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implements IKernelFileIniZZZ, IListenerObjectFlagZsetZZZ, IKernelExpressionIniConverterUserZZZ, ICachableObjectZZZ{
 //20170123: Diese Flags nun per Reflection aus der Enumeration FLAGZ holen und in eine FlagHashmap (s. ObjectZZZ) verwenden.
 //	private boolean bFlagFileUnsaved;
 //	private boolean bFlagFileNew; // don�t create a file in the constructor
@@ -66,6 +66,7 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 //	private boolean bFlagDebug;
 //	private boolean bFlagInit;
 		
+	private static final long serialVersionUID = -7112079956493555008L;
 	private IniFile objFileIni;
 	private File objFile;
 	private HashMapCaseInsensitiveZZZ<String,String> hmVariable;
@@ -1390,15 +1391,15 @@ public class KernelFileIniZZZ extends AbstractKernelUseObjectZZZ implements IKer
 		
 
 	//### Interface aus IKernelExpressionIniSolver
-		public IKernelConfigSectionEntryZZZ getEntry() {
-			if(this.objEntry==null) {
-				this.objEntry = new KernelConfigSectionEntryZZZ();			
-			}
-			return this.objEntry;
+	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ {
+		if(this.objEntry==null) {
+			this.objEntry = new KernelConfigSectionEntryZZZ<T>();			
 		}
-		public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
-			this.objEntry = objEntry;
-		}
+		return this.objEntry;
+	}
+	public void setEntry(IKernelConfigSectionEntryZZZ objEntry) {
+		this.objEntry = objEntry;
+	}
 	
 	//######## AUS Interface IKernelFileZZZ
 	/** 

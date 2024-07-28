@@ -1,5 +1,7 @@
 package basic.zBasic;
 
+import basic.zBasic.util.datatype.string.StringZZZ;
+
 public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T> implements IValueUserZZZ{
 	private static final long serialVersionUID = -2430016737090603862L;
 
@@ -7,14 +9,30 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 	protected boolean bAnyValue = false;
 	protected boolean bNullValue = false;
 	
-	public AbstractObjectWithValueZZZ() {	
+	public AbstractObjectWithValueZZZ() throws ExceptionZZZ{	
 		super();
+	}
+	
+	public AbstractObjectWithValueZZZ(String sValue) throws ExceptionZZZ {	
+		super();
+		AbstractObjectWithValueNew_(sValue);
+	}
+	
+	private void AbstractObjectWithValueNew_(String sValue) throws ExceptionZZZ{
+		main:{
+			if(sValue==null){
+				ExceptionZZZ ez = new ExceptionZZZ("Element-Value", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}					
+			
+			this.setValue(sValue);			
+		}//End main
 	}
 	
 	
 	//### Aus IValueUserZZZ
 	@Override
-	public String getValue() {
+	public String getValue() throws ExceptionZZZ {
 		if(this.hasNullValue()){
 			return null;		
 		}else if (!this.hasAnyValue()){
@@ -25,7 +43,7 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 	}
 
 	@Override
-	public void setValue(String sValue) {
+	public void setValue(String sValue) throws ExceptionZZZ {
 		
 		this.hasAnyValue(true);
 		this.sValue=sValue;	
@@ -43,7 +61,7 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 	
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar
 	//daher protected. Was nicht im Intface definierbar ist.
-	protected void hasAnyValue(boolean bAnyValue) {
+	public void hasAnyValue(boolean bAnyValue) {
 		this.bAnyValue=bAnyValue;
 	}
 	
@@ -53,7 +71,7 @@ public abstract class AbstractObjectWithValueZZZ<T> extends AbstractObjectZZZ<T>
 	}
 	//Wird beim Setzen des Werts automatisch mit gesetzt. Also nicht "von aussen" setzbar, 
 	//daher protected. Was nicht im Intface definierbar ist.
-	protected void hasNullValue(boolean bNullValue) {
+	public void hasNullValue(boolean bNullValue) {
 		this.bNullValue=bNullValue;
 	}
 	//####################################################

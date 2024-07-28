@@ -1,57 +1,33 @@
-package basic.zKernel.file.ini;
+package basic.zBasic.util.xml.tagexpression;
 
-import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
-import basic.zBasic.AbstractObjectWithValueZZZ;
+import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.util.xml.tagsimple.ITagBasicsZZZ;
 import basic.zKernel.file.ini.AbstractIniTagSimpleZZZ;
 
-public abstract class AbstractIniTagBasicsZZZ<T> extends AbstractObjectWithValueZZZ<T> implements ITagBasicsZZZ{			
-	private static final long serialVersionUID = -3411751655174978836L;
-	
+public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjectWithExpressionZZZ<T> implements ITagWithExpressionZZZ{
+	private static final long serialVersionUID = -367756957686201953L;
+
 	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
 	protected String sTagName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
-	
-	public AbstractIniTagBasicsZZZ() throws ExceptionZZZ{
+		
+	public AbstractTagWithExpressionBasicZZZ() throws ExceptionZZZ {
 		super();
-	}
+	}  
 	
-			
-	//######## Getter / Setter ##################
-	@Override	
-	public String getValue(){
-		return this.sValue;
-	}
+	public AbstractTagWithExpressionBasicZZZ(String sFlagControl) throws ExceptionZZZ {
+		super(sFlagControl);
+	} 
+	
+	public AbstractTagWithExpressionBasicZZZ(String[] saFlagControl) throws ExceptionZZZ {
+		super(saFlagControl);
+	} 
 
-	@Override
-	public void setValue(String sValue){
-		this.sValue = sValue;
-	}
-	
-	
-	
-	@Override 
-	public String getElementString() throws ExceptionZZZ{
-		String sReturn = null;
-		main:{
-			String sValue = this.getValue();
-			if(sValue==null) {
-				sReturn = this.getEmpty();
-				break main;
-			}
-			
-			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
-		}
-		return sReturn;
-	}
-	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ Details aus ITagBasicsZZZ +++++++++++++++++++++++++++++++++++++++++
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
 	//#### Aus Interfacace
 	//Merke: Der Name wird auf unterschiedliche Arten geholt. Z.B. aus dem TagTypeZZZ, darum diese Methode dann ueberschreiben.
 	@Override
@@ -111,4 +87,19 @@ public abstract class AbstractIniTagBasicsZZZ<T> extends AbstractObjectWithValue
 	public String getEmpty() throws ExceptionZZZ{
 		return this.getTagEmpty();
 	}	
+	
+	@Override 
+	public String getElementString() throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			String sValue = this.getValue();
+			if(sValue==null) {
+				sReturn = this.getEmpty();
+				break main;
+			}
+			
+			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
+		}
+		return sReturn;
+	}
 }

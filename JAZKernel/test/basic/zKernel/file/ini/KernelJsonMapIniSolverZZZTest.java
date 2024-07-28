@@ -76,7 +76,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			
 			
 			//### Nun die Gesamtberechnung durchführen
-			String sValue = objExpressionSolver.compute(sLineWithExpression);
+			String sValue = objExpressionSolver.parse(sLineWithExpression);
 			assertEquals("Ohne Auflösung soll Ausgabe gleich Eingabe sein",sLineWithExpression, sValue);
 		
 			//Anwenden der ersten Formel
@@ -84,7 +84,7 @@ public class KernelJsonMapIniSolverZZZTest extends TestCase {
 			//           Der eigentliche Wert wird aber durch .computeHashMap() zurückgegeben.			
 			objExpressionSolver.setFlag("usejson", true); //Damit der Wert sofort ausgerechnet wird
 			objExpressionSolver.setFlag("usejson_map", true); //Damit der Wert sofort ausgerechnet wird
-			sValue = objExpressionSolver.compute(sLineWithExpression);			
+			sValue = objExpressionSolver.parse(sLineWithExpression);			
 			assertFalse("Mit Auflösung soll Ausgabe anders als Eingabe sein.",sLineWithExpression.equals(sValue));
 			System.out.println(ReflectCodeZZZ.getPositionCurrent() + "\tDebugausagabe\n" + sValue);
 			

@@ -198,12 +198,12 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			String sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula1").getValue();
 			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
 			
-			String sValue = objFormulaSolver.compute(sExpression);
+			String sValue = objFormulaSolver.parse(sExpression);
 			assertEquals("Der dynamische Wert ist '<Z>[Section A]Testentry1</Z>'. FGL rulez.", sExpression);
 				
 			//+++++++++++++++++++++++++++++++++++++++
 			objFormulaSolver.setFlag("useformula",true);
-			sValue = objFormulaSolver.compute(sExpression);
+			sValue = objFormulaSolver.parse(sExpression);
 			assertEquals("Der dynamische Wert ist 'Testvalue1 to be found'. FGL rulez.", sValue);
 							
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird
@@ -221,7 +221,7 @@ public class KernelZFormulaIniSolverZZZTest extends TestCase {
 			*/
 			objFileIniTest.setFlag("useformula", false);//Ansonsten wird der Wert sofort ausgerechnet
 			sExpression = objFileIniTest.getPropertyValue("Section for testCompute", "Formula2").getValue();
-			sValue = objFormulaSolver.compute(sExpression);
+			sValue = objFormulaSolver.parse(sExpression);
 			assertEquals("Der dynamische Wert2 ist 'Testvalue local to be found'. FGL rulez.", sValue);
 			
 			objFileIniTest.setFlag("useformula", true); //Damit der Wert sofort ausgerechnet wird

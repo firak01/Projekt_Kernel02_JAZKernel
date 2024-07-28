@@ -154,7 +154,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 
 	//### Aus Interface IKernelExpressionIniZZZ	
 		@Override
-		public String compute(String sLineWithExpression) throws ExceptionZZZ{
+		public String parse(String sLineWithExpression) throws ExceptionZZZ{
 			String sReturn = null;
 			main:{
 				if(StringZZZ.isEmptyTrimmed(sLineWithExpression)) break main;
@@ -163,13 +163,13 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 				//links vom Operator
 				ZTagFormulaMath_ValueZZZ objValue01 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue01.isExpression(sLineWithExpression)){
-					sLineWithExpression = objValue01.compute(sLineWithExpression);						
+					sLineWithExpression = objValue01.parse(sLineWithExpression);						
 				}	
 				
 				//rechts vom Operator
 				ZTagFormulaMath_ValueZZZ objValue02 = new ZTagFormulaMath_ValueZZZ();
 				if(objValue02.isExpression(sLineWithExpression)){
-					sLineWithExpression = objValue02.compute(sLineWithExpression);						
+					sLineWithExpression = objValue02.parse(sLineWithExpression);						
 				}	
 				
 				Vector vecAll = this.computeExpressionAllVector(sLineWithExpression);

@@ -3,21 +3,21 @@ package basic.zKernel.file.ini;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectWithFormulaZZZ;
+import basic.zBasic.IObjectWithExpressionZZZ;
 import basic.zBasic.IValueComputedBufferedUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryUserZZZ;
 import basic.zKernel.IKernelConfigSectionEntryZZZ;
 
-public interface IValueSolverZTagIniZZZ extends IObjectWithFormulaZZZ{
+public interface IValueSolverZTagIniZZZ extends IObjectWithExpressionZZZ{
 	//Merke: Erst ab Java 8 können static Ausdrücke in ein interface: 
 	//getExpressionTagName()
 	//getExpressionTagStarting()
 	//getExpressionTagClosing()
 	//getExpressionTagEmpty()
 	
-	public String compute(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..." !!! OHNE <z:.. voran.
+	public String parse(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..." !!! OHNE <z:.. voran.
 	public IKernelConfigSectionEntryZZZ computeAsEntry(String sLineWithExpression) throws ExceptionZZZ;
-	public String[] computeAsArray(String sLineWithExpression, String sSeparator) throws ExceptionZZZ;
+	public String[] parseAsArray(String sLineWithExpression, String sSeparator) throws ExceptionZZZ;
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ; //Mache aus einem String mit <z: ... den errechneten Ausdruck "..." !!! MIT <z:... voran. Dann kann das Ergebnis weiterverarbeit werden.	
 	//boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ;//z.B. als Ausdrück für KernelExpressionIni_EmptyZZZ wäre relevant: <z:Empty/>, d.h. true zurück.
    																				//wird verwendet in der KernelExpressionIniConverterZZZ - Klasse.

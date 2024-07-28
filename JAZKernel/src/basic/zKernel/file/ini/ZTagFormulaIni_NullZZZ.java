@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
-import basic.zBasic.util.file.ini.IniFile;
+import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -176,7 +176,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 	}
 	
 	@Override
-	public boolean isStringForComputeRelevant(String sExpressionToProof) throws ExceptionZZZ {
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
 		main:{
 		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
@@ -189,10 +189,10 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 	}
 	
 	@Override
-	public String compute(String sLineWithExpression) throws ExceptionZZZ{
+	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(!this.isParseRelevant(sLineWithExpression)) break main;
 			
 			//Hier einfach NULL zurückgeben
 			return null;
@@ -202,14 +202,14 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 	}
 	
 	@Override
-	public String[] computeAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
+	public String[] parseAsArray(String sLineWithExpression, String sDelimiterIn) throws ExceptionZZZ{
 		String[] saReturn = null;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(!this.isParseRelevant(sLineWithExpression)) break main;
 						
 			String sDelimiter;
 			if(StringZZZ.isEmpty(sDelimiterIn)) {
-				sDelimiter = IniFile.sINI_MULTIVALUE_SEPARATOR; 
+				sDelimiter = IIniStructureConstantZZZ.sINI_MULTIVALUE_SEPARATOR; 
 			}else {
 				sDelimiter = sDelimiterIn;
 			}
@@ -220,7 +220,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 			String sValue = null;
 			ArrayListExtendedZZZ listasValue = new ArrayListExtendedZZZ();
 			for(String sExpression : saExpression) {
-				sValue = this.compute(sExpression);
+				sValue = this.parse(sExpression);
 				listasValue.add(sValue);
 			}
 			saReturn = listasValue.toStringArray();
@@ -233,7 +233,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 	public String computeAsExpression(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
 		main:{
-			if(!this.isStringForComputeRelevant(sLineWithExpression)) break main;
+			if(!this.isParseRelevant(sLineWithExpression)) break main;
 			
 			//Hier einfach eine leere Expression zurückgeben
 			sReturn = "<Z/>";
@@ -248,8 +248,8 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 		main:{
 			if(!this.isStringForConvertRelevant(sLineWithoutExpression)) break main;
 			
-			//Hier einfach den Leeren-Tag zurückgeben
-			sReturn = ZTagFormulaIni_NullZZZ.getExpressionTagEmpty();
+			//Hier einfach den Leeren-Tag zurückgeben			
+			sReturn = this.getTagEmpty();
 						
 		}//end main
 		return sReturn;

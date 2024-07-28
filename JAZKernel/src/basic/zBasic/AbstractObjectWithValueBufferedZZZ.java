@@ -7,8 +7,12 @@ public abstract class AbstractObjectWithValueBufferedZZZ<T> extends AbstractObje
 	
 	protected VectorExtendedDifferenceZZZ<String> vecValue = new VectorExtendedDifferenceZZZ<String>();
 	
-	public AbstractObjectWithValueBufferedZZZ() {	
+	public AbstractObjectWithValueBufferedZZZ() throws ExceptionZZZ{	
 		super();
+	}
+	
+	public AbstractObjectWithValueBufferedZZZ(String sValue) throws ExceptionZZZ{	
+		super(sValue);
 	}
 	
 	//### Aus IValueBufferedUserZZZ
