@@ -180,7 +180,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 		boolean bReturn=false;
 		main:{
 		if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
-		if(ZTagFormulaIni_NullZZZ.getExpressionTagEmpty().equalsIgnoreCase(sExpressionToProof)){
+		if(this.getTagEmpty().equalsIgnoreCase(sExpressionToProof)){
 			bReturn = true;
 			break main;
 		}

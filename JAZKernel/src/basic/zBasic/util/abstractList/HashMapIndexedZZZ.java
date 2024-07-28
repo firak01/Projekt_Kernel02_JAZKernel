@@ -17,7 +17,8 @@ import basic.zBasic.ReflectCodeZZZ;
  */
 
 //Merke: Wenn man hier <Integr,V> schreibt, defniert man sich sein eigenes Integer und nutzt nicht mehr die Java-Integer Klasse....
-public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterable<V>,Serializable{	
+public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ<Object> implements Iterable<V>,Serializable{	
+	private static final long serialVersionUID = 8726987571013127695L;
 	private HashMap<Integer,V> hmIndexed=null;
 	private VectorExtendedZZZ<Integer> vecIndex=null;	
 	private int iIndexCurrent4Vector=-1;  //Der Index des gerade verarbeiteten Keys im Vektor
@@ -325,7 +326,7 @@ public class HashMapIndexedZZZ<K,V>  extends AbstractObjectZZZ implements Iterab
 		this.iIndexCurrent4Vector = -1;
 	}
 	
-	/** HashMap, die Im Kontruktor übergebene HashMap, unver�ndert.
+	/** HashMap, die Im Kontruktor übergebene HashMap, unveraendert.
 	 * Merke: Es macht keine Sinn zu versuchen eine irgendwie sortierte Hashtable zurückzugeben,
 	 * 			da HashMap immer beliebig sortiert ist.
 	 * @return
