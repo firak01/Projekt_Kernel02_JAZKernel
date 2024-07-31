@@ -17,6 +17,7 @@ import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
+import basic.zKernel.file.ini.IIniTagBasicZZZ;
 import basic.zKernel.file.ini.IIniTagSimpleZZZ;
 
 public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
@@ -80,16 +81,18 @@ public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBuffe
 		super();
 	}
 	
-	public KernelConfigSectionEntryZZZ(IIniTagSimpleZZZ objTag) throws ExceptionZZZ{
+	public KernelConfigSectionEntryZZZ(IIniTagBasicZZZ objTag) throws ExceptionZZZ{
 		super();
 		KernelConfigSectionEntryNew_(objTag);
 	}
 	
-	private boolean KernelConfigSectionEntryNew_(IIniTagSimpleZZZ objTag) throws ExceptionZZZ{
+	private boolean KernelConfigSectionEntryNew_(IIniTagBasicZZZ objTag) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			//Kopiere die Werte aus objTag hierher
 			if(objTag==null) break main;
+			
+			this.setIniStructurePostion(objTag.getIniStructurePosition()); //Section, Property
 			
 			this.setValue(objTag.getValue());
 			this.setValue(objTag.getValueArrayList());

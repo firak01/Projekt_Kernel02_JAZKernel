@@ -7,6 +7,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
@@ -80,81 +81,81 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		return true;
 	 }//end function KernelExpressionMathSolverNew_
 			
-//	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String> vecReturn = new Vector<String>();
-//		main:{
-//			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
-//			
-//			//Nun die Section suchen
-//			Vector<String> vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
-//								
-//			String sSection = (String) vecSection.get(1);
-//			String sProperty = (String) vecSection.get(2);
-//			String sBefore = "";
-//			String sRest = "";
-//						
-//			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
-//
-//					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
-//					String sMathValueTag = ZTagFormulaMath_ValueZZZ.computeExpressionTagClosing(ZTagFormulaMath_ValueZZZ.sTAG_NAME);
-//					if(StringZZZ.contains(sProperty, sMathValueTag)){
-//						sBefore = (String) vecSection.get(0);
-//						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
-//						sProperty = StringZZZ.left(sProperty, sMathValueTag);												
-//					}
-//										
-//					FileIniZZZ objFileIni = this.getFileIni();
-//					if(objFileIni==null){
-//						ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
-//						throw ez;
-//					}
-//					
-//					//20080109 FGL: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
-//					String sSystemNr = this.getKernelObject().getSystemNumber();
-//					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
-//					
-//					//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
-//					if(sValue!=null){
-//						
-//						//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
-//						if(!StringZZZ.isEmpty(sBefore)){
-//							if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
-//							vecReturn.add(0, sBefore);
-//						}else{
-//							vecReturn.add(0,"");
-//						}
-//																
-//						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
-//						vecReturn.add(1, sValue);
-//						
-//						if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
-//						if(!StringZZZ.isEmpty(sRest)){							
-//							vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
-//						}else{
-//							vecReturn.add(2,"");
-//						}		
-//				}//end if sValue!=null
-//									
-//			}//end if isempty(sSection)
-//			
-//		}//end main:
-//		return vecReturn;
-//	}
+	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();
+		main:{
+			if(StringZZZ.isEmpty(sLineWithExpression)) break main;
+			
+			//Nun die Section suchen
+			Vector<String> vecSection = this.computeExpressionFirstVector(sLineWithExpression);	
+								
+			String sSection = (String) vecSection.get(1);
+			String sProperty = (String) vecSection.get(2);
+			String sBefore = "";
+			String sRest = "";
+						
+			if(!(StringZZZ.isEmpty(sSection) || StringZZZ.isEmpty(sProperty))){
+
+					//Falls noch ein Value-Tag im Rest ist, diesen daraus rechnen!!!
+					String sMathValueTag = XmlUtilZZZ.computeTagPartClosing(this.getName());
+					if(StringZZZ.contains(sProperty, sMathValueTag)){
+						sBefore = (String) vecSection.get(0);
+						sRest = sMathValueTag + StringZZZ.rightback(sProperty, sMathValueTag);
+						sProperty = StringZZZ.left(sProperty, sMathValueTag);												
+					}
+										
+					FileIniZZZ objFileIni = this.getFileIni();
+					if(objFileIni==null){
+						ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+						throw ez;
+					}
+					
+					//20080109 FGL: Falls es eine Section gibt, so muss die Auflösung der Section über eine Suche über die Systemnummer erfolgen
+					String sSystemNr = this.getKernelObject().getSystemNumber();
+					String sValue =  objFileIni.getPropertyValueSystemNrSearched(sSection, sProperty, sSystemNr).getValue();
+					
+					//Den Wert ersetzen, aber nur, wenn es auch etwas zu ersetzen gibt.
+					if(sValue!=null){
+						
+						//Dann hat man auch den Fall, dass dies Bestandteil einer Formel ist. Also den Wert vorher und den Rest in den Vektor packen
+						if(!StringZZZ.isEmpty(sBefore)){
+							if(vecReturn.size()>=1) vecReturn.removeElementAt(0);
+							vecReturn.add(0, sBefore);
+						}else{
+							vecReturn.add(0,"");
+						}
+																
+						if(vecReturn.size()>=2) vecReturn.removeElementAt(1);
+						vecReturn.add(1, sValue);
+						
+						if(vecReturn.size()>=3) vecReturn.removeElementAt(2); //Immer den Namen der Property löschen....
+						if(!StringZZZ.isEmpty(sRest)){							
+							vecReturn.add(2, sRest); //Falls vorhanden einen Restwert eintragen.
+						}else{
+							vecReturn.add(2,"");
+						}		
+				}//end if sValue!=null
+									
+			}//end if isempty(sSection)
+			
+		}//end main:
+		return vecReturn;
+	}
 	
-//	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-//	* @param sLineWithExpression
-//	* @return
-//	* 
-//	* lindhaueradmin; 06.03.2007 11:20:34
-//	 * @throws ExceptionZZZ 
-//	 */
-//	public Vector<String> computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-//		Vector<String> vecReturn = new Vector<String>();		
-//		main:{
-//			vecReturn = StringZZZ.vecMid(sLineWithExpression, KernelZFormulaIni_EmptyZZZ.getExpressionTagStarting(), KernelZFormulaIni_EmptyZZZ.getExpressionTagClosing(), false,false);
-//		}
-//		return vecReturn;
-//	}
+	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+	* @param sLineWithExpression
+	* @return
+	* 
+	* lindhaueradmin; 06.03.2007 11:20:34
+	 * @throws ExceptionZZZ 
+	 */
+	public Vector<String> computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String> vecReturn = new Vector<String>();		
+		main:{
+			vecReturn = StringZZZ.vecMid(sLineWithExpression, KernelZFormulaIni_EmptyZZZ.getExpressionTagStarting(), KernelZFormulaIni_EmptyZZZ.getExpressionTagClosing(), false,false);
+		}
+		return vecReturn;
+	}
 		
 	
 	@Override
@@ -248,6 +249,9 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		return sReturn;
 	}
 	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.IKernelZFormulaIniZZZ#convert(java.lang.String)
+	 */
 	@Override
 	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithoutExpression;

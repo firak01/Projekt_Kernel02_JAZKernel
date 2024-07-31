@@ -55,9 +55,6 @@ public abstract class AbstractTagParseEnabledZZZ<T> extends AbstractObjectWithVa
 	return bReturn;
 	}
 	
-	
-	
-	
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ {
 		String sReturn = null;
