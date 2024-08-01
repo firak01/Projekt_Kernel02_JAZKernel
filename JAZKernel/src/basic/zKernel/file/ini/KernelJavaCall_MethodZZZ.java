@@ -1,19 +1,9 @@
 package basic.zKernel.file.ini;
 
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractList.VectorZZZ;
-import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
-import basic.zKernel.IKernelZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.KernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
-import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelJavaCall_MethodZZZ  extends AbstractIniTagSimpleZZZ{
+public class KernelJavaCall_MethodZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
+	private static final long serialVersionUID = 8437140852114172576L;
 	public static String sTAG_NAME = "Z:Method";
 	
 	public KernelJavaCall_MethodZZZ() throws ExceptionZZZ{
@@ -54,5 +44,11 @@ public class KernelJavaCall_MethodZZZ  extends AbstractIniTagSimpleZZZ{
 	@Override
 	public String getNameDefault() throws ExceptionZZZ{
 		return KernelJavaCall_MethodZZZ.sTAG_NAME;
-	}					
+	}
+
+	//### aus IConvertableZZZ
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+		return false;
+	}						
 }//End class

@@ -1,16 +1,10 @@
 package basic.zKernel.file.ini;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
 import basic.zBasic.util.abstractList.VectorZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
-import basic.zKernel.IKernelConfigSectionEntryZZZ;
-import basic.zKernel.KernelConfigSectionEntryZZZ;
-import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
 /** Merke: Einfache Tags sind nicht verschachtelt.
  *         => 1. Bei einer compute() Berechnung wird nur der Inhalt des Tags zurückgegeben. 
@@ -36,8 +30,15 @@ public abstract class AbstractIniTagSimpleZZZ<T>  extends AbstractIniTagBasicZZZ
 		return bReturn;
 	 }//end function KernelExpressionMathSolverNew_
 	
+	//### aus IConvertableZZZ
+	@Override
+	public String convert(String sLine) throws ExceptionZZZ {
+		return sLine;
+	}	
+	public abstract boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ;
 	
-	//### aus IExpressionCascadedUserZZZ
+	
+	//### aus IExpressionUserZZZ
 	@Override
 	public String computeAsExpression() throws ExceptionZZZ {
 		String sExpression = this.getValue();

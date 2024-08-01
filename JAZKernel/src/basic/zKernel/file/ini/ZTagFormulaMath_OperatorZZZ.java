@@ -31,8 +31,7 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		return true;
 	 }//end function ZTagFormulaMath_OperatorNew_
 	
-	
-	
+
 	public String compute(String sValue01, String sValue02) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -185,5 +184,11 @@ public class ZTagFormulaMath_OperatorZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 		@Override
 		public String getNameDefault() throws ExceptionZZZ {
 			return ZTagFormulaMath_OperatorZZZ.sTAG_NAME;
+		}
+
+		//### aus IConvertableZZZ
+		@Override
+		public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+			return false;
 		}
 }//End class

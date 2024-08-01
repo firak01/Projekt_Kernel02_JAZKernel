@@ -10,11 +10,9 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
 import basic.zKernel.IKernelZFormulaIniZZZ;
-import basic.zKernel.IKernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
+public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelZFormulaIniZZZ{
 //public class KernelZFormulaIni_EmptyZZZ  extends AbstractKernelUseObjectZZZ implements IKernelZFormulaIniZZZ{	
 	private static final long serialVersionUID = 7203160369729097L;
 	public static String sTAG_NAME = "z:Empty";
@@ -81,6 +79,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		return true;
 	 }//end function KernelExpressionMathSolverNew_
 			
+	@Override
 	public Vector<String> computeExpressionAllVector(String sLineWithExpression) throws ExceptionZZZ{
 		Vector<String> vecReturn = new Vector<String>();
 		main:{
@@ -104,7 +103,7 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 						sProperty = StringZZZ.left(sProperty, sMathValueTag);												
 					}
 										
-					FileIniZZZ objFileIni = this.getFileIni();
+					FileIniZZZ objFileIni = this.getFileConfigKernelIni();
 					if(objFileIni==null){
 						ExceptionZZZ ez = new ExceptionZZZ("FileIni", iERROR_PROPERTY_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 						throw ez;
@@ -142,22 +141,6 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 		return vecReturn;
 	}
 	
-	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
-	* @param sLineWithExpression
-	* @return
-	* 
-	* lindhaueradmin; 06.03.2007 11:20:34
-	 * @throws ExceptionZZZ 
-	 */
-	public Vector<String> computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
-		Vector<String> vecReturn = new Vector<String>();		
-		main:{
-			vecReturn = StringZZZ.vecMid(sLineWithExpression, KernelZFormulaIni_EmptyZZZ.getExpressionTagStarting(), KernelZFormulaIni_EmptyZZZ.getExpressionTagClosing(), false,false);
-		}
-		return vecReturn;
-	}
-		
-	
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
@@ -166,6 +149,22 @@ public class KernelZFormulaIni_EmptyZZZ<T> extends AbstractIniTagSimpleZZZ<T> im
 	}
 
 	//### Aus Interface IKernelExpressionIniZZZ
+//	/** Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element ist der Ausdruck NACH der ersten Expression.
+//	* @param sLineWithExpression
+//	* @return
+//	* 
+//	* lindhaueradmin; 06.03.2007 11:20:34
+//	 * @throws ExceptionZZZ 
+//	 */
+//	@Override
+//	public Vector<String> computeExpressionFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+//		Vector<String> vecReturn = new Vector<String>();		
+//		main:{
+//			vecReturn = StringZZZ.vecMid(sLineWithExpression, XmlUtilZZZ.computeTagPartStarting(this.getName()), XmlUtilZZZ.computeTagPartClosing(this.getName()), false,false);
+//		}
+//		return vecReturn;
+//	}
+	
 	/**
 	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
 	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element

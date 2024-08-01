@@ -56,12 +56,13 @@ import basic.zKernel.flag.IFlagZUserZZZ;
  * @author lindhauer
  * 
  */
-public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
+public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IKernelConfigZZZ,IKernelExpressionIniConverterUserZZZ{
 	//FLAGZ, die dann zum "Rechnen in der Konfiguations Ini Datei" gesetzt sein müssen.
 //	public enum FLAGZ{
 //		USEFORMULA, USEFORMULA_MATH;
 //	}
 	
+	private static final long serialVersionUID = -8991085241039836506L;
 	private IKernelConfigSectionEntryZZZ objEntry = null;
 	private GetOptZZZ objOpt = null;
 	private ICryptZZZ objCrypt = null;
@@ -415,9 +416,9 @@ public abstract class AbstractKernelConfigZZZ extends AbstractObjectWithFlagZZZ 
 	}
 	
 	//### Interface aus IKernelExpressionIniSolver
-	public IKernelConfigSectionEntryZZZ getEntry() {
+	public IKernelConfigSectionEntryZZZ getEntry() throws ExceptionZZZ {
 		if(this.objEntry==null) {
-			this.objEntry = new KernelConfigSectionEntryZZZ();			
+			this.objEntry = new KernelConfigSectionEntryZZZ<T>();			
 		}
 		return this.objEntry;
 	}

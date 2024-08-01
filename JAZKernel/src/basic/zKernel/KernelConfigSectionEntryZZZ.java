@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import basic.zBasic.AbstractObjectWithValueBufferedZZZ;
-import basic.zBasic.AbstractObjectWithValueZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
@@ -18,7 +17,6 @@ import basic.zBasic.util.file.ini.IIniStructurePositionZZZ;
 import basic.zKernel.cache.ICachableObjectZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 import basic.zKernel.file.ini.IIniTagBasicZZZ;
-import basic.zKernel.file.ini.IIniTagSimpleZZZ;
 
 public class KernelConfigSectionEntryZZZ<T> extends AbstractObjectWithValueBufferedZZZ<T> implements IKernelConfigSectionEntryZZZ, ICachableObjectZZZ, Cloneable {
 	private static final long serialVersionUID = -6413574962232912980L;

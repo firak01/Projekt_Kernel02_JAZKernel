@@ -1,5 +1,7 @@
 package basic.zBasic.util.xml.tagexpression;
 
+import java.util.Vector;
+
 import basic.zBasic.AbstractObjectWithExpressionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -101,5 +103,24 @@ public abstract class AbstractTagWithExpressionBasicZZZ<T> extends AbstractObjec
 			sReturn = this.getTagStarting() + sValue + this.getTagClosing();
 		}
 		return sReturn;
+	}
+	
+	//Aus IParseEnabledZZZ
+	/**
+	 * Gibt einen Vector zurück, in dem das erste Element der Ausdruck VOR der
+	 * ersten 'Expression' ist. Das 2. Element ist die Expression. Das 3. Element
+	 * ist der Ausdruck NACH der ersten Expression.
+	 * 
+	 * @param sLineWithExpression
+	 * @throws ExceptionZZZ
+	 */
+	@Override
+	public Vector<String>parseFirstVector(String sLineWithExpression) throws ExceptionZZZ{
+		Vector<String>vecReturn = new Vector<String>();		
+		main:{
+			//Bei dem einfachen Tag wird das naechste oeffnende Tag genommen und dann auch das naechste schliessende Tag...
+			vecReturn = StringZZZ.vecMidFirst(sLineWithExpression, this.getTagStarting(), this.getTagClosing(), false, false);
+		}
+		return vecReturn;
 	}
 }

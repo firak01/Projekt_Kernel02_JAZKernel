@@ -31,5 +31,12 @@ public class KernelEncryption_CharacterPoolAdditionalZZZ<T>  extends AbstractIni
 	@Override
 	public String getNameDefault() throws ExceptionZZZ{
 		return KernelEncryption_CharacterPoolAdditionalZZZ.sTAG_NAME;
+	}
+
+
+	//### aus IConvertableZZZ
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+		return false;
 	}			
 }//End class

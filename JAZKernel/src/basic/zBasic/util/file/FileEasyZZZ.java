@@ -42,6 +42,7 @@ import basic.zBasic.AbstractObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.ReflectWorkspaceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zBasic.util.datatype.calling.ReferenceZZZ;
 import basic.zBasic.util.datatype.character.CharZZZ;
@@ -2586,12 +2587,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(bUseProjectBase) {
 				sPath = sPathIn;
 			}else {
-				if(sPathIn.startsWith(ZTagFormulaIni_NullZZZ.getExpressionTagEmpty())){			
+				if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME))){			
 					bUseProjectBase=true;
-					sPath = StringZZZ.stripLeft(sPathIn, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty());
-				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME));
+				}else if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME))){		
 					bUseClasspathSource=true;
-					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME));
 				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)){
 					bUseProjectBase=true;
 					sPath = sPathIn;
@@ -2721,12 +2722,12 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 			if(bUseProjectBase) {
 				sPath = sPathIn;
 			}else {
-				if(sPathIn.startsWith(ZTagFormulaIni_NullZZZ.getExpressionTagEmpty())){			
+				if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME))){			
 					bUseProjectBase=true;
-					sPath = StringZZZ.stripLeft(sPathIn, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty());
-				}else if(sPathIn.startsWith(KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty())){		
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME));
+				}else if(sPathIn.startsWith(XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME))){		
 					bUseClasspathSource=true;
-					sPath = StringZZZ.stripLeft(sPathIn, KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty());
+					sPath = StringZZZ.stripLeft(sPathIn, XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME));
 				}else if(sPathIn.startsWith(IFileEasyConstantsZZZ.sDIRECTORY_PARENT)){
 					bUseProjectBase=true;
 					sPath = sPathIn;

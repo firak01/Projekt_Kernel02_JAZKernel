@@ -12,13 +12,12 @@ import basic.zKernel.flag.IFlagZUserZZZ;
 import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 
-/**Merke: Weil hier noch eine HashMap der Variablen verwaltet wird, 
- *       kann es keine TagSimple-Klasse sein.
+/**
  * @author fl86kyvo
  *
  * @param <T>
  */
-public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagCascadedZZZ<T>{
+public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = 6370617551800139734L;
 	public static String sTAG_NAME = "z:Var"; 
 	private HashMapCaseInsensitiveZZZ<String,String>hmVariable = null;
@@ -196,10 +195,12 @@ public class ZTagFormulaIni_VariableZZZ<T>  extends AbstractIniTagCascadedZZZ<T>
 		return ZTagFormulaIni_VariableZZZ.sTAG_NAME;
 	}
 
-	
-	
+	//### aus IConvertableZZZ
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+		return false;
+	}
 
-	
 	//### Aus Interface IKernelExpressionIniZZZ
 		
 		/* (non-Javadoc)

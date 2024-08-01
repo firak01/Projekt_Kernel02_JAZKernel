@@ -24,7 +24,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
 //DIES IST DER FLAG - WEG: AbstractObjectWithFlagZZZ -> AbstractObjectWithExpression -> AbstractTagWithExpressionBasic
 //ALSO:      In AbstractInitTagWitchExpressionBasicZZZ steht schon ALLES WAS IN AbstractIniTagBasicZZZ und dessen Elternklasse implementiert ist
 //NUN NOCH:  Alles WAS in AbstractIniTagSimpleZZZ steht hier auch noch hinein.
-public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithExpressionZZZ, IExpressionCascadedUserZZZ{
+public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ, IKernelConfigSectionEntryUserZZZ, IIniTagWithExpressionZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.
@@ -334,6 +334,11 @@ public abstract class AbstractKernelIniTagSimpleZZZ<T> extends AbstractIniTagWit
 			return vecReturn;
 		}
 		
-		
-		
+		//### aus IConvertableZZZ
+		@Override
+		public String convert(String sLine) throws ExceptionZZZ {
+			return sLine;
+		}	
+		public abstract boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ;
+
 }// End class

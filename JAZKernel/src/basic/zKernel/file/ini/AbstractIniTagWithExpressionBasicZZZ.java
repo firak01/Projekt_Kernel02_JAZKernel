@@ -117,7 +117,20 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return saReturn;
 	}
 	
-	//### Aus IParseEnabled
+	//aus IParseEnabledZZZ
+	@Override
+	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
+		boolean bReturn=false;
+		main:{
+			if(StringZZZ.isEmptyTrimmed(sExpressionToProof)) break main;
+		
+			bReturn = XmlUtilZZZ.containsTag(sExpressionToProof, this.getName(), false); //also, kein exact match
+			if(bReturn) break main;
+						
+		}//end main
+		return bReturn;
+	}
+		
 	@Override
 	public String parse(String sLineWithExpression) throws ExceptionZZZ{
 		String sReturn = sLineWithExpression;
@@ -252,9 +265,6 @@ public abstract class AbstractIniTagWithExpressionBasicZZZ<T> extends AbstractTa
 		return ComputableExpressionUtilZZZ.isExpression4TagXml(sLineWithExpression, this.getName());
 	}	
 
-	
-
-	
 	
 	//### Merke: IValueSolvedUserZZZ hier eingebunden, da es eine Expression ist
 	//           Die MEthoden aus AbstractObjectWithExpressionZZZ muessen nur auf den Entry umgebogen werden.

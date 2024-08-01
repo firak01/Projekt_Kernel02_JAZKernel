@@ -28,4 +28,10 @@ public class ZTagFormulaMath_ValueZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagFormulaMath_ValueZZZ.sTAG_NAME;
 	}
+	
+	//### aus IConvertableZZZ
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+		return false;
+	}
 }//End class

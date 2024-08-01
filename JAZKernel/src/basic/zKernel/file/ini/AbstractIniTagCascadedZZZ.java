@@ -12,7 +12,8 @@ import basic.zKernel.IKernelConfigSectionEntryZZZ;
 import basic.zKernel.KernelConfigSectionEntryZZZ;
 import basic.zKernel.config.KernelConfigSectionEntryUtilZZZ;
 
-public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> {
+public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagSimpleZZZ<T> {
+//public abstract class AbstractIniTagCascadedZZZ<T> extends AbstractIniTagWithExpressionBasicZZZ<T> {
 	private static final long serialVersionUID = 3041123191138631240L;
 
 	public AbstractIniTagCascadedZZZ() throws ExceptionZZZ {

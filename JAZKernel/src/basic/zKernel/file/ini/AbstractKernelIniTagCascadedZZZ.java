@@ -14,7 +14,7 @@ import basic.zKernel.IKernelZZZ;
 import custom.zKernel.LogZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
-public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractIniTagCascadedZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ{
+public abstract class AbstractKernelIniTagCascadedZZZ<T> extends AbstractKernelIniTagSimpleZZZ<T> implements IKernelUserZZZ, IKernelFileIniUserZZZ{
 	private static final long serialVersionUID = -3319737210584524888L;
 	protected volatile IKernelZZZ objKernel=null;
 	protected volatile LogZZZ objLog = null; //Kann anders als beim Kernel selbst sein.

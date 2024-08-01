@@ -2,7 +2,7 @@ package basic.zKernel.file.ini;
 
 import basic.zBasic.ExceptionZZZ;
 
-public class ZTagEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
+public class ZTagEncryption_KeyStringZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	private static final long serialVersionUID = -79235762837292434L;
 	public static String sTAG_NAME = "Z:KeyString";
 	
@@ -27,5 +27,11 @@ public class ZTagEncryption_KeyStringZZZ  extends AbstractIniTagSimpleZZZ{
 	@Override
 	public String getNameDefault() throws ExceptionZZZ {
 		return ZTagEncryption_KeyStringZZZ.sTAG_NAME;
+	}
+
+	//### aus IConvertableZZZ
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+		return false;
 	}					
 }//End class

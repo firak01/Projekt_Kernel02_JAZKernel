@@ -3,30 +3,17 @@ package basic.zBasic;
 import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 
 //MUSS FLAGS FUER DIE Expression-VERARBEITUNG SETZEN KOENNEN
+//Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
 public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectWithFlagZZZ<T> implements IObjectWithExpressionZZZ{
 	private static final long serialVersionUID = 4049221887081114236L;
-	
-	//+++ fuer das Arbeiten mit einem INI-Eintrag
-	//protected volatile IKernelConfigSectionEntryZZZ objEntry = null;
-	
-	//Merke: Der Name der Tags wird auf unterschiedliche Weise geholt.
-	//protected String sTagName = null; //String fuer den Fall, das ein Tag OHNE TagType erstellt wird.	
 		
-	//IValueBufferedUserZZZ
+	//+++ fuer IValueBufferedUserZZZ
 	protected VectorExtendedDifferenceZZZ<String> vecValue = new VectorExtendedDifferenceZZZ<String>();
 	protected boolean bAnyValue = false;
 	protected boolean bNullValue = false;
 	
 	//IValueSolvedUserZZZ
 	protected VectorExtendedDifferenceZZZ<String> vecRaw = new VectorExtendedDifferenceZZZ<String>();
-	
-	
-	//+++ fuer die Flags
-//	protected volatile HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
-//	protected volatile HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
-//	protected volatile HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
-		
-//	protected volatile ISenderObjectFlagZsetZZZ objEventFlagZBroker = null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines Flags per Event informiert zu werden.
 	
 	public AbstractObjectWithExpressionZZZ() throws ExceptionZZZ{
 		this("init");
@@ -58,7 +45,7 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 		return bReturn;
 	 }//end function AbstractObjectWithExpressionNew_
 	//++++++++++++++++++++++++
-	
+		
 	//### Aus IValueBufferedUserZZZ
 	@Override 
 	public VectorExtendedDifferenceZZZ<String> getValueVector() throws ExceptionZZZ{
@@ -129,9 +116,4 @@ public abstract class AbstractObjectWithExpressionZZZ<T> extends AbstractObjectW
 	public void setRaw(String sRaw) throws ExceptionZZZ {
 		this.getRawVector().add(sRaw);
 	}
-
-	//######################################################
-	//Merke: Arrays erst in ini-Tag behandeln, da es dafuer Separatorn in der Zeile geben muss
-
-
 }

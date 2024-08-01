@@ -5,14 +5,10 @@ import java.util.Vector;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractList.ArrayListExtendedZZZ;
-import basic.zBasic.util.abstractList.VectorExtendedDifferenceZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.file.ini.IIniStructureConstantZZZ;
-import basic.zKernel.AbstractKernelUseObjectZZZ;
-import basic.zKernel.IKernelZFormulaIniZZZ;
 import basic.zKernel.IKernelZZZ;
-import basic.zKernel.flag.IFlagZUserZZZ;
 import custom.zKernel.file.ini.FileIniZZZ;
 
 /** Warum diese Klasse existiert:
@@ -24,7 +20,7 @@ import custom.zKernel.file.ini.FileIniZZZ;
  * @param <T>
  */
 //public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelUseObjectZZZ<T> implements IKernelZFormulaIniZZZ{
-public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<T>{ // implements IKernelZFormulaIniZZZ{
+public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagSimpleZZZ<T>{ // implements IKernelZFormulaIniZZZ{
 	private static final long serialVersionUID = -3773890882498236252L;
 	public static String sTAG_NAME = "z:Null"; 
 	private FileIniZZZ objFileIni=null;
@@ -167,7 +163,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 	}
 
 	
-	//### Aus Interface IKernelExpressionIniZZZ
+	//### Aus Interface IConvertable
 	@Override
 	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
@@ -175,6 +171,20 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 		return bReturn;
 	}
 	
+	@Override
+	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
+		String sReturn = sLineWithoutExpression;
+		main:{
+			if(!this.isStringForConvertRelevant(sLineWithoutExpression)) break main;
+			
+			//Hier einfach den Leeren-Tag zurückgeben			
+			sReturn = this.getTagEmpty();
+						
+		}//end main
+		return sReturn;
+	}
+	
+	//### Aus Interface IParseEnabled	
 	@Override
 	public boolean isParseRelevant(String sExpressionToProof) throws ExceptionZZZ {
 		boolean bReturn=false;
@@ -242,18 +252,7 @@ public class ZTagFormulaIni_NullZZZ<T>  extends AbstractKernelIniTagCascadedZZZ<
 		return sReturn;
 	}
 	
-	@Override
-	public String convert(String sLineWithoutExpression) throws ExceptionZZZ{
-		String sReturn = sLineWithoutExpression;
-		main:{
-			if(!this.isStringForConvertRelevant(sLineWithoutExpression)) break main;
-			
-			//Hier einfach den Leeren-Tag zurückgeben			
-			sReturn = this.getTagEmpty();
-						
-		}//end main
-		return sReturn;
-	}
+	
 
 
 	@Override

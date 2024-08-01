@@ -3,6 +3,7 @@ package basic.zBasic.util.file;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 
@@ -29,12 +30,12 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 			String sReturnFilePathTotal="";
 			
 			//An empty string is allowed as ROOT-Directory. A null String is the Project/Execution Directory		
-			if(sFilePath==null || ZTagFormulaIni_NullZZZ.getExpressionTagEmpty().equals(sFilePath)){
+			if(sFilePath==null || XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME).equals(sFilePath)){
 				String sWorkspace = FileEasyZZZ.getDirectoryOfExecutionAsString();
 				sReturnRoot = "";
 				sReturnFilePath = sWorkspace;				
 				sReturnFilePathTotal = sWorkspace;
-			}else if(sFilePath.equals("") || KernelZFormulaIni_EmptyZZZ.getExpressionTagEmpty().equals(sFilePath)){					
+			}else if(sFilePath.equals("") || XmlUtilZZZ.computeTagEmpty(KernelZFormulaIni_EmptyZZZ.sTAG_NAME).equals(sFilePath)){					
 				sReturnRoot = FileEasyZZZ.getFileRootPath();
 				sReturnFilePath="";
 				sReturnFilePathTotal=sReturnRoot;	
@@ -44,10 +45,10 @@ public class FileEasyConstantConverterZZZ implements IFileEasyConstantsZZZ {
 				sReturnFilePathTotal=sReturnRoot;
 			}else {				
 				if(FileEasyZZZ.isPathRelative(sFilePath) & !StringZZZ.isEmpty(sFilePath)) {			
-					boolean btemp = StringZZZ.startsWithIgnoreCase((sFilePath + sDirectorySeparator),ZTagFormulaIni_NullZZZ.getExpressionTagEmpty() + sDirectorySeparator);
+					boolean btemp = StringZZZ.startsWithIgnoreCase((sFilePath + sDirectorySeparator),XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME) + sDirectorySeparator);
 					if(!(sFilePath + sDirectorySeparator).startsWith(sDirectorySeparator) && btemp ) {
 						sReturnRoot = FileEasyZZZ.getDirectoryOfExecutionAsString();
-						sReturnFilePath = StringZZZ.rightback(sFilePath, ZTagFormulaIni_NullZZZ.getExpressionTagEmpty()+sDirectorySeparator,false);
+						sReturnFilePath = StringZZZ.rightback(sFilePath, XmlUtilZZZ.computeTagEmpty(ZTagFormulaIni_NullZZZ.sTAG_NAME)+sDirectorySeparator,false);
 						if(bReturnAsRelativePath) {
 							sReturnFilePathTotal = sReturnFilePath;
 						}else {

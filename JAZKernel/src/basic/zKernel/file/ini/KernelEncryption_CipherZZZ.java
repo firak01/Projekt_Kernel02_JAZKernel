@@ -35,5 +35,11 @@ public class KernelEncryption_CipherZZZ<T>  extends AbstractIniTagSimpleZZZ<T>{
 	@Override
 	public String getNameDefault() throws ExceptionZZZ{
 		return KernelEncryption_CipherZZZ.sTAG_NAME;
+	}
+
+	//### aus IConvertableZZZ
+	@Override
+	public boolean isStringForConvertRelevant(String sStringToProof) throws ExceptionZZZ {	
+		return false;
 	}				
 }//End class
